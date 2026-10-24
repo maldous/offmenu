@@ -725,6 +725,34 @@
         },
         "sourcePath": {
           "type": "string"
+        },
+        "condition": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "selected-alternative"
+            },
+            "groupId": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "branchId": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "sourceScope": {
+              "$ref": "#/$defs/alternativeSourceScope"
+            }
+          },
+          "required": [
+            "kind",
+            "groupId",
+            "branchId",
+            "sourceScope"
+          ]
         }
       },
       "required": [
@@ -736,6 +764,22 @@
         "citationIds",
         "scope",
         "sourcePath"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "condition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "predicateId": {
+                "const": "canonical_ingredient"
+              }
+            }
+          }
+        }
       ]
     },
     "translation": {
@@ -805,6 +849,49 @@
         "status",
         "citationIds",
         "terminologyResourceIds"
+      ]
+    },
+    "alternativeSourceScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "recipeId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "mentionId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "sourceKey": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "recordId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "contentSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "recipeId",
+        "mentionId",
+        "sourceKey",
+        "sourceVersion",
+        "recordId",
+        "contentSha256"
       ]
     }
   },

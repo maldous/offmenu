@@ -75,7 +75,7 @@ CREATE TABLE gold_edges (
   subject_id TEXT,
   predicate_id TEXT NOT NULL,
   object_id TEXT,
-  state TEXT NOT NULL CHECK(state IN ('verified','inferred','held','conflict')),
+  state TEXT NOT NULL CHECK(state IN ('verified','conditional','inferred','held','conflict')),
   payload_json TEXT NOT NULL CHECK(json_valid(payload_json)),
   FOREIGN KEY(subject_id) REFERENCES gold_entities(entity_id),
   FOREIGN KEY(object_id) REFERENCES gold_entities(entity_id)
@@ -151,8 +151,43 @@ CREATE INDEX gold_observations_metric ON gold_observations(metric_id,entity_id);
 
 -- Verified edge endpoints must themselves qualify. Held unresolved edges retain NULLs.
 CREATE TRIGGER gold_edge_qualified BEFORE INSERT ON gold_edges
-WHEN NEW.state='verified' AND (
+WHEN NEW.state IN ('verified','conditional') AND (
  NEW.subject_id IS NULL OR NEW.object_id IS NULL OR
  NOT EXISTS(SELECT 1 FROM gold_entities WHERE entity_id=NEW.subject_id AND state='verified') OR
  NOT EXISTS(SELECT 1 FROM gold_entities WHERE entity_id=NEW.object_id AND state='verified'))
 BEGIN SELECT RAISE(ABORT,'verified relationship requires qualified endpoints'); END;
+
+-- Conditional rows cannot be silently promoted by a verified-only consumer.
+CREATE TRIGGER gold_edge_alternative_insert BEFORE INSERT ON gold_edges
+WHEN (NEW.state='verified' AND (
+ json_type(NEW.payload_json,'$.condition') IS NOT NULL OR
+ json_type(NEW.payload_json,'$.alternativeGroupId') IS NOT NULL OR
+ json_type(NEW.payload_json,'$.branchId') IS NOT NULL OR
+ json_type(NEW.payload_json,'$.groupId') IS NOT NULL)) OR
+ (NEW.state='conditional' AND (
+ NEW.predicate_id!='canonical_ingredient' OR
+ json_type(NEW.payload_json,'$.condition') IS NOT 'object' OR
+ json_extract(NEW.payload_json,'$.condition.kind') IS NOT 'selected-alternative'))
+BEGIN SELECT RAISE(ABORT,'alternative requires typed conditional state'); END;
+
+CREATE TRIGGER gold_edge_qualified_update BEFORE UPDATE ON gold_edges
+WHEN NEW.state IN ('verified','conditional') AND (
+ NEW.subject_id IS NULL OR NEW.object_id IS NULL OR
+ NOT EXISTS(SELECT 1 FROM gold_entities WHERE entity_id=NEW.subject_id AND state='verified') OR
+ NOT EXISTS(SELECT 1 FROM gold_entities WHERE entity_id=NEW.object_id AND state='verified'))
+BEGIN SELECT RAISE(ABORT,'relationship requires qualified endpoints'); END;
+
+-- Qualification is proposed afresh; removing a condition in place is not review.
+CREATE TRIGGER gold_edge_alternative_update BEFORE UPDATE ON gold_edges
+WHEN ((OLD.state='conditional' OR json_type(OLD.payload_json,'$.condition') IS NOT NULL)
+ AND (NEW.state='verified' OR NEW.payload_json!=OLD.payload_json)) OR
+ (NEW.state='verified' AND (
+ json_type(NEW.payload_json,'$.condition') IS NOT NULL OR
+ json_type(NEW.payload_json,'$.alternativeGroupId') IS NOT NULL OR
+ json_type(NEW.payload_json,'$.branchId') IS NOT NULL OR
+ json_type(NEW.payload_json,'$.groupId') IS NOT NULL)) OR
+ (NEW.state='conditional' AND (
+ NEW.predicate_id!='canonical_ingredient' OR
+ json_type(NEW.payload_json,'$.condition') IS NOT 'object' OR
+ json_extract(NEW.payload_json,'$.condition.kind') IS NOT 'selected-alternative'))
+BEGIN SELECT RAISE(ABORT,'alternative requires a fresh qualified proposal'); END;
