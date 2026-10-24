@@ -1,6 +1,5 @@
 """Read-only application-created recipe groups in an already admitted snapshot."""
 import argparse
-from contextlib import closing
 import hashlib
 import json
 import math
@@ -8,6 +7,8 @@ from pathlib import Path
 import re
 import sqlite3
 import time
+
+from gold_snapshot_access import SnapshotAccessError, verified_snapshot
 
 GROUP_VERSION = 'offmenu.application-created-recipe-group/1'
 RESULT_VERSION = 'offmenu.generated-recipe-menu/1'
@@ -338,9 +339,34 @@ def read_generated_menu(db, group, *, database_sha256, admission_sha256,
                 if qualified:
                     instructions = [x['english_text'] for x in actions]
                 instruction_state = 'selected-native-run' if qualified else 'held-action-provenance'
-                native = {'run': selected, 'actions': actions,
+                graph = {}
+                for key, table, order in (
+                        ('dependencies', 'gold_recipe_dependencies', 'action_sequence,dependency_sequence'),
+                        ('ingredients', 'gold_recipe_ingredients', 'action_id,slot_name'),
+                        ('ingredientSupport', 'gold_recipe_ingredient_support', 'action_id,slot_name,citation_id'),
+                        ('materials', 'gold_recipe_materials', 'producer_sequence,material_id'),
+                        ('materialSupport', 'gold_recipe_material_support', 'material_id,citation_id'),
+                        ('materialInputs', 'gold_recipe_material_inputs', 'action_sequence,material_id'),
+                        ('materialInputSupport', 'gold_recipe_material_input_support', 'action_id,material_id,citation_id')):
+                    # Fixed table/order literals only; every row and byte is charged
+                    # to the existing SQL budget, including support/graph metadata.
+                    graph[key] = query('SELECT * FROM ' + table + ' WHERE run_id=? ORDER BY ' + order,
+                                       (selected['run_id'],))
+                for support in graph['ingredientSupport'] + graph['materialSupport'] + graph['materialInputSupport']:
+                    cid = support.get('citation_id')
+                    if cid not in citation_cache:
+                        rows = query('SELECT payload_json FROM gold_citations WHERE citation_id=?', (cid,))
+                        citation_cache[cid] = _parsed_json(rows[0]['payload_json']) if len(rows) == 1 else None
+                    citation = citation_cache[cid]
+                    _require(type(citation) is dict and citation.get('id') == cid
+                             and all(type(citation.get(k)) is str and citation[k].strip()
+                                     for k in ('license', 'attribution')), 'native-graph-citation-required')
+                    if cid not in {c['id'] for c in citations}:
+                        citations.append(citation)
+                    _require(len(citations) <= 64, 'recipe-citation-limit')
+                native = {'run': selected, 'actions': actions, 'graph': graph,
                           'meaning': 'Exact selected admitted records; instructionState controls display qualification. Retain scope and unknown parameters. No whole-recipe automation acceptance.'}
-            holds = query('SELECT target_kind,target_id,reason FROM gold_holds '
+            holds = query('SELECT hold_id,target_kind,target_id,reason FROM gold_holds '
                           'WHERE target_id IN (?,?,?) ORDER BY hold_id',
                           (eid, entity['resource_id'], member.get('nativeRunId', '')))
             out['members'].append({'recipeEntityId': eid, 'recipeResourceId': entity['resource_id'],
@@ -353,6 +379,8 @@ def read_generated_menu(db, group, *, database_sha256, admission_sha256,
                 'sourceScope': payload.get('scope'), 'holds': holds,
                 'recipeNutrition': None, 'userSelected': False})
             output_bound()
+        out['limits'].update(rowsRead=max_rows - remaining, sourceBytesRead=source_bytes,
+                             maxSourceBytes=8388608, sqliteStepsUpperBound=ticks + 99)
         output_bound()
         return out
     except (sqlite3.Error, json.JSONDecodeError, KeyError, TypeError, RecursionError) as exc:
@@ -362,50 +390,24 @@ def read_generated_menu(db, group, *, database_sha256, admission_sha256,
         db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, old_length)
 
 
-def _file_sha(path, ceiling):
-    h, count = hashlib.sha256(), 0
-    with path.open('rb') as stream:
-        for chunk in iter(lambda: stream.read(1048576), b''):
-            count += len(chunk)
-            _require(count <= ceiling, 'snapshot-file-byte-limit')
-            h.update(chunk)
-    return h.hexdigest()
-
-
 def query_snapshot(admission_path, admission_sha256, group, **limits):
-    """Verify an explicitly selected admission receipt and sealed database.
-
-    The expected receipt hash must come from the owner's accepted handoff,
-    never from the grouping sidecar. Matching JSON is not new source authority.
-    """
-    _require(_sha(admission_sha256), 'admission-pin-required')
-    admission_path = Path(admission_path)
-    _require(_file_sha(admission_path, 262144) == admission_sha256, 'admission-hash-mismatch')
-    receipt = json.loads(admission_path.read_text())
-    _require(type(receipt.get('state')) is str and receipt['state'].startswith('ACCEPTED_'),
-             'accepted-admission-required')
-    artifact = receipt.get('artifact', {})
-    _require(type(artifact.get('path')) is str and _sha(artifact.get('sha256')), 'admission-artifact-required')
-    database = Path(artifact['path']).resolve(strict=True)
-    _require(not any(Path(str(database) + suffix).exists() for suffix in ['-wal', '-shm', '-journal']),
-             'sealed-snapshot-required')
-    _require(_file_sha(database, 67108864) == artifact['sha256'], 'database-hash-mismatch')
-    with closing(sqlite3.connect(database.as_uri() + '?mode=ro&immutable=1', uri=True)) as db:
-        db.execute('PRAGMA query_only=ON')
-        db.execute('PRAGMA temp_store=MEMORY')
-        result = read_generated_menu(db, group, database_sha256=artifact['sha256'],
-                                     admission_sha256=admission_sha256, **limits)
-    _require(_file_sha(database, 67108864) == artifact['sha256'], 'database-changed-during-query')
-    _require(not any(Path(str(database) + suffix).exists() for suffix in ['-wal', '-shm', '-journal']),
-             'sealed-snapshot-required')
-    _require(_file_sha(admission_path, 262144) == admission_sha256, 'admission-changed-during-query')
-    result['admissionState'] = receipt['state']
-    result['admissionLimits'] = _receipt_limits(receipt)
-    qualified = result['admissionLimits']['status'] == 'present'
-    result['admissionScopeLimits'] = receipt.get('scopeLimits') if qualified else None
-    result['admissionSourceAndConsumerLimits'] = receipt.get('sourceAndConsumerLimits') if qualified else None
-    _require(len(encoded(result)) <= limits.get('max_bytes', 1048576), 'menu-output-limit')
-    return result
+    """Verify an explicitly selected receipt and sealed file, independently of SQL limits."""
+    try:
+        with verified_snapshot(admission_path, admission_sha256) as access:
+            result = read_generated_menu(access.db, group,
+                database_sha256=access.database_sha256,
+                admission_sha256=admission_sha256, **limits)
+            receipt = access.receipt
+        result['snapshotVerification'] = access.verification
+        result['admissionState'] = receipt['state']
+        result['admissionLimits'] = _receipt_limits(receipt)
+        qualified = result['admissionLimits']['status'] == 'present'
+        result['admissionScopeLimits'] = receipt.get('scopeLimits') if qualified else None
+        result['admissionSourceAndConsumerLimits'] = receipt.get('sourceAndConsumerLimits') if qualified else None
+        _require(len(encoded(result)) <= limits.get('max_bytes', 1048576), 'menu-output-limit')
+        return result
+    except SnapshotAccessError as error:
+        raise GeneratedMenuError(str(error)) from error
 
 
 def main():

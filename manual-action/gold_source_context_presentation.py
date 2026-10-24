@@ -25,6 +25,8 @@ _SHA = re.compile(r'[0-9a-f]{64}\Z')
 _RUN = re.compile(r'recipe-actions:[0-9a-f]{64}\Z')
 _COMPANION = 'attributed-source-context-companion'
 _CAUTION = 'report-only-attributed-source-caution-companion'
+_LINEAGE = 'offmenu-source-local-lineage-qualified-companion/1'
+_HISTORICAL = 'offmenu-private-historical-source-proof-context/1'
 _FALSE_SCOPE = ('actualCookingQualified', 'actualUserChoice',
                 'recipeNutritionQualified', 'scalingQualified', 'executionQualified',
                 'cookingSafetyNutritionScalingAcceptance')
@@ -246,7 +248,203 @@ def _instruction_events(member, run, provenance, citations):
     return events
 
 
-def _member(member, guard):
+def _pin_metadata(pin):
+    _need(type(pin) is dict and _sha(pin.get('sha256')), 'context-pin-shape')
+    _text(pin.get('path'), 8192)  # Never open stored artifact paths.
+
+
+def _graph_support(rows, targets, key_fields, run_id, citations, provenance):
+    """Bind complete stored support rows to the exact selected graph records."""
+    _need(type(rows) is list, 'lineage-support-shape')
+    seen = set()
+    for row in rows:
+        key = tuple(row[k] for k in key_fields)
+        _need(row.get('run_id') == run_id and key in targets, 'lineage-support-binding')
+        target = targets[key]
+        cid = row.get('citation_id')
+        _need(cid in citations and _parsed(row['evidence_json']) == _parsed(target['evidence_json']),
+              'lineage-support-evidence')
+        _rights(citations[cid], provenance)
+        _need((key, cid) not in seen, 'duplicate-lineage-support')
+        seen.add((key, cid))
+    _need({key for key, _ in seen} == set(targets), 'lineage-support-missing')
+
+
+def _lineage_events(payload, member, run, source, provenance, citations):
+    rid = run['run_id']
+    binding = payload['boundRun']
+    _need(binding['runId'] == rid and binding['recipeEntityId'] == member['recipeEntityId']
+          and binding['sourceOccurrenceId'] == source['occurrence_id'], 'lineage-run-binding')
+    for key in ('independentActualOutputReview', 'originalCompanion', 'requiredWrittenConsumerBindings'):
+        _pin_metadata(payload[key])
+    _pin_metadata(binding['rawOutput'])
+    original, source_context = payload['completeOriginalSource'], payload['completeOriginalSourceContext']
+    _need(original == source['sourceOriginal'] and source_context['provenance'] == provenance,
+          'lineage-original-source-binding')
+    _pin_metadata(source_context['source_original'])
+    companion = payload['completeCompanion']
+    _need(companion.get('schema') == 'offmenu-qualified-source-local-lineage-context/1',
+          'lineage-companion-schema')
+    _pin_metadata(companion['fullOriginalSourceContext'])
+    _text(companion['meaning']); _text(companion['requiredUse'])
+    citation = companion['rightsCitation']
+    _need(citations.get(citation.get('id')) == citation, 'lineage-rights-binding')
+    _rights(citation, provenance)
+    actions = {a['action_id']: a for a in member['native']['actions']}
+    _need(companion['nativeUnknownsByInstance'] == {
+        aid: _parsed(a['unknown_parameters_json']) for aid, a in actions.items()},
+        'lineage-native-unknowns-mismatch')
+    graph = member['native']['graph']
+    materials, inputs, dependencies = graph['materials'], graph['materialInputs'], graph['dependencies']
+    _need(type(materials) is list and type(inputs) is list and type(dependencies) is list
+          and 1 <= len(inputs) <= MAX_CONTEXTS and 1 <= len(materials) <= MAX_CONTEXTS,
+          'lineage-graph-bound')
+    material_map = {}
+    for material in materials:
+        mid, producer = material['material_id'], material['producer_instance_id']
+        _need(material['run_id'] == rid and producer in actions and mid not in material_map
+              and material['producer_sequence'] == actions[producer]['sequence_index'],
+              'lineage-material-binding')
+        _text(material['source_label'])
+        material_map[mid] = material
+    ancestors = {aid: set() for aid in actions}
+    for edge in dependencies:
+        aid, parent = edge['action_id'], edge['depends_on']
+        _need(edge['run_id'] == rid and aid in actions and parent in actions
+              and edge['action_sequence'] == actions[aid]['sequence_index']
+              and edge['dependency_sequence'] == actions[parent]['sequence_index']
+              and edge['dependency_sequence'] < edge['action_sequence'], 'lineage-dependency-binding')
+        ancestors[aid].add(parent)
+    for action in sorted(actions.values(), key=lambda a: a['sequence_index']):
+        for parent in tuple(ancestors[action['action_id']]):
+            ancestors[action['action_id']].update(ancestors[parent])
+    input_map = {}
+    for item in inputs:
+        aid, mid = item['action_id'], item['material_id']
+        _need(item['run_id'] == rid and aid in actions and mid in material_map
+              and item['action_sequence'] == actions[aid]['sequence_index']
+              and item['producer_sequence'] == material_map[mid]['producer_sequence']
+              and material_map[mid]['producer_instance_id'] in ancestors[aid]
+              and (aid, mid) not in input_map, 'lineage-input-binding')
+        input_map[(aid, mid)] = item
+    _graph_support(graph['materialSupport'], {(m,): v for m, v in material_map.items()},
+                   ('material_id',), rid, citations, provenance)
+    _graph_support(graph['materialInputSupport'], input_map,
+                   ('action_id', 'material_id'), rid, citations, provenance)
+    ingredient_map = {}
+    for row in graph['ingredients']:
+        key = row['action_id'], row['slot_name']
+        _need(row['run_id'] == rid and key[0] in actions and key not in ingredient_map,
+              'lineage-ingredient-binding')
+        ingredient_map[key] = row
+    _graph_support(graph['ingredientSupport'], ingredient_map,
+                   ('action_id', 'slot_name'), rid, citations, provenance)
+    contexts, references = companion['perBindingContexts'], payload['referenceBindings']
+    _need(type(contexts) is list and type(references) is list
+          and len(contexts) == len(references) == len(input_map), 'lineage-reference-count')
+    seen = set()
+    for index, (context, reference) in enumerate(zip(contexts, references)):
+        aid, mid = reference['consumerInstanceId'], reference['materialId']
+        _need((aid, mid) in input_map and (aid, mid) not in seen
+              and reference['runId'] == rid
+              and reference['contextPointer'] == '/perBindingContexts/' + str(index),
+              'lineage-reference-binding')
+        material = material_map[mid]
+        for key in ('consumerInstanceId', 'producerInstanceId', 'materialId', 'basis'):
+            _need(reference[key] == context[key], 'lineage-context-binding')
+        _need(reference['producerInstanceId'] == material['producer_instance_id']
+              and reference['sourceLabel'] == material['source_label'], 'lineage-reference-binding')
+        restrictions = context['restrictions']
+        _need(type(restrictions) is list and 1 <= len(restrictions) <= MAX_CONTEXTS
+              and all(type(v) is str and v.strip() for v in restrictions)
+              and type(reference['restrictionEntries']) is int
+              and reference['restrictionEntries'] == len(restrictions)
+              and reference['restrictionCanonicalSHA256'] == _digest(restrictions),
+              'lineage-restrictions-mismatch')
+        _need(type(context['heldStrongerMeanings']) is list
+              and all(v in restrictions for v in context['heldStrongerMeanings']),
+              'lineage-stronger-meaning-hold')
+        _text(context['sourceLocalMeaning']); _text(context['basis'])
+        seen.add((aid, mid))
+    events = []
+    for key, source_key in (('fullSourceWarning', 'warning_source_context'),
+                            ('applianceVariation', 'appliance_variation')):
+        span = companion[key]
+        _need(span == source_context[source_key], 'lineage-context-span-binding')
+        _span(span, {'source_original': original}, whole=True)
+        events.append({'kind': 'source-context', 'contextType': key,
+            'contextId': 'source-context:' + _digest([rid, key, span]),
+            'text': span['text'], 'textFormat': 'plain', 'sourceSpan': span,
+            'citations': [citation], 'sourceBinding': binding})
+    events.append({'kind': 'source-context', 'contextType': 'restricted-source-local-lineage',
+        'contextId': 'source-context:' + _digest([rid, payload]),
+        'text': companion['requiredUse'], 'textFormat': 'plain',
+        'completeContext': payload, 'selectedRunGraph': graph, 'citations': [citation],
+        'sourceBinding': binding, 'physicalMaterialEquivalence': False,
+        'quantityAllocationAuthority': False})
+    return events
+
+
+def _historical_event(payload, hold, member, run, source, snapshot, provenance, citations):
+    """Project inert historical evidence; never deserialize caller authority."""
+    _need(hold.get('target_kind') == 'resource' and hold.get('target_id') == member['recipeEntityId'],
+          'historical-hold-target')
+    join, result = payload['join'], payload['completeActualResult']
+    _need(payload['purpose'] == 'HISTORICAL_SOURCE_DECLARATION_COMPATIBILITY_ONLY'
+          and payload['currentSnapshotRebound'] is False, 'historical-authority-uplift')
+    proof = payload['proofSnapshot']
+    _need(type(proof) is dict and set(proof) == {'databaseSHA256', 'admissionSHA256'}
+          and all(_sha(v) for v in proof.values()) and result['snapshot'] == proof,
+          'historical-proof-snapshot-binding')
+    _need(_sha(payload['claimSHA256']) and _sha(payload['factsSHA256'])
+          and result['claimSHA256'] == join['claimSHA256'] == payload['claimSHA256']
+          and result['factsSHA256'] == payload['factsSHA256']
+          and _digest(result) == payload['actualOutputRowSHA256'], 'historical-result-binding')
+    occurrence = result['sourcePins']['sourceOccurrence']
+    _need(join['physicalRecipeEntityId'] == member['recipeEntityId']
+          and join['logicalRecipeResourceId'] == member['recipeResourceId']
+          and occurrence['recipeId'] == member['recipeResourceId']
+          and occurrence['mentionId'] == join['mentionId']
+          and result['sourcePins']['mention']['resourceId'] == join['mentionId']
+          and occurrence['occurrenceId'] == source['occurrence_id']
+          and occurrence['contentSha256'] == source['content_sha256'], 'historical-source-binding')
+    for key in ('actualRecipeComposition', 'currentStateFit', 'preparedYieldG', 'servings'):
+        _need(result[key] is None, 'historical-authority-uplift')
+    _need(result['actualSelection'] == 'unobserved' and result['compositionReadiness'] == 'held'
+          and result['existingProductFitAcceptance'] is False and result['productFitAcceptance'] is False
+          and type(result['compositionGaps']) is dict and len(result['compositionGaps']) == 7
+          and all(v == 'unobserved' for v in result['compositionGaps'].values()),
+          'historical-authority-uplift')
+    for key in ('constraints', 'sourceRestrictions'):
+        scope = result[key]
+        _need(scope['sourceOnly'] is True and scope['globalFit'] is False
+              and scope['actualRecipeComposition'] is None and scope['actualSelection'] == 'unobserved'
+              and scope['purpose'] == payload['purpose']
+              and scope['operationVisibility'] == 'private-internal-attributed-only',
+              'historical-authority-uplift')
+    source_citations = result['sourcePins']['sourceCitations']
+    _need(type(source_citations) is list and source_citations, 'historical-rights-required')
+    recipe_rights = []
+    for citation in source_citations:
+        _text(citation['license']); _text(citation['attribution'])
+        if citation['id'] in citations:
+            actual = citations[citation['id']]
+            _rights(actual, provenance)
+            _need(all(citation[k] == actual[k] for k in ('license', 'attribution')),
+                  'historical-rights-binding')
+            recipe_rights.append(actual)
+    _need(recipe_rights, 'historical-rights-binding')
+    return {'kind': 'source-context', 'contextType': 'historical-source-proof',
+        'contextId': 'source-context:' + _digest([run['run_id'], payload['claimSHA256'], proof]),
+        'text': 'Historical source declaration compatibility only. Actual use, current fit and composition remain unobserved and held.',
+        'textFormat': 'plain', 'operationVisibility': 'private-internal-attributed-only',
+        'proofSnapshot': proof, 'storageSnapshot': snapshot,
+        'proofSnapshotReboundToStorageSnapshot': False, 'completeContext': payload,
+        'citations': recipe_rights, 'callerAuthorityReconstructed': False,
+        'currentStateFit': None, 'actualRecipeComposition': None, 'productFitAcceptance': False}
+
+
+def _member(member, guard, snapshot):
     _guard(guard)
     _need(member.get('instructionState') == 'selected-native-run'
           and member.get('userSelected') is False and member.get('recipeNutrition') is None,
@@ -267,6 +465,7 @@ def _member(member, guard):
     instructions = _instruction_events(member, run, provenance, citations)
     context_events, cautions, context_ids = [], {}, set()
     companions, require_companion = 0, False
+    lineage_payload, lineage_scope, lineage_hold_id = None, None, None
     for hold in member['holds']:
         reason = _text(hold['reason'], MAX_HOLD_REASON_BYTES)
         if not reason.lstrip().startswith(('{', '[')):
@@ -279,9 +478,28 @@ def _member(member, guard):
             _need(hold.get('target_kind') == 'recipe-run' and hold.get('target_id') == rid,
                   'scope-hold-target')
             require_companion = True
+            if payload.get('all48PerBindingRestrictionsAnd9NativeUnknownArraysMandatory') is True:
+                _need(lineage_scope is None and payload.get('requiredRunId') == rid,
+                      'lineage-scope-binding')
+                lineage_scope = payload
         kind = payload.get('documentKind')
+        if kind == _LINEAGE:
+            _need(hold.get('target_kind') == 'recipe-run' and hold.get('target_id') == rid
+                  and lineage_payload is None, 'lineage-hold-target')
+            context_events.extend(_lineage_events(payload, member, run, source, provenance, citations))
+            lineage_payload = payload
+            lineage_hold_id = hold.get('hold_id')
+            companions += 1
+            continue
+        if kind == _HISTORICAL:
+            event = _historical_event(payload, hold, member, run, source, snapshot, provenance, citations)
+            _need(event['contextId'] not in context_ids, 'duplicate-context')
+            context_ids.add(event['contextId'])
+            context_events.append(event)
+            continue
         if kind not in (_COMPANION, _CAUTION):
-            _need(not any(k in payload for k in ('sourceContexts', 'boundNativeRun', 'sourceSpan')),
+            _need(not any(k in payload for k in ('sourceContexts', 'boundNativeRun', 'sourceSpan',
+                       'completeCompanion', 'completeActualResult', 'proofSnapshot', 'boundRun')),
                   'unrecognized-context-document')
             continue
         _need(hold.get('target_kind') == 'recipe-run' and hold.get('target_id') == rid,
@@ -334,6 +552,14 @@ def _member(member, guard):
                       'caution-action-order')
                 event.update(beforeActionId=aid, beforeSequenceIndex=seq)
                 cautions[aid] = event
+    if lineage_payload is not None or lineage_scope is not None:
+        _need(lineage_payload is not None and lineage_scope is not None, 'lineage-scope-required')
+        companion = lineage_payload['completeCompanion']
+        _need(_sha(lineage_hold_id) and lineage_scope['mandatoryCompanionHoldId'] == lineage_hold_id
+              and lineage_scope['mandatoryCompanionSHA256'] == lineage_payload['originalCompanion']['sha256']
+              and len(companion['perBindingContexts']) == 8
+              and sum(len(c['restrictions']) for c in companion['perBindingContexts']) == 48
+              and len(companion['nativeUnknownsByInstance']) == 9, 'lineage-required-contract')
     _need(len(context_events) == guard['contextCount'] and (not require_companion or companions == 1),
           'required-context-missing-or-extra')
     actual_cautions = sorted((k, v['beforeSequenceIndex']) for k, v in cautions.items())
@@ -394,7 +620,8 @@ def build_source_context_presentation(menu_result, *, expected_snapshot, require
                   'nutritionTotals': None, 'automaticPlanning': False, 'physicalCookingObserved': False,
                   'completeCookingPlan': False,
                   'purpose': 'Presentation of existing source instructions and contexts only; no new qualification.',
-                  'members': [_member(m, required_run_contexts[r]) for m, r in zip(members, runs)]}
+                  'members': [_member(m, required_run_contexts[r], expected_snapshot)
+                              for m, r in zip(members, runs)]}
         kinds = [e['kind'] for m in result['members'] for e in m['events']]
         _need(kinds.count('instruction') <= MAX_INSTRUCTIONS
               and kinds.count('source-context') + kinds.count('source-caution') <= MAX_CONTEXTS,

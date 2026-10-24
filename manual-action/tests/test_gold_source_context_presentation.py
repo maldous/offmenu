@@ -117,6 +117,213 @@ def present(menu, snapshot, guards):
                                              required_run_contexts=guards)
 
 
+def lineage_fixture():
+    menu, snapshot, guards = fixture(contexts=0, caution=False, actions=9)
+    member = menu['members'][0]
+    run = member['native']['run']['run_id']
+    source = member['sourceRecords'][0]
+    original = source['sourceOriginal']
+    original['data']['originalTextLines'] = ['W' * 184, '* ' + 'V' * 92]
+    source['content_sha256'] = sha(original)
+    citation = member['citations'][0]
+    actions = member['native']['actions']
+    def span(i):
+        text = original['data']['originalTextLines'][i]
+        return {'pointer': '/source_original/data/originalTextLines/' + str(i),
+                'start': 0, 'end': len(text), 'text': text, 'offset_unit': 'unicode_codepoint'}
+    source_context = {'provenance': original['provenance'],
+        'source_original': {'path': 'generated-source.json', 'sha256': sha('file')},
+        'warning_source_context': span(0), 'appliance_variation': span(1),
+        'unknownFutureSourceField': {'retain': ['all', 'fields']}}
+    materials = [{'run_id': run, 'material_id': 'generated:material:' + str(i),
+        'producer_instance_id': actions[0]['action_id'], 'producer_sequence': 0,
+        'source_label': 'generated label ' + str(i), 'evidence_json': actions[0]['evidence_json']}
+        for i in range(3)]
+    inputs, contexts, references = [], [], []
+    for i, action in enumerate(actions[1:]):
+        material = materials[i % 3]
+        inputs.append({'run_id': run, 'action_id': action['action_id'],
+            'material_id': material['material_id'], 'action_sequence': i + 1,
+            'producer_sequence': 0, 'evidence_json': action['evidence_json']})
+        restrictions = ['Generated restriction ' + str(j) for j in range(6)]
+        context = {'consumerInstanceId': action['action_id'], 'materialId': material['material_id'],
+            'producerInstanceId': material['producer_instance_id'], 'basis': 'GENERATED_SOURCE_LINEAGE',
+            'restrictions': restrictions, 'heldStrongerMeanings': restrictions[:2],
+            'sourceLocalMeaning': 'Generated source participation only.', 'futureUnknown': None}
+        contexts.append(context)
+        references.append({k: context[k] for k in ('consumerInstanceId', 'producerInstanceId', 'materialId', 'basis')} |
+            {'runId': run, 'sourceLabel': material['source_label'], 'contextPointer': '/perBindingContexts/' + str(i),
+             'restrictionEntries': 6, 'restrictionCanonicalSHA256': sha(restrictions)})
+    graph = {'materials': materials, 'materialInputs': inputs,
+        'materialSupport': [{**{k: m[k] for k in ('run_id', 'material_id', 'evidence_json')},
+                             'citation_id': citation['id']} for m in materials],
+        'materialInputSupport': [{**{k: m[k] for k in ('run_id', 'action_id', 'material_id', 'evidence_json')},
+                                  'citation_id': citation['id']} for m in inputs],
+        'ingredients': [], 'ingredientSupport': [],
+        'dependencies': [{'run_id': run, 'action_id': actions[i]['action_id'],
+            'depends_on': actions[i - 1]['action_id'], 'action_sequence': i, 'dependency_sequence': i - 1}
+            for i in range(1, 9)]}
+    member['native']['graph'] = graph
+    companion = {'schema': 'offmenu-qualified-source-local-lineage-context/1',
+        'fullOriginalSourceContext': {'path': 'generated-context.json', 'sha256': sha('context-file')},
+        'fullSourceWarning': span(0), 'applianceVariation': span(1),
+        'perBindingContexts': contexts, 'nativeUnknownsByInstance': {
+            a['action_id']: json.loads(a['unknown_parameters_json']) for a in actions},
+        'rightsCitation': citation, 'meaning': 'Generated restricted source lineage only.',
+        'requiredUse': 'Retain every restriction and unknown; no quantity or physical equivalence.'}
+    pin = {'path': 'generated-only.json', 'sha256': sha('generated-file')}
+    complete = {'documentKind': 'offmenu-source-local-lineage-qualified-companion/1',
+        'boundRun': {'runId': run, 'recipeEntityId': member['recipeEntityId'],
+                     'sourceOccurrenceId': source['occurrence_id'], 'rawOutput': pin},
+        'completeCompanion': companion, 'completeOriginalSource': original,
+        'completeOriginalSourceContext': source_context, 'referenceBindings': references,
+        'independentActualOutputReview': pin, 'originalCompanion': pin,
+        'requiredWrittenConsumerBindings': pin, 'meaning': 'Generated only.'}
+    hid = sha('lineage-hold')
+    member['holds'].extend([
+        {'hold_id': hid, 'target_kind': 'recipe-run', 'target_id': run, 'reason': encoded(complete).decode()},
+        {'hold_id': sha('scope-hold'), 'target_kind': 'recipe-run', 'target_id': run, 'reason': encoded({
+            'sourceContextsRequiredAlongsideInstructions': True, 'requiredRunId': run,
+            'all48PerBindingRestrictionsAnd9NativeUnknownArraysMandatory': True,
+            'mandatoryCompanionHoldId': hid, 'mandatoryCompanionSHA256': pin['sha256'],
+            'actualCookingQualified': False, 'servings': None, 'yield': None}).decode()}])
+    guards[run]['contextCount'] = 3
+    return menu, snapshot, guards
+
+
+def add_historical(args, *, claim='generated-claim'):
+    menu, snapshot, guards = args
+    member = menu['members'][0]
+    source = member['sourceRecords'][0]
+    proof = {'databaseSHA256': sha('old-db'), 'admissionSHA256': sha('old-admission')}
+    claim_sha = sha(claim)
+    mention = member['recipeResourceId'] + ':ingredient:' + claim
+    scope = {'sourceOnly': True, 'globalFit': False, 'actualRecipeComposition': None,
+        'actualSelection': 'unobserved', 'purpose': 'HISTORICAL_SOURCE_DECLARATION_COMPATIBILITY_ONLY',
+        'operationVisibility': 'private-internal-attributed-only',
+        'requiredGroupClosure': {'role': 'GENERATED_TEST_ROLE', 'members': ['a', 'b']},
+        'unknownRestriction': {'neverDrop': True}}
+    result = {'claimSHA256': claim_sha, 'factsSHA256': sha('facts'), 'snapshot': proof,
+        'actualRecipeComposition': None, 'currentStateFit': None, 'preparedYieldG': None, 'servings': None,
+        'actualSelection': 'unobserved', 'compositionReadiness': 'held',
+        'existingProductFitAcceptance': False, 'productFitAcceptance': False,
+        'compositionGaps': {str(i): 'unobserved' for i in range(7)},
+        'constraints': scope, 'sourceRestrictions': copy.deepcopy(scope),
+        'sourcePins': {'sourceOccurrence': {'recipeId': member['recipeResourceId'], 'mentionId': mention,
+            'occurrenceId': source['occurrence_id'], 'contentSha256': source['content_sha256']},
+            'mention': {'resourceId': mention}, 'sourceCitations': [member['citations'][0]]},
+        'futureUnknownResult': {'retainNull': None}}
+    complete = {'documentKind': 'offmenu-private-historical-source-proof-context/1',
+        'proofSnapshot': proof, 'currentSnapshotRebound': False, 'claimSHA256': claim_sha,
+        'factsSHA256': sha('facts'), 'actualOutputRowSHA256': sha(result), 'completeActualResult': result,
+        'purpose': scope['purpose'], 'callerTrust': 'Never reconstruct caller authority from stored JSON.',
+        'qualifiedAcceptedEntries': {'path': 'DO-NOT-OPEN.json', 'sha256': sha('inert-pointer')},
+        'join': {'physicalRecipeEntityId': member['recipeEntityId'],
+                 'logicalRecipeResourceId': member['recipeResourceId'], 'claimSHA256': claim_sha, 'mentionId': mention},
+        'futureUnknownContext': ['preserve', {'nested': None}]}
+    member['holds'].append({'hold_id': sha(claim), 'target_kind': 'resource',
+                            'target_id': member['recipeEntityId'], 'reason': encoded(complete).decode()})
+    guards[member['native']['run']['run_id']]['contextCount'] += 1
+    return complete
+
+
+class ExtendedContextTests(unittest.TestCase):
+    def test_current_shaped_five_members_fit_existing_bounds_without_dropping_contexts(self):
+        cases = [fixture(contexts=0, caution=False, actions=3),
+                 fixture(contexts=0, caution=True, actions=13),
+                 fixture(contexts=3, caution=False, actions=13),
+                 fixture(contexts=2, caution=False, actions=10), lineage_fixture()]
+        members, guards = [], {}
+        for index, args in enumerate(cases):
+            for number in range(2 if index == 0 else 1 if index < 4 else 0):
+                add_historical(args, claim='generated-' + str(index) + '-' + str(number))
+            member = args[0]['members'][0]
+            mapping = {member['recipeEntityId']: sha('entity-' + str(index)),
+                       member['sourceRecords'][0]['occurrence_id']: sha('occ-' + str(index)),
+                       member['native']['run']['run_id']: 'recipe-actions:' + sha('run-' + str(index)),
+                       member['recipeResourceId']: 'generated:recipe:' + str(index)}
+            def rename(value):
+                if isinstance(value, str):
+                    for old, new in mapping.items():
+                        value = value.replace(old, new)
+                    return value
+                if isinstance(value, (list, tuple)): return [rename(v) for v in value]
+                if isinstance(value, dict): return {rename(k): rename(v) for k, v in value.items()}
+                return value
+            renamed = rename(args)
+            # Historical row hashes cover the now-renamed generated bindings.
+            for hold in renamed[0]['members'][0]['holds']:
+                if hold['reason'].startswith('{'):
+                    document = json.loads(hold['reason'])
+                    if document.get('documentKind') == 'offmenu-private-historical-source-proof-context/1':
+                        document['actualOutputRowSHA256'] = sha(document['completeActualResult'])
+                        hold['reason'] = encoded(document).decode()
+            members.append(renamed[0]['members'][0]); guards.update(renamed[2])
+        menu = copy.deepcopy(cases[0][0]); menu['members'] = members
+        result = present(menu, cases[0][1], guards)
+        self.assertEqual(result['counts'], {'instructions': 48, 'sourceContexts': 13, 'cautions': 1, 'events': 62})
+        self.assertLessEqual(len(encoded(menu)), MAX_INPUT_BYTES)
+        self.assertLessEqual(len(encoded(result)), MAX_OUTPUT_BYTES)
+
+    def test_full_lineage_three_events_before_nine_instructions_no_io_or_mutation(self):
+        args = lineage_fixture(); before = copy.deepcopy(args)
+        with patch('builtins.open', side_effect=AssertionError('no I/O')):
+            out = present(*args)
+        self.assertEqual(args, before)
+        events = out['members'][0]['events']
+        self.assertEqual([e['kind'] for e in events], ['source-context'] * 3 + ['instruction'] * 9)
+        self.assertEqual([len(e['text']) for e in events[:2]], [184, 94])
+        self.assertEqual(events[2]['completeContext']['completeCompanion']['perBindingContexts'][0]['restrictions'],
+                         ['Generated restriction ' + str(i) for i in range(6)])
+        self.assertEqual(events[2]['selectedRunGraph'], args[0]['members'][0]['native']['graph'])
+        self.assertFalse(events[2]['quantityAllocationAuthority'])
+
+    def test_lineage_foreign_graph_reference_restrictions_unknowns_rights_and_scope_fail(self):
+        for field in ('reference', 'restriction', 'unknowns', 'support', 'dependency', 'rights', 'scope', 'hold-id'):
+            args = lineage_fixture(); member = args[0]['members'][0]
+            hold, value = payload(args[0], 'offmenu-source-local-lineage-qualified-companion/1')
+            if field == 'reference': value['referenceBindings'][0]['materialId'] = 'foreign'
+            if field == 'restriction': value['completeCompanion']['perBindingContexts'][0]['restrictions'].pop()
+            if field == 'unknowns': value['completeCompanion']['nativeUnknownsByInstance'].pop(next(iter(value['completeCompanion']['nativeUnknownsByInstance'])))
+            if field == 'support': member['native']['graph']['materialInputSupport'].pop()
+            if field == 'dependency': member['native']['graph']['dependencies'].clear()
+            if field == 'rights': value['completeCompanion']['rightsCitation']['license'] = 'foreign'
+            if field == 'scope': member['holds'].pop()
+            if field == 'hold-id': hold['hold_id'] = sha('foreign')
+            hold['reason'] = encoded(value).decode()
+            with self.subTest(field=field), self.assertRaises(SourceContextPresentationError):
+                present(*args)
+
+    def test_full_historical_two_claims_keep_proof_storage_group_roles_and_unknowns(self):
+        args = fixture(contexts=0, caution=False)
+        first = add_historical(args, claim='first'); second = add_historical(args, claim='second')
+        with patch('builtins.open', side_effect=AssertionError('no stored authority read')):
+            events = present(*args)['members'][0]['events']
+        self.assertEqual([e['completeContext'] for e in events[:2]], [first, second])
+        self.assertNotEqual(events[0]['contextId'], events[1]['contextId'])
+        self.assertEqual(events[0]['proofSnapshot'], first['proofSnapshot'])
+        self.assertEqual(events[0]['storageSnapshot'], args[1])
+        self.assertFalse(events[0]['callerAuthorityReconstructed'])
+        self.assertFalse(events[0]['proofSnapshotReboundToStorageSnapshot'])
+        self.assertEqual(events[0]['completeContext']['completeActualResult']['constraints']['requiredGroupClosure']['members'], ['a', 'b'])
+
+    def test_historical_foreign_source_rebound_uplift_duplicate_or_incomplete_guard_fail(self):
+        for field in ('foreign', 'rebound', 'uplift', 'row-hash', 'proof', 'duplicate', 'guard', 'unsupported'):
+            args = fixture(contexts=0, caution=False); value = add_historical(args)
+            hold = args[0]['members'][0]['holds'][-1]
+            if field == 'foreign': value['join']['physicalRecipeEntityId'] = sha('foreign')
+            if field == 'rebound': value['currentSnapshotRebound'] = True
+            if field == 'uplift': value['completeActualResult']['currentStateFit'] = True; value['actualOutputRowSHA256'] = sha(value['completeActualResult'])
+            if field == 'row-hash': value['completeActualResult']['futureUnknownResult'] = 'changed'
+            if field == 'proof': value['proofSnapshot']['databaseSHA256'] = sha('new-proof')
+            if field == 'unsupported': value['documentKind'] = 'unsupported-historical/2'
+            hold['reason'] = encoded(value).decode()
+            if field == 'duplicate': args[0]['members'][0]['holds'].append(copy.deepcopy(hold))
+            if field == 'guard': next(iter(args[2].values()))['contextCount'] = 0
+            with self.subTest(field=field), self.assertRaises(SourceContextPresentationError):
+                present(*args)
+
+
 def payload(menu, kind):
     member = menu['members'][0]
     for hold in member['holds']:

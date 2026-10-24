@@ -266,25 +266,15 @@ class GoldBarcodeLookupTests(unittest.TestCase):
             selected=dict(state='ACCEPTED_GENERATED_A',artifact=dict(path=str(a),sha256=sha(a)))
             replacement=dict(state='ACCEPTED_GENERATED_B',artifact=dict(path=str(b),sha256=sha(b)))
             receipt.write_text(json.dumps(selected));selected_sha=sha(receipt)
-            original_open=Path.open;reads=[]
-            def opening(path,*args,**kwargs):
-                stream=original_open(path,*args,**kwargs)
-                if path!=receipt or not args or args[0]!='rb':return stream
-                class InterleavedRead:
-                    def __enter__(self):return self
-                    def __exit__(self,*args):stream.close()
-                    def read(self,size=-1):
-                        data=stream.read(size);reads.append(size)
-                        if len(reads)==1:receipt.write_text(json.dumps(replacement))
-                        return data
-                return InterleavedRead()
-            with patch.object(Path,'open',opening):
-                result=reader.query_snapshot(receipt,selected_sha,CODE)
-            self.assertEqual([1048577],reads)
-            self.assertEqual(selected,result['admissionNotice'])
-            self.assertEqual(selected_sha,result['snapshot']['admissionSha256'])
-            self.assertEqual(sha(a),result['snapshot']['databaseSha256'])
-            self.assertNotEqual(sha(b),result['snapshot']['databaseSha256'])
+            original_read=reader.read_barcode
+            def interleaved(*args,**kwargs):
+                # Selected receipt bytes were already verified. A same-path
+                # replacement must now reject the whole result on exit.
+                receipt.write_text(json.dumps(replacement))
+                return original_read(*args,**kwargs)
+            with patch.object(reader,'read_barcode',interleaved):
+                with self.assertRaisesRegex(reader.BarcodeQueryError,'identity-changed|admission-changed-during-query'):
+                    reader.query_snapshot(receipt,selected_sha,CODE)
             self.assertNotEqual(selected_sha,sha(receipt))
             self.assertEqual(replacement,json.loads(receipt.read_text()))
 
