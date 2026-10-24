@@ -33,14 +33,27 @@ def lookup_recipe_products(db, *, source, selections=()):
         if (payload.get('scope',{}).get('visibility')!='public'
             or type(cids) is not list or not cids or any(type(c) is not str for c in cids)):
             return False
-        for cid in cids:
-            evidence=query('SELECT s.evidence_sha256,c.payload_json FROM gold_support s '
-                'JOIN gold_citations c ON c.citation_id=s.citation_id '
-                'WHERE s.target_kind=? AND s.target_id=? AND s.citation_id=? AND s.support_scope IN ('+
-                ','.join('?' for _ in scopes)+')',
-                (kind,payload.get('id'),cid,*scopes))
-            if not any(_pin(e['evidence_sha256']) and json.loads(e['payload_json']).get('scope',{}).get('visibility')=='public' for e in evidence):
-                return False
+        # Bound SQL parameter counts while avoiding a support-table scan for
+        # each citation. Only the requested IDs may supply evidence.
+        for start in range(0,len(cids),128):
+            batch=cids[start:start+128]
+            cached_reader=getattr(db,'recipe_support_evidence',None)
+            if callable(cached_reader):
+                evidence=cached_reader(kind,payload.get('id'),batch,scopes)
+            else:
+                evidence=query('SELECT s.citation_id,s.evidence_sha256,c.payload_json FROM gold_support s '
+                    'JOIN gold_citations c ON c.citation_id=s.citation_id '
+                    'WHERE s.target_kind=? AND s.target_id=? AND s.citation_id IN ('+
+                    ','.join('?' for _ in batch)+') AND s.support_scope IN ('+
+                    ','.join('?' for _ in scopes)+')',
+                    (kind,payload.get('id'),*batch,*scopes))
+            by_citation={}
+            for e in evidence:
+                by_citation.setdefault(e['citation_id'],[]).append(e)
+            for cid in batch:
+                if not any(_pin(e['evidence_sha256']) and json.loads(e['payload_json']).get('scope',{}).get('visibility')=='public'
+                           for e in by_citation.get(cid,[])):
+                    return False
         return True
 
     def entity(eid, domain, typ):

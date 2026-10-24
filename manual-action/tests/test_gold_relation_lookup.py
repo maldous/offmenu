@@ -77,6 +77,21 @@ def two_member_fixture():
     return p, q, source
 
 
+def many_product_citations_fixture(count):
+    p, q, source = two_member_fixture()
+    product = next(r for r in p['common']['resources'] if r['id'] == 'product')
+    ids = []
+    for i in range(count):
+        citation = copy.deepcopy(p['common']['citations'][0])
+        citation['id'] = 'generated-product-citation-' + str(i)
+        p['common']['citations'].append(citation)
+        product['citationIds'].append(citation['id'])
+        ids.append(citation['id'])
+        q['supports'].append(dict(target_kind='resource', target_id='product',
+            citation_id=citation['id'], support_scope='field', evidence_sha256=fixtures.PIN))
+    return p, q, source, ids
+
+
 class AlternativeLookupTests(unittest.TestCase):
     def run_lookup(self, p, q, source, branch=None, selections=None):
         proposal = fixtures.build(p, q)
@@ -156,6 +171,86 @@ class AlternativeLookupTests(unittest.TestCase):
                     self.assertEqual([] if product is None else [product],
                         [x['productId'] for x in result['paths'] if x['mentionId']=='mention'])
                     self.assertEqual([],result['errors'])
+
+    def test_many_citations_preserve_output_with_bounded_support_table_work(self):
+        expected = self.run_lookup(*two_member_fixture())
+        p, q, source, _ = many_product_citations_fixture(24)
+        with fixtures.sqlite_proposal(fixtures.build(p, q)) as db:
+            # Unrelated support rows must not multiply work for each citation
+            # of this product. The existing schema and caller budget stay fixed.
+            db.executemany('INSERT INTO gold_support VALUES (?,?,?,?,?,?)',
+                [('generated-noise-'+str(i), 'resource', 'unrelated-'+str(i),
+                  'cite', 'field', fixtures.PIN) for i in range(4000)])
+            steps = 0
+            def progress():
+                nonlocal steps
+                steps += 1000
+                return steps > 400000
+            db.set_progress_handler(progress, 1000)
+            try:
+                actual = lookup.lookup_recipe_products(db, source=source)
+            finally:
+                db.set_progress_handler(None, 0)
+            self.assertEqual(expected, actual)
+            self.assertLessEqual(steps, 400000)
+
+    def test_late_required_citation_failure_holds_only_affected_product(self):
+        for failure in ('missing', 'invalid-pin', 'wrong-scope', 'private'):
+            with self.subTest(failure=failure):
+                p, q, source, ids = many_product_citations_fixture(129)
+                with fixtures.sqlite_proposal(fixtures.build(p, q)) as db:
+                    where = "target_kind='resource' AND target_id='product' AND citation_id=?"
+                    if failure == 'missing':
+                        db.execute('DELETE FROM gold_support WHERE '+where, (ids[-1],))
+                    elif failure == 'invalid-pin':
+                        db.execute("UPDATE gold_support SET evidence_sha256='invalid' WHERE "+where, (ids[-1],))
+                    elif failure == 'wrong-scope':
+                        db.execute("UPDATE gold_support SET support_scope='relationship' WHERE "+where, (ids[-1],))
+                    else:
+                        row = db.execute('SELECT payload_json FROM gold_citations WHERE citation_id=?', (ids[-1],)).fetchone()
+                        payload = json.loads(row[0])
+                        payload['scope'] = dict(visibility='local-restricted')
+                        db.execute('UPDATE gold_citations SET payload_json=? WHERE citation_id=?', (json.dumps(payload), ids[-1]))
+                    actual = lookup.lookup_recipe_products(db, source=source)
+                    self.assertEqual(['other-member'], [p['productId'] for p in actual['paths']])
+                    self.assertFalse(actual['productFitAcceptance'])
+
+    def test_cached_barcode_support_bridge_keeps_deadline_guards(self):
+        import gold_barcode_lookup as barcode
+        from unittest.mock import patch
+        db = sqlite3.connect(':memory:')
+        def cached_budget():
+            budget = barcode._Budget(db, 100, 1000000, 3, 'generated')
+            budget.support_index = {('resource', 'generated-product', cid):
+                [dict(support_scope='record', evidence_sha256=fixtures.PIN)]
+                for cid in ('generated-cite-1', 'generated-cite-2')}
+            budget.citation_rows = {cid: [dict(payload_json=json.dumps(
+                dict(scope=dict(visibility='public'))))]
+                for cid in ('generated-cite-1', 'generated-cite-2')}
+            return budget
+        args = ('resource', 'generated-product',
+                ['generated-cite-1', 'generated-cite-2'], ('record',))
+        try:
+            budget = cached_budget()
+            budget.deadline = -1
+            with self.assertRaisesRegex(barcode.BarcodeQueryError, 'resource-limit'):
+                budget.recipe_support_evidence(*args)
+            self.assertEqual(100, budget.remaining)
+            budget = cached_budget()
+            budget.deadline = 5
+            with patch.object(barcode.time, 'monotonic', side_effect=[0, 0, 6]):
+                with self.assertRaisesRegex(barcode.BarcodeQueryError, 'resource-limit'):
+                    budget.recipe_support_evidence(*args)
+            self.assertEqual(99, budget.remaining)
+            budget = cached_budget()
+            budget.deadline = 5
+            with patch.object(barcode.time, 'monotonic', return_value=0):
+                evidence = budget.recipe_support_evidence(*args)
+            self.assertEqual(['generated-cite-1', 'generated-cite-2'],
+                             [e['citation_id'] for e in evidence])
+            self.assertEqual(98, budget.remaining)
+        finally:
+            db.close()
 
     def test_resource_every_citation_still_requires_valid_scoped_support(self):
         for style in ('all-field','mixed'):
