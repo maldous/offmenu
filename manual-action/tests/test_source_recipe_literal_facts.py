@@ -199,6 +199,29 @@ def fixture(kind):
     return r, seal(r)
 
 
+def boundary_fixture(text, value, unit, form="integer"):
+    """Wholly generated expression/token fixture, not a retained recipe."""
+    raw = json.dumps({"id": "TEST-LEXICAL-BOUNDARY", "line": text}, ensure_ascii=False) + "\n"
+    h = hashlib.sha256(raw.encode()).hexdigest()
+    def span(word):
+        start = text.index(word)
+        return {"pointer": "/line", "start": start, "end": start + len(word),
+                "text": word, "offset_unit": "unicode_codepoint"}
+    payload = {"scope": {"visibility": "public"}, "license": "Generated",
+               "attribution": "Test-only lexical boundary control"}
+    r = {"purpose": m.PURPOSE,
+         "sourceScope": {"recipeId": "TEST-LEXICAL-BOUNDARY", "occurrenceId": "TEST-OCCURRENCE", "rawSHA256": h},
+         "source": {"rawText": raw, "rawSHA256": h, "artifactReference": "generated://boundary",
+                    "scopePointers": {"recipeId": "/id"}},
+         "citations": [{"id": "c", "state": "verified", "payload": payload, "payloadSHA256": m.canonical_sha256(payload)}],
+         "literalFacts": [{"id": "quantity", "binding": {"kind": "ingredient-total", "sourceId": "TEST-LINE"},
+                           "sourceSpans": [span(text)], "citationIds": ["c"],
+                           "amount": {"state": "stated", "form": form, "lexeme": value, "span": span(value)},
+                           "unit": {"lexeme": unit, "span": span(unit)}, "qualifiers": [], "membership": None}],
+         "sourceEvents": [], "relativeGroups": [], "alternativeGroups": [], "mandatoryContexts": []}
+    return r, seal(r, native=None)
+
+
 class LiteralFactsTests(unittest.TestCase):
     def ok(self, r, ctx):
         before = copy.deepcopy(r)
@@ -392,6 +415,49 @@ class LiteralFactsTests(unittest.TestCase):
             if isinstance(n, ast.Call):
                 name = n.func.id if isinstance(n.func, ast.Name) else n.func.attr if isinstance(n.func, ast.Attribute) else None
                 self.assertNotIn(name, forbidden)
+
+    def test_19_reject_ascii_products_and_exponent_fragments(self):
+        for text, value in [
+            ("* 2 x 3 cups grains", "2"), ("* 2 x 3 cups grains", "3"),
+            ("* 2X3 cups grains", "2"), ("* 2x3 cups grains", "3"),
+            ("* (2) x (3) cups grains", "2"), ("* (2) x (3) cups grains", "3"),
+            ("* '2' x '3' cups grains", "2"), ("* '2' x '3' cups grains", "3"),
+            ("* “2” X “3” cups grains", "2"), ("* “2” X “3” cups grains", "3"),
+            ("* 1e3 cups grains", "1"), ("* 1e3 cups grains", "3"),
+            ("* 1E+3 cups grains", "1"), ("* 1E+3 cups grains", "3"),
+            ("* 1e−3 cups grains", "1"), ("* 1e−3 cups grains", "3"),
+            ("* 2^3 cups grains", "2"), ("* 2^3 cups grains", "3"),
+        ]:
+            with self.subTest(text=text, value=value):
+                r, c = boundary_fixture(text, value, "cups")
+                self.rejected(r, c)
+        for text, value, unit, form in [
+            ("* 2 cups grains", "2", "cups", "integer"),
+            ("* 250ml water", "250", "ml", "integer"),
+            ("* 2 xylitol portions", "2", "xylitol", "integer"),
+            ("* 2 espresso cups", "2", "espresso cups", "integer"),
+            ("* ½ cup water", "½", "cup", "fraction"),
+            ("* 1–2 shots coffee", "1–2", "shots", "range"),
+        ]:
+            with self.subTest(positive=text):
+                r, c = boundary_fixture(text, value, unit, form)
+                self.ok(r, c)
+
+    def test_20_word_count_unicode_whole_tokens(self):
+        for text in ["* stone cup holder", "* onerous cup holder", "* someone cup holder",
+                     "* éone cup holder", "* oneé cup holder", "* e\u0301one cup holder",
+                     "* one\u0301 cup holder", "* one_name cup holder", "* name_one cup holder",
+                     "* one\u200dname cup holder", "* name\u200cone cup holder",
+                     "* one2 cup holder", "* 2one cup holder", "* one's cup holder"]:
+            with self.subTest(negative=text):
+                r, c = boundary_fixture(text, "one", "cup", "word-count")
+                self.rejected(r, c)
+        for text, value in [("* one cup water", "one"), ("* ONE cup water", "ONE"),
+                            ("* (one) cup water", "one"), ("* ‘one’ cup water", "one"),
+                            ("* 'one' cup water", "one")]:
+            with self.subTest(positive=text):
+                r, c = boundary_fixture(text, value, "cup", "word-count")
+                self.ok(r, c)
 
 
 if __name__ == "__main__":

@@ -225,11 +225,11 @@ def _row_evidence(row, source, citations, *, whole=False):
 def _numeric_boundary(span, source):
     raw = _span(span, source)
     before, after = raw[:span["start"]].rstrip(), raw[span["end"]:].lstrip()
-    while before and unicodedata.category(before[-1]) == "Ps":
+    while before and (unicodedata.category(before[-1]) in ("Ps", "Pi") or before[-1] in "\"'"):
         before = before[:-1].rstrip()
-    while after and unicodedata.category(after[0]) == "Pe":
+    while after and (unicodedata.category(after[0]) in ("Pe", "Pf") or after[0] in "\"'"):
         after = after[1:].lstrip()
-    bad = "/⁄∕+−﹣－＋﹢±×÷.,"
+    bad = "/⁄∕+−﹣－＋﹢±×÷.,^"
     _need(not before or (before[-1] not in bad and unicodedata.category(before[-1])[0] != "N"
                         and unicodedata.category(before[-1]) != "Pd"), "partial numeric prefix")
     _need(not after or (after[0] not in bad and unicodedata.category(after[0])[0] != "N"
@@ -238,6 +238,34 @@ def _numeric_boundary(span, source):
           and not re.match(r"to\s+\d", after, re.I), "partial numeric range")
     _need(not re.search(r"\d\s*\*\s*$", before)
           and not re.match(r"\*\s*\d", after), "partial numeric multiplication")
+    if before and before[-1] in "xXeE":
+        operand = before[:-1].rstrip()
+        while operand and (unicodedata.category(operand[-1]) in ("Pe", "Pf") or operand[-1] in "\"'"):
+            operand = operand[:-1].rstrip()
+        _need(not operand or unicodedata.category(operand[-1])[0] != "N", "partial numeric expression operand")
+    if after and after[0] in "xXeE":
+        operand = after[1:].lstrip()
+        if after[0] in "eE" and operand and operand[0] in "+-−﹣－＋﹢":
+            operand = operand[1:].lstrip()
+        while operand and (unicodedata.category(operand[0]) in ("Ps", "Pi") or operand[0] in "\"'"):
+            operand = operand[1:].lstrip()
+        _need(not operand or unicodedata.category(operand[0])[0] != "N", "partial numeric expression operand")
+
+
+def _word_count_boundary(span, source):
+    raw = _span(span, source)
+    def word_character(character):
+        category = unicodedata.category(character) if character else ""
+        return bool(character) and (category[:1] in ("L", "M", "N") or category == "Pc"
+                                    or character in ("\u200c", "\u200d"))
+    start, end = span["start"], span["end"]
+    left = raw[start - 1] if start else ""
+    right = raw[end] if end < len(raw) else ""
+    _need(not word_character(left) and not word_character(right), "word count requires a whole source token")
+    apostrophes = ("'", "’", "ʼ")
+    _need(not (left in apostrophes and start > 1 and word_character(raw[start - 2]))
+          and not (right in apostrophes and end + 1 < len(raw) and word_character(raw[end + 1])),
+          "word count requires a whole source token")
 
 
 def _facts(rows, source, citations):
@@ -267,6 +295,8 @@ def _facts(rows, source, citations):
                          or (form == "word-count" and lexeme.lower() == "one"))
                 _need(bool(valid), "unsupported literal amount form")
                 _numeric_boundary(span, source)
+                if form == "word-count":
+                    _word_count_boundary(span, source)
                 _need("unit" in fact, "stated source unit required")
         if "unit" in fact:
             unit = fact["unit"]

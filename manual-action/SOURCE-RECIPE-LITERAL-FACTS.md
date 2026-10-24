@@ -85,6 +85,16 @@ source word `one`. The range dash/spacing and fraction glyph remain exact. A sta
 amount requires its exact quoted unit. No min/max arithmetic or word-to-number,
 fraction, cup, scoop, tin, density, mass or metric conversion occurs. Obvious partial
 numeric signs/fractions/ranges/multiplication fail closed.
+ASCII `x`/`X` multiplication and `e`/`E` exponent joins also reject partial operands,
+including parenthesized operands and signed exponents. Caret expressions remain
+unsupported. These guards never evaluate an expression or rewrite its source.
+Unrelated unit words beginning with x/e and compact numeric units remain supported.
+
+Word-count `one` must be a whole source token. Adjacent Unicode letters, combining
+marks, numbers, connector punctuation or word joiners cannot be part of that token;
+apostrophes connecting another word also prevent qualification. Genuine standalone
+quoted/parenthesized/case-preserved `one` remains literal. No Unicode normalization
+or invented count is used to make a substring qualify.
 
 Unstated amounts use `{state: not-stated}` without a hidden form/lexeme/span.
 Qualitative source wording uses `state: qualitative`, exact lexeme/span and no
@@ -165,7 +175,9 @@ Run generated-only regressions:
 python3 -B -m unittest discover -s manual-action/tests -p test_source_recipe_literal_facts.py -v
 ```
 
-Eighteen groups use seven retained source shapes with original artifact SHA anchors.
+The original eighteen groups use seven retained source shapes with original artifact SHA anchors.
+Two focused regression groups add multiplication/exponent fragments and Unicode
+whole-word boundaries, preserving ordinary integer/fraction/range/word positives.
 Generated wrappers/review contexts test fidelity and guards; they are not actual
 corpus calls or historical approvals. Exact independent code/generated review and00
 integration precede separately qualified real retained processing. The completed
