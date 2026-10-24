@@ -106,7 +106,8 @@ class SourceLiteralQuantityTests(unittest.TestCase):
 
     def test_full_source_token_check_preserves_standalone_literals(self):
         for count, phrase in ((True, '4 large eggs'), (False, '2 handfuls')):
-            for prefix, suffix in (('', ''), ('* ', ''), ('Use ', '.'), ('(', ')')):
+            for prefix, suffix in (('', ''), ('* ', ''), ('Use ', '.'), ('(', ')'),
+                                   ('[ (\t', ')]'), ('（', '）'), ('［\u00a0（', '）］')):
                 with self.subTest(count=count, prefix=prefix):
                     rules, review, c = _source_literal_case(self.n, count=count)
                     ingredient = rules['normalized']['fields']['recipe_menu_template']['ingredients'][0]
@@ -119,6 +120,26 @@ class SourceLiteralQuantityTests(unittest.TestCase):
                         allowed_pointers={'/ingredients/0/raw_text'}, source=source,
                         citations={'citation:generated': {'state':'verified'}}, validate_evidence=actions._evidence)
                     self.assertEqual(row, result)
+
+    def test_grouped_range_endpoints_are_not_standalone_literals(self):
+        for count, phrase, lower in ((True, '4 large eggs', '3'), (False, '2 handfuls', '1')):
+            for opening, closing in (('(', ')'), ('[', ']'), ('([', '])'),
+                                     ('\t( [', '])'), ('\u00a0(', ')'),
+                                     ('（', '）'), ('［', '］'), ('｟（', '）｠')):
+                for operator in (' to ', ' TO\t', '\u00a0to\u00a0', ' . ', ', ', ' – '):
+                    for clipped in (False, True):
+                        with self.subTest(count=count, opening=opening, operator=operator, clipped=clipped):
+                            rules, review, c = _source_literal_case(self.n, count=count)
+                            ingredient = rules['normalized']['fields']['recipe_menu_template']['ingredients'][0]
+                            row = c['source_literal_quantities'][0]
+                            source = copy.deepcopy(rules['source_original'])
+                            raw = lower + operator + opening + phrase + closing
+                            source['ingredients'][0]['raw_text'] = raw
+                            row['evidence'] = [_span('/ingredients/0/raw_text', raw, phrase if clipped else raw)]
+                            with self.assertRaises(SourceLiteralQuantityError):
+                                validate_source_literal(row, ingredient,
+                                    allowed_pointers={'/ingredients/0/raw_text'}, source=source,
+                                    citations={'citation:generated':{'state':'verified'}}, validate_evidence=actions._evidence)
 
     def test_literal_and_known_metric_allocate_once_unknown_extra_stays_none(self):
         rules, review, c = mixed_case(self.n)

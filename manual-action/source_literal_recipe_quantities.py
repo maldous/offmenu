@@ -28,11 +28,11 @@ def _complete_literal_phrase(phrase, spans, source):
                 continue
             prefix = raw[:match.start()]
             tail = prefix.rstrip()
-            while tail.endswith(('(', '[')):
+            while tail and unicodedata.category(tail[-1]) == 'Ps':
                 tail = tail[:-1].rstrip()
             if tail and (tail[-1] in '/⁄∕+−﹣－＋﹢±' or unicodedata.category(tail[-1]) == 'Pd'):
                 continue
-            if re.search(r'\d\s*(?:[.,]|to)\s*$', prefix, re.IGNORECASE):
+            if re.search(r'\d\s*(?:[.,]|to)\s*$', tail, re.IGNORECASE):
                 continue
             return True
     return False
