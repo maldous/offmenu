@@ -79,7 +79,18 @@ def build_recipe_source_subset(packet, *, qualifications):
     return _build_gold_slice(packet, qualifications=qualifications, recipe_source_only=True)
 
 
-def _build_gold_slice(packet, *, qualifications, recipe_source_only):
+def build_product_source_subset(packet, *, qualifications):
+    """Propose source-identifier lookup, optional class fits and label records.
+
+    Trusted qualifications select each source identifier and observation basis.
+    This never claims a recipe chain, global identifier ownership, current stock,
+    resolved businesses or actual admission. Source packets cannot select it.
+    """
+    return _build_gold_slice(packet, qualifications=qualifications,
+                             recipe_source_only=False, product_source_only=True)
+
+
+def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_source_only=False):
     """Return deterministic proposed rows and explicit holds; never write a DB.
 
     Independent reviewers select qualifications; hashes bind those decisions, not
@@ -108,6 +119,15 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only):
             raise ValueError("recipe source subset excludes canonical identity and other entities")
         if any(r.get("predicateId") != "mentions" for r in common.get("relations", [])):
             raise ValueError("recipe source subset supports source mentions only")
+    if product_source_only:
+        if qualifications.get("comparisons"):
+            raise ValueError("product source subset excludes comparisons")
+        if any(s.get("domain") not in {"barcodes", "ingredients"} for s in packet.get("watermark", {}).get("domains", [])):
+            raise ValueError("product source subset domain")
+        if any(r.get("type") not in {"barcode-product", "ingredient"} for r in common.get("resources", [])):
+            raise ValueError("product source subset excludes recipes, mentions and other entities")
+        if any(r.get("predicateId") != "represents" for r in common.get("relations", [])):
+            raise ValueError("product source subset supports direct class fits only")
     rows = {name: [] for name in TABLE_COLUMNS}
     def add(table, **row):
         if set(row) != set(TABLE_COLUMNS[table]):
@@ -131,6 +151,9 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only):
     if recipe_source_only:
         run_id = _uid("recipe-source-subset/1", digest(packet), digest(qualifications))
         run_water = dict(water, admission_profile="recipe-source-subset/1")
+    if product_source_only:
+        run_id = _uid("product-source-subset/1", digest(packet), digest(qualifications))
+        run_water = dict(water, admission_profile="product-source-subset/1")
     add("gold_runs", run_id=run_id, packet_sha256=digest(packet), qualification_sha256=digest(qualifications), data_class=packet["data_class"], watermark_json=_json(run_water))
     citations = _index(common.get("citations", []), "id")
     for cid, citation in citations.items():
@@ -316,6 +339,20 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only):
             good = False; hold("observation", oid, "claim property not bound to metric")
         if not dimension_ok:
             good = False; hold("observation", oid, "quantity dimension incompatible with metric")
+        if product_source_only:
+            basis = original.get("basis")
+            basis_ok = (type(basis) is dict and basis.get("kind") == "quantity"
+                and type(basis.get("value")) in (int, float) and basis["value"] > 0
+                and (basis.get("unitId"), basis.get("dimension")) in {("g", "mass"), ("mL", "volume")}
+                and obs.get("context", {}).get("basis") == basis
+                and any(b.get("observation_id") == oid and b.get("basis") == basis
+                        and _pin(b.get("evidence_sha256"))
+                        for b in qualifications.get("observation_basis_bindings", [])))
+            source_value_ok = (type(original.get("value")) in (int, float)
+                and original.get("unitId") == metrics[mid].get("canonical_unit_id"))
+            subject = resources.get(claims[aid]["subjectId"], {})
+            if not basis_ok or not source_value_ok or subject.get("type") != "barcode-product":
+                good = False; hold("observation", oid, "source product value/basis qualification incomplete")
         if obs.get("comparable") is not None:
             comparable = obs["comparable"]; original = claims[aid]["value"]
             rules = [r for r in qualifications.get("unit_rules", []) if r.get("rule_id") == comparable.get("rule_id")]
@@ -382,6 +419,18 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only):
         seeds = {subject for subject, edges in declared.items()
                  if subject in verified and edges and all(e["state"] == "verified" and e["object_id"] in verified for e in edges)}
         mapped_mentions = {e["object_id"] for e in usable_edges if e["subject_id"] in seeds}
+    if product_source_only:
+        verified = {e["entity_id"] for e in rows["gold_entities"] if e["state"] == "verified"}
+        seeds = set()
+        for binding in qualifications.get("product_identifier_bindings", []):
+            aid = binding.get("assertion_id"); rid = binding.get("resource_id")
+            assertion = claims.get(aid, {}); value = assertion.get("value", {})
+            eid = entity_for.get(rid)
+            if (eid in verified and endpoints.get(eid) == ("barcodes", "barcode-product")
+                and assertion.get("subjectId") == rid and claim_good.get(aid)
+                and value.get("kind") == "identifier" and type(value.get("value")) is str
+                and value["value"].strip() and _pin(binding.get("evidence_sha256"))):
+                seeds.add(eid)
     # Component membership cannot supply a mention's own required association.
     mentions_with_canonical = {e["subject_id"] for e in by_predicate.get("canonical_ingredient", [])}
     missing_associations = {}
@@ -403,7 +452,11 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only):
             continue
         adjacency.setdefault(edge["subject_id"], set()).add(edge["object_id"])
         adjacency.setdefault(edge["object_id"], set()).add(edge["subject_id"])
-    if recipe_source_only:
+    if product_source_only:
+        # Only a product's own selected identifier seeds it. A shared class must
+        # never revive another product with missing identity/rights evidence.
+        reachable = set(seeds) | {e["object_id"] for e in usable_edges if e["subject_id"] in seeds}
+    elif recipe_source_only:
         # Each source recipe must qualify its own declared branches. Traversing
         # back through a shared mention must never revive an incomplete recipe.
         reachable = set(seeds) | mapped_mentions
@@ -457,6 +510,10 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only):
     if recipe_source_only:
         result["admission_profile"] = "recipe-source-subset/1"
         result["metrics"]["connectivity"]["source_recipe_seeds"] = len(seeds)
+        result["metrics"]["connectivity"]["core_chain_seeds"] = 0
+    if product_source_only:
+        result["admission_profile"] = "product-source-subset/1"
+        result["metrics"]["connectivity"]["source_product_seeds"] = len(seeds)
         result["metrics"]["connectivity"]["core_chain_seeds"] = 0
     if len(_json(result).encode()) > 8388608:
         raise ValueError("proposal exceeds 8 MiB")
