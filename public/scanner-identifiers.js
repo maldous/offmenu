@@ -9,13 +9,13 @@ const enriched=page=>({...page,detailSelectionSha256:DETAIL_SELECTION,detailBack
   detailDatabaseSha256:null,detailGenerationId:'worker00-identity-first-native58f9-20261025-v1',
   detailBackingStores:null,productDetailCoverage:null});
 
-export function projectIdentifierPage(data,raw,generation,{cursor=null,symbology=null}={}){
-  return enriched(projectIdentityPage(data,raw,generation,{requestCursor:cursor,symbology}));
+export function projectIdentifierPage(data,raw,generation,{cursor=null,namespace='barcode',symbology=null}={}){
+  return enriched(projectIdentityPage(data,raw,generation,{requestCursor:cursor,namespace,symbology}));
 }
 export function sameDetailSelection(a,b){
   return a?.databaseSha256===IDENTIFIER_DB&&b?.databaseSha256===IDENTIFIER_DB&&
     a.detailSelectionSha256===DETAIL_SELECTION&&b.detailSelectionSha256===DETAIL_SELECTION&&
-    a.original===b.original&&a.symbology===b.symbology&&a.runId===b.runId;
+    a.original===b.original&&a.namespace===b.namespace&&a.symbology===b.symbology&&a.runId===b.runId;
 }
 export function mergeIdentifierPages(previous,next){
   if(!sameDetailSelection(previous,next))throw Error('Selected identity release changed');
@@ -25,10 +25,11 @@ export function currentSavedReference(reference,page){
   return reference?.schema==='offmenu-identifier-observation/2'&&
     reference.detailSelectionSha256===DETAIL_SELECTION&&
     reference.databaseSha256===page?.databaseSha256&&reference.runId===page?.runId&&
-    reference.originalLexicalValue===page?.original;
+    reference.originalLexicalValue===page?.original&&reference.namespace===page?.namespace&&
+    reference.symbology===page?.symbology;
 }
-export async function lookupIdentifiers(raw,generation,cursor=null,symbology=null){
-  const page=await lookupIdentityPage(raw,generation,{cursor,symbology});
+export async function lookupIdentifiers(raw,generation,cursor=null,symbology=null,namespace='barcode'){
+  const page=await lookupIdentityPage(raw,generation,{cursor,namespace,symbology});
   return page.status==='unavailable'?page:enriched(page);
 }
 
