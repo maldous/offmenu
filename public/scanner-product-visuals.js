@@ -1,21 +1,21 @@
-import {selectProductVisual} from './product-visual-selector.js';
-import {selectedPublisherPhotos,OFF_PHOTOS} from './off-photo-catalogue.js';
+import {associateProductVisual,afterProductVisualAssociationFailure} from './product-visual-association.js';
 import {validSourceObservationReference} from './model.js';
 
 export function mountScannerProductVisual(thumbnail,captionRoot,{onChange=()=>{}}={}) {
   const doc=thumbnail.ownerDocument;let epoch=0,key=null,failed=[],current=null;
   const text=(tag,value)=>{const node=doc.createElement(tag);node.textContent=value;return node;};
-  function render(input,turn,notify=false) {
-    const result=input?selectProductVisual(input,{failedSources:failed}):{
-      tier:'app-fallback',kind:'image',src:doc.documentElement?.dataset.theme==='dark'?'/scanner-balanced-final-dark.svg':'/scanner-balanced-final.svg',
-      alt:'OffMenu app icon; product photo unavailable',caption:'Product photo unavailable · no qualified category illustration'};
+  function render(input,turn,notify=false,previous=null) {
+    const selected=input??{theme:doc.documentElement?.dataset.theme==='dark'?'dark':'light'};
+    const association=previous?afterProductVisualAssociationFailure(selected,previous,{failedSources:failed}):
+      associateProductVisual(selected,{failedSources:failed});
+    const result=input?association.visual:{...association.visual,alt:'OffMenu app icon; product photo unavailable'};
     current=result;thumbnail.replaceChildren();captionRoot.replaceChildren();thumbnail.dataset.visualTier=result.tier;
     if(result.kind==='image'){
       const image=doc.createElement('img');image.alt=result.alt;image.referrerPolicy='no-referrer';
       if(result.tier==='app-fallback')image.dataset.offmenuLogo='';
       image.onerror=()=>{
         if(turn!==epoch||image!==thumbnail.firstChild)return;
-        if(input){failed=[...new Set([...failed,result.src])];render(input,turn,true);}
+        if(input){failed=[...new Set([...failed,result.src])];render(input,turn,true,association);}
         else{thumbnail.replaceChildren(text('span','OffMenu'));current={...result,kind:'text',text:'OffMenu'};onChange(current);}
       };
       image.src=result.src;thumbnail.append(image);
@@ -36,9 +36,7 @@ export function mountScannerProductVisual(thumbnail,captionRoot,{onChange=()=>{}
     const nextKey=JSON.stringify([entryId,generation,reference,detail?.referenceRecordId??null]);
     if(nextKey!==key){failed=[];key=nextKey;}
     const turn=++epoch;
-    const input=valid?{sourceObservationReference:reference,selectedProductRecordId:detail?.referenceRecordId??null,
-      sourceProductName:name,theme,offline,photoCandidates:selectedPublisherPhotos(reference,detail),
-      categoryMappings:[],canonicalConcepts:[],permittedLocalAssets:OFF_PHOTOS.map(photo=>photo.path)}:null;
+    const input=valid?{reference,detail,name,theme,offline}:null;
     return render(input,turn);
   },current:()=>current,destroy(){epoch++;thumbnail.replaceChildren();captionRoot.replaceChildren();}};
 }

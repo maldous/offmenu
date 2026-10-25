@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3812,
+  "messages": 3817,
   "arabicTranslated": 376,
-  "arabicMissing": 3436,
+  "arabicMissing": 3441,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -431,7 +431,8 @@
     },
     " · completion unknown": {
       "sources": [
-        "public/cooking-model.js"
+        "public/cooking-model.js",
+        "public/insights-model.js"
       ],
       "arabic": false
     },
@@ -1992,6 +1993,7 @@
         "public/household-model.js",
         "public/journey-ui.js",
         "public/menu-model.js",
+        "public/product-visual-association.js",
         "public/recipe-review.js",
         "public/scanner-product-visuals.js",
         "public/shelf-scanner.js",
@@ -2001,7 +2003,7 @@
     },
     "./off-photo-catalogue.js": {
       "sources": [
-        "public/scanner-product-visuals.js"
+        "public/product-visual-association.js"
       ],
       "arabic": false
     },
@@ -2030,9 +2032,15 @@
       ],
       "arabic": false
     },
-    "./product-visual-selector.js": {
+    "./product-visual-association.js": {
       "sources": [
         "public/scanner-product-visuals.js"
+      ],
+      "arabic": false
+    },
+    "./product-visual-selector.js": {
+      "sources": [
+        "public/product-visual-association.js"
       ],
       "arabic": false
     },
@@ -2428,7 +2436,6 @@
     "/scanner-balanced-final-dark.svg": {
       "sources": [
         "public/product-visual-selector.js",
-        "public/scanner-product-visuals.js",
         "public/shelf-scanner.js"
       ],
       "arabic": false
@@ -2436,7 +2443,6 @@
     "/scanner-balanced-final.svg": {
       "sources": [
         "public/product-visual-selector.js",
-        "public/scanner-product-visuals.js",
         "public/shelf-scanner.js"
       ],
       "arabic": false
@@ -4628,7 +4634,8 @@
     },
     "Category": {
       "sources": [
-        "public/care-ui.js"
+        "public/care-ui.js",
+        "public/product-visual-association.js"
       ],
       "arabic": false
     },
@@ -9353,6 +9360,12 @@
       ],
       "arabic": false
     },
+    "Ingredient match": {
+      "sources": [
+        "public/product-visual-association.js"
+      ],
+      "arabic": false
+    },
     "Ingredient not mapped. Excluded from meal matching.": {
       "sources": [
         "public/app.js"
@@ -9529,7 +9542,8 @@
     },
     "Intake quantity is unknown. Serving recorded; no zero-intake claim.": {
       "sources": [
-        "public/cooking-model.js"
+        "public/cooking-model.js",
+        "public/insights-model.js"
       ],
       "arabic": false
     },
@@ -12359,6 +12373,12 @@
       ],
       "arabic": false
     },
+    "Not yet identified": {
+      "sources": [
+        "public/product-visual-association.js"
+      ],
+      "arabic": false
+    },
     "Note": {
       "sources": [
         "public/documents.js"
@@ -14020,8 +14040,7 @@
     },
     "Product photo unavailable · no qualified category illustration": {
       "sources": [
-        "public/product-visual-selector.js",
-        "public/scanner-product-visuals.js"
+        "public/product-visual-selector.js"
       ],
       "arabic": false
     },
@@ -16924,6 +16943,12 @@
     "Separate source allergen statement · not certification": {
       "sources": [
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Separate source claims, normalized category and ingredient authority required; photo qualification supplies none.": {
+      "sources": [
+        "public/product-visual-association.js"
       ],
       "arabic": false
     },
@@ -21160,6 +21185,12 @@
       ],
       "arabic": false
     },
+    "application/json; charset=utf-8": {
+      "sources": [
+        "cloud/source-field-host.mjs"
+      ],
+      "arabic": false
+    },
     "application/xml;charset=utf-8": {
       "sources": [
         "cloud/service-config.mjs"
@@ -22493,7 +22524,8 @@
         "cloud/identifier-host.mjs",
         "cloud/locale.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
-        "cloud/queue-state-entry-owner16.mjs"
+        "cloud/queue-state-entry-owner16.mjs",
+        "cloud/source-field-host.mjs"
       ],
       "arabic": false
     },
