@@ -6,6 +6,28 @@ const DB='97c2f7390f75d8d187b49c927652515cd829e095301d7b305a0081120c7502f0';
 const ROOT='/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/live-dev/3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879/production-app/cloud/';
 const BACKEND='retained-product-federation-v1';
 const CAP=262144;
+async function boundedRequestText(request,deadline){
+ if(!request.body)return '';
+ const reader=request.body.getReader();let timer,total=0;const chunks=[];
+ try{
+  while(true){
+   if(Date.now()>=deadline)throw Error('REQUEST_TIME_BOUND');
+   const {done,value}=await new Promise((resolve,reject)=>{
+    timer=setTimeout(()=>reject(Error('REQUEST_TIME_BOUND')),Math.max(0,deadline-Date.now()));
+    reader.read().then(resolve,reject);
+   });
+   clearTimeout(timer);
+   if(done)break;
+   total+=value.byteLength;
+   if(total>8192)throw Error('REQUEST_BOUND');
+   if(value.byteLength)chunks.push(value);
+  }
+  return new TextDecoder('utf-8',{fatal:true}).decode(Buffer.concat(chunks,total));
+ }catch(error){
+  // A stream's cancellation hook can itself stall; cancellation must not extend the deadline.
+  void reader.cancel().catch(()=>{});throw error;
+ }finally{clearTimeout(timer);reader.releaseLock();}
+}
 // Same checksum and UPC-E expansion as the retained scanner model.
 // These representations never establish one physical product or ingredient.
 function validGTIN(value) {
@@ -78,6 +100,7 @@ export function createIdentifierAdapter({Response:ResponseClass=Response,scriptP
  }
  return async request=>{
   const url=new URL(request.url);if(url.hostname!=='offmenu-identifiers.invalid'||!['/__dev/identifiers','/__dev/identifiers/status'].includes(url.pathname))return null;
+  const deadline=Date.now()+timeoutMs;
   let reserved=false;
   try{
    const isStatus=url.pathname.endsWith('/status');
@@ -85,7 +108,8 @@ export function createIdentifierAdapter({Response:ResponseClass=Response,scriptP
    let query,after=0,laneIndex=0,plan;
    if(!isStatus){
     if(request.headers.get('Content-Type')?.split(';')[0]!=='application/json')return reply({error:'JSON_REQUIRED'},415);
-    const text=await request.text();if(Buffer.byteLength(text)>8192)return reply({error:'REQUEST_BOUND'},413);
+    let text;
+    try{text=await boundedRequestText(request,deadline);}catch(error){return reply({error:error.message==='REQUEST_BOUND'?'REQUEST_BOUND':error.message==='REQUEST_TIME_BOUND'?'REQUEST_TIME_BOUND':'INVALID_JSON'},error.message==='REQUEST_BOUND'?413:error.message==='REQUEST_TIME_BOUND'?408:400);}
     try{query=JSON.parse(text);}catch{return reply({error:'INVALID_JSON'},400);}
     if(!query||typeof query!=='object'||Array.isArray(query)||Object.keys(query).some(k=>!['namespace','lexical_value','limit','cursor','generation','databaseSha256','include','detailAssertionId','detailLexicalValue','detailDisposition','symbology'].includes(k))||!['barcode','USDA-FDC'].includes(query.namespace)||typeof query.lexical_value!=='string'||query.lexical_value.length<1||query.lexical_value.length>128||/[\x00-\x1f\x7f]/.test(query.lexical_value)||!Number.isInteger(query.limit)||query.limit<1||query.limit>25||typeof query.generation!=='string'||query.generation.length>64)return reply({error:'INVALID_IDENTIFIER_QUERY'},400);
     if(query.symbology!==undefined&&(query.namespace!=='barcode'||!['EAN-13','EAN-8','UPC-A','UPC-E','GTIN-14'].includes(query.symbology)))return reply({error:'INVALID_SYMBOLOGY'},400);
@@ -98,7 +122,7 @@ export function createIdentifierAdapter({Response:ResponseClass=Response,scriptP
     if(query.cursor!==null&&query.cursor!==undefined){try{const c=JSON.parse(Buffer.from(query.cursor,'base64url').toString('utf8'));if(c.version!==2||c.symbology!==(query.symbology??null)||!Number.isSafeInteger(c.lane)||c.lane<0||c.lane>=plan.length||c.db!==DB||c.generation!==query.generation||c.namespace!==query.namespace||c.lexical!==query.lexical_value||c.limit!==query.limit||!Number.isSafeInteger(c.after)||c.after<0)throw Error();after=c.after;laneIndex=c.lane;}catch{return reply({error:'CURSOR_BINDING_MISMATCH'},400);}}
    }
    if(active>=2)return reply({error:'PRIVATE_IDENTIFIER_HOST_BUSY'},429);
-   active++;reserved=true;const deadline=Date.now()+timeoutMs;
+   active++;reserved=true;
    if(isStatus){
     const status=await run({action:'status'},scriptPath,deadline);
     // Detail-store status cannot prevent a valid identifier search.

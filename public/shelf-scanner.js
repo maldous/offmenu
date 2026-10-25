@@ -63,7 +63,7 @@ const CAPTURE_FORMATS={'ean_13':'EAN-13','ean_8':'EAN-8','upc_a':'UPC-A','upc_e'
 async function inspectMatch(entry,match,token){
  if(entry.connection!=='live'||!match?.identifier)return;
  selected=match;entry.detailsState='loading';render();
- const result=await loadSelectedDetails(match,entry,token);
+ const result=await loadSelectedDetails(match,entry,entry.queryGeneration??entry.generation);
  if(token!==generation||current?.id!==entry.id)return;
  match.availability=result.availability;match.variants=result.variants;
  match.detail=result.variants.length===1?result.variants[0].detail:null;
@@ -78,8 +78,8 @@ async function capture(raw,namespace,alias=null,eventId=crypto.randomUUID()){
  if(!active||paused||processed.has(eventId))return;
  if(typeof raw!=='string'||!raw.length||raw.length>128||/[\x00-\x1f\x7f]/.test(raw)){message('Invalid capture · enter 1–128 original printable characters.');return;}
  const symbology=CAPTURE_FORMATS[namespace]||null;
- processed.add(eventId);const token=++generation,entry={id:eventId,raw,namespace,symbology,alias,status:'pending',matches:[],mode};queue.push(entry);current=entry;selected=null;render();readTone();
- entry.connection=connection;const result=await Promise.resolve(connection==='surrogate'?(raw===SURROGATE_CODE?{generation:token,status:'surrogate-match',matches:[surrogate]}:{generation:token,status:'saved-result-miss',matches:[]}):connection==='live'?lookupIdentifiers(raw,token,null,symbology):resolveSavedResult(raw,token,saved));
+ processed.add(eventId);const token=++generation,entry={id:eventId,queryGeneration:token,raw,namespace,symbology,alias,status:'pending',matches:[],mode};queue.push(entry);current=entry;selected=null;render();readTone();
+ entry.connection=connection;const result=await Promise.resolve(connection==='surrogate'?(raw===SURROGATE_CODE?{generation:token,status:'surrogate-match',matches:[surrogate]}:{generation:token,status:'saved-result-miss',matches:[]}):connection==='live'?lookupIdentifiers(raw,entry.queryGeneration,null,symbology):resolveSavedResult(raw,token,saved));
  if(!queue.some(x=>x.id===entry.id)||entry.status!=='pending')return;Object.assign(entry,result);if(token!==generation)return;
  current=entry;if(result.matches?.length&&['source-match','ambiguous'].includes(result.status))scanner.noteAccepted();
  selected=entry.connection==='live'&&result.status==='source-match'?result.matches[0]:null;
@@ -114,7 +114,7 @@ function showMatches(){
   host.append(box);
  }
  if(entry?.hasMore)host.append(btn(entry.status==='partial'?'Retry incomplete source lane':'Continue bounded source search',async()=>{
-  const result=await lookupIdentifiers(entry.raw,token,entry.nextCursor,entry.symbology);
+  const result=await lookupIdentifiers(entry.raw,entry.queryGeneration??entry.generation,entry.nextCursor,entry.symbology);
   if(token!==generation||current?.id!==entry.id)return;
   if(result.status==='unavailable'){message('Selected search page unavailable; '+entry.matches.length+' already loaded source observations retained. '+result.error);return;}
   try{Object.assign(entry,mergeIdentifierPages(entry,result));}catch(error){message('Selected continuation rejected; prior observations retained. '+error.message);return;}
@@ -135,7 +135,7 @@ $('manual').onsubmit=e=>{e.preventDefault();const raw=$('barcode').value;$('barc
 $('kitchen-handoff').onclick=()=>{
  if(connection!=='live'||!selected?.identifier||!current?.raw)return;
  let ref;try{ref=sourceObservationReference(selected,current);}catch(error){message('Source reference unavailable: '+error.message);return;}
- const row=selected.identifier,payload={schema:'offmenu-scanner-kitchen-handoff/1',barcode:current.raw,
+ const row=selected.identifier,payload={schema:'offmenu-scanner-kitchen-handoff/1',operationId:crypto.randomUUID(),barcode:current.raw,
   name:selected.name||null,brand:selected.brand||null,sourceId:row.source_id,releaseId:row.release_id??null,
   assertionId:row.assertion_id,detailSelectionSha256:current.detailSelectionSha256||null,sourceObservationReference:ref};
  try{sessionStorage.setItem(KITCHEN_HANDOFF,JSON.stringify(payload));location.assign('/kitchen.html?scan=staged');}

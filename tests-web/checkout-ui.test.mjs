@@ -4,7 +4,8 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {parse} from 'acorn';
 import {finishInventory,locationKey,makeAutoLot} from '../public/checkout-model.js';
-import {validateLot} from '../public/model.js';
+import {validateLot,validSourceObservationReference} from '../public/model.js';
+import {IDENTIFIER_DB,IDENTIFIER_RUN,DETAIL_SELECTION} from '../public/scanner-identity-v2.js';
 import {reconcileCookedStock} from '../public/cooking-model.js';
 import {t,setLocalizedText,getLanguage} from '../public/i18n.js';
 
@@ -12,7 +13,7 @@ import {t,setLocalizedText,getLanguage} from '../public/i18n.js';
 // doubles intentionally make no browser, camera, network, or cloud-sync claim.
 const source=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
 const nodes=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body;
-const names=['draftKey','saveDraft','today','save','canEditCheckout','autoAccept','trustedIngredient','mappedIngredient','openWorkspace','startCheckout','renderBasket','saveReceipt','renderFinalReceipt','editReceiptItem'];
+const names=['draftKey','saveDraft','readScannerImport','completeScannerHandoff','today','save','canEditCheckout','autoAccept','trustedIngredient','mappedIngredient','openWorkspace','startCheckout','renderBasket','saveReceipt','renderFinalReceipt','editReceiptItem'];
 const functions=names.flatMap(name=>nodes.filter(n=>n.type==='FunctionDeclaration'&&n.id.name===name).map(n=>source.slice(n.start,n.end)));
 for(const name of names)assert.equal(nodes.filter(n=>n.type==='FunctionDeclaration'&&n.id.name===name).length,1,name);
 const handlers=['void-last','finish-checkout','confirm-finish','add'];
@@ -35,7 +36,7 @@ const draft=(items=[],mode='shelf')=>({mode,area:'Pantry',shelf:'Shelf 1',items,
 function harness({inventory=[inventoryLot('old'),inventoryLot('other','Shelf 2')],session=draft(),store=new Map(),lookup=()=>Promise.reject(Error('Unknown')),writable=true}={}){
  const elements=new Map(),$=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};
  const cancel=new Element();cancel.dataset.close='finish-dialog';let dirty=0;
- const ctx={$,KEY:'test-pantry',PROFILE:'test-profile',session:copy(session),pendingScannerImport:null,KITCHEN_HANDOFF:'offmenu-scanner-kitchen-pending-v1',lots:copy(inventory),profile:{batches:[],locations:[]},products:{},feedback:{},latestAcceptedId:null,selectedMode:'shelf',selectedArea:'Pantry',demoMode:false,user:null,lastReceipt:null,editingId:null,crypto,Date,
+ const ctx={$,KEY:'test-pantry',PROFILE:'test-profile',session:copy(session),pendingScannerImport:null,scannerHandoffOperations:[],scannerHandoffStateValid:true,KITCHEN_HANDOFF:'offmenu-scanner-kitchen-pending-v1',validSourceObservationReference,lifecycleFixture:false,location:{search:'?scan=staged'},URLSearchParams,lots:copy(inventory),profile:{batches:[],locations:[]},products:{},feedback:{},latestAcceptedId:null,selectedMode:'shelf',selectedArea:'Pantry',demoMode:false,user:null,lastReceipt:null,editingId:null,crypto,Date,
   document:{createElement:()=>new Element(),querySelectorAll:selector=>selector==='[data-close]'?[cancel]:[]},window:{scrollTo(){}},
   localStorage:{getItem:key=>store.get(key)??null,setItem:(key,value)=>store.set(key,value),removeItem:key=>store.delete(key)},
   sharing:{canWrite:()=>writable},syncStatus:()=>{},finishInventory,locationKey,makeAutoLot,validateLot,reconcileCookedStock,t,setLocalizedText,getLanguage,
@@ -48,15 +49,16 @@ function harness({inventory=[inventoryLot('old'),inventoryLot('other','Shelf 2')
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 function scannerHandoffFixture(){
  const h=harness({session:{...draft(),id:'existing-receipt'}});
- const reference={schema:'offmenu-identifier-observation/2',disposition:'unresolved',matchType:'exact',sourceId:'fixture'};
- const handoff={barcode:'0000000000002',sourceId:'fixture',releaseId:null,name:'Beans',brand:null,sourceObservationReference:reference};
+ const barcode='0000000000002',reference={schema:'offmenu-identifier-observation/2',databaseSha256:IDENTIFIER_DB,runId:IDENTIFIER_RUN,namespace:'barcode',originalLexicalValue:barcode,sourceLexicalValue:barcode,symbology:null,matchType:'exact',equivalence:null,disposition:'unresolved',sourceId:'fixture',releaseId:null,sourceRecordId:'fixture-1',observationKey:{run_id:IDENTIFIER_RUN,input_id:'generated-only',record_ordinal:0,assertion_id:1},detailSelectionSha256:DETAIL_SELECTION};
+ assert.equal(validSourceObservationReference(reference,barcode),true);
+ const handoff={schema:'offmenu-scanner-kitchen-handoff/1',operationId:'11111111-1111-4111-8111-111111111111',barcode,sourceId:'fixture',releaseId:null,name:'Beans',brand:null,assertionId:1,sourceObservationReference:reference};
  h.ctx.pendingScannerImport=handoff;h.$('storage-area').value='Pantry';h.$('shelf-name').value='Shelf 1';
  const removed=[];h.ctx.sessionStorage={removeItem:key=>removed.push(key)};return {...h,handoff,removed};
 }
 test('real scanner acceptance retains handoff and rolls back unsaved item after storage failure',()=>{
  const h=scannerHandoffFixture(),write=h.ctx.localStorage.setItem;
  h.ctx.localStorage.setItem=(key,value)=>{if(JSON.parse(value).items?.length)throw Error('storage full');write(key,value);};
- h.ctx.startCheckout();assert.equal(h.ctx.session.id,'existing-receipt');assert.equal(h.ctx.session.items.length,0);assert.equal(JSON.parse(h.store.get('test-pantry-checkout')).items.length,0);assert.equal(h.ctx.pendingScannerImport,h.handoff);assert.deepEqual(h.removed,[]);
+ h.ctx.startCheckout();assert.equal(h.ctx.session.id,'existing-receipt');assert.equal(h.ctx.session.items.length,0);assert.equal(JSON.parse(h.store.get('test-pantry-checkout')).items.length,0);assert.equal(h.ctx.scannerHandoffOperations.length,0);assert.equal(h.ctx.pendingScannerImport,h.handoff);assert.deepEqual(h.removed,[]);
  h.ctx.localStorage.setItem=write;h.ctx.startCheckout();assert.equal(h.ctx.session.id,'existing-receipt');assert.equal(h.ctx.session.items.length,1);assert.deepEqual(JSON.parse(h.store.get('test-pantry-checkout')).items[0].sourceObservationReference,h.handoff.sourceObservationReference);assert.equal(h.ctx.pendingScannerImport,null);assert.deepEqual(h.removed,[h.ctx.KITCHEN_HANDOFF]);
 });
 test('saved handoff is consumed once even if rendering the persisted item fails',()=>{
@@ -65,6 +67,27 @@ test('saved handoff is consumed once even if rendering the persisted item fails'
 });
 test('a waste handoff with no matching stock remains pending and unconsumed',()=>{
  const h=scannerHandoffFixture();h.ctx.session.mode='waste';h.ctx.selectedMode='waste';h.ctx.startCheckout();assert.equal(h.ctx.session.items.length,0);assert.equal(h.ctx.pendingScannerImport,h.handoff);assert.deepEqual(h.removed,[]);
+});
+test('saved handoff cleanup failure cannot duplicate after real reload; fresh intentional scan remains possible',()=>{
+ const first=scannerHandoffFixture(),tab=new Map([[first.ctx.KITCHEN_HANDOFF,JSON.stringify(first.handoff)]]);
+ const storage={getItem:key=>tab.get(key)??null,setItem:(key,value)=>tab.set(key,value),removeItem(){throw Error('cleanup unavailable');}};let message='';first.ctx.msg=value=>{message=value;};first.ctx.sessionStorage=storage;first.ctx.startCheckout();
+ assert.equal(JSON.parse(first.store.get('test-pantry-checkout')).items.length,1);assert.doesNotMatch(message,/was not saved/);assert.match(message,/saved|staged/);
+ const next=harness({session:null,store:first.store});next.ctx.sessionStorage=storage;next.ctx.openWorkspace();next.$('storage-area').value='Pantry';next.$('shelf-name').value='Shelf 1';next.ctx.pendingScannerImport=next.ctx.readScannerImport();assert.ok(next.ctx.pendingScannerImport);next.ctx.startCheckout();
+ let persisted=JSON.parse(next.store.get('test-pantry-checkout'));assert.equal(persisted.id,'existing-receipt');assert.equal(persisted.items.length,1);assert.deepEqual(persisted.items[0].sourceObservationReference,first.handoff.sourceObservationReference);
+ const fresh={...first.handoff,operationId:'22222222-2222-4222-8222-222222222222'};tab.set(next.ctx.KITCHEN_HANDOFF,JSON.stringify(fresh));next.ctx.pendingScannerImport=next.ctx.readScannerImport();next.ctx.startCheckout();persisted=JSON.parse(next.store.get('test-pantry-checkout'));assert.equal(persisted.items.length,2);assert.notEqual(persisted.items[0].id,persisted.items[1].id);
+});
+test('legacy handoff receives a stable operation ID before adding inventory',()=>{
+ const h=scannerHandoffFixture(),legacy={...h.handoff};delete legacy.operationId;const tab=new Map([[h.ctx.KITCHEN_HANDOFF,JSON.stringify(legacy)]]);h.ctx.sessionStorage={getItem:key=>tab.get(key)??null,setItem:(key,value)=>tab.set(key,value)};
+ const first=h.ctx.readScannerImport(),second=h.ctx.readScannerImport();assert.match(first.operationId,/^[0-9a-f-]{36}$/);assert.equal(first.operationId,second.operationId);assert.equal(h.ctx.session.items.length,0);
+ h.ctx.sessionStorage.setItem=()=>{throw Error('blocked');};tab.set(h.ctx.KITCHEN_HANDOFF,JSON.stringify(legacy));assert.equal(h.ctx.readScannerImport(),null);assert.equal(h.ctx.session.items.length,0);
+});
+test('consumed handoff identity survives draft completion and reload',()=>{
+ const first=scannerHandoffFixture(),tab=new Map([[first.ctx.KITCHEN_HANDOFF,JSON.stringify(first.handoff)]]);const storage={getItem:key=>tab.get(key)??null,setItem:(key,value)=>tab.set(key,value),removeItem(){throw Error('cleanup unavailable');}};first.ctx.sessionStorage=storage;first.ctx.startCheckout();
+ const saved=JSON.parse(first.store.get('test-pantry-checkout'));assert.equal(saved.items.length,1);assert.deepEqual(saved.scannerHandoffOperations,[first.handoff.operationId]);first.ctx.session=null;first.ctx.saveDraft();
+ const next=harness({session:null,store:first.store});next.ctx.sessionStorage=storage;next.ctx.openWorkspace();assert.equal(next.ctx.session,null);next.ctx.pendingScannerImport=next.ctx.readScannerImport();next.ctx.startCheckout();assert.equal(next.ctx.session,null);assert.deepEqual(JSON.parse(next.store.get('test-pantry-checkout')).scannerHandoffOperations,[first.handoff.operationId]);
+});
+test('invalid saved handoff history fails closed without overwriting it',()=>{
+ const h=scannerHandoffFixture(),raw=JSON.stringify({scannerHandoffOperations:['invalid']});h.store.set('test-pantry-checkout',raw);h.ctx.openWorkspace();h.ctx.pendingScannerImport=h.handoff;h.ctx.startCheckout();assert.equal(h.ctx.session,null);assert.equal(h.ctx.pendingScannerImport,h.handoff);assert.equal(h.store.get('test-pantry-checkout'),raw);
 });
 function receiptVoid(h){return h.$('finish-items').children[0].children.at(-1).children.at(-1);}
 

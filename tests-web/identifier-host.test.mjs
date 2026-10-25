@@ -144,3 +144,26 @@ test('nine representation/disposition lanes reserve at most the existing identif
   assert.equal((await f.adapter(request({max_steps:1000000}))).status,400);
  }finally{await f.close();}
 });
+
+test('oversized chunked input is cancelled at the byte bound without running a child',async()=>{
+ const f=await fixture();let produced=0,cancelled=false;
+ const body=new ReadableStream({pull(controller){if(produced===32768){controller.close();return;}produced+=1024;controller.enqueue(new Uint8Array(1024).fill(32));},cancel(){cancelled=true;}});
+ try{
+  const response=await f.adapter(new Request('https://offmenu-identifiers.invalid/__dev/identifiers',{method:'POST',headers:{'Content-Type':'application/json'},body,duplex:'half'}));
+  assert.equal(response.status,413);assert.equal((await response.json()).error,'REQUEST_BOUND');assert.equal(cancelled,true);assert.ok(produced<=10240,'reader stops after overflow plus normal upstream prefetch');await assert.rejects(readFile(f.calls),{code:'ENOENT'});
+ }finally{await f.close();}
+});
+
+test('bounded input preserves a UTF-8 identifier split across stream chunks',async()=>{
+ const lexical='Café咖',f=await fixture('valid',0,7000,[row(1,lexical)]);
+ const bytes=new TextEncoder().encode(JSON.stringify({namespace:'barcode',lexical_value:lexical,limit:25,cursor:null,generation:'split-utf8',databaseSha256:DB}));let offset=0;
+ const body=new ReadableStream({pull(controller){if(offset===bytes.length){controller.close();return;}controller.enqueue(bytes.slice(offset,++offset));}});
+ try{const response=await f.adapter(new Request('https://offmenu-identifiers.invalid/__dev/identifiers',{method:'POST',headers:{'Content-Type':'application/json'},body,duplex:'half'}));assert.equal(response.status,200);const result=await response.json();assert.equal(result.rows[0].lexical_value,lexical);assert.equal(result.identityQuery.originalLexicalValue,lexical);}finally{await f.close();}
+});
+
+test('stalled input expires and is cancelled before any child is started',async()=>{
+ const f=await fixture('valid',0,30);let controller,cancelled=false;
+ const body=new ReadableStream({start(value){controller=value;controller.enqueue(new TextEncoder().encode('{'));},cancel(){cancelled=true;return new Promise(()=>{});}});
+ const fallback=setTimeout(()=>{if(!cancelled)controller.close();},200);
+ try{const response=await f.adapter(new Request('https://offmenu-identifiers.invalid/__dev/identifiers',{method:'POST',headers:{'Content-Type':'application/json'},body,duplex:'half'}));assert.equal(response.status,408);assert.equal((await response.json()).error,'REQUEST_TIME_BOUND');assert.equal(cancelled,true);await assert.rejects(readFile(f.calls),{code:'ENOENT'});}finally{clearTimeout(fallback);await f.close();}
+});
