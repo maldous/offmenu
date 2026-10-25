@@ -1,3 +1,5 @@
+import {authPageRoutes} from './auth-page-routes.mjs';
+import {providerConsentRoutes} from './provider-consent-routes.mjs';
 import {requestLocale,localizedHTML} from './locale.mjs';
 import {catalogueRoutes} from './catalogue.mjs';
 import {enrichmentRoutes} from './enrichment.mjs';
@@ -27,13 +29,17 @@ const reply=(data,status=200)=>Response.json(data,{status,headers:{...SECURITY,'
 async function boundedJSON(request,limit=2_000_000){const reader=request.body?.getReader();if(!reader)throw Error('Missing body.');const chunks=[];let size=0;for(;;){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>limit){await reader.cancel();throw Error('Data exceeds 2 MB.');}chunks.push(value);}const bytes=new Uint8Array(size);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.length;}return JSON.parse(new TextDecoder().decode(bytes));}
 async function legacyVerifiedUser(request){const auth=request.headers.get('Authorization');const cookie=request.headers.get('Cookie')||'';const encoded=cookie.match(/(?:^|;\s*)nf_jwt=([^;]+)/)?.[1];let token;try{token=auth?.startsWith('Bearer ')?auth.slice(7):encoded?decodeURIComponent(encoded):null;}catch{return null;}if(!token)return null;const r=await fetch(IDENTITY+'/user',{headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(10000)});if(!r.ok)return null;const user=await r.json();return typeof user.id==='string'&&user.id.length<200?user:null;}
 /** Construct with deployment-owned auth options only, never request or admin settings. */
-export function createOffMenuHandler({authOptions,photoFetch} = {}) {
+export function createOffMenuHandler({authOptions,photoFetch,providerConsentOptions} = {}) {
 const photos=createOffPhotoRoutes({fetchImpl:photoFetch??fetch});
 return {async scheduled(event,env,ctx){ctx.waitUntil((async()=>{await cleanupAdminMcp(env);const runtime=await loadAdminRuntime(env),serviceEnv=runtime.env;await env.DB.prepare('DELETE FROM resolver_cache WHERE fresh_until<? AND retry_after<?').bind(Date.now()-14*86400000,Date.now()).run();await env.DB.prepare('DELETE FROM resolver_leases WHERE expires_at<?').bind(Date.now()).run();await env.DB.prepare("DELETE FROM unified_records WHERE owner NOT LIKE 'public:%' AND json_valid(document) AND json_extract(document,'$.provenance.retainUntil') IS NOT NULL AND julianday(json_extract(document,'$.provenance.retainUntil'))<=julianday(?)").bind(new Date().toISOString()).run();await env.DB.prepare('DELETE FROM evidence_assertions WHERE retain_until<?').bind(Date.now()).run();await env.DB.prepare('DELETE FROM integration_limits WHERE bucket<?').bind(Math.floor(Date.now()/3600000)-24).run();await cleanupServiceRequests(serviceEnv);await cleanupCareCases(env);await cleanupCareCommunity(env);await cleanupCareUpdates(env);})());},async fetch(request,env,ctx){const url=new URL(request.url);try{
 const photo=await photos(request);if(photo)return photo;
 const runtime=createOffMenuAuthRuntime(env,{legacyVerifiedUser,authOptions});
 const authResponse=await runtime.handleAuthRequest(request);if(authResponse)return authResponse;
 const {verifiedUser}=runtime;
+const authPage=await authPageRoutes(request,env,{runtime,authOptions});if(authPage)return authPage;
+const providerConsent=await providerConsentRoutes(request,env,{verifiedUser,boundedJSON,
+  termsFor:providerConsentOptions?.termsFor,storeConsent:providerConsentOptions?.storeConsent,
+  withdrawConsent:providerConsentOptions?.withdrawConsent});if(providerConsent)return providerConsent;
 for(const route of [careCaseRoutes,careCommunityRoutes,careUpdateRoutes,recipeCommunityRoutes,communityAIRoutes,personalAIRoutes]){const response=await route(request,env,{verifiedUser,boundedJSON,reply});if(response)return response;}
 if(url.pathname.startsWith('/api/care/')||url.pathname.startsWith('/api/community/')||url.pathname.startsWith('/api/admin/care/')||url.pathname.startsWith('/api/admin/community/'))return reply({error:'Not found'},404);
 const adminOperation=await adminOperationsRoutes(request,env,{verifiedUser,boundedJSON,reply});if(adminOperation)return adminOperation;

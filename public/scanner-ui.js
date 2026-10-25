@@ -153,13 +153,13 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,autoResume=
           lastRead=performance.now(); onCode(captureEnvelope.lookupLexicalValue,{captureEnvelope,
             originalCaptures:[{value:captureEnvelope.lookupLexicalValue,symbology:captureEnvelope.lookupSymbology}]});
           setLocalizedText($('scanner-last'),"Accepted: {v0}",{v0:(captureEnvelope.lookupLexicalValue)});
-          status('Accepted ✓ Move this item away. Present the next barcode.');
+          status('Scanned · move item away');
           $('camera-stage').classList.add('scan-accepted');
           setTimeout(()=>$('camera-stage').classList.remove('scan-accepted'),500);
-        } else if(codes.length>1) status('More than one barcode visible. Present one product at a time.');
-        else if(codes.length===1 && performance.now()-lastRead>2000) status(lastRead?'Ready for next item. Remove this barcode fully before the next identical pack.':'Reading… Hold one barcode steady.');
-        else if(lastRead && !codes.length) status('Ready for next item. Previous product details are retained.');
-        else if(!lastRead && performance.now()-started>6000) status(results.some(x=>captureFromDecoder(x,decoderPath).status==='manual-required')?'Decoder representation needs manual confirmation. Use Type code to preserve the printed value.':'No readable code yet. Pause movement, move farther away if blurred, and avoid glare. Try another lens or a photo.');
+        } else if(codes.length>1) status('One barcode at a time');
+        else if(codes.length===1 && performance.now()-lastRead>2000) status(lastRead?'Move item away':'Hold steady');
+        else if(lastRead && !codes.length) status('Ready');
+        else if(!lastRead && performance.now()-started>6000) status(results.some(x=>captureFromDecoder(x,decoderPath).status==='manual-required')?'Check code in Scan options':'Aim at barcode');
       }
     } catch {
       if(sessionToken!==token) return;
@@ -204,7 +204,7 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,autoResume=
       if(sessionToken!==token) return;
       preview(); showControls(); $('scanner-controls').hidden=false; $('scanner-rearm').disabled=false;
       running=true;starting=false; started=performance.now(); lastRead=0; attempts=0;
-      status('Ready. Present one barcode and pause briefly.');
+      status('Ready · aim at barcode');
       void keepAwake(sessionToken); void loop(sessionToken);
     } catch(error) { if(sessionToken===token){stop({announce:false});status(cameraError(error));} }
   }
@@ -255,5 +255,5 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,autoResume=
   guide(); preview();
   if(!['environment','user'].includes(preferences.camera)) $('scanner-camera').add(new Option('Last used camera',preferences.camera));
   $('scanner-camera').value=preferences.camera;
-  return {stop,start,noteAccepted(){if(running){lastRead=performance.now();status('Ready for next item. Previous product details are retained.');}}};
+  return {stop,start,noteAccepted(){if(running){lastRead=performance.now();status('Ready');}}};
 }

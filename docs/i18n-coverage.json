@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3825,
+  "messages": 4029,
   "arabicTranslated": 376,
-  "arabicMissing": 3449,
+  "arabicMissing": 3653,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -414,12 +414,6 @@
     " · cached response": {
       "sources": [
         "public/insights-ui.js"
-      ],
-      "arabic": false
-    },
-    " · checking product details": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -1344,7 +1338,7 @@
       ],
       "arabic": false
     },
-    "#manual-open,#session-button,#change-mode,#scanner-rearm,#tools-close": {
+    "#manual-open,#session-button,#change-mode": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -1420,6 +1414,12 @@
       ],
       "arabic": false
     },
+    "(prefers-reduced-motion: reduce)": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "(prefers-reduced-motion:reduce)": {
       "sources": [
         "public/app.js"
@@ -1429,6 +1429,12 @@
     ") to (": {
       "sources": [
         "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "* Planned step in the connected journey.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -1646,6 +1652,18 @@
     "./admin-ui.js": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "./auth-controller.js": {
+      "sources": [
+        "public/auth.js"
+      ],
+      "arabic": false
+    },
+    "./auth-page-routes.mjs": {
+      "sources": [
+        "cloud/handler.mjs"
       ],
       "arabic": false
     },
@@ -1967,7 +1985,8 @@
     },
     "./offmenu-identity-client.js": {
       "sources": [
-        "public/app.js"
+        "public/app.js",
+        "public/auth.js"
       ],
       "arabic": false
     },
@@ -1993,6 +2012,18 @@
     "./product-visual-selector.js": {
       "sources": [
         "public/product-visual-association.js"
+      ],
+      "arabic": false
+    },
+    "./provider-consent-controller.js": {
+      "sources": [
+        "public/auth.js"
+      ],
+      "arabic": false
+    },
+    "./provider-consent-routes.mjs": {
+      "sources": [
+        "cloud/handler.mjs"
       ],
       "arabic": false
     },
@@ -2221,6 +2252,30 @@
       ],
       "arabic": false
     },
+    ".neon-shell.backgrounded": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    ".neon-shell.motion": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    ".neon-shell.paused": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    ".neon-shell{width:100%;height:100%;overflow:hidden}": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     ".site-header .brand": {
       "sources": [
         "public/app.js"
@@ -2346,6 +2401,12 @@
       ],
       "arabic": false
     },
+    "/offmenu-neon.html": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "/openapi.json": {
       "sources": [
         "cloud/integrations.mjs",
@@ -2414,7 +2475,9 @@
     },
     "/shelf-scanner.html": {
       "sources": [
-        "public/app.js"
+        "cloud/auth-page-routes.mjs",
+        "public/app.js",
+        "public/auth-controller.js"
       ],
       "arabic": false
     },
@@ -2880,12 +2943,6 @@
       ],
       "arabic": false
     },
-    "Accepted ✓ Move this item away. Present the next barcode.": {
-      "sources": [
-        "public/scanner-ui.js"
-      ],
-      "arabic": false
-    },
     "Accepted. Looking up details while you keep scanning…": {
       "sources": [
         "public/app.js",
@@ -2909,6 +2966,18 @@
     "Access method": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Access your account through supported sign-in options.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Accessible scanning": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -3030,6 +3099,12 @@
       ],
       "arabic": false
     },
+    "Adapt a favourite week for attendance, time and equipment.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Adapter pending": {
       "sources": [
         "public/sources.js"
@@ -3065,6 +3140,12 @@
     "Add anything else": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Add fruit, vegetables and ingredients without a barcode.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -3151,6 +3232,12 @@
     "Add your own credentials for this source first.": {
       "sources": [
         "cloud/provider-data.mjs"
+      ],
+      "arabic": false
+    },
+    "Adjust quantities for the portions you want to make.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -3303,6 +3390,12 @@
     "Age (optional)": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Aim at barcode": {
+      "sources": [
+        "public/scanner-ui.js"
       ],
       "arabic": false
     },
@@ -3651,6 +3744,36 @@
       ],
       "arabic": false
     },
+    "Approved intro exceeds bound": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Approved intro incomplete": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Approved intro unavailable": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Approved neon image is unavailable": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Approved neon intro unavailable": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Approved programme / user consent": {
       "sources": [
         "public/sources.js"
@@ -3848,6 +3971,12 @@
       ],
       "arabic": false
     },
+    "Availability depends on the product source and your account.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Availability status": {
       "sources": [
         "cloud/service-config.mjs"
@@ -3897,6 +4026,12 @@
       ],
       "arabic": false
     },
+    "Back to barcode →": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Back to community": {
       "sources": [
         "public/care-ui.js"
@@ -3927,6 +4062,12 @@
       ],
       "arabic": false
     },
+    "Backups": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Backups & recipe imports": {
       "sources": [
         "public/index.html",
@@ -3943,8 +4084,8 @@
     "Barcode": {
       "sources": [
         "public/index.html",
-        "public/locales/ar.js",
-        "public/shelf-scanner.js"
+        "public/landing.js",
+        "public/locales/ar.js"
       ],
       "arabic": true
     },
@@ -3978,31 +4119,19 @@
       ],
       "arabic": false
     },
-    "Barcode format: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Barcode number": {
       "sources": [
         "public/index.html"
       ],
       "arabic": false
     },
-    "Barcode read: ": {
+    "Barcode scanning": {
       "sources": [
-        "public/shelf-scanner.js"
+        "public/landing.js"
       ],
       "arabic": false
     },
     "Barcode · original": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Barcode: ": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -4058,12 +4187,6 @@
       ],
       "arabic": false
     },
-    "Beep is on, but browser audio is unavailable. Visual confirmation remains on.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Beep muted; visual confirmation stays on.": {
       "sources": [
         "public/shelf-scanner.js"
@@ -4091,6 +4214,12 @@
     "Best-before": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Better planning": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -4184,6 +4313,12 @@
       ],
       "arabic": false
     },
+    "Brands and suppliers": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Brazilian food composition; country provenance stays attached.": {
       "sources": [
         "public/sources.js"
@@ -4212,6 +4347,24 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Bring product knowledge from different countries into one place.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Bring saved food into another meal without counting it twice.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Bring supported kitchen routines to compatible home tools.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "Bring your files, too.": {
       "sources": [
@@ -4486,6 +4639,12 @@
       ],
       "arabic": false
     },
+    "Capture which parts of a meal were left behind.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Captured ": {
       "sources": [
         "public/shelf-scanner.js"
@@ -4531,6 +4690,12 @@
     "Care request unavailable.": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Care sharing": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -4652,6 +4817,18 @@
       ],
       "arabic": false
     },
+    "Celebrate variety, organisation and taking part.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Certification claims": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Certification not established": {
       "sources": [
         "public/evidence-model.js"
@@ -4670,9 +4847,21 @@
       ],
       "arabic": false
     },
+    "Check and correct receipt details before adding items.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Check barcode, name, ingredient, quantity and unit.": {
       "sources": [
         "public/model.js"
+      ],
+      "arabic": false
+    },
+    "Check code in Scan options": {
+      "sources": [
+        "public/scanner-ui.js"
       ],
       "arabic": false
     },
@@ -4719,6 +4908,18 @@
       ],
       "arabic": false
     },
+    "Check the source behind product-specific claims.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Check what is on a shelf and update its contents.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Check your email for recovery instructions.": {
       "sources": [
         "public/app.js",
@@ -4743,6 +4944,12 @@
       "sources": [
         "public/app.js",
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "Checking sign-in…": {
+      "sources": [
+        "public/auth.js"
       ],
       "arabic": false
     },
@@ -4906,6 +5113,12 @@
       ],
       "arabic": true
     },
+    "Choose controls and feedback that suit you.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Choose portions within the cooked amount remaining.": {
       "sources": [
         "public/cooking-model.js"
@@ -4970,6 +5183,12 @@
     "Choose what happens when an item scans. Every option is optional.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Choose what your own assistant can access and help with.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -5213,7 +5432,7 @@
       ],
       "arabic": false
     },
-    "Code entered: ": {
+    "Code entered": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -5441,6 +5660,18 @@
       ],
       "arabic": false
     },
+    "Compare food baskets using their recorded quantities and sources.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Compare recorded prices without confusing them with today’s offers.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Competing observations": {
       "sources": [
         "public/shelf-scanner.js"
@@ -5456,6 +5687,12 @@
     "Complete compatible evidence required": {
       "sources": [
         "public/basket-model.js"
+      ],
+      "arabic": false
+    },
+    "Complete details": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -5694,6 +5931,24 @@
       ],
       "arabic": false
     },
+    "Connect international food names through shared English terms.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Connect supported services using your own accounts.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Connected assistants": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Connection and contribution choices": {
       "sources": [
         "public/data-workspace.html"
@@ -5715,6 +5970,12 @@
     "Connection name": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Connection recovery": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -5740,6 +6001,12 @@
     "Consent requires both site and policy IDs.": {
       "sources": [
         "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Consumption": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -5910,9 +6177,21 @@
       ],
       "arabic": false
     },
+    "Cookie, Authorization": {
+      "sources": [
+        "cloud/auth-page-routes.mjs"
+      ],
+      "arabic": false
+    },
     "Cooking date": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Cooking records": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -5971,6 +6250,12 @@
     "Country filter": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Country food baskets": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -6433,12 +6718,6 @@
       ],
       "arabic": false
     },
-    "Decoder representation needs manual confirmation. Use Type code to preserve the printed value.": {
-      "sources": [
-        "public/scanner-ui.js"
-      ],
-      "arabic": false
-    },
     "Decoder stopped": {
       "sources": [
         "public/scanner-ui.js"
@@ -6634,6 +6913,12 @@
       ],
       "arabic": false
     },
+    "Dietary information": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Dietary status": {
       "sources": [
         "public/shelf-scanner.js"
@@ -6716,6 +7001,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Discover meals you can make with what you have.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "Discover regional food composition tables worldwide; not a single globally licensed database.": {
       "sources": [
@@ -7186,6 +7477,12 @@
       ],
       "arabic": false
     },
+    "Email sign-in is not configured for this environment.": {
+      "sources": [
+        "public/auth-controller.js"
+      ],
+      "arabic": false
+    },
     "Email the displayed document to your verified account address using Brevo? It may contain private kitchen or health information.": {
       "sources": [
         "public/app.js"
@@ -7258,6 +7555,12 @@
     "English / gold admission: not established": {
       "sources": [
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "English food knowledge": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -7394,6 +7697,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Enter your email and password.": {
+      "sources": [
+        "public/auth-controller.js"
+      ],
+      "arabic": false
     },
     "Entered ": {
       "sources": [
@@ -7948,6 +8257,12 @@
       ],
       "arabic": false
     },
+    "Explore available menu and ingredient information when eating out.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Explore normalized data": {
       "sources": [
         "public/data-ui.js"
@@ -7960,12 +8275,24 @@
       ],
       "arabic": false
     },
+    "Explore the available source information beyond the summary.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Explore the shared recipe library.": {
       "sources": [
         "public/index.html",
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Explore who makes and supplies your products.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "Export history CSV ↓": {
       "sources": [
@@ -8104,6 +8431,12 @@
     "FSANZ recalls": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Family meals": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -8264,9 +8597,33 @@
       ],
       "arabic": false
     },
+    "Find an item from a clear picture of its barcode.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Find dated price observations": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Find ideas that help you use food already waiting in your kitchen.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Find out about everyday items, not just food.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Find recipes by dish, ingredient or source.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -8324,6 +8681,12 @@
       ],
       "arabic": false
     },
+    "Flag recorded intake below chosen targets without treating missing logs as zero.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Flag: ": {
       "sources": [
         "public/care-ui.js"
@@ -8352,6 +8715,18 @@
     "Follow": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Follow clear cooking steps with ingredients and amounts linked together.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Follow each person’s recorded intake over time.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -8385,12 +8760,24 @@
       ],
       "arabic": false
     },
+    "Food containers": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Food data & estimated nutrition": {
       "sources": [
         "public/app.js",
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Food history": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "Food history & nutrition": {
       "sources": [
@@ -8403,6 +8790,12 @@
     "Food journal": {
       "sources": [
         "public/insights-model.js"
+      ],
+      "arabic": false
+    },
+    "Food preferences": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -8449,12 +8842,6 @@
         "public/locales/ar.js"
       ],
       "arabic": true
-    },
-    "Format entered: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
     },
     "France": {
       "sources": [
@@ -8507,6 +8894,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Freshness": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "Freshness reminders & cleanup": {
       "sources": [
@@ -8704,6 +9097,12 @@
       ],
       "arabic": true
     },
+    "Global information": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Global product / price lookup + national source workflows. {v0}": {
       "sources": [
         "public/data-ui.js"
@@ -8855,6 +9254,12 @@
       ],
       "arabic": true
     },
+    "Health records": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Hear the product name as it is identified.": {
       "sources": [
         "public/app.js",
@@ -8879,6 +9284,12 @@
         "public/care-ui.js",
         "public/index.html",
         "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Help and corrections": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -8938,12 +9349,36 @@
       ],
       "arabic": false
     },
+    "History": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Hold steady": {
+      "sources": [
+        "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Home checkout": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Home checkout receipt": {
       "sources": [
         "public/documents.js",
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Home integrations": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "Home scopes belong to carer declarations": {
       "sources": [
@@ -8985,6 +9420,7 @@
     "Household portions": {
       "sources": [
         "public/index.html",
+        "public/landing.js",
         "public/locales/ar.js"
       ],
       "arabic": true
@@ -9280,6 +9716,12 @@
       ],
       "arabic": false
     },
+    "Individual history": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Indonesia": {
       "sources": [
         "public/sources.js"
@@ -9309,6 +9751,7 @@
       "sources": [
         "public/documents.js",
         "public/insights-ui.js",
+        "public/landing.js",
         "public/locales/ar.js"
       ],
       "arabic": true
@@ -9341,6 +9784,12 @@
       "sources": [
         "public/product-visual-association.js",
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Ingredient matching": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -9512,6 +9961,12 @@
       ],
       "arabic": false
     },
+    "Intake gaps": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Intake history full": {
       "sources": [
         "cloud/intake-history-owner25.mjs"
@@ -9546,6 +10001,12 @@
     "Integrated references": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Integration": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -10639,15 +11100,57 @@
       ],
       "arabic": true
     },
+    "Keep a copy of your kitchen information.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Keep chosen measurements alongside your food history.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Keep everyone’s likes and avoided ingredients in mind.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Keep existing value": {
       "sources": [
         "public/admin-ui.js"
       ],
       "arabic": false
     },
+    "Keep family recipes and permitted bookmarks in your own collection.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Keep known restrictions and missing information clearly separate.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Keep label dates and check reminders close at hand.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Keep leading zeroes": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Keep personal health information separate from general household access.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -10679,6 +11182,24 @@
     "Keep this as an internal note?": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Keep track of food in your pantry, fridge, freezer and other spaces.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Keep track of ingredients used and meals prepared.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Keep track of unsaved changes when your connection drops.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -10751,6 +11272,18 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Kitchen spaces": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Know how much you have, including partly used packs.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "Known nutrient totals": {
       "sources": [
@@ -10827,6 +11360,18 @@
       ],
       "arabic": false
     },
+    "Leftover reuse": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Leftovers": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Legacy authentication is not available in this authentication mode.": {
       "sources": [
         "cloud/auth-runtime.mjs"
@@ -10836,6 +11381,12 @@
     "Legacy authentication verifier is required.": {
       "sources": [
         "cloud/auth-runtime.mjs"
+      ],
+      "arabic": false
+    },
+    "Let authorised apps help with the information you choose to share.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -10937,6 +11488,12 @@
     "Link": {
       "sources": [
         "cloud/off-photos.mjs"
+      ],
+      "arabic": false
+    },
+    "List": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -11156,6 +11713,12 @@
       ],
       "arabic": false
     },
+    "Look back at meals, drinks and snacks you recorded.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Look up": {
       "sources": [
         "public/locales/ar.js"
@@ -11211,6 +11774,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Loose food": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "Lot: surrogate:lot:oats-01 · separate test state": {
       "sources": [
@@ -11282,6 +11851,12 @@
       ],
       "arabic": false
     },
+    "Make one meal work for different people and portions.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Manage locations": {
       "sources": [
         "public/index.html"
@@ -11297,6 +11872,12 @@
     "Managed hosting is required.": {
       "sources": [
         "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Manual entry": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -11412,6 +11993,12 @@
       ],
       "arabic": false
     },
+    "Meal ideas": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Meal name": {
       "sources": [
         "public/index.html",
@@ -11436,6 +12023,12 @@
     "Meal plan & recipe booklet": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Meal planning": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -11520,7 +12113,8 @@
     },
     "Menu": {
       "sources": [
-        "public/documents.js"
+        "public/documents.js",
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -11706,15 +12300,21 @@
       ],
       "arabic": false
     },
-    "More than one barcode visible. Present one product at a time.": {
+    "Most": {
+      "sources": [
+        "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Move item away": {
       "sources": [
         "public/scanner-ui.js"
       ],
       "arabic": false
     },
-    "Most": {
+    "Move your records without carrying over passwords or access grants.": {
       "sources": [
-        "public/index.html"
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -12002,6 +12602,12 @@
       ],
       "arabic": false
     },
+    "Next →": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "No": {
       "sources": [
         "public/common-corpus-locale.js",
@@ -12009,6 +12615,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "No English source name is available to speak.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
     },
     "No camera found. Connect a camera or use a barcode photo or manual entry.": {
       "sources": [
@@ -12180,12 +12792,6 @@
       ],
       "arabic": false
     },
-    "No readable code yet. Pause movement, move farther away if blurred, and avoid glare. Try another lens or a photo.": {
-      "sources": [
-        "public/scanner-ui.js"
-      ],
-      "arabic": false
-    },
     "No real-source, supplier, recipe, nutrition or accepted-corpus links.": {
       "sources": [
         "public/shelf-scanner.js"
@@ -12235,12 +12841,6 @@
       ],
       "arabic": false
     },
-    "No source-backed English product name is available to speak.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "No supported structured product data found. Use a retailer file / receipt or enter it manually.": {
       "sources": [
         "extension/popup-source.js"
@@ -12271,6 +12871,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Non-food products": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "None": {
       "sources": [
@@ -12414,6 +13020,12 @@
       ],
       "arabic": true
     },
+    "Notice repeated avoidance and ask whether a preference should change.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Notifications": {
       "sources": [
         "public/care-ui.js"
@@ -12458,6 +13070,12 @@
       ],
       "arabic": false
     },
+    "Nutrition": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Nutrition basis must match this inventory item: per 100 {v0}.": {
       "sources": [
         "public/unified-data.js"
@@ -12467,6 +13085,12 @@
     "Nutrition is product information, not a meal plan. Check labels for allergens.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Nutrition sources": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -12817,6 +13441,12 @@
       ],
       "arabic": false
     },
+    "One barcode at a time": {
+      "sources": [
+        "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
     "One ingredient, more possibilities.": {
       "sources": [
         "public/index.html"
@@ -13113,6 +13743,12 @@
       ],
       "arabic": false
     },
+    "Ordering": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Ordinary JSON required": {
       "sources": [
         "public/meal-context-model.js"
@@ -13139,6 +13775,7 @@
         "cloud/kitchens.mjs",
         "cloud/lot-restriction-owner28.mjs",
         "cloud/personal-ai.mjs",
+        "cloud/provider-consent-routes.mjs",
         "cloud/provider-data.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs",
@@ -13307,6 +13944,12 @@
       ],
       "arabic": false
     },
+    "Pack sizes and budgets": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Package": {
       "sources": [
         "public/shelf-scanner.js"
@@ -13392,18 +14035,24 @@
       ],
       "arabic": false
     },
-    "Pause": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Pause & choose another shelf": {
       "sources": [
         "public/index.html",
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Pause animation": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Pause feature text": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "Peas": {
       "sources": [
@@ -13513,6 +14162,7 @@
     },
     "Personal AI": {
       "sources": [
+        "public/landing.js",
         "public/personal-ai-ui.js"
       ],
       "arabic": false
@@ -13583,6 +14233,12 @@
       ],
       "arabic": false
     },
+    "Personal connections": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Personal credentials never appear in unified records, profile exports, REST or MCP.": {
       "sources": [
         "cloud/provider-data.mjs"
@@ -13598,6 +14254,12 @@
     "Personal integration": {
       "sources": [
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "Personal restrictions": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -13643,6 +14305,12 @@
       ],
       "arabic": false
     },
+    "Photo scanning": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Photo source": {
       "sources": [
         "public/scanner-product-visuals.js"
@@ -13674,6 +14342,18 @@
       ],
       "arabic": false
     },
+    "Plan breakfasts, lunches, dinners and snacks for your week.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Plan meals around each person’s recorded restrictions and preferences.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Plan meals on 7 different dates": {
       "sources": [
         "public/insights-model.js"
@@ -13683,6 +14363,18 @@
     "Plan meals, see ingredient totals and find what’s missing.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Plan the packs you need around your budget.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Plan the right portions for the people eating.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -13706,6 +14398,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Planning": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "Play shopkeeper.": {
       "sources": [
@@ -13753,6 +14451,12 @@
       ],
       "arabic": false
     },
+    "Positive achievements": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Post comment": {
       "sources": [
         "public/recipe-community-ui.js"
@@ -13762,6 +14466,12 @@
     "Potassium": {
       "sources": [
         "public/menu-model.js"
+      ],
+      "arabic": false
+    },
+    "Preference review": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -13869,6 +14579,12 @@
       ],
       "arabic": false
     },
+    "Price history": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Price lookup unavailable": {
       "sources": [
         "public/insights-ui.js"
@@ -13884,6 +14600,12 @@
     "Print / Save PDF ↓": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Printable documents": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -13942,6 +14664,12 @@
       ],
       "arabic": false
     },
+    "Private recipes": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Private request encryption is unavailable.": {
       "sources": [
         "cloud/service-support.mjs"
@@ -13987,6 +14715,7 @@
     "Product": {
       "sources": [
         "public/documents.js",
+        "public/landing.js",
         "public/locales/ar.js"
       ],
       "arabic": true
@@ -13997,9 +14726,21 @@
       ],
       "arabic": false
     },
+    "Product categories": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Product code missing.": {
       "sources": [
         "public/unified-data.js"
+      ],
+      "arabic": false
+    },
+    "Product details": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -14048,6 +14789,12 @@
       ],
       "arabic": false
     },
+    "Product origins": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Product photo unavailable": {
       "sources": [
         "public/shelf-scanner.js"
@@ -14057,6 +14804,18 @@
     "Product photo unavailable · no qualified category illustration": {
       "sources": [
         "public/product-visual-selector.js"
+      ],
+      "arabic": false
+    },
+    "Product pictures": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Product recalls": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -14082,6 +14841,12 @@
     "Profile changed. Retry in your current profile.": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "Profile privacy": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -14160,6 +14925,12 @@
     "Protected data unavailable.": {
       "sources": [
         "cloud/byoc-envelope-v1.mjs"
+      ],
+      "arabic": false
+    },
+    "Protected portability": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -14460,6 +15231,12 @@
       ],
       "arabic": false
     },
+    "Put prepared food back into storage with its remaining quantity and nutrition.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Put the good stuff back.": {
       "sources": [
         "public/index.html",
@@ -14503,6 +15280,12 @@
       ],
       "arabic": false
     },
+    "Quantities": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Quantities/composition unresolved": {
       "sources": [
         "public/data-workspace.js"
@@ -14511,6 +15294,7 @@
     },
     "Quantity": {
       "sources": [
+        "public/landing.js",
         "public/locales/ar.js"
       ],
       "arabic": true
@@ -14872,14 +15656,9 @@
       ],
       "arabic": false
     },
-    "Reading… Hold one barcode steady.": {
-      "sources": [
-        "public/scanner-ui.js"
-      ],
-      "arabic": false
-    },
     "Ready": {
       "sources": [
+        "public/scanner-ui.js",
         "public/shelf-scanner.js"
       ],
       "arabic": false
@@ -14887,18 +15666,6 @@
     "Ready for a barcode. Product details appear here.": {
       "sources": [
         "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Ready for next item. Previous product details are retained.": {
-      "sources": [
-        "public/scanner-ui.js"
-      ],
-      "arabic": false
-    },
-    "Ready for next item. Remove this barcode fully before the next identical pack.": {
-      "sources": [
-        "public/scanner-ui.js"
       ],
       "arabic": false
     },
@@ -14928,7 +15695,7 @@
       ],
       "arabic": false
     },
-    "Ready. Present one barcode and pause briefly.": {
+    "Ready · aim at barcode": {
       "sources": [
         "public/scanner-ui.js"
       ],
@@ -14948,6 +15715,18 @@
       ],
       "arabic": true
     },
+    "Receipt": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Receipt capture": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Receipt retention expired": {
       "sources": [
         "public/receipt-review-model.js"
@@ -14963,6 +15742,7 @@
     "Recipe": {
       "sources": [
         "public/integrations.js",
+        "public/landing.js",
         "public/recipe-library-model.js"
       ],
       "arabic": false
@@ -15015,9 +15795,21 @@
       ],
       "arabic": false
     },
+    "Recipe community": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Recipe data unavailable ({v0})": {
       "sources": [
         "public/recipe-library-ui.js"
+      ],
+      "arabic": false
+    },
+    "Recipe discovery": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -15078,6 +15870,12 @@
       ],
       "arabic": false
     },
+    "Recipe nutrition": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Recipe or custom meal": {
       "sources": [
         "public/index.html",
@@ -15091,9 +15889,21 @@
       ],
       "arabic": false
     },
+    "Recipe scaling": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Recipe shard missing": {
       "sources": [
         "public/recipe-library-ui.js"
+      ],
+      "arabic": false
+    },
+    "Recipe steps": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -15126,6 +15936,12 @@
     "Recipes need id, title, source, license, servings and ingredients.": {
       "sources": [
         "public/model.js"
+      ],
+      "arabic": false
+    },
+    "Recognise the same item wherever you see it.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -15174,6 +15990,24 @@
     "Record type not consented": {
       "sources": [
         "cloud/health-import-owner28.mjs"
+      ],
+      "arabic": false
+    },
+    "Record what each person was actually served.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Record what was eaten, not just what was put on the plate.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Record what was thrown away and where it came from.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -15234,6 +16068,12 @@
     "Refresh my connections": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Refresh this connection in the background": {
+      "sources": [
+        "public/auth.js"
       ],
       "arabic": false
     },
@@ -15567,6 +16407,12 @@
       ],
       "arabic": false
     },
+    "Restaurant menus": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Restore backup": {
       "sources": [
         "public/index.html"
@@ -15616,9 +16462,15 @@
       ],
       "arabic": false
     },
-    "Resume": {
+    "Resume animation": {
       "sources": [
-        "public/shelf-scanner.js"
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Resume feature text": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -15708,9 +16560,21 @@
       ],
       "arabic": true
     },
+    "Reusable plans": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Reuse permission / terms review": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Review alternatives without hiding changes to nutrition or ingredients.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -15751,6 +16615,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Review notices that may match your product, market and batch.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "Review preferences before saving.": {
       "sources": [
@@ -15827,6 +16697,12 @@
     "Review translation report": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Review your list before sending it to a supported service.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -16442,6 +17318,12 @@
       ],
       "arabic": true
     },
+    "Scan an item to find out what it is.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Scan an item to see available nutrition.": {
       "sources": [
         "public/index.html"
@@ -16494,6 +17376,12 @@
       ],
       "arabic": false
     },
+    "Scan your shopping, review your receipt and put it away.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Scan → beep → put it back. Every scan is accepted automatically.": {
       "sources": [
         "public/app.js",
@@ -16508,9 +17396,39 @@
       ],
       "arabic": true
     },
+    "Scanned": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Scanned · move item away": {
+      "sources": [
+        "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Scanner audio could not start": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Scanner beep failed": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Scanner credits": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Scanner devices": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -16523,6 +17441,12 @@
     "Scanner handoff was not saved: ": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner speech failed": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -16640,6 +17564,42 @@
     "See all matching records": {
       "sources": [
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "See how each scanned product has been classified.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "See how products connect to the ingredients you cook with.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "See nutrition for the whole recipe and each serving.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "See the evidence about where products were grown, made or packed.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "See the information available about each product.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "See where food facts come from and what is missing.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -17017,6 +17977,12 @@
       ],
       "arabic": false
     },
+    "Serving": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Serving event ID required": {
       "sources": [
         "public/cooking-model.js"
@@ -17078,6 +18044,24 @@
       ],
       "arabic": false
     },
+    "Share a kitchen while choosing who can view or change it.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Share recipes while keeping their authors and sources visible.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Share selected dietary information with people you authorise.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Shared (recipient intake not inferred)": {
       "sources": [
         "public/index.html"
@@ -17099,6 +18083,12 @@
     "Shared kitchen · view only": {
       "sources": [
         "public/sharing-ui.js"
+      ],
+      "arabic": false
+    },
+    "Shared kitchens": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -17149,6 +18139,12 @@
       ],
       "arabic": false
     },
+    "Shelf check": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Shelf starter": {
       "sources": [
         "public/insights-model.js"
@@ -17193,6 +18189,12 @@
       ],
       "arabic": false
     },
+    "Shopping handoff": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Shopping intent +1 · not payment": {
       "sources": [
         "public/scanner-surrogate.js"
@@ -17208,6 +18210,12 @@
     "Shopping list copied. Paste it into your preferred app.": {
       "sources": [
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "Shopping lists": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -17383,9 +18391,33 @@
       ],
       "arabic": true
     },
+    "Sign-in choices": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Sign-in could not be confirmed. Your kitchen has not changed.": {
+      "sources": [
+        "public/auth-controller.js"
+      ],
+      "arabic": false
+    },
     "Sign-in required": {
       "sources": [
         "cloud/lot-restriction-owner28.mjs"
+      ],
+      "arabic": false
+    },
+    "Sign-in setup is unavailable in this environment.": {
+      "sources": [
+        "public/auth-controller.js"
+      ],
+      "arabic": false
+    },
+    "Sign-out could not be confirmed.": {
+      "sources": [
+        "public/auth-controller.js"
       ],
       "arabic": false
     },
@@ -17401,6 +18433,24 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Signed in.": {
+      "sources": [
+        "public/auth-controller.js"
+      ],
+      "arabic": false
+    },
+    "Signed out.": {
+      "sources": [
+        "public/auth-controller.js"
+      ],
+      "arabic": false
+    },
+    "Signing in…": {
+      "sources": [
+        "public/auth.js"
+      ],
+      "arabic": false
     },
     "Single use · expires in 48 hours. Share privately with the intended person. No message has been sent.": {
       "sources": [
@@ -17481,6 +18531,18 @@
       ],
       "arabic": false
     },
+    "Sound is unavailable in this browser.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Sound is unavailable; the scan remains visible.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Source": {
       "sources": [
         "public/data-workspace.html",
@@ -17500,12 +18562,6 @@
     "Source & access details ↗": {
       "sources": [
         "public/data-ui.js"
-      ],
-      "arabic": false
-    },
-    "Source ID: ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -18241,6 +19297,12 @@
     "Submit recipe for review": {
       "sources": [
         "public/recipe-community-ui.js"
+      ],
+      "arabic": false
+    },
+    "Substitutions": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -18995,6 +20057,18 @@
       ],
       "arabic": false
     },
+    "Take your recipes, receipts, menus and shopping lists with you.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Tap the scanner to allow sound.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Tap water · demo staple": {
       "sources": [
         "public/app.js"
@@ -19016,6 +20090,24 @@
     "Target topic ID": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Tell us when product or recipe information needs attention.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "Terms for this connection are not configured.": {
+      "sources": [
+        "public/provider-consent-controller.js"
+      ],
+      "arabic": false
+    },
+    "Terms for this connection are unavailable.": {
+      "sources": [
+        "public/auth.js"
       ],
       "arabic": false
     },
@@ -19046,6 +20138,12 @@
     "The camera is busy. Close other camera apps and retry.": {
       "sources": [
         "public/scanner-model.js"
+      ],
+      "arabic": false
+    },
+    "The connection terms changed or could not be recorded. Review them again.": {
+      "sources": [
+        "public/provider-consent-controller.js"
       ],
       "arabic": false
     },
@@ -19377,6 +20475,12 @@
       ],
       "arabic": false
     },
+    "Track food you open, freeze, thaw or move into another container.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Transcribe the complete historical OCR ingredient list before creating a kitchen recipe.": {
       "sources": [
         "public/recipe-library-model.js"
@@ -19462,9 +20566,21 @@
       ],
       "arabic": true
     },
+    "Turn your meal plan into a shared shopping list.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Type": {
       "sources": [
         "public/data-workspace.js"
+      ],
+      "arabic": false
+    },
+    "Type a barcode when the camera cannot read it.": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -19645,6 +20761,12 @@
     "Undo cooking": {
       "sources": [
         "public/journey-ui.js"
+      ],
+      "arabic": false
+    },
+    "Uneaten components": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -20052,6 +21174,12 @@
       ],
       "arabic": false
     },
+    "Use a compatible scanner as well as your phone.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Use a connected personal provider adapter without exposing its credentials.": {
       "sources": [
         "cloud/personal-ai.mjs"
@@ -20124,6 +21252,12 @@
       ],
       "arabic": false
     },
+    "Use food history, preferences and leftovers to shape the next menu.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Use in recipes as": {
       "sources": [
         "public/index.html"
@@ -20149,6 +21283,12 @@
       ],
       "arabic": true
     },
+    "Use the existing account page for this account action.": {
+      "sources": [
+        "public/auth-controller.js"
+      ],
+      "arabic": false
+    },
     "Use the separately consented private health/history workflow": {
       "sources": [
         "public/record-policy.js"
@@ -20158,6 +21298,12 @@
     "Use the source’s file-import or personal-connection workflow.": {
       "sources": [
         "cloud/provider-data.mjs"
+      ],
+      "arabic": false
+    },
+    "Use this connection privately": {
+      "sources": [
+        "public/auth.js"
       ],
       "arabic": false
     },
@@ -20188,6 +21334,12 @@
     "Use-by": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Use-first meals": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -20259,6 +21411,7 @@
     },
     "Vary": {
       "sources": [
+        "cloud/auth-page-routes.mjs",
         "cloud/locale.mjs"
       ],
       "arabic": false
@@ -20412,6 +21565,12 @@
     "WHERE owner=?": {
       "sources": [
         "cloud/care-cases.mjs"
+      ],
+      "arabic": false
+    },
+    "Waste": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -20841,6 +22000,18 @@
       ],
       "arabic": false
     },
+    "Your choice was recorded. Provider access remains separate.": {
+      "sources": [
+        "public/auth.js"
+      ],
+      "arabic": false
+    },
+    "Your choice was withdrawn.": {
+      "sources": [
+        "public/auth.js"
+      ],
+      "arabic": false
+    },
     "Your chosen goals": {
       "sources": [
         "public/documents.js"
@@ -21025,6 +22196,12 @@
     "Your week’s shopping.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Your withdrawal could not be confirmed.": {
+      "sources": [
+        "public/provider-consent-controller.js"
       ],
       "arabic": false
     },
@@ -21593,6 +22770,12 @@
       ],
       "arabic": false
     },
+    "data:image/jpeg;base64,": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "data:read": {
       "sources": [
         "cloud/integrations.mjs",
@@ -21902,10 +23085,46 @@
       ],
       "arabic": false
     },
+    "height:100%": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "height:100vh;height:100dvh": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "history:read": {
       "sources": [
         "cloud/integrations.mjs",
         "public/access-ui.js"
+      ],
+      "arabic": false
+    },
+    "html,body": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "html.backgrounded": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "html.motion": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "html.paused": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -21923,9 +23142,11 @@
         "cloud/community-ai.mjs",
         "cloud/integrations.mjs",
         "cloud/named-reference-owner22.mjs",
+        "cloud/provider-consent-routes.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
         "cloud/service-config.mjs",
         "cloud/session-state-d1-owner04.mjs",
+        "public/auth.js",
         "public/data-ui.js",
         "public/product-visual-selector.js",
         "public/unified-data.js"
@@ -22002,6 +23223,12 @@
       "sources": [
         "cloud/handler.mjs",
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "input:checked": {
+      "sources": [
+        "public/auth.js"
       ],
       "arabic": false
     },
@@ -22204,6 +23431,12 @@
     "native + enhanced decoder": {
       "sources": [
         "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "neon-shell motion": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -22452,6 +23685,12 @@
         "extension/popup.html",
         "public/documents.js",
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "offmenu:cycle": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
