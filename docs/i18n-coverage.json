@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3841,
+  "messages": 3870,
   "arabicTranslated": 376,
-  "arabicMissing": 3465,
+  "arabicMissing": 3494,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -270,6 +270,12 @@
     " planned portions": {
       "sources": [
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    " published scanner items. Choose the current kitchen location, then open checkout and review quantities.": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -1989,6 +1995,7 @@
     "./model.js": {
       "sources": [
         "public/app.js",
+        "public/checkout-model.js",
         "public/cooking-model.js",
         "public/household-model.js",
         "public/journey-ui.js",
@@ -2141,6 +2148,14 @@
     "./scanner-identifiers.js": {
       "sources": [
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "./scanner-kitchen-handoff.js": {
+      "sources": [
+        "public/app.js",
+        "public/checkout-model.js",
+        "public/model.js"
       ],
       "arabic": false
     },
@@ -4873,6 +4888,12 @@
     "Choose a personal assistant name before contributing an AI-attributed recipe.": {
       "sources": [
         "cloud/personal-ai.mjs"
+      ],
+      "arabic": false
+    },
+    "Choose a published source record for every kept item, or Undo it before finishing.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
       ],
       "arabic": false
     },
@@ -10616,6 +10637,18 @@
       ],
       "arabic": false
     },
+    "Inventory space or account changed before saving.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Inventory space or account changed. Review from the current kitchen.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Invitation role": {
       "sources": [
         "public/sharing-ui.js"
@@ -14529,6 +14562,24 @@
       ],
       "arabic": false
     },
+    "Published scanner items need a shelf or shopping review, not an unverified discard action.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Published source items staged. Review each known quantity and ingredient, then confirm the existing final receipt.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Published source reference does not match the selected barcode and release.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
     "Publisher reuse: attribution and unchanged data": {
       "sources": [
         "public/sources.js"
@@ -15794,6 +15845,12 @@
       ],
       "arabic": false
     },
+    "Review ": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Review before putting away.": {
       "sources": [
         "public/index.html"
@@ -15859,6 +15916,12 @@
     "Review the comment before submitting.": {
       "sources": [
         "public/recipe-community-ui.js"
+      ],
+      "arabic": false
+    },
+    "Review the known quantity and ingredient for every scanner item before saving inventory.": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -16534,6 +16597,12 @@
       ],
       "arabic": false
     },
+    "Scan at least one item before finishing.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
     "Scan each item straight onto your receipt. Glance at nutrition and enjoy the beep. Review it all at the end.": {
       "sources": [
         "public/index.html",
@@ -16588,9 +16657,39 @@
       ],
       "arabic": true
     },
+    "Scanner completion conflicts with partially changed stock. Review the receipt.": {
+      "sources": [
+        "public/checkout-model.js"
+      ],
+      "arabic": false
+    },
+    "Scanner completion conflicts with saved inventory. Review the receipt.": {
+      "sources": [
+        "public/checkout-model.js"
+      ],
+      "arabic": false
+    },
     "Scanner credits": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Scanner draft saved; tab cleanup failed. Repeating this handoff will not add it again.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff conflicts with a saved operation.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff exceeds the existing tab limit. Review a smaller batch.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
       ],
       "arabic": false
     },
@@ -16600,7 +16699,73 @@
       ],
       "arabic": false
     },
+    "Scanner handoff is invalid.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff item is incomplete.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff receipt history is invalid.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff repeats an operation.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff was not completed: ": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Scanner handoff was not saved: ": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner inventory space changed before correction.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner inventory space changed.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner inventory space changed. Restore the current checkout.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner inventory space or permission changed.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner inventory space or saved history changed. Restore the current checkout.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner operation conflicts with its saved handoff.": {
       "sources": [
         "public/app.js"
       ],
@@ -19299,6 +19464,12 @@
       "arabic": false
     },
     "This scanner handoff is already saved.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "This scanner handoff was already staged or completed.": {
       "sources": [
         "public/app.js"
       ],
@@ -22003,6 +22174,7 @@
         "public/data-ui.js",
         "public/off-photo-metadata.js",
         "public/product-visual-selector.js",
+        "public/scanner-kitchen-handoff.js",
         "public/unified-data.js"
       ],
       "arabic": false
@@ -22534,6 +22706,12 @@
         "extension/popup.html",
         "public/documents.js",
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "offmenu:": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
       ],
       "arabic": false
     },

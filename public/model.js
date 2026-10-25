@@ -1,3 +1,4 @@
+import {copyPublicProductReference} from './scanner-kitchen-handoff.js';
 import {t} from './i18n.js';
 import {canonicalIngredient} from './ingredients.js';
 import {validSourceObservationReference as validV2Reference} from './scanner-identity-v2.js';
@@ -20,6 +21,7 @@ export function validateLot(value) {
   if(value.checkedAt&&typeof value.checkedAt==='string')lot.checkedAt=value.checkedAt.slice(0,40);
   if(['full-pack','package','manual'].includes(value.amountBasis))lot.amountBasis=value.amountBasis;
   if(value.sourceObservationReference){if(!validSourceObservationReference(value.sourceObservationReference,lot.barcode))throw Error('Retained source reference is incomplete or does not match the barcode.');lot.sourceObservationReference=value.sourceObservationReference;}
+  if(value.publicProductReference)lot.publicProductReference=copyPublicProductReference(value.publicProductReference,lot.barcode);
   if(typeof value.needsReview==='boolean')lot.needsReview=value.needsReview;
   if(value.freshnessReminder){if(!/^\d{4}-\d{2}-\d{2}$/.test(value.freshnessReminder)||!Number.isFinite(Date.parse(value.freshnessReminder)))throw Error(t('Invalid freshness reminder.'));lot.freshnessReminder=value.freshnessReminder;if(Number.isInteger(value.freshnessDays)&&value.freshnessDays>0&&value.freshnessDays<=3650)lot.freshnessDays=value.freshnessDays;lot.freshnessNote=typeof value.freshnessNote==='string'?value.freshnessNote.slice(0,200):'';}
   if(value.discardQuantity!=null){if(!Number.isFinite(value.discardQuantity)||value.discardQuantity<=0||value.discardQuantity>lot.quantity)throw Error(t('Invalid discard amount.'));lot.discardQuantity=value.discardQuantity;}

@@ -1,3 +1,5 @@
+import {validateLot} from './model.js';
+import {SCANNER_COMPLETION,copyPublicProductReference} from './scanner-kitchen-handoff.js';
 import {t} from './i18n.js';
 export function locationKey(location){return `${location?.area||'Unassigned'} / ${location?.shelf||'Unsorted'}`;}
 export function finishInventory(existing,session){
@@ -6,8 +8,14 @@ export function finishInventory(existing,session){
  const location={area:session.area,shelf:session.shelf.trim()};
  const items=session.items.map(item=>({...item,location,checkedAt:session.startedAt}));
  if(new Set(items.map(i=>i.id)).size!==items.length)throw Error(t('Duplicate checkout items.'));
+ const replayed=new Set();
+ if(session.scannerCompletion?.schema===SCANNER_COMPLETION){
+  for(const item of items){const prior=existing.find(l=>l.id===item.id);if(!prior)continue;if(JSON.stringify(validateLot(prior))!==JSON.stringify(validateLot(item)))throw Error('Scanner completion conflicts with saved inventory. Review the receipt.');replayed.add(item.id);}
+  if(replayed.size===items.length)return existing;
+  if(replayed.size)throw Error('Scanner completion conflicts with partially changed stock. Review the receipt.');
+ }
  const retained=session.mode==='shelf'?existing.filter(item=>item.location?.area!==location.area||item.location?.shelf!==location.shelf):existing;
- const updated=[...retained,...items];
+ const updated=[...retained,...items.filter(item=>!replayed.has(item.id))];
  if(new Set(updated.map(i=>i.id)).size!==updated.length)throw Error(t('Duplicate checkout items.'));
  return updated;
 }
@@ -23,7 +31,7 @@ export function packAmount(product){
 }
 export function makeAutoLot(code,product,ingredient='unmapped'){
  if(!/^\d{4,32}$/.test(code))throw Error(t('Invalid barcode.'));
- return {id:crypto.randomUUID(),barcode:code,name:product?.name||'Unknown product · '+code,ingredient:ingredient||'unmapped',...packAmount(product),expires:null,needsReview:!product?.name||!ingredient||ingredient==='unmapped',...(product?.sourceObservationReference?{sourceObservationReference:product.sourceObservationReference}:{})};
+ return {id:crypto.randomUUID(),barcode:code,name:product?.name||'Unknown product · '+code,ingredient:ingredient||'unmapped',...packAmount(product),expires:null,needsReview:!product?.name||!ingredient||ingredient==='unmapped',...(product?.sourceObservationReference?{sourceObservationReference:product.sourceObservationReference}:{}),...(product?.publicProductReference?{publicProductReference:copyPublicProductReference(product.publicProductReference,code)}:{})};
 }
 // A code held in view counts once; removing it from view re-arms the scanner.
 export function createScanGate(gap=800){let code='',lastSeen=0;return {read(next,now){const duplicate=next===code&&now-lastSeen<gap;code=next;lastSeen=now;return !duplicate;},miss(now){if(now-lastSeen>=gap)code='';},reset(){code='';lastSeen=0;}};}
