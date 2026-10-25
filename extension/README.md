@@ -1,6 +1,6 @@
 # offmenu retailer companion (preview)
 
-Build with `npm run build`. Install the generated extension directory as an unpacked extension in desktop Chrome / Chromium Developer mode. Store publication and end-to-end retailer testing are pending.
+Build from the repository root with `npm run build`. It regenerates the tracked `extension/popup.js` from `extension/popup-source.js` and writes `dist/retailer-extension.zip`. Review any generated diff. Install the repository's `extension/` directory as an unpacked extension in desktop Chrome / Chromium Developer mode; the archive contains the same extension files under `offmenu-retailer-extension/`. Store publication and end-to-end retailer testing are pending.
 
 1. Sign in to your retailer directly in your own browser.
 2. Open a product page and invoke the extension.

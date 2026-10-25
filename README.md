@@ -1,9 +1,9 @@
 # offmenu
 
 Local barcode inventory → ingredient requirements → meal options → retailer price observations.
-Python 3.10+ and SQLite; no runtime dependencies or network required. Run commands from this directory.
+The local CLI demo uses Python and SQLite with local input files. Web and data tooling have declared Python/Node dependencies. Start with the [maintainer setup, checks and data guide](docs/maintainer.md); run commands from the source checkout you are maintaining.
 
-## Quick start
+## Local CLI demo
 
 ```bash
 python3 -m offmenu init
@@ -28,7 +28,7 @@ Use `--db /path/to/database.sqlite` before a command to select another database.
   `python3 -m offmenu import-products /path/products.jsonl.gz --country en:australia`
   Streams JSONL/gzip; preserves string barcodes and existing ingredient mappings. Country filtering depends on supplied tags and is not exhaustive coverage of products sold in Australia. No photos downloaded. OFF database: ODbL; contents: DbCL.
 - Recipes: `import-recipes` accepts the offmenu JSON array schema shown in examples/recipes.json, including source and licence provenance. Ingredients use explicit canonical names, quantity and unit (`g`, `ml`, `count`). Missing quantities remain unresolved. This is not yet a direct Wikibooks/RecipeNLG importer.
-- Wikibooks candidate: https://huggingface.co/datasets/gossminn/wikibooks-cookbook (CC BY-SA 4.0). Adapter and ingredient parsing are next steps.
+- Wikibooks candidate: https://huggingface.co/datasets/gossminn/wikibooks-cookbook (CC BY-SA 4.0). Collection and extraction tooling is present in `scripts/collect-wikibooks.py` and `scripts/collect-wikibooks-live.py`; the local CLI still expects its documented recipe interchange format. Retained data requires its own source and operation review.
 - RecipeNLG: https://recipenlg.cs.put.poznan.pl/ — non-commercial research/education terms; not bundled.
 - Open Prices: https://github.com/openfoodfacts/open-prices/blob/main/docs/guides/data.md
   `python3 -m offmenu import-prices /path/prices.jsonl.gz`
@@ -45,7 +45,9 @@ Map the culinary identity of a product, not the ingredients inside it. Chocolate
 python3 -m unittest discover -s tests -v
 ```
 
-## Next implementation steps
+## Historical CLI roadmap
+
+This early list predates the web app and retained-source pipeline. For current setup and validation, use the [maintainer guide](docs/maintainer.md) and [product review status](docs/product-review-status.md).
 
 1. Wikibooks adapter with preserved attribution and original ingredient text.
 2. Ingredient aliases, product mapping suggestions and a review workflow.
@@ -54,7 +56,7 @@ python3 -m unittest discover -s tests -v
 5. Verify WhichGrocer GTIN support and terms before adding an optional connector.
 6. Camera scanning and a local UI, then indexed/block-compressed deployment measurements.
 
-A source archive can be compressed for distribution; the active SQLite database is not presented as a compressed random-access implementation. No full external dataset has been downloaded.
+A source archive can be compressed for distribution; the active SQLite database is not presented as a compressed random-access implementation. Use the selected dataset manifest and admission receipt for actual retained-data scope; a downloaded source is not by itself an accepted application dataset.
 
 ## Phone interface and camera scanning
 
@@ -83,11 +85,9 @@ The phone UI requires connectivity to the host backend; it is not yet a standalo
 
 https://offmenu.aldous.info
 
-The Cloudflare Worker serves the mobile app and uses the `offmenu-users` D1 database for:
-- Private per-account pantry snapshots, product mappings/cache, profile, serving settings, imported recipes and selected meals.
-- Shared product lookup records, dated price observations and recipe catalogue records.
+The Cloudflare Worker serves the mobile app. `offmenu-users` D1 retains private account/shared-kitchen and application state, including imported personal recipes and selected meals. Bulk public-source D1 replication is retired in the [local curation/static delivery architecture](docs/curation-architecture.md): original source releases remain local, selected publication projections are static, and the Worker performs bounded queries/cache operations. Application catalogue state is separate from a raw-source corpus replica.
 
-Public product/price records retain source and licence. The catalogue is populated on barcode lookups; this is not a full downloaded OFF or Open Prices mirror. The starter catalogue contains an authored demonstration recipe. Bulk recipe adapters and retailer availability feeds remain future work.
+Use the [docs index](docs/README.md) and [maintainer guide](docs/maintainer.md) for current source/configuration boundaries. Historical deployment and catalogue counts below belong to their original checkpoints; consult the matching release receipt for actual deployed state.
 
 Netlify Identity project: `offmenu-accounts`. Identity is enabled in https://app.netlify.com/projects/offmenu-accounts/identity with managed Google sign-in, open registration and required email confirmation. A fixed callback landing page in `netlify-return/` returns the Identity fragment to the public app for SDK handling. Live verification reached Google’s account chooser; first user sign-in and end-to-end cross-browser cloud restoration remain outstanding. The Worker proxies the documented Identity endpoints; it verifies tokens through the upstream `/user` endpoint before selecting private records. No user ID supplied by the browser selects another user's data.
 
@@ -95,17 +95,11 @@ Select a preferred country (global by default). Shop observations are filtered u
 
 Guest data and each account's browser copy use separate keys. Signing in restores the cloud copy unless that browser has unsaved account changes. **Save to cloud** is explicit; new edits are local until saved. Saving uses atomic revision checks. A conflict requires exporting local changes then loading the newer copy. This initial version does not auto-merge concurrent edits.
 
-Build and verify:
-```bash
-npm ci
-npm run build
-npm test
-python3 -m unittest discover -s tests -v
-```
+For dependency setup and build verification, follow the [maintainer check sequence](docs/maintainer.md#checks-and-generated-files), including the generated-file drift check **before** building.
 
 Deployment uses Cloudflare MCP with module upload, D1 binding `DB`, compatibility date `2026-10-12` and custom domain `offmenu.aldous.info`. Account `7edd51038e07b5b84a635b3ff7e11144`; database `006cbdd6-6be8-4181-9dd5-519de280b6ef`. No credentials belong in this repository. Schema is in `cloud/schema.sql`. Camera permission and physical scanning must still be tested on a phone.
 
-Licensed catalogue imports can be prepared with `python3 scripts/catalogue-sql.py products products.jsonl.gz --country en:australia > products.sql`, or `python3 scripts/catalogue-sql.py recipes recipes.json > recipes.sql`. Apply SQL through Cloudflare MCP/D1. Bulk records must fit the chosen database capacity; no full dump has been imported.
+Historical bulk public-corpus SQL/D1 import commands are not the current delivery workflow. Use the [curation architecture](docs/curation-architecture.md) and selected source/operation contracts: producing SQL or a private candidate does not qualify publication or deployment.
 
 
 ## Home checkout layout (October 2026)
@@ -203,7 +197,7 @@ Verified, normalized shared nutrition tables:
 | ANSES CIQUAL 2025 | 3,484 | Etalab Licence Ouverte2.0; French/English names |
 | Germany BLS4.0 | 7,140 | CC BY4.0; German/English names and nutrient origins/references |
 
-All 13,511 source profiles were imported to source-partitioned public rows in D1. `scripts/import-national-tables.py` reproduces the ingestion from the official XLSX releases. It retains all provided nutrient columns, explicit units, source calculation methods and measurement qualifiers; `Tr`, not-detected, not-tested, `N`, censored `<…` and zero are distinct. CoFID alcoholic beverages retain per100ml basis, others per100g; fatty-acid bases are explicit. A duplicate CoFID food code is disambiguated with the food-name hash and joins use `(code,name)` to preserve both foods. Gzip record storage reduces repetitive source metadata; API consumers receive regular unified JSON. Source data is not relicensed as proprietary.
+Historical national-table checkpoint: 13,511 source profiles were imported to public D1 rows before that bulk-replication path was retired. `scripts/import-national-tables.py` is retained tooling, not a current instruction to recreate those public replicas. Use the selected local source and static publication contracts in the [curation architecture](docs/curation-architecture.md). It retains all provided nutrient columns, explicit units, source calculation methods and measurement qualifiers; `Tr`, not-detected, not-tested, `N`, censored `<…` and zero are distinct. CoFID alcoholic beverages retain per100ml basis, others per100g; fatty-acid bases are explicit. A duplicate CoFID food code is disambiguated with the food-name hash and joins use `(code,name)` to preserve both foods. Gzip record storage reduces repetitive source metadata; API consumers receive regular unified JSON. Source data is not relicensed as proprietary.
 
 Official reproducible workbook URLs:
 
