@@ -13,7 +13,7 @@ from .core import RefreshError, canonical
 from .field_provenance import datum_pointers, field_origin_errors
 from . import product_adapters as adapters
 
-ADAPTER_SHA256 = '1632280c5586546f5104fab6a3688ae2fe73d996f2ed4ae6ad00ba39196e5d3e'
+ADAPTER_SHA256 = 'e8f223cb8a9cbe78a13f5630b4cb060a410f4cb4fa42b10875941edab46d1341'
 
 
 @dataclass(frozen=True)
@@ -133,27 +133,60 @@ class ProductOriginEmitter:
         code = r.get('code')
         name = r.get('product_name') if r.raw.get('product_name') else r.get('product_name_en') if r.raw.get('product_name_en') else d(str(code.value), 'string-barcode-name-fallback', code)
         ids = [{'system': c('barcode', 'identifier-system-barcode'), 'value': d(str(code.value), 'string-barcode', code)}]
-        basis = {'amount': c(100, 'off-basis-amount'),
-                 'unit': d('ml' if r.raw.get('nutrition_data_per') == '100ml' else 'g', 'off-basis-unit', r.get('nutrition_data_per')),
-                 'state': c('as-sold', 'off-basis-state'), 'qualificationStatus': c('unverified-source-assertions', 'off-unverified')}
+        per = r.get('nutrition_data_per')
+        numeric, unknowns, raw_basis = adapters._off_nutrient_projection(r.raw)
+        basis = (d(None, 'off-basis-unestablished', per) if raw_basis is None else
+                 {'amount': c(100, 'off-basis-amount'),
+                  'unit': d(raw_basis['unit'], 'off-explicit-basis-unit', per),
+                  'state': c('as-sold', 'off-basis-state'),
+                  'qualificationStatus': c('unverified-source-assertions', 'off-unverified')})
         if kind == 'product':
-            return {'name': name, 'identifiers': ids, 'brand': r.get('brands'),
+            names = {key[len('product_name_'):]: r.tree(key, None) for key in r.raw
+                     if re.fullmatch(r'product_name_[A-Za-z]{2,3}(?:[-_][A-Za-z0-9]+)*', key)}
+            if 'product_name' in r.raw:
+                language = r.raw.get('lang') or r.raw.get('lc')
+                names.setdefault(language if isinstance(language, str) and language else 'und',
+                                 r.tree('product_name', None))
+            name_language = (d(r.raw.get('lang') or r.raw.get('lc'),
+                               'off-name-language-source-fallback', r.get('lang'), r.get('lc'))
+                             if r.raw.get('product_name') else
+                             d('en', 'off-name-language-from-field-key', r.get('product_name_en'))
+                             if r.raw.get('product_name_en') else c(None, 'off-name-language-unestablished'))
+            raw_nutrients = (r.tree('nutriments', None) if 'nutriments' in r.raw else
+                             c(None, 'missing-source-field:products/nutriments'))
+            return {'name': name, 'names': names, 'nameLanguage': name_language,
+                    'identifiers': ids, 'brand': r.get('brands'),
                     'ingredientsText': r.get('ingredients_text'), 'sourceCountryTags': r.tree('countries_tags', []),
-                    'rawNutriments': r.tree('nutriments', {}, truthy=True), 'nutritionSourceBasis': r.get('nutrition_data_per'),
+                    'rawNutriments': raw_nutrients, 'nutritionSourceBasis': per,
                     'qualificationStatus': c('unverified-source-assertions', 'off-unverified'),
                     'sourceCategoryFields': {key: r.tree(key, None)
                         for key in adapters._off_category_fields(r.raw)[0]},
                     'nutritionId': d('off:nutrientProfile:' + str(code.value), 'off-nutrition-id', code)}
         if kind != 'nutrientProfile':
             raise RefreshError('product-origin-unsupported-kind')
-        nutrients = {}
+        nutrients, dispositions = {}, {}
+        raw_tree = r.tree('nutriments', None) if 'nutriments' in r.raw else c(None, 'missing-source-field:products/nutriments')
         for field, (name_key, unit) in adapters._OFF_NUTRIENTS.items():
-            if field in (r.raw.get('nutriments') or {}):
-                n = r.get('nutriments', field)
-                nutrients[name_key] = {'value': d(adapters._number(n.value), 'finite-number-or-null', n),
+            if name_key in numeric:
+                amount = r.get('nutriments', field)
+                nutrients[name_key] = {'value': d(numeric[name_key]['value'], 'finite-nonnegative-number-explicit-basis', amount, per),
                     'unit': c(unit, 'off-nutrient-unit:' + field), 'basis': basis,
-                    'sourceAmount': n, 'sourceField': c(field, 'off-nutrient-field:' + field), 'method': c('source', 'nutrient-method')}
-        return {'foodName': name, 'identifiers': ids, 'basis': basis, 'nutrients': nutrients}
+                    'sourceAmount': amount, 'sourceField': c(field, 'off-nutrient-field:' + field),
+                    'method': c('source', 'nutrient-method')}
+            if field in unknowns:
+                amount = r.get('nutriments', field)
+                dispositions[field] = {
+                    'state': c('unknown', 'off-optional-nutrient-unknown'),
+                    'reason': d(unknowns[field]['reason'], 'off-optional-nutrient-disposition', amount, per),
+                    'sourceAmount': raw_tree[field], 'sourceUnit': c(unit, 'off-nutrient-unit:' + field),
+                    'sourceBasis': per, 'sourceField': c(field, 'off-nutrient-field:' + field)}
+        if '$nutriments' in unknowns:
+            dispositions['$nutriments'] = {
+                'state': c('unknown', 'off-optional-nutriments-unknown'),
+                'reason': d(unknowns['$nutriments']['reason'], 'off-nutriments-object-disposition', r.get('nutriments')),
+                'sourceAmount': raw_tree}
+        return {'foodName': name, 'identifiers': ids, 'basis': basis, 'nutrients': nutrients,
+                'nutrientDispositions': dispositions, 'nutritionSourceBasis': per}
 
     def price(self, r):
         c, d = self.constant, self.derived
