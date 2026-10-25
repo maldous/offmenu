@@ -147,7 +147,10 @@ configuration, generated-extension, all web and edge tests, Python, explicit
 receipt OCR and the normal build. The generated-file guard runs before build,
 and build runs before edge tests that load `dist/worker.mjs`. The build already
 includes `i18n:check`, so the local wrapper omits that duplicate invocation.
-Existing provider workflows and their required contexts remain unchanged.
+The Third-party services workflow retains this full validation as an explicit
+manual release action. Its automatic push and PR triggers are disabled by owner
+direction; development uses affected checks. Other workflows and actual required
+security or branch contexts remain unchanged.
 
 Choose the wrapper or the corresponding direct baseline, rather than running
 both. Do not add `test:auth` after full web and edge suites that already include
@@ -168,10 +171,12 @@ The workflow also names its portable receipt-OCR checks. Preserve them where
 required, along with current branch protection and reviewed security/data
 regressions. Source CI configuration does not by itself reveal the hosted
 branch-protection rules: the integrator verifies those actual required contexts.
-This page does not disable, replace or silently defer any of them. If provider
-CI currently runs the full suite on a PR, that run still applies. These local
-workflow selections do not edit CI configuration or hosted branch protection;
-reduce churn through coherent grouped PRs, not bypasses. Keep optional
+Removing the Third-party services automatic triggers does not waive a real
+required security or branch context. If one remains required, report that precise
+constraint rather than invent a pass or change branch protection. Preserve old
+failed runs as failures. Manual dispatch availability must be qualified separately
+because GitHub requires the workflow on the default branch; no `main` promotion
+or production action follows here. Keep optional
 external scans under their existing explicit configuration and holds; Sonar's
 current deferral is not a passing scan.
 

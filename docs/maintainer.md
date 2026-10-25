@@ -46,9 +46,14 @@ local checks and thorough release validation, group coherent PRs and reuse exact
 evidence. Fast iteration does not waive required branch checks; checks not run
 remain explicitly unrun. The baseline sequence below is retained.
 
-The baseline workflow in `.github/workflows/third-party-services.yml` runs the
-configuration check, web tests, locale check, build, edge tests and Python suite.
-From the prepared checkout:
+The manual baseline workflow in `.github/workflows/third-party-services.yml`
+retains the configuration check, web tests, locale check, build, edge tests and
+Python suite for explicit release validation. It has no automatic push or PR
+trigger. During development, select the materially affected checks below;
+preserve actual required security and branch checks. A retained manual declaration
+does not prove hosted dispatch is available: the workflow must also exist on the
+default branch, and this change does not promote it to `main`.
+For an explicit full validation from the prepared checkout:
 
 ```sh
 node scripts/verify-third-party-config.mjs
