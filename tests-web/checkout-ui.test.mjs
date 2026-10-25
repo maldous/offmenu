@@ -35,7 +35,7 @@ const draft=(items=[],mode='shelf')=>({mode,area:'Pantry',shelf:'Shelf 1',items,
 function harness({inventory=[inventoryLot('old'),inventoryLot('other','Shelf 2')],session=draft(),store=new Map(),lookup=()=>Promise.reject(Error('Unknown')),writable=true}={}){
  const elements=new Map(),$=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};
  const cancel=new Element();cancel.dataset.close='finish-dialog';let dirty=0;
- const ctx={$,KEY:'test-pantry',PROFILE:'test-profile',session:copy(session),lots:copy(inventory),profile:{batches:[],locations:[]},products:{},feedback:{},latestAcceptedId:null,selectedMode:'shelf',selectedArea:'Pantry',demoMode:false,user:null,lastReceipt:null,editingId:null,crypto,Date,
+ const ctx={$,KEY:'test-pantry',PROFILE:'test-profile',session:copy(session),pendingScannerImport:null,KITCHEN_HANDOFF:'offmenu-scanner-kitchen-pending-v1',lots:copy(inventory),profile:{batches:[],locations:[]},products:{},feedback:{},latestAcceptedId:null,selectedMode:'shelf',selectedArea:'Pantry',demoMode:false,user:null,lastReceipt:null,editingId:null,crypto,Date,
   document:{createElement:()=>new Element(),querySelectorAll:selector=>selector==='[data-close]'?[cancel]:[]},window:{scrollTo(){}},
   localStorage:{getItem:key=>store.get(key)??null,setItem:(key,value)=>store.set(key,value),removeItem:key=>store.delete(key)},
   sharing:{canWrite:()=>writable},syncStatus:()=>{},finishInventory,locationKey,makeAutoLot,validateLot,reconcileCookedStock,t,setLocalizedText,getLanguage,
@@ -46,6 +46,26 @@ function harness({inventory=[inventoryLot('old'),inventoryLot('other','Shelf 2')
  return {ctx,$,cancel,store,setWritable:value=>{writable=value;},dirty:()=>dirty};
 }
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
+function scannerHandoffFixture(){
+ const h=harness({session:{...draft(),id:'existing-receipt'}});
+ const reference={schema:'offmenu-identifier-observation/2',disposition:'unresolved',matchType:'exact',sourceId:'fixture'};
+ const handoff={barcode:'0000000000002',sourceId:'fixture',releaseId:null,name:'Beans',brand:null,sourceObservationReference:reference};
+ h.ctx.pendingScannerImport=handoff;h.$('storage-area').value='Pantry';h.$('shelf-name').value='Shelf 1';
+ const removed=[];h.ctx.sessionStorage={removeItem:key=>removed.push(key)};return {...h,handoff,removed};
+}
+test('real scanner acceptance retains handoff and rolls back unsaved item after storage failure',()=>{
+ const h=scannerHandoffFixture(),write=h.ctx.localStorage.setItem;
+ h.ctx.localStorage.setItem=(key,value)=>{if(JSON.parse(value).items?.length)throw Error('storage full');write(key,value);};
+ h.ctx.startCheckout();assert.equal(h.ctx.session.id,'existing-receipt');assert.equal(h.ctx.session.items.length,0);assert.equal(JSON.parse(h.store.get('test-pantry-checkout')).items.length,0);assert.equal(h.ctx.pendingScannerImport,h.handoff);assert.deepEqual(h.removed,[]);
+ h.ctx.localStorage.setItem=write;h.ctx.startCheckout();assert.equal(h.ctx.session.id,'existing-receipt');assert.equal(h.ctx.session.items.length,1);assert.deepEqual(JSON.parse(h.store.get('test-pantry-checkout')).items[0].sourceObservationReference,h.handoff.sourceObservationReference);assert.equal(h.ctx.pendingScannerImport,null);assert.deepEqual(h.removed,[h.ctx.KITCHEN_HANDOFF]);
+});
+test('saved handoff is consumed once even if rendering the persisted item fails',()=>{
+ const h=scannerHandoffFixture();h.ctx.renderBasket=()=>{throw Error('fixture render failed');};
+ h.ctx.startCheckout();assert.equal(h.ctx.session.id,'existing-receipt');assert.equal(JSON.parse(h.store.get('test-pantry-checkout')).items.length,1);assert.equal(h.ctx.pendingScannerImport,null);assert.deepEqual(h.removed,[h.ctx.KITCHEN_HANDOFF]);h.ctx.startCheckout();assert.equal(h.ctx.session.items.length,1);
+});
+test('a waste handoff with no matching stock remains pending and unconsumed',()=>{
+ const h=scannerHandoffFixture();h.ctx.session.mode='waste';h.ctx.selectedMode='waste';h.ctx.startCheckout();assert.equal(h.ctx.session.items.length,0);assert.equal(h.ctx.pendingScannerImport,h.handoff);assert.deepEqual(h.removed,[]);
+});
 function receiptVoid(h){return h.$('finish-items').children[0].children.at(-1).children.at(-1);}
 
 test('final receipt and cancel keep inventory intact; explicit confirmation replaces only the selected shelf',()=>{
