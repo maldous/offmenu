@@ -78,7 +78,12 @@ def curate(rows, policy_version):
             projected = {key: data.get(key) for key in ['identifiers', 'amount', 'currency', 'observedAt', 'unitPrice', 'unit', 'promotion', 'regularAmount']}
             projected.update(priceType='dated-observation', availability='unknown',
                              retailer={'name': retailer.get('name'), 'externalId': retailer.get('externalId')},
-                             comparable=data.get('amount') is not None and bool(data.get('currency')) and bool(data.get('observedAt')))
+                             # The approved fields above do not establish matching
+                             # product/variant/pack, tax, loyalty or fulfilment
+                             # conditions. Amount/currency/date are dated facts,
+                             # not comparison qualification (see the price import
+                             # contract). No comparison review runs in this path.
+                             comparable=False)
         elif kind == 'organization' and source == 'wikidata-food-businesses':
             projected = {key: data.get(key) for key in ['name', 'names', 'identifiers', 'roles', 'websites', 'countryBasis', 'reviewStatus']}
             projected.update(ownershipVerified=False, operationalCoverageVerified=False)

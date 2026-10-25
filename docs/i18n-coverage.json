@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3870,
+  "messages": 3884,
   "arabicTranslated": 376,
-  "arabicMissing": 3494,
+  "arabicMissing": 3508,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -238,7 +238,6 @@
     },
     " ingredient entries": {
       "sources": [
-        "public/app.js",
         "public/documents.js"
       ],
       "arabic": false
@@ -1767,10 +1766,8 @@
     "./checkout-model.js": {
       "sources": [
         "public/app.js",
-        "public/cooking-model.js",
         "public/documents.js",
-        "public/freshness-ui.js",
-        "public/menu-model.js"
+        "public/freshness-ui.js"
       ],
       "arabic": false
     },
@@ -1909,6 +1906,7 @@
         "public/recipe-library-model.js",
         "public/recipe-library-ui.js",
         "public/recipe-review.js",
+        "public/saved-price-observations.js",
         "public/scanner-ui.js",
         "public/services-ui.js",
         "public/sharing-ui.js",
@@ -1924,6 +1922,7 @@
         "public/cooking-model.js",
         "public/household-model.js",
         "public/journey-ui.js",
+        "public/menu-model.js",
         "public/model.js",
         "public/recipe-library-model.js"
       ],
@@ -2134,7 +2133,15 @@
       "sources": [
         "public/data-ui.js",
         "public/recipe-review.js",
+        "public/saved-price-observations.js",
         "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
+    "./saved-price-observations.js": {
+      "sources": [
+        "public/app.js",
+        "public/insights-ui.js"
       ],
       "arabic": false
     },
@@ -2287,7 +2294,8 @@
     },
     "./unified-data.js": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -2348,14 +2356,14 @@
     },
     "/api/data/records?": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
     "/api/prices?barcode=": {
       "sources": [
-        "public/app.js",
-        "public/insights-ui.js"
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -3023,6 +3031,7 @@
     "Account changed. Retry from your current account.": {
       "sources": [
         "public/app.js",
+        "public/saved-price-observations.js",
         "public/session-fetch.js"
       ],
       "arabic": false
@@ -4013,6 +4022,12 @@
     "Backup has duplicate item IDs.": {
       "sources": [
         "public/pantry-backup.js"
+      ],
+      "arabic": false
+    },
+    "Backup restore failed and browser storage could not be fully restored. Keep your backup and reload before making changes.": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -6040,6 +6055,12 @@
       ],
       "arabic": false
     },
+    "Country unknown": {
+      "sources": [
+        "public/saved-price-observations.js"
+      ],
+      "arabic": false
+    },
     "Country unspecified / global": {
       "sources": [
         "public/data-ui.js"
@@ -6160,7 +6181,8 @@
     "Currency unknown": {
       "sources": [
         "extension/popup-source.js",
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -6399,7 +6421,8 @@
     },
     "Date unknown": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -7402,7 +7425,8 @@
     },
     "Enter a numeric barcode.": {
       "sources": [
-        "public/insights-ui.js"
+        "public/insights-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -7557,7 +7581,7 @@
       ],
       "arabic": false
     },
-    "Estimate from mapped products": {
+    "Estimate from allocated lots": {
       "sources": [
         "public/app.js"
       ],
@@ -10278,9 +10302,21 @@
       ],
       "arabic": false
     },
+    "Invalid price observations": {
+      "sources": [
+        "public/saved-price-observations.js"
+      ],
+      "arabic": false
+    },
     "Invalid price on CSV row {v0}{v1}": {
       "sources": [
         "public/unified-data.js"
+      ],
+      "arabic": false
+    },
+    "Invalid price response": {
+      "sources": [
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -10426,6 +10462,12 @@
     "Invalid saved receipt.": {
       "sources": [
         "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid saved records response": {
+      "sources": [
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -10920,6 +10962,18 @@
     "Latest": {
       "sources": [
         "public/data-workspace.js"
+      ],
+      "arabic": false
+    },
+    "Latest price lookup unavailable": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Latest price lookup unavailable. Saved dated observations remain historical.": {
+      "sources": [
+        "public/insights-ui.js"
       ],
       "arabic": false
     },
@@ -12158,12 +12212,6 @@
     "No current evidenced control path; absence is not independence": {
       "sources": [
         "public/evidence-model.js"
-      ],
-      "arabic": false
-    },
-    "No data · ": {
-      "sources": [
-        "public/app.js"
       ],
       "arabic": false
     },
@@ -13432,6 +13480,12 @@
       ],
       "arabic": false
     },
+    "Pantry backup exceeds 20 MB.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Pantry, fridge or freezer. One satisfying": {
       "sources": [
         "public/index.html",
@@ -13454,12 +13508,6 @@
     "Partial recorded observations only; not all waste or person-level attribution.": {
       "sources": [
         "public/integration-owner03.mjs"
-      ],
-      "arabic": false
-    },
-    "Partial · ": {
-      "sources": [
-        "public/app.js"
       ],
       "arabic": false
     },
@@ -13967,7 +14015,7 @@
     },
     "Price lookup unavailable": {
       "sources": [
-        "public/insights-ui.js"
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -15540,6 +15588,12 @@
       ],
       "arabic": false
     },
+    "Repeated saved records cursor": {
+      "sources": [
+        "public/saved-price-observations.js"
+      ],
+      "arabic": false
+    },
     "Repeated source child": {
       "sources": [
         "public/source-field-page-presenter.js"
@@ -16466,6 +16520,12 @@
       ],
       "arabic": false
     },
+    "Saved dated observations remain historical.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Saved favourite ✓": {
       "sources": [
         "public/app.js",
@@ -16507,6 +16567,18 @@
     "Saved meal preferences could not be validated. Your cloud copy is unchanged; keep your local copy and contact support.": {
       "sources": [
         "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
+    "Saved observation · dated observation, not verified current stock": {
+      "sources": [
+        "public/saved-price-observations.js"
+      ],
+      "arabic": false
+    },
+    "Saved observations unavailable": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -17756,6 +17828,18 @@
       ],
       "arabic": false
     },
+    "Some saved observations are unavailable. Retry in your current profile.": {
+      "sources": [
+        "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "Some saved observations could not be loaded. Retry in your current profile.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Sound off": {
       "sources": [
         "public/shelf-scanner.js"
@@ -18413,7 +18497,8 @@
     },
     "Store not supplied": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -19913,7 +19998,8 @@
     },
     "Unified record, provenance & licence": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -19987,7 +20073,8 @@
     },
     "Unknown amount": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -23629,7 +23716,7 @@
       ],
       "arabic": false
     },
-    "{v0}\nFor all {v1} portions. Based on the first matching mapped product for each ingredient; brands can differ. Missing data is excluded.": {
+    "{v0}\nFor all {v1} portions. Based on allocated ingredient lots with a compatible nutrition basis; brands can differ. Uncovered amounts and missing nutrition remain unknown.": {
       "sources": [
         "public/app.js"
       ],
@@ -23836,6 +23923,12 @@
     "{v0}/{v1} ingredient entries · {v2}": {
       "sources": [
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "{v0}/{v1} nutrition contributions have data (allocated lots and unknown amounts)": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
