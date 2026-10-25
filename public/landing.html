@@ -1,53 +1,11 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#10243a" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#f2f5fa" media="(prefers-color-scheme: light)">
-  <title>OffMenu · From product to pantry to plate</title>
-  <link rel="stylesheet" href="/landing.css">
-  <script type="module" src="/landing.js"></script>
-</head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="color-scheme" content="light dark"><meta name="theme-color" content="#10243a" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f2f5fa" media="(prefers-color-scheme: light)"><title>OffMenu · From product to pantry to plate</title><link rel="stylesheet" href="/landing.css"><script type="module" src="/landing.js"></script></head>
 <body>
-  <div class="intro" id="intro" aria-label="OffMenu introduction">
-    <div id="neon-host" class="neon-host" aria-label="OffMenu neon sign"></div>
-    <div class="intro-actions">
-      <button id="intro-pause" type="button" aria-pressed="false">Pause animation</button>
-      <button id="intro-skip" type="button">Skip intro</button>
-    </div>
-  </div>
-  <div class="landing" id="landing" hidden>
-    <header class="site-head">
-      <a class="brand" href="/landing.html" aria-label="OffMenu home"><img src="/scanner-balanced-final.svg" alt="" width="38" height="38"><span>OffMenu</span></a>
-      <nav aria-label="Main">
-        <a class="secondary" href="/auth.html">Sign in</a>
-        <a class="primary" href="/shelf-scanner.html">Open scanner</a>
-      </nav>
-    </header>
-    <main class="story">
-      <section class="story-copy" aria-labelledby="headline">
-        <p class="eyebrow">Meet OffMenu</p>
-        <h1 id="headline">From product to pantry to plate</h1>
-        <div class="feature-rotation" aria-label="OffMenu features">
-          <p id="feature-line" aria-live="off"></p>
-          <button id="feature-pause" type="button" aria-pressed="false">Pause feature text</button>
-        </div>
-        <details class="feature-list"><summary>Explore all features and availability</summary><ul id="all-features"></ul><p>* Planned. Other features depend on available source information and account setup.</p></details>
-        <div class="chapter-heading">
-          <span class="chapter-number" id="chapter-number" aria-hidden="true">01</span>
-          <div><p class="chapter-count" id="chapter-count">Step 1 of 15</p><h2 id="chapter-title">Barcode</h2></div>
-        </div>
-        <p class="chapter-description" id="chapter-description"></p>
-        <p class="chapter-availability" id="chapter-availability"></p>
-        <div class="chapter-actions">
-          <button id="previous" type="button" aria-label="Previous step">← Previous</button>
-          <button id="next" type="button" aria-label="Next step">Next →</button>
-        </div>
-        <nav class="chapter-nav" aria-label="Story steps"><ol id="chapter-list"></ol></nav>
-      </section>
-      <section class="kitchen-stage" aria-label="One continuous kitchen story">
+<header class="site-head"><a class="brand" href="/landing.html" aria-label="OffMenu home"><img src="/scanner-balanced-final.svg" alt="" width="38" height="38"><span>OffMenu</span></a><nav aria-label="Main"><a class="primary" href="/auth.html">Sign in or create account</a></nav></header>
+<section class="intro snap-section" id="intro" aria-label="OffMenu introduction"><div id="neon-host" class="neon-host" aria-label="OffMenu neon sign"></div><p class="neon-fallback" id="neon-fallback" hidden>OffMenu</p></section>
+<div class="landing" id="landing">
+<main class="story" aria-label="From product to pantry to plate"><div class="story-copy" id="chapter-sections"></div>
+<section class="kitchen-stage" aria-label="One continuous kitchen story">
         <div class="scene" id="scene" data-focus="barcode">
           <div class="scene-depth scene-back" aria-hidden="true"></div>
           <div class="scene-depth scene-mid" aria-hidden="true"></div>
@@ -72,9 +30,5 @@
           </div>
           <p class="scene-caption" id="scene-caption">One kitchen, one connected journey.</p>
         </div>
-      </section>
-    </main>
-    <footer class="landing-footer"><span>Product and food information varies by source. Check the record before acting.</span><a href="/shelf-scanner.html">Scan an item</a></footer>
-  </div>
-</body>
-</html>
+      </section></main>
+</div></body></html>
