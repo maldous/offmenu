@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3710,
+  "messages": 3716,
   "arabicTranslated": 376,
-  "arabicMissing": 3334,
+  "arabicMissing": 3340,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -273,12 +273,6 @@
       ],
       "arabic": false
     },
-    " remains the only lookup key; no source identity merge.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     " served; ": {
       "sources": [
         "public/documents.js"
@@ -459,6 +453,12 @@
       ],
       "arabic": false
     },
+    " · explicit/observed ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     " · identity separate from ingredient use": {
       "sources": [
         "public/app.js"
@@ -520,12 +520,6 @@
       "arabic": false
     },
     " · null is not zero. Profile IDs are not nutrient values.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    " · original ": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -1474,9 +1468,21 @@
       ],
       "arabic": false
     },
+    ". Exact source identifier only; no barcode alias is inferred.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     ". Nutrients use the original recipe; review actual meal totals.": {
       "sources": [
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    ". Original and eligible labelled equivalent forms are searched separately; no source identity merge.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -3869,21 +3875,15 @@
       ],
       "arabic": false
     },
-    "Barcode found · 1 source record · product details ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Barcode found · retained source details · canonical mapping pending": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Barcode number": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Barcode · original": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -4685,6 +4685,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Choose a supported namespace and barcode hint.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
     },
     "Choose a valid remainder action": {
       "sources": [
@@ -6205,12 +6211,6 @@
     "Decoder stopped": {
       "sources": [
         "public/scanner-ui.js"
-      ],
-      "arabic": false
-    },
-    "Decoder-derived standards representation: ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -11760,13 +11760,13 @@
       ],
       "arabic": false
     },
-    "No matching source-asserted barcode in selected retained generation · not global absence": {
+    "No matching source-asserted identifier in selected retained generation · not global absence": {
       "sources": [
         "public/shelf-scanner.js"
       ],
       "arabic": false
     },
-    "No matching source-asserted barcode in the selected retained generation.": {
+    "No matching source-asserted identifier in the selected retained generation.": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -12754,7 +12754,7 @@
       ],
       "arabic": false
     },
-    "Original barcode: ": {
+    "Original ": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -16218,7 +16218,8 @@
     },
     "Selected ": {
       "sources": [
-        "public/app.js"
+        "public/app.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -17159,6 +17160,18 @@
     "Source directory": {
       "sources": [
         "public/data-workspace.html"
+      ],
+      "arabic": false
+    },
+    "Source identifier found · 1 source record · product details ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source identifier found · retained details · canonical mapping pending": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -18933,6 +18946,18 @@
       ],
       "arabic": false
     },
+    "USDA-FDC identifier": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "USDA-FDC · original identifier": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Unable to create the private request.": {
       "sources": [
         "cloud/service-support.mjs"
@@ -19322,6 +19347,12 @@
     "Unsupported curation origin": {
       "sources": [
         "cloud/corpus.mjs"
+      ],
+      "arabic": false
+    },
+    "Unsupported identifier namespace or representation": {
+      "sources": [
+        "public/scanner-identity-v2.js"
       ],
       "arabic": false
     },
@@ -21462,7 +21493,12 @@
     },
     "manual lexical barcode": {
       "sources": [
-        "public/app.js",
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "manual lexical identifier": {
+      "sources": [
         "public/shelf-scanner.js"
       ],
       "arabic": false

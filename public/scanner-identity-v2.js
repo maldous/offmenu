@@ -4,6 +4,7 @@ export const IDENTIFIER_DB = '97c2f7390f75d8d187b49c927652515cd829e095301d7b305a
 export const IDENTIFIER_RUN = 'worker57-full-retained-identifiers-v1';
 export const DETAIL_SELECTION = 'd9a08c3b2b9eec880418b8108d60c177a253b53802e8ea0453eb8fd502498290';
 const DISPOSITIONS = new Set(['source-asserted', 'unresolved', 'invalid']);
+const NAMESPACES = new Set(['barcode', 'USDA-FDC']);
 const SYMBOLOGIES = new Set(['EAN-13', 'EAN-8', 'UPC-A', 'UPC-E', 'GTIN-14']);
 const KEY = ['run_id', 'input_id', 'record_ordinal', 'assertion_id'];
 const bounded = (value, max) => typeof value === 'string' && value.length > 0 && value.length <= max;
@@ -15,8 +16,9 @@ export function validGTIN(value) {
   return (10 - sum % 10) % 10 === Number(value.at(-1));
 }
 
-export function expectedForms(original, symbology = null) {
+export function expectedForms(original, symbology = null, namespace = 'barcode') {
   const forms = [{lexicalValue: original, matchType: 'exact', equivalence: null}];
+  if (namespace !== 'barcode') return forms;
   const add = (lexicalValue, equivalence) => {
     if (!forms.some(form => form.lexicalValue === lexicalValue)) forms.push({lexicalValue, matchType: 'representation-alias', equivalence});
   };
@@ -40,16 +42,17 @@ function status(matches, hasMore, partial) {
   return matches.length > 1 || hasMore ? 'ambiguous' : 'source-match';
 }
 
-export function projectIdentityPage(data, original, generation, {symbology = null, requestCursor = null} = {}) {
-  if (!bounded(original, 128) || /[\x00-\x1f\x7f]/.test(original) || symbology !== null && !SYMBOLOGIES.has(symbology)) throw Error('Invalid original capture');
+export function projectIdentityPage(data, original, generation, {namespace = 'barcode', symbology = null, requestCursor = null} = {}) {
+  if (!bounded(original, 128) || /[\x00-\x1f\x7f]/.test(original) || !NAMESPACES.has(namespace) ||
+      symbology !== null && (namespace !== 'barcode' || !SYMBOLOGIES.has(symbology))) throw Error('Invalid original capture');
   if (data?.databaseSha256 !== IDENTIFIER_DB || data.generation !== String(generation) || data.identitySearchPlanVersion !== 2 ||
       data.operation !== 'identifier-search' || !Array.isArray(data.rows) || data.rows.length > 25 ||
       !Array.isArray(data.identityMatches) || data.identityMatches.length !== data.rows.length ||
-      data.identityQuery?.namespace !== 'barcode' || data.identityQuery.originalLexicalValue !== original ||
+      data.identityQuery?.namespace !== namespace || data.identityQuery.originalLexicalValue !== original ||
       (data.identityQuery.symbology ?? null) !== symbology || !['available', 'partial'].includes(data.identitySearchState) ||
       typeof data.hasMore !== 'boolean' || (data.hasMore && !bounded(data.nextCursor, 8192)) ||
       (!data.hasMore && data.nextCursor !== null)) throw Error('Selected identifier page binding mismatch');
-  const forms = expectedForms(original, symbology);
+  const forms = expectedForms(original, symbology, namespace);
   if (JSON.stringify(data.identityQuery.forms) !== JSON.stringify(forms)) throw Error('Representation plan mismatch');
   const coverage = data.identitySearchCoverage;
   if (!coverage || coverage.physicalProductIdentityAsserted !== false || coverage.ingredientQualificationAsserted !== false ||
@@ -59,7 +62,7 @@ export function projectIdentityPage(data, original, generation, {symbology = nul
   const matches = data.rows.map((row, index) => {
     const match = data.identityMatches[index];
     const form = forms.find(item => item.lexicalValue === row?.lexical_value);
-    if (!row || row.namespace !== 'barcode' || !DISPOSITIONS.has(row.disposition) ||
+    if (!row || row.namespace !== namespace || !DISPOSITIONS.has(row.disposition) ||
         !Number.isSafeInteger(row.assertion_id) || row.assertion_id <= 0 ||
         !form || match?.assertionId !== row.assertion_id || match.sourceLexicalValue !== row.lexical_value ||
         match.matchType !== form.matchType || match.equivalence !== form.equivalence ||
@@ -71,7 +74,7 @@ export function projectIdentityPage(data, original, generation, {symbology = nul
         symbology, matchType:form.matchType, equivalence:form.equivalence, disposition:row.disposition},
       availability:null, detail:null, variants:[], name:null, brand:null, ingredientsText:null};
   });
-  return {generation, original, symbology, requestCursor, status:status(matches, data.hasMore, data.identitySearchState === 'partial'),
+  return {generation, original, namespace, symbology, requestCursor, status:status(matches, data.hasMore, data.identitySearchState === 'partial'),
     searchState:data.identitySearchState, searchCoverage:coverage, hasMore:data.hasMore, nextCursor:data.nextCursor,
     databaseSha256:IDENTIFIER_DB, runId:IDENTIFIER_RUN, matches,
     detailsState:data.details?.state || 'not-requested', detailReasonCode:data.details?.error?.reasonCode || null};
@@ -79,7 +82,7 @@ export function projectIdentityPage(data, original, generation, {symbology = nul
 
 export function mergeIdentityPages(previous, next) {
   if (!previous?.hasMore || previous.nextCursor !== next?.requestCursor ||
-      previous.original !== next.original || previous.symbology !== next.symbology ||
+      previous.original !== next.original || previous.namespace !== next.namespace || previous.symbology !== next.symbology ||
       previous.databaseSha256 !== next.databaseSha256 || previous.runId !== next.runId) throw Error('Continuation binding mismatch');
   const seen = new Set(previous.matches.map(item => [item.identifier.assertion_id, item.identifier.lexical_value, item.identifier.disposition].join('|')));
   for (const match of next.matches) {
@@ -94,7 +97,8 @@ export function mergeIdentityPages(previous, next) {
 
 export function sourceObservationReference(match, page) {
   const row = match?.identifier, context = match?.matchContext;
-  if (!row || !context || page?.databaseSha256 !== IDENTIFIER_DB || page.original !== context.originalLexicalValue)
+  if (!row || !context || page?.databaseSha256 !== IDENTIFIER_DB || page.original !== context.originalLexicalValue ||
+      page.namespace !== row.namespace)
     throw Error('Source observation not selected');
   const ref = {schema:'offmenu-identifier-observation/2', databaseSha256:page.databaseSha256, runId:page.runId,
     namespace:row.namespace, originalLexicalValue:context.originalLexicalValue,
@@ -108,12 +112,12 @@ export function sourceObservationReference(match, page) {
 
 export function validSourceObservationReference(ref, original) {
   const key = ref?.observationKey;
-  const form = expectedForms(original, ref?.symbology).find(item => item.lexicalValue === ref?.sourceLexicalValue);
+  const form = expectedForms(original, ref?.symbology, ref?.namespace).find(item => item.lexicalValue === ref?.sourceLexicalValue);
   return ref?.schema === 'offmenu-identifier-observation/2' && ref.databaseSha256 === IDENTIFIER_DB &&
-    ref.runId === IDENTIFIER_RUN && ref.namespace === 'barcode' && ref.originalLexicalValue === original &&
+    ref.runId === IDENTIFIER_RUN && NAMESPACES.has(ref.namespace) && ref.originalLexicalValue === original &&
     bounded(ref.sourceId, 40) && (ref.releaseId === null || bounded(ref.releaseId, 80)) &&
     (ref.sourceRecordId === null || bounded(ref.sourceRecordId, 200)) &&
-    (ref.symbology === null || SYMBOLOGIES.has(ref.symbology)) && DISPOSITIONS.has(ref.disposition) &&
+    (ref.symbology === null || ref.namespace === 'barcode' && SYMBOLOGIES.has(ref.symbology)) && DISPOSITIONS.has(ref.disposition) &&
     form?.matchType === ref.matchType && form?.equivalence === ref.equivalence &&
     key?.run_id === ref.runId && bounded(key.input_id, 250) &&
     Number.isSafeInteger(key.record_ordinal) && key.record_ordinal >= 0 &&
@@ -123,29 +127,31 @@ export function validSourceObservationReference(ref, original) {
 
 export function exactDetailRequest(ref, generation) {
   if (!validSourceObservationReference(ref, ref?.originalLexicalValue)) throw Error('Selected observation changed');
-  return {namespace:'barcode', lexical_value:ref.originalLexicalValue, symbology:ref.symbology ?? undefined,
+  return {namespace:ref.namespace, lexical_value:ref.originalLexicalValue, ...(ref.symbology ? {symbology:ref.symbology} : {}),
     generation:String(generation), databaseSha256:IDENTIFIER_DB, limit:1, cursor:null,
     include:['retained-product-federation-v1'], detailAssertionId:ref.observationKey.assertion_id,
     detailLexicalValue:ref.sourceLexicalValue, detailDisposition:ref.disposition};
 }
 
-export async function lookupIdentityPage(original, generation, {cursor = null, symbology = null, fetchImpl = fetch} = {}) {
+export async function lookupIdentityPage(original, generation, {cursor = null, namespace = 'barcode', symbology = null, fetchImpl = fetch} = {}) {
   try {
+    if (!NAMESPACES.has(namespace) || symbology !== null && (namespace !== 'barcode' || !SYMBOLOGIES.has(symbology)))
+      throw Error('Unsupported identifier namespace or representation');
     const statusResponse = await fetchImpl('/__dev/identifiers/status', {cache:'no-store'});
     const selected = await statusResponse.json();
     if (!statusResponse.ok || !selected.queryAvailable || selected.identitySearchPlanVersion !== 2 ||
         selected.databaseSha256 !== IDENTIFIER_DB || selected.runId !== IDENTIFIER_RUN ||
         selected.detailSelectionSha256 !== DETAIL_SELECTION) throw Error('Selected identity release unavailable');
-    const request = {namespace:'barcode', lexical_value:original, limit:25, cursor,
+    const request = {namespace, lexical_value:original, limit:25, cursor,
       generation:String(generation), databaseSha256:IDENTIFIER_DB,
       ...(symbology ? {symbology} : {})};
     const response = await fetchImpl('/__dev/identifiers', {method:'POST', cache:'no-store',
       headers:{'Content-Type':'application/json'}, body:JSON.stringify(request)});
     const data = await response.json();
     if (!response.ok || data.error) throw Error(data.error || 'Selected identifier page unavailable');
-    return projectIdentityPage(data, original, generation, {symbology, requestCursor:cursor});
+    return projectIdentityPage(data, original, generation, {namespace, symbology, requestCursor:cursor});
   } catch (error) {
-    return {generation, original, symbology, requestCursor:cursor, status:'unavailable',
+    return {generation, original, namespace, symbology, requestCursor:cursor, status:'unavailable',
       matches:[], error:error.message, hasMore:false, nextCursor:null};
   }
 }
