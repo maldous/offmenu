@@ -21,183 +21,94 @@ const STAGES = [
   {title:'Receipt',key:'Receipt capture',focus:'barcode',actor:35,action:'check'}
 ];
 
-const byId = id => document.getElementById(id);
-const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-let stageIndex = 0, featureIndex = 0, featurePaused = false, featureTimer = null;
-let introAutomatic = true, introPaused = false;
-let neonShell = null;
-const stageButtons = [];
-
-function featureText(feature) {
-  return feature.value + (feature.availability.startsWith('future') ? '*' : '');
-}
-function renderFeatures() {
-  const list = byId('all-features');
-  list.replaceChildren(...FEATURES.map(feature => {
-    const row = document.createElement('li');
-    row.textContent = featureText(feature);
-    return row;
-  }));
-  byId('feature-line').textContent = featureText(FEATURES[featureIndex]);
-}
-function rotateFeature() {
-  if(featurePaused || reducedMotion.matches || document.hidden) return;
-  const line = byId('feature-line');
-  line.classList.add('fading');
-  setTimeout(() => {
-    if(featurePaused || document.hidden) { line.classList.remove('fading'); return; }
-    featureIndex = (featureIndex + 1) % FEATURES.length;
-    line.textContent = featureText(FEATURES[featureIndex]);
-    line.classList.remove('fading');
-  }, 330);
-}
-function resetFeatureTimer() {
-  clearInterval(featureTimer);
-  if(!featurePaused && !reducedMotion.matches) featureTimer = setInterval(rotateFeature, 6000);
-}
-
-function renderStage(previous = stageIndex) {
-  const stage = STAGES[stageIndex], feature = FEATURE_BY_KEY.get(stage.key);
-  byId('chapter-number').textContent = String(stageIndex + 1).padStart(2, '0');
-  byId('chapter-count').textContent = `Step ${stageIndex + 1} of ${STAGES.length}`;
-  byId('chapter-title').textContent = stage.title;
-  byId('chapter-description').textContent = feature?.value || stage.title;
-  byId('chapter-availability').textContent =
-    feature?.availability.startsWith('future') ? '* Planned step in the connected journey.' :
-    'Availability depends on the product source and your account.';
-  const scene = byId('scene'), actor = byId('actor-wrap');
-  scene.dataset.focus = stage.focus;
-  scene.dataset.action = stage.action;
-  scene.style.setProperty('--pan-x', Math.max(-22, Math.min(22, Math.round((39 - stage.actor) * 1.4))) + 'px');
-  actor.style.left = stage.actor + '%';
-  const travel = reducedMotion.matches ? '0ms' :
-    Math.max(130, Math.round(440 / Math.max(1, Math.abs(stageIndex - previous)))) + 'ms';
-  actor.style.setProperty('--travel-ms', travel);
-  scene.style.setProperty('--travel-ms', travel);
-  stageButtons.forEach((button, index) => {
-    if(index === stageIndex) button.setAttribute('aria-current', 'step');
-    else button.removeAttribute('aria-current');
-  });
-  byId('previous').disabled = stageIndex === 0;
-  byId('next').textContent = stageIndex === STAGES.length - 1 ? 'Back to barcode →' : 'Next →';
-  byId('scene-caption').textContent = `${stage.title} in the same kitchen.`;
-}
-function moveTo(index) {
-  const previous = stageIndex;
-  stageIndex = (index + STAGES.length) % STAGES.length;
-  renderStage(previous);
-}
-function buildStageNav() {
-  const list = byId('chapter-list');
-  STAGES.forEach((stage, index) => {
-    const item = document.createElement('li'), button = document.createElement('button');
-    button.type = 'button';
-    button.textContent = String(index + 1).padStart(2, '0');
-    button.setAttribute('aria-label', `Step ${index + 1}: ${stage.title}`);
-    button.onclick = () => moveTo(index);
-    item.append(button);
-    list.append(item);
-    stageButtons.push(button);
-  });
-}
-
-function showLanding() {
-  if(byId('intro').hidden) return;
-  neonShell?.classList.add('paused');
-  byId('intro').hidden = true;
-  byId('landing').hidden = false;
-  byId('headline').tabIndex = -1;
-  byId('headline').focus({preventScroll:true});
-  resetFeatureTimer();
-}
-async function attachApprovedNeon() {
-  byId('intro-skip').onclick = () => { introAutomatic = false; showLanding(); };
-  byId('intro-pause').onclick = () => {
-    introAutomatic = false;
-    introPaused = !introPaused;
-    byId('intro-pause').textContent = introPaused ? 'Resume animation' : 'Pause animation';
-    byId('intro-pause').setAttribute('aria-pressed', String(introPaused));
-    neonShell?.classList.toggle('paused', introPaused);
-  };
-  if(reducedMotion.matches) return;
-  try {
-    // This is the pinned, same-origin approved artwork. Only its CSS and SVG
-    // enter an isolated shadow root; its standalone scripts are not executed.
-    const response = await fetch('/offmenu-neon.html', {cache:'no-store'});
-    if(!response.ok) throw Error('Approved intro unavailable');
-    const source = await response.text();
-    if(source.length > 1100000) throw Error('Approved intro exceeds bound');
-    const parsed = new DOMParser().parseFromString(source, 'text/html');
-    const approvedStyle = parsed.querySelector('style'), approvedSign = parsed.querySelector('svg#neon-sign');
-    if(!approvedStyle || !approvedSign || !source.includes('offmenu:cycle')) throw Error('Approved intro incomplete');
-    const host = byId('neon-host'), shadow = host.attachShadow({mode:'open'});
-    neonShell = document.createElement('div');
-    neonShell.className = 'neon-shell motion';
-    const scoped = document.createElement('style');
-    scoped.textContent = approvedStyle.textContent
-      .replaceAll(':root', '.neon-shell')
-      .replaceAll('html,body', '.neon-shell')
-      .replaceAll(/\bbody\b/g, '.neon-shell')
-      .replaceAll('html.motion', '.neon-shell.motion')
-      .replaceAll('html.paused', '.neon-shell.paused')
-      .replaceAll('html.backgrounded', '.neon-shell.backgrounded')
-      .replaceAll('height:100vh;height:100dvh', 'height:100%')
-      + '.neon-shell{width:100%;height:100%;overflow:hidden}';
-    const stage = document.createElement('main');
-    stage.className = 'stage';
-    stage.append(document.importNode(approvedSign, true));
-    neonShell.append(stage);
-    shadow.append(scoped, neonShell);
-    const sign = neonShell.querySelector('#neon-sign'), circuits = [...sign.querySelectorAll('.circuit')];
-    const atlas = sign.querySelector('image#glass-atlas');
-    const encoded = atlas?.getAttribute('href');
-    if(!encoded?.startsWith('data:image/jpeg;base64,') || encoded.length > 1050000)
-      throw Error('Approved neon image is unavailable');
-    const bytes = Uint8Array.from(atob(encoded.slice('data:image/jpeg;base64,'.length)), character => character.charCodeAt(0));
-    const atlasUrl = URL.createObjectURL(new Blob([bytes], {type:'image/jpeg'}));
-    atlas.setAttribute('href', atlasUrl);
-    window.addEventListener('pagehide', () => URL.revokeObjectURL(atlasUrl), {once:true});
-    let cycles = 0;
-    sign.addEventListener('animationend', event => {
-      if(event.animationName !== 'energize' || !event.target.classList.contains('circuit')) return;
-      event.target.classList.add('ready');
-      if(circuits.every(circuit => circuit.classList.contains('ready'))) neonShell.classList.add('steaming');
-    });
-    sign.addEventListener('animationiteration', event => {
-      if(event.animationName !== 'steam-rise' || event.target.dataset.master !== 'true') return;
-      cycles++;
-      if(introAutomatic && !introPaused && cycles >= 4) showLanding();
-    });
-    document.addEventListener('visibilitychange', () => neonShell?.classList.toggle('backgrounded', document.hidden));
-    // A failed animation must not trap the visitor behind the intro.
-    setTimeout(() => { if(!byId('intro').hidden && introAutomatic && !introPaused && cycles === 0) showLanding(); }, 18000);
-  } catch(error) {
-    console.warn('Approved neon intro unavailable', error?.message || 'unknown');
-    showLanding();
+const byId=id=>document.getElementById(id);
+const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+let stageIndex=-1,neonShell=null,autoTimer=null,featureTimer=null,featureIndex=0,userInteracted=false;
+const sections=[];
+function featureText(feature){return feature.value+(feature.availability.startsWith('future')?'*':'');}
+function buildChapters(){
+ const host=byId('chapter-sections');
+ STAGES.forEach((stage,index)=>{
+  const feature=FEATURE_BY_KEY.get(stage.key),section=document.createElement('section');
+  section.className='chapter snap-section';section.id='step-'+(index+1);section.dataset.index=String(index);
+  section.setAttribute('aria-labelledby','chapter-title-'+(index+1));
+  if(index===0){
+   const eyebrow=document.createElement('p');eyebrow.className='eyebrow';eyebrow.textContent='Meet OffMenu';
+   const headline=document.createElement('h1');headline.textContent='From product to pantry to plate';
+   const featureLine=document.createElement('p');featureLine.id='feature-line';featureLine.className='feature-intro';featureLine.setAttribute('aria-live','off');featureLine.textContent=featureText(FEATURES[0]);
+   section.append(eyebrow,headline,featureLine);
   }
+  const heading=document.createElement('div');heading.className='chapter-heading';
+  const circle=document.createElement('span');circle.className='chapter-number';circle.setAttribute('aria-hidden','true');circle.textContent=String(index+1).padStart(2,'0');
+  const labels=document.createElement('div'),count=document.createElement('p'),title=document.createElement('h2');
+  count.className='chapter-count';count.textContent='Step '+(index+1)+' of '+STAGES.length;
+  title.id='chapter-title-'+(index+1);title.textContent=stage.title;labels.append(count,title);heading.append(circle,labels);
+  const description=document.createElement('p');description.className='chapter-description';description.textContent=feature?featureText(feature):stage.title;
+  section.append(heading,description);host.append(section);sections.push(section);
+ });
 }
-
-buildStageNav();
-renderFeatures();
-renderStage();
-attachApprovedNeon();
-if(reducedMotion.matches) showLanding();
-reducedMotion.addEventListener('change', () => {
-  if(reducedMotion.matches) showLanding();
-  renderStage(stageIndex);
-  resetFeatureTimer();
-});
-byId('previous').onclick = () => moveTo(stageIndex - 1);
-byId('next').onclick = () => moveTo(stageIndex + 1);
-byId('feature-pause').onclick = () => {
-  featurePaused = !featurePaused;
-  byId('feature-pause').setAttribute('aria-pressed', String(featurePaused));
-  byId('feature-pause').textContent = featurePaused ? 'Resume feature text' : 'Pause feature text';
-  resetFeatureTimer();
-};
-document.addEventListener('visibilitychange', resetFeatureTimer);
-document.addEventListener('keydown', event => {
-  if(event.altKey || event.metaKey || event.ctrlKey || /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(event.target?.tagName || '')) return;
-  if(event.key === 'ArrowRight') { event.preventDefault(); moveTo(stageIndex + 1); }
-  if(event.key === 'ArrowLeft') { event.preventDefault(); moveTo(stageIndex - 1); }
-});
+function updateFeatureRotation(){
+ clearInterval(featureTimer);featureTimer=null;
+ const line=byId('feature-line');
+ if(!line||reducedMotion.matches||document.hidden)return;
+ featureTimer=setInterval(()=>{
+  if(document.hidden)return;
+  line.classList.add('changing');
+  setTimeout(()=>{
+   featureIndex=(featureIndex+1)%FEATURES.length;
+   line.textContent=featureText(FEATURES[featureIndex]);
+   line.classList.remove('changing');
+  },320);
+ },6000);
+}
+function renderStage(index){
+ if(index===stageIndex||index<0||index>=STAGES.length)return;
+ const previous=stageIndex,stage=STAGES[index],scene=byId('scene'),actor=byId('actor-wrap');stageIndex=index;
+ scene.dataset.focus=stage.focus;scene.dataset.action=stage.action;
+ scene.style.setProperty('--pan-x',Math.max(-22,Math.min(22,Math.round((39-stage.actor)*1.4)))+'px');
+ actor.style.left=stage.actor+'%';
+ const travel=reducedMotion.matches?'0ms':Math.max(130,Math.round(440/Math.max(1,Math.abs(index-previous))))+'ms';
+ scene.style.setProperty('--travel-ms',travel);actor.style.setProperty('--travel-ms',travel);
+ byId('scene-caption').textContent=stage.title+' in the same kitchen.';
+}
+function activeChapter(){
+ if(!sections.length)return;
+ const center=innerHeight*.5;let nearest=0,distance=Infinity;
+ sections.forEach((section,index)=>{const r=section.getBoundingClientRect(),d=Math.abs((r.top+r.bottom)/2-center);if(d<distance){distance=d;nearest=index;}});
+ if(sections[0].getBoundingClientRect().top>innerHeight*.75)return;
+ renderStage(nearest);
+}
+let frame=0;addEventListener('scroll',()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(activeChapter);},{passive:true});addEventListener('resize',activeChapter);
+function cancelAuto(){userInteracted=true;clearTimeout(autoTimer);autoTimer=null;}
+for(const event of ['wheel','touchstart','pointerdown','keydown'])addEventListener(event,cancelAuto,{passive:true,once:true});
+function scheduleAuto(){if(reducedMotion.matches||userInteracted||scrollY>8)return;clearTimeout(autoTimer);autoTimer=setTimeout(()=>{if(!userInteracted&&!reducedMotion.matches&&scrollY<8)sections[0]?.scrollIntoView({behavior:'smooth',block:'start'});},3000);}
+async function attachApprovedNeon(){
+ try{
+  const response=await fetch('/offmenu-neon.html',{cache:'no-store'});if(!response.ok)throw Error('Approved neon unavailable');
+  const source=await response.text();if(source.length>1100000)throw Error('Approved neon exceeds bound');
+  const parsed=new DOMParser().parseFromString(source,'text/html');
+  const approvedStyle=parsed.querySelector('style'),approvedSign=parsed.querySelector('svg#neon-sign');
+  if(!approvedStyle||!approvedSign||!source.includes('offmenu:cycle'))throw Error('Approved neon incomplete');
+  const shadow=byId('neon-host').attachShadow({mode:'open'});neonShell=document.createElement('div');neonShell.className=reducedMotion.matches?'neon-shell':'neon-shell motion';
+  const scoped=document.createElement('style');scoped.textContent=approvedStyle.textContent
+   .replaceAll(':root','.neon-shell').replaceAll('html,body','.neon-shell')
+   .replaceAll(/\bbody\b/g,'.neon-shell').replaceAll('html.motion','.neon-shell.motion')
+   .replaceAll('html.paused','.neon-shell.paused').replaceAll('html.backgrounded','.neon-shell.backgrounded')
+   .replaceAll('height:100vh;height:100dvh','height:100%')+'.neon-shell{width:100%;height:100%;overflow:hidden}';
+  const stage=document.createElement('div');stage.className='stage';stage.append(document.importNode(approvedSign,true));neonShell.append(stage);shadow.append(scoped,neonShell);
+  const sign=neonShell.querySelector('#neon-sign'),atlas=sign.querySelector('image#glass-atlas'),encoded=atlas?.getAttribute('href');
+  if(!encoded?.startsWith('data:image/jpeg;base64,')||encoded.length>1050000)throw Error('Approved neon image unavailable');
+  const bytes=Uint8Array.from(atob(encoded.slice('data:image/jpeg;base64,'.length)),character=>character.charCodeAt(0));
+  const atlasUrl=URL.createObjectURL(new Blob([bytes],{type:'image/jpeg'}));atlas.setAttribute('href',atlasUrl);
+  addEventListener('pagehide',()=>URL.revokeObjectURL(atlasUrl),{once:true});
+  const circuits=[...sign.querySelectorAll('.circuit')];sign.addEventListener('animationend',event=>{
+   if(event.animationName!=='energize'||!event.target.classList.contains('circuit'))return;
+   event.target.classList.add('ready');if(circuits.every(circuit=>circuit.classList.contains('ready')))neonShell.classList.add('steaming');
+  });
+  document.addEventListener('visibilitychange',()=>neonShell?.classList.toggle('backgrounded',document.hidden));
+ }catch(error){console.warn('Approved neon unavailable',error?.message||'unknown');byId('neon-fallback').hidden=false;}
+ scheduleAuto();
+}
+buildChapters();activeChapter();updateFeatureRotation();attachApprovedNeon();
+reducedMotion.addEventListener('change',()=>{if(reducedMotion.matches)cancelAuto();updateFeatureRotation();renderStage(stageIndex<0?0:stageIndex);});
+document.addEventListener('visibilitychange',updateFeatureRotation);
