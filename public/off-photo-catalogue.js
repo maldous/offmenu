@@ -1,3 +1,5 @@
+import {retainedCataloguePhotoAttribution} from './off-photo-metadata.js';
+export {extractRetainedOFFPhotos} from './off-photo-metadata.js';
 // Exact publisher photo URLs verified by Morgan on 25 October 2026 and relayed
 // through Gateway. These are current publisher observations, not retained-image
 // index results or proof that a photo belongs to a historical snapshot.
@@ -37,5 +39,6 @@ export function selectedPublisherPhotos(reference,detail) {
       contributor:photo.contributor,contributorRole:'publisher-reported-uploader; independent-authorship-unverified'},
     rights:{displayPermitted:true,license:photo.license,attribution:'Open Food Facts · contributor '+photo.contributor,
       licenseUrl:photo.licenseUrl,sourcePage:photo.sourcePage,photoLicensePage:photo.licensePage,
-      changes:'Image bytes relayed unchanged; displayed to fit.',evidenceReference:'docs/off-publisher-photos.md#'+photo.key}}));
+      changes:'Image bytes relayed unchanged; displayed to fit.',evidenceReference:'docs/off-publisher-photos.md#'+photo.key,
+      attributionDetails:retainedCataloguePhotoAttribution(photo,reference.sourceLexicalValue)}}));
 }

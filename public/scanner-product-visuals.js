@@ -22,12 +22,17 @@ export function mountScannerProductVisual(thumbnail,captionRoot,{onChange=()=>{}
     }else thumbnail.append(text('span',result.text));
     captionRoot.append(text('p',result.caption));
     if(result.tier==='product-photo'){
-      captionRoot.append(text('p','Current publisher photo; membership in the retained snapshot is unverified.'));
-      for(const [label,url] of [['Photo source',result.rights.sourcePage],['Photo licence',result.rights.photoLicensePage],
+      const details=text('details',''),credit=result.rights.attributionDetails;
+      details.append(text('summary','Photo source and licence'),text('p',result.rights.attribution));
+      details.append(text('p','Current publisher photo; membership in the retained snapshot is unverified.'));
+      for(const [label,url] of [['Product on Open Food Facts',credit?.productUrl||result.rights.sourcePage],['Photo source',result.rights.sourcePage],['Photo licence',result.rights.photoLicensePage],
         [result.rights.license,result.rights.licenseUrl]]){
-        const link=text('a',label);link.href=url;link.target='_blank';link.rel='noopener noreferrer';captionRoot.append(link);
+        const link=text('a',label);link.href=url;link.target='_blank';link.rel='noopener noreferrer';details.append(link);
       }
-      captionRoot.append(text('p',result.rights.changes));
+      for(const notice of credit?.notices||[])details.append(text('p',notice.field+': '+notice.text));
+      details.append(text('p',result.rights.changes));
+      if(credit?.packagingRights?.qualification)details.append(text('p',credit.packagingRights.qualification));
+      captionRoot.append(details);
     }
     if(notify)onChange(result);return result;
   }
