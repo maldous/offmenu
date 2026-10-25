@@ -4,6 +4,7 @@ Reuses the accepted Python projector. No source IO, SourceContract constructor,
 count/ID witness, runtime binding, resource selection or permission factory.
 """
 from dataclasses import dataclass
+from copy import deepcopy
 from functools import lru_cache
 import re
 
@@ -38,6 +39,25 @@ def native_schemas():
         'system':{'const':'barcode'},'value':code})}
     basis=_object({'amount':{'const':100},'unit':{'enum':['g','ml']},
         'state':{'const':'as-sold'},'qualificationStatus':{'const':'unverified-source-assertions'}})
+    # Match only the pinned projector's selected original keys/version family.
+    # Unknown JSON within a selected source property value stays source-native;
+    # arbitrary category-looking top-level keys remain forbidden.
+    version_key='^'+adapters._OFF_CATEGORY_VERSION_KEY.pattern+'$'
+    category_values={'type':'object',
+        'properties':{key:{'$ref':'#/$defs/json'} for key in adapters._OFF_CATEGORY_FIELDS},
+        'patternProperties':{version_key:{'$ref':'#/$defs/json'}},
+        'additionalProperties':False}
+    category_state=_object({'state':{'enum':['missing','null','present']},
+        'sourcePointer':{'type':['string','null'],'pattern':'^/'}})
+    category_states=_object({key:category_state for key in adapters._OFF_CATEGORY_FIELDS})
+    category_states['patternProperties']={version_key:category_state}
+    category_evidence=_object({
+        'projectionVersion':{'const':adapters.OFF_CATEGORY_FIELD_VERSION},
+        'qualificationStatus':{'const':'unverified-source-assertions'},
+        'fields':category_states,
+        'sourceVersionKeys':{'type':'array','uniqueItems':True,
+            'items':{'type':'string','pattern':version_key}},
+        'sourceTaxonomyVersionStatus':{'enum':['unknown','unverified-source-assertions']}})
     nutrients={}
     for field,(name,unit) in adapters._OFF_NUTRIENTS.items():
         nutrients[name]=_object({'value':{'type':['number','null']},
@@ -51,6 +71,7 @@ def native_schemas():
             'rawNutriments':{'type':'object','additionalProperties':{'$ref':'#/$defs/json'}},
             'nutritionSourceBasis':nullable_text,
             'qualificationStatus':{'const':'unverified-source-assertions'},
+            'sourceCategoryFields':category_values,
             'nutritionId':{'type':'string','pattern':'^off:nutrientProfile:[0-9]{4,32}$'}}),
         'nutrientProfile':_object({'foodName':{'type':'string','minLength':1},
             'identifiers':ids,'basis':basis,'nutrients':{
@@ -69,11 +90,17 @@ def native_schemas():
         'inputSha256':{'const':{'products':SOURCE.sha256}}})
     json_value={'anyOf':[scalar,{'type':'array','items':{'$ref':'#/$defs/json'}},
                             {'type':'object','additionalProperties':{'$ref':'#/$defs/json'}}]}
-    return {kind:{'$schema':'https://json-schema.org/draft/2020-12/schema',
+    result={}
+    for kind,shape in data.items():
+        record_provenance=deepcopy(provenance)
+        if kind=='product':
+            record_provenance['properties']['sourceCategoryFields']=category_evidence
+            record_provenance['required'].append('sourceCategoryFields')
+        result[kind]={'$schema':'https://json-schema.org/draft/2020-12/schema',
         '$defs':{'json':json_value},**_object({'schemaVersion':{'const':'1.0'},
         'kind':{'const':kind},'id':{'type':'string','pattern':'^off:'+kind+':[0-9]{4,32}$'},
-        'countries':{'const':[]},'data':shape,'provenance':provenance})}
-        for kind,shape in data.items()}
+        'countries':{'const':[]},'data':shape,'provenance':record_provenance})}
+    return result
 
 
 @lru_cache(maxsize=1)

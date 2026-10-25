@@ -114,6 +114,30 @@ evidence remain separate. `UNRUN`, `PENDING` and `DEFERRED_RELEASE` are never
 `PASS`. Reused scoped evidence does not manufacture
 a green required CI context for a new commit.
 
+## Carry scoped evidence into integration
+
+Keep the same owner/peer pair for a coupled interface through its concrete
+corrections. Pass one canonical result ID with short deltas, already-granted
+authority, exact source/artifact pins, tested boundary, remaining dependency
+and its owner. See the maintainer guide's
+[coordination and delivery states](../maintainer.md#coordination-and-delivery-states).
+Worker00's shared mutation lock can delay application without blocking another
+owner's disjoint patch, generated fixture or already-qualified preparation.
+Never use that parallelism to read held data or activate an unapproved runtime.
+
+During development, run materially affected checks and the necessary auth,
+isolation and data-loss regressions. Reuse unchanged valid evidence by exact
+reference; full frozen-release and mandatory provider checks retain their actual
+scope. Record ready, placed, tested, integrated, qualified, mounted and usable
+separately. A patch plus a passing test is not a consumer usability receipt.
+
+Use source-event times separately from ledger-write times when reporting those
+transitions. Ready-to-usable, waiting, rework and cost measurements come only
+from matching existing receipts; absent evidence is `UNKNOWN`, not zero or a
+claimed saving. Preserve earlier failures and completed scope in existing
+custody. A docs-only alignment needs focused static checks and a guarded inverse
+patch, not a new telemetry system, full-suite replay or optional signoff cycle.
+
 ## Thorough validation at the release boundary
 
 At the coherent release cut, run the full existing baseline and every actual
@@ -123,7 +147,10 @@ configuration, generated-extension, all web and edge tests, Python, explicit
 receipt OCR and the normal build. The generated-file guard runs before build,
 and build runs before edge tests that load `dist/worker.mjs`. The build already
 includes `i18n:check`, so the local wrapper omits that duplicate invocation.
-Existing provider workflows and their required contexts remain unchanged.
+The Third-party services workflow retains this full validation as an explicit
+manual release action. Its automatic push and PR triggers are disabled by owner
+direction; development uses affected checks. Other workflows and actual required
+security or branch contexts remain unchanged.
 
 Choose the wrapper or the corresponding direct baseline, rather than running
 both. Do not add `test:auth` after full web and edge suites that already include
@@ -144,10 +171,12 @@ The workflow also names its portable receipt-OCR checks. Preserve them where
 required, along with current branch protection and reviewed security/data
 regressions. Source CI configuration does not by itself reveal the hosted
 branch-protection rules: the integrator verifies those actual required contexts.
-This page does not disable, replace or silently defer any of them. If provider
-CI currently runs the full suite on a PR, that run still applies. These local
-workflow selections do not edit CI configuration or hosted branch protection;
-reduce churn through coherent grouped PRs, not bypasses. Keep optional
+Removing the Third-party services automatic triggers does not waive a real
+required security or branch context. If one remains required, report that precise
+constraint rather than invent a pass or change branch protection. Preserve old
+failed runs as failures. Manual dispatch availability must be qualified separately
+because GitHub requires the workflow on the default branch; no `main` promotion
+or production action follows here. Keep optional
 external scans under their existing explicit configuration and holds; Sonar's
 current deferral is not a passing scan.
 

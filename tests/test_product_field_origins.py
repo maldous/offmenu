@@ -3,6 +3,7 @@ from dataclasses import replace
 import json
 import sqlite3
 import unittest
+from unittest.mock import patch
 
 import test_product_adapters as fixtures
 from offmenu.refresh.core import RefreshError, canonical
@@ -54,6 +55,47 @@ class ProductFieldOriginsTest(unittest.TestCase):
     def test_off_explicit_null_is_source(self):
         e, rows = self.prepare(brands=None)
         self.assertEqual(self.assert_covered(e, rows)[0]['provenance']['fieldOrigins']['/data/brand']['kind'], 'source')
+
+    def test_off_category_present_null_missing_and_nested_source_pointers(self):
+        e, rows = self.prepare(categories=None, categories_tags=['fr:Original', 'en:Other'],
+            categories_properties={'a/b~c': {'values': [None, False, '0007']}},
+            lang='fr', categories_taxonomy_version='source-v0',
+            categories_contributor_email='DO NOT PROJECT')
+        product = self.assert_covered(e, rows)[0]
+        values = product['data']['sourceCategoryFields']
+        origins = product['provenance']['fieldOrigins']
+        self.assertIsNone(values['categories'])
+        self.assertNotIn('food_groups', values)
+        self.assertNotIn('categories_contributor_email', values)
+        self.assertEqual(origins['/data/sourceCategoryFields/categories']['sourceField'], '/categories')
+        self.assertEqual(origins['/data/sourceCategoryFields/categories']['kind'], 'source')
+        self.assertEqual(origins['/data/sourceCategoryFields/categories_tags/1']['sourceField'], '/categories_tags/1')
+        for index in range(3):
+            pointer = '/data/sourceCategoryFields/categories_properties/a~1b~0c/values/' + str(index)
+            self.assertEqual(origins[pointer]['sourceField'], '/categories_properties/a~1b~0c/values/' + str(index))
+            self.assertEqual(origins[pointer]['line'], 1)
+        self.assertEqual(origins['/data/sourceCategoryFields/categories_taxonomy_version']['sourceField'],
+                         '/categories_taxonomy_version')
+        self.assertFalse(any(p.startswith('/data/sourceCategoryFields/food_groups') for p in origins))
+        evidence = product['provenance']['sourceCategoryFields']['fields']
+        self.assertEqual(evidence['categories']['state'], 'null')
+        self.assertEqual(evidence['food_groups'], {'state': 'missing', 'sourcePointer': None})
+
+    def test_off_forged_category_values_or_provenance_cannot_gain_origins(self):
+        e, rows = self.prepare(categories_tags=['fr:Original'])
+        rows[0]['data']['sourceCategoryFields']['categories_contributor_profile'] = 'DO NOT PROJECT'
+        with self.assertRaisesRegex(RefreshError, 'projection-mismatch'):
+            e.emit(rows[0])
+        del rows[0]['data']['sourceCategoryFields']['categories_contributor_profile']
+        rows[0]['provenance']['sourceCategoryFields']['fields']['categories_tags']['sourcePointer'] = '/owner'
+        with self.assertRaisesRegex(RefreshError, 'category-evidence-mismatch'):
+            e.emit(rows[0])
+
+    def test_adapter_pin_check_remains_fail_closed(self):
+        e, _ = self.prepare()
+        with patch('offmenu.refresh.product_field_origins.ADAPTER_SHA256', '0'*64):
+            with self.assertRaisesRegex(RefreshError, 'adapter-pin-mismatch'):
+                ProductOriginEmitter(e.context, e.db, e.inputs)
 
     def test_off_name_barcode_fallback_and_ml_basis(self):
         e, rows = self.prepare(product_name='', nutrition_data_per='100ml')

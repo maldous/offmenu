@@ -87,6 +87,49 @@ class OffNativePolicyTests(unittest.TestCase):
                                  raw.get('product_name_en') or '00123')
             self.assertIsNone(records(raw)[0]['data']['ingredientsText'])
 
+    def test_category_raw_values_missing_null_paths_and_version_match_closed_schema(self):
+        raw = source()
+        raw.update(categories=None, categories_tags=['fr:Original', 'en:Other'],
+            categories_hierarchy=[['fr:Parent', 'fr:Leaf'], ['en:Other', 'fr:Leaf']],
+            categories_properties={'a/b~c': [None, False, {'code': '0007'}]},
+            lang='fr', lc='en', categories_taxonomy_version='synthetic-source-v0')
+        product, profile = records(raw)
+        self.assertEqual(self.errors(product, raw), [])
+        self.assertEqual(self.errors(profile, raw), [])
+        values = product['data']['sourceCategoryFields']
+        for key in ['categories', 'categories_tags', 'categories_hierarchy',
+                    'categories_properties', 'lang', 'lc', 'categories_taxonomy_version']:
+            self.assertEqual(values[key], raw[key])
+        self.assertNotIn('food_groups', values)
+        states = product['provenance']['sourceCategoryFields']['fields']
+        self.assertEqual(states['categories'], {'state': 'null', 'sourcePointer': '/categories'})
+        self.assertEqual(states['food_groups'], {'state': 'missing', 'sourcePointer': None})
+        self.assertNotIn('sourceCategoryFields', profile['provenance'])
+
+    def test_category_closed_keys_and_provenance_forbid_contributor_ingress_and_disposition(self):
+        raw = source(); raw['categories_contributor_email'] = 'DO NOT PROJECT'
+        product, profile = records(raw)
+        self.assertEqual(self.errors(product, raw), [])
+        self.assertNotIn('categories_contributor_email', product['data']['sourceCategoryFields'])
+        for field in ['categories_contributor_email', 'categories_contributor_profile']:
+            forged = deepcopy(product); forged['data']['sourceCategoryFields'][field] = 'private'
+            self.assertIn('off-native-schema-invalid', self.errors(forged, raw))
+            forged = deepcopy(product)
+            forged['provenance']['sourceCategoryFields']['fields'][field] = {'state': 'present', 'sourcePointer': '/' + field}
+            self.assertIn('off-native-schema-invalid', self.errors(forged, raw))
+        forged = deepcopy(product)
+        forged['data']['categoryDisposition'] = {'state': 'ambiguous-unknown'}
+        self.assertIn('off-native-schema-invalid', self.errors(forged, raw))
+        forged = deepcopy(profile)
+        forged['provenance']['sourceCategoryFields'] = product['provenance']['sourceCategoryFields']
+        self.assertIn('off-native-schema-invalid', self.errors(forged, raw))
+
+    def test_forged_category_provenance_state_is_not_source_evidence(self):
+        raw = source(); raw['categories'] = None
+        product = records(raw)[0]
+        product['provenance']['sourceCategoryFields']['fields']['categories']['state'] = 'missing'
+        self.assertIn('off-native-source-provenance-mismatch', self.errors(product, raw))
+
     def test_both_kinds_require_source_authority_even_if_self_consistent(self):
         unbound=policy.UnboundOffSemantics(self.ctx)
         for row in self.rows:

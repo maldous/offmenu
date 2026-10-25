@@ -46,9 +46,14 @@ local checks and thorough release validation, group coherent PRs and reuse exact
 evidence. Fast iteration does not waive required branch checks; checks not run
 remain explicitly unrun. The baseline sequence below is retained.
 
-The baseline workflow in `.github/workflows/third-party-services.yml` runs the
-configuration check, web tests, locale check, build, edge tests and Python suite.
-From the prepared checkout:
+The manual baseline workflow in `.github/workflows/third-party-services.yml`
+retains the configuration check, web tests, locale check, build, edge tests and
+Python suite for explicit release validation. It has no automatic push or PR
+trigger. During development, select the materially affected checks below;
+preserve actual required security and branch checks. A retained manual declaration
+does not prove hosted dispatch is available: the workflow must also exist on the
+default branch, and this change does not promote it to `main`.
+For an explicit full validation from the prepared checkout:
 
 ```sh
 node scripts/verify-third-party-config.mjs
@@ -194,6 +199,80 @@ preservation, ledger migration, issue closure and completion of the underlying
 work are distinct facts. Use the actual migration result when reconciling them;
 no migration completion is asserted by this guide. Do not create replacement
 OffMenu task issues or duplicate that preservation work.
+
+## Coordination and delivery states
+
+Keep the existing implementation owner and peer together while a coupled
+contract moves through clarification, correction and integration. Confirm their
+disjoint file/interface boundaries; do not allocate a new owner for each small
+helper or create another coordinator. Worker00 remains the shared mutation and
+integration owner. That lock does not stop useful parallel work: existing owners
+can prepare their own frozen patches, generated fixtures, qualified metadata and
+focused checks within granted scope while shared application waits. It grants
+no access to held source bodies or permission to start a paused job.
+
+Use supported direct local-to-local or durable-to-durable specialist artifact
+clarification where the existing human grant covers it. Gateway handles
+cross-boundary routing, milestones, scheduling and escalation. Preserve the
+specific UI and 14117 denied/uncertain-route exceptions; direct peer permission
+does not authorize a retry, proxy sender or security change. A direct exchange
+does not transfer source ownership or the shared write lock.
+
+Carry the already-granted authority and its source reference in each handoff,
+with the exact task, owner/peer, native session, source commit and artifact hashes,
+affected interface, checks, holds, dependency owner and next concrete action.
+Do not ask again for an action already within that grant. Missing permission or
+an actual denial remains explicit; a message cannot broaden the grant. Keep one
+canonical result ID for the finite deliverable and send short, source-bound
+deltas referring to it instead of repeatedly copying a full handover. Preserve
+immutable prior events and artifacts; changed evidence gets a linked delta or
+superseding result, never different content under an already-recorded event ID.
+
+Record each observed state independently in that same ledger:
+
+| State | Evidence required; what it establishes |
+| --- | --- |
+| Dispatched | Supported transport envelope; admission alone proves no wake or pickup. |
+| Picked up | Actual owner session/turn and scoped read acknowledgment. |
+| Result/artifact ready | Frozen result ID, artifacts, source pins and scoped checks; dependencies may remain open. |
+| Placed | Exact patch/files applied in a named checkout; placement may still be uncommitted WIP. |
+| Tested | Actual check and result on those exact inputs; reused and unrun checks remain distinct. |
+| Integrated | Accepted integration commit/provider receipt, separately from local placement or a private push. |
+| Qualified | Exact source-use, custody, store, identity/auth, resource and operation qualifications for the selected effect. |
+| Mounted | Actual running instance binds the selected code/build/configuration; source integration alone is insufficient. |
+| Usable | The affected consumer behavior works on that qualified instance/input, with its remaining limits stated. |
+
+These are evidence distinctions, not permission to execute the next stage or a
+new mandatory audit sequence. For example, qualification needed before a source
+read must precede that read. A finished author's scope can remain retained while
+integration or usability is pending; neither a title nor an acknowledgment closes
+those dependencies. Record only the blocker on the affected scope and keep
+independent already-authorized preparation moving.
+
+Keep source-event timestamps, their timezone and origin separate from ledger
+record timestamps. A late ledger append cannot establish when execution began,
+and sequence order is not a substitute for source-event chronology. From existing
+receipts, report ready-to-usable time only when both matching endpoints exist.
+Identify measured waiting and rework spans by their actual evidence; do not
+infer idle time from silence or subtract unrelated intervals. Missing endpoints,
+wait causes, token/cost attribution or causal speedup stay `UNKNOWN`, with the
+available observation window. This uses existing receipts, not new telemetry.
+
+Two examples from 25 October 2026 show why these distinctions matter:
+
+| Existing receipt | Correct interpretation |
+| --- | --- |
+| Image index v3, terminal failure16475 and disposition16479 | One actual attempt failed with `field_count_limit` after committing an **unqualified 13,312-occurrence prefix**. Execution was not zero. Full EOF/hash/extent and target validation did not complete; normalized, mapped and Gold-admitted counts remained zero. Retain the failed prefix and consumed admission; no automatic retry or source reread follows. |
+| PR130 provider timestamps,03:09:46–03:21:14UTC (14:09:46–14:21:14AEDT) | **11m28s is creation-to-merge PR time only**, not task duration, ready-to-usable time, a measured wait/rework reduction or a cost/speedup claim. Develop integration did not activate the runtime or admit source data. |
+
+Keep completed scope, unique partial outputs, failure evidence and source/resume
+pointers in their existing custody. Completion does not authorize destroying
+them or another owner's cwd, processes or locks. Release only owned disposable
+fixtures after custody/dependency checks, or retain them with an exact reason.
+Apply documentation with its coherent implementation group; a small reversible
+guidance correction does not need a new formal review gate, tracker or micro-PR.
+Existing required checks, source/privacy/ownership/permission holds, Sonar
+deferral, paused normalization, production and CIX boundaries still apply.
 
 ## Private data and data lifecycle
 

@@ -9,6 +9,7 @@ Malformed releases fail atomically; retry the same immutable inputs in a fresh
 staging directory. A completed identical contract is checksum-verified and reused.
 """
 from contextlib import closing
+from copy import deepcopy
 from dataclasses import asdict, dataclass
 import csv
 import gzip
@@ -30,6 +31,17 @@ from .product_clock import clock_marker, validate_clock
 
 MIN_CACHE_SECONDS = 30 * 86400
 VERSION = 'offmenu-products-offline/2'
+OFF_CATEGORY_FIELD_VERSION = 'offmenu-off-source-category-fields/1'
+
+# Original source keys, never a translated taxonomy or a composition claim.
+_OFF_CATEGORY_FIELDS = (
+    'categories', 'categories_tags', 'categories_hierarchy', 'categories_lc',
+    'categories_properties', 'categories_properties_tags', 'category_properties',
+    'food_groups', 'food_groups_tags', 'food_groups_hierarchy',
+    'lang', 'lc', 'languages_codes',
+)
+_OFF_CATEGORY_VERSION_KEY = re.compile(
+    r'(?:categories|category|food_groups|taxonomy|taxonomies)_(?:taxonomy_)?versions?')
 
 
 @dataclass(frozen=True)
@@ -287,6 +299,27 @@ _USDA_NUTRIENTS = {'1008': 'energy', '1003': 'protein', '1004': 'fat',
     '1258': 'saturatedFat', '1087': 'calcium', '1089': 'iron', '1092': 'potassium', '1162': 'vitaminC'}
 
 
+def _off_category_fields(row):
+    # Only copy source keys that are present. Missing, null, empty and literal
+    # unknown values must not collapse into a fabricated empty category list.
+    versions = sorted(key for key in row if _OFF_CATEGORY_VERSION_KEY.fullmatch(key))
+    keys = (*_OFF_CATEGORY_FIELDS, *versions)
+    values = {key: deepcopy(row[key]) for key in keys if key in row}
+    evidence = {
+        'projectionVersion': OFF_CATEGORY_FIELD_VERSION,
+        'qualificationStatus': 'unverified-source-assertions',
+        'fields': {key: {
+            'state': 'missing' if key not in row else 'null' if row[key] is None else 'present',
+            'sourcePointer': '/' + key if key in row else None,
+        } for key in keys},
+        # A source-supplied version key is preserved, not interpreted as proof
+        # of which taxonomy it governs. Never substitute our adapter version.
+        'sourceVersionKeys': versions,
+        'sourceTaxonomyVersionStatus': 'unverified-source-assertions' if versions else 'unknown',
+    }
+    return values, evidence
+
+
 def _off(context, row):
     key = str(row['code'])
     identifiers = [{'system': 'barcode', 'value': key}]
@@ -301,12 +334,16 @@ def _off(context, row):
                        'sourceAmount': raw_nutrients[field], 'sourceField': field, 'method': 'source'}
                  for field, (name, unit) in _OFF_NUTRIENTS.items() if field in raw_nutrients}
     name = row.get('product_name') or row.get('product_name_en') or key
-    yield _record(context, 'product', key, {'name': name, 'identifiers': identifiers,
+    category_fields, category_evidence = _off_category_fields(row)
+    product = _record(context, 'product', key, {'name': name, 'identifiers': identifiers,
         'brand': row.get('brands'), 'ingredientsText': row.get('ingredients_text'),
         'sourceCountryTags': row.get('countries_tags', []), 'rawNutriments': raw_nutrients,
         'nutritionSourceBasis': row.get('nutrition_data_per'),
         'qualificationStatus': 'unverified-source-assertions',
+        'sourceCategoryFields': category_fields,
         'nutritionId': f'off:nutrientProfile:{key}'}, countries)
+    product['provenance']['sourceCategoryFields'] = category_evidence
+    yield product
     yield _record(context, 'nutrientProfile', key, {'foodName': name, 'identifiers': identifiers,
                   'basis': basis, 'nutrients': nutrients}, countries)
 
@@ -407,6 +444,15 @@ def _candidate_manifest(context, files, contract, hashes, raw_rows, count, kinds
         'accepted': False}
 
 
+def _product_contract(context, limits, files):
+    contract = {'context': asdict(context), 'limits': asdict(limits), 'inputFiles': files,
+                'adapterVersion': VERSION,
+                'clockPolicySha256': hashlib.sha256(Path(product_clock.__file__).read_bytes()).hexdigest()}
+    if context.source_id == 'off':
+        contract['offCategoryFieldProjectionVersion'] = OFF_CATEGORY_FIELD_VERSION
+    return contract
+
+
 def normalize_products(context, inputs, destination, *, limits=ProductLimits()):
     """Make private candidate files, never an admission. inputs are role -> Path:
 
@@ -428,8 +474,7 @@ def normalize_products(context, inputs, destination, *, limits=ProductLimits()):
         raise RefreshError('product-input-limit')
     files = [{'role': role, 'path': path.name, 'bytes': path.stat().st_size, 'sha256': _hash(path)}
              for role, path in sorted(paths.items())]
-    contract = {'context': asdict(context), 'limits': asdict(limits), 'inputFiles': files, 'adapterVersion': VERSION,
-                'clockPolicySha256': hashlib.sha256(Path(product_clock.__file__).read_bytes()).hexdigest()}
+    contract = _product_contract(context, limits, files)
     destination = _safe(destination)
     if destination.exists():
         manifest_path = _safe(destination / 'manifest.json')

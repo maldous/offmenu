@@ -139,7 +139,7 @@ def prepare_product_detail_manifest(assets):
 OFF_LEGACY_PRODUCT_KEYS = frozenset(('name', 'names', 'identifiers', 'brand', 'pack',
     'ingredientsText', 'allergens', 'traces', 'labels', 'categories', 'origins',
     'manufacturingPlaces', 'nutritionSourceBasis', 'rawNutriments',
-    'qualificationStatus', 'nutritionId'))
+    'qualificationStatus', 'nutritionId', 'sourceCategoryFields', 'categoryDisposition'))
 USDA_NATIVE_PRODUCT_KEYS = frozenset(('name', 'identifiers', 'brand', 'dataType',
     'ingredientsText', 'marketCountry', 'serving', 'nutritionId'))
 PRODUCT_KEYS_BY_REPRESENTATION = {
@@ -157,7 +157,8 @@ def _fields(packet, representation):
         'servingQuantity': ('serving',), 'dataType': ('dataType',), 'ingredientDeclaration': ('ingredientsText',),
         'categories': ('categories',), 'sourceAllergenClaims': ('allergens',), 'sourceTraceClaims': ('traces',),
         'sourceDietaryLabelClaims': ('labels',), 'origins': ('origins',), 'manufacturingPlaces': ('manufacturingPlaces',),
-        'rawNutriments': ('rawNutriments',), 'nutritionSourceBasis': ('nutritionSourceBasis',)}
+        'rawNutriments': ('rawNutriments',), 'nutritionSourceBasis': ('nutritionSourceBasis',),
+        'sourceCategoryFields': ('sourceCategoryFields',), 'categoryDisposition': ('categoryDisposition',)}
     evidence = hashlib.sha256(readers.canonical(packet)).hexdigest(); result = {}
     def field(value, present, pointer, available=True):
         state = ('present' if value is not None else 'null') if present else ('missing' if available else 'not-loaded')
