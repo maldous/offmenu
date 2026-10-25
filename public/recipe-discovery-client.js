@@ -1,6 +1,6 @@
 import {assertCurated} from '../corpus/assert-curated.mjs';
 
-const MANIFEST='https://offmenu-corpus.netlify.app/recipes/manifest.json';
+const MANIFEST='/recipes/manifest.json';
 const digest=async bytes=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),b=>b.toString(16).padStart(2,'0')).join('');
 async function boundedJSON(response,limit){
  if(!response.ok)throw Error('Shared recipes unavailable ('+response.status+').');
