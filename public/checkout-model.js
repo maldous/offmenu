@@ -7,7 +7,9 @@ export function finishInventory(existing,session){
  const items=session.items.map(item=>({...item,location,checkedAt:session.startedAt}));
  if(new Set(items.map(i=>i.id)).size!==items.length)throw Error(t('Duplicate checkout items.'));
  const retained=session.mode==='shelf'?existing.filter(item=>item.location?.area!==location.area||item.location?.shelf!==location.shelf):existing;
- return [...retained,...items];
+ const updated=[...retained,...items];
+ if(new Set(updated.map(i=>i.id)).size!==updated.length)throw Error(t('Duplicate checkout items.'));
+ return updated;
 }
 export function nutritionRows(product){
  const n=product?.nutriments||{};
