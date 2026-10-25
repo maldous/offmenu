@@ -50,7 +50,7 @@ const controller=createAuthController({configuration:()=>read('/api/auth-page/co
       button.onclick=()=>controller.providerSignIn(provider);$('auth-providers').append(button);
     }
     $('auth-provider-status').hidden=state!=='ready'||oauthReady||!providers.length;
-    $('auth-provider-status').textContent='Provider sign-in is waiting for callback setup on this address. Email sign-in is available.';
+    $('auth-provider-status').textContent='Provider sign-in compatibility has not yet been verified for this address. You can sign in with email.';
     $('continue-scanner').hidden=state!=='signed-in';$('signout').hidden=state!=='signed-in';
     if(state==='signed-in')void loadConsent().catch(()=>{$('provider-consent-status').textContent='Terms for this connection are unavailable.';});
     else $('provider-consent').hidden=true;

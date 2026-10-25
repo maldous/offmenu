@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4036,
+  "messages": 3955,
   "arabicTranslated": 376,
-  "arabicMissing": 3660,
+  "arabicMissing": 3579,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -175,12 +175,6 @@
       ],
       "arabic": false
     },
-    " already loaded source observations retained. ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     " but it wasn't found.": {
       "sources": [
         "public/scanner-three.js"
@@ -215,6 +209,12 @@
       "sources": [
         "public/app.js",
         "public/household-model.js"
+      ],
+      "arabic": false
+    },
+    " for public lookup. No inventory change yet.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -261,6 +261,12 @@
       ],
       "arabic": false
     },
+    " published source product record(s). Source claims are attributed; ingredient suitability is not inferred.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     " quantities need measurement": {
       "sources": [
         "public/recipe-library-ui.js"
@@ -291,30 +297,6 @@
       ],
       "arabic": false
     },
-    " source identifier records · ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    " source observations retained; retry lane": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    " source observations · inspect alternatives and load selected details; no physical-product winner": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    " source observations; not physical-product or ingredient counts. ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     " source records": {
       "sources": [
         "public/shelf-scanner.js"
@@ -322,12 +304,6 @@
       "arabic": false
     },
     " source-record matches": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    " source-record matches · release ": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -342,18 +318,6 @@
     " texture units while this GPU supports only ": {
       "sources": [
         "public/scanner-three.js"
-      ],
-      "arabic": false
-    },
-    " to exercise separate test state": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    " using the selected retained identifier release. No inventory change yet.": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -399,12 +363,6 @@
       ],
       "arabic": false
     },
-    " · audit observations ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     " · basis unknown; no interpreted amount": {
       "sources": [
         "public/shelf-scanner.js"
@@ -430,12 +388,6 @@
       ],
       "arabic": false
     },
-    " · discard context: 1 invented pack, reason exercise. No real pantry changes.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     " · entered ": {
       "sources": [
         "public/journey-ui.js"
@@ -454,12 +406,6 @@
       ],
       "arabic": false
     },
-    " · invented scenario decision, not accepted mapping evidence.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     " · isolated local namespace; no account or cloud sync": {
       "sources": [
         "public/app.js"
@@ -469,24 +415,6 @@
     " · labelled ": {
       "sources": [
         "public/app.js"
-      ],
-      "arabic": false
-    },
-    " · lot packs ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    " · memory only": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    " · native record ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -505,6 +433,12 @@
     " · public composition records: ": {
       "sources": [
         "public/data-workspace.js"
+      ],
+      "arabic": false
+    },
+    " · record ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -535,8 +469,7 @@
     },
     " · source ": {
       "sources": [
-        "public/app.js",
-        "public/shelf-scanner.js"
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -1827,6 +1760,12 @@
       ],
       "arabic": false
     },
+    "./generated.mjs": {
+      "sources": [
+        "cloud/production-entry.mjs"
+      ],
+      "arabic": false
+    },
     "./global-settings.mjs": {
       "sources": [
         "cloud/admin-settings.mjs",
@@ -1966,7 +1905,6 @@
         "public/product-visual-association.js",
         "public/recipe-review.js",
         "public/scanner-product-visuals.js",
-        "public/shelf-scanner.js",
         "public/stock-transition-model.js"
       ],
       "arabic": false
@@ -2102,12 +2040,6 @@
       ],
       "arabic": false
     },
-    "./scanner-identifiers.js": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "./scanner-model.js": {
       "sources": [
         "public/scanner-decode.js",
@@ -2115,19 +2047,13 @@
       ],
       "arabic": false
     },
-    "./scanner-product-visuals.js": {
+    "./scanner-product-visuals-production.js": {
       "sources": [
         "public/shelf-scanner.js"
       ],
       "arabic": false
     },
-    "./scanner-saved-result.js": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "./scanner-surrogate.js": {
+    "./scanner-production-lookup.js": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -2349,6 +2275,12 @@
       ],
       "arabic": false
     },
+    "/auth.html": {
+      "sources": [
+        "public/auth-return-bridge.js"
+      ],
+      "arabic": false
+    },
     "/data-workspace.html": {
       "sources": [
         "public/app.js",
@@ -2368,16 +2300,23 @@
       ],
       "arabic": false
     },
+    "/index.html": {
+      "sources": [
+        "cloud/production-entry.mjs"
+      ],
+      "arabic": false
+    },
     "/kitchen.html": {
       "sources": [
+        "cloud/production-entry.mjs",
         "public/app.js",
         "public/lifecycle-fixture.js"
       ],
       "arabic": false
     },
-    "/kitchen.html?scan=staged": {
+    "/landing.html": {
       "sources": [
-        "public/shelf-scanner.js"
+        "cloud/production-entry.mjs"
       ],
       "arabic": false
     },
@@ -2449,6 +2388,7 @@
     "/scanner-balanced-final-dark.svg": {
       "sources": [
         "public/product-visual-selector.js",
+        "public/scanner-product-visuals-production.js",
         "public/shelf-scanner.js"
       ],
       "arabic": false
@@ -2456,6 +2396,7 @@
     "/scanner-balanced-final.svg": {
       "sources": [
         "public/product-visual-selector.js",
+        "public/scanner-product-visuals-production.js",
         "public/shelf-scanner.js"
       ],
       "arabic": false
@@ -3872,12 +3813,6 @@
       ],
       "arabic": false
     },
-    "Attribution: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Audit": {
       "sources": [
         "public/scanner-surrogate.js"
@@ -3899,6 +3834,12 @@
     "Authentication is temporarily unavailable.": {
       "sources": [
         "cloud/auth-runtime.mjs"
+      ],
+      "arabic": false
+    },
+    "Authentication is unavailable.": {
+      "sources": [
+        "cloud/production-entry.mjs"
       ],
       "arabic": false
     },
@@ -4307,12 +4248,6 @@
       ],
       "arabic": false
     },
-    "Brand unavailable": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Brand · source assertion": {
       "sources": [
         "public/shelf-scanner.js"
@@ -4648,12 +4583,6 @@
     "Capture which parts of a meal were left behind.": {
       "sources": [
         "public/landing.js"
-      ],
-      "arabic": false
-    },
-    "Captured ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -5432,13 +5361,19 @@
       ],
       "arabic": false
     },
-    "Code captured · querying selected retained identifiers": {
+    "Code entered": {
       "sources": [
         "public/shelf-scanner.js"
       ],
       "arabic": false
     },
-    "Code entered": {
+    "Code read · checking available product records": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Code read · public product lookup unavailable for this release": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -5792,12 +5727,6 @@
       ],
       "arabic": false
     },
-    "Concept: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Confirm & finish": {
       "sources": [
         "public/index.html"
@@ -6065,15 +5994,15 @@
       ],
       "arabic": false
     },
-    "Continue bounded source search": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Continue on this device →": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Continue source search": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -6595,12 +6524,6 @@
       ],
       "arabic": false
     },
-    "Database: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Dataset discovery": {
       "sources": [
         "public/sources.js"
@@ -6679,12 +6602,6 @@
     "Days with records": {
       "sources": [
         "public/insights-ui.js"
-      ],
-      "arabic": false
-    },
-    "Decision: ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -6799,18 +6716,6 @@
       ],
       "arabic": true
     },
-    "Demo only. ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Demo · ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Dense ordinary array required": {
       "sources": [
         "public/meal-context-model.js"
@@ -6832,12 +6737,6 @@
     "DepthTexture: 16 bit depth attachment is not supported with stencil. Using 24-bit attachment.": {
       "sources": [
         "public/scanner-three.js"
-      ],
-      "arabic": false
-    },
-    "Derived camera alias: ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -6866,18 +6765,6 @@
       "arabic": false
     },
     "Detail coverage": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Detail state: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Details ": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -7558,12 +7445,6 @@
       ],
       "arabic": false
     },
-    "English / gold admission: not established": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "English food knowledge": {
       "sources": [
         "public/landing.js"
@@ -7898,12 +7779,6 @@
       ],
       "arabic": false
     },
-    "Evidence: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Exact current source identities unresolved": {
       "sources": [
         "cloud/business-identity-owner27.mjs"
@@ -7919,12 +7794,6 @@
     "Exact releaseId and manifestSha256 are required.": {
       "sources": [
         "cloud/provider-data.mjs"
-      ],
-      "arabic": false
-    },
-    "Exact saved source assertion selected · source disposition and any labelled representation retained. No ingredient use inferred.": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -7955,12 +7824,6 @@
     "Exact source detail unavailable": {
       "sources": [
         "public/scanner-identity-v2.js"
-      ],
-      "arabic": false
-    },
-    "Exact source disposition and labelled representation remain visible. Detail gaps do not erase identifiers.": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -9355,12 +9218,6 @@
       ],
       "arabic": false
     },
-    "Historical source reference retained, but not selected under this release. Inspect current source alternatives before making a new choice.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Historical source; measurements and text may require correction.": {
       "sources": [
         "public/recipe-library-ui.js"
@@ -9624,12 +9481,6 @@
       ],
       "arabic": false
     },
-    "Identity: lexical source assertion only; all collisions retained": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Illustration of the offmenu home checkout": {
       "sources": [
         "public/index.html",
@@ -9677,12 +9528,6 @@
     "Import recipes (offmenu JSON)": {
       "sources": [
         "public/index.html"
-      ],
-      "arabic": false
-    },
-    "Import rejected: ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -9889,6 +9734,12 @@
       ],
       "arabic": false
     },
+    "Inspect product record": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Inspect retained barcode ↗": {
       "sources": [
         "public/app.js"
@@ -9902,12 +9753,6 @@
       "arabic": false
     },
     "Inspect source information. No inventory changes.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Inspect source projection": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -11433,12 +11278,6 @@
       ],
       "arabic": false
     },
-    "License declaration: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Licensed full recipes with source ingredients, directions and reviewable quantities": {
       "sources": [
         "cloud/corpus.mjs"
@@ -11606,12 +11445,6 @@
       ],
       "arabic": false
     },
-    "Load selected source details": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Load synthetic arithmetic example": {
       "sources": [
         "public/data-workspace.html"
@@ -11719,12 +11552,6 @@
       ],
       "arabic": false
     },
-    "Logo: selected Balanced Final option12 raster artwork; final standalone vector pending": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Long grain rice": {
       "sources": [
         "public/app.js"
@@ -11780,12 +11607,6 @@
       ],
       "arabic": false
     },
-    "Lookup unavailable · ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Lookup unavailable.": {
       "sources": [
         "public/app.js",
@@ -11796,12 +11617,6 @@
     "Loose food": {
       "sources": [
         "public/landing.js"
-      ],
-      "arabic": false
-    },
-    "Lot: surrogate:lot:oats-01 · separate test state": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12306,12 +12121,6 @@
       ],
       "arabic": false
     },
-    "More selected lanes remain. ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "More selected lanes remain; no absence established.": {
       "sources": [
         "public/shelf-scanner.js"
@@ -12427,6 +12236,12 @@
       ],
       "arabic": false
     },
+    "Name not supplied": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Name or identifier": {
       "sources": [
         "public/data-workspace.html"
@@ -12442,12 +12257,6 @@
     "Name the AI agent for public attribution.": {
       "sources": [
         "public/recipe-community-ui.js"
-      ],
-      "arabic": false
-    },
-    "Name unavailable": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12524,12 +12333,6 @@
         "public/locales/ar.js"
       ],
       "arabic": true
-    },
-    "Native source line: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
     },
     "Needs checking for the selected diners": {
       "sources": [
@@ -12620,6 +12423,12 @@
       ],
       "arabic": false
     },
+    "Next source page is unavailable; loaded records remain visible.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Next →": {
       "sources": [
         "public/landing.js"
@@ -12649,12 +12458,6 @@
     "No camera frame yet": {
       "sources": [
         "public/scanner-ui.js"
-      ],
-      "arabic": false
-    },
-    "No canonical identity winner. Product name, ingredients and nutrients are not supplied by the identifier response.": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12692,12 +12495,6 @@
     "No final receipt has been confirmed yet.": {
       "sources": [
         "public/documents.js"
-      ],
-      "arabic": false
-    },
-    "No identity winner, usable_as mapping, English/gold or inventory eligibility inferred.": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12755,18 +12552,6 @@
       ],
       "arabic": false
     },
-    "No matching source-asserted identifier in selected retained generation · not global absence": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "No matching source-asserted identifier in the selected retained generation.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "No measured ingredient gaps. Check unmeasured ingredients below.": {
       "sources": [
         "public/app.js",
@@ -12792,12 +12577,6 @@
       ],
       "arabic": false
     },
-    "No product scanned · private saved-result connection not loaded": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "No purchase authority": {
       "sources": [
         "public/shopping-handoff-model.js"
@@ -12805,12 +12584,6 @@
       "arabic": false
     },
     "No qualified relation supplied by this selected response · unknown, not none.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "No real-source, supplier, recipe, nutrition or accepted-corpus links.": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -12974,6 +12747,7 @@
         "cloud/integrations.mjs",
         "cloud/kitchens.mjs",
         "cloud/personal-ai.mjs",
+        "cloud/production-entry.mjs",
         "cloud/provider-data.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs"
@@ -13288,6 +13062,7 @@
     },
     "OffMenu app icon; product photo unavailable": {
       "sources": [
+        "public/scanner-product-visuals-production.js",
         "public/scanner-product-visuals.js"
       ],
       "arabic": false
@@ -13310,7 +13085,7 @@
       ],
       "arabic": false
     },
-    "OffMenu ingredient: unmapped. No evidenced usable_as or contains links. Claims in the source name are not certifications.": {
+    "OffMenu ingredient: not yet identified. No ingredient use can be inferred from a barcode alone.": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -13531,7 +13306,7 @@
       ],
       "arabic": false
     },
-    "Open Food Facts source · retain attribution and ODbL/DbCL notices. Source claims are not independently certified; image and trademark reuse and public redistribution are not granted by this private display.": {
+    "Open Food Facts source · retain attribution and ODbL/DbCL notices. Source claims are not independently certified. Image and trademark permissions remain separate from product data rights.": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -13830,21 +13605,9 @@
       ],
       "arabic": false
     },
-    "Original ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Original camera capture unavailable or ambiguous. Type the code in the retained scanner.": {
       "sources": [
         "public/app.js"
-      ],
-      "arabic": false
-    },
-    "Original capture: ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -14305,12 +14068,6 @@
       ],
       "arabic": false
     },
-    "Photo / category icon: no qualified applicable binding": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Photo accepted ✓": {
       "sources": [
         "public/scanner-ui.js"
@@ -14615,12 +14372,6 @@
       ],
       "arabic": false
     },
-    "Primary detail reason: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Print / Save PDF ↓": {
       "sources": [
         "public/index.html"
@@ -14700,24 +14451,6 @@
       ],
       "arabic": false
     },
-    "Private retained barcode lookup · ready · no inventory actions": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Private retained identifier lookup": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Private retained source identifier observation": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Private service request limit reached. Try again next hour.": {
       "sources": [
         "cloud/service-support.mjs"
@@ -14794,18 +14527,30 @@
       ],
       "arabic": true
     },
+    "Product information is unavailable.": {
+      "sources": [
+        "cloud/production-entry.mjs"
+      ],
+      "arabic": false
+    },
+    "Product lookup": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Product lookup is unavailable for this release. Your scanned code is retained in this session; no product has been identified.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Product name": {
       "sources": [
         "public/index.html",
         "public/locales/ar.js"
       ],
       "arabic": true
-    },
-    "Product name / brand / package / ingredients / nutrients: unavailable in this identifier response": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
     },
     "Product not found.": {
       "sources": [
@@ -14822,6 +14567,12 @@
     "Product photo unavailable": {
       "sources": [
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Product photo unavailable for this published release": {
+      "sources": [
+        "public/scanner-product-visuals-production.js"
       ],
       "arabic": false
     },
@@ -14843,13 +14594,13 @@
       ],
       "arabic": false
     },
-    "Product · source assertion": {
+    "Product status unavailable": {
       "sources": [
         "public/shelf-scanner.js"
       ],
       "arabic": false
     },
-    "Product: ": {
+    "Product · source assertion": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -15081,7 +14832,7 @@
       ],
       "arabic": false
     },
-    "Provider sign-in is waiting for callback setup on this address. Email sign-in is available.": {
+    "Provider sign-in compatibility has not yet been verified for this address. You can sign in with email.": {
       "sources": [
         "public/auth.js"
       ],
@@ -15162,6 +14913,12 @@
     "Public national lookups; bulk reuse / API permission not verified.": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Public product lookup is unavailable until a qualified release and manifest are selected. This scan has no source record or product details.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -15249,6 +15006,12 @@
       ],
       "arabic": false
     },
+    "Published source record; claims are attributed, not independently certified.": {
+      "sources": [
+        "public/scanner-production-lookup.js"
+      ],
+      "arabic": false
+    },
     "Publisher reuse: attribution and unchanged data": {
       "sources": [
         "public/sources.js"
@@ -15273,18 +15036,6 @@
         "public/locales/ar.js"
       ],
       "arabic": true
-    },
-    "Qualification pin: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Qualification: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
     },
     "Qualified HTTPS endpoint": {
       "sources": [
@@ -15731,7 +15482,7 @@
       ],
       "arabic": false
     },
-    "Real source records retain ambiguity, provenance and missing mappings. No inventory action is enabled.": {
+    "Ready · scan or enter a code": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -16041,12 +15792,6 @@
       ],
       "arabic": false
     },
-    "Record: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Recorded cleanup evidence": {
       "sources": [
         "public/integration-owner03.mjs"
@@ -16156,12 +15901,6 @@
       ],
       "arabic": false
     },
-    "Relationship: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Release evidence": {
       "sources": [
         "public/care-ui.js"
@@ -16177,12 +15916,6 @@
     "Release requires a reviewed proposal and release reference.": {
       "sources": [
         "cloud/care-cases.mjs"
-      ],
-      "arabic": false
-    },
-    "Release: ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -16419,12 +16152,6 @@
       ],
       "arabic": false
     },
-    "Required role states and reasons: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Requires ": {
       "sources": [
         "cloud/integrations.mjs"
@@ -16553,12 +16280,6 @@
       "arabic": false
     },
     "Retained upstream projection · original field presence unknown. Canonical ingredient unmapped. Identifier index coverage is separate from selected detail coverage.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Retry incomplete source lane": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -16756,21 +16477,9 @@
       ],
       "arabic": true
     },
-    "Reviewed file SHA-256: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Reviewed moderation action": {
       "sources": [
         "cloud/care-community.mjs"
-      ],
-      "arabic": false
-    },
-    "Reviewed private result loaded · ready to capture": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -16879,12 +16588,6 @@
       ],
       "arabic": false
     },
-    "Rights: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Role reasons unavailable": {
       "sources": [
         "public/shelf-scanner.js"
@@ -16924,12 +16627,6 @@
     "Run the configured community review now?": {
       "sources": [
         "public/community-ai-ui.js"
-      ],
-      "arabic": false
-    },
-    "Run: ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -16992,39 +16689,9 @@
       ],
       "arabic": true
     },
-    "SURROGATE ONLY · ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "SURROGATE ONLY · enter ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "SURROGATE ONLY · invented UI exercise": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "SURROGATE ONLY: enter SURROGATE-OATS. Invented 500 g pack; test lot starts at 2 packs. Buy +1 intent, Stock +1 test pack, Audit +1 observation without stock addition, Discard −1 test pack with exercise reason. Undo reverses the last test action. Real connection stays separate.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "SURROGATE · Rolled oats (test only)": {
       "sources": [
         "public/scanner-surrogate.js"
-      ],
-      "arabic": false
-    },
-    "SURROGATE: usable_as ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -17310,24 +16977,12 @@
       ],
       "arabic": false
     },
-    "Saved source assertion is not on this bounded page or selected release. Continue the selected search; no identity was inferred.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Saved to cloud. Automatic saving continues.": {
       "sources": [
         "public/app.js",
         "public/locales/ar.js"
       ],
       "arabic": true
-    },
-    "Saved-result miss · not global absence · no live fallback": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
     },
     "Saving automatically…": {
       "sources": [
@@ -17554,12 +17209,6 @@
       ],
       "arabic": true
     },
-    "Search incomplete; retry the failed lane. ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Search recipes": {
       "sources": [
         "public/locales/ar.js"
@@ -17651,12 +17300,6 @@
       ],
       "arabic": false
     },
-    "Select a source alternative to inspect its exact provenance.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Select a titled plain-text document.": {
       "sources": [
         "cloud/service-support.mjs"
@@ -17684,12 +17327,6 @@
     "Selected context": {
       "sources": [
         "public/care-ui.js"
-      ],
-      "arabic": false
-    },
-    "Selected continuation rejected; prior observations retained. ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -17813,25 +17450,13 @@
       ],
       "arabic": false
     },
+    "Selected public release changed": {
+      "sources": [
+        "public/scanner-production-lookup.js"
+      ],
+      "arabic": false
+    },
     "Selected search": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Selected search continuing · no absence established": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Selected search incomplete · ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Selected search page unavailable; ": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -18637,12 +18262,6 @@
       ],
       "arabic": false
     },
-    "Source alternatives: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Source and licence metadata are required.": {
       "sources": [
         "public/unified-data.js"
@@ -18671,12 +18290,6 @@
     "Source assertion ": {
       "sources": [
         "public/app.js",
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Source assertion only · action eligibility not established": {
-      "sources": [
         "public/shelf-scanner.js"
       ],
       "arabic": false
@@ -18712,12 +18325,6 @@
       "arabic": false
     },
     "Source data type": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Source date: ": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -18762,18 +18369,6 @@
     "Source field value supplied · node page only": {
       "sources": [
         "public/source-field-page-presenter.js"
-      ],
-      "arabic": false
-    },
-    "Source identifier found · 1 source record · product details ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Source identifier found · retained details · canonical mapping pending": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -18922,13 +18517,13 @@
       ],
       "arabic": false
     },
-    "Source reference unavailable: ": {
+    "Source release": {
       "sources": [
         "public/shelf-scanner.js"
       ],
       "arabic": false
     },
-    "Source release": {
+    "Source release changed; loaded records remain visible.": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -19484,12 +19079,6 @@
       ],
       "arabic": false
     },
-    "Symbology / namespace: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Synced · ": {
       "sources": [
         "public/sync-ui.js"
@@ -19535,12 +19124,6 @@
     "TCF enabled": {
       "sources": [
         "cloud/service-config.mjs"
-      ],
-      "arabic": false
-    },
-    "TEST STATE · shopping intents ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -20231,12 +19814,6 @@
       ],
       "arabic": false
     },
-    "This browser could not stage the selected source record. Nothing was added to inventory.": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "This camera cannot use those settings. Try another camera.": {
       "sources": [
         "public/scanner-model.js"
@@ -20698,12 +20275,6 @@
       ],
       "arabic": false
     },
-    "USDA-FDC identifier": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "USDA-FDC · original identifier": {
       "sources": [
         "public/shelf-scanner.js"
@@ -20764,6 +20335,12 @@
     "Unavailable": {
       "sources": [
         "public/documents.js",
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Unavailable for this release. The code was read, but no product identity or details were verified.": {
+      "sources": [
         "public/shelf-scanner.js"
       ],
       "arabic": false
@@ -21036,12 +20613,6 @@
     "Unlogged days are unknown": {
       "sources": [
         "public/insights-ui.js"
-      ],
-      "arabic": false
-    },
-    "Unmapped · missing evidence": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -21496,12 +21067,6 @@
       ],
       "arabic": false
     },
-    "Verified private file · ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Verify access and reuse terms": {
       "sources": [
         "public/sources.js"
@@ -21511,12 +21076,6 @@
     "Verify reuse terms": {
       "sources": [
         "public/sources.js"
-      ],
-      "arabic": false
-    },
-    "Verifying reviewed file…": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -21553,12 +21112,6 @@
     "Viewer · read kitchen only": {
       "sources": [
         "public/sharing-ui.js"
-      ],
-      "arabic": false
-    },
-    "Visibility: ": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -23005,12 +22558,6 @@
       ],
       "arabic": false
     },
-    "exact lexical": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "expansion range": {
       "sources": [
         "public/activity-schedule-model.js"
@@ -23343,12 +22890,6 @@
       ],
       "arabic": false
     },
-    "labelled ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "layout(location = 0) out highp vec4 pc_fragColor;": {
       "sources": [
         "public/scanner-three.js"
@@ -23536,18 +23077,6 @@
     "not configured": {
       "sources": [
         "public/admin-ui.js"
-      ],
-      "arabic": false
-    },
-    "not loaded": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "not queried yet": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -24133,12 +23662,6 @@
     "schedule state": {
       "sources": [
         "public/activity-schedule-model.js"
-      ],
-      "arabic": false
-    },
-    "selected connection unavailable": {
-      "sources": [
-        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -24861,12 +24384,6 @@
       "arabic": false
     },
     "— · no qualified links": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "— · no selected source record. Select the exact reviewed file before scanning; no live fallback.": {
       "sources": [
         "public/shelf-scanner.js"
       ],
