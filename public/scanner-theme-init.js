@@ -1,0 +1,1 @@
+(()=>{let preference;try{preference=localStorage.getItem('offmenu-scanner-theme');}catch{}const retained=preference==='dark'||preference==='light';document.documentElement.dataset.theme=retained?preference:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.themeSource=retained?'persisted':'system';})();

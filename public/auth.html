@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer"><title>Sign in to OffMenu</title>
+<link rel="stylesheet" href="/offmenu-system.css"></head>
+<body><main><a href="/landing.html">OffMenu</a><h1>Sign in</h1>
+<p>Use your existing OffMenu account. Your kitchen stays with your account.</p>
+<p id="synthetic-notice" hidden>This local preview uses a synthetic sign-in demonstration. It is not a real provider login.</p>
+<p id="auth-status" role="status" aria-live="polite">Checking sign-in…</p>
+<form id="signin-form" hidden>
+<label for="auth-email">Email</label><input id="auth-email" type="email" autocomplete="username" required>
+<label for="auth-password">Password</label><input id="auth-password" type="password" autocomplete="current-password" required>
+<button id="signin-submit" type="submit">Sign in</button></form>
+<div id="auth-providers" hidden></div>
+<p id="auth-provider-status" role="status" hidden></p>
+<button id="continue-scanner" type="button" hidden>Continue to scanner</button>
+<button id="signout" type="button" hidden>Sign out</button>
+<section id="provider-consent" hidden aria-labelledby="provider-consent-heading">
+<h2 id="provider-consent-heading">Connection terms</h2>
+<p id="provider-consent-status" role="status"></p>
+<form id="provider-consent-form" hidden>
+<p><a id="provider-terms-link" target="_blank" rel="noopener noreferrer">Read provider terms</a> · <span id="provider-terms-version"></span></p>
+<label for="provider-purpose">Purpose</label><select id="provider-purpose"></select>
+<fieldset id="provider-scopes"><legend>Requested access</legend></fieldset>
+<label><input id="provider-accept" type="checkbox">I accept these terms for this connection.</label>
+<button type="submit">Record my choice</button>
+</form><button id="provider-withdraw" type="button">Withdraw my choice</button>
+<p>Accepting terms does not grant access beyond your provider account, its permissions or the source-use rules.</p>
+</section>
+<p><a href="/shelf-scanner.html">Continue on this device</a></p>
+<p>Service connections and their provider terms are separate from signing in. Existing account permissions still apply.</p>
+</main><script type="module" src="/auth.js"></script></body></html>
