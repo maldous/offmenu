@@ -1,3 +1,4 @@
+import {unknownCategoryDisposition} from './source-category-claims.js';
 // Off-live UI adapter for the staged identity-search-plan-v2 contract.
 // This file is not loaded by the 7645 scanner until source review and owner activation.
 export const IDENTIFIER_DB = '97c2f7390f75d8d187b49c927652515cd829e095301d7b305a0081120c7502f0';
@@ -72,7 +73,8 @@ export function projectIdentityPage(data, original, generation, {namespace = 'ba
       provenance:{sourceId:row.source_id, releaseId:row.release_id},
       matchContext:{originalLexicalValue:original, sourceLexicalValue:row.lexical_value,
         symbology, matchType:form.matchType, equivalence:form.equivalence, disposition:row.disposition},
-      availability:null, detail:null, variants:[], name:null, brand:null, ingredientsText:null};
+      availability:null, detail:null, variants:[], name:null, brand:null, ingredientsText:null,
+      categoryDisposition:unknownCategoryDisposition()};
   });
   return {generation, original, namespace, symbology, requestCursor, status:status(matches, data.hasMore, data.identitySearchState === 'partial'),
     searchState:data.identitySearchState, searchCoverage:coverage, hasMore:data.hasMore, nextCursor:data.nextCursor,

@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3776,
+  "messages": 3779,
   "arabicTranslated": 376,
-  "arabicMissing": 3400,
+  "arabicMissing": 3403,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -1605,6 +1605,12 @@
       ],
       "arabic": false
     },
+    "../public/source-category-claims.js": {
+      "sources": [
+        "cloud/identifier-host.mjs"
+      ],
+      "arabic": false
+    },
     "../public/sources.js": {
       "sources": [
         "cloud/handler.mjs",
@@ -2166,6 +2172,13 @@
     "./sharing-ui.js": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "./source-category-claims.js": {
+      "sources": [
+        "public/scanner-identity-v2.js",
+        "public/unified-data.js"
       ],
       "arabic": false
     },
@@ -12676,6 +12689,12 @@
     "Only lot and preference IDs allowed": {
       "sources": [
         "cloud/lot-restriction-owner28.mjs"
+      ],
+      "arabic": false
+    },
+    "Only supplied source fields; omitted input fields do not establish publisher absence.": {
+      "sources": [
+        "public/source-category-claims.js"
       ],
       "arabic": false
     },

@@ -22,7 +22,7 @@ def _sha(value): return type(value) is str and re.fullmatch('[a-f0-9]{64}', valu
 OFF_LEGACY_PRODUCT_KEYS = frozenset(('name', 'names', 'identifiers', 'brand', 'pack',
     'ingredientsText', 'allergens', 'traces', 'labels', 'categories', 'origins',
     'manufacturingPlaces', 'nutritionSourceBasis', 'rawNutriments',
-    'qualificationStatus', 'nutritionId'))
+    'qualificationStatus', 'nutritionId', 'sourceCategoryClaims'))
 
 
 USDA_NATIVE_PRODUCT_KEYS = frozenset(('name', 'identifiers', 'brand', 'dataType',
@@ -44,7 +44,8 @@ def _fields(packet, representation):
         'servingQuantity': ('serving',), 'dataType': ('dataType',), 'ingredientDeclaration': ('ingredientsText',),
         'categories': ('categories',), 'sourceAllergenClaims': ('allergens',), 'sourceTraceClaims': ('traces',),
         'sourceDietaryLabelClaims': ('labels',), 'origins': ('origins',), 'manufacturingPlaces': ('manufacturingPlaces',),
-        'rawNutriments': ('rawNutriments',), 'nutritionSourceBasis': ('nutritionSourceBasis',)}
+        'rawNutriments': ('rawNutriments',), 'nutritionSourceBasis': ('nutritionSourceBasis',),
+        'sourceCategoryClaims': ('sourceCategoryClaims',)}
     evidence = hashlib.sha256(readers.canonical(packet)).hexdigest(); result = {}
     def field(value, present, pointer, available=True):
         state = ('present' if value is not None else 'null') if present else ('missing' if available else 'not-loaded')

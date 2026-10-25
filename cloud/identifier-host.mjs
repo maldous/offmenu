@@ -1,5 +1,6 @@
 // Native-only paths and selected source receipts; HTTP never selects a store or script.
 import {spawn} from 'node:child_process';
+import {unknownCategoryDisposition} from '../public/source-category-claims.js';
 import {Buffer} from 'node:buffer';
 import {isDeepStrictEqual} from 'node:util';
 const DB='97c2f7390f75d8d187b49c927652515cd829e095301d7b305a0081120c7502f0';
@@ -150,7 +151,7 @@ export function createIdentifierAdapter({Response:ResponseClass=Response,scriptP
     if(!result.metadata&&page.metadata)result.metadata=page.metadata;
     const rows=detailOnly?page.rows.filter(row=>row.assertion_id===query.detailAssertionId):page.rows;
     result.rows.push(...rows);
-    matches.push(...rows.map(row=>({assertionId:row.assertion_id,sourceLexicalValue:row.lexical_value,matchType:lane.matchType,equivalence:lane.equivalence,disposition:lane.disposition})));
+    matches.push(...rows.map(row=>({assertionId:row.assertion_id,sourceLexicalValue:row.lexical_value,matchType:lane.matchType,equivalence:lane.equivalence,disposition:lane.disposition,categoryDisposition:unknownCategoryDisposition()})));
     if(detailOnly)break;
     if(page.hasMore){after=page.nextAssertionId;break;}
     laneIndex++;after=0;
@@ -159,7 +160,7 @@ export function createIdentifierAdapter({Response:ResponseClass=Response,scriptP
    result={...result,generation:query.generation,hasMore,nextAssertionId:null,nextCursor:hasMore?cursor(query,laneIndex,after):null,
     identitySearchState:failures.length?'partial':'available',identitySearchIndependentOfDetails:true,
     identitySearchPlanVersion:2,identityQuery:{namespace:query.namespace,originalLexicalValue:query.lexical_value,symbology:query.symbology??null,forms:identifierForms(query.namespace,query.lexical_value,query.symbology)},
-    identityMatches:matches,identitySearchCoverage:{state:failures.length?'partial':hasMore?'page-available':'complete-for-selected-index-and-query-plan',startLane,nextLane:hasMore?laneIndex:null,lanes:plan,failures,identifierVMStepReservation:{limit:100000,plannedLanes,perLaneMaxSteps:laneMaxSteps,progressQuantumAllowancePerLane:100,measured:false},physicalProductIdentityAsserted:false,ingredientQualificationAsserted:false},
+    identityMatches:matches,categoryDispositionCoverage:{scope:'returned-identifier-observations-only',returnedOccurrences:result.rows.length,mappedIngredientCategory:0,nonIngredientNotApplicable:0,ambiguousUnknown:result.rows.length,unreturnedPopulation:null},identitySearchCoverage:{state:failures.length?'partial':hasMore?'page-available':'complete-for-selected-index-and-query-plan',startLane,nextLane:hasMore?laneIndex:null,lanes:plan,failures,identifierVMStepReservation:{limit:100000,plannedLanes,perLaneMaxSteps:laneMaxSteps,progressQuantumAllowancePerLane:100,measured:false},physicalProductIdentityAsserted:false,ingredientQualificationAsserted:false},
     operation:detailOnly?'observation-detail':'identifier-search'};
    if(detailOnly&&!result.rows.length)result.details=unavailable(failures.length?'SELECTED_OBSERVATION_LOOKUP_UNAVAILABLE':'NO_CURRENT_SELECTED_OBSERVATION');
    else if(query.include&&result.rows.length){
