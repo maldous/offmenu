@@ -10,7 +10,9 @@
     "i18n:extract": "node scripts/i18n-catalogue.mjs",
     "i18n:check": "node scripts/i18n-catalogue.mjs --check",
     "test:locale-edge": "node --test tests-edge/*.test.mjs",
-    "test:auth": "node --test tests-web/auth-principal.test.mjs tests-edge/better-auth.test.mjs"
+    "test:auth": "node --test tests-web/auth-principal.test.mjs tests-edge/better-auth.test.mjs",
+    "validate:dev": "node scripts/validate.mjs dev",
+    "validate:release": "node scripts/validate.mjs release"
   },
   "dependencies": {
     "@netlify/identity": "^2.0.0",
