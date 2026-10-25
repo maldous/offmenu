@@ -3,14 +3,21 @@
 import {createEngine} from '../corpus/engine.mjs';
 import {assertCurated} from '../corpus/assert-curated.mjs';
 function origin(env){if(!env.CURATED_CORPUS_ORIGIN)return null;const url=new URL(env.CURATED_CORPUS_ORIGIN);if(url.origin!=='https://offmenu-corpus.netlify.app'||url.pathname!=='/'||url.search||url.hash)throw Error('Unsupported curation origin');return url.origin;}
+// Selected publication is append-only: its manifest must not replace the
+// site's existing root or recipe manifests. Only this named namespace is allowed.
+const selectedReleaseNamespaces=new Map([
+ ['offmenu-off-selected-products-20261025-v1','products-selected/offmenu-off-selected-products-20261025-v1']
+]);
+function safeRelativeFile(key){return typeof key==='string'&&key.split('/').every(part=>/^[-A-Za-z0-9._]+$/.test(part)&&part!=='.'&&part!=='..');}
 function selectedReleaseError(message,status){return Object.assign(new Error(message),{status});}
 async function engine(env,recipeLibrary=false,selection=null){
- const base=origin(env);if(!base)return null;let manifest;
+ const base=origin(env);if(!base)return null;const namespace=selection&&selectedReleaseNamespaces.get(selection.releaseId),servingBase=namespace?base+'/'+namespace:base;let manifest;
  return createEngine(async key=>{
+  if(!safeRelativeFile(key))throw Error('Unsafe curation file path');
   const metadata=key==='manifest.json'?null:manifest.files.find(f=>f.key===key);if(key!=='manifest.json'&&!metadata)throw Error('Unlisted curation file');
   // Cache the manifest and completed query responses. Caching every index and
   // record shard multiplies subrequests and can exhaust a cold page's budget.
-  const url=base+'/'+(metadata?'releases/'+manifest.releaseId+'/':recipeLibrary?'recipes/':'')+key,cache=metadata?null:globalThis.caches?.default;
+  const url=servingBase+'/'+(metadata?'releases/'+manifest.releaseId+'/':recipeLibrary&&!namespace?'recipes/':'')+key,cache=metadata?null:globalThis.caches?.default;
   const cacheKey=url+(metadata?'?release='+manifest.manifestSha256:'');let response;
   try{response=await cache?.match(cacheKey);}catch{/* cache is optional */}
   if(!response){response=await fetch(url,{redirect:'manual',signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error('Curated release unavailable ('+response.status+')');}
@@ -22,7 +29,7 @@ async function engine(env,recipeLibrary=false,selection=null){
    if(digest!==selection.manifestSha256)throw selectedReleaseError('Selected curated manifest does not match.',409);
   }
   if(metadata){const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),b=>b.toString(16).padStart(2,'0')).join('');if(bytes.byteLength!==metadata.bytes||digest!==metadata.sha256)throw Error('Curated file checksum mismatch');}
-  else{manifest=JSON.parse(new TextDecoder().decode(bytes));if(manifest.format!=='offmenu-curated/1'||manifest.status!=='curated-release-ready'||manifest.privateProviderData!==false||manifest.curatedAcceptance?.status!=='all-curated-records-exercised'||!/^[-A-Za-z0-9.]+$/.test(manifest.releaseId))throw Error('Unaccepted OffMenu curation');if(selection&&manifest.releaseId!==selection.releaseId)throw selectedReleaseError('Selected curated release does not match.',409);}
+  else{manifest=JSON.parse(new TextDecoder().decode(bytes));if(manifest.format!=='offmenu-curated/1'||manifest.status!=='curated-release-ready'||manifest.privateProviderData!==false||manifest.curatedAcceptance?.status!=='all-curated-records-exercised'||typeof manifest.releaseId!=='string'||!/^[-A-Za-z0-9.]+$/.test(manifest.releaseId)||manifest.releaseId==='.'||manifest.releaseId==='..')throw Error('Unaccepted OffMenu curation');if(selection&&manifest.releaseId!==selection.releaseId)throw selectedReleaseError('Selected curated release does not match.',409);}
   try{await cache?.put(cacheKey,new Response(bytes,{headers:{'Cache-Control':metadata?'public, max-age=86400':'public, max-age=60'}}));}catch{/* cache is optional */}
   return bytes;
  },{maxBlobReads:24,maxPageEntries:20});
