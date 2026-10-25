@@ -106,9 +106,30 @@ The existing interface contracts include REST `/api/v1`, MCP `/mcp` and OpenAPI 
 
 The current authentication default remains the established Netlify path. The alternative authentication seam is integrated in source, but a live change still requires explicit configuration, staging, account-continuity and release work; it is not a completed sign-in migration. See the [current configuration guide](docs/maintainer.md#configuration-and-authentication-state).
 
-### Named sources and historical import scope
+### Source catalogue and coverage
 
-These sources remain part of OffMenu's documented history and delivery scope. The notes below preserve the earlier README's source and small-CLI boundaries; **they are not fresh licence clearance, current provider entitlement, permission to download, or proof of present coverage**. Use the selected source/version and its accepted rights and operation records before reuse.
+OffMenu's source programme is much broader than the small CLI examples below. It spans product labels, national food composition, recipes, prices, companies, safety notices, places and optional personal connections. The [source catalogue](docs/OFFMENU_CORPUS_INDEX.md#source-catalogue) points to the existing registers, release mappings and later country/recipe catalogues, rather than treating six import examples as the whole corpus.
+
+The repository records **1,303 discovery entries**, **22 historical retained-release mappings** and **54 app-directory entries**, with additional country and recipe evidence. These inventories overlap and have different purposes; they are **not an additive total of collected or live sources**. Discovery, collection, parsing, qualification and live use are separate milestones. Historical counts and directory labels are not a current coverage guarantee.
+
+| Source group | Named sources and what they contribute | Delivery boundary |
+| --- | --- | --- |
+| Products and barcodes | Open Food Facts; GS1 GDSN and certified pools such as 1WorldSync and Syndigo; GS1 India DataKart and Australia Trusted Content/National Product Catalogue; NIQ Label Insight/Brandbank. | OFF has retained-release and implementation evidence. The other product-content routes are documented candidates or agreement-dependent services, not automatically available datasets. |
+| National and regional nutrition | USDA FoodData Central; Australia AFCD and AUSNUT; UK CoFID; Canada CNF; France CIQUAL; Germany BLS; Norway Matvaretabellen; Denmark Frida; Finland Fineli; New Zealand FOODfiles; Sweden's food composition database; Japan MEXT. The wider catalogues also name NEVO, TBCA, TACO, PortFIR, Czech NutriDatabaze, Cyprus composition tables, IFCT, TKPI, China CDC, Russian composition references and the Pacific Nutrient Database. | Named releases for a subset are mapped and have historical parser evidence. Other entries remain discovery, retained-reference or permission-review work. FAO/INFOODS, EFSA, EuroFIR and regional tables are additional routes, not proof of complete country coverage. |
+| Recipes and cookbooks | Wikibooks language editions; HowToCook; based.cooking; TacoFancy; OpenRecipe; UniTools; Open Recipe Archive; Smithsonian book texts; recetasdemami, Indisch-eten, libre_cuisine and Ricette. Later research also records Wellcome works, Library of Congress leads and country-specific cookbooks. | The dated recipe reports distinguish collected/parsed material, qualified local candidates and excluded records. Metadata for a book is not a parsed recipe. RecipeNLG and other restricted or uncleared corpora are not general-purpose bundled content. |
+| Prices and household baskets | Open Prices; FAO FPMA; WFP food prices via HDX; OpenDOSM PriceCatcher; national statistics, household-budget and CPI sources, including Statistics Canada, STATEC and country-portfolio records. | Dated observations, commodity series, household baskets and price indices remain different types. None alone establishes a current offer, local stock or a complete shopping basket. |
+| Producers, ownership and certification | Wikidata; GLEIF; OpenCorporates; Companies House; Open Ownership; USDA Organic INTEGRITY, EU TRACES, national organic registers, Fairtrade/FLOCERT, Rainforest Alliance, RSPO, ASC, halal, kosher and vegan certification directories. | Discovery/reference evidence must retain its issuer, date and scope. A company link or certification-directory entry is not a verified ownership chain, product claim or automatic boycott decision. |
+| Safety and food guidance | UK FSA alerts and hygiene ratings; France RappelConso; openFDA enforcement; FSANZ and Canadian recalls; EU RASFF; China SAMR; Indonesia BPOM; USDA FoodKeeper; national dietary-guideline references. | Country, affected product and batch must match. Inspections are not necessarily recalls; registration identifiers are not barcodes. Historical openFDA enforcement research is not a public-alert or recall-lifecycle feed. |
+| Places, menus and shopping connections | OpenStreetMap, Overture Places and Google Places; country retailer and restaurant catalogues; ALDI country portals; WhichGrocer, Instacart, Kroger, Square, Toast, Deliverect, Uber Eats, DoorDash and Wolt. | Place references and retained menus do not establish live menus, nutrition or inventory. Commercial and merchant routes need their own access, scope and terms; future ordering still requires explicit confirmation. |
+| Meaning, units and enrichment | FoodOn, FAO AGROVOC, QUDT, ChEBI and Codex references, alongside source-native classifications and nutrient definitions. | Some named releases have reference adapters; others are research candidates. A vocabulary or parser does not itself prove ingredient equivalence, a unit conversion or a dietary conclusion. |
+| Optional personal services and imports | USDA's personal API, Edamam, Spoonacular, fatsecret and Nutritics; Apple HealthKit, Android Health Connect, Google Health, Withings, Garmin and Strava; user-provided files, receipts and open document formats. | Provider approval, plan-specific rights and per-person consent remain separate from source registration. Private account data is not the shared food corpus. Native OffMenu JSON and Schema.org Recipe are formats, not external datasets. |
+
+For exact source IDs, releases, historical evidence and outstanding restrictions, use the [catalogue and status guide](docs/OFFMENU_CORPUS_INDEX.md#source-catalogue), [source acceptance contract](docs/source-acceptance-contract.md) and [delivery programme](docs/research-delivery-plan.md). This summary is not fresh licence clearance, download permission, provider entitlement or proof that a connector is live.
+
+<details>
+<summary>Historical small-CLI import notes — a limited subset, not the source catalogue</summary>
+
+The following notes preserve the earlier README's small-CLI scope and historical licence observations; they are not fresh permission or present coverage claims.
 
 | Source | Preserved scope and limitations |
 | --- | --- |
@@ -119,7 +140,7 @@ These sources remain part of OffMenu's documented history and delivery scope. Th
 | [Open Prices](https://github.com/openfoodfacts/open-prices/blob/main/docs/guides/data.md) | The small CLI's `import-prices` expects product code, price, currency and date; retailer/location metadata is optional. Unjoined locations show an unknown retailer. Repeated imports historically append duplicate observations. `shops` returns dated observations, not current stock; Australian coverage was unmeasured. Historical licence note: ODbL. |
 | [WhichGrocer](https://www.whichgrocer.com/developers) | A future optional backend connector in the earlier README, with no account, calls or paid service configured at that checkpoint. Issued access, attribution and cache/retention terms need review; catalogue prices do not establish store-level stock. |
 
-The [corpus/research index](docs/OFFMENU_CORPUS_INDEX.md), [source acceptance contract](docs/source-acceptance-contract.md) and [detailed delivery programme](docs/research-delivery-plan.md) retain the wider source programme. A named source, downloaded release, parser or historical count is not the same as a qualified feature or live connector.
+</details>
 
 ### Setup, build and checks
 
