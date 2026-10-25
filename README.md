@@ -106,6 +106,21 @@ The existing interface contracts include REST `/api/v1`, MCP `/mcp` and OpenAPI 
 
 The current authentication default remains the established Netlify path. The alternative authentication seam is integrated in source, but a live change still requires explicit configuration, staging, account-continuity and release work; it is not a completed sign-in migration. See the [current configuration guide](docs/maintainer.md#configuration-and-authentication-state).
 
+### Named sources and historical import scope
+
+These sources remain part of OffMenu's documented history and delivery scope. The notes below preserve the earlier README's source and small-CLI boundaries; **they are not fresh licence clearance, current provider entitlement, permission to download, or proof of present coverage**. Use the selected source/version and its accepted rights and operation records before reuse.
+
+| Source | Preserved scope and limitations |
+| --- | --- |
+| [Open Food Facts products](https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz) | The small CLI's `import-products` accepts JSONL/gzip, preserves barcode strings and existing ingredient mappings, and can filter supplied country tags; that filter is not exhaustive national coverage. The importer does not download photos. Historical licence notes distinguish the ODbL database from DbCL contents; image rights are separate. |
+| [Native OffMenu recipe JSON](examples/recipes.json) | `import-recipes` accepts the example array format with source/licence provenance, explicit culinary ingredient names and quantities in `g`, `ml` or `count`. Missing amounts remain unresolved. This command is not a direct Wikibooks or RecipeNLG importer. |
+| [Wikibooks Cookbook candidate](https://huggingface.co/datasets/gossminn/wikibooks-cookbook) | The historical candidate declared CC BY-SA 4.0. Collection/extraction tools are retained in [`collect-wikibooks.py`](scripts/collect-wikibooks.py) and [`collect-wikibooks-live.py`](scripts/collect-wikibooks-live.py); the small CLI still requires its own interchange format. Earlier adapter/parsing roadmap items and later recipe-library work are distinct scopes, not evidence that every recipe is reviewed or usable. |
+| [RecipeNLG](https://recipenlg.cs.put.poznan.pl/) | Recorded as restricted to non-commercial research/education and not bundled. Its appearance in the source inventory is not approval for commercial ingestion or redistribution. |
+| [Open Prices](https://github.com/openfoodfacts/open-prices/blob/main/docs/guides/data.md) | The small CLI's `import-prices` expects product code, price, currency and date; retailer/location metadata is optional. Unjoined locations show an unknown retailer. Repeated imports historically append duplicate observations. `shops` returns dated observations, not current stock; Australian coverage was unmeasured. Historical licence note: ODbL. |
+| [WhichGrocer](https://www.whichgrocer.com/developers) | A future optional backend connector in the earlier README, with no account, calls or paid service configured at that checkpoint. Issued access, attribution and cache/retention terms need review; catalogue prices do not establish store-level stock. |
+
+The [corpus/research index](docs/OFFMENU_CORPUS_INDEX.md), [source acceptance contract](docs/source-acceptance-contract.md) and [detailed delivery programme](docs/research-delivery-plan.md) retain the wider source programme. A named source, downloaded release, parser or historical count is not the same as a qualified feature or live connector.
+
 ### Setup, build and checks
 
 Start with the [maintainer guide](docs/maintainer.md) for the supported Node/Python environment, declared dependencies, configuration and precise commands. There is no `npm run dev` or `npm start` script. The small Python server is not a substitute for the full browser/Worker app.
