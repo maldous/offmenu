@@ -12,7 +12,7 @@ export function offMenuAuthMode(env) {
 const within = (path, base) => path === base || path.startsWith(base + '/');
 
 /**
- * Unmounted seam for future dispatcher adoption. Do not pass request-derived
+ * Dispatcher adapter. Do not pass request-derived
  * options or mutable administrative settings. Legacy verification is provided
  * by the dispatcher, and is never attempted after a Better Auth failure.
  */
@@ -29,7 +29,7 @@ export function createOffMenuAuthRuntime(env, {legacyVerifiedUser, authOptions} 
     async handleAuthRequest(request) {
       const path = new URL(request.url).pathname;
       if (within(path, '/.netlify/identity')) {
-        // Future mounting must precede the legacy proxy: no mixed identity mode.
+        // The dispatcher mounts this guard before the legacy proxy: no mixed identity mode.
         return Response.json({error: 'Legacy authentication is not available in this authentication mode.'},
           {status: 410, headers: {'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff'}});
       }

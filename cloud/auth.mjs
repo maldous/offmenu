@@ -34,7 +34,7 @@ function configuration(env, options) {
 }
 
 /**
- * Unmounted foundation: no routes, schema writes, secret generation or providers.
+ * Explicit factory: the caller mounts its handler; no schema writes, secret generation or providers.
  * Email stays disabled unless a caller explicitly supplies its delivery hooks.
  * Never pass browser input as env or options. Keep sessionPolicy deployment-owned.
  */
