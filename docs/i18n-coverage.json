@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3706,
+  "messages": 3710,
   "arabicTranslated": 376,
-  "arabicMissing": 3330,
+  "arabicMissing": 3334,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -10004,6 +10004,12 @@
       ],
       "arabic": false
     },
+    "Invalid saved scanner operation history.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Invalid schedule transition": {
       "sources": [
         "public/activity-schedule-model.js"
@@ -16063,6 +16069,12 @@
       ],
       "arabic": false
     },
+    "Scanner handoff history is unavailable. Restore the saved checkout before retrying.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Scanner handoff was not saved: ": {
       "sources": [
         "public/app.js"
@@ -18466,6 +18478,12 @@
       ],
       "arabic": false
     },
+    "The scanner item is saved. Browser cleanup failed; this handoff will not be added again.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Thing": {
       "sources": [
         "public/integrations.js"
@@ -18608,6 +18626,12 @@
     "This retained field includes ingredients and other label content (claims, storage and address text). Verbatim upstream projection · ": {
       "sources": [
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "This scanner handoff is already saved.": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
