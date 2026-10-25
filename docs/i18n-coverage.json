@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3839,
+  "messages": 3841,
   "arabicTranslated": 376,
-  "arabicMissing": 3463,
+  "arabicMissing": 3465,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -11399,6 +11399,12 @@
       ],
       "arabic": false
     },
+    "Map a source observation ID for every price row; a barcode identifies a product, not a dated price observation.": {
+      "sources": [
+        "public/unified-data.js"
+      ],
+      "arabic": false
+    },
     "Map the columns and confirm units before normalization.": {
       "sources": [
         "public/data-ui.js"
@@ -13929,6 +13935,12 @@
     "Price lookup unavailable": {
       "sources": [
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "Price observation IDs must be unique within the CSV batch.": {
+      "sources": [
+        "public/unified-data.js"
       ],
       "arabic": false
     },
