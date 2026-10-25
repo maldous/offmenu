@@ -110,6 +110,10 @@ export function selectProductVisual(input,{failedSources=[]}={}) {
   }
   const category=categoryChoice(input,failed);
   if (category) return category;
+  return appProductVisualFallback(input,{failedSources});
+}
+export function appProductVisualFallback(input={}, {failedSources=[]}={}) {
+  const failed=new Set(failedSources);
   const theme=input.theme==='dark'?'dark':'light',src=APP_ICONS[theme];
   if (failed.has(src)) return {tier:'app-fallback',kind:'text',text:'OffMenu',
     alt:'OffMenu app fallback; no eligible product photo or category illustration',

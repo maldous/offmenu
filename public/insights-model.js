@@ -2,6 +2,23 @@ import {t} from './i18n.js';
 import {NUTRIENTS,planSummary} from './menu-model.js';
 export function rangeDates(end,count){const base=new Date(end+'T12:00:00Z');return Array.from({length:count},(_,i)=>{const d=new Date(base);d.setUTCDate(d.getUTCDate()-count+1+i);return d.toISOString().slice(0,10);});}
 export function mealSnapshot({recipe,date,slot,servings,memberId='',inventory,products,note=''}){const result=planSummary([{recipeId:recipe.id,date,servings}], [recipe],inventory,products,[date]);return {id:crypto.randomUUID(),recipeId:recipe.id,title:recipe.title,date,slot,servings,memberId,note,createdAt:new Date().toISOString(),source:'Mapped product estimate',totals:structuredClone(result.totals),unresolved:result.unresolved};}
+export function recipeIntakeSnapshot({completion=null,...input}) {
+  if(completion!==null&&(!Number.isFinite(completion)||completion<0||completion>100))throw Error(t('Invalid completion.'));
+  if(!Number.isFinite(input.servings)||input.servings<=0||input.servings>1000)throw Error(t('Invalid food log.'));
+  const meal=mealSnapshot(input),fraction=completion===null?null:completion/100;
+  meal.servedPortions=input.servings;
+  meal.completion=completion;
+  meal.intakeKnown=completion!==null;
+  // Zero is the existing storage placeholder; intakeKnown=false preserves unknown.
+  meal.servings=fraction===null?0:input.servings*fraction;
+  meal.totals=Object.fromEntries(Object.entries(meal.totals).map(([key,n])=>[key,
+    {...n,value:fraction===null?0:n.value*fraction,known:fraction===null?0:n.known}]));
+  if(fraction===null) {
+    meal.source+=' · completion unknown';
+    meal.note=[meal.note,'Intake quantity is unknown. Serving recorded; no zero-intake claim.'].filter(Boolean).join(' ');
+  }
+  return meal;
+}
 export function intakeSummary(history,dates,memberId='all'){const meals=history.filter(m=>dates.includes(m.date)&&(memberId==='all'||m.memberId===memberId));const totals=Object.fromEntries(NUTRIENTS.map(([k])=>[k,{value:0,known:0,total:0}]));for(const meal of meals)for(const [key]of NUTRIENTS){const n=meal.totals[key];if(n){totals[key].value+=n.value;totals[key].known+=n.known;totals[key].total+=n.total;}else totals[key].total++;}return {meals,totals,days:dates.map(date=>({date,...intakeSummaryDay(meals,date)})),loggedDays:new Set(meals.map(m=>m.date)).size,variety:new Set(meals.map(m=>m.recipeId||m.title.toLowerCase())).size};}
 function intakeSummaryDay(meals,date){const entries=meals.filter(m=>m.date===date),totals=Object.fromEntries(NUTRIENTS.map(([k])=>[k,{value:0,known:0,total:0}]));for(const meal of entries)for(const [key]of NUTRIENTS){const n=meal.totals[key];if(n){totals[key].value+=n.value;totals[key].known+=n.known;totals[key].total+=n.total;}else totals[key].total++;}return {meals:entries.length,totals};}
 export function milestones(profile,inventory){const history=profile.history||[],plan=profile.plan||[],dates=new Set(history.map(x=>x.date)),variety=new Set(history.map(x=>x.recipeId||x.title.toLowerCase()));return [['▤','Shelf starter','Confirm a home checkout',profile.lastReceipt?1:0,1],['♧','Kitchen keeper','Record 10 inventory items',inventory.length,10],['▦','Week architect','Plan meals on 7 different dates',new Set(plan.map(p=>p.date)).size,7],['✳','Menu explorer','Log 5 different dishes',variety.size,5],['◷','Food journal','Record meals on 7 different days',dates.size,7],['◇','Shared table','Add 2 household members',(profile.members||[]).length,2]].map(([icon,title,description,value,target])=>({icon,title,description,value,target,earned:value>=target}));}
