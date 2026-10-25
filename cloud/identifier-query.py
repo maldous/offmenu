@@ -124,13 +124,15 @@ def main():
  finally:os.close(fd)
  meta={'databaseLoaded':True,'queryAvailable':True,'databaseSha256':DB_SHA,'receiptSha256':RECEIPT_SHA,'runId':receipt['runId'],'schemaVersion':receipt['schemaVersion'],'loadComplete':True,'pointInTimeOnly':True,'scope':'complete listed retained USDA native + OFF occurrence inputs; not worldwide catalogue or canonical product acceptance','summary':receipt['summary'],'accepted':False,'assurance':'lexical-source-observations-only','limitMax':25,'queryMatchTotal':None}
  if request.get('action')=='status':output(meta);return
- if set(request)-{'action','namespace','lexical_value','after','limit','include','disposition'}:raise ValueError('request-shape')
+ if set(request)-{'action','namespace','lexical_value','after','limit','include','disposition','max_steps'}:raise ValueError('request-shape')
+ steps=request.get('max_steps',100000)
+ if type(steps) is not int or not 1<=steps<=100000:raise ValueError('query-step-budget')
  ns=request.get('namespace');lex=request.get('lexical_value');limit=request.get('limit',10);after=request.get('after',0);disposition=request.get('disposition','source-asserted')
  if disposition not in ('source-asserted','unresolved','invalid') or ns not in ('barcode','USDA-FDC') or type(lex) is not str or not 1<=len(lex)<=128 or type(limit) is not int or not 1<=limit<=25 or type(after) is not int or after<0:raise ValueError('query-input')
  sys.path.insert(0,str(ROOT))
  from offmenu.refresh.identifier_database import query_identifiers
  if Path(sys.modules[query_identifiers.__module__].__file__).resolve() != helper.resolve():raise ValueError('native-import-path')
- result=query_identifiers(receipt,namespace=ns,lexical_value=lex,disposition=disposition,after_assertion_id=after,limit=limit,max_steps=100000,max_seconds=5,max_result_bytes=262144)
+ result=query_identifiers(receipt,namespace=ns,lexical_value=lex,disposition=disposition,after_assertion_id=after,limit=limit,max_steps=steps,max_seconds=5,max_result_bytes=262144)
  result['rows']=[{k:row.get(k) for k in FIELDS} for row in result['rows']]
  result.update({'metadata':meta,'queryMatchTotal':None})
  if request.get('include')==['source-native-product-details']:

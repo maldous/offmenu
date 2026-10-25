@@ -10,9 +10,9 @@ const DB='97c2f7390f75d8d187b49c927652515cd829e095301d7b305a0081120c7502f0';
 const BACKEND='retained-product-federation-v1';
 async function fixture(mode='valid',delay=0,timeoutMs=7000,records=null,failDisposition=null){
  const dir=await mkdtemp(join(tmpdir(),'offmenu-identity-host-owned-'));
- const index=join(dir,'identity.py'),details=join(dir,'details.py'),calls=join(dir,'calls.jsonl');
+ const index=join(dir,'identity.py'),details=join(dir,'details.py'),calls=join(dir,'calls.jsonl'),budgets=join(dir,'budgets.jsonl');
  const recordsJson=JSON.stringify(records??[1,2].map(n=>({assertion_id:n,run_id:'selected-run',namespace:'barcode',lexical_value:'00027000612323',source_id:'fixture-'+n,disposition:'source-asserted',ingredientStatus:'unclassified'})));
- const identity=`import sys,json,time\nq=json.load(sys.stdin)\ntime.sleep(${delay})\nwith open(${JSON.stringify(calls)},'a') as f:f.write('identity:'+q['action']+'\\n')\nif q['action']=='status':\n print(json.dumps({'databaseLoaded':True,'queryAvailable':True,'databaseSha256':'${DB}','loadComplete':True,'runId':'worker57-full-retained-identifiers-v1'}));sys.exit(0)\nrecords=json.loads(${JSON.stringify(recordsJson)})\nif q['disposition']==${JSON.stringify(failDisposition??'never-fail')}:sys.exit(3)\nrows=[r for r in records if r['namespace']==q['namespace'] and r['lexical_value']==q['lexical_value'] and r['disposition']==q['disposition'] and r['assertion_id']>q['after']]\nmore=len(rows)>q['limit'];rows=rows[:q['limit']]\nprint(json.dumps({'databaseSha256':'${DB}','rows':rows,'hasMore':more,'nextAssertionId':rows[-1]['assertion_id'] if more else None,'metadata':{'scope':'generated-only'},'assurance':'lexical-source-observations-only'}))\n`;
+ const identity=`import sys,json,time\nq=json.load(sys.stdin)\nif sys.flags.optimize or not sys.flags.isolated:sys.exit(91)\ntime.sleep(${delay})\nwith open(${JSON.stringify(calls)},'a') as f:f.write('identity:'+q['action']+'\\n')\nif q['action']=='status':\n print(json.dumps({'databaseLoaded':True,'queryAvailable':True,'databaseSha256':'${DB}','loadComplete':True,'runId':'worker57-full-retained-identifiers-v1'}));sys.exit(0)\nwith open(${JSON.stringify(budgets)},'a') as f:f.write(json.dumps({'max_steps':q['max_steps'],'disposition':q['disposition']})+'\\n')\nrecords=json.loads(${JSON.stringify(recordsJson)})\nif q['disposition']==${JSON.stringify(failDisposition??'never-fail')}:sys.exit(3)\nrows=[r for r in records if r['namespace']==q['namespace'] and r['lexical_value']==q['lexical_value'] and r['disposition']==q['disposition'] and r['assertion_id']>q['after']]\nmore=len(rows)>q['limit'];rows=rows[:q['limit']]\nprint(json.dumps({'databaseSha256':'${DB}','rows':rows,'hasMore':more,'nextAssertionId':rows[-1]['assertion_id'] if more else None,'metadata':{'scope':'generated-only'},'assurance':'lexical-source-observations-only'}))\n`;
  let enrich=`import sys,json,time\nq=json.load(sys.stdin)\nwith open(${JSON.stringify(calls)},'a') as f:f.write('details:'+q['action']+'\\n')\np=q['identity'];p['details']={'detailBackend':'${BACKEND}','state':'loaded','accepted':False,'sourceProducts':[{'records':[{'kind':'product','data':{'name':'Generated product'}}],'ingredientUsability':{'status':'unclassified'}}]}\n`;
  if(mode==='invalid')enrich+="print('{invalid')\n";
  else if(mode==='overflow')enrich+="print('x'*262145)\n";
@@ -21,7 +21,7 @@ async function fixture(mode='valid',delay=0,timeoutMs=7000,records=null,failDisp
  else if(mode==='failed')enrich+="sys.exit(3)\n";
  else enrich+="print(json.dumps(p,sort_keys=True))\n";
  await writeFile(index,identity);await writeFile(details,enrich);
- return {adapter:createIdentifierAdapter({scriptPath:index,federatedScriptPath:details,timeoutMs}),dir,calls,close:()=>rm(dir,{recursive:true,force:true})};
+ return {adapter:createIdentifierAdapter({scriptPath:index,federatedScriptPath:details,timeoutMs}),dir,calls,budgets,close:()=>rm(dir,{recursive:true,force:true})};
 }
 function request(changes={}){return new Request('https://offmenu-identifiers.invalid/__dev/identifiers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({namespace:'barcode',lexical_value:'00027000612323',limit:25,cursor:null,generation:'generated-session',databaseSha256:DB,include:[BACKEND],...changes})});}
 
@@ -120,5 +120,27 @@ test('actual wired UI and native host agree on release pins, aliases, lazy failu
   const lot=validateLot({barcode:original,name:'Synthetic source observation',ingredient:'unmapped',quantity:1,
    unit:'count',needsReview:true,sourceObservationReference:ref});
   assert.deepEqual(lot.sourceObservationReference,ref);
+ }finally{await f.close();}
+});
+
+test('external Python optimization cannot disable identifier-stage guards',async()=>{
+ const previous=process.env.PYTHONOPTIMIZE;process.env.PYTHONOPTIMIZE='1';
+ const f=await fixture();
+ try{
+  const body=await (await f.adapter(request({include:undefined}))).json();
+  assert.equal(body.rows.length,2);assert.equal(body.identitySearchState,'available');
+ }finally{if(previous===undefined)delete process.env.PYTHONOPTIMIZE;else process.env.PYTHONOPTIMIZE=previous;await f.close();}
+});
+
+test('nine representation/disposition lanes reserve at most the existing identifier VM budget',async()=>{
+ const f=await fixture();try{
+  const response=await f.adapter(request({lexical_value:'04252614',symbology:'UPC-E',include:undefined}));
+  const body=await response.json();assert.equal(response.status,200);assert.equal(body.hasMore,false);
+  const budgets=(await readFile(f.budgets,'utf8')).trim().split('\n').map(line=>JSON.parse(line));
+  assert.equal(budgets.length,9);
+  assert.ok(budgets.every(q=>Number.isInteger(q.max_steps)&&q.max_steps>0));
+  assert.ok(budgets.reduce((sum,q)=>sum+q.max_steps+100,0)<=100000);
+  assert.equal(body.identitySearchCoverage.identifierVMStepReservation.measured,false);
+  assert.equal((await f.adapter(request({max_steps:1000000}))).status,400);
  }finally{await f.close();}
 });

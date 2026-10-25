@@ -51,7 +51,8 @@ export function createIdentifierAdapter({Response:ResponseClass=Response,scriptP
  };
  function run(payload,script,deadline){return new Promise((resolve,reject)=>{
   const remaining=deadline-Date.now();if(remaining<=0){reject(Error('CHILD_TIME_BOUND'));return;}
-  const child=spawn('python3',script===federatedScriptPath?['-I','-B',script]:['-B',script],{stdio:['pipe','pipe','ignore']});
+  // Both stages ignore Python environment flags, including optimization that disables assertions.
+  const child=spawn('python3',['-I','-B',script],{stdio:['pipe','pipe','ignore']});
   let chunks=[],size=0,settled=false,pendingError;
   const finish=(error,value)=>{if(settled)return;settled=true;clearTimeout(timer);error?reject(error):resolve(value);};
   // Wait for close after killing this owned child, so the two-request pool cannot outlive its process bound.
@@ -105,6 +106,10 @@ export function createIdentifierAdapter({Response:ResponseClass=Response,scriptP
    }
    const detailOnly=query.detailAssertionId!==undefined;
    const startLane=laneIndex;
+   // Reserve within the existing identifier-stage VM ceiling across all remaining lanes.
+   // The helper checks progress every100 VM instructions; leave that quantum in each reservation.
+   const plannedLanes=detailOnly?1:plan.length-startLane;
+   const laneMaxSteps=Math.max(1,Math.floor(100000/plannedLanes)-100);
    let result={databaseSha256:DB,rows:[],assurance:'lexical-source-observations-only',queryMatchTotal:null};
    const matches=[],failures=[];
    if(detailOnly)after=query.detailAssertionId-1;
@@ -113,7 +118,7 @@ export function createIdentifierAdapter({Response:ResponseClass=Response,scriptP
     const lane=plan[laneIndex],limit=detailOnly?1:query.limit-result.rows.length;
     let page;
     try{
-     page=await run({action:'query',namespace:query.namespace,lexical_value:lane.lexicalValue,disposition:lane.disposition,limit,after},scriptPath,deadline);
+     page=await run({action:'query',namespace:query.namespace,lexical_value:lane.lexicalValue,disposition:lane.disposition,limit,after,max_steps:laneMaxSteps},scriptPath,deadline);
      if(!identityValid(page,query,lane,limit,after))throw Error('IDENTITY_RESPONSE_INVALID');
     }catch{
      failures.push({lane:laneIndex,lexicalValue:lane.lexicalValue,disposition:lane.disposition,reasonCode:'IDENTITY_LANE_UNAVAILABLE'});break;
@@ -130,7 +135,7 @@ export function createIdentifierAdapter({Response:ResponseClass=Response,scriptP
    result={...result,generation:query.generation,hasMore,nextAssertionId:null,nextCursor:hasMore?cursor(query,laneIndex,after):null,
     identitySearchState:failures.length?'partial':'available',identitySearchIndependentOfDetails:true,
     identitySearchPlanVersion:2,identityQuery:{namespace:query.namespace,originalLexicalValue:query.lexical_value,symbology:query.symbology??null,forms:identifierForms(query.namespace,query.lexical_value,query.symbology)},
-    identityMatches:matches,identitySearchCoverage:{state:failures.length?'partial':hasMore?'page-available':'complete-for-selected-index-and-query-plan',startLane,nextLane:hasMore?laneIndex:null,lanes:plan,failures,physicalProductIdentityAsserted:false,ingredientQualificationAsserted:false},
+    identityMatches:matches,identitySearchCoverage:{state:failures.length?'partial':hasMore?'page-available':'complete-for-selected-index-and-query-plan',startLane,nextLane:hasMore?laneIndex:null,lanes:plan,failures,identifierVMStepReservation:{limit:100000,plannedLanes,perLaneMaxSteps:laneMaxSteps,progressQuantumAllowancePerLane:100,measured:false},physicalProductIdentityAsserted:false,ingredientQualificationAsserted:false},
     operation:detailOnly?'observation-detail':'identifier-search'};
    if(detailOnly&&!result.rows.length)result.details=unavailable(failures.length?'SELECTED_OBSERVATION_LOOKUP_UNAVAILABLE':'NO_CURRENT_SELECTED_OBSERVATION');
    else if(query.include&&result.rows.length){
