@@ -22,7 +22,7 @@ export function retailCode(result) {
     code = f <= '2' ? n+a+b+f+'0000'+c+d+e+k : f === '3' ? n+a+b+c+'00000'+d+e+k : f === '4' ? n+a+b+c+d+'00000'+e+k : n+a+b+c+d+e+'0000'+f+k;
   }
   if (!validGTIN(code)) return null;
-  // EAN-13's leading zero is the same product as UPC-A; keep OFF's UPC lookup form.
+  // This is a standards-defined representation alias, not evidence of one source product. Callers retain and query the original lexical capture.
   return code.length === 13 && code.startsWith('0') ? code.slice(1) : code;
 }
 

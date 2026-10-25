@@ -21,7 +21,7 @@ export function packAmount(product){
 }
 export function makeAutoLot(code,product,ingredient='unmapped'){
  if(!/^\d{4,32}$/.test(code))throw Error(t('Invalid barcode.'));
- return {id:crypto.randomUUID(),barcode:code,name:product?.name||'Unknown product · '+code,ingredient:ingredient||'unmapped',...packAmount(product),expires:null,needsReview:!product?.name||!ingredient||ingredient==='unmapped'};
+ return {id:crypto.randomUUID(),barcode:code,name:product?.name||'Unknown product · '+code,ingredient:ingredient||'unmapped',...packAmount(product),expires:null,needsReview:!product?.name||!ingredient||ingredient==='unmapped',...(product?.sourceObservationReference?{sourceObservationReference:product.sourceObservationReference}:{})};
 }
 // A code held in view counts once; removing it from view re-arms the scanner.
 export function createScanGate(gap=800){let code='',lastSeen=0;return {read(next,now){const duplicate=next===code&&now-lastSeen<gap;code=next;lastSeen=now;return !duplicate;},miss(now){if(now-lastSeen>=gap)code='';},reset(){code='';lastSeen=0;}};}

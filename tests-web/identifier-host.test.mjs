@@ -4,13 +4,15 @@ import {mkdtemp,writeFile,rm,readFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {createIdentifierAdapter,identifierForms} from '../cloud/identifier-host.mjs';
+import {lookupIdentityPage,lookupExactObservationDetail,sourceObservationReference as uiReference,DETAIL_SELECTION} from '../public/scanner-identity-v2.js';
+import {validateLot} from '../public/model.js';
 const DB='97c2f7390f75d8d187b49c927652515cd829e095301d7b305a0081120c7502f0';
 const BACKEND='retained-product-federation-v1';
 async function fixture(mode='valid',delay=0,timeoutMs=7000,records=null,failDisposition=null){
  const dir=await mkdtemp(join(tmpdir(),'offmenu-identity-host-owned-'));
  const index=join(dir,'identity.py'),details=join(dir,'details.py'),calls=join(dir,'calls.jsonl');
  const recordsJson=JSON.stringify(records??[1,2].map(n=>({assertion_id:n,run_id:'selected-run',namespace:'barcode',lexical_value:'00027000612323',source_id:'fixture-'+n,disposition:'source-asserted',ingredientStatus:'unclassified'})));
- const identity=`import sys,json,time\nq=json.load(sys.stdin)\ntime.sleep(${delay})\nwith open(${JSON.stringify(calls)},'a') as f:f.write('identity:'+q['action']+'\\n')\nif q['action']=='status':\n print(json.dumps({'databaseLoaded':True,'queryAvailable':True,'databaseSha256':'${DB}','loadComplete':True}));sys.exit(0)\nrecords=json.loads(${JSON.stringify(recordsJson)})\nif q['disposition']==${JSON.stringify(failDisposition??'never-fail')}:sys.exit(3)\nrows=[r for r in records if r['namespace']==q['namespace'] and r['lexical_value']==q['lexical_value'] and r['disposition']==q['disposition'] and r['assertion_id']>q['after']]\nmore=len(rows)>q['limit'];rows=rows[:q['limit']]\nprint(json.dumps({'databaseSha256':'${DB}','rows':rows,'hasMore':more,'nextAssertionId':rows[-1]['assertion_id'] if more else None,'metadata':{'scope':'generated-only'},'assurance':'lexical-source-observations-only'}))\n`;
+ const identity=`import sys,json,time\nq=json.load(sys.stdin)\ntime.sleep(${delay})\nwith open(${JSON.stringify(calls)},'a') as f:f.write('identity:'+q['action']+'\\n')\nif q['action']=='status':\n print(json.dumps({'databaseLoaded':True,'queryAvailable':True,'databaseSha256':'${DB}','loadComplete':True,'runId':'worker57-full-retained-identifiers-v1'}));sys.exit(0)\nrecords=json.loads(${JSON.stringify(recordsJson)})\nif q['disposition']==${JSON.stringify(failDisposition??'never-fail')}:sys.exit(3)\nrows=[r for r in records if r['namespace']==q['namespace'] and r['lexical_value']==q['lexical_value'] and r['disposition']==q['disposition'] and r['assertion_id']>q['after']]\nmore=len(rows)>q['limit'];rows=rows[:q['limit']]\nprint(json.dumps({'databaseSha256':'${DB}','rows':rows,'hasMore':more,'nextAssertionId':rows[-1]['assertion_id'] if more else None,'metadata':{'scope':'generated-only'},'assurance':'lexical-source-observations-only'}))\n`;
  let enrich=`import sys,json,time\nq=json.load(sys.stdin)\nwith open(${JSON.stringify(calls)},'a') as f:f.write('details:'+q['action']+'\\n')\np=q['identity'];p['details']={'detailBackend':'${BACKEND}','state':'loaded','accepted':False,'sourceProducts':[{'records':[{'kind':'product','data':{'name':'Generated product'}}],'ingredientUsability':{'status':'unclassified'}}]}\n`;
  if(mode==='invalid')enrich+="print('{invalid')\n";
  else if(mode==='overflow')enrich+="print('x'*262145)\n";
@@ -91,5 +93,32 @@ test('alias observation detail binds exact lexical and disposition; arbitrary al
   assert.equal((await f.adapter(request({detailAssertionId:8,detailLexicalValue:'027000612323'}))).status,400);
   const page=await (await f.adapter(request({lexical_value:'036000291452',limit:1,include:undefined}))).json();
   assert.equal((await f.adapter(request({lexical_value:'036000291452',limit:1,cursor:page.nextCursor,symbology:'UPC-A',include:undefined}))).status,400);
+ }finally{await f.close();}
+});
+
+test('actual wired UI and native host agree on release pins, aliases, lazy failure and pantry reference',async()=>{
+ const original='036000291452',alias='0036000291452';
+ const records=[row(5,original),row(7,alias,'unresolved')].map((r,i)=>({...r,
+  run_id:'worker57-full-retained-identifiers-v1',input_id:'synthetic:source-input',record_ordinal:i+1,
+  source_id:'off',release_id:'synthetic-release',source_record_id:String(r.assertion_id),native_record_id:'synthetic:'+r.assertion_id}));
+ const f=await fixture('failed',0,7000,records);
+ const fetchImpl=(path,options)=>{
+  assert.match(path,/^\/__dev\/identifiers(?:\/status)?$/);
+  return f.adapter(new Request('https://offmenu-identifiers.invalid'+path,options));
+ };
+ try{
+  const page=await lookupIdentityPage(original,41,{fetchImpl});
+  assert.notEqual(page.status,'unavailable');assert.equal(page.matches.length,2);
+  assert.equal(DETAIL_SELECTION,'d9a08c3b2b9eec880418b8108d60c177a253b53802e8ea0453eb8fd502498290');
+  assert.equal((await readFile(f.calls,'utf8')).includes('details:enrich'),false);
+  const selected=page.matches.find(m=>m.identifier.assertion_id===7),ref=uiReference(selected,page);
+  assert.equal(ref.matchType,'representation-alias');assert.equal(ref.disposition,'unresolved');
+  assert.equal(ref.originalLexicalValue,original);assert.equal(ref.sourceLexicalValue,alias);
+  const detail=await lookupExactObservationDetail(ref,41,{fetchImpl});
+  assert.equal(detail.status,'detail-unavailable');assert.deepEqual(detail.sourceObservationReference,ref);
+  assert.deepEqual(page.matches.map(m=>m.identifier.assertion_id),[5,7]);
+  const lot=validateLot({barcode:original,name:'Synthetic source observation',ingredient:'unmapped',quantity:1,
+   unit:'count',needsReview:true,sourceObservationReference:ref});
+  assert.deepEqual(lot.sourceObservationReference,ref);
  }finally{await f.close();}
 });

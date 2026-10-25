@@ -1,12 +1,12 @@
 import {t,setLocalizedText} from './i18n.js';
 import {NATIVE_FORMATS, retailCode, createPresentationGate, cameraError} from './scanner-model.js';
 
-export function setupScanner({canScan,onCode,onStream,onStartGesture,storage}) {
+export function setupScanner({canScan,onCode,onStream,onStartGesture,autoResume=false,storage}) {
   const $=id=>document.getElementById(id), video=$('video'), canvas=document.createElement('canvas');
   const context=canvas.getContext('2d',{willReadFrequently:true});
   const gate=createPresentationGate();
   let stream=null, token=0, timer=null, worker=null, pending=null, job=0, native=null, wake=null;
-  let running=false, lastFrame=-1, attempts=0, started=0, lastRead=0, lastCodes=[], track=null;
+  let running=false, starting=false, lastFrame=-1, attempts=0, started=0, lastRead=0, lastCodes=[], track=null;
   let preferences={mode:'bench',camera:'user',mirror:true,rotate:false,enhance:true};
   try { preferences={...preferences,...JSON.parse((storage ?? localStorage).getItem('offmenu-scanner-v2')||'{}')}; } catch {}
   if(!['handheld','bench','stand'].includes(preferences.mode)) preferences.mode='bench';
@@ -37,11 +37,11 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,storage}) {
     if(pending) { clearTimeout(pending.timeout); pending.reject(Error(t('Decoder stopped'))); pending=null; }
   }
   function stop({announce=true}={}) {
-    token++; running=false; clearTimeout(timer); closeDecoder(); native=null;
+    token++; running=false; starting=false; clearTimeout(timer); closeDecoder(); native=null;
     stream?.getTracks().forEach(t=>t.stop()); stream=null; track=null; onStream(null);
     video.srcObject=null; video.hidden=true;
-    $('camera-stage').hidden=true; $('scanner-controls').hidden=true; $('stop').hidden=true;
-    $('scan').disabled=false; $('scanner-photo').disabled=false;
+    $('camera-stage').hidden=true; $('scanner-controls').hidden=true; if($('stop'))$('stop').hidden=true;
+    if($('scan'))$('scan').disabled=false; $('scanner-photo').disabled=false;
     $('scanner-rearm').disabled=true;
     if(wake) { void wake.release().catch(()=>{}); wake=null; }
     gate.rearm(); lastFrame=-1; lastCodes=[];
@@ -106,6 +106,7 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,storage}) {
   }
   async function loop(sessionToken) {
     if(sessionToken!==token || !running) return;
+    if(!canScan()){timer=setTimeout(()=>void loop(sessionToken),140);return;}
     const begin=performance.now();
     try {
       if(video.readyState>=2 && video.currentTime!==lastFrame) {
@@ -122,14 +123,15 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,storage}) {
         lastCodes=codes;
         const accepted=gate.observe(codes,performance.now());
         if(accepted) {
-          lastRead=performance.now(); onCode(accepted);
+          lastRead=performance.now(); onCode(accepted,{originalCaptures:results.filter(retailCode).map(r=>({value:String(r.rawValue??r.text??''),symbology:r.format??null}))});
           setLocalizedText($('scanner-last'),"Accepted: {v0}",{v0:(accepted)});
           status('Accepted ✓ Move this item away. Present the next barcode.');
           $('camera-stage').classList.add('scan-accepted');
           setTimeout(()=>$('camera-stage').classList.remove('scan-accepted'),500);
         } else if(codes.length>1) status('More than one barcode visible. Present one product at a time.');
-        else if(codes.length===1 && performance.now()-lastRead>2000) status('Reading… If already scanned, remove it fully before the next identical pack.');
-        else if(performance.now()-Math.max(started,lastRead)>6000) status('No readable code yet. Pause movement, move farther away if blurred, and avoid glare. Try another lens or a photo.');
+        else if(codes.length===1 && performance.now()-lastRead>2000) status(lastRead?'Ready for next item. Remove this barcode fully before the next identical pack.':'Reading… Hold one barcode steady.');
+        else if(lastRead && !codes.length) status('Ready for next item. Previous product details are retained.');
+        else if(!lastRead && performance.now()-started>6000) status('No readable code yet. Pause movement, move farther away if blurred, and avoid glare. Try another lens or a photo.');
       }
     } catch {
       if(sessionToken!==token) return;
@@ -139,9 +141,9 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,storage}) {
     if(sessionToken===token && running) timer=setTimeout(()=>void loop(sessionToken),Math.max(70,140-(performance.now()-begin)));
   }
   async function start() {
-    if(!canScan()) return;
-    stop({announce:false}); const sessionToken=token;
-    $('scan').disabled=true; $('stop').hidden=false;
+    if(!canScan()||running||starting) return;
+    stop({announce:false}); starting=true;const sessionToken=token;
+    if($('scan'))$('scan').disabled=true;if($('stop'))$('stop').hidden=false;
     status('Opening camera…');
     // Audio resume must begin in the user gesture, before the permission dialog.
     void onStartGesture?.();
@@ -173,7 +175,7 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,storage}) {
       try { await enumerate(); } catch { /* Automatic facing modes remain available. */ }
       if(sessionToken!==token) return;
       preview(); showControls(); $('scanner-controls').hidden=false; $('scanner-rearm').disabled=false;
-      running=true; started=performance.now(); lastRead=0; attempts=0;
+      running=true;starting=false; started=performance.now(); lastRead=0; attempts=0;
       status('Ready. Present one barcode and pause briefly.');
       void keepAwake(sessionToken); void loop(sessionToken);
     } catch(error) { if(sessionToken===token){stop({announce:false});status(cameraError(error));} }
@@ -183,11 +185,11 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,storage}) {
     preferences.camera=preferences.mode==='bench'?'user':'environment';
     preferences.mirror=preferences.mode==='bench'; preferences.rotate=false;
     $('scanner-camera').value=preferences.camera; guide(); preview(); save();
-    if(running || $('scan').disabled) void start();
+    if(running||starting){stop({announce:false});void start();}
   };
   $('scanner-camera').onchange=()=>{
     preferences.camera=$('scanner-camera').value; save();
-    if(running || $('scan').disabled) void start();
+    if(running||starting){stop({announce:false});void start();}
   };
   for(const key of ['mirror','rotate','enhance']) $('scanner-'+key).onchange=()=>{preferences[key]=$('scanner-'+key).checked;preview();save();};
   $('scanner-torch').onclick=async()=>{await setting({torch:!track?.getSettings?.().torch});showControls();};
@@ -211,15 +213,16 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,storage}) {
       if(photoToken!==token) return;
       const codes=[...new Set(results.map(retailCode).filter(Boolean))];
       if(codes.length!==1) return status(codes.length?'Several barcodes found. Crop the photo to one product.':'No retail barcode found. Use a sharp photo of the entire barcode, including its blank edges.');
-      onCode(codes[0]); setLocalizedText($('scanner-last'),"Accepted from photo: {v0}",{v0:(codes[0])}); status('Photo accepted ✓');
+      onCode(codes[0],{captureKind:'photo',originalCaptures:results.filter(retailCode).map(r=>({value:String(r.rawValue??r.text??''),symbology:r.format??null}))}); setLocalizedText($('scanner-last'),"Accepted from photo: {v0}",{v0:(codes[0])}); status('Photo accepted ✓');
     } catch { if(photoToken===token) status('Photo could not be decoded. Try a JPEG/PNG photo or enter the barcode.'); }
-    finally { bitmap?.close(); if(photoToken===token){closeDecoder();$('scanner-photo').disabled=false;} }
+    finally { bitmap?.close(); if(photoToken===token){closeDecoder();$('scanner-photo').disabled=false;if(autoResume&&canScan())void start();} }
   };
-  $('scan').onclick=()=>void start(); $('stop').onclick=()=>stop();
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
+  if($('scan'))$('scan').onclick=()=>void start();if($('stop'))$('stop').onclick=()=>stop();
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else if(autoResume&&canScan())void start();});
+  if(autoResume&&navigator.permissions?.query)void navigator.permissions.query({name:'camera'}).then(p=>p.addEventListener('change',()=>{if(p.state==='granted'&&!document.hidden&&canScan())void start();})).catch(()=>{});
   window.addEventListener('pagehide',()=>stop());
   guide(); preview();
   if(!['environment','user'].includes(preferences.camera)) $('scanner-camera').add(new Option('Last used camera',preferences.camera));
   $('scanner-camera').value=preferences.camera;
-  return {stop,start};
+  return {stop,start,noteAccepted(){if(running){lastRead=performance.now();status('Ready for next item. Previous product details are retained.');}}};
 }
