@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3731,
+  "messages": 3776,
   "arabicTranslated": 376,
-  "arabicMissing": 3355,
+  "arabicMissing": 3400,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -1992,6 +1992,12 @@
       ],
       "arabic": false
     },
+    "./offmenu-identity-client.js": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "./personal-ai-ui.js": {
       "sources": [
         "public/app.js"
@@ -2693,6 +2699,12 @@
     "A reviewed write confirmation is required.": {
       "sources": [
         "cloud/personal-ai.mjs"
+      ],
+      "arabic": false
+    },
+    "A same-origin request function is required.": {
+      "sources": [
+        "public/offmenu-identity-client.js"
       ],
       "arabic": false
     },
@@ -3731,6 +3743,12 @@
       ],
       "arabic": false
     },
+    "Attribution": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
     "Attribution: ": {
       "sources": [
         "public/shelf-scanner.js"
@@ -3758,6 +3776,30 @@
     "Authentication is temporarily unavailable.": {
       "sources": [
         "cloud/auth-runtime.mjs"
+      ],
+      "arabic": false
+    },
+    "Authentication request failed. Your local kitchen is unchanged.": {
+      "sources": [
+        "public/offmenu-identity-client.js"
+      ],
+      "arabic": false
+    },
+    "Authentication response unavailable.": {
+      "sources": [
+        "public/offmenu-identity-client.js"
+      ],
+      "arabic": false
+    },
+    "Authentication session remains active.": {
+      "sources": [
+        "public/offmenu-identity-client.js"
+      ],
+      "arabic": false
+    },
+    "Authentication session unavailable.": {
+      "sources": [
+        "public/offmenu-identity-client.js"
       ],
       "arabic": false
     },
@@ -3840,6 +3882,12 @@
     "Avoid:": {
       "sources": [
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    "Awaiting source field page": {
+      "sources": [
+        "public/source-field-page-presenter.js"
       ],
       "arabic": false
     },
@@ -6998,6 +7046,12 @@
       ],
       "arabic": false
     },
+    "Email and password are required.": {
+      "sources": [
+        "public/offmenu-identity-client.js"
+      ],
+      "arabic": false
+    },
     "Email authentication requires an explicit enabled setting.": {
       "sources": [
         "cloud/auth.mjs"
@@ -7473,6 +7527,12 @@
       ],
       "arabic": false
     },
+    "Exact selected field binding required": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
     "Exact source binding": {
       "sources": [
         "public/shelf-scanner.js"
@@ -7766,6 +7826,12 @@
       ],
       "arabic": false
     },
+    "Explicit source null; not zero or false": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
     "Explore": {
       "sources": [
         "public/shelf-scanner.js"
@@ -7992,6 +8058,78 @@
     "Fibre g / 100": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "Field container page gap": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Field metadata": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Field missing in selected source scope": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Field number unavailable": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Field page binding mismatch": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Field page kind unavailable": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Field page state mismatch": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Field page unavailable or changed source; already loaded values remain. ": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Field page unavailable: ": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Field path": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Field scalar continuation": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Field text page gap": {
+      "sources": [
+        "public/source-field-page-presenter.js"
       ],
       "arabic": false
     },
@@ -10745,6 +10883,12 @@
       ],
       "arabic": false
     },
+    "Load child ": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
     "Load more cases": {
       "sources": [
         "public/care-ui.js"
@@ -10754,6 +10898,12 @@
     "Load my private records": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Load next field page": {
+      "sources": [
+        "public/source-field-page-presenter.js"
       ],
       "arabic": false
     },
@@ -14518,6 +14668,12 @@
       ],
       "arabic": false
     },
+    "Reader and root required": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
     "Reading barcode photo…": {
       "sources": [
         "public/scanner-ui.js"
@@ -15055,6 +15211,12 @@
       ],
       "arabic": false
     },
+    "Repeated source child": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
     "Repeated source observation across pages": {
       "sources": [
         "public/scanner-identity-v2.js"
@@ -15539,6 +15701,12 @@
       ],
       "arabic": false
     },
+    "Revision": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
     "Revision conflict": {
       "sources": [
         "cloud/waste-observation-owner24.mjs"
@@ -15592,6 +15760,12 @@
     "Rice and peas": {
       "sources": [
         "public/lifecycle-fixture.js"
+      ],
+      "arabic": false
+    },
+    "Rights held; source value withheld": {
+      "sources": [
+        "public/source-field-page-presenter.js"
       ],
       "arabic": false
     },
@@ -16368,6 +16542,30 @@
       ],
       "arabic": false
     },
+    "Selected field root": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Selected field traversal complete. Other source fields and global coverage are not established.": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Selected field traversal incomplete": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Selected field traversal incomplete; unloaded children or continuations remain.": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
     "Selected home unavailable": {
       "sources": [
         "public/meal-context-model.js"
@@ -16443,6 +16641,12 @@
     "Selected search page unavailable; ": {
       "sources": [
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Selected source field · ": {
+      "sources": [
+        "public/source-field-page-presenter.js"
       ],
       "arabic": false
     },
@@ -17236,6 +17440,24 @@
       ],
       "arabic": false
     },
+    "Source field attribution and metadata": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Source field not loaded": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Source field value supplied · node page only": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
     "Source identifier found · 1 source record · product details ": {
       "sources": [
         "public/shelf-scanner.js"
@@ -17423,6 +17645,12 @@
       ],
       "arabic": false
     },
+    "Source text": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
     "Source text fingerprint does not match.": {
       "sources": [
         "public/common-corpus-locale.js"
@@ -17450,6 +17678,18 @@
     "Source unavailable.": {
       "sources": [
         "cloud/admin-operations.mjs"
+      ],
+      "arabic": false
+    },
+    "Source value": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Source value unknown": {
+      "sources": [
+        "public/source-field-page-presenter.js"
       ],
       "arabic": false
     },
@@ -18546,6 +18786,12 @@
       ],
       "arabic": false
     },
+    "The existing Netlify Identity client is required.": {
+      "sources": [
+        "public/offmenu-identity-client.js"
+      ],
+      "arabic": false
+    },
     "The external privacy panel uses {language}.": {
       "sources": [
         "public/services-ui.js"
@@ -18573,6 +18819,12 @@
     "Thing": {
       "sources": [
         "public/integrations.js"
+      ],
+      "arabic": false
+    },
+    "This account action is not available in the selected authentication mode.": {
+      "sources": [
+        "public/offmenu-identity-client.js"
       ],
       "arabic": false
     },
@@ -18959,6 +19211,12 @@
       ],
       "arabic": false
     },
+    "Typed field reader failure: ": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
     "UI scenario v1 · not real mapping evidence": {
       "sources": [
         "public/scanner-surrogate.js"
@@ -19281,6 +19539,12 @@
       ],
       "arabic": false
     },
+    "Unknown reader error": {
+      "sources": [
+        "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
     "Unknown requested permission.": {
       "sources": [
         "public/access-ui.js"
@@ -19402,6 +19666,12 @@
     "Unsupported analytics provider.": {
       "sources": [
         "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Unsupported authentication mode.": {
+      "sources": [
+        "public/offmenu-identity-client.js"
       ],
       "arabic": false
     },

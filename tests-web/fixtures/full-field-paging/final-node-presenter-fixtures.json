@@ -1,0 +1,1315 @@
+{
+  "schema": "synthetic-reader-node-presenter-fixtures/1",
+  "cases": [
+    {
+      "name": "unicode",
+      "fixtureOnly": true,
+      "first": {
+        "binding": {
+          "attribution": {
+            "notice": "Generated synthetic fixture; no upstream acquisition.",
+            "originalLanguage": null
+          },
+          "fieldPath": "/0/data/unknown~1extension",
+          "generation": 7,
+          "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+          "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+          "sourceBinding": {
+            "representation": "generated-only",
+            "sourcePointer": "/fixture/1",
+            "unknownExtension": {
+              "keep": true
+            }
+          },
+          "sourceObservationReference": {
+            "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "disposition": "source-asserted",
+            "equivalence": "not-a-product-assertion",
+            "matchType": "synthetic-only",
+            "namespace": "barcode",
+            "observationKey": {
+              "assertion_id": 1,
+              "input_id": "fixture",
+              "record_ordinal": 1,
+              "run_id": "synthetic-run"
+            },
+            "originalLexicalValue": "synthetic-original",
+            "releaseId": null,
+            "runId": "synthetic-run",
+            "schema": "offmenu-identifier-observation/2",
+            "sourceId": "synthetic-source",
+            "sourceLexicalValue": "synthetic-source",
+            "sourceRecordId": null,
+            "symbology": null
+          }
+        },
+        "field": {
+          "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+          "fieldPointer": "/0/data/unknown~1extension",
+          "language": null,
+          "sourceFieldState": "unknown",
+          "state": "present",
+          "unknownMetadata": [
+            "kept",
+            "kept"
+          ],
+          "valueOrigin": "generated-only"
+        },
+        "schema": "offmenu-source-field-page/1",
+        "snapshotSha256": "1fd15155abdcfa8db16b90956c512308682bd6316d6cc32395cfb902686cfed5",
+        "path": [],
+        "requestCursor": null,
+        "state": "present",
+        "scope": "node-page-only",
+        "content": {
+          "kind": "text",
+          "text": "😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢",
+          "offsetUnit": "unicode-code-points",
+          "start": 0,
+          "end": 874,
+          "total": 7000
+        },
+        "nextCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6ODc0LCJwYXRoIjpbXSwic25hcHNob3QiOiIxZmQxNTE1NWFiZGNmYThkYjE2YjkwOTU2YzUxMjMwODY4MmJkNjMxNmQ2Y2MzMjM5NWNmYjkwMjY4NmNmZWQ1IiwidiI6MX0K.tZ-lk85oQ9PvvHUmksDoOlbqGuqww1URxVJGPp9zyzg",
+        "nodeExhausted": false,
+        "valueCompleteInThisPage": false
+      },
+      "replies": {
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6ODc0LCJwYXRoIjpbXSwic25hcHNob3QiOiIxZmQxNTE1NWFiZGNmYThkYjE2YjkwOTU2YzUxMjMwODY4MmJkNjMxNmQ2Y2MzMjM5NWNmYjkwMjY4NmNmZWQ1IiwidiI6MX0K.tZ-lk85oQ9PvvHUmksDoOlbqGuqww1URxVJGPp9zyzg": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "1fd15155abdcfa8db16b90956c512308682bd6316d6cc32395cfb902686cfed5",
+          "path": [],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6ODc0LCJwYXRoIjpbXSwic25hcHNob3QiOiIxZmQxNTE1NWFiZGNmYThkYjE2YjkwOTU2YzUxMjMwODY4MmJkNjMxNmQ2Y2MzMjM5NWNmYjkwMjY4NmNmZWQ1IiwidiI6MX0K.tZ-lk85oQ9PvvHUmksDoOlbqGuqww1URxVJGPp9zyzg",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "text",
+            "text": "字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀e",
+            "offsetUnit": "unicode-code-points",
+            "start": 874,
+            "end": 1661,
+            "total": 7000
+          },
+          "nextCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MTY2MSwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg._REFSl0DmWcbJbSwnr_IZMpy2rPoUApPa-R8fJ3Dza4",
+          "nodeExhausted": false,
+          "valueCompleteInThisPage": false
+        },
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MTY2MSwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg._REFSl0DmWcbJbSwnr_IZMpy2rPoUApPa-R8fJ3Dza4": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "1fd15155abdcfa8db16b90956c512308682bd6316d6cc32395cfb902686cfed5",
+          "path": [],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MTY2MSwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg._REFSl0DmWcbJbSwnr_IZMpy2rPoUApPa-R8fJ3Dza4",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "text",
+            "text": "́\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r",
+            "offsetUnit": "unicode-code-points",
+            "start": 1661,
+            "end": 2447,
+            "total": 7000
+          },
+          "nextCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MjQ0NywicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.besqrk7TJDozUnfBf7zizrbhILfuPw1h7E0iPslOVGo",
+          "nodeExhausted": false,
+          "valueCompleteInThisPage": false
+        },
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MjQ0NywicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.besqrk7TJDozUnfBf7zizrbhILfuPw1h7E0iPslOVGo": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "1fd15155abdcfa8db16b90956c512308682bd6316d6cc32395cfb902686cfed5",
+          "path": [],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MjQ0NywicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.besqrk7TJDozUnfBf7zizrbhILfuPw1h7E0iPslOVGo",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "text",
+            "text": "\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢",
+            "offsetUnit": "unicode-code-points",
+            "start": 2447,
+            "end": 3233,
+            "total": 7000
+          },
+          "nextCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MzIzMywicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.QStxI0Etv9RAFCU0LqxCm7wz1i8PaxBPh4h26quQ_TA",
+          "nodeExhausted": false,
+          "valueCompleteInThisPage": false
+        },
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MzIzMywicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.QStxI0Etv9RAFCU0LqxCm7wz1i8PaxBPh4h26quQ_TA": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "1fd15155abdcfa8db16b90956c512308682bd6316d6cc32395cfb902686cfed5",
+          "path": [],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MzIzMywicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.QStxI0Etv9RAFCU0LqxCm7wz1i8PaxBPh4h26quQ_TA",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "text",
+            "text": "字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字",
+            "offsetUnit": "unicode-code-points",
+            "start": 3233,
+            "end": 4018,
+            "total": 7000
+          },
+          "nextCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6NDAxOCwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.L-X2RBrVoVeMBJ4R40kaolicQnroP155Ge8s5XUkc9c",
+          "nodeExhausted": false,
+          "valueCompleteInThisPage": false
+        },
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6NDAxOCwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.L-X2RBrVoVeMBJ4R40kaolicQnroP155Ge8s5XUkc9c": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "1fd15155abdcfa8db16b90956c512308682bd6316d6cc32395cfb902686cfed5",
+          "path": [],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6NDAxOCwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.L-X2RBrVoVeMBJ4R40kaolicQnroP155Ge8s5XUkc9c",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "text",
+            "text": "😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀e",
+            "offsetUnit": "unicode-code-points",
+            "start": 4018,
+            "end": 4804,
+            "total": 7000
+          },
+          "nextCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6NDgwNCwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.DkImhp_NFBU5fe4v1lf5msi7MshFTgZtvBs-HU1RXQo",
+          "nodeExhausted": false,
+          "valueCompleteInThisPage": false
+        },
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6NDgwNCwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.DkImhp_NFBU5fe4v1lf5msi7MshFTgZtvBs-HU1RXQo": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "1fd15155abdcfa8db16b90956c512308682bd6316d6cc32395cfb902686cfed5",
+          "path": [],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6NDgwNCwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.DkImhp_NFBU5fe4v1lf5msi7MshFTgZtvBs-HU1RXQo",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "text",
+            "text": "́\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r",
+            "offsetUnit": "unicode-code-points",
+            "start": 4804,
+            "end": 5590,
+            "total": 7000
+          },
+          "nextCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6NTU5MCwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.JdxCeYJPjPILU7bzqyIrBFSWiO5zKgN-TOdumj6Jdr8",
+          "nodeExhausted": false,
+          "valueCompleteInThisPage": false
+        },
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6NTU5MCwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.JdxCeYJPjPILU7bzqyIrBFSWiO5zKgN-TOdumj6Jdr8": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "1fd15155abdcfa8db16b90956c512308682bd6316d6cc32395cfb902686cfed5",
+          "path": [],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6NTU5MCwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.JdxCeYJPjPILU7bzqyIrBFSWiO5zKgN-TOdumj6Jdr8",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "text",
+            "text": "\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢",
+            "offsetUnit": "unicode-code-points",
+            "start": 5590,
+            "end": 6376,
+            "total": 7000
+          },
+          "nextCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6NjM3NiwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.LUxy4G0r1vnDR38gp-bFD6k3EuqzGDzFcl7_YUOyFq0",
+          "nodeExhausted": false,
+          "valueCompleteInThisPage": false
+        },
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6NjM3NiwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.LUxy4G0r1vnDR38gp-bFD6k3EuqzGDzFcl7_YUOyFq0": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "1fd15155abdcfa8db16b90956c512308682bd6316d6cc32395cfb902686cfed5",
+          "path": [],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6NjM3NiwicGF0aCI6W10sInNuYXBzaG90IjoiMWZkMTUxNTVhYmRjZmE4ZGIxNmI5MDk1NmM1MTIzMDg2ODJiZDYzMTZkNmNjMzIzOTVjZmI5MDI2ODZjZmVkNSIsInYiOjF9Cg.LUxy4G0r1vnDR38gp-bFD6k3EuqzGDzFcl7_YUOyFq0",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "text",
+            "text": "字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字",
+            "offsetUnit": "unicode-code-points",
+            "start": 6376,
+            "end": 7000,
+            "total": 7000
+          },
+          "nextCursor": null,
+          "nodeExhausted": true,
+          "valueCompleteInThisPage": false
+        }
+      },
+      "original": "😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字😀é\r\n漢字"
+    },
+    {
+      "name": "nested",
+      "fixtureOnly": true,
+      "first": {
+        "binding": {
+          "attribution": {
+            "notice": "Generated synthetic fixture; no upstream acquisition.",
+            "originalLanguage": null
+          },
+          "fieldPath": "/0/data/unknown~1extension",
+          "generation": 7,
+          "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+          "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+          "sourceBinding": {
+            "representation": "generated-only",
+            "sourcePointer": "/fixture/1",
+            "unknownExtension": {
+              "keep": true
+            }
+          },
+          "sourceObservationReference": {
+            "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "disposition": "source-asserted",
+            "equivalence": "not-a-product-assertion",
+            "matchType": "synthetic-only",
+            "namespace": "barcode",
+            "observationKey": {
+              "assertion_id": 1,
+              "input_id": "fixture",
+              "record_ordinal": 1,
+              "run_id": "synthetic-run"
+            },
+            "originalLexicalValue": "synthetic-original",
+            "releaseId": null,
+            "runId": "synthetic-run",
+            "schema": "offmenu-identifier-observation/2",
+            "sourceId": "synthetic-source",
+            "sourceLexicalValue": "synthetic-source",
+            "sourceRecordId": null,
+            "symbology": null
+          }
+        },
+        "field": {
+          "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+          "fieldPointer": "/0/data/unknown~1extension",
+          "language": null,
+          "sourceFieldState": "unknown",
+          "state": "present",
+          "unknownMetadata": [
+            "kept",
+            "kept"
+          ],
+          "valueOrigin": "generated-only"
+        },
+        "schema": "offmenu-source-field-page/1",
+        "snapshotSha256": "6959c15fe7eb7e61c2565cf821dbfbbeb17ceb0fa91b9c6dd5a95c03ed9e8b1b",
+        "path": [],
+        "requestCursor": null,
+        "state": "present",
+        "scope": "node-page-only",
+        "content": {
+          "kind": "object",
+          "children": [
+            {
+              "key": "empty",
+              "valueType": "object",
+              "cursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJlbXB0eSJdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.P1xw06SY61Bn3-7X6kVV9VGarDbDPagdm5TZfxSXEsM"
+            },
+            {
+              "key": "unknown/extension~",
+              "valueType": "array",
+              "cursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iXSwic25hcHNob3QiOiI2OTU5YzE1ZmU3ZWI3ZTYxYzI1NjVjZjgyMWRiZmJiZWIxN2NlYjBmYTkxYjljNmRkNWE5NWMwM2VkOWU4YjFiIiwidiI6MX0K.CW15kpMGSMRnIjQz7H3Zc7RfwzXz1jO98L0uauHnts8"
+            }
+          ],
+          "start": 0,
+          "end": 2,
+          "total": 2,
+          "order": "unicode-code-point-key"
+        },
+        "nextCursor": null,
+        "nodeExhausted": true,
+        "valueCompleteInThisPage": false
+      },
+      "replies": {
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJlbXB0eSJdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.P1xw06SY61Bn3-7X6kVV9VGarDbDPagdm5TZfxSXEsM": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "6959c15fe7eb7e61c2565cf821dbfbbeb17ceb0fa91b9c6dd5a95c03ed9e8b1b",
+          "path": [
+            "empty"
+          ],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJlbXB0eSJdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.P1xw06SY61Bn3-7X6kVV9VGarDbDPagdm5TZfxSXEsM",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "object",
+            "children": [],
+            "start": 0,
+            "end": 0,
+            "total": 0,
+            "order": "unicode-code-point-key"
+          },
+          "nextCursor": null,
+          "nodeExhausted": true,
+          "valueCompleteInThisPage": true
+        },
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iXSwic25hcHNob3QiOiI2OTU5YzE1ZmU3ZWI3ZTYxYzI1NjVjZjgyMWRiZmJiZWIxN2NlYjBmYTkxYjljNmRkNWE5NWMwM2VkOWU4YjFiIiwidiI6MX0K.CW15kpMGSMRnIjQz7H3Zc7RfwzXz1jO98L0uauHnts8": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "6959c15fe7eb7e61c2565cf821dbfbbeb17ceb0fa91b9c6dd5a95c03ed9e8b1b",
+          "path": [
+            "unknown/extension~"
+          ],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iXSwic25hcHNob3QiOiI2OTU5YzE1ZmU3ZWI3ZTYxYzI1NjVjZjgyMWRiZmJiZWIxN2NlYjBmYTkxYjljNmRkNWE5NWMwM2VkOWU4YjFiIiwidiI6MX0K.CW15kpMGSMRnIjQz7H3Zc7RfwzXz1jO98L0uauHnts8",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "array",
+            "children": [
+              {
+                "key": 0,
+                "valueType": "null",
+                "cursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iLDBdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.em6oB5GEpejpxsJBYIA0oIaMjACcj2csDJyKOShGCgQ"
+              },
+              {
+                "key": 1,
+                "valueType": "boolean",
+                "cursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iLDFdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.Cx2bvRZZn5ShukTKabw5rV3HblHBf_eqoNkdRC2JL5I"
+              },
+              {
+                "key": 2,
+                "valueType": "number",
+                "cursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iLDJdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.NrGun_ST7i3k0eFZ1v7_T6n5m8wF3oJNN-gJvjlUa8U"
+              },
+              {
+                "key": 3,
+                "valueType": "string",
+                "cursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iLDNdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.mldsL1pmBM1Fysu5s9DxS3x8Fz7Wz9pJh2Azp_12mkY"
+              }
+            ],
+            "start": 0,
+            "end": 4,
+            "total": 4,
+            "order": "array-index"
+          },
+          "nextCursor": null,
+          "nodeExhausted": true,
+          "valueCompleteInThisPage": false
+        },
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iLDBdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.em6oB5GEpejpxsJBYIA0oIaMjACcj2csDJyKOShGCgQ": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "6959c15fe7eb7e61c2565cf821dbfbbeb17ceb0fa91b9c6dd5a95c03ed9e8b1b",
+          "path": [
+            "unknown/extension~",
+            0
+          ],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iLDBdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.em6oB5GEpejpxsJBYIA0oIaMjACcj2csDJyKOShGCgQ",
+          "state": "null",
+          "scope": "node-page-only",
+          "content": null,
+          "nextCursor": null,
+          "nodeExhausted": true,
+          "valueCompleteInThisPage": true
+        },
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iLDFdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.Cx2bvRZZn5ShukTKabw5rV3HblHBf_eqoNkdRC2JL5I": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "6959c15fe7eb7e61c2565cf821dbfbbeb17ceb0fa91b9c6dd5a95c03ed9e8b1b",
+          "path": [
+            "unknown/extension~",
+            1
+          ],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iLDFdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.Cx2bvRZZn5ShukTKabw5rV3HblHBf_eqoNkdRC2JL5I",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "boolean",
+            "value": false
+          },
+          "nextCursor": null,
+          "nodeExhausted": true,
+          "valueCompleteInThisPage": true
+        },
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iLDJdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.NrGun_ST7i3k0eFZ1v7_T6n5m8wF3oJNN-gJvjlUa8U": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "6959c15fe7eb7e61c2565cf821dbfbbeb17ceb0fa91b9c6dd5a95c03ed9e8b1b",
+          "path": [
+            "unknown/extension~",
+            2
+          ],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iLDJdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.NrGun_ST7i3k0eFZ1v7_T6n5m8wF3oJNN-gJvjlUa8U",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "number",
+            "jsonNumber": "9007199254740993",
+            "numberKind": "integer"
+          },
+          "nextCursor": null,
+          "nodeExhausted": true,
+          "valueCompleteInThisPage": true
+        },
+        "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iLDNdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.mldsL1pmBM1Fysu5s9DxS3x8Fz7Wz9pJh2Azp_12mkY": {
+          "binding": {
+            "attribution": {
+              "notice": "Generated synthetic fixture; no upstream acquisition.",
+              "originalLanguage": null
+            },
+            "fieldPath": "/0/data/unknown~1extension",
+            "generation": 7,
+            "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+            "sourceBinding": {
+              "representation": "generated-only",
+              "sourcePointer": "/fixture/1",
+              "unknownExtension": {
+                "keep": true
+              }
+            },
+            "sourceObservationReference": {
+              "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "disposition": "source-asserted",
+              "equivalence": "not-a-product-assertion",
+              "matchType": "synthetic-only",
+              "namespace": "barcode",
+              "observationKey": {
+                "assertion_id": 1,
+                "input_id": "fixture",
+                "record_ordinal": 1,
+                "run_id": "synthetic-run"
+              },
+              "originalLexicalValue": "synthetic-original",
+              "releaseId": null,
+              "runId": "synthetic-run",
+              "schema": "offmenu-identifier-observation/2",
+              "sourceId": "synthetic-source",
+              "sourceLexicalValue": "synthetic-source",
+              "sourceRecordId": null,
+              "symbology": null
+            }
+          },
+          "field": {
+            "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "fieldPointer": "/0/data/unknown~1extension",
+            "language": null,
+            "sourceFieldState": "unknown",
+            "state": "present",
+            "unknownMetadata": [
+              "kept",
+              "kept"
+            ],
+            "valueOrigin": "generated-only"
+          },
+          "schema": "offmenu-source-field-page/1",
+          "snapshotSha256": "6959c15fe7eb7e61c2565cf821dbfbbeb17ceb0fa91b9c6dd5a95c03ed9e8b1b",
+          "path": [
+            "unknown/extension~",
+            3
+          ],
+          "requestCursor": "eyJtb2RlIjoibm9kZSIsIm9mZnNldCI6MCwicGF0aCI6WyJ1bmtub3duL2V4dGVuc2lvbn4iLDNdLCJzbmFwc2hvdCI6IjY5NTljMTVmZTdlYjdlNjFjMjU2NWNmODIxZGJmYmJlYjE3Y2ViMGZhOTFiOWM2ZGQ1YTk1YzAzZWQ5ZThiMWIiLCJ2IjoxfQo.mldsL1pmBM1Fysu5s9DxS3x8Fz7Wz9pJh2Azp_12mkY",
+          "state": "present",
+          "scope": "node-page-only",
+          "content": {
+            "kind": "text",
+            "text": "inert https://invalid.test/",
+            "offsetUnit": "unicode-code-points",
+            "start": 0,
+            "end": 27,
+            "total": 27
+          },
+          "nextCursor": null,
+          "nodeExhausted": true,
+          "valueCompleteInThisPage": true
+        }
+      },
+      "original": {
+        "unknown/extension~": [
+          null,
+          false,
+          9007199254740993,
+          "inert https://invalid.test/"
+        ],
+        "empty": {}
+      }
+    },
+    {
+      "name": "held",
+      "fixtureOnly": true,
+      "first": {
+        "binding": {
+          "attribution": {
+            "notice": "Generated synthetic fixture; no upstream acquisition.",
+            "originalLanguage": null
+          },
+          "fieldPath": "/0/data/unknown~1extension",
+          "generation": 7,
+          "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+          "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+          "sourceBinding": {
+            "representation": "generated-only",
+            "sourcePointer": "/fixture/1",
+            "unknownExtension": {
+              "keep": true
+            }
+          },
+          "sourceObservationReference": {
+            "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "disposition": "source-asserted",
+            "equivalence": "not-a-product-assertion",
+            "matchType": "synthetic-only",
+            "namespace": "barcode",
+            "observationKey": {
+              "assertion_id": 1,
+              "input_id": "fixture",
+              "record_ordinal": 1,
+              "run_id": "synthetic-run"
+            },
+            "originalLexicalValue": "synthetic-original",
+            "releaseId": null,
+            "runId": "synthetic-run",
+            "schema": "offmenu-identifier-observation/2",
+            "sourceId": "synthetic-source",
+            "sourceLexicalValue": "synthetic-source",
+            "sourceRecordId": null,
+            "symbology": null
+          }
+        },
+        "field": {
+          "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+          "fieldPointer": "/0/data/unknown~1extension",
+          "language": null,
+          "sourceFieldState": "unknown",
+          "state": "rights-held",
+          "valueOrigin": "generated-only"
+        },
+        "schema": "offmenu-source-field-page/1",
+        "snapshotSha256": "d68f30072fb8c42fb38105568708988e8152f67051c8d77cad1a270c90315490",
+        "path": [],
+        "requestCursor": null,
+        "state": "rights-held",
+        "scope": "node-page-only",
+        "content": null,
+        "nextCursor": null,
+        "nodeExhausted": true,
+        "valueCompleteInThisPage": false
+      },
+      "replies": {},
+      "original": null
+    },
+    {
+      "name": "unknown",
+      "fixtureOnly": true,
+      "first": {
+        "binding": {
+          "attribution": {
+            "notice": "Generated synthetic fixture; no upstream acquisition.",
+            "originalLanguage": null
+          },
+          "fieldPath": "/0/data/unknown~1extension",
+          "generation": 7,
+          "revisionSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+          "selectionRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+          "sourceBinding": {
+            "representation": "generated-only",
+            "sourcePointer": "/fixture/1",
+            "unknownExtension": {
+              "keep": true
+            }
+          },
+          "sourceObservationReference": {
+            "databaseSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "detailSelectionSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "disposition": "source-asserted",
+            "equivalence": "not-a-product-assertion",
+            "matchType": "synthetic-only",
+            "namespace": "barcode",
+            "observationKey": {
+              "assertion_id": 1,
+              "input_id": "fixture",
+              "record_ordinal": 1,
+              "run_id": "synthetic-run"
+            },
+            "originalLexicalValue": "synthetic-original",
+            "releaseId": null,
+            "runId": "synthetic-run",
+            "schema": "offmenu-identifier-observation/2",
+            "sourceId": "synthetic-source",
+            "sourceLexicalValue": "synthetic-source",
+            "sourceRecordId": null,
+            "symbology": null
+          }
+        },
+        "field": {
+          "evidenceSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+          "fieldPointer": "/0/data/unknown~1extension",
+          "language": null,
+          "sourceFieldState": "unknown",
+          "state": "unknown",
+          "unknownMetadata": [
+            "kept",
+            "kept"
+          ],
+          "valueOrigin": "generated-only"
+        },
+        "schema": "offmenu-source-field-page/1",
+        "snapshotSha256": "bf895a7a9f0c9e9f2d0aa97efeededc388678ff6bcbab474a803c33dfa3b89d0",
+        "path": [],
+        "requestCursor": null,
+        "state": "unknown",
+        "scope": "node-page-only",
+        "content": null,
+        "nextCursor": null,
+        "nodeExhausted": true,
+        "valueCompleteInThisPage": false
+      },
+      "replies": {},
+      "original": null
+    }
+  ]
+}
