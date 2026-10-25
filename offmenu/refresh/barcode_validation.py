@@ -176,7 +176,7 @@ def normalize_record(record, source_pointer):
         match = re.fullmatch(r'product_name_([A-Za-z]{2,3}(?:[-_][A-Za-z0-9]+)*)', key)
         if match:
             names[match.group(1)] = value
-    language = data.get('lang') or data.get('lc')
+    language = data.get('nameLanguage') or data.get('lang') or data.get('lc')
     if 'product_name' in data:
         names.setdefault(language if isinstance(language, str) else 'und', data['product_name'])
     # A display name is not evidence of a human-readable upstream name.
