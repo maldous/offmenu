@@ -2,13 +2,32 @@ import {t,setLocalizedText} from './i18n.js';
 import {NATIVE_FORMATS, createPresentationGate, cameraError} from './scanner-model.js';
 import {captureFromDecoder, selectableCaptures, requiresUPCEConfirmation} from './scanner-capture-envelope.js';
 
+// Translate the visible aiming guide through the video's object-fit:cover crop.
+// The returned rectangle is the only region submitted to both decoders.
+export function cameraCrop(videoWidth,videoHeight,frame,guide,{mirror=false,rotate=false,fit='cover'}={}) {
+  if(!(videoWidth>0&&videoHeight>0&&frame?.width>0&&frame?.height>0&&guide?.width>0&&guide?.height>0))return null;
+  const scale=fit==='contain'?Math.min(frame.width/videoWidth,frame.height/videoHeight):Math.max(frame.width/videoWidth,frame.height/videoHeight);
+  const imageLeft=frame.left+(frame.width-videoWidth*scale)/2;
+  const imageTop=frame.top+(frame.height-videoHeight*scale)/2;
+  const left=Math.max(frame.left,imageLeft,guide.left),top=Math.max(frame.top,imageTop,guide.top);
+  const right=Math.min(frame.left+frame.width,imageLeft+videoWidth*scale,guide.left+guide.width);
+  const bottom=Math.min(frame.top+frame.height,imageTop+videoHeight*scale,guide.top+guide.height);
+  if(right-left<24||bottom-top<24)return null;
+  let sx=(left-imageLeft)/scale;
+  let sy=(top-imageTop)/scale;
+  const sw=(right-left)/scale,sh=(bottom-top)/scale;
+  if(Boolean(mirror)!==Boolean(rotate))sx=videoWidth-sx-sw;
+  if(rotate)sy=videoHeight-sy-sh;
+  return {sx:Math.max(0,sx),sy:Math.max(0,sy),sw:Math.min(sw,videoWidth-Math.max(0,sx)),sh:Math.min(sh,videoHeight-Math.max(0,sy))};
+}
+
 export function setupScanner({canScan,onCode,onStream,onStartGesture,autoResume=false,storage}) {
   const $=id=>document.getElementById(id), video=$('video'), canvas=document.createElement('canvas');
   const context=canvas.getContext('2d',{willReadFrequently:true});
   const gate=createPresentationGate();
   let stream=null, token=0, timer=null, worker=null, pending=null, job=0, native=null, wake=null;
   let running=false, starting=false, lastFrame=-1, attempts=0, started=0, lastRead=0, lastCodes=[], track=null;
-  let preferences={mode:'bench',camera:'user',mirror:true,rotate:false,enhance:true};
+  let preferences={mode:'handheld',camera:'environment',mirror:false,rotate:false,enhance:true};
   try { preferences={...preferences,...JSON.parse((storage ?? localStorage).getItem('offmenu-scanner-v2')||'{}')}; } catch {}
   if(!['handheld','bench','stand'].includes(preferences.mode)) preferences.mode='bench';
   const status=text=>{setLocalizedText($('scanner-status'),text);};
@@ -100,9 +119,13 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,autoResume=
   function pixels(source=video,limit=1920) {
     const width=source.videoWidth||source.width, height=source.videoHeight||source.height;
     if(!width||!height) throw Error(t('No camera frame yet'));
-    const scale=Math.min(1,limit/Math.max(width,height));
-    canvas.width=Math.round(width*scale); canvas.height=Math.round(height*scale);
-    context.drawImage(source,0,0,canvas.width,canvas.height);
+    const guide=$('capture-guide')||$('camera-stage')?.querySelector('.scanner-guide');
+    const crop=source===video&&guide?cameraCrop(width,height,video.getBoundingClientRect(),guide.getBoundingClientRect(),{...preferences,fit:getComputedStyle(video).objectFit}):null;
+    if(source===video&&!crop) throw Error(t('Visible aiming area unavailable'));
+    const sw=crop?.sw||width,sh=crop?.sh||height;
+    const scale=Math.min(1,limit/Math.max(sw,sh));
+    canvas.width=Math.max(1,Math.round(sw*scale)); canvas.height=Math.max(1,Math.round(sh*scale));
+    context.drawImage(source,crop?.sx||0,crop?.sy||0,sw,sh,0,0,canvas.width,canvas.height);
     return context.getImageData(0,0,canvas.width,canvas.height);
   }
   async function loop(sessionToken) {
@@ -113,12 +136,13 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,autoResume=
       if(video.readyState>=2 && video.currentTime!==lastFrame) {
         lastFrame=video.currentTime; attempts++;
         let results=[],decoderPath='native';
+        const frame=pixels();
         if(native) {
-          try { results=await native.detect(video); } catch { native=null; }
+          try { results=await native.detect(canvas); } catch { native=null; }
         }
         if(sessionToken!==token) return;
         // Serial fallback: never queue frames behind an in-flight decode.
-        if(!requiresUPCEConfirmation(results,'native') && !selectableCaptures(results,'native').length && (!native || attempts%3===0)) {results=await decode(pixels(),preferences.enhance);decoderPath='zxing-wasm';}
+        if(!requiresUPCEConfirmation(results,'native') && !selectableCaptures(results,'native').length && (!native || attempts%3===0)) {results=await decode(frame,preferences.enhance);decoderPath='zxing-wasm';}
         if(sessionToken!==token) return;
         const captures=requiresUPCEConfirmation(results,decoderPath)?[]:selectableCaptures(results,decoderPath);
         const codes=[...new Set(captures.map(x=>x.lookupLexicalValue+'\u0000'+(x.lookupSymbology||'')))];

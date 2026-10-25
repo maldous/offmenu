@@ -73,6 +73,24 @@ not a new dashboard or separate task. Exact owner source:
 `Sentinel_93926b4504dc819192befcf98888dfd8`, 25 October 2026 06:39:23 UTC,
 relayed through Parent/Gateway.
 
+<a id="normalised-vocabulary-and-nutrition-consistency"></a>
+
+### Shared vocabulary and declared versus modeled nutrition
+
+Use one inspectable, versioned persisted vocabulary projection over the existing common-resource and ingredient/GOLD contracts. Stable ingredient IDs are shared by product mappings and recipe mentions; compounds can contain several independently evidenced ingredients. Consistent English preferred labels retain original multilingual aliases, source versions and reviewed crosswalks. Categories, nutrients, units, preparation and quantity concepts retain their own types, definitions, evidence and unresolved states. Source-import tables and lexical alias lists are not evidence that this populated shared generation is qualified. Declared product nutrition remains a source fact separate from an ingredient-weighted modeled estimate. Consistency checks require compatible quantities or percentage ranges, nutrient definitions and units, product/serving basis, processing yield, uncertainty, rounding and any explicitly qualified applicable threshold evidence. A fat-containing ingredient alone does not refute a fat-free claim; unknown composition is insufficient evidence. Any supported possible discrepancy remains a review signal, not a diagnosis or regulatory conclusion.
+
+This is the existing owner requirement under
+`ARCH-CURATED-CORPUS-DELIVERY`, `CORE-BARCODE-CANONICAL-IDENTITY`,
+`MEAL-DISCOVERY-DELIVERY`, `NUTRITION-HISTORY-GOALS` and
+`SOURCE-FIELD-PERMISSION-POLICY`. Worker56's bounded source assessment identifies
+persisted schema/view foundations, but no current qualified populated generation
+or new permitted inspection operation was selected. Its prepared queries were
+not executed. Existing Gold26 counts describe their dated source-purpose cut;
+they do not establish current vocabulary coverage, actual product fit or complete
+recipe nutrition. This requirement creates no competing taxonomy, dataset,
+implementation, release gate or source-access grant. Source and scanner delivery
+continue independently under their existing permissions.
+
 ### Existing requirements, owners and current status
 
 Canonical authority remains the existing

@@ -14,6 +14,7 @@ class Element {
   get firstChild(){return this.children[0]??null;}
   append(...children){this.children.push(...children);}
   replaceChildren(...children){this.text='';this.children=[...children];}
+  setAttribute(name,value){(this.attributes??={})[name]=value;}
   set innerHTML(_){throw Error('HTML insertion forbidden');}
 }
 function dom(){const doc={documentElement:{dataset:{theme:'light'}},createElement:tag=>new Element(tag,doc)};
@@ -66,7 +67,8 @@ test('actual scanner render sends its current selected observation and detail to
     active:true,paused:false,streaming:false,queue:[],saved:null,document:doc,navigator:{onLine:true},
     sourceObservationReference,productVisual:{show:input=>{passed=input;return presenter.show(input);}},
     $:id=>{if(!nodes.has(id))nodes.set(id,new Element('div',doc));return nodes.get(id);},
-    displayValue(){},renderConsumerSummary(){},message(){},renderData(){},detailQueryUnavailable:()=>false});
+    displayValue(){},renderConsumerSummary(){},message(){},renderData(){},detailQueryUnavailable:()=>false,
+    projectedField:()=>null,projectedValue:()=>null,humanValue:value=>String(value)});
   vm.runInContext(source.slice(node.start,node.end),context);context.render();
   assert.equal(passed.detail,fixture.detail);assert.equal(passed.generation,9);assert.equal(passed.entryId,'one');
   assert.equal(passed.reference.sourceLexicalValue,'0078742003986');
