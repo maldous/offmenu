@@ -1,4 +1,4 @@
-import {copyPublicProductReference} from './scanner-kitchen-handoff.js';
+import {copyPublicProductReference,validPublicProductReference} from './scanner-kitchen-handoff.js';
 import {t} from './i18n.js';
 import {canonicalIngredient,measuredIngredient} from './ingredients.js';
 import {validSourceObservationReference as validV2Reference} from './scanner-identity-v2.js';
@@ -12,7 +12,7 @@ export function validSourceObservationReference(ref,barcode){
 export function validateLot(value) {
   if(value.quantity==null||!['number','string'].includes(typeof value.quantity)||typeof value.quantity==='string'&&!value.quantity.trim())throw Error('Enter a known quantity. Missing stock amounts need review.');
   const lot = {id: String(value.id || crypto.randomUUID()), barcode: String(value.barcode || ''),name: String(value.name||'').trim(),ingredient: normalize(value.ingredient||''),quantity: Number(value.quantity),unit: value.unit,expires: value.expires || null};
-  if(!(/^[0-9]{4,32}$/.test(lot.barcode)||/^local:[a-zA-Z0-9-]{1,100}$/.test(lot.barcode)||value.sourceObservationReference&&lot.barcode.length<=128&&!/[\x00-\x1f\x7f]/.test(lot.barcode)) || !lot.name || !lot.ingredient || !Number.isFinite(lot.quantity) || lot.quantity<0 || !['g','ml','count'].includes(lot.unit)) throw Error(t('Check barcode, name, ingredient, quantity and unit.'));
+  if(!(/^[0-9]{4,32}$/.test(lot.barcode)||/^local:[a-zA-Z0-9-]{1,100}$/.test(lot.barcode)||validPublicProductReference(value.publicProductReference,lot.barcode)||value.sourceObservationReference&&lot.barcode.length<=128&&!/[\x00-\x1f\x7f]/.test(lot.barcode)) || !lot.name || !lot.ingredient || !Number.isFinite(lot.quantity) || lot.quantity<0 || !['g','ml','count'].includes(lot.unit)) throw Error(t('Check barcode, name, ingredient, quantity and unit.'));
   if(lot.expires && (!/^\d{4}-\d{2}-\d{2}$/.test(lot.expires) || !Number.isFinite(Date.parse(lot.expires)))) throw Error(t('Invalid expiry date.'));
   if(value.location){
     if(typeof value.location.area!=='string'||!value.location.area.trim()||value.location.area.length>60||typeof value.location.shelf!=='string'||!value.location.shelf.trim()||value.location.shelf.length>60)throw Error(t('Choose a valid storage area and shelf.'));

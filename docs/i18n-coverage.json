@@ -2288,7 +2288,8 @@
     },
     "./typed-identifier-contract.mjs": {
       "sources": [
-        "public/scanner-capture-envelope.js"
+        "public/scanner-capture-envelope.js",
+        "public/scanner-kitchen-handoff.js"
       ],
       "arabic": false
     },

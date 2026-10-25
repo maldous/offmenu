@@ -1,3 +1,4 @@
+import {analyzeIdentifier} from './typed-identifier-contract.mjs';
 // The existing tab handoff and checkout store remain the only persistence route.
 export const SCANNER_HANDOFF_KEY='offmenu-scanner-kitchen-pending-v1';
 export const PUBLIC_SCANNER_HANDOFF='offmenu-scanner-kitchen-handoff/2';
@@ -10,17 +11,25 @@ const text=(v,n)=>typeof v==='string'&&v.length>0&&v.length<=n&&!/[\x00-\x1f\x7f
 const optional=(v,n)=>v===null||text(v,n);
 const barcode=v=>typeof v==='string'&&/^\d{4,32}$/.test(v);
 const web=v=>{if(v==null)return true;if(!text(v,700))return false;try{const u=new URL(v);return u.protocol==='https:'&&!u.username&&!u.password&&u.href===v;}catch{return false;}};
+function validLexicalBinding(ref,raw){
+ if(!text(raw,128))return false;
+ if(ref?.lexicalValue===raw)return barcode(raw)&&ref.capturedLexicalValue===undefined&&ref.representationHint===undefined;
+ if(ref?.capturedLexicalValue!==raw||typeof ref.representationHint!=='string'||!barcode(ref.lexicalValue))return false;
+ const typed=analyzeIdentifier({original:raw,namespace:'barcode',representationHint:ref.representationHint});
+ return typed.status==='checksum-valid'&&typed.labelledEquivalents.some(form=>form.value===ref.lexicalValue);
+}
 export function validPublicProductReference(ref,raw){
  const p=ref?.provenance;
- return ref?.schema===PUBLIC_PRODUCT_REFERENCE&&ref.sourceId===PUBLIC_PRODUCT_SELECTION.sourceId&&ref.releaseId===PUBLIC_PRODUCT_SELECTION.releaseId&&ref.manifestSha256===PUBLIC_PRODUCT_SELECTION.manifestSha256&&text(ref.recordId,200)&&ref.recordId.startsWith('offmenu:')&&ref.namespace==='barcode'&&barcode(raw)&&ref.lexicalValue===raw&&p?.sourceId==='off'&&p.visibility==='public'&&text(p.license,160)&&text(p.attribution,240)&&web(p.url)&&web(p.licenseUrl)&&optional(p.sourceDate,80);
+ return ref?.schema===PUBLIC_PRODUCT_REFERENCE&&ref.sourceId===PUBLIC_PRODUCT_SELECTION.sourceId&&ref.releaseId===PUBLIC_PRODUCT_SELECTION.releaseId&&ref.manifestSha256===PUBLIC_PRODUCT_SELECTION.manifestSha256&&text(ref.recordId,200)&&ref.recordId.startsWith('offmenu:')&&ref.namespace==='barcode'&&validLexicalBinding(ref,raw)&&p?.sourceId==='off'&&p.visibility==='public'&&text(p.license,160)&&text(p.attribution,240)&&web(p.url)&&web(p.licenseUrl)&&optional(p.sourceDate,80);
 }
 export function copyPublicProductReference(ref,raw){
  if(!validPublicProductReference(ref,raw))throw Error('Published source reference does not match the selected barcode and release.');
- return {schema:PUBLIC_PRODUCT_REFERENCE,sourceId:ref.sourceId,releaseId:ref.releaseId,manifestSha256:ref.manifestSha256,recordId:ref.recordId,namespace:'barcode',lexicalValue:raw,
+ return {schema:PUBLIC_PRODUCT_REFERENCE,sourceId:ref.sourceId,releaseId:ref.releaseId,manifestSha256:ref.manifestSha256,recordId:ref.recordId,namespace:'barcode',lexicalValue:ref.lexicalValue,
+  ...(ref.lexicalValue!==raw?{capturedLexicalValue:raw,representationHint:ref.representationHint}:{}),
   provenance:{sourceId:'off',visibility:'public',license:ref.provenance.license,attribution:ref.provenance.attribution,url:ref.provenance.url??null,licenseUrl:ref.provenance.licenseUrl??null,sourceDate:ref.provenance.sourceDate}};
 }
 function normalizedItem(item){
- if(!uuid(item?.operationId)||!barcode(item.barcode)||!optional(item.name,240)||!optional(item.brand,240))throw Error('Scanner handoff item is incomplete.');
+ if(!uuid(item?.operationId)||!validLexicalBinding(item.publicProductReference,item.barcode)||!optional(item.name,240)||!optional(item.brand,240))throw Error('Scanner handoff item is incomplete.');
  return {operationId:item.operationId,barcode:item.barcode,name:item.name,brand:item.brand,publicProductReference:copyPublicProductReference(item.publicProductReference,item.barcode)};
 }
 export function publicHandoffFingerprint(item){return JSON.stringify(normalizedItem(item));}
@@ -47,8 +56,10 @@ export function createPublicScannerHandoff(queue){
  if(!Array.isArray(queue)||!queue.length)throw Error('Scan at least one item before finishing.');
  return parsePublicScannerHandoff({schema:PUBLIC_SCANNER_HANDOFF,items:queue.map(entry=>{
   const selected=entry.selectedRecord,record=selected?.publicRecord,p=record?.provenance;
-  if(!entry.matches?.includes(selected)||!record?.data?.identifiers?.some(i=>i.system==='barcode'&&i.value===entry.raw)||p?.sourceId!=='off'||p.visibility!=='public')throw Error('Choose a published source record for every kept item, or Undo it before finishing.');
-  const ref={schema:PUBLIC_PRODUCT_REFERENCE,sourceId:'off',releaseId:entry.releaseId,manifestSha256:entry.manifestSha256,recordId:record.id,namespace:entry.namespace,lexicalValue:entry.raw,
+  const lexical=selected?.matchContext?.sourceLexicalValue??entry.raw;
+  const binding={lexicalValue:lexical,...(lexical!==entry.raw?{capturedLexicalValue:entry.raw,representationHint:entry.symbology}:{})};
+  if(!entry.matches?.includes(selected)||!validLexicalBinding(binding,entry.raw)||!record?.data?.identifiers?.some(i=>i.system==='barcode'&&i.value===lexical)||p?.sourceId!=='off'||p.visibility!=='public')throw Error('Choose a published source record for every kept item, or Undo it before finishing.');
+  const ref={schema:PUBLIC_PRODUCT_REFERENCE,sourceId:'off',releaseId:entry.releaseId,manifestSha256:entry.manifestSha256,recordId:record.id,namespace:entry.namespace,...binding,
    provenance:{sourceId:p.sourceId,visibility:p.visibility,license:p.license,attribution:p.attribution,url:p.url??null,licenseUrl:p.licenseUrl??null,sourceDate:p.sourceDate??null}};
   return {operationId:entry.id,barcode:entry.raw,name:selected.name??null,brand:selected.brand??null,publicProductReference:ref};
  })});

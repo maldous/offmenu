@@ -1,5 +1,5 @@
 import {validateLot} from './model.js';
-import {SCANNER_COMPLETION,copyPublicProductReference} from './scanner-kitchen-handoff.js';
+import {SCANNER_COMPLETION,copyPublicProductReference,validPublicProductReference} from './scanner-kitchen-handoff.js';
 import {t} from './i18n.js';
 export function locationKey(location){return `${location?.area||'Unassigned'} / ${location?.shelf||'Unsorted'}`;}
 export function finishInventory(existing,session){
@@ -30,7 +30,7 @@ export function packAmount(product){
  return amount>0&&Number.isFinite(amount)?{quantity:amount,unit,amountBasis:'full-pack'}:{quantity:1,unit:'count',amountBasis:'package'};
 }
 export function makeAutoLot(code,product,ingredient='unmapped'){
- if(!/^\d{4,32}$/.test(code))throw Error(t('Invalid barcode.'));
+ if(!(/^\d{4,32}$/.test(code)||validPublicProductReference(product?.publicProductReference,code)))throw Error(t('Invalid barcode.'));
  return {id:crypto.randomUUID(),barcode:code,name:product?.name||'Unknown product · '+code,ingredient:ingredient||'unmapped',...packAmount(product),expires:null,needsReview:!product?.name||!ingredient||ingredient==='unmapped',...(product?.sourceObservationReference?{sourceObservationReference:product.sourceObservationReference}:{}),...(product?.publicProductReference?{publicProductReference:copyPublicProductReference(product.publicProductReference,code)}:{})};
 }
 // A code held in view counts once; removing it from view re-arms the scanner.
