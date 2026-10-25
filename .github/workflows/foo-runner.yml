@@ -432,7 +432,10 @@ jobs:
           
           
           def verify_pr(pr):
-              require(RESULTS_PR > 0 and pr.get('number') == RESULTS_PR and pr.get('state') == 'open' and
+              # Closed-unmerged PR31 retains target identity after consumer cutover.
+              # Publication is not delivery proof; consumer acceptance gates closure.
+              require(RESULTS_PR > 0 and pr.get('number') == RESULTS_PR and
+                      pr.get('state') in ('open', 'closed') and
                       pr.get('merged') is False, 'results-pr-not-open')
               require(pr.get('head', {}).get('repo', {}).get('id') == REPOSITORY_ID and
                       pr.get('base', {}).get('repo', {}).get('id') == REPOSITORY_ID and
