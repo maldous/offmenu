@@ -16,6 +16,10 @@ DEFERRED; source rights, ownership and actual platform denials remain binding.
 
 ### Established North Star and data semantics
 
+The staged household daily loop and regional integrations are detailed in the
+[consumption, inventory and integration design](consumption-inventory-integration-design.md).
+They remain design requirements until their stated component acceptance is met.
+
 **Barcode → Product → Ingredient → Recipe → Quantity → Nutrition → Menu → Serving → Consumption → Leftovers → History → Planning → Integration → Ordering → Receipt → Barcode** This is established
 owner scope, not a new requirement discovered by this reconciliation. Matt's
 reinforcement is `Sentinel_09fbc9f9e40881919333c5ce40dcd754` (25 October
