@@ -1,3 +1,4 @@
+import {projectPublishedRecord} from './scanner-source-assertions.js';
 import {analyzeIdentifier} from './typed-identifier-contract.mjs';
 // Production scanner boundary. No private retained index, fixture session, or live provider fallback.
 // A release may be selected only after its exact published manifest bytes and rights are qualified.
@@ -7,11 +8,8 @@ const RELEASE = /^[-A-Za-z0-9.]{1,128}$/;
 const PUBLIC_SOURCE = 'off';
 const unavailable = (generation, reasonCode) => ({generation,status:'unavailable',matches:[],hasMore:false,nextCursor:null,error:reasonCode});
 function selected(selection) {return selection && RELEASE.test(selection.releaseId||'') && HEX.test(selection.manifestSha256||'') && selection.sourceId===PUBLIC_SOURCE;}
-function projected(record) {
-  const d=record.data, value=(v)=>({state:v===null?'null':v===undefined?'missing':'present',value:v??null});
-  const fields={name:value(d.name===d.identifiers?.[0]?.value?null:d.name),brand:value(d.brand),markets:value(record.countries),packageQuantity:value(d.pack),ingredientDeclaration:value(d.ingredientsText),sourceAllergenClaims:value(d.allergens),sourceTraceClaims:value(d.traces),sourceDietaryLabelClaims:value(d.labels),categories:value(d.categories),origins:value(d.origins),manufacturingPlaces:value(d.manufacturingPlaces),names:value(d.names),nutritionSourceBasis:value(d.nutritionSourceBasis),rawNutriments:value(d.rawNutriments),nutrientProfile:{state:'not-loaded',value:null}};
-  for(const [key,raw] of Object.entries(d))if(!Object.hasOwn(fields,key))fields[key]=value(raw);
-  return {id:record.id,name:fields.name.value,brand:fields.brand.value,ingredientsText:d.ingredientsText??null,provenance:{...record.provenance,releaseId:record.releaseId??null},detail:{fields,sourceBinding:{sourceId:record.provenance.sourceId},assurance:'Published source record; claims are attributed, not independently certified.'},publicRecord:record};
+function projected(record,context) {
+  return projectPublishedRecord(record,context);
 }
 // Only explicit, checksum-valid labels supply aliases. The existing public index accepts digits.
 function lookupForms(raw,namespace,symbology) {
@@ -51,7 +49,7 @@ export function createPublicLookup({selection,fetchImpl=fetch}={}) {
       const matches=[];
       for(const record of data.records){
         if(record?.kind!=='product'||typeof record.id!=='string'||!record.id.length||record.provenance?.sourceId!==PUBLIC_SOURCE||record.provenance?.visibility!=='public'||record.data?.identifiers?.some(id=>id.system==='barcode'&&id.value===form.value)!==true)return unavailable(generation,'PUBLIC_RECORD_BINDING');
-        matches.push(projected({...record,releaseId:selection.releaseId}));
+        matches.push(projected({...record,releaseId:selection.releaseId},{assertions:data.localSourceAssertions,selection}));
       }
       for(const match of matches)match.matchContext={originalLexicalValue:raw,sourceLexicalValue:form.value,symbology,matchType:form.value===raw?'exact':'representation-alias',equivalence:form.rule};
       if(data.nextCursor!==null&&data.nextCursor!==undefined&&typeof data.nextCursor!=='string')return unavailable(generation,'PUBLIC_CURSOR_INVALID');

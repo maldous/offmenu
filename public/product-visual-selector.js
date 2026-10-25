@@ -47,8 +47,11 @@ function photoSource(candidate, input, failed) {
       input.offline===true && (!candidate.localAssetPath || candidate.offlineAvailable!==true)) return null;
   return {src,candidate};
 }
-function categoryChoice(input, failed) {
-  const mappings=(input.categoryMappings||[]).filter(item=>
+function mappedChoice(input, failed, kind='category') {
+  const key=kind==='ingredient'?'ingredientMappings':kind==='type'?'typeMappings':'categoryMappings';
+  if(kind!=='category' && (!input.classificationEvidenceReference ||
+    kind==='ingredient' && (input.ingredientApplicability?.state!=='applicable' || !input.ingredientApplicability.evidenceReference)))return null;
+  const mappings=(Array.isArray(input[key])?input[key]:[]).filter(item=>
     object(item) && exactReference(item.sourceObservationReference,input.sourceObservationReference) &&
     item.status==='qualified' && item.relation==='exact' &&
     typeof input.selectedProductRecordId==='string' && item.productRecordId===input.selectedProductRecordId &&
@@ -56,35 +59,41 @@ function categoryChoice(input, failed) {
     typeof item.taxonomyVersion==='string' && item.taxonomyVersion &&
     typeof item.crosswalkVersion==='string' && item.crosswalkVersion &&
     object(item.provenance) && object(item.originalSource) &&
+    (kind==='category'||typeof item.provenance.sourceId==='string'&&!!item.provenance.sourceId&&
+      typeof item.provenance.pointer==='string'&&!!item.provenance.pointer) &&
     (typeof item.originalSource.term==='string' && !!item.originalSource.term ||
      typeof item.originalSource.code==='string' && !!item.originalSource.code));
   const ids=new Set(mappings.map(item=>item.taxonomyVersion+'\u0000'+item.conceptId));
   if (ids.size!==1) return null; // Ambiguous/broader/unmapped is not category equality.
   const [mapping]=mappings;
-  const concepts=(input.canonicalConcepts||[]).filter(item=>object(item) &&
+  const concepts=(Array.isArray(input.canonicalConcepts)?input.canonicalConcepts:[]).filter(item=>object(item) &&
+    (kind==='category'||item.kind===kind) &&
     item.conceptId===mapping.conceptId && item.taxonomyVersion===mapping.taxonomyVersion &&
     item.definitionStatus==='accepted' && typeof item.preferredEnglishLabel==='string' &&
     item.preferredEnglishLabel.trim());
   if (concepts.length!==1) return null;
   const concept=concepts[0], presentation=concept.presentation;
-  if (presentation?.status!=='approved') return null;
+  if (presentation?.status!=='approved' || kind!=='category' && !presentation.evidenceReference) return null;
+  const title=kind==='ingredient'?'Ingredient':kind==='type'?'Type':'Category';
+  const tier=kind==='category'?'category-illustration':kind+'-illustration';
   const evidence={conceptId:concept.conceptId,taxonomyVersion:concept.taxonomyVersion,
     preferredEnglishLabel:concept.preferredEnglishLabel,
+    ...(kind==='category'?{}:{kind,classificationEvidenceReference:input.classificationEvidenceReference,presentationEvidenceReference:presentation.evidenceReference}),
     mappings:mappings.map(item=>({crosswalkVersion:item.crosswalkVersion,relation:item.relation,
       originalSource:item.originalSource,provenance:item.provenance}))};
   if (typeof presentation.emoji==='string' && presentation.emoji.length>0 &&
       Array.from(presentation.emoji).length<=16 && !/[\x00-\x1f\x7f<>]/.test(presentation.emoji))
-    return {tier:'category-illustration',kind:'emoji',text:presentation.emoji,
-      alt:'Category illustration of '+concept.preferredEnglishLabel+'; not a product photo',
-      caption:'Category illustration, not product photo · emoji appearance varies by platform',
+    return {tier,kind:'emoji',text:presentation.emoji,
+      alt:title+' illustration of '+concept.preferredEnglishLabel+'; not a product photo',
+      caption:title+' illustration, not product photo · emoji appearance varies by platform',
       evidence,rights:{presentation:'Unicode emoji; platform appearance varies'}};
   const src=presentation.localIconAssetPath;
   if (localAsset(src,input.permittedLocalAssets) && !failed.has(src) &&
       presentation.iconRights?.displayPermitted===true && presentation.iconRights?.evidenceReference &&
       (input.offline!==true || presentation.offlineAvailable===true))
-    return {tier:'category-illustration',kind:'image',src,
-      alt:'Category illustration of '+concept.preferredEnglishLabel+'; not a product photo',
-      caption:'Category illustration, not product photo',evidence,rights:presentation.iconRights};
+    return {tier,kind:'image',src,
+      alt:title+' illustration of '+concept.preferredEnglishLabel+'; not a product photo',
+      caption:title+' illustration, not product photo',evidence,rights:presentation.iconRights};
   return null;
 }
 /** Returns data for semantic DOM rendering; no URL is fetched by this module. */
@@ -99,17 +108,18 @@ export function selectProductVisual(input,{failedSources=[]}={}) {
     const {src,candidate}=chosen;
     const name=typeof input.sourceProductName==='string'&&input.sourceProductName.trim()?
       input.sourceProductName.trim():'selected source product';
+    const nativeAssertion=candidate.qualification.scope==='reviewed-retained-photo-for-explicit-native-source-assertion';
     const currentPublisher=candidate.qualification.scope==='separately-observed-current-publisher-photo-for-exact-OFF-source-code';
     return {tier:'product-photo',kind:'image',src,
-      alt:currentPublisher?'Current Open Food Facts photo for source code '+candidate.provenance.sourceCode+
+      alt:nativeAssertion?'Photo from the explicitly selected source; product variant match unverified':currentPublisher?'Current Open Food Facts photo for source code '+candidate.provenance.sourceCode+
         '; retained label '+name+'; snapshot image unverified':'Source product photo for '+name,
-      caption:currentPublisher?'Current publisher photo':'Source product photo',
+      caption:nativeAssertion?'Selected source photo':currentPublisher?'Current publisher photo':'Source product photo',
       provenance:candidate.provenance,rights:candidate.rights,
       identity:{sourceObservationReference:input.sourceObservationReference},
       competingPhotoCount:photos.length};
   }
-  const category=categoryChoice(input,failed);
-  if (category) return category;
+  const illustration=mappedChoice(input,failed,'ingredient')||mappedChoice(input,failed,'type')||mappedChoice(input,failed);
+  if (illustration) return illustration;
   return appProductVisualFallback(input,{failedSources});
 }
 export function appProductVisualFallback(input={}, {failedSources=[]}={}) {

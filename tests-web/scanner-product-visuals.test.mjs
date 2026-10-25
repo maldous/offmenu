@@ -21,13 +21,15 @@ function dom(){const doc={documentElement:{dataset:{theme:'light'}},createElemen
   const thumbnail=new Element('div',doc),caption=new Element('div',doc);
   return {doc,thumbnail,caption,presenter:mountScannerProductVisual(thumbnail,caption)};}
 
-test('real photo renderer supplies alt, visible credit and safe source/licence links without theme-logo rewriting',()=>{
+test('real photo renderer supplies alt, accessible native credit details and safe source/licence links without theme-logo rewriting',()=>{
   const {thumbnail,caption,presenter}=dom();const fixture=photoFixture();
   const result=presenter.show({...fixture,name:'Source flour',entryId:'one',generation:1});
   assert.equal(result.tier,'product-photo');assert.match(thumbnail.firstChild.src,/^\/api\/off-photos\/flour-/);
   assert.match(thumbnail.firstChild.alt,/Source flour/);assert.equal(thumbnail.firstChild.dataset.offmenuLogo,undefined);
   assert.match(caption.textContent,/foodless/);assert.match(caption.textContent,/retained snapshot is unverified/);
-  const links=caption.children.filter(node=>node.tagName==='a');assert.equal(links.length,3);
+  const details=caption.children.find(node=>node.tagName==='details');assert.ok(details);
+  assert.equal(details.firstChild.tagName,'summary');assert.match(details.firstChild.textContent,/source and licence/);
+  const links=details.children.filter(node=>node.tagName==='a');assert.equal(links.length,4);
   for(const link of links){assert.match(link.href,/^https:\/\//);assert.equal(link.rel,'noopener noreferrer');}
 });
 

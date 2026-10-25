@@ -24,7 +24,13 @@ export function mountScannerProductVisual(thumbnail,captionRoot,{onChange=()=>{}
     if(result.tier==='product-photo'){
       const details=text('details',''),credit=result.rights.attributionDetails;
       details.append(text('summary','Photo source and licence'),text('p',result.rights.attribution));
-      details.append(text('p','Current publisher photo; membership in the retained snapshot is unverified.'));
+      details.append(text('p',result.provenance?.associationScope==='explicit-independent-native-source-assertion'?
+        'Photo from the selected source. The product variant and older-snapshot image membership are unverified.':
+        'Current publisher photo; membership in the retained snapshot is unverified.'));
+      if(result.provenance?.associationScope==='explicit-independent-native-source-assertion'){
+        details.append(text('p','Photo author and notices were not captured in the selected metadata; their absence is not established.'));
+        details.append(text('p','Image retrieved '+result.provenance.retrievedAt+'; metadata release '+result.provenance.metadataRelease+'.'));
+      }
       for(const [label,url] of [['Product on Open Food Facts',credit?.productUrl||result.rights.sourcePage],['Photo source',result.rights.sourcePage],['Photo licence',result.rights.photoLicensePage],
         [result.rights.license,result.rights.licenseUrl]]){
         const link=text('a',label);link.href=url;link.target='_blank';link.rel='noopener noreferrer';details.append(link);
@@ -36,12 +42,12 @@ export function mountScannerProductVisual(thumbnail,captionRoot,{onChange=()=>{}
     }
     if(notify)onChange(result);return result;
   }
-  return {show({reference=null,detail=null,entryId=null,generation=null,name='',theme='light',offline=false}={}){
+  return {show({reference=null,detail=null,entryId=null,generation=null,name='',theme='light',offline=false,sourcePhotoSelection=null}={}){
     const valid=reference&&validSourceObservationReference(reference,reference.originalLexicalValue);
-    const nextKey=JSON.stringify([entryId,generation,reference,detail?.referenceRecordId??null]);
+    const nextKey=JSON.stringify([entryId,generation,reference,detail?.referenceRecordId??null,sourcePhotoSelection,detail?.currentOutputUse]);
     if(nextKey!==key){failed=[];key=nextKey;}
     const turn=++epoch;
-    const input=valid?{reference,detail,name,theme,offline}:null;
+    const input=valid||sourcePhotoSelection?{reference:valid?reference:null,detail,name,theme,offline,sourcePhotoSelection}:null;
     return render(input,turn);
   },current:()=>current,destroy(){epoch++;thumbnail.replaceChildren();captionRoot.replaceChildren();}};
 }

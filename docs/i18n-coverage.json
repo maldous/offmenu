@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3884,
+  "messages": 3901,
   "arabicTranslated": 376,
-  "arabicMissing": 3508,
+  "arabicMissing": 3525,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -233,6 +233,24 @@
     " identity.": {
       "sources": [
         "public/common-corpus-locale.js"
+      ],
+      "arabic": false
+    },
+    " illustration of ": {
+      "sources": [
+        "public/product-visual-selector.js"
+      ],
+      "arabic": false
+    },
+    " illustration, not product photo": {
+      "sources": [
+        "public/product-visual-selector.js"
+      ],
+      "arabic": false
+    },
+    " illustration, not product photo · emoji appearance varies by platform": {
+      "sources": [
+        "public/product-visual-selector.js"
       ],
       "arabic": false
     },
@@ -2138,6 +2156,12 @@
       ],
       "arabic": false
     },
+    "./retained-source-photo-selection.js": {
+      "sources": [
+        "public/product-visual-association.js"
+      ],
+      "arabic": false
+    },
     "./saved-price-observations.js": {
       "sources": [
         "public/app.js",
@@ -2253,6 +2277,12 @@
       "sources": [
         "public/scanner-identity-v2.js",
         "public/unified-data.js"
+      ],
+      "arabic": false
+    },
+    "./source-classification-contract.mjs": {
+      "sources": [
+        "public/product-visual-association.js"
       ],
       "arabic": false
     },
@@ -2377,6 +2407,12 @@
     "/app.js?v=i18n-1": {
       "sources": [
         "public/sw.js"
+      ],
+      "arabic": false
+    },
+    "/cgi/product_image.pl": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
       ],
       "arabic": false
     },
@@ -2625,6 +2661,12 @@
     "; certification and cross-contact are not inferred": {
       "sources": [
         "public/household-model.js"
+      ],
+      "arabic": false
+    },
+    "; metadata release ": {
+      "sources": [
+        "public/scanner-product-visuals.js"
       ],
       "arabic": false
     },
@@ -4688,25 +4730,8 @@
       "sources": [
         "public/care-ui.js",
         "public/product-visual-association.js",
+        "public/product-visual-selector.js",
         "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Category illustration of ": {
-      "sources": [
-        "public/product-visual-selector.js"
-      ],
-      "arabic": false
-    },
-    "Category illustration, not product photo": {
-      "sources": [
-        "public/product-visual-selector.js"
-      ],
-      "arabic": false
-    },
-    "Category illustration, not product photo · emoji appearance varies by platform": {
-      "sources": [
-        "public/product-visual-selector.js"
       ],
       "arabic": false
     },
@@ -6239,6 +6264,12 @@
     "Current receipt review consent required": {
       "sources": [
         "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
+    "Current retrieval selected by retained metadata; historical image bytes and primary-product variant match unverified": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
       ],
       "arabic": false
     },
@@ -9310,6 +9341,12 @@
       ],
       "arabic": false
     },
+    "Image retrieved ": {
+      "sources": [
+        "public/scanner-product-visuals.js"
+      ],
+      "arabic": false
+    },
     "Imperial": {
       "sources": [
         "public/index.html",
@@ -9430,7 +9467,8 @@
       "sources": [
         "public/documents.js",
         "public/insights-ui.js",
-        "public/locales/ar.js"
+        "public/locales/ar.js",
+        "public/product-visual-selector.js"
       ],
       "arabic": true
     },
@@ -13770,9 +13808,27 @@
       ],
       "arabic": false
     },
+    "Photo author and notices were not captured in the selected metadata; their absence is not established.": {
+      "sources": [
+        "public/scanner-product-visuals.js"
+      ],
+      "arabic": false
+    },
     "Photo could not be decoded. Try a JPEG/PNG photo or enter the barcode.": {
       "sources": [
         "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Photo from the explicitly selected source; product variant match unverified": {
+      "sources": [
+        "public/product-visual-selector.js"
+      ],
+      "arabic": false
+    },
+    "Photo from the selected source. The product variant and older-snapshot image membership are unverified.": {
+      "sources": [
+        "public/scanner-product-visuals.js"
       ],
       "arabic": false
     },
@@ -17172,6 +17228,12 @@
       ],
       "arabic": false
     },
+    "Selected source photo": {
+      "sources": [
+        "public/product-visual-selector.js"
+      ],
+      "arabic": false
+    },
     "Selected source reference invalid": {
       "sources": [
         "public/scanner-identity-v2.js"
@@ -19789,7 +19851,8 @@
     },
     "Type": {
       "sources": [
-        "public/data-workspace.js"
+        "public/data-workspace.js",
+        "public/product-visual-selector.js"
       ],
       "arabic": false
     },
@@ -20703,6 +20766,12 @@
     "Visible aiming area unavailable": {
       "sources": [
         "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Visual classification supplies no recipe composition, nutrition or physical-product equivalence.": {
+      "sources": [
+        "public/product-visual-association.js"
       ],
       "arabic": false
     },
@@ -21895,6 +21964,12 @@
       ],
       "arabic": false
     },
+    "creativecommons.org": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
+      ],
+      "arabic": false
+    },
     "credential ": {
       "sources": [
         "public/admin-ui.js"
@@ -22125,6 +22200,12 @@
       ],
       "arabic": false
     },
+    "explicit independent source assertion": {
+      "sources": [
+        "public/product-visual-association.js"
+      ],
+      "arabic": false
+    },
     "feedback board": {
       "sources": [
         "cloud/service-config.mjs"
@@ -22262,6 +22343,7 @@
         "public/data-ui.js",
         "public/off-photo-metadata.js",
         "public/product-visual-selector.js",
+        "public/retained-source-photo-selection.js",
         "public/scanner-kitchen-handoff.js",
         "public/unified-data.js"
       ],
@@ -22288,6 +22370,12 @@
     "id,recipe_json,revision": {
       "sources": [
         "cloud/community-ai.mjs"
+      ],
+      "arabic": false
+    },
+    "id,sha256": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
       ],
       "arabic": false
     },
@@ -22648,6 +22736,12 @@
       ],
       "arabic": false
     },
+    "off:sourceOccurrence:": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
+      ],
+      "arabic": false
+    },
     "offmenu": {
       "sources": [
         "public/documents.js",
@@ -22825,6 +22919,12 @@
     "or use your email": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "origin,runtimeSelectionSha256,state,useSelectionRef": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
       ],
       "arabic": false
     },
@@ -23686,6 +23786,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "world.openfoodfacts.org": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
+      ],
+      "arabic": false
     },
     "your pending review": {
       "sources": [
