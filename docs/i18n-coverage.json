@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4036,
+  "messages": 4038,
   "arabicTranslated": 376,
-  "arabicMissing": 3660,
+  "arabicMissing": 3662,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -224,6 +224,12 @@
       ],
       "arabic": false
     },
+    " in the same kitchen.": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     " ingredient entries": {
       "sources": [
         "public/app.js",
@@ -251,7 +257,8 @@
     },
     " of ": {
       "sources": [
-        "public/insights-ui.js"
+        "public/insights-ui.js",
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -1432,12 +1439,6 @@
       ],
       "arabic": false
     },
-    "* Planned step in the connected journey.": {
-      "sources": [
-        "public/landing.js"
-      ],
-      "arabic": false
-    },
     "+ Add food": {
       "sources": [
         "public/index.html",
@@ -1931,6 +1932,12 @@
       ],
       "arabic": false
     },
+    "./landing-playback.mjs": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "./lifecycle-fixture.js": {
       "sources": [
         "public/app.js"
@@ -2346,6 +2353,12 @@
     "/app.js?v=i18n-1": {
       "sources": [
         "public/sw.js"
+      ],
+      "arabic": false
+    },
+    "/auth.html": {
+      "sources": [
+        "public/landing.js"
       ],
       "arabic": false
     },
@@ -3744,31 +3757,25 @@
       ],
       "arabic": false
     },
-    "Approved intro exceeds bound": {
+    "Approved neon exceeds bound": {
       "sources": [
         "public/landing.js"
       ],
       "arabic": false
     },
-    "Approved intro incomplete": {
+    "Approved neon image unavailable": {
       "sources": [
         "public/landing.js"
       ],
       "arabic": false
     },
-    "Approved intro unavailable": {
+    "Approved neon incomplete": {
       "sources": [
         "public/landing.js"
       ],
       "arabic": false
     },
-    "Approved neon image is unavailable": {
-      "sources": [
-        "public/landing.js"
-      ],
-      "arabic": false
-    },
-    "Approved neon intro unavailable": {
+    "Approved neon unavailable": {
       "sources": [
         "public/landing.js"
       ],
@@ -3971,12 +3978,6 @@
       ],
       "arabic": false
     },
-    "Availability depends on the product source and your account.": {
-      "sources": [
-        "public/landing.js"
-      ],
-      "arabic": false
-    },
     "Availability status": {
       "sources": [
         "cloud/service-config.mjs"
@@ -4023,12 +4024,6 @@
     "BLS 4.0 is CC BY 4.0; licensed file-import workflow.": {
       "sources": [
         "public/sources.js"
-      ],
-      "arabic": false
-    },
-    "Back to barcode →": {
-      "sources": [
-        "public/landing.js"
       ],
       "arabic": false
     },
@@ -8928,6 +8923,12 @@
       ],
       "arabic": true
     },
+    "From product to pantry to plate": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "From your shopping bag to its new home.": {
       "sources": [
         "public/app.js",
@@ -12111,6 +12112,12 @@
       ],
       "arabic": false
     },
+    "Meet OffMenu": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Meet your table.": {
       "sources": [
         "public/index.html"
@@ -12617,12 +12624,6 @@
     "Next page": {
       "sources": [
         "public/data-workspace.html"
-      ],
-      "arabic": false
-    },
-    "Next →": {
-      "sources": [
-        "public/landing.js"
       ],
       "arabic": false
     },
@@ -14065,18 +14066,6 @@
         "public/locales/ar.js"
       ],
       "arabic": true
-    },
-    "Pause animation": {
-      "sources": [
-        "public/landing.js"
-      ],
-      "arabic": false
-    },
-    "Pause feature text": {
-      "sources": [
-        "public/landing.js"
-      ],
-      "arabic": false
     },
     "Peas": {
       "sources": [
@@ -16498,18 +16487,6 @@
       ],
       "arabic": false
     },
-    "Resume animation": {
-      "sources": [
-        "public/landing.js"
-      ],
-      "arabic": false
-    },
-    "Resume feature text": {
-      "sources": [
-        "public/landing.js"
-      ],
-      "arabic": false
-    },
     "Resume or start checkout ↗": {
       "sources": [
         "public/app.js"
@@ -18314,6 +18291,12 @@
       ],
       "arabic": false
     },
+    "Sign in or create account": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "Sign in required.": {
       "sources": [
         "cloud/admin-operations.mjs",
@@ -19213,6 +19196,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Step ": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
     },
     "Steps": {
       "sources": [
@@ -22652,6 +22641,12 @@
       ],
       "arabic": false
     },
+    "chapter snap-section": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "chia seeds": {
       "sources": [
         "public/ingredients.js"
@@ -23730,7 +23725,25 @@
       ],
       "arabic": false
     },
+    "offmenu:animationCompleted": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
     "offmenu:cycle": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "offmenu:sceneReady": {
+      "sources": [
+        "public/landing.js"
+      ],
+      "arabic": false
+    },
+    "offmenu:sceneSelected": {
       "sources": [
         "public/landing.js"
       ],
