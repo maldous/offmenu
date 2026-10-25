@@ -1,11 +1,83 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3014,
+  "messages": 3710,
   "arabicTranslated": 376,
-  "arabicMissing": 2638,
+  "arabicMissing": 3334,
   "arabicComplete": false,
   "entries": {
+    "\tattribute mat4 instanceMatrix;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "\tattribute vec2 uv1;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "\tattribute vec2 uv2;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "\tattribute vec2 uv3;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "\tattribute vec3 color;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "\tattribute vec3 instanceColor;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "\tattribute vec4 color;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "\tattribute vec4 skinIndex;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "\tattribute vec4 skinWeight;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "\tattribute vec4 tangent;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "\treturn dot( weights, rgb );": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "\tuniform sampler2D morphTexture;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "\nAlways check the package for allergens.": {
       "sources": [
         "public/app.js"
@@ -27,6 +99,18 @@
     " (quantity needs review)": {
       "sources": [
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    " (synthetic fixture)": {
+      "sources": [
+        "public/lifecycle-fixture.js"
+      ],
+      "arabic": false
+    },
+    " - VALIDATE_STATUS ": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -85,6 +169,30 @@
       ],
       "arabic": false
     },
+    " already loaded source observations retained. ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " ambiguous · 0 real inventory actions.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " but it wasn't found.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    " captured event(s) · ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     " cm · Weight: ": {
       "sources": [
         "public/documents.js"
@@ -100,6 +208,12 @@
     " editorial starter": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    " extension not supported.": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -135,6 +249,12 @@
       ],
       "arabic": false
     },
+    " keyframe track named ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     " of ": {
       "sources": [
         "public/insights-ui.js"
@@ -153,6 +273,12 @@
       ],
       "arabic": false
     },
+    " remains the only lookup key; no source identity merge.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     " served; ": {
       "sources": [
         "public/documents.js"
@@ -162,6 +288,84 @@
     " setting.": {
       "sources": [
         "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    " source identifier assertion(s) retained · ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " source identifier records · ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " source observations retained; retry lane": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " source observations · inspect alternatives and load selected details; no physical-product winner": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " source observations; not physical-product or ingredient counts. ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " source records": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " source-record matches": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " source-record matches · release ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " staged for review. Confirm quantity and ingredient before recipe matching. No nutrition or package amount inferred.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    " texture units while this GPU supports only ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    " to exercise separate test state": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " using the selected retained identifier release. No inventory change yet.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " will be ignored.": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -195,6 +399,30 @@
       ],
       "arabic": false
     },
+    " · attributed candidate": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · attribution and use terms require the retained source record.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · audit observations ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · basis unknown; no interpreted amount": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     " · cached response": {
       "sources": [
         "public/insights-ui.js"
@@ -213,9 +441,27 @@
       ],
       "arabic": false
     },
+    " · discard context: 1 invented pack, reason exercise. No real pantry changes.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · eligible projections not measured; retained identifier assertions remain inspectable.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     " · entered ": {
       "sources": [
         "public/journey-ui.js"
+      ],
+      "arabic": false
+    },
+    " · identity separate from ingredient use": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -225,9 +471,75 @@
       ],
       "arabic": false
     },
+    " · invented scenario decision, not accepted mapping evidence.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · isolated local namespace; no account or cloud sync": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    " · labelled ": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    " · lot packs ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · memory only": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · native record ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · no image fetched.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · not physical-product count": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · null is not zero. Profile IDs are not nutrient values.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · original ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     " · public composition records: ": {
       "sources": [
         "public/data-workspace.js"
+      ],
+      "arabic": false
+    },
+    " · release ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -237,10 +549,35 @@
       ],
       "arabic": false
     },
+    " · required role reasons": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     " · revision ": {
       "sources": [
         "public/admin-operations-ui.js",
         "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    " · source ": {
+      "sources": [
+        "public/app.js",
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · source nutrient assertion": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · source nutrition-basis label: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -256,15 +593,789 @@
       ],
       "arabic": false
     },
+    "#define ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define ALPHAMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define ALPHA_TO_COVERAGE": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define ANISOTROPYMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define AOMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define BUMPMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define CLEARCOATMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define CLEARCOAT_NORMALMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define CLEARCOAT_ROUGHNESSMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define CUBEUV_MAX_MIP ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define CUBEUV_TEXEL_HEIGHT ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define CUBEUV_TEXEL_WIDTH ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define DECODE_VIDEO_TEXTURE": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define DECODE_VIDEO_TEXTURE_EMISSIVE": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define DEPTH_PACKING ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define DISPLACEMENTMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define DITHERING": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define DOUBLE_SIDED": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define EMISSIVEMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define FLAT_SHADED": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define FLIP_SIDED": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define FOG_EXP2": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define IRIDESCENCEMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define IRIDESCENCE_THICKNESSMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define LIGHTMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define MAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define METALNESSMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define MORPHTARGETS_COUNT ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define MORPHTARGETS_TEXTURE_STRIDE ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define NORMALMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define OPAQUE": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define PREMULTIPLIED_ALPHA": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define ROUGHNESSMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define SHADER_NAME ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define SHADER_TYPE ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define SHEEN_COLORMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define SHEEN_ROUGHNESSMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define SPECULARMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define SPECULAR_COLORMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define SPECULAR_INTENSITYMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define THICKNESSMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define TONE_MAPPING": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define TRANSMISSIONMAP_UV ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_ALPHAHASH": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_ALPHAMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_ALPHATEST": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_ANISOTROPY": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_ANISOTROPYMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_AOMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_BATCHING": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_BATCHING_COLOR": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_BUMPMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_CLEARCOAT": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_CLEARCOATMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_CLEARCOAT_NORMALMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_CLEARCOAT_ROUGHNESSMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_CLIP_DISTANCE": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_COLOR": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_COLOR_ALPHA": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_DISPERSION": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_DISPLACEMENTMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_EMISSIVEMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_ENVMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_FOG": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_GRADIENTMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_INSTANCING": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_INSTANCING_COLOR": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_INSTANCING_MORPH": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_IRIDESCENCE": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_IRIDESCENCEMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_IRIDESCENCE_THICKNESSMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_LIGHTMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_LIGHT_PROBES": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_LOGARITHMIC_DEPTH_BUFFER": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_MAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_MATCAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_METALNESSMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_MORPHCOLORS": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_MORPHNORMALS": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_MORPHTARGETS": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_NORMALMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_NORMALMAP_OBJECTSPACE": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_NORMALMAP_TANGENTSPACE": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_POINTS_UV": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_REVERSED_DEPTH_BUFFER": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_ROUGHNESSMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_SHADOWMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_SHEEN": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_SHEEN_COLORMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_SHEEN_ROUGHNESSMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_SIZEATTENUATION": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_SKINNING": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_SPECULARMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_SPECULAR_COLORMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_SPECULAR_INTENSITYMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_TANGENT": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_THICKNESSMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_TRANSMISSION": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_TRANSMISSIONMAP": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_UV1": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_UV2": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define USE_UV3": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define attribute in": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define gl_FragColor pc_fragColor": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define gl_FragDepthEXT gl_FragDepth": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define texture2D texture": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define texture2DGradEXT textureGrad": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define texture2DLodEXT textureLod": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define texture2DProj textureProj": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define texture2DProjGradEXT textureProjGrad": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define texture2DProjLodEXT textureProjLod": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define textureCube texture": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define textureCubeGradEXT textureGrad": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define textureCubeLodEXT textureLod": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define varying in": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#define varying out": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#elif defined( USE_COLOR )": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#extension GL_ANGLE_clip_cull_distance : require": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#extension GL_ANGLE_multi_draw : require": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "#finish-items input[data-waste-id]": {
       "sources": [
         "public/app.js"
       ],
       "arabic": false
     },
+    "#if defined( USE_COLOR_ALPHA )": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#ifdef USE_INSTANCING": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#ifdef USE_INSTANCING_COLOR": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#ifdef USE_INSTANCING_MORPH": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#ifdef USE_SKINNING": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#ifdef USE_TANGENT": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#ifdef USE_UV1": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#ifdef USE_UV2": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "#ifdef USE_UV3": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "#third-party-services, #offmenu-administration, #offmenu-admin-operations, #care-dialog": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "#version ": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -301,6 +1412,12 @@
       ],
       "arabic": false
     },
+    "( vec3 color ) { return ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "(CAST(strftime('%s','now') AS INTEGER)*1000+CAST(substr(strftime('%f','now'),4,3) AS INTEGER))": {
       "sources": [
         "cloud/session-state-d1-owner04.mjs"
@@ -313,9 +1430,22 @@
       ],
       "arabic": false
     },
+    "(prefers-color-scheme: dark)": {
+      "sources": [
+        "public/scanner-theme-init.js",
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "(prefers-reduced-motion:reduce)": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    ") to (": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -325,6 +1455,24 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    ". Basis/preparation applicability is unverified.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    ". Canonical ingredient: unmapped; no evidenced usable_as or contains links. Source claims are not certifications.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    ". Choose a location, then open checkout. Quantity and ingredient need your review before recipe matching.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
     },
     ". Nutrients use the original recipe; review actual meal totals.": {
       "sources": [
@@ -764,6 +1912,12 @@
       ],
       "arabic": false
     },
+    "./lifecycle-fixture.js": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "./locale.mjs": {
       "sources": [
         "cloud/handler.mjs"
@@ -791,6 +1945,7 @@
         "public/journey-ui.js",
         "public/menu-model.js",
         "public/recipe-review.js",
+        "public/shelf-scanner.js",
         "public/stock-transition-model.js"
       ],
       "arabic": false
@@ -876,6 +2031,12 @@
       ],
       "arabic": false
     },
+    "./scanner-identifiers.js": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "./scanner-model.js": {
       "sources": [
         "public/scanner-decode.js",
@@ -883,9 +2044,28 @@
       ],
       "arabic": false
     },
+    "./scanner-saved-result.js": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "./scanner-surrogate.js": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "./scanner-three.js": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "./scanner-ui.js": {
       "sources": [
-        "public/app.js"
+        "public/app.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -1074,6 +2254,19 @@
       ],
       "arabic": false
     },
+    "/kitchen.html": {
+      "sources": [
+        "public/app.js",
+        "public/lifecycle-fixture.js"
+      ],
+      "arabic": false
+    },
+    "/kitchen.html?scan=staged": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "/manifest-ar.webmanifest": {
       "sources": [
         "cloud/locale.mjs",
@@ -1098,6 +2291,12 @@
       "sources": [
         "cloud/integrations.mjs",
         "public/sw.js"
+      ],
+      "arabic": false
+    },
+    "/recipes.json": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -1127,6 +2326,18 @@
       ],
       "arabic": false
     },
+    "/scanner-balanced-final-dark.svg": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "/scanner-balanced-final.svg": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "/scanner-worker.js": {
       "sources": [
         "public/scanner-ui.js",
@@ -1137,6 +2348,12 @@
     "/scanner.wasm": {
       "sources": [
         "public/sw.js"
+      ],
+      "arabic": false
+    },
+    "/shelf-scanner.html": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -1216,6 +2433,12 @@
       ],
       "arabic": false
     },
+    "500 g · invented test package": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
     "7 days": {
       "sources": [
         "public/index.html"
@@ -1231,6 +2454,12 @@
     ":nutrientProfile:": {
       "sources": [
         "public/unified-data.js"
+      ],
+      "arabic": false
+    },
+    ":projection:": {
+      "sources": [
+        "public/scanner-identifiers.js"
       ],
       "arabic": false
     },
@@ -1542,6 +2771,12 @@
       ],
       "arabic": false
     },
+    "Absent from loaded projection · absence is not a negative claim": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Accept": {
       "sources": [
         "cloud/community-ai.mjs"
@@ -1627,6 +2862,12 @@
       "sources": [
         "public/app.js",
         "public/session-fetch.js"
+      ],
+      "arabic": false
+    },
+    "Account operations are unavailable in this synthetic fixture.": {
+      "sources": [
+        "public/lifecycle-fixture.js"
       ],
       "arabic": false
     },
@@ -2235,6 +3476,18 @@
       ],
       "arabic": false
     },
+    "Annotation evidence": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Annotation limits": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Another device changed the kitchen. Retrying with its latest version.": {
       "sources": [
         "public/sync-ui.js"
@@ -2387,6 +3640,12 @@
       ],
       "arabic": false
     },
+    "Assurance": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "At least {v0} {v1} for any one recipe: {v2}": {
       "sources": [
         "public/app.js"
@@ -2414,6 +3673,18 @@
     "Atomic D1 batch unavailable": {
       "sources": [
         "cloud/admin-settings.mjs"
+      ],
+      "arabic": false
+    },
+    "Attribution: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Audit": {
+      "sources": [
+        "public/scanner-surrogate.js"
       ],
       "arabic": false
     },
@@ -2569,7 +3840,8 @@
     "Barcode": {
       "sources": [
         "public/index.html",
-        "public/locales/ar.js"
+        "public/locales/ar.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": true
     },
@@ -2585,9 +3857,27 @@
       ],
       "arabic": false
     },
+    "Barcode / original": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Barcode decoder unavailable. Reconnect and reopen the camera, or type the barcode.": {
       "sources": [
         "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Barcode found · 1 source record · product details ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Barcode found · retained source details · canonical mapping pending": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -2606,6 +3896,12 @@
     "Basis: {v0} {v1}": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "Basis: — · no nutrient values in the current response. A profile ID is not nutrition.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -2719,6 +4015,24 @@
       ],
       "arabic": false
     },
+    "Brand": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Brand unavailable": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Brand · source assertion": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Brazilian food composition; country provenance stays attached.": {
       "sources": [
         "public/sources.js"
@@ -2778,9 +4092,21 @@
       ],
       "arabic": false
     },
+    "BufferGeometry.toJSON": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "Bulk API / reuse terms not verified": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Buy": {
+      "sources": [
+        "public/scanner-surrogate.js"
       ],
       "arabic": false
     },
@@ -2849,6 +4175,12 @@
       ],
       "arabic": false
     },
+    "CSS fallback · ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "CSV is empty.": {
       "sources": [
         "public/unified-data.js"
@@ -2861,9 +4193,27 @@
       ],
       "arabic": false
     },
+    "Cached ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Cached observations": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Cached source-label annotation · ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Cached source-label annotation · candidate, not normalized or certified": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -2885,6 +4235,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Camera": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
     },
     "Camera / lens": {
       "sources": [
@@ -2967,6 +4323,30 @@
       ],
       "arabic": true
     },
+    "Candidate ingredient list · no Ingredients heading": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Candidate ingredient passage · component annotation unavailable": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Captured ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Carbohydrate": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Carbohydrate g / 100": {
       "sources": [
         "public/data-ui.js"
@@ -3030,7 +4410,8 @@
     },
     "Carrots": {
       "sources": [
-        "public/app.js"
+        "public/app.js",
+        "public/lifecycle-fixture.js"
       ],
       "arabic": false
     },
@@ -3073,6 +4454,12 @@
     "Case update failed.": {
       "sources": [
         "cloud/care-cases.mjs"
+      ],
+      "arabic": false
+    },
+    "Categories": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -3422,6 +4809,12 @@
       ],
       "arabic": false
     },
+    "Cineon": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "Civil date outside supported years 1900..9998": {
       "sources": [
         "public/activity-schedule-model.js"
@@ -3631,9 +5024,21 @@
       ],
       "arabic": false
     },
+    "Code captured · querying selected retained identifiers": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Cohort, evidence track or preparation basis differs": {
       "sources": [
         "public/basket-model.js"
+      ],
+      "arabic": false
+    },
+    "Collect shopping intent for later receipt comparison. This is not payment.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -3835,6 +5240,12 @@
       ],
       "arabic": false
     },
+    "Competing observations": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Complete an awaiting-agent public community decision.": {
       "sources": [
         "cloud/admin-mcp.mjs"
@@ -3883,6 +5294,12 @@
       ],
       "arabic": false
     },
+    "Complete retained source projection · exact supplied caveats and extensions": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Complete version 2026-07-01 export; source nutrient values retained unchanged.": {
       "sources": [
         "public/sources.js"
@@ -3913,6 +5330,12 @@
       ],
       "arabic": false
     },
+    "Component annotation evidence": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Composition data needs permission; GTIN API / bulk access needs your member account.": {
       "sources": [
         "public/sources.js"
@@ -3922,6 +5345,12 @@
     "Composition of the UK food supply; import with release and nutrient units.": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Concept: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -4024,6 +5453,12 @@
     "Confirmed cleanup receipts record removal from inventory. Estimated freshness reminders prompt inspection; they are not use-by dates or safety assessments.": {
       "sources": [
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    "Confirmed in synthetic scenario only": {
+      "sources": [
+        "public/scanner-surrogate.js"
       ],
       "arabic": false
     },
@@ -4150,6 +5585,18 @@
       ],
       "arabic": false
     },
+    "Continuation binding mismatch": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
+    "Continue bounded source search": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Continue on this device →": {
       "sources": [
         "public/index.html"
@@ -4183,6 +5630,12 @@
     "Cook a recipe to turn raw ingredients into a batch. Leftovers stay here as usable cooked portions.": {
       "sources": [
         "public/journey-ui.js"
+      ],
+      "arabic": false
+    },
+    "Cook and portion for the fixture journey.": {
+      "sources": [
+        "public/lifecycle-fixture.js"
       ],
       "arabic": false
     },
@@ -4363,6 +5816,12 @@
       ],
       "arabic": false
     },
+    "Coverage · retained subset, incomplete": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Create a private invitation code": {
       "sources": [
         "public/sharing-ui.js"
@@ -4511,6 +5970,12 @@
       ],
       "arabic": false
     },
+    "Custom": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "Custom meal / food label": {
       "sources": [
         "public/insights-ui.js"
@@ -4626,6 +6091,12 @@
       ],
       "arabic": false
     },
+    "Database: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Dataset discovery": {
       "sources": [
         "public/sources.js"
@@ -4707,6 +6178,12 @@
       ],
       "arabic": false
     },
+    "Decision: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Declaration kind cannot change": {
       "sources": [
         "public/meal-context-model.js"
@@ -4728,6 +6205,12 @@
     "Decoder stopped": {
       "sources": [
         "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Decoder-derived standards representation: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -4806,6 +6289,30 @@
       ],
       "arabic": false
     },
+    "Depth Texture with cube render targets is not supported": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "DepthTexture format must be either THREE.DepthFormat or THREE.DepthStencilFormat": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "DepthTexture: 16 bit depth attachment is not supported with stencil. Using 24-bit attachment.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "Derived camera alias: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Descriptive analytical reference coverage only. No ranking, medical selection, safety or adequacy certification.": {
       "sources": [
         "cloud/named-reference-owner22.mjs"
@@ -4827,6 +6334,48 @@
     "Designed to travel.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Detail backend": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Detail coverage": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Detail coverage · selected generation only": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Detail generation": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Detail state: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Detail store digest · distinct from identifier index": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Details ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -4863,6 +6412,12 @@
     "Dietary advisors": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Dietary status": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -4914,6 +6469,12 @@
     "Disable value": {
       "sources": [
         "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    "Discard": {
+      "sources": [
+        "public/scanner-surrogate.js"
       ],
       "arabic": false
     },
@@ -5293,6 +6854,12 @@
       ],
       "arabic": false
     },
+    "Edit item": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Edit location": {
       "sources": [
         "public/app.js",
@@ -5328,7 +6895,14 @@
     },
     "Eggs": {
       "sources": [
-        "public/app.js"
+        "public/app.js",
+        "public/lifecycle-fixture.js"
+      ],
+      "arabic": false
+    },
+    "Eggs and carrots": {
+      "sources": [
+        "public/lifecycle-fixture.js"
       ],
       "arabic": false
     },
@@ -5421,7 +6995,8 @@
       "sources": [
         "public/checkout-model.js",
         "public/locales/ar.js",
-        "public/menu-model.js"
+        "public/menu-model.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": true
     },
@@ -5455,6 +7030,12 @@
       ],
       "arabic": false
     },
+    "English / gold admission: not established": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "English when supplied": {
       "sources": [
         "public/index.html",
@@ -5469,6 +7050,18 @@
       "arabic": false
     },
     "Enter": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Enter ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Enter 1–128 original printable barcode characters.": {
       "sources": [
         "public/app.js"
       ],
@@ -5495,6 +7088,12 @@
     "Enter a date based on your food handling and applicable guidance. Offmenu does not infer a safe deadline.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Enter a known quantity. Missing stock amounts need review.": {
+      "sources": [
+        "public/model.js"
       ],
       "arabic": false
     },
@@ -5625,6 +7224,18 @@
       ],
       "arabic": false
     },
+    "Error creating WebGL context with your selected attributes.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "Error creating WebGL context.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "Error reporting is not configured.": {
       "sources": [
         "cloud/service-observability.mjs"
@@ -5741,9 +7352,27 @@
       ],
       "arabic": false
     },
+    "Evidence: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Exact current source identities unresolved": {
       "sources": [
         "cloud/business-identity-owner27.mjs"
+      ],
+      "arabic": false
+    },
+    "Exact observation": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Exact observation bridge": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -5756,6 +7385,42 @@
     "Exact releaseId and manifestSha256 are required.": {
       "sources": [
         "cloud/provider-data.mjs"
+      ],
+      "arabic": false
+    },
+    "Exact saved source assertion selected · source disposition and any labelled representation retained. No ingredient use inferred.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Exact source binding": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Exact source detail binding mismatch": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
+    "Exact source detail row mismatch": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
+    "Exact source detail unavailable": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
+    "Exact source disposition and labelled representation remain visible. Detail gaps do not erase identifiers.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -5792,6 +7457,12 @@
     "Existing measured stock deducted.": {
       "sources": [
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    "Existing native retail formats + local ZXing WASM fallback; decoding not established by this diagnostic": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -5979,6 +7650,12 @@
       ],
       "arabic": false
     },
+    "Explicit projected null · unknown, not zero or false": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Explicit qualifiers required": {
       "sources": [
         "public/meal-context-model.js"
@@ -6007,6 +7684,12 @@
       "sources": [
         "cloud/cache-invalidation-owner29.mjs",
         "public/meal-preference-model.js"
+      ],
+      "arabic": false
+    },
+    "Explore": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -6087,6 +7770,12 @@
     "Extension preview": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "External data requests are unavailable in this synthetic fixture.": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -6184,7 +7873,8 @@
     "Fat": {
       "sources": [
         "public/locales/ar.js",
-        "public/menu-model.js"
+        "public/menu-model.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": true
     },
@@ -6200,10 +7890,23 @@
       ],
       "arabic": false
     },
+    "Federated retained subset · incomplete. Identifier coverage is separate; unknown global counts are not zero.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Federated selection digest": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Fibre": {
       "sources": [
         "public/locales/ar.js",
-        "public/menu-model.js"
+        "public/menu-model.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": true
     },
@@ -6270,6 +7973,12 @@
       ],
       "arabic": false
     },
+    "Finish ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "First public recipe": {
       "sources": [
         "cloud/recipe-community.mjs"
@@ -6297,6 +8006,12 @@
     "Fixed runtime error codes only; no exception text, URLs, identifiers or pantry data.": {
       "sources": [
         "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Fixture shelf": {
+      "sources": [
+        "public/lifecycle-fixture.js"
       ],
       "arabic": false
     },
@@ -6523,6 +8238,18 @@
     "Full downloadable USDA collection is not published yet.": {
       "sources": [
         "cloud/provider-data.mjs"
+      ],
+      "arabic": false
+    },
+    "Full label · verbatim": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Full label, marketing, address, recycling and unclassified spans remain under Source. Canonical ingredient mapping remains unmapped.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -6753,6 +8480,12 @@
       ],
       "arabic": false
     },
+    "Group": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "Guest data is saved in this browser.": {
       "sources": [
         "public/app.js",
@@ -6881,6 +8614,12 @@
     "Historical enforcement research. FDA says not to use this feed for public alerts or recall lifecycle tracking.": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Historical source reference retained, but not selected under this release. Inspect current source alternatives before making a new choice.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -7110,9 +8849,21 @@
       ],
       "arabic": true
     },
+    "Identifier known · product details ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Identity mapping not current/admitted/typed": {
       "sources": [
         "cloud/business-identity-owner27.mjs"
+      ],
+      "arabic": false
+    },
+    "Identity: lexical source assertion only; all collisions retained": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -7160,6 +8911,12 @@
       ],
       "arabic": false
     },
+    "Import rejected: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Import unified JSON, OFF or USDA JSON, or map CSV columns. Private to your account; no public redistribution.": {
       "sources": [
         "public/sources.js"
@@ -7193,6 +8950,12 @@
     "Inclusive YYYY-MM-DD": {
       "sources": [
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "Incomplete · retry the failed lane; loaded source observations remain visible.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -7265,6 +9028,18 @@
       ],
       "arabic": false
     },
+    "Ingredient use": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Ingredient use needs review": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Ingredients": {
       "sources": [
         "public/recipe-community-ui.js"
@@ -7304,6 +9079,60 @@
     "Injected clock required": {
       "sources": [
         "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
+    "Inspect": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Inspect ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Inspect only": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
+    "Inspect retained barcode ↗": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Inspect retained source": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Inspect source information. No inventory changes.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Inspect source projection": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Inspect source records": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Inspect source-record alternatives": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -7539,6 +9368,12 @@
       ],
       "arabic": false
     },
+    "Invalid capture · enter 1–128 original printable characters.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Invalid care case.": {
       "sources": [
         "cloud/care-cases.mjs"
@@ -7602,6 +9437,12 @@
     "Invalid completion.": {
       "sources": [
         "public/insights-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid component type.": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -7856,6 +9697,12 @@
       ],
       "arabic": false
     },
+    "Invalid native deadline": {
+      "sources": [
+        "cloud/identifier-host.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid notification update.": {
       "sources": [
         "cloud/care-updates.mjs"
@@ -7931,6 +9778,12 @@
     "Invalid or unqualified AI settings.": {
       "sources": [
         "cloud/community-ai.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid original capture": {
+      "sources": [
+        "public/scanner-identity-v2.js"
       ],
       "arabic": false
     },
@@ -8151,6 +10004,12 @@
       ],
       "arabic": false
     },
+    "Invalid saved scanner operation history.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Invalid schedule transition": {
       "sources": [
         "public/activity-schedule-model.js"
@@ -8334,6 +10193,12 @@
       ],
       "arabic": false
     },
+    "Invented OffMenu test brand": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
     "Inventory item": {
       "sources": [
         "public/index.html",
@@ -8506,6 +10371,12 @@
       ],
       "arabic": false
     },
+    "Kitchen capture ready · confirm original ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Kitchen inventory": {
       "sources": [
         "public/documents.js",
@@ -8664,15 +10535,33 @@
       ],
       "arabic": false
     },
+    "License declaration: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Licensed full recipes with source ingredients, directions and reviewable quantities": {
       "sources": [
         "cloud/corpus.mjs"
       ],
       "arabic": false
     },
+    "Lifecycle fixture is available only on the existing local DEV kitchen.": {
+      "sources": [
+        "public/lifecycle-fixture.js"
+      ],
+      "arabic": false
+    },
     "Lift restriction": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Light": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -8710,6 +10599,12 @@
       ],
       "arabic": false
     },
+    "Linear": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "List bounded community AI decision metadata.": {
       "sources": [
         "cloud/admin-mcp.mjs"
@@ -8737,6 +10632,12 @@
     "List submitted care cases.": {
       "sources": [
         "cloud/admin-mcp.mjs"
+      ],
+      "arabic": false
+    },
+    "Literal source origin claim · separate from market": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -8783,9 +10684,21 @@
       ],
       "arabic": false
     },
+    "Load selected source details": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Load synthetic arithmetic example": {
       "sources": [
         "public/data-workspace.html"
+      ],
+      "arabic": false
+    },
+    "Loaded source observations": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -8884,6 +10797,12 @@
       ],
       "arabic": false
     },
+    "Logo: selected Balanced Final option12 raster artwork; final standalone vector pending": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Long grain rice": {
       "sources": [
         "public/app.js"
@@ -8933,12 +10852,24 @@
       ],
       "arabic": false
     },
+    "Lookup unavailable · ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Lookup unavailable.": {
       "sources": [
         "public/app.js",
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Lot: surrogate:lot:oats-01 · separate test state": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
     },
     "Lower carbohydrate": {
       "sources": [
@@ -9040,6 +10971,18 @@
       ],
       "arabic": false
     },
+    "Manufactured (source)": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Manufacturing places": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Map the columns and confirm units before normalization.": {
       "sources": [
         "public/data-ui.js"
@@ -9058,12 +11001,42 @@
       ],
       "arabic": false
     },
+    "Mapping status": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Market": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Markets (not origin)": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Mass coverage": {
       "sources": [
         "public/data-workspace.js",
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Material": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "Material.toJSON": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
     },
     "Mattilsynet API reuse; source attribution required": {
       "sources": [
@@ -9234,6 +11207,12 @@
       ],
       "arabic": false
     },
+    "Mesh": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "Message": {
       "sources": [
         "public/care-ui.js",
@@ -9368,6 +11347,18 @@
       ],
       "arabic": false
     },
+    "More selected lanes remain. ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "More selected lanes remain; no absence established.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "More than one barcode visible. Present one product at a time.": {
       "sources": [
         "public/scanner-ui.js"
@@ -9389,6 +11380,12 @@
     "Multiple device sources remain separate; do not sum overlapping observations.": {
       "sources": [
         "public/health-model.js"
+      ],
+      "arabic": false
+    },
+    "Multiple source records or eligible detail projections; inspect without resolving identity.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -9483,9 +11480,33 @@
       ],
       "arabic": false
     },
+    "Name unavailable": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Name unavailable · multiple source records": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Name unavailable · source record found": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Named 2026 composition release; preserve source references and unknown nutrient definitions.": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Names / languages": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -9539,6 +11560,12 @@
       ],
       "arabic": true
     },
+    "Native source line: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Needs checking for the selected diners": {
       "sources": [
         "public/app.js"
@@ -9563,6 +11590,12 @@
     "Netlify Identity": {
       "sources": [
         "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Neutral": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -9642,6 +11675,12 @@
       ],
       "arabic": false
     },
+    "No canonical identity winner. Product name, ingredients and nutrients are not supplied by the identifier response.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "No changes to save.": {
       "sources": [
         "public/admin-ui.js"
@@ -9679,6 +11718,12 @@
       ],
       "arabic": false
     },
+    "No identity winner, usable_as mapping, English/gold or inventory eligibility inferred.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "No inferred availability, expiry, ownership, allergy or nutrition equivalence": {
       "sources": [
         "public/shopping-handoff-model.js"
@@ -9709,6 +11754,24 @@
       ],
       "arabic": false
     },
+    "No matching source observation in the selected index and completed query plan · not global absence.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "No matching source-asserted barcode in selected retained generation · not global absence": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "No matching source-asserted barcode in the selected retained generation.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "No measured ingredient gaps. Check unmeasured ingredients below.": {
       "sources": [
         "public/app.js",
@@ -9734,15 +11797,33 @@
       ],
       "arabic": false
     },
+    "No product scanned · private saved-result connection not loaded": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "No purchase authority": {
       "sources": [
         "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
+    "No qualified relation supplied by this selected response · unknown, not none.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "No readable code yet. Pause movement, move farther away if blurred, and avoid glare. Try another lens or a photo.": {
       "sources": [
         "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "No real-source, supplier, recipe, nutrition or accepted-corpus links.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -9795,9 +11876,21 @@
       ],
       "arabic": false
     },
+    "No surrogate stock to discard": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
     "No updates yet.": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "No values supplied": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -9880,6 +11973,12 @@
       ],
       "arabic": false
     },
+    "Not provided by this source representation": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Not recorded": {
       "sources": [
         "public/index.html",
@@ -9896,6 +11995,12 @@
     "Not supplied": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "Not supplied by selected detail response": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -10058,6 +12163,18 @@
       ],
       "arabic": false
     },
+    "Object": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "Object3D.toJSON": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "Observation clock required.": {
       "sources": [
         "public/stock-transition-model.js"
@@ -10118,6 +12235,12 @@
       ],
       "arabic": false
     },
+    "Observed +1 pack · lot stock unchanged": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
     "Occurrence bound exceeded; narrow the range": {
       "sources": [
         "public/activity-schedule-model.js"
@@ -10139,6 +12262,18 @@
     "OffMenu authentication requires an explicit HTTPS origin.": {
       "sources": [
         "cloud/auth.mjs"
+      ],
+      "arabic": false
+    },
+    "OffMenu ingredient: unmapped. No evidenced usable_as or contains links. Claims in the source name are not certifications.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "OffMenu local synthetic lifecycle fixture": {
+      "sources": [
+        "public/lifecycle-fixture.js"
       ],
       "arabic": false
     },
@@ -10262,7 +12397,8 @@
     },
     "Olive oil": {
       "sources": [
-        "public/app.js"
+        "public/app.js",
+        "public/lifecycle-fixture.js"
       ],
       "arabic": false
     },
@@ -10335,6 +12471,12 @@
     "Open Food Facts": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Open Food Facts source · retain attribution and ODbL/DbCL notices. Source claims are not independently certified; image and trademark reuse and public redistribution are not granted by this private display.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -10469,6 +12611,12 @@
       ],
       "arabic": false
     },
+    "Open retained scanner · camera or type code ↗": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Open support board": {
       "sources": [
         "public/services-ui.js"
@@ -10491,6 +12639,12 @@
     "OpenAPI specification ↗": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "OpenGL ES": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -10600,6 +12754,30 @@
       ],
       "arabic": false
     },
+    "Original barcode: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Original camera capture unavailable or ambiguous · use manual entry.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Original camera capture unavailable or ambiguous. Type the code in the retained scanner.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Original capture: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Original grants, sessions, entitlements and credentials are never restored.": {
       "sources": [
         "cloud/private-portability-v1.mjs"
@@ -10641,6 +12819,18 @@
       ],
       "arabic": false
     },
+    "Origins": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Outflow needs an identified lot, quantity and reason, with undo.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Overlapping observations require owner reconciliation.": {
       "sources": [
         "public/integration-owner03.mjs"
@@ -10672,6 +12862,18 @@
       ],
       "arabic": true
     },
+    "PMREM.Background": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "PMREM.cubeUv": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "POST required": {
       "sources": [
         "cloud/lot-restriction-owner28.mjs"
@@ -10690,12 +12892,31 @@
       ],
       "arabic": false
     },
+    "Package": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Package (source projection)": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Package · source projection": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Pantry": {
       "sources": [
         "public/app.js",
         "public/household-model.js",
         "public/index.html",
         "public/journey-ui.js",
+        "public/lifecycle-fixture.js",
         "public/locales/ar.js"
       ],
       "arabic": true
@@ -10712,6 +12933,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Parent/child label syntax only · no Ingredients heading, canonical identities, certification or unstated quantities.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
     },
     "Parse error": {
       "sources": [
@@ -10750,6 +12977,12 @@
       ],
       "arabic": false
     },
+    "Pause": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Pause & choose another shelf": {
       "sources": [
         "public/index.html",
@@ -10759,7 +12992,8 @@
     },
     "Peas": {
       "sources": [
-        "public/app.js"
+        "public/app.js",
+        "public/lifecycle-fixture.js"
       ],
       "arabic": false
     },
@@ -10811,6 +13045,12 @@
     "Per 100 ml": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Per-backend coverage · global counts unknown": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -10961,6 +13201,12 @@
     "Personalised documents.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Photo / category icon: no qualified applicable binding": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -11130,6 +13376,12 @@
       ],
       "arabic": true
     },
+    "Prepare these synthetic example ingredients.": {
+      "sources": [
+        "public/lifecycle-fixture.js"
+      ],
+      "arabic": false
+    },
     "Prepared": {
       "sources": [
         "public/documents.js"
@@ -11193,6 +13445,12 @@
     "Price lookup unavailable": {
       "sources": [
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "Primary detail reason: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -11263,6 +13521,24 @@
       ],
       "arabic": false
     },
+    "Private retained barcode lookup · ready · no inventory actions": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Private retained identifier lookup": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Private retained source identifier observation": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Private service request limit reached. Try again next hour.": {
       "sources": [
         "cloud/service-support.mjs"
@@ -11307,6 +13583,18 @@
       ],
       "arabic": true
     },
+    "Product image": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Product image: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Product information from Open Food Facts. Always check the package for allergens.": {
       "sources": [
         "public/index.html",
@@ -11321,9 +13609,33 @@
       ],
       "arabic": true
     },
+    "Product name / brand / package / ingredients / nutrients: unavailable in this identifier response": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Product not found.": {
       "sources": [
         "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
+    "Product · source assertion": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Product-detail query unavailable · ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Product: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -11343,6 +13655,36 @@
     "Profile updates may only set country, units, servings and interface language.": {
       "sources": [
         "cloud/personal-ai.mjs"
+      ],
+      "arabic": false
+    },
+    "Projected measurement basis · applicability unverified": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Projected profile basis: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Projection caveats": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "PropertyBinding: Cannot parse trackName: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "PropertyBinding: can not parse propertyName from trackName: ": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -11398,7 +13740,8 @@
       "sources": [
         "public/checkout-model.js",
         "public/locales/ar.js",
-        "public/menu-model.js"
+        "public/menu-model.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": true
     },
@@ -11697,9 +14040,27 @@
       ],
       "arabic": true
     },
+    "Qualification pin: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Qualification: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Qualified HTTPS endpoint": {
       "sources": [
         "public/community-ai-ui.js"
+      ],
+      "arabic": false
+    },
+    "Qualified backing stores · independent digests": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -11742,6 +14103,12 @@
     "Quantity total overflow": {
       "sources": [
         "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
+    "Quantity unknown · edit required": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -11816,6 +14183,18 @@
     "Raw": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Raw retained nutrient values": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Raw retained nutriments: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -11958,6 +14337,12 @@
       ],
       "arabic": false
     },
+    "Read sound on": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Read the authorised owner’s private profile snapshot.": {
       "sources": [
         "cloud/personal-ai.mjs"
@@ -12066,7 +14451,31 @@
       ],
       "arabic": false
     },
-    "Reading… If already scanned, remove it fully before the next identical pack.": {
+    "Reading… Hold one barcode steady.": {
+      "sources": [
+        "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Ready": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Ready for a barcode. Product details appear here.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Ready for next item. Previous product details are retained.": {
+      "sources": [
+        "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Ready for next item. Remove this barcode fully before the next identical pack.": {
       "sources": [
         "public/scanner-ui.js"
       ],
@@ -12095,6 +14504,12 @@
     "Ready. Present one barcode and pause briefly.": {
       "sources": [
         "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Real source records retain ambiguity, provenance and missing mappings. No inventory action is enabled.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12211,6 +14626,12 @@
       ],
       "arabic": true
     },
+    "Recipe links": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Recipe no longer available": {
       "sources": [
         "public/app.js",
@@ -12281,6 +14702,12 @@
       ],
       "arabic": false
     },
+    "Reconcile existing lots; never double-add scanned inventory.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Record 10 inventory items": {
       "sources": [
         "public/insights-model.js"
@@ -12320,6 +14747,12 @@
     "Record type not consented": {
       "sources": [
         "cloud/health-import-owner28.mjs"
+      ],
+      "arabic": false
+    },
+    "Record: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12396,6 +14829,18 @@
       ],
       "arabic": false
     },
+    "Reinhard": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "Relationship kind": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Relationship not current/admitted or endpoints unresolved": {
       "sources": [
         "cloud/business-identity-owner27.mjs"
@@ -12405,6 +14850,12 @@
     "Relationship role mismatch": {
       "sources": [
         "cloud/business-identity-owner27.mjs"
+      ],
+      "arabic": false
+    },
+    "Relationship: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12423,6 +14874,12 @@
     "Release requires a reviewed proposal and release reference.": {
       "sources": [
         "cloud/care-cases.mjs"
+      ],
+      "arabic": false
+    },
+    "Release: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12525,6 +14982,12 @@
       ],
       "arabic": false
     },
+    "Repeated source observation across pages": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
     "Replace a reviewed meal plan using the owner’s current state revision.": {
       "sources": [
         "cloud/personal-ai.mjs"
@@ -12611,6 +15074,12 @@
       ],
       "arabic": false
     },
+    "Representation plan mismatch": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
     "Request / permission required": {
       "sources": [
         "public/sources.js"
@@ -12638,6 +15107,12 @@
     "Required gates": {
       "sources": [
         "cloud/cache-invalidation-owner29.mjs"
+      ],
+      "arabic": false
+    },
+    "Required role states and reasons: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12708,6 +15183,12 @@
       ],
       "arabic": false
     },
+    "Resume": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Resume or start checkout ↗": {
       "sources": [
         "public/app.js"
@@ -12732,9 +15213,33 @@
       ],
       "arabic": false
     },
+    "Retained source ": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Retained source reference is incomplete or does not match the barcode.": {
+      "sources": [
+        "public/model.js"
+      ],
+      "arabic": false
+    },
     "Retained to prevent uncertain delivery from being replayed.": {
       "sources": [
         "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Retained upstream projection · original field presence unknown. Canonical ingredient unmapped. Identifier index coverage is separate from selected detail coverage.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Retry incomplete source lane": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12906,9 +15411,21 @@
       ],
       "arabic": true
     },
+    "Reviewed file SHA-256: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Reviewed moderation action": {
       "sources": [
         "cloud/care-community.mjs"
+      ],
+      "arabic": false
+    },
+    "Reviewed private result loaded · ready to capture": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12988,7 +15505,44 @@
     "Rice": {
       "sources": [
         "public/app.js",
-        "public/index.html"
+        "public/index.html",
+        "public/lifecycle-fixture.js"
+      ],
+      "arabic": false
+    },
+    "Rice and carrots": {
+      "sources": [
+        "public/lifecycle-fixture.js"
+      ],
+      "arabic": false
+    },
+    "Rice and peas": {
+      "sources": [
+        "public/lifecycle-fixture.js"
+      ],
+      "arabic": false
+    },
+    "Rights: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Role reasons unavailable": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Rolled oats · SURROGATE": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
+    "Rolled oats · invented test assertion": {
+      "sources": [
+        "public/scanner-surrogate.js"
       ],
       "arabic": false
     },
@@ -13013,6 +15567,12 @@
     "Run the configured community review now?": {
       "sources": [
         "public/community-ai-ui.js"
+      ],
+      "arabic": false
+    },
+    "Run: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -13075,6 +15635,48 @@
       ],
       "arabic": true
     },
+    "SURROGATE ONLY · ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "SURROGATE ONLY · enter ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "SURROGATE ONLY · invented UI exercise": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "SURROGATE ONLY: enter SURROGATE-OATS. Invented 500 g pack; test lot starts at 2 packs. Buy +1 intent, Stock +1 test pack, Audit +1 observation without stock addition, Discard −1 test pack with exercise reason. Undo reverses the last test action. Real connection stays separate.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "SURROGATE · Rolled oats (test only)": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
+    "SURROGATE: usable_as ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "SYNTHETIC FIXTURE · ": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Salt": {
       "sources": [
         "public/checkout-model.js",
@@ -13092,7 +15694,8 @@
     },
     "Saturated fat": {
       "sources": [
-        "public/menu-model.js"
+        "public/menu-model.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -13282,6 +15885,18 @@
       ],
       "arabic": true
     },
+    "Saved file does not match the reviewed SHA-256 pin.": {
+      "sources": [
+        "public/scanner-saved-result.js"
+      ],
+      "arabic": false
+    },
+    "Saved file size does not match the reviewed result.": {
+      "sources": [
+        "public/scanner-saved-result.js"
+      ],
+      "arabic": false
+    },
     "Saved for later": {
       "sources": [
         "public/index.html",
@@ -13332,12 +15947,30 @@
       ],
       "arabic": false
     },
+    "Saved result identity or release does not match.": {
+      "sources": [
+        "public/scanner-saved-result.js"
+      ],
+      "arabic": false
+    },
+    "Saved source assertion is not on this bounded page or selected release. Continue the selected search; no identity was inferred.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Saved to cloud. Automatic saving continues.": {
       "sources": [
         "public/app.js",
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Saved-result miss · not global absence · no live fallback": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
     },
     "Saving automatically…": {
       "sources": [
@@ -13348,6 +15981,12 @@
     "Scan a barcode photo": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Scan a barcode to see product details.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -13404,6 +16043,12 @@
       ],
       "arabic": true
     },
+    "Scan to inspect a product.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Scan → beep → put it back. Every scan is accepted automatically.": {
       "sources": [
         "public/app.js",
@@ -13424,6 +16069,18 @@
       ],
       "arabic": false
     },
+    "Scanner handoff history is unavailable. Restore the saved checkout before retrying.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff was not saved: ": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Scans are accepted automatically. Sound and other feedback can be enabled above.": {
       "sources": [
         "public/index.html"
@@ -13433,6 +16090,12 @@
     "Scans count once while visible. Move the barcode fully out of view for at least 1.2 seconds before the next identical pack, or use the button above.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Scene": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -13486,6 +16149,12 @@
       ],
       "arabic": true
     },
+    "Search incomplete; retry the failed lane. ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Search recipes": {
       "sources": [
         "public/locales/ar.js"
@@ -13535,9 +16204,27 @@
       ],
       "arabic": false
     },
+    "Select a source alternative to inspect its exact provenance.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Select a titled plain-text document.": {
       "sources": [
         "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
+    "Selected ": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Selected Balanced Final OffMenu logo": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -13550,6 +16237,18 @@
     "Selected context": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Selected continuation rejected; prior observations retained. ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Selected coverage binding mismatch": {
+      "sources": [
+        "public/scanner-identity-v2.js"
       ],
       "arabic": false
     },
@@ -13583,15 +16282,99 @@
       ],
       "arabic": false
     },
+    "Selected detail envelope mismatch": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
+    "Selected detail release unavailable": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
     "Selected home unavailable": {
       "sources": [
         "public/meal-context-model.js"
       ],
       "arabic": false
     },
+    "Selected identifier lookup unavailable; no absence established.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Selected identifier page binding mismatch": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
+    "Selected identifier page unavailable": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
+    "Selected identity release changed": {
+      "sources": [
+        "public/scanner-identifiers.js"
+      ],
+      "arabic": false
+    },
+    "Selected identity release unavailable": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
+    "Selected observation availability and ordered role reasons": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Selected observation changed": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
     "Selected protocol and server transport hooks required": {
       "sources": [
         "cloud/queue-state-entry-owner16.mjs"
+      ],
+      "arabic": false
+    },
+    "Selected search": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Selected search continuing · no absence established": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Selected search incomplete · ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Selected search page unavailable; ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Selected source reference invalid": {
+      "sources": [
+        "public/scanner-identity-v2.js"
       ],
       "arabic": false
     },
@@ -13679,6 +16462,12 @@
       ],
       "arabic": false
     },
+    "Separate source allergen statement · not certification": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Separate sources retained; never sum overlapping observations": {
       "sources": [
         "cloud/health-import-owner28.mjs"
@@ -13750,6 +16539,18 @@
     "Serving event ID required": {
       "sources": [
         "public/cooking-model.js"
+      ],
+      "arabic": false
+    },
+    "Serving · source projection, not package": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Set a known quantity for each retained source item before saving inventory. The barcode does not state your stock amount.": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -13908,6 +16709,12 @@
     "Shopping gaps": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Shopping intent +1 · not payment": {
+      "sources": [
+        "public/scanner-surrogate.js"
       ],
       "arabic": false
     },
@@ -14152,7 +16959,8 @@
     "Sodium": {
       "sources": [
         "public/locales/ar.js",
-        "public/menu-model.js"
+        "public/menu-model.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": true
     },
@@ -14186,6 +16994,12 @@
       ],
       "arabic": false
     },
+    "Sound off": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Source": {
       "sources": [
         "public/data-workspace.html",
@@ -14196,9 +17010,51 @@
       ],
       "arabic": false
     },
+    "Source ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Source & access details ↗": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "Source allergen claims (not certification)": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source allergen claims · not certification": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source allergen statement · not safety certification": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source allergens": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source alternatives": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source alternatives: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -14221,15 +17077,82 @@
       ],
       "arabic": true
     },
+    "Source assertion ": {
+      "sources": [
+        "public/app.js",
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source assertion only · action eligibility not established": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source attribution and use notice": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source attribution unavailable.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Source basket extracted": {
       "sources": [
         "public/data-workspace.js"
       ],
       "arabic": false
     },
+    "Source categories": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Source changed elsewhere. Reload and review it again.": {
       "sources": [
         "public/admin-operations-ui.js"
+      ],
+      "arabic": false
+    },
+    "Source data type": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source date: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source details": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source details unavailable or awaiting selection.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source dietary / label claims": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source dietary / label claims (not certification)": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -14242,6 +17165,12 @@
     "Source identity required": {
       "sources": [
         "cloud/health-import-owner28.mjs"
+      ],
+      "arabic": false
+    },
+    "Source image metadata supplied; display requires a qualified permitted image route.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -14258,9 +17187,51 @@
       ],
       "arabic": false
     },
+    "Source labels": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Source licences preserved": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Source nutrition basis": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source observation not selected": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
+    "Source observation or alias binding mismatch": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
+    "Source observation reference incomplete": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
+    "Source origin claim: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source origins": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -14306,6 +17277,18 @@
       ],
       "arabic": false
     },
+    "Source records": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source reference unavailable: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Source replica serving has been retired. OffMenu curation publication is pending.": {
       "sources": [
         "cloud/provider-data.mjs"
@@ -14330,9 +17313,51 @@
       ],
       "arabic": false
     },
+    "Source serving (not package)": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source serving (not package): ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source storage statement": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source syntax uncertain": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Source text fingerprint does not match.": {
       "sources": [
         "public/common-corpus-locale.js"
+      ],
+      "arabic": false
+    },
+    "Source trace claims (not certification)": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source trace claims · not certification": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source traces": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -14348,6 +17373,24 @@
       ],
       "arabic": false
     },
+    "Source-derived candidate components": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source-derived candidate components · no canonical mapping": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source-record identity mismatch.": {
+      "sources": [
+        "public/scanner-saved-result.js"
+      ],
+      "arabic": false
+    },
     "Source-specific identity": {
       "sources": [
         "public/common-corpus-locale.js",
@@ -14355,9 +17398,21 @@
       ],
       "arabic": true
     },
+    "Source-stated ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Source:": {
       "sources": [
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    "Source: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -14475,6 +17530,12 @@
     "Steps · count": {
       "sources": [
         "public/data-workspace.html"
+      ],
+      "arabic": false
+    },
+    "Stock": {
+      "sources": [
+        "public/scanner-surrogate.js"
       ],
       "arabic": false
     },
@@ -14597,7 +17658,8 @@
     "Sugars": {
       "sources": [
         "public/checkout-model.js",
-        "public/menu-model.js"
+        "public/menu-model.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -14625,6 +17687,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Supplier / offers, recalls, recipe links": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
     },
     "Supply 1–100 source records": {
       "sources": [
@@ -14717,15 +17785,69 @@
       ],
       "arabic": false
     },
+    "Symbology / namespace: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Synced · ": {
       "sources": [
         "public/sync-ui.js"
       ],
       "arabic": false
     },
+    "Synthetic exercise only": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
+    "Synthetic fixture changes saved only in this isolated local namespace.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Synthetic lifecycle test kitchen": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Synthetic lot +1 pack": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
+    "Synthetic lot −1 pack · reason: exercise": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
+    "Synthetic test data; no external source or nutrition claim.": {
+      "sources": [
+        "public/lifecycle-fixture.js"
+      ],
+      "arabic": false
+    },
     "TCF enabled": {
       "sources": [
         "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "TEST STATE · shopping intents ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "TEST · ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -14762,6 +17884,528 @@
       ],
       "arabic": true
     },
+    "THREE.BufferAttribute: array should be a Typed Array.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.BufferGeometry.computeBoundingBox(): Computed min/max have NaN values. The \"position\" attribute is likely to have NaN values.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.BufferGeometry.computeBoundingBox(): GLBufferAttribute requires a manual bounding box.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.BufferGeometry.computeBoundingSphere(): Computed radius is NaN. The \"position\" attribute is likely to have NaN values.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.BufferGeometry.computeBoundingSphere(): GLBufferAttribute requires a manual bounding sphere.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.BufferGeometry.toNonIndexed(): BufferGeometry is already non-indexed.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.BufferGeometry: .computeTangents() failed. Missing required attributes (index, position, normal or uv)": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.BufferGeometry: Buffer size too small for points data. Use .dispose() and create a new geometry.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.Color: Alpha component of ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.Color: Invalid hex color ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.Color: Unknown color ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.Color: Unknown color model ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.ColorManagement: .fromWorkingColorSpace() has been renamed to .workingToColorSpace().": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.ColorManagement: .toWorkingColorSpace() has been renamed to .colorSpaceToWorking().": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.CubeCamera.updateCoordinateSystem(): Invalid coordinate system: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.Euler: .setFromRotationMatrix() encountered an unknown order: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.Frustum.setFromProjectionMatrix(): Invalid coordinate system: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.ImageUtils.sRGBToLinear(): Unsupported image type. No color space conversion applied.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.KeyframeTrack:": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.KeyframeTrack: Invalid value size in track.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.KeyframeTrack: Out of order keys.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.KeyframeTrack: Time is not a valid number.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.KeyframeTrack: Track is empty.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.KeyframeTrack: Value is not a valid number.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.KeyframeTrack: no keyframes in track named ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.KeyframeTrack: track name is undefined": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.Matrix4.makeOrthographic(): Invalid coordinate system: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.Matrix4.makePerspective(): Invalid coordinate system: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.Object3D.add: object can't be added as a child of itself.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.Object3D.add: object not an instance of THREE.Object3D.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.PropertyBinding: Can not bind to bones as node does not have a skeleton.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.PropertyBinding: Can not bind to material as node does not have a material.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.PropertyBinding: Can not bind to material.map as node.material does not have a map.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.PropertyBinding: Can not bind to material.materials as node.material does not have a materials array.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.PropertyBinding: Can not bind to morphTargetInfluences because node does not have a geometry.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.PropertyBinding: Can not bind to morphTargetInfluences because node does not have a geometry.morphAttributes.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.PropertyBinding: Can not bind to objectName of node undefined.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.PropertyBinding: No target node found for track: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.PropertyBinding: Trying to bind to objectIndex of objectName, but is undefined.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.PropertyBinding: Trying to update property for track: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.Quaternion: .setFromEuler() encountered an unknown order: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.Texture: Unable to serialize Texture.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLAttributes: The size of the buffer attribute's array buffer does not match the original size. Resizing buffer attributes is not supported.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLAttributes: Unsupported buffer data format: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLInfo: Unknown draw mode:": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLProgram.getParameters:": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLProgram: Program Info Log:": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLProgram: Shader Error ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLProgram: Unsupported color space: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLProgram: Unsupported toneMapping:": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not THREE.WebGLRenderTarget.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in RGBA or implementation defined format.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer.readRenderTargetPixelsAsync: renderTarget is not in RGBA or implementation defined format.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer.readRenderTargetPixelsAsync: renderTarget is not in UnsignedByteType or implementation defined type.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer.readRenderTargetPixelsAsync: requested read bounds are out of range.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer:": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: A WebGL context could not be created. Reason: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .setTextureCube()": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .uploadTexture()": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Attempt to use non-existing WebGL internal format '": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Can't change size while VR device is presenting.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Context Lost.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Context Restored.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Image in DataTexture is too big (": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Maximum number of simultaneously usable uniforms groups reached.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Shader chunk \"%s\" has been deprecated. Use \"%s\" instead.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Texture has been resized from (": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Texture marked for update but image is incomplete": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Texture marked for update but no image data found.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Texture samplers can not be part of an uniforms group.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Unable to use linear filtering with floating point textures. OES_texture_float_linear not supported on this device.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: Unsupported uniform value type.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: WebGL 1 is not supported since r163.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLRenderer: renderMultiDrawInstances has been deprecated and will be removed in r184. Append to renderMultiDraw arguments and use indirection.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLShadowMap:": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLState:": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLState: Invalid blending: ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLState: MultiplyBlending requires material.premultipliedAlpha = true": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLState: SubtractiveBlending requires material.premultipliedAlpha = true": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLTextures: Trying to use ": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLTextures: Unsupported texture color space:": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebGLTextures: sRGB encoded textures have to use RGBAFormat and UnsignedByteType.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebXRManager: Cannot change framebuffer scale while presenting.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "THREE.WebXRManager: Cannot change reference space type while presenting.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "Tap water · demo staple": {
       "sources": [
         "public/app.js"
@@ -14792,6 +18436,18 @@
       ],
       "arabic": false
     },
+    "Texture": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "Texture.toJSON": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "The browser extension preview reads structured product / price data only from the page you choose, through your own existing login. Review and download it for private import. It does not read or export passwords, cookies or payment details. You complete cart and checkout actions on the retailer website.": {
       "sources": [
         "public/index.html"
@@ -14816,9 +18472,27 @@
       ],
       "arabic": false
     },
+    "The retained scanner could not open in this tab. Nothing was added to inventory.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "The scanner item is saved. Browser cleanup failed; this handoff will not be added again.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Thing": {
       "sources": [
         "public/integrations.js"
+      ],
+      "arabic": false
+    },
+    "This browser could not stage the selected source record. Nothing was added to inventory.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -14949,6 +18623,18 @@
       ],
       "arabic": false
     },
+    "This retained field includes ingredients and other label content (claims, storage and address text). Verbatim upstream projection · ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "This scanner handoff is already saved.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "This shared kitchen is view only.": {
       "sources": [
         "public/app.js"
@@ -14985,6 +18671,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Three.js r": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
     },
     "Through date": {
       "sources": [
@@ -15025,6 +18717,12 @@
     "Token destination": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "ToneMapping( color ); }": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -15175,6 +18873,12 @@
       ],
       "arabic": false
     },
+    "UI scenario v1 · not real mapping evidence": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
     "UK CoFID": {
       "sources": [
         "public/sources.js"
@@ -15208,6 +18912,12 @@
     "US government data / openFDA terms": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "USDA ARS FoodData Central source · retained public-domain/CC0 declaration. Source lineage applies; third-party image and trademark rights are unverified.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -15276,7 +18986,8 @@
     },
     "Unavailable": {
       "sources": [
-        "public/documents.js"
+        "public/documents.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -15293,6 +19004,18 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Unavailable · ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Unclassified by this response · no qualified usable_as or contains relation. Barcode and source identity remain visible.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
     },
     "Unclosed CSV quote.": {
       "sources": [
@@ -15336,6 +19059,12 @@
       ],
       "arabic": false
     },
+    "UniformsUtils: Textures of render targets cannot be cloned via cloneUniforms() or mergeUniforms().": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "Unique need ids required; aggregate the same need before quoting": {
       "sources": [
         "public/offer-comparison-model.js"
@@ -15375,7 +19104,8 @@
         "public/documents.js",
         "public/index.html",
         "public/integrations.js",
-        "public/locales/ar.js"
+        "public/locales/ar.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": true
     },
@@ -15421,6 +19151,12 @@
       ],
       "arabic": false
     },
+    "Unknown depthTexture format": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "Unknown ingredient evidence: ": {
       "sources": [
         "public/household-model.js"
@@ -15442,6 +19178,7 @@
     },
     "Unknown product · ": {
       "sources": [
+        "public/app.js",
         "public/checkout-model.js"
       ],
       "arabic": false
@@ -15489,6 +19226,12 @@
       ],
       "arabic": false
     },
+    "Unknown · not zero": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Unlisted curation file": {
       "sources": [
         "cloud/corpus.mjs"
@@ -15498,6 +19241,12 @@
     "Unlogged days are unknown": {
       "sources": [
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "Unmapped · missing evidence": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -15512,6 +19261,12 @@
     "Unnamed food": {
       "sources": [
         "public/unified-data.js"
+      ],
+      "arabic": false
+    },
+    "Unpacking intake needs eligible identity, quantity and a verified pantry action.": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -15666,6 +19421,12 @@
       ],
       "arabic": false
     },
+    "Use a new fixture run URL for a fresh synthetic kitchen. Shared storage is never inspected or cleared.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Use a positive civil range of at most 366 days": {
       "sources": [
         "public/activity-schedule-model.js"
@@ -15675,6 +19436,12 @@
     "Use a small JSON request.": {
       "sources": [
         "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
+    "Use a unique 8–64 character lowercase fixture run ID.": {
+      "sources": [
+        "public/lifecycle-fixture.js"
       ],
       "arabic": false
     },
@@ -15817,6 +19584,12 @@
       ],
       "arabic": false
     },
+    "User-selected recipe ingredient: ": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Uses the selected week and “Use existing ingredients” setting in My week. Unmeasured ingredients stay visible for review.": {
       "sources": [
         "public/index.html"
@@ -15885,6 +19658,12 @@
       ],
       "arabic": false
     },
+    "Verified private file · ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Verify access and reuse terms": {
       "sources": [
         "public/sources.js"
@@ -15894,6 +19673,12 @@
     "Verify reuse terms": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Verifying reviewed file…": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -15933,6 +19718,12 @@
       ],
       "arabic": false
     },
+    "Visibility: ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Vitamin C": {
       "sources": [
         "public/menu-model.js"
@@ -15963,6 +19754,12 @@
       ],
       "arabic": false
     },
+    "WARNING: Multiple instances of Three.js being imported.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "WHERE owner=?": {
       "sources": [
         "cloud/care-cases.mjs"
@@ -15986,6 +19783,18 @@
     "Waste aggregate overflow": {
       "sources": [
         "public/waste-analysis-model.js"
+      ],
+      "arabic": false
+    },
+    "WebGLRenderTarget: Attached DepthTexture is initialized to the incorrect size.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "WebGLRenderer: copyTextureToTexture function signature has changed to support src and dst mipmap levels.": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -16116,6 +19925,30 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Whole label text (source field: ingredientDeclaration)": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Whole label text · extraction pending": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Whole label text · ingredient-only extraction pending": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Whole label text · verbatim retained field": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
     },
     "Whole week": {
       "sources": [
@@ -16786,6 +20619,24 @@
       ],
       "arabic": false
     },
+    "attribute vec2 uv;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "attribute vec3 normal;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "attribute vec3 position;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "autofocus control available": {
       "sources": [
         "public/scanner-ui.js"
@@ -16848,6 +20699,12 @@
       ],
       "arabic": false
     },
+    "blur direction must be either latitudinal or longitudinal!": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "body{font-family:serif;line-height:1.5}h1,h2,h3{page-break-after:avoid}table{width:100%;border-collapse:collapse}td,th{padding:.4em;text-align:left;border-bottom:1px solid #aaa}.doc-meta{font-size:.8em}.doc-brand{font-weight:bold;font-size:1.4em}": {
       "sources": [
         "public/documents.js"
@@ -16863,6 +20720,19 @@
     "butter|dairy butter": {
       "sources": [
         "public/ingredients.js"
+      ],
+      "arabic": false
+    },
+    "call to abstract method": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "camera lexical capture": {
+      "sources": [
+        "public/app.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -17236,6 +21106,12 @@
       ],
       "arabic": false
     },
+    "exact lexical": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "expansion range": {
       "sources": [
         "public/activity-schedule-model.js"
@@ -17267,6 +21143,12 @@
       ],
       "arabic": false
     },
+    "float luminance( const in vec3 rgb ) {": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "focus control not exposed; lens may be fixed-focus or managed by the camera": {
       "sources": [
         "public/scanner-ui.js"
@@ -17288,6 +21170,12 @@
     "g → convert to mg": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "gl_FragColor = linearToOutputTexel( gl_FragColor );": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -17327,6 +21215,12 @@
       ],
       "arabic": false
     },
+    "has no shadow.": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "health:read": {
       "sources": [
         "cloud/integrations.mjs",
@@ -17344,7 +21238,8 @@
     "http:": {
       "sources": [
         "cloud/integrations.mjs",
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/lifecycle-fixture.js"
       ],
       "arabic": false
     },
@@ -17392,9 +21287,33 @@
       ],
       "arabic": false
     },
+    "identifier-assertion:": {
+      "sources": [
+        "public/scanner-identity-v2.js"
+      ],
+      "arabic": false
+    },
+    "identifier-federated-query.py": {
+      "sources": [
+        "cloud/identifier-host.mjs"
+      ],
+      "arabic": false
+    },
+    "identifier-query.py": {
+      "sources": [
+        "cloud/identifier-host.mjs"
+      ],
+      "arabic": false
+    },
     "image ID": {
       "sources": [
         "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
+    "index is out of range: ": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -17402,6 +21321,12 @@
       "sources": [
         "cloud/handler.mjs",
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "instead.": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -17414,6 +21339,12 @@
     "intake amount unknown": {
       "sources": [
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "invented 500 g pack": {
+      "sources": [
+        "public/scanner-surrogate.js"
       ],
       "arabic": false
     },
@@ -17462,6 +21393,18 @@
       ],
       "arabic": false
     },
+    "labelled ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "layout(location = 0) out highp vec4 pc_fragColor;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
     "lb": {
       "sources": [
         "public/index.html"
@@ -17493,6 +21436,12 @@
       ],
       "arabic": false
     },
+    "local:fixture-food-": {
+      "sources": [
+        "public/lifecycle-fixture.js"
+      ],
+      "arabic": false
+    },
     "logged estimate": {
       "sources": [
         "public/insights-ui.js"
@@ -17508,6 +21457,13 @@
     "manifest.json": {
       "sources": [
         "cloud/corpus.mjs"
+      ],
+      "arabic": false
+    },
+    "manual lexical barcode": {
+      "sources": [
+        "public/app.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -17547,6 +21503,12 @@
       ],
       "arabic": false
     },
+    "name unavailable": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "native + enhanced decoder": {
       "sources": [
         "public/scanner-ui.js"
@@ -17556,6 +21518,30 @@
     "no meals logged": {
       "sources": [
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "no reason supplied": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "node:buffer": {
+      "sources": [
+        "cloud/identifier-host.mjs"
+      ],
+      "arabic": false
+    },
+    "node:child_process": {
+      "sources": [
+        "cloud/identifier-host.mjs"
+      ],
+      "arabic": false
+    },
+    "node:util": {
+      "sources": [
+        "cloud/identifier-host.mjs"
       ],
       "arabic": false
     },
@@ -17582,6 +21568,24 @@
     "not configured": {
       "sources": [
         "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    "not loaded": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "not queried yet": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "not supported, using": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -17696,6 +21700,12 @@
       ],
       "arabic": false
     },
+    "offmenu-identifiers.invalid": {
+      "sources": [
+        "cloud/identifier-host.mjs"
+      ],
+      "arabic": false
+    },
     "offmenu-pantry.json": {
       "sources": [
         "public/app.js"
@@ -17754,7 +21764,8 @@
     },
     "olive oil": {
       "sources": [
-        "public/app.js"
+        "public/app.js",
+        "public/lifecycle-fixture.js"
       ],
       "arabic": false
     },
@@ -17874,6 +21885,7 @@
     },
     "private, no-store": {
       "sources": [
+        "cloud/identifier-host.mjs",
         "cloud/locale.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
         "cloud/queue-state-entry-owner16.mjs"
@@ -17985,6 +21997,12 @@
       ],
       "arabic": false
     },
+    "reason unavailable": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "recipes.json": {
       "sources": [
         "cloud/handler.mjs",
@@ -18017,6 +22035,18 @@
     "red lentils|red lentil|split red lentils": {
       "sources": [
         "public/ingredients.js"
+      ],
+      "arabic": false
+    },
+    "release unknown": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "renderTarget.depthTexture must be an instance of THREE.DepthTexture": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -18088,6 +22118,24 @@
       ],
       "arabic": false
     },
+    "saved source observation": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "scanner-roboto-bold.ttf": {
+      "sources": [
+        "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
+    "scanner-roboto-regular.ttf": {
+      "sources": [
+        "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
     "scanner.wasm": {
       "sources": [
         "cloud/handler.mjs"
@@ -18103,6 +22151,12 @@
     "schedule state": {
       "sources": [
         "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "selected connection unavailable": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -18154,6 +22208,12 @@
       ],
       "arabic": false
     },
+    "source amount": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "source identity": {
       "sources": [
         "public/shopping-handoff-model.js"
@@ -18163,6 +22223,18 @@
     "source line ID": {
       "sources": [
         "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
+    "source name": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "source nutrient ID": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -18185,9 +22257,21 @@
       ],
       "arabic": false
     },
+    "source row ID": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "source text": {
       "sources": [
         "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
+    "source unit": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -18263,6 +22347,30 @@
       ],
       "arabic": false
     },
+    "surrogate:concept:rolled-oats": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
+    "surrogate:decision:oats-v1": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
+    "surrogate:lot:oats-01": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
+    "surrogate:product:rolled-oats-500": {
+      "sources": [
+        "public/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
     "sw.js": {
       "sources": [
         "cloud/handler.mjs"
@@ -18272,6 +22380,12 @@
     "sweet potato|sweet potatoes": {
       "sources": [
         "public/ingredients.js"
+      ],
+      "arabic": false
+    },
+    "target.depthTexture not supported in Cube render targets": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -18355,15 +22469,81 @@
       ],
       "arabic": false
     },
+    "uniform bool isOrthographic;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "uniform mat3 normalMatrix;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "uniform mat4 modelMatrix;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "uniform mat4 modelViewMatrix;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "uniform mat4 projectionMatrix;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "uniform mat4 viewMatrix;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "uniform vec3 cameraPosition;": {
+      "sources": [
+        "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "unit unknown": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "unknown": {
       "sources": [
         "public/locales/ar.js"
       ],
       "arabic": true
     },
+    "unknown origin": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "unknown reason": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "unmeasured ingredient entries need recipe review.": {
       "sources": [
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    "unsupported interpolation for ": {
+      "sources": [
+        "public/scanner-three.js"
       ],
       "arabic": false
     },
@@ -18548,7 +22728,7 @@
       ],
       "arabic": false
     },
-    "{v0} quantified recipes · {v1} portions · start with three options": {
+    "{v0} recipes · {v1} quantified · {v2} portions · browse 24 or show all": {
       "sources": [
         "public/app.js"
       ],
@@ -18689,6 +22869,30 @@
     "×": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "— · no qualified links": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "— · no selected source record. Select the exact reviewed file before scanning; no live fallback.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "— · no source ingredient text selected": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "— · not assessed": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },

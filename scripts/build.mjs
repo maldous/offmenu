@@ -12,8 +12,12 @@ await build({entryPoints:['public/data-workspace.js'],bundle:true,minify:true,fo
 await build({entryPoints:['public/app.js'],bundle:true,minify:true,format:'esm',outfile:'dist/app.js'});
 execFileSync('python3',['-c',"import zipfile; z=zipfile.ZipFile('dist/retailer-extension.zip','w',zipfile.ZIP_DEFLATED); [z.write('extension/'+f,'offmenu-retailer-extension/'+f) for f in ['manifest.json','popup.html','popup.css','popup.js','README.md']]; z.close()"]);
 await build({entryPoints:['public/scanner-worker.js'],bundle:true,minify:true,format:'esm',outfile:'dist/scanner-worker.js'});
+await build({entryPoints:['public/shelf-scanner.js'],bundle:true,minify:true,format:'esm',outfile:'dist/shelf-scanner.js'});
 const assets={};
 assets['data-workspace.js']=await readFile('dist/data-workspace.js','utf8');
+assets['shelf-scanner.js']=await readFile('dist/shelf-scanner.js','utf8');
+for(const file of ['shelf-scanner.html','scanner-balanced-final.svg','scanner-balanced-final-dark.svg','offmenu-system.css','scanner-theme-init.js','scanner-font-license.txt'])assets[file]=await readFile('public/'+file,'utf8');
+for(const file of ['scanner-roboto-regular.ttf','scanner-roboto-bold.ttf'])assets[file]=(await readFile('public/'+file)).toString('base64');
 assets['data-workspace.html']=await readFile('public/data-workspace.html','utf8');
 assets['retailer-extension.zip']=(await readFile('dist/retailer-extension.zip')).toString('base64');
 for(const file of ['index.html','style.css','scanner-licenses.txt','recipes.json','afcd-nutrient-details.json','icon.svg','manifest.webmanifest','manifest-ar.webmanifest'])assets[file]=await readFile('public/'+file,'utf8');
