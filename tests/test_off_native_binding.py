@@ -106,6 +106,17 @@ class OffNativeBindingTests(unittest.TestCase):
         self.assertFalse(result['qualified'])
         self.assertIn('off-native-source-authority-required',result['errors'])
 
+    def test_category_projection_stamp_is_required_and_exact_in_bound_manifest(self):
+        for value in (None, 'unreviewed-category-projection'):
+            manifest = deepcopy(self.manifest)
+            if value is None:
+                del manifest['contract']['offCategoryFieldProjectionVersion']
+            else:
+                manifest['contract']['offCategoryFieldProjectionVersion'] = value
+            with self.subTest(value=value), self.assertRaisesRegex(RefreshError, 'manifest-context'):
+                with self.bind(manifest=manifest):
+                    self.fail('stale or changed category projection must not bind')
+
     def test_bridge_hook_qualifies_and_retries_same_frozen_inputs(self):
         for _ in range(2):
             output=qualify_product_candidate(self.contract,self.bundle,{'products':self.source.path},self.normalized,

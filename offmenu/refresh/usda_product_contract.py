@@ -31,7 +31,7 @@ RELEASE = '2026-04-30'
 SCOPE = 'usda-20260430-private-native-products-v1'
 LICENSE = 'USDA FoodData Central public domain / CC0 (retained declaration)'
 ATTRIBUTION = 'USDA Agricultural Research Service FoodData Central'
-ADAPTER_SHA256 = 'a41e3bb77fcc6a32a98837cdc74fd0f4653cfc809070283c53dc900098c70a4d'
+ADAPTER_SHA256 = '1632280c5586546f5104fab6a3688ae2fe73d996f2ed4ae6ad00ba39196e5d3e'
 
 
 def _object(properties):

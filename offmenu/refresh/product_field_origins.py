@@ -13,7 +13,7 @@ from .core import RefreshError, canonical
 from .field_provenance import datum_pointers, field_origin_errors
 from . import product_adapters as adapters
 
-ADAPTER_SHA256 = 'a41e3bb77fcc6a32a98837cdc74fd0f4653cfc809070283c53dc900098c70a4d'
+ADAPTER_SHA256 = '1632280c5586546f5104fab6a3688ae2fe73d996f2ed4ae6ad00ba39196e5d3e'
 
 
 @dataclass(frozen=True)
@@ -83,7 +83,12 @@ class ProductOriginEmitter:
         key = record['provenance']['recordId']
         source = self.context.source_id
         if source == 'off':
-            tree = self.off(record['kind'], self.row('products', key))
+            raw = self.row('products', key)
+            tree = self.off(record['kind'], raw)
+            if (record['kind'] == 'product'
+                    and canonical(record['provenance'].get('sourceCategoryFields'))
+                    != canonical(adapters._off_category_fields(raw.raw)[1])):
+                raise RefreshError('product-origin-category-evidence-mismatch')
         elif source == 'prices':
             if record['kind'] != 'priceObservation':
                 raise RefreshError('product-origin-unsupported-kind')
@@ -136,6 +141,8 @@ class ProductOriginEmitter:
                     'ingredientsText': r.get('ingredients_text'), 'sourceCountryTags': r.tree('countries_tags', []),
                     'rawNutriments': r.tree('nutriments', {}, truthy=True), 'nutritionSourceBasis': r.get('nutrition_data_per'),
                     'qualificationStatus': c('unverified-source-assertions', 'off-unverified'),
+                    'sourceCategoryFields': {key: r.tree(key, None)
+                        for key in adapters._off_category_fields(r.raw)[0]},
                     'nutritionId': d('off:nutrientProfile:' + str(code.value), 'off-nutrition-id', code)}
         if kind != 'nutrientProfile':
             raise RefreshError('product-origin-unsupported-kind')
