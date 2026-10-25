@@ -159,10 +159,11 @@ boundary above; a descriptor never creates that authority.
 
 #### History, privacy and planning
 
-A missing log is not zero intake; served is not eaten. The current manual recipe
-history path's `completion ?? 100` default conflicts with explicit unknown
-consumption and is a concrete later correction, not behavior accepted by this
-design. Keep planned, recorded consumed and unknown-consumed buckets separate.
+A missing log is not zero intake; served is not eaten. At the examined `9b641c5`
+source cut, the manual recipe history path's `completion ?? 100` default conflicts
+with explicit unknown consumption. This source change includes a narrow correction
+using the existing unknown-intake representation; its review and runtime adoption
+are separate from this design reference. Keep planned, recorded consumed and unknown-consumed buckets separate.
 Compare only qualified, coverage-described recorded contributions with the
 person's selected configured target/version. Below-target recorded contribution
 with incomplete logs is a recorded-intake gap with unknown actual intake, never
@@ -287,12 +288,11 @@ is created here. These dependencies do not interrupt phase one or authorize
 phase-three implementation, spending, live tests or vendor-support promises.
 
 
-Feature-copy boundary: the single approved75 asset is
-`/home/user/src/offmenu-data/runtime/layout-migration/gateway/approved-feature-copy-20261025/approved-feature-copy.v1.json`,
-SHA256 `2445a3b24770472a288f1d7c2ec866da93f07bcb938fa39bbdcca4d6e217b4a5`.
-Preserve its exact key/value mapping; Worker00 owns versioned
-`public/feature-copy.v1.json` placement, crosslink and ledger at its writer boundary.
-That selected future repository location is not a placement claim by this design.
+Feature-copy boundary: the single versioned [approved75 copy asset](../public/feature-copy.v1.json)
+is included in this source change, with original SHA256
+`2445a3b24770472a288f1d7c2ec866da93f07bcb938fa39bbdcca4d6e217b4a5`.
+Preserve its exact key/value mapping. Repository custody and this link do not
+establish runtime serving or implementation of the proposed rotation.
 This design neither copies it into another asset nor rewrites slogans. Future
 values-only rotation marks planned capabilities with `* Planned`; actual
 availability must be reconciled before unmarked claims. Copy approval grants no
