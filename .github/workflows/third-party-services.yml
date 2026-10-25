@@ -9,6 +9,8 @@ on:
         default: false
         type: boolean
   push:
+    branches: [develop, main]
+    tags: ['**']
   pull_request:
 
 permissions:

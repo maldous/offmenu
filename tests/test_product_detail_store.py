@@ -13,7 +13,7 @@ from unittest.mock import patch
 from tests import test_native_barcode_lookup as fixtures
 from offmenu.refresh import native_barcode_lookup as readers, product_detail_store as store
 from offmenu.refresh.core import canonical, RefreshError
-from offmenu.refresh import identifier_database
+from offmenu.refresh import identifier_database, product_detail_query
 from offmenu.refresh.acceptance import Asset, qualify, contract_fingerprint
 from offmenu.refresh.usda_product_contract import native_schemas
 
@@ -79,6 +79,7 @@ class ProductDetailStoreTests(unittest.TestCase):
         keys = json.loads(subprocess.check_output(['node', '--input-type=module', '-e', code],
             cwd=store.Path(__file__).resolve().parents[1], text=True))
         self.assertEqual(store.OFF_LEGACY_PRODUCT_KEYS, frozenset(keys))
+        self.assertEqual(product_detail_query.OFF_LEGACY_PRODUCT_KEYS, store.OFF_LEGACY_PRODUCT_KEYS)
         for name in ('off-legacy-paired-gzip', 'off-cached-qualified-pair'):
             self.assertEqual(store.PRODUCT_KEYS_BY_REPRESENTATION[name], frozenset(keys))
         for name in ('usda-native-jsonl', 'usda-reviewed-lookup-products-json'):

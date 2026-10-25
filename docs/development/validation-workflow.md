@@ -114,6 +114,30 @@ evidence remain separate. `UNRUN`, `PENDING` and `DEFERRED_RELEASE` are never
 `PASS`. Reused scoped evidence does not manufacture
 a green required CI context for a new commit.
 
+## Carry scoped evidence into integration
+
+Keep the same owner/peer pair for a coupled interface through its concrete
+corrections. Pass one canonical result ID with short deltas, already-granted
+authority, exact source/artifact pins, tested boundary, remaining dependency
+and its owner. See the maintainer guide's
+[coordination and delivery states](../maintainer.md#coordination-and-delivery-states).
+Worker00's shared mutation lock can delay application without blocking another
+owner's disjoint patch, generated fixture or already-qualified preparation.
+Never use that parallelism to read held data or activate an unapproved runtime.
+
+During development, run materially affected checks and the necessary auth,
+isolation and data-loss regressions. Reuse unchanged valid evidence by exact
+reference; full frozen-release and mandatory provider checks retain their actual
+scope. Record ready, placed, tested, integrated, qualified, mounted and usable
+separately. A patch plus a passing test is not a consumer usability receipt.
+
+Use source-event times separately from ledger-write times when reporting those
+transitions. Ready-to-usable, waiting, rework and cost measurements come only
+from matching existing receipts; absent evidence is `UNKNOWN`, not zero or a
+claimed saving. Preserve earlier failures and completed scope in existing
+custody. A docs-only alignment needs focused static checks and a guarded inverse
+patch, not a new telemetry system, full-suite replay or optional signoff cycle.
+
 ## Thorough validation at the release boundary
 
 At the coherent release cut, run the full existing baseline and every actual
