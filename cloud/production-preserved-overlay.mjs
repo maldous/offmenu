@@ -1,5 +1,6 @@
 import application from './deployed-application.mjs';
 import {authPageRoutes} from './auth-page-routes.mjs';
+import {productionAccessGuard,protectProductionResponse} from './production-access-guard.mjs';
 import {assets, release} from './production-overlay-assets.mjs';
 
 // Same verifier and existing realm as the deployed ac2 application. No sessions
@@ -22,11 +23,14 @@ export default {
     const url=new URL(request.url);
     if((env.OFFMENU_AUTH_MODE!==undefined&&env.OFFMENU_AUTH_MODE!=='netlify')||env.DEV_COMPOSITION||env.OFFMENU_LOCAL_LAB)
       return Response.json({error:'Authentication is unavailable.'},{status:503,headers:{'Cache-Control':'no-store'}});
-    if(['/api/product','/api/prices','/api/data/public'].includes(url.pathname))
-      return Response.json({error:'Product information is unavailable.'},{status:503,headers:{'Cache-Control':'no-store'}});
     if(url.pathname.startsWith('/__dev/')||url.pathname.startsWith('/api/dev-auth'))return new Response('Not found',{status:404});
     const auth=await authPageRoutes(request,env,{runtime:{mode:'netlify',verifiedUser},authPageOptions:{identityTransport:'real',oauthCallbackReady:false}});
     if(auth)return auth;
+    const denied=await productionAccessGuard(request,env,{verifiedUser});
+    if(denied)return denied;
+    const respond=async()=>{
+    if(['/api/product','/api/prices','/api/data/public'].includes(url.pathname))
+      return Response.json({error:'Product information is unavailable.'},{status:503,headers:{'Cache-Control':'no-store'}});
     if(['GET','HEAD'].includes(request.method)){
       if(url.pathname==='/api/landing-release')return Response.json(release,{headers:{'Cache-Control':'no-store'}});
       const file=url.pathname==='/'?'landing.html':url.pathname.slice(1);
@@ -39,6 +43,8 @@ export default {
       if(url.pathname==='/index.html')return retainedKitchenPage(request,env,ctx);
     }
     return application.fetch(request,env,ctx);
+    };
+    return protectProductionResponse(request,await respond());
   },
   scheduled(event,env,ctx){return application.scheduled(event,env,ctx);}
 };

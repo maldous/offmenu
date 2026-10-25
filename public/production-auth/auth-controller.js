@@ -1,8 +1,8 @@
 // Pure flow controller; dependencies own IO. No profile/cookie/token persistence.
 export function createAuthController({configuration,identityFor,verifySession,navigate,onState=()=>{}}) {
-  let identity,config,state='initial',busy=false,providers=[];
+  let identity,config,state='initial',busy=false,providers=[],signupAvailable=false;
   const emit=(next,message='')=>{state=next;onState({state,message,synthetic:config?.synthetic===true,
-    providers:[...providers],oauthReady:config?.oauthAvailable===true});};
+    providers:[...providers],oauthReady:config?.oauthAvailable===true,signupAvailable});};
   const fail=()=>emit('ready','Sign-in could not be confirmed. Your kitchen has not changed.');
   async function confirmed(user){
     if(!user||typeof user.id!=='string')return false;
@@ -22,6 +22,8 @@ export function createAuthController({configuration,identityFor,verifySession,na
         emit('unavailable','Use the existing account page for this account action.');return;
       }
       const settings=await identity.getSettings();
+      signupAvailable=config.mode==='netlify'&&settings?.disableSignup===false&&
+        settings?.providers?.email===true&&typeof identity.signup==='function';
       // Enabled providers come from the selected SDK transport, never a public
       // discovery snapshot or browser query flag. Email uses the existing form.
       providers=config.mode==='netlify'?['google','github','gitlab','bitbucket','facebook']
@@ -64,6 +66,21 @@ export function createAuthController({configuration,identityFor,verifySession,na
       navigate('/shelf-scanner.html');return true;
     }catch{fail();return false;}finally{busy=false;}
   }
+  async function signUp(email,password){
+    if(busy||state!=='ready'||!signupAvailable)return false;
+    if(typeof email!=='string'||!email.trim()||typeof password!=='string'||!password){
+      emit('ready','Enter your email and password.');return false;
+    }
+    busy=true;emit('creating-account');
+    try{
+      // Existing SDK/realm only; the provider controls registration and email confirmation.
+      const created=await identity.signup(email.trim(),password);
+      const user=await identity.getUser();
+      if(created?.id&&user?.id===created.id&&await confirmed(user)){emit('signed-in','Signed in.');return true;}
+      emit('ready','Check your email to confirm your account, then sign in.');return true;
+    }catch{emit('ready','Account creation could not be confirmed. Check your details or sign in to your existing account.');return false;}
+    finally{busy=false;password='';}
+  }
   async function signOut(){
     if(busy||!identity)return false;
     busy=true;
@@ -75,5 +92,5 @@ export function createAuthController({configuration,identityFor,verifySession,na
     catch{emit('unavailable','Sign-out could not be confirmed.');return false;}
     finally{busy=false;}
   }
-  return Object.freeze({start,signIn,providerSignIn,continueToScanner,signOut,getState:()=>state});
+  return Object.freeze({start,signIn,signUp,providerSignIn,continueToScanner,signOut,getState:()=>state});
 }

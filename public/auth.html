@@ -9,7 +9,8 @@
 <form id="signin-form" hidden>
 <label for="auth-email">Email</label><input id="auth-email" type="email" autocomplete="username" required>
 <label for="auth-password">Password</label><input id="auth-password" type="password" autocomplete="current-password" required>
-<button id="signin-submit" type="submit">Sign in</button></form>
+<button id="signin-submit" type="submit">Sign in</button>
+<button id="signup-submit" type="button" hidden>Create account</button></form>
 <div id="auth-providers" hidden></div>
 <p id="auth-provider-status" role="status" hidden></p>
 <button id="continue-scanner" type="button" hidden>Continue to scanner</button>
@@ -26,6 +27,5 @@
 </form><button id="provider-withdraw" type="button">Withdraw my choice</button>
 <p>Accepting terms does not grant access beyond your provider account, its permissions or the source-use rules.</p>
 </section>
-<p><a href="/shelf-scanner.html">Continue on this device</a></p>
 <p>Service connections and their provider terms are separate from signing in. Existing account permissions still apply.</p>
 </main><script type="module" src="/auth.js"></script></body></html>

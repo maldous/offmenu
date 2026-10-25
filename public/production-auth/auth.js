@@ -36,11 +36,13 @@ const controller=createAuthController({configuration:()=>read('/api/auth-page/co
   identityFor:async mode=>createOffMenuIdentityClient({mode,
     ...(mode==='netlify'?{netlify:await import('@netlify/identity')}:{})}),
   verifySession:()=>read('/api/auth-page/session'),navigate:path=>location.assign(path),
-  onState:({state,message,synthetic,providers,oauthReady})=>{
-    $('auth-status').textContent=message||({loading:'Checking sign-in…','signing-in':'Signing in…'}[state]||'');
+  onState:({state,message,synthetic,providers,oauthReady,signupAvailable})=>{
+    $('auth-status').textContent=message||({loading:'Checking sign-in…','signing-in':'Signing in…','creating-account':'Creating account…'}[state]||'');
     $('synthetic-notice').hidden=!synthetic;
     $('signin-form').hidden=!['ready','signing-in'].includes(state);
     $('signin-submit').disabled=state!=='ready';
+    $('signup-submit').hidden=!signupAvailable;
+    $('signup-submit').disabled=state!=='ready';
     $('auth-providers').replaceChildren();
     $('auth-providers').hidden=state!=='ready'||!oauthReady||!providers.length;
     if(state==='ready'&&oauthReady)for(const provider of providers){
@@ -60,6 +62,11 @@ $('signin-form').addEventListener('submit',async event=>{event.preventDefault();
   await controller.signIn($('auth-email').value,password);
 });
 $('continue-scanner').onclick=()=>controller.continueToScanner();
+$('signup-submit').onclick=async()=>{
+  if(!$('signin-form').reportValidity())return;
+  const password=$('auth-password').value;$('auth-password').value='';
+  await controller.signUp($('auth-email').value,password);
+};
 $('signout').onclick=()=>controller.signOut();
 $('provider-consent-form').onsubmit=async event=>{event.preventDefault();
   if(consent)await consent.choose({checked:$('provider-accept').checked,purpose:$('provider-purpose').value,
