@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3817,
+  "messages": 3826,
   "arabicTranslated": 376,
-  "arabicMissing": 3441,
+  "arabicMissing": 3450,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -4014,6 +4014,12 @@
       ],
       "arabic": true
     },
+    "Barcode ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Barcode (OFF / Open Prices)": {
       "sources": [
         "public/index.html"
@@ -4635,7 +4641,8 @@
     "Category": {
       "sources": [
         "public/care-ui.js",
-        "public/product-visual-association.js"
+        "public/product-visual-association.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -5227,6 +5234,18 @@
     "Cohort, evidence track or preparation basis differs": {
       "sources": [
         "public/basket-model.js"
+      ],
+      "arabic": false
+    },
+    "Collapse product details": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Collapse scanner options": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -7734,6 +7753,18 @@
       ],
       "arabic": true
     },
+    "Expand product details": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Expand scanner options": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Expected 1–200 OCR lines": {
       "sources": [
         "public/receipt-review-model.js"
@@ -8305,7 +8336,7 @@
       ],
       "arabic": false
     },
-    "Finish ": {
+    "Finish scanning": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -9362,7 +9393,8 @@
     },
     "Ingredient match": {
       "sources": [
-        "public/product-visual-association.js"
+        "public/product-visual-association.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12306,6 +12338,12 @@
       ],
       "arabic": false
     },
+    "Not applicable": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Not available": {
       "sources": [
         "public/locales/ar.js"
@@ -12375,7 +12413,8 @@
     },
     "Not yet identified": {
       "sources": [
-        "public/product-visual-association.js"
+        "public/product-visual-association.js",
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -14000,12 +14039,6 @@
       ],
       "arabic": false
     },
-    "Product image: ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
     "Product information from Open Food Facts. Always check the package for allergens.": {
       "sources": [
         "public/index.html",
@@ -14927,6 +14960,12 @@
     "Ready to put it all away?": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Ready to scan": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -17227,6 +17266,12 @@
       ],
       "arabic": true
     },
+    "Show additional product details": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Show more recipes": {
       "sources": [
         "public/locales/ar.js",
@@ -17738,6 +17783,12 @@
       "arabic": false
     },
     "Source origins": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Source pack size": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -20313,6 +20364,12 @@
     "Visibility: ": {
       "sources": [
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Visible aiming area unavailable": {
+      "sources": [
+        "public/scanner-ui.js"
       ],
       "arabic": false
     },
