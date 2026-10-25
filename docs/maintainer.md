@@ -41,6 +41,11 @@ source-use rights or start acquisition.
 
 ## Checks and generated files
 
+Use the [validation workflow](development/validation-workflow.md) to choose fast
+local checks and thorough release validation, group coherent PRs and reuse exact
+evidence. Fast iteration does not waive required branch checks; checks not run
+remain explicitly unrun. The baseline sequence below is retained.
+
 The baseline workflow in `.github/workflows/third-party-services.yml` runs the
 configuration check, web tests, locale check, build, edge tests and Python suite.
 From the prepared checkout:
@@ -117,18 +122,27 @@ remain separate from automated tests.
 | `PROVIDER_VAULT_KEY` | Existing deployment secret protecting provider credentials. Preserve the binding; rotation needs its reviewed migration. |
 | `CURATED_CORPUS_ORIGIN` | Deployment-selected static curation origin after publication acceptance; see the curation architecture. |
 | `OFFMENU_CURATED_RELEASE` | Local publication-tool input selecting an accepted release directory, not an app credential or permission to publish. |
-| `OFFMENU_AUTH_MODE` | The unmounted auth adapter returns the legacy verifier for missing mode or exact `netlify`; exact `better-auth` selects the new factory only when a dispatcher explicitly mounts it. Other values fail closed. |
+| `OFFMENU_AUTH_MODE` | The handler preserves the legacy verifier for missing mode or exact `netlify`. Exact `better-auth` selects the authentication adapter; a trusted `createOffMenuHandler({authOptions})` entry point must also supply its explicit policy. Unknown modes and incomplete enabled configuration fail closed. |
 | `BETTER_AUTH_URL` | A deployment-owned explicit HTTPS origin. `https://offmenu.example.invalid` is a documentation placeholder, not a working environment. |
 | `BETTER_AUTH_SECRET` | A separately provisioned deployment secret; no real or reusable example value belongs in source or this guide. |
 
-At this source baseline, `cloud/auth-runtime.mjs` is unmounted: the main handler
-does not import it. Source integration and its synthetic tests do not activate
-Better Auth, apply its schema, migrate accounts, register providers or switch
-live login. The factory also requires deployment-owned session policy and
+The main handler now wires `cloud/auth-runtime.mjs` before its legacy proxy and
+protected routes. Its default export retains Netlify authentication. Selecting
+Better Auth requires a trusted deployment entry point with explicit auth options;
+changing the mode alone does not supply them. Source integration and synthetic
+tests do not apply a live schema, migrate accounts, register providers or switch
+live login. The factory requires deployment-owned session policy and
 explicit email callbacks before enabling email; Google is not a default provider.
 See the [foundation](better-auth-foundation.md) and
-[runtime seam](better-auth-runtime-seam.md) for the exact boundaries and remaining
+[runtime seam](better-auth-runtime-seam.md) for the foundational slice boundaries and remaining
 staging/account-continuity requirements.
+
+Pinned Miniflare fixtures explicitly enable `nodejs_compat` when loading the
+compiled Worker, including the landing-page locale fixture. Qualify the actual
+runtime engine, compatibility date and flags before activation; do not assume an
+older local engine has newer platform defaults. See
+[Cloudflare's Node.js compatibility reference](https://developers.cloudflare.com/workers/runtime-apis/nodejs/).
+This source requirement does not change any live runtime setting.
 
 The foundation's focused test procedure uses `npm ci --ignore-scripts` and
 `npm run test:auth`, with reported evidence under Node 24.19.0. That procedure is

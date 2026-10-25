@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3716,
+  "messages": 3731,
   "arabicTranslated": 376,
-  "arabicMissing": 3340,
+  "arabicMissing": 3355,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -130,6 +130,12 @@
     " Credential vault setup is pending.": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    " Labelled derived form: ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -459,6 +465,12 @@
       ],
       "arabic": false
     },
+    " · format ": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     " · identity separate from ingredient use": {
       "sources": [
         "public/app.js"
@@ -486,6 +498,12 @@
     " · labelled ": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    " · lookup origin ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -520,6 +538,12 @@
       "arabic": false
     },
     " · null is not zero. Profile IDs are not nutrient values.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    " · printed original unverified when decoder normalized text.": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -578,6 +602,12 @@
     " · source quantities available": {
       "sources": [
         "public/recipe-library-ui.js"
+      ],
+      "arabic": false
+    },
+    " · validated original ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -1480,7 +1510,7 @@
       ],
       "arabic": false
     },
-    ". Original and eligible labelled equivalent forms are searched separately; no source identity merge.": {
+    ". Selected lookup form and eligible labelled equivalent forms are searched separately; no source identity merge.": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -1663,6 +1693,12 @@
     "./auth-principal.mjs": {
       "sources": [
         "cloud/auth-runtime.mjs"
+      ],
+      "arabic": false
+    },
+    "./auth-runtime.mjs": {
+      "sources": [
+        "cloud/handler.mjs"
       ],
       "arabic": false
     },
@@ -2037,6 +2073,13 @@
       ],
       "arabic": false
     },
+    "./scanner-capture-envelope.js": {
+      "sources": [
+        "public/scanner-ui.js",
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "./scanner-identifiers.js": {
       "sources": [
         "public/shelf-scanner.js"
@@ -2147,6 +2190,12 @@
       "sources": [
         "public/app.js",
         "public/sharing-ui.js"
+      ],
+      "arabic": false
+    },
+    "./typed-identifier-contract.mjs": {
+      "sources": [
+        "public/scanner-capture-envelope.js"
       ],
       "arabic": false
     },
@@ -6205,6 +6254,36 @@
     "Decline": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Decoder capture needs manual confirmation · use Type code.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Decoder capture needs manual confirmation. No lookup was started.": {
+      "sources": [
+        "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Decoder representation needs manual confirmation. Type the printed code.": {
+      "sources": [
+        "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Decoder representation needs manual confirmation. Use Type code to preserve the printed value.": {
+      "sources": [
+        "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Decoder returned ": {
+      "sources": [
+        "public/shelf-scanner.js"
       ],
       "arabic": false
     },
@@ -12755,12 +12834,6 @@
       "arabic": false
     },
     "Original ": {
-      "sources": [
-        "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Original camera capture unavailable or ambiguous · use manual entry.": {
       "sources": [
         "public/shelf-scanner.js"
       ],
@@ -20969,6 +21042,12 @@
       ],
       "arabic": false
     },
+    "decoder-returned-13-digit-form; printed-original-unverified": {
+      "sources": [
+        "public/scanner-capture-envelope.js"
+      ],
+      "arabic": false
+    },
     "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'": {
       "sources": [
         "cloud/integrations.mjs"
@@ -21439,6 +21518,12 @@
     "lb": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "leading-zero-EAN-13-to-UPC-A; printed original unverified": {
+      "sources": [
+        "public/scanner-capture-envelope.js"
       ],
       "arabic": false
     },
@@ -22604,6 +22689,12 @@
     "user-contributed promotion disabled": {
       "sources": [
         "cloud/admin-operations.mjs"
+      ],
+      "arabic": false
+    },
+    "validated-decoder-extra.UPCE": {
+      "sources": [
+        "public/scanner-capture-envelope.js"
       ],
       "arabic": false
     },

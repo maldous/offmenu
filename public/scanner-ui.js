@@ -1,5 +1,6 @@
 import {t,setLocalizedText} from './i18n.js';
-import {NATIVE_FORMATS, retailCode, createPresentationGate, cameraError} from './scanner-model.js';
+import {NATIVE_FORMATS, createPresentationGate, cameraError} from './scanner-model.js';
+import {captureFromDecoder, selectableCaptures, requiresUPCEConfirmation} from './scanner-capture-envelope.js';
 
 export function setupScanner({canScan,onCode,onStream,onStartGesture,autoResume=false,storage}) {
   const $=id=>document.getElementById(id), video=$('video'), canvas=document.createElement('canvas');
@@ -111,27 +112,30 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,autoResume=
     try {
       if(video.readyState>=2 && video.currentTime!==lastFrame) {
         lastFrame=video.currentTime; attempts++;
-        let results=[];
+        let results=[],decoderPath='native';
         if(native) {
           try { results=await native.detect(video); } catch { native=null; }
         }
         if(sessionToken!==token) return;
         // Serial fallback: never queue frames behind an in-flight decode.
-        if(!results.some(retailCode) && (!native || attempts%3===0)) results=await decode(pixels(),preferences.enhance);
+        if(!requiresUPCEConfirmation(results,'native') && !selectableCaptures(results,'native').length && (!native || attempts%3===0)) {results=await decode(pixels(),preferences.enhance);decoderPath='zxing-wasm';}
         if(sessionToken!==token) return;
-        const codes=[...new Set(results.map(retailCode).filter(Boolean))];
+        const captures=requiresUPCEConfirmation(results,decoderPath)?[]:selectableCaptures(results,decoderPath);
+        const codes=[...new Set(captures.map(x=>x.lookupLexicalValue+'\u0000'+(x.lookupSymbology||'')))];
         lastCodes=codes;
         const accepted=gate.observe(codes,performance.now());
         if(accepted) {
-          lastRead=performance.now(); onCode(accepted,{originalCaptures:results.filter(retailCode).map(r=>({value:String(r.rawValue??r.text??''),symbology:r.format??null}))});
-          setLocalizedText($('scanner-last'),"Accepted: {v0}",{v0:(accepted)});
+          const captureEnvelope=captures.find(x=>x.lookupLexicalValue+'\u0000'+(x.lookupSymbology||'')===accepted);
+          lastRead=performance.now(); onCode(captureEnvelope.lookupLexicalValue,{captureEnvelope,
+            originalCaptures:[{value:captureEnvelope.lookupLexicalValue,symbology:captureEnvelope.lookupSymbology}]});
+          setLocalizedText($('scanner-last'),"Accepted: {v0}",{v0:(captureEnvelope.lookupLexicalValue)});
           status('Accepted ✓ Move this item away. Present the next barcode.');
           $('camera-stage').classList.add('scan-accepted');
           setTimeout(()=>$('camera-stage').classList.remove('scan-accepted'),500);
         } else if(codes.length>1) status('More than one barcode visible. Present one product at a time.');
         else if(codes.length===1 && performance.now()-lastRead>2000) status(lastRead?'Ready for next item. Remove this barcode fully before the next identical pack.':'Reading… Hold one barcode steady.');
         else if(lastRead && !codes.length) status('Ready for next item. Previous product details are retained.');
-        else if(!lastRead && performance.now()-started>6000) status('No readable code yet. Pause movement, move farther away if blurred, and avoid glare. Try another lens or a photo.');
+        else if(!lastRead && performance.now()-started>6000) status(results.some(x=>captureFromDecoder(x,decoderPath).status==='manual-required')?'Decoder representation needs manual confirmation. Use Type code to preserve the printed value.':'No readable code yet. Pause movement, move farther away if blurred, and avoid glare. Try another lens or a photo.');
       }
     } catch {
       if(sessionToken!==token) return;
@@ -211,9 +215,12 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture,autoResume=
       if(photoToken!==token) return;
       const results=await decode(pixels(bitmap,2560),preferences.enhance);
       if(photoToken!==token) return;
-      const codes=[...new Set(results.map(retailCode).filter(Boolean))];
-      if(codes.length!==1) return status(codes.length?'Several barcodes found. Crop the photo to one product.':'No retail barcode found. Use a sharp photo of the entire barcode, including its blank edges.');
-      onCode(codes[0],{captureKind:'photo',originalCaptures:results.filter(retailCode).map(r=>({value:String(r.rawValue??r.text??''),symbology:r.format??null}))}); setLocalizedText($('scanner-last'),"Accepted from photo: {v0}",{v0:(codes[0])}); status('Photo accepted ✓');
+      const captures=requiresUPCEConfirmation(results,'photo-zxing-wasm')?[]:selectableCaptures(results,'photo-zxing-wasm');
+      const codes=[...new Set(captures.map(x=>x.lookupLexicalValue+'\u0000'+(x.lookupSymbology||'')))];
+      if(codes.length!==1) return status(codes.length?'Several barcodes found. Crop the photo to one product.':results.length?'Decoder representation needs manual confirmation. Type the printed code.':'No retail barcode found. Use a sharp photo of the entire barcode, including its blank edges.');
+      const captureEnvelope=captures[0];
+      onCode(captureEnvelope.lookupLexicalValue,{captureKind:'photo',captureEnvelope,
+        originalCaptures:[{value:captureEnvelope.lookupLexicalValue,symbology:captureEnvelope.lookupSymbology}]}); setLocalizedText($('scanner-last'),"Accepted from photo: {v0}",{v0:(captureEnvelope.lookupLexicalValue)}); status('Photo accepted ✓');
     } catch { if(photoToken===token) status('Photo could not be decoded. Try a JPEG/PNG photo or enter the barcode.'); }
     finally { bitmap?.close(); if(photoToken===token){closeDecoder();$('scanner-photo').disabled=false;if(autoResume&&canScan())void start();} }
   };

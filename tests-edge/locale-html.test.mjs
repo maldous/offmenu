@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {Miniflare} from 'miniflare';
 
 test('built Worker localizes the landing response with headers, hints, RTL and safe cache policy',async()=>{
-  const worker=new Miniflare({modules:true,scriptPath:'dist/worker.mjs',compatibilityDate:'2026-08-06',cf:{country:'EG'}});
+  const worker=new Miniflare({modules:true,scriptPath:'dist/worker.mjs',compatibilityDate:'2026-08-06',compatibilityFlags:['nodejs_compat'],cf:{country:'EG'}});
   try{
     const geo=await worker.dispatchFetch('https://offmenu.test/');const arabic=await geo.text();
     assert.equal(geo.status,200);assert.equal(geo.headers.get('content-language'),'ar');assert.equal(geo.headers.get('x-offmenu-locale-source'),'geoip');

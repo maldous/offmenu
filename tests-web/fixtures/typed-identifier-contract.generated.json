@@ -1,0 +1,1836 @@
+{
+  "kind": "synthetic arithmetic fixtures, not allocated identifiers or catalogue records",
+  "official": {
+    "UPCE": "01234558",
+    "GTIN12": "012345000058",
+    "ISBN10": "0471384291",
+    "ISBN13": "9780471384298"
+  },
+  "citations": {
+    "upce": "https://ref.gs1.org/guidelines/2d-in-retail/1.0.0/",
+    "isbn": "https://support.gs1.org/support/solutions/articles/43000734165-how-is-an-isbn-used-in-a-gs1-barcode-",
+    "isbnAgency": "https://www.isbn-international.org/content/what-isbn/10"
+  },
+  "gtins": [
+    {
+      "value": "00000178",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000000178"
+    },
+    {
+      "value": "00079365",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000079365"
+    },
+    {
+      "value": "00158558",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000158558"
+    },
+    {
+      "value": "00237741",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000237741"
+    },
+    {
+      "value": "00316934",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000316934"
+    },
+    {
+      "value": "00396127",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000396127"
+    },
+    {
+      "value": "00475310",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000475310"
+    },
+    {
+      "value": "00554503",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000554503"
+    },
+    {
+      "value": "00633697",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000633697"
+    },
+    {
+      "value": "00712880",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000712880"
+    },
+    {
+      "value": "00792073",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000792073"
+    },
+    {
+      "value": "00871266",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000871266"
+    },
+    {
+      "value": "00950459",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000000950459"
+    },
+    {
+      "value": "01029642",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001029642"
+    },
+    {
+      "value": "01108835",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001108835"
+    },
+    {
+      "value": "01188028",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001188028"
+    },
+    {
+      "value": "01267211",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001267211"
+    },
+    {
+      "value": "01346404",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001346404"
+    },
+    {
+      "value": "01425598",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001425598"
+    },
+    {
+      "value": "01504781",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001504781"
+    },
+    {
+      "value": "01583977",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001583977"
+    },
+    {
+      "value": "01663167",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001663167"
+    },
+    {
+      "value": "01742350",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001742350"
+    },
+    {
+      "value": "01821543",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001821543"
+    },
+    {
+      "value": "01900736",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001900736"
+    },
+    {
+      "value": "01979923",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000001979923"
+    },
+    {
+      "value": "02059112",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000002059112"
+    },
+    {
+      "value": "02138305",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000002138305"
+    },
+    {
+      "value": "02217499",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000002217499"
+    },
+    {
+      "value": "02296685",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000002296685"
+    },
+    {
+      "value": "02375878",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000002375878"
+    },
+    {
+      "value": "02455068",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000002455068"
+    },
+    {
+      "value": "02534251",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000002534251"
+    },
+    {
+      "value": "02613444",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000002613444"
+    },
+    {
+      "value": "02692630",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000002692630"
+    },
+    {
+      "value": "02771823",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000002771823"
+    },
+    {
+      "value": "02851013",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000002851013"
+    },
+    {
+      "value": "02930206",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000002930206"
+    },
+    {
+      "value": "03009390",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003009390"
+    },
+    {
+      "value": "03088586",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003088586"
+    },
+    {
+      "value": "03167779",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003167779"
+    },
+    {
+      "value": "03246962",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003246962"
+    },
+    {
+      "value": "03326152",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003326152"
+    },
+    {
+      "value": "03405345",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003405345"
+    },
+    {
+      "value": "03484531",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003484531"
+    },
+    {
+      "value": "03563724",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003563724"
+    },
+    {
+      "value": "03642917",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003642917"
+    },
+    {
+      "value": "03722107",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003722107"
+    },
+    {
+      "value": "03801291",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003801291"
+    },
+    {
+      "value": "03880487",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003880487"
+    },
+    {
+      "value": "03959671",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000003959671"
+    },
+    {
+      "value": "04038863",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004038863"
+    },
+    {
+      "value": "04118053",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004118053"
+    },
+    {
+      "value": "04197249",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004197249"
+    },
+    {
+      "value": "04276432",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004276432"
+    },
+    {
+      "value": "04355625",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004355625"
+    },
+    {
+      "value": "04434818",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004434818"
+    },
+    {
+      "value": "04514008",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004514008"
+    },
+    {
+      "value": "04593195",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004593195"
+    },
+    {
+      "value": "04672388",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004672388"
+    },
+    {
+      "value": "04751571",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004751571"
+    },
+    {
+      "value": "04830764",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004830764"
+    },
+    {
+      "value": "04909958",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004909958"
+    },
+    {
+      "value": "04989141",
+      "hint": "GTIN-8",
+      "comparisonGTIN14": "00000004989141"
+    },
+    {
+      "value": "000000000178",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000000178"
+    },
+    {
+      "value": "000000079365",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000079365"
+    },
+    {
+      "value": "000000158558",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000158558"
+    },
+    {
+      "value": "000000237741",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000237741"
+    },
+    {
+      "value": "000000316934",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000316934"
+    },
+    {
+      "value": "000000396127",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000396127"
+    },
+    {
+      "value": "000000475310",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000475310"
+    },
+    {
+      "value": "000000554503",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000554503"
+    },
+    {
+      "value": "000000633697",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000633697"
+    },
+    {
+      "value": "000000712880",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000712880"
+    },
+    {
+      "value": "000000792073",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000792073"
+    },
+    {
+      "value": "000000871266",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000871266"
+    },
+    {
+      "value": "000000950459",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000000950459"
+    },
+    {
+      "value": "000001029642",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001029642"
+    },
+    {
+      "value": "000001108835",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001108835"
+    },
+    {
+      "value": "000001188028",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001188028"
+    },
+    {
+      "value": "000001267211",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001267211"
+    },
+    {
+      "value": "000001346404",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001346404"
+    },
+    {
+      "value": "000001425598",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001425598"
+    },
+    {
+      "value": "000001504781",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001504781"
+    },
+    {
+      "value": "000001583977",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001583977"
+    },
+    {
+      "value": "000001663167",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001663167"
+    },
+    {
+      "value": "000001742350",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001742350"
+    },
+    {
+      "value": "000001821543",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001821543"
+    },
+    {
+      "value": "000001900736",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001900736"
+    },
+    {
+      "value": "000001979923",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000001979923"
+    },
+    {
+      "value": "000002059112",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000002059112"
+    },
+    {
+      "value": "000002138305",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000002138305"
+    },
+    {
+      "value": "000002217499",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000002217499"
+    },
+    {
+      "value": "000002296685",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000002296685"
+    },
+    {
+      "value": "000002375878",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000002375878"
+    },
+    {
+      "value": "000002455068",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000002455068"
+    },
+    {
+      "value": "000002534251",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000002534251"
+    },
+    {
+      "value": "000002613444",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000002613444"
+    },
+    {
+      "value": "000002692630",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000002692630"
+    },
+    {
+      "value": "000002771823",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000002771823"
+    },
+    {
+      "value": "000002851013",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000002851013"
+    },
+    {
+      "value": "000002930206",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000002930206"
+    },
+    {
+      "value": "000003009390",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003009390"
+    },
+    {
+      "value": "000003088586",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003088586"
+    },
+    {
+      "value": "000003167779",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003167779"
+    },
+    {
+      "value": "000003246962",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003246962"
+    },
+    {
+      "value": "000003326152",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003326152"
+    },
+    {
+      "value": "000003405345",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003405345"
+    },
+    {
+      "value": "000003484531",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003484531"
+    },
+    {
+      "value": "000003563724",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003563724"
+    },
+    {
+      "value": "000003642917",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003642917"
+    },
+    {
+      "value": "000003722107",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003722107"
+    },
+    {
+      "value": "000003801291",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003801291"
+    },
+    {
+      "value": "000003880487",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003880487"
+    },
+    {
+      "value": "000003959671",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000003959671"
+    },
+    {
+      "value": "000004038863",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004038863"
+    },
+    {
+      "value": "000004118053",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004118053"
+    },
+    {
+      "value": "000004197249",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004197249"
+    },
+    {
+      "value": "000004276432",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004276432"
+    },
+    {
+      "value": "000004355625",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004355625"
+    },
+    {
+      "value": "000004434818",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004434818"
+    },
+    {
+      "value": "000004514008",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004514008"
+    },
+    {
+      "value": "000004593195",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004593195"
+    },
+    {
+      "value": "000004672388",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004672388"
+    },
+    {
+      "value": "000004751571",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004751571"
+    },
+    {
+      "value": "000004830764",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004830764"
+    },
+    {
+      "value": "000004909958",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004909958"
+    },
+    {
+      "value": "000004989141",
+      "hint": "GTIN-12",
+      "comparisonGTIN14": "00000004989141"
+    },
+    {
+      "value": "0000000000178",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000000178"
+    },
+    {
+      "value": "0000000079365",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000079365"
+    },
+    {
+      "value": "0000000158558",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000158558"
+    },
+    {
+      "value": "0000000237741",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000237741"
+    },
+    {
+      "value": "0000000316934",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000316934"
+    },
+    {
+      "value": "0000000396127",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000396127"
+    },
+    {
+      "value": "0000000475310",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000475310"
+    },
+    {
+      "value": "0000000554503",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000554503"
+    },
+    {
+      "value": "0000000633697",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000633697"
+    },
+    {
+      "value": "0000000712880",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000712880"
+    },
+    {
+      "value": "0000000792073",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000792073"
+    },
+    {
+      "value": "0000000871266",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000871266"
+    },
+    {
+      "value": "0000000950459",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000000950459"
+    },
+    {
+      "value": "0000001029642",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001029642"
+    },
+    {
+      "value": "0000001108835",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001108835"
+    },
+    {
+      "value": "0000001188028",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001188028"
+    },
+    {
+      "value": "0000001267211",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001267211"
+    },
+    {
+      "value": "0000001346404",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001346404"
+    },
+    {
+      "value": "0000001425598",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001425598"
+    },
+    {
+      "value": "0000001504781",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001504781"
+    },
+    {
+      "value": "0000001583977",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001583977"
+    },
+    {
+      "value": "0000001663167",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001663167"
+    },
+    {
+      "value": "0000001742350",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001742350"
+    },
+    {
+      "value": "0000001821543",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001821543"
+    },
+    {
+      "value": "0000001900736",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001900736"
+    },
+    {
+      "value": "0000001979923",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000001979923"
+    },
+    {
+      "value": "0000002059112",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000002059112"
+    },
+    {
+      "value": "0000002138305",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000002138305"
+    },
+    {
+      "value": "0000002217499",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000002217499"
+    },
+    {
+      "value": "0000002296685",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000002296685"
+    },
+    {
+      "value": "0000002375878",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000002375878"
+    },
+    {
+      "value": "0000002455068",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000002455068"
+    },
+    {
+      "value": "0000002534251",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000002534251"
+    },
+    {
+      "value": "0000002613444",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000002613444"
+    },
+    {
+      "value": "0000002692630",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000002692630"
+    },
+    {
+      "value": "0000002771823",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000002771823"
+    },
+    {
+      "value": "0000002851013",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000002851013"
+    },
+    {
+      "value": "0000002930206",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000002930206"
+    },
+    {
+      "value": "0000003009390",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003009390"
+    },
+    {
+      "value": "0000003088586",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003088586"
+    },
+    {
+      "value": "0000003167779",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003167779"
+    },
+    {
+      "value": "0000003246962",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003246962"
+    },
+    {
+      "value": "0000003326152",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003326152"
+    },
+    {
+      "value": "0000003405345",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003405345"
+    },
+    {
+      "value": "0000003484531",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003484531"
+    },
+    {
+      "value": "0000003563724",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003563724"
+    },
+    {
+      "value": "0000003642917",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003642917"
+    },
+    {
+      "value": "0000003722107",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003722107"
+    },
+    {
+      "value": "0000003801291",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003801291"
+    },
+    {
+      "value": "0000003880487",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003880487"
+    },
+    {
+      "value": "0000003959671",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000003959671"
+    },
+    {
+      "value": "0000004038863",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004038863"
+    },
+    {
+      "value": "0000004118053",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004118053"
+    },
+    {
+      "value": "0000004197249",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004197249"
+    },
+    {
+      "value": "0000004276432",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004276432"
+    },
+    {
+      "value": "0000004355625",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004355625"
+    },
+    {
+      "value": "0000004434818",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004434818"
+    },
+    {
+      "value": "0000004514008",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004514008"
+    },
+    {
+      "value": "0000004593195",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004593195"
+    },
+    {
+      "value": "0000004672388",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004672388"
+    },
+    {
+      "value": "0000004751571",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004751571"
+    },
+    {
+      "value": "0000004830764",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004830764"
+    },
+    {
+      "value": "0000004909958",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004909958"
+    },
+    {
+      "value": "0000004989141",
+      "hint": "GTIN-13",
+      "comparisonGTIN14": "00000004989141"
+    },
+    {
+      "value": "00000000000178",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000000000178"
+    },
+    {
+      "value": "20000000079369",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "20000000079369"
+    },
+    {
+      "value": "00000000158558",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000000158558"
+    },
+    {
+      "value": "40000000237749",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "40000000237749"
+    },
+    {
+      "value": "00000000316934",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000000316934"
+    },
+    {
+      "value": "60000000396129",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "60000000396129"
+    },
+    {
+      "value": "00000000475310",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000000475310"
+    },
+    {
+      "value": "80000000554509",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "80000000554509"
+    },
+    {
+      "value": "00000000633697",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000000633697"
+    },
+    {
+      "value": "20000000712884",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "20000000712884"
+    },
+    {
+      "value": "00000000792073",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000000792073"
+    },
+    {
+      "value": "40000000871264",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "40000000871264"
+    },
+    {
+      "value": "00000000950459",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000000950459"
+    },
+    {
+      "value": "60000001029644",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "60000001029644"
+    },
+    {
+      "value": "00000001108835",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000001108835"
+    },
+    {
+      "value": "80000001188024",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "80000001188024"
+    },
+    {
+      "value": "00000001267211",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000001267211"
+    },
+    {
+      "value": "20000001346408",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "20000001346408"
+    },
+    {
+      "value": "00000001425598",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000001425598"
+    },
+    {
+      "value": "40000001504789",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "40000001504789"
+    },
+    {
+      "value": "00000001583977",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000001583977"
+    },
+    {
+      "value": "60000001663169",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "60000001663169"
+    },
+    {
+      "value": "00000001742350",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000001742350"
+    },
+    {
+      "value": "80000001821549",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "80000001821549"
+    },
+    {
+      "value": "00000001900736",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000001900736"
+    },
+    {
+      "value": "20000001979927",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "20000001979927"
+    },
+    {
+      "value": "00000002059112",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000002059112"
+    },
+    {
+      "value": "40000002138303",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "40000002138303"
+    },
+    {
+      "value": "00000002217499",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000002217499"
+    },
+    {
+      "value": "60000002296687",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "60000002296687"
+    },
+    {
+      "value": "00000002375878",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000002375878"
+    },
+    {
+      "value": "80000002455064",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "80000002455064"
+    },
+    {
+      "value": "00000002534251",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000002534251"
+    },
+    {
+      "value": "20000002613448",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "20000002613448"
+    },
+    {
+      "value": "00000002692630",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000002692630"
+    },
+    {
+      "value": "40000002771821",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "40000002771821"
+    },
+    {
+      "value": "00000002851013",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000002851013"
+    },
+    {
+      "value": "60000002930208",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "60000002930208"
+    },
+    {
+      "value": "00000003009390",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000003009390"
+    },
+    {
+      "value": "80000003088582",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "80000003088582"
+    },
+    {
+      "value": "00000003167779",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000003167779"
+    },
+    {
+      "value": "20000003246966",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "20000003246966"
+    },
+    {
+      "value": "00000003326152",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000003326152"
+    },
+    {
+      "value": "40000003405343",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "40000003405343"
+    },
+    {
+      "value": "00000003484531",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000003484531"
+    },
+    {
+      "value": "60000003563726",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "60000003563726"
+    },
+    {
+      "value": "00000003642917",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000003642917"
+    },
+    {
+      "value": "80000003722103",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "80000003722103"
+    },
+    {
+      "value": "00000003801291",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000003801291"
+    },
+    {
+      "value": "20000003880481",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "20000003880481"
+    },
+    {
+      "value": "00000003959671",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000003959671"
+    },
+    {
+      "value": "40000004038861",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "40000004038861"
+    },
+    {
+      "value": "00000004118053",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000004118053"
+    },
+    {
+      "value": "60000004197241",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "60000004197241"
+    },
+    {
+      "value": "00000004276432",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000004276432"
+    },
+    {
+      "value": "80000004355621",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "80000004355621"
+    },
+    {
+      "value": "00000004434818",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000004434818"
+    },
+    {
+      "value": "20000004514002",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "20000004514002"
+    },
+    {
+      "value": "00000004593195",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000004593195"
+    },
+    {
+      "value": "40000004672386",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "40000004672386"
+    },
+    {
+      "value": "00000004751571",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000004751571"
+    },
+    {
+      "value": "60000004830766",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "60000004830766"
+    },
+    {
+      "value": "00000004909958",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "00000004909958"
+    },
+    {
+      "value": "80000004989147",
+      "hint": "GTIN-14",
+      "comparisonGTIN14": "80000004989147"
+    }
+  ],
+  "upces": [
+    {
+      "original": "01234505",
+      "expandedGTIN12": "012000003455"
+    },
+    {
+      "original": "05678901",
+      "expandedGTIN12": "056000007891"
+    },
+    {
+      "original": "09807602",
+      "expandedGTIN12": "098000000762"
+    },
+    {
+      "original": "01234514",
+      "expandedGTIN12": "012100003454"
+    },
+    {
+      "original": "05678910",
+      "expandedGTIN12": "056100007890"
+    },
+    {
+      "original": "09807611",
+      "expandedGTIN12": "098100000761"
+    },
+    {
+      "original": "01234523",
+      "expandedGTIN12": "012200003453"
+    },
+    {
+      "original": "05678929",
+      "expandedGTIN12": "056200007899"
+    },
+    {
+      "original": "09807620",
+      "expandedGTIN12": "098200000760"
+    },
+    {
+      "original": "01234531",
+      "expandedGTIN12": "012300000451"
+    },
+    {
+      "original": "05678935",
+      "expandedGTIN12": "056700000895"
+    },
+    {
+      "original": "09807632",
+      "expandedGTIN12": "098000000762"
+    },
+    {
+      "original": "01234543",
+      "expandedGTIN12": "012340000053"
+    },
+    {
+      "original": "05678949",
+      "expandedGTIN12": "056780000099"
+    },
+    {
+      "original": "09807648",
+      "expandedGTIN12": "098070000068"
+    },
+    {
+      "original": "01234558",
+      "expandedGTIN12": "012345000058"
+    },
+    {
+      "original": "05678952",
+      "expandedGTIN12": "056789000052"
+    },
+    {
+      "original": "09807655",
+      "expandedGTIN12": "098076000055"
+    },
+    {
+      "original": "01234565",
+      "expandedGTIN12": "012345000065"
+    },
+    {
+      "original": "05678969",
+      "expandedGTIN12": "056789000069"
+    },
+    {
+      "original": "09807662",
+      "expandedGTIN12": "098076000062"
+    },
+    {
+      "original": "01234572",
+      "expandedGTIN12": "012345000072"
+    },
+    {
+      "original": "05678976",
+      "expandedGTIN12": "056789000076"
+    },
+    {
+      "original": "09807679",
+      "expandedGTIN12": "098076000079"
+    },
+    {
+      "original": "01234589",
+      "expandedGTIN12": "012345000089"
+    },
+    {
+      "original": "05678983",
+      "expandedGTIN12": "056789000083"
+    },
+    {
+      "original": "09807686",
+      "expandedGTIN12": "098076000086"
+    },
+    {
+      "original": "01234596",
+      "expandedGTIN12": "012345000096"
+    },
+    {
+      "original": "05678990",
+      "expandedGTIN12": "056789000090"
+    },
+    {
+      "original": "09807693",
+      "expandedGTIN12": "098076000093"
+    },
+    {
+      "original": "11234502",
+      "expandedGTIN12": "112000003452"
+    },
+    {
+      "original": "15678908",
+      "expandedGTIN12": "156000007898"
+    },
+    {
+      "original": "19807609",
+      "expandedGTIN12": "198000000769"
+    },
+    {
+      "original": "11234511",
+      "expandedGTIN12": "112100003451"
+    },
+    {
+      "original": "15678917",
+      "expandedGTIN12": "156100007897"
+    },
+    {
+      "original": "19807618",
+      "expandedGTIN12": "198100000768"
+    },
+    {
+      "original": "11234520",
+      "expandedGTIN12": "112200003450"
+    },
+    {
+      "original": "15678926",
+      "expandedGTIN12": "156200007896"
+    },
+    {
+      "original": "19807627",
+      "expandedGTIN12": "198200000767"
+    },
+    {
+      "original": "11234538",
+      "expandedGTIN12": "112300000458"
+    },
+    {
+      "original": "15678932",
+      "expandedGTIN12": "156700000892"
+    },
+    {
+      "original": "19807639",
+      "expandedGTIN12": "198000000769"
+    },
+    {
+      "original": "11234540",
+      "expandedGTIN12": "112340000050"
+    },
+    {
+      "original": "15678946",
+      "expandedGTIN12": "156780000096"
+    },
+    {
+      "original": "19807645",
+      "expandedGTIN12": "198070000065"
+    },
+    {
+      "original": "11234555",
+      "expandedGTIN12": "112345000055"
+    },
+    {
+      "original": "15678959",
+      "expandedGTIN12": "156789000059"
+    },
+    {
+      "original": "19807652",
+      "expandedGTIN12": "198076000052"
+    },
+    {
+      "original": "11234562",
+      "expandedGTIN12": "112345000062"
+    },
+    {
+      "original": "15678966",
+      "expandedGTIN12": "156789000066"
+    },
+    {
+      "original": "19807669",
+      "expandedGTIN12": "198076000069"
+    },
+    {
+      "original": "11234579",
+      "expandedGTIN12": "112345000079"
+    },
+    {
+      "original": "15678973",
+      "expandedGTIN12": "156789000073"
+    },
+    {
+      "original": "19807676",
+      "expandedGTIN12": "198076000076"
+    },
+    {
+      "original": "11234586",
+      "expandedGTIN12": "112345000086"
+    },
+    {
+      "original": "15678980",
+      "expandedGTIN12": "156789000080"
+    },
+    {
+      "original": "19807683",
+      "expandedGTIN12": "198076000083"
+    },
+    {
+      "original": "11234593",
+      "expandedGTIN12": "112345000093"
+    },
+    {
+      "original": "15678997",
+      "expandedGTIN12": "156789000097"
+    },
+    {
+      "original": "19807690",
+      "expandedGTIN12": "198076000090"
+    }
+  ],
+  "isbns": [
+    {
+      "ISBN10": "000000006X",
+      "ISBN13": "9780000000064"
+    },
+    {
+      "ISBN10": "0000010030",
+      "ISBN13": "9780000010032"
+    },
+    {
+      "ISBN10": "0000020001",
+      "ISBN13": "9780000020000"
+    },
+    {
+      "ISBN10": "0000029971",
+      "ISBN13": "9780000029973"
+    },
+    {
+      "ISBN10": "0000039942",
+      "ISBN13": "9780000039941"
+    },
+    {
+      "ISBN10": "0000049913",
+      "ISBN13": "9780000049919"
+    },
+    {
+      "ISBN10": "0000059889",
+      "ISBN13": "9780000059888"
+    },
+    {
+      "ISBN10": "000006985X",
+      "ISBN13": "9780000069856"
+    },
+    {
+      "ISBN10": "0000079820",
+      "ISBN13": "9780000079824"
+    },
+    {
+      "ISBN10": "0000089796",
+      "ISBN13": "9780000089793"
+    },
+    {
+      "ISBN10": "0000099767",
+      "ISBN13": "9780000099761"
+    },
+    {
+      "ISBN10": "0000109738",
+      "ISBN13": "9780000109736"
+    },
+    {
+      "ISBN10": "0000119709",
+      "ISBN13": "9780000119704"
+    },
+    {
+      "ISBN10": "0000129674",
+      "ISBN13": "9780000129673"
+    },
+    {
+      "ISBN10": "0000139645",
+      "ISBN13": "9780000139641"
+    },
+    {
+      "ISBN10": "0000149616",
+      "ISBN13": "9780000149619"
+    },
+    {
+      "ISBN10": "0000159581",
+      "ISBN13": "9780000159588"
+    },
+    {
+      "ISBN10": "0000169552",
+      "ISBN13": "9780000169556"
+    },
+    {
+      "ISBN10": "0000179523",
+      "ISBN13": "9780000179524"
+    },
+    {
+      "ISBN10": "0000189499",
+      "ISBN13": "9780000189493"
+    },
+    {
+      "ISBN10": "000019946X",
+      "ISBN13": "9780000199461"
+    },
+    {
+      "ISBN10": "0000209430",
+      "ISBN13": "9780000209436"
+    },
+    {
+      "ISBN10": "0000219401",
+      "ISBN13": "9780000219404"
+    },
+    {
+      "ISBN10": "0000229377",
+      "ISBN13": "9780000229373"
+    },
+    {
+      "ISBN10": "0000239348",
+      "ISBN13": "9780000239341"
+    },
+    {
+      "ISBN10": "0000249319",
+      "ISBN13": "9780000249319"
+    },
+    {
+      "ISBN10": "0000259284",
+      "ISBN13": "9780000259288"
+    },
+    {
+      "ISBN10": "0000269255",
+      "ISBN13": "9780000269256"
+    },
+    {
+      "ISBN10": "0000279226",
+      "ISBN13": "9780000279224"
+    },
+    {
+      "ISBN10": "0000289191",
+      "ISBN13": "9780000289193"
+    },
+    {
+      "ISBN10": "0000299162",
+      "ISBN13": "9780000299161"
+    },
+    {
+      "ISBN10": "0000309133",
+      "ISBN13": "9780000309136"
+    },
+    {
+      "ISBN10": "0000319104",
+      "ISBN13": "9780000319104"
+    },
+    {
+      "ISBN10": "000032907X",
+      "ISBN13": "9780000329073"
+    },
+    {
+      "ISBN10": "0000339040",
+      "ISBN13": "9780000339041"
+    },
+    {
+      "ISBN10": "0000349011",
+      "ISBN13": "9780000349019"
+    },
+    {
+      "ISBN10": "0000358983",
+      "ISBN13": "9780000358981"
+    },
+    {
+      "ISBN10": "0000368954",
+      "ISBN13": "9780000368959"
+    },
+    {
+      "ISBN10": "0000378925",
+      "ISBN13": "9780000378927"
+    },
+    {
+      "ISBN10": "0000388890",
+      "ISBN13": "9780000388896"
+    },
+    {
+      "ISBN10": "0000398861",
+      "ISBN13": "9780000398864"
+    },
+    {
+      "ISBN10": "0000408832",
+      "ISBN13": "9780000408839"
+    },
+    {
+      "ISBN10": "0000418803",
+      "ISBN13": "9780000418807"
+    },
+    {
+      "ISBN10": "0000428779",
+      "ISBN13": "9780000428776"
+    },
+    {
+      "ISBN10": "000043874X",
+      "ISBN13": "9780000438744"
+    },
+    {
+      "ISBN10": "0000448710",
+      "ISBN13": "9780000448712"
+    },
+    {
+      "ISBN10": "0000458686",
+      "ISBN13": "9780000458681"
+    },
+    {
+      "ISBN10": "0000468657",
+      "ISBN13": "9780000468659"
+    },
+    {
+      "ISBN10": "0000478628",
+      "ISBN13": "9780000478627"
+    },
+    {
+      "ISBN10": "0000488593",
+      "ISBN13": "9780000488596"
+    },
+    {
+      "ISBN10": "0000498564",
+      "ISBN13": "9780000498564"
+    },
+    {
+      "ISBN10": "0000508535",
+      "ISBN13": "9780000508539"
+    },
+    {
+      "ISBN10": "0000518506",
+      "ISBN13": "9780000518507"
+    },
+    {
+      "ISBN10": "0000528471",
+      "ISBN13": "9780000528476"
+    },
+    {
+      "ISBN10": "0000538442",
+      "ISBN13": "9780000538444"
+    },
+    {
+      "ISBN10": "0000548413",
+      "ISBN13": "9780000548412"
+    },
+    {
+      "ISBN10": "0000558389",
+      "ISBN13": "9780000558381"
+    },
+    {
+      "ISBN10": "000056835X",
+      "ISBN13": "9780000568359"
+    },
+    {
+      "ISBN10": "0000578320",
+      "ISBN13": "9780000578327"
+    },
+    {
+      "ISBN10": "0000588296",
+      "ISBN13": "9780000588296"
+    },
+    {
+      "ISBN10": "0000598267",
+      "ISBN13": "9780000598264"
+    },
+    {
+      "ISBN10": "0000608238",
+      "ISBN13": "9780000608239"
+    },
+    {
+      "ISBN10": "0000618209",
+      "ISBN13": "9780000618207"
+    },
+    {
+      "ISBN10": "0000628174",
+      "ISBN13": "9780000628176"
+    }
+  ],
+  "isbn979": [
+    "9790000000001",
+    "9790000009974",
+    "9790000019942",
+    "9790000029910",
+    "9790000039889",
+    "9790000049857",
+    "9790000059825",
+    "9790000069794",
+    "9790000079762",
+    "9790000089730",
+    "9790000099708",
+    "9790000109674",
+    "9790000119642",
+    "9790000129610",
+    "9790000139589",
+    "9790000149557",
+    "9790000159525",
+    "9790000169494",
+    "9790000179462",
+    "9790000189430",
+    "9790000199408",
+    "9790000209374",
+    "9790000219342",
+    "9790000229310",
+    "9790000239289",
+    "9790000249257",
+    "9790000259225",
+    "9790000269194",
+    "9790000279162",
+    "9790000289130",
+    "9790000299108",
+    "9790000309074"
+  ],
+  "packaging": {
+    "unitOriginal": "078742003986",
+    "unitComparisonGTIN14": "00078742003986",
+    "otherPackagingGTIN14": "10078742003983",
+    "relationship": "not established"
+  }
+}
