@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4029,
+  "messages": 4036,
   "arabicTranslated": 376,
-  "arabicMissing": 3653,
+  "arabicMissing": 3660,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -4241,6 +4241,12 @@
       ],
       "arabic": false
     },
+    "Bitbucket": {
+      "sources": [
+        "public/auth.js"
+      ],
+      "arabic": false
+    },
     "Blank = unknown; * = partial. Sodium uses label data when available, otherwise salt × 400 mg/g. {v0}": {
       "sources": [
         "public/insights-ui.js"
@@ -8434,6 +8440,12 @@
       ],
       "arabic": false
     },
+    "Facebook": {
+      "sources": [
+        "public/auth.js"
+      ],
+      "arabic": false
+    },
     "Family meals": {
       "sources": [
         "public/landing.js"
@@ -9143,6 +9155,12 @@
     "Good food. Barcode optional.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Google": {
+      "sources": [
+        "public/auth.js"
       ],
       "arabic": false
     },
@@ -13699,6 +13717,12 @@
       ],
       "arabic": false
     },
+    "Opening your sign-in provider…": {
+      "sources": [
+        "public/auth-controller.js"
+      ],
+      "arabic": false
+    },
     "Optional": {
       "sources": [
         "public/app.js",
@@ -15057,6 +15081,12 @@
       ],
       "arabic": false
     },
+    "Provider sign-in is waiting for callback setup on this address. Email sign-in is available.": {
+      "sources": [
+        "public/auth.js"
+      ],
+      "arabic": false
+    },
     "Provider temporarily paused": {
       "sources": [
         "cloud/enrichment.mjs"
@@ -16056,6 +16086,12 @@
     "Redirect destination: {v0}": {
       "sources": [
         "public/access-ui.js"
+      ],
+      "arabic": false
+    },
+    "Redirecting to OAuth provider": {
+      "sources": [
+        "public/auth-controller.js"
       ],
       "arabic": false
     },
@@ -18369,6 +18405,12 @@
     "Sign in to your own profile.": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "Sign in with ": {
+      "sources": [
+        "public/auth.js"
       ],
       "arabic": false
     },

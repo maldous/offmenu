@@ -36,11 +36,21 @@ const controller=createAuthController({configuration:()=>read('/api/auth-page/co
   identityFor:async mode=>createOffMenuIdentityClient({mode,
     ...(mode==='netlify'?{netlify:await import('@netlify/identity')}:{})}),
   verifySession:()=>read('/api/auth-page/session'),navigate:path=>location.assign(path),
-  onState:({state,message,synthetic})=>{
+  onState:({state,message,synthetic,providers,oauthReady})=>{
     $('auth-status').textContent=message||({loading:'Checking sign-in…','signing-in':'Signing in…'}[state]||'');
     $('synthetic-notice').hidden=!synthetic;
     $('signin-form').hidden=!['ready','signing-in'].includes(state);
     $('signin-submit').disabled=state!=='ready';
+    $('auth-providers').replaceChildren();
+    $('auth-providers').hidden=state!=='ready'||!oauthReady||!providers.length;
+    if(state==='ready'&&oauthReady)for(const provider of providers){
+      const button=document.createElement('button');button.type='button';
+      const names={google:'Google',github:'GitHub',gitlab:'GitLab',bitbucket:'Bitbucket',facebook:'Facebook'};
+      button.textContent='Sign in with '+names[provider];
+      button.onclick=()=>controller.providerSignIn(provider);$('auth-providers').append(button);
+    }
+    $('auth-provider-status').hidden=state!=='ready'||oauthReady||!providers.length;
+    $('auth-provider-status').textContent='Provider sign-in is waiting for callback setup on this address. Email sign-in is available.';
     $('continue-scanner').hidden=state!=='signed-in';$('signout').hidden=state!=='signed-in';
     if(state==='signed-in')void loadConsent().catch(()=>{$('provider-consent-status').textContent='Terms for this connection are unavailable.';});
     else $('provider-consent').hidden=true;

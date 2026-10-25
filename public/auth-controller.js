@@ -1,7 +1,8 @@
 // Pure flow controller; dependencies own IO. No profile/cookie/token persistence.
 export function createAuthController({configuration,identityFor,verifySession,navigate,onState=()=>{}}) {
-  let identity,config,state='initial',busy=false;
-  const emit=(next,message='')=>{state=next;onState({state,message,synthetic:config?.synthetic===true});};
+  let identity,config,state='initial',busy=false,providers=[];
+  const emit=(next,message='')=>{state=next;onState({state,message,synthetic:config?.synthetic===true,
+    providers:[...providers],oauthReady:config?.oauthAvailable===true});};
   const fail=()=>emit('ready','Sign-in could not be confirmed. Your kitchen has not changed.');
   async function confirmed(user){
     if(!user||typeof user.id!=='string')return false;
@@ -20,13 +21,28 @@ export function createAuthController({configuration,identityFor,verifySession,na
       if(callback?.type&&!['oauth','confirmation','email_change'].includes(callback.type)){
         emit('unavailable','Use the existing account page for this account action.');return;
       }
-      await identity.getSettings();
+      const settings=await identity.getSettings();
+      // Enabled providers come from the selected SDK transport, never a public
+      // discovery snapshot or browser query flag. Email uses the existing form.
+      providers=config.mode==='netlify'?['google','github','gitlab','bitbucket','facebook']
+        .filter(provider=>settings?.providers?.[provider]===true):[];
       if(await confirmed(await identity.getUser())){emit('signed-in','Signed in.');return;}
       if(config.emailSignIn==='not-configured'){
         emit('unavailable','Email sign-in is not configured for this environment.');return;
       }
       emit('ready');
     }catch{emit('unavailable','Sign-in setup is unavailable in this environment.');}
+  }
+  async function providerSignIn(provider){
+    if(busy||state!=='ready'||config.identityTransport!=='real'||
+      config.oauthAvailable!==true||!providers.includes(provider))return false;
+    busy=true;emit('redirecting','Opening your sign-in provider…');
+    try{await identity.oauthLogin(provider);fail();return false;}
+    catch(error){
+      // @netlify/identity 2.0.0 redirects and deliberately throws this error.
+      if(error?.name==='AuthError'&&error.message==='Redirecting to OAuth provider')return true;
+      fail();return false;
+    }finally{busy=false;}
   }
   async function signIn(email,password){
     if(busy||state!=='ready')return false;
@@ -59,5 +75,5 @@ export function createAuthController({configuration,identityFor,verifySession,na
     catch{emit('unavailable','Sign-out could not be confirmed.');return false;}
     finally{busy=false;}
   }
-  return Object.freeze({start,signIn,continueToScanner,signOut,getState:()=>state});
+  return Object.freeze({start,signIn,providerSignIn,continueToScanner,signOut,getState:()=>state});
 }
