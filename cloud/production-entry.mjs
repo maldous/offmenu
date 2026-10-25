@@ -30,7 +30,7 @@ export default {
       return new Response('Not found', {status: 404, headers: {'Cache-Control': 'no-store'}});
     }
     if (['GET', 'HEAD'].includes(request.method)) {
-      if (url.pathname === '/' || url.pathname === '/index.html') {
+      if (url.pathname === '/') {
         url.pathname = '/landing.html';
         return application.fetch(new Request(url, request), env, ctx);
       }

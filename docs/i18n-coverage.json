@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3955,
+  "messages": 3954,
   "arabicTranslated": 376,
-  "arabicMissing": 3579,
+  "arabicMissing": 3578,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -2297,12 +2297,6 @@
     "/icon.svg": {
       "sources": [
         "public/sw.js"
-      ],
-      "arabic": false
-    },
-    "/index.html": {
-      "sources": [
-        "cloud/production-entry.mjs"
       ],
       "arabic": false
     },
