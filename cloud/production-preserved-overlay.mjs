@@ -1,4 +1,5 @@
 import application from './deployed-application.mjs';
+import {selectedProductionLookup} from './production-selected-lookup.mjs';
 import {authPageRoutes} from './auth-page-routes.mjs';
 import {productionAccessGuard,protectProductionResponse} from './production-access-guard.mjs';
 import {assets, release} from './production-overlay-assets.mjs';
@@ -29,6 +30,7 @@ export default {
     const denied=await productionAccessGuard(request,env,{verifiedUser});
     if(denied)return denied;
     const respond=async()=>{
+    const selectedLookup=await selectedProductionLookup(request,env);if(selectedLookup)return selectedLookup;
     if(['/api/product','/api/prices','/api/data/public'].includes(url.pathname))
       return Response.json({error:'Product information is unavailable.'},{status:503,headers:{'Cache-Control':'no-store'}});
     if(['GET','HEAD'].includes(request.method)){

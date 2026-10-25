@@ -1,6 +1,6 @@
 // Production scanner boundary. No private retained index, fixture session, or live provider fallback.
 // A release may be selected only after its exact published manifest bytes and rights are qualified.
-const SELECTED_PUBLIC_RELEASE = null;
+const SELECTED_PUBLIC_RELEASE = Object.freeze({sourceId:'off',releaseId:'offmenu-off-selected-products-20261025-v1',manifestSha256:'1bf09a371a164ebd8215fd9b44a1b2ac9816caaa65cd13504086defad76d4e8f'});
 const HEX = /^[a-f0-9]{64}$/;
 const RELEASE = /^[-A-Za-z0-9.]{1,128}$/;
 const PUBLIC_SOURCE = 'off';
