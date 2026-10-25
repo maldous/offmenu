@@ -26,7 +26,8 @@ test('qualified exact OFF front photo wins with source attribution; ingredient s
   const result=selectProductVisual(input({photoCandidates:[photo()],ingredientStatus:'non-food'}));
   assert.equal(result.tier,'product-photo');assert.equal(result.src,url);
   assert.match(result.alt,/Generated source name/);
-  assert.match(result.caption,/Generated fixture contributor/);
+  assert.equal(result.caption,'Source product photo');
+  assert.match(result.rights.attribution,/Generated fixture contributor/);
   assert.equal(result.provenance.sourceId,'off');
   assert.equal(result.rights.license,'Fixture CC BY-SA');
 });

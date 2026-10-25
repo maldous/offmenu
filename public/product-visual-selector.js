@@ -103,7 +103,7 @@ export function selectProductVisual(input,{failedSources=[]}={}) {
     return {tier:'product-photo',kind:'image',src,
       alt:currentPublisher?'Current Open Food Facts photo for source code '+candidate.provenance.sourceCode+
         '; retained label '+name+'; snapshot image unverified':'Source product photo for '+name,
-      caption:(currentPublisher?'Current publisher photo':'Source product photo')+' · '+candidate.rights.attribution+' · '+candidate.rights.license,
+      caption:currentPublisher?'Current publisher photo':'Source product photo',
       provenance:candidate.provenance,rights:candidate.rights,
       identity:{sourceObservationReference:input.sourceObservationReference},
       competingPhotoCount:photos.length};
