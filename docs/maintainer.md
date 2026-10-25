@@ -137,6 +137,13 @@ See the [foundation](better-auth-foundation.md) and
 [runtime seam](better-auth-runtime-seam.md) for the foundational slice boundaries and remaining
 staging/account-continuity requirements.
 
+Pinned Miniflare fixtures explicitly enable `nodejs_compat` when loading the
+compiled Worker, including the landing-page locale fixture. Qualify the actual
+runtime engine, compatibility date and flags before activation; do not assume an
+older local engine has newer platform defaults. See
+[Cloudflare's Node.js compatibility reference](https://developers.cloudflare.com/workers/runtime-apis/nodejs/).
+This source requirement does not change any live runtime setting.
+
 The foundation's focused test procedure uses `npm ci --ignore-scripts` and
 `npm run test:auth`, with reported evidence under Node 24.19.0. That procedure is
 separate from the normal application CI install, `npm ci`; it is not evidence
