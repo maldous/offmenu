@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"atUTC\": \"2026-10-26T12:17:25.716Z\",\n  \"activationHTTP\": 200,\n  \"deploymentId\": \"c41fff7d-c144-46d2-9e61-5a6cbb0b1592\",\n  \"createdOn\": \"2026-10-26T12:17:25.68785Z\",\n  \"version\": \"d7797e1f-580d-4cc2-aa50-779b55c45db3\",\n  \"number\": 168,\n  \"percentage\": 100,\n  \"moduleCount\": 181,\n  \"all181ExpectedBytesTypesHashesPassed\": true,\n  \"mainSHA256\": \"eb0ea235022d8667b60fbdf05288f860aadac37e3b1f3d24b1ab4e5b1e0bda6e\",\n  \"retainedInactiveDataVersion\": \"039eb57c-fbd6-4606-8f98-05e7e14e515d\",\n  \"dataProjectionAdopted\": false,\n  \"authDeltaIncluded\": false,\n  \"scope\": \"UNFINISHED_SOURCE_R2_FEEDBACK_ONLY_NOT_FULL15_OR_CANONICAL_ACCEPTANCE\"\n}"
+    }
+  ]
+}
