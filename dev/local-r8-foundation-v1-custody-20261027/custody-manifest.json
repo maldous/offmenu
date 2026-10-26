@@ -1,0 +1,44 @@
+{
+  "status": "PRIVATE_SOURCE_CODE_CUSTODY_ONLY_NOT_EXECUTABLE_RUNTIME_ADOPTION",
+  "files": [
+    {
+      "name": "compose-local.mjs",
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/compose-local.mjs",
+        "sha256": "541c1ebb968dee50674367a557b4f1ce27f3bef4fc0e425790bf942f63ef2a61"
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/local-r8-foundation-v1-custody-20261027/compose-local.mjs",
+        "sha256": "541c1ebb968dee50674367a557b4f1ce27f3bef4fc0e425790bf942f63ef2a61"
+      }
+    },
+    {
+      "name": "check-local.mjs",
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/check-local.mjs",
+        "sha256": "a736ac1878828669e212afb3962970c586ebe42e7446a7def91e7ea771d40209"
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/local-r8-foundation-v1-custody-20261027/check-local.mjs",
+        "sha256": "a736ac1878828669e212afb3962970c586ebe42e7446a7def91e7ea771d40209"
+      }
+    },
+    {
+      "name": "check-stock.mjs",
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/check-stock.mjs",
+        "sha256": "63da26eedf9b370358cfd71c0fbbc59ca491fc9438df05734cfc3bbfe20c34e0"
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/local-r8-foundation-v1-custody-20261027/check-stock.mjs",
+        "sha256": "63da26eedf9b370358cfd71c0fbbc59ca491fc9438df05734cfc3bbfe20c34e0"
+      }
+    }
+  ],
+  "sourceResult": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/result.json",
+    "sha256": "9aa42bbbb70a74a2d06ba2d13f7186ead569f997f08337b60e0b773ad97ec18c"
+  },
+  "exclusions": "No515blobs/inlineblobs/manifest/admission/candidateDTO/source-records/identifierarrays/privateprofile/credentials/rawcorpus orfullhistories copied. Code/privatepinmetadata only. Operational paths remain original custody and are not a deployment instruction.",
+  "runtime": "Currentd425 andurgent422storyheadertransition unchanged; R8notserved."
+}
