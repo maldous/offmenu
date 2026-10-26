@@ -157,6 +157,24 @@ class ActivePolicyTests(unittest.TestCase):
         self.assertEqual(fixture['policyJson'], self.adapter.policy_bytes.decode())
         self.assertEqual(fixture['matcherResult'], out['matcherResult'])
 
+    def test_nested_stage_record_id_conflict_is_rejected(self):
+        record, identity = generated()
+        identity['sourceBinding']['stageRecordId'] = 'conflicting-nested-stage'
+        with self.assertRaises(ValueError):
+            self.adapter.project(record, identity)
+        identity['sourceBinding']['stageRecordId'] = identity['stageRecordId']
+        candidate = self.adapter.project(record, identity)['candidate']
+        self.assertEqual(candidate['identity']['sourceBinding']['stageRecordId'], identity['stageRecordId'])
+
+    def test_nested_stage_wire_conflict_is_rejected(self):
+        record, identity = generated()
+        identity['sourceBinding']['stageRecordWireSha256'] = '0' * 64
+        with self.assertRaises(ValueError):
+            self.adapter.project(record, identity)
+        identity['sourceBinding']['stageRecordWireSha256'] = identity['stageRecordWireSha256']
+        candidate = self.adapter.project(record, identity)['candidate']
+        self.assertEqual(candidate['identity']['sourceBinding']['stageRecordWireSha256'], identity['stageRecordWireSha256'])
+
 
 if __name__ == '__main__':
     unittest.main()

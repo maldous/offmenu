@@ -153,6 +153,8 @@ class NamedFoodActiveAdapter:
         for k in ('stageRecordId', 'stageRecordWireSha256'):
             _require(identity.get(k) == evidence[0].get(k) and isinstance(identity.get(k), str) and
                      len(identity[k]) > 0, 'stage-identity')
+            if k in identity['sourceBinding']:
+                _require(identity['sourceBinding'][k] == identity[k], 'nested-stage-identity')
         _require(outer.get('stageRecordId') == record.get('stageRecordId') == identity['stageRecordId'] and
                  outer.get('stageRecordWireSha256') ==
                  record.get('evidenceSource', {}).get('recordWireSha256') == identity['stageRecordWireSha256'], 'stage-wire-readback')
