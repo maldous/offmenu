@@ -1,0 +1,11 @@
+{
+  "cause": "Existing late94Object.assign rootpart mapping masks modified initialassets.root body. Initial selected-constant smoke/preservation checks missed finalassetmap; realauthHTML/JS andlandingalias installed, rootloginlinknotyetvisible.",
+  "incorrect177ConstRootSHA": "fd38b62d5ae18b7efd7f6a465c033fdf91bad853c39c79cadfae9223626a5607",
+  "actual177RootBodyExpectedSHA": "f7940ac2ac275be03e0815f201b7ec8ad9dd3e190a60a56e80b790d02744ab13",
+  "fix": "One late rootassignment usingexactcurrent94HTML+sameLoginanchor afterallpreviousassetoverrides. Sourcebeforeinsertinverselybyteidentical177; originalSSRhiddenstage/nativebootstrap retained.",
+  "newRootSHA": "597143c955773000f7aaaa3ca07811070e3ceeaf0cdd355bcf7632af1401a066",
+  "newRootBytes": 1938,
+  "candidateMainSHA": "c327f5eaf9c51a77b36c327da40a5b904b706e30f3f397f3092a24bd2e2512d6",
+  "candidateMainBytes": 626324,
+  "guardProviderAuthEffects": "Noadditionalguard/provider/authasset/config/serverchange."
+}

@@ -1,0 +1,14 @@
+{
+  "error": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Error: Cloudflare API error: PATCH /accounts/7edd51038e07b5b84a635b3ff7e11144/workers/workers/9717ed575b19481097710a5f29d7e14c/versions/latest returned HTTP 400: 10021: Uncaught TypeError: rootWorldNewBytes.subarray is not a function\n  at landing-only.mjs:217:176\n (https://developers.cloudflare.com/workers/observability/errors/#validation-errors-10021)"
+      }
+    ],
+    "isError": true
+  },
+  "cause": "Cloudflare data module default is ArrayBuffer; synthetic module used Uint8Array. Explicit Uint8Array wrapping corrects adapter without route changes. Rejected inactive stage retained; active178 unchanged.",
+  "candidate": "d1ffce4e4f1ac4ea51b48013a1d4cf00faa151e365a516bf1e30638f93c3d7c8",
+  "retryScope": "Corrected code stage, not denied permission bypass"
+}
