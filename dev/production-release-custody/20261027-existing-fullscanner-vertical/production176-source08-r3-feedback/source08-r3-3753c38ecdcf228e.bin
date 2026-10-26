@@ -1,0 +1,86 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>OffMenu · Serving</title><style>body{margin:0;background:#eef3f3;font:16px system-ui}canvas{display:block;width:100%;height:auto;max-height:85vh;object-fit:contain}</style><p>Serving · Working animation</p><canvas width="1040" height="628"></canvas><script type="module" src="/feedback/source-actions/scene08-r3-assets/native15-first-sequence-20261026/full15-master-r1/source08-feedback-r3/preview-entry.mjs"></script>import{mountSourceActionPreview}from'../source-action-preview-r6.mjs';
+const moduleURL=new URL('../../../worker05/scene06-10-native-action-modules-20261026/scene-08/module.mjs',import.meta.url).href,preview=await mountSourceActionPreview(document.querySelector('canvas'),moduleURL);Object.defineProperty(window,'__OFFMENU_SOURCE_ACTION__',{value:preview});
+import {drawTexturedMesh,disposeTexturedMesh,beginTexturedFrame,endTexturedFrame} from './seamless-layer-raster-r2.mjs';
+// Finite diagnostic consumer of the SAME authored module API; never a final room render.
+import {loadSceneModule,createModuleChapter,fitSourceViewport} from './scene-module-runtime-r3.mjs';
+import {createChapterMaster} from '../landing-first-pair-v12-integration/controller/chapter-master.mjs';
+function image(url){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=()=>reject(Error('Missing source image: '+url));i.src=url;});}
+function sourceScreen(ctx,image,quad,reference,viewport){
+ if(!image)return;if(!Array.isArray(quad)||quad.length!==4)throw Error('Approved screen requires measured native glass quad');
+ const p=quad.map(([x,y])=>[viewport.x+x/reference.width*viewport.width,viewport.y+y/reference.height*viewport.height]);
+ const[a,b,c,d]=p,dx1=b[0]-c[0],dx2=d[0]-c[0],dx3=a[0]-b[0]+c[0]-d[0],dy1=b[1]-c[1],dy2=d[1]-c[1],dy3=a[1]-b[1]+c[1]-d[1],den=dx1*dy2-dx2*dy1;
+ const g=(dx3*dy2-dx2*dy3)/den,h=(dx1*dy3-dx3*dy1)/den,H=[b[0]-a[0]+g*b[0],d[0]-a[0]+h*d[0],a[0],b[1]-a[1]+g*b[1],d[1]-a[1]+h*d[1],a[1],g,h,1];
+ const map=([u,v])=>{const q=H[6]*u+H[7]*v+1;return[(H[0]*u+H[1]*v+H[2])/q,(H[3]*u+H[4]*v+H[5])/q];};
+ const source=[],dest=[],indices=[];for(let y=0;y<12;y++)for(let x=0;x<16;x++){const uv=[[x/16,y/12],[(x+1)/16,y/12],[(x+1)/16,(y+1)/12],[x/16,(y+1)/12]];const start=source.length;source.push(...uv.map(([u,v])=>[u*image.naturalWidth,v*image.naturalHeight]));dest.push(...uv.map(map));indices.push(start,start+1,start+2,start,start+2,start+3);}drawTexturedMesh(ctx,image,source,dest,indices);
+}
+function drawSource(canvas,loaded,frame){const ctx=canvas.getContext('2d'),viewport=fitSourceViewport(canvas.width,canvas.height,loaded.module.reference.width/loaded.module.reference.height);ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#d9dde2';ctx.fillRect(0,0,canvas.width,canvas.height);beginTexturedFrame(ctx);sourceScreen(ctx,frame.screen,loaded.module.reference.anchors?.tabletGlass,loaded.module.reference,viewport);for(const layer of [...frame.layers].sort((a,b)=>a.order-b.order)){const img=layer.image,rect=layer.rect||[0,0,1,1],sample=layer.sample||[0,0,1,1],mesh=layer.rasterMesh,uv=mesh?.source||[[rect[0],rect[1]],[rect[0]+rect[2],rect[1]],[rect[0],rect[1]+rect[3]],[rect[0]+rect[2],rect[1]+rect[3]]],target=layer.deformedUV||uv;const transform=layer.transform||{},pivot=transform.pivot||[.5,.5],shift=transform.shift||[0,0],a=transform.angle||0,c=Math.cos(a),s=Math.sin(a);const source=uv.map(([u,v])=>[(sample[0]+(u-rect[0])/rect[2]*sample[2])*img.naturalWidth,(sample[1]+(v-rect[1])/rect[3]*sample[3])*img.naturalHeight]);const dest=target.map(([u,v])=>{const x=u-pivot[0],y=v-pivot[1];return[viewport.x+(pivot[0]+x*c-y*s+shift[0])*viewport.width,viewport.y+(pivot[1]+x*s+y*c+shift[1])*viewport.height];});const indices=mesh?.indices||[0,2,1,1,2,3];drawTexturedMesh(ctx,img,source,dest,indices);}endTexturedFrame(ctx);}
+export async function mountSourceActionPreview(canvas,moduleURL){const loaded=await loadSceneModule(moduleURL,{loadImage:image});const state={qualification:'SOURCE_PART_ACTION_ONLY_NOT_WORLD_ACCEPTANCE',id:loaded.module.id,frames:0,progress:0,contacts:[],finished:false,error:null};const chapter=createModuleChapter(loaded,{draw(progress,frame){state.progress=progress;state.contacts=frame.contacts;state.frames++;drawSource(canvas,loaded,frame);}});const master=createChapterMaster({chapters:[chapter],host:canvas.parentNode,onError(error){state.error=error.message;}});const visibility=()=>master.setPaused(document.hidden);document.addEventListener('visibilitychange',visibility);visibility();master.start();master.completion.then(result=>{state.finished=true;state.result=result.status;master.dispose();chapter.dispose();disposeTexturedMesh(canvas.getContext('2d'));document.removeEventListener('visibilitychange',visibility);});const dispose=()=>{master.dispose();chapter.dispose();disposeTexturedMesh(canvas.getContext('2d'));document.removeEventListener('visibilitychange',visibility);};addEventListener('pagehide',dispose,{once:true});return{getState:()=>structuredClone(state),dispose};}
+// Bounded source-preview mesh raster only: no world, camera, clock or UI policy.
+// One GPU indexed draw owns shared edges; independent Canvas2D AA clips do not.
+const surfaces=new WeakMap();
+function compile(gl,type,source){const shader=gl.createShader(type);gl.shaderSource(shader,source);gl.compileShader(shader);if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(shader));return shader;}
+function create(ctx){const canvas=typeof OffscreenCanvas==='function'?new OffscreenCanvas(ctx.canvas.width,ctx.canvas.height):document.createElement('canvas');canvas.width=ctx.canvas.width;canvas.height=ctx.canvas.height;const gl=canvas.getContext('webgl',{alpha:true,antialias:false,premultipliedAlpha:true});if(!gl)throw Error('Source mesh raster requires supported WebGL; do not change browser security/settings to enable it.');
+ const vs=compile(gl,gl.VERTEX_SHADER,'attribute vec2 position;attribute vec2 uv;varying vec2 sourceUV;void main(){sourceUV=uv;gl_Position=vec4(position,0.0,1.0);}'),fs=compile(gl,gl.FRAGMENT_SHADER,'precision highp float;varying vec2 sourceUV;uniform sampler2D image;void main(){gl_FragColor=texture2D(image,sourceUV);}');
+ const program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));
+ const state={canvas,gl,program,vertices:gl.createBuffer(),indices:gl.createBuffer(),textures:new WeakMap(),ownedTextures:new Set(),position:gl.getAttribLocation(program,'position'),uv:gl.getAttribLocation(program,'uv'),sampler:gl.getUniformLocation(program,'image')};surfaces.set(ctx,state);return state;
+}
+export function drawTexturedMesh(ctx,image,source,dest,indices){if(source.length!==dest.length||source.length>65535||indices.length%3)throw Error('Invalid bounded source mesh');const s=surfaces.get(ctx)||create(ctx),{gl,canvas}=s,width=ctx.canvas.width,height=ctx.canvas.height;if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;}
+ const iw=image.naturalWidth||image.width,ih=image.naturalHeight||image.height,data=new Float32Array(source.length*4);for(let i=0;i<source.length;i++){data[i*4]=dest[i][0]/width*2-1;data[i*4+1]=1-dest[i][1]/height*2;data[i*4+2]=source[i][0]/iw;data[i*4+3]=source[i][1]/ih;}
+ let texture=s.textures.get(image);if(!texture){texture=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,texture);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,true);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,image);s.textures.set(image,texture);s.ownedTextures.add(texture);}
+ gl.viewport(0,0,width,height);if(s.batching){gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);}else{gl.disable(gl.BLEND);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);}gl.disable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);gl.useProgram(s.program);gl.bindBuffer(gl.ARRAY_BUFFER,s.vertices);gl.bufferData(gl.ARRAY_BUFFER,data,gl.DYNAMIC_DRAW);gl.enableVertexAttribArray(s.position);gl.vertexAttribPointer(s.position,2,gl.FLOAT,false,16,0);gl.enableVertexAttribArray(s.uv);gl.vertexAttribPointer(s.uv,2,gl.FLOAT,false,16,8);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,s.indices);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(indices),gl.DYNAMIC_DRAW);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);gl.uniform1i(s.sampler,0);gl.drawElements(gl.TRIANGLES,indices.length,gl.UNSIGNED_SHORT,0);if(!s.batching)ctx.drawImage(canvas,0,0);
+}
+export function disposeTexturedMesh(ctx){const s=surfaces.get(ctx);if(!s)return;for(const t of s.ownedTextures)s.gl.deleteTexture(t);s.gl.deleteBuffer(s.vertices);s.gl.deleteBuffer(s.indices);s.gl.deleteProgram(s.program);s.ownedTextures.clear();surfaces.delete(ctx);}
+
+// A finite source frame retains layer order/alpha in one GPU surface and transfers once to Canvas2D.
+export function beginTexturedFrame(ctx){const s=surfaces.get(ctx)||create(ctx);if(s.batching)throw Error('Nested source frame');s.batching=true;const{gl,canvas}=s;if(canvas.width!==ctx.canvas.width||canvas.height!==ctx.canvas.height){canvas.width=ctx.canvas.width;canvas.height=ctx.canvas.height;}gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);}
+export function endTexturedFrame(ctx){const s=surfaces.get(ctx);if(!s?.batching)throw Error('No source frame');s.batching=false;ctx.drawImage(s.canvas,0,0);}
+// Serving: pan stability, loaded spoon travel, persistent food transfer, retract.
+export const id=8;
+export const durationMs=3200;
+const W=1014,H=624,panGrip=[278,212],spoonGrip=[187,360],foodBase=[524,453],plateSupport=[604,490];
+export const reference={width:W,height:H,
+ source:{path:'/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-08.png',sha256:'55dcda8c90df1d8f68c1546c7627dd6dcb9c00ed7d9d7ffdbcb471cc804a5ca2'},
+ anchors:{neck:null,shoulder:null,elbow:null,wrist:null,index:null,grip:spoonGrip,panGrip,propBase:foodBase,support:plateSupport,
+  panArmEntry:[0,75],spoonArmEntry:[0,298],tabletGlass:[[726,78],[948,108],[915,279],[678,240]]},
+ anchorReasons:{neck:'Actor torso/head are outside this approved serving view.',shoulder:'Both arms enter left crop.',elbow:'Outside crop; no invented anatomical joint.',wrist:'Hands partly obscure handle; exact wrist centre unavailable.',index:'Grip action, not index tap.',grip:'Observed spoon handle grip±5pixels; pan grip±5.',propBase:'Observed source spoonful bottom approx524453±6.',support:'Authored food-placement point inside visible right plate; fixed-world plate/contact surface requires master binding.'},
+ action:'Lift a loaded spoon while the other hand steadies the pan, carry over right plate, tip, let the same portion settle, then lift/retract empty spoon. No food disappearance or UI/data mutation.'};
+const clamp=x=>Math.max(0,Math.min(1,x));
+// Hermite trajectory with continuous internal velocities; explicit stop at support.
+function curve(p,keys){
+ if(p<=keys[0][0])return keys[0][1];if(p>=keys.at(-1)[0])return keys.at(-1)[1];
+ const slope=i=>keys[i][2]??(i===0||i===keys.length-1?0:(keys[i+1][1]-keys[i-1][1])/(keys[i+1][0]-keys[i-1][0]));
+ for(let i=1;i<keys.length;i++)if(p<=keys[i][0]){const a=keys[i-1],b=keys[i],dt=b[0]-a[0],t=(p-a[0])/dt,t2=t*t,t3=t2*t;return(2*t3-3*t2+1)*a[1]+(t3-2*t2+t)*dt*slope(i-1)+(-2*t3+3*t2)*b[1]+(t3-t2)*dt*slope(i);}
+}
+function spoonPose(p){return{rigidX:103,pivot:spoonGrip,shift:[curve(p,[[0,-45],[.18,-25],[.38,-25],[.65,0],[.78,70],[.88,72],[1,0]]),curve(p,[[0,-100],[.18,-95],[.38,-50],[.65,0],[.78,25],[.88,25],[1,-55]])],angle:curve(p,[[0,-.08],[.3,-.04],[.65,0],[.78,0],[.86,.12],[.95,.04],[1,0]])};}
+function panPose(p){return{rigidX:150,pivot:panGrip,shift:[0,0],angle:curve(p,[[0,.012],[.25,-.008],[.65,0],[.85,.015],[1,0]])};}
+function portionPose(p,spoon){if(p<=.78)return spoon;return{pivot:foodBase,shift:[curve(p,[[.78,70],[.86,80,0],[1,80,0]]),curve(p,[[.78,25],[.86,37,0],[1,37,0]])],angle:curve(p,[[.78,0],[.82,.04],[.86,0,0],[1,0,0]])};}
+function rigid(point,pose){const [x,y]=point,[px,py]=pose.pivot,dx=(x-px)/W,dy=(y-py)/H,c=Math.cos(pose.angle),s=Math.sin(pose.angle);return[(px/W+dx*c-dy*s)*W+pose.shift[0],(py/H+dx*s+dy*c)*H+pose.shift[1]];}
+const transform=p=>({pivot:[p.pivot[0]/W,p.pivot[1]/H],angle:p.angle,shift:[p.shift[0]/W,p.shift[1]/H]});
+function makeMesh(bounds,root,grip){
+ const [x0,y0,x1,y1]=bounds;
+ const xs=[...new Set([...Array.from({length:42},(_,i)=>(x0+(x1-x0)*i/41)/W),grip[0]/W])].sort((a,b)=>a-b);
+ const ys=[...new Set([...Array.from({length:29},(_,i)=>(y0+(y1-y0)*i/28)/H),root[1]/H,grip[1]/H])].sort((a,b)=>a-b);
+ const source=ys.flatMap(v=>xs.map(u=>[u,v])),indices=[];
+ for(let y=0;y<ys.length-1;y++)for(let x=0;x<xs.length-1;x++){const k=y*xs.length+x;indices.push(k,k+xs.length,k+1,k+1,k+xs.length,k+xs.length+1);}
+ return{source,indices,root:[root[0]/W,root[1]/H],gripContact:[grip[0]/W,grip[1]/H]};
+}
+const panMesh=makeMesh([0,8,318,270],[0,75],panGrip),spoonMesh=makeMesh([0,228,255,424],[0,298],spoonGrip);
+function armUV(point,pose){const[u,v]=point,x=u*W,y=v*H,t=clamp(x/pose.rigidX),weight=t*t*(3-2*t),moved=rigid([x,y],pose);return[(x+(moved[0]-x)*weight)/W,(y+(moved[1]-y)*weight)/H];}
+export async function load({loadImage,resolveAsset}){const names={panArm:'panGripArm',spoonArm:'spoonGripArm',pan:'pan-clean-r2',spoon:'emptySpoon',portion:'portion',leftPlate:'leftPlate-clean-r3',rightPlate:'rightPlate-clean',screen:'approved-screen'};return Object.fromEntries(await Promise.all(Object.entries(names).map(async([key,file])=>[key,await loadImage(resolveAsset(`./assets/${file}.png`))])));}
+export function sample(progress,assets){const p=clamp(progress),spoon=spoonPose(p),pan=panPose(p),food=portionPose(p,spoon),foodPoint=rigid(foodBase,food);return{
+ layers:[
+  {id:'serving-left-plate',image:assets.leftPlate,role:'prop',order:0},
+  {id:'serving-right-plate',image:assets.rightPlate,role:'prop',order:1},
+  {id:'serving-pan',image:assets.pan,role:'prop',order:10,transform:transform(pan)},
+  {id:'serving-pan-hand',image:assets.panArm,role:'actor',order:15,rasterMesh:panMesh,deformedUV:panMesh.source.map(uv=>armUV(uv,pan))},
+  {id:'serving-spoon',image:assets.spoon,role:'prop',order:20,transform:transform(spoon)},
+  {id:'serving-portion',image:assets.portion,role:'prop',order:p<.84?25:18,transform:transform(food)},
+  {id:'serving-spoon-hand',image:assets.spoonArm,role:'actor',order:30,rasterMesh:spoonMesh,deformedUV:spoonMesh.source.map(uv=>armUV(uv,spoon))}
+ ],contacts:[
+  {id:'serving-pan-grip',layerId:'serving-pan-hand',kind:'grip',point:rigid(panGrip,pan),target:'prop:serving-pan',active:true,targetPoint:rigid(panGrip,pan)},
+  {id:'serving-spoon-grip',layerId:'serving-spoon-hand',kind:'grip',point:rigid(spoonGrip,spoon),target:'prop:serving-spoon',active:true,targetPoint:rigid(spoonGrip,spoon)},
+  {id:'serving-portion-carry',layerId:'serving-portion',kind:'grip',point:foodPoint,target:'prop:serving-spoon',active:p<=.78,targetPoint:rigid(foodBase,spoon)},
+  {id:'serving-portion-transfer',layerId:'serving-portion',kind:'release',point:foodPoint,target:'prop:serving-right-plate',active:p>.78&&p<.86},
+  {id:'serving-portion-support',layerId:'serving-portion',kind:'support',point:foodPoint,target:'prop:serving-right-plate',active:p>=.86,targetPoint:plateSupport}
+ ],screen:assets.screen,phase:p<=.78?'action':p<.86?'release':p<.98?'contact':'settled',worldSupportQualified:false};}
+export function dispose(){}
