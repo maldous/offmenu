@@ -1,0 +1,36 @@
+{
+  "id": "r9-generic-caller-authored-source-manifest-20261027",
+  "files": [
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r9-generic-caller-candidate-20261027/r9_caller.py",
+      "sha256": "86eade8ba84fb291137e6c43073b4d1927fa2e5928a098b835db6fab71319d09",
+      "bytes": 7836
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r9-generic-caller-candidate-20261027/test_r9_caller.py",
+      "sha256": "ab895d8fe8e6531f0ca2cf82f0e6c0c6be84ce4bba8dffd2e7f31a979eb47ca8",
+      "bytes": 9517
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r9-generic-caller-candidate-20261027/dependency-pins.json",
+      "sha256": "758f2d53ed4699bd943ddfb8ff792ad8a4f0ebe960a53460bc89d222fdaf379f",
+      "bytes": 7277
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r9-generic-caller-candidate-20261027/caller-delta.patch",
+      "sha256": "61178e0d2b5e6123660ea668dbb3c79c8a24e094886a21442531c2e4ce611b48",
+      "bytes": 3942
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r9-generic-caller-candidate-20261027/INTEGRATION.md",
+      "sha256": "7e23b1dc7431cd60abf2eb3735f1438e058cd7711ba527ac409b9a10a9fbd9c2",
+      "bytes": 1435
+    }
+  ],
+  "interface": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r9-generic-caller-candidate-20261027/frozen-interface-and-ownership-release.json",
+    "sha256": "c0a722de1642cf97e1bb888495ede7a2a89a3ef7f9a2ee5d4522194012da92b9",
+    "bytes": 9584
+  },
+  "dependencyCount": 32
+}

@@ -1,0 +1,127 @@
+{
+  "id": "worker00-r9-source-interface-release-reuse-existing-author-20261027",
+  "atUTC": "2026-10-26T21:50:52.118176+00:00",
+  "worker": 0,
+  "threadId": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+  "state": "SOURCE_ONLY_INTERFACE_PREPARED_NO_CALLER_CODE_EDITS_BY00",
+  "outputDirectory": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r9-generic-caller-candidate-20261027",
+  "ownership": "Reuse existing qualified R8 caller author; exact route recovery pending with Gateway.00 does not author candidate caller/tests while author scope is retained.57 designated independent actual changed-code reviewer;19 actual source operation owner;05 runtime executor. No new coordinator or duplicate helper.",
+  "frozenSources": {
+    "acceptedInput": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/english-relationship-layer-20261026/accepted-active-whole-family-r9-r2-input-20261027/accepted-input.json",
+      "sha256": "6e2b83ffd758d9062913111d292b5637b37f5e3e2af032641136ed6961997fc3",
+      "bytes": 6004
+    },
+    "legacy83Dispatcher": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker19/remaining-held-public-english-serving-20261026/reviewed83-r7-application/reviewed_83_r7_wrapper.py",
+      "sha256": "b6f538ba6ff1d5e458b1f2bc524e1f735760e8f3f9584fae1925dc9bd6da3e84"
+    },
+    "frozenRuleOverlay": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/english-relationship-v4-freeze-recovery-20261027/r2/rule_overlay.py",
+      "sha256": "f7f44b6cc7e5411bcb7580353e962cff736f1f3e45f771c0aacedc45fcc47678"
+    },
+    "predecessorCaller": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/r8_caller.py",
+      "sha256": "08f5630496a7efe516735a77cda9286a0e69b4f196481facc3031c1b3b67b92b",
+      "bytes": 7823
+    },
+    "predecessorCallerResult": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/result.json",
+      "sha256": "f9864d8fdbe5e3407397fc66b840cf1cd7365dc109338bb319f5300c16ec2bd6",
+      "bytes": 3769
+    },
+    "predecessorAcceptedImplementation": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker57/general-variant-semantic-review-20261026/r8-generic-caller-review-20261027/accepted-implementation.json",
+      "sha256": "db361f1e0ac96e9241731e8eef19a5846c791fd1e4c84c6b913f5293139aaa37",
+      "bytes": 4912
+    }
+  },
+  "requiredCut": {
+    "engine": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/english-relationship-v4-freeze-recovery-20261027/r2/engine/context_rules.py",
+      "sha256": "c884cbd3d88b744074af4003096fd61c0e5aa2c769e0ba43d042a149e959a1f6"
+    },
+    "registry": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/english-relationship-layer-20261026/r9-ranked-off-cheese-whole-family-r2-20261027/registry.candidate.json",
+      "sha256": "1912b366197745479120a4f4a34a974c6cec74ebde9aadd1f5ecad37eeef443c"
+    },
+    "typeRelations": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/english-relationship-layer-20261026/r9-ranked-off-cheese-whole-family-r2-20261027/type-relations.candidate.json",
+      "sha256": "210a5448c52bb2f24ac95eadc3bca3d1113b09ec1456bccabc80aad83e9f0e0e"
+    },
+    "manifest": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/english-relationship-layer-20261026/r9-ranked-off-cheese-whole-family-r2-20261027/cheese-whole.family.json",
+      "sha256": "cf0ae1e83fe861835fe67a9b7f59ac981c3530a1e1a156d7d16afb1c6e9e7773"
+    },
+    "acceptedGenericCompiler": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/english-relationship-layer-20261026/generic-active-family-compiler-r4-20261027/compile_family.py",
+      "sha256": "5e14cfb0b234ec37eff670612fad0db15a9e1e9c9f55bd28999e80d2ab2ce4fe"
+    },
+    "verifiedBuild": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/english-relationship-layer-20261026/r9-ranked-off-cheese-whole-family-r2-20261027/build.py",
+      "sha256": "defa43d677f79ec94a951202b7f1ac0423383500d65ac5354adfd91b30b0703f"
+    },
+    "qualifiedGateMandatoryForFiveWholeFamilies": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/english-relationship-layer-20261026/r9-ranked-off-cheese-whole-family-r2-20261027/qualified_evaluator.py",
+      "sha256": "88007f14c10aa9366e361f3cddf002bb3cdf52bdbc58af916952c2acf8ced157"
+    },
+    "realAcceptedRuleReceipt": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker57/general-variant-semantic-review-20261026/r9-cheese-family-review-20261027/accepted-subset-r9-r2.json",
+      "sha256": "d1a5addacc18832ed5a142755d0b7a0d2784f3b8396112dda491be4ae9efbfa7"
+    },
+    "separateAcceptedTypeReceipt": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker57/general-variant-semantic-review-20261026/r9-cheese-family-review-20261027/accepted-type-relations-r9-r2.json",
+      "sha256": "7fa94959e2bffe3af4f59d4ef0d4a6facdbd7637dea81937d36dd2a0048b8584"
+    },
+    "acceptedBuildGateCodeReceipt": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker57/general-variant-semantic-review-20261026/r9-cheese-family-review-20261027/accepted-build-gate-code-r9-r2.json",
+      "sha256": "bd21c9480ee62623918bf13528dcacfaf47faf4affa907e631f8040895178cf4"
+    }
+  },
+  "requiredSemantics": {
+    "legacyAcceptedRules": 83,
+    "currentAcceptedRules": 88,
+    "currentAcceptedConditionalTypeRelations": 18,
+    "mandatoryGateRuleIds": [
+      "context-rule:whole-product-taxonomy:off-whole-milk:v1",
+      "context-rule:whole-product-taxonomy:off-honey:v1",
+      "context-rule:whole-product-taxonomy:off-water:v1",
+      "context-rule:whole-product-taxonomy:off-part-skim-mozzarella-string-cheese:v1",
+      "context-rule:whole-product-taxonomy:off-gouda-cheese-sticks:v1"
+    ],
+    "newCheeseRuleIds": [
+      "context-rule:whole-product-taxonomy:off-part-skim-mozzarella-string-cheese:v1",
+      "context-rule:whole-product-taxonomy:off-gouda-cheese-sticks:v1"
+    ],
+    "mandatoryGate": "Use exact current88007f14 qualified evaluator + REAL88 receipt for ALL5 listed IDs, including inherited R8three. Do not use new-only-two as gated dispatcher selection, and never substitute bare engine result on failed/suppressed qualification.",
+    "typeLinks": "Read exact separately accepted18 receipt and evidence-bind only exact accepted current rule-target/source-scope relations. Preserve unrelated legacy83/USDA dispatch and source/stage output. No new type/controlled-parameter claim.",
+    "loader": "Retain read-once hash-verified frozen bytes and scoped modules/paths. New adjacent dependency manifest/interface pins required; predecessor caller cannot merely be relocated or old acceptance transplanted. No global sys.path/modules mutation.",
+    "compatibility": "Preserve legacy83/USDA behavior exactly; preserve accepted R8three semantic classifications/types while binding current registry/receipt/gate. Current receipt and revision changes are expected; no per-ingredient conditions, brand/barcode exemptions or canonical alias assumptions.",
+    "limits": "Caller classifies only; normalizationComplete false, no source-operation/privacy/rights/foundation/Gold/runtime grant."
+  },
+  "focusedAuthorVerification": [
+    "Generated positive/null/empty/compatible declarations for5 families through actualcurrentgate; exact typed links",
+    "Incompatible whole context, privacy, original-field/dual-array, stagewire/native/barcode conditions refuse or abstain without leaking targets",
+    "Prove oldR8three all pass through currentgate and fail closed, not stalegate or bareengine",
+    "Legacy83 unrelatedOFF/nonOFF and USDA positive equal predecessor outputs",
+    "Changed/missing dependency pins refused; verified bytes consumed; no global module pollution"
+  ],
+  "reviewScope": "SAME57 one independent review of actual caller/loader/test delta; reuse exact accepted88/18 semantics and codegate receipts, no restart semantic campaign/source acquisition.",
+  "baseline": {
+    "worktree": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026",
+    "branch": "codex/foundation-phase-contract-v1-20261027",
+    "head": "807918de35e68b2f1de036aea5ec80c25d6b39e6",
+    "freshRemoteDevelop": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+    "freshRemoteMain": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "reason": "Immutable accepted predecessor/current R9 source cut; no branch or shared-source mutation. Fresh remote tips verified at intake; accepted integration baseline unchanged."
+  },
+  "sourceCounts": {
+    "actualRecordEvaluations": 0,
+    "newProductAdmissions": 0,
+    "Gold": 0,
+    "populationYieldMeasured": null
+  },
+  "nextAction": "Gateway recover/reuse exact retained caller author once; author minimal disjoint candidate and focused tests;57 independently review actual code delta;00 source integration before19 any selected population operation. Do not delay ready R8 data/List increment for R9.",
+  "holds": "Production/main/CIX/security/settings/credentials/source rights/denied-action holds unchanged. No19population, sourcebody/DB/network classification pass/browser/runtime/landing change.",
+  "cleanup": "Retain unique interface and predecessor/source receipts pending owner pickup; no owned child/process/socket/lock; no deletion."
+}
