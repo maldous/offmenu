@@ -1,0 +1,95 @@
+{
+  "scope": "PRIVATE_ORIGIN_SOURCE_CUSTODY_ONLY_NOT_ADOPTED_NOT_DEPLOYED",
+  "originalArtifacts": [
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/result.json",
+      "sha256": "e40989e5293fd33e1f5e2cb087fd392f7dd5e9e75e763e2469acf26b5fa9f788"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/result.json",
+      "sha256": "7b5b2862c2ea7f1434fc551cc59dfccfcc53eb66ee21aa0b7b310aa846025bc7"
+    }
+  ],
+  "files": [
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/foundation-scanner-handoff.mjs",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner00/foundation-scanner-handoff.mjs",
+      "sha256": "be5fb8967bcf6fe9c9e8852f123ddfc5546666ccb5bbe2896f2ccee2923484ff",
+      "bytes": 6289
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/foundation-handoff-bindings.mjs",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner00/foundation-handoff-bindings.mjs",
+      "sha256": "65784f36238b93e84a3960c2dd396d02d9c4101d8e60e88a7c2fbe82f43cb235",
+      "bytes": 757
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/foundation-local-response-with-reference.mjs",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner00/foundation-local-response-with-reference.mjs",
+      "sha256": "ec1871f50e9bea813750dbd0550c35c30fb05b1343b4c815e126a28d9ccaa038",
+      "bytes": 4451
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/model.js",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner00/model.js",
+      "sha256": "ac59b94a9d0089bb770c86196fcd634d15d1ddc87d701bd2875ac3e55e786c2a",
+      "bytes": 8006
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/checkout-model.js",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner00/checkout-model.js",
+      "sha256": "e66f7436ddf823d116cc2fc777a86401fa74071f3d59758fb8ff5038c5a41ce8",
+      "bytes": 5052
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/scanner-kitchen-handoff.js",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner00/scanner-kitchen-handoff.js",
+      "sha256": "d07d6ce268a4d07cc0c9368ae867b807aa2710ffae9265e737d0a889f74f3803",
+      "bytes": 6281
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/confirmed-handoff.test.mjs",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner00/confirmed-handoff.test.mjs.source.txt",
+      "sha256": "bf853b4d5ec7ffb1c813a279a1de2d6ab464cbc16141172f414a3d9548bad4b0",
+      "bytes": 7880
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/source-preservation-proof.json",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner00/source-preservation-proof.json",
+      "sha256": "3965b40e4f825270a6748ef6bd561f4d6e8fa8cd60d0dacfd7b94de7cae90a96",
+      "bytes": 5321
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/candidate/app.js",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner13/app.js",
+      "sha256": "722720c61f4d0a76cf782f690093a28a8efff0d06ce3f49c6e661acc25307c60",
+      "bytes": 104523
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/candidate/shelf-scanner.js",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner13/shelf-scanner.js",
+      "sha256": "15b41defdff1e1f600a286da98015a6db554856b94f607e2f89884385cadc0cf",
+      "bytes": 45301
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/candidate/foundation-scanner-client.mjs",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner13/foundation-scanner-client.mjs",
+      "sha256": "e2544712208380198b7e29667f0156e8ec364649ed9addf6a65f923464462b86",
+      "bytes": 10462
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/consumer.test.mjs",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner13/consumer.test.mjs.source.txt",
+      "sha256": "57fb6aa2fe3bfc607ca060c7e6e5ff9603a45ce1c8e2fec4db2fee2c88be6e82",
+      "bytes": 7894
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/build-consumer.mjs",
+      "repositoryPath": "dev/local-foundation-confirmed-handoff-20261027/owner13/build-consumer.mjs",
+      "sha256": "e5357b5a10e4cf653d7d6b556b8725ab93503b38a39a8a08f26d5eb56f96534c",
+      "bytes": 4827
+    }
+  ],
+  "excluded": "All515corpusfiles,8.7MBinlinecorpusmodule,37.7MBstaticbodies,actualsourceDTOexamples,private/sourcepayloads/credentials,fullhistories. Those remaincanonicalauthorizedLOCALcustody only. Code/test/sourcepreimages are preserved here; no application imports this dev folder. Test source renamed .source.txt to avoid accidental discovery without authorized local fixtures. Originalbuild/runtime sourcepaths and operation holds remain authoritative.",
+  "review": "Combined affected review pending; this is WIPsource preservation, not acceptance or runtime activation."
+}

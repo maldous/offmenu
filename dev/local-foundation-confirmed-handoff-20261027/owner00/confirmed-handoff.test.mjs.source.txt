@@ -1,0 +1,83 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import vm from 'node:vm';
+import {webcrypto} from 'node:crypto';
+import * as foundation from './foundation-scanner-handoff.mjs';
+import * as binding from './foundation-handoff-bindings.mjs';
+import {localFoundationResponse} from './foundation-local-response-with-reference.mjs';
+const root=import.meta.dirname;
+const sample=JSON.parse(await readFile(root+'/reference-example-off.json'));
+const ref=sample.records[0].foundationSourceReference;
+const id='00000000-0000-4000-8000-000000000001';
+const match={name:'Canonical base · '+sample.records[0].data.name,brand:null,foundationSourceReference:ref};
+const entry=()=>({id,foundationLookup:true,raw:ref.lexicalValue,namespace:'barcode',symbology:null,status:'source-match',lookupPending:false,sourceChoiceConfirmed:true,selectedRecord:match,matches:[match]});
+const context=vm.createContext({crypto:webcrypto,TextEncoder,URL,Date});
+const modules=new Map();
+async function synthetic(name,exports){const mod=new vm.SyntheticModule(Object.keys(exports),function(){for(const [k,v]of Object.entries(exports))this.setExport(k,v);},{context});modules.set(name,mod);return mod;}
+await synthetic('./foundation-scanner-handoff.mjs',foundation);
+await synthetic('./foundation-handoff-bindings.mjs',binding);
+await synthetic('./i18n.js',{t:x=>x});
+await synthetic('./ingredients.js',{canonicalIngredient:x=>String(x).trim().toLowerCase(),measuredIngredient:()=>false});
+await synthetic('./scanner-identity-v2.js',{validSourceObservationReference:()=>false});
+await synthetic('./typed-identifier-contract.mjs',{analyzeIdentifier:()=>({status:'unresolved',labelledEquivalents:[]})});
+async function load(name){if(modules.has(name))return modules.get(name);const mod=new vm.SourceTextModule(await readFile(root+'/'+name.slice(2),'utf8'),{context});modules.set(name,mod);await mod.link(load);return mod;}
+const legacy=await load('./scanner-kitchen-handoff.js');await legacy.evaluate();
+const model=await load('./model.js');await model.evaluate();
+const checkout=await load('./checkout-model.js');await checkout.evaluate();
+const plain=x=>JSON.parse(JSON.stringify(x));
+test('explicit choice produces a closed bounded source-reference handoff; auto display and pending do not',()=>{
+ const batch=foundation.createFoundationScannerHandoff([entry()]);assert.equal(batch.schema,foundation.FOUNDATION_SCANNER_HANDOFF);
+ assert.deepEqual(batch,foundation.parseFoundationScannerHandoff(batch));
+ assert.equal(batch.items[0].userSelected,true);assert.equal(batch.items[0].foundationSourceReference.stageRecordWireSha256,ref.stageRecordWireSha256);
+ for(const change of [{sourceChoiceConfirmed:false},{lookupPending:true},{status:'pending'},{selectedRecord:{...match}},{namespace:'usda-fdc'}])assert.throws(()=>foundation.createFoundationScannerHandoff([{...entry(),...change}]));
+});
+test('fixed cut/source/GTIN/notices/phase flags and closed public fields reject substitution',()=>{
+ assert.equal(foundation.validFoundationSourceReference(ref,ref.lexicalValue),true);
+ for(const change of [{manifestSha256:'a'.repeat(64)},{lexicalValue:'0'+ref.lexicalValue},{stageRecordWireSha256:'invalid'},{sourceBinding:{...ref.sourceBinding,sourceQualificationSha256:'a'.repeat(64)}},{license:'other'},{fullProductComplete:true},{credentials:'forbidden'}])assert.equal(foundation.validFoundationSourceReference({...ref,...change},ref.lexicalValue),false);
+ assert.equal(foundation.validFoundationSourceReference(ref,ref.lexicalValue.slice(1)),false);
+});
+test('batch byte limit and repeated operation are honest refusals',()=>{
+ const batch=foundation.createFoundationScannerHandoff([entry()]);assert.ok(new TextEncoder().encode(JSON.stringify(batch)).byteLength<=3000);
+ assert.throws(()=>foundation.parseFoundationScannerHandoff({schema:batch.schema,items:[batch.items[0],batch.items[0]]}));
+ assert.throws(()=>foundation.parseFoundationScannerHandoff({schema:batch.schema,items:Array.from({length:20},(_,i)=>({...batch.items[0],operationId:'00000000-0000-4000-8000-'+String(i+1).padStart(12,'0')}))}));
+});
+test('new fingerprint receipts restore and conflict detection remains strict',()=>{
+ const item=foundation.createFoundationScannerHandoff([entry()]).items[0],fingerprint=foundation.foundationHandoffFingerprint(item);
+ assert.equal(legacy.namespace.validateScannerHandoffReceipts({[id]:fingerprint},[id])[id],fingerprint);
+ const altered=JSON.parse(fingerprint);altered.foundationSourceReference.goldAdmitted=true;
+ assert.throws(()=>legacy.namespace.validateScannerHandoffReceipts({[id]:JSON.stringify(altered)},[id]));
+ assert.throws(()=>legacy.namespace.validateScannerHandoffReceipts({[id]:fingerprint},[]));
+});
+test('foundation stage has no amount; draft can resume, final stock refuses until manual positive amount',()=>{
+ const staged=checkout.namespace.makeAutoLot(ref.lexicalValue,{name:'Milk',foundationSourceReference:ref},'unmapped');
+ assert.equal(staged.quantity,null);assert.equal(staged.amountBasis,'unknown');assert.equal(staged.needsReview,true);
+ const restored=model.namespace.validateCheckoutDraftLot(staged);assert.equal(restored.quantity,null);assert.deepEqual(plain(restored.foundationSourceReference),ref);
+ assert.throws(()=>model.namespace.validateLot(staged));
+ const final=model.namespace.validateLot({...staged,quantity:250,unit:'g',amountBasis:'manual',ingredient:'milk',needsReview:false});
+ assert.equal(final.quantity,250);assert.equal(final.foundationSourceReference.automaticPlanningEligible,false);
+ for(const change of [{quantity:0},{quantity:-1},{amountBasis:'package'},{quantity:null}])assert.throws(()=>model.namespace.validateLot({...final,...change}));
+});
+test('checkout preserves manual source annotation and exact replay; unknown never finishes',()=>{
+ const item=checkout.namespace.makeAutoLot(ref.lexicalValue,{name:'Milk',foundationSourceReference:ref},'unmapped');item.id=id;
+ const session={mode:'shopping',area:'Pantry',shelf:'Top',items:[item],startedAt:'2026-10-27T00:00:00Z',scannerCompletion:{schema:legacy.namespace.SCANNER_COMPLETION}};
+ assert.throws(()=>checkout.namespace.finishInventory([],session));
+ session.items=[{...item,ingredient:'milk',quantity:250,unit:'g',amountBasis:'manual',needsReview:false}];
+ const stock=checkout.namespace.finishInventory([],session);assert.deepEqual(plain(stock[0].foundationSourceReference),ref);
+ assert.equal(checkout.namespace.finishInventory(stock,session),stock);
+ assert.throws(()=>checkout.namespace.finishInventory(stock,{...session,items:[{...session.items[0],quantity:251}]}));
+});
+test('ordinary checkout amount projection is unchanged',()=>{
+ const lot=checkout.namespace.makeAutoLot('12178162',{name:'Existing manual food',quantity:'500 g'},'milk');
+ assert.equal(lot.quantity,500);assert.equal(lot.unit,'g');assert.equal(lot.foundationSourceReference,undefined);
+});
+test('actual local response extension preserves all prior data and supplies qualified native/wire references',async()=>{
+ for(const [source,barcode]of [['off','12178162'],['usda-files','20026103']]){
+  const url='http://127.0.0.1:7645/api/corpus/foundation?'+new URLSearchParams({source,barcode});
+  const response=await localFoundationResponse(new Request(url));assert.equal(response.status,200);const dto=await response.json();
+  const previous=JSON.parse(await readFile(root+'/../consumer-source-example-'+source+'.json')).dto;
+  for(const record of dto.records){assert.equal(foundation.validFoundationSourceReference(record.foundationSourceReference,barcode),true);assert.equal(record.foundationSourceReference.recordId,record.id);delete record.foundationSourceReference;}
+  assert.deepEqual(dto,previous);
+  const head=await localFoundationResponse(new Request(url,{method:'HEAD'}));assert.equal(head.status,200);assert.equal(await head.text(),'');
+ }
+});

@@ -1,0 +1,42 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+import {AXES,FOUNDATION_CONTRACT,FOUNDATION_SELECTION,createFoundationScannerLookup,mergeIdentifierPages,foundationReadout} from './foundation-client-runtime.mjs';
+const sha='a'.repeat(64),raw='0012178162';
+function record(source,id='same-id',barcode=raw){return {schemaVersion:'1.0',id,kind:'product',provenance:{sourceId:source,releaseId:'synthetic-source-release',recordId:id,sourceObservationSha256:sha,sourceDocumentSha256:sha,inputDatabaseSha256:sha,sourceQualificationSha256:sha,visibility:'public',license:source==='off'?'Synthetic ODbL notice':'Synthetic CC0 notice',attribution:'Synthetic '+source},curation:{schema:'offmenu-foundation-curation/2',phaseContract:FOUNDATION_CONTRACT,rawSourcePayloadPublished:false,legacyCuratedAdmission:false},data:{name:'Synthetic base',identifiers:[{system:'barcode',value:barcode}],classification:'ingredient',canonicalEnglishKey:'synthetic',canonicalConceptId:'urn:synthetic',meaningfulType:{state:'reviewed',canonicalEnglishLabel:'Synthetic type',subjectConceptId:'urn:synthetic'},variantParameters:Object.fromEntries(AXES.map(k=>[k,{state:'unknown',reason:'not-provided-in-qualified-representation',qualificationDisposition:'no-accepted-controlled-value',evidence:[{pointer:'/synthetic/'+k}]}])),foundationComplete:true,fullProductComplete:false,normalizationComplete:false,goldAdmitted:false,automaticPlanningEligible:false,recipeNutritionJoinsAccepted:false}};}
+function dto(source,records=[record(source)],nextCursor=null){return {schemaVersion:'1.0',fieldContract:FOUNDATION_CONTRACT,source,barcode:records[0]?.data.identifiers[0].value??raw,...FOUNDATION_SELECTION,records,status:'phase-qualified-own-data',httpStatus:200,qualifiedSourceObservationCount:records.length+(nextCursor?1:0),physicalProductEquivalenceAsserted:false,externalFallback:false,nextCursor,goldAdmitted:false,fullProductComplete:false};}
+function client(handler=(source)=>Response.json(dto(source))){const calls=[];return {calls,lookup:createFoundationScannerLookup({fetchImpl:async(url,init)=>{calls.push({url,init});const q=new URL(url,'http://127.0.0.1:7645');assert.equal(q.pathname,'/api/corpus/foundation');return handler(q.searchParams.get('source'),q);}})};}
+test('same ID/base across OFF and USDA remain separate exact lexical source observations; no equivalence/full product',async()=>{
+ const c=client(),r=await c.lookup(raw,1);assert.equal(r.matches.length,2);assert.equal(r.status,'ambiguous');assert.notEqual(r.matches[0].id,r.matches[1].id);assert.equal(r.physicalProductEquivalenceAsserted,false);assert.equal(r.fullProductComplete,false);
+ assert.ok(c.calls.every(c=>c.url.startsWith('/api/corpus/foundation?')&&new URL(c.url,'http://local').searchParams.get('barcode')===raw&&c.init.credentials==='omit'&&c.init.redirect==='error'&&c.init.mode==='same-origin'));
+ assert.ok(r.matches.every(m=>m.sourceObservationReference===null&&!m.publicRecord));
+});
+test('24 unknowns, source notices, typed concept and assertion alternatives retain exact structure',async()=>{
+ const off=record('off');off.data.variantParameters.baseMaterial={state:'known',value:{conceptId:'urn:synthetic:material'},evidence:[{pointer:'/material'}]};off.data.variantParameters.processing={state:'known',value:[{assertionId:'one',value:'one',evidence:[{pointer:'/one'}]},{assertionId:'two',value:'two',evidence:[{pointer:'/two'}]}],evidence:[]};
+ const c=client(s=>s==='off'?Response.json(dto(s,[off])):new Response('',{status:503}));const r=await c.lookup(raw,2),m=r.matches[0];assert.deepEqual(m.foundationRecord,off);const overview=foundationReadout(m,r),source=foundationReadout(m,r,'source');assert.equal(overview.filter(row=>row.label.endsWith(' · unknown')).length,22);assert.match(JSON.stringify(source),/Synthetic ODbL notice/);assert.match(JSON.stringify(source),/assertionId/);assert.match(JSON.stringify(source),/not-provided-in-qualified-representation/);assert.match(JSON.stringify(foundationReadout(m,r,'nutrition')),/Unknown, not zero/);
+});
+test('source-bound pagination keeps all observations and no first page winner; cursor cannot move to new code/generation',async()=>{
+ const c=client((s,q)=>s==='usda-files'?new Response('',{status:503}):Response.json(dto(s,[record(s,q.searchParams.has('cursor')?'second':'first')],q.searchParams.has('cursor')?null:'opaque-next')));
+ const a=await c.lookup(raw,3);assert.equal(a.hasMore,true);const b=await c.lookup(raw,3,a.nextCursor),merged=mergeIdentifierPages(a,b);assert.equal(merged.matches.length,2);assert.deepEqual(merged.matches.map(m=>m.foundationRecord.id),['first','second']);assert.equal(c.calls.length,3);assert.equal(merged.hasMore,false);
+ const count=c.calls.length;assert.equal((await c.lookup('12178162',3,a.nextCursor)).error,'FOUNDATION_CURSOR_MISMATCH');assert.equal((await c.lookup(raw,4,a.nextCursor)).error,'FOUNDATION_CURSOR_MISMATCH');assert.equal(c.calls.length,count);
+ const other=client((s)=>Response.json(dto(s,[record(s)],'next')));const partial=await other.lookup(raw,1);assert.equal(partial.status,'ambiguous');
+});
+test('changed observation on later page refuses merge rather than overwriting evidence',async()=>{
+ const c=client((s,q)=>{const r=record(s);if(q.searchParams.has('cursor'))r.data.name='Changed';return Response.json(dto(s,[r],q.searchParams.has('cursor')?null:'next'));});const a=await c.lookup(raw,1),b=await c.lookup(raw,1,a.nextCursor);assert.throws(()=>mergeIdentifierPages(a,b),/OBSERVATION_CHANGED/);
+});
+test('unavailable and denied queries have no fallback, alias, retry or false global absence',async()=>{
+ for(const status of [400,401,403,405,409,503]){const c=client(()=>new Response('',{status})),r=await c.lookup(raw,1);assert.equal(r.status,'unavailable');assert.equal(r.hasMore,false);assert.equal(c.calls.length,2);assert.equal(r.matches.length,0);assert.match(JSON.stringify(foundationReadout(null,r)),/not global absence/);}
+ const c=client();assert.equal((await c.lookup(raw,1,null,null,'USDA-FDC')).error,'UNSUPPORTED_EXACT_BARCODE');assert.equal(c.calls.length,0);
+});
+test('wrong manifest/source/code/contract/phase claims and missing axes never become a legacy product',async()=>{
+ const changes=[d=>d.manifestSha256='b'.repeat(64),d=>d.source='other',d=>d.barcode='9999',d=>d.fieldContract='offmenu-barcode-foundation-phase/1',d=>d.records[0].data.fullProductComplete=true,d=>delete d.records[0].data.variantParameters.form,d=>d.records[0].provenance.visibility='private'];
+ for(const change of changes){const c=client(s=>{const d=dto(s);change(d);return Response.json(d);});const r=await c.lookup(raw,1);assert.equal(r.matches.length,0);assert.equal(r.status,'unavailable');}
+});
+test('actual frozen public-derived example envelopes are compatible, without requesting the endpoint',async()=>{
+ const root='/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/';
+ for(const source of ['off','usda-files']){const e=JSON.parse(fs.readFileSync(root+'consumer-source-example-'+source+'.json'));const c=client(s=>s===source?Response.json(e.dto):new Response('',{status:503}));const r=await c.lookup(e.dto.barcode,1);assert.equal(r.matches.length,e.dto.records.length);assert.deepEqual(r.matches.map(m=>m.foundationRecord),e.dto.records);}
+});
+test('actual current app legacy getProduct is bounded unavailable before cache/fetch/state writes',async()=>{
+ const source=fs.readFileSync(new URL('candidate/app.js',import.meta.url),'utf8');const a=source.indexOf('async function getProduct('),b=source.indexOf('\nfunction trustedIngredient',a);const context=vm.createContext({t:x=>x,Error});vm.runInContext(source.slice(a,b),context);await assert.rejects(vm.runInContext("getProduct('0012178162')",context),/Full product details are unavailable/);
+});
