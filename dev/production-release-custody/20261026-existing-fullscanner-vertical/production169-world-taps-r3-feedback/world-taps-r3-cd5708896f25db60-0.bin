@@ -1,0 +1,77 @@
+// Scene06 Nutrition. Pure source-space action; shared master owns world/clock.
+export const id = 6;
+export const durationMs = 2800;
+const SW=1047, SH=633, CW=1040, CH=628;
+const canonical=([x,y])=>[x,y];
+export const reference={width:SW,height:SH,outputSize:[CW,CH],
+ source:{path:'/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-06.png',sha256:'4781addd7faaf1d60e6441c332265793d2c8f7cb154111506aae7ab87da6f394'},
+ sourceNativeSize:[SW,SH],anchors:{neck:null,shoulder:null,elbow:null,
+ wrist:canonical([603,604]),index:canonical([735,387]),grip:null,support:null,
+ propBase:null,tabletGlass:[[429,207],[849,228],[792,537],[363,489]].map(canonical)},
+ anchorReasons:{neck:'Neck seen from rear but anatomical root not independently located.',shoulder:'Joint obscured by shirt/body crop; no bbox-derived joint.',elbow:'Pointing forearm enters bottom crop; elbow not visible.',grip:'Index tap, no prop grasp.',support:'Plate remains fixed; base support not exposed in this source.',propBase:'No moving prop in this action.',wrist:'Visible palm/forearm taper approximated ±8 native pixels.',index:'Approved source fingertip ±5 native pixels.'},
+ action:'Read nutrition evidence, point once to exact evidence-coverage panel, hold contact, withdraw before travel.'};
+const clamp=x=>Math.max(0,Math.min(1,x));
+const ease=x=>{x=clamp(x);return x*x*(3-2*x);};
+const lerp=(a,b,t)=>a+(b-a)*t;
+function angles(p){
+ p=clamp(p);
+ if(p<.16)return {hand:.12,index:.20,phase:'action'};
+ if(p<.32){const t=ease((p-.16)/.16);return{hand:lerp(.12,0,t),index:lerp(.20,0,t),phase:'action'};}
+ if(p<=.72)return{hand:0,index:0,phase:'contact'};
+ const t=ease((p-.72)/.24);return{hand:lerp(0,.12,t),index:lerp(0,.20,t),phase:p<.96?'release':'settled'};
+}
+function rotate([x,y],[cx,cy],a){const c=Math.cos(a),s=Math.sin(a);return[cx+c*(x-cx)-s*(y-cy),cy+s*(x-cx)+c*(y-cy)];}
+function deform([x,y],q){
+ // Forearm root at the bottom crop is invariant; hand rolls at visible wrist.
+ const region=ease((x-440)/100)*ease((850-x)/100)*ease((y-280)/100);
+ const hw=ease((SH-y)/110)*region;
+ const moved=rotate([x,y],[603,604],q.hand*hw);
+ // Separate index articulation; do not hinge the entire arm at its tip.
+ const axisX=87,axisY=-67,axisLength2=axisX*axisX+axisY*axisY;
+ const projection=((x-648)*axisX+(y-454)*axisY)/axisLength2;
+ const t=clamp(projection),distance=Math.hypot(x-(648+t*axisX),y-(454+t*axisY));
+ const nearIndex=ease(projection/.55)*ease((68-distance)/48);
+ const pivot=rotate([648,454],[603,604],q.hand*ease((SH-454)/110));
+ return rotate(moved,pivot,q.index*nearIndex);
+}
+const source=[],indices=[];
+const NX=58,NY=38;
+for(let y=0;y<=NY;y++)for(let x=0;x<=NX;x++)source.push([x/NX,y/NY]);
+for(let y=0;y<NY;y++)for(let x=0;x<NX;x++){const k=y*(NX+1)+x;indices.push(k,k+NX+1,k+1,k+1,k+NX+1,k+NX+2);}
+const rasterMesh={source,indices,root:[603/SW,1],indexContact:[735/SW,387/SH]};
+
+// Source-local torso lean and collar/head anticipation; no camera/room motion.
+// Controls are artist semantic pivots, not newly asserted anatomical landmarks.
+const bodySource=[],bodyIndices=[];
+const BX=34,BY=30;
+for(let y=0;y<=BY;y++)for(let x=0;x<=BX;x++)bodySource.push([(-64+(SW+128)*x/BX)/SW,(-64+(SH+128)*y/BY)/SH]);
+for(let y=0;y<BY;y++)for(let x=0;x<BX;x++){const k=y*(BX+1)+x;bodyIndices.push(k,k+BX+1,k+1,k+1,k+BX+1,k+BX+2);}
+const bodyMesh={source:bodySource,indices:bodyIndices};
+function beatValue(p,keys){for(let i=1;i<keys.length;i++)if(p<=keys[i][0]){const t=ease((p-keys[i-1][0])/(keys[i][0]-keys[i-1][0]));return lerp(keys[i-1][1],keys[i][1],t);}return keys.at(-1)[1];}
+function bodyPoint(u,v,p){
+ const x=u*SW,y=v*SH;
+ const lean=beatValue(p,[[0,-24],[.16,-12],[.32,4],[.5,0],[.72,0],[.9,-10],[1,-16]]);
+ const nod=beatValue(p,[[0,-.06],[.16,.015],[.32,.03],[.5,0],[.72,0],[1,-.02]]);
+ const upper=ease((SH-y)/400),head=ease((405-y)/100)*ease((460-x)/100);
+ const q=rotate([x,y],[125,360],nod*head);
+ return[(q[0]+lean*upper)/SW,(q[1]-lean*.22*upper)/SH];
+}
+
+export async function load({loadImage,resolveAsset}){
+ const names=['actorCore','pointArm','mealPlate','approved-screen'];
+ const values=await Promise.all(names.map(n=>loadImage(resolveAsset(`./assets/${n==='actorCore'?'actorCore-overscan-r4':n}.png`))));
+ return Object.fromEntries(names.map((n,i)=>[n,values[i]]));
+}
+export function sample(progress,assets){
+ const p=clamp(progress),q=angles(p),indexPoint=canonical(deform([735,387],q));
+ return {layers:[
+  {id:'nutrition-source-actor',image:assets.actorCore,role:'actor',order:0,sample:[64/1175,64/761,SW/1175,SH/761],rasterMesh:bodyMesh,deformedUV:bodySource.map(([u,v])=>bodyPoint(u,v,p))},
+  {id:'nutrition-meal-plate',image:assets.mealPlate,role:'prop',order:5},
+  {id:'nutrition-index-hand',image:assets.pointArm,role:'actor',order:20,rasterMesh,
+   deformedUV:source.map(([u,v])=>{const [x,y]=deform([u*SW,v*SH],q);return[x/SW,y/SH];})}
+ ],contacts:[{id:'nutrition-evidence-index',layerId:'nutrition-index-hand',kind:'tap',point:indexPoint,target:'tablet',active:q.phase==='contact',
+ targetPoint:canonical([735,387]),targetGlassUV:[.8171818870524958,.5457725327692529],
+ qualification:'Source-space contact only; master binds the actual fixed glass normal/depth.'}],
+ screen:assets['approved-screen'],phase:q.phase,beat:p<.16?'reading-anticipation':p<.32?'arm-presentation':p<=.72?'evidence-point-and-read':p<.96?'arm-lowering-followthrough':'body-settle'};
+}
+export function dispose(){}

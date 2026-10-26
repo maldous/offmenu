@@ -1,0 +1,61 @@
+{
+  "id": "worker00-versioned-world-taps-r3-feedback-production169-delivered-20261026",
+  "atUTC": "2026-10-26T12:32:20.559392+00:00",
+  "worker": 0,
+  "threadId": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+  "task": "CORE-APP-SCANNER-DELIVERY",
+  "state": "DONE_WITH_CONCERNS_VERSIONED_FEEDBACK_ONLY_NOT_FULL15_ACCEPTANCE",
+  "live": {
+    "version": 169,
+    "uuid": "7267a1eb-a94b-4c58-8ea7-fd9217b0cd6e",
+    "deployment": "95ffd095-e80c-4763-8875-728bab96a7a3",
+    "createdOn": "2026-10-26T12:30:14.502331Z",
+    "percentage": 100,
+    "modules": 192,
+    "bytes": 34782062,
+    "main": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/landing-only.mjs",
+      "sha256": "c35305c644c5a65c53662dabac0b1f261b546c8b2c1c98c6546076df1d52ddb3",
+      "bytes": 575493
+    },
+    "url": "https://offmenu.aldous.info/feedback/vertical-landing/world-taps-r3/",
+    "provisionalWorldChapters": [
+      6,
+      11,
+      13,
+      14
+    ]
+  },
+  "proofs": {
+    "activationAndAll192Pins": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/activation-world169-envelope.json",
+      "sha256": "d615d5c6f2528d9b38cd4d4372a2cb5fc2ee493f89cdbca38219293f3a820a62",
+      "bytes": 806
+    },
+    "exactASTReferenceClosure": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/active169-exact-ast-reference-closure.json",
+      "sha256": "5c58144a55790671609bd7e0f1845a7678694fec2989a573cf18bf1fc4fa6863",
+      "bytes": 18199
+    },
+    "offlineRouteComposition": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/package-qualification.json",
+      "sha256": "2269a652fbf1674ef7156742f951dc5efcbd16a63f124950bd2ea47049274774",
+      "bytes": 1291
+    },
+    "manifest": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/manifest.json",
+      "sha256": "3ee92080dab867dc94ca458ac401b1ab3e31fff8338ff2448e7fa51449549143",
+      "bytes": 212473
+    },
+    "actual64NormalR2": "17919/893100ac5e3e0508b2f1a4d3c771203d9270fb8cfbe068944f658b9cbf219b48",
+    "actual64AffectedR3": "17931/cd89dc8117fc0a08f4e2e90dd54f9e2b3d530e929452508529b660d3c38e7972"
+  },
+  "scope": "40versionedworldfeedbackroutes/11newbinaryparts233100B; mainlanding unchanged.168sourceR2/own-only94/private/CSP/existingfeedback/all180nonmain168pins preserved. Actual4requiredroomasset hashes verified;287oldmanifest routes compared unchanged;184reachablemodules/183edges/no unresolved/dynamicimports.8originalunreferencedbins retained. Only3oldscreen01fixturebins remainexplicitlyopaque offline; newworld40and4requiredactualresponsehashesPASS.",
+  "actualBehavior": "R2 four06/11/13/14 actions/holds and rapid13/14reentry reused; exact1pxentryfixpassed. R3 affectedwheel\u2192ArrowDownexit remains7/canvas hidden, genuinelylaterwheel reenters6 stable. No repeated4casecheck.",
+  "remainingConcerns": "Largeletterbox/head/bodycrop/physicalsupport/framing/adjacentautomaticspatialhandoff/anatomy/natural/full15/humanacceptance open; fridge17928 framingconcern and renderernewR3camera candidate separate. This is functionalincrement, not approved mainlanding replacement.",
+  "data": "Completeimmutable165 source-onlyfoodDATA retained separately; NOTadopted/canonical0/EnglishAdmissions0/Gold0; no externalfoodfallback or newhost/DBwrite.",
+  "auth": "FourassetauthcandidateNOTincluded. Exactfullapp2a07 nowexecutesHTML withgeneratedidentity, tenchecksPASS; realIDP/browser/accountqualification remainsopen.05soleexecutionowner preparing7645immutabletransition.00 nextprepare exactnewroleclosure/selection+roleboundtransport+conditionaladmission withoutlaunch.",
+  "authority": "Current Parent relay explicitly authorizesversionedaccessibleworldfeedback after17931; priorovernight human816ac1d6 and source/privacy/denial/security/main/CIXholds remain.",
+  "cleanup": "Retainunique169source/proofs/inactive165/unfinishedauth+semantic+framingwork.00creatednochildserver.64allownbrowsers/listenersclosed; donotstopanotherowner.",
+  "nextAction": "Sendoneexact169delivery Gateway/native receipts separate. Preserve/push169sourcecustody. Prepare00authsuccessorroles fromverified089de47f template without launch; waitactual05PID/birth/currentcustody qualification, no oldstartgrant replay."
+}

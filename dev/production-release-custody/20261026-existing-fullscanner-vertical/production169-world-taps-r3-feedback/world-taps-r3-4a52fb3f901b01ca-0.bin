@@ -1,0 +1,36 @@
+import{sourceWorld,project,V}from'../landing-first-pair-v12-integration/scene-camera.mjs';
+import{tabletRayDepth,tabletContactDepths}from'./scene-module-runtime-r3.mjs';
+const clamp=t=>Math.max(0,Math.min(1,t));
+function homography(p){const[a,b,c,d]=p,dx1=b[0]-c[0],dx2=d[0]-c[0],dx3=a[0]-b[0]+c[0]-d[0],dy1=b[1]-c[1],dy2=d[1]-c[1],dy3=a[1]-b[1]+c[1]-d[1],den=dx1*dy2-dx2*dy1,g=(dx3*dy2-dx2*dy3)/den,h=(dx1*dy3-dx3*dy1)/den;return[b[0]-a[0]+g*b[0],d[0]-a[0]+h*d[0],a[0],b[1]-a[1]+g*b[1],d[1]-a[1]+h*d[1],a[1],g,h,1];}
+function inverse(m){const[a,b,c,d,e,f,g,h,i]=m,A=e*i-f*h,B=f*g-d*i,C=d*h-e*g,det=a*A+b*B+c*C;return[A,(c*h-b*i),(b*f-c*e),B,(a*i-c*g),(c*d-a*f),C,(b*g-a*h),(a*e-b*d)].map(x=>x/det);}
+const map=(H,[x,y])=>{const w=H[6]*x+H[7]*y+H[8];return[(H[0]*x+H[1]*y+H[2])/w,(H[3]*x+H[4]*y+H[5])/w];};
+export function fixedGlassWorld(shared){const camera=shared.room.spec.cameras[1],abc=shared.room.spec.tabletInverseDepthABC;return shared.glass[1].map(([x,y])=>sourceWorld(x,y,1/(abc[0]*x+abc[1]*y+abc[2]),camera));}
+export function glassTargetWorld(shared,uv){const xy=map(homography(shared.glass[1]),uv),abc=shared.room.spec.tabletInverseDepthABC;return sourceWorld(...xy,1/(abc[0]*xy[0]+abc[1]*xy[1]+abc[2]),shared.room.spec.cameras[1]);}
+export function planeInverseDepth(camera,normal,point){const den=V.dot(normal,V.sub(point,camera.position));if(Math.abs(den)<1e-8)throw Error('Camera lies on support plane');const at=uv=>V.dot(normal,V.sub(sourceWorld(...uv,1,camera),camera.position))/den;const c=at([0,0]);return[at([1,0])-c,at([0,1])-c,c];}
+function rasterTip(mesh,posed,depths,uv,camera){
+ const cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+ for(let k=0;k<mesh.indices.length;k+=3){const ids=mesh.indices.slice(k,k+3),[a,b,c]=ids.map(i=>mesh.source[i]),den=cross(a,b,c);if(Math.abs(den)<1e-12)continue;const weights=[cross(uv,b,c)/den,cross(a,uv,c)/den,cross(a,b,uv)/den];if(weights.some(w=>w< -1e-8))continue;const point=[0,1].map(axis=>weights.reduce((sum,w,j)=>sum+w*posed[ids[j]][axis],0)),depth=1/weights.reduce((sum,w,j)=>sum+w/depths[ids[j]],0);return sourceWorld(...point,depth,camera);}
+ throw Error('Source fingertip outside actual triangle mesh');
+}
+function exactContactVertex(mesh,posed,point){
+ if(mesh.source.some(uv=>Math.hypot(uv[0]-mesh.indexContact[0],uv[1]-mesh.indexContact[1])<1e-10))return{mesh,posed};
+ const cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),uv=mesh.indexContact,index=mesh.source.length,source=[...mesh.source,uv],indices=[];let splits=0;
+ for(let k=0;k<mesh.indices.length;k+=3){const ids=mesh.indices.slice(k,k+3),[a,b,c]=ids.map(i=>mesh.source[i]),den=cross(a,b,c);if(Math.abs(den)<1e-12){indices.push(...ids);continue;}const weights=[cross(uv,b,c)/den,cross(a,uv,c)/den,cross(a,b,uv)/den];if(weights.some(w=>w< -1e-10)){indices.push(...ids);continue;}splits++;for(const tri of [[ids[0],ids[1],index],[ids[1],ids[2],index],[ids[2],ids[0],index]])if(Math.abs(cross(...tri.map(i=>source[i])))>1e-12)indices.push(...tri);}
+ if(!splits)throw Error('Contact landmark outside hand mesh');return{mesh:{...mesh,source,indices},posed:[...posed,point]};
+}
+/** Bind measured source hand to ONE world tablet; no change to authored module/assets. */
+export function bindTabletFrame(loaded,frame,{shared,camera,actorPlaneABC,endpointGapNative}){
+ const {module}=loaded,reference=module.reference,glass=fixedGlassWorld(shared),contacts=frame.contacts.map(x=>({...x}));const placements={};const layers=frame.layers.map(layer=>{const c=contacts.find(x=>x.layerId===layer.id&&x.kind==='tap'&&x.target==='tablet');if(!c||!layer.rasterMesh)return layer;
+  const nativeRoot=reference.anchors.armCropRoot||reference.anchors.forearmRoot||reference.anchors.wrist;let mesh={...layer.rasterMesh,root:layer.rasterMesh.root||(nativeRoot?nativeRoot.map((v,i)=>v/(i?reference.height:reference.width)):null),indexContact:layer.rasterMesh.indexContact||(reference.anchors.index?.map((v,i)=>v/(i?reference.height:reference.width)))};
+  if(!mesh.root||!mesh.indexContact)throw Error('Measured source hand root/index binding missing');
+  const refined=exactContactVertex(mesh,layer.deformedUV||mesh.source,c.point.map((v,i)=>v/(i?reference.height:reference.width)));mesh=refined.mesh;
+  const targetUV=c.targetGlassUV||c.glassUV||map(inverse(homography(reference.anchors.tabletGlass)),c.targetPoint);
+  const worldTarget=glassTargetWorld(shared,targetUV),projected=project(worldTarget,camera),target=[(projected[0]+1)/2,(1-projected[1])/2],sourceTarget=c.targetPoint.map((v,i)=>v/(i?reference.height:reference.width));
+  const gap=Math.hypot(c.point[0]-c.targetPoint[0],c.point[1]-c.targetPoint[1]);const amount=c.active?1:Number.isFinite(c.frontNormalSeparationInTabletWidths)?1-clamp(c.frontNormalSeparationInTabletWidths/.08):1-clamp(gap/(endpointGapNative||1));
+  const delta=target.map((v,i)=>v-sourceTarget[i]),direction=V.sub(mesh.indexContact,mesh.root),length=V.dot(direction,direction);if(!length)throw Error('Contact root/index coincide');
+  const deformedUV=refined.posed.map((uv,i)=>{const weight=clamp(V.dot(V.sub(mesh.source[i],mesh.root),direction)/length);return uv.map((v,k)=>v+delta[k]*weight*amount);});
+  const actorDepth=1/(actorPlaneABC[0]*mesh.root[0]+actorPlaneABC[1]*mesh.root[1]+actorPlaneABC[2]);const depths=tabletContactDepths({mesh,posedUV:deformedUV,camera,actorDepth,glassWorld:glass,progress:amount});
+  placements[layer.id]={vertexDepths:depths};const currentTip=c.point.map((v,i)=>v/(i?reference.height:reference.width)+delta[i]*amount),tipDepth=1/((1-amount)/actorDepth+amount/tabletRayDepth(currentTip,camera,glass)),tipWorld=sourceWorld(...currentTip,tipDepth,camera);
+  c.worldTarget=worldTarget;c.analyticWorldTip=tipWorld;c.worldTip=rasterTip(mesh,deformedUV,depths,mesh.indexContact,camera);c.targetDistance=Math.hypot(...V.sub(c.worldTip,worldTarget));c.analyticTargetDistance=Math.hypot(...V.sub(tipWorld,worldTarget));c.contactProgress=amount;c.sourceTargetToWorldProjectionDeltaNative=delta.map((v,i)=>v*(i?reference.height:reference.width));return{...layer,rasterMesh:mesh,deformedUV};
+ });return{frame:{...frame,layers,contacts},placements};
+}
