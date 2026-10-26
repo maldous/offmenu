@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3944,
+  "messages": 3950,
   "arabicTranslated": 376,
-  "arabicMissing": 3568,
+  "arabicMissing": 3574,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -1823,7 +1823,8 @@
     "./cooking-model.js": {
       "sources": [
         "public/app.js",
-        "public/journey-ui.js"
+        "public/journey-ui.js",
+        "public/recipe-ingredient-coverage.js"
       ],
       "arabic": false
     },
@@ -1943,6 +1944,7 @@
         "public/journey-ui.js",
         "public/menu-model.js",
         "public/model.js",
+        "public/recipe-ingredient-coverage.js",
         "public/recipe-library-model.js"
       ],
       "arabic": false
@@ -1991,6 +1993,12 @@
       ],
       "arabic": false
     },
+    "./local-retained-category-presentation.js": {
+      "sources": [
+        "public/scanner-product-visuals.js"
+      ],
+      "arabic": false
+    },
     "./locale.mjs": {
       "sources": [
         "cloud/handler.mjs"
@@ -2006,6 +2014,7 @@
         "public/insights-model.js",
         "public/insights-ui.js",
         "public/integrations.js",
+        "public/recipe-ingredient-coverage.js",
         "public/unified-data.js"
       ],
       "arabic": false
@@ -2020,6 +2029,7 @@
         "public/menu-model.js",
         "public/pantry-backup.js",
         "public/product-visual-association.js",
+        "public/recipe-ingredient-coverage.js",
         "public/recipe-review.js",
         "public/scanner-product-visuals.js",
         "public/shelf-scanner.js",
@@ -2090,6 +2100,7 @@
     },
     "./product-visual-selector.js": {
       "sources": [
+        "public/local-retained-category-presentation.js",
         "public/product-visual-association.js"
       ],
       "arabic": false
@@ -15443,6 +15454,12 @@
       ],
       "arabic": true
     },
+    "Recipe ingredient names must be explicit.": {
+      "sources": [
+        "public/recipe-ingredient-coverage.js"
+      ],
+      "arabic": false
+    },
     "Recipe is no longer in this search; search again.": {
       "sources": [
         "public/recipe-library-ui.js"
@@ -15515,6 +15532,12 @@
     "Recipe submitted for review.": {
       "sources": [
         "public/recipe-community-ui.js"
+      ],
+      "arabic": false
+    },
+    "Recipe, bounded inventory, product map and explicit date required.": {
+      "sources": [
+        "public/recipe-ingredient-coverage.js"
       ],
       "arabic": false
     },
@@ -17223,6 +17246,12 @@
     "Selected Balanced Final OffMenu app icon": {
       "sources": [
         "public/product-visual-selector.js"
+      ],
+      "arabic": false
+    },
+    "Selected admitted snapshot only; inherited vocabulary/matching/allocation. Basis eligibility is not nutrient completeness, food safety, recipe admission or cooking/serving evidence.": {
+      "sources": [
+        "public/recipe-ingredient-coverage.js"
       ],
       "arabic": false
     },
@@ -20284,6 +20313,12 @@
     "UniformsUtils: Textures of render targets cannot be cloned via cloneUniforms() or mergeUniforms().": {
       "sources": [
         "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "Unique lot IDs and valid declared expiry dates required.": {
+      "sources": [
+        "public/recipe-ingredient-coverage.js"
       ],
       "arabic": false
     },
@@ -23892,6 +23927,12 @@
     "tree nuts": {
       "sources": [
         "public/ingredients.js"
+      ],
+      "arabic": false
+    },
+    "typed-exact-decimal-json/1; not an original byte-span hash": {
+      "sources": [
+        "public/local-retained-category-presentation.js"
       ],
       "arabic": false
     },
