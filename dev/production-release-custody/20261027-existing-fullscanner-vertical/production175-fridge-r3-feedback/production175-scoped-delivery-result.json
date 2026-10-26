@@ -1,0 +1,54 @@
+{
+  "id": "worker00-versioned-fridge-r3-feedback-production175-delivered-20261027",
+  "atUTC": "2026-10-26T13:19:41.866411+00:00",
+  "worker": 0,
+  "threadId": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+  "task": "CORE-APP-SCANNER-DELIVERY",
+  "state": "DONE_WITH_CONCERNS_VERSIONED_FRIDGE_FEEDBACK_ONLY",
+  "live": {
+    "version": 175,
+    "uuid": "dba469db-450d-4289-b182-351355a99806",
+    "deployment": "da799f97-622e-4f9e-9806-1a844e46fe91",
+    "createdOnUTC": "2026-10-26T13:17:31.497127Z",
+    "percentage": 100,
+    "moduleCount": 202,
+    "bytes": 37074820,
+    "main": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/landing-only.mjs",
+      "sha256": "13820aa6b77d75a99cc152ef2b2349bea94f35837b698aca824170fc95ebd339",
+      "bytes": 581548
+    },
+    "url": "https://offmenu.aldous.info/feedback/fridge-world/r3/"
+  },
+  "proofs": {
+    "activationAnd202Pins": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/activation175-envelope.json",
+      "sha256": "26659d43cd241b55b208131de19f2291c651324563eb719efd6f82b9195a5bc9",
+      "bytes": 773
+    },
+    "referenceClosure": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/candidate175-exact-ast-reference-closure.json",
+      "sha256": "3ee34c26da703c03695f041b58173bd37a49ef2470101f6fba430f818b9a12a3",
+      "bytes": 19188
+    },
+    "offlineComposition": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/package-qualification.json",
+      "sha256": "9f85432755bbedbeeed7947b65f2604cb82e5d5e92d1a3091eb897be000b2d6b",
+      "bytes": 1295
+    },
+    "expectedPins": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/fridge-202-expected-pins.json",
+      "sha256": "d486cbbdc140c0a251533095c98816c340e41aad52fbedaa42ce501ad3accc3e",
+      "bytes": 41077
+    },
+    "actual64Result": "17937/dddd27b8a4906217bac25a2cda0bd21208dc817ac415151a789ee054929d9673",
+    "sourceManifest": "9d44dc732601336e2da865a3574f1a8a89b39ee645b09f577e4ad2e2eb465f91"
+  },
+  "scope": "21versionedfridgeroutes/10newparts,14oldbodyaliases. All327oldstaticroutes unchanged; all191nonmain169modulepins exact.21newresponsehash/HEAD/headers+3existingroomresources actualhashPASS;3oldscreenfixturebins explicitopaqueoffline. FourWorkerJS exactpins/AST194nodes/193edges/no unresolved/dynamicimports,8oldunreferencedmodules retained,56foodbins absent/noWorkerreferences. Mainlanding/sourceR2/world/own-only94/private/CSP preserved.",
+  "visualVerdict": "Actual64onefocusednormalR3view materialimprovement actor/container/cavity/shelf readability; actualkeyframesviewed, softwareWebGL notphysicalphone/fullnative1x proof. Fararmocclusion/angularcutout/physicalsupport/closedvolume/anatomy/natural/full15/humanacceptance open. No rootlandingreplacement or finalcamerachoice.",
+  "auth": "LOCALV3served17957independentlyverified21b055ab, anonGETHEADkitchen303/auth/scannerredirect/hash9cb+d133/samestate preserved, owned05node2360498+workerd2360583. No Rootstopon06expiry. Productionauth/Google NOTactivated; realaccount/returnorigin/nonceconfigready unresolved, no deniedsettingsretry.",
+  "data": "Real57subset2015 nowappliedsingle19wrappera323; first5150 class7/type14/typeonly7/variant20/attr1, fullnorm0/Gold0/publicationnone. Full269source6.9Mobs/5.24Mkeys completeSOURCEonly. Immutable165unadopted, no source-body reprocessing/publication or inline5GB assumptions.",
+  "authority": "Existingauthorizedunfinishedfridgefeedback packet95b8e7a7/actual17937 afterauthcriticalpath17957; prior source/privacy/denial/security/productionCIX/mainholds remain. Noauth/data/providerconfig mutation.",
+  "cleanup": "Retainunique175source/proofs/source165/unfinishedsemantic/authacceptance/framing. NoRootchildserver;05solelive7645owner,64closesitsownchecks.",
+  "nextAction": "Sendoneexact175deliveryGateway, preserve/privateoriginpush175sourcecustody; recordcurrentcutv3served+real57positiveclassification and unresolved fullnormalization/login/Google/framing; preserveexistingworkerownership/noarchive."
+}
