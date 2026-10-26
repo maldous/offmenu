@@ -1,0 +1,35 @@
+// Per-scene finite choreography; master still owns the only clock and world.
+import {grid} from '../action-math.mjs';
+import {attachedSkin} from '../grip-math.mjs';
+const ease=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
+export function track(p,keys){if(!Number.isFinite(p)||p<0||p>1)throw RangeError('Finite progress0..1');for(let i=1;i<keys.length;i++)if(p<=keys[i][0]){const [a,x]=keys[i-1],[b,y]=keys[i];return x+(y-x)*ease((p-a)/(b-a));}return keys.at(-1)[1];}
+const timelines={
+ 11:[[0,0],[.10,0],[.30,.6],[.68,.72],[.91,1],[1,1]],
+ 12:[[0,0],[.12,0],[.38,.6],[.69,.72],[.94,1],[1,1]],
+ 13:[[0,0],[.16,0],[.40,.6],[.68,.72],[.90,1],[1,1]],
+ 14:[[0,0],[.08,0],[.30,.56],[.73,.74],[.95,1],[1,1]],
+ 15:[[0,0],[.12,0],[.36,.56],[.73,.74],[.96,1],[1,1]]
+};
+export const sourceProgress=(id,p)=>track(p,timelines[id]);
+function curve(layer,root,index,pixels,width,height){
+ const axis=[index[0]-root[0],index[1]-root[1]],length=Math.hypot(...axis),unit=axis.map(v=>v/length),normal=[-unit[1],unit[0]];
+ return layer.deformedUV.map(uv=>{const pt=[uv[0]*width,uv[1]*height],t=((pt[0]-root[0])*unit[0]+(pt[1]-root[1])*unit[1])/length;
+  const w=t>0&&t<1?Math.sin(Math.PI*t)**2:0;
+  return [(pt[0]+normal[0]*pixels*w)/width,(pt[1]+normal[1]*pixels*w)/height];});
+}
+export function pointFollowThrough(frame,id,p,ref){const arm=frame.layers.find(l=>l.rasterMesh);const scale=id===11?7:id===12?-6:9;
+ const amount=track(p,[[0,0],[.10,-scale*.45],[.28,scale],[.43,-scale*.4],[.57,0],[.65,0],[.75,scale*.5],[.92,0],[1,0]]);
+ // Source-space forearm curvature, both ends pinned: no fake shoulder/elbow anchors.
+ arm.deformedUV=curve(arm,ref.anchors.armCropRoot,frame.contacts[0].point,amount,ref.width,ref.height);
+ frame.motionStage=p<.16?'anticipation':p<.42?'reach':p<.69?'read-and-indicate':p<.94?'retract-follow-through':'settle';return frame;}
+export function heldInspection(frame,id,p,ref){const contact=frame.contacts[0],grip=contact.point,root=ref.anchors.armCropRoot;
+ const turn=id===14?track(p,[[0,0],[.22,-.025],[.38,-.065],[.50,.025],[.65,0],[.73,0],[.86,.025],[1,0]]):track(p,[[0,0],[.30,.025],[.45,.055],[.56,.02],[.65,0],[.73,0],[.86,-.02],[1,0]]);
+ const lift=id===14?track(p,[[0,0],[.38,-7],[.50,-3],[.65,0],[.73,0],[.9,0],[1,0]]):track(p,[[0,0],[.40,-10],[.56,-4],[.65,0],[.73,0],[1,0]]);
+ const pose={angle:turn,shift:[0,lift]},arm=frame.layers.find(l=>l.rasterMesh),prop=frame.layers.find(l=>l.id===contact.target.slice(5));
+ arm.deformedUV=attachedSkin({source:arm.deformedUV},{root,grip,radius:id===14?120:130,width:ref.width,height:ref.height},pose);
+ prop.transform.angle+=turn;prop.transform.shift[1]+=lift/ref.height;contact.point=[grip[0],grip[1]+lift];
+ frame.motionStage=p<.16?'anticipation':p<.38?'raise':p<.73?(id===14?'compare-notebook-with-tablet':'inspect-printed-record'):'lower-held-and-settle';return frame;}
+export function bodyFollow(frame,id,p,ref){if(![11,12].includes(id))return frame;const core=frame.layers.find(l=>/actor-core/.test(l.id));if(!core)return frame;
+ const root=ref.anchors.armCropRoot,mesh=grid(ref.width,ref.height,{root,index:root}),lean=track(p,[[0,0],[.14,-1.2],[.32,2.4],[.52,.8],[.65,0],[.80,-1],[1,0]]);
+ // Small cloth/torso follow-through anchored at the exact arm crop join, not invented body anatomy.
+ core.rasterMesh=mesh;core.deformedUV=mesh.source.map(uv=>{const x=uv[0]*ref.width-root[0],y=uv[1]*ref.height-root[1],w=Math.min(1,Math.hypot(x,y)/100);return [uv[0]+lean*w/ref.width,uv[1]+Math.abs(lean)*.25*w/ref.height];});return frame;}

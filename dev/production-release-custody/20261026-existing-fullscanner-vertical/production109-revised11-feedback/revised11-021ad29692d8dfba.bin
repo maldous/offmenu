@@ -1,0 +1,17 @@
+// Source-local attachment math only; no world/camera/depth/controller ownership.
+export const ease=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
+export function heldPose(p,{start=[-8,55,-.06],end=[10,60,.04]}={}){
+ if(!Number.isFinite(p)||p<0||p>1)throw RangeError('Finite progress0..1 required');
+ if(p>=.56&&p<=.74)return {shift:[0,0],angle:0};
+ const k=p<.56?1-ease(p/.56):ease((p-.74)/.26),a=p<.56?start:end;
+ return {shift:[a[0]*k,a[1]*k],angle:a[2]*k};
+}
+export function rigidPixel(point,grip,pose){const c=Math.cos(pose.angle),s=Math.sin(pose.angle),x=point[0]-grip[0],y=point[1]-grip[1];return [grip[0]+x*c-y*s+pose.shift[0],grip[1]+x*s+y*c+pose.shift[1]];}
+export function attachedSkin(mesh,{root,grip,radius=120,width,height},pose){
+ const axis=[grip[0]-root[0],grip[1]-root[1]],length=axis[0]**2+axis[1]**2;
+ return mesh.source.map(uv=>{const point=[uv[0]*width,uv[1]*height],along=((point[0]-root[0])*axis[0]+(point[1]-root[1])*axis[1])/length;
+  const rootDistance=Math.hypot(point[0]-root[0],point[1]-root[1]);
+  const w=Math.max(ease((along-.05)/.6),1-ease((Math.hypot(point[0]-grip[0],point[1]-grip[1])-radius)/35))*ease(rootDistance/35);
+  const moved=rigidPixel(point,grip,pose);return [(point[0]+(moved[0]-point[0])*w)/width,(point[1]+(moved[1]-point[1])*w)/height];
+ });
+}

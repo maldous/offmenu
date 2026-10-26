@@ -1,0 +1,9 @@
+// Smooth source-part reach with fixed crop root; controls are not anatomical anchors.
+const ease=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
+export function reachPoint(uv,weight,{root,elbow:control,index},width,height){
+ const point=[uv[0]*width,uv[1]*height],axis=[index[0]-root[0],index[1]-root[1]],length=axis[0]**2+axis[1]**2;
+ const along=((point[0]-root[0])*axis[0]+(point[1]-root[1])*axis[1])/length,local=ease((along-.05)/.65);
+ const angle=(1-weight)*.16*local,c=Math.cos(angle),s=Math.sin(angle),x=point[0]-control[0],y=point[1]-control[1];
+ const moved=[control[0]+c*x-s*y,control[1]+s*x+c*y];
+ return [(point[0]+(moved[0]-point[0])*local)/width,(point[1]+(moved[1]-point[1])*local)/height];
+}
