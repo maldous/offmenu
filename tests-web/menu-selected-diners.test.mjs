@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {webcrypto} from 'node:crypto';
+import {appendRecipeIngredientCoverage} from '../public/recipe-ingredient-coverage-ui.js';
 import {pathToFileURL} from 'node:url';
 
 // Execute the real rendered-menu and diner-checkbox handlers with synthetic
@@ -21,23 +22,25 @@ function declaration(name,end){
 }
 const handlers=declaration('findMeals',"\n$('refresh').onclick")+'\n'+declaration('renderDinnerMembers','\nlet syncReady=');
 class Element{
- constructor(tag){this.tag=tag;this.children=[];this.value='';this.checked=false;this.style={};this.textContent='';}
+ constructor(tag){this.tag=tag;this.children=[];this.value='';this.checked=false;this.style={};this.dataset={};this.attributes={};this.textContent='';this.ownerDocument=document;this.classList={toggle:(name,on)=>{this.classes??=new Set();on?this.classes.add(name):this.classes.delete(name);}};}
+ setAttribute(name,value){this.attributes[name]=value;}
  append(...children){this.children.push(...children);}
  replaceChildren(...children){this.children=[...children];}
 }
+const document={createElement:tag=>new Element(tag),createTextNode:text=>String(text),activeElement:null};
 const plain=x=>JSON.parse(JSON.stringify(x));
 const date='2026-10-26';
 const recipe={id:'synthetic:rice',title:'Synthetic rice meal',servings:2,source:'synthetic-fixture',license:'fixture-only',instructions:['Synthetic step'],ingredients:[{ingredient:'rice',quantity:100,unit:'g'}]};
 const members=[{id:'small',name:'Same name',portion:.5,advisors:[],avoid:[],restrictions:[]},{id:'large',name:'Same name',portion:1.5,advisors:[],avoid:[],restrictions:[]}];
-function harness({people=members,mapped=true}={}){
+function harness({people=members,mapped=true,recipeCount=1}={}){
  const elements=new Map(),$=id=>{if(!elements.has(id))elements.set(id,new Element(id));return elements.get(id);};
  const inventory=[{id:'synthetic-lot',barcode:'synthetic-product',ingredient:mapped?'rice':'unmapped',quantity:500,unit:'g'}];
  // Explicit synthetic product/ingredient association and illustrative per100g
  // values. No source-local DTO identity or product name establishes this join.
  const products={'synthetic-product':{name:'Rice',product_quantity:500,product_quantity_unit:'g',nutrition_data_per:'100g',nutriments:{proteins_100g:7}}};
  const store=new Map();let dirty=0;
- const ctx={$,recipeLibrary:null,profile:{members:plain(people),units:'metric',plan:[]},recipes:[plain(recipe)],products,absentDiners:new Set(),selections:[],PROFILE:'synthetic-profile',crypto:webcrypto,NUTRIENTS,planSummary,rankedMenus,householdPortions,quantified,
-  document:{createElement:tag=>new Element(tag),createTextNode:text=>String(text),activeElement:null},
+ const ctx={$,recipeLibrary:null,profile:{members:plain(people),units:'metric',plan:[]},recipes:Array.from({length:recipeCount},(_,i)=>({...plain(recipe),id:recipeCount===1?recipe.id:recipe.id+':'+i})),products,absentDiners:new Set(),selections:[],PROFILE:'synthetic-profile',crypto:webcrypto,NUTRIENTS,planSummary,rankedMenus,householdPortions,quantified,
+  document,appendRecipeIngredientCoverage,
   today:()=>date,menuInventory:()=>inventory,normalizeSearchText:s=>String(s).toLowerCase(),multilingualSearchText:r=>r.title.toLowerCase(),normalize:s=>String(s).toLowerCase(),locationKey:()=>'',
   setLocalizedText:(el,text,values={})=>{el.textContent=String(text).replace(/\{(v\d+)\}/g,(_,k)=>String(values[k]));},t:(s,values={})=>String(s).replace(/\{(v\d+)\}/g,(_,k)=>String(values[k])),getLanguage:()=> 'en',
   localizedField:(r,k)=>({value:r[k]}),showLocalized:(el,v)=>{el.textContent=v.value;},displayAmount:(n,u)=>n+' '+u,displayName:s=>s,
@@ -74,3 +77,23 @@ test('product name cannot create a missing ingredient join or turn absent nutrie
 test('anonymous measured menu keeps no invented household identity',()=>{
  const h=harness({people:[]});const meal=h.add();assert.deepEqual(meal.memberIds,[]);assert.equal(meal.servings,2);assert.equal(h.summary().requirements[0].quantity,100);
 });
+
+ test('filtered results expose the entire loaded collection and last result saves only selected diners',()=>{
+ const h=harness({recipeCount:130});
+ assert.equal(h.$('meals').children.length,24);
+ assert.equal(h.$('meals').tabIndex,-1);
+ const box=h.checkbox(1);box.checked=false;box.onchange();
+ h.$('menu-search').value='synthetic';h.ctx.findMeals();
+ assert.equal(h.$('meals').children.length,130);
+ assert.equal(h.$('meals').tabIndex,0);
+ assert.equal(h.$('meals').classes.has('meal-results-scroll'),true);
+ const last=h.$('meals').children.at(-1);
+ last.children.find(x=>x.tag==='button'&&x.className==='coral').onclick();
+ assert.equal(h.ctx.profile.plan.at(-1).recipeId,recipe.id+':129');
+ assert.deepEqual(plain(h.ctx.profile.plan.at(-1).memberIds),['small']);
+ h.$('menu-search').value='';h.ctx.findMeals();
+ assert.equal(h.$('meals').children.length,24);
+ assert.equal(h.$('meals').classes.has('meal-results-scroll'),false);
+ h.$('show-all-meals').checked=true;h.ctx.findMeals();
+ assert.equal(h.$('meals').children.length,130);
+ });

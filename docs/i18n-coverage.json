@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3973,
+  "messages": 3976,
   "arabicTranslated": 376,
-  "arabicMissing": 3597,
+  "arabicMissing": 3600,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -87,12 +87,6 @@
     "\nReported allergens: ": {
       "sources": [
         "public/app.js"
-      ],
-      "arabic": false
-    },
-    " (optional, not allocated)": {
-      "sources": [
-        "public/journey-ui.js"
       ],
       "arabic": false
     },
@@ -7639,6 +7633,12 @@
       ],
       "arabic": false
     },
+    "Enter a valid number of portions.": {
+      "sources": [
+        "public/journey-ui.js"
+      ],
+      "arabic": false
+    },
     "Enter a value": {
       "sources": [
         "public/data-workspace.js"
@@ -9625,7 +9625,7 @@
       ],
       "arabic": true
     },
-    "Ingredient amounts below show the recipe’s base yield; allocation scales to the portions entered.": {
+    "Ingredient amounts below update for the portions entered.": {
       "sources": [
         "public/index.html"
       ],
@@ -13468,6 +13468,7 @@
     "Optional": {
       "sources": [
         "public/app.js",
+        "public/journey-ui.js",
         "public/locales/ar.js",
         "public/recipe-library-ui.js"
       ],
@@ -15034,7 +15035,8 @@
     },
     "Quantity not specified": {
       "sources": [
-        "public/app.js"
+        "public/app.js",
+        "public/journey-ui.js"
       ],
       "arabic": false
     },
@@ -15654,6 +15656,12 @@
     "Recipes need id, title, source, license, servings and ingredients.": {
       "sources": [
         "public/model.js"
+      ],
+      "arabic": false
+    },
+    "Recipes; scroll for more results": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -18962,6 +18970,12 @@
       "arabic": false
     },
     "Suggested ingredient: {v0}. Correct it to use in meal matching.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Suggested recipes": {
       "sources": [
         "public/app.js"
       ],
@@ -23073,6 +23087,12 @@
     "noopener,noreferrer": {
       "sources": [
         "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "not allocated": {
+      "sources": [
+        "public/journey-ui.js"
       ],
       "arabic": false
     },

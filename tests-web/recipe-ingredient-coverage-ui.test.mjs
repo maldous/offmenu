@@ -15,7 +15,7 @@ import {t,setLocalizedText,getLanguage} from '../public/i18n.js';
 import {normalizeSearchText,multilingualSearchText,showLocalized,localizedField,displayName} from '../public/content-locale.js';
 const date='2026-10-26';
 class Element{
- constructor(tag,document){this.tagName=tag;this.ownerDocument=document;this.children=[];this.dataset={};this.style={};this.className='';this.ownText='';this.value='';this.checked=false;this.attributes={};}
+ constructor(tag,document){this.tagName=tag;this.ownerDocument=document;this.children=[];this.dataset={};this.style={};this.className='';this.ownText='';this.value='';this.checked=false;this.attributes={};this.classList={toggle:(name,on)=>{this.classes??=new Set();on?this.classes.add(name):this.classes.delete(name);}};}
  set textContent(v){this.ownText=String(v);this.children=[];}get textContent(){return this.ownText+this.children.map(n=>n.textContent).join('');}
  set innerHTML(v){throw Error('Untrusted markup must never be parsed.');}
  append(...nodes){for(const n of nodes){const v=typeof n==='string'?this.ownerDocument.createTextNode(n):n;v.parentNode=this;this.children.push(v);}}
