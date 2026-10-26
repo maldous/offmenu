@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3901,
+  "messages": 3944,
   "arabicTranslated": 376,
-  "arabicMissing": 3525,
+  "arabicMissing": 3568,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -1919,6 +1919,7 @@
         "public/integration-owner03.mjs",
         "public/journey-ui.js",
         "public/model.js",
+        "public/owned-backup-account-ui.js",
         "public/personal-ai-ui.js",
         "public/recipe-community-ui.js",
         "public/recipe-library-model.js",
@@ -2047,6 +2048,18 @@
     "./offmenu-identity-client.js": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "./owned-backup-account-ui.js": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "./owned-snapshot-extractor.mjs": {
+      "sources": [
+        "cloud/private-portability-owned-backup-v1.mjs"
       ],
       "arabic": false
     },
@@ -3071,6 +3084,12 @@
       ],
       "arabic": true
     },
+    "Account backup controls are missing.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
     "Account changed. Retry from your current account.": {
       "sources": [
         "public/app.js",
@@ -4068,6 +4087,12 @@
       ],
       "arabic": false
     },
+    "Backup request refused.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
     "Backup restore failed and browser storage could not be fully restored. Keep your backup and reload before making changes.": {
       "sources": [
         "public/app.js"
@@ -4435,6 +4460,12 @@
     "CONFIRMED · REMOVED FROM INVENTORY.": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "COUNT_MISMATCH:": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
       ],
       "arabic": false
     },
@@ -4838,6 +4869,12 @@
       "sources": [
         "public/app.js",
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "Checking encrypted backup availability…": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -5999,6 +6036,12 @@
       ],
       "arabic": false
     },
+    "Cookie, Authorization": {
+      "sources": [
+        "cloud/owned-backup-export-route.mjs"
+      ],
+      "arabic": false
+    },
     "Cooking date": {
       "sources": [
         "public/index.html"
@@ -6635,6 +6678,12 @@
       ],
       "arabic": false
     },
+    "Deployment-owned backup route function required.": {
+      "sources": [
+        "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
     "Depth Texture with cube render targets is not supported": {
       "sources": [
         "public/scanner-three.js"
@@ -6972,6 +7021,13 @@
       ],
       "arabic": false
     },
+    "Download encrypted account backup": {
+      "sources": [
+        "public/index.html",
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
     "Download phone-friendly HTML ↓": {
       "sources": [
         "public/index.html"
@@ -6996,6 +7052,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Download your account backup as an encrypted file. Kitchen backups below are separate.": {
+      "sources": [
+        "public/index.html"
+      ],
+      "arabic": false
     },
     "Downloaded copies cannot be recalled.": {
       "sources": [
@@ -7334,6 +7396,31 @@
     "Enable AI review": {
       "sources": [
         "public/community-ai-ui.js"
+      ],
+      "arabic": false
+    },
+    "Encrypted account backup": {
+      "sources": [
+        "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Encrypted account backup download started.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
+    "Encrypted account backup is unavailable.": {
+      "sources": [
+        "public/index.html",
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
+    "Encrypted account backup is unavailable. Try again later.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -7744,6 +7831,12 @@
     "Exact releaseId and manifestSha256 are required.": {
       "sources": [
         "cloud/provider-data.mjs"
+      ],
+      "arabic": false
+    },
+    "Exact retained source product reference required": {
+      "sources": [
+        "public/product-visual-selector.js"
       ],
       "arabic": false
     },
@@ -9426,6 +9519,12 @@
       ],
       "arabic": false
     },
+    "Incomplete source inventory: ": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
     "Incomplete · retry the failed lane; loaded source observations remain visible.": {
       "sources": [
         "public/shelf-scanner.js"
@@ -10048,6 +10147,12 @@
     "Invalid eaten portions": {
       "sources": [
         "public/cooking-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid encrypted backup response.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -11462,6 +11567,12 @@
     "MEXT food composition": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "MISSING_SOURCE:": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
       ],
       "arabic": false
     },
@@ -13222,6 +13333,12 @@
       ],
       "arabic": true
     },
+    "Open your account panel to download an encrypted backup.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
     "Open: {v0} · {v1}": {
       "sources": [
         "public/sharing-ui.js"
@@ -13315,6 +13432,7 @@
         "cloud/integrations.mjs",
         "cloud/kitchens.mjs",
         "cloud/lot-restriction-owner28.mjs",
+        "cloud/owned-backup-export-route.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
@@ -13426,6 +13544,36 @@
     "Overture food shops and venues": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Owned backup unavailable (AUTHORITY_CHANGED).": {
+      "sources": [
+        "cloud/private-portability-owned-backup-v1.mjs"
+      ],
+      "arabic": false
+    },
+    "Owned backup unavailable (INCOMPLETE_SNAPSHOT).": {
+      "sources": [
+        "cloud/private-portability-owned-backup-v1.mjs"
+      ],
+      "arabic": false
+    },
+    "Owned backup unavailable (REQUEST_SCOPE).": {
+      "sources": [
+        "cloud/private-portability-owned-backup-v1.mjs"
+      ],
+      "arabic": false
+    },
+    "Owned snapshot unavailable": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
+    "Owned snapshot unavailable (": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
       ],
       "arabic": false
     },
@@ -13581,6 +13729,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Payload exceeds existing cryptor plaintext limit; no chunking supported.": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
     },
     "Peas": {
       "sources": [
@@ -14013,6 +14167,18 @@
     "Prepared": {
       "sources": [
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    "Preparing encrypted account backup…": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
+    "Preparing your encrypted account backup…": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -15168,6 +15334,12 @@
     "Ready to count the next identical pack. Keep its barcode in view.": {
       "sources": [
         "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Ready to download your encrypted account backup.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -17659,6 +17831,12 @@
       ],
       "arabic": false
     },
+    "Sign in again before downloading an encrypted account backup.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
     "Sign in as an administrator.": {
       "sources": [
         "public/admin-operations-ui.js",
@@ -17708,6 +17886,12 @@
     "Sign in to continue.": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Sign in to download an encrypted account backup.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -19430,6 +19614,12 @@
       ],
       "arabic": false
     },
+    "The encrypted backup could not be downloaded. Try again.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
     "The existing Netlify Identity client is required.": {
       "sources": [
         "public/offmenu-identity-client.js"
@@ -19469,6 +19659,12 @@
     "This account action is not available in the selected authentication mode.": {
       "sources": [
         "public/offmenu-identity-client.js"
+      ],
+      "arabic": false
+    },
+    "This account backup was not authorized. Check your account and backup selection, then try again.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -19889,6 +20085,18 @@
     "UK food hygiene ratings": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "UNAVAILABLE_SOURCE:": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
+    "UNKNOWN_SOURCE:": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
       ],
       "arabic": false
     },
@@ -20655,7 +20863,8 @@
     },
     "Vary": {
       "sources": [
-        "cloud/locale.mjs"
+        "cloud/locale.mjs",
+        "cloud/owned-backup-export-route.mjs"
       ],
       "arabic": false
     },
@@ -20814,6 +21023,12 @@
     "WHERE owner=?": {
       "sources": [
         "cloud/care-cases.mjs"
+      ],
+      "arabic": false
+    },
+    "WITHHELD_SOURCE:": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
       ],
       "arabic": false
     },
@@ -21670,6 +21885,12 @@
       ],
       "arabic": true
     },
+    "attachment; filename=\"offmenu-owned-backup.json\"": {
+      "sources": [
+        "cloud/owned-backup-export-route.mjs"
+      ],
+      "arabic": false
+    },
     "attachment; filename=offmenu-retailer-extension.zip": {
       "sources": [
         "cloud/handler.mjs"
@@ -21976,6 +22197,12 @@
       ],
       "arabic": false
     },
+    "credentials and sealed provider credentials": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
     "credentials.": {
       "sources": [
         "cloud/admin-settings.mjs"
@@ -22160,6 +22387,12 @@
     "e.g. zh, hi, id, ru, fr, de": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "effective grants and entitlements": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
       ],
       "arabic": false
     },
@@ -22483,6 +22716,12 @@
     "kcal": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "keyRef,keyVersion": {
+      "sources": [
+        "cloud/owned-backup-export-route.mjs"
       ],
       "arabic": false
     },
@@ -22891,6 +23130,12 @@
       ],
       "arabic": false
     },
+    "offmenu.snapshot.": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
     "offmenu:": {
       "sources": [
         "public/scanner-kitchen-handoff.js"
@@ -22933,6 +23178,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "other owners’ profiles/health/stock; membership alone is insufficient": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
     },
     "owner ID": {
       "sources": [
@@ -23028,6 +23279,7 @@
       "sources": [
         "cloud/identifier-host.mjs",
         "cloud/locale.mjs",
+        "cloud/owned-backup-export-route.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
         "cloud/queue-state-entry-owner16.mjs",
         "cloud/source-field-host.mjs"
@@ -23048,6 +23300,7 @@
     },
     "profile.full": {
       "sources": [
+        "cloud/owned-snapshot-extractor.mjs",
         "cloud/private-portability-v1.mjs"
       ],
       "arabic": false
@@ -23087,6 +23340,12 @@
         "cloud/integrations.mjs",
         "cloud/personal-ai.mjs",
         "public/access-ui.js"
+      ],
+      "arabic": false
+    },
+    "public catalogue/cache copies and source bodies without export permission": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
       ],
       "arabic": false
     },
@@ -23609,6 +23868,12 @@
     "tofu|bean curd": {
       "sources": [
         "public/ingredients.js"
+      ],
+      "arabic": false
+    },
+    "tokens, cookies, sessions, secret/key material": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
       ],
       "arabic": false
     },
