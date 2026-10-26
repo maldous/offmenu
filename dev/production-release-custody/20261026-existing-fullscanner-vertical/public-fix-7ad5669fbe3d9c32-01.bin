@@ -1,0 +1,9 @@
+(() => {
+  // ../offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/source/guest-theme.js
+  (() => {
+    const preference = null;
+    const retained = preference === "dark" || preference === "light";
+    document.documentElement.dataset.theme = retained ? preference : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.dataset.themeSource = retained ? "persisted" : "system";
+  })();
+})();

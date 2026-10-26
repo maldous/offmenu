@@ -1,0 +1,130 @@
+{
+  "id": "worker00-existing-fullscanner-native-vertical-reverse-corrected-combined-r2-20261026",
+  "baseVersion": "7efbc8be-c699-43b3-a0db-a31048422f7d",
+  "sourceSelection": "EXACT_SOURCE_PINS_SELECTED",
+  "sourceEvidence": {
+    "author13": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/result.json",
+      "sha256": "8409c2e2c94d60febc097579befcefcd8fd7311eebed9671e94403a7d55f15b8"
+    },
+    "provider19": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker19/full-scanner-guest-providers-20261026/result.json",
+      "sha256": "6247ad0b08fdbbd3388b494803ca38d6eff7c0ca1d5421ad678b44bac16d6cbd"
+    },
+    "narrowGuestHookReview62": "PENDING;no acceptance inferred",
+    "fullHTML": "Samea0e96IDs/inlineStyles;13assetbindingsplusRootONLYexternalCSSalias to/demo/offmenu-system.css; originalprivate/rootCSS route NOT overlaid",
+    "reusedExistingSharedAssets": [
+      {
+        "route": "/scanner-balanced-final.svg",
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker26/current-code-dev17645-successor-20261026/frame01-light-scanner-20261026/assets/scanner-balanced-final.svg",
+        "mime": "image/svg+xml",
+        "bytes": 1749149,
+        "sha256": "ebacf743a4d072712c33c6e375b4f39f3c2a1a1ff7661638f446791e80949327"
+      },
+      {
+        "route": "/scanner-balanced-final-dark.svg",
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker26/current-code-dev17645-successor-20261026/frame01-light-scanner-20261026/assets/scanner-balanced-final-dark.svg",
+        "mime": "image/svg+xml",
+        "bytes": 1749445,
+        "sha256": "f01bf9bdf7f4ec6e81d9abe8a6b0d82d82fe6ec1f6425de9b97f79a162c831cc"
+      },
+      {
+        "route": "/scanner-roboto-regular.ttf",
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker26/current-code-dev17645-successor-20261026/frame01-light-scanner-20261026/assets/scanner-roboto-regular.ttf",
+        "mime": "font/ttf",
+        "bytes": 305608,
+        "sha256": "797e35f7f5d6020a5c6ea13b42ecd668bcfb3bbc4baa0e74773527e5b6cb3174"
+      },
+      {
+        "route": "/scanner-roboto-bold.ttf",
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker26/current-code-dev17645-successor-20261026/frame01-light-scanner-20261026/assets/scanner-roboto-bold.ttf",
+        "mime": "font/ttf",
+        "bytes": 306940,
+        "sha256": "36f3709dea3e3ce3c6aedc058079e55980825f898f1e901d091c73c40de8bab1"
+      }
+    ],
+    "actualBrowser": "PENDING64fullguest+oneaffectedreverse;reuseintro/static17754+17756/unchangedneonV12proof17714;nohorizontal/miniUI/fullartcampaign",
+    "verticalAuthorRuntime": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/landing-demo-correction-r2/vertical-scroll-r2/story-runtime.mjs",
+      "sha256": "9c3be98936cc562ceef3accd4430a6843bb7636311b600673e019901a73693c0"
+    },
+    "verticalAuthorGeneratedProof": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/landing-demo-correction-r2/vertical-scroll-r2/gesture-regression-proof.json",
+      "sha256": "addafd805bced88ddc3dbf0bb544ddbcd3cc29724b8ba0c3e4a15fb86b5b504e"
+    },
+    "verticalCSS": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/landing-demo-correction-r2/vertical-scroll-r1/vertical-scroll.css",
+      "sha256": "342ab02a84a08a60d504c741fc633b7fa711b91a5c8a370bf5166b6266e1ad27"
+    },
+    "rootReleaseMetadata": "Navigationvertical androllback79 fields only;otherreleasefields unchanged"
+  },
+  "overrides": [
+    {
+      "route": "/demo/scanner.html",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/guest-source-assembly-r1/scanner.html",
+      "mime": "text/html; charset=utf-8",
+      "bytes": 45825,
+      "sha256": "beb658cd34580800f3cbe19fe61e6dba2417f642b370210964207de2484f0c89"
+    },
+    {
+      "route": "/demo/full-scanner.js",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/assets/full-scanner.js",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 857525,
+      "sha256": "2114d7c8e59422bb487424bdf5309769f7fea98d9f0e186e232abf4c16442050"
+    },
+    {
+      "route": "/demo/full-scanner-theme.js",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/assets/full-scanner-theme.js",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 480,
+      "sha256": "7ad5669fbe3d9c32d1308c0c8d55b7739b72c3683640d932bd7125f9e0432e00"
+    },
+    {
+      "route": "/demo/decoder-worker.js",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/public-demo-decoder-lifecycle-candidate-20261026/assets/decoder-worker.js",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 62469,
+      "sha256": "d724b7816bd1763ab89e1ab9d4bd7750d2754394f4f650436d1415ef48b3797f"
+    },
+    {
+      "route": "/demo/scanner.wasm",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/public-demo-decoder-lifecycle-candidate-20261026/assets/scanner.wasm",
+      "mime": "application/wasm",
+      "bytes": 1089670,
+      "sha256": "b03d35cd265123b9f75a0c476c204714663a1e85ba908acc3f50eae7824dfcf6"
+    },
+    {
+      "route": "/demo/scanner-licenses.txt",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/public-demo-decoder-lifecycle-candidate-20261026/assets/scanner-licenses.txt",
+      "mime": "text/plain; charset=utf-8",
+      "bytes": 12718,
+      "sha256": "11c5397e1bfc9ccf801a5b5a282ccf2fbeebb17eb853f1d50a5c80e196ccaa49"
+    },
+    {
+      "route": "/demo/offmenu-system.css",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker26/current-code-dev17645-successor-20261026/frame01-light-scanner-20261026/assets/offmenu-system.css",
+      "mime": "text/css; charset=utf-8",
+      "bytes": 46847,
+      "sha256": "223df367294c0c9391e99cfbfdce43e28d5b5df5b1f5b6c4a9d73d762d55b264"
+    },
+    {
+      "route": "/landing-static-15/story.js",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/vertical-source-assembly-r2/story.js",
+      "sha256": "dc7d0f0dde4211768f093f54b7104551bda65029515e75dd0b95ee30eb8dc980",
+      "mime": "application/javascript; charset=utf-8"
+    },
+    {
+      "route": "/landing-static-15/story.css",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/vertical-source-assembly-r2/story.css",
+      "sha256": "8920543aadcb2a21f91b8326159edb435350643ef205df2a447c04047b8a403e",
+      "mime": "text/css; charset=utf-8"
+    },
+    {
+      "route": "/landing-static-15/release.json",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/vertical-source-assembly-r2/release.json",
+      "sha256": "3ee0418dfc61b96c1ee43c33f14b3ecd8b13aaf01aeb2c0a6e785fef2077c678",
+      "mime": "application/json"
+    }
+  ]
+}

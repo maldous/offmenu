@@ -1,0 +1,130 @@
+{
+  "schema": "offmenu-exact-reviewed-release-source-custody/1",
+  "atUTC": "2026-10-26T08:39:31.688539+00:00",
+  "scope": "Immutable source/binarycode custody of exactalreadydeployed84, notanothertracker ornew runtimeadoption. AllbytesarepublicUI/decodercode,not product/profile/countrydata orcredentials.",
+  "version": {
+    "id": "9b8244d2-5fa0-4471-b74c-8626e3478813",
+    "number": 84
+  },
+  "deployment": "f53cfc43-3ca1-406c-9d57-f5bd51cb0528",
+  "moduleSHA256": "a56f70978ede9d6e3a7c982f4a64502c31448ad3b53799145e6f05428b9e14de",
+  "files": [
+    {
+      "file": "landing-only.mjs",
+      "sha256": "a56f70978ede9d6e3a7c982f4a64502c31448ad3b53799145e6f05428b9e14de",
+      "bytes": 510829,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/landing-only.mjs"
+    },
+    {
+      "file": "qualified-route-manifest.json",
+      "sha256": "cf4a9edc03afb1ba2046b482d65ba361151932804bf8b38a2d4003fd2383c140",
+      "bytes": 38440,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/manifest.json"
+    },
+    {
+      "file": "binary-transfer-plan.json",
+      "sha256": "02842cb1dd06b0ffbf03e1f271beef086903c86e14c779dc572d59e9f947b92c",
+      "bytes": 8596,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/binary-transfer-plan.json"
+    },
+    {
+      "file": "build-scoped-package.py",
+      "sha256": "c86d713c22b9420463eb20a53c057a308a89d36e8d1e9262715b4d66b9a44bb3",
+      "bytes": 4935,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/build-scoped-package.py"
+    },
+    {
+      "file": "selected-source-pins.json",
+      "sha256": "ba49b3ca6f284c012ff6cdc6c2db2cc422ac4d228f2e3710b5b775e6fc623b26",
+      "bytes": 7445,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/selected-combined-r2.json"
+    },
+    {
+      "file": "source13-guest-wiring.patch",
+      "sha256": "b3cc3452e67ef053bf94c9cf71fab18a943cc65a7b18c4707681cfd8f478f1a5",
+      "bytes": 95659,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/full-scanner-guest-wiring.patch"
+    },
+    {
+      "file": "source19-guest-providers.patch",
+      "sha256": "7fbe3defbd3e5b36efbef6cc1bf51a4c6da3b3674890ca0d28f98f400cd02799",
+      "bytes": 8121,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker19/full-scanner-guest-providers-20261026/source.patch"
+    },
+    {
+      "file": "public-fix-beb658cd34580800-01.bin",
+      "sha256": "beb658cd34580800f3cbe19fe61e6dba2417f642b370210964207de2484f0c89",
+      "bytes": 45825,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-beb658cd34580800-01.bin"
+    },
+    {
+      "file": "public-fix-2114d7c8e59422bb-01.bin",
+      "sha256": "495b31b8407f3ef334a50bdfd1c8a483e19ecd871987c9ff89c6295589b2ae6e",
+      "bytes": 600000,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-2114d7c8e59422bb-01.bin"
+    },
+    {
+      "file": "public-fix-2114d7c8e59422bb-02.bin",
+      "sha256": "b0fd3599357691edbb795b9a07c1068b8d17ab5a639500707092142d7baf7629",
+      "bytes": 257525,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-2114d7c8e59422bb-02.bin"
+    },
+    {
+      "file": "public-fix-7ad5669fbe3d9c32-01.bin",
+      "sha256": "7ad5669fbe3d9c32d1308c0c8d55b7739b72c3683640d932bd7125f9e0432e00",
+      "bytes": 480,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-7ad5669fbe3d9c32-01.bin"
+    },
+    {
+      "file": "public-fix-d724b7816bd1763a-01.bin",
+      "sha256": "d724b7816bd1763ab89e1ab9d4bd7750d2754394f4f650436d1415ef48b3797f",
+      "bytes": 62469,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-d724b7816bd1763a-01.bin"
+    },
+    {
+      "file": "public-fix-b03d35cd265123b9-01.bin",
+      "sha256": "43f9109280cfa34ccd16cf815ae067847368a3b542044730f3fe4aa850c07b9b",
+      "bytes": 600000,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-b03d35cd265123b9-01.bin"
+    },
+    {
+      "file": "public-fix-b03d35cd265123b9-02.bin",
+      "sha256": "a369672d01cdb5a243c818d6cd427974985fc7520e9ce9768dbee525faefad65",
+      "bytes": 489670,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-b03d35cd265123b9-02.bin"
+    },
+    {
+      "file": "public-fix-11c5397e1bfc9ccf-01.bin",
+      "sha256": "11c5397e1bfc9ccf801a5b5a282ccf2fbeebb17eb853f1d50a5c80e196ccaa49",
+      "bytes": 12718,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-11c5397e1bfc9ccf-01.bin"
+    },
+    {
+      "file": "public-fix-223df367294c0c93-01.bin",
+      "sha256": "223df367294c0c9391e99cfbfdce43e28d5b5df5b1f5b6c4a9d73d762d55b264",
+      "bytes": 46847,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-223df367294c0c93-01.bin"
+    },
+    {
+      "file": "public-fix-dc7d0f0dde421176-01.bin",
+      "sha256": "dc7d0f0dde4211768f093f54b7104551bda65029515e75dd0b95ee30eb8dc980",
+      "bytes": 23691,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-dc7d0f0dde421176-01.bin"
+    },
+    {
+      "file": "public-fix-8920543aadcb2a21-01.bin",
+      "sha256": "8920543aadcb2a21f91b8326159edb435350643ef205df2a447c04047b8a403e",
+      "bytes": 22961,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-8920543aadcb2a21-01.bin"
+    },
+    {
+      "file": "public-fix-3ee0418dfc61b96c-01.bin",
+      "sha256": "3ee0418dfc61b96c1ee43c33f14b3ecd8b13aaf01aeb2c0a6e785fef2077c678",
+      "bytes": 561,
+      "canonicalSource": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-3ee0418dfc61b96c-01.bin"
+    }
+  ],
+  "base": "Original33modules liveinretained provider version79/7efbc8be-c699-43b3-a0db-a31048422f7d; provider-module-pins.json bindsall45deployedmodules. Rootcanonicalruntime/source/rollbackcustody retained;thiscopydoesnotretireoriginalsources.",
+  "reconstruction": "Mainrelativeimports resolve12newpublic-fixDataModuleshere;original30binaryimports/worker/deployed-application remainexactbase79modules, availablethrough existingauthorizedmanagementroute. Source/candidateinputs intentionallyretaincanonicalprovenancepaths.",
+  "permission": "Existingauthorizedprivate-origin reviewedsourcecustody route;no main/develop/PR/deployment/providerdata/secret/settings change."
+}
