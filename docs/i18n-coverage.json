@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3950,
+  "messages": 3973,
   "arabicTranslated": 376,
-  "arabicMissing": 3574,
+  "arabicMissing": 3597,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -1923,6 +1923,7 @@
         "public/owned-backup-account-ui.js",
         "public/personal-ai-ui.js",
         "public/recipe-community-ui.js",
+        "public/recipe-ingredient-coverage-ui.js",
         "public/recipe-library-model.js",
         "public/recipe-library-ui.js",
         "public/recipe-review.js",
@@ -2149,6 +2150,18 @@
     "./recipe-ingredient-aliases.json": {
       "sources": [
         "public/recipe-library-model.js"
+      ],
+      "arabic": false
+    },
+    "./recipe-ingredient-coverage-ui.js": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "./recipe-ingredient-coverage.js": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -3319,6 +3332,12 @@
       ],
       "arabic": false
     },
+    "Additional ingredients are needed.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Adjustments:": {
       "sources": [
         "public/documents.js"
@@ -4022,6 +4041,12 @@
     "Automatic-action threshold": {
       "sources": [
         "public/community-ai-ui.js"
+      ],
+      "arabic": false
+    },
+    "Availability needs review; no positive shortfall is confirmed.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -4841,6 +4866,12 @@
     "Check the actual ": {
       "sources": [
         "public/household-model.js"
+      ],
+      "arabic": false
+    },
+    "Check the existing dietary review before choosing this meal.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -6166,9 +6197,21 @@
       ],
       "arabic": false
     },
+    "Coverage needs review.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Coverage · retained subset, incomplete": {
       "sources": [
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Covered {covered} / required {required}": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -9588,6 +9631,18 @@
       ],
       "arabic": false
     },
+    "Ingredient coverage": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
+    "Ingredient coverage is unavailable. Keep the existing meal review.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Ingredient details need review": {
       "sources": [
         "public/documents.js"
@@ -12467,6 +12522,12 @@
       ],
       "arabic": false
     },
+    "No positive shortfall reported by the allocation.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "No product scanned · private saved-result connection not loaded": {
       "sources": [
         "public/shelf-scanner.js"
@@ -12756,9 +12817,33 @@
       ],
       "arabic": false
     },
+    "Nutrition basis compatible; nutrient values may still be missing.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
+    "Nutrition basis is shown per allocated lot. Nutrient completeness is not established.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Nutrition basis must match this inventory item: per 100 {v0}.": {
       "sources": [
         "public/unified-data.js"
+      ],
+      "arabic": false
+    },
+    "Nutrition basis unknown without an allocated lot.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
+    "Nutrition basis unsupported or unknown.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -13118,6 +13203,12 @@
     "One ingredient, more possibilities.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "One item to add": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -15331,6 +15422,12 @@
     "Ready for next item. Remove this barcode fully before the next identical pack.": {
       "sources": [
         "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Ready now": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -18715,6 +18812,12 @@
       ],
       "arabic": false
     },
+    "Still needed: {amount}": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Stock": {
       "sources": [
         "public/scanner-surrogate.js"
@@ -20267,6 +20370,12 @@
       ],
       "arabic": false
     },
+    "Uncovered quantity is unknown.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Undo cooking": {
       "sources": [
         "public/journey-ui.js"
@@ -20438,6 +20547,18 @@
       "sources": [
         "public/app.js",
         "public/checkout-model.js"
+      ],
+      "arabic": false
+    },
+    "Unknown quantity ({unit})": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
+    "Unknown quantity and unit": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -24111,9 +24232,27 @@
       ],
       "arabic": false
     },
+    "{amount} · Location unknown": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
+    "{amount} · {area} / {shelf}": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "{quantity} {unit} · partial measured observations": {
       "sources": [
         "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "{quantity} · unit unknown": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
