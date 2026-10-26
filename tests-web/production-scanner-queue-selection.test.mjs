@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import {localRetainedCategorySelected,lookupLocalRetainedCategory} from '../public/production-scanner/local-retained-category-client.js';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {pathToFileURL} from 'node:url';
@@ -17,7 +18,7 @@ function harness(query=lookup.lookupIdentifiers){
  const elements=new Map(),$=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};let storageWrites=0;
  const storage={getItem:()=>null,setItem(){storageWrites++;},removeItem(){storageWrites++;}};
  const context={...handoff,$,crypto,document:{documentElement:{dataset:{theme:'light'}},createElement:()=>new Element()},window:{},navigator:{onLine:true},innerWidth:900,performance,
- active:true,paused:false,finished:false,processed:new Set(),generation:0,queue:[],current:null,selected:null,mode:'Explore',sheetTouched:false,streaming:false,sound:false,audio:null,
+ localRetainedCategorySelected,lookupLocalRetainedCategory,active:true,paused:false,finished:false,processed:new Set(),generation:0,queue:[],current:null,selected:null,mode:'Explore',sheetTouched:false,streaming:false,sound:false,audio:null,
  productVisual:{show(){}},projectedField:()=>null,projectedValue:()=>null,humanValue:String,renderConsumerSummary(){},renderData(){},setSheetSnap(){},cancelPendingSpeech(){},readTone:()=>false,showReadCue(){},
  scanner:{start(){},stop(){},noteAccepted(){}},localStorage:storage,sessionStorage:storage,lookupIdentifiers:query,mergeIdentifierPages:lookup.mergeIdentifierPages};
  const wanted=['el','btn','message','open','close','displayValue','render','capture','showMatches','renderQueue','selectedQueueRecord'];

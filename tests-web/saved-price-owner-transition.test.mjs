@@ -14,7 +14,7 @@ function fixture(){
  const context={$,document:{createElement:node},profile:{country:'AU',dataRecords:rows('A')},requestIdentity:{owner:'A'},shopsRequest:0,demoMode:false,user:{id:'A'},authResolved:true,recoveryMode:false,KEY:'',PRODUCTS:'',RECIPES:'',PROFILE:'',SELECTIONS:'',revision:0,dirty:false,
   Number,Error,t:x=>x,names:{of:x=>x},localStorage:{getItem:()=>null},setLocalizedText:(n,s)=>{n.textContent=s;},card:(target,title,body)=>target.append({...node(),textContent:title+' '+body}),text:(tag,content)=>({...node(tag),textContent:content}),
   loadPriceObservations,renderSavedPriceObservations};
- for(const key of ['care','recipeCommunity','communityAI','personalAI','administration','adminOperations','dataUi'])context[key]={reset(){}};
+ for(const key of ['care','recipeCommunity','communityAI','personalAI','administration','adminOperations','dataUi','accountBackup'])context[key]={reset(){}};
  context.getIdentity=()=>context.requestIdentity;context.data=()=>({profile:context.profile});context.getData=context.data;
  context.boundFetch=context.request=async()=>({ok:true,json:async()=>({items:[],records:[]})});
  const script=vm.createContext(context);let start=insights.indexOf("$('integration-prices').onclick="),end=insights.indexOf('\nreturn {render',start);

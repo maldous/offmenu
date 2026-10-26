@@ -51,7 +51,7 @@ test('exact current source observation binds the separately observed photo, with
   const visual=selectProductVisual({sourceObservationReference:reference,selectedProductRecordId:detail.referenceRecordId,
     photoCandidates:photos,permittedLocalAssets:OFF_PHOTOS.map(photo=>photo.path),canonicalConcepts:[],categoryMappings:[]});
   assert.equal(visual.tier,'product-photo');assert.equal(visual.src,OFF_PHOTOS[0].path);
-  assert.match(visual.caption,/foodless/);assert.match(visual.caption,/CC BY-SA/);
+  assert.equal(visual.caption,'Current publisher photo');assert.match(visual.rights.attribution,/foodless/);assert.match(visual.rights.license,/CC BY-SA/);
   for(const changed of [{...reference,sourceId:'usda-files'},{...reference,sourceLexicalValue:'different'},
     {...reference,observationKey:{...reference.observationKey,assertion_id:10}}, {...reference,releaseId:'different'}])
     assert.deepEqual(selectedPublisherPhotos(changed,detail),[]);

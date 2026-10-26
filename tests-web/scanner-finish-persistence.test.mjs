@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import vm from 'node:vm';
+import {localRetainedCategorySelected,lookupLocalRetainedCategory} from '../public/production-scanner/local-retained-category-client.js';
 import {createRequire} from 'node:module';
 import {validateLot,validSourceObservationReference} from '../public/model.js';
 import {finishInventory,makeAutoLot,locationKey} from '../public/checkout-model.js';
@@ -49,7 +50,7 @@ function scannerHarness(tab){
  const source=fs.readFileSync(new URL('public/production-scanner/shelf-scanner.js',root),'utf8'),ast=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body,elements=new Map(),$=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};let requests=0;
  const query=createPublicLookup({selection:handoff.PUBLIC_PRODUCT_SELECTION,fetchImpl:async url=>{requests++;const q=new URL(url,'https://generated.invalid').searchParams;assert.equal(q.get('manifestSha256'),handoff.PUBLIC_PRODUCT_SELECTION.manifestSha256);const raw=q.get('barcode');return Response.json({releaseId:handoff.PUBLIC_PRODUCT_SELECTION.releaseId,manifestSha256:handoff.PUBLIC_PRODUCT_SELECTION.manifestSha256,records:[{id:'offmenu:generated:'+raw,kind:'product',provenance:{sourceId:'off',visibility:'public',license:'Generated declaration',attribution:'Generated source',url:null,sourceDate:null},data:{name:'Generated '+raw,pack:'500 g source package is not stock',identifiers:[{system:'barcode',value:raw}]}}],nextCursor:null});}});
  const ctx={...handoff,$,crypto,document:{createElement:()=>new Element(),documentElement:{dataset:{theme:'light'}}},window:{},navigator:{onLine:true},innerWidth:900,performance,
-  active:true,paused:false,finished:false,processed:new Set(),generation:0,queue:[],current:null,selected:null,mode:'Explore',sheetTouched:false,streaming:false,sound:false,audio:null,
+  localRetainedCategorySelected,lookupLocalRetainedCategory,active:true,paused:false,finished:false,processed:new Set(),generation:0,queue:[],current:null,selected:null,mode:'Explore',sheetTouched:false,streaming:false,sound:false,audio:null,
   productVisual:{show(){}},projectedField:()=>null,projectedValue:()=>null,humanValue:String,renderConsumerSummary(){},renderData(){},setSheetSnap(){},cancelPendingSpeech(){},readTone:()=>false,showReadCue(){},scanner:{start(){},stop(){},noteAccepted(){}},sessionStorage:tab,location:{assign(value){ctx.destination=value;}},lookupIdentifiers:query};
  const names=['el','btn','message','open','close','displayValue','selectedQueueRecord','render','capture','showMatches','renderQueue'];const ids=['manual-namespace','manual','manual-open','pause','undo','finish'];
  const selected=ast.filter(n=>n.type==='FunctionDeclaration'&&names.includes(n.id.name)||n.type==='VariableDeclaration'&&n.declarations.some(d=>d.id.name==='CAPTURE_FORMATS')||n.type==='ExpressionStatement'&&n.expression.type==='AssignmentExpression'&&n.expression.left.type==='MemberExpression'&&n.expression.left.object.type==='CallExpression'&&ids.includes(n.expression.left.object.arguments[0]?.value));

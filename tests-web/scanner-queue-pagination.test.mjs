@@ -38,7 +38,7 @@ print(json.dumps({'databaseSha256':'${IDENTIFIER_DB}','rows':rows,'hasMore':more
  class Element{constructor(){this.children=[];this.dataset={};this.textContent='';}append(...children){this.children.push(...children);}replaceChildren(...children){this.children=children;}}
  const elements=new Map(),$=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};
  let hold=false,entered,release;const requestGenerations=[];
- const ctx={$,document:{createElement:()=>new Element()},active:true,paused:false,processed:new Set(),generation:0,queue:[],current:null,selected:null,mode:'Explore',connection:'live',requestedSourceReference:null,crypto,
+ const ctx={$,document:{createElement:()=>new Element()},sheetTouched:false,setSheetSnap(){},innerWidth:900,active:true,paused:false,processed:new Set(),generation:0,queue:[],current:null,selected:null,mode:'Explore',connection:'live',requestedSourceReference:null,crypto,
   render(){},readTone(){},close(){},open(){},scanner:{noteAccepted(){},start(){}},mergeIdentifierPages:shim.mergeIdentifierPages,
   async lookupIdentifiers(raw,generation,cursor,symbology){requestGenerations.push({raw,generation,cursor});const response=await shim.lookupIdentifiers(raw,generation,cursor,symbology);if(cursor&&hold){entered();await new Promise(resolve=>{release=resolve;});}return response;},message(value){ctx.lastMessage=value;}};
  vm.createContext(ctx);vm.runInContext([source.slice(formats.start,formats.end),...functions,source.slice(pause.start,pause.end),source.slice(handoff.start,handoff.end)].join('\n'),ctx);

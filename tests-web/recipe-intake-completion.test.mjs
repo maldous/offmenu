@@ -6,7 +6,7 @@ const date='2026-10-25';
 const input=()=>({date,slot:'Dinner',servings:2,memberId:'sam',note:'User note',
   recipe:{id:'rice',title:'Rice',servings:1,ingredients:[{ingredient:'rice',quantity:100,unit:'g'}]},
   inventory:[{id:'lot',barcode:'12345678',ingredient:'rice',quantity:500,unit:'g'}],
-  products:{'12345678':{quantity:'500 g',nutriments:{fat_100g:2}}}});
+  products:{'12345678':{quantity:'500 g',nutrition_data_per:'100g',nutriments:{fat_100g:2}}}});
 
 test('blank recipe completion records serving with unknown intake through validation and aggregation',()=>{
   const meal=recipeIntakeSnapshot(input());
