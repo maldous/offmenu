@@ -1,0 +1,63 @@
+{
+  "atUTC": "2026-10-26T15:52:21.364308+00:00",
+  "status": "DONE_IMMEDIATE_AUTHENTICATED_OWN_DATA_CONTAINMENT181_ACTIVE",
+  "owner": 0,
+  "threadId": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+  "host": "local",
+  "version": {
+    "number": 181,
+    "id": "690e7cd8-ef04-42e6-9075-a7c616c359bb",
+    "deployment": "8661abe3-3914-48a7-8a4b-cdf7534d2d08",
+    "percentage": 100,
+    "activatedAtUTC": "2026-10-26T15:51:50.783572Z"
+  },
+  "changedModule": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/authenticated-own-data-containment-over180-r1/deployed-application.mjs",
+    "sha256": "13bd5e94c11ded5756a09edafc414791164425f4aca0b12b947849e1af60157a"
+  },
+  "moduleCount": 206,
+  "totalModuleBytes": 38094826,
+  "modulePins": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/authenticated-own-data-containment-over180-r1/candidate-206-expected-pins.json",
+    "sha256": "f310367487ff4094a3c95d8454d239dc9fa0dba0e4da36d42415ff82164de969"
+  },
+  "exactBranch": "POST /api/data/lookup AFTER existing DB/method/Origin/verifiedUser checks;503 OWN_DATA_REQUIRED, no credential/provider lookup attempted",
+  "composition": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/authenticated-own-data-containment-over180-r1/composition-proof.json",
+    "sha256": "a923bab80fd760673b689a471564b14d01cd24241bcfc78fa800683e8412ee46"
+  },
+  "sourceDelta": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/authenticated-app-delivery-20261026/own-data-enforcement-current180/exact-delta.json",
+    "sha256": "60eb323447691591119401ad01095b242797d17c8a100865bded0b82412aa6a7"
+  },
+  "preimageOfflineTripwire": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/authenticated-app-delivery-20261026/own-data-enforcement-current180/route-tripwire-proof.json",
+    "sha256": "b66f9be2dc023416d50b6c227312ed8fc737acafd8c828ec465b3c58fef39091"
+  },
+  "candidateOfflineTripwire": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/authenticated-app-delivery-20261026/own-data-enforcement-current180/candidate-tripwire-proof.json",
+    "sha256": "4120478be670b181b2cd9beaf2e0c6851486b3ddc219da63ca337e0f307dfb30"
+  },
+  "independent206Pins": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/authenticated-own-data-containment-over180-r1/inactive181-independent206-readback.json",
+    "sha256": "06bcf2ea54da87bcaf66bf5c018554891da6a155c9080563b4d41eb2eb92b9dc"
+  },
+  "activeReadback": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/authenticated-own-data-containment-over180-r1/activation181-readback-envelope.json",
+    "sha256": "2897fe31cc8c5d1fee76cef7b8ec12e5d46c3c35940ec2ffc8066af9570cce28"
+  },
+  "preservation": "Other205modules byte/type/hash identical180, includingmain d55eb1ec,root/auth/audio,worker83421/provider e8eb/private/CSP/bindings/compatibility. No provider/identity/securitysettings writes. Savedrecords/recipes unchanged.",
+  "verification": "Exactprefix/suffixinverse; all206freshbasepins; independentall206candidatepins; offlinegeneratedUSDA+Edamam503 ZEROfoodfetch+anonymous401 andexistingkitchen/scanner200/ownrecordsrecipes200. Existingidentitylegitimatetransport separatelymocked, no realcredentials/DB/network.",
+  "authority": "NativeGatewayParentIMMEDIATECONTAINMENTAUTHORITYthisturn underMattown-dataSTOP, no new broadreviewgate. Exactaffectedbranch only.",
+  "incidentBoundary": {
+    "confirmed": "Reachablelegacyexternalproviderbranch underofflinegeneratedauthenticatedowner/providerfixtures beforepatch",
+    "actualPastUsage": "NOT_ESTABLISHED",
+    "realProviderRequestsPerformedByThisVerification": 0,
+    "realCredentialsUsed": 0,
+    "noLiveProbe": true,
+    "existingSourceLogsRetained": true
+  },
+  "rollback": "180retainedforevidenceONLY; doNOTrestore2a07uncontainedpath. Everyfuturewrapper/root/audio/data composition mustpreserve13bdpatchedapp.",
+  "cleanup": "Retainold2a07/evidence/new13bdsource/pins/receipts; no ownedchildprocessesstarted/no deletion.",
+  "nextAction": "GatewaypromptParentactivationreceipt/fresh181base toallintegrators;privateorigin181sourcecustody next. Local05READY18085 sourceb31db042 needsseparatehelperlocal4b/queued567trace/reconciliation beforeactualnewpairedstopstart; do notassumeproduction/localequivalence. Root05R2passed18094 onlyfresh181composition iftaken. Continue typedphaseown-data consumer aftercorrectpolicy."
+}
