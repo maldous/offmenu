@@ -1,0 +1,28 @@
+{
+  "atUTC": "2026-10-26T22:55:00.755022+00:00",
+  "status": "EXACT_IMPLEMENTATION_AND_POLICY_REVIEW_ACCEPTED_NO_SOURCE_OR_RUNTIME_ADMISSION",
+  "receipts": {
+    "independentReview": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker57/general-variant-semantic-review-20261026/r9-phase-adapter-review-20261027/result.json",
+      "sha256": "fe7ae89fd94093887735f845af62c8b972c3370f8a508d2d9b3b636d038687f1"
+    },
+    "acceptedImplementation": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker57/general-variant-semantic-review-20261026/r9-phase-adapter-review-20261027/accepted-implementation.json",
+      "sha256": "1816465803cca285241cd10ed5b98cf6412e7a9a16f361b3713acdaa444b6b8f"
+    },
+    "acceptedPolicy": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker57/general-variant-semantic-review-20261026/r9-phase-adapter-review-20261027/accepted-policy.json",
+      "sha256": "51b50f58435a2ce549432d37855fd93ecbc562b498301fd03733c24927a5f02a"
+    },
+    "reviewEvidence": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker57/general-variant-semantic-review-20261026/r9-phase-adapter-review-20261027/review-evidence.json",
+      "sha256": "aeb028ded680f0ffa56293083f0716d0909b6b6fd7e1ea39c6d4e99407a23e05"
+    },
+    "fourOnlySourceHandoff": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r9-generic-phase-adapter-v1-20261027/reviewed-four-only-phase-input-executable-handoff.json",
+      "sha256": "87cef71dbb364b4d72c147508537f34ed49108dcc6d022802818f7e99ad169c6"
+    }
+  },
+  "codeCopiesUnchanged": true,
+  "scope": "Onlyreviewmetadatarefs,nodata/credentials. Actual4sourceidentity/native/original-projectedarrayreadback andservingadmission remainseparate."
+}

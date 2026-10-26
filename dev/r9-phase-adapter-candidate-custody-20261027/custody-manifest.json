@@ -1,7 +1,7 @@
 {
   "schema": "offmenu-source-candidate-code-custody/1",
   "atUTC": "2026-10-26T22:26:51.970707+00:00",
-  "status": "WIP_REVIEW_PENDING_NOT_ACCEPTED_OR_RUNTIME_ADOPTED",
+  "status": "EXACT_SOURCE_IMPLEMENTATION_AND_POLICY_REVIEW_ACCEPTED_NOT_SOURCE_OR_RUNTIME_ADOPTED",
   "sourceResult": {
     "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r9-generic-phase-adapter-v1-20261027/result.json",
     "sha256": "c915abc3d3810d1e8364736412c4a4ffd2a8e692014e4cee62a0f7fa18e28951"
@@ -33,8 +33,30 @@
       "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r9-generic-phase-adapter-v1-20261027/candidate/docs/whole-family-phase-projection.md"
     }
   ],
-  "verification": "Fiveexactsourcecode/test/docs copies.14generatedgroupspassedincanonicalcandidate;projectmethodbyteidenticaltoacceptedR8,realR8policy78ebunchanged. No independentacceptanceyet.",
-  "reviewRoute": "ExistingSAME57 throughGateway; Gateway actualnativefinal confirmsONEdispatch, pickup/resultnotyetobserved.",
+  "verification": "FiveexactsourcecopiesUNCHANGED;14authorgroups+8independentconstructorrefusals+JS3+2accepted. projectbytes unchanged/realR8policy78ebexact/currentR9policy195f2definitions. No actual4sourceproductoperation/admission/runtimefromreview.",
+  "reviewRoute": "ONEexistingSAME57independentreviewcomplete;receipts1816/51b5/evidenceaeb0 bound by00,Gatewayexisting19four-onlyscopehandoff87cef.",
   "scope": "PrivateoriginWIPCODEcustodyonly,no rawproduct/sourceblobs/DTOarrays/credentials or operationalrole/mockreceipt copied. Corecorpus/whole_family_phase_adapter.py andcurrentruntime/sourcepathsunchanged.",
-  "holds": "No phaseproductprojection/admission/publication/runtime/sourceoperation/productionpermission fromGitreachability."
+  "holds": "No phaseproductprojection/admission/publication/runtime/sourceoperation/productionpermission fromGitreachability.",
+  "independentAcceptance": {
+    "independentReview": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker57/general-variant-semantic-review-20261026/r9-phase-adapter-review-20261027/result.json",
+      "sha256": "fe7ae89fd94093887735f845af62c8b972c3370f8a508d2d9b3b636d038687f1"
+    },
+    "acceptedImplementation": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker57/general-variant-semantic-review-20261026/r9-phase-adapter-review-20261027/accepted-implementation.json",
+      "sha256": "1816465803cca285241cd10ed5b98cf6412e7a9a16f361b3713acdaa444b6b8f"
+    },
+    "acceptedPolicy": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker57/general-variant-semantic-review-20261026/r9-phase-adapter-review-20261027/accepted-policy.json",
+      "sha256": "51b50f58435a2ce549432d37855fd93ecbc562b498301fd03733c24927a5f02a"
+    },
+    "reviewEvidence": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker57/general-variant-semantic-review-20261026/r9-phase-adapter-review-20261027/review-evidence.json",
+      "sha256": "aeb028ded680f0ffa56293083f0716d0909b6b6fd7e1ea39c6d4e99407a23e05"
+    },
+    "fourOnlySourceHandoff": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r9-generic-phase-adapter-v1-20261027/reviewed-four-only-phase-input-executable-handoff.json",
+      "sha256": "87cef71dbb364b4d72c147508537f34ed49108dcc6d022802818f7e99ad169c6"
+    }
+  }
 }
