@@ -1,0 +1,802 @@
+{
+  "atUTC": "2026-10-26T13:16:24.189Z",
+  "version": "dba469db-450d-4289-b182-351355a99806",
+  "parser": "Acorn actual JavaScript AST; embedded browser asset strings are not parsed as Worker imports",
+  "allFourWorkerJSSourcesMatchProviderPins": true,
+  "original154ModulesAllRetained": true,
+  "original153NonMainPinsByteTypeLengthIdentical": true,
+  "previous168All180NonMainPinsIdentical": true,
+  "previous169All191NonMainPinsIdentical": true,
+  "exactAuthorizedMainOnly": true,
+  "excluded56FoodBinsAbsentFromRuntimeAndAllWorkerReferences": true,
+  "reachableModuleCount": 194,
+  "edges": [
+    {
+      "from": "landing-only.mjs",
+      "to": "fridge-r3-ae89c07f57049d90-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "fridge-r3-b6305e0becfcdd51-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "fridge-r3-2f41c4447a3e6f30-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "fridge-r3-76c6c318c84b3901-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "fridge-r3-c0e27980752134b3-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "fridge-r3-7539cedf2ba65fab-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "fridge-r3-002030bc595f6dec-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "fridge-r3-bfd4d0ccec019ebd-1.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "fridge-r3-e0798738415fc811-2.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "fridge-r3-b69fe34d20100dfa-3.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "world-taps-r3-6836e8ef5e540397-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "world-taps-r3-9956787e7cf0dba5-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "world-taps-r3-5d580a1d79cd978b-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "world-taps-r3-225b32200895129f-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "world-taps-r3-24456f41e9fc5794-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "world-taps-r3-4a52fb3f901b01ca-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "world-taps-r3-ed00bd4fae00fe03-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "world-taps-r3-2fabf0ca5fd18e72-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "world-taps-r3-cd5708896f25db60-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "world-taps-r3-c2b92941e4cef6a9-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "world-taps-r3-f700dce4ed45d9e6-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-89cbf7a73a273ed7-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-25ede085465ae92a-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-5253ada2163dd2cd-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-af859f6b023a138f-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-7029e4d0bc32a028-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-6bb37bd3990adab0-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-9eaaf4422f6fb7d8-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-eaa4548cdcf91163-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-2a2e9e4d5340b486-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-5794512855c14647-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-05eb6c8c9ac3f0cb-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-3fde608f16c247b4-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-7109f925aab68dd0-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-70c919d9a5858a21-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-ee2136fc18e37191-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-d6ea6595d579e52f-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-8648d91ff1fe19b8-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-458a2d1098dc733b-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-5765e429aef622fc-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-f8a3f2940c18a593-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-05de2482013fcd5c-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-81e41c493df9206d-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-aadf2d9fcff98c67-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-01c1b9d784c74c7e-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-8b92d6c0eeb2747c-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-e420f328ee8b4097-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "source-r2-387f67c43a265087-0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-f91ed3ad16a4564b.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-4dc2282dd5300a38.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-030cc13c1a196950.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-d35414d81e975c1c.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-5b22240d4d5d13ca.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-7e10802200a9b422.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-d3662122a9d78c7d.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-da0e6598f0077762.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-fe1e3eff1c658111.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-8e3332ed51001df2.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-afa9a12ed77f2310.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-e061c7581a31eeb6.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-3cf044dcabf401b0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-2e4d00980e329d6b.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-385b15e80e0a0427.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-055fa820b6a4d4bf.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-791b8c18a5ee9df3.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-0bca235321c201ab.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-33ef7a9f25fd9bb3.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-8715cb679ced0698.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-1c5ea3cb4771416b.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-b32a0701c0971144.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-0b307af06d527f55.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-a91bce55b0d41677.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-ea14f99ef570f13c.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-3ce10fad5784e0db.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-2261e581e63cee94.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-56ec6932faa22b53.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-753a92531686c17c.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-93fa86e138fbb4b0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-33a2a5a0e0e25626.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-15c51f888d089bfc.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-7df6dc7d13fb68e8.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-0c5efc174f51b8fb.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-fab5c2fe945a5c96.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-87f4683435a24248.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-73577062723b524b.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-4a25d89b8d35fc93.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-6b339b8f3a2f46ab.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-3632522b202ada66.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-ee5220612386b5b6.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-62664bd839cb8334.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-ccee0e91186134eb.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-429c08bd9c7b6f68.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-021ad29692d8dfba.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-e75d8e705231cad5.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-31de97a27ed7d2b6.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-48ed5bdc839b79b6.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-8c0f747a5843aa2b.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-027030af4b57e0c1.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-b0d6e56d0e4c2635.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-b9b1686d148af164.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-7382499eb7b13a1c.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-8f4e0bcd84c6fa75.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-e268e093bb40b171.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-cc785bf268cae9e0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-051d20c1a92771a3.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-09bf0cfc0e052005.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-748810751c3d276f.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-16259904b9ec6f07.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-cbe8462d0a5e9f90.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-c60c33c51be712c3.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-18b8957845913804.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-195a9656ae5bab99.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-1ff71b1ba82a9a38.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-7cba240fbcbbaf93.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-496ef6c90b8a8133.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "revised11-dae16ea1442cefd3.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "public-inventory-provider.mjs"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "cold92-r2-f7940ac2ac275be0.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "cold92-r2-3726bb9023bdadb2.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "cold92-r2-483a693065ea2eff.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "cold92-r2-55e3ddbfd23487be.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "cold92-r2-2b0a85b3f894dc88.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-32c4608b92652bae.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-1e7297f0e11eeea5.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-92ae11a411c9beda.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-a0f62617562d6699.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-3b42f65254110c11.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-1bd0aa0ae28dfa50.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-0ea6b3a0cc701750.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-8cfd6774e42ec03e.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-76d4060c29f9872f.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-68bb453c814e1563.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-dff3887536e2fd68.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-a7c4f840aa4a9b8e.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-6b7f2efd70befe53.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-4ad462cea8ced79d.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-fc89de4498c6eaac.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-f45f37046d30a1f8.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-4b7ebe15ed4be71c.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-eb0e1848216fbdb1.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-84d7cec4ba53a04a.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-6492175651addf7a.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-af2bb75a9757080a.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-e8cad0daa9bc8ce6.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-6a2ca6f8b794afa9.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-1712990af697d1e2.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-ece84c7f9672756b.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-542fbac334deb26f.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "feedback-0bc41bee631e5a48.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "public-fix-beb658cd34580800-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "own-inventory-ed706f2e1d84db27-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "own-inventory-ed706f2e1d84db27-02.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "public-fix-7ad5669fbe3d9c32-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "public-fix-d724b7816bd1763a-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "public-fix-b03d35cd265123b9-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "public-fix-b03d35cd265123b9-02.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "public-fix-11c5397e1bfc9ccf-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "public-fix-223df367294c0c93-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "public-fix-370dd7816ee8caec-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "public-fix-4c7107fda91268fb-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "public-fix-518a3a86bd472c29-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-actorcore-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-actorcore02-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-bezel-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-carton-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-carton02-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-foreground-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-griphand-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-room-atlas-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-room-atlas-02.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-screen-01-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-screen-01-02.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-screen-01-03.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-screen-02-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-taparm-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "v12-upperarm-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "worker.mjs"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-01.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-02.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-03.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-04.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-05.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-06.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-07.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-08.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-09.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-10.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-11.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-12.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-13.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-14.bin"
+    },
+    {
+      "from": "landing-only.mjs",
+      "to": "approved-panel-15.bin"
+    },
+    {
+      "from": "worker.mjs",
+      "to": "deployed-application.mjs"
+    }
+  ],
+  "unresolvedImports": [],
+  "nonliteralDynamicImports": [],
+  "retainedUnreferencedOriginalModules": [
+    "public-fix-2114d7c8e59422bb-01.bin",
+    "public-fix-2114d7c8e59422bb-02.bin",
+    "public-fix-3492003a795cb4fd-01.bin",
+    "public-fix-3492003a795cb4fd-02.bin",
+    "public-fix-3ee0418dfc61b96c-01.bin",
+    "public-fix-8920543aadcb2a21-01.bin",
+    "public-fix-dc7d0f0dde421176-01.bin",
+    "ssr92-r1-a9d9ae9e8a3bd41a.bin"
+  ],
+  "inactiveDataCustody": "165/039eb57c-fbd6-4606-8f98-05e7e14e515d remains immutable; complete210-module independent proof retained",
+  "priorReadbackQualification": "The earlier provider string-pattern diagnostic also matched six imports inside embedded browser source strings. Those are not unresolved Worker imports; this exact AST pass resolves that diagnostic without changing runtime/source.",
+  "scope": "Import/reference closure and membership only; no provider write, private/account/source-data query or new identity/semantic acceptance."
+}

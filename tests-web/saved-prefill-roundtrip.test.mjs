@@ -5,6 +5,7 @@ import {readFileSync} from 'node:fs';
 import {parse} from 'acorn';
 import * as identity from '../public/scanner-identity-v2.js';
 import * as shim from '../public/scanner-identifiers.js';
+import {PUBLIC_SCANNER_HANDOFF} from '../public/scanner-kitchen-handoff.js';
 const source=readFileSync(new URL('../public/shelf-scanner.js',import.meta.url),'utf8');
 const nodes=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body;
 const fn=name=>{const n=nodes.find(n=>n.type==='FunctionDeclaration'&&n.id.name===name);assert.ok(n);return source.slice(n.start,n.end);};
@@ -21,7 +22,7 @@ function harness(namespace,symbology,raw){
  const ref=shim.sourceObservationReference(oldPage.matches[0],oldPage);assert.equal(identity.validSourceObservationReference(ref,raw),true);
  const values=new Map(),$=id=>{if(!values.has(id))values.set(id,{value:'',disabled:false});return values.get(id);};
  const key='generated-prefill',storage=new Map([[key,JSON.stringify({schema:'offmenu-kitchen-scanner-prefill/1',raw,namespace,sourceObservationReference:ref})]]),queries=[];
- const ctx={$,SCANNER_PREFILL:key,sessionStorage:{getItem:k=>storage.get(k)??null,removeItem:k=>storage.delete(k)},validSourceObservationReference:identity.validSourceObservationReference,currentSavedReference:shim.currentSavedReference,requestedSourceReference:null,open(){},close(){},message(v){ctx.lastMessage=v;},crypto,active:true,paused:false,processed:new Set(),generation:0,queue:[],current:null,selected:null,mode:'Explore',connection:'live',render(){},readTone(){},scanner:{noteAccepted(){}},lookupIdentifiers:async(value,generation,cursor,representation,ns)=>{queries.push({value,generation,cursor,representation,ns});return shim.projectIdentifierPage(wire(value,ns,representation,generation),value,generation,{namespace:ns,symbology:representation});},inspectMatch:async()=>{}};
+ const ctx={$,SCANNER_PREFILL:key,sessionStorage:{getItem:k=>storage.get(k)??null,removeItem:k=>storage.delete(k)},validSourceObservationReference:identity.validSourceObservationReference,currentSavedReference:shim.currentSavedReference,requestedSourceReference:null,open(){},close(){},message(v){ctx.lastMessage=v;},crypto,sheetTouched:false,setSheetSnap(){},innerWidth:900,active:true,paused:false,processed:new Set(),generation:0,queue:[],current:null,selected:null,mode:'Explore',connection:'live',render(){},readTone(){},scanner:{noteAccepted(){}},lookupIdentifiers:async(value,generation,cursor,representation,ns)=>{queries.push({value,generation,cursor,representation,ns});return shim.projectIdentifierPage(wire(value,ns,representation,generation),value,generation,{namespace:ns,symbology:representation});},inspectMatch:async()=>{}};
  vm.createContext(ctx);vm.runInContext([fn('readKitchenPrefill'),fn('capture'),source.slice(formats.start,formats.end),assignment('manual-namespace','onchange'),assignment('manual','onsubmit'),source.slice(prefill.start,prefill.end),source.slice(prefillIf.start,prefillIf.end)].join('\n'),ctx);
  return {ctx,$,ref,queries};
 }
@@ -66,7 +67,7 @@ for(const [namespace,symbology,raw] of [['USDA-FDC',null,'001105904'],['barcode'
   assert.equal(requests[0].path,'/__dev/identifiers/status');assert.equal(requests[0].options.body,undefined);
   const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8'),appNodes=parse(app,{ecmaVersion:'latest',sourceType:'module'}).body,reader=appNodes.find(n=>n.type==='FunctionDeclaration'&&n.id.name==='readScannerImport');
   const payload={schema:'offmenu-scanner-kitchen-handoff/1',operationId:'11111111-1111-4111-8111-111111111111',barcode:raw,identifierNamespace:namespace,representationHint:symbology,sourceId:ref.sourceId,releaseId:ref.releaseId,name:'Generated',brand:null,assertionId:ref.observationKey.assertion_id,sourceObservationReference:ref};let stored=JSON.stringify(payload);
-  const ctx={lifecycleFixture:false,location:{search:'?scan=staged'},URLSearchParams,KITCHEN_HANDOFF:'generated-handoff',validSourceObservationReference:identity.validSourceObservationReference,sessionStorage:{getItem:()=>stored},crypto};vm.createContext(ctx);vm.runInContext(app.slice(reader.start,reader.end),ctx);
+  const ctx={PUBLIC_SCANNER_HANDOFF,lifecycleFixture:false,location:{search:'?scan=staged'},URLSearchParams,KITCHEN_HANDOFF:'generated-handoff',validSourceObservationReference:identity.validSourceObservationReference,sessionStorage:{getItem:()=>stored},crypto};vm.createContext(ctx);vm.runInContext(app.slice(reader.start,reader.end),ctx);
   const result=ctx.readScannerImport();assert.ok(result);assert.equal(result.barcode,raw);assert.equal(result.identifierNamespace,namespace);assert.equal(result.representationHint,symbology);assert.equal(result.sourceObservationReference.namespace,namespace);
   stored=JSON.stringify({...payload,identifierNamespace:namespace==='barcode'?'USDA-FDC':'barcode'});assert.equal(ctx.readScannerImport(),null);
  }finally{globalThis.fetch=previous;}

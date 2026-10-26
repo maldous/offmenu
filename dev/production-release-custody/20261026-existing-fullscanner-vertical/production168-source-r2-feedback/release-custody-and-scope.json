@@ -1,0 +1,215 @@
+{
+  "atUTC": "2026-10-26T12:21:06.401467+00:00",
+  "release": 168,
+  "version": "d7797e1f-580d-4cc2-aa50-779b55c45db3",
+  "deployment": "c41fff7d-c144-46d2-9e61-5a6cbb0b1592",
+  "actualMainSHA256": "eb0ea235022d8667b60fbdf05288f860aadac37e3b1f3d24b1ab4e5b1e0bda6e",
+  "files": [
+    {
+      "name": "landing-only.mjs",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/feedback-only-landing.mjs",
+      "sha256": "eb0ea235022d8667b60fbdf05288f860aadac37e3b1f3d24b1ab4e5b1e0bda6e",
+      "bytes": 564317
+    },
+    {
+      "name": "source-r2-89cbf7a73a273ed7-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-89cbf7a73a273ed7-0.bin",
+      "sha256": "89cbf7a73a273ed7e988b40261148365ac233a984243a8e80cc6fb1a39db083e",
+      "bytes": 612
+    },
+    {
+      "name": "source-r2-25ede085465ae92a-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-25ede085465ae92a-0.bin",
+      "sha256": "25ede085465ae92aa55308ea8f038a0a6c4180c954ad2e6543e2f05ceacb7c34",
+      "bytes": 6099
+    },
+    {
+      "name": "source-r2-5253ada2163dd2cd-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-5253ada2163dd2cd-0.bin",
+      "sha256": "5253ada2163dd2cd2d847b704598e250f4f273640103d10364230de62a6cfef4",
+      "bytes": 32814
+    },
+    {
+      "name": "source-r2-af859f6b023a138f-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-af859f6b023a138f-0.bin",
+      "sha256": "af859f6b023a138fd9c91441dbbbd904354a851bc725e6087a239f414ad5c5cf",
+      "bytes": 27105
+    },
+    {
+      "name": "source-r2-7029e4d0bc32a028-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-7029e4d0bc32a028-0.bin",
+      "sha256": "7029e4d0bc32a028a65a0f43f97926cae1f02befeee8f96f453111722870ccc3",
+      "bytes": 41979
+    },
+    {
+      "name": "source-r2-6bb37bd3990adab0-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-6bb37bd3990adab0-0.bin",
+      "sha256": "6bb37bd3990adab0c8059e5bc57aca465f8fbe125bf1d4b26676e3350390e68d",
+      "bytes": 111089
+    },
+    {
+      "name": "source-r2-9eaaf4422f6fb7d8-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-9eaaf4422f6fb7d8-0.bin",
+      "sha256": "9eaaf4422f6fb7d8d2c560726201375f892a27c043efda438304f1701155fa9c",
+      "bytes": 21859
+    },
+    {
+      "name": "source-r2-eaa4548cdcf91163-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-eaa4548cdcf91163-0.bin",
+      "sha256": "eaa4548cdcf91163fc24c3af8c45430acfd227b471c0449912fd11a22264cec4",
+      "bytes": 98045
+    },
+    {
+      "name": "source-r2-2a2e9e4d5340b486-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-2a2e9e4d5340b486-0.bin",
+      "sha256": "2a2e9e4d5340b4868b6fdb4f148ededf6c9820779b270808b7414794a44a4f32",
+      "bytes": 139399
+    },
+    {
+      "name": "source-r2-5794512855c14647-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-5794512855c14647-0.bin",
+      "sha256": "5794512855c1464723d7a3e16923b30bd0a25957e65e98289939b759bfd48249",
+      "bytes": 306302
+    },
+    {
+      "name": "source-r2-05eb6c8c9ac3f0cb-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-05eb6c8c9ac3f0cb-0.bin",
+      "sha256": "05eb6c8c9ac3f0cb4cbe71bb4bb57dd22831fb235109f648724b2762783c20e3",
+      "bytes": 5633
+    },
+    {
+      "name": "source-r2-3fde608f16c247b4-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-3fde608f16c247b4-0.bin",
+      "sha256": "3fde608f16c247b43ed21f12b87be82be944a6019d4a610784249ac7424fa275",
+      "bytes": 10747
+    },
+    {
+      "name": "source-r2-7109f925aab68dd0-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-7109f925aab68dd0-0.bin",
+      "sha256": "7109f925aab68dd05e872b8b8d45998db7b4a8610b85a4db5f7ecc3ecc55457b",
+      "bytes": 22396
+    },
+    {
+      "name": "source-r2-70c919d9a5858a21-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-70c919d9a5858a21-0.bin",
+      "sha256": "70c919d9a5858a2102436e98c27633cbf009cf0be57b3b1f33141a13b2e9f02c",
+      "bytes": 91564
+    },
+    {
+      "name": "source-r2-ee2136fc18e37191-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-ee2136fc18e37191-0.bin",
+      "sha256": "ee2136fc18e3719150f9a7dac4e4a27cd47be1dd7dd706933b4806c9b19d8041",
+      "bytes": 33534
+    },
+    {
+      "name": "source-r2-d6ea6595d579e52f-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-d6ea6595d579e52f-0.bin",
+      "sha256": "d6ea6595d579e52f1393c626884d21c18f5c90fc21aca0c928b243d35d94a8ff",
+      "bytes": 329613
+    },
+    {
+      "name": "source-r2-8648d91ff1fe19b8-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-8648d91ff1fe19b8-0.bin",
+      "sha256": "8648d91ff1fe19b80a15320c23f69cb1b37cf8b977bf4256ba8a1bbd21da6e85",
+      "bytes": 1819
+    },
+    {
+      "name": "source-r2-458a2d1098dc733b-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-458a2d1098dc733b-0.bin",
+      "sha256": "458a2d1098dc733b0381a836562a9d9f620f8186bb58de8f0f05d0d71a1292e7",
+      "bytes": 2377
+    },
+    {
+      "name": "source-r2-5765e429aef622fc-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-5765e429aef622fc-0.bin",
+      "sha256": "5765e429aef622fc53fdb16151cdf678ccd51dc5b43a5d78671c420c147b8047",
+      "bytes": 67013
+    },
+    {
+      "name": "source-r2-f8a3f2940c18a593-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-f8a3f2940c18a593-0.bin",
+      "sha256": "f8a3f2940c18a5933b11cc1e0b7fbee4e8f2c30838788142844c02053263f5bf",
+      "bytes": 82811
+    },
+    {
+      "name": "source-r2-05de2482013fcd5c-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-05de2482013fcd5c-0.bin",
+      "sha256": "05de2482013fcd5cc7e1c8b839f2ece2d7534e776798d8243dcd7fed45470e02",
+      "bytes": 1286
+    },
+    {
+      "name": "source-r2-81e41c493df9206d-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-81e41c493df9206d-0.bin",
+      "sha256": "81e41c493df9206d2eb1674ba9f9c7b65e6e5d76fa74c705aa0ba021b3435287",
+      "bytes": 766
+    },
+    {
+      "name": "source-r2-aadf2d9fcff98c67-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-aadf2d9fcff98c67-0.bin",
+      "sha256": "aadf2d9fcff98c6793aef9b1a259e6a18e854b8db5b55a7a8fa967a5c5373722",
+      "bytes": 56950
+    },
+    {
+      "name": "source-r2-01c1b9d784c74c7e-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-01c1b9d784c74c7e-0.bin",
+      "sha256": "01c1b9d784c74c7ed7cf7ce207900b7d7e2b7b0a232a98ef12596411c15cf254",
+      "bytes": 2096
+    },
+    {
+      "name": "source-r2-8b92d6c0eeb2747c-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-8b92d6c0eeb2747c-0.bin",
+      "sha256": "8b92d6c0eeb2747caa215165ba8991fb327ef82adb2369faaea28b32666d6de2",
+      "bytes": 4133
+    },
+    {
+      "name": "source-r2-e420f328ee8b4097-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-e420f328ee8b4097-0.bin",
+      "sha256": "e420f328ee8b40975d60641812b4c885d378ddd5fc104a7b7ccfd64135893e96",
+      "bytes": 3984
+    },
+    {
+      "name": "source-r2-387f67c43a265087-0.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/source-r2-387f67c43a265087-0.bin",
+      "sha256": "387f67c43a2650879af26ff43be39d26e30757f8e37e45d44d80162da8748881",
+      "bytes": 2089
+    },
+    {
+      "name": "manifest.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/manifest.json",
+      "sha256": "cc8659f406a6dea7c6fd372ed07db1d426c556396eb5480c42585c955b045256",
+      "bytes": 120546
+    },
+    {
+      "name": "feedback-only-qualification.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/feedback-only-qualification.json",
+      "sha256": "9f544d309eeff41581727537c9707aedf4477fc304b4207a4e8deeb4bd8781b5",
+      "bytes": 1269
+    },
+    {
+      "name": "active168-exact-ast-reference-closure.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/active168-exact-ast-reference-closure.json",
+      "sha256": "701865d34000251520ca0af0df96dc3f1fb53f62cd435cf079126346024b4b0d",
+      "bytes": 17072
+    },
+    {
+      "name": "activation-feedback168-envelope.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/activation-feedback168-envelope.json",
+      "sha256": "ec8a86f5abf0ae0ef0583da54275fbc8aa6054e6ce8fe35ff1005015d9dffe73",
+      "bytes": 766
+    },
+    {
+      "name": "feedback-runtime-181-expected-pins.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/feedback-runtime-181-expected-pins.json",
+      "sha256": "c9b0373b56abd33700efd5396ba3bba59ee5762c2b2faf8b2cf869ca56158394",
+      "bytes": 36718
+    },
+    {
+      "name": "production168-scoped-delivery-result.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/production168-scoped-delivery-result.json",
+      "sha256": "64ada5135f6deb04bf8fbce302fd0ef788c88ab8a3604aa2eebf261d27227984",
+      "bytes": 6332
+    }
+  ],
+  "scope": "Exact live168 source-feedback-only entry+27newassets+receipts. The copied original manifest also references a separately prepared combined auth candidate; that auth candidate is NOT the deployed main and is NOT included. Original154modulepins retained except exact scoped main; immutable165 full source-only data retained separately/unadopted. No corpus/householddata/credentials/provider bindings included. This code custody is not main/develop promotion or additional runtime deployment.",
+  "remaining": "Natural/full15/world/humanacceptance; real-IDP/fullappUI; acceptedcanonicalEnglish/allvariantfoundation remain open."
+}

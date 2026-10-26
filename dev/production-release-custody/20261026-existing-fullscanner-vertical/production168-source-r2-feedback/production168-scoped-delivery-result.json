@@ -1,0 +1,84 @@
+{
+  "id": "worker00-source-r2-incremental-feedback-production168-delivered-20261026",
+  "atUTC": "2026-10-26T12:19:56.943411+00:00",
+  "worker": 0,
+  "threadId": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+  "task": "CORE-APP-SCANNER-DELIVERY",
+  "state": "DONE_WITH_CONCERNS_SCOPED_FEEDBACK_ONLY_NOT_HUMAN_ACCEPTANCE",
+  "live": {
+    "version": 168,
+    "uuid": "d7797e1f-580d-4cc2-aa50-779b55c45db3",
+    "deployment": "c41fff7d-c144-46d2-9e61-5a6cbb0b1592",
+    "createdOn": "2026-10-26T12:17:25.68785Z",
+    "percentage": 100,
+    "moduleCount": 181,
+    "main": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/feedback-only-landing.mjs",
+      "sha256": "eb0ea235022d8667b60fbdf05288f860aadac37e3b1f3d24b1ab4e5b1e0bda6e",
+      "bytes": 564317
+    },
+    "url": "https://offmenu.aldous.info/feedback/source-actions/revised-r2/?scene=6",
+    "sceneNumbers": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ]
+  },
+  "proofs": {
+    "activationAndExact181Pins": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/activation-feedback168-envelope.json",
+      "sha256": "ec8a86f5abf0ae0ef0583da54275fbc8aa6054e6ce8fe35ff1005015d9dffe73",
+      "bytes": 766
+    },
+    "referenceClosure": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/active168-exact-ast-reference-closure.json",
+      "sha256": "701865d34000251520ca0af0df96dc3f1fb53f62cd435cf079126346024b4b0d",
+      "bytes": 17072
+    },
+    "offlineComposition": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/feedback-only-qualification.json",
+      "sha256": "9f544d309eeff41581727537c9707aedf4477fc304b4207a4e8deeb4bd8781b5",
+      "bytes": 1269
+    },
+    "expected181Pins": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-source-r2-auth-current109-r1/feedback-runtime-181-expected-pins.json",
+      "sha256": "c9b0373b56abd33700efd5396ba3bba59ee5762c2b2faf8b2cf869ca56158394",
+      "bytes": 36718
+    },
+    "actual64": {
+      "resultId": "worker64-source-r2-seven-targeted-actual-motion-raster-and-viewed-frames-result-20261026",
+      "sequence": 17892,
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker64/revised-source-motion-r2-browser-20261026/targeted-r2-result.json",
+      "sha256": "edb9bf5a863010d87936d4873e4b968529b507f7c6cbff22e4531633de1de6a8"
+    }
+  },
+  "behavior": "Adds versionedR2 source-motion studies scenes03-15. All existing178manifest routes, own-normalized-only109/94firstpaint/timing/private guards/CSP/historical feedback preserved; four-asset auth candidate NOTincluded. Source-onlydata165 NOTadopted. Original153non-main modulepins identical.",
+  "actualMotionEvidence": "Seven06/07/08/10/11/13/14 complete+about5s holds; indexed640triangle raster coverage/orientation/alpha pass;110responses noerrors. Viewed keyframes; no uninterrupted playback/device/productionHTTP claim. Local06/07fps38.09/51.62 vs prior17.7/16.99;08 remains16.87fps.",
+  "remainingConcerns": [
+    "Unfinished source previews; world support/anatomy/framing/natural/full15/human acceptance open",
+    "Latest worldR2 actual17919 entry/fouractions passed but mixedinput ownership rebound; renderer R3ee301b52 ready only affectedfollowup; separate from sourcefeedbackrelease",
+    "Real-IDP/fullapp UI qualification open; compatible local05authoverride now admitted, helper continues",
+    "Canonical source-only b65 remains mappings0/EnglishAdmissions0/Gold0;19/English/57 own accepted semantic successor. No country complete claim."
+  ],
+  "capacity": {
+    "actualFailure": "HTTP400/10027 uncompressed63.9MiB when unadopted33MBdata staged alongside newfeedback",
+    "retainedInactiveDataVersion": "165/039eb57c-fbd6-4606-8f98-05e7e14e515d",
+    "sameLimitCorrection": "Boundedfeedbackruntime excludesONLY56 unreferenced source-food DATA bins from new version, retainsall154originalmodules including8unreferenced historicalbinaries. No immutableversion/source deletion, upgrade, changedlimits or alternative deniedroute.",
+    "closure": "AllfouractualWorkerJS matchedpins/AcornAST;173reachablemodule nodes/172edges/no unresolved/dynamicimports. All56foodbins absent and no references/prefix in anyWorkerJS; oldprovider e8 retained, new7c notadopted.",
+    "scalabilityConstraint": "6.9M product observations cannot be assumed to fit inline Worker. Existingapprovedown curated/public corpus origin offmenu-corpus.netlify.app and manifest/file-reader contract are candidate scalable serving route; first determine actual qualified canonical-shard/index contracts and existing service capacity. No new host/storagebinding/securityconfig or providerwrite undertaken. CurrentDB binding is not an assumedpubliccorpuswrite grant."
+  },
+  "authority": "Existing scoped incremental feedback delivery plus Parent exactnative boundedcomposition/activation direction; priordenials/mandatoryreview/source/private/holdssurvive. No main/develop/generalproduction/CIX/security change.",
+  "git": "e5d7da3fb53bfce339c7f8f470e414381ed7298c exact2a07source+83421worker custody pushed third-party-services;168sourcegroup next privateorigin custody action",
+  "cleanup": "RETAIN unique168source/proofs/inactive165 dataset/unfinishedauth/canonical/worldwork;00 oldpreviewsabsent;64ownedbrowser/serverexplicitclosure independentlyreported. No new00listener/daemon/controller.",
+  "nextAction": "Sendone exactscoped168 delivery toGateway with separatetransportreceipt; preserve/push exact168 sourcecustody; consume auth/semantic/renderer latestqualifiedpair and continue only authorized scope."
+}

@@ -1,0 +1,74 @@
+// Shared integration adapter. Authors supply finite samples; the existing master owns scheduling.
+import {sourceWorld,V} from '../landing-first-pair-v12-integration/scene-camera.mjs';
+const abort=()=>new DOMException('Scene operation superseded','AbortError');
+const finitePoint=(p,n=2)=>Array.isArray(p)&&p.length===n&&p.every(Number.isFinite);
+export function validateModule(module){
+ if(!Number.isInteger(module.id)||module.id<3||module.id>15)throw TypeError('Authored scene id03–15 required');
+ if(!Number.isFinite(module.durationMs)||module.durationMs<=0)throw TypeError('Finite action duration required');
+ if(!Number.isInteger(module.reference?.width)||module.reference.width<=0||!Number.isInteger(module.reference?.height)||module.reference.height<=0||!module.reference?.source?.path||!/^[a-f0-9]{64}$/.test(module.reference?.source?.sha256||''))throw TypeError('Pinned actual native-size source reference required');
+ if(typeof module.load!=='function'||typeof module.sample!=='function')throw TypeError('load/sample scene module required');return module;
+}
+export function sampleModule(module,assets,progress){
+ if(!Number.isFinite(progress)||progress<0||progress>1)throw RangeError('Finite progress0..1 required');
+ const frame=module.sample(progress,assets);if(!frame||!Array.isArray(frame.layers)||!Array.isArray(frame.contacts))throw TypeError('Scene sample requires layers/contacts');
+ const ids=new Set();for(const layer of frame.layers){if(!layer.id||ids.has(layer.id)||!layer.image||!['actor','prop','foreground'].includes(layer.role)||!Number.isFinite(layer.order))throw TypeError('Named unique source layer/image/role/order required');ids.add(layer.id);
+  if(layer.deformedUV&&(!layer.rasterMesh||layer.deformedUV.length!==layer.rasterMesh.source.length||!layer.deformedUV.every(p=>finitePoint(p))))throw TypeError('Deformed UV mesh correspondence required');
+  if(layer.transform){const t=layer.transform;if(t.pivot&&!finitePoint(t.pivot)||t.shift&&!finitePoint(t.shift)||t.angle!==undefined&&!Number.isFinite(t.angle))throw TypeError('Finite source layer transform required');}
+ }
+ for(const c of frame.contacts)if(!c.id||!['tap','grip','support','release'].includes(c.kind)||!finitePoint(c.point)||typeof c.target!=='string'||typeof c.active!=='boolean')throw TypeError('Measured source contact required');
+ return frame;
+}
+export async function loadSceneModule(moduleURL,{loadImage,readJSON,importModule=url=>import(url)}={}){
+ const url=new URL(moduleURL,import.meta.url),module=validateModule(await importModule(url.href));
+ const resolveAsset=relative=>new URL(relative,url).href;
+ const json=readJSON|| (async path=>{const r=await fetch(path);if(!r.ok)throw Error('Missing scene JSON: '+path);return r.json();});
+ if(typeof loadImage!=='function')throw TypeError('Shared decoded-image loader required');
+ const assets=await module.load({loadImage,readJSON:json,resolveAsset});
+ // Load once; fail incomplete assets before the shared master starts this chapter.
+ sampleModule(module,assets,0);return {module,assets,url:url.href};
+}
+export function createModuleChapter(loaded,{draw,transition,requestFrame=requestAnimationFrame,cancelFrame=cancelAnimationFrame,now=()=>performance.now()}={}){
+ const {module,assets}=loaded;validateModule(module);if(typeof draw!=='function')throw TypeError('Master draw binding required');
+ let progress=0,mounted=false,phase='idle',pending=null,lastFrame=null,disposed=false;
+ const render=()=>{lastFrame=sampleModule(module,assets,progress);draw(progress,lastFrame);};
+ const cancel=()=>{const previous=pending;pending=null;previous?.cancel();};
+ const animate=(target,{signal,rate})=>{
+  cancel();if(signal?.aborted)return Promise.reject(abort());if(!Number.isFinite(rate)||rate<=0)return Promise.reject(RangeError('Positive rate required'));
+  const from=progress,duration=Math.abs(target-from)*module.durationMs/rate;if(duration===0){render();return Promise.resolve();}
+  return new Promise((resolve,reject)=>{let handle=null,finished=false;const since=now();const cleanup=()=>{if(handle!==null)cancelFrame(handle);signal?.removeEventListener('abort',onAbort);if(pending===operation)pending=null;};const finish=(error)=>{if(finished)return;finished=true;cleanup();error?reject(error):resolve();};const onAbort=()=>finish(abort());const operation={cancel:onAbort};pending=operation;signal?.addEventListener('abort',onAbort,{once:true});
+   const tick=time=>{try{if(signal?.aborted)throw abort();const t=Math.max(0,Math.min(1,(time-since)/duration));progress=from+(target-from)*t;render();if(t===1)finish();else handle=requestFrame(tick);}catch(error){finish(error);}};handle=requestFrame(tick);
+  });
+ };
+ return {id:module.id,
+  mount(host,{boundary='start',signal}={}){if(signal?.aborted)throw abort();cancel();progress=boundary==='end'?1:0;mounted=true;phase='action';render();},
+  async play({signal,rate=1}={}){if(!mounted)throw Error('Scene not mounted');phase='action';await animate(rate<0?0:1,{signal,rate:Math.abs(rate)});phase='holding';return{id:module.id,pose:progress};},
+  async finishToBoundary({signal,rate=1,direction=1,nextId}={}){if(nextId!==module.id+Math.sign(direction))throw Error('Adjacent scene handoff required');if(typeof transition!=='function')throw Error('Actual shared spatial transition required');phase='action';await animate(direction<0?0:1,{signal,rate:Math.abs(rate)});phase='travel';const result=await transition({from:module.id,to:nextId,direction:Math.sign(direction),signal,rate:Math.abs(rate),frame:lastFrame});if(signal?.aborted)throw abort();if(result?.nextId!==nextId||!['start','end'].includes(result.entryBoundary)||![1,-1].includes(result.entryDirection))throw Error('Incoming canonical boundary not reached');return result;},
+  reset(){cancel();mounted=false;phase='idle';},
+  dispose(){if(disposed)return;disposed=true;cancel();mounted=false;phase='disposed';module.dispose?.(assets);},
+  getState(){return{id:module.id,progress,mounted,phase,active:!!pending,contacts:lastFrame?.contacts??[]};}
+ };
+}
+/** Actual world tablet depth at a posed UV, never a per-view fake glass plane. */
+export function tabletRayDepth(uv,camera,glassWorld){
+ if(!finitePoint(uv)||!Array.isArray(glassWorld)||glassWorld.length<3)throw TypeError('UV and fixed world glass plane required');
+ const normal=V.cross(V.sub(glassWorld[1],glassWorld[0]),V.sub(glassWorld[2],glassWorld[0])),ray=V.sub(sourceWorld(...uv,1,camera),camera.position),den=V.dot(normal,ray);if(Math.abs(den)<1e-10)throw Error('Ray parallel to tablet');const depth=V.dot(normal,V.sub(glassWorld[0],camera.position))/den;if(depth<=0||!Number.isFinite(depth))throw Error('Tablet behind source camera');return depth;
+}
+export function tabletContactDepths({mesh,posedUV=mesh.source,camera,actorDepth,glassWorld,progress}){
+ if(!finitePoint(mesh.root)||!finitePoint(mesh.indexContact)||!Number.isFinite(actorDepth)||actorDepth<=0||!Number.isFinite(progress)||progress<0||progress>1)throw TypeError('Bound hand mesh/root/index and positive world depth required');
+ const direction=V.sub(mesh.indexContact,mesh.root),length=V.dot(direction,direction);if(length===0)throw Error('Hand root/index coincide');
+ return mesh.source.map((uv,i)=>{const weight=Math.max(0,Math.min(1,V.dot(V.sub(uv,mesh.root),direction)/length)),target=tabletRayDepth(posedUV[i],camera,glassWorld),t=progress*weight;return 1/((1-t)/actorDepth+t/target);});
+}
+export function fitSourceViewport(width,height,aspect){
+ if(!Number.isFinite(aspect)||aspect<=0)throw TypeError('Positive reference aspect required');
+ const w=Math.min(width,height*aspect),h=w/aspect;return {x:(width-w)/2,y:(height-h)/2,width:w,height:h};
+}
+/** Draw ONLY against master-supplied camera/placements; absent registration is explicit. */
+export function drawWorldFrame(renderer,shared,loaded,frame,{camera,referenceCamera,placements}={}){
+ if(!camera||!referenceCamera||!placements)throw Error('Master camera/reference/placement registration missing');
+ const g=renderer.gl,viewport=fitSourceViewport(renderer.canvas.width,renderer.canvas.height,camera.viewportAspect||camera.aspect||renderer.canvas.width/renderer.canvas.height);g.viewport(Math.round(viewport.x),Math.round(viewport.y),Math.round(viewport.width),Math.round(viewport.height));g.clearColor(.89,.94,.94,1);g.clear(g.COLOR_BUFFER_BIT);renderer.references={...shared.room.spec.cameras,[loaded.module.id]:referenceCamera};renderer.room(shared.room,camera);
+ const glass=shared.glass['1'],planeDepthABC=shared.room.spec.tabletInverseDepthABC;
+ if(shared.bezel)renderer.drawLayer(shared.bezel.image||shared.bezel,{camera,reference:1,planeQuad:glass,polygon:glass,outside:true,planeDepthABC});
+ if(frame.screen)renderer.screen(frame.screen,glass,camera,planeDepthABC);
+ for(const layer of [...frame.layers].sort((a,b)=>a.order-b.order)){const placement=placements[layer.id]||placements[layer.role];if(!placement)throw Error('Master placement missing: '+layer.id);const options=typeof placement==='function'?placement({layer,frame,camera}):placement;renderer.drawLayer(layer.image,{camera,reference:loaded.module.id,...options,...Object.fromEntries(['rect','sample','transform','rasterMesh','deformedUV'].filter(k=>layer[k]!==undefined).map(k=>[k,layer[k]]))});}
+ return {chapter:loaded.module.id,contacts:frame.contacts,qualification:'Shared world render; source and actual contact/occlusion acceptance remain separate.'};
+}

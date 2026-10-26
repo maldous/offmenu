@@ -1,0 +1,47 @@
+// Leftovers: finite two-hand carry, observed shelf placement, staged withdrawal.
+export const id=10;
+export const durationMs=3900;
+const W=1041,H=645,base=[290,410],shelf=[220,425];
+const near={root:[492,407],grip:[274,395]},far={root:[466,373],grip:[363,334]};
+export const reference={width:W,height:H,
+ source:{path:'/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-10.png',sha256:'76c7587e2080e16b02ea104c8c0b771e13c0b7917de6efcabd7b734262b1fd0b'},
+ anchors:{neck:null,shoulder:null,elbow:null,wrist:null,index:null,grip:near.grip,farGrip:far.grip,propBase:base,support:shelf,
+  nearCuff:near.root,farCuff:far.root,tabletGlass:[[825,390],[987,426],[954,558],[789,513]]},
+ anchorReasons:{neck:'Profile/collar does not uniquely establish anatomical centre.',shoulder:'Inside opaque shirt.',elbow:'Visible bends not independently measured as joint centres.',wrist:'Hand/container occlusion prevents exact anatomical wrist.',index:'Two-hand grip, not a pointing action.',grip:'Source near-palm contact±5 pixels; far grip±5, partially hidden.',propBase:'Native bottom contour tip±6 pixels; inferred concealed completion.',support:'Observed white fridge shelf at220425±10pixels; source inspection saved. NOT world-plane registration.'},
+ action:'Carry a closed leftovers box into existing fridge, place on observed shelf, release far hand then near palm, withdraw. Source-local support, world qualification open.'};
+const clamp=x=>Math.max(0,Math.min(1,x)),smooth=x=>{x=clamp(x);return x*x*(3-2*x);};
+function value(p,keys){for(let i=1;i<keys.length;i++)if(p<=keys[i][0]){const t=smooth((p-keys[i-1][0])/(keys[i][0]-keys[i-1][0]));return keys[i-1][1]+(keys[i][1]-keys[i-1][1])*t;}return keys.at(-1)[1];}
+function pose(p){
+ p=clamp(p);const dx=value(p,[[0,35],[.12,32],[.48,8],[.65,0],[.8,-70],[1,-70]]),dy=value(p,[[0,16],[.12,14],[.48,3],[.65,0],[.8,15],[1,15]]);
+ const lean=value(p,[[0,6],[.12,4],[.48,-2],[.65,0],[.8,-10],[.9,-6],[1,0]]);
+ return{p,dx,dy,lean,farRelease:smooth((p-.84)/.12),nearRelease:smooth((p-.9)/.1)};
+}
+const xs=[...new Set([...Array.from({length:55},(_,i)=>i/54),near.root[0]/W,far.root[0]/W,near.grip[0]/W,far.grip[0]/W])].sort((a,b)=>a-b);
+const ys=[...new Set([...Array.from({length:37},(_,i)=>i/36),near.root[1]/H,far.root[1]/H,near.grip[1]/H,far.grip[1]/H])].sort((a,b)=>a-b);
+const source=ys.flatMap(v=>xs.map(u=>[u,v])),indices=[];
+for(let y=0;y<ys.length-1;y++)for(let x=0;x<xs.length-1;x++){const k=y*xs.length+x;indices.push(k,k+xs.length,k+1,k+1,k+xs.length,k+xs.length+1);}
+const mesh=spec=>({source,indices,root:[spec.root[0]/W,spec.root[1]/H],gripContact:[spec.grip[0]/W,spec.grip[1]/H]});
+function bodyPoint([u,v],s){const w=smooth((H-v*H)/380);return[u+s.lean*w/W,v];}
+function gripShift(spec,s,release){return[s.dx+release*(spec===near?82:66),s.dy+release*(spec===near?35:28)];}
+function handPoint([u,v],spec,s,release){
+ const x=u*W,y=v*H,[rx,ry]=spec.root,[gx,gy]=spec.grip,dir=[gx-rx,gy-ry],length=dir[0]**2+dir[1]**2;
+ const weight=smooth(((x-rx)*dir[0]+(y-ry)*dir[1])/length);
+ const body=bodyPoint([rx/W,ry/H],s),rootShift=[body[0]*W-rx,body[1]*H-ry],delta=gripShift(spec,s,release);
+ return[(x+rootShift[0]*(1-weight)+delta[0]*weight)/W,(y+rootShift[1]*(1-weight)+delta[1]*weight)/H];
+}
+export async function load({loadImage,resolveAsset}){const files={actor:'actorCore-separated-r2',nearArm:'nearArm-skin-only',farHand:'farHand-skin-only',container:'container-complete',screen:'approved-screen'};const rows=await Promise.all(Object.entries(files).map(async([k,n])=>[k,await loadImage(resolveAsset(`./assets/${n}.png`))]));return Object.fromEntries(rows);}
+export function sample(progress,assets){const s=pose(progress),farPoint=handPoint([far.grip[0]/W,far.grip[1]/H],far,s,s.farRelease).map((v,i)=>v*[W,H][i]),nearPoint=handPoint([near.grip[0]/W,near.grip[1]/H],near,s,s.nearRelease).map((v,i)=>v*[W,H][i]);
+ return{layers:[
+  {id:'leftovers-actor',image:assets.actor,role:'actor',order:0,rasterMesh:{source,indices},deformedUV:source.map(p=>bodyPoint(p,s))},
+  {id:'leftovers-container',image:assets.container,role:'prop',order:10,transform:{pivot:[base[0]/W,base[1]/H],angle:0,shift:[s.dx/W,s.dy/H]}},
+  {id:'leftovers-far-hand',image:assets.farHand,role:'actor',order:20,rasterMesh:mesh(far),deformedUV:source.map(p=>handPoint(p,far,s,s.farRelease))},
+  {id:'leftovers-near-arm',image:assets.nearArm,role:'actor',order:30,rasterMesh:mesh(near),deformedUV:source.map(p=>handPoint(p,near,s,s.nearRelease))}
+ ],contacts:[
+  {id:'leftovers-far-grip',layerId:'leftovers-far-hand',kind:'grip',point:farPoint,target:'prop:leftovers-container',active:s.p<=.84,targetPoint:[far.grip[0]+s.dx,far.grip[1]+s.dy]},
+  {id:'leftovers-near-grip',layerId:'leftovers-near-arm',kind:'grip',point:nearPoint,target:'prop:leftovers-container',active:s.p<=.9,targetPoint:[near.grip[0]+s.dx,near.grip[1]+s.dy]},
+  {id:'leftovers-base-support',layerId:'leftovers-container',kind:'support',point:[base[0]+s.dx,base[1]+s.dy],target:'shelf',active:s.p>=.8,targetPoint:shelf},
+  {id:'leftovers-far-release',layerId:'leftovers-far-hand',kind:'release',point:farPoint,target:'prop:leftovers-container',active:s.p>.84},
+  {id:'leftovers-near-release',layerId:'leftovers-near-arm',kind:'release',point:nearPoint,target:'prop:leftovers-container',active:s.p>.9}
+ ],screen:assets.screen,phase:s.p<.8?'action':s.p<=.84?'contact':s.p<.99?'release':'settled',supportBinding:'Observed native shelf reference only; master fixed-world shelf/collision/occlusion not accepted',worldReleaseQualified:false};
+}
+export function dispose(){}

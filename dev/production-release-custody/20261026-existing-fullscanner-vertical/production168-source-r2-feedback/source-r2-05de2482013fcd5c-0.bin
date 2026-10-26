@@ -1,0 +1,10 @@
+import * as base from '../helper-scene13/scene-13.mjs';
+import {grid} from '../action-math.mjs';
+import {sourceSkin,poseFor,bodyLayer} from './actor-motion.mjs';
+export const id=13;export const durationMs=3350;export const reference={...base.reference,actionRevision:'R4 deliberate source-visible body/arm action; not natural/world acceptance'};
+const width=reference.width,height=reference.height,root=reference.anchors.armCropRoot,index=reference.anchors.index,mesh=grid(width,height,{root,index,extra:[]});
+export function load(ctx){return base.load({...ctx,resolveAsset:path=>ctx.resolveAsset('../helper-scene13/'+path.replace(/^\.\//,''))});}
+export function sample(p,assets){const f=base.sample(.65,assets),pose=poseFor(id,p),arm=f.layers.find(l=>l.rasterMesh),uv=sourceSkin(mesh,{width,height,root,index},pose,{pinCrop:id===13});arm.rasterMesh=mesh;arm.deformedUV=uv;
+ const contact=f.contacts[0];contact.point=[index[0]+pose.shift[0],index[1]+pose.shift[1]];contact.active=p>=.43&&p<=.66;contact.frontNormalSeparationInTabletWidths=contact.active?0:Math.hypot(...pose.shift)/500;
+ 
+ f.phase=p===1?'settled':contact.active?'contact':p>.66?'release':'action';f.motionStage=p<.18?'prepare-and-look':contact.active?'read-and-indicate':p>.66?'release-and-recover':'reach';return f;}

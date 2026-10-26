@@ -1,0 +1,4 @@
+import*as authored from"../../../../scene03-05-action-modules-20261026/r2/scene-05.mjs";
+const baseURL=new URL("../../../../scene03-05-action-modules-20261026/r2/scene-05.mjs",import.meta.url);export const id=authored.id,durationMs=authored.durationMs;export const reference={...authored.reference,anchors:{...authored.reference.anchors,...{}}};
+export async function load(services){const assets=await authored.load({...services,resolveAsset:value=>new URL(value,baseURL).href});return{...assets,__masterApprovedScreen:await services.loadImage(new URL("../../../../worker64/tablet-screen-contactsheet-20261026/quantity.png",import.meta.url).href)};}
+export function sample(p,assets){return{...authored.sample(p,assets),screen:assets.__masterApprovedScreen};}export function dispose(assets){authored.dispose?.(assets);}

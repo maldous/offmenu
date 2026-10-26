@@ -1,0 +1,21 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "$id":"urn:offmenu:schema:current-source-category-consumer:1",
+ "title":"Current OFF source-local category presentation candidate; no product identity or icon admission",
+ "type":"object",
+ "required":["schema","sourceNamespace","exactCategoryID","status","displayLabel","displayLanguage","sourceLabels","EnglishDisplayLabel","sourceLocalTypeCandidates","iconType","visualAction","unresolvedReasons","provenance"],
+ "properties":{
+  "schema":{"const":"offmenu-current-source-category-consumer/1"},
+  "sourceNamespace":{"type":"string","minLength":1},"exactCategoryID":{"type":"string","minLength":1},
+  "status":{"enum":["unresolved","exact-current-source-category"]},
+  "displayLabel":{"type":["string","null"]},"displayLanguage":{"type":["string","null"]},
+  "sourceLabels":{"type":["object","null"],"additionalProperties":{"type":"string"}},
+  "EnglishDisplayLabel":{"type":["string","null"]},
+  "sourceLocalTypeCandidates":{"type":"array","items":{"type":"object","required":["sourceNamespace","sourceCategoryID","sourceLabels","EnglishDisplayLabel","relation","status","evidence","identityEquivalence"],"properties":{"sourceNamespace":{"const":"off"},"sourceCategoryID":{"type":"string","minLength":1},"sourceLabels":{"type":"object","additionalProperties":{"type":"string"}},"EnglishDisplayLabel":{"type":["string","null"]},"relation":{"const":"declared-source-category-parent"},"status":{"const":"source-local-type-candidate-not-admitted"},"evidence":{"type":"object","required":["childPointer","parentPointer","taxonomySnapshot"]},"identityEquivalence":{"const":false}}}},
+  "iconType":{"type":"null"},"visualAction":{"const":"retain-existing-shared-resolver-fallback"},
+  "parentMultiplicity":{"enum":["multiple-preserved","single","none"]},
+  "unresolvedReasons":{"type":"array","items":{"type":"string","minLength":1},"minItems":1},
+  "provenance":{"type":"object","required":["sourceSnapshot","sourceURL","currentToHistoricalDefinitionEquivalence"],"properties":{"sourceSnapshot":{"type":"object","required":["path","sha256","bytes"]},"sourceURL":{"type":"string"},"currentToHistoricalDefinitionEquivalence":{"const":false}}}
+ },
+ "allOf":[{"if":{"properties":{"status":{"const":"unresolved"}}},"then":{"properties":{"displayLabel":{"type":"null"},"sourceLabels":{"type":"null"},"sourceLocalTypeCandidates":{"maxItems":0}}}}]
+}

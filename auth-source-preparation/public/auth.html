@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer"><title>Sign in to OffMenu</title>
+<link rel="stylesheet" href="/offmenu-system.css"></head>
+<body><main><a href="/landing.html">OffMenu</a><h1>Your OffMenu account</h1>
+<p>Sign in, create an account, or recover access to your kitchen.</p>
+<p id="synthetic-notice" hidden>This local preview uses a synthetic sign-in demonstration. It is not a real provider login.</p>
+<p id="auth-status" role="status" aria-live="polite">Checking sign-in…</p>
+<form id="signin-form" hidden>
+<label for="auth-email">Email</label><input id="auth-email" type="email" autocomplete="username" maxlength="512" required>
+<label for="auth-password">Password</label><input id="auth-password" type="password" autocomplete="current-password" maxlength="1024" required>
+<button id="signin-submit" type="submit">Sign in</button>
+<button id="signup-submit" type="button" disabled>Create account</button>
+<button id="recovery-submit" type="button" disabled>Forgot password?</button></form>
+<p id="account-action-status" role="status"></p>
+<form id="signup-form" hidden aria-labelledby="signup-heading">
+<h2 id="signup-heading">Create your account</h2>
+<label for="signup-email">Email</label><input id="signup-email" type="email" autocomplete="username" maxlength="512" required>
+<label for="signup-password">New password</label><input id="signup-password" type="password" autocomplete="new-password" maxlength="1024" required>
+<label for="signup-password-confirm">Repeat password</label><input id="signup-password-confirm" type="password" autocomplete="new-password" maxlength="1024" required>
+<button id="signup-create" type="submit">Create account</button>
+<button id="signup-back" type="button">Back to sign in</button>
+</form>
+<section id="confirmation-pending" hidden><h2>Check your email</h2>
+<p>If confirmation is required, open the link in your email to finish setting up your account.</p>
+<button id="confirmation-signin" type="button">Back to sign in</button></section>
+<form id="reset-form" hidden aria-labelledby="reset-heading">
+<h2 id="reset-heading">Set a new password</h2>
+<label for="reset-password">New password</label><input id="reset-password" type="password" autocomplete="new-password" maxlength="1024" required>
+<label for="reset-password-confirm">Repeat new password</label><input id="reset-password-confirm" type="password" autocomplete="new-password" maxlength="1024" required>
+<button id="reset-submit" type="submit">Update password</button>
+<button id="reset-cancel" type="button">Cancel and sign out</button></form>
+<p id="account-link-help" hidden><a href="/auth.html">Return to sign in</a> or request a new account link.</p>
+<div id="auth-providers" hidden></div>
+<p id="auth-provider-status" role="status" hidden></p>
+<button id="continue-scanner" type="button" hidden>Continue to scanner</button>
+<button id="signout" type="button" hidden>Sign out</button>
+<section id="provider-consent" hidden aria-labelledby="provider-consent-heading">
+<h2 id="provider-consent-heading">Connection terms</h2>
+<p id="provider-consent-status" role="status"></p>
+<form id="provider-consent-form" hidden>
+<p><a id="provider-terms-link" target="_blank" rel="noopener noreferrer">Read provider terms</a> · <span id="provider-terms-version"></span></p>
+<label for="provider-purpose">Purpose</label><select id="provider-purpose"></select>
+<fieldset id="provider-scopes"><legend>Requested access</legend></fieldset>
+<label><input id="provider-accept" type="checkbox">I accept these terms for this connection.</label>
+<button type="submit">Record my choice</button>
+</form><button id="provider-withdraw" type="button">Withdraw my choice</button>
+<p>Accepting terms does not grant access beyond your provider account, its permissions or the source-use rules.</p>
+</section>
+<p>Service connections and their provider terms are separate from signing in. Existing account permissions still apply.</p>
+</main><script type="module" src="/auth.js"></script></body></html>

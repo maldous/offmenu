@@ -8,12 +8,13 @@ import {validateLot,validSourceObservationReference} from '../public/model.js';
 import {IDENTIFIER_DB,IDENTIFIER_RUN,DETAIL_SELECTION} from '../public/scanner-identity-v2.js';
 import {reconcileCookedStock} from '../public/cooking-model.js';
 import {t,setLocalizedText,getLanguage} from '../public/i18n.js';
+import * as handoff from '../public/scanner-kitchen-handoff.js';
 
 // Execute the shipped callbacks, not copies of their logic. The small DOM/storage
 // doubles intentionally make no browser, camera, network, or cloud-sync claim.
 const source=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
 const nodes=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body;
-const names=['draftKey','saveDraft','readScannerImport','completeScannerHandoff','today','save','canEditCheckout','autoAccept','trustedIngredient','mappedIngredient','openWorkspace','startCheckout','renderBasket','saveReceipt','renderFinalReceipt','editReceiptItem'];
+const names=['draftKey','saveDraft','readScannerImport','completeScannerHandoff','scannerScopeMatches','today','save','canEditCheckout','autoAccept','trustedIngredient','mappedIngredient','openWorkspace','startCheckout','renderBasket','saveReceipt','renderFinalReceipt','editReceiptItem'];
 const functions=names.flatMap(name=>nodes.filter(n=>n.type==='FunctionDeclaration'&&n.id.name===name).map(n=>source.slice(n.start,n.end)));
 for(const name of names)assert.equal(nodes.filter(n=>n.type==='FunctionDeclaration'&&n.id.name===name).length,1,name);
 const handlers=['void-last','finish-checkout','confirm-finish','add'];
@@ -36,7 +37,7 @@ const draft=(items=[],mode='shelf')=>({mode,area:'Pantry',shelf:'Shelf 1',items,
 function harness({inventory=[inventoryLot('old'),inventoryLot('other','Shelf 2')],session=draft(),store=new Map(),lookup=()=>Promise.reject(Error('Unknown')),writable=true}={}){
  const elements=new Map(),$=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};
  const cancel=new Element();cancel.dataset.close='finish-dialog';let dirty=0;
- const ctx={$,KEY:'test-pantry',PROFILE:'test-profile',session:copy(session),pendingScannerImport:null,scannerHandoffOperations:[],scannerHandoffStateValid:true,KITCHEN_HANDOFF:'offmenu-scanner-kitchen-pending-v1',validSourceObservationReference,lifecycleFixture:false,location:{search:'?scan=staged'},URLSearchParams,lots:copy(inventory),profile:{batches:[],locations:[]},products:{},feedback:{},latestAcceptedId:null,selectedMode:'shelf',selectedArea:'Pantry',demoMode:false,user:null,lastReceipt:null,editingId:null,crypto,Date,
+ const ctx={...handoff,$,KEY:'test-pantry',PROFILE:'test-profile',requestIdentity:{owner:null},session:copy(session),pendingScannerImport:null,scannerHandoffOperations:[],scannerHandoffReceipts:{},scannerHandoffStateValid:true,KITCHEN_HANDOFF:'offmenu-scanner-kitchen-pending-v1',validSourceObservationReference,lifecycleFixture:false,location:{search:'?scan=staged'},URLSearchParams,lots:copy(inventory),profile:{batches:[],locations:[]},products:{},feedback:{},latestAcceptedId:null,selectedMode:'shelf',selectedArea:'Pantry',demoMode:false,user:null,lastReceipt:null,editingId:null,crypto,Date,
   document:{createElement:()=>new Element(),querySelectorAll:selector=>selector==='[data-close]'?[cancel]:[]},window:{scrollTo(){}},
   localStorage:{getItem:key=>store.get(key)??null,setItem:(key,value)=>store.set(key,value),removeItem:key=>store.delete(key)},
   sharing:{canWrite:()=>writable},syncStatus:()=>{},finishInventory,locationKey,makeAutoLot,validateLot,reconcileCookedStock,t,setLocalizedText,getLanguage,

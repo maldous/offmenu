@@ -1,0 +1,21 @@
+{
+  "atUTC": "2026-10-26T13:09:53.582Z",
+  "status": "PASS_SCOPED_OFFLINE_COMPOSITION",
+  "moduleSHA256": "13820aa6b77d75a99cc152ef2b2349bea94f35837b698aca824170fc95ebd339",
+  "preservedBaseSHA256": "c35305c644c5a65c53662dabac0b1f261b546c8b2c1c98c6546076df1d52ddb3",
+  "unchangedOpaqueNativeParts": [
+    "v12-screen-01-01.bin",
+    "v12-screen-01-02.bin",
+    "v12-screen-01-03.bin"
+  ],
+  "oldManifestRoutesByteAndHeaderIdenticalToPinnedBase": 327,
+  "newFeedbackRoutesActualResponseHashAndHeaders": 21,
+  "emptyHeadResponses": 21,
+  "requiredExistingWorldResourcesActualHashPassed": 3,
+  "authDeltaIncluded": false,
+  "privatePathsOpaqueDelegation": 5,
+  "invalidEnvironmentDelegations": 3,
+  "externalCalls": 0,
+  "sourceDataQueries": 0,
+  "limits": "Private worker and listed unchanged original v12 native dependencies are explicit opaque sentinels. Old-route comparison shares those same sentinels; new21 fridge route bodies and3 existing room resources independently match exact source hashes. Production preservation additionally requires exact prior module pins and inverse source proof. This is not real authentication, full-app UI, deployed HTTP, world/anatomy/full15 or human acceptance. Author real-worker synthetic guard and actual64 sourceR2 evidence remain separately scoped."
+}

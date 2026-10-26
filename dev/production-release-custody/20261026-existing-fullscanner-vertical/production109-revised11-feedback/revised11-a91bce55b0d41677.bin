@@ -1,0 +1,23 @@
+// Finite source-part weighing action; the shared master owns room, camera and clock.
+export const id=5;
+export const durationMs=3400;
+export const reference={width:1014,height:633,source:{path:'/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-05.png',sha256:'be938c6286f10c47571a4c6af677e3d0dc7e71b5fb03e57aa712ab2e6cf5e1db'},anchors:{neck:null,shoulder:null,elbow:null,wrist:[174,120],index:null,grip:[289,175],support:[437,479],propBase:[366,252],propContact:[386,212],grainLanding:[411.5,351],tabletGlass:[[714,119],[976,167],[888,431],[616,348]]},anchorQualification:{neck:'Offscreen in approved closeup.',shoulder:'Offscreen; no invented anatomical shoulder.',elbow:'Offscreen at left source boundary.',index:'Curled behind cup; no tablet tap in this shot.',wrist:'Accepted05 source hinge/control, not surveyed anatomical centre.',grip:'Visible thumb/cup boundary from accepted hand polygon.',tabletGlass:'Hand-traced source screen interior corners, approximate±5px; master binds actual fixed glass.'}};
+const names=['grain-jar','scale','bowl-empty','grain-pile','forearm','hand-cup-contact','grain-stream'];
+export async function load({loadImage,resolveAsset}){return Object.fromEntries(await Promise.all(names.map(async n=>[n,await loadImage(resolveAsset('./assets/scene-05/'+n+'.png'))])));}
+const smooth=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
+const W=reference.width,H=reference.height;
+const source=[[0,0],[1,0],[0,1],[1,1]],indices=[0,2,1,1,2,3];
+const mesh=fn=>({rasterMesh:{source,indices},deformedUV:source.map(([u,v])=>{const p=fn([u*W,v*H]);return[p[0]/W,p[1]/H];})});
+const rigid=(point,pivot,angle,dy)=>{const x=point[0]-pivot[0],y=point[1]-pivot[1],c=Math.cos(angle),s=Math.sin(angle);return[pivot[0]+c*x-s*y,pivot[1]+dy+s*x+c*y];};
+const keys=[[0,-65,120,0],[.12,-68,126,-4],[.32,-20,6,12],[.5,-3,-4,3],[.65,0,0,0],[.78,-2,2,2],[.9,-58,108,-3],[1,-65,120,0]];
+function motion(p){let i=1;while(i<keys.length-1&&p>keys[i][0])i++;const a=keys[i-1],b=keys[i],s=smooth((p-a[0])/(b[0]-a[0]));return a.slice(1).map((v,k)=>v+(b[k+1]-v)*s);}
+export function sample(progress,assets){
+ if(!Number.isFinite(progress)||progress<0||progress>1)throw RangeError('Finite scene05 progress0..1 required');
+ const [degrees,dy,dx]=motion(progress),angle=degrees*Math.PI/180,pivot=[174,120],held=p=>{const q=rigid(p,pivot,angle,dy);return[q[0]+dx,q[1]];};
+ const flow=smooth((progress-.38)/.08)*(1-smooth((progress-.70)/.08)),fill=smooth((progress-.38)/.40),lip=held([386,212]),landing=[411.5,351];
+ const layers=[{id:'grain-jar',image:assets['grain-jar'],role:'prop',order:0},{id:'scale',image:assets.scale,role:'prop',order:1},{id:'bowl-empty',image:assets['bowl-empty'],role:'prop',order:2}];
+ if(fill>0)layers.push({id:'grain-pile',image:assets['grain-pile'],role:'prop',order:3,...mesh(([x,y])=>[411.5+(x-411.5)*(.4+.6*fill),351+(y-351)*fill])});
+ layers.push({id:'pour-forearm',image:assets.forearm,role:'actor',order:4,...mesh(([x,y])=>[x+dx*x/174,y+dy*x/174])},{id:'hand-cup-contact',image:assets['hand-cup-contact'],role:'actor',order:5,...mesh(held)});
+ if(flow>0)layers.push({id:'grain-stream',image:assets['grain-stream'],role:'prop',order:6,...mesh(([x,y])=>{const t=(y-212)/139,side=x-(386+25.5*t);return[lip[0]+(landing[0]-lip[0])*t+side*flow,lip[1]+(landing[1]-lip[1])*t];})});
+ const grip=held([289,175]);return{layers,contacts:[{id:'cup-grip',kind:'grip',point:grip,target:'prop:hand-cup-contact',layerId:'hand-cup-contact',active:true,targetPoint:grip,gapNative:0},{id:'bowl-scale-support',kind:'support',point:[437,479],target:'prop:scale',active:true,targetPoint:[437,479],gapNative:0},{id:'grain-landing',kind:'support',point:landing,target:'prop:bowl-empty',active:flow>0,targetPoint:landing,gapNative:0},{id:'cup-release',kind:'release',point:grip,target:'prop:hand-cup-contact',active:false,reason:'Cup remains held; only grains transfer into the supported bowl.'}],screen:null,phase:progress===1?'settled':flow>0?'contact':'action',diagnostics:{cupLipNative:lip,grainLandingNative:landing,flow,fill,wristNative:[174+dx,120+dy],motionStage:progress<.12?"anticipation":progress<.38?"lift-and-tip":progress<.78?"pour":"withdraw-and-settle",cupGripGapNative:0,streamLandingGapNative:flow>0?0:null,releaseQualification:'No cup setdown claimed; no unsupported prop release.'}};
+}

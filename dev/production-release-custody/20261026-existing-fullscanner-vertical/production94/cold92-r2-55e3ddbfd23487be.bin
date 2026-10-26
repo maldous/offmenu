@@ -1,0 +1,26 @@
+import {createFirstSequence} from './scene-adapter.mjs';
+import {createChapterMaster,bindChapterIntent} from './controller/chapter-master.mjs';
+
+/** Mount the accepted two chapters; the landing owner retains all DOM/navigation. */
+export async function mountFirstPair({canvas,host=canvas?.parentNode,assetBase,
+ onChapter=()=>{},onStatic03=()=>{},onError=()=>{},clock,autoAdvance=true}={}) {
+ if(!canvas||!host)throw new TypeError('Existing canvas and host required');
+ const sequence=await createFirstSequence(canvas,{assetBase});
+ let disposed=false,started=false,preparedIndex=null,unbind=()=>{};
+ const master=createChapterMaster({chapters:sequence.chapters,host,clock,
+  autoAdvance,requireSpatialTransitions:true,onChapter,onError});
+ // completion resolves only after02 finite action AND its final five-second hold.
+ // onFinal is deliberately unused: it fires before that hold.
+ master.completion.then(result=>{
+  if(!disposed&&result.status==='complete')onStatic03({index:2,lastAnimatedState:sequence.getState()});
+ });
+ return {prepare(index=0){if(started||disposed)throw Error('Prepare only before visible activation');if(index!==0&&index!==1)throw RangeError('First pair index0 or1 required');if(preparedIndex!==null&&preparedIndex!==index)sequence.chapters[preparedIndex].reset();preparedIndex=index;return sequence.chapters[index].mount(host,{boundary:'start',direction:1});},
+  start(index=0){started=true;return master.start(index);},
+  request(index,options){return master.request(index,options);},
+  setPaused(value){master.setPaused(value);},
+  bindIntent(options={}){unbind();unbind=bindChapterIntent(master,options);return unbind;},
+  getState(){return {master:master.state,scene:sequence.getState()};},
+  completion:master.completion,
+  dispose(){if(disposed)return;disposed=true;unbind();master.dispose();sequence.dispose();}
+ };
+}

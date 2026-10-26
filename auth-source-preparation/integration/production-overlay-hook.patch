@@ -1,0 +1,29 @@
+--- a/cloud/production-preserved-overlay.mjs
++++ b/cloud/production-preserved-overlay.mjs
+@@ -1,3 +1,5 @@
++import {createGoogleReturnProxy} from './google-return-proxy.mjs';
++import {createD1GoogleReturnStore} from './google-return-store.mjs';
+ import application from './deployed-application.mjs';
+ import {selectedProductionLookup} from './production-selected-lookup.mjs';
+ import {authPageRoutes} from './auth-page-routes.mjs';
+@@ -7,6 +9,8 @@
+ // Same verifier and existing realm as the deployed ac2 application. No sessions
+ // or roles are issued by this readback endpoint.
+ const IDENTITY='https://offmenu-accounts.netlify.app/.netlify/identity';
++// Code-ready, unselected until exact callback/return qualification and00admission.
++const GOOGLE_RETURN_OPTIONS=Object.freeze({enabled:false,callbackPolicy:null});
+ async function verifiedUser(request){const auth=request.headers.get('Authorization');const cookie=request.headers.get('Cookie')||'';const encoded=cookie.match(/(?:^|;\s*)nf_jwt=([^;]+)/)?.[1];let token;try{token=auth?.startsWith('Bearer ')?auth.slice(7):encoded?decodeURIComponent(encoded):null;}catch{return null;}if(!token)return null;const r=await fetch(IDENTITY+'/user',{headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(10000)});if(!r.ok)return null;const user=await r.json();return typeof user.id==='string'&&user.id.length<200?user:null;}
+ const headers={'X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Permissions-Policy':'camera=(self), microphone=()',
+   'Content-Security-Policy':"default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://offmenu-corpus.netlify.app; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"};
+@@ -27,6 +31,11 @@
+     if(url.pathname.startsWith('/__dev/')||url.pathname.startsWith('/api/dev-auth'))return new Response('Not found',{status:404});
+     const auth=await authPageRoutes(request,env,{runtime:{mode:'netlify',verifiedUser},authPageOptions:{identityTransport:'real',oauthCallbackReady:false}});
+     if(auth)return auth;
++    // Two exact auth-bootstrap paths; nonce guard runs before SDK token handling.
++    const googleProxy=createGoogleReturnProxy({...GOOGLE_RETURN_OPTIONS,
++      fetchImpl:fetch,pendingStore:GOOGLE_RETURN_OPTIONS.enabled&&env.DB?createD1GoogleReturnStore(env.DB):undefined,
++      assertAuthority:async()=>{if(!GOOGLE_RETURN_OPTIONS.enabled)throw Error('GOOGLE_RETURN_NOT_SELECTED');}});
++    const googleReturn=await googleProxy.handle(request);if(googleReturn)return googleReturn;
+     const denied=await productionAccessGuard(request,env,{verifiedUser});
+     if(denied)return denied;
+     const respond=async()=>{

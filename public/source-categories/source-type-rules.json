@@ -1,0 +1,106 @@
+{
+  "schema": "offmenu-off-category-type-rules/1",
+  "status": "candidate-review-required",
+  "snapshotSHA256": "e069022e0cab0dd4034f0283c01783fa1c234daab72d3e3e137cf272898ed9aa",
+  "nonFoodRootID": "en:non-food-products",
+  "foodRules": [
+    {
+      "typeID": "off-source-type:beverages",
+      "rootID": "en:beverages",
+      "sourceEnglishName": "Beverages",
+      "rootJSONPointer": "/en:beverages",
+      "match": "exact category root or reachable via declared parents; all roots considered; no priority",
+      "icon": {
+        "path": "/source-categories/icons/beverages.svg",
+        "sha256": "b3fab314aca5519dc6e266c43c9f2001296e68cad6855624f532159c26e4c7a8",
+        "rightsID": "worker13-original-svg-20261026"
+      }
+    },
+    {
+      "typeID": "off-source-type:dairies",
+      "rootID": "en:dairies",
+      "sourceEnglishName": "Dairies",
+      "rootJSONPointer": "/en:dairies",
+      "match": "exact category root or reachable via declared parents; all roots considered; no priority",
+      "icon": {
+        "path": "/source-categories/icons/dairies.svg",
+        "sha256": "7417b26f275bbe3052858fd3f9ecf7bb4665a9d99252fca85b042e88f34b9773",
+        "rightsID": "worker13-original-svg-20261026"
+      }
+    },
+    {
+      "typeID": "off-source-type:meats",
+      "rootID": "en:meats",
+      "sourceEnglishName": "Meats",
+      "rootJSONPointer": "/en:meats",
+      "match": "exact category root or reachable via declared parents; all roots considered; no priority",
+      "icon": {
+        "path": "/source-categories/icons/meats.svg",
+        "sha256": "66f9db82533926ee9aecaf771cc6de86aa1930de86ed556019fc3bb8bd4e63eb",
+        "rightsID": "worker13-original-svg-20261026"
+      }
+    },
+    {
+      "typeID": "off-source-type:seafood",
+      "rootID": "en:seafood",
+      "sourceEnglishName": "Seafood",
+      "rootJSONPointer": "/en:seafood",
+      "match": "exact category root or reachable via declared parents; all roots considered; no priority",
+      "icon": {
+        "path": "/source-categories/icons/seafood.svg",
+        "sha256": "14b6f513e8ca58b470508d6651a18548396acfe5649325f0f667069d8ddf685c",
+        "rightsID": "worker13-original-svg-20261026"
+      }
+    },
+    {
+      "typeID": "off-source-type:fruits",
+      "rootID": "en:fruits",
+      "sourceEnglishName": "Fruits",
+      "rootJSONPointer": "/en:fruits",
+      "match": "exact category root or reachable via declared parents; all roots considered; no priority",
+      "icon": {
+        "path": "/source-categories/icons/fruits.svg",
+        "sha256": "68edbdef93afca85b6e1b7df1df06b0b6712ede2f73d1b2a460983f8239fe5b7",
+        "rightsID": "worker13-original-svg-20261026"
+      }
+    },
+    {
+      "typeID": "off-source-type:vegetables",
+      "rootID": "en:vegetables",
+      "sourceEnglishName": "Vegetables",
+      "rootJSONPointer": "/en:vegetables",
+      "match": "exact category root or reachable via declared parents; all roots considered; no priority",
+      "icon": {
+        "path": "/source-categories/icons/vegetables.svg",
+        "sha256": "a5b723fb1b678ae5b5bb7774d2d22b43a9a144b888860dfab8f838c500f55433",
+        "rightsID": "worker13-original-svg-20261026"
+      }
+    },
+    {
+      "typeID": "off-source-type:cereals",
+      "rootID": "en:cereals-and-their-products",
+      "sourceEnglishName": "Cereals and their products",
+      "rootJSONPointer": "/en:cereals-and-their-products",
+      "match": "exact category root or reachable via declared parents; all roots considered; no priority",
+      "icon": {
+        "path": "/source-categories/icons/cereals.svg",
+        "sha256": "29f5990e8f61cc6f00a4bbd53ad73adc22a7f54905b249004e37166228d62b97",
+        "rightsID": "worker13-original-svg-20261026"
+      }
+    },
+    {
+      "typeID": "off-source-type:eggs",
+      "rootID": "en:eggs",
+      "sourceEnglishName": "Eggs",
+      "rootJSONPointer": "/en:eggs",
+      "match": "exact category root or reachable via declared parents; all roots considered; no priority",
+      "icon": {
+        "path": "/source-categories/icons/eggs.svg",
+        "sha256": "4af837587b3142b588505abe0508bb2a26c4d88e70b6a58c5674609b3ba416d0",
+        "rightsID": "worker13-original-svg-20261026"
+      }
+    }
+  ],
+  "conflictPolicy": "More than one food root, food+nonfood, cycle, missing or malformed parent uses fallback. No first-parent or nearest-root selection.",
+  "meaning": "Current source category presentation only; no historical product definition/ingredient/product/allergen/nutrition/recipe identity. Missing source English category label is preserved; selected type label is exact source root English label."
+}

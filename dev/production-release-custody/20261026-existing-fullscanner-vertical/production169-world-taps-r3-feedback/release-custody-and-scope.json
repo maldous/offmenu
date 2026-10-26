@@ -1,0 +1,118 @@
+{
+  "atUTC": "2026-10-26T12:42:19.690024+00:00",
+  "version": 169,
+  "uuid": "7267a1eb-a94b-4c58-8ea7-fd9217b0cd6e",
+  "deployment": "95ffd095-e80c-4763-8875-728bab96a7a3",
+  "mainSHA256": "c35305c644c5a65c53662dabac0b1f261b546c8b2c1c98c6546076df1d52ddb3",
+  "scope": "Versionedworldfeedbackonly; no rootlanding/auth/dataadoption. All180nonmain168modules retained; source168/109olddependencies are separately preserved in samecustody. Original153nonmain109pins exact. Provisionalframing/support/anatomy/full15/humanacceptance open.",
+  "files": [
+    {
+      "name": "landing-only.mjs",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/landing-only.mjs",
+      "sha256": "c35305c644c5a65c53662dabac0b1f261b546c8b2c1c98c6546076df1d52ddb3",
+      "bytes": 575493
+    },
+    {
+      "name": "world-taps-r3-6836e8ef5e540397-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/world-taps-r3-6836e8ef5e540397-0.bin",
+      "sha256": "6836e8ef5e540397e66dd38d520503910a9e892e1380ba91d892488768d58ffd",
+      "bytes": 2017
+    },
+    {
+      "name": "world-taps-r3-9956787e7cf0dba5-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/world-taps-r3-9956787e7cf0dba5-0.bin",
+      "sha256": "9956787e7cf0dba50583dc4e93f3b2a218bbf9256d21de4f335a193ed0ab1e57",
+      "bytes": 2816
+    },
+    {
+      "name": "world-taps-r3-5d580a1d79cd978b-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/world-taps-r3-5d580a1d79cd978b-0.bin",
+      "sha256": "5d580a1d79cd978be45bbc66bb511fa861e3a80002d7bc81217312bd7d1e1cfa",
+      "bytes": 12916
+    },
+    {
+      "name": "world-taps-r3-225b32200895129f-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/world-taps-r3-225b32200895129f-0.bin",
+      "sha256": "225b32200895129fb0ac749893ffe901a17e37248fea109652ce5fb8bcb31251",
+      "bytes": 9386
+    },
+    {
+      "name": "world-taps-r3-24456f41e9fc5794-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/world-taps-r3-24456f41e9fc5794-0.bin",
+      "sha256": "24456f41e9fc57947c84617e9813f19b986a129ca74ce0d14d8d636b61a61319",
+      "bytes": 1555
+    },
+    {
+      "name": "world-taps-r3-4a52fb3f901b01ca-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/world-taps-r3-4a52fb3f901b01ca-0.bin",
+      "sha256": "4a52fb3f901b01ca27111cfb3d3dab5c51ad466547605a18f452085ac7b9ce17",
+      "bytes": 6153
+    },
+    {
+      "name": "world-taps-r3-ed00bd4fae00fe03-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/world-taps-r3-ed00bd4fae00fe03-0.bin",
+      "sha256": "ed00bd4fae00fe03206edd521f7da45dd36dbc4dd2a40802262276ac1cd6507d",
+      "bytes": 2573
+    },
+    {
+      "name": "world-taps-r3-2fabf0ca5fd18e72-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/world-taps-r3-2fabf0ca5fd18e72-0.bin",
+      "sha256": "2fabf0ca5fd18e724a1ea367993aefe8950288b9ecfa38075d579b4297a7d589",
+      "bytes": 1863
+    },
+    {
+      "name": "world-taps-r3-cd5708896f25db60-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/world-taps-r3-cd5708896f25db60-0.bin",
+      "sha256": "cd5708896f25db602a24fd74ed11e7014d40096bc1d8ae07058419fbcdc8be44",
+      "bytes": 5484
+    },
+    {
+      "name": "world-taps-r3-c2b92941e4cef6a9-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/world-taps-r3-c2b92941e4cef6a9-0.bin",
+      "sha256": "c2b92941e4cef6a9e79417311337d2488e4463919eb6b6c0e49b6ee8c8957e21",
+      "bytes": 158346
+    },
+    {
+      "name": "world-taps-r3-f700dce4ed45d9e6-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/world-taps-r3-f700dce4ed45d9e6-0.bin",
+      "sha256": "f700dce4ed45d9e63dd2d112307be5190e6f1a2362c47068a046fbf0c8b4954f",
+      "bytes": 29991
+    },
+    {
+      "name": "manifest.json",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/manifest.json",
+      "sha256": "3ee92080dab867dc94ca458ac401b1ab3e31fff8338ff2448e7fa51449549143",
+      "bytes": 212473
+    },
+    {
+      "name": "package-qualification.json",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/package-qualification.json",
+      "sha256": "2269a652fbf1674ef7156742f951dc5efcbd16a63f124950bd2ea47049274774",
+      "bytes": 1291
+    },
+    {
+      "name": "active169-exact-ast-reference-closure.json",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/active169-exact-ast-reference-closure.json",
+      "sha256": "5c58144a55790671609bd7e0f1845a7678694fec2989a573cf18bf1fc4fa6863",
+      "bytes": 18199
+    },
+    {
+      "name": "activation-world169-envelope.json",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/activation-world169-envelope.json",
+      "sha256": "d615d5c6f2528d9b38cd4d4372a2cb5fc2ee493f89cdbca38219293f3a820a62",
+      "bytes": 806
+    },
+    {
+      "name": "world-192-expected-pins.json",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/world-192-expected-pins.json",
+      "sha256": "c22f7972e3ba19686dc3f231a1b3b815194f59065c3d7cda8402acc68da1e8f8",
+      "bytes": 39021
+    },
+    {
+      "name": "production169-scoped-delivery-result.json",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-world-taps-r3-current168-r1/production169-scoped-delivery-result.json",
+      "sha256": "ae6c0f1d3f8fbc3e6d7d72d811a0784b70faa5f2699f4bc592f1e4447cedb29c",
+      "bytes": 4939
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+CREATE INDEX field_state_lookup ON field_state(path_id,state,occurrence_id);
+CREATE INDEX identifier_lookup ON identifier(system,value_text,occurrence_id);
+CREATE INDEX nutrient_lookup ON nutrient(metric_id,amount_state,is_explicit_zero,occurrence_id);
+CREATE INDEX occurrence_kind_id ON occurrence(kind,native_id);
+CREATE INDEX pair_profile_lookup ON source_candidate_pair(profile_occurrence,product_occurrence);
+CREATE INDEX source_identity ON source_record(source_id,release_id,record_id,archive_sha);
+CREATE TABLE basis_structure(node_id INTEGER PRIMARY KEY REFERENCES json_node(id));
+CREATE TABLE field_path(id INTEGER PRIMARY KEY,pointer TEXT NOT NULL UNIQUE);
+CREATE TABLE field_state(occurrence_id INTEGER NOT NULL REFERENCES occurrence(id),path_id INTEGER NOT NULL REFERENCES field_path(id),state TEXT NOT NULL,evidence_node INTEGER NOT NULL REFERENCES json_node(id),PRIMARY KEY(occurrence_id,path_id));
+CREATE TABLE identifier(occurrence_id INTEGER NOT NULL REFERENCES occurrence(id),position INTEGER NOT NULL,system TEXT,value_text TEXT,entry_node INTEGER NOT NULL REFERENCES json_node(id),PRIMARY KEY(occurrence_id,position));
+CREATE TABLE input_file(id INTEGER PRIMARY KEY,path TEXT NOT NULL,sha256 TEXT NOT NULL,bytes INTEGER NOT NULL,records INTEGER NOT NULL);
+CREATE TABLE json_node(id INTEGER PRIMARY KEY,kind TEXT NOT NULL CHECK(kind IN('null','bool','number','string','object','array')),scalar_json TEXT,shape_id INTEGER REFERENCES object_shape(id),children BLOB,
+ CHECK((kind IN('object','array') AND scalar_json IS NULL AND children IS NOT NULL) OR (kind NOT IN('object','array') AND scalar_json IS NOT NULL AND children IS NULL)));
+CREATE TABLE metadata(key TEXT PRIMARY KEY,value TEXT NOT NULL);
+CREATE TABLE nutrient(occurrence_id INTEGER NOT NULL REFERENCES occurrence(id),metric_id INTEGER NOT NULL REFERENCES source_metric(id),entry_node INTEGER NOT NULL REFERENCES json_node(id),amount_node INTEGER NOT NULL REFERENCES json_node(id),amount_state TEXT NOT NULL,decimal_text TEXT,is_explicit_zero INTEGER NOT NULL,unit_node INTEGER NOT NULL REFERENCES unit_structure(node_id),basis_node INTEGER NOT NULL REFERENCES basis_structure(node_id),PRIMARY KEY(occurrence_id,metric_id));
+CREATE TABLE object_shape(id INTEGER PRIMARY KEY,keys_json TEXT NOT NULL UNIQUE);
+CREATE TABLE occurrence(id INTEGER PRIMARY KEY,kind TEXT NOT NULL,native_id TEXT NOT NULL,root_node INTEGER NOT NULL REFERENCES json_node(id),file_id INTEGER NOT NULL REFERENCES input_file(id),line_number INTEGER NOT NULL,byte_offset INTEGER NOT NULL,byte_length INTEGER NOT NULL,line_sha256 TEXT NOT NULL,UNIQUE(file_id,line_number));
+CREATE TABLE pair_qualification(id INTEGER PRIMARY KEY,status TEXT NOT NULL,declared_link_recovered INTEGER NOT NULL CHECK(declared_link_recovered=0),canonical_equivalence INTEGER NOT NULL CHECK(canonical_equivalence=0),basis_agreement TEXT NOT NULL);
+CREATE TABLE provenance_ref(occurrence_id INTEGER PRIMARY KEY REFERENCES occurrence(id),envelope_node INTEGER NOT NULL REFERENCES json_node(id),original_node INTEGER NOT NULL REFERENCES json_node(id),source_reference_node INTEGER NOT NULL REFERENCES json_node(id));
+CREATE TABLE source_candidate_pair(product_occurrence INTEGER NOT NULL REFERENCES occurrence(id),profile_occurrence INTEGER NOT NULL REFERENCES occurrence(id),qualification_id INTEGER NOT NULL REFERENCES pair_qualification(id),PRIMARY KEY(product_occurrence,profile_occurrence));
+CREATE TABLE source_metric(id INTEGER PRIMARY KEY,source_id TEXT NOT NULL,nutrient_key TEXT NOT NULL,source_id_evidence_node INTEGER NOT NULL REFERENCES json_node(id),source_name_evidence_node INTEGER NOT NULL REFERENCES json_node(id),UNIQUE(source_id,nutrient_key,source_id_evidence_node,source_name_evidence_node));
+CREATE TABLE source_record(occurrence_id INTEGER PRIMARY KEY REFERENCES occurrence(id),source_id TEXT,release_id TEXT,record_id TEXT,archive_sha TEXT,source_row_node INTEGER REFERENCES json_node(id),rights_sha TEXT,scope_sha TEXT,store_sha TEXT,qualification_sha TEXT,pointer_base TEXT,pointer_tail TEXT,role TEXT);
+CREATE TABLE unit_structure(node_id INTEGER PRIMARY KEY REFERENCES json_node(id));

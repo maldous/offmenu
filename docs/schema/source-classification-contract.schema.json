@@ -1,0 +1,347 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:offmenu:schema:source-classification-relationships:1",
+  "title": "CANDIDATE source classification/relationship evidence projection; not admission authority",
+  "type": "object",
+  "required": [
+    "schema",
+    "sourceBinding",
+    "classification",
+    "relationships",
+    "visualClassification"
+  ],
+  "properties": {
+    "schema": {
+      "const": "offmenu-source-classification-relationships/1"
+    },
+    "sourceBinding": {
+      "type": "object",
+      "required": [
+        "sourceRecordId",
+        "snapshotSha256"
+      ],
+      "properties": {
+        "sourceRecordId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "snapshotSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "sourceObservationReference": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "required": [
+        "disposition",
+        "ingredientApplicability",
+        "canonicalId",
+        "idScope",
+        "relation",
+        "identityEquivalence",
+        "evidenceRefs",
+        "reasonCodes"
+      ],
+      "properties": {
+        "disposition": {
+          "enum": [
+            "ingredient",
+            "type",
+            "nonfood",
+            "not-applicable",
+            "unresolved",
+            "conflict"
+          ]
+        },
+        "ingredientApplicability": {
+          "enum": [
+            "applicable",
+            "nonfood",
+            "not-applicable",
+            "unresolved",
+            "conflict"
+          ]
+        },
+        "canonicalId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "idScope": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "relation": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "identityEquivalence": {
+          "type": "boolean"
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "assertionId",
+              "admission"
+            ],
+            "properties": {
+              "assertionId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "admission": {
+                "$ref": "#/$defs/pin"
+              }
+            }
+          }
+        },
+        "reasonCodes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "enum": [
+                  "ingredient",
+                  "type"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "canonicalId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "idScope": {
+                "type": "string",
+                "minLength": 1
+              },
+              "relation": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "enum": [
+                  "nonfood",
+                  "not-applicable",
+                  "unresolved",
+                  "conflict"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "canonicalId": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "enum": [
+                  "ingredient",
+                  "type",
+                  "nonfood",
+                  "not-applicable"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidenceRefs": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "enum": [
+                  "unresolved",
+                  "conflict",
+                  "nonfood",
+                  "not-applicable"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reasonCodes": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "relation": {
+                "const": "represents"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "identityEquivalence": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "ingredient"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ingredientApplicability": {
+                "const": "applicable"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "nonfood"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ingredientApplicability": {
+                "const": "nonfood"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "not-applicable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ingredientApplicability": {
+                "const": "not-applicable"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "unresolved"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ingredientApplicability": {
+                "const": "unresolved"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "conflict"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ingredientApplicability": {
+                "const": "conflict"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "Existing typed assertions VERBATIM; schema does not qualify or derive their semantics."
+    },
+    "visualClassification": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "13 separately source-bound visual payload, or null; never synthesized from name/class membership."
+    }
+  },
+  "$defs": {
+    "pin": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

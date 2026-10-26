@@ -1,0 +1,293 @@
+const abortError = () => new DOMException('Chapter operation superseded', 'AbortError');
+const nativeClock = {
+  now: () => performance.now(),
+  setTimeout: (fn, ms) => setTimeout(fn, ms),
+  clearTimeout: handle => clearTimeout(handle)
+};
+
+function cancellable(work, signal) {
+  if (signal.aborted) return Promise.reject(abortError());
+  return new Promise((resolve, reject) => {
+    const abort = () => { cleanup(); reject(abortError()); };
+    const cleanup = () => signal.removeEventListener('abort', abort);
+    signal.addEventListener('abort', abort, {once: true});
+    Promise.resolve().then(() => {
+      if (signal.aborted) throw abortError();
+      return work();
+    }).then(value => { cleanup(); resolve(value); }, error => { cleanup(); reject(error); });
+  });
+}
+
+function wait(clock, ms, signal) {
+  return cancellable(() => new Promise(resolve => {
+    const handle = clock.setTimeout(resolve, ms);
+    signal.addEventListener('abort', () => clock.clearTimeout(handle), {once: true});
+  }), signal);
+}
+
+/** Owns scheduling only. Chapters own their layered art and pose continuity. */
+export function createChapterMaster({
+  chapters, intro = null, host,
+  onChapter = () => {}, onFinal = () => {}, onError = () => {},
+  clock = nativeClock, autoAdvance = true, requireSpatialTransitions = false
+}) {
+  if (!Array.isArray(chapters) || chapters.length < 1 || chapters.length > 15) throw new TypeError('One to fifteen authored chapters required');
+  const first = intro ? -1 : 0;
+  const lastIndex = chapters.length - 1;
+  const sequence = intro ? [intro, ...chapters] : chapters;
+  for (const chapter of sequence) {
+    for (const method of ['mount', 'play', 'finishToBoundary', 'reset']) {
+      if (typeof chapter?.[method] !== 'function') throw new TypeError(`Chapter requires ${method}`);
+    }
+  }
+  let index = first, target = first, phase = 'idle', generation = 0, rate = 1;
+  let mounted = false, entered = false, completed = false, paused = false, disposed = false, started = false;
+  let resumeCompleted = false, ended = false;
+  let boundary = 'start', direction = 1, remaining = 5000, failure = null;
+  let action = null, dwell = null, wake = null, settle;
+  const completion = new Promise(resolve => { settle = resolve; });
+  const chapter = () => sequence[index - first];
+  const notify = () => { const resume = wake; wake = null; resume?.(); };
+  const invalidate = () => {
+    generation++;
+    action?.abort();
+    dwell?.abort();
+    notify();
+  };
+  const validIndex = value => Number.isInteger(value) && value >= first && value <= lastIndex;
+  const idle = () => new Promise(resolve => { wake = resolve; });
+
+  async function invoke(operation) {
+    const expected = generation;
+    const controller = new AbortController();
+    action = controller;
+    const result = await cancellable(() => operation(controller.signal), controller.signal);
+    if (disposed || expected !== generation) throw abortError();
+    return result;
+  }
+
+  async function drive() {
+    try {
+      while (!disposed) {
+        if (paused || (ended && target === index)) { await idle(); continue; }
+        try {
+          if (!mounted) {
+            phase = 'mounting';
+            await invoke(signal => chapter().mount(host, {signal, boundary, direction}));
+            mounted = true;
+            entered = false;
+            resumeCompleted = false;
+            ended = false;
+            completed = false;
+            remaining = 5000;
+          }
+          if (target !== index) {
+            resumeCompleted = false;
+            ended = false;
+            const exitDirection = Math.sign(target - index);
+            phase = 'finishing';
+            const nextIndex = index + exitDirection;
+            const nextId = sequence[nextIndex - first].id ?? nextIndex + 1;
+            const handoff = await invoke(signal => chapter().finishToBoundary({
+              signal, rate, direction: exitDirection, nextId
+            }));
+            const hasEntry = handoff?.entryBoundary !== undefined || handoff?.entryDirection !== undefined;
+            if (hasEntry || requireSpatialTransitions) {
+              if (!['start', 'end'].includes(handoff?.entryBoundary) ||
+                  ![1, -1].includes(handoff?.entryDirection) ||
+                  (requireSpatialTransitions && handoff?.nextId !== nextId)) {
+                throw new TypeError('Spatial handoff must reach the incoming canonical boundary');
+              }
+            }
+            // The operation token has been checked. No stale boundary can mount a chapter.
+            chapter().reset();
+            mounted = false;
+            index += exitDirection;
+            direction = handoff?.entryDirection ?? exitDirection;
+            boundary = handoff?.entryBoundary ?? (exitDirection > 0 ? 'start' : 'end');
+            continue;
+          }
+          if (!entered) {
+            // Mount draws the canonical boundary without advancing its clock.
+            // The landing owns actual ready/visible/snap entry; retry after a pause.
+            phase = 'entering';
+            await invoke(signal => onChapter(index, {generation, direction, boundary, signal}));
+            entered = true;
+            rate = 1; // An incoming action never inherits manual old-scene fast finish.
+          }
+          if (resumeCompleted) {
+            await invoke(signal => chapter().play({signal, rate: direction}));
+            resumeCompleted = false;
+          }
+          if (!completed) {
+            phase = 'playing';
+            await invoke(signal => chapter().play({signal, rate: direction}));
+            // Resolves at finite action completion; neon resolves on entering its stable loop.
+            completed = true;
+            remaining = 5000;
+            if (index === lastIndex) onFinal({index, generation});
+          }
+          phase = 'holding';
+          if (!autoAdvance) { await idle(); continue; }
+          dwell = new AbortController();
+          const expected = generation, since = clock.now();
+          try { await wait(clock, remaining, dwell.signal); }
+          finally { remaining = Math.max(0, remaining - Math.max(0, clock.now() - since)); }
+          if (disposed || expected !== generation) continue;
+          if (index === lastIndex) {
+            phase = 'ended';
+            ended = true;
+            settle({status: 'complete', index});
+            await idle();
+          } else {
+            target = index + 1;
+            rate = 1;
+            invalidate();
+          }
+        } catch (error) {
+          if (error?.name !== 'AbortError' || (!action?.signal.aborted && !dwell?.signal.aborted)) throw error;
+          // Aborted mounts may have created partial art; reset only that partial mount.
+          if (!mounted && !disposed) chapter().reset();
+        }
+      }
+    } catch (error) {
+      failure = error;
+      phase = 'failed';
+      action?.abort();
+      dwell?.abort();
+      try { chapter().reset(); } catch { /* Retain the original failure. */ }
+      try { onError(error); } catch { /* Reporting must not strand completion. */ }
+      settle({status: 'failed', index, error});
+    }
+  }
+
+  const api = {
+    completion,
+    start(initialIndex = first) {
+      if (started || disposed) throw new Error('Master already started or disposed');
+      if (!validIndex(initialIndex)) throw new RangeError('Chapter index outside story');
+      index = target = initialIndex;
+      started = true;
+      void drive();
+      return completion;
+    },
+    request(nextIndex, {transitionRate = 4} = {}) {
+      if (!validIndex(nextIndex)) throw new RangeError('Chapter index outside story');
+      if (!Number.isFinite(transitionRate) || transitionRate < 1) throw new RangeError('Positive transition rate at least one required');
+      if (!started || disposed || failure) return false;
+      if (nextIndex === target) return false;
+      target = nextIndex;
+      rate = transitionRate;
+      if (phase === 'playing' || phase === 'finishing') completed = false;
+      invalidate();
+      return true;
+    },
+    step(delta) {
+      if (!Number.isFinite(delta) || delta === 0) return false;
+      // Repeated wheel events do not accumulate unseen chapter skips.
+      return api.request(Math.max(first, Math.min(lastIndex, index + Math.sign(delta))));
+    },
+    setPaused(value) {
+      const next = Boolean(value);
+      if (next === paused || disposed) return;
+      if (next && completed && phase === 'holding') resumeCompleted = true;
+      paused = next;
+      invalidate();
+    },
+    setAutoAdvance(value) {
+      const next = Boolean(value);
+      if (next === autoAdvance || disposed) return;
+      autoAdvance = next;
+      dwell?.abort();
+      notify();
+    },
+    dispose() {
+      if (disposed) return;
+      disposed = true;
+      invalidate();
+      chapter().reset();
+      phase = 'disposed';
+      settle({status: 'disposed', index});
+    },
+    get state() {
+      return {firstIndex: first, lastIndex, index, target, phase, generation, transitionRate: rate, entered, completed,
+        holdRemainingMs: remaining, paused, autoAdvance, error: failure};
+    }
+  };
+  return api;
+}
+
+/** Attach to the existing landing navigation; creates no controls or page content. */
+export function bindChapterIntent(master, {
+  target = window, documentTarget = document,
+  reducedMotion = matchMedia('(prefers-reduced-motion: reduce)'),
+  onUserIntent = () => {}, resolveScrollIndex = null
+} = {}) {
+  let scrollbarDrag = false;
+  const user = event => {
+    if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (event.target?.closest?.('input,textarea,select,button,a,[contenteditable="true"]')) return;
+    scrollbarDrag = false;
+    if (event.type === 'wheel' && Math.abs(event.deltaY) > Math.abs(event.deltaX)) { event.preventDefault?.(); onUserIntent(event); master.step(event.deltaY); }
+    if (event.type === 'keydown') {
+      const delta = {ArrowDown: 1, PageDown: 1, ' ': event.shiftKey ? -1 : 1, ArrowUp: -1, PageUp: -1}[event.key];
+      if (delta) { event.preventDefault?.(); onUserIntent(event); master.step(delta); }
+      if (event.key === 'Home' || event.key === 'End') { event.preventDefault?.(); onUserIntent(event); master.request(event.key === 'Home' ? master.state.firstIndex : master.state.lastIndex); }
+    }
+  };
+  let touchY = null;
+  const touchStart = event => {
+    const editable = event.target?.closest?.('input,textarea,select,button,a,[contenteditable="true"]');
+    scrollbarDrag = false;
+    touchY = !editable && event.touches.length === 1 ? event.touches[0].clientY : null;
+  };
+  const touchMove = event => {
+    if (touchY === null || event.touches.length !== 1) return;
+    event.preventDefault?.();
+    const delta = touchY - event.touches[0].clientY;
+    if (Math.abs(delta) > 24) { onUserIntent(event); master.step(delta); touchY = event.touches[0].clientY; }
+  };
+  const scroll = () => {
+    // Scroll notifications also come from native Home/End and our own spring.
+    // Only a directly held native scrollbar may derive a new goal from position.
+    if (!scrollbarDrag) return;
+    const next = resolveScrollIndex?.();
+    if (Number.isInteger(next)) master.request(next);
+  };
+  const pointerDown = event => {
+    const root = documentTarget.documentElement;
+    scrollbarDrag = event.button === 0 && Boolean(root) && (
+      (Number.isFinite(root.clientWidth) && event.clientX >= root.clientWidth) ||
+      (Number.isFinite(root.clientHeight) && event.clientY >= root.clientHeight)
+    );
+    if (scrollbarDrag) onUserIntent(event);
+  };
+  const pointerUp = () => { scroll(); scrollbarDrag = false; };
+  const visibility = () => master.setPaused(documentTarget.hidden);
+  const motion = () => master.setAutoAdvance(!reducedMotion.matches);
+  target.addEventListener('wheel', user, {passive: false});
+  target.addEventListener('keydown', user);
+  if (resolveScrollIndex) {
+    target.addEventListener('scroll', scroll, {passive: true});
+    target.addEventListener('pointerdown', pointerDown, {passive: true});
+    target.addEventListener('pointerup', pointerUp, {passive: true});
+    target.addEventListener('pointercancel', pointerUp, {passive: true});
+  }
+  target.addEventListener('touchstart', touchStart, {passive: true});
+  target.addEventListener('touchmove', touchMove, {passive: false});
+  documentTarget.addEventListener('visibilitychange', visibility);
+  reducedMotion.addEventListener('change', motion);
+  visibility(); motion();
+  return () => {
+    target.removeEventListener('wheel', user);
+    target.removeEventListener('keydown', user);
+    target.removeEventListener('scroll', scroll);
+    target.removeEventListener('pointerdown', pointerDown);
+    target.removeEventListener('pointerup', pointerUp);
+    target.removeEventListener('pointercancel', pointerUp);
+    target.removeEventListener('touchstart', touchStart);
+    target.removeEventListener('touchmove', touchMove);
+    documentTarget.removeEventListener('visibilitychange', visibility);
+    reducedMotion.removeEventListener('change', motion);
+  };
+}

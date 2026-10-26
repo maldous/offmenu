@@ -1,0 +1,17 @@
+import {SceneRenderer,loadImage} from '../../next03-04/scene-renderer.mjs';
+import {loadSceneModule,createModuleChapter,fitSourceViewport} from '../scene-module-runtime-r3.mjs';
+import {createChapterMaster} from '../../landing-first-pair-v12-integration/controller/chapter-master.mjs';
+import {bindPhysicalLeftovers,drawPhysicalLayers,worldCamera} from './physical-binding.mjs';
+import {drawFridgeInterior} from './draw-fridge.mjs';
+import {moduleURL,materialURL} from './preview-inputs.mjs';
+const canvas=document.querySelector('canvas'),json=async url=>{const r=await fetch(url);if(!r.ok)throw Error('Missing world preview asset '+url);return r.json();};
+const [geometry,spec,layers,loaded]=await Promise.all([json(new URL('./fridge-geometry.json',import.meta.url)),json(new URL('./room-fridge-open.json',import.meta.url)),json('/landing-motion-v12/assets/layers.json'),loadSceneModule(new URL(moduleURL,import.meta.url).href,{loadImage,readJSON:json})]);
+const [atlas,bezel,interior]=await Promise.all([loadImage('/landing-motion-v12/'+spec.atlas.url),loadImage('/landing-motion-v12/'+layers.layers.bezel.url),loadImage(new URL(materialURL,import.meta.url).href)]);
+const renderer=new SceneRenderer(canvas),state={qualification:'ISOLATED_PHYSICAL_WORLD_FRIDGE_CANDIDATE_NOT_APPROVED_FRAMING_OR_FINAL_ANIMATION',progress:0,frames:0,finished:false,error:null};
+const chapter=createModuleChapter(loaded,{draw(progress,frame){const gl=renderer.gl,v=fitSourceViewport(canvas.width,canvas.height,worldCamera.aspect);gl.viewport(Math.round(v.x),Math.round(v.y),Math.round(v.width),Math.round(v.height));gl.clearColor(.89,.94,.94,1);gl.clear(gl.COLOR_BUFFER_BIT);renderer.references=spec.cameras;renderer.room({spec,atlas},worldCamera);drawFridgeInterior(renderer,geometry,interior,worldCamera);
+ const glass=layers.glass[1],abc=spec.tabletInverseDepthABC;renderer.drawLayer(bezel,{camera:worldCamera,reference:1,planeQuad:glass,polygon:glass,outside:true,planeDepthABC:abc});renderer.screen(frame.screen,glass,worldCamera,abc);
+ const bound=bindPhysicalLeftovers(loaded,frame,progress,geometry);drawPhysicalLayers(renderer,bound);state.progress=progress;state.frames++;state.contacts=bound.contacts;state.support=bound.support;state.container=bound.container;
+}});
+const master=createChapterMaster({chapters:[chapter],host:canvas.parentNode,onError:error=>{state.error=error.message;}}),visibility=()=>master.setPaused(document.hidden);document.addEventListener('visibilitychange',visibility);visibility();master.start();
+let disposed=false;function dispose(){if(disposed)return;disposed=true;master.dispose();chapter.dispose();renderer.dispose();document.removeEventListener('visibilitychange',visibility);}
+master.completion.then(result=>{state.finished=true;state.result=result.status;dispose();});addEventListener('pagehide',dispose,{once:true});Object.defineProperty(window,'__OFFMENU_FRIDGE_WORLD__',{value:{getState:()=>structuredClone(state),dispose}});

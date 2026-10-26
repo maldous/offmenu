@@ -1,0 +1,104 @@
+import {createOffMenuIdentityClient} from './offmenu-identity-client.js';
+import {createAuthController} from './auth-controller.js';
+import {classifyIdentityCallback} from './callback-intent.js';
+import {createProviderConsentController} from './provider-consent-controller.js';
+const $=id=>document.getElementById(id);
+const providerId=new URL(location.href).searchParams.get('provider');
+let consent,terms;
+async function loadConsent(){
+  if(!/^[a-z0-9_-]{1,60}$/.test(providerId||''))return;
+  $('provider-consent').hidden=false;
+  const path='/api/provider-consent/'+providerId;
+  consent=createProviderConsentController({loadTerms:()=>read(path),
+    recordChoice:async body=>{
+      const response=await fetch(path,{method:'POST',credentials:'same-origin',cache:'no-store',redirect:'error',
+        headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(15000)});
+      if(!response.ok)throw Error('consent');return response.json();
+    },onState:state=>{
+      $('provider-consent-form').hidden=state.state!=='ready';
+      $('provider-consent-status').textContent=state.message||({recorded:'Your choice was recorded. Provider access remains separate.',withdrawn:'Your choice was withdrawn.'}[state.state]||'');
+    }});
+  terms=await consent.load();if(!terms)return;
+  const link=new URL(terms.termsUrl);if(link.protocol!=='https:')throw Error('terms');
+  $('provider-terms-link').href=link.href;$('provider-terms-version').textContent=terms.termsVersion;
+  $('provider-purpose').replaceChildren();
+  for(const purpose of terms.purposes){const option=document.createElement('option');option.value=purpose;option.textContent=purpose==='private_use'?'Use this connection privately':'Refresh this connection in the background';$('provider-purpose').append(option);}
+  $('provider-scopes').querySelectorAll('label').forEach(element=>element.remove());
+  for(const scope of terms.scopes){const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.value=scope;label.append(input,document.createTextNode(scope));$('provider-scopes').append(label);}
+}
+async function read(path){
+  const response=await fetch(path,{credentials:'same-origin',cache:'no-store',redirect:'error',
+    headers:{Accept:'application/json'},signal:AbortSignal.timeout(15000)});
+  if(!response.headers.get('Content-Type')?.includes('application/json'))throw Error('response');
+  if(path.endsWith('/session')&&response.status===401)return {authenticated:false};
+  if(!response.ok)throw Error('response');return response.json();
+}
+const controller=createAuthController({configuration:()=>read('/api/auth-page/config'),
+  identityFor:async mode=>createOffMenuIdentityClient({mode,
+    ...(mode==='netlify'?{netlify:await import('@netlify/identity')}:{})}),
+  verifySession:()=>read('/api/auth-page/session'),navigate:path=>location.assign(path),
+  callbackContext:()=>({...classifyIdentityCallback(location.hash),origin:location.origin,path:location.pathname}),
+  onState:({state,message,synthetic,providers,oauthReady,signupAvailable,recoveryAvailable})=>{
+    $('auth-status').textContent=message||({loading:'Checking sign-in…','signing-in':'Signing in…','creating-account':'Creating account…','resetting-password':'Updating your password…'}[state]||'');
+    $('synthetic-notice').hidden=!synthetic;
+    $('signin-form').hidden=!['ready','signing-in'].includes(state);
+    $('signin-submit').disabled=state!=='ready';
+    $('signup-submit').disabled=state!=='ready'||!signupAvailable;
+    $('recovery-submit').disabled=state!=='ready'||!recoveryAvailable;
+    $('account-action-status').hidden=state!=='ready';
+    $('account-action-status').textContent=!signupAvailable&&!recoveryAvailable?
+      'Account registration and password reset are not available at this address yet.':
+      !signupAvailable?'Account registration is not available at this address yet.':
+      !recoveryAvailable?'Password reset is not available at this address yet.':'';
+    $('signup-form').hidden=!['sign-up','creating-account'].includes(state);
+    for(const input of $('signup-form').querySelectorAll('input,button'))input.disabled=state!=='sign-up';
+    $('confirmation-pending').hidden=state!=='confirmation-pending';
+    $('reset-form').hidden=!['recovery-password','resetting-password'].includes(state);
+    for(const input of $('reset-form').querySelectorAll('input,button'))input.disabled=state!=='recovery-password';
+    $('account-link-help').hidden=state!=='unavailable';
+    $('auth-providers').replaceChildren();
+    $('auth-providers').hidden=state!=='ready'||!oauthReady||!providers.length;
+    if(state==='ready'&&oauthReady)for(const provider of providers){
+      const button=document.createElement('button');button.type='button';
+      const names={google:'Google',github:'GitHub',gitlab:'GitLab',bitbucket:'Bitbucket',facebook:'Facebook'};
+      button.textContent='Sign in with '+names[provider];
+      button.onclick=()=>controller.providerSignIn(provider);$('auth-providers').append(button);
+    }
+    $('auth-provider-status').hidden=state!=='ready'||oauthReady||!providers.length;
+    $('auth-provider-status').textContent='Provider sign-in compatibility has not yet been verified for this address. You can sign in with email.';
+    $('continue-scanner').hidden=state!=='signed-in';$('signout').hidden=state!=='signed-in';
+    if(state==='signed-in')void loadConsent().catch(()=>{$('provider-consent-status').textContent='Terms for this connection are unavailable.';});
+    else $('provider-consent').hidden=true;
+  }});
+$('signin-form').addEventListener('submit',async event=>{event.preventDefault();
+  const password=$('auth-password').value;$('auth-password').value='';
+  await controller.signIn($('auth-email').value,password);
+});
+$('continue-scanner').onclick=()=>controller.continueToScanner();
+$('signup-submit').onclick=()=>{if(controller.showSignUp())$('signup-email').value=$('auth-email').value;};
+$('signup-form').onsubmit=async event=>{event.preventDefault();
+  if(!$('signup-form').reportValidity())return;
+  let password=$('signup-password').value,confirmation=$('signup-password-confirm').value;
+  $('signup-password').value='';$('signup-password-confirm').value='';
+  try{await controller.signUp($('signup-email').value,password,confirmation);}finally{password='';confirmation='';}
+};
+$('signup-back').onclick=()=>{ $('signup-password').value='';$('signup-password-confirm').value='';controller.backToSignIn(); };
+$('confirmation-signin').onclick=()=>controller.backToSignIn();
+$('recovery-submit').onclick=async()=>{
+  if(!$('auth-email').reportValidity())return;$('auth-password').value='';await controller.requestRecovery($('auth-email').value);
+};
+$('reset-form').onsubmit=async event=>{event.preventDefault();
+  if(!$('reset-form').reportValidity())return;
+  let password=$('reset-password').value,confirmation=$('reset-password-confirm').value;
+  $('reset-password').value='';$('reset-password-confirm').value='';
+  try{await controller.resetPassword(password,confirmation);}finally{password='';confirmation='';}
+};
+$('reset-cancel').onclick=()=>{$('reset-password').value='';$('reset-password-confirm').value='';return controller.signOut();};
+$('signout').onclick=()=>controller.signOut();
+$('provider-consent-form').onsubmit=async event=>{event.preventDefault();
+  if(consent)await consent.choose({checked:$('provider-accept').checked,purpose:$('provider-purpose').value,
+    scopes:[...$('provider-scopes').querySelectorAll('input:checked')].map(input=>input.value)});
+};
+$('provider-withdraw').onclick=()=>consent?.choose({choice:'withdrawn',purpose:$('provider-purpose').value,
+  scopes:[...$('provider-scopes').querySelectorAll('input:checked')].map(input=>input.value)});
+void controller.start();

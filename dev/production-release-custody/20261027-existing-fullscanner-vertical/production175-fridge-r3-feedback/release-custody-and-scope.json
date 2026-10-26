@@ -1,0 +1,112 @@
+{
+  "atUTC": "2026-10-26T13:21:32.409008+00:00",
+  "version": 175,
+  "uuid": "dba469db-450d-4289-b182-351355a99806",
+  "deployment": "da799f97-622e-4f9e-9806-1a844e46fe91",
+  "mainSHA256": "13820aa6b77d75a99cc152ef2b2349bea94f35837b698aca824170fc95ebd339",
+  "files": [
+    {
+      "name": "landing-only.mjs",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/landing-only.mjs",
+      "sha256": "13820aa6b77d75a99cc152ef2b2349bea94f35837b698aca824170fc95ebd339",
+      "bytes": 581548
+    },
+    {
+      "name": "fridge-r3-ae89c07f57049d90-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/fridge-r3-ae89c07f57049d90-0.bin",
+      "sha256": "ae89c07f57049d9093e44d2c5263cf5a808ea312353a7d0fb599bbe8e9766f8d",
+      "bytes": 640
+    },
+    {
+      "name": "fridge-r3-b6305e0becfcdd51-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/fridge-r3-b6305e0becfcdd51-0.bin",
+      "sha256": "b6305e0becfcdd51b06de9b773a7e1e1c34e2460c2ab2008e6be980a505d7b97",
+      "bytes": 2958
+    },
+    {
+      "name": "fridge-r3-2f41c4447a3e6f30-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/fridge-r3-2f41c4447a3e6f30-0.bin",
+      "sha256": "2f41c4447a3e6f30fdf7cf681955dd65baa0522ad69a5c6bb2c86a6929207666",
+      "bytes": 6003
+    },
+    {
+      "name": "fridge-r3-76c6c318c84b3901-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/fridge-r3-76c6c318c84b3901-0.bin",
+      "sha256": "76c6c318c84b39014ca56a72a2cf83af68851e152e9cb3a238bc4af512dcddca",
+      "bytes": 1249
+    },
+    {
+      "name": "fridge-r3-c0e27980752134b3-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/fridge-r3-c0e27980752134b3-0.bin",
+      "sha256": "c0e27980752134b3421d308f94092d4bafaf53c0f493301b4409bf5a1f86b3e8",
+      "bytes": 245
+    },
+    {
+      "name": "fridge-r3-7539cedf2ba65fab-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/fridge-r3-7539cedf2ba65fab-0.bin",
+      "sha256": "7539cedf2ba65fab00e973e84e19582f8da72d4b6c98b8d4dac8eb8d01704d43",
+      "bytes": 9397
+    },
+    {
+      "name": "fridge-r3-002030bc595f6dec-0.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/fridge-r3-002030bc595f6dec-0.bin",
+      "sha256": "002030bc595f6dec2d27b7093fed1132a970b1fd2a9f36d2d59cd98766aaa4ce",
+      "bytes": 600000
+    },
+    {
+      "name": "fridge-r3-bfd4d0ccec019ebd-1.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/fridge-r3-bfd4d0ccec019ebd-1.bin",
+      "sha256": "bfd4d0ccec019ebda1f98d8f42ed81f0c98e0cb63d076dfd768fea666673b0b5",
+      "bytes": 600000
+    },
+    {
+      "name": "fridge-r3-e0798738415fc811-2.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/fridge-r3-e0798738415fc811-2.bin",
+      "sha256": "e0798738415fc811ecf2788016016719f2484f880bd37835ff27f5de1141315e",
+      "bytes": 600000
+    },
+    {
+      "name": "fridge-r3-b69fe34d20100dfa-3.bin",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/fridge-r3-b69fe34d20100dfa-3.bin",
+      "sha256": "b69fe34d20100dfa218b7d06de156a90fc9d28c2ec0b3db7265e0f7366eadf27",
+      "bytes": 466211
+    },
+    {
+      "name": "manifest.json",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/manifest.json",
+      "sha256": "abd5a8c75e8a6ed820d8090c8e62dad59570f2c0c2fd6f9ef31b76e9cafa9fd8",
+      "bytes": 219948
+    },
+    {
+      "name": "package-qualification.json",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/package-qualification.json",
+      "sha256": "9f85432755bbedbeeed7947b65f2604cb82e5d5e92d1a3091eb897be000b2d6b",
+      "bytes": 1295
+    },
+    {
+      "name": "candidate175-exact-ast-reference-closure.json",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/candidate175-exact-ast-reference-closure.json",
+      "sha256": "3ee34c26da703c03695f041b58173bd37a49ef2470101f6fba430f818b9a12a3",
+      "bytes": 19188
+    },
+    {
+      "name": "activation175-envelope.json",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/activation175-envelope.json",
+      "sha256": "26659d43cd241b55b208131de19f2291c651324563eb719efd6f82b9195a5bc9",
+      "bytes": 773
+    },
+    {
+      "name": "fridge-202-expected-pins.json",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/fridge-202-expected-pins.json",
+      "sha256": "d486cbbdc140c0a251533095c98816c340e41aad52fbedaa42ce501ad3accc3e",
+      "bytes": 41077
+    },
+    {
+      "name": "production175-scoped-delivery-result.json",
+      "source": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-fridge-r3-current169-r1/production175-scoped-delivery-result.json",
+      "sha256": "069d9de0966d552d45baad57fa6c4ab0b099658867e03df7e73e4d35aa4dcf8c",
+      "bytes": 4720
+    }
+  ],
+  "scope": "Exactversionedfridgefeedback175 entry+10assets/proofs, dependencies168/169/109alreadyretained separate. No rootlanding/auth/fooddata165 adoption. All191nonmain169modulepins retained. Visualsupport/anatomy/full15/humanacceptance open; no local7645/privateprofile/state/grants/credentials or corpus bytes copied."
+}

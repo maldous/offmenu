@@ -1,0 +1,18 @@
+import {V,sourceWorld} from '../../landing-first-pair-v12-integration/scene-camera.mjs';
+import {sampleModule} from '../scene-module-runtime-r4.mjs';
+import {fixedGlassWorld,planeInverseDepth,bindTabletFrame} from '../world-contact-bindings.mjs';
+const props={11:[{id:'history-cup',bbox:[668,61,805,245],base:[736,241],kind:'upright'},{id:'history-notebook',bbox:[753,281,914,452],kind:'flat'}],13:[{id:'connection-cup',bbox:[865,174,1028,364],base:[947,359],kind:'upright'}],14:[]};
+export function createTabletSceneBinding(loaded,shared,camera){
+ const id=loaded.module.id;if(!props[id])throw Error('Unregistered tap scene '+id);
+ const glass=fixedGlassWorld(shared),center=[0,1,2].map(i=>glass.reduce((s,p)=>s+p[i],0)/4),forward=V.sub(camera.lookAt,camera.position),normal=V.unit([forward[0],forward[1],0]),actorPlaneABC=planeInverseDepth(camera,normal,V.sub(center,V.scale(normal,.35))),tablePlane=planeInverseDepth(camera,[0,0,1],[0,0,.601]);
+ const supports=[],propBindings={};for(const prop of props[id]){
+  let abc=tablePlane;if(prop.kind==='upright'){const uv=prop.base.map((v,i)=>v/(i?loaded.module.reference.height:loaded.module.reference.width)),ray=V.sub(sourceWorld(...uv,1,camera),camera.position),depth=(.6-camera.position[2])/ray[2];if(depth<=0)throw Error('Cup base support lies behind camera');const point=sourceWorld(...uv,depth,camera);abc=planeInverseDepth(camera,normal,point);supports.push({id:prop.id,sourceBase:prop.base,worldPoint:point,support:'worktop',qualification:'VISIBLE_SOURCE_BASE_CANDIDATE_NOT_SURVEYED_SUPPORT'});}
+  propBindings[prop.id]={...prop,abc};
+ }
+ const endpointGapNative=Math.max(...[0,1].flatMap(p=>sampleModule(loaded.module,loaded.assets,p).contacts.map(c=>Math.hypot(c.point[0]-c.targetPoint[0],c.point[1]-c.targetPoint[1]))));
+ return frame=>{
+  const bound=bindTabletFrame(loaded,frame,{shared,camera,actorPlaneABC,endpointGapNative});
+  bound.frame.layers=bound.frame.layers.map(layer=>{const prop=propBindings[layer.id];if(!prop)return layer;const [x0,y0,x1,y1]=prop.bbox,W=loaded.module.reference.width,H=loaded.module.reference.height,rect=[x0/W,y0/H,(x1-x0)/W,(y1-y0)/H];return {...layer,rect,sample:rect};});
+  return {frame:bound.frame,registration:{camera,referenceCamera:camera,placements:{actor:{planeDepthABC:actorPlaneABC},foreground:{planeDepthABC:actorPlaneABC},...Object.fromEntries(Object.entries(propBindings).map(([key,p])=>[key,{planeDepthABC:p.abc}])),...bound.placements}},supports,qualification:'FIXED_SHARED_TABLET_AND_SOURCE_PROP_WORLD_BINDING_CANDIDATE_NOT_BODY_OR_HANDOFF_ACCEPTANCE'};
+ };
+}

@@ -32,7 +32,10 @@ test('actual caller uses the shared typed association and preserves photo credit
   assert.ok(!JSON.stringify(value).includes('DO NOT COPY')); // proves the shared typed snapshot is used
   assert.match(caption.textContent,/foodless/);assert.match(caption.textContent,/CC BY-SA 3.0/);
   assert.match(caption.textContent,/membership in the retained snapshot is unverified/);
-  const links=caption.children.filter(node=>node.tagName==='a');assert.equal(links.length,3);
+  assert.equal(caption.children[0].textContent,'Current publisher photo');
+  const disclosure=caption.children.find(node=>node.tagName==='details');
+  assert.equal(disclosure.firstChild.tagName,'summary');
+  const links=disclosure.children.filter(node=>node.tagName==='a');assert.equal(links.length,4);
   for(const link of links){assert.equal(link.target,'_blank');assert.equal(link.rel,'noopener noreferrer');}
   assert.equal(changes.length,0);assert.equal(presenter.current(),value);
 });

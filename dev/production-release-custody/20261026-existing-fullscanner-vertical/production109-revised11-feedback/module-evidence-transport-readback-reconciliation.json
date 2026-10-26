@@ -1,0 +1,10 @@
+{
+  "expectedTuples": 154,
+  "expectedTupleCanonicalSHA256": "7a3b37706d343ab1d6f2e9c1609c2723ec7370e0662da128b12827cebb86fb86",
+  "independentProviderCount": 154,
+  "independentVerifiedCount": 154,
+  "independentProviderTupleSHA256": "8145896636c265da7228def73156b20ea74bbd7f38887c0d75185f35cedbd873",
+  "orderedTupleDigestMatches": false,
+  "activationEnvelopeReturnedPinItems": 122,
+  "scope": "Activationlongarrayreturned122pinitems; actualsourceguardverified154beforeactivation, independentconciseexactreadbackverified154. Returnedarraylength discrepancytransportcauseunknown, NOTmissingprovider modules. Full154expectedtuples retained, no extra write/rollback/test required."
+}

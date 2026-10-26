@@ -1,0 +1,8 @@
+import {project} from '../../landing-first-pair-v12-integration/scene-camera.mjs';
+/** Draw after the cloned open-room mesh, before actors/props; retain its depth buffer for real cavity occlusion. */
+export function drawFridgeInterior(renderer,geometry,image,camera){
+ const gl=renderer.gl,p=renderer.program,[width,height]=geometry.material.nativeSize;
+ gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.depthMask(true);gl.useProgram(p);gl.bindTexture(gl.TEXTURE_2D,renderer.texture(image));
+ gl.uniform4fv(gl.getUniformLocation(p,'sampleRect'),[0,0,1,1]);gl.uniform1i(gl.getUniformLocation(p,'polyCount'),0);gl.uniform1i(gl.getUniformLocation(p,'outside'),0);gl.uniform1f(gl.getUniformLocation(p,'opacity'),1);
+ for(const surface of geometry.surfaces){const data=[];for(const i of [0,1,2,0,2,3]){const uv=surface.sourceQuad[i];data.push(...project(surface.quad[i],camera),uv[0]/width,uv[1]/height,1);}gl.bindBuffer(gl.ARRAY_BUFFER,renderer.buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.DYNAMIC_DRAW);for(const[name,size,offset]of[['position',3,0],['uv',3,12]]){const loc=gl.getAttribLocation(p,name);gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,24,offset);}gl.drawArrays(gl.TRIANGLES,0,6);}
+}

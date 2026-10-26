@@ -12,9 +12,9 @@ const input = () => ({accountId: 'account-a', sourceId: 'private-receipt', conte
 const review = () => ({confirmed: true, lines: [{id: 'line-1', decision: 'include', name: 'Rice', quantity: 2, unit: null}, {id: 'line-2', decision: 'exclude'}]});
 const draft = () => prepareReceipt(input(), context());
 
-test('baseline gap: shopping receipt replay duplicates stock; new contract blocks same source bytes', () => {
+test('shopping receipt replay is rejected and review blocks the same source bytes', () => {
   const s = {mode: 'shopping', area: 'Pantry', shelf: 'Top', items: [{id: 'receipt-line-1', quantity: 2, unit: 'count'}]};
-  assert.equal(finishInventory(finishInventory([], s), s).length, 2);
+  const stock=finishInventory([],s);assert.equal(stock.length,1);assert.throws(()=>finishInventory(stock,s),/Duplicate checkout items/);assert.equal(stock.length,1);
   const first = reviewReceipt(draft(), review(), [], context());
   const replay = reviewReceipt(draft(), review(), [first.ledgerEntry], context());
   assert.deepEqual(replay, {status: 'duplicate', receipt: null, ledgerEntry: null});

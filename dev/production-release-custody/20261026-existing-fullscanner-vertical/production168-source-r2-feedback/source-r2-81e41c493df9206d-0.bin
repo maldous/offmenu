@@ -1,0 +1,6 @@
+import * as base from '../scene14-app-order-r1/scene-14.mjs';
+import {bodyLayer} from './actor-motion.mjs';
+export const id=14;export const durationMs=base.durationMs;
+export const reference={...base.reference,actionRevision:'R4 head/torso leads app review reach, reads then recovers; exact OrderUI/no notebook'};
+export async function load(ctx){const get=p=>ctx.loadImage(ctx.resolveAsset(p));return {core:await get('./scene-14-core-fringe-r1.png'),arm:await get('../scene14-app-order-r1/interaction-arm.png'),screen:await get('../assets/scene-14/approved-screen.png')};}
+export function sample(p,assets){const frame=base.sample(p,assets),i=frame.layers.findIndex(l=>/actor-core/.test(l.id));frame.layers[i]=bodyLayer(frame.layers[i],14,p,reference);return frame;}

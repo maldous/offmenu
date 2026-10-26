@@ -1,0 +1,1219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:offmenu:worker19:private-source-product-source-qualified:2",
+  "type": "object",
+  "properties": {
+    "barcode": {
+      "type": "string",
+      "pattern": "^[0-9]{1,64}$"
+    },
+    "products": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "occurrence": {
+            "type": "integer"
+          },
+          "kind": {
+            "const": "product"
+          },
+          "nativeId": {
+            "type": "string"
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "relationalSourceReference": {
+                "type": "object",
+                "properties": {
+                  "file_id": {
+                    "type": "integer"
+                  },
+                  "line_number": {
+                    "type": "integer"
+                  },
+                  "line_sha256": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "source_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "release_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "record_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "archive_sha": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "rights_sha": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "scope_sha": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "store_sha": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "qualification_sha": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "pointer_base": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "pointer_tail": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "role": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "input_sha256": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "file_id",
+                  "line_number",
+                  "line_sha256",
+                  "source_id",
+                  "release_id",
+                  "record_id",
+                  "archive_sha",
+                  "rights_sha",
+                  "scope_sha",
+                  "store_sha",
+                  "qualification_sha",
+                  "pointer_base",
+                  "pointer_tail",
+                  "role",
+                  "input_sha256"
+                ],
+                "additionalProperties": false
+              },
+              "attribution": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "source-value",
+                      "null",
+                      "unknown"
+                    ]
+                  },
+                  "value": {},
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "state"
+                ],
+                "additionalProperties": false
+              },
+              "license": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "source-value",
+                      "null",
+                      "unknown"
+                    ]
+                  },
+                  "value": {},
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "state"
+                ],
+                "additionalProperties": false
+              },
+              "rights": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "source-value",
+                      "null",
+                      "unknown"
+                    ]
+                  },
+                  "value": {},
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "state"
+                ],
+                "additionalProperties": false
+              },
+              "url": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "source-value",
+                      "null",
+                      "unknown"
+                    ]
+                  },
+                  "value": {},
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "state"
+                ],
+                "additionalProperties": false
+              },
+              "visibility": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "source-value",
+                      "null",
+                      "unknown"
+                    ]
+                  },
+                  "value": {},
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "state"
+                ],
+                "additionalProperties": false
+              },
+              "citationStatus": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "source-value",
+                      "null",
+                      "unknown"
+                    ]
+                  },
+                  "value": {},
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "state"
+                ],
+                "additionalProperties": false
+              },
+              "sourceDate": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "source-value",
+                      "null",
+                      "unknown"
+                    ]
+                  },
+                  "value": {},
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "state"
+                ],
+                "additionalProperties": false
+              },
+              "fetchedAt": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "source-value",
+                      "null",
+                      "unknown"
+                    ]
+                  },
+                  "value": {},
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "state"
+                ],
+                "additionalProperties": false
+              },
+              "sourceLanguage": {
+                "type": "object",
+                "properties": {
+                  "nameLanguage": {
+                    "type": "object",
+                    "properties": {
+                      "state": {
+                        "enum": [
+                          "source-value",
+                          "null",
+                          "unknown"
+                        ]
+                      },
+                      "value": {},
+                      "reason": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "state"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "sourceLanguageFields": {
+                    "type": "object",
+                    "properties": {
+                      "state": {
+                        "enum": [
+                          "source-value",
+                          "null",
+                          "unknown"
+                        ]
+                      },
+                      "value": {},
+                      "reason": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "state"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "nameLanguage",
+                  "sourceLanguageFields"
+                ],
+                "additionalProperties": false
+              },
+              "sourceUseNotice": {
+                "type": "object",
+                "properties": {
+                  "release": {
+                    "type": "string"
+                  },
+                  "attribution": {
+                    "type": "string"
+                  },
+                  "retainedDeclaration": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "release",
+                  "attribution",
+                  "retainedDeclaration"
+                ],
+                "additionalProperties": false
+              },
+              "sourceScopeSha256": {
+                "const": "e40e6b80cc8fcdcc834be3ebe8bcf869ea74654471bea5851cc848be4965e89d"
+              }
+            },
+            "required": [
+              "relationalSourceReference",
+              "attribution",
+              "license",
+              "rights",
+              "url",
+              "visibility",
+              "citationStatus",
+              "sourceDate",
+              "fetchedAt",
+              "sourceLanguage",
+              "sourceUseNotice",
+              "sourceScopeSha256"
+            ],
+            "additionalProperties": false
+          },
+          "reviewStatus": {
+            "const": "unreviewed"
+          },
+          "goldAdmitted": {
+            "const": false
+          },
+          "englishQualification": {
+            "const": "unknown"
+          },
+          "canonicalIdentity": {
+            "const": "unknown"
+          },
+          "barcode": {
+            "type": "string",
+            "pattern": "^[0-9]{1,64}$"
+          },
+          "name": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "source-value",
+                  "null",
+                  "unknown"
+                ]
+              },
+              "value": {},
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "state"
+            ],
+            "additionalProperties": false
+          },
+          "brand": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "source-value",
+                  "null",
+                  "unknown"
+                ]
+              },
+              "value": {},
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "state"
+            ],
+            "additionalProperties": false
+          },
+          "candidateProfiles": {
+            "type": "array",
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "properties": {
+                "occurrence": {
+                  "type": "integer"
+                },
+                "kind": {
+                  "const": "nutrientProfile"
+                },
+                "nativeId": {
+                  "type": "string"
+                },
+                "provenance": {
+                  "type": "object",
+                  "properties": {
+                    "relationalSourceReference": {
+                      "type": "object",
+                      "properties": {
+                        "file_id": {
+                          "type": "integer"
+                        },
+                        "line_number": {
+                          "type": "integer"
+                        },
+                        "line_sha256": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "source_id": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "release_id": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "record_id": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "archive_sha": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "rights_sha": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "scope_sha": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "store_sha": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "qualification_sha": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "pointer_base": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "pointer_tail": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "role": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "input_sha256": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "file_id",
+                        "line_number",
+                        "line_sha256",
+                        "source_id",
+                        "release_id",
+                        "record_id",
+                        "archive_sha",
+                        "rights_sha",
+                        "scope_sha",
+                        "store_sha",
+                        "qualification_sha",
+                        "pointer_base",
+                        "pointer_tail",
+                        "role",
+                        "input_sha256"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "attribution": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "source-value",
+                            "null",
+                            "unknown"
+                          ]
+                        },
+                        "value": {},
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "state"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "license": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "source-value",
+                            "null",
+                            "unknown"
+                          ]
+                        },
+                        "value": {},
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "state"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "rights": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "source-value",
+                            "null",
+                            "unknown"
+                          ]
+                        },
+                        "value": {},
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "state"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "url": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "source-value",
+                            "null",
+                            "unknown"
+                          ]
+                        },
+                        "value": {},
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "state"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "visibility": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "source-value",
+                            "null",
+                            "unknown"
+                          ]
+                        },
+                        "value": {},
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "state"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "citationStatus": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "source-value",
+                            "null",
+                            "unknown"
+                          ]
+                        },
+                        "value": {},
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "state"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "sourceDate": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "source-value",
+                            "null",
+                            "unknown"
+                          ]
+                        },
+                        "value": {},
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "state"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "fetchedAt": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "source-value",
+                            "null",
+                            "unknown"
+                          ]
+                        },
+                        "value": {},
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "state"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "sourceLanguage": {
+                      "type": "object",
+                      "properties": {
+                        "nameLanguage": {
+                          "type": "object",
+                          "properties": {
+                            "state": {
+                              "enum": [
+                                "source-value",
+                                "null",
+                                "unknown"
+                              ]
+                            },
+                            "value": {},
+                            "reason": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "state"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "sourceLanguageFields": {
+                          "type": "object",
+                          "properties": {
+                            "state": {
+                              "enum": [
+                                "source-value",
+                                "null",
+                                "unknown"
+                              ]
+                            },
+                            "value": {},
+                            "reason": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "state"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "nameLanguage",
+                        "sourceLanguageFields"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "sourceUseNotice": {
+                      "type": "object",
+                      "properties": {
+                        "release": {
+                          "type": "string"
+                        },
+                        "attribution": {
+                          "type": "string"
+                        },
+                        "retainedDeclaration": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "release",
+                        "attribution",
+                        "retainedDeclaration"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "sourceScopeSha256": {
+                      "const": "e40e6b80cc8fcdcc834be3ebe8bcf869ea74654471bea5851cc848be4965e89d"
+                    }
+                  },
+                  "required": [
+                    "relationalSourceReference",
+                    "attribution",
+                    "license",
+                    "rights",
+                    "url",
+                    "visibility",
+                    "citationStatus",
+                    "sourceDate",
+                    "fetchedAt",
+                    "sourceLanguage",
+                    "sourceUseNotice",
+                    "sourceScopeSha256"
+                  ],
+                  "additionalProperties": false
+                },
+                "reviewStatus": {
+                  "const": "unreviewed"
+                },
+                "goldAdmitted": {
+                  "const": false
+                },
+                "englishQualification": {
+                  "const": "unknown"
+                },
+                "canonicalIdentity": {
+                  "const": "unknown"
+                },
+                "qualification": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "declared_link_recovered": {
+                      "const": 0
+                    },
+                    "canonical_equivalence": {
+                      "const": 0
+                    },
+                    "basis_agreement": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "declared_link_recovered",
+                    "canonical_equivalence",
+                    "basis_agreement"
+                  ],
+                  "additionalProperties": false
+                },
+                "nutrients": {
+                  "type": "array",
+                  "maxItems": 32,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "metricReference": {
+                        "type": "integer"
+                      },
+                      "sourceId": {
+                        "type": "string"
+                      },
+                      "sourceKey": {
+                        "type": "string"
+                      },
+                      "amountState": {
+                        "type": "string"
+                      },
+                      "decimalText": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "explicitZero": {
+                        "type": "boolean"
+                      },
+                      "mappingStatus": {
+                        "const": "source-local-only"
+                      },
+                      "reviewStatus": {
+                        "const": "unreviewed"
+                      },
+                      "amountEvidence": {
+                        "type": "object",
+                        "properties": {
+                          "state": {
+                            "enum": [
+                              "source-value",
+                              "null",
+                              "unknown"
+                            ]
+                          },
+                          "value": {},
+                          "reason": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "state"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "unit": {
+                        "type": "object",
+                        "properties": {
+                          "state": {
+                            "enum": [
+                              "source-value",
+                              "null",
+                              "unknown"
+                            ]
+                          },
+                          "value": {},
+                          "reason": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "state"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "basis": {
+                        "type": "object",
+                        "properties": {
+                          "state": {
+                            "enum": [
+                              "source-value",
+                              "null",
+                              "unknown"
+                            ]
+                          },
+                          "value": {},
+                          "reason": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "state"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "sourceMetricId": {
+                        "type": "object",
+                        "properties": {
+                          "state": {
+                            "enum": [
+                              "source-value",
+                              "null",
+                              "unknown"
+                            ]
+                          },
+                          "value": {},
+                          "reason": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "state"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "sourceMetricName": {
+                        "type": "object",
+                        "properties": {
+                          "state": {
+                            "enum": [
+                              "source-value",
+                              "null",
+                              "unknown"
+                            ]
+                          },
+                          "value": {},
+                          "reason": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "state"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "metricReference",
+                      "sourceId",
+                      "sourceKey",
+                      "amountState",
+                      "decimalText",
+                      "explicitZero",
+                      "mappingStatus",
+                      "reviewStatus",
+                      "amountEvidence",
+                      "unit",
+                      "basis",
+                      "sourceMetricId",
+                      "sourceMetricName"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "nutrientsTruncated": {
+                  "type": "boolean"
+                },
+                "nutrientCounts": {
+                  "type": "object",
+                  "properties": {
+                    "returned": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "total": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "minimum": 0
+                    },
+                    "totalState": {
+                      "enum": [
+                        "exact",
+                        "unknown-beyond-bound"
+                      ]
+                    },
+                    "observedLowerBound": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "returned",
+                    "total",
+                    "totalState",
+                    "observedLowerBound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "occurrence",
+                "kind",
+                "nativeId",
+                "provenance",
+                "reviewStatus",
+                "goldAdmitted",
+                "englishQualification",
+                "canonicalIdentity",
+                "qualification",
+                "nutrients",
+                "nutrientsTruncated",
+                "nutrientCounts"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "profilesTruncated": {
+            "type": "boolean"
+          },
+          "profileCounts": {
+            "type": "object",
+            "properties": {
+              "returned": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "total": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "totalState": {
+                "enum": [
+                  "exact",
+                  "unknown-beyond-bound"
+                ]
+              },
+              "observedLowerBound": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "returned",
+              "total",
+              "totalState",
+              "observedLowerBound"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "occurrence",
+          "kind",
+          "nativeId",
+          "provenance",
+          "reviewStatus",
+          "goldAdmitted",
+          "englishQualification",
+          "canonicalIdentity",
+          "barcode",
+          "name",
+          "brand",
+          "candidateProfiles",
+          "profilesTruncated",
+          "profileCounts"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "productsTruncated": {
+      "type": "boolean"
+    },
+    "matchStatus": {
+      "enum": [
+        "source-local-candidates",
+        "not-found-in-selected-snapshot"
+      ]
+    },
+    "snapshotSha256": {
+      "const": "27472e67235c37f9cd1637886d1f38acfc8596dfba2caa5a88868f2af8c9700e"
+    },
+    "reviewStatus": {
+      "const": "unreviewed"
+    },
+    "goldAdmitted": {
+      "const": false
+    },
+    "countryCoverage": {
+      "const": "not-established"
+    },
+    "canonicalEquivalence": {
+      "const": false
+    },
+    "bounds": {
+      "type": "object",
+      "properties": {
+        "products": {
+          "const": 8
+        },
+        "profilesPerProduct": {
+          "const": 4
+        },
+        "nutrientsPerProfile": {
+          "const": 32
+        },
+        "responseBytes": {
+          "const": 65536
+        }
+      },
+      "required": [
+        "products",
+        "profilesPerProduct",
+        "nutrientsPerProfile",
+        "responseBytes"
+      ],
+      "additionalProperties": false
+    },
+    "productCounts": {
+      "type": "object",
+      "properties": {
+        "returned": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "totalState": {
+          "enum": [
+            "exact",
+            "unknown-beyond-bound"
+          ]
+        },
+        "observedLowerBound": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "returned",
+        "total",
+        "totalState",
+        "observedLowerBound"
+      ],
+      "additionalProperties": false
+    },
+    "caveats": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "barcode",
+    "products",
+    "productsTruncated",
+    "matchStatus",
+    "snapshotSha256",
+    "reviewStatus",
+    "goldAdmitted",
+    "countryCoverage",
+    "canonicalEquivalence",
+    "bounds",
+    "productCounts",
+    "caveats"
+  ],
+  "additionalProperties": false
+}

@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3826,
+  "messages": 3976,
   "arabicTranslated": 376,
-  "arabicMissing": 3450,
+  "arabicMissing": 3600,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -87,12 +87,6 @@
     "\nReported allergens: ": {
       "sources": [
         "public/app.js"
-      ],
-      "arabic": false
-    },
-    " (optional, not allocated)": {
-      "sources": [
-        "public/journey-ui.js"
       ],
       "arabic": false
     },
@@ -236,9 +230,26 @@
       ],
       "arabic": false
     },
+    " illustration of ": {
+      "sources": [
+        "public/product-visual-selector.js"
+      ],
+      "arabic": false
+    },
+    " illustration, not product photo": {
+      "sources": [
+        "public/product-visual-selector.js"
+      ],
+      "arabic": false
+    },
+    " illustration, not product photo · emoji appearance varies by platform": {
+      "sources": [
+        "public/product-visual-selector.js"
+      ],
+      "arabic": false
+    },
     " ingredient entries": {
       "sources": [
-        "public/app.js",
         "public/documents.js"
       ],
       "arabic": false
@@ -270,6 +281,12 @@
     " planned portions": {
       "sources": [
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    " published scanner items. Choose the current kitchen location, then open checkout and review quantities.": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -1513,14 +1530,14 @@
     },
     "../cloud/state.mjs": {
       "sources": [
-        "public/app.js"
+        "public/pantry-backup.js"
       ],
       "arabic": false
     },
     "../corpus/assert-curated.mjs": {
       "sources": [
         "cloud/corpus.mjs",
-        "public/recipe-library-ui.js"
+        "public/recipe-discovery-client.js"
       ],
       "arabic": false
     },
@@ -1761,10 +1778,8 @@
     "./checkout-model.js": {
       "sources": [
         "public/app.js",
-        "public/cooking-model.js",
         "public/documents.js",
-        "public/freshness-ui.js",
-        "public/menu-model.js"
+        "public/freshness-ui.js"
       ],
       "arabic": false
     },
@@ -1802,7 +1817,8 @@
     "./cooking-model.js": {
       "sources": [
         "public/app.js",
-        "public/journey-ui.js"
+        "public/journey-ui.js",
+        "public/recipe-ingredient-coverage.js"
       ],
       "arabic": false
     },
@@ -1898,11 +1914,14 @@
         "public/integration-owner03.mjs",
         "public/journey-ui.js",
         "public/model.js",
+        "public/owned-backup-account-ui.js",
         "public/personal-ai-ui.js",
         "public/recipe-community-ui.js",
+        "public/recipe-ingredient-coverage-ui.js",
         "public/recipe-library-model.js",
         "public/recipe-library-ui.js",
         "public/recipe-review.js",
+        "public/saved-price-observations.js",
         "public/scanner-ui.js",
         "public/services-ui.js",
         "public/sharing-ui.js",
@@ -1918,7 +1937,9 @@
         "public/cooking-model.js",
         "public/household-model.js",
         "public/journey-ui.js",
+        "public/menu-model.js",
         "public/model.js",
+        "public/recipe-ingredient-coverage.js",
         "public/recipe-library-model.js"
       ],
       "arabic": false
@@ -1967,6 +1988,12 @@
       ],
       "arabic": false
     },
+    "./local-retained-category-presentation.js": {
+      "sources": [
+        "public/scanner-product-visuals.js"
+      ],
+      "arabic": false
+    },
     "./locale.mjs": {
       "sources": [
         "cloud/handler.mjs"
@@ -1982,6 +2009,7 @@
         "public/insights-model.js",
         "public/insights-ui.js",
         "public/integrations.js",
+        "public/recipe-ingredient-coverage.js",
         "public/unified-data.js"
       ],
       "arabic": false
@@ -1989,11 +2017,14 @@
     "./model.js": {
       "sources": [
         "public/app.js",
+        "public/checkout-model.js",
         "public/cooking-model.js",
         "public/household-model.js",
         "public/journey-ui.js",
         "public/menu-model.js",
+        "public/pantry-backup.js",
         "public/product-visual-association.js",
+        "public/recipe-ingredient-coverage.js",
         "public/recipe-review.js",
         "public/scanner-product-visuals.js",
         "public/shelf-scanner.js",
@@ -2007,6 +2038,12 @@
       ],
       "arabic": false
     },
+    "./off-photo-metadata.js": {
+      "sources": [
+        "public/off-photo-catalogue.js"
+      ],
+      "arabic": false
+    },
     "./off-photos.mjs": {
       "sources": [
         "cloud/handler.mjs"
@@ -2014,6 +2051,24 @@
       "arabic": false
     },
     "./offmenu-identity-client.js": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "./owned-backup-account-ui.js": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "./owned-snapshot-extractor.mjs": {
+      "sources": [
+        "cloud/private-portability-owned-backup-v1.mjs"
+      ],
+      "arabic": false
+    },
+    "./pantry-backup.js": {
       "sources": [
         "public/app.js"
       ],
@@ -2040,6 +2095,7 @@
     },
     "./product-visual-selector.js": {
       "sources": [
+        "public/local-retained-category-presentation.js",
         "public/product-visual-association.js"
       ],
       "arabic": false
@@ -2079,9 +2135,27 @@
       ],
       "arabic": false
     },
+    "./recipe-discovery-client.js": {
+      "sources": [
+        "public/recipe-library-ui.js"
+      ],
+      "arabic": false
+    },
     "./recipe-ingredient-aliases.json": {
       "sources": [
         "public/recipe-library-model.js"
+      ],
+      "arabic": false
+    },
+    "./recipe-ingredient-coverage-ui.js": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "./recipe-ingredient-coverage.js": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -2108,7 +2182,21 @@
       "sources": [
         "public/data-ui.js",
         "public/recipe-review.js",
+        "public/saved-price-observations.js",
         "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
+    "./retained-source-photo-selection.js": {
+      "sources": [
+        "public/product-visual-association.js"
+      ],
+      "arabic": false
+    },
+    "./saved-price-observations.js": {
+      "sources": [
+        "public/app.js",
+        "public/insights-ui.js"
       ],
       "arabic": false
     },
@@ -2122,6 +2210,14 @@
     "./scanner-identifiers.js": {
       "sources": [
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "./scanner-kitchen-handoff.js": {
+      "sources": [
+        "public/app.js",
+        "public/checkout-model.js",
+        "public/model.js"
       ],
       "arabic": false
     },
@@ -2215,6 +2311,12 @@
       ],
       "arabic": false
     },
+    "./source-classification-contract.mjs": {
+      "sources": [
+        "public/product-visual-association.js"
+      ],
+      "arabic": false
+    },
     "./sources.js": {
       "sources": [
         "public/data-ui.js",
@@ -2247,25 +2349,21 @@
     },
     "./typed-identifier-contract.mjs": {
       "sources": [
-        "public/scanner-capture-envelope.js"
+        "public/scanner-capture-envelope.js",
+        "public/scanner-kitchen-handoff.js"
       ],
       "arabic": false
     },
     "./unified-data.js": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
     "./waste-analysis-model.js": {
       "sources": [
         "public/integration-owner03.mjs"
-      ],
-      "arabic": false
-    },
-    ".jsonl.gz": {
-      "sources": [
-        "public/recipe-library-ui.js"
       ],
       "arabic": false
     },
@@ -2313,20 +2411,21 @@
     },
     "/api/data/public?": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/recipe-discovery-client.js"
       ],
       "arabic": false
     },
     "/api/data/records?": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
     "/api/prices?barcode=": {
       "sources": [
-        "public/app.js",
-        "public/insights-ui.js"
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -2339,6 +2438,12 @@
     "/app.js?v=i18n-1": {
       "sources": [
         "public/sw.js"
+      ],
+      "arabic": false
+    },
+    "/cgi/product_image.pl": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
       ],
       "arabic": false
     },
@@ -2416,7 +2521,7 @@
     },
     "/recipes/manifest.json": {
       "sources": [
-        "public/recipe-library-ui.js"
+        "public/recipe-discovery-client.js"
       ],
       "arabic": false
     },
@@ -2587,6 +2692,12 @@
     "; certification and cross-contact are not inferred": {
       "sources": [
         "public/household-model.js"
+      ],
+      "arabic": false
+    },
+    "; metadata release ": {
+      "sources": [
+        "public/scanner-product-visuals.js"
       ],
       "arabic": false
     },
@@ -2991,9 +3102,16 @@
       ],
       "arabic": true
     },
+    "Account backup controls are missing.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
     "Account changed. Retry from your current account.": {
       "sources": [
         "public/app.js",
+        "public/saved-price-observations.js",
         "public/session-fetch.js"
       ],
       "arabic": false
@@ -3205,6 +3323,12 @@
     "Add your own credentials for this source first.": {
       "sources": [
         "cloud/provider-data.mjs"
+      ],
+      "arabic": false
+    },
+    "Additional ingredients are needed.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -3914,6 +4038,12 @@
       ],
       "arabic": false
     },
+    "Availability needs review; no positive shortfall is confirmed.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Availability status": {
       "sources": [
         "cloud/service-config.mjs"
@@ -3982,6 +4112,18 @@
       "arabic": false
     },
     "Backup has duplicate item IDs.": {
+      "sources": [
+        "public/pantry-backup.js"
+      ],
+      "arabic": false
+    },
+    "Backup request refused.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
+    "Backup restore failed and browser storage could not be fully restored. Keep your backup and reload before making changes.": {
       "sources": [
         "public/app.js"
       ],
@@ -4290,7 +4432,8 @@
     },
     "CC BY-SA 3.0": {
       "sources": [
-        "public/off-photo-catalogue.js"
+        "public/off-photo-catalogue.js",
+        "public/off-photo-metadata.js"
       ],
       "arabic": false
     },
@@ -4347,6 +4490,12 @@
     "CONFIRMED · REMOVED FROM INVENTORY.": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "COUNT_MISMATCH:": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
       ],
       "arabic": false
     },
@@ -4642,25 +4791,8 @@
       "sources": [
         "public/care-ui.js",
         "public/product-visual-association.js",
+        "public/product-visual-selector.js",
         "public/shelf-scanner.js"
-      ],
-      "arabic": false
-    },
-    "Category illustration of ": {
-      "sources": [
-        "public/product-visual-selector.js"
-      ],
-      "arabic": false
-    },
-    "Category illustration, not product photo": {
-      "sources": [
-        "public/product-visual-selector.js"
-      ],
-      "arabic": false
-    },
-    "Category illustration, not product photo · emoji appearance varies by platform": {
-      "sources": [
-        "public/product-visual-selector.js"
       ],
       "arabic": false
     },
@@ -4731,6 +4863,12 @@
       ],
       "arabic": false
     },
+    "Check the existing dietary review before choosing this meal.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Check the package for ingredients and allergens.": {
       "sources": [
         "public/app.js"
@@ -4767,6 +4905,12 @@
       "sources": [
         "public/app.js",
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "Checking encrypted backup availability…": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -4858,6 +5002,12 @@
     "Choose a personal assistant name before contributing an AI-attributed recipe.": {
       "sources": [
         "cloud/personal-ai.mjs"
+      ],
+      "arabic": false
+    },
+    "Choose a published source record for every kept item, or Undo it before finishing.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
       ],
       "arabic": false
     },
@@ -5922,6 +6072,12 @@
       ],
       "arabic": false
     },
+    "Cookie, Authorization": {
+      "sources": [
+        "cloud/owned-backup-export-route.mjs"
+      ],
+      "arabic": false
+    },
     "Cooking date": {
       "sources": [
         "public/index.html"
@@ -6004,6 +6160,12 @@
       ],
       "arabic": false
     },
+    "Country unknown": {
+      "sources": [
+        "public/saved-price-observations.js"
+      ],
+      "arabic": false
+    },
     "Country unspecified / global": {
       "sources": [
         "public/data-ui.js"
@@ -6029,9 +6191,21 @@
       ],
       "arabic": false
     },
+    "Coverage needs review.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Coverage · retained subset, incomplete": {
       "sources": [
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Covered {covered} / required {required}": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -6124,7 +6298,8 @@
     "Currency unknown": {
       "sources": [
         "extension/popup-source.js",
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -6180,6 +6355,12 @@
     "Current receipt review consent required": {
       "sources": [
         "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
+    "Current retrieval selected by retained metadata; historical image bytes and primary-product variant match unverified": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
       ],
       "arabic": false
     },
@@ -6363,7 +6544,8 @@
     },
     "Date unknown": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -6541,6 +6723,12 @@
     "Dense ordinary array required": {
       "sources": [
         "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
+    "Deployment-owned backup route function required.": {
+      "sources": [
+        "cloud/handler.mjs"
       ],
       "arabic": false
     },
@@ -6881,6 +7069,13 @@
       ],
       "arabic": false
     },
+    "Download encrypted account backup": {
+      "sources": [
+        "public/index.html",
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
     "Download phone-friendly HTML ↓": {
       "sources": [
         "public/index.html"
@@ -6905,6 +7100,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Download your account backup as an encrypted file. Kitchen backups below are separate.": {
+      "sources": [
+        "public/index.html"
+      ],
+      "arabic": false
     },
     "Downloaded copies cannot be recalled.": {
       "sources": [
@@ -7246,6 +7447,31 @@
       ],
       "arabic": false
     },
+    "Encrypted account backup": {
+      "sources": [
+        "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Encrypted account backup download started.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
+    "Encrypted account backup is unavailable.": {
+      "sources": [
+        "public/index.html",
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
+    "Encrypted account backup is unavailable. Try again later.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
     "Endpoint": {
       "sources": [
         "public/community-ai-ui.js"
@@ -7366,7 +7592,8 @@
     },
     "Enter a numeric barcode.": {
       "sources": [
-        "public/insights-ui.js"
+        "public/insights-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -7388,6 +7615,12 @@
       ],
       "arabic": false
     },
+    "Enter a recipe search of at most 100 characters.": {
+      "sources": [
+        "public/recipe-discovery-client.js"
+      ],
+      "arabic": false
+    },
     "Enter a replacement value for ": {
       "sources": [
         "public/admin-model.js"
@@ -7397,6 +7630,12 @@
     "Enter a short food search.": {
       "sources": [
         "cloud/provider-data.mjs"
+      ],
+      "arabic": false
+    },
+    "Enter a valid number of portions.": {
+      "sources": [
+        "public/journey-ui.js"
       ],
       "arabic": false
     },
@@ -7515,7 +7754,7 @@
       ],
       "arabic": false
     },
-    "Estimate from mapped products": {
+    "Estimate from allocated lots": {
       "sources": [
         "public/app.js"
       ],
@@ -7646,6 +7885,12 @@
     "Exact releaseId and manifestSha256 are required.": {
       "sources": [
         "cloud/provider-data.mjs"
+      ],
+      "arabic": false
+    },
+    "Exact retained source product reference required": {
+      "sources": [
+        "public/product-visual-selector.js"
       ],
       "arabic": false
     },
@@ -9243,6 +9488,12 @@
       ],
       "arabic": false
     },
+    "Image retrieved ": {
+      "sources": [
+        "public/scanner-product-visuals.js"
+      ],
+      "arabic": false
+    },
     "Imperial": {
       "sources": [
         "public/index.html",
@@ -9322,6 +9573,12 @@
       ],
       "arabic": false
     },
+    "Incomplete source inventory: ": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
     "Incomplete · retry the failed lane; loaded source observations remain visible.": {
       "sources": [
         "public/shelf-scanner.js"
@@ -9363,13 +9620,26 @@
       "sources": [
         "public/documents.js",
         "public/insights-ui.js",
-        "public/locales/ar.js"
+        "public/locales/ar.js",
+        "public/product-visual-selector.js"
       ],
       "arabic": true
     },
-    "Ingredient amounts below show the recipe’s base yield; allocation scales to the portions entered.": {
+    "Ingredient amounts below update for the portions entered.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Ingredient coverage": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
+    "Ingredient coverage is unavailable. Keep the existing meal review.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -9872,6 +10142,12 @@
       ],
       "arabic": false
     },
+    "Invalid curated recipe response.": {
+      "sources": [
+        "public/recipe-discovery-client.js"
+      ],
+      "arabic": false
+    },
     "Invalid cursor.": {
       "sources": [
         "cloud/care-cases.mjs",
@@ -9937,6 +10213,12 @@
     "Invalid eaten portions": {
       "sources": [
         "public/cooking-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid encrypted backup response.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -10172,7 +10454,7 @@
     },
     "Invalid pantry backup.": {
       "sources": [
-        "public/app.js"
+        "public/pantry-backup.js"
       ],
       "arabic": false
     },
@@ -10230,9 +10512,21 @@
       ],
       "arabic": false
     },
+    "Invalid price observations": {
+      "sources": [
+        "public/saved-price-observations.js"
+      ],
+      "arabic": false
+    },
     "Invalid price on CSV row {v0}{v1}": {
       "sources": [
         "public/unified-data.js"
+      ],
+      "arabic": false
+    },
+    "Invalid price response": {
+      "sources": [
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -10293,12 +10587,6 @@
     "Invalid receipt ledger": {
       "sources": [
         "public/receipt-review-model.js"
-      ],
-      "arabic": false
-    },
-    "Invalid recipe file": {
-      "sources": [
-        "public/recipe-library-ui.js"
       ],
       "arabic": false
     },
@@ -10384,6 +10672,12 @@
     "Invalid saved receipt.": {
       "sources": [
         "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid saved records response": {
+      "sources": [
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -10592,6 +10886,18 @@
     "Inventory item to enrich with {v0}": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "Inventory space or account changed before saving.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Inventory space or account changed. Review from the current kitchen.": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -10869,6 +11175,18 @@
       ],
       "arabic": false
     },
+    "Latest price lookup unavailable": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Latest price lookup unavailable. Saved dated observations remain historical.": {
+      "sources": [
+        "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
     "Latest receipt": {
       "sources": [
         "public/index.html"
@@ -11122,12 +11440,6 @@
       ],
       "arabic": true
     },
-    "Loading the shared recipe ingredient index…": {
-      "sources": [
-        "public/recipe-library-ui.js"
-      ],
-      "arabic": false
-    },
     "Loading…": {
       "sources": [
         "public/locales/ar.js"
@@ -11324,6 +11636,12 @@
       ],
       "arabic": false
     },
+    "MISSING_SOURCE:": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
     "Made for the food you already have.": {
       "sources": [
         "public/index.html"
@@ -11381,6 +11699,12 @@
     "Manufacturing places": {
       "sources": [
         "public/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Map a source observation ID for every price row; a barcode identifies a product, not a dated price observation.": {
+      "sources": [
+        "public/unified-data.js"
       ],
       "arabic": false
     },
@@ -11624,6 +11948,12 @@
     "Messages": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Metadata selection/URL construction only; no new image adaptation performed.": {
+      "sources": [
+        "public/off-photo-metadata.js"
       ],
       "arabic": false
     },
@@ -12101,12 +12431,6 @@
       ],
       "arabic": false
     },
-    "No data · ": {
-      "sources": [
-        "public/app.js"
-      ],
-      "arabic": false
-    },
     "No entered dates or estimated reminders due today.": {
       "sources": [
         "public/freshness-ui.js"
@@ -12195,6 +12519,12 @@
     "No open redistribution licence verified": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "No positive shortfall reported by the allocation.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -12487,9 +12817,33 @@
       ],
       "arabic": false
     },
+    "Nutrition basis compatible; nutrient values may still be missing.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
+    "Nutrition basis is shown per allocated lot. Nutrient completeness is not established.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Nutrition basis must match this inventory item: per 100 {v0}.": {
       "sources": [
         "public/unified-data.js"
+      ],
+      "arabic": false
+    },
+    "Nutrition basis unknown without an allocated lot.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
+    "Nutrition basis unsupported or unknown.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -12852,6 +13206,12 @@
       ],
       "arabic": false
     },
+    "One item to add": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "One list, your choice of shops. Availability depends on your country and provider.": {
       "sources": [
         "public/index.html"
@@ -12908,6 +13268,7 @@
     },
     "Open Food Facts": {
       "sources": [
+        "public/off-photo-metadata.js",
         "public/sources.js"
       ],
       "arabic": false
@@ -13074,6 +13435,12 @@
       ],
       "arabic": true
     },
+    "Open your account panel to download an encrypted backup.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
     "Open: {v0} · {v1}": {
       "sources": [
         "public/sharing-ui.js"
@@ -13101,6 +13468,7 @@
     "Optional": {
       "sources": [
         "public/app.js",
+        "public/journey-ui.js",
         "public/locales/ar.js",
         "public/recipe-library-ui.js"
       ],
@@ -13167,6 +13535,7 @@
         "cloud/integrations.mjs",
         "cloud/kitchens.mjs",
         "cloud/lot-restriction-owner28.mjs",
+        "cloud/owned-backup-export-route.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
@@ -13281,6 +13650,36 @@
       ],
       "arabic": false
     },
+    "Owned backup unavailable (AUTHORITY_CHANGED).": {
+      "sources": [
+        "cloud/private-portability-owned-backup-v1.mjs"
+      ],
+      "arabic": false
+    },
+    "Owned backup unavailable (INCOMPLETE_SNAPSHOT).": {
+      "sources": [
+        "cloud/private-portability-owned-backup-v1.mjs"
+      ],
+      "arabic": false
+    },
+    "Owned backup unavailable (REQUEST_SCOPE).": {
+      "sources": [
+        "cloud/private-portability-owned-backup-v1.mjs"
+      ],
+      "arabic": false
+    },
+    "Owned snapshot unavailable": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
+    "Owned snapshot unavailable (": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
     "Owner": {
       "sources": [
         "public/documents.js"
@@ -13348,6 +13747,12 @@
       ],
       "arabic": false
     },
+    "Packaging artwork and other underlying rights remain separate; the photo licence alone does not establish all permissions for a proposed use.": {
+      "sources": [
+        "public/off-photo-metadata.js"
+      ],
+      "arabic": false
+    },
     "Pantry": {
       "sources": [
         "public/app.js",
@@ -13362,6 +13767,12 @@
     "Pantry / Shelf 1": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Pantry backup exceeds 20 MB.": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -13387,12 +13798,6 @@
     "Partial recorded observations only; not all waste or person-level attribution.": {
       "sources": [
         "public/integration-owner03.mjs"
-      ],
-      "arabic": false
-    },
-    "Partial · ": {
-      "sources": [
-        "public/app.js"
       ],
       "arabic": false
     },
@@ -13427,6 +13832,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Payload exceeds existing cryptor plaintext limit; no chunking supported.": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
     },
     "Peas": {
       "sources": [
@@ -13654,9 +14065,27 @@
       ],
       "arabic": false
     },
+    "Photo author and notices were not captured in the selected metadata; their absence is not established.": {
+      "sources": [
+        "public/scanner-product-visuals.js"
+      ],
+      "arabic": false
+    },
     "Photo could not be decoded. Try a JPEG/PNG photo or enter the barcode.": {
       "sources": [
         "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Photo from the explicitly selected source; product variant match unverified": {
+      "sources": [
+        "public/product-visual-selector.js"
+      ],
+      "arabic": false
+    },
+    "Photo from the selected source. The product variant and older-snapshot image membership are unverified.": {
+      "sources": [
+        "public/scanner-product-visuals.js"
       ],
       "arabic": false
     },
@@ -13667,6 +14096,12 @@
       "arabic": false
     },
     "Photo source": {
+      "sources": [
+        "public/scanner-product-visuals.js"
+      ],
+      "arabic": false
+    },
+    "Photo source and licence": {
       "sources": [
         "public/scanner-product-visuals.js"
       ],
@@ -13838,6 +14273,18 @@
       ],
       "arabic": false
     },
+    "Preparing encrypted account backup…": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
+    "Preparing your encrypted account backup…": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
     "Preview and confirm the document before emailing it.": {
       "sources": [
         "public/services-ui.js"
@@ -13894,7 +14341,13 @@
     },
     "Price lookup unavailable": {
       "sources": [
-        "public/insights-ui.js"
+        "public/saved-price-observations.js"
+      ],
+      "arabic": false
+    },
+    "Price observation IDs must be unique within the CSV batch.": {
+      "sources": [
+        "public/unified-data.js"
       ],
       "arabic": false
     },
@@ -14062,6 +14515,12 @@
     "Product not found.": {
       "sources": [
         "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
+    "Product on Open Food Facts": {
+      "sources": [
+        "public/scanner-product-visuals.js"
       ],
       "arabic": false
     },
@@ -14477,9 +14936,33 @@
       ],
       "arabic": false
     },
+    "Published scanner items need a shelf or shopping review, not an unverified discard action.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Published source items staged. Review each known quantity and ingredient, then confirm the existing final receipt.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Published source reference does not match the selected barcode and release.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
     "Publisher reuse: attribution and unchanged data": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Publisher-stated product-photo licence; not database licensing": {
+      "sources": [
+        "public/off-photo-metadata.js"
       ],
       "arabic": false
     },
@@ -14552,7 +15035,8 @@
     },
     "Quantity not specified": {
       "sources": [
-        "public/app.js"
+        "public/app.js",
+        "public/journey-ui.js"
       ],
       "arabic": false
     },
@@ -14943,6 +15427,12 @@
       ],
       "arabic": false
     },
+    "Ready now": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Ready to cook": {
       "sources": [
         "public/app.js",
@@ -14954,6 +15444,12 @@
     "Ready to count the next identical pack. Keep its barcode in view.": {
       "sources": [
         "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "Ready to download your encrypted account backup.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -15050,42 +15546,24 @@
       ],
       "arabic": false
     },
-    "Recipe collection unavailable": {
-      "sources": [
-        "public/recipe-library-ui.js"
-      ],
-      "arabic": false
-    },
-    "Recipe data unavailable ({v0})": {
-      "sources": [
-        "public/recipe-library-ui.js"
-      ],
-      "arabic": false
-    },
-    "Recipe file checksum failed": {
-      "sources": [
-        "public/recipe-library-ui.js"
-      ],
-      "arabic": false
-    },
-    "Recipe file too large": {
-      "sources": [
-        "public/recipe-library-ui.js"
-      ],
-      "arabic": false
-    },
-    "Recipe index reconciliation failed": {
-      "sources": [
-        "public/recipe-library-ui.js"
-      ],
-      "arabic": false
-    },
     "Recipe ingredient": {
       "sources": [
         "public/documents.js",
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Recipe ingredient names must be explicit.": {
+      "sources": [
+        "public/recipe-ingredient-coverage.js"
+      ],
+      "arabic": false
+    },
+    "Recipe is no longer in this search; search again.": {
+      "sources": [
+        "public/recipe-library-ui.js"
+      ],
+      "arabic": false
     },
     "Recipe language": {
       "sources": [
@@ -15107,12 +15585,6 @@
       ],
       "arabic": true
     },
-    "Recipe not found": {
-      "sources": [
-        "public/recipe-library-ui.js"
-      ],
-      "arabic": false
-    },
     "Recipe nutrients scale to the eaten percentage. This records consumption without deducting kitchen stock. Estimates use the original recipe; substitutions require a custom log.": {
       "sources": [
         "public/index.html"
@@ -15126,15 +15598,27 @@
       ],
       "arabic": true
     },
-    "Recipe saved. Review yield, ingredient matches and quantities before planning or cooking.": {
+    "Recipe page repeats an earlier result": {
       "sources": [
-        "public/data-ui.js"
+        "public/recipe-library-ui.js"
       ],
       "arabic": false
     },
-    "Recipe shard missing": {
+    "Recipe response does not match the selected release.": {
       "sources": [
-        "public/recipe-library-ui.js"
+        "public/recipe-discovery-client.js"
+      ],
+      "arabic": false
+    },
+    "Recipe response exceeds limit.": {
+      "sources": [
+        "public/recipe-discovery-client.js"
+      ],
+      "arabic": false
+    },
+    "Recipe saved. Review yield, ingredient matches and quantities before planning or cooking.": {
+      "sources": [
+        "public/data-ui.js"
       ],
       "arabic": false
     },
@@ -15150,6 +15634,12 @@
       ],
       "arabic": false
     },
+    "Recipe, bounded inventory, product map and explicit date required.": {
+      "sources": [
+        "public/recipe-ingredient-coverage.js"
+      ],
+      "arabic": false
+    },
     "Recipes imported.": {
       "sources": [
         "public/app.js",
@@ -15159,14 +15649,19 @@
     },
     "Recipes indexed: {count}": {
       "sources": [
-        "public/locales/ar.js",
-        "public/recipe-library-ui.js"
+        "public/locales/ar.js"
       ],
       "arabic": true
     },
     "Recipes need id, title, source, license, servings and ingredients.": {
       "sources": [
         "public/model.js"
+      ],
+      "arabic": false
+    },
+    "Recipes; scroll for more results": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -15447,6 +15942,12 @@
     "Removed from this checkout": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Repeated saved records cursor": {
+      "sources": [
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -15755,6 +16256,12 @@
       ],
       "arabic": false
     },
+    "Review ": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Review before putting away.": {
       "sources": [
         "public/index.html"
@@ -15820,6 +16327,12 @@
     "Review the comment before submitting.": {
       "sources": [
         "public/recipe-community-ui.js"
+      ],
+      "arabic": false
+    },
+    "Review the known quantity and ingredient for every scanner item before saving inventory.": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -16364,6 +16877,12 @@
       ],
       "arabic": false
     },
+    "Saved dated observations remain historical.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Saved favourite ✓": {
       "sources": [
         "public/app.js",
@@ -16405,6 +16924,18 @@
     "Saved meal preferences could not be validated. Your cloud copy is unchanged; keep your local copy and contact support.": {
       "sources": [
         "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
+    "Saved observation · dated observation, not verified current stock": {
+      "sources": [
+        "public/saved-price-observations.js"
+      ],
+      "arabic": false
+    },
+    "Saved observations unavailable": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -16495,6 +17026,12 @@
       ],
       "arabic": false
     },
+    "Scan at least one item before finishing.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
     "Scan each item straight onto your receipt. Glance at nutrition and enjoy the beep. Review it all at the end.": {
       "sources": [
         "public/index.html",
@@ -16549,9 +17086,39 @@
       ],
       "arabic": true
     },
+    "Scanner completion conflicts with partially changed stock. Review the receipt.": {
+      "sources": [
+        "public/checkout-model.js"
+      ],
+      "arabic": false
+    },
+    "Scanner completion conflicts with saved inventory. Review the receipt.": {
+      "sources": [
+        "public/checkout-model.js"
+      ],
+      "arabic": false
+    },
     "Scanner credits": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Scanner draft saved; tab cleanup failed. Repeating this handoff will not add it again.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff conflicts with a saved operation.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff exceeds the existing tab limit. Review a smaller batch.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
       ],
       "arabic": false
     },
@@ -16561,7 +17128,73 @@
       ],
       "arabic": false
     },
+    "Scanner handoff is invalid.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff item is incomplete.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff receipt history is invalid.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff repeats an operation.": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
+    "Scanner handoff was not completed: ": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Scanner handoff was not saved: ": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner inventory space changed before correction.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner inventory space changed.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner inventory space changed. Restore the current checkout.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner inventory space or permission changed.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner inventory space or saved history changed. Restore the current checkout.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Scanner operation conflicts with its saved handoff.": {
       "sources": [
         "public/app.js"
       ],
@@ -16653,6 +17286,12 @@
       ],
       "arabic": false
     },
+    "Searching shared recipes…": {
+      "sources": [
+        "public/recipe-library-ui.js"
+      ],
+      "arabic": false
+    },
     "Second basket JSON": {
       "sources": [
         "public/data-workspace.html"
@@ -16712,6 +17351,12 @@
     "Selected Balanced Final OffMenu app icon": {
       "sources": [
         "public/product-visual-selector.js"
+      ],
+      "arabic": false
+    },
+    "Selected admitted snapshot only; inherited vocabulary/matching/allocation. Basis eligibility is not nutrient completeness, food safety, recipe admission or cooking/serving evidence.": {
+      "sources": [
+        "public/recipe-ingredient-coverage.js"
       ],
       "arabic": false
     },
@@ -16886,6 +17531,12 @@
     "Selected source field · ": {
       "sources": [
         "public/source-field-page-presenter.js"
+      ],
+      "arabic": false
+    },
+    "Selected source photo": {
+      "sources": [
+        "public/product-visual-selector.js"
       ],
       "arabic": false
     },
@@ -17065,6 +17716,12 @@
       ],
       "arabic": false
     },
+    "Serving event changed. Reconcile the existing serving before retrying.": {
+      "sources": [
+        "public/cooking-model.js"
+      ],
+      "arabic": false
+    },
     "Serving · source projection, not package": {
       "sources": [
         "public/shelf-scanner.js"
@@ -17150,12 +17807,24 @@
       ],
       "arabic": false
     },
+    "Shared recipe search failed. {reason}": {
+      "sources": [
+        "public/recipe-library-ui.js"
+      ],
+      "arabic": false
+    },
     "Shared recipes are available to everyone. Your pantry matching runs on this device.": {
       "sources": [
         "public/index.html",
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Shared recipes unavailable (": {
+      "sources": [
+        "public/recipe-discovery-client.js"
+      ],
+      "arabic": false
     },
     "Shared table": {
       "sources": [
@@ -17274,10 +17943,15 @@
     },
     "Show more recipes": {
       "sources": [
-        "public/locales/ar.js",
-        "public/recipe-library-ui.js"
+        "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Show next recipes": {
+      "sources": [
+        "public/recipe-library-ui.js"
+      ],
+      "arabic": false
     },
     "Show the whole world": {
       "sources": [
@@ -17288,6 +17962,12 @@
     "Showing the first 100 of {v0} records. Export retains the full batch.": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "Sign in again before downloading an encrypted account backup.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -17340,6 +18020,12 @@
     "Sign in to continue.": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Sign in to download an encrypted account backup.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -17518,6 +18204,18 @@
       "arabic": false
     },
     "Some original quantities need review.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Some saved observations are unavailable. Retry in your current profile.": {
+      "sources": [
+        "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "Some saved observations could not be loaded. Retry in your current profile.": {
       "sources": [
         "public/app.js"
       ],
@@ -18122,6 +18820,12 @@
       ],
       "arabic": false
     },
+    "Still needed: {amount}": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Stock": {
       "sources": [
         "public/scanner-surrogate.js"
@@ -18180,7 +18884,8 @@
     },
     "Store not supplied": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -18265,6 +18970,12 @@
       "arabic": false
     },
     "Suggested ingredient: {v0}. Correct it to use in meal matching.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Suggested recipes": {
       "sources": [
         "public/app.js"
       ],
@@ -19049,6 +19760,12 @@
       ],
       "arabic": false
     },
+    "The encrypted backup could not be downloaded. Try again.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
+      ],
+      "arabic": false
+    },
     "The existing Netlify Identity client is required.": {
       "sources": [
         "public/offmenu-identity-client.js"
@@ -19088,6 +19805,12 @@
     "This account action is not available in the selected authentication mode.": {
       "sources": [
         "public/offmenu-identity-client.js"
+      ],
+      "arabic": false
+    },
+    "This account backup was not authorized. Check your account and backup selection, then try again.": {
+      "sources": [
+        "public/owned-backup-account-ui.js"
       ],
       "arabic": false
     },
@@ -19231,6 +19954,12 @@
       "arabic": false
     },
     "This scanner handoff is already saved.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "This scanner handoff was already staged or completed.": {
       "sources": [
         "public/app.js"
       ],
@@ -19464,7 +20193,8 @@
     },
     "Type": {
       "sources": [
-        "public/data-workspace.js"
+        "public/data-workspace.js",
+        "public/product-visual-selector.js"
       ],
       "arabic": false
     },
@@ -19501,6 +20231,18 @@
     "UK food hygiene ratings": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "UNAVAILABLE_SOURCE:": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
+    "UNKNOWN_SOURCE:": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
       ],
       "arabic": false
     },
@@ -19576,9 +20318,9 @@
       ],
       "arabic": false
     },
-    "Unaccepted recipe collection": {
+    "Unaccepted recipe collection.": {
       "sources": [
-        "public/recipe-library-ui.js"
+        "public/recipe-discovery-client.js"
       ],
       "arabic": false
     },
@@ -19642,6 +20384,12 @@
       ],
       "arabic": false
     },
+    "Uncovered quantity is unknown.": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "Undo cooking": {
       "sources": [
         "public/journey-ui.js"
@@ -19674,7 +20422,8 @@
     },
     "Unified record, provenance & licence": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -19687,6 +20436,12 @@
     "UniformsUtils: Textures of render targets cannot be cloned via cloneUniforms() or mergeUniforms().": {
       "sources": [
         "public/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "Unique lot IDs and valid declared expiry dates required.": {
+      "sources": [
+        "public/recipe-ingredient-coverage.js"
       ],
       "arabic": false
     },
@@ -19748,7 +20503,8 @@
     },
     "Unknown amount": {
       "sources": [
-        "public/data-ui.js"
+        "public/data-ui.js",
+        "public/saved-price-observations.js"
       ],
       "arabic": false
     },
@@ -19805,6 +20561,18 @@
       "sources": [
         "public/app.js",
         "public/checkout-model.js"
+      ],
+      "arabic": false
+    },
+    "Unknown quantity ({unit})": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
+    "Unknown quantity and unit": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -19904,6 +20672,12 @@
     "Unregistered client or redirect URI.": {
       "sources": [
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "Unsafe curation file path": {
+      "sources": [
+        "cloud/corpus.mjs"
       ],
       "arabic": false
     },
@@ -20259,7 +21033,8 @@
     },
     "Vary": {
       "sources": [
-        "cloud/locale.mjs"
+        "cloud/locale.mjs",
+        "cloud/owned-backup-export-route.mjs"
       ],
       "arabic": false
     },
@@ -20373,6 +21148,12 @@
       ],
       "arabic": false
     },
+    "Visual classification supplies no recipe composition, nutrition or physical-product equivalence.": {
+      "sources": [
+        "public/product-visual-association.js"
+      ],
+      "arabic": false
+    },
     "Vitamin C": {
       "sources": [
         "public/menu-model.js"
@@ -20412,6 +21193,12 @@
     "WHERE owner=?": {
       "sources": [
         "cloud/care-cases.mjs"
+      ],
+      "arabic": false
+    },
+    "WITHHELD_SOURCE:": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
       ],
       "arabic": false
     },
@@ -21268,6 +22055,12 @@
       ],
       "arabic": true
     },
+    "attachment; filename=\"offmenu-owned-backup.json\"": {
+      "sources": [
+        "cloud/owned-backup-export-route.mjs"
+      ],
+      "arabic": false
+    },
     "attachment; filename=offmenu-retailer-extension.zip": {
       "sources": [
         "cloud/handler.mjs"
@@ -21562,9 +22355,21 @@
       ],
       "arabic": false
     },
+    "creativecommons.org": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
+      ],
+      "arabic": false
+    },
     "credential ": {
       "sources": [
         "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    "credentials and sealed provider credentials": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
       ],
       "arabic": false
     },
@@ -21755,6 +22560,12 @@
       ],
       "arabic": false
     },
+    "effective grants and entitlements": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
     "enhanced decoder": {
       "sources": [
         "public/scanner-ui.js"
@@ -21789,6 +22600,12 @@
     "expansion range": {
       "sources": [
         "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "explicit independent source assertion": {
+      "sources": [
+        "public/product-visual-association.js"
       ],
       "arabic": false
     },
@@ -21927,7 +22744,10 @@
         "cloud/service-config.mjs",
         "cloud/session-state-d1-owner04.mjs",
         "public/data-ui.js",
+        "public/off-photo-metadata.js",
         "public/product-visual-selector.js",
+        "public/retained-source-photo-selection.js",
+        "public/scanner-kitchen-handoff.js",
         "public/unified-data.js"
       ],
       "arabic": false
@@ -21953,6 +22773,12 @@
     "id,recipe_json,revision": {
       "sources": [
         "cloud/community-ai.mjs"
+      ],
+      "arabic": false
+    },
+    "id,sha256": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
       ],
       "arabic": false
     },
@@ -21988,6 +22814,7 @@
     },
     "images.openfoodfacts.org": {
       "sources": [
+        "public/off-photo-metadata.js",
         "public/product-visual-selector.js"
       ],
       "arabic": false
@@ -22059,6 +22886,12 @@
     "kcal": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "keyRef,keyVersion": {
+      "sources": [
+        "cloud/owned-backup-export-route.mjs"
       ],
       "arabic": false
     },
@@ -22165,6 +22998,12 @@
       ],
       "arabic": false
     },
+    "metadata-reference-only; image bytes and display use unverified": {
+      "sources": [
+        "public/off-photo-metadata.js"
+      ],
+      "arabic": false
+    },
     "mg": {
       "sources": [
         "public/index.html"
@@ -22251,6 +23090,12 @@
       ],
       "arabic": false
     },
+    "not allocated": {
+      "sources": [
+        "public/journey-ui.js"
+      ],
+      "arabic": false
+    },
     "not available": {
       "sources": [
         "public/app.js",
@@ -22303,6 +23148,12 @@
     "occurrence bound": {
       "sources": [
         "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "off:sourceOccurrence:": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
       ],
       "arabic": false
     },
@@ -22455,6 +23306,18 @@
       ],
       "arabic": false
     },
+    "offmenu.snapshot.": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
+    "offmenu:": {
+      "sources": [
+        "public/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false
+    },
     "olive oil": {
       "sources": [
         "public/app.js",
@@ -22480,11 +23343,23 @@
       ],
       "arabic": false
     },
+    "origin,runtimeSelectionSha256,state,useSelectionRef": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
+      ],
+      "arabic": false
+    },
     "original Source Record": {
       "sources": [
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "other owners’ profiles/health/stock; membership alone is insufficient": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
     },
     "owner ID": {
       "sources": [
@@ -22580,6 +23455,7 @@
       "sources": [
         "cloud/identifier-host.mjs",
         "cloud/locale.mjs",
+        "cloud/owned-backup-export-route.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
         "cloud/queue-state-entry-owner16.mjs",
         "cloud/source-field-host.mjs"
@@ -22600,6 +23476,7 @@
     },
     "profile.full": {
       "sources": [
+        "cloud/owned-snapshot-extractor.mjs",
         "cloud/private-portability-v1.mjs"
       ],
       "arabic": false
@@ -22642,6 +23519,12 @@
       ],
       "arabic": false
     },
+    "public catalogue/cache copies and source bodies without export permission": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
     "public or private": {
       "sources": [
         "cloud/provider-data.mjs"
@@ -22677,6 +23560,12 @@
     "published OffMenu curation": {
       "sources": [
         "cloud/corpus.mjs"
+      ],
+      "arabic": false
+    },
+    "publisher-reported uploader; independent authorship unverified": {
+      "sources": [
+        "public/off-photo-metadata.js"
       ],
       "arabic": false
     },
@@ -23158,6 +24047,12 @@
       ],
       "arabic": false
     },
+    "tokens, cookies, sessions, secret/key material": {
+      "sources": [
+        "cloud/owned-snapshot-extractor.mjs"
+      ],
+      "arabic": false
+    },
     "topic-reply:": {
       "sources": [
         "public/care-ui.js"
@@ -23173,6 +24068,12 @@
     "tree nuts": {
       "sources": [
         "public/ingredients.js"
+      ],
+      "arabic": false
+    },
+    "typed-exact-decimal-json/1; not an original byte-span hash": {
+      "sources": [
+        "public/local-retained-category-presentation.js"
       ],
       "arabic": false
     },
@@ -23254,6 +24155,12 @@
       ],
       "arabic": false
     },
+    "unverified; current publisher observation only": {
+      "sources": [
+        "public/off-photo-metadata.js"
+      ],
+      "arabic": false
+    },
     "usda:": {
       "sources": [
         "public/unified-data.js"
@@ -23327,6 +24234,12 @@
       ],
       "arabic": true
     },
+    "world.openfoodfacts.org": {
+      "sources": [
+        "public/retained-source-photo-selection.js"
+      ],
+      "arabic": false
+    },
     "your pending review": {
       "sources": [
         "cloud/care-community.mjs"
@@ -23339,9 +24252,27 @@
       ],
       "arabic": false
     },
+    "{amount} · Location unknown": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
+    "{amount} · {area} / {shelf}": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
+      ],
+      "arabic": false
+    },
     "{quantity} {unit} · partial measured observations": {
       "sources": [
         "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "{quantity} · unit unknown": {
+      "sources": [
+        "public/recipe-ingredient-coverage-ui.js"
       ],
       "arabic": false
     },
@@ -23357,7 +24288,7 @@
       ],
       "arabic": false
     },
-    "{v0}\nFor all {v1} portions. Based on the first matching mapped product for each ingredient; brands can differ. Missing data is excluded.": {
+    "{v0}\nFor all {v1} portions. Based on allocated ingredient lots with a compatible nutrition basis; brands can differ. Uncovered amounts and missing nutrition remain unknown.": {
       "sources": [
         "public/app.js"
       ],
@@ -23396,12 +24327,6 @@
     "{v0} items {v1} {v2}. {v3}": {
       "sources": [
         "public/app.js"
-      ],
-      "arabic": false
-    },
-    "{v0} matches · {v1} shared recipes · quantities compare the source batch; pantry data stays on this device.": {
-      "sources": [
-        "public/recipe-library-ui.js"
       ],
       "arabic": false
     },
@@ -23474,6 +24399,12 @@
     "{v0} records saved privately to this profile.": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "{v0} shown from {v1} loaded search results · {v2} published recipes, including OCR candidates. Continue browsing for later results; this list keeps the latest 200. Language and pantry filters apply to loaded results. Pantry matches are hints needing review; quantities compare the source batch.": {
+      "sources": [
+        "public/recipe-library-ui.js"
       ],
       "arabic": false
     },
@@ -23564,6 +24495,12 @@
     "{v0}/{v1} ingredient entries · {v2}": {
       "sources": [
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "{v0}/{v1} nutrition contributions have data (allocated lots and unknown amounts)": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },

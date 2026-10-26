@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en" data-story-phase="loading" data-story-step="0"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="color-scheme" content="light dark"><meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)"><title>OffMenu · From product to pantry to plate</title><link rel="stylesheet" href="/landing-static-15/story.css"><script type="module" src="/landing-static-15/story.js"></script><script type="module" src="/auth-return-bridge.js"></script></head>
+<body>
+<header class="site-head"><a class="brand" href="/" aria-label="OffMenu home"><img src="/scanner-balanced-final.svg" alt="" width="38" height="38"><span>OffMenu</span></a><nav aria-label="Main"><a class="primary" href="/demo/scanner.html">Demo</a></nav></header>
+<section class="intro snap-section" id="intro" hidden aria-label="OffMenu introduction"><div id="neon-host" class="neon-host"></div><p class="neon-fallback" id="neon-fallback" hidden>OffMenu</p><div class="intro-copy"><h1>From product to pantry to plate</h1><p id="feature-line" class="feature-intro" aria-live="off">Scan an item to find out what it is.</p></div></section>
+<div class="landing" id="landing">
+<main class="story" aria-label="From product to pantry to plate"><div class="story-copy" id="chapter-sections"></div>
+<section class="kitchen-stage" hidden aria-label="One continuous kitchen story">
+        <div class="scene" id="scene" data-renderer="static-approved" data-focus="barcode">
+          <div class="kitchen-canvas-host" id="kitchen-canvas-host"><img id="story-panel" class="story-frame" alt="" hidden></div>
+          <p class="scene-caption" id="scene-caption">One kitchen, one connected journey.</p>
+        </div>
+      </section></main>
+</div></body></html>

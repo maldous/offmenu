@@ -1,0 +1,116 @@
+--- /dev/null
++++ b/public/production-scanner/guest-demo-providers.js
+@@ -0,0 +1,23 @@
++import {createGuestStorage,readGuestPrefill,finishGuestSession} from './guest-scanner-state.mjs';
++import {createGuestDemoLookup,mergeIdentifierPages,localRetainedCategorySelected,
++  lookupLocalRetainedCategory} from './guest-scanner-lookup.mjs';
++const unavailable=generation=>({generation,status:'unavailable',matches:[],hasMore:false,nextCursor:null,
++  error:'DEMO_PUBLIC_PROVIDER_NOT_SELECTED'});
++// Explicit binding to the already selected public endpoint's inspected source
++// contract. This pin describes that contract; it is not an auth/serving grant.
++export function createGuestDemoProviders({selection,origin=globalThis.location?.origin,fetchImpl=globalThis.fetch}={}){
++  const storage=createGuestStorage();let epoch=0,closed=false;
++  const selected=selection?.kind==='public-demo-off'&&
++    selection.sourceContractSha256==='02962e94a09ac7a6a36ba608479b4c1ca5e54a9f2931a9b291f48ce6496b5a00';
++  const lookup=selected?createGuestDemoLookup({origin,fetchImpl}):async(_raw,generation)=>unavailable(generation);
++  return Object.freeze({scope:'guest-demo',storage,mergeIdentifierPages,localRetainedCategorySelected,
++    lookupLocalRetainedCategory,readGuestPrefill,finishGuestSession,
++    async lookupIdentifiers(raw,generation,cursor=null,symbology=null,namespace='barcode'){
++      if(closed)return unavailable(generation);const turn=epoch;
++      const result=await lookup(raw,generation,cursor,symbology,namespace);
++      return closed||turn!==epoch?unavailable(generation):result;
++    },
++    reset(){epoch++;storage.clear();},
++    destroy(){closed=true;epoch++;storage.clear();}
++  });
++}
+--- /dev/null
++++ b/public/production-scanner/guest-scanner-lookup.mjs
+@@ -0,0 +1,57 @@
++// Adapter for the existing selected temporary public Demo endpoint only.
++// No source corpus, authentication, private state, image or upstream fallback.
++const exactCode=value=>typeof value==='string'&&/^(?:\d{8}|\d{12}|\d{13}|\d{14})$/.test(value);
++const unavailable=(generation,error)=>({generation,status:'unavailable',matches:[],hasMore:false,nextCursor:null,error});
++const nullableText=(value,max)=>value===null||typeof value==='string'&&value.length<=max&&
++  !/[\u0000-\u001f\u007f]/.test(value);
++const field=(value,pointer)=>({state:value===null?'null':'present',value,
++  fieldPointer:pointer,valueOrigin:'temporary-public-demo-response',
++  sourceFieldState:'original-field-presence-unknown'});
++async function boundedJSON(response){
++  if(!response.headers.get('Content-Type')?.includes('application/json'))throw Error('DEMO_JSON_REQUIRED');
++  const reader=response.body?.getReader();if(!reader)throw Error('DEMO_RESPONSE_REQUIRED');
++  const parts=[];let length=0;
++  try{for(;;){const {done,value}=await reader.read();if(done)break;length+=value.byteLength;
++    if(length>16384){await reader.cancel();throw Error('DEMO_RESPONSE_BOUND');}parts.push(value);}}
++  finally{reader.releaseLock();}
++  const bytes=new Uint8Array(length);let at=0;for(const part of parts){bytes.set(part,at);at+=part.length;}
++  return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));
++}
++export function createGuestDemoLookup({fetchImpl=globalThis.fetch,origin=globalThis.location?.origin}={}){
++  return async function lookup(raw,generation,cursor=null,symbology=null,namespace='barcode'){
++    if(cursor!==null||namespace!=='barcode'||!exactCode(raw))return unavailable(generation,'DEMO_EXACT_BARCODE_REQUIRED');
++    let base;try{base=new URL(origin);if(base.origin!==origin||!['http:','https:'].includes(base.protocol))throw Error();}
++    catch{return unavailable(generation,'DEMO_ORIGIN_REQUIRED');}
++    if(typeof fetchImpl!=='function')return unavailable(generation,'DEMO_PUBLIC_LOOKUP_UNAVAILABLE');
++    try{
++      const url=new URL('/demo/api/product',base);url.searchParams.set('barcode',raw);
++      const response=await fetchImpl(url.href,{method:'GET',credentials:'omit',cache:'no-store',
++        redirect:'error',mode:'same-origin',headers:{Accept:'application/json'},signal:AbortSignal.timeout(12000)});
++      if(response.status===404)return {generation,status:'scoped-miss',matches:[],hasMore:false,nextCursor:null,
++        original:raw,namespace,symbology,sourceId:'off',lookupScope:'one temporary Open Food Facts public lookup only'};
++      if(!response.ok)return unavailable(generation,'DEMO_PUBLIC_LOOKUP_UNAVAILABLE');
++      const data=await boundedJSON(response),source=data.source;
++      if(data.status!=='found'||data.barcode!==raw||!nullableText(data.name,200)||
++        !nullableText(data.brand,200)||!nullableText(data.quantity,100)||
++        source?.name!=='Open Food Facts'||source.url!=='https://world.openfoodfacts.org/product/'+raw||
++        source.license!=='ODbL'||source.licenseUrl!=='https://opendatacommons.org/licenses/odbl/1-0/')
++        throw Error('DEMO_PUBLIC_PRODUCT_BINDING');
++      // id is the exact returned publisher URL, not an invented corpus ID,
++      // observation reference, published release, semantic match or admission.
++      const match={id:source.url,name:data.name,brand:data.brand,sourceObservationReference:null,
++        provenance:{sourceId:'off',url:source.url,attribution:source.name,license:source.license,licenseUrl:source.licenseUrl},
++        detail:{fields:{name:field(data.name,'/name'),brand:field(data.brand,'/brand'),
++          packageQuantity:field(data.quantity,'/quantity')},
++          sourceBinding:{sourceId:'off',url:source.url},sourcePhotoSelection:null,
++          canonicalCategory:null,canonicalIngredient:null,
++          projectionLimitations:['Temporary public response supplies only product name, brand and source quantity text. Other fields and original source presence are unknown.'],
++          assurance:'Temporary attributed public lookup; no retained corpus, ingredient suitability, source release or independent acceptance is established.'}};
++      return {generation,status:'source-match',matches:[match],hasMore:false,nextCursor:null,
++        original:raw,namespace,symbology,sourceId:'off',lookupScope:'temporary-public-demo'};
++    }catch{return unavailable(generation,'DEMO_PUBLIC_LOOKUP_UNAVAILABLE');}
++  };
++}
++export const lookupIdentifiers=createGuestDemoLookup();
++export function mergeIdentifierPages(){throw Error('DEMO_LOOKUP_HAS_NO_CONTINUATION');}
++export function localRetainedCategorySelected(){return false;}
++export async function lookupLocalRetainedCategory(_raw,generation){return unavailable(generation,'DEMO_PRIVATE_CORPUS_DISABLED');}
+--- /dev/null
++++ b/public/production-scanner/guest-scanner-state.mjs
+@@ -0,0 +1,27 @@
++// One module instance belongs to this guest document only. No browser storage,
++// cookies, account, identity, backend state or cross-tab handoff is accessed.
++const encoder=new TextEncoder(),MAX_BYTES=262144;
++const size=(key,value)=>encoder.encode(key).length+encoder.encode(value).length;
++export function createGuestStorage(){
++const values=new Map();let used=0;
++return Object.freeze({
++  get length(){return values.size;},
++  key(index){return Number.isInteger(index)&&index>=0?[...values.keys()][index]??null:null;},
++  getItem(key){key=String(key);return values.has(key)?values.get(key):null;},
++  setItem(key,value){
++    key=String(key);value=String(value);
++    const previous=values.has(key)?size(key,values.get(key)):0,next=used-previous+size(key,value);
++    if(next>MAX_BYTES){const error=Error('Demo memory limit reached.');error.name='QuotaExceededError';throw error;}
++    values.set(key,value);used=next;
++  },
++  removeItem(key){key=String(key);if(values.has(key)){used-=size(key,values.get(key));values.delete(key);}},
++  clear(){values.clear();used=0;}
++});
++}
++export const guestStorage=createGuestStorage();
++export function readGuestPrefill(){return null;}
++export function finishGuestSession(queue){
++  if(!Array.isArray(queue))throw Error('DEMO_QUEUE_REQUIRED');
++  return {message:'Demo session finished. Your list stays in this tab until you reload.',
++    captureCount:queue.length,persisted:false,scope:'guest-demo'};
++}

@@ -1,0 +1,225 @@
+{
+  "atUTC": "2026-10-26T10:16:58.708331+00:00",
+  "status": "EXACT_SOURCE_CUSTODY_NO_NEW_ADOPTION",
+  "files": [
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-ssr92-r1/landing-only.mjs",
+        "sha256": "bb6e8cbb573d119fa50b1e3d9a71a5578fc594ab092b7a22b6fcdf535fd03b80",
+        "bytes": 513999
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production93/landing-only.mjs",
+        "sha256": "bb6e8cbb573d119fa50b1e3d9a71a5578fc594ab092b7a22b6fcdf535fd03b80",
+        "bytes": 513999
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-ssr92-r1/manifest.json",
+        "sha256": "d57d30599f3ca8c91879d63fe8de46e82add475aa93bdcbccbb126c62b2f58d8",
+        "bytes": 70556
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production93/manifest.json",
+        "sha256": "d57d30599f3ca8c91879d63fe8de46e82add475aa93bdcbccbb126c62b2f58d8",
+        "bytes": 70556
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-ssr92-r1/package-qualification.json",
+        "sha256": "813c02cff26820b8abe97fdabf05a3aa483802e87720c845c02afd0726879e70",
+        "bytes": 3667
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production93/package-qualification.json",
+        "sha256": "813c02cff26820b8abe97fdabf05a3aa483802e87720c845c02afd0726879e70",
+        "bytes": 3667
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-ssr92-r1/ssr92-r1-a9d9ae9e8a3bd41a.bin",
+        "sha256": "a9d9ae9e8a3bd41a49ef77bb96c785e99fb7e292022594e6f4a64b5f59e80a08",
+        "bytes": 1833
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production93/ssr92-r1-a9d9ae9e8a3bd41a.bin",
+        "sha256": "a9d9ae9e8a3bd41a49ef77bb96c785e99fb7e292022594e6f4a64b5f59e80a08",
+        "bytes": 1833
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-cold92-r2/landing-only.mjs",
+        "sha256": "0ea94e716d8984c52bd11bcedc8e4add1d1c3acd2a780cc7a4f091ab56dd6829",
+        "bytes": 514682
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production94/landing-only.mjs",
+        "sha256": "0ea94e716d8984c52bd11bcedc8e4add1d1c3acd2a780cc7a4f091ab56dd6829",
+        "bytes": 514682
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-cold92-r2/manifest.json",
+        "sha256": "3f8e4a89af37e89e612626eb68817ee46f4faf43f412918b99f346f188b6d512",
+        "bytes": 76191
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production94/manifest.json",
+        "sha256": "3f8e4a89af37e89e612626eb68817ee46f4faf43f412918b99f346f188b6d512",
+        "bytes": 76191
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-cold92-r2/package-qualification.json",
+        "sha256": "289678da173673a9ae943b2a5eb499dde1a33537d48452e0890416e0f81ac16c",
+        "bytes": 3840
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production94/package-qualification.json",
+        "sha256": "289678da173673a9ae943b2a5eb499dde1a33537d48452e0890416e0f81ac16c",
+        "bytes": 3840
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-cold92-r2/cold92-r2-f7940ac2ac275be0.bin",
+        "sha256": "f7940ac2ac275be03e0815f201b7ec8ad9dd3e190a60a56e80b790d02744ab13",
+        "bytes": 1907
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production94/cold92-r2-f7940ac2ac275be0.bin",
+        "sha256": "f7940ac2ac275be03e0815f201b7ec8ad9dd3e190a60a56e80b790d02744ab13",
+        "bytes": 1907
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-cold92-r2/cold92-r2-3726bb9023bdadb2.bin",
+        "sha256": "3726bb9023bdadb2107d312e3a6673f8619611f74983954ffdcfd85f08ab2dcc",
+        "bytes": 26903
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production94/cold92-r2-3726bb9023bdadb2.bin",
+        "sha256": "3726bb9023bdadb2107d312e3a6673f8619611f74983954ffdcfd85f08ab2dcc",
+        "bytes": 26903
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-cold92-r2/cold92-r2-483a693065ea2eff.bin",
+        "sha256": "483a693065ea2eff4b849ae4749b1959b932122b8832f051f7aa0d983a0d02b3",
+        "bytes": 27127
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production94/cold92-r2-483a693065ea2eff.bin",
+        "sha256": "483a693065ea2eff4b849ae4749b1959b932122b8832f051f7aa0d983a0d02b3",
+        "bytes": 27127
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-cold92-r2/cold92-r2-55e3ddbfd23487be.bin",
+        "sha256": "55e3ddbfd23487be12eb797b1d3a25e92d8cb7d2a2fd4852f8da9f545b62d21d",
+        "bytes": 1855
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production94/cold92-r2-55e3ddbfd23487be.bin",
+        "sha256": "55e3ddbfd23487be12eb797b1d3a25e92d8cb7d2a2fd4852f8da9f545b62d21d",
+        "bytes": 1855
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-cold92-r2/cold92-r2-2b0a85b3f894dc88.bin",
+        "sha256": "2b0a85b3f894dc88924964cce7c9cb0f77546eba5b3ca8ed2872fe08365c93f1",
+        "bytes": 13054
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production94/cold92-r2-2b0a85b3f894dc88.bin",
+        "sha256": "2b0a85b3f894dc88924964cce7c9cb0f77546eba5b3ca8ed2872fe08365c93f1",
+        "bytes": 13054
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-own-only-inventory-current94-r1/landing-only.mjs",
+        "sha256": "95246c779b30d58b1d5ae8f7723b875c0a2f981d5535b5ae0a2524284cc3380f",
+        "bytes": 515417
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production97/landing-only.mjs",
+        "sha256": "95246c779b30d58b1d5ae8f7723b875c0a2f981d5535b5ae0a2524284cc3380f",
+        "bytes": 515417
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-own-only-inventory-current94-r1/manifest.json",
+        "sha256": "c35ee17c8c41890bc4c6618cd4c8dbaaf2337420e418d4d76718e52ad6f0db38",
+        "bytes": 75959
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production97/manifest.json",
+        "sha256": "c35ee17c8c41890bc4c6618cd4c8dbaaf2337420e418d4d76718e52ad6f0db38",
+        "bytes": 75959
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-own-only-inventory-current94-r1/package-qualification.json",
+        "sha256": "43c5ba397960e1b2aefb3373d7263c602fc623021ee5262cbaaf552491f9ee7e",
+        "bytes": 4310
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production97/package-qualification.json",
+        "sha256": "43c5ba397960e1b2aefb3373d7263c602fc623021ee5262cbaaf552491f9ee7e",
+        "bytes": 4310
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-own-only-inventory-current94-r1/own-inventory-ed706f2e1d84db27-01.bin",
+        "sha256": "a89babe7018febcc9b3b9dd598f5bd3aa6068758f990415757424209b1dfb554",
+        "bytes": 600000
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production97/own-inventory-ed706f2e1d84db27-01.bin",
+        "sha256": "a89babe7018febcc9b3b9dd598f5bd3aa6068758f990415757424209b1dfb554",
+        "bytes": 600000
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-own-only-inventory-current94-r1/own-inventory-ed706f2e1d84db27-02.bin",
+        "sha256": "6a91d45f8c59653fd317fed509f683623868df90474fb474c89bfcf941c7ce09",
+        "bytes": 282823
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production97/own-inventory-ed706f2e1d84db27-02.bin",
+        "sha256": "6a91d45f8c59653fd317fed509f683623868df90474fb474c89bfcf941c7ce09",
+        "bytes": 282823
+      }
+    },
+    {
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-own-only-inventory-current94-r1/public-inventory-provider.mjs",
+        "sha256": "e8eb2f715543e65b7ec29b89296bb2c6603fc4d3a55294a86dc4cc09f017d460",
+        "bytes": 26734
+      },
+      "custody": {
+        "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/dev/production-release-custody/20261026-existing-fullscanner-vertical/production97/public-inventory-provider.mjs",
+        "sha256": "e8eb2f715543e65b7ec29b89296bb2c6603fc4d3a55294a86dc4cc09f017d460",
+        "bytes": 26734
+      }
+    }
+  ],
+  "baseDependency": "Existing84/87/91/92custody andcanonical retainedsourcepaths stillrequired forunchangedmodules; no source retired/deleted.",
+  "privacy": "No household/account profiles, credentials, rawdatabase/source payloads, product request traces or private legal narrative uploaded.97portablemodule includes actualqualifiedPUBLICnormalizedprojection only.",
+  "rollbackConstraint": "NeverrestorepriorOFF-capableversions;94/92 compatibleSTOP retained, no automatic rollback."
+}
