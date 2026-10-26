@@ -10,7 +10,7 @@ const uuid=v=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab]
 const text=(v,n)=>typeof v==='string'&&v.length>0&&v.length<=n&&!/[\x00-\x1f\x7f]/.test(v);
 const optional=(v,n)=>v===null||text(v,n);
 const barcode=v=>typeof v==='string'&&/^\d{4,32}$/.test(v);
-const web=v=>{if(v==null)return true;if(!text(v,700))return false;try{const u=new URL(v);return u.protocol==='https:'&&!u.username&&!u.password&&u.href===v;}catch{return false;}};
+const web=v=>{if(v==null)return true;if(!text(v,700))return false;try{const u=new URL(v);return u.protocol==='https:'&&!u.username&&!u.password&&(u.href===v||v===u.origin);}catch{return false;}};
 function validLexicalBinding(ref,raw){
  if(!text(raw,128))return false;
  if(ref?.lexicalValue===raw)return barcode(raw)&&ref.capturedLexicalValue===undefined&&ref.representationHint===undefined;
