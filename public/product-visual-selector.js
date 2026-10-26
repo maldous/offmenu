@@ -12,6 +12,19 @@ function exactReference(a,b) {
   return object(a) && object(b) && a.schema==='offmenu-identifier-observation/2' &&
     stable(a)===stable(b);
 }
+// Genuine retained references are a distinct, type-only presentation path.
+// No identifier observation or product equivalence is manufactured from them.
+export function validSourceProductReference(value) {
+  const named=x=>typeof x==='string'&&x.length>0&&x.length<=2000;
+  const sha=x=>typeof x==='string'&&/^[a-f0-9]{64}$/.test(x);
+  const keys=(x,list)=>object(x)&&Object.keys(x).sort().join('|')===[...list].sort().join('|');
+  const ref=value?.sourceReference;
+  return keys(value,['productId','sourceId','releaseId','archiveSha256','sourceRow','auditObservationSha256','sourceReference'])&&named(value.productId)&&value.sourceId==='off'&&named(value.releaseId)&&sha(value.archiveSha256)&&Number.isSafeInteger(value.sourceRow)&&value.sourceRow>=0&&sha(value.auditObservationSha256)&&keys(ref,['nativeReference','storeSha256','ordinal','sourcePointer','rawStoredDocumentSha256','sourceQualificationSha256','role'])&&named(ref.nativeReference)&&/^urn:offmenu:product-detail:[a-f0-9]{64}$/.test(ref.nativeReference)&&sha(ref.storeSha256)&&Number.isSafeInteger(ref.ordinal)&&ref.ordinal>=0&&named(ref.sourcePointer)&&sha(ref.rawStoredDocumentSha256)&&sha(ref.sourceQualificationSha256)&&named(ref.role);
+}
+function exactTypeSource(mapping,input,kind) {
+  if(input.sourceProductReference!==undefined)return kind==='type'&&input.sourceObservationReference==null&&mapping.sourceObservationReference==null&&validSourceProductReference(input.sourceProductReference)&&validSourceProductReference(mapping.sourceProductReference)&&stable(mapping.sourceProductReference)===stable(input.sourceProductReference);
+  return exactReference(mapping.sourceObservationReference,input.sourceObservationReference);
+}
 function localAsset(path, permitted) {
   return typeof path==='string' && Array.isArray(permitted) && permitted.includes(path) &&
     /^\/[A-Za-z0-9/_-]+\.(?:svg|png|webp|jpe?g)$/.test(path) &&
@@ -52,7 +65,7 @@ function mappedChoice(input, failed, kind='category') {
   if(kind!=='category' && (!input.classificationEvidenceReference ||
     kind==='ingredient' && (input.ingredientApplicability?.state!=='applicable' || !input.ingredientApplicability.evidenceReference)))return null;
   const mappings=(Array.isArray(input[key])?input[key]:[]).filter(item=>
-    object(item) && exactReference(item.sourceObservationReference,input.sourceObservationReference) &&
+    object(item) && exactTypeSource(item,input,kind) &&
     item.status==='qualified' && item.relation==='exact' &&
     typeof input.selectedProductRecordId==='string' && item.productRecordId===input.selectedProductRecordId &&
     typeof item.conceptId==='string' && item.conceptId &&
@@ -98,6 +111,11 @@ function mappedChoice(input, failed, kind='category') {
 }
 /** Returns data for semantic DOM rendering; no URL is fetched by this module. */
 export function selectProductVisual(input,{failedSources=[]}={}) {
+  if(object(input)&&input.sourceProductReference!==undefined){
+    if(input.sourceObservationReference!=null||!validSourceProductReference(input.sourceProductReference))throw new TypeError('Exact retained source product reference required');
+    const failed=new Set(failedSources);
+    return mappedChoice(input,failed,'type')||appProductVisualFallback(input,{failedSources});
+  }
   if (!object(input) || input.sourceObservationReference?.schema!=='offmenu-identifier-observation/2')
     throw new TypeError('Exact selected source observation required');
   const failed=new Set(failedSources);
