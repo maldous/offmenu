@@ -1,0 +1,54 @@
+{
+  "scope": "CODE_AND_PIN_METADATA_CUSTODY_NOT_SOURCE_POPULATION_OR_APP_RUNTIME",
+  "files": [
+    {
+      "relativePath": "r8_caller.py",
+      "sha256": "08f5630496a7efe516735a77cda9286a0e69b4f196481facc3031c1b3b67b92b",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/r8_caller.py",
+      "bytes": 7823
+    },
+    {
+      "relativePath": "test_r8_caller.py",
+      "sha256": "233a82b2293f83d5ed98a376e04c6d93c84485248842a308c8df21e0a6a2cd47",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/test_r8_caller.py",
+      "bytes": 7270
+    },
+    {
+      "relativePath": "dependency-pins.json",
+      "sha256": "c44c3840b1bfe50233b6ffebf129d72bd4e0e005288d9760d244f614a9a27dd1",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/dependency-pins.json",
+      "bytes": 6698
+    },
+    {
+      "relativePath": "frozen-interface-and-ownership-release.json",
+      "sha256": "258b1269bca049944e83e71872c65fefa1b7a8dc0b9d271165336459e9cf1d38",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/frozen-interface-and-ownership-release.json",
+      "bytes": 5205
+    },
+    {
+      "relativePath": "source-manifest.json",
+      "sha256": "908ec967d6f243e4f68af603bc8c5b810b70729ad378b52e8798825e8144e213",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/source-manifest.json",
+      "bytes": 1588
+    },
+    {
+      "relativePath": "INTEGRATION.md",
+      "sha256": "74d7e0e385dbce3b964afd346ad79277cf2c87920dae7b4ab637ba5e9cecfd05",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/INTEGRATION.md",
+      "bytes": 1802
+    },
+    {
+      "relativePath": "verify_integrated_source.py",
+      "sha256": "4b097d45d4c1f91b54e95df00d63c032e2ab0b10ddb5ea074b7cc0e9534f89c1",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-integration-20261027/verify_integrated_source.py",
+      "bytes": 1821
+    }
+  ],
+  "canonicalExecutableHandoff": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-integration-20261027/executable-handoff.json",
+    "sha256": "6d1dc3b05cd1ebc3acb66e43b29d9bbf1a2ee16164445ecdf45f70c4d0b15721"
+  },
+  "acceptedImplementation": "db361f1e0ac96e9241731e8eef19a5846c791fd1e4c84c6b913f5293139aaa37",
+  "executionBinding": "Run canonicalLOCALcandidate path in handoff. This custody copy is not relocatable runtime adoption: embedded interface/29dependencies remain exact canonical paths. No caller source rewritten.",
+  "excluded": "No source packets,staged shard bodies,corpus/actualDTO/privatecrosswalkbody/profile/credentials or full histories."
+}

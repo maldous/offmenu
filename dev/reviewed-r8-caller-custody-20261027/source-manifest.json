@@ -1,0 +1,31 @@
+{
+  "schema": "offmenu-r8-generic-caller-source-manifest/1",
+  "ownedFiles": [
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/r8_caller.py",
+      "sha256": "08f5630496a7efe516735a77cda9286a0e69b4f196481facc3031c1b3b67b92b",
+      "bytes": 7823
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/test_r8_caller.py",
+      "sha256": "233a82b2293f83d5ed98a376e04c6d93c84485248842a308c8df21e0a6a2cd47",
+      "bytes": 7270
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/dependency-pins.json",
+      "sha256": "c44c3840b1bfe50233b6ffebf129d72bd4e0e005288d9760d244f614a9a27dd1",
+      "bytes": 6698
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/INTEGRATION.md",
+      "sha256": "74d7e0e385dbce3b964afd346ad79277cf2c87920dae7b4ab637ba5e9cecfd05",
+      "bytes": 1802
+    }
+  ],
+  "interface": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/r8-generic-caller-candidate-20261027/frozen-interface-and-ownership-release.json",
+    "sha256": "258b1269bca049944e83e71872c65fefa1b7a8dc0b9d271165336459e9cf1d38",
+    "bytes": 5205
+  },
+  "dependencyCount": 29
+}
