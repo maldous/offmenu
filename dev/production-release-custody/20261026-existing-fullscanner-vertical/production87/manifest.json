@@ -1,0 +1,729 @@
+{
+  "id": "worker00-current84-beetroot-status-exact-layout-integrated-correction-r1-20261026",
+  "atUTC": "2026-10-26T08:22:49.150546+00:00",
+  "module": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/landing-only.mjs",
+    "sha256": "fafc541add2dbf5e37b9288209ace327a38157f8864c5ab062986d4c4159b656",
+    "bytes": 510829
+  },
+  "baseVersion": "9b8244d2-5fa0-4471-b74c-8626e3478813",
+  "baseModule": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/landing-only.mjs",
+    "sha256": "a56f70978ede9d6e3a7c982f4a64502c31448ad3b53799145e6f05428b9e14de",
+    "bytes": 510829
+  },
+  "selection": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/selected-combined-r2.json",
+    "sha256": "ba49b3ca6f284c012ff6cdc6c2db2cc422ac4d228f2e3710b5b775e6fc623b26",
+    "bytes": 7445
+  },
+  "sourceEvidence": {
+    "statusAuthorResult": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/current84-scanner-status-diagnosis-20261026/result.json",
+      "sha256": "ae515f21fd4eebc14d2251e90b27639240087433bcbb4886785286978baf656f",
+      "bytes": 2735
+    },
+    "layoutAuthorResult": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/landing-demo-correction-r2/current84-lifecycle-assessment/layout-correction-r1/result.json",
+      "sha256": "e456a033e495726b3d64d98fbe3ec4b1390ed73704fdb9d277e2632ef45b9de6",
+      "bytes": 3500
+    },
+    "exactRegionREADME": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/landing-exact-region-layout-20261026/README.md",
+      "sha256": "e2dbb2c3856869deaf73d4c5c45c1cfaf1786ee53520fa78e8d47518294a3a52",
+      "bytes": 2816
+    },
+    "exactRegionCSS": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/landing-exact-region-layout-20261026/exact-regions.css",
+      "sha256": "10e5f9c90623d8c9ec02573448276eb305fb291615adc5266582d23681c2e3fe",
+      "bytes": 2804
+    },
+    "realCurrent84Baseline": "17785/c4f7d47e camera\u2192exactcode\u2192REALOFF200\u2192namebrand/queue1, misleadingbannerreproduced",
+    "providerUnchanged": "ExactpublicDemoProduct02962and19guestprovider27d0/factory8cbf;Nodeactualresponse0b896200found;no provider/corpusfake/hardcode/substitution",
+    "all15Animations": "NOTcomplete; current01\u201302native/03\u201315stills remainsknowninterimlimit; latesthumanincrementalreviewdeliveryexplicitlyauthorized, full15workersparallel",
+    "actualBrowser": "PENDINGoneaffectedintegratedcheck livecamera/status+finalmobileDemo/frame/randomcopy;no broadreplay"
+  },
+  "binaryParts": [
+    {
+      "module": "public-fix-beb658cd34580800-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-beb658cd34580800-01.bin",
+      "sha256": "beb658cd34580800f3cbe19fe61e6dba2417f642b370210964207de2484f0c89",
+      "bytes": 45825,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/guest-source-assembly-r1/scanner.html",
+        "sha256": "beb658cd34580800f3cbe19fe61e6dba2417f642b370210964207de2484f0c89",
+        "bytes": 45825
+      }
+    },
+    {
+      "module": "public-fix-7ad5669fbe3d9c32-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-7ad5669fbe3d9c32-01.bin",
+      "sha256": "7ad5669fbe3d9c32d1308c0c8d55b7739b72c3683640d932bd7125f9e0432e00",
+      "bytes": 480,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/assets/full-scanner-theme.js",
+        "sha256": "7ad5669fbe3d9c32d1308c0c8d55b7739b72c3683640d932bd7125f9e0432e00",
+        "bytes": 480
+      }
+    },
+    {
+      "module": "public-fix-d724b7816bd1763a-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-d724b7816bd1763a-01.bin",
+      "sha256": "d724b7816bd1763ab89e1ab9d4bd7750d2754394f4f650436d1415ef48b3797f",
+      "bytes": 62469,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/public-demo-decoder-lifecycle-candidate-20261026/assets/decoder-worker.js",
+        "sha256": "d724b7816bd1763ab89e1ab9d4bd7750d2754394f4f650436d1415ef48b3797f",
+        "bytes": 62469
+      }
+    },
+    {
+      "module": "public-fix-b03d35cd265123b9-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-b03d35cd265123b9-01.bin",
+      "sha256": "43f9109280cfa34ccd16cf815ae067847368a3b542044730f3fe4aa850c07b9b",
+      "bytes": 600000,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/public-demo-decoder-lifecycle-candidate-20261026/assets/scanner.wasm",
+        "sha256": "b03d35cd265123b9f75a0c476c204714663a1e85ba908acc3f50eae7824dfcf6",
+        "bytes": 1089670
+      }
+    },
+    {
+      "module": "public-fix-b03d35cd265123b9-02.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-b03d35cd265123b9-02.bin",
+      "sha256": "a369672d01cdb5a243c818d6cd427974985fc7520e9ce9768dbee525faefad65",
+      "bytes": 489670,
+      "offset": 600000,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/public-demo-decoder-lifecycle-candidate-20261026/assets/scanner.wasm",
+        "sha256": "b03d35cd265123b9f75a0c476c204714663a1e85ba908acc3f50eae7824dfcf6",
+        "bytes": 1089670
+      }
+    },
+    {
+      "module": "public-fix-11c5397e1bfc9ccf-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-11c5397e1bfc9ccf-01.bin",
+      "sha256": "11c5397e1bfc9ccf801a5b5a282ccf2fbeebb17eb853f1d50a5c80e196ccaa49",
+      "bytes": 12718,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/public-demo-decoder-lifecycle-candidate-20261026/assets/scanner-licenses.txt",
+        "sha256": "11c5397e1bfc9ccf801a5b5a282ccf2fbeebb17eb853f1d50a5c80e196ccaa49",
+        "bytes": 12718
+      }
+    },
+    {
+      "module": "public-fix-223df367294c0c93-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/combined-package-r2/public-fix-223df367294c0c93-01.bin",
+      "sha256": "223df367294c0c9391e99cfbfdce43e28d5b5df5b1f5b6c4a9d73d762d55b264",
+      "bytes": 46847,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker26/current-code-dev17645-successor-20261026/frame01-light-scanner-20261026/assets/offmenu-system.css",
+        "sha256": "223df367294c0c9391e99cfbfdce43e28d5b5df5b1f5b6c4a9d73d762d55b264",
+        "bytes": 46847
+      }
+    },
+    {
+      "module": "public-fix-3492003a795cb4fd-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/public-fix-3492003a795cb4fd-01.bin",
+      "sha256": "495b31b8407f3ef334a50bdfd1c8a483e19ecd871987c9ff89c6295589b2ae6e",
+      "bytes": 600000,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/current84-scanner-status-diagnosis-20261026/assets/full-scanner.js",
+        "sha256": "3492003a795cb4fddac788486be7bd0cf6ae2f97a143157d816563ae9f48043c",
+        "bytes": 857690
+      }
+    },
+    {
+      "module": "public-fix-3492003a795cb4fd-02.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/public-fix-3492003a795cb4fd-02.bin",
+      "sha256": "9ad3bd41e9a5c2b3d8558db8d8d1c88c261ce8692b812bd234fdee2b8b85ce69",
+      "bytes": 257690,
+      "offset": 600000,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/current84-scanner-status-diagnosis-20261026/assets/full-scanner.js",
+        "sha256": "3492003a795cb4fddac788486be7bd0cf6ae2f97a143157d816563ae9f48043c",
+        "bytes": 857690
+      }
+    },
+    {
+      "module": "public-fix-370dd7816ee8caec-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/public-fix-370dd7816ee8caec-01.bin",
+      "sha256": "370dd7816ee8caec49aacaf9b9fe11c6f14e204074e841bfb0e1fec5f7b44d88",
+      "bytes": 23949,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/story.js",
+        "sha256": "370dd7816ee8caec49aacaf9b9fe11c6f14e204074e841bfb0e1fec5f7b44d88",
+        "bytes": 23949
+      }
+    },
+    {
+      "module": "public-fix-4c7107fda91268fb-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/public-fix-4c7107fda91268fb-01.bin",
+      "sha256": "4c7107fda91268fb1a24189dd0a5193ca1f9ea137eb4ac358fd758f27865bc6f",
+      "bytes": 26499,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/story.css",
+        "sha256": "4c7107fda91268fb1a24189dd0a5193ca1f9ea137eb4ac358fd758f27865bc6f",
+        "bytes": 26499
+      }
+    },
+    {
+      "module": "public-fix-518a3a86bd472c29-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/public-fix-518a3a86bd472c29-01.bin",
+      "sha256": "518a3a86bd472c2925d5a25d51609029b7a0bff64cb51289c09dba1cd26a33db",
+      "bytes": 561,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/release.json",
+        "sha256": "518a3a86bd472c2925d5a25d51609029b7a0bff64cb51289c09dba1cd26a33db",
+        "bytes": 561
+      }
+    }
+  ],
+  "routes": [
+    {
+      "route": "/",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/index.html",
+      "sha256": "15091633966a9a78cb8982c3dafdb7582fdc78f0a98f8b41e9d8e5337c0c1269",
+      "mime": "text/html; charset=utf-8",
+      "bytes": 1826
+    },
+    {
+      "route": "/landing.html",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing.html",
+      "sha256": "15091633966a9a78cb8982c3dafdb7582fdc78f0a98f8b41e9d8e5337c0c1269",
+      "mime": "text/html; charset=utf-8",
+      "bytes": 1826
+    },
+    {
+      "route": "/landing-static-15/story.css",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/story.css",
+      "sha256": "4c7107fda91268fb1a24189dd0a5193ca1f9ea137eb4ac358fd758f27865bc6f",
+      "mime": "text/css; charset=utf-8",
+      "bytes": 26499
+    },
+    {
+      "route": "/landing-static-15/story.js",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/story.js",
+      "sha256": "370dd7816ee8caec49aacaf9b9fe11c6f14e204074e841bfb0e1fec5f7b44d88",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 23949
+    },
+    {
+      "route": "/landing-static-15/release.json",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/release.json",
+      "sha256": "518a3a86bd472c2925d5a25d51609029b7a0bff64cb51289c09dba1cd26a33db",
+      "mime": "application/json",
+      "bytes": 561
+    },
+    {
+      "route": "/demo/scanner.html",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/existing-scanner-demo-correction-20261026/guest-source-assembly-r1/scanner.html",
+      "mime": "text/html; charset=utf-8",
+      "bytes": 45825,
+      "sha256": "beb658cd34580800f3cbe19fe61e6dba2417f642b370210964207de2484f0c89"
+    },
+    {
+      "route": "/demo/scanner.js",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/demo/scanner.js",
+      "sha256": "a0ba426636f2126652c4ce5f74e9e1d1a3860841a1a5f555cc9a610dae71895f",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 3400
+    },
+    {
+      "route": "/demo/scanner.css",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/demo/scanner.css",
+      "sha256": "ef4fbfb286b046b7b14fb753c49b62f430f897c76b3a336efbe023899bda6186",
+      "mime": "text/css; charset=utf-8",
+      "bytes": 1788
+    },
+    {
+      "route": "/landing-neon/approved-neon.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-neon/approved-neon.mjs",
+      "sha256": "ace39e6cb3161a0eb8a38682f2ed7e2f11322b6b29f166afeaba1b9a13a8cb4e",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 4789
+    },
+    {
+      "route": "/landing-motion-v12/assets/body-mesh.json",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/assets/body-mesh.json",
+      "sha256": "2bd2154667258466b0b5fb96790790b899ea19e08d2f6f88243f51a93c675b1f",
+      "mime": "application/json",
+      "bytes": 7896
+    },
+    {
+      "route": "/landing-motion-v12/assets/carton-path.json",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/assets/carton-path.json",
+      "sha256": "3ebc41dd443e507eca7c7652e6875c8c86e313b59facab7ac65c1d310673cce0",
+      "mime": "application/json",
+      "bytes": 4933
+    },
+    {
+      "route": "/landing-motion-v12/assets/hand-mesh.json",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/assets/hand-mesh.json",
+      "sha256": "6232e9036030efdf3c17e713d8998ca54f9e715f5de562b29a7d2f482f89121d",
+      "mime": "application/json",
+      "bytes": 3061
+    },
+    {
+      "route": "/landing-motion-v12/assets/layers.json",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/assets/layers.json",
+      "sha256": "b7796cfe014e3e3572d8fa182ff23c07d248ee4b6edfc814376c527ef065a2ef",
+      "mime": "application/json",
+      "bytes": 7095
+    },
+    {
+      "route": "/landing-motion-v12/assets/room-surfaces.json",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/assets/room-surfaces.json",
+      "sha256": "7a6708e968a62336d76684ba2c9061794f7eb1b77a16c4c572df9034c0c3a995",
+      "mime": "application/json",
+      "bytes": 387157
+    },
+    {
+      "route": "/landing-motion-v12/controller/chapter-master.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/controller/chapter-master.mjs",
+      "sha256": "0bc41bee631e5a48fe8cdfc6ba4f944bb2f062ed151f1966521de94ffee69943",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 12615
+    },
+    {
+      "route": "/landing-motion-v12/mount-first-pair.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/mount-first-pair.mjs",
+      "sha256": "71ba9a5c0ac2f3d80a4319bc3ecd39443767205bb4fe10964be21b87d0d157b2",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 1454
+    },
+    {
+      "route": "/landing-motion-v12/room-surfaces.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/room-surfaces.mjs",
+      "sha256": "bee035f95f0191de2794ef4aaae0be5e6e6eba1ca3739400f988e4dc0d8243c3",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 5509
+    },
+    {
+      "route": "/landing-motion-v12/scene-adapter.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/scene-adapter.mjs",
+      "sha256": "91b929445740e13b9d1237875273478573c6b17633d5f58f748c50c120144b83",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 4779
+    },
+    {
+      "route": "/landing-motion-v12/scene-camera.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/scene-camera.mjs",
+      "sha256": "542fbac334deb26f77970f9484682924734b24ee3c3451d6ae0d470b9816c270",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 1749
+    },
+    {
+      "route": "/landing-motion-v12/scene-motion.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/scene-motion.mjs",
+      "sha256": "abfb186a95efa8700eb6342fec76ce013e9ad814fa616fca4082edbda00d2910",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 370
+    },
+    {
+      "route": "/landing-motion-v12/scene-pose.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/scene-pose.mjs",
+      "sha256": "806513fd1e1cfc4894ffd1befa8a0f003a941d8e5face400eec70996218c7d77",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 947
+    },
+    {
+      "route": "/landing-motion-v12/scene-renderer.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/landing-motion-v12/scene-renderer.mjs",
+      "sha256": "0764082228b65f5dea29979385ba9bc5793a4d8276e3c0ac006d52a2776c4a55",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 12758
+    },
+    {
+      "route": "/landing-motion-v12/assets/actorCore.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/candidate-v12/assets/actorCore.png",
+      "sha256": "351676370b5316c39d5794cabf83e31403b37e8644370fd0d712e599cfa0d159",
+      "mime": "image/png",
+      "bytes": 316781
+    },
+    {
+      "route": "/landing-motion-v12/assets/actorCore02.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/candidate-v12/assets/actorCore02.png",
+      "sha256": "2c72e9435cedc5ec77f3dbe425053cb66c7a09f8c6aefd82bfa63d1daa2a8418",
+      "mime": "image/png",
+      "bytes": 456906
+    },
+    {
+      "route": "/landing-motion-v12/assets/bezel.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/candidate-v12/assets/bezel.png",
+      "sha256": "4eb37cf2d92f1ee46574d15f91d9a7b8ad9de48c481e3fddfb6bea46056fd047",
+      "mime": "image/png",
+      "bytes": 61507
+    },
+    {
+      "route": "/landing-motion-v12/assets/carton.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/candidate-v12/assets/carton.png",
+      "sha256": "959806d73de8dafdbc797ad224bf1e0ab07e76114132134593292b6b4d679ba2",
+      "mime": "image/png",
+      "bytes": 532647
+    },
+    {
+      "route": "/landing-motion-v12/assets/carton02.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/candidate-v12/assets/carton02.png",
+      "sha256": "35b508dcb4bb87dc942305a489e56eb5724be9f8218fbee704b22f02ad168955",
+      "mime": "image/png",
+      "bytes": 457315
+    },
+    {
+      "route": "/landing-motion-v12/assets/foreground.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/candidate-v12/assets/foreground.png",
+      "sha256": "df9169c96ca73e30dd60d54f70ed6308566b7bbf15fc5acac83045781cb75d69",
+      "mime": "image/png",
+      "bytes": 531947
+    },
+    {
+      "route": "/landing-motion-v12/assets/gripHand.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/candidate-v12/assets/gripHand.png",
+      "sha256": "d596bff3d13e998abf8c8a6e81821db648a169576b0495517eeadb2e01f12152",
+      "mime": "image/png",
+      "bytes": 531933
+    },
+    {
+      "route": "/landing-motion-v12/assets/room-atlas.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/candidate-v12/assets/room-atlas.png",
+      "sha256": "229eb40fd996c4a295939bf7e53688b07c20d37ea548c4450b279e77fdc1641e",
+      "mime": "image/png",
+      "bytes": 1163883
+    },
+    {
+      "route": "/landing-motion-v12/assets/screen-01.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/candidate-v12/assets/screen-01.png",
+      "sha256": "8b13a380f06b3f80eef5d105844baa54e4e912141fd52ad7f9735514e088e845",
+      "mime": "image/png",
+      "bytes": 1691949
+    },
+    {
+      "route": "/landing-motion-v12/assets/screen-02.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/candidate-v12/assets/screen-02.png",
+      "sha256": "4a0ddf7182e8d3fd04547db55737fc8da135f8e1cbbf35289dcfb28f05102873",
+      "mime": "image/png",
+      "bytes": 262474
+    },
+    {
+      "route": "/landing-motion-v12/assets/tapArm.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/candidate-v12/assets/tapArm.png",
+      "sha256": "e4eabf8ba8a68622f50ffc9097d28c364356ab2574c22c42a438a87e44f78133",
+      "mime": "image/png",
+      "bytes": 457204
+    },
+    {
+      "route": "/landing-motion-v12/assets/upperArm.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/candidate-v12/assets/upperArm.png",
+      "sha256": "16ff117400da28cece6bb05f5ad4d8153c754b98ece6c5bc9ca15c55bdb10f7b",
+      "mime": "image/png",
+      "bytes": 531881
+    },
+    {
+      "route": "/landing-static-15/panel-01.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-01.png",
+      "sha256": "60ab9af841d3de43e932cec23001edf01424ed94239cf35606f42931764df30c",
+      "mime": "image/png",
+      "bytes": 469605
+    },
+    {
+      "route": "/landing-static-15/panel-02.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-02.png",
+      "sha256": "df411c58b74ed2328b8d055de45bf56262640bbe4f4c65e49a867c9ad27939f0",
+      "mime": "image/png",
+      "bytes": 406347
+    },
+    {
+      "route": "/landing-static-15/panel-03.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-03.png",
+      "sha256": "62fe73a08cce5063846cd7e84bfa5781a90cd16a24b791325929d6dd61a9cfd8",
+      "mime": "image/png",
+      "bytes": 488203
+    },
+    {
+      "route": "/landing-static-15/panel-04.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-04.png",
+      "sha256": "17e2316dc39ad8b129d415a58c173e4d6c7dee4e11773a620027af63aed0404a",
+      "mime": "image/png",
+      "bytes": 467926
+    },
+    {
+      "route": "/landing-static-15/panel-05.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-05.png",
+      "sha256": "be938c6286f10c47571a4c6af677e3d0dc7e71b5fb03e57aa712ab2e6cf5e1db",
+      "mime": "image/png",
+      "bytes": 486903
+    },
+    {
+      "route": "/landing-static-15/panel-06.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-06.png",
+      "sha256": "4781addd7faaf1d60e6441c332265793d2c8f7cb154111506aae7ab87da6f394",
+      "mime": "image/png",
+      "bytes": 416709
+    },
+    {
+      "route": "/landing-static-15/panel-07.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-07.png",
+      "sha256": "d0cc5a450e05cd939a12723e411a3a2bb5a3401c9acddc4b7eeec68804010136",
+      "mime": "image/png",
+      "bytes": 361040
+    },
+    {
+      "route": "/landing-static-15/panel-08.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-08.png",
+      "sha256": "55dcda8c90df1d8f68c1546c7627dd6dcb9c00ed7d9d7ffdbcb471cc804a5ca2",
+      "mime": "image/png",
+      "bytes": 564474
+    },
+    {
+      "route": "/landing-static-15/panel-09.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-09.png",
+      "sha256": "dc0b132e4deb8178dfc4cb0e4ce57b515030828eef1778e633eacf1495dc37cc",
+      "mime": "image/png",
+      "bytes": 433588
+    },
+    {
+      "route": "/landing-static-15/panel-10.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-10.png",
+      "sha256": "76c7587e2080e16b02ea104c8c0b771e13c0b7917de6efcabd7b734262b1fd0b",
+      "mime": "image/png",
+      "bytes": 464985
+    },
+    {
+      "route": "/landing-static-15/panel-11.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-11.png",
+      "sha256": "ec18a708be1ad6db651c3dbf276d595fbdc3bb93bc265e3706181e2fbf6f8165",
+      "mime": "image/png",
+      "bytes": 405191
+    },
+    {
+      "route": "/landing-static-15/panel-12.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-12.png",
+      "sha256": "3ce8518b0e95b5e2c6d79f2927db3fe4d4a927b4080f4302a7e194721eec6f05",
+      "mime": "image/png",
+      "bytes": 483408
+    },
+    {
+      "route": "/landing-static-15/panel-13.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-13.png",
+      "sha256": "b9e24d0b5da97f525a353a58e5e2e1639fe51d01dc991382b383fcd3ed4ec8e2",
+      "mime": "image/png",
+      "bytes": 389008
+    },
+    {
+      "route": "/landing-static-15/panel-14.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-14.png",
+      "sha256": "044362773d2ba4580cdc713d47555d3713b491dd2a87da33eb9b79d3116b11bb",
+      "mime": "image/png",
+      "bytes": 373619
+    },
+    {
+      "route": "/landing-static-15/panel-15.png",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-15.png",
+      "sha256": "1ccece3603bb79b19f8650db04b4b9abb88b716445d1eda51d610c8b421e27c7",
+      "mime": "image/png",
+      "bytes": 442293
+    },
+    {
+      "route": "/scanner-balanced-final.svg",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/../../current-static/scanner-balanced-final.svg",
+      "sha256": "ebacf743a4d072712c33c6e375b4f39f3c2a1a1ff7661638f446791e80949327",
+      "mime": "image/svg+xml",
+      "bytes": 1749149
+    },
+    {
+      "route": "/scanner-balanced-final-dark.svg",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/../../current-static/scanner-balanced-final-dark.svg",
+      "sha256": "f01bf9bdf7f4ec6e81d9abe8a6b0d82d82fe6ec1f6425de9b97f79a162c831cc",
+      "mime": "image/svg+xml",
+      "bytes": 1749445
+    },
+    {
+      "route": "/scanner-roboto-regular.ttf",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/../../current-static/scanner-roboto-regular.ttf",
+      "sha256": "797e35f7f5d6020a5c6ea13b42ecd668bcfb3bbc4baa0e74773527e5b6cb3174",
+      "mime": "font/ttf",
+      "bytes": 305608
+    },
+    {
+      "route": "/scanner-roboto-bold.ttf",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/../../current-static/scanner-roboto-bold.ttf",
+      "sha256": "36f3709dea3e3ce3c6aedc058079e55980825f898f1e901d091c73c40de8bab1",
+      "mime": "font/ttf",
+      "bytes": 306940
+    },
+    {
+      "route": "/offmenu-neon.html",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/production-landing-idp-scanner-20261025/local-production45-baseline-static-input-20261026/offmenu-neon.html",
+      "sha256": "a801074684c12861f817805813cfb8c4dbf81d77a7edbd5ad2457a6967748dad",
+      "mime": "text/html; charset=utf-8",
+      "bytes": 1036172
+    },
+    {
+      "route": "/auth-return-bridge.js",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/native15-landing-integration-20261026/production-v12-firstpair-20261026/r3-final/served/auth-return-bridge.js",
+      "sha256": "cc9f263268aa7f73cadafd8dd6cdb3ee5f73a5cf5b649d03891ba82ea0b6d16c",
+      "mime": "application/javascript",
+      "fixtureOnly": true
+    },
+    {
+      "route": "/demo/full-scanner.js",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/current84-scanner-status-diagnosis-20261026/assets/full-scanner.js",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 857690,
+      "sha256": "3492003a795cb4fddac788486be7bd0cf6ae2f97a143157d816563ae9f48043c"
+    },
+    {
+      "route": "/demo/full-scanner-theme.js",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/assets/full-scanner-theme.js",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 480,
+      "sha256": "7ad5669fbe3d9c32d1308c0c8d55b7739b72c3683640d932bd7125f9e0432e00"
+    },
+    {
+      "route": "/demo/decoder-worker.js",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/public-demo-decoder-lifecycle-candidate-20261026/assets/decoder-worker.js",
+      "mime": "application/javascript; charset=utf-8",
+      "bytes": 62469,
+      "sha256": "d724b7816bd1763ab89e1ab9d4bd7750d2754394f4f650436d1415ef48b3797f"
+    },
+    {
+      "route": "/demo/scanner.wasm",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/public-demo-decoder-lifecycle-candidate-20261026/assets/scanner.wasm",
+      "mime": "application/wasm",
+      "bytes": 1089670,
+      "sha256": "b03d35cd265123b9f75a0c476c204714663a1e85ba908acc3f50eae7824dfcf6"
+    },
+    {
+      "route": "/demo/scanner-licenses.txt",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/public-demo-decoder-lifecycle-candidate-20261026/assets/scanner-licenses.txt",
+      "mime": "text/plain; charset=utf-8",
+      "bytes": 12718,
+      "sha256": "11c5397e1bfc9ccf801a5b5a282ccf2fbeebb17eb853f1d50a5c80e196ccaa49"
+    },
+    {
+      "route": "/demo/offmenu-system.css",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker26/current-code-dev17645-successor-20261026/frame01-light-scanner-20261026/assets/offmenu-system.css",
+      "mime": "text/css; charset=utf-8",
+      "bytes": 46847,
+      "sha256": "223df367294c0c9391e99cfbfdce43e28d5b5df5b1f5b6c4a9d73d762d55b264"
+    }
+  ],
+  "routeCount": 61,
+  "overriddenRoutes": [
+    "/demo/full-scanner.js",
+    "/landing-static-15/story.js",
+    "/landing-static-15/story.css",
+    "/landing-static-15/release.json"
+  ],
+  "headers": {
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "no-referrer",
+    "Permissions-Policy": "camera=(self), microphone=()",
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://offmenu-corpus.netlify.app; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+  },
+  "preservation": {
+    "allUnselectedTextAssets": true,
+    "originalSuffixIncludingLookupPrivateGuardsAndHeadersByteIdentical": true,
+    "original30BinaryImportsAndPreviousDelegationPreserved": true
+  },
+  "scope": "LOCAL_IMMUTABLE_PACKAGE_ONLY_NO_PROVIDER_WRITES; requires exactexecutablequalification/64actualvertical+fullscannerproof and applicable scopedreleaseauthority",
+  "newBinaryParts": [
+    {
+      "module": "public-fix-3492003a795cb4fd-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/public-fix-3492003a795cb4fd-01.bin",
+      "sha256": "495b31b8407f3ef334a50bdfd1c8a483e19ecd871987c9ff89c6295589b2ae6e",
+      "bytes": 600000,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/current84-scanner-status-diagnosis-20261026/assets/full-scanner.js",
+        "sha256": "3492003a795cb4fddac788486be7bd0cf6ae2f97a143157d816563ae9f48043c",
+        "bytes": 857690
+      }
+    },
+    {
+      "module": "public-fix-3492003a795cb4fd-02.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/public-fix-3492003a795cb4fd-02.bin",
+      "sha256": "9ad3bd41e9a5c2b3d8558db8d8d1c88c261ce8692b812bd234fdee2b8b85ce69",
+      "bytes": 257690,
+      "offset": 600000,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/current84-scanner-status-diagnosis-20261026/assets/full-scanner.js",
+        "sha256": "3492003a795cb4fddac788486be7bd0cf6ae2f97a143157d816563ae9f48043c",
+        "bytes": 857690
+      }
+    },
+    {
+      "module": "public-fix-370dd7816ee8caec-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/public-fix-370dd7816ee8caec-01.bin",
+      "sha256": "370dd7816ee8caec49aacaf9b9fe11c6f14e204074e841bfb0e1fec5f7b44d88",
+      "bytes": 23949,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/story.js",
+        "sha256": "370dd7816ee8caec49aacaf9b9fe11c6f14e204074e841bfb0e1fec5f7b44d88",
+        "bytes": 23949
+      }
+    },
+    {
+      "module": "public-fix-4c7107fda91268fb-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/public-fix-4c7107fda91268fb-01.bin",
+      "sha256": "4c7107fda91268fb1a24189dd0a5193ca1f9ea137eb4ac358fd758f27865bc6f",
+      "bytes": 26499,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/story.css",
+        "sha256": "4c7107fda91268fb1a24189dd0a5193ca1f9ea137eb4ac358fd758f27865bc6f",
+        "bytes": 26499
+      }
+    },
+    {
+      "module": "public-fix-518a3a86bd472c29-01.bin",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/public-fix-518a3a86bd472c29-01.bin",
+      "sha256": "518a3a86bd472c2925d5a25d51609029b7a0bff64cb51289c09dba1cd26a33db",
+      "bytes": 561,
+      "offset": 0,
+      "source": {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/integrated-correction-r1/release.json",
+        "sha256": "518a3a86bd472c2925d5a25d51609029b7a0bff64cb51289c09dba1cd26a33db",
+        "bytes": 561
+      }
+    }
+  ],
+  "moduleReplacements": [
+    {
+      "oldModule": "public-fix-2114d7c8e59422bb-01.bin",
+      "newModule": "public-fix-3492003a795cb4fd-01.bin",
+      "route": "/demo/full-scanner.js"
+    },
+    {
+      "oldModule": "public-fix-2114d7c8e59422bb-02.bin",
+      "newModule": "public-fix-3492003a795cb4fd-02.bin",
+      "route": "/demo/full-scanner.js"
+    },
+    {
+      "oldModule": "public-fix-dc7d0f0dde421176-01.bin",
+      "newModule": "public-fix-370dd7816ee8caec-01.bin",
+      "route": "/landing-static-15/story.js"
+    },
+    {
+      "oldModule": "public-fix-8920543aadcb2a21-01.bin",
+      "newModule": "public-fix-4c7107fda91268fb-01.bin",
+      "route": "/landing-static-15/story.css"
+    },
+    {
+      "oldModule": "public-fix-3ee0418dfc61b96c-01.bin",
+      "newModule": "public-fix-518a3a86bd472c29-01.bin",
+      "route": "/landing-static-15/release.json"
+    }
+  ]
+}

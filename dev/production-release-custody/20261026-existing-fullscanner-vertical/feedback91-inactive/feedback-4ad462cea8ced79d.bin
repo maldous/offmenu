@@ -1,0 +1,47 @@
+// Scene07 Menu: source-native review, selected row contact and withdrawal.
+export const id=7;
+export const durationMs=3600;
+const W=1041,H=624;
+export const reference={width:W,height:H,
+ source:{path:'/home/user/src/offmenu-data/runtime/layout-migration/worker05/native-browser-kitchen-15-20261026/v4-keyframe-world/targets/target-07.png',sha256:'d0cc5a450e05cd939a12723e411a3a2bb5a3401c9acddc4b7eeec68804010136'},
+ anchors:{neck:null,shoulder:null,elbow:null,wrist:[775,581],index:[704,344],grip:null,support:null,propBase:null,tabletGlass:[[459,150],[942,186],[885,519],[396,480]],forearmRoot:[785,685]},
+ anchorReasons:{neck:'Rear silhouette does not establish a joint.',shoulder:'Shoulder joint obscured by torso/clothing.',elbow:'Cropped elbow unavailable; null, never inferred from bounding box.',wrist:'Visible palm/forearm taper observation, approximately ±10 source pixels.',index:'Approved extracted fingertip contact, ±5 source pixels.',grip:'No grasp in menu review.',support:'No prop setdown or support event.',propBase:'No moving prop.',forearmRoot:'Approved hidden root below crop; boundary is pinned rather than treating root as visible elbow.'},
+ action:'Review the daily/weekly menu; extend index to approved selected meal-row point, hold, retract. Exact UI unchanged.'};
+const clamp=x=>Math.max(0,Math.min(1,Number.isFinite(x)?x:0));
+const ease=x=>{x=clamp(x);return x*x*(3-2*x);};
+function pose(p){
+ if(p<.20)return{hand:.065,finger:.18,phase:'action'};
+ if(p<.60){const t=1-ease((p-.20)/.40);return{hand:.065*t,finger:.18*t,phase:'action'};}
+ if(p<=.72)return{hand:0,finger:0,phase:'contact'};
+ const t=ease((p-.72)/.28);return{hand:.085*t,finger:.22*t,phase:p===1?'settled':'release'};
+}
+function rot([x,y],[a,b],r){return[a+(x-a)*Math.cos(r)-(y-b)*Math.sin(r),b+(x-a)*Math.sin(r)+(y-b)*Math.cos(r)];}
+function deform([x,y],q){
+ // Smooth wrist articulation; entire bottom crop and inferred root remain fixed.
+ const rootWeight=ease((H-y)/115);
+ const hand=rot([x,y],[775,581],q.hand*rootWeight);
+ // Local index curl around visible finger base; no generic whole-arm oscillation.
+ const dx=-19,dy=-71,t=((x-723)*dx+(y-415)*dy)/(dx*dx+dy*dy);
+ const s=clamp(t),distance=Math.hypot(x-(723+s*dx),y-(415+s*dy));
+ const fingerWeight=ease(t/.65)*ease((48-distance)/34)*rootWeight;
+ const base=rot([723,415],[775,581],q.hand*ease((H-415)/115));
+ return rot(hand,base,q.finger*fingerWeight);
+}
+const xs=[...new Set([...Array.from({length:65},(_,i)=>i*W/64),704])].sort((a,b)=>a-b);
+const ys=[...new Set([...Array.from({length:49},(_,i)=>i*H/48),344])].sort((a,b)=>a-b);
+const source=ys.flatMap(y=>xs.map(x=>[x/W,y/H])),indices=[];
+for(let y=0;y<ys.length-1;y++)for(let x=0;x<xs.length-1;x++){const k=y*xs.length+x;indices.push(k,k+xs.length,k+1,k+1,k+xs.length,k+xs.length+1);}
+const rasterMesh={source,indices};
+export async function load({loadImage,readJSON,resolveAsset}){
+ const names=['actorCore','pointArm','menuUI'];
+ const images=await Promise.all(names.map(n=>loadImage(resolveAsset(`./assets/${n}.png`))));
+ return Object.fromEntries(names.map((n,i)=>[n,images[i]]));
+}
+export function sample(progress,assets){
+ const p=clamp(progress),q=pose(p);
+ return{layers:[{id:'menu-actor-core',image:assets.actorCore,role:'actor',order:0},
+ {id:'menu-index-hand',image:assets.pointArm,role:'actor',order:20,rasterMesh,deformedUV:source.map(([u,v])=>{const [x,y]=deform([u*W,v*H],q);return[x/W,y/H];})}],
+ contacts:[{id:'menu-selected-meal-row',layerId:'menu-index-hand',kind:'tap',point:deform([704,344],q),target:'tablet',targetPoint:[704,344],active:q.phase==='contact',qualification:'Approved native fingertip point; actual fixed glass-plane depth supplied by shared master.'}],
+ screen:assets.menuUI,phase:q.phase};
+}
+export function dispose(){}

@@ -1,0 +1,17 @@
+{
+  "atUTC": "2026-10-26T09:35:01.605Z",
+  "status": 200,
+  "version": "f13a0dc2-eaa7-4e98-bf0d-56e460835646",
+  "number": 91,
+  "main_module": "landing-only.mjs",
+  "startup_time_ms": 3,
+  "expectedModuleCount": 77,
+  "bindingNames": [
+    "CURATED_CORPUS_ORIGIN",
+    "DB",
+    "PROVIDER_VAULT_KEY"
+  ],
+  "deployed": false,
+  "priorLatest": "9c513b36-92b3-41bb-95a7-864890796b9c",
+  "candidateSHA256": "c20aaa26bea6f8ea54975b37e9043dc2e06798fdc4ee5a943ddf05b200480815"
+}
