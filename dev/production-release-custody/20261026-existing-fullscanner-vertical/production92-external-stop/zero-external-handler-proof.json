@@ -1,0 +1,69 @@
+{
+  "atUTC": "2026-10-26T09:46:01.948Z",
+  "state": "PASS_ZERO_FETCH_OWN_UNAVAILABLE_HANDLER",
+  "fetchCalls": 0,
+  "cases": [
+    {
+      "barcode": "4061464939738",
+      "method": "GET",
+      "status": 503,
+      "body": {
+        "error": "OffMenu normalized product lookup is not available yet.",
+        "code": "OFFMENU_OWN_DATA_UNAVAILABLE",
+        "barcode": "4061464939738",
+        "source": {
+          "name": "OffMenu",
+          "scope": "managed-normalized-inventory",
+          "available": false
+        }
+      }
+    },
+    {
+      "barcode": "0078742003986",
+      "method": "GET",
+      "status": 503,
+      "body": {
+        "error": "OffMenu normalized product lookup is not available yet.",
+        "code": "OFFMENU_OWN_DATA_UNAVAILABLE",
+        "barcode": "0078742003986",
+        "source": {
+          "name": "OffMenu",
+          "scope": "managed-normalized-inventory",
+          "available": false
+        }
+      }
+    },
+    {
+      "barcode": "078742003986",
+      "method": "GET",
+      "status": 503,
+      "body": {
+        "error": "OffMenu normalized product lookup is not available yet.",
+        "code": "OFFMENU_OWN_DATA_UNAVAILABLE",
+        "barcode": "078742003986",
+        "source": {
+          "name": "OffMenu",
+          "scope": "managed-normalized-inventory",
+          "available": false
+        }
+      }
+    },
+    {
+      "barcode": "bad",
+      "method": "GET",
+      "status": 400,
+      "body": {
+        "error": "Enter a valid barcode."
+      }
+    },
+    {
+      "barcode": "4061464939738",
+      "method": "POST",
+      "status": 405,
+      "body": {
+        "error": "Method not allowed."
+      }
+    }
+  ],
+  "scope": "Actual replacement handler; known barcodes do not trigger external lookup. No source/network/DB query or deployed HTTP claim."
+}
