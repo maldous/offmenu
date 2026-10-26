@@ -1,6 +1,7 @@
 // Explicit foundation publication namespace. No legacy curated-ready admission
 // is changed, and internal producer projections are never served directly.
-import {assessFoundation,FOUNDATION_CONTRACT} from './foundation-phase-contract-v2.mjs';
+import {FOUNDATION_CONTRACT} from './foundation-phase-contract-v2.mjs';
+import {createFoundationPolicySelector} from './foundation-policy-set.mjs';
 const SHA=/^[a-f0-9]{64}$/,encoder=new TextEncoder(),decoder=new TextDecoder('utf-8',{fatal:true});
 const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const own=(v,k)=>Object.hasOwn(v,k);
@@ -56,8 +57,12 @@ export async function createAcceptedFoundationReader(readBlob,selection){
   'Foundation publication is not admitted');
   const source=manifest.sources[selection.sourceId];
   need(source?.sourceId===selection.sourceId&&text(source.releaseId)&&text(source.license)&&text(source.attribution)&&object(source.partitions),'Foundation source notices or partitions are missing');
-  const policy=await load(selection.policy,128*1024),qualified=policy.sourceQualifications?.[selection.sourceId];
-  need(policy.schema===FOUNDATION_CONTRACT&&qualified?.releaseId===source.releaseId&&
+  const policy=await load(selection.policy,128*1024);
+  let selector;
+  try{selector=await createFoundationPolicySelector(policy,{sha256:selection.policy.sha256,sourceId:selection.sourceId});}
+  catch{throw new FoundationOriginError('Unqualified foundation policy selection');}
+  const qualified=selector.sourceQualification;
+  need(qualified?.releaseId===source.releaseId&&
     qualified.qualificationSha256===source.qualificationSha256,'Foundation policy/source mismatch');
   const version=[selection.manifest.sha256,selection.policy.sha256,selection.sourceId].join(':');
   return {lookup:async({source:requested,barcode,cursor='',limit=20}={})=>{
@@ -83,7 +88,9 @@ export async function createAcceptedFoundationReader(readBlob,selection){
       need(row?.schema==='offmenu-foundation-product/2'&&row.id===c?.identity?.stageRecordId&&
         c.barcode===barcode&&b?.sourceId===requested&&b.releaseId===source.releaseId&&
         b.sourceQualificationSha256===source.qualificationSha256,'Foundation record source/identity mismatch');
-      const assessment=assessFoundation(c,policy);need(assessment.foundationComplete&&assessment.goldAdmitted===false&&assessment.publicationAccepted===false,'Unqualified foundation record');
+      let assessment;
+      try{assessment=selector.assess(c);}catch{throw new FoundationOriginError('Unqualified foundation record policy');}
+      need(assessment.foundationComplete&&assessment.goldAdmitted===false&&assessment.publicationAccepted===false,'Unqualified foundation record');
       records.push({schemaVersion:'1.0',id:row.id,kind:'product',
         provenance:{...Object.fromEntries(SUBJECT.map(k=>[k,b[k]])),visibility:'public',license:source.license,attribution:source.attribution},
         curation:{schema:'offmenu-foundation-curation/2',phaseContract:FOUNDATION_CONTRACT,rawSourcePayloadPublished:false,legacyCuratedAdmission:false},

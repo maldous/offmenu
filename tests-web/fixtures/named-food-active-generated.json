@@ -1,0 +1,731 @@
+{
+  "provenance": "GENERATED synthetic context and identities only; no actual product/source packet. Semantic policy pins are reviewed declarative metadata, no product/country admission.",
+  "candidate": {
+    "barcode": "12178162",
+    "foundationPolicySha256": "d08c938779708eae5dcf912f606616028b86d883d307f5fa3ce060f711f3d99c",
+    "identity": {
+      "namespace": "barcode",
+      "lexicalValue": "12178162",
+      "nativeRecordId": "off:generated:12178162",
+      "stageRecordId": "offmenu:generated:12178162",
+      "stageRecordWireSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "sourceBinding": {
+        "sourceId": "off",
+        "releaseId": "2026-10-12",
+        "recordId": "generated-12178162",
+        "nativeRecordId": "off:generated:12178162",
+        "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+        "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+      }
+    },
+    "classification": {
+      "state": "reviewed",
+      "registrySha256": "3daecdf9788815348c118d1648d2ecfa93e58b18c50a7b0f73c6729e15444162",
+      "independentReviewSha256": "47c520f2a6a1527e2d8d2aa2c1bcdc075c8efa5d756fc3de3735f12ca6b0a5d5",
+      "evidence": [
+        {
+          "kind": "source-field",
+          "pointer": "/data/name",
+          "valueSha256": "5b97bdfcbe4a646f2157970f5e983b57c2bd69cd0b8bca9d2a5929bf9084f1b9",
+          "sourceBinding": {
+            "sourceId": "off",
+            "releaseId": "2026-10-12",
+            "recordId": "generated-12178162",
+            "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+          },
+          "ruleId": "context-rule:produce:sliced-beetroot-named-base-null-composition:v1"
+        },
+        {
+          "kind": "source-field",
+          "pointer": "/data/names",
+          "valueSha256": "b2e0283e40c56563914ea27c089b5fb3719aff81ac799e8bd4b3648de53f0550",
+          "sourceBinding": {
+            "sourceId": "off",
+            "releaseId": "2026-10-12",
+            "recordId": "generated-12178162",
+            "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+          },
+          "ruleId": "context-rule:produce:sliced-beetroot-named-base-null-composition:v1"
+        },
+        {
+          "kind": "source-field",
+          "pointer": "/data/ingredientsText",
+          "valueSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+          "sourceBinding": {
+            "sourceId": "off",
+            "releaseId": "2026-10-12",
+            "recordId": "generated-12178162",
+            "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+          },
+          "ruleId": "context-rule:produce:sliced-beetroot-named-base-null-composition:v1"
+        },
+        {
+          "kind": "source-field",
+          "pointer": "/data/categories",
+          "valueSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "sourceBinding": {
+            "sourceId": "off",
+            "releaseId": "2026-10-12",
+            "recordId": "generated-12178162",
+            "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+          },
+          "ruleId": "context-rule:produce:sliced-beetroot-named-base-null-composition:v1"
+        }
+      ],
+      "value": "ingredient"
+    },
+    "base": {
+      "state": "reviewed",
+      "registrySha256": "3daecdf9788815348c118d1648d2ecfa93e58b18c50a7b0f73c6729e15444162",
+      "independentReviewSha256": "47c520f2a6a1527e2d8d2aa2c1bcdc075c8efa5d756fc3de3735f12ca6b0a5d5",
+      "evidence": [
+        {
+          "kind": "source-field",
+          "pointer": "/data/name",
+          "valueSha256": "5b97bdfcbe4a646f2157970f5e983b57c2bd69cd0b8bca9d2a5929bf9084f1b9",
+          "sourceBinding": {
+            "sourceId": "off",
+            "releaseId": "2026-10-12",
+            "recordId": "generated-12178162",
+            "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+          },
+          "ruleId": "context-rule:produce:sliced-beetroot-named-base-null-composition:v1"
+        },
+        {
+          "kind": "source-field",
+          "pointer": "/data/names",
+          "valueSha256": "b2e0283e40c56563914ea27c089b5fb3719aff81ac799e8bd4b3648de53f0550",
+          "sourceBinding": {
+            "sourceId": "off",
+            "releaseId": "2026-10-12",
+            "recordId": "generated-12178162",
+            "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+          },
+          "ruleId": "context-rule:produce:sliced-beetroot-named-base-null-composition:v1"
+        },
+        {
+          "kind": "source-field",
+          "pointer": "/data/ingredientsText",
+          "valueSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+          "sourceBinding": {
+            "sourceId": "off",
+            "releaseId": "2026-10-12",
+            "recordId": "generated-12178162",
+            "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+          },
+          "ruleId": "context-rule:produce:sliced-beetroot-named-base-null-composition:v1"
+        },
+        {
+          "kind": "source-field",
+          "pointer": "/data/categories",
+          "valueSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "sourceBinding": {
+            "sourceId": "off",
+            "releaseId": "2026-10-12",
+            "recordId": "generated-12178162",
+            "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+          },
+          "ruleId": "context-rule:produce:sliced-beetroot-named-base-null-composition:v1"
+        }
+      ],
+      "conceptId": "urn:offmenu:ingredient:beetroot",
+      "canonicalEnglishKey": "beetroot",
+      "canonicalEnglishLabel": "Beetroot",
+      "typeKey": "sliced-beetroot"
+    },
+    "type": {
+      "state": "reviewed",
+      "typeKey": "sliced-beetroot",
+      "canonicalEnglishLabel": "Sliced beetroot",
+      "conceptId": "urn:offmenu:type:sliced-beetroot",
+      "relationshipId": "context-rule:produce:sliced-beetroot-named-base-null-composition:v1:matched-product-type",
+      "relationshipKind": "is-a",
+      "subjectConceptId": "urn:offmenu:ingredient:beetroot",
+      "registrySha256": "3daecdf9788815348c118d1648d2ecfa93e58b18c50a7b0f73c6729e15444162",
+      "independentReviewSha256": "47c520f2a6a1527e2d8d2aa2c1bcdc075c8efa5d756fc3de3735f12ca6b0a5d5",
+      "associationScope": "actual-product-matched-by-exact-reviewed-context-only",
+      "evidence": [
+        {
+          "kind": "reviewed-type-rule",
+          "pointer": "context-rule:produce:sliced-beetroot-named-base-null-composition:v1:matched-product-type",
+          "sourceBinding": {
+            "sourceId": "off",
+            "releaseId": "2026-10-12",
+            "recordId": "generated-12178162",
+            "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+          }
+        }
+      ]
+    },
+    "parameters": {
+      "baseMaterial": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/baseMaterial",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "milkBase": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/milkBase",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "fatClass": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/fatClass",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "sugarStatus": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/sugarStatus",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "saltStatus": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/saltStatus",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "lactoseStatus": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/lactoseStatus",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "processing": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/processing",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "flavour": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/flavour",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "scent": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/scent",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "colour": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/colour",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "material": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/material",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "size": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/size",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "netAmount": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/netAmount",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "packageCount": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/packageCount",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "concentration": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/concentration",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "strength": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/strength",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "dimensions": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/dimensions",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "capacity": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/capacity",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "compatibility": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/compatibility",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "finish": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/finish",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "grade": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/grade",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "originVariant": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/originVariant",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "otherQualifiedVariant": {
+        "state": "unknown",
+        "reason": "not-provided-in-qualified-representation",
+        "evidence": [
+          {
+            "kind": "qualified-representation-omission",
+            "pointer": "/parametersByAxis/otherQualifiedVariant",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      },
+      "form": {
+        "state": "known",
+        "value": "sliced",
+        "qualifier": "source-name-declared derived assertion, not physical measurement",
+        "evidenceKind": "source-name-declared",
+        "independentReviewSha256": "47c520f2a6a1527e2d8d2aa2c1bcdc075c8efa5d756fc3de3735f12ca6b0a5d5",
+        "evidence": [
+          {
+            "kind": "source-field",
+            "pointer": "/data/name",
+            "valueSha256": "5b97bdfcbe4a646f2157970f5e983b57c2bd69cd0b8bca9d2a5929bf9084f1b9",
+            "sourceBinding": {
+              "sourceId": "off",
+              "releaseId": "2026-10-12",
+              "recordId": "generated-12178162",
+              "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "policyJson": "{\"definitions\":{\"beetroot\":{\"canonicalEnglishKey\":\"beetroot\",\"canonicalEnglishLabel\":\"Beetroot\",\"classification\":\"ingredient\",\"conceptId\":\"urn:offmenu:ingredient:beetroot\",\"parameters\":{\"baseMaterial\":{\"kind\":\"string\"},\"capacity\":{\"kind\":\"string\"},\"colour\":{\"kind\":\"string\"},\"compatibility\":{\"kind\":\"string\"},\"concentration\":{\"kind\":\"string\"},\"dimensions\":{\"kind\":\"string\"},\"fatClass\":{\"kind\":\"string\"},\"finish\":{\"kind\":\"string\"},\"flavour\":{\"kind\":\"string\"},\"form\":{\"kind\":\"string\",\"values\":[\"sliced\"]},\"grade\":{\"kind\":\"string\"},\"lactoseStatus\":{\"kind\":\"string\"},\"material\":{\"kind\":\"string\"},\"milkBase\":{\"kind\":\"string\"},\"netAmount\":{\"kind\":\"string\"},\"originVariant\":{\"kind\":\"string\"},\"otherQualifiedVariant\":{\"kind\":\"string\"},\"packageCount\":{\"kind\":\"string\"},\"processing\":{\"kind\":\"string\"},\"saltStatus\":{\"kind\":\"string\"},\"scent\":{\"kind\":\"string\"},\"size\":{\"kind\":\"string\"},\"strength\":{\"kind\":\"string\"},\"sugarStatus\":{\"kind\":\"string\"}},\"typeKey\":\"sliced-beetroot\",\"typeRelation\":{\"associationScope\":\"actual-product-matched-by-exact-reviewed-context-only\",\"canonicalEnglishLabel\":\"Sliced beetroot\",\"conceptId\":\"urn:offmenu:type:sliced-beetroot\",\"independentReviewSha256\":\"47c520f2a6a1527e2d8d2aa2c1bcdc075c8efa5d756fc3de3735f12ca6b0a5d5\",\"registrySha256\":\"3daecdf9788815348c118d1648d2ecfa93e58b18c50a7b0f73c6729e15444162\",\"relationshipId\":\"context-rule:produce:sliced-beetroot-named-base-null-composition:v1:matched-product-type\",\"relationshipKind\":\"is-a\",\"subjectConceptId\":\"urn:offmenu:ingredient:beetroot\",\"typeKey\":\"sliced-beetroot\"}}},\"derivation\":{\"acceptedInputSha256\":\"8aad9e57b13389165f4dfae83251c8a981f1a883a1e1999941187d0aadd2dc35\",\"kind\":\"source-bound-derived-curator-policy\",\"matcherSha256\":\"aac5df3f291dc8c00f59276ae75446fb1d5aa5ed3a3ce0db82bad626a20d2af6\",\"ruleSha256\":\"8860c43c483abc4621399e5b56ff38b3e0517cf776269c3c683152d72972b87e\",\"semanticReviewSha256\":\"47c520f2a6a1527e2d8d2aa2c1bcdc075c8efa5d756fc3de3735f12ca6b0a5d5\"},\"independentReviewSha256\":\"47c520f2a6a1527e2d8d2aa2c1bcdc075c8efa5d756fc3de3735f12ca6b0a5d5\",\"registrySha256\":\"3daecdf9788815348c118d1648d2ecfa93e58b18c50a7b0f73c6729e15444162\",\"schema\":\"offmenu-barcode-foundation-phase/2\",\"sourceQualifications\":{\"off\":{\"qualificationSha256\":\"96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0\",\"releaseId\":\"2026-10-12\"}}}",
+  "matcherResult": {
+    "schema": "offmenu-named-food-context-candidate/1",
+    "status": "matched-unreviewed-named-meanings",
+    "ruleId": "context-rule:produce:sliced-beetroot-named-base-null-composition:v1",
+    "ruleSha256": "8860c43c483abc4621399e5b56ff38b3e0517cf776269c3c683152d72972b87e",
+    "classificationAccepted": false,
+    "productTypeAccepted": false,
+    "applicationEligibilityReviewed": false,
+    "foundationQualified": false,
+    "normalizationComplete": false,
+    "candidateMeanings": {
+      "namedCulinaryBase": {
+        "conceptId": "urn:offmenu:ingredient:beetroot",
+        "canonicalEnglishKey": "beetroot",
+        "canonicalEnglishLabel": "Beetroot"
+      },
+      "productType": {
+        "typeId": "urn:offmenu:type:sliced-beetroot",
+        "canonicalEnglishKey": "sliced-beetroot",
+        "canonicalEnglishLabel": "Sliced beetroot"
+      },
+      "sourceNameForm": {
+        "typeKey": "form",
+        "value": "sliced",
+        "evidenceRole": "name"
+      }
+    },
+    "unresolvedAxes": [
+      "composition",
+      "purity",
+      "preparation",
+      "quantity",
+      "allergens",
+      "recipeFit",
+      "nutritionJoin",
+      "otherVariants",
+      "applicationEligibility"
+    ],
+    "reasons": [],
+    "baseResolution": "unresolved",
+    "evidenceRefs": [
+      {
+        "sourceBinding": {
+          "sourceId": "off",
+          "releaseId": "2026-10-12",
+          "recordId": "generated-12178162",
+          "sourceObservationSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "sourceDocumentSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "inputDatabaseSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+          "sourceQualificationSha256": "96a192c8d7ec08e4116b9c7b1c8fb77da452a22820656fa43ceef1200c96cfc0"
+        },
+        "stageRecordId": "offmenu:generated:12178162",
+        "stageRecordWireSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+        "fieldEvidence": {
+          "name": {
+            "sourcePointer": "/data/name",
+            "valueSha256": "5b97bdfcbe4a646f2157970f5e983b57c2bd69cd0b8bca9d2a5929bf9084f1b9",
+            "state": "present"
+          },
+          "names": {
+            "sourcePointer": "/data/names",
+            "valueSha256": "b2e0283e40c56563914ea27c089b5fb3719aff81ac799e8bd4b3648de53f0550",
+            "state": "present"
+          },
+          "ingredientDeclaration": {
+            "sourcePointer": "/data/ingredientsText",
+            "valueSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+            "state": "null"
+          },
+          "categories": {
+            "sourcePointer": "/data/categories",
+            "valueSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "state": "empty"
+          }
+        }
+      }
+    ]
+  }
+}
