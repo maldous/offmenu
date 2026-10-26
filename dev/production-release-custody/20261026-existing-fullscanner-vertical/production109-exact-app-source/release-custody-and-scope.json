@@ -1,0 +1,26 @@
+{
+  "atUTC": "2026-10-26T12:14:00.311001+00:00",
+  "sourceVersion": "3bed1081-0861-42cf-bb9e-491d6362b67b",
+  "purpose": "Byte-exact original deployed109 worker+preserved application source custody; no source rewrite/runtime adoption/provider binding values/private account data/corpus included",
+  "files": [
+    {
+      "name": "deployed-application.mjs",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/production-selected-lookup-preparation-20261026/provider-module-custody/exact-source-readback-20261026/deployed-application.mjs",
+      "sha256": "2a07a3e6e302a328c65dbb0c21b3dce0fa8bd993edcfc5dbcf3511762c15ff6e",
+      "bytes": 2221680
+    },
+    {
+      "name": "worker.mjs",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/production-selected-lookup-preparation-20261026/candidate-modules/worker.mjs",
+      "sha256": "83421e679296b4f0a59e3f9a7ebde12b40638ad8cc1c480709f34c5a393b61bb",
+      "bytes": 4440939
+    },
+    {
+      "name": "full-source-custody-result.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/production-selected-lookup-preparation-20261026/provider-module-custody/exact-source-readback-20261026/full-source-custody-result.json",
+      "sha256": "5ce697dce5684e74200909145cf626e1d8a0e071c3bf1410c3e3b01654dad335",
+      "bytes": 998
+    }
+  ],
+  "scope": "Current109 source custody, not full-app UI/real-IDP acceptance. Existing truncated fragment remains unusable and retained. Main/develop untouched."
+}

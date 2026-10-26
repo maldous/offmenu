@@ -1,0 +1,14 @@
+{
+  "atUTC": "2026-10-26T12:10:16.148114+00:00",
+  "sourceVersion": "3bed1081-0861-42cf-bb9e-491d6362b67b",
+  "module": "deployed-application.mjs",
+  "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/production-selected-lookup-preparation-20261026/provider-module-custody/exact-source-readback-20261026/deployed-application.mjs",
+  "bytes": 2221680,
+  "sha256": "2a07a3e6e302a328c65dbb0c21b3dce0fa8bd993edcfc5dbcf3511762c15ff6e",
+  "method": "Immutable exact109 module read; gzip transport67 independently exact-length chunks; decompressed full-module SHA verified",
+  "providerWrites": 0,
+  "credentialsOrBindingValuesRead": false,
+  "oldTruncatedFragment": "Retained and explicitly unusable; no fragment adopted",
+  "transportFailure": "Initial batched local save failed with Argument list too long; perchunk save corrected; read-only source recovery complete",
+  "scope": "Exact public application source custody only; no actual identity/session/private DB/UI acceptance"
+}
