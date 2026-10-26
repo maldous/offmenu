@@ -1,0 +1,77 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import vm from 'node:vm';
+import {webcrypto} from 'node:crypto';
+import * as source from './foundation-scanner-handoff.mjs';
+const h = s => s.repeat(64), copy = structuredClone;
+// Generated cuts, subject and stock only. No actual product, profile or data IO.
+const old = {releaseId:'generated-before',manifestSha256:h('a'),sourceAdmissionSha256:h('b'),
+  sources:{off:{releaseId:'generated-source',qualificationSha256:h('c'),license:'GENERATED',attribution:'GENERATED'}}};
+const next = {...copy(old),releaseId:'generated-next',manifestSha256:h('d'),sourceAdmissionSha256:h('e')};
+const bindings = {schema:'offmenu-foundation-handoff-bindings/2',selections:[next,old]};
+const contract = source.createFoundationHandoffContract(bindings), barcode='12178162';
+function reference(cut) {return {schema:source.FOUNDATION_SOURCE_REFERENCE,fieldContract:'offmenu-barcode-foundation-phase/2',
+  releaseId:cut.releaseId,manifestSha256:cut.manifestSha256,sourceAdmissionSha256:cut.sourceAdmissionSha256,
+  recordId:'offmenu:generated:stock',namespace:'barcode',lexicalValue:barcode,nativeRecordId:'off:product:generated',
+  stageRecordWireSha256:h('f'),sourceBinding:{sourceId:'off',releaseId:'generated-source',recordId:'generated',
+    sourceObservationSha256:h('1'),sourceDocumentSha256:h('2'),inputDatabaseSha256:h('3'),sourceQualificationSha256:h('c')},
+  license:'GENERATED',attribution:'GENERATED',foundationComplete:true,normalizationComplete:false,
+  fullProductComplete:false,goldAdmitted:false,automaticPlanningEligible:false,recipeNutritionJoinsAccepted:false};}
+const previous=reference(old),current=reference(next),id='00000000-0000-4000-8000-000000000001';
+const context=vm.createContext({crypto:webcrypto,TextEncoder,URL,Date});const modules=new Map();
+async function synthetic(name,exports){const mod=new vm.SyntheticModule(Object.keys(exports),function(){for(const[k,v]of Object.entries(exports))this.setExport(k,v);},{context});modules.set(name,mod);}
+await synthetic('./foundation-scanner-handoff.mjs',{...source,...contract});
+await synthetic('./i18n.js',{t:x=>x});
+await synthetic('./ingredients.js',{canonicalIngredient:x=>String(x).trim().toLowerCase(),measuredIngredient:()=>false});
+await synthetic('./scanner-identity-v2.js',{validSourceObservationReference:()=>false});
+await synthetic('./typed-identifier-contract.mjs',{analyzeIdentifier:()=>({status:'unresolved',labelledEquivalents:[]})});
+async function load(name){if(modules.has(name))return modules.get(name);const mod=new vm.SourceTextModule(await readFile(new URL(name,import.meta.url),'utf8'),{context});modules.set(name,mod);await mod.link(load);return mod;}
+const legacy=await load('./scanner-kitchen-handoff.js');await legacy.evaluate();
+const model=await load('./model.js');await model.evaluate();
+const checkout=await load('./checkout-model.js');await checkout.evaluate();
+const plain=x=>JSON.parse(JSON.stringify(x));
+test('explicit retained and next cuts preserve exact references and are snapshotted',()=>{
+ assert.deepEqual(contract.copyFoundationSourceReference(previous,barcode),previous);
+ assert.deepEqual(contract.copyFoundationSourceReference(current,barcode),current);
+ bindings.selections.length=0;
+ assert.equal(contract.validFoundationSourceReference(previous,barcode),true);
+});
+test('legacy single-selection API still accepts only its original exact cut',()=>{
+ const single=source.createFoundationHandoffContract(old);
+ assert.equal(single.validFoundationSourceReference(previous,barcode),true);
+ assert.equal(single.validFoundationSourceReference(current,barcode),false);
+});
+test('mixed/unknown selections, source substitutions and phase promotion fail closed',()=>{
+ for(const changed of [{...current,manifestSha256:old.manifestSha256},
+   {...current,releaseId:'unknown'}, {...current,sourceAdmissionSha256:h('0')},
+   {...current,sourceBinding:{...current.sourceBinding,sourceQualificationSha256:h('0')}},
+   {...current,goldAdmitted:true}])assert.equal(contract.validFoundationSourceReference(changed,barcode),false);
+});
+test('empty/duplicate or malformed cut sets fail construction',()=>{
+ for(const selections of [[],[old,old],[{...old,manifestSha256:'invalid'}]])
+   assert.throws(()=>source.createFoundationHandoffContract({schema:'offmenu-foundation-handoff-bindings/2',selections}));
+ assert.throws(()=>source.createFoundationHandoffContract({schema:'offmenu-foundation-handoff-bindings/2',selections:[old],extra:true}));
+});
+test('actual unchanged model validates old saved stock and next-cut stock together',()=>{
+ for(const ref of [previous,current]){
+  const draft=checkout.namespace.makeAutoLot(barcode,{name:'Generated food',foundationSourceReference:ref},'unmapped');
+  assert.equal(draft.quantity,null);assert.throws(()=>model.namespace.validateLot(draft));
+  const lot=model.namespace.validateLot({...draft,quantity:125,unit:'g',amountBasis:'manual',ingredient:'generated',needsReview:false});
+  assert.deepEqual(plain(lot.foundationSourceReference),ref);
+  assert.deepEqual(plain(model.namespace.validateLot(JSON.parse(JSON.stringify(lot))).foundationSourceReference),ref);
+ }
+});
+test('old and next receipt fingerprints retain exact replay/amount protections',()=>{
+ for(const ref of [previous,current]){
+  const item={operationId:id,barcode,namespace:'barcode',symbology:null,name:'Generated food',brand:null,userSelected:true,foundationSourceReference:ref};
+  const fingerprint=contract.foundationHandoffFingerprint(item);
+  assert.equal(legacy.namespace.validateScannerHandoffReceipts({[id]:fingerprint},[id])[id],fingerprint);
+  const draft=checkout.namespace.makeAutoLot(barcode,{name:'Generated food',foundationSourceReference:ref},'unmapped');draft.id=id;
+  const session={mode:'shopping',area:'Pantry',shelf:'Top',items:[{...draft,ingredient:'generated',quantity:125,unit:'g',amountBasis:'manual',needsReview:false}],startedAt:'2026-10-27T00:00:00Z',scannerCompletion:{schema:legacy.namespace.SCANNER_COMPLETION}};
+  const stock=checkout.namespace.finishInventory([],session);
+  assert.deepEqual(plain(stock[0].foundationSourceReference),ref);
+  assert.equal(checkout.namespace.finishInventory(stock,session),stock);
+  assert.throws(()=>checkout.namespace.finishInventory(stock,{...session,items:[{...session.items[0],quantity:126}]}));
+ }
+});

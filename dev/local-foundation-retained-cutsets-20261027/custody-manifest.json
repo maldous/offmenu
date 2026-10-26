@@ -1,0 +1,48 @@
+{
+  "scope": "CODE_ONLY_REVIEW_CANDIDATE_CUSTODY_NOT_RUNTIME_ADOPTION",
+  "authorResult": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/named-food-active-adapter-v1-20261027/handoff-cutset-preparation/result.json",
+    "sha256": "81934453a971b1b2af2ee2dbfb538f47558477251e0058a2df577f03beef7ad0"
+  },
+  "reviewStatus": "Pending existing designated consumer reviewer via Gateway; not accepted by custody.",
+  "files": [
+    {
+      "relativePath": "foundation-scanner-handoff.mjs",
+      "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00",
+      "bytes": 6878,
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/named-food-active-adapter-v1-20261027/handoff-cutset-preparation/foundation-scanner-handoff.mjs"
+    },
+    {
+      "relativePath": "foundation-handoff-bindings.mjs",
+      "sha256": "65784f36238b93e84a3960c2dd396d02d9c4101d8e60e88a7c2fbe82f43cb235",
+      "bytes": 757,
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/named-food-active-adapter-v1-20261027/handoff-cutset-preparation/foundation-handoff-bindings.mjs"
+    },
+    {
+      "relativePath": "model.js",
+      "sha256": "ac59b94a9d0089bb770c86196fcd634d15d1ddc87d701bd2875ac3e55e786c2a",
+      "bytes": 8006,
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/named-food-active-adapter-v1-20261027/handoff-cutset-preparation/model.js"
+    },
+    {
+      "relativePath": "checkout-model.js",
+      "sha256": "e66f7436ddf823d116cc2fc777a86401fa74071f3d59758fb8ff5038c5a41ce8",
+      "bytes": 5052,
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/named-food-active-adapter-v1-20261027/handoff-cutset-preparation/checkout-model.js"
+    },
+    {
+      "relativePath": "scanner-kitchen-handoff.js",
+      "sha256": "d07d6ce268a4d07cc0c9368ae867b807aa2710ffae9265e737d0a889f74f3803",
+      "bytes": 6281,
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/named-food-active-adapter-v1-20261027/handoff-cutset-preparation/scanner-kitchen-handoff.js"
+    },
+    {
+      "relativePath": "handoff-cutset.test.mjs.source.txt",
+      "sha256": "0cb003a4d0234da3c02e308f5f43b53370561136907a06c0184e77a3bd9e1586",
+      "bytes": 6388,
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/named-food-active-adapter-v1-20261027/handoff-cutset-preparation/handoff-cutset.test.mjs"
+    }
+  ],
+  "tests": "6 generated focused VM checks PASS in author packet. Test source kept as.source.txt to avoid unconfigured VM/discovery; run using exact author workdir and command in result.",
+  "excluded": "No corpus/static bodies/actual DTO/profile/credentials/private payload/history included."
+}
