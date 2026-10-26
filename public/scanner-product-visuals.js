@@ -1,3 +1,4 @@
+import {retainedCategoryAssociation} from './local-retained-category-presentation.js';
 import {associateProductVisual,afterProductVisualAssociationFailure} from './product-visual-association.js';
 import {validSourceObservationReference} from './model.js';
 
@@ -6,8 +7,10 @@ export function mountScannerProductVisual(thumbnail,captionRoot,{onChange=()=>{}
   const text=(tag,value)=>{const node=doc.createElement(tag);node.textContent=value;return node;};
   function render(input,turn,notify=false,previous=null) {
     const selected=input??{theme:doc.documentElement?.dataset.theme==='dark'?'dark':'light'};
-    const association=previous?afterProductVisualAssociationFailure(selected,previous,{failedSources:failed}):
-      associateProductVisual(selected,{failedSources:failed});
+    const retained=input?.retainedSourceCategoryPresentation;
+    const association=(retained?retainedCategoryAssociation(retained,input.sourceProductReference,selected,failed):null)||
+      (previous?afterProductVisualAssociationFailure(selected,previous,{failedSources:failed}):
+      associateProductVisual(selected,{failedSources:failed}));
     const result=input?association.visual:{...association.visual,alt:'OffMenu app icon; product photo unavailable'};
     current=result;thumbnail.replaceChildren();captionRoot.replaceChildren();thumbnail.dataset.visualTier=result.tier;
     if(result.kind==='image'){
@@ -42,12 +45,17 @@ export function mountScannerProductVisual(thumbnail,captionRoot,{onChange=()=>{}
     }
     if(notify)onChange(result);return result;
   }
-  return {show({reference=null,detail=null,entryId=null,generation=null,name='',theme='light',offline=false,sourcePhotoSelection=null}={}){
+  return {show({reference=null,detail=null,entryId=null,generation=null,name='',theme='light',offline=false,sourcePhotoSelection=null,sourceProductReference=null,retainedSourceCategoryPresentation=null}={}){
     const valid=reference&&validSourceObservationReference(reference,reference.originalLexicalValue);
-    const nextKey=JSON.stringify([entryId,generation,reference,detail?.referenceRecordId??null,sourcePhotoSelection,detail?.currentOutputUse]);
+    const nextKey=JSON.stringify([entryId,generation,reference,detail?.referenceRecordId??null,sourcePhotoSelection,detail?.currentOutputUse,sourceProductReference,retainedSourceCategoryPresentation]);
     if(nextKey!==key){failed=[];key=nextKey;}
     const turn=++epoch;
-    const input=valid||sourcePhotoSelection?{reference:valid?reference:null,detail,name,theme,offline,sourcePhotoSelection}:null;
+    // Genuine retained references remain separate from native observations and photos.
+    // Existing qualified photo/ingredient paths keep priority and behavior.
+    const retained=!valid&&!sourcePhotoSelection&&retainedCategoryAssociation(retainedSourceCategoryPresentation,
+      sourceProductReference,{theme,offline},failed);
+    const input=valid||sourcePhotoSelection?{reference:valid?reference:null,detail,name,theme,offline,sourcePhotoSelection}:
+      retained?{sourceProductReference,retainedSourceCategoryPresentation,name,theme,offline}:null;
     return render(input,turn);
   },current:()=>current,destroy(){epoch++;thumbnail.replaceChildren();captionRoot.replaceChildren();}};
 }

@@ -25,6 +25,11 @@ export async function createRetainedCategoryProducer({selection,sourceScope,sele
   const supportedPolicy=policy.schema==='offmenu-private-retained-category-output-selection/1'||
     (policy.schema==='offmenu-private-retained-category-output-selection/2'&&
       policy.target?.adoptedConsumerKind==='isolated-in-process-accepted-consumer'&&
+      pin(policy.target.adoptedNewConsumerRuntimePin))||
+    (policy.schema==='offmenu-private-retained-category-output-selection/3'&&
+      policy.target?.adoptedConsumerKind==='isolated-local-application'&&
+      policy.target.existingVerifierMode==='local-dev'&&
+      policy.target.origin==='http://127.0.0.1:17645'&&
       pin(policy.target.adoptedNewConsumerRuntimePin));
   requireThat(supportedPolicy&&
     policy.operation==='selected-source-category-type-presentation'&&policy.outputScope==='private-local-app',
@@ -87,7 +92,8 @@ export async function createRetainedCategoryProducer({selection,sourceScope,sele
       request.headers.get('Sec-Fetch-Site')!=='cross-site','EXACT_PRIVATE_TARGET_REQUIRED');
     const adopted=target.adoptedNewConsumerRuntimePin;
     requireThat(sha(adopted)||pin(adopted),'ADOPTED_CONSUMER_RUNTIME_REQUIRED');
-    requireThat(runtime?.mode==='netlify'&&typeof runtime.verifiedUser==='function'&&
+    const verifierMode=policy.schema==='offmenu-private-retained-category-output-selection/3'?'local-dev':'netlify';
+    requireThat(runtime?.mode===verifierMode&&typeof runtime.verifiedUser==='function'&&
       typeof readCurrentBinding==='function','EXISTING_VERIFIER_AND_CURRENT_BINDING_REQUIRED');
     const read=async()=>{
       const binding=clone(await readCurrentBinding(request));
