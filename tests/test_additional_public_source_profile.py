@@ -49,7 +49,7 @@ class AdditionalSourceProfileTests(unittest.TestCase):
         for extra in ({'command': 'bash'}, {'ref': 'unreviewed'}, {'cacheRoot': '/home/user'}, {'url': 'https://unreviewed.invalid'}):
             with self.assertRaises(jobs.JobError):
                 jobs.parse_request(jobs.canonical(self.request() | extra))
-        self.assertEqual(jobs.PROFILES - set(LEGACY_GRAPHS), {'source-access-test-diagnostic', 'additional-public-sources', 'additional-source-capacity', 'public-source-read-handoff', 'local-source-export'})
+        self.assertEqual(jobs.PROFILES - set(LEGACY_GRAPHS), {'source-access-test-diagnostic', 'additional-public-sources', 'additional-source-capacity', 'public-source-read-handoff', 'local-source-export', 'local-source-export-diagnostic'})
 
     def test_existing_profile_graphs_unchanged(self):
         fake = types.ModuleType('offmenu.refresh.native_ciqual')

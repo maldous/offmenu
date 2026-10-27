@@ -24,7 +24,7 @@ import time
 CACHE = Path("/srv/offmenu-refresh/cache")
 OUTPUT = Path("/srv/offmenu-refresh/outputs")
 REPOSITORY_ID = "1416253963"
-PROFILES = {"local-source-export", "source-access-test-diagnostic", "public-source-read-handoff", "additional-source-capacity", "additional-public-sources", "readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare", "zenodo-private-original", "zenodo-response-metadata", "swiss-private-original", "selected-original-batch", "batch-recovery-diagnostic", "global-collection"}
+PROFILES = {"local-source-export-diagnostic", "local-source-export", "source-access-test-diagnostic", "public-source-read-handoff", "additional-source-capacity", "additional-public-sources", "readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare", "zenodo-private-original", "zenodo-response-metadata", "swiss-private-original", "selected-original-batch", "batch-recovery-diagnostic", "global-collection"}
 MAX_REQUEST = 1024
 MAX_CHILD_OUTPUT = 1024 * 1024
 MAX_REPORT = 32768
@@ -140,6 +140,7 @@ def finite_float(value):
 def diagnostic_evidence(value):
     """Rebind child reports through pinned, closed-schema sanitizers."""
     schemas = {
+        "offmenu-local-source-tests/1": ("check-local-source-export-tests.py", "localSourceTests"),
         "offmenu-local-source-summary/1": ("export-local-source.py", "localSourceExport"),
         "offmenu-source-access-tests/1": ("../manual-action/check_source_access_handoff_tests.py", "sourceAccessTests"),
         "offmenu-source-access-handoff/1": ("../manual-action/grant_acquired_read_access.py", "sourceAccessHandoff"),
@@ -314,6 +315,9 @@ def profile_steps(profile, code, trusted_sha=None, job_id=None):
               "--manifest", "tests/fixtures/corpus-refresh/input-manifest.json",
               "--input-root", "tests/fixtures/corpus-refresh", "--workspace", str(OUTPUT / "pilot")]
     steps = [("readiness", [], [python, "-B", "-c", "import sys, fcntl, resource, offmenu.refresh; assert sys.version_info >= (3, 10)"])]
+    if profile == "local-source-export-diagnostic":
+        return steps + [("local-source-export-diagnostic", ["readiness"],
+                         [python, "-I", "-B", "scripts/check-local-source-export-tests.py"])]
     if profile == "local-source-export":
         if not isinstance(job_id, str) or not re.fullmatch(r"[a-z0-9][a-z0-9-]{7,63}", job_id):
             raise JobError("export-job-id-invalid")
@@ -656,6 +660,10 @@ def run_profile(request, sha, code, run_id, attempt):
               "profile": request["profile"], "trustedCodeSha": sha, "githubRunId": run_id,
               "githubRunAttempt": attempt, "status": state, "steps": results,
               "sourceContentsUploaded": False, "externalPublication": False}
+    if request["profile"] == "local-source-export-diagnostic":
+        report.update(maximumParallelChildren=1, diagnosticScope="fixed-export-test-identifiers-only",
+                      stagedSourceRead=False, sourceCodeArtifactPrepared=False,
+                      repositoryWriteEnabled=False, hostAccessExpanded=False)
     if request["profile"] == "local-source-export":
         report.update(maximumParallelChildren=1, diagnosticScope="owner-staged-selected-source-packet",
                       sourceCodeArtifactPrepared=state == "passed", datasetContentsUploaded=False,
