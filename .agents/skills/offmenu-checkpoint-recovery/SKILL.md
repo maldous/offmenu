@@ -84,3 +84,14 @@ checkpoint JSON, data artifacts and raw error text local and out of Git/chat.
 No quota retries before capacity confirmation, Actions, network lookup, AI setup,
 privilege expansion, deletion of unrelated files or new release gate is part of
 this recovery procedure. Routine corrections remain within the existing approval.
+
+## Bounded control observations
+
+Use `scripts/windmill/platform_check.py --mode health|verify --max-items 100`
+for the read-only control audit. This path does not wait for the job writer
+lock. Inspect `status`, findings severity, byte/item budgets and coverage.
+`incomplete` means not fully verified, not successful full coverage and not
+proof of corruption. Historical terminal failures with `child_tree_gone:true`
+are informational; active/stale markers or integrity errors need explicit
+reconciliation. No check prunes data, clears markers, restarts unknown jobs,
+reads job logs/credentials, or proves independent backup coverage.

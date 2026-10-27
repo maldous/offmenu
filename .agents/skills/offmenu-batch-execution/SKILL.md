@@ -76,3 +76,14 @@ all visible cores can reduce total throughput. Third-party dependencies must be
 already available and pinned per script; no online installation or workspace-wide
 dependency-default changes. Do not claim a benchmark proves complete production
 coverage.
+
+## Inline failure evidence
+
+Admitted failed/timed-out `run` operations raise safe business failures after an
+inline owner-private incident write, so Windmill's run is red. Inspect the
+matching job receipt and incident; never interpret transport completion as
+business success. Unknown transport/cleanup outcomes remain reconciliation
+cases, not retry permission. Busy and fresh active duplicate-ID observations
+are normal data. Status and cancel actions do not manufacture new incidents;
+a valid user cancellation stays quiet. Incident persistence failures do not
+make failed work green. No nested long Windmill jobs are needed for capture.

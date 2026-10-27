@@ -57,7 +57,9 @@ and a final receipt; never clear one merely because a PID or heartbeat disappear
 The `windmill_foo_jobs.py` client accepts action, job_id, command, mode and timeout_seconds.
 It pins the trusted SSH host key, retrieves the private key internally from the fixed
 Windmill secret path, disables agent/key discovery, and uses only `offmenu-exec-v1`.
-It returns compact receipts, not log bodies. Its `transport_ok` field describes receipt
+It returns compact status/success receipts, not log bodies. Phase 2 run failures
+now raise fixed safe errors after recording an owner-private incident; failed
+business commands no longer appear as green Windmill runs. Its `transport_ok` field describes receipt
 transport/validation; `ok`/`job_succeeded` are true only for succeeded jobs. Inspect
 `admitted`, `receipt.status`, `exit_code`, and `child_tree_gone`. For long calls use a Windmill background
 run and track its job ID; do not detach a remote shell and assume it will survive.
@@ -75,3 +77,23 @@ reconciled by ID, not silently restarted.
 uses synthetic temporary artifacts only. It covers duplicate/unknown IDs, conflicts,
 writer serialization, overlapping reads, capped dual-stream logs, cancellation, and
 termination/reaping of a child that changes its session.
+
+## Phase 2 outcome and control checks
+
+The deployed client records admitted failed/timed-out runs inline, using the
+current worker's existing Windmill authentication. No child Windmill job is
+launched. Incidents are create-only per job/phase/code; retries never overwrite
+the first custody record. Busy/nonadmitted runs are not retried. Fresh active
+same-ID receipts remain valid observations. Unknown outcomes require explicit
+reconciliation. A valid user cancellation is quiet and creates no incident.
+Status/cancel observations do not create new incidents for historical failures.
+
+`platform_check.py --mode health|verify --max-items 100` is a separate read-only
+control path, not a user-command runner. It does not take execution admission
+locks. Its eight-second/64-MiB budgets and fixed scan limits are cumulative;
+partial or skipped work is explicitly `incomplete`, never a full-coverage claim.
+Health inspects compact receipts/markers, never logs. Historical terminal
+failures with verified cleanup are informational, not new repeated alerts.
+Verification uses the existing storage schema/hash rules for selected current
+checkpoints and canonical artifact manifests. It does not prune, repair, rotate
+credentials, inspect PostgreSQL backups, or claim independent backup coverage.
