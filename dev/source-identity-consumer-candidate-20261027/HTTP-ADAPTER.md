@@ -1,0 +1,7 @@
+# Source identity HTTP adapter custody (unadmitted)
+
+This is code custody of the pure local HTTP adapter, not an adopted runtime or data release. Canonical operational source is `source-identity-consumer-candidate-v1-20261027/http-adapter-r2` under the existing Worker00 integration evidence directory. The sole custody adaptation changes the reader import from the operational `../r2/source-identity-reader.mjs` to this directory's `./source-identity-reader.mjs`; exact inverse is recorded in canonical evidence.
+
+The separate identity HTTP schema preserves phase validation and exact source identifiers, explicit unknowns, pagination, component admission and local origin checks. It performs no network, runtime start, provider write or inventory write. Construction snapshots caller inputs before asynchronous checks. Eight focused synthetic tests pass. Synthetic admission fixtures must never admit real corpus data. Actual selected 2,574 claims remain prepared, not admitted or served.
+
+The reader requires its existing focused independent review; the adapter and consumer require their affected review and truthful source/operation binding before adoption. Product text gaps, full corpus availability, normalization and protected source-identity inventory handoff remain open. No scope/design reduction, phase-reference fabrication, silent dropping or Finish disabling is authorized by this code. Existing production, source rights, privacy, denial and CIX holds remain.
