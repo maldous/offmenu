@@ -1,0 +1,1136 @@
+{
+  "title": "OffMenu source evidence reconciliation",
+  "observedAt": "2026-10-27",
+  "repository": "maldous/offmenu",
+  "inspectedCommit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+  "scope": "Read-only cloud GitHub inspection of source code and compact metadata/docs; no Foo access, raw dataset-body reads, publisher acquisition, GitHub mutation, production change or legal-controls implementation",
+  "stageRule": "Named/discovered != acquired != parsed != source-normalized != canonical/English-qualified != served. All historical evidence retains date/scope. Current local counts are supplied by parent and not reverified here.",
+  "currentParentReported": {
+    "heldOFFSourceObservations": 4807217,
+    "heldUSDASourceObservations": 2101279,
+    "totalHeldSourceObservations": 6908496,
+    "distinctLexicalKeys": 5242504,
+    "r8ServedSourceObservations": 11527,
+    "r8SourceQueries": 4908,
+    "fullNormalizedEnglishComplete": false,
+    "latestProcessedCounts": "Separate; exact export pending"
+  },
+  "nonEquivalentDenominators": {
+    "historicalOFFNativeRows": 9614434,
+    "historicalUSDANativeRows": 4202558,
+    "repositoryOFFAuditTotal": 4807663,
+    "repositoryOFFValidCodeOccurrences": 4807278,
+    "repositoryOFFInvalidRows": 385,
+    "repositoryOFFAmbiguousGroups": 61,
+    "repositoryOFFAmbiguousMembers": 122,
+    "note": "No automatic subtraction, collapse or cause inferred from the 61-occurrence difference between valid-code audit and current held count; require exact source-stage export."
+  },
+  "historicalMappedReleases": [
+    {
+      "sourceId": "off",
+      "releaseId": "2026-10-12",
+      "historicalMappedSourceRecords": 5452981,
+      "historicalNativeNormalizedRows": 9614434,
+      "historicalArchiveSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
+      "sourceFieldsOrTypes": [
+        "FoodProduct",
+        "FoodCompositionObservation"
+      ],
+      "recordedLicence": "ODbL / DbCL; images CC BY-SA",
+      "recordedAttribution": "Open Food Facts",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "All product rows in the full JSONL export; original fields retained in archive",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {},
+        "conditions": [
+          "ODbL attribution/share-alike obligations; image rights separate",
+          "Need exact dump receipt and applicable full terms before executable admission"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "usda-files",
+      "releaseId": "usda-2026-04",
+      "historicalMappedSourceRecords": 4025777,
+      "historicalNativeNormalizedRows": 4202558,
+      "historicalArchiveSha256": "c33d91e5c44ddbcd71ed6038714fb648b26089b3f91fabfa3be63d96d5763a01",
+      "sourceFieldsOrTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "recordedLicence": "USDA FoodData Central public domain / CC0",
+      "recordedAttribution": "US Department of Agriculture, Agricultural Research Service, FoodData Central",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Every CSV table and supporting workbook in the supplied archive",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "permission-evidenced",
+          "retain": "permission-evidenced",
+          "parse": "permission-evidenced",
+          "transform": "permission-evidenced",
+          "serve": "permission-evidenced",
+          "redistribute": "permission-evidenced"
+        },
+        "transformScopes": {},
+        "conditions": [
+          "Preserve source/type/date and provenance; citation requested",
+          "No API credentials implied; file distribution scope only"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "prices",
+      "releaseId": "2026-10-12",
+      "historicalMappedSourceRecords": 317898,
+      "historicalNativeNormalizedRows": 317898,
+      "historicalArchiveSha256": "337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0",
+      "sourceFieldsOrTypes": [
+        "PriceObservation"
+      ],
+      "recordedLicence": "ODbL",
+      "recordedAttribution": "Open Prices",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "All prices, locations and proof metadata rows; images and contributor identities excluded from public projection",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {},
+        "conditions": [
+          "ODbL attribution and applicable share-alike duties",
+          "Full licence/representation review and exact October12 snapshot receipt still required"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "afcd",
+      "releaseId": "3",
+      "historicalMappedSourceRecords": 1801,
+      "historicalNativeNormalizedRows": 1801,
+      "historicalArchiveSha256": "ee2e99fe0856e29eb0b67247b12bb02a1b36ae2d01a5a910f67a0080f60043c6",
+      "sourceFieldsOrTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "recordedLicence": "FSANZ Data User Licence Agreement (CC BY-SA 3.0 AU based)",
+      "recordedAttribution": "Food Standards Australia New Zealand — Australian Food Composition Database Release 3",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {
+          "losslessSchemaMapping": "conditional",
+          "normalizationWithChanges": "permitted under licence conditions; retain scientific source qualifiers",
+          "curation": "conditional; changes identified, no publisher endorsement"
+        },
+        "conditions": [
+          "FSANZ attribution, work title, copyright and licence notices",
+          "Derivative distribution under the FSANZ licence; unrelated collection material not automatically covered",
+          "Distribute licence, limitation-of-data statement and Australian-data suitability notice",
+          "Identify modifications; no implied endorsement; logos excluded",
+          "Current terms are evidence only; prior acceptance and release-specific receipt not established"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "ciqual",
+      "releaseId": "2025",
+      "historicalMappedSourceRecords": 3484,
+      "historicalNativeNormalizedRows": 3484,
+      "historicalArchiveSha256": "5e89a52960dc6e0d87e73f55364c149e1af41a088e13e579d0fcd4fab56eee49",
+      "sourceFieldsOrTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "recordedLicence": "Etalab Licence Ouverte 2.0",
+      "recordedAttribution": "Anses. 2025. Ciqual French food composition table.",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "unknown",
+          "fetch": "unknown",
+          "retain": "unknown",
+          "parse": "unknown",
+          "transform": "unknown",
+          "serve": "unknown",
+          "redistribute": "unknown"
+        },
+        "transformScopes": {},
+        "conditions": []
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "cofid",
+      "releaseId": "2021",
+      "historicalMappedSourceRecords": 2887,
+      "historicalNativeNormalizedRows": 2887,
+      "historicalArchiveSha256": "2f031fd67ae55dfb5e638e286ef369ecad5a1f0a4bf0cc81f52afdd66705b63e",
+      "sourceFieldsOrTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "recordedLicence": "Open Government Licence 3.0",
+      "recordedAttribution": "Public Health England — McCance and Widdowson's CoFID 2021",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {},
+        "conditions": [
+          "OGL attribution; check embedded workbook notices against retained bytes",
+          "Old foods remain separate; no unqualified current-food inference"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "germany-bls",
+      "releaseId": "4.0",
+      "historicalMappedSourceRecords": 7140,
+      "historicalNativeNormalizedRows": 7140,
+      "historicalArchiveSha256": "a5ba3a151e50834673c335afd719929557d4a22e7c4de9788a20d8e60cd9fb7c",
+      "sourceFieldsOrTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "recordedLicence": "CC BY 4.0",
+      "recordedAttribution": "Max Rubner-Institut — Bundeslebensmittelschlüssel BLS 4.0 (2025)",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {},
+        "conditions": [
+          "Retain MRI citation and change notices",
+          "Download HTML supplies a transient tokenized ZIP link; do not hardcode or retain that token"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "matvaretabellen",
+      "releaseId": "2026",
+      "historicalMappedSourceRecords": 2121,
+      "historicalNativeNormalizedRows": 2121,
+      "historicalArchiveSha256": "1bac8a781ed170e16535fd95ee808d0d04e4c8f6233b96cf4766d192b2852d75",
+      "sourceFieldsOrTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "recordedLicence": "Mattilsynet API reuse: source attribution required; see https://www.matvaretabellen.no/api/",
+      "recordedAttribution": "Mattilsynet — Matvaretabellen 2026",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "unknown",
+          "fetch": "unknown",
+          "retain": "unknown",
+          "parse": "unknown",
+          "transform": "unknown",
+          "serve": "unknown",
+          "redistribute": "unknown"
+        },
+        "transformScopes": {},
+        "conditions": []
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "frida",
+      "releaseId": "5.5",
+      "historicalMappedSourceRecords": 1381,
+      "historicalNativeNormalizedRows": 1381,
+      "historicalArchiveSha256": "14101f7df7b93dd78472c3e5506bf39104dd61d33f4ec45a9ee170a3e4063f92",
+      "sourceFieldsOrTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "recordedLicence": "CC BY 4.0",
+      "recordedAttribution": "National Food Institute, Technical University of Denmark — Frida 5.5",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "unknown",
+          "retain": "unknown",
+          "parse": "unknown",
+          "transform": "unknown",
+          "serve": "unknown",
+          "redistribute": "unknown"
+        },
+        "transformScopes": {},
+        "conditions": []
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "wikidata-food-businesses",
+      "releaseId": "2026-10-13-direct-types",
+      "historicalMappedSourceRecords": 1505,
+      "historicalNativeNormalizedRows": 1505,
+      "historicalArchiveSha256": "de3e72f283252c31f075bb3bf544a1ed9d17e7956e89abfa9ae4f8bd5332f559",
+      "sourceFieldsOrTypes": [
+        "Organization",
+        "Producer",
+        "Supplier",
+        "Retailer",
+        "OwnershipAssertion"
+      ],
+      "recordedLicence": "CC0 1.0",
+      "recordedAttribution": "Wikidata contributors",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "All results of the direct P31 food-manufacturer, supermarket-chain and grocery-store-chain query. Subclass query timed out; direct-type results are not all businesses or complete country registers.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "permission-evidenced",
+          "retain": "permission-evidenced",
+          "parse": "permission-evidenced",
+          "transform": "permission-evidenced",
+          "serve": "permission-evidenced",
+          "redistribute": "permission-evidenced"
+        },
+        "transformScopes": {},
+        "conditions": [
+          "Limit CC0 grant to structured-data namespaces; preserve references"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "dietary-guidelines",
+      "releaseId": "fao-directory-20261013",
+      "historicalMappedSourceRecords": 100,
+      "historicalNativeNormalizedRows": 100,
+      "historicalArchiveSha256": "eb28660ef816bfa4c5186a4b088d3cbaae57334ccf1f24b3dd5b5d1a7ad6a334",
+      "sourceFieldsOrTypes": [
+        "SourceDocument",
+        "DietaryType",
+        "SourceAssertion"
+      ],
+      "recordedLicence": "CC0 1.0 for OffMenu original reference metadata; linked documents retain national owner rights",
+      "recordedAttribution": "OffMenu reference index; FAO dietary-guidelines country directory",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "All 100 country options in the FAO directory; reference metadata only, no guideline content copied or diet rules applied. Countries absent from the directory remain unresolved.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "unknown",
+          "retain": "unknown",
+          "parse": "unknown",
+          "transform": "unknown",
+          "serve": "unknown",
+          "redistribute": "unknown"
+        },
+        "transformScopes": {
+          "originalBibliographicLinkMetadata": "separate original-work claim requires retained evidence",
+          "copiedFAOProseOrNationalDocuments": "unknown/restricted; do not import blanket CC0 claim"
+        },
+        "conditions": []
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "wikibooks",
+      "releaseId": "2026-10-13-live",
+      "historicalMappedSourceRecords": 3796,
+      "historicalNativeNormalizedRows": 3796,
+      "historicalArchiveSha256": "efadf48d40d6a8e6f67f13c3c0dd66a07feaff5f8c294eda34292045326d8f88",
+      "sourceFieldsOrTypes": [
+        "RecipeDiscoveryReference"
+      ],
+      "recordedLicence": "CC BY-SA 4.0",
+      "recordedAttribution": "Wikibooks contributors",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "All current pages in English Wikibooks Category:Recipes, Cookbook namespace, collected with complete API continuation. A dated retrieval, not a transactionally frozen dump.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {},
+        "conditions": [
+          "Preserve page/revision/history references, authorship attribution, licence and change notices",
+          "Do not treat images as automatically covered"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "cnf",
+      "releaseId": "2015",
+      "historicalMappedSourceRecords": 5690,
+      "historicalNativeNormalizedRows": 5690,
+      "historicalArchiveSha256": "fb77503d88186844cc2c27b39432d755505f97a789c97fc5973a30d0cd4b0367",
+      "sourceFieldsOrTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "recordedLicence": "Health Canada CNF 2015 copyright guidelines",
+      "recordedAttribution": "Canadian Nutrient File, Health Canada, 2015",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "All 12 CSV relational tables in the complete CNF 2015 archive. Every food and nutrient observation parsed; original files and supporting guides retained locally.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {
+          "losslessSchemaMapping": "conditional: preserve values, qualifiers and provenance; exact contract review required",
+          "servingSizeExpression": "explicitly permitted",
+          "alterNutrientValues": "restricted"
+        },
+        "conditions": [
+          "Credit Canadian Nutrient File, Health Canada, 2015",
+          "Do not imply official version or endorsement; reference only, not medical advice",
+          "2015 parser is not a 2026 release parser"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "mext",
+      "releaseId": "2023-corrected-20260327-main",
+      "historicalMappedSourceRecords": 2538,
+      "historicalNativeNormalizedRows": 2538,
+      "historicalArchiveSha256": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c",
+      "sourceFieldsOrTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "recordedLicence": "MEXT website content use rules",
+      "recordedAttribution": "Ministry of Education, Culture, Sports, Science and Technology, Japan",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Every food row and component in the complete main composition table, corrected 27 March 2026. All 17 publisher release files retained; special-denominator companion tables remain original files, outside this per-100g projection. Parenthesized values remain unresolved.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {
+          "losslessSchemaMapping": "conditional",
+          "adaptation": "conditional on attribution and modification notice",
+          "specialDenominatorCompanions": "outside main-table projection; no per-100g inference",
+          "paidBookOrEbookDistribution": "separate permission/fee review"
+        },
+        "conditions": [
+          "Cite MEXT and Standard Tables 2023, corrected 2026-03-27",
+          "Identify processing; do not represent modified work as government-created",
+          "Third-party rights and logos remain excluded",
+          "Paid book/ebook distribution requires separate review; this exception is not an application-use prohibition"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "overture-food-places",
+      "releaseId": "2026-09-23.1",
+      "historicalMappedSourceRecords": 12681108,
+      "historicalNativeNormalizedRows": 12681108,
+      "historicalArchiveSha256": "9dd97acae860f74aba19a407c1a473fe0d1f0e9cfcbe82ad4b36f59a869b5a7a",
+      "sourceFieldsOrTypes": [
+        "Site",
+        "RetailOutlet",
+        "Retailer",
+        "Organization"
+      ],
+      "recordedLicence": "Per-record CDLA-Permissive-2.0 / Apache-2.0 / CC0-1.0; notices retained",
+      "recordedAttribution": "Overture Maps Foundation and original providers",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Every row in all 16 pinned place Parquet files examined. All food/drink venues, non-tobacco food/beverage stores, farmers markets and agricultural farm references selected. No confidence or first-N truncation; rows outside the selected taxonomy scope explicitly excluded. Place category, operation and country remain source assertions.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {},
+        "conditions": [
+          "Retain per-record sources/licences; Apache licence and NOTICE/change requirements for Foursquare",
+          "Do not collapse into one licence or transfer rights from other themes",
+          "No nationwide coverage acceptance from global source"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "fineli",
+      "releaseId": "20.0",
+      "historicalMappedSourceRecords": 4232,
+      "historicalNativeNormalizedRows": 4238,
+      "historicalArchiveSha256": "e7e6bd8d4b9261d751229e763dad436b297d36d48fe853faf49e1fd2a116d262",
+      "sourceFieldsOrTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "recordedLicence": "CC BY 4.0",
+      "recordedAttribution": "National Institute for Health and Welfare (THL), Fineli, Release 20.0",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Every food and nutrient observation in the complete publisher Fineli Release 20.0 74-component archive. Companion 55-component and raw-ingredient archives retained without double-counting overlapping foods. This downloadable snapshot is not claimed as the current live API.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "unknown",
+          "fetch": "unknown",
+          "retain": "unknown",
+          "parse": "unknown",
+          "transform": "unknown",
+          "serve": "unknown",
+          "redistribute": "unknown"
+        },
+        "transformScopes": {},
+        "conditions": []
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "foodfiles",
+      "releaseId": "2024-v01",
+      "historicalMappedSourceRecords": 2857,
+      "historicalNativeNormalizedRows": 2857,
+      "historicalArchiveSha256": "fad47d11c97814b1d7be5a9d538f0b32cd4807b7d231e516e57c939c75a18a5f",
+      "sourceFieldsOrTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "recordedLicence": "FOODfiles terms: source data unchanged, attribution and downstream terms required",
+      "recordedAttribution": "New Zealand Food Composition Database, FOODfiles 2024 Version 01; Plant & Food Research and New Zealand Ministry of Health",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "All FOODfiles 2024 Version 01 food names and all 571,495 unabridged nutrient observations parsed; all 30 installer components retained locally. Canonical facts use whole-food W matrix only; fatty-acid F and nitrogen N matrices remain source-specific. Multiple energy, carbohydrate and fibre definitions remain distinct. Source values unaltered; selected FSANZ available-carbohydrate energy definition explicitly identified. Not the newer 2026 online-search data.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {
+          "losslessSchemaMapping": "conditional/interpretation; prove original values and form preserved",
+          "alterSourceData": "restricted",
+          "separateDerivedValues": "unknown; no blanket curation grant"
+        },
+        "conditions": [
+          "Original data presentation and publisher attribution required",
+          "Custom indemnity/terms remain relevant; no acceptance action performed",
+          "MSI installer not downloaded or run"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "sweden-food",
+      "releaseId": "2026-07-01",
+      "historicalMappedSourceRecords": 2606,
+      "historicalNativeNormalizedRows": 2606,
+      "historicalArchiveSha256": "4424c9e4656368a94517a2c697313e3b8682d959ccc4b4c848181083c4dd6569",
+      "sourceFieldsOrTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "recordedLicence": "Publisher reuse terms: source/version attribution, data must not be changed",
+      "recordedAttribution": "Livsmedelsverkets Livsmedelsdatabas version 2026-07-01",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Complete official Swedish full-database workbook export, version 2026-07-01; every food and all 58 nutrient columns parsed without changing source values. Missing values remain unknown. Recipe-derived foods are composition references, not quantified recipe instructions.",
+      "historicalServiceEvidence": "2026-10-13 expanded-country-search hosted receipt and bounded source query examples; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {
+          "losslessSchemaMapping": "conditional/interpretation: may differ from data alteration; exact contract review needed",
+          "alterSourceValues": "restricted",
+          "derivedSeparateObservations": "unknown; not covered by blanket transform permission"
+        },
+        "conditions": [
+          "Credit Livsmedelsverkets Livsmedelsdatabas version 2026-07-01",
+          "Preserve original data; do not silently recalculate or curate numeric values"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "world-recipes",
+      "releaseId": "world-recipes-common-20261014",
+      "historicalMappedSourceRecords": 25135,
+      "historicalNativeNormalizedRows": null,
+      "historicalArchiveSha256": null,
+      "sourceFieldsOrTypes": [
+        "RecipeConcept",
+        "RecipeVariant",
+        "IngredientMention",
+        "IngredientScalingRule",
+        "RecipeStep",
+        "CulturalRepresentation",
+        "HistoricalRecipeCandidate",
+        "Quantity"
+      ],
+      "recordedLicence": "Per-record original licences; derivative requirements retained",
+      "recordedAttribution": null,
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "common-field-map/1",
+      "historicalServiceEvidence": "2026-10-14 publication receipt verifies 25,135 recipe native/common records; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "unknown",
+          "retain": "unknown",
+          "parse": "unknown",
+          "transform": "unknown",
+          "serve": "unknown",
+          "redistribute": "unknown"
+        },
+        "transformScopes": {},
+        "conditions": []
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/world-recipe-research-20261014.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "foodon",
+      "releaseId": "2026-09-20",
+      "historicalMappedSourceRecords": 29255,
+      "historicalNativeNormalizedRows": null,
+      "historicalArchiveSha256": null,
+      "sourceFieldsOrTypes": [
+        "OntologyClass",
+        "OntologyAxiom",
+        "OntologyAnnotation",
+        "FormalExpression",
+        "ExternalConceptReference"
+      ],
+      "recordedLicence": "CC-BY-4.0",
+      "recordedAttribution": "FoodOn contributors",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Own-namespace source classes and all direct annotations/expressions; imported ontology identities stay references",
+      "historicalServiceEvidence": "2026-10-14 common publication receipt verifies FoodOn source manifest and notice; source map declares 29,255 own-namespace classes; not current runtime",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {},
+        "conditions": [
+          "Credit FoodOn contributors; mark changes",
+          "Imported ontology terms may carry separate origin notices; scope own namespace only"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/common-data-publication-verification-20261014.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "qudt-measurement-definitions",
+      "releaseId": "qudt-measurement-definitions-3.5.2-20261014",
+      "historicalMappedSourceRecords": 56,
+      "historicalNativeNormalizedRows": null,
+      "historicalArchiveSha256": null,
+      "sourceFieldsOrTypes": [
+        "UnitDefinition"
+      ],
+      "recordedLicence": "CC-BY-4.0",
+      "recordedAttribution": "QUDT.org",
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Pinned source unit definitions and dimension-specific conversion metadata; conventional variants retained distinctly",
+      "historicalServiceEvidence": "Local qualified package; no current served proof established in inspected evidence",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "conditional",
+          "retain": "conditional",
+          "parse": "conditional",
+          "transform": "conditional",
+          "serve": "conditional",
+          "redistribute": "conditional"
+        },
+        "transformScopes": {},
+        "conditions": [
+          "Attribution, source/link and change notices",
+          "Definition identity and conversion semantics require independent review"
+        ]
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/measurement-terminology-20261014.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    },
+    {
+      "sourceId": "recipe-expansion-20261014",
+      "releaseId": "recipe-expansion-qualified-20261014",
+      "historicalMappedSourceRecords": 42,
+      "historicalNativeNormalizedRows": null,
+      "historicalArchiveSha256": null,
+      "sourceFieldsOrTypes": [
+        "RecipeVariant",
+        "RecipeStep",
+        "IngredientMention",
+        "CulturalRepresentation"
+      ],
+      "recordedLicence": "Per-record pinned repository CC0-1.0 / Unlicense dedications and attribution",
+      "recordedAttribution": null,
+      "originalRecordsPreservedClaim": true,
+      "historicalScope": "Source-scoped complete recipe statements and candidate measure/ingredient mappings; pinned original content and title provenance",
+      "historicalServiceEvidence": "Local qualified package; no current served proof established in inspected evidence",
+      "historicalRightsEvidence": {
+        "date": "2026-10-18",
+        "classificationOnly": true,
+        "operations": {
+          "discover": "public-metadata-readable",
+          "fetch": "unknown",
+          "retain": "unknown",
+          "parse": "unknown",
+          "transform": "unknown",
+          "serve": "unknown",
+          "redistribute": "unknown"
+        },
+        "transformScopes": {},
+        "conditions": []
+      },
+      "currentAcquiredParsedNormalizedServedState": "Not independently reverified by this cloud-only documentation inspection; retain later source-specific holds and pending export",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/corpus/common-source-mappings.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/recipe-expansion-20261014.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/source-release-permissions-evidence.json"
+      ]
+    }
+  ],
+  "namedAdditionalSources": [
+    {
+      "source": "Wikibooks gossminn/wikibooks-cookbook",
+      "release": "2024-07-31",
+      "downloaded": "Historical archive receipt e41fdc713ea3b1ae74437fcaa783274161664926ba5f8f4769905b22879bc073",
+      "parsed": 3895,
+      "normalized": 3895,
+      "served": "Historical isolated public D1 import, Worker binding pending; current serving not established",
+      "rights": "CC BY-SA 4.0; Wikibooks contributors and Gosse Minnema attribution",
+      "evidence": "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/collections/wikibooks-2024-07-31.json"
+    },
+    {
+      "source": "OpenNutrition",
+      "release": "2025.1",
+      "downloaded": "Full publisher ZIP; checksum 30420802bbf0e29852c282e37a58c7e18ebc1b57e109706925ef969f0498ff47 matched",
+      "parsed": 326759,
+      "normalized": "Full TSV structural reconciliation is not authoritative nutrition admission",
+      "served": false,
+      "fields": {
+        "everyday": 5299,
+        "prepared": 3836,
+        "grocery": 313442,
+        "restaurant": 4182,
+        "missingBarcode": 13317,
+        "duplicateIds": 0,
+        "invalidJsonFields": 0
+      },
+      "rights": "ODbL + modified DbCL attribution requirements; model-inferred values and incomplete citations remain distinct. User confirms held, no publication approval.",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/collections/opennutrition-2025.1.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/hn-dataset-discovery.json"
+      ]
+    },
+    {
+      "source": "RecipeNLG",
+      "downloaded": "Not established; retained dataset-card lead reports 2,231,142 records, not a receipt",
+      "parsed": "Not established",
+      "normalized": "Not established",
+      "served": "Not bundled; publication rights blocked in historical report",
+      "rights": "Noncommercial research/education restriction; upstream text rights unresolved",
+      "evidence": "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/hn-dataset-discovery.json"
+    },
+    {
+      "source": "OpenLibrary / ISBN",
+      "downloaded": "Not established in inspected origin evidence",
+      "parsed": "Not established",
+      "normalized": "Not established",
+      "served": "Not established",
+      "rights": "No applicable exact release/terms/receipt established. ISBN is an identifier scheme, not a source dataset.",
+      "evidenceBasis": "No acquisition receipt in inspected mapped releases/corpus index/discovery reports; default-branch exact OpenLibrary/ISBN search no match. This is not proof that no retained artifact exists."
+    },
+    {
+      "source": "EAN-Search community registry",
+      "downloaded": "Not established in inspected origin evidence",
+      "parsed": "Not established",
+      "normalized": "Not established",
+      "served": "Not established",
+      "rights": "Exact release and terms not established",
+      "evidenceBasis": "Named by user; no exact source match in inspected mapped releases/index or default-branch EAN-Search search."
+    },
+    {
+      "source": "GS1 prefix metadata / licensed GS1 feeds",
+      "downloaded": "No prefix metadata payload receipt established; licensed feed access unexercised in historical reconciliation",
+      "parsed": "No exact prefix dataset parse receipt",
+      "normalized": "No source-qualified prefix mapping proof",
+      "served": "Directory/reference only; no current feed proof",
+      "rights": "Member/data-pool entitlements are source specific. Prefix does not establish manufacturing origin; checksum is not product authentication.",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/recommendation-delivery-register.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/delivery-reconciliation.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/OFFMENU_CORPUS_INDEX.md"
+      ]
+    },
+    {
+      "source": "Barcode Lookup",
+      "downloaded": "No approved bulk database purchase/download established",
+      "parsed": "Not established",
+      "normalized": "Not established",
+      "served": "No live fallback permitted",
+      "rights": "User supplied as barcode-format reference only: UPC/EAN/ISBN/JAN/ITF-14; not data permission",
+      "evidenceBasis": "Parent's latest user-direction handoff; not an acquisition receipt."
+    },
+    {
+      "source": "WhichGrocer",
+      "downloaded": "No configured account, calls or paid service at the historical checkpoint",
+      "parsed": "No retained bulk parse receipt established",
+      "normalized": "Not established",
+      "served": "Future optional connector in historical README; not a runtime fallback",
+      "rights": "Issued access, attribution/cache/retention terms; catalogue price is not local stock",
+      "evidence": "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/README.md"
+    },
+    {
+      "source": "Country staples / baskets",
+      "downloaded": "Research registers retained; not every national source dataset",
+      "parsed": "3,230 research basket lines = 2,523 editorial + 707 published-example lines",
+      "normalized": "337 proposed food concepts and 45 metric definitions are research assets, not accepted source-food equivalences or completed quantity joins",
+      "served": "249 queues do not establish complete national datasets or live baskets",
+      "rights": "Original source/quantity/period/population/state remain per-row; no blanket national-source clearance",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/research-audit.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/research-delivery-plan.md",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/OFFMENU_CORPUS_INDEX.md"
+      ]
+    },
+    {
+      "source": "Manufacturer / ownership sources",
+      "downloaded": "Wikidata direct-type results historically acquired: 1,505 references; other named companies/registers need exact receipts",
+      "parsed": "1,505 Wikidata references, not all manufacturers",
+      "normalized": "Source organization/role relations; no verified ownership chain inferred",
+      "served": "Historical bounded source example only; current runtime unverified",
+      "rights": "Wikidata structured data CC0; GLEIF/OpenCorporates/Companies House/Open Ownership are distinct sources/conditions",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/expanded-places-national-20261013.json",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/business-identity-owner27.md"
+      ]
+    },
+    {
+      "source": "Recall / regulatory sources",
+      "downloaded": "FSA/openFDA bounded historical sample capability and country leads; no full exact held-corpus totals established",
+      "parsed": "Helper/code presence not actual dataset parsing",
+      "normalized": "Source notice/GTIN/lot/date/market scopes must stay distinct; no exhaustive dataset proof",
+      "served": "No current comprehensive recall service proof",
+      "rights": "Historical openFDA enforcement is not current public-alert/lifecycle data; country/issuer/notice terms separate",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/OFFMENU_CORPUS_INDEX.md",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/recall-binding-owner26.md",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/delivery-reconciliation.json"
+      ]
+    },
+    {
+      "source": "Retailer price sources / country connectors",
+      "downloaded": "Open Prices has exact historical receipt; other country sources vary between retained metadata, exact bodies, unavailable originals and holds",
+      "parsed": "No blanket count. CPI, commodity market estimates, retail observations, menu prices, stock and household costs remain distinct.",
+      "normalized": "Existing country bindings are not completed source normalization",
+      "served": "No full country/retailer runtime coverage established",
+      "rights": "Per-source terms and dated scope; merchant/retailer access not created by catalogue",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/OFFMENU_CORPUS_INDEX.md",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/global-coverage-assessment.md"
+      ]
+    },
+    {
+      "source": "BYO credentials / optional APIs (including USDA personal API, Edamam)",
+      "downloaded": "Connection capability is not held eligible data; no configured connection/issued-key live verification established by historical receipt",
+      "parsed": "Not established by code presence",
+      "normalized": "Not established",
+      "served": "External Edamam/runtime food fallback prohibited by current user scope; use own normalized serving corpus only",
+      "rights": "Per-account/plan-specific private scope; no credentials inspected, source calls or purchases",
+      "evidence": [
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/acceptance-register.md",
+        "https://github.com/maldous/offmenu/blob/dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7/docs/OFFMENU_CORPUS_INDEX.md"
+      ]
+    },
+    {
+      "source": "Open Code",
+      "downloaded": "Unknown exact source identity",
+      "parsed": "Unknown",
+      "normalized": "Unknown",
+      "served": "Unknown",
+      "rights": "Do not silently resolve to Open Food Facts, Open Food Network, OpenLibrary or another source",
+      "evidenceBasis": "Latest user-direction handoff says conversational name is unverified."
+    },
+    {
+      "source": "Brocade",
+      "downloaded": "Not pursued",
+      "parsed": "Out of current scope",
+      "normalized": "Out of current scope",
+      "served": "Out of current scope",
+      "rights": "Explicitly dropped by user",
+      "evidenceBasis": "Latest user direction."
+    }
+  ],
+  "limits": [
+    "No current runtime service or local artifact hash reverified.",
+    "The large source-delivery ledger and enrichment register contents endpoint returned empty content with blob SHA; counts are corroborated by compact index/audit, not a fresh row-by-row review of all entries.",
+    "No complete deduplicated all-source universe or current all-corpus per-stage totals established.",
+    "Country coverage is not inferred from language, country tags, registered source routes or GS1 prefixes."
+  ]
+}
