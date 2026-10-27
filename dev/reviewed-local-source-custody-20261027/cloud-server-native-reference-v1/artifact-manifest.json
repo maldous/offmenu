@@ -1,0 +1,77 @@
+{
+  "schema": "offmenu-server-native-reference-source-artifacts/1",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5197,
+      "sha256": "cfb4d43c1b63f558fa18ef61523827ff2388110ffb09c72a6ee0e9ec27158e6d"
+    },
+    {
+      "path": "source/cloud/source-reference-stock.mjs",
+      "bytes": 408,
+      "sha256": "275180a284f2629ee6deec33fded25006191c08f8219076f7786f1c5d65792c7"
+    },
+    {
+      "path": "source-reference-stock-entry.mjs",
+      "bytes": 468,
+      "sha256": "4910abf19f4c672fd7a1a2019c99d777c397f2d5af6dff763e3bad348d232b61"
+    },
+    {
+      "path": "source-reference-stock.mjs",
+      "bytes": 90639,
+      "sha256": "3952df80dd0799848add2ef68e5e92591e16d99e5d0a9c9f42f048ea497abe52"
+    },
+    {
+      "path": "source-reference-stock.mjs.build.json",
+      "bytes": 4471,
+      "sha256": "39fb9620aa00bce6b32df3baea58d9eef7f3b461606ab90691fb88c07edbe2e5"
+    },
+    {
+      "path": "build-server-reference.mjs",
+      "bytes": 1786,
+      "sha256": "8f32c1b3d154ec094744c68c5000e6c1e26c28f7abbe1199ab2593707c57027c"
+    },
+    {
+      "path": "patch-server-reference.mjs",
+      "bytes": 3602,
+      "sha256": "6cf3b2db6712dc8e872bebe4415f41df82b585839ad86449a441a8fc5a6d32c8"
+    },
+    {
+      "path": "server-reference-save.test.mjs",
+      "bytes": 11911,
+      "sha256": "24c805e086b60f837bf8ccdf112992fa60c99d7119d29d250fafd44b9551a710"
+    },
+    {
+      "path": "server-reference-save-tests.log",
+      "bytes": 721,
+      "sha256": "fd02ea7efe28893b91324442c4231a5e7116039245a1ec5a3dab35d2130d2449"
+    },
+    {
+      "path": "deployed-application.server-reference.mjs.server-dispatch.json",
+      "bytes": 1038,
+      "sha256": "d0f9fc3ba92f8edeb1259fcf68e12bb7b8b9f0dc00a03cbca36be8eed333319a"
+    },
+    {
+      "path": "composed-server-reference-save-tests.log",
+      "bytes": 722,
+      "sha256": "f0c6b4eb59afaa3d01854bf05175a2701b6658e013368f081e45a4135fce9e43"
+    },
+    {
+      "path": "public-target-server-reference-save-tests.log",
+      "bytes": 721,
+      "sha256": "855272555340f9ede1b04de6f8d786948a30f603596f6e3b61ae6be6ad132e9e"
+    }
+  ],
+  "tests": {
+    "passed": 5,
+    "failed": 0,
+    "scope": "Actual server fetch; mocked auth/D1 only",
+    "composedArtifact": "d80ff41b23cada4c2686d0bc12a8aa69fd363ee0f898b452f5033029a8f86397",
+    "composedPassed": 5,
+    "publicTargetComposedArtifact": "b301e2bf3e9504387540cda4d202b38ec0e5de5359be031582b77b7ad05b0ad9",
+    "publicTargetPassed": 5
+  },
+  "runtimeActivation": false,
+  "deployed": false,
+  "actualIdentitySelection": "null"
+}

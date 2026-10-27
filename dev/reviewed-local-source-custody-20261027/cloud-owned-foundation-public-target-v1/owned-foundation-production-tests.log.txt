@@ -1,0 +1,14 @@
+✔ new public-target lookup returns actual qualified own-source record with rights and unchanged false flags (87.386844ms)
+✔ existing strict scanner accepts new real selection, explicit handoff and unknown amount without inferred package (69.277411ms)
+✔ actual USDA multi-observation pages retain count/order and exact source claims (705.259956ms)
+✔ same-origin guard, strict query/methods, unavailable source and public notices are truthful (21.338825ms)
+✔ actual new-public-reference stock survives composed server PUT and GET with original auth/containment (5.902467ms)
+✔ original local-only metadata cannot be passed off as public target; original pins remain unchanged (26.851524ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1096.648955

@@ -1,0 +1,34 @@
+{
+  "schema": "offmenu-existing-guest-foundation-adapter-build/1",
+  "compiler": "esbuild@0.25.12",
+  "output": {
+    "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/guest-foundation-adapter.bundle.js",
+    "bytes": 21264,
+    "sha256": "7c250884bcf9f6273f72a747a20e3bc49344d20755a0e00251aa5b1a1f87877a"
+  },
+  "inputs": [
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/public/foundation-handoff-bindings.mjs",
+      "bytes": 2982,
+      "sha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584"
+    },
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/public/foundation-scanner-handoff.mjs",
+      "bytes": 6878,
+      "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+    },
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/public/production-scanner/foundation-scanner-client.mjs",
+      "bytes": 10461,
+      "sha256": "46d43f13d06caafc22ddc47e361e04e5e0abb97e23709c3d028ed48f0d518e3d"
+    },
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/guest-foundation-adapter.mjs",
+      "bytes": 6458,
+      "sha256": "3c4544fb0d86bd3c3fa1a3a619fc93ef3ae213f22f018e5d7376ab5188e3e321"
+    }
+  ],
+  "externalImports": [],
+  "sourceOnly": true,
+  "replacesExistingScanner": false
+}
