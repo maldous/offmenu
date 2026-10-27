@@ -1,5 +1,5 @@
 {
   "schemaVersion": 1,
-  "jobId": "foo-source-inventory-20261027-0001",
-  "profile": "local-source-export"
+  "jobId": "foo-source-export-diagnostic-20261027-001",
+  "profile": "local-source-export-diagnostic"
 }
