@@ -123,7 +123,18 @@ def read_regular(path, maximum=MAX_FILE):
         after = os.fstat(fd)
         identity = lambda s: (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
         require(identity(before) == identity(after) and total == before.st_size, 'file-changed-during-read')
-        return b''.join(parts), before
+        raw = b''.join(parts)
+        # Same-length rewrites can share a filesystem timestamp tick. Recheck
+        # bounded bytes on this descriptor rather than relying on metadata alone.
+        os.lseek(fd, 0, os.SEEK_SET)
+        verified = 0
+        while True:
+            chunk = os.read(fd, min(65536, len(raw) + 1 - verified))
+            if not chunk: break
+            require(chunk == raw[verified:verified + len(chunk)], 'file-changed-during-read')
+            verified += len(chunk)
+        require(verified == len(raw) and identity(before) == identity(os.fstat(fd)), 'file-changed-during-read')
+        return raw, before
     finally:
         os.close(fd)
 
