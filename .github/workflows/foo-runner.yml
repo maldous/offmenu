@@ -9,7 +9,7 @@ on:
         description: Bounded command batch
         type: choice
         default: smoke
-        options: [source-access-test-diagnostic, public-source-read-handoff, additional-source-capacity, additional-public-sources, smoke, readiness, inventory, offline-replay, delivery-diagnostics, ciqual-source-native, global-readiness, offline-reconciliation, collection-prepare, zenodo-private-original, zenodo-response-metadata, swiss-private-original, selected-original-batch, batch-recovery-diagnostic, global-collection]
+        options: [local-source-export, source-access-test-diagnostic, public-source-read-handoff, additional-source-capacity, additional-public-sources, smoke, readiness, inventory, offline-replay, delivery-diagnostics, ciqual-source-native, global-readiness, offline-reconciliation, collection-prepare, zenodo-private-original, zenodo-response-metadata, swiss-private-original, selected-original-batch, batch-recovery-diagnostic, global-collection]
   push:
     branches: [offmenu-runner-jobs]
     paths: [.github/offmenu-runner/request.json]
@@ -34,7 +34,7 @@ jobs:
     env:
       # Replace only after the code/fixture/dispatcher commit is independently
       # reviewed and published. This placeholder deliberately prevents execution.
-      TRUSTED_CODE_SHA: 91da92bc4672dc570f7515d4d396bacda37de19f
+      TRUSTED_CODE_SHA: c6cc6cde59c6fc56f866873faeae845cd19ce163
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Verify trusted revision is configured
@@ -81,6 +81,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 1
       - name: Run one bounded batch and emit one sanitized report
+        id: batch
         shell: bash
         env:
           EVENT_NAME: ${{ github.event_name }}
@@ -105,6 +106,19 @@ jobs:
           python3 -B "$GITHUB_WORKSPACE/trusted-code/scripts/dispatch-foo-job.py" \
             --request "$REQUEST" --trusted-code-sha "$TRUSTED_CODE_SHA"
 
+      # This exports only the validated, owner-staged packet, never the checkout,
+      # cache, runtime tree, or arbitrary request paths. Foo token stays read-only.
+      - name: Retain validated selected source packet
+        if: steps.batch.outputs.source_export_ready == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4, existing reviewed pin
+        with:
+          name: offmenu-source-export-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/offmenu-source-export-${{ github.run_id }}-${{ github.run_attempt }}/source-export.json
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 14
+          overwrite: false
+
   # Hosted-only publisher. Its job-scoped write token never reaches Foo.
   # Install only after the explicit permission expansion and results PR approval.
   publish_receipt:
@@ -122,7 +136,7 @@ jobs:
       contents: write
       pull-requests: read
     env:
-      TRUSTED_CODE_SHA: 91da92bc4672dc570f7515d4d396bacda37de19f
+      TRUSTED_CODE_SHA: c6cc6cde59c6fc56f866873faeae845cd19ce163
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Verify terminal Foo job and prepare bounded evidence
@@ -168,15 +182,16 @@ jobs:
           MAX_REPORT = 128 * 1024
           MAX_RECEIPT = 16 * 1024
           MAX_API = 1024 * 1024
-          PROFILES = {'source-access-test-diagnostic', 'public-source-read-handoff', 'additional-source-capacity', 'additional-public-sources', 'readiness', 'inventory', 'offline-replay', 'smoke',
+          PROFILES = {'local-source-export', 'source-access-test-diagnostic', 'public-source-read-handoff', 'additional-source-capacity', 'additional-public-sources', 'readiness', 'inventory', 'offline-replay', 'smoke',
                       'delivery-diagnostics', 'national-schema-survey', 'ciqual-source-native', 'global-readiness', 'offline-reconciliation', 'collection-prepare', 'zenodo-private-original', 'zenodo-response-metadata', 'swiss-private-original', 'selected-original-batch', 'batch-recovery-diagnostic', 'global-collection'}
-          STEP_IDS = {'source-access-test-reporter-tests', 'source-access-test-diagnostic', 'public-source-read-handoff-tests', 'public-source-read-handoff', 'additional-source-capacity-tests', 'additional-source-capacity', 'additional-public-source-tests', 'additional-public-sources', 'readiness', 'inventory', 'refresh-tests', 'offline-replay',
+          STEP_IDS = {'local-source-export-tests', 'local-source-export', 'source-access-test-reporter-tests', 'source-access-test-diagnostic', 'public-source-read-handoff-tests', 'public-source-read-handoff', 'additional-source-capacity-tests', 'additional-source-capacity', 'additional-public-source-tests', 'additional-public-sources', 'readiness', 'inventory', 'refresh-tests', 'offline-replay',
                       'replay-idempotency', 'ledger-tests', 'ledger-audit',
                       'dataset-tests', 'selected-data-inventory', 'schema-survey-tests',
                       'schema-survey', 'ciqual-native-tests',
                       'ciqual-native-candidate', 'ciqual-native-retry', 'global-readiness-tests', 'global-runtime', 'global-coverage', 'global-registry-tests', 'global-harness-tests', 'reconciliation-tests',
                       'source-claims', 'transfer-receipts', 'native-continuity', 'disk-reservations', 'pending-ownership', 'collection-preparation-tests', 'collection-prepare', 'zenodo-original-tests', 'zenodo-private-original', 'zenodo-response-tests', 'zenodo-response-metadata', 'swiss-original-tests', 'swiss-private-original', 'fixed-source-batch-tests', 'selected-original-batch', 'batch-recovery-tests', 'batch-recovery-diagnostic', 'global-collection-tests', 'media-preparation-tests', 'global-collection'}
           PROFILE_STEPS = {
+              'local-source-export': ['readiness', 'local-source-export-tests', 'local-source-export'],
               'source-access-test-diagnostic': ['readiness', 'source-access-test-reporter-tests', 'source-access-test-diagnostic'],
               'public-source-read-handoff': ['readiness', 'public-source-read-handoff-tests', 'public-source-read-handoff'],
               'additional-source-capacity': ['readiness', 'additional-source-capacity-tests', 'additional-source-capacity'],
