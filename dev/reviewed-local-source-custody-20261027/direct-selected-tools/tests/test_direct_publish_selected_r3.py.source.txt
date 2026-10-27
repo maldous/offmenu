@@ -1,0 +1,109 @@
+"""Focused synthetic selected-source checks. No network or real source reads."""
+import copy
+import importlib.util
+import json
+from pathlib import Path
+import tempfile
+import unittest
+from unittest.mock import patch
+HERE = Path(__file__).resolve().parent
+TOOL = HERE.parent / 'scripts/direct_publish_selected_r3.py'
+if not TOOL.exists(): TOOL = HERE / 'direct_publish_selected_r3.py'
+spec = importlib.util.spec_from_file_location('direct_selected', TOOL)
+D = importlib.util.module_from_spec(spec); spec.loader.exec_module(D)
+HELPER = HERE.parent / 'scripts/export-local-source.py'
+if not HELPER.exists(): HELPER = HERE.parent / 'offmenu-source-corpus-inventory-20261027/scripts/export-local-source.py'
+
+class SelectedTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.helper = D.load_helper(HELPER, D.sha256(HELPER.read_bytes()))
+        self.helper.CANONICAL = str(self.root)
+        self.source = self.root / 'synthetic.mjs'; self.source.write_bytes(b'export const synthetic = 1;\r\n')
+        self.row = {'sourcePath': str(self.source), 'repositoryPath': 'dev/reviewed-local-source-custody-20261027/recovered/synthetic/test.mjs',
+                    'bytes': None, 'sha256': D.sha256(self.source.read_bytes()), 'kind': 'source', 'reviewRef': 'synthetic-reviewed'}
+        self.request = self.root / 'request.json'
+
+    def resolve(self, row=None):
+        raw = self.helper.canonical({'schemaVersion': 'offmenu-reviewed-source-request/3', 'evidenceCommit': 'a'*40, 'files': [row or self.row], 'landingProjection': {}})
+        self.request.write_bytes(raw)
+        return D.resolve_requests(self.request, D.sha256(raw), self.helper)[0]
+
+    def packet(self):
+        selection = self.resolve(); directory = self.root / 'packets'
+        self.helper.private_output(str(directory), self.helper.packets('selected','synthetic-selected',{'head':'a'*40,'branch':'synthetic'},selection,self.helper.selected_parts(selection)))
+        return directory, selection
+
+    def test_unknown_size_resolves_after_exact_digest(self):
+        selection = self.resolve(); self.assertEqual(selection[0]['bytes'], self.source.stat().st_size)
+        self.assertEqual(selection[0]['sha256'], self.row['sha256'])
+        self.assertEqual(self.source.read_bytes(), b'export const synthetic = 1;\r\n')
+
+    def test_changed_source_and_request_pin_rejected(self):
+        self.source.write_bytes(b'changed')
+        with self.assertRaisesRegex(D.Refused,'source-changed'): self.resolve()
+        with self.assertRaisesRegex(D.Refused,'requests-pin'): D.resolve_requests(self.request,'0'*64,self.helper)
+
+    def test_artwork_wrong_destination_and_symlink_rejected(self):
+        for key,value in [('kind','artwork'),('repositoryPath','public/live.mjs')]:
+            row=dict(self.row);row[key]=value
+            with self.assertRaises(D.Refused):self.resolve(row)
+        self.source.unlink();self.source.symlink_to(self.request)
+        with self.assertRaises(OSError):self.resolve()
+
+    def test_explicit_selected_directory_and_different_selection(self):
+        directory,selection=self.packet();records,manifest,digest=D.prepare_directory(directory,self.helper,selection)
+        self.assertEqual(len(records),2);self.assertEqual(digest,D.sha256(self.helper.canonical(selection)))
+        other=copy.deepcopy(selection);other[0]['reviewRef']='different'
+        with self.assertRaisesRegex(D.Refused,'approved-selection'):D.prepare_directory(directory,self.helper,other)
+
+    def test_workflow_pin_stops_before_writes(self):
+        directory,selection=self.packet();calls=[]
+        def api(url,method='GET',payload=None):
+            calls.append(method)
+            if '/git/ref/' in url:return {'ref':'refs/heads/'+D.BRANCH,'object':{'type':'commit','sha':'a'*40}}
+            if '/contents/' in url:return []
+            return {'full_name':D.REPOSITORY,'private':True}
+        with self.assertRaisesRegex(D.Refused,'workflow-pins'):D.publish(directory,self.helper,api,selection,{"schemaVersion":"synthetic-projection"})
+        self.assertEqual(set(calls),{'GET'})
+
+    def test_concurrent_branch_move_never_updates_ref(self):
+        directory,selection=self.packet();calls=[]
+        def api(url,method='GET',payload=None):
+            calls.append(method)
+            if url.endswith('/git/blobs'):
+                import base64
+                return {'sha':D.git_blob(base64.b64decode(payload['content']))}
+            if url.endswith('/git/trees'):return {'sha':'b'*40}
+            if url.endswith('/git/commits'):return {'sha':'c'*40}
+            raise AssertionError(url)
+        with patch.object(D,'current_ref',side_effect=['a'*40,'f'*40]),patch.object(D,'verify_safe_parent',return_value='b'*40),patch.object(D,'tree_at',return_value=None):
+            with self.assertRaisesRegex(D.Refused,'branch-moved'):D.publish(directory,self.helper,api,selection,{"schemaVersion":"synthetic-projection"})
+        self.assertNotIn('PATCH',calls)
+
+class LandingProjectionTests(unittest.TestCase):
+    setUp = SelectedTests.setUp
+    def projector(self):
+        path=HERE.parent/'scripts/extract-landing-source-literals.py'
+        if not path.exists(): path=Path('/workspace/shared/offmenu-landing-integration-39396038/extract-landing-source-literals.py')
+        return D.load_helper(path,D.sha256(path.read_bytes()))
+    def test_literal_landing_projection_keeps_binary_opaque(self):
+        import base64
+        projector=self.projector();body=b'export const authored=1;';digest=D.sha256(body)
+        routes={'/landing-world/test.mjs':{'sha256':digest,'bytes':len(body),'mime':'application/javascript'},
+                '/landing-world/image.png':{'sha256':'b'*64,'bytes':100,'mime':'image/png'},
+                '/api/data.json':{'sha256':'c'*64,'bytes':100,'mime':'application/json'}}
+        raw=('export const ROOT14_ROUTES='+json.dumps(routes)+'; export const ROOT14_BODIES='+json.dumps({digest:base64.b64encode(body).decode(),'b'*64:'intentionally-not-base64','c'*64:'intentionally-not-base64'})+';').encode()
+        parent=self.root/'parent.mjs';parent.write_bytes(raw);projector.SOURCE_PATH=str(parent);projector.SOURCE_SHA=D.sha256(raw)
+        # project default argument is frozen when defined; pass pinned test digest.
+        real=projector.project;projector.project=lambda body:real(body,projector.SOURCE_SHA)
+        req={'evidenceCommit':'a'*40,'landingProjection':{'sourcePath':str(parent),'sha256':D.sha256(raw),'projectorSha256':'f'*64}}
+        out=D.project_landing(req,'e'*64,self.helper,projector,'f'*64)
+        self.assertEqual(len(out['routeDescriptors']),3);self.assertEqual(len(out['sourceBodies']),1)
+        self.assertEqual(base64.b64decode(out['sourceBodies'][0]['contentBase64']),body)
+        self.assertNotIn('intentionally-not-base64',json.dumps(out))
+        req['landingProjection']['sha256']='0'*64
+        with self.assertRaisesRegex(D.Refused,'projection-pin'):D.project_landing(req,'e'*64,self.helper,projector,'f'*64)
+
+if __name__=='__main__': unittest.main()
