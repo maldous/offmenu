@@ -1,5 +1,5 @@
 {
   "schemaVersion": 1,
-  "jobId": "public-source-read-handoff-20261022-0745-004",
-  "profile": "public-source-read-handoff"
+  "jobId": "foo-route-readiness-20261027-001",
+  "profile": "readiness"
 }
