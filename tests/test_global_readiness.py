@@ -156,9 +156,16 @@ class GlobalReadinessTests(unittest.TestCase):
         self.assertIn("github.repository_id == '1416253963'",text)
         self.assertIn("github.actor_id == '6347545'",text)
         self.assertIn('permissions:\n  contents: read',text)
-        self.assertNotIn('contents: write',text)
-        self.assertNotIn('PROFILE_STEPS =',text)
-        self.assertIn('global-readiness]',text)
+        # The separately reviewed hosted receipt publisher has a job-local write
+        # token. It must never widen the self-hosted Foo execution job's token.
+        execution, publisher = text.split('  publish_receipt:', 1)
+        self.assertNotIn('contents: write',execution)
+        self.assertNotIn('PROFILE_STEPS =',execution)
+        choices = execution.split('options: [', 1)[1].split(']', 1)[0].split(', ')
+        self.assertIn('global-readiness',choices)
+        self.assertIn('runs-on: ubuntu-24.04',publisher)
+        self.assertIn('needs: run',publisher)
+        self.assertIn('permissions:\n      actions: read\n      contents: write\n      pull-requests: read',publisher)
 
     def test_incomplete_census_cannot_claim_complete(self):
         value=census.coverage(OBSERVED)
@@ -252,3 +259,4 @@ class GlobalReadinessTests(unittest.TestCase):
 
 if __name__=='__main__':
     unittest.main()
+
