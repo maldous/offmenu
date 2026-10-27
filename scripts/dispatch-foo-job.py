@@ -24,7 +24,7 @@ import time
 CACHE = Path("/srv/offmenu-refresh/cache")
 OUTPUT = Path("/srv/offmenu-refresh/outputs")
 REPOSITORY_ID = "1416253963"
-PROFILES = {"source-access-test-diagnostic", "public-source-read-handoff", "additional-source-capacity", "additional-public-sources", "readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare", "zenodo-private-original", "zenodo-response-metadata", "swiss-private-original", "selected-original-batch", "batch-recovery-diagnostic", "global-collection"}
+PROFILES = {"local-source-export", "source-access-test-diagnostic", "public-source-read-handoff", "additional-source-capacity", "additional-public-sources", "readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare", "zenodo-private-original", "zenodo-response-metadata", "swiss-private-original", "selected-original-batch", "batch-recovery-diagnostic", "global-collection"}
 MAX_REQUEST = 1024
 MAX_CHILD_OUTPUT = 1024 * 1024
 MAX_REPORT = 32768
@@ -140,6 +140,7 @@ def finite_float(value):
 def diagnostic_evidence(value):
     """Rebind child reports through pinned, closed-schema sanitizers."""
     schemas = {
+        "offmenu-local-source-summary/1": ("export-local-source.py", "localSourceExport"),
         "offmenu-source-access-tests/1": ("../manual-action/check_source_access_handoff_tests.py", "sourceAccessTests"),
         "offmenu-source-access-handoff/1": ("../manual-action/grant_acquired_read_access.py", "sourceAccessHandoff"),
         "offmenu-additional-source-capacity/1": ("../manual-action/fetch_capacity.py", "additionalSourceCapacity"),
@@ -307,12 +308,20 @@ def run_child(command, code, timeout=240):
             "evidence": evidence}
 
 
-def profile_steps(profile, code, trusted_sha=None):
+def profile_steps(profile, code, trusted_sha=None, job_id=None):
     python = sys.executable
     replay = [python, "-B", "-m", "offmenu.refresh", "replay",
               "--manifest", "tests/fixtures/corpus-refresh/input-manifest.json",
               "--input-root", "tests/fixtures/corpus-refresh", "--workspace", str(OUTPUT / "pilot")]
     steps = [("readiness", [], [python, "-B", "-c", "import sys, fcntl, resource, offmenu.refresh; assert sys.version_info >= (3, 10)"])]
+    if profile == "local-source-export":
+        if not isinstance(job_id, str) or not re.fullmatch(r"[a-z0-9][a-z0-9-]{7,63}", job_id):
+            raise JobError("export-job-id-invalid")
+        artifact = source_export_artifact()
+        return steps + [
+            ("local-source-export-tests", ["readiness"], [python, "-I", "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_local_source_export.py"]),
+            ("local-source-export", ["readiness", "local-source-export-tests"], [python, "-I", "-B", "scripts/export-local-source.py", "receive", "--job-id", job_id, "--artifact", str(artifact)]),
+        ]
     if profile == "source-access-test-diagnostic":
         return steps + [
             ("source-access-test-reporter-tests", ["readiness"], [python, "-I", "-B", "-m", "unittest", "discover", "-s", "manual-action/tests", "-p", "test_check_source_access_handoff_tests.py"]),
@@ -458,6 +467,9 @@ def run_step(step_id, command, code):
                 result["status"] = "blocked"
             else:
                 result.update(status="failed", exitCode=3, errorCode="additional-source-capacity-report-invalid")
+        if step_id == "local-source-export" and result["status"] == "passed":
+            if not result["evidence"].get("localSourceExport"):
+                result.update(status="failed", exitCode=3, errorCode="local-source-export-summary-invalid")
         if step_id == "additional-public-sources" and result["status"] in {"passed", "failed"}:
             report = result["evidence"].get("additionalPublicSources", {})
             if report.get("status") == "complete" and result["exitCode"] == 0:
@@ -619,7 +631,7 @@ def parallel_diagnostics(steps, code):
 
 
 def run_profile(request, sha, code, run_id, attempt):
-    steps = profile_steps(request["profile"], code, sha)
+    steps = profile_steps(request["profile"], code, sha, request["jobId"])
     cancelled = False
     if request["profile"] in {"delivery-diagnostics", "global-readiness"}:
         by_id, cancelled = parallel_diagnostics(steps, code)
@@ -644,6 +656,10 @@ def run_profile(request, sha, code, run_id, attempt):
               "profile": request["profile"], "trustedCodeSha": sha, "githubRunId": run_id,
               "githubRunAttempt": attempt, "status": state, "steps": results,
               "sourceContentsUploaded": False, "externalPublication": False}
+    if request["profile"] == "local-source-export":
+        report.update(maximumParallelChildren=1, diagnosticScope="owner-staged-selected-source-packet",
+                      sourceCodeArtifactPrepared=state == "passed", datasetContentsUploaded=False,
+                      repositoryWriteEnabled=False, hostAccessExpanded=False)
     if request["profile"] == "source-access-test-diagnostic":
         report.update(maximumParallelChildren=1, diagnosticScope="synthetic-handoff-tests-only",
                       corpusAcceptanceEstablished=False, databaseWritesEnabled=False,
@@ -740,6 +756,7 @@ def execute(request, sha, code, run_id, attempt):
         identity = hashlib.sha256(canonical({"request": request, "trustedCodeSha": sha})).hexdigest()
         if receipt.is_symlink():
             raise JobError("receipt-symlink-forbidden")
+        prior_export_digest = None
         if receipt.exists():
             if receipt.stat().st_size > report_limit(request):
                 raise JobError("previous-receipt-invalid")
@@ -747,7 +764,11 @@ def execute(request, sha, code, run_id, attempt):
             if previous.get("requestIdentity") != identity:
                 raise JobError("job-id-reused-for-different-request")
             if previous.get("status") in {"passed", "failed", "cancelled", "incomplete"}:
-                return previous | {"delivery": "existing-receipt-no-execution"}
+                if request["profile"] != "local-source-export":
+                    return previous | {"delivery": "existing-receipt-no-execution"}
+                for step in previous.get("steps", []):
+                    if step.get("stepId") == "local-source-export":
+                        prior_export_digest = step.get("evidence", {}).get("localSourceExport", {}).get("packetSha256")
             # An interrupted coordinator may retry. The downstream replay handles resumable checkpoints.
         atomic_json(receipt, {"status": "running", "requestIdentity": identity})
         # The active direct child inherits custody of this flock. If the
@@ -758,9 +779,55 @@ def execute(request, sha, code, run_id, attempt):
             report = run_profile(request, sha, code, run_id, attempt)
         finally:
             ACTIVE_LOCK_FD = None
+        if prior_export_digest is not None:
+            actual = next((x.get("evidence", {}).get("localSourceExport", {}).get("packetSha256")
+                           for x in report["steps"] if x["stepId"] == "local-source-export"), None)
+            if actual is not None and actual != prior_export_digest:
+                raise JobError("staged-export-changed-between-attempts")
         report["requestIdentity"] = identity
         atomic_json(receipt, report)
         return report
+
+
+def source_export_artifact():
+    temp = os.environ.get("RUNNER_TEMP", "")
+    if not temp.startswith("/") or Path(temp).is_symlink() or not Path(temp).is_dir():
+        raise JobError("runner-temp-unavailable")
+    run_id, attempt = os.environ.get("GITHUB_RUN_ID", ""), os.environ.get("GITHUB_RUN_ATTEMPT", "")
+    if not re.fullmatch(r"[0-9]{1,20}", run_id) or not re.fullmatch(r"[0-9]{1,5}", attempt):
+        raise JobError("source-export-run-identity-invalid")
+    directory = Path(temp) / ("offmenu-source-export-" + run_id + "-" + attempt)
+    if directory.is_symlink():
+        raise JobError("source-export-artifact-directory-invalid")
+    directory.mkdir(mode=0o700, exist_ok=True)
+    if not directory.is_dir() or directory.stat().st_uid != os.getuid():
+        raise JobError("source-export-artifact-directory-invalid")
+    return directory / "source-export.json"
+
+
+def mark_source_export_ready(report):
+    evidence = next((x.get("evidence", {}).get("localSourceExport") for x in report.get("steps", [])
+                     if x.get("stepId") == "local-source-export"), None)
+    if not evidence:
+        raise JobError("source-export-evidence-unavailable")
+    artifact = source_export_artifact()
+    fd = os.open(artifact, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    try:
+        import stat
+        info = os.fstat(fd)
+        if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 or info.st_size > 8 * 1024 * 1024:
+            raise JobError("source-export-artifact-invalid")
+        with os.fdopen(os.dup(fd), "rb") as stream:
+            raw = stream.read(8 * 1024 * 1024 + 1)
+        if len(raw) != evidence["packetBytes"] or hashlib.sha256(raw).hexdigest() != evidence["packetSha256"]:
+            raise JobError("source-export-artifact-pin-mismatch")
+    finally:
+        os.close(fd)
+    output = os.environ.get("GITHUB_OUTPUT")
+    if not output:
+        raise JobError("github-output-unavailable")
+    with open(output, "a") as stream:
+        stream.write("source_export_ready=true\n")
 
 
 def main(argv=None):
@@ -782,6 +849,8 @@ def main(argv=None):
         if not re.fullmatch(r"[0-9]{1,20}", run_id) or not re.fullmatch(r"[0-9]{1,5}", attempt):
             raise JobError("github-run-identity-invalid")
         report = execute(request, args.trusted_code_sha, code, run_id, attempt)
+        if request["profile"] == "local-source-export" and report["status"] == "passed":
+            mark_source_export_ready(report)
     except JobError as error:
         report = {"schemaVersion": 1, "status": "blocked", "errorCode": str(error)}
     except Cancelled:
@@ -799,6 +868,7 @@ def main(argv=None):
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
 
 

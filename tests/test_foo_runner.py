@@ -152,12 +152,13 @@ class QueueTests(unittest.TestCase):
                 jobs.parse_request(raw)
 
     def test_no_arbitrary_commands_from_request(self):
-        for profile in jobs.PROFILES:
-            for _, _, command in jobs.profile_steps(profile, ROOT, "a" * 40):
-                self.assertIsInstance(command, list)
-                self.assertNotIn("bash", command)
-                self.assertNotIn("sudo", command)
-                self.assertNotIn("gh", command)
+        with patch.object(jobs, "source_export_artifact", return_value=Path("/tmp/offmenu-source-export.json")):
+            for profile in jobs.PROFILES:
+                for _, _, command in jobs.profile_steps(profile, ROOT, "a" * 40, "foo-test-001"):
+                    self.assertIsInstance(command, list)
+                    self.assertNotIn("bash", command)
+                    self.assertNotIn("sudo", command)
+                    self.assertNotIn("gh", command)
 
     def test_smoke_independent_steps_continue_and_dependents_skip(self):
         calls = []
@@ -255,3 +256,4 @@ class QueueTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
