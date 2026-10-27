@@ -1,0 +1,86 @@
+{
+  "schema": "offmenu-skill-reference-pins/2",
+  "purpose": "Repository-relative platform source bindings; deployment and production coverage are established by separate evidence.",
+  "references": [
+    {
+      "repository_path": "scripts/windmill/job_runner.py",
+      "bytes": 14070,
+      "sha256": "81b2918d8384ac3da63397263263c01340dc9b90031672d1fa4baab16aef8c1a"
+    },
+    {
+      "repository_path": "scripts/windmill/windmill_foo_jobs.py",
+      "bytes": 7049,
+      "sha256": "b136113ffe4c0e5564fa475f2c9b2842b6188dae13191742f20cdc8fabbf60e5"
+    },
+    {
+      "repository_path": "scripts/windmill/README.md",
+      "bytes": 4720,
+      "sha256": "0a914b71db9cf8e9026b79626e90db8352ca5f6f3953be6c41a25ec66e076734"
+    },
+    {
+      "repository_path": "scripts/windmill/test_job_runner.py",
+      "bytes": 5278,
+      "sha256": "f385c6f00a9e2c691fd7f1e19b48621b19a2f38f5151ddc427a8d29348e46448"
+    },
+    {
+      "repository_path": "scripts/windmill/test_windmill_foo_jobs.py",
+      "bytes": 1671,
+      "sha256": "507f1207fa206ca00efa0b6a2c3e7272486b4c0cdb23e93fb9c2a5bf59790b35"
+    },
+    {
+      "repository_path": "scripts/windmill/storage/offmenu_storage.py",
+      "bytes": 18197,
+      "sha256": "a6d4222f7324b5fc4260f7133ab9815a95d4849f81049ef1ef3bec53bd309d70"
+    },
+    {
+      "repository_path": "scripts/windmill/storage/windmill_checkpoint.py",
+      "bytes": 6758,
+      "sha256": "97c7e9393edc0ebbaf882db3c9fa469958e2e0e8a8a07ded7c75e847b51b288d"
+    },
+    {
+      "repository_path": "scripts/windmill/storage/README.md",
+      "bytes": 10286,
+      "sha256": "7bc7fd473e4bcfae615276c2193a7bfd7af9762eb9032ef510ca03e3bec8cf97"
+    },
+    {
+      "repository_path": "scripts/windmill/storage/checkpoint-record.schema.json",
+      "bytes": 950,
+      "sha256": "0803dac11b91b31805a950aa13970cbcbc6d60c843ebb77340ef4a203ea2b77b"
+    },
+    {
+      "repository_path": "scripts/windmill/storage/test_offmenu_storage.py",
+      "bytes": 8720,
+      "sha256": "eef2727cb4f560255ff3f95b305dd74edb08e70bd18c58006ef01d8148d3ef29"
+    },
+    {
+      "repository_path": "scripts/windmill/storage/test_windmill_checkpoint.py",
+      "bytes": 5976,
+      "sha256": "b479bd57fde6991d6e6b7300205a3068b7881c1c471269aa8b0f026214f38573"
+    },
+    {
+      "repository_path": "scripts/windmill/duckdb/runtime.py",
+      "bytes": 6940,
+      "sha256": "a894d076d7adc6d349a229d417094f7fc7a5b08aab43f83049ed1e7f3662abd0"
+    },
+    {
+      "repository_path": "scripts/windmill/duckdb/install_offline.py",
+      "bytes": 8264,
+      "sha256": "99aa6130ddd0fd4e1f0f29cdba2d19cc5c98d6ea985850dfc3c314c5da6b67d8"
+    },
+    {
+      "repository_path": "scripts/windmill/duckdb/README.md",
+      "bytes": 10114,
+      "sha256": "cb2b0f15fc92c38b03d0021c1bc062bf9242c14da47203b4abeb9410c5266577"
+    },
+    {
+      "repository_path": "scripts/windmill/duckdb/lock.json",
+      "bytes": 1382,
+      "sha256": "cad278bd2cb8d2a185b3aee6e7a21ab17115bc12929e3b2cb9a0ba0e1ecab18d"
+    },
+    {
+      "repository_path": "scripts/windmill/duckdb/requirements.lock",
+      "bytes": 176,
+      "sha256": "9c059b64df8b7bfd85b09f25c6ff99e8d3a42c626855bf3f910ad231fba9d46e"
+    }
+  ]
+}

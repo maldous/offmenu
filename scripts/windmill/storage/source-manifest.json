@@ -1,0 +1,16 @@
+{
+  "contains_credentials": false,
+  "contains_runtime_artifacts": false,
+  "files": {
+    "README.md": "7bc7fd473e4bcfae615276c2193a7bfd7af9762eb9032ef510ca03e3bec8cf97",
+    "checkpoint-record.schema.json": "0803dac11b91b31805a950aa13970cbcbc6d60c843ebb77340ef4a203ea2b77b",
+    "deployment-receipt.json": "ebaa5236a74b6a4227d7a9ed45e209a3e303ab2ccc24b6e9903b992e95d4b55f",
+    "offmenu_storage.py": "a6d4222f7324b5fc4260f7133ab9815a95d4849f81049ef1ef3bec53bd309d70",
+    "test_offmenu_storage.py": "eef2727cb4f560255ff3f95b305dd74edb08e70bd18c58006ef01d8148d3ef29",
+    "test_windmill_checkpoint.py": "b479bd57fde6991d6e6b7300205a3068b7881c1c471269aa8b0f026214f38573",
+    "windmill_checkpoint.py": "97c7e9393edc0ebbaf882db3c9fa469958e2e0e8a8a07ded7c75e847b51b288d"
+  },
+  "format": "offmenu-storage-source-manifest-v1",
+  "scope": "source/tests/schema/docs/receipts only",
+  "tests": "26 synthetic tests passed locally under umask007 and in actual Foo jail; end-to-end state receipt roundtrip verified"
+}
