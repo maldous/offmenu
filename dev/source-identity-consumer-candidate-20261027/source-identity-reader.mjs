@@ -54,8 +54,9 @@ export async function sha256(bytes) {
 }
 async function document(bytes, descriptor, maxBytes, label) {
   need(bytes instanceof Uint8Array && bytes.byteLength > 0 && bytes.byteLength <= maxBytes, label + '-bytes');
-  need(object(descriptor) && descriptor.bytes === bytes.byteLength && hex(descriptor.sha256) && await sha256(bytes) === descriptor.sha256, label + '-pin');
-  return JSON.parse(new TextDecoder('utf-8', {fatal:true}).decode(bytes));
+  const ownedBytes = new Uint8Array(bytes);
+  need(object(descriptor) && descriptor.bytes === ownedBytes.byteLength && hex(descriptor.sha256) && await sha256(ownedBytes) === descriptor.sha256, label + '-pin');
+  return JSON.parse(new TextDecoder('utf-8', {fatal:true}).decode(ownedBytes));
 }
 const unknown = () => ({state:'unknown', reason:'not-in-qualified-identity-metadata'});
 

@@ -153,3 +153,19 @@ test('partial presentation is permitted for an empty selected phase result, but 
   assert.throws(()=>composeWithQualifiedPhase({...phase,status:'error'},identity),/technical-failure/);
   assert.throws(()=>composeWithQualifiedPhase({...phase,fieldContract:undefined,error:'OWN_DATA_UNAVAILABLE'},identity),/qualified-reader-results/);
 });
+
+test('after-hash caller-buffer mutation never changes parsed provenance under the original pin',async()=>{
+  const input=await fixture();const expected=input.selection.index.sha256;
+  const text=new TextDecoder().decode(input.indexBytes);const offset=text.indexOf('"wireSha256":"')+'"wireSha256":"'.length;
+  assert.equal(text[offset],'b');const originalDigest=crypto.subtle.digest;let changes=0;
+  crypto.subtle.digest=async function(algorithm,data){
+    const digest=await originalDigest.call(this,algorithm,data);
+    const hash=Array.from(new Uint8Array(digest),n=>n.toString(16).padStart(2,'0')).join('');
+    if(hash===expected&&changes===0){input.indexBytes[offset]='f'.charCodeAt(0);changes++;}
+    return digest;
+  };
+  let reader;
+  try{reader=await createSourceIdentityReader(input);}finally{crypto.subtle.digest=originalDigest;}
+  assert.equal(changes,1);assert.notEqual(await sha256(input.indexBytes),expected);
+  assert.equal(reader.lookup(query).records[0].wireSha256,h('b'));
+});
