@@ -1,0 +1,92 @@
+"""Focused exact-literal/custody tests; synthetic content, no GitHub writes."""
+import base64
+import importlib.util
+import json
+from pathlib import Path
+import tempfile
+import unittest
+from unittest.mock import patch
+
+HERE = Path(__file__).resolve().parent
+SCRIPT = HERE / 'direct_exact_landing_supplement.py'
+if not SCRIPT.exists(): SCRIPT = HERE.parent / 'scripts/direct_exact_landing_supplement.py'
+spec = importlib.util.spec_from_file_location('exact_supplement', SCRIPT)
+D = importlib.util.module_from_spec(spec); spec.loader.exec_module(D)
+PUBLISHER = HERE.parent / 'offmenu-source-custody-import-20261027/direct_publish_selected_r3_fix.py'
+HELPER = HERE.parent / 'offmenu-source-exact-worktree-export-20261027/scripts/export-local-source.py'
+PARSER = Path('/workspace/shared/offmenu-landing-integration-39396038/extract-landing-source-literals.py')
+for name in ('PUBLISHER', 'HELPER', 'PARSER'):
+    candidate = HERE.parent / 'scripts' / globals()[name].name
+    if candidate.exists(): globals()[name] = candidate
+BASE = D.load_publisher(PUBLISHER)
+H = BASE.load_helper(HELPER, D.HELPER_SHA)
+P = BASE.load_helper(PARSER, D.PARSER_SHA)
+
+class ExactSupplement(unittest.TestCase):
+    def fixture(self):
+        bodies = [b'{"scene":"synthetic"}', b'\x89PNG\r\n\x1a\nsynthetic-pinned-fixture']
+        targets = [{'route':'/landing-test/scene.json','mime':'application/json'},
+                   {'route':'/landing-test/art.png','mime':'image/png'}]
+        for item, body in zip(targets, bodies): item.update(bytes=len(body), sha256=D.sha256(body))
+        routes = {x['route']:{k:x[k] for k in ('bytes','sha256','mime')} for x in targets}
+        routes['/api/private.json'] = {'bytes':7,'sha256':'f'*64,'mime':'application/json'}
+        table = {x['sha256']:base64.b64encode(body).decode() for x,body in zip(targets,bodies)}
+        table['f'*64] = 'DO-NOT-DECODE-OR-UPLOAD'
+        raw = ('const ROOT14_ROUTES='+json.dumps(routes)+'; const ROOT14_BODIES='+json.dumps(table)+'; throw new Error("NEVER EXECUTE");').encode()
+        return raw, targets, bodies
+
+    def test_only_exact_two_literals_and_separate_real_dom_source_are_emitted(self):
+        raw, targets, bodies = self.fixture(); dom = b'export const DOM = "synthetic";\n'
+        with patch.object(D,'TARGETS',targets),patch.object(D,'SOURCE_SHA',D.sha256(raw)),patch.object(D,'DOM_SHA',D.sha256(dom)), \
+             patch.object(H,'read_regular',side_effect=[(raw,None),(dom,None)]) as read:
+            result = D.prepare(H,P)
+        self.assertEqual([x.args[0] for x in read.call_args_list],[D.SOURCE_PATH,D.DOM_PATH])
+        self.assertEqual([base64.b64decode(x['contentBase64']) for x in result['projectedBodies']],bodies)
+        self.assertEqual(base64.b64decode(result['selectedSources'][0]['contentBase64']),dom)
+        self.assertEqual(result['selectedSources'][0]['sourcePath'],D.DOM_PATH)
+        self.assertNotIn('DO-NOT-DECODE-OR-UPLOAD',json.dumps(result))
+        self.assertNotIn('/api/private.json',json.dumps(result))
+        self.assertNotIn('sourcePath',result['projectedBodies'][0])
+
+    def test_parent_descriptor_body_and_dom_pins_fail_closed(self):
+        raw, targets, _ = self.fixture()
+        with self.assertRaisesRegex(D.Refused,'static-parent-pin'): D.exact_literals(raw,P,H)
+        with patch.object(D,'TARGETS',targets),patch.object(D,'SOURCE_SHA',D.sha256(raw)):
+            changed=[dict(x) for x in targets]; changed[0]['bytes']+=1
+            with patch.object(D,'TARGETS',changed):
+                with self.assertRaisesRegex(D.Refused,'descriptor-mismatch'): D.exact_literals(raw,P,H)
+            with patch.object(H,'read_regular',side_effect=[(raw,None),(b'wrong source',None)]):
+                with self.assertRaisesRegex(D.Refused,'dom-source-pin'): D.prepare(H,P)
+
+    def test_hardcoded_scope_is_exact_real_selection(self):
+        self.assertEqual(len(D.TARGETS),2)
+        self.assertEqual(sum(x['bytes'] for x in D.TARGETS),14733)
+        self.assertEqual({x['sha256'] for x in D.TARGETS},{'21e6aadc33f397c4e0da69b071c336e15ee64f329b8c7d7eb1891fc7f3479c69','bc893ba64eb6f05169c1c68a76f8b5a7f5c7b7d23e33dd796195070c6ec2a80f'})
+
+    def test_workflow_change_stops_before_any_github_write(self):
+        calls=[]
+        def api(url,method='GET',payload=None):
+            calls.append(method)
+            if '/git/ref/' in url: return {'ref':'refs/heads/'+BASE.BRANCH,'object':{'type':'commit','sha':'a'*40}}
+            if '/contents/' in url: return []
+            return {'full_name':BASE.REPOSITORY,'private':True}
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(BASE.Refused,'workflow-pins'):
+                D.publish({'fixture':True},str(Path(directory)/'out'),BASE,H,api)
+        self.assertEqual(set(calls),{'GET'})
+
+    def test_branch_move_stops_before_ref_patch(self):
+        calls=[]
+        def api(url,method='GET',payload=None):
+            calls.append(method)
+            if url.endswith('/git/blobs'): return {'sha':BASE.git_blob(base64.b64decode(payload['content']))}
+            if url.endswith('/git/trees'): return {'sha':'b'*40}
+            if url.endswith('/git/commits'): return {'sha':'c'*40}
+            raise AssertionError(url)
+        with tempfile.TemporaryDirectory() as directory,patch.object(BASE,'current_ref',side_effect=['a'*40,'d'*40]), \
+                patch.object(BASE,'verify_safe_parent',return_value='b'*40),patch.object(BASE,'tree_at',return_value=None):
+            with self.assertRaisesRegex(D.Refused,'branch-moved'):
+                D.publish({'fixture':True},str(Path(directory)/'out'),BASE,H,api)
+        self.assertNotIn('PATCH',calls)
+
+if __name__ == '__main__': unittest.main()
