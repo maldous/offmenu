@@ -7320,7 +7320,7 @@
   },
   "continuousEfficiencyReview": {
     "schema": "offmenu-continuous-efficiency-review/1",
-    "asOfUTC": "2026-10-28T06:11:00Z",
+    "asOfUTC": "2026-10-28T06:25:00Z",
     "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
     "state": "active-owned-ongoing",
     "currentOwner": "audit_production_efficiency",
@@ -7367,7 +7367,7 @@
         "provider free eligibility/quota/reset metadata and quality",
         "source/security holds"
       ],
-      "nextMilestone": "Corpus owner stages reviewedcache-v4 after clean009 boundary, then reports successor010 and accepted throughput/resource evidence.",
+      "nextMilestone": "Corpus012 actual throughput/resource or early-failure evidence; natural boundary around2026-10-28T06:49Z or earlier committed hash-phase pause. Existing corpus owner executes; efficiency owner reviews evidence without duplicate probes.",
       "cadence": "Milestone-driven bounded checks; remain owner while authorized production is active. Wait for meaningful milestones, not tight busy polling or arbitrary saturation.",
       "stop": "User cancels; authorized production/backlog completes; or explicit durable-owner handover. Pause only affected dependent action at an authorization/access boundary.",
       "routineTuning": "Send safe same-scope corrections through the existing execution owner; do not seize its writer, duplicate production or change scope/design."
@@ -7419,9 +7419,10 @@
         "assess_partial_corpus_resume",
         "map_rights_cache_propagation",
         "prepare_common_corpus_publication",
-        "resolve_ready_country_dispositions"
+        "resolve_ready_country_dispositions",
+        "discover_ai_throughput_tooling"
       ],
-      "persistentPreference": "Existing /root/save_current_task_updates owner identified; handoff pending available reasoning slot. No separate memory worker created."
+      "persistentPreference": "Saved and readback verified by existing /root/save_current_task_updates at2026-10-28T06:16:45Z: current-state opening, delivery action and operating-preference/project notes. No duplicate manager, ledger or automation mutation by memoryworker."
     },
     "constraints": [
       "No new spend, paid inference, topups or new access",
@@ -7432,6 +7433,72 @@
       "No quota-blocked Foo/Codex retry without user-confirmed restored capacity",
       "All original source/security and specific no-retry holds preserved",
       "No scope/design substitution, added delivery gates or delivery trade-off without explicit user approval"
-    ]
+    ],
+    "latestMilestone": {
+      "state": "approved-correction-deployed-production-continuing",
+      "failedOptimization": {
+        "run": "010",
+        "job": "01a18123-840f-232b-ac10-b37aad8bb233",
+        "status": "failed-SQLite-INSERT-MemoryError",
+        "elapsedSecondsApprox": 64,
+        "resourcesAdded": 44000,
+        "checkpoint": 1966,
+        "cleanupVerified": true,
+        "observedPeakRSSGB": 4.39,
+        "observedPeakVMGB": 4.56,
+        "cause": "4GiB main-cache target equalled4GiB process-global SQLite hard heap; no overhead headroom. Not a worker-pool failure.",
+        "optimizationBenefitEstablished": false
+      },
+      "safeBridge": {
+        "run": "011",
+        "job": "01a18128-722c-4510-b26f-3578aea3b8e8",
+        "cacheMiB": 64,
+        "resourcesAdded": 768000,
+        "wallSeconds": 300.2848927974701,
+        "resourcesPerSecondApprox": 2557.6,
+        "checkpointFrom": 1966,
+        "checkpointTo": 2734,
+        "status": "expected-pause",
+        "cleanupVerified": true,
+        "note": "Actual useful production continued while correction was authored/reviewed; not idle or filler. Different segments are not a controlled speedup benchmark."
+      },
+      "correction": {
+        "author": "assess_partial_corpus_resume",
+        "independentReviewer": "audit_production_efficiency",
+        "source": "22502c8f01c4b2c97f724ef09ddba01ec58b6c8cbd9110f5ac10f846c9baa8a7",
+        "migration": "4eafb917c97120d707430d197ca453e451002241fd7f78d706345b2ba31eafe9",
+        "adapter": "2ec322084b8f04c7f6e9d4f3fd0756209c104843cd200d8188c52a94287a90f1",
+        "reviewSHA256": "fa8969334b43da3a0abf2409c1997a5a03aaf68ac5dcbf6ccec4d44b9ce6b06e",
+        "independentFocusedTestsPassed": 23,
+        "authorBroaderTestsPassed": 70,
+        "mainCacheMiB": 3072,
+        "softHeapMiB": 3072,
+        "hardSqlHeapMiB": 4096,
+        "parentGiB": 8,
+        "nonSqlVMReserveMiB": 256,
+        "additionalLaneMemoryBytes": 0,
+        "preserved": "Original validation/helper/schema/contracts, FULL/DELETE, row+cursor transactions, source/runtime pins, fresh-process hash pauses,64MiBdefault, workerCPU/wholejobbudgets.",
+        "adopted": true,
+        "migrationJournal": "c80800e8c85f45db8c0ade424a854a4a",
+        "checkpointPreserved": 2734
+      },
+      "activeRun": {
+        "run": "012",
+        "job": "01a1812e-f9ba-c52f-db3d-0e0f941c1699",
+        "startedAtUTC": "2026-10-28T06:25:00Z",
+        "naturalBoundaryApproxUTC": "2026-10-28T06:49:00Z",
+        "workers": 64,
+        "workerMiB": 256,
+        "cpuReservation": 19,
+        "wholeJobReservationGiB": 24.625,
+        "status": "running-owner-reported",
+        "performanceBenefitEstablished": false
+      },
+      "otherEfficiencyFindings": [
+        "Country lane14readyrows/76exactbindings/15assertions/7tests avoids stale repeat-reviews; zero country closures. Proposed native validators never admitted; payload-specific permission remains held after initial+one materially supported retry, no further retry.",
+        "Rights map15edges/4obligationdispositions/39staticchecks distinguishes root dispatch accountability from exact receipt-custody execution ownership; do not repeat accepted tests/broadsource search.",
+        "Source-only throughput-tooling report identifies exact-result reuse/single-flight and model-compatible Groq prefix caching. Not adopted or dispatched solely for benchmarking; require real eligible task, actualcached_tokens, unique accepted artifacts and end-to-end rework/latency."
+      ]
+    }
   }
 }
