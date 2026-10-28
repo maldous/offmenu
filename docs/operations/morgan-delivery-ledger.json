@@ -82,7 +82,7 @@
       "latestUserConcurrencyTarget": 256,
       "actualConcurrencyVerified": false,
       "placesFallback": "Historical ingestion fallback superseded by all packet ingestion complete; existing v5 global/final phases preserve their reviewed resource and hash-pause contracts.",
-      "fooDispatchState": "Corpus018 runs original global/final phases with reviewed64MiB additional growth. Full bulk SQL, national derivation and namespace proof completed locally; new NorthStar staging/basis writes await exact destination authority, not quota or disk headroom.",
+      "fooDispatchState": "Global proof and qualified assembly/delta complete. Same-deploy Netlify publication recovery and approved basis phase2 remain active owner work. ToolingR2 source approved; runtime/store integration is still pending, with no claimed deployed cache.",
       "serviceWorkerTarget": 64,
       "serviceWorkersVerified": true,
       "hourlyPrompt": "Existing reminder updated/readback2026-10-28T08:38:55.195299Z for restored quota and supported6.1medium default; hourly schedule/enabled/timezone unchanged.",
@@ -106,7 +106,7 @@
       "top": "Full production mode across authorized OffMenu ledger deliverables",
       "messageId": "Sentinel_497944df3ae48191912dd654846406f6",
       "messageUTC": "2026-10-28T01:31:37.839196Z",
-      "latest": "Finish the finite authorized end state using accountable durable/Foo owners and Windmill; optimize useful throughput under actual disk/CPU/RAM limits. Restored Codex quota allows scoped retries;6.1medium default where supported, task-appropriate available model selection. User driving: quiet except critical or specifically requested Warframe, root consolidates nonurgent outcomes.",
+      "latest": "Complete the defined authorized end state; implement useful no-cost optimization through durable/Foo owners. OSM explicitly retired and deferred until all current delivery work completes and storage is accounted for. Preserve non-OSM data and custom configuration; no routine user noise.",
       "priorLatest": "End-state-first full production; latest target256, places128 only after actualMemoryError; finish approved maintenance before resuming"
     },
     "preservedHolds": [
@@ -4934,7 +4934,7 @@
   },
   "currentDeliveryReconciliation": {
     "schema": "offmenu-current-delivery-evidence/1",
-    "asOfUTC": "2026-10-28T08:39:10Z",
+    "asOfUTC": "2026-10-28T10:43:30Z",
     "candidateOnly": false,
     "baseCommit": "062210db932a67f9d4f374c12fb577ce61579d07",
     "evidenceLimit": "Configured shared admission ceiling verified, plus normal qualification007 running through v3. No stress test or simultaneous64x256 capacity claim. Provider catalogs are distinct from useful inference; global qualification/publication not complete.",
@@ -5003,31 +5003,243 @@
       },
       {
         "id": "common-corpus-expansion",
-        "state": "both-producers-final-global-qualification-running",
-        "owner": "assess_partial_corpus_resume (sole Foo writer); prepare_places_checkpoint_batches (local producer); review_corpus_mount_delta (focused reviewer)",
-        "evidence": [
-          "artifact-ref:offmenu-source-evidence-20261027/coverage-state-7dd3ed8c.json",
-          "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-INPUT-VERIFICATION-20261028.json",
-          "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-SOURCE-ALL-20261028.json",
-          "artifact-ref:qualification-parallel-20261028/ACTUAL-PARALLEL-004-EXPECTED-PAUSE.json",
-          "artifact-ref:qualification-parallel-20261028/ACTUAL-PARALLEL-005-EXPECTED-PAUSE.json",
-          "artifact-ref:qualification-merge-20261028/ACTUAL-MERGE-007-LIVE.json"
-        ],
+        "state": "qualified-and-assembled-publication-pending",
+        "owner": "prepare_common_corpus_publication (exclusive deployment); assess_partial_corpus_resume proof/assembly completed",
+        "evidence": "docs/operations/2026-10-28/delivery-and-osm-retirement-checkpoint.json",
         "actual": {
-          "bulkAssets": 9800,
-          "bulkPackets": 9796656,
-          "placesIdentities": 12682613,
-          "placesAssets": 12686,
-          "finalCombinedTargetRecords": 22574390,
-          "finalCombinedTargetSources": 22,
-          "qualificationBulkAssetsCommitted": 9347,
-          "qualificationComplete": false,
-          "published": false,
-          "activeQualificationJob": "01a18104-018a-1277-66b8-dce4910422c0",
-          "configuredQualificationWorkers": 128,
-          "qualificationCPUAllocation": 19
+          "globalProof": {
+            "job": "01a181da-ce15-9f85-f2bb-f1968549da9b",
+            "status": "completed-and-clean",
+            "sha256": "9e60de075a9bf049e0348c666e4cc2cbe9edb07c6771bcab95649038dafd1226",
+            "bytes": 6327,
+            "localSanitizedReceiptSHA256": "55c4962a99ef16f40939f816b07a73da428fcedc9c7d32c916a95a90b51110af",
+            "evidence": {
+              "aggregateObservedCounts": {
+                "assertions": 166914715,
+                "assets": 24147,
+                "externalReferences": 94948126,
+                "packets": 9929609,
+                "relations": 4036948,
+                "resources": 23586626,
+                "translations": 3242
+              },
+              "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+              "contractTextIdentityRule": "A text identifier can be reused in multiple projections of the same original text (for example a resource name and the original data.name field). Repeated definitions must have identical language, value, source-text hash and citation set; conflicts are rejected. Source edition language is not proof of each embedded quoted string language; uncertain fields use und.",
+              "contractVersion": "offmenu-common-contract/1",
+              "database": {
+                "citations": 22574341,
+                "ids": 194541531,
+                "referencesRecorded": 23786447,
+                "texts": 216170809,
+                "translation_sources": 3242
+              },
+              "diskGuardBytes": 10737418240,
+              "packageCount": 8,
+              "packages": [
+                {
+                  "admittedSourceRecords": {
+                    "foodon": 29255,
+                    "world-recipes": 25135
+                  },
+                  "directory": "/offmenu-corpus/common-data-reviewed-package-20261014",
+                  "grandfathered": true,
+                  "manifestByteSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+                  "observedCounts": {
+                    "assertions": 2199543,
+                    "packets": 79534,
+                    "relations": 459245,
+                    "resources": 441391,
+                    "translations": 3242
+                  },
+                  "packetFiles": 161,
+                  "releaseId": "common-data-20261014"
+                },
+                {
+                  "admittedSourceRecords": {
+                    "dietary-guidelines": 100,
+                    "wikibooks": 3796
+                  },
+                  "directory": "/offmenu-corpus/common-reference-delivery-final-20261014",
+                  "grandfathered": false,
+                  "manifestByteSha256": "bec93ffedf4d80eef10ec11000c18161024a3c30999697ad1f3db5f3318ff3e7",
+                  "observedCounts": {
+                    "assertions": 31168,
+                    "packets": 3896,
+                    "relations": 0,
+                    "resources": 3896,
+                    "translations": 0
+                  },
+                  "packetFiles": 9,
+                  "releaseId": "common-references-20261014"
+                },
+                {
+                  "admittedSourceRecords": {
+                    "afcd": 1801,
+                    "ciqual": 3484,
+                    "cnf": 5690,
+                    "cofid": 2887,
+                    "fineli": 4232,
+                    "foodfiles": 2857,
+                    "frida": 1381,
+                    "germany-bls": 7140,
+                    "matvaretabellen": 2121,
+                    "mext": 2538,
+                    "sweden-food": 2606
+                  },
+                  "directory": "/offmenu-corpus/common-national-semantic-final-20261014",
+                  "grandfathered": false,
+                  "manifestByteSha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+                  "observedCounts": {
+                    "assertions": 2020535,
+                    "packets": 36737,
+                    "relations": 661266,
+                    "resources": 661266,
+                    "translations": 0
+                  },
+                  "packetFiles": 1470,
+                  "releaseId": "common-national-20261014"
+                },
+                {
+                  "admittedSourceRecords": {
+                    "qudt-measurement-definitions": 56
+                  },
+                  "directory": "/offmenu-corpus/measurement-terminology-final-qualified-20261014",
+                  "grandfathered": false,
+                  "manifestByteSha256": "75c33340f1ee25c4121c57d8fc124621b4455412717fc6d9dd01bfb162351679",
+                  "observedCounts": {
+                    "assertions": 440,
+                    "packets": 56,
+                    "relations": 0,
+                    "resources": 56,
+                    "translations": 0
+                  },
+                  "packetFiles": 1,
+                  "releaseId": "qudt-measurement-definitions-3.5.2-20261014"
+                },
+                {
+                  "admittedSourceRecords": {
+                    "Remarknl/Indisch-eten": 1,
+                    "chefdelakarma/libre_cuisine": 6,
+                    "clicat/Ricette": 2,
+                    "lvisintini/recetasdemami": 33,
+                    "rochacbruno/vegan_recipes": 0
+                  },
+                  "directory": "/offmenu-corpus/recipe-expansion-final-qualified-20261014/common-graph",
+                  "grandfathered": false,
+                  "manifestByteSha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
+                  "observedCounts": {
+                    "assertions": 1588,
+                    "packets": 42,
+                    "relations": 644,
+                    "resources": 682,
+                    "translations": 0
+                  },
+                  "packetFiles": 1,
+                  "releaseId": "recipe-expansion-qualified-20261014"
+                },
+                {
+                  "admittedSourceRecords": {
+                    "smithsonian-archive": 5
+                  },
+                  "directory": "/offmenu-corpus/historical-recipe-quality-final-corrected-20261014",
+                  "grandfathered": false,
+                  "manifestByteSha256": "e4c06a1d4a2fcb492529c37c6245a595dd104061ef1a63427cbe9d65e7e2241f",
+                  "observedCounts": {
+                    "assertions": 256,
+                    "packets": 5,
+                    "relations": 66,
+                    "resources": 66,
+                    "translations": 0
+                  },
+                  "packetFiles": 1,
+                  "releaseId": "historical-recipe-quality-final-20261014"
+                },
+                {
+                  "admittedSourceRecords": {
+                    "off": 5452981,
+                    "prices": 317898,
+                    "usda-files": 4025777
+                  },
+                  "directory": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/bulk-parallel",
+                  "grandfathered": false,
+                  "manifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e",
+                  "observedCounts": {
+                    "assertions": 137295959,
+                    "packets": 9796656,
+                    "relations": 2915727,
+                    "resources": 9796656,
+                    "translations": 0
+                  },
+                  "packetFiles": 9797,
+                  "releaseId": "bulk-food-common-semantic-final-20261014"
+                },
+                {
+                  "admittedSourceRecords": {
+                    "overture-food-places": 12681108,
+                    "wikidata-food-businesses": 1505
+                  },
+                  "directory": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/places",
+                  "grandfathered": false,
+                  "manifestByteSha256": "fc0952ab0cf03c1451239173ebc60cc1fbdda20b133f40d6714c07e5188caf77",
+                  "observedCounts": {
+                    "assertions": 25365226,
+                    "packets": 12683,
+                    "relations": 0,
+                    "resources": 12682613,
+                    "translations": 0
+                  },
+                  "packetFiles": 12683,
+                  "releaseId": "common-places-20261014"
+                }
+              ],
+              "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+              "schemaId": "https://offmenu-corpus.netlify.app/common-data/schema.json",
+              "schemaVersion": "offmenu-common-expansion-qualification/1",
+              "scratchBudgetBytes": 64424509440,
+              "seconds": 21256.893,
+              "status": "all-packages-streamed-global-identities-references-and-provenance-checked"
+            }
+          },
+          "assembly": {
+            "status": "qualified-assembly-and-delta-complete",
+            "job": "01a181dd-050e-0278-8713-33adec32cfa2",
+            "deltaBytes": 5879185,
+            "deltaFiles": 24171,
+            "logicalPayloadGB": 27.165,
+            "deltaSHA256Prefix": "ec4f73f1",
+            "source": "Existing assessor and publisher receipts; exact complete delta hash retained by exclusive publisher."
+          },
+          "served": false
         },
-        "next": "Continue pooled resource-declared qualification008; global proof and Netlify publication remain incomplete. Single-pass merge preserved correctness but full-run007 did not show throughput improvement."
+        "next": "Complete existing authorized same-deploy recovery and served verification; no producer replay, extra broad gate or substitution. Preserve exact source/security holds and OSM retirement.",
+        "priorBeforeGlobalCompletion1043": {
+          "id": "common-corpus-expansion",
+          "state": "both-producers-final-global-qualification-running",
+          "owner": "assess_partial_corpus_resume (sole Foo writer); prepare_places_checkpoint_batches (local producer); review_corpus_mount_delta (focused reviewer)",
+          "evidence": [
+            "artifact-ref:offmenu-source-evidence-20261027/coverage-state-7dd3ed8c.json",
+            "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-INPUT-VERIFICATION-20261028.json",
+            "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-SOURCE-ALL-20261028.json",
+            "artifact-ref:qualification-parallel-20261028/ACTUAL-PARALLEL-004-EXPECTED-PAUSE.json",
+            "artifact-ref:qualification-parallel-20261028/ACTUAL-PARALLEL-005-EXPECTED-PAUSE.json",
+            "artifact-ref:qualification-merge-20261028/ACTUAL-MERGE-007-LIVE.json"
+          ],
+          "actual": {
+            "bulkAssets": 9800,
+            "bulkPackets": 9796656,
+            "placesIdentities": 12682613,
+            "placesAssets": 12686,
+            "finalCombinedTargetRecords": 22574390,
+            "finalCombinedTargetSources": 22,
+            "qualificationBulkAssetsCommitted": 9347,
+            "qualificationComplete": false,
+            "published": false,
+            "activeQualificationJob": "01a18104-018a-1277-66b8-dce4910422c0",
+            "configuredQualificationWorkers": 128,
+            "qualificationCPUAllocation": 19
+          },
+          "next": "Continue pooled resource-declared qualification008; global proof and Netlify publication remain incomplete. Single-pass merge preserved correctness but full-run007 did not show throughput improvement."
+        }
       },
       {
         "id": "identity-only-candidate",
@@ -5133,16 +5345,49 @@
       },
       {
         "id": "netlify-upload-route",
-        "state": "ready-reviewed-native-route-awaiting-qualified-candidate",
-        "owner": "prepare_common_corpus_publication",
-        "actual": "Reviewed native fixedsite seed/publisher deployed; existing fixedsite status01a18138-a3cb-a6e8-ca68-56ef86e15ac8 completed success with ready state. No credentials returned or new user action; actual final qualified corpus not yet uploaded.",
-        "next": "Existing publication owner seeds/prepares/uploads only actual root-qualified corpus after proof/assembly; no connector or credential remediation, optional proxy or repeated setup required.",
+        "state": "same-deploy-prepared-upload-recovery-in-progress",
+        "owner": "prepare_common_corpus_publication (exclusive deployment); assess_partial_corpus_resume proof/assembly completed",
+        "actual": {
+          "owner": "prepare_common_corpus_publication",
+          "deploy": "6ae1c3946435074ef6c08369",
+          "previousLiveBase": "6ade30f984233b1725dc0501",
+          "preparedMergedFiles": 117003,
+          "preservedExistingFiles": 92841,
+          "sources": 22,
+          "records": 22574390,
+          "state": "same-deploy-upload-in-progress-or-recovery; final served verification pending",
+          "knownCompletedAttempt": {
+            "job": "01a181ff-6d63-3885-5a5d-be0c627349a3",
+            "elapsedMs": 277777,
+            "result": "netlify_http_429; accepted partial uploads retained"
+          },
+          "corrections": "Observed transport thread-allocation and MaxSessions=1 failures corrected under reviewed same-deploy recovery; then actual HTTP500requests/min limit required shared480/min pacing and same-digest-only retry.",
+          "rateSourceSHA256": "91fe1f36835818976bfac8e417db9914f7bab85661b47fd0e592cb6526923b0b",
+          "review": "Same Foo reviewer approved supplied changed functions with8 focused mocks; full-file hash binding remains publisher responsibility, not a71-test independent rerun.",
+          "secondDeployCreated": false,
+          "servedQualificationClaimed": false
+        },
+        "next": "Complete existing authorized same-deploy recovery and served verification; no producer replay, extra broad gate or substitution. Preserve exact source/security holds and OSM retirement.",
         "priorDispositionBeforeNativePublisher": {
           "state": "blocked-current-tool-exposure",
           "owner": "Morgan/root connector integration",
           "actual": "Historical CLI upload route and officially renamed MCP netlify-deploy-site recovered. Current exposed upload tool is missing; connected plugin exists. Not evidence of missing credentials or provider inability.",
           "next": "Restore/use the authorized exposed deployment route; do not ask for credentials or claim Netlify cannot deploy based on this tool-exposure gap."
-        }
+        },
+        "priorBeforeGlobalCompletion1043": {
+          "id": "netlify-upload-route",
+          "state": "ready-reviewed-native-route-awaiting-qualified-candidate",
+          "owner": "prepare_common_corpus_publication",
+          "actual": "Reviewed native fixedsite seed/publisher deployed; existing fixedsite status01a18138-a3cb-a6e8-ca68-56ef86e15ac8 completed success with ready state. No credentials returned or new user action; actual final qualified corpus not yet uploaded.",
+          "next": "Existing publication owner seeds/prepares/uploads only actual root-qualified corpus after proof/assembly; no connector or credential remediation, optional proxy or repeated setup required.",
+          "priorDispositionBeforeNativePublisher": {
+            "state": "blocked-current-tool-exposure",
+            "owner": "Morgan/root connector integration",
+            "actual": "Historical CLI upload route and officially renamed MCP netlify-deploy-site recovered. Current exposed upload tool is missing; connected plugin exists. Not evidence of missing credentials or provider inability.",
+            "next": "Restore/use the authorized exposed deployment route; do not ask for credentials or claim Netlify cannot deploy based on this tool-exposure gap."
+          }
+        },
+        "evidence": "docs/operations/2026-10-28/delivery-and-osm-retirement-checkpoint.json"
       },
       {
         "id": "windmill-capacity-ceiling",
@@ -5334,6 +5579,36 @@
         "evidence": "docs/operations/2026-10-28/rights/propagation-map.json",
         "resultSHA256": "dae3c0f8b26dc51d1c751f298062088d864d74fb8243e1c37df20af1258bb704",
         "next": "Do not repeat map or acceptedCACHE52/invalidation/retention-parity reviews. Follow exact four current allocation receiptClosure inputs; root is decision/dispatch accountability, not broad-search executor."
+      },
+      {
+        "id": "osm-source-retirement",
+        "state": "removal-authorized-execution-unconfirmed-future-work-deferred",
+        "owner": "Existing Foo disk owner for exact cleanup package; audit_production_efficiency for ledger/no-retry policy",
+        "actual": {
+          "id": "SOURCE-OSM-DEFERRED",
+          "authority": "Explicit user retirement2026-10-28; remove OSM now and reconsider only after all current ledger work completes and storage is accounted for.",
+          "state": "retirement-authorized-execution-unconfirmed; future work deferred",
+          "target": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-63/dc7480cf5666cc2af990/planet-261005.osm.pbf.part",
+          "reportedAllocatedBytes": 95244251136,
+          "scope": "Exact OSM-only partial file; preserve all adjacent provenance and bound source manifests.",
+          "currentDependencyClearance": {
+            "qualifiedPackagesExcludeOSM": true,
+            "publisherAttestedNoOSMReader": true,
+            "northStarAttestedNoActiveOrPlannedOSMDependency": true,
+            "historicalProducerStopped": "2026-10-15 owner report",
+            "historicalOwnerResponseRequired": false
+          },
+          "remainingExecutionCheck": "Normal-host user-run script fails closed on active handles; restricted agent cannot claim full-host handle visibility.",
+          "noAutoDownloadOrRetry": true,
+          "reconsideration": "Only after all currently defined delivery work is complete, with explicit storage budget and permission; not an automatic reactivation.",
+          "physicalReclamationConfirmed": false,
+          "verifiedReclaimedBytes": 0,
+          "preserve": "Overture/Wikidata places, all non-OSM inputs/proofs/assembly/upload state, custom configuration, full native manifest, OFF and Trash holds.",
+          "cleanupOther": "Only identified installer/Ollama scripts delivered for user execution; Chrome/npm/uv caches withheld while browser/package work active. No bytes reclaimed claimed."
+        },
+        "next": "Execute only the exact approved OSM target through supported user-run host route with active-handle guard; record actual result. No OSM reconsideration until all current defined delivery work is complete and storage is budgeted.",
+        "evidence": "docs/operations/2026-10-28/delivery-and-osm-retirement-checkpoint.json",
+        "parentComplete": false
       }
     ],
     "historicalCoverage": {
@@ -5524,7 +5799,7 @@
   },
   "currentObligationAllocation": {
     "schema": "offmenu-all89-current-allocation/1",
-    "asOfUTC": "2026-10-28T09:19:30Z",
+    "asOfUTC": "2026-10-28T10:43:30Z",
     "baseCommit": "e2ec394485254ed2edc217078af67e72d8d608d7",
     "candidateOnly": false,
     "publishOwner": "Morgan/root",
@@ -7601,13 +7876,13 @@
       {
         "id": "AUDIT-LOCAL-CORPUS-SUPERSESSION",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "assess_partial_corpus_resume; prepare_common_corpus_publication remains safe-idle until qualified proof",
+        "currentOwner": "prepare_common_corpus_publication; assessor proof/assembly complete and retained for exact follow-through",
         "deliveryLane": "corpus-globalproof",
-        "state": "active-owned",
-        "executionClaim": "Existing018 actually admitted/running after017 clean pause. All packet ingestion and global reference/translation/ID checks complete; texts/citations and final hashes still pending. No final proof.",
+        "state": "qualified-publication-in-progress",
+        "executionClaim": "Actual020 global proof and qualified assembly/delta complete; Netlify prepare/upload recovery is in progress, served verification not yet established.",
         "deliverable": "Both corpus producers final and prior source custody/retained proof milestones remain accepted. Current global proof is016 per coordinator, not stale007. Native publisher ready with accepted source custody; no longer described as blocked by the previously absent connector upload surface.",
         "dependency": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred.",
-        "nextUsefulAction": "Continue existing018 original global and fresh-process final-hash phases; same publisher resumes only on actual qualified handoff. No producer replay or raw export.",
+        "nextUsefulAction": "Finish the same authorized Netlify deployment, retain accepted partial uploads, verify served publication, then reconcile the finite delivery receipt. Preserve all exact country/source dependencies and newly deferred OSM.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/52",
@@ -7626,8 +7901,8 @@
           "nextUsefulAction": "Monitor exact007 result; no producer replay, raw export, cloud deletion or new source acquisition."
         },
         "receiptClosure": {
-          "asOfUTC": "2026-10-28T09:19:30Z",
-          "finiteDeliverableState": "existing-proof-active-not-closed",
+          "asOfUTC": "2026-10-28T10:43:30Z",
+          "finiteDeliverableState": "global-proof-and-assembly-complete-publication-pending",
           "broaderParentState": "active-existing-owner",
           "runnableNow": true,
           "readyUnexecutedStepProven": false,
@@ -7649,22 +7924,29 @@
                 "publisher": "native publisher ready",
                 "notIndependentlyReprobed": true
               }
-            ]
+            ],
+            "currentMilestone": "docs/operations/2026-10-28/delivery-and-osm-retirement-checkpoint.json"
           },
           "parentComplete": false,
           "reactivationCondition": "Existing owner actual phase/result milestone."
+        },
+        "priorAllocationBeforeGlobalProofCompletion": {
+          "state": "active-owned",
+          "currentOwner": "assess_partial_corpus_resume; prepare_common_corpus_publication remains safe-idle until qualified proof",
+          "executionClaim": "Existing018 actually admitted/running after017 clean pause. All packet ingestion and global reference/translation/ID checks complete; texts/citations and final hashes still pending. No final proof.",
+          "nextUsefulAction": "Continue existing018 original global and fresh-process final-hash phases; same publisher resumes only on actual qualified handoff. No producer replay or raw export."
         }
       },
       {
         "id": "ARCH-CURATED-CORPUS-DELIVERY",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "assess_partial_corpus_resume; prepare_common_corpus_publication remains safe-idle until qualified proof",
+        "currentOwner": "prepare_common_corpus_publication; assessor proof/assembly complete and retained for exact follow-through",
         "deliveryLane": "corpus-globalproof",
-        "state": "active-owned",
-        "executionClaim": "Existing018 actually admitted/running after017 clean pause. All packet ingestion and global reference/translation/ID checks complete; texts/citations and final hashes still pending. No final proof.",
+        "state": "qualified-publication-in-progress",
+        "executionClaim": "Actual020 global proof and qualified assembly/delta complete; Netlify prepare/upload recovery is in progress, served verification not yet established.",
         "deliverable": "Both corpus producers final and prior source custody/retained proof milestones remain accepted. Current global proof is016 per coordinator, not stale007. Native publisher ready with accepted source custody; no longer described as blocked by the previously absent connector upload surface.",
         "dependency": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred.",
-        "nextUsefulAction": "Continue existing018 original global and fresh-process final-hash phases; same publisher resumes only on actual qualified handoff. No producer replay or raw export.",
+        "nextUsefulAction": "Finish the same authorized Netlify deployment, retain accepted partial uploads, verify served publication, then reconcile the finite delivery receipt. Preserve all exact country/source dependencies and newly deferred OSM.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/53",
@@ -7683,8 +7965,8 @@
           "nextUsefulAction": "Monitor exact007 result; no producer replay, raw export, cloud deletion or new source acquisition."
         },
         "receiptClosure": {
-          "asOfUTC": "2026-10-28T09:19:30Z",
-          "finiteDeliverableState": "existing-proof-active-not-closed",
+          "asOfUTC": "2026-10-28T10:43:30Z",
+          "finiteDeliverableState": "global-proof-and-assembly-complete-publication-pending",
           "broaderParentState": "active-existing-owner",
           "runnableNow": true,
           "readyUnexecutedStepProven": false,
@@ -7706,10 +7988,17 @@
                 "publisher": "native publisher ready",
                 "notIndependentlyReprobed": true
               }
-            ]
+            ],
+            "currentMilestone": "docs/operations/2026-10-28/delivery-and-osm-retirement-checkpoint.json"
           },
           "parentComplete": false,
           "reactivationCondition": "Existing owner actual phase/result milestone."
+        },
+        "priorAllocationBeforeGlobalProofCompletion": {
+          "state": "active-owned",
+          "currentOwner": "assess_partial_corpus_resume; prepare_common_corpus_publication remains safe-idle until qualified proof",
+          "executionClaim": "Existing018 actually admitted/running after017 clean pause. All packet ingestion and global reference/translation/ID checks complete; texts/citations and final hashes still pending. No final proof.",
+          "nextUsefulAction": "Continue existing018 original global and fresh-process final-hash phases; same publisher resumes only on actual qualified handoff. No producer replay or raw export."
         }
       },
       {
@@ -8153,13 +8442,13 @@
       {
         "id": "PRIORITY-RECORD-PROVENANCE-CORRECTION",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "assess_partial_corpus_resume; prepare_common_corpus_publication remains safe-idle until qualified proof",
+        "currentOwner": "prepare_common_corpus_publication; assessor proof/assembly complete and retained for exact follow-through",
         "deliveryLane": "corpus-globalproof",
-        "state": "active-owned",
-        "executionClaim": "Existing018 actually admitted/running after017 clean pause. All packet ingestion and global reference/translation/ID checks complete; texts/citations and final hashes still pending. No final proof.",
+        "state": "qualified-publication-in-progress",
+        "executionClaim": "Actual020 global proof and qualified assembly/delta complete; Netlify prepare/upload recovery is in progress, served verification not yet established.",
         "deliverable": "Both corpus producers final and prior source custody/retained proof milestones remain accepted. Current global proof is016 per coordinator, not stale007. Native publisher ready with accepted source custody; no longer described as blocked by the previously absent connector upload surface.",
         "dependency": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred.",
-        "nextUsefulAction": "Continue existing018 original global and fresh-process final-hash phases; same publisher resumes only on actual qualified handoff. No producer replay or raw export.",
+        "nextUsefulAction": "Finish the same authorized Netlify deployment, retain accepted partial uploads, verify served publication, then reconcile the finite delivery receipt. Preserve all exact country/source dependencies and newly deferred OSM.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/66",
@@ -8178,8 +8467,8 @@
           "nextUsefulAction": "Monitor exact007 result; no producer replay, raw export, cloud deletion or new source acquisition."
         },
         "receiptClosure": {
-          "asOfUTC": "2026-10-28T09:19:30Z",
-          "finiteDeliverableState": "existing-proof-active-not-closed",
+          "asOfUTC": "2026-10-28T10:43:30Z",
+          "finiteDeliverableState": "global-proof-and-assembly-complete-publication-pending",
           "broaderParentState": "active-existing-owner",
           "runnableNow": true,
           "readyUnexecutedStepProven": false,
@@ -8201,10 +8490,17 @@
                 "publisher": "native publisher ready",
                 "notIndependentlyReprobed": true
               }
-            ]
+            ],
+            "currentMilestone": "docs/operations/2026-10-28/delivery-and-osm-retirement-checkpoint.json"
           },
           "parentComplete": false,
           "reactivationCondition": "Existing owner actual phase/result milestone."
+        },
+        "priorAllocationBeforeGlobalProofCompletion": {
+          "state": "active-owned",
+          "currentOwner": "assess_partial_corpus_resume; prepare_common_corpus_publication remains safe-idle until qualified proof",
+          "executionClaim": "Existing018 actually admitted/running after017 clean pause. All packet ingestion and global reference/translation/ID checks complete; texts/citations and final hashes still pending. No final proof.",
+          "nextUsefulAction": "Continue existing018 original global and fresh-process final-hash phases; same publisher resumes only on actual qualified handoff. No producer replay or raw export."
         }
       },
       {
@@ -9397,7 +9693,7 @@
       "blocked-security": 3,
       "event-triggered-ongoing-duty": 7,
       "finite-setup-complete-ongoing-duty": 3,
-      "active-owned": 3,
+      "qualified-publication-in-progress": 3,
       "blocked-scope": 2,
       "waiting-exact-diet-source-qualification": 1,
       "waiting-exact-prior-plan-reservation-contract": 1,
@@ -9583,11 +9879,57 @@
       "waiting-exact-retention-operator-receipts": 1,
       "waiting-exact-item-receive-provenance-contract": 1,
       "blocked-consent": 1
-    }
+    },
+    "priorCountsByStateBeforeGlobalProofCompletion": {
+      "waiting-exact-source-metadata": 1,
+      "blocked-missing-artifact": 2,
+      "waiting-exact-custody-handoff": 2,
+      "waiting-exact-lineage-disposition": 1,
+      "dependent": 25,
+      "blocked-source-scope": 3,
+      "completed-limited": 11,
+      "waiting-exact-semantic-contract": 1,
+      "waiting-exact-review-receipt": 3,
+      "waiting-exact-semantic-use-input": 1,
+      "blocked-source-rights-output": 1,
+      "waiting-exact-source-use-input": 1,
+      "waiting-exact-source-use-or-review-input": 1,
+      "waiting-exact-mapping-admission-input": 1,
+      "waiting-exact-scientific-source-clarification": 1,
+      "waiting-exact-source-basis-use-input": 1,
+      "finite-step-complete-dependent": 4,
+      "blocked-security": 3,
+      "event-triggered-ongoing-duty": 7,
+      "finite-setup-complete-ongoing-duty": 3,
+      "active-owned": 3,
+      "blocked-scope": 2,
+      "waiting-exact-diet-source-qualification": 1,
+      "waiting-exact-prior-plan-reservation-contract": 1,
+      "waiting-exact-confirmed-receipt-producer": 2,
+      "waiting-exact-qualified-preference-consumer": 1,
+      "waiting-exact-policy-custody-input": 1,
+      "waiting-exact-source-event-adoption-input": 1,
+      "waiting-exact-successor-and-aggregate-scope": 1,
+      "waiting-exact-retention-operator-receipts": 1,
+      "waiting-exact-item-receive-provenance-contract": 1,
+      "blocked-consent": 1
+    },
+    "additionalDeferredSourceWork": [
+      {
+        "id": "SOURCE-OSM-DEFERRED",
+        "state": "deferred-by-explicit-user-priority",
+        "runnableNow": false,
+        "downloadOrRetryAuthorized": false,
+        "reconsiderOnlyAfter": "All currently defined ledger delivery work complete and explicit storage budget accounted for.",
+        "retirementExecution": "Exact OSM-only target authorized and current dependency clearance complete; user-run fail-closed host check/execution receipt still required.",
+        "historical89CountUnchanged": true,
+        "evidence": "docs/operations/2026-10-28/delivery-and-osm-retirement-checkpoint.json"
+      }
+    ]
   },
   "continuousEfficiencyReview": {
     "schema": "offmenu-continuous-efficiency-review/1",
-    "asOfUTC": "2026-10-28T09:19:30Z",
+    "asOfUTC": "2026-10-28T10:43:30Z",
     "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
     "state": "active-owned-ongoing",
     "currentOwner": "audit_production_efficiency",
@@ -9751,33 +10093,13 @@
         "runtimeStability": "012 completed1440.4seconds without priorcacheMemoryError;3.101Mresources added, expectedpause/cleanupverified. No causal cache-speedup assertion."
       },
       "activeRun": {
-        "run": "018",
-        "job": "01a181cb-5043-ffb7-be3e-2679bcabd16f",
-        "startedAtApproxUTC": "2026-10-28T09:15:45Z",
-        "naturalBoundaryApproxUTC": "2026-10-28T09:39:45Z",
-        "workers": 64,
-        "workerMiB": 256,
-        "cpuReservation": 19,
-        "wholeJobReservationGiB": 24.625,
-        "cacheMiB": 3072,
-        "sqlHardHeapMiB": 4096,
-        "additionalGrowthBytes": 67108864,
-        "status": "capacity-admitted-and-running-owner-verified",
-        "mayPauseEarlierAtCommittedHashTransition": true,
-        "performanceBenefitEstablished": false,
-        "phase": "global",
-        "progressAsOfUTC": "2026-10-28T09:16:45Z",
-        "allPacketIngestionComplete": true,
-        "ingestedTotals": {
-          "resources": 23586626,
-          "assertions": 166914715,
-          "relations": 4036948,
-          "translations": 3242,
-          "externalReferences": 94948126
-        },
-        "finalProofWritten": false,
-        "globalTextsCountedAtResume": 90810000,
-        "globalIdsChecked": 194541531
+        "run": "020",
+        "job": "01a181da-ce15-9f85-f2bb-f1968549da9b",
+        "status": "completed-qualified-and-child-tree-gone",
+        "finalProofWritten": true,
+        "proofSHA256": "9e60de075a9bf049e0348c666e4cc2cbe9edb07c6771bcab95649038dafd1226",
+        "proofBytes": 6327,
+        "active": false
       },
       "otherEfficiencyFindings": [
         "Country lane14readyrows/76exactbindings/15assertions/7tests avoids stale repeat-reviews; zero country closures. Proposed native validators never admitted; payload-specific permission remains held after initial+one materially supported retry, no further retry.",
@@ -9809,22 +10131,24 @@
         "noDeletionOrCapRelaxation": true
       },
       "publicationReadiness": {
-        "state": "Native reviewed seed/publisher deployed; actualfixedsite ready",
-        "job": "01a18138-a3cb-a6e8-ca68-56ef86e15ac8",
-        "durationMs": 1173,
-        "queueToStartMs": 6.276,
-        "memPeakKB": 32560,
-        "actualOverlapWithCorpusSeconds": 1.173,
-        "remainingDependency": "Actualqualifiedproof/assembly, not access/setup/capacity",
-        "dispatchGapFixed": "Queued message had not activated idle reviewer; existingowner followup_task activated existingreviewer. No duplicate and no actualslotlimit.",
-        "frozenBulkBinding": {
-          "job": "01a181c2-5369-f354-1395-ddfb2ef342db",
-          "receipt": "FROZEN-NORTH-STAR-BINDING-20261028T0906.json",
-          "state": "Exact final bulk manifest bound; reviewed public scope/citation/private artifact exclusions. No corpus payload output, upload or Foo writes.",
-          "owner": "prepare_common_corpus_publication",
-          "safeIdleAfterStep": true,
-          "next": "Exact namespace proof and reviewed consumer receipt and/or actual completed base proof, followed by original assembly/served pin prerequisites."
-        }
+        "owner": "prepare_common_corpus_publication",
+        "deploy": "6ae1c3946435074ef6c08369",
+        "previousLiveBase": "6ade30f984233b1725dc0501",
+        "preparedMergedFiles": 117003,
+        "preservedExistingFiles": 92841,
+        "sources": 22,
+        "records": 22574390,
+        "state": "same-deploy-upload-in-progress-or-recovery; final served verification pending",
+        "knownCompletedAttempt": {
+          "job": "01a181ff-6d63-3885-5a5d-be0c627349a3",
+          "elapsedMs": 277777,
+          "result": "netlify_http_429; accepted partial uploads retained"
+        },
+        "corrections": "Observed transport thread-allocation and MaxSessions=1 failures corrected under reviewed same-deploy recovery; then actual HTTP500requests/min limit required shared480/min pacing and same-digest-only retry.",
+        "rateSourceSHA256": "91fe1f36835818976bfac8e417db9914f7bab85661b47fd0e592cb6526923b0b",
+        "review": "Same Foo reviewer approved supplied changed functions with8 focused mocks; full-file hash binding remains publisher responsibility, not a71-test independent rerun.",
+        "secondDeployCreated": false,
+        "servedQualificationClaimed": false
       },
       "completedRun013": {
         "job": "01a18146-732a-3df6-e197-fdd79179aec0",
@@ -9916,11 +10240,10 @@
         "limit": "Observed lowerthroughput underconcurrentwork is not a causal cacheclaim; sameapprovedcode retained."
       },
       "latestDiskRefill": {
-        "order": "Bulk004 finished and released its reservation; national plus namespace proof admitted and completed. After017 clean pause, exact final-phase review allowed018 to admit with64MiB instead of23.497GB future growth. No total-cap or shared-reserve reduction.",
-        "proofJob": "01a181cb-5043-ffb7-be3e-2679bcabd16f",
-        "northStarWritersActive": false,
-        "basis": "Reviewed10GiB phase is resource-ready after phase declaration reduction but new writes withheld pending the separate exact destination authority denial; no bypass.",
-        "physicalIO": "Earlier measured disk/journal bottleneck retained as historical sample, not a claim that current IO saturation persists after writer completion."
+        "proof": "Global qualification completed and released its job reservation.",
+        "basis": "Phase1 completed; approved phase2 actually admitted with21GiB absolute cap including retained index,14.453GB additional growth,4CPU/2GiB and70GiB reserve.",
+        "publication": "Qualified assembly and delta complete; same Netlify deploy recovery retains partial uploads. Current measured bottleneck is HTTP request rate, not lack of Foo workers.",
+        "noStressOrReserveRelaxation": true
       },
       "northStarSQL003": {
         "job": "01a18197-1323-c9ff-d5a9-d2bad4a4ab71",
@@ -10077,6 +10400,286 @@
         "activeMarkerEdits": false,
         "forcedRestart": false,
         "testsRepeated": 0
+      },
+      "previousActiveRun018": {
+        "run": "018",
+        "job": "01a181cb-5043-ffb7-be3e-2679bcabd16f",
+        "startedAtApproxUTC": "2026-10-28T09:15:45Z",
+        "naturalBoundaryApproxUTC": "2026-10-28T09:39:45Z",
+        "workers": 64,
+        "workerMiB": 256,
+        "cpuReservation": 19,
+        "wholeJobReservationGiB": 24.625,
+        "cacheMiB": 3072,
+        "sqlHardHeapMiB": 4096,
+        "additionalGrowthBytes": 67108864,
+        "status": "capacity-admitted-and-running-owner-verified",
+        "mayPauseEarlierAtCommittedHashTransition": true,
+        "performanceBenefitEstablished": false,
+        "phase": "global",
+        "progressAsOfUTC": "2026-10-28T09:16:45Z",
+        "allPacketIngestionComplete": true,
+        "ingestedTotals": {
+          "resources": 23586626,
+          "assertions": 166914715,
+          "relations": 4036948,
+          "translations": 3242,
+          "externalReferences": 94948126
+        },
+        "finalProofWritten": false,
+        "globalTextsCountedAtResume": 90810000,
+        "globalIdsChecked": 194541531
+      },
+      "globalQualificationComplete": {
+        "job": "01a181da-ce15-9f85-f2bb-f1968549da9b",
+        "status": "completed-and-clean",
+        "sha256": "9e60de075a9bf049e0348c666e4cc2cbe9edb07c6771bcab95649038dafd1226",
+        "bytes": 6327,
+        "localSanitizedReceiptSHA256": "55c4962a99ef16f40939f816b07a73da428fcedc9c7d32c916a95a90b51110af",
+        "evidence": {
+          "aggregateObservedCounts": {
+            "assertions": 166914715,
+            "assets": 24147,
+            "externalReferences": 94948126,
+            "packets": 9929609,
+            "relations": 4036948,
+            "resources": 23586626,
+            "translations": 3242
+          },
+          "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+          "contractTextIdentityRule": "A text identifier can be reused in multiple projections of the same original text (for example a resource name and the original data.name field). Repeated definitions must have identical language, value, source-text hash and citation set; conflicts are rejected. Source edition language is not proof of each embedded quoted string language; uncertain fields use und.",
+          "contractVersion": "offmenu-common-contract/1",
+          "database": {
+            "citations": 22574341,
+            "ids": 194541531,
+            "referencesRecorded": 23786447,
+            "texts": 216170809,
+            "translation_sources": 3242
+          },
+          "diskGuardBytes": 10737418240,
+          "packageCount": 8,
+          "packages": [
+            {
+              "admittedSourceRecords": {
+                "foodon": 29255,
+                "world-recipes": 25135
+              },
+              "directory": "/offmenu-corpus/common-data-reviewed-package-20261014",
+              "grandfathered": true,
+              "manifestByteSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+              "observedCounts": {
+                "assertions": 2199543,
+                "packets": 79534,
+                "relations": 459245,
+                "resources": 441391,
+                "translations": 3242
+              },
+              "packetFiles": 161,
+              "releaseId": "common-data-20261014"
+            },
+            {
+              "admittedSourceRecords": {
+                "dietary-guidelines": 100,
+                "wikibooks": 3796
+              },
+              "directory": "/offmenu-corpus/common-reference-delivery-final-20261014",
+              "grandfathered": false,
+              "manifestByteSha256": "bec93ffedf4d80eef10ec11000c18161024a3c30999697ad1f3db5f3318ff3e7",
+              "observedCounts": {
+                "assertions": 31168,
+                "packets": 3896,
+                "relations": 0,
+                "resources": 3896,
+                "translations": 0
+              },
+              "packetFiles": 9,
+              "releaseId": "common-references-20261014"
+            },
+            {
+              "admittedSourceRecords": {
+                "afcd": 1801,
+                "ciqual": 3484,
+                "cnf": 5690,
+                "cofid": 2887,
+                "fineli": 4232,
+                "foodfiles": 2857,
+                "frida": 1381,
+                "germany-bls": 7140,
+                "matvaretabellen": 2121,
+                "mext": 2538,
+                "sweden-food": 2606
+              },
+              "directory": "/offmenu-corpus/common-national-semantic-final-20261014",
+              "grandfathered": false,
+              "manifestByteSha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+              "observedCounts": {
+                "assertions": 2020535,
+                "packets": 36737,
+                "relations": 661266,
+                "resources": 661266,
+                "translations": 0
+              },
+              "packetFiles": 1470,
+              "releaseId": "common-national-20261014"
+            },
+            {
+              "admittedSourceRecords": {
+                "qudt-measurement-definitions": 56
+              },
+              "directory": "/offmenu-corpus/measurement-terminology-final-qualified-20261014",
+              "grandfathered": false,
+              "manifestByteSha256": "75c33340f1ee25c4121c57d8fc124621b4455412717fc6d9dd01bfb162351679",
+              "observedCounts": {
+                "assertions": 440,
+                "packets": 56,
+                "relations": 0,
+                "resources": 56,
+                "translations": 0
+              },
+              "packetFiles": 1,
+              "releaseId": "qudt-measurement-definitions-3.5.2-20261014"
+            },
+            {
+              "admittedSourceRecords": {
+                "Remarknl/Indisch-eten": 1,
+                "chefdelakarma/libre_cuisine": 6,
+                "clicat/Ricette": 2,
+                "lvisintini/recetasdemami": 33,
+                "rochacbruno/vegan_recipes": 0
+              },
+              "directory": "/offmenu-corpus/recipe-expansion-final-qualified-20261014/common-graph",
+              "grandfathered": false,
+              "manifestByteSha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
+              "observedCounts": {
+                "assertions": 1588,
+                "packets": 42,
+                "relations": 644,
+                "resources": 682,
+                "translations": 0
+              },
+              "packetFiles": 1,
+              "releaseId": "recipe-expansion-qualified-20261014"
+            },
+            {
+              "admittedSourceRecords": {
+                "smithsonian-archive": 5
+              },
+              "directory": "/offmenu-corpus/historical-recipe-quality-final-corrected-20261014",
+              "grandfathered": false,
+              "manifestByteSha256": "e4c06a1d4a2fcb492529c37c6245a595dd104061ef1a63427cbe9d65e7e2241f",
+              "observedCounts": {
+                "assertions": 256,
+                "packets": 5,
+                "relations": 66,
+                "resources": 66,
+                "translations": 0
+              },
+              "packetFiles": 1,
+              "releaseId": "historical-recipe-quality-final-20261014"
+            },
+            {
+              "admittedSourceRecords": {
+                "off": 5452981,
+                "prices": 317898,
+                "usda-files": 4025777
+              },
+              "directory": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/bulk-parallel",
+              "grandfathered": false,
+              "manifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e",
+              "observedCounts": {
+                "assertions": 137295959,
+                "packets": 9796656,
+                "relations": 2915727,
+                "resources": 9796656,
+                "translations": 0
+              },
+              "packetFiles": 9797,
+              "releaseId": "bulk-food-common-semantic-final-20261014"
+            },
+            {
+              "admittedSourceRecords": {
+                "overture-food-places": 12681108,
+                "wikidata-food-businesses": 1505
+              },
+              "directory": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/places",
+              "grandfathered": false,
+              "manifestByteSha256": "fc0952ab0cf03c1451239173ebc60cc1fbdda20b133f40d6714c07e5188caf77",
+              "observedCounts": {
+                "assertions": 25365226,
+                "packets": 12683,
+                "relations": 0,
+                "resources": 12682613,
+                "translations": 0
+              },
+              "packetFiles": 12683,
+              "releaseId": "common-places-20261014"
+            }
+          ],
+          "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+          "schemaId": "https://offmenu-corpus.netlify.app/common-data/schema.json",
+          "schemaVersion": "offmenu-common-expansion-qualification/1",
+          "scratchBudgetBytes": 64424509440,
+          "seconds": 21256.893,
+          "status": "all-packages-streamed-global-identities-references-and-provenance-checked"
+        }
+      },
+      "qualifiedAssembly": {
+        "status": "qualified-assembly-and-delta-complete",
+        "job": "01a181dd-050e-0278-8713-33adec32cfa2",
+        "deltaBytes": 5879185,
+        "deltaFiles": 24171,
+        "logicalPayloadGB": 27.165,
+        "deltaSHA256Prefix": "ec4f73f1",
+        "source": "Existing assessor and publisher receipts; exact complete delta hash retained by exclusive publisher."
+      },
+      "finalHashRecovery": {
+        "failedRun": "019",
+        "failedJob": "01a181d8-b2b6-5c01-bb0f-f5b69e6ef21e",
+        "result": "RuntimeError: cannot start new thread under parent virtual-address cap",
+        "elapsedSecondsApprox": 6.3,
+        "observedParentVMGB": 8.461,
+        "observedParentRSSMB": 342,
+        "childTreeGone": true,
+        "committedProgressPreserved": true,
+        "correction": "Same pinned hash checks resumed with64 hash threads instead of256; no source migration, input change or proof weakening.",
+        "successfulRun": "020",
+        "remainingAssetsHashed": 3214,
+        "wallSeconds": 2.392668315966148,
+        "sampledParentVMBytes": 3466805248,
+        "sampledParentRSSBytes": 160763904,
+        "perProcessASCapBytes": 8589934592,
+        "outputGrowthBytes": 67108864,
+        "limit": "This is successful correction of the remaining hash work, not a whole-corpus2.39second benchmark or measured causal speedup."
+      },
+      "terminalDetectionGap": {
+        "run": "018",
+        "actualTerminalUTC": "2026-10-28T09:21:52Z",
+        "detectedApproxUTC": "2026-10-28T09:29:00Z",
+        "finding": "About8minutes of avoidable critical-path idle before refill.",
+        "correction": "Existing owner switched to phase-aware60–90second checks for expected early final-phase completion, immediate clean handoff and nonblocking receipt writing. No new supervisor, duplicate job or root polling."
+      },
+      "basisRestoration": {
+        "phase1": {
+          "status": "completed",
+          "terminalUTC": "2026-10-28T10:08:28Z",
+          "assets": 8192,
+          "records": 9478758,
+          "nativeIndexBytes": 8162656256,
+          "requiredForPhase2": true
+        },
+        "phase2": {
+          "job": "01a1820e-077e-23ee-931e-75b7500cffdb",
+          "admittedAtUTC": "2026-10-28T10:28:40Z",
+          "state": "running-after-specific-user-approval-and-one-known-nonexecuted-retry",
+          "workers": 4,
+          "cpuReservation": 4,
+          "memoryGiB": 2,
+          "totalOutputGiB": 21,
+          "remainingGrowthBytes": 14453027134,
+          "sharedReserveGiB": 70,
+          "boundaryApproxUTC": "2026-10-28T10:55:55Z",
+          "sourceInputsReadOnly": true
+        }
       }
     },
     "latestUserOperatingPrinciple": {
@@ -10250,6 +10853,39 @@
       "limitation": "Names/statusonly; no current hashes captured. Do not overwrite earlier files or re-export/replay merely fromuntrackedstatus. Deliberateexit7smoke remainsnotretryable."
     },
     "latestNarrowAuthorityHold": {
+      "state": "specific-actions-authorized-and-resumed",
+      "approvedUTC": "2026-10-28T10:25:11Z",
+      "scope": "Read-only corrected Groq review, no provider call/deployment; reviewed nutrition-basis phase2 in existing output directory with4workers/2GiB/21GiB total and70GiB reserve, original inputs read-only.",
+      "actual": "Same Groq reviewer completed approvedR2; exact basis request admitted after one known-nonexecuted retry.",
+      "notExpanded": "No paid services, corpus deletion, new credentials or blanket permission bypass."
+    },
+    "latestToolingImplementation": {
+      "authorTask": "01a181e9-ee60-71fe-8036-0960ae187021",
+      "reviewTask": "01a181f1-8cbc-707c-b44d-b0b9edfaf037",
+      "approvedReviewTurn": "01a18210-32a0-71c2-a9ef-88ecf768e78e",
+      "baseSHA256": "3760b83e2678f89e2330a62f2ccdf0a8e935461f5cbc2168a3f57d0e725e9f38",
+      "candidateSHA256": "1e24c1d5ce2d5b6cecb47666f775f85c4a2b582215e951c1845815eb102fef67",
+      "sourceState": "R2 independently approved;15 mocked tests plus focused supervisor-termination check; current live task catalog preserved.",
+      "features": "Exact provenance-keyed reuse, bounded single-flight, structured validation and usage/unique-artifact accounting implemented in candidate.",
+      "acceptanceLimit": "Schema acceptance is not semantic correctness. No deployed cache or measured production token/time savings claimed.",
+      "liveAdoption": "In progress through existing Foo author and durable connector coordination; native owner activation hit7-slot cap, not a reason to stop ready work.",
+      "storage": "Existing compose declares a worker-cache volume; live shared trusted POSIX mount and fork/signal runtime behavior are not yet verified. Ordinary resource state is not a lock; no new service/mount or bypass.",
+      "integrationTurn": "01a18219-6f22-7230-9bf9-3c6fe830984d",
+      "model": "Saved/default model with medium effort; exact resolved model not exposed."
+    },
+    "latestAntigravityVerification": {
+      "task": "01a181a8-c114-77b2-b98e-030c3a46c008",
+      "turn": "01a181eb-4d5d-769f-a9fb-4f10a47e5e52",
+      "observedUTC": "2026-10-28T09:50:56Z to09:51:25Z",
+      "desktopVersion": "2.4.2",
+      "cliVersion": "1.4.7",
+      "signedInState": "unverified",
+      "installedClientEntitlement": "unverified",
+      "numericRemainingAllowance": "unverified",
+      "modelListing": "Advertised read-only command failed during local helper initialization: loopback bind/profile-write restrictions. No inference, new OAuth, install or bypass.",
+      "mcp": "CLI advertises MCP commands; configured working connectivity not established."
+    },
+    "priorNarrowAuthorityHoldBeforeSpecificApproval": {
       "reportedUTC": "2026-10-28T09:16:08Z",
       "owner": "align_north_star_graph and scale_north_star_derivation",
       "actions": "Reviewed caller-code staging and a separate metadata-only consumer receipt staging to existing Foo destination.",
@@ -10258,6 +10894,45 @@
       "dependentWork": "New basis writes to that destination withheld rather than used to evade denial; exact paths/pins held by root for next suitable user interaction.",
       "unaffected": "Existing authorized corpus018 remains running; completed outputs, existing Windmill connector operations and source custody remain intact.",
       "userInteraction": "User driving; no direct noncritical message. Root will bundle the exact authorization request when suitable."
+    },
+    "latestOSMDisposition": {
+      "id": "SOURCE-OSM-DEFERRED",
+      "authority": "Explicit user retirement2026-10-28; remove OSM now and reconsider only after all current ledger work completes and storage is accounted for.",
+      "state": "retirement-authorized-execution-unconfirmed; future work deferred",
+      "target": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-63/dc7480cf5666cc2af990/planet-261005.osm.pbf.part",
+      "reportedAllocatedBytes": 95244251136,
+      "scope": "Exact OSM-only partial file; preserve all adjacent provenance and bound source manifests.",
+      "currentDependencyClearance": {
+        "qualifiedPackagesExcludeOSM": true,
+        "publisherAttestedNoOSMReader": true,
+        "northStarAttestedNoActiveOrPlannedOSMDependency": true,
+        "historicalProducerStopped": "2026-10-15 owner report",
+        "historicalOwnerResponseRequired": false
+      },
+      "remainingExecutionCheck": "Normal-host user-run script fails closed on active handles; restricted agent cannot claim full-host handle visibility.",
+      "noAutoDownloadOrRetry": true,
+      "reconsideration": "Only after all currently defined delivery work is complete, with explicit storage budget and permission; not an automatic reactivation.",
+      "physicalReclamationConfirmed": false,
+      "verifiedReclaimedBytes": 0,
+      "preserve": "Overture/Wikidata places, all non-OSM inputs/proofs/assembly/upload state, custom configuration, full native manifest, OFF and Trash holds.",
+      "cleanupOther": "Only identified installer/Ollama scripts delivered for user execution; Chrome/npm/uv caches withheld while browser/package work active. No bytes reclaimed claimed.",
+      "evidence": "docs/operations/2026-10-28/delivery-and-osm-retirement-checkpoint.json"
+    },
+    "implementationReminder": {
+      "id": "6adfe4594890819190c493c2198ae9e4",
+      "updatedAt": "2026-10-28T09:43:39.482061+00:00",
+      "promptExact": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART:20261026T233801Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+      "enabled": true,
+      "timezone": "Australia/Melbourne"
+    },
+    "osmReminder": {
+      "id": "6adfe4594890819190c493c2198ae9e4",
+      "updatedAt": "2026-10-28T10:37:45.171300+00:00",
+      "promptExact": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART:20261026T233801Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+      "enabled": true,
+      "timezone": "Australia/Melbourne"
     }
   },
   "priorStatusBeforeProduction194Reconciliation": "full-production-allocated-corpus-active-product193-served",
