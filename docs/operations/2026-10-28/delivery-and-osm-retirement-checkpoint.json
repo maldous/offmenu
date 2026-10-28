@@ -1,6 +1,6 @@
 {
   "schema": "offmenu-efficiency-delivery-checkpoint/1",
-  "asOfUTC": "2026-10-28T11:29:30Z",
+  "asOfUTC": "2026-10-28T12:27:00Z",
   "globalProof": {
     "job": "01a181da-ce15-9f85-f2bb-f1968549da9b",
     "status": "completed-and-clean",
@@ -227,16 +227,17 @@
       "result": "netlify_http_429; accepted partial uploads retained"
     },
     "currentRun": {
-      "job": "01a1823a-6636-466a-f02c-cc9b7a5f74af",
-      "status": "running-first-accepted-PUT-observed",
-      "observedUTC": "2026-10-28T11:23:57Z",
-      "requiredDigests": 23983,
-      "acceptedDigestsObserved": 1,
-      "acceptedBytesObserved": 151607,
-      "firstAcceptanceElapsedSeconds": 2.7,
-      "preCommandChannelCode2RetriesObserved": 4,
-      "uploadFailureEventObserved": false,
-      "sustainedRateEstablished": false
+      "job": "01a1824d-4c33-00a0-9ccb-5656f4e47c95",
+      "deploy": "6ae1c3946435074ef6c08369",
+      "owner": "prepare_common_corpus_publication",
+      "observedUTC": "2026-10-28T12:24:00Z",
+      "status": "running-direct-MCP-readback",
+      "acceptedDigests": 4750,
+      "acceptedBytes": 5367345142,
+      "remainingDigests": 19233,
+      "uploadElapsedSeconds": 2422.2,
+      "servedVerificationPending": true,
+      "source": "Direct MCP get_run logs; accepted progress is not serving."
     },
     "channelSourceSHA256": "1d0af37859aeac37138bc3fe781f31623780151fd82435f803256662aaea29cf",
     "channelReview": "Same Foo reviewer approved supplied narrow source with five focused mocks. Frozen full-file hash binding/readback by publisher; 74 local author tests, not independently rerun. Retry only known unexecuted channel-open code2, bounded seven attempts; no administrative-denial or post-dispatch retries.",
@@ -263,7 +264,7 @@
     "phase2": {
       "job": "01a1820e-077e-23ee-931e-75b7500cffdb",
       "admittedAtUTC": "2026-10-28T10:28:40Z",
-      "state": "full-restoration-and-final-SQL-proof-complete; finite-caller-proof-pending",
+      "state": "full-restoration-final-SQL-caller002-and-final-reviewed-consumer-proof-handoff-complete; no-active-NorthStar-data-job",
       "workers": 4,
       "cpuReservation": 4,
       "memoryGiB": 2,
@@ -321,13 +322,25 @@
       }
     },
     "callerProof": {
-      "job": "01a18243-e936-376b-34dc-054a1b8bd1e3",
-      "status": "admitted-running-owner-confirmed",
-      "cpu": 1,
-      "memoryMiB": 512,
-      "metadataOutputMiB": 64,
-      "corpusWrites": false,
-      "observedUTC": "2026-10-28T11:29:00Z"
+      "completedUTC": "2026-10-28T11:42:33Z",
+      "elapsedSeconds": 15.824,
+      "finalReviewedConsumerProof": {
+        "bytes": 13130,
+        "path": "reviewed-consumer-proof.json",
+        "publisherConsumed": true,
+        "sha256": "79d2adae3713a7604c8b4965027be7acc0512de58fa02c3c18f131b8fef2f05a",
+        "source": "Trusted parent handoff; no new fetch or execution.",
+        "stagedUTC": "2026-10-28T11:47:49Z",
+        "stagingJob": "01a18256-8003-7b0f-f4e1-8d7a41973958"
+      },
+      "job": "01a18251-6db2-6d9d-0453-6d848f373f97",
+      "owner": "align_north_star_graph",
+      "reportBytes": 3306,
+      "reportSHA256": "921fa2113c67b05213786dbebfb10e350e2716a45a325b977f44c18e7bacf61b",
+      "run": "caller002",
+      "scope": "Finite caller002 proof complete; final reviewed-consumer proof has also been staged and consumed by publisher. No active NorthStar data job remains; not admission/canonicalization/serving.",
+      "source": "Trusted parent handoff; exact report bytes not fetched or execution repeated.",
+      "status": "succeeded-owner-reported"
     }
   },
   "tooling": {
@@ -339,7 +352,7 @@
     "sourceState": "R2 independently approved;15 mocked tests plus focused supervisor-termination check; current live task catalog preserved.",
     "features": "Exact provenance-keyed reuse, bounded single-flight, structured validation and usage/unique-artifact accounting implemented in candidate.",
     "acceptanceLimit": "Schema acceptance is not semantic correctness. No deployed cache or measured production token/time savings claimed.",
-    "liveAdoption": "Metrics-only patch independently approved; same-owner live adoption denied twice before admission (initial plus one materially supported retry). No live mutation, cache activation or provider call; exact specific platform confirmation pending.",
+    "liveAdoption": "user-approved-but-direct-platform-confirmation-binding-unresolved",
     "storage": "Existing compose declares a worker-cache volume; live shared trusted POSIX mount and fork/signal runtime behavior are not yet verified. Ordinary resource state is not a lock; no new service/mount or bypass.",
     "integrationTurn": "01a18219-6f22-7230-9bf9-3c6fe830984d",
     "model": "Saved/default model with medium effort; exact resolved model not exposed.",
@@ -379,7 +392,7 @@
       "fixedDefect": "TF-R1: known child status lost if finalization failed; now preserved while tool failure is explicit."
     },
     "sourceCustody": {
-      "status": "frozen-local-publication-platform-held",
+      "status": "user-approved-local-frozen-platform-binding-unresolved",
       "bundleBytes": 36863,
       "bundleSHA256": "1a7cd9fa05dbc8352c4a13d7b9b1ae4cc5a2cf0b17f8898103067e6b7464d039",
       "filesPlanned": 23,
@@ -389,8 +402,19 @@
       "existingPushPermissionVerified": true,
       "branch": "integration/reviewed-local-source-custody-20261027",
       "destinationPrefix": "dev/reviewed-local-source-custody-20261027/ai-efficiency-tooling-20261028/",
-      "denial": "Initial upload and one materially supported same-action retry denied before execution; exact specific user confirmation pending. No commit/ref mutation or alternate route.",
+      "denial": "Adapter saved as private inactive draft only; deployment denied before execution; live adapter/caller sources and private permissions unchanged. Git tree creation denied before execution; no commit/ref update. Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
       "terminalFilterIncluded": false
+    },
+    "approvalReconciliation": {
+      "approvedUTC": "2026-10-28T12:05:00Z",
+      "sameOwnerTask": "01a181e9-ee60-71fe-8036-0960ae187021",
+      "attemptTurn": "01a18269-4379-71f2-8cf9-c3d26069f655",
+      "state": "user-approved-but-direct-platform-confirmation-binding-unresolved",
+      "actual": "Adapter saved as private inactive draft only; deployment denied before execution; live adapter/caller sources and private permissions unchanged. Git tree creation denied before execution; no commit/ref update.",
+      "cause": "Platform did not accept delegated voice approval as a trusted direct user message; no source/scope drift reported.",
+      "next": "Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
+      "cacheEnabled": false,
+      "providerCalls": 0
     }
   },
   "antigravity": {
@@ -455,12 +479,64 @@
   },
   "reminder": {
     "id": "6adfe4594890819190c493c2198ae9e4",
-    "updatedAt": "2026-10-28T10:37:45.171300+00:00",
-    "promptExact": true,
-    "schedule": "BEGIN:VEVENT\nDTSTART:20261026T233801Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+    "scheduledWakeUTC": "2026-10-28T11:38:01Z",
+    "arrivedUTC": "2026-10-28T11:41:32Z",
     "enabled": true,
-    "timezone": "Australia/Melbourne"
+    "scheduleChanged": false,
+    "apiNextRunTime": null,
+    "source": "Root confirmed actual wake; current automation enabled/schedule/prompt readback verified. Next-run timestamp not exposed.",
+    "updatedAt": "2026-10-28T12:25:38.528774+00:00",
+    "morningReport": "One written actual-delivery report on the first existing wake at/after08:00 Australia/Melbourne; record real message receipt; no routine overnight pings."
   },
   "counting": "All89 historical allocation rows retained;31 prior finite assigned substeps remain counted. OSM is a separately tracked deferred source, not a90th runnable job.",
-  "previousAsOfUTC": "2026-10-28T11:02:30Z"
+  "previousAsOfUTC": "2026-10-28T11:29:30Z",
+  "unattendedReliability": {
+    "asOfUTC": "2026-10-28T12:27:00Z",
+    "correctedCurrentSelectors": 26,
+    "sourceDeltaSHA256": "6e51b9faf1783260af7ab5bf6471395fa17d6b5add613531caac082e327ec75a",
+    "sourceHandoffSHA256": "bd647aed8bf0548a4fe085531996fce8a20359025b593134f1e477c876dbbcb2",
+    "allPreconditionsMatched": true,
+    "corrections": [
+      "Removed completed proof/route/view-history work from current dispatch pointers.",
+      "Reconciled duplicate OSM current row with verified physical cleanup receipt; no repeat deletion.",
+      "Preserved explicit no-Actions dispatch/retry/push prohibition.",
+      "Recorded exact active uploader and terminal successor ownership; messages alone do not prove activation.",
+      "Preserved historical values,89 rows/states/owners/counts and all genuine source/security holds."
+    ],
+    "actualFollowthrough": "NorthStar final reviewed proof staged and consumed; derived transports/projectors prepared while healthy base upload continues. No ready-unowned runtime job established.",
+    "nextVerification": "Observe next actual existing hourly wake and its owner continuation; enablement/wake alone is not delivery completion."
+  },
+  "overnight": {
+    "owner": "prepare_common_corpus_publication",
+    "sequence": [
+      "base-upload-complete",
+      "base-actual-served-and-full-readback",
+      "bulk",
+      "national",
+      "recipe",
+      "basis"
+    ],
+    "allDerivedPublishersDeployedAndReadback": true,
+    "allProjectorsAndReceiptsStaged": true,
+    "optionalRootAcceptanceRequired": false,
+    "limits": "Per-release pins, one writer, resource admission, idempotent journals and terminal/drain checks retained; mandatory holds still apply.",
+    "morningReportSent": false
+  },
+  "userFacingRoster": {
+    "libraryFileId": "libfile_37547822965081918c149668e46a004f",
+    "fileId": "file_000000004fc881f5bdaf82a7fc14099a",
+    "filename": "OffMenu-delivery-ledger-2026-10-28.md",
+    "asOfUTC": "2026-10-28T12:20:00Z",
+    "bytes": 87830,
+    "sha256": "3d334a107d0e0d86d1768f01bcd60a3de434df89c8d6688d25c0c9183cd1d4b4",
+    "parentRows": 89,
+    "groups": {
+      "activeSharedPublication": 3,
+      "dependent": 29,
+      "exactInputScopeConsentCustodyHold": 36,
+      "limitedScopeCompletion": 11,
+      "eventTriggeredOrSetupCompleteDuty": 10
+    },
+    "finiteAssignedSubstepsEvidenced": 31
+  }
 }
