@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
   "status": "full-production-corpus-active-product194-served-finite-ready-assignments-closed",
-  "asOfUTC": "2026-10-28T12:27:00Z",
+  "asOfUTC": "2026-10-28T14:49:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -82,7 +82,7 @@
       "latestUserConcurrencyTarget": 256,
       "actualConcurrencyVerified": false,
       "placesFallback": "Historical ingestion fallback superseded by all packet ingestion complete; existing v5 global/final phases preserve their reviewed resource and hash-pause contracts.",
-      "fooDispatchState": "Global proof/assembly and NorthStar data, SQL, caller proof and final staging complete. One active base uploader; derived sequence prepared and owned. Local opt-in filter delivered. Two user-approved tooling operations remain blocked only by direct platform-confirmation binding; no duplicate jobs or cache activation.",
+      "fooDispatchState": "Global proof/assembly and NorthStar data, SQL, caller proof and final staging complete. One active same-deploy base uploader; derived sequence fully prepared/owned. Metrics and validation deployed, exact 23-file custody published, local filter delivered, cache disabled. Four new finite app corrections implemented; sole app integrator admitted but source-only export interrupted by platform review. Version194 still served, no195 claim.",
       "serviceWorkerTarget": 64,
       "serviceWorkersVerified": true,
       "hourlyPrompt": "Existing reminder updated/readback2026-10-28T08:38:55.195299Z for restored quota and supported6.1medium default; hourly schedule/enabled/timezone unchanged.",
@@ -99,7 +99,7 @@
         ],
         "evidenceId": "registrations-0327.json"
       },
-      "currentSnapshotUTC": "2026-10-28T12:27:00Z"
+      "currentSnapshotUTC": "2026-10-28T14:49:00Z"
     },
     "coordinatorRole": "Morgan/root stays highly available: lightweight communication, ownership/integration coordination, user decisions and concise result verification. Durable owners perform substantive engineering/execution/monitoring; audit_production_efficiency owns currentledger efficiency/closure updates.",
     "publicationWriter": "Morgan/root-authorized ledger reconciliation; direct Git/GitHub leased integration publication",
@@ -445,6 +445,109 @@
       "reminderUpdatedAt": "2026-10-28T12:25:38.528774+00:00",
       "scope": "Metadata/current-owner repair and actual overnight handoff, not a new automation/manager or whole-ledger completion.",
       "userFacingRoster": "libfile_37547822965081918c149668e46a004f"
+    },
+    {
+      "atUTC": "2026-10-28T14:49:00Z",
+      "type": "actual-tooling-completion-app-handoff-and-current-upload-reconciliation",
+      "owner": "audit_production_efficiency",
+      "tooling": {
+        "state": "completed-deployed-and-private-source-published",
+        "sameOwnerTask": "01a181e9-ee60-71fe-8036-0960ae187021",
+        "turn": "01a182ae-7bb2-7164-863a-c8b75178bf6d",
+        "observedUTC": "2026-10-28T14:47:22Z",
+        "source": "Same-owner cloud task terminal read; completion independently reported by root before this read.",
+        "receipt": "/home/user/src/offmenu-ai-20261028-DEPLOYED-AND-PUBLISHED.json",
+        "commit": "72d146cfa2e20d752228099c5a1e536e81ed1f29",
+        "adapterAndCallerDeployed": true,
+        "exactSourcesSchemasAndPrivatePermissionsReadBack": true,
+        "filesPublished": 23,
+        "allFilesReadBack": true,
+        "priorFilesUnchanged": true,
+        "cacheActivated": false,
+        "providerCalls": 0,
+        "credentialsChanged": false,
+        "actionsRuns": 0,
+        "rollbackSnapshotsRetained": true
+      },
+      "appIntegration": {
+        "id": "four-observed-app-defects",
+        "ownerTask": "prepare_production_integration",
+        "implementationTask": "01a182db-66d0-7092-bc85-fee8dd21f003",
+        "actualPickupUTC": "2026-10-28T14:44:52Z",
+        "checkpoint": {
+          "servedVersion": 194,
+          "served100Percent": true,
+          "isolatedCandidateVersion": 195,
+          "candidateDeployed": false,
+          "sourceExportTurn": "01a182f9-7504-7373-a379-24abf1f57310",
+          "sourceExportStatus": "interrupted-after-three-review-rejections-no-files",
+          "activeRuntimeAppJob": false
+        },
+        "fixes": [
+          {
+            "id": "CORE-APP-SCANNER-DELIVERY",
+            "path": "/offmenu/data/.offmenu-platform/artifacts/staging/scanner-access-recheck-20261029/",
+            "patchSHA256": "fd7066017bcff0a761b36c68af57ff172697ecf94139099f0b5adf2fd3ed0e27",
+            "evidenceJob": "01a182e2-13ce-a7b6-23be-96537103de0b",
+            "scope": "Recheck access after asynchronous camera/photo/decoder; revoke releases resources and discards pending results.",
+            "authorFocusedChecksPassed": 25,
+            "pinnedBaselineRegressionFailures": 5,
+            "evidenceSource": "Trusted root handoff from independent Foo implementer; not re-executed here."
+          },
+          {
+            "id": "SHOPPING-PLAN-DURATION",
+            "path": "/offmenu/data/.offmenu-platform/artifacts/staging/pantry-required-demand-20261029/",
+            "patchSHA256": "518655b435e21fd5934b0d2e55478cdb127d6340b3eadca31c88ef2cedd8ce27",
+            "evidenceJob": "01a182e6-0a52-ba3c-8f10-3196a8c66eaf",
+            "scope": "Require at least one nonoptional ingredient; apply predicate only to current source, preserving deployed expiry/date fixes.",
+            "authorFocusedChecksPassed": 6,
+            "pinnedBaselineRegressionFailures": 3,
+            "evidenceSource": "Trusted root handoff from independent Foo implementer; not re-executed here."
+          },
+          {
+            "id": "CONSUMPTION-LEFTOVERS-RECONCILIATION",
+            "path": "/offmenu/data/.offmenu-platform/artifacts/staging/cook-retry-contract-20261029/",
+            "patchSHA256": "6618d948ff5dc56db23c8c4a811bfbae667fb7edd656d837f72beb5fe1e5084a",
+            "evidenceJob": "01a182e9-723e-19ea-511e-c6aed94eb248",
+            "scope": "Reject retry recipe/servings/date conflicts while preserving valid retry without double stock deduction.",
+            "authorFocusedChecksPassed": 7,
+            "pinnedBaselineRegressionFailures": 3,
+            "evidenceSource": "Trusted root handoff from independent Foo implementer; not re-executed here."
+          },
+          {
+            "id": "NUTRITION-HISTORY-GOALS",
+            "path": "/offmenu/data/.offmenu-platform/artifacts/staging/history-zero-roundtrip-20261029/",
+            "patchSHA256": "19b88d420d573f29dc184f3b34076b9119602f96abbef9d1e24e5cd2edb6280b",
+            "evidenceJob": "01a182ea-870c-36b7-63b1-c0a8d7bcd00b",
+            "scope": "Retain missing served amount and zero intake correctly on a second save.",
+            "authorFocusedChecksPassed": 7,
+            "pinnedBaselineRegressionFailures": 3,
+            "evidenceSource": "Trusted root handoff from independent Foo implementer; not re-executed here."
+          }
+        ],
+        "nextActualTrigger": "Resolve exact source-only transfer denial through same task/direct user confirmation; then integrate function-local changes against actual v194, focused independent review, publish using existing authorized app route, verify served version and evidence. No whole-file pantry replacement.",
+        "safeContinuation": "Same sole app writer retains isolated current-v194 source. No duplicate implementer/writer, no corpus publisher changes, no reconstruction from prose or alternate transfer route after denial.",
+        "stopOrApproval": "No export retry while exact denial/authority reconciliation remains unresolved. Root requested direct task approval at 14:48.",
+        "evidenceDestination": "Existing app served receipt -> audit_production_efficiency -> ledger."
+      },
+      "publication": {
+        "job": "01a182cd-6e6e-07f9-0030-f030f346e232",
+        "deploy": "6ae1c3946435074ef6c08369",
+        "owner": "prepare_common_corpus_publication",
+        "observedUTC": "2026-10-28T14:41:19Z",
+        "status": "running-owner-reported",
+        "acceptedDigests": 4500,
+        "acceptedBytes": 5039016233,
+        "remainingDigests": 19483,
+        "uploadElapsedSeconds": 2262.8,
+        "source": "Existing publisher's already-observed normal receipt; no extra probe.",
+        "servedVerificationPending": true,
+        "nonAdditiveCounterCaveat": "Previous job ended on SSH rekey timeout after 15,250 accepted. Same-deploy refreshed provider inventory returned 23,983 digests; current counters are not additive to prior-run acceptance.",
+        "sameDeployResumeUTC": "2026-10-28T13:57:00Z",
+        "reviewedRecoverySourcePrefix": "3250423c"
+      },
+      "historicalRowsPreserved": 89,
+      "noNewExecution": true
     }
   ],
   "lanes": [
@@ -8799,13 +8902,13 @@
       {
         "id": "CORE-APP-SCANNER-DELIVERY",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "prepare_production_integration (sole current app integration owner)",
         "deliveryLane": "household-profile-planner",
         "state": "dependent",
-        "executionClaim": "No new job dispatched by allocation",
+        "executionClaim": "New observed finite correction implemented/tested by independent Foo owner; integration admitted 14:44:52, exact source-export turn interrupted with no files; not deployed.",
         "deliverable": "Selected scanner handoff/account inventory contract plus physical-device acceptance",
         "dependency": "Actual authorized camera/device and authenticated session absent from present evidence",
-        "nextUsefulAction": "Prepare source-only handoff checks independently; keep real camera/ROI/torch/audio/vibration acceptance unverified.",
+        "nextUsefulAction": "Resolve exact source-only transfer denial through same task/direct user confirmation; then integrate function-local changes against actual v194, focused independent review, publish using existing authorized app route, verify served version and evidence. No whole-file pantry replacement.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/72",
@@ -8814,7 +8917,25 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorCurrentDispatchBeforeNewObservedDefect": {
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "nextUsefulAction": "Prepare source-only handoff checks independently; keep real camera/ROI/torch/audio/vibration acceptance unverified."
+        },
+        "currentFiniteCorrection": {
+          "id": "CORE-APP-SCANNER-DELIVERY",
+          "path": "/offmenu/data/.offmenu-platform/artifacts/staging/scanner-access-recheck-20261029/",
+          "patchSHA256": "fd7066017bcff0a761b36c68af57ff172697ecf94139099f0b5adf2fd3ed0e27",
+          "evidenceJob": "01a182e2-13ce-a7b6-23be-96537103de0b",
+          "scope": "Recheck access after asynchronous camera/photo/decoder; revoke releases resources and discards pending results.",
+          "authorFocusedChecksPassed": 25,
+          "pinnedBaselineRegressionFailures": 5,
+          "evidenceSource": "Trusted root handoff from independent Foo implementer; not re-executed here.",
+          "state": "implemented-tested-awaiting-exact-source-transfer-and-current-source-integration",
+          "parentStateUnchanged": true,
+          "parentComplete": false
+        }
       },
       {
         "id": "HOUSEHOLD-DURABLE-SYNC",
@@ -9015,13 +9136,13 @@
       {
         "id": "SHOPPING-PLAN-DURATION",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "prepare_production_integration finite delivery complete; audit_production_efficiency coordinates exact broader-input owner",
+        "currentOwner": "prepare_production_integration (sole current app integration owner)",
         "deliveryLane": "root-production",
         "state": "finite-step-complete-dependent",
-        "executionClaim": "Finite accepted receipt reconciliation only; no new tests, job, build, deploy or perpetual runnable task.",
+        "executionClaim": "New observed finite correction implemented/tested by independent Foo owner; integration admitted 14:44:52, exact source-export turn interrupted with no files; not deployed.",
         "deliverable": "Pantry-duration expiry correction delivered and served193;194preserves it. Existing estimate now advances simulated meal-day and uses consistent expiry-aware matching/deduction; no held shopping-deficit adoption.",
         "dependency": "Only broader duration/planning acceptance remains: exact shopping-deficit receipt/mapping and qualified ingredient/amount/source/roundtrip prerequisites. Do not redeploy193correction or replay accepted scoped tests.",
-        "nextUsefulAction": "Only broader duration/planning acceptance remains: exact shopping-deficit receipt/mapping and qualified ingredient/amount/source/roundtrip prerequisites. Do not redeploy193correction or replay accepted scoped tests.",
+        "nextUsefulAction": "Resolve exact source-only transfer denial through same task/direct user confirmation; then integrate function-local changes against actual v194, focused independent review, publish using existing authorized app route, verify served version and evidence. No whole-file pantry replacement.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/77",
@@ -9080,18 +9201,36 @@
           },
           "parentComplete": false,
           "reactivationCondition": "Exact named existing contract/input becomes available or an observed scoped defect requires correction."
+        },
+        "priorCurrentDispatchBeforeNewObservedDefect": {
+          "currentOwner": "prepare_production_integration finite delivery complete; audit_production_efficiency coordinates exact broader-input owner",
+          "executionClaim": "Finite accepted receipt reconciliation only; no new tests, job, build, deploy or perpetual runnable task.",
+          "nextUsefulAction": "Only broader duration/planning acceptance remains: exact shopping-deficit receipt/mapping and qualified ingredient/amount/source/roundtrip prerequisites. Do not redeploy193correction or replay accepted scoped tests."
+        },
+        "currentFiniteCorrection": {
+          "id": "SHOPPING-PLAN-DURATION",
+          "path": "/offmenu/data/.offmenu-platform/artifacts/staging/pantry-required-demand-20261029/",
+          "patchSHA256": "518655b435e21fd5934b0d2e55478cdb127d6340b3eadca31c88ef2cedd8ce27",
+          "evidenceJob": "01a182e6-0a52-ba3c-8f10-3196a8c66eaf",
+          "scope": "Require at least one nonoptional ingredient; apply predicate only to current source, preserving deployed expiry/date fixes.",
+          "authorFocusedChecksPassed": 6,
+          "pinnedBaselineRegressionFailures": 3,
+          "evidenceSource": "Trusted root handoff from independent Foo implementer; not re-executed here.",
+          "state": "implemented-tested-awaiting-exact-source-transfer-and-current-source-integration",
+          "parentStateUnchanged": true,
+          "parentComplete": false
         }
       },
       {
         "id": "NUTRITION-HISTORY-GOALS",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "prepare_production_integration (finite delivery complete; exact broader-input dependency owner, no new running product job)",
+        "currentOwner": "prepare_production_integration (sole current app integration owner)",
         "deliveryLane": "consumption-history",
         "state": "waiting-exact-confirmed-receipt-producer",
-        "executionClaim": "Bounded existing-caller audit/fix delivered and served194; no new job from this reconciliation.",
+        "executionClaim": "New observed finite correction implemented/tested by independent Foo owner; integration admitted 14:44:52, exact source-export turn interrupted with no files; not deployed.",
         "deliverable": "Completed finite assigned current-caller audit/fix: Existing cook/serve/history persistence/validation/render/export journey audited; unknown intake CSV Portions corrected from misleading zero to blank, preserving known zero/positive;9focused/45combined tests, served194.",
         "dependency": "Historical selected owner03 frozen producer/confirmed-receipt trace remains missing/unadmitted; no qualified real nutrition or goal acceptance established.",
-        "nextUsefulAction": "Do not rerun unchanged audit. Obtain only: Exact selected owner03 producer and confirmed-receipt trace plus admission/disposition under existing holds; no substitute producer or receipt-metadata integration.",
+        "nextUsefulAction": "Resolve exact source-only transfer denial through same task/direct user confirmation; then integrate function-local changes against actual v194, focused independent review, publish using existing authorized app route, verify served version and evidence. No whole-file pantry replacement.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/78",
@@ -9158,18 +9297,36 @@
           },
           "reactivationCondition": "Exact named existing caller/source/receipt contract becomes available or a new concrete observed defect is selected; no repeated accepted audit, unsupported semantics or held receipt-integration bypass.",
           "parentComplete": false
+        },
+        "priorCurrentDispatchBeforeNewObservedDefect": {
+          "currentOwner": "prepare_production_integration (finite delivery complete; exact broader-input dependency owner, no new running product job)",
+          "executionClaim": "Bounded existing-caller audit/fix delivered and served194; no new job from this reconciliation.",
+          "nextUsefulAction": "Do not rerun unchanged audit. Obtain only: Exact selected owner03 producer and confirmed-receipt trace plus admission/disposition under existing holds; no substitute producer or receipt-metadata integration."
+        },
+        "currentFiniteCorrection": {
+          "id": "NUTRITION-HISTORY-GOALS",
+          "path": "/offmenu/data/.offmenu-platform/artifacts/staging/history-zero-roundtrip-20261029/",
+          "patchSHA256": "19b88d420d573f29dc184f3b34076b9119602f96abbef9d1e24e5cd2edb6280b",
+          "evidenceJob": "01a182ea-870c-36b7-63b1-c0a8d7bcd00b",
+          "scope": "Retain missing served amount and zero intake correctly on a second save.",
+          "authorFocusedChecksPassed": 7,
+          "pinnedBaselineRegressionFailures": 3,
+          "evidenceSource": "Trusted root handoff from independent Foo implementer; not re-executed here.",
+          "state": "implemented-tested-awaiting-exact-source-transfer-and-current-source-integration",
+          "parentStateUnchanged": true,
+          "parentComplete": false
         }
       },
       {
         "id": "CONSUMPTION-LEFTOVERS-RECONCILIATION",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "prepare_production_integration (finite delivery complete; exact broader-input dependency owner, no new running product job)",
+        "currentOwner": "prepare_production_integration (sole current app integration owner)",
         "deliveryLane": "consumption-history",
         "state": "waiting-exact-confirmed-receipt-producer",
-        "executionClaim": "Bounded existing-caller audit/fix delivered and served194; no new job from this reconciliation.",
+        "executionClaim": "New observed finite correction implemented/tested by independent Foo owner; integration admitted 14:44:52, exact source-export turn interrupted with no files; not deployed.",
         "deliverable": "Completed finite assigned current-caller audit/fix: Actual cook/serve retry and history callers tested with synthetic stock conservation, saved/discarded/shared/unknown remainder, removal, storage/validator roundtrip; CSVunknown-intake correction served194.",
         "dependency": "Same separate producer/confirmed-receipt join remains unresolved; synthetic conservation is not real receipt provenance or full end-to-end lifecycle acceptance.",
-        "nextUsefulAction": "Do not rerun unchanged audit. Obtain only: Exact selected owner03 frozen producer/confirmed-receipt evidence and permitted join; keep receipt-metadata denial/admission holds intact.",
+        "nextUsefulAction": "Resolve exact source-only transfer denial through same task/direct user confirmation; then integrate function-local changes against actual v194, focused independent review, publish using existing authorized app route, verify served version and evidence. No whole-file pantry replacement.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/79",
@@ -9235,6 +9392,24 @@
             ]
           },
           "reactivationCondition": "Exact named existing caller/source/receipt contract becomes available or a new concrete observed defect is selected; no repeated accepted audit, unsupported semantics or held receipt-integration bypass.",
+          "parentComplete": false
+        },
+        "priorCurrentDispatchBeforeNewObservedDefect": {
+          "currentOwner": "prepare_production_integration (finite delivery complete; exact broader-input dependency owner, no new running product job)",
+          "executionClaim": "Bounded existing-caller audit/fix delivered and served194; no new job from this reconciliation.",
+          "nextUsefulAction": "Do not rerun unchanged audit. Obtain only: Exact selected owner03 frozen producer/confirmed-receipt evidence and permitted join; keep receipt-metadata denial/admission holds intact."
+        },
+        "currentFiniteCorrection": {
+          "id": "CONSUMPTION-LEFTOVERS-RECONCILIATION",
+          "path": "/offmenu/data/.offmenu-platform/artifacts/staging/cook-retry-contract-20261029/",
+          "patchSHA256": "6618d948ff5dc56db23c8c4a811bfbae667fb7edd656d837f72beb5fe1e5084a",
+          "evidenceJob": "01a182e9-723e-19ea-511e-c6aed94eb248",
+          "scope": "Reject retry recipe/servings/date conflicts while preserving valid retry without double stock deduction.",
+          "authorFocusedChecksPassed": 7,
+          "pinnedBaselineRegressionFailures": 3,
+          "evidenceSource": "Trusted root handoff from independent Foo implementer; not re-executed here.",
+          "state": "implemented-tested-awaiting-exact-source-transfer-and-current-source-integration",
+          "parentStateUnchanged": true,
           "parentComplete": false
         }
       },
@@ -9319,12 +9494,12 @@
       {
         "id": "GROWER-OPERATOR-QUALIFICATION",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "assess_partial_corpus_resume",
+        "currentOwner": "audit_production_efficiency coordinates exact source/consumer custodian; no active proof job",
         "deliveryLane": "corpus-globalproof",
         "state": "dependent",
         "executionClaim": "No new job dispatched by allocation",
         "deliverable": "Qualified canonical/product-role source bindings, not fabricated GTIN identity",
-        "dependency": "Current global proof007, source-use/role/identity acceptance; identity-only local candidate remains unadmitted",
+        "dependency": "Global proof020 is complete; exact source-use, role, identity and permitted consumer acceptance remain. Identity-only local candidate remains unadmitted.",
         "nextUsefulAction": "Join proof output to exact permitted consumers; do not publish unqualified identity claims.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
@@ -9334,7 +9509,8 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorGrowerProofDependencyBeforeHeldWorkRepair": "Current global proof007, source-use/role/identity acceptance; identity-only local candidate remains unadmitted"
       },
       {
         "id": "SOURCE-FIELD-PERMISSION-POLICY",
@@ -9997,7 +10173,7 @@
   },
   "continuousEfficiencyReview": {
     "schema": "offmenu-continuous-efficiency-review/1",
-    "asOfUTC": "2026-10-28T12:27:00Z",
+    "asOfUTC": "2026-10-28T14:49:00Z",
     "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
     "state": "active-owned-ongoing",
     "currentOwner": "audit_production_efficiency",
@@ -11022,17 +11198,38 @@
       "limitation": "Names/statusonly; no current hashes captured. Do not overwrite earlier files or re-export/replay merely fromuntrackedstatus. Deliberateexit7smoke remainsnotretryable."
     },
     "latestNarrowAuthorityHold": {
-      "asOfUTC": "2026-10-28T12:27:00Z",
-      "approvedUTC": "2026-10-28T12:05:00Z",
-      "sameOwnerTask": "01a181e9-ee60-71fe-8036-0960ae187021",
-      "attemptTurn": "01a18269-4379-71f2-8cf9-c3d26069f655",
-      "state": "user-approved-but-direct-platform-confirmation-binding-unresolved",
-      "actual": "Adapter saved as private inactive draft only; deployment denied before execution; live adapter/caller sources and private permissions unchanged. Git tree creation denied before execution; no commit/ref update.",
-      "cause": "Platform did not accept delegated voice approval as a trusted direct user message; no source/scope drift reported.",
-      "next": "Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
-      "cacheEnabled": false,
-      "providerCalls": 0,
-      "unaffected": "Healthy base upload and authorized derived publication continue; other exact source/security/consent inputs remain scoped to their own rows."
+      "asOfUTC": "2026-10-28T14:49:00Z",
+      "state": "tooling-hold-resolved; separate-app-source-transfer-blocked",
+      "resolvedTooling": {
+        "state": "completed-deployed-and-private-source-published",
+        "sameOwnerTask": "01a181e9-ee60-71fe-8036-0960ae187021",
+        "turn": "01a182ae-7bb2-7164-863a-c8b75178bf6d",
+        "observedUTC": "2026-10-28T14:47:22Z",
+        "source": "Same-owner cloud task terminal read; completion independently reported by root before this read.",
+        "receipt": "/home/user/src/offmenu-ai-20261028-DEPLOYED-AND-PUBLISHED.json",
+        "commit": "72d146cfa2e20d752228099c5a1e536e81ed1f29",
+        "adapterAndCallerDeployed": true,
+        "exactSourcesSchemasAndPrivatePermissionsReadBack": true,
+        "filesPublished": 23,
+        "allFilesReadBack": true,
+        "priorFilesUnchanged": true,
+        "cacheActivated": false,
+        "providerCalls": 0,
+        "credentialsChanged": false,
+        "actionsRuns": 0,
+        "rollbackSnapshotsRetained": true
+      },
+      "activeAppSourceTransfer": {
+        "owner": "prepare_production_integration",
+        "task": "01a182db-66d0-7092-bc85-fee8dd21f003",
+        "turn": "01a182f9-7504-7373-a379-24abf1f57310",
+        "status": "interrupted-after-three-automatic-review-rejections",
+        "filesReceived": 0,
+        "exactDeniedOperationVisible": false,
+        "next": "Root requested direct task approval for the four reviewed patches/tests/manifests only; no autonomous retry or route switch.",
+        "requestMessageId": "Sentinel_bda688668c24819186060d82d755f7ee",
+        "requestUTC": "2026-10-28T14:48:00Z"
+      }
     },
     "latestToolingImplementation": {
       "authorTask": "01a181e9-ee60-71fe-8036-0960ae187021",
@@ -11043,7 +11240,7 @@
       "sourceState": "R2 independently approved;15 mocked tests plus focused supervisor-termination check; current live task catalog preserved.",
       "features": "Exact provenance-keyed reuse, bounded single-flight, structured validation and usage/unique-artifact accounting implemented in candidate.",
       "acceptanceLimit": "Schema acceptance is not semantic correctness. No deployed cache or measured production token/time savings claimed.",
-      "liveAdoption": "user-approved-but-direct-platform-confirmation-binding-unresolved",
+      "liveAdoption": "Metrics and structured validation deployed in existing adapter and caller; reuse cache remains disabled pending separate runtime/storage qualification.",
       "storage": "Existing compose declares a worker-cache volume; live shared trusted POSIX mount and fork/signal runtime behavior are not yet verified. Ordinary resource state is not a lock; no new service/mount or bypass.",
       "integrationTurn": "01a18219-6f22-7230-9bf9-3c6fe830984d",
       "model": "Saved/default model with medium effort; exact resolved model not exposed.",
@@ -11056,7 +11253,26 @@
         "scope": "Metrics, structured validation and caller summary only; preserve existing uncached transport and live task catalog.",
         "schemaNotSemanticAcceptance": true,
         "cacheActivated": false,
-        "deployed": false
+        "deployed": true,
+        "deploymentReceipt": {
+          "state": "completed-deployed-and-private-source-published",
+          "sameOwnerTask": "01a181e9-ee60-71fe-8036-0960ae187021",
+          "turn": "01a182ae-7bb2-7164-863a-c8b75178bf6d",
+          "observedUTC": "2026-10-28T14:47:22Z",
+          "source": "Same-owner cloud task terminal read; completion independently reported by root before this read.",
+          "receipt": "/home/user/src/offmenu-ai-20261028-DEPLOYED-AND-PUBLISHED.json",
+          "commit": "72d146cfa2e20d752228099c5a1e536e81ed1f29",
+          "adapterAndCallerDeployed": true,
+          "exactSourcesSchemasAndPrivatePermissionsReadBack": true,
+          "filesPublished": 23,
+          "allFilesReadBack": true,
+          "priorFilesUnchanged": true,
+          "cacheActivated": false,
+          "providerCalls": 0,
+          "credentialsChanged": false,
+          "actionsRuns": 0,
+          "rollbackSnapshotsRetained": true
+        }
       },
       "terminalFilter": {
         "state": "independently-reviewed-and-adopted-opt-in-local-tool",
@@ -11083,7 +11299,7 @@
         "fixedDefect": "TF-R1: known child status lost if finalization failed; now preserved while tool failure is explicit."
       },
       "sourceCustody": {
-        "status": "user-approved-local-frozen-platform-binding-unresolved",
+        "status": "published-and-exact-readback-verified",
         "bundleBytes": 36863,
         "bundleSHA256": "1a7cd9fa05dbc8352c4a13d7b9b1ae4cc5a2cf0b17f8898103067e6b7464d039",
         "filesPlanned": 23,
@@ -11093,19 +11309,30 @@
         "existingPushPermissionVerified": true,
         "branch": "integration/reviewed-local-source-custody-20261027",
         "destinationPrefix": "dev/reviewed-local-source-custody-20261027/ai-efficiency-tooling-20261028/",
-        "denial": "Adapter saved as private inactive draft only; deployment denied before execution; live adapter/caller sources and private permissions unchanged. Git tree creation denied before execution; no commit/ref update. Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
-        "terminalFilterIncluded": false
+        "terminalFilterIncluded": false,
+        "commit": "72d146cfa2e20d752228099c5a1e536e81ed1f29",
+        "filesPublished": 23,
+        "priorDenial": "Adapter saved as private inactive draft only; deployment denied before execution; live adapter/caller sources and private permissions unchanged. Git tree creation denied before execution; no commit/ref update. Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route."
       },
       "approvalReconciliation": {
-        "approvedUTC": "2026-10-28T12:05:00Z",
+        "state": "completed-deployed-and-private-source-published",
         "sameOwnerTask": "01a181e9-ee60-71fe-8036-0960ae187021",
-        "attemptTurn": "01a18269-4379-71f2-8cf9-c3d26069f655",
-        "state": "user-approved-but-direct-platform-confirmation-binding-unresolved",
-        "actual": "Adapter saved as private inactive draft only; deployment denied before execution; live adapter/caller sources and private permissions unchanged. Git tree creation denied before execution; no commit/ref update.",
-        "cause": "Platform did not accept delegated voice approval as a trusted direct user message; no source/scope drift reported.",
-        "next": "Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
-        "cacheEnabled": false,
-        "providerCalls": 0
+        "turn": "01a182ae-7bb2-7164-863a-c8b75178bf6d",
+        "observedUTC": "2026-10-28T14:47:22Z",
+        "source": "Same-owner cloud task terminal read; completion independently reported by root before this read.",
+        "receipt": "/home/user/src/offmenu-ai-20261028-DEPLOYED-AND-PUBLISHED.json",
+        "commit": "72d146cfa2e20d752228099c5a1e536e81ed1f29",
+        "adapterAndCallerDeployed": true,
+        "exactSourcesSchemasAndPrivatePermissionsReadBack": true,
+        "filesPublished": 23,
+        "allFilesReadBack": true,
+        "priorFilesUnchanged": true,
+        "cacheActivated": false,
+        "providerCalls": 0,
+        "credentialsChanged": false,
+        "actionsRuns": 0,
+        "rollbackSnapshotsRetained": true,
+        "next": "No repeat deployment or source upload. Use deployed metrics on the next genuinely useful approved provider task; do not generate filler inference or claim cache savings."
       }
     },
     "latestAntigravityVerification": {
@@ -11492,7 +11719,7 @@
     },
     "currentDeliveryHandoffs": {
       "schema": "offmenu-current-owner-handoff/1",
-      "asOfUTC": "2026-10-28T12:27:00Z",
+      "asOfUTC": "2026-10-28T14:49:00Z",
       "authority": "Existing user-authorized delivery scope and exact source/runtime approvals travel with each same-owner activation; this contract adds no permission. Named source/security/platform holds remain.",
       "precedence": "Use these current pointers and latest authoritative receipts; prior*, historical lanes/rosters, old job labels and retained blocked attempts are provenance, not a runnable queue. Refresh an active snapshot from its owner before issuing any mutation.",
       "activation": "For a genuinely ready finite action, activate the existing idle owner with its established follow-up mechanism. A message alone is not activation or running evidence. If already active, steer that owner; do not spawn a duplicate writer. A ready unowned action is returned only to audit_production_efficiency for assignment.",
@@ -11508,17 +11735,20 @@
           "id": "qualified-corpus-publication",
           "ownerTask": "prepare_common_corpus_publication",
           "checkpoint": {
-            "job": "01a1824d-4c33-00a0-9ccb-5656f4e47c95",
+            "job": "01a182cd-6e6e-07f9-0030-f030f346e232",
             "deploy": "6ae1c3946435074ef6c08369",
             "owner": "prepare_common_corpus_publication",
-            "observedUTC": "2026-10-28T12:24:00Z",
-            "status": "running-direct-MCP-readback",
-            "acceptedDigests": 4750,
-            "acceptedBytes": 5367345142,
-            "remainingDigests": 19233,
-            "uploadElapsedSeconds": 2422.2,
+            "observedUTC": "2026-10-28T14:41:19Z",
+            "status": "running-owner-reported",
+            "acceptedDigests": 4500,
+            "acceptedBytes": 5039016233,
+            "remainingDigests": 19483,
+            "uploadElapsedSeconds": 2262.8,
+            "source": "Existing publisher's already-observed normal receipt; no extra probe.",
             "servedVerificationPending": true,
-            "source": "Direct MCP get_run logs; accepted progress is not serving."
+            "nonAdditiveCounterCaveat": "Previous job ended on SSH rekey timeout after 15,250 accepted. Same-deploy refreshed provider inventory returned 23,983 digests; current counters are not additive to prior-run acceptance.",
+            "sameDeployResumeUTC": "2026-10-28T13:57:00Z",
+            "reviewedRecoverySourcePrefix": "3250423c"
           },
           "nextActualTrigger": "Clean base terminal and verified served pin, then bulk -> national -> recipe -> basis using each actual current deploy as complete-map base; no optional acceptance or nudge.",
           "safeContinuation": "Same owner continues current job. On a terminal failure/cancellation, reconcile accepted partial uploads and confirm terminal/drained state before any separately authorized same-deploy resume. Retain exact map/journal/source pins and existing retry boundaries; no new deployment or parallel uploader. All four reviewed HTTP-reuse publishers are deployed/readback; four projectors and consumer receipts staged. Preserve each release's served-byte/count verification.",
@@ -11560,25 +11790,103 @@
           "evidenceDestination": "Existing publisher projection/served receipts -> audit_production_efficiency -> sole ledger writer."
         },
         {
-          "id": "tooling-exact-holds",
-          "ownerTask": "audit_production_efficiency coordinates existing tooling author and root",
+          "id": "tooling-completed-handoff",
+          "ownerTask": "audit_production_efficiency",
           "checkpoint": {
-            "metricsPatchSHA256": "06f906eb149a4c97b65e20c0f79a083d58c231b06e61a5600a8939477cf56575",
-            "custodyBundleSHA256": "1a7cd9fa05dbc8352c4a13d7b9b1ae4cc5a2cf0b17f8898103067e6b7464d039",
-            "custodyFiles": 23,
-            "status": "user-approved-but-direct-platform-confirmation-binding-unresolved"
+            "state": "completed-deployed-and-private-source-published",
+            "sameOwnerTask": "01a181e9-ee60-71fe-8036-0960ae187021",
+            "turn": "01a182ae-7bb2-7164-863a-c8b75178bf6d",
+            "observedUTC": "2026-10-28T14:47:22Z",
+            "source": "Same-owner cloud task terminal read; completion independently reported by root before this read.",
+            "receipt": "/home/user/src/offmenu-ai-20261028-DEPLOYED-AND-PUBLISHED.json",
+            "commit": "72d146cfa2e20d752228099c5a1e536e81ed1f29",
+            "adapterAndCallerDeployed": true,
+            "exactSourcesSchemasAndPrivatePermissionsReadBack": true,
+            "filesPublished": 23,
+            "allFilesReadBack": true,
+            "priorFilesUnchanged": true,
+            "cacheActivated": false,
+            "providerCalls": 0,
+            "credentialsChanged": false,
+            "actionsRuns": 0,
+            "rollbackSnapshotsRetained": true
           },
-          "nextActualTrigger": "Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
-          "safeContinuation": "Retain exact approved artifacts and inactive draft; source-only/private publish and live metrics adoption resume only on accepted same-task/platform confirmation. Local opt-in filter already delivered; cache remains off.",
-          "stopOrApproval": "User approval exists; platform binding remains unresolved. Do not reclassify as generic permission missing or retry through another executor."
+          "nextActualTrigger": "No repeat action. Existing provider owner consumes metrics on next useful approved task.",
+          "safeContinuation": "Cache remains disabled; exact deployed source and rollback snapshots retained. Local opt-in filter already delivered.",
+          "stopOrApproval": "Prior platform-binding hold resolved in same task. Independent source/security/runtime-store limits remain."
+        },
+        {
+          "id": "four-observed-app-defects",
+          "ownerTask": "prepare_production_integration",
+          "implementationTask": "01a182db-66d0-7092-bc85-fee8dd21f003",
+          "actualPickupUTC": "2026-10-28T14:44:52Z",
+          "checkpoint": {
+            "servedVersion": 194,
+            "served100Percent": true,
+            "isolatedCandidateVersion": 195,
+            "candidateDeployed": false,
+            "sourceExportTurn": "01a182f9-7504-7373-a379-24abf1f57310",
+            "sourceExportStatus": "interrupted-after-three-review-rejections-no-files",
+            "activeRuntimeAppJob": false
+          },
+          "fixes": [
+            {
+              "id": "CORE-APP-SCANNER-DELIVERY",
+              "path": "/offmenu/data/.offmenu-platform/artifacts/staging/scanner-access-recheck-20261029/",
+              "patchSHA256": "fd7066017bcff0a761b36c68af57ff172697ecf94139099f0b5adf2fd3ed0e27",
+              "evidenceJob": "01a182e2-13ce-a7b6-23be-96537103de0b",
+              "scope": "Recheck access after asynchronous camera/photo/decoder; revoke releases resources and discards pending results.",
+              "authorFocusedChecksPassed": 25,
+              "pinnedBaselineRegressionFailures": 5,
+              "evidenceSource": "Trusted root handoff from independent Foo implementer; not re-executed here."
+            },
+            {
+              "id": "SHOPPING-PLAN-DURATION",
+              "path": "/offmenu/data/.offmenu-platform/artifacts/staging/pantry-required-demand-20261029/",
+              "patchSHA256": "518655b435e21fd5934b0d2e55478cdb127d6340b3eadca31c88ef2cedd8ce27",
+              "evidenceJob": "01a182e6-0a52-ba3c-8f10-3196a8c66eaf",
+              "scope": "Require at least one nonoptional ingredient; apply predicate only to current source, preserving deployed expiry/date fixes.",
+              "authorFocusedChecksPassed": 6,
+              "pinnedBaselineRegressionFailures": 3,
+              "evidenceSource": "Trusted root handoff from independent Foo implementer; not re-executed here."
+            },
+            {
+              "id": "CONSUMPTION-LEFTOVERS-RECONCILIATION",
+              "path": "/offmenu/data/.offmenu-platform/artifacts/staging/cook-retry-contract-20261029/",
+              "patchSHA256": "6618d948ff5dc56db23c8c4a811bfbae667fb7edd656d837f72beb5fe1e5084a",
+              "evidenceJob": "01a182e9-723e-19ea-511e-c6aed94eb248",
+              "scope": "Reject retry recipe/servings/date conflicts while preserving valid retry without double stock deduction.",
+              "authorFocusedChecksPassed": 7,
+              "pinnedBaselineRegressionFailures": 3,
+              "evidenceSource": "Trusted root handoff from independent Foo implementer; not re-executed here."
+            },
+            {
+              "id": "NUTRITION-HISTORY-GOALS",
+              "path": "/offmenu/data/.offmenu-platform/artifacts/staging/history-zero-roundtrip-20261029/",
+              "patchSHA256": "19b88d420d573f29dc184f3b34076b9119602f96abbef9d1e24e5cd2edb6280b",
+              "evidenceJob": "01a182ea-870c-36b7-63b1-c0a8d7bcd00b",
+              "scope": "Retain missing served amount and zero intake correctly on a second save.",
+              "authorFocusedChecksPassed": 7,
+              "pinnedBaselineRegressionFailures": 3,
+              "evidenceSource": "Trusted root handoff from independent Foo implementer; not re-executed here."
+            }
+          ],
+          "nextActualTrigger": "Resolve exact source-only transfer denial through same task/direct user confirmation; then integrate function-local changes against actual v194, focused independent review, publish using existing authorized app route, verify served version and evidence. No whole-file pantry replacement.",
+          "safeContinuation": "Same sole app writer retains isolated current-v194 source. No duplicate implementer/writer, no corpus publisher changes, no reconstruction from prose or alternate transfer route after denial.",
+          "stopOrApproval": "No export retry while exact denial/authority reconciliation remains unresolved. Root requested direct task approval at 14:48.",
+          "evidenceDestination": "Existing app served receipt -> audit_production_efficiency -> ledger."
         }
       ],
       "terminalFollowthrough": "Existing owners perform bounded metadata-only, phase-aware checks near expected completion (the already-recorded 60–90-second final-phase practice); on terminal receipt, reconcile and activate the ready dependent existing owner in the same owner cycle. Record checkpoint time/detected time/next activation evidence. No new supervisor, automation, manager or broad test gate.",
       "readyUnownedAssessment": {
+        "asOfUTC": "2026-10-28T14:49:00Z",
         "provenReadyUnownedRuntimeTasks": 0,
-        "immediateOwnedFollowthrough": "No new ready unowned/runtime step: NorthStar final proof handoff is complete; existing sole publisher owns base upload and reviewed projection preparation.",
-        "remainingInputHolds": "Scanner/device acceptance, exact country/rights/custody inputs and held tooling actions are not free runnable tasks. Historical pending IDs do not prove readiness.",
-        "assignmentRoute": "Any newly proven ready unowned finite action goes only to audit_production_efficiency; this payload assigns none."
+        "actualNewFiniteImplementations": 4,
+        "actualIntegrationOwnerAdmitted": true,
+        "integrationBlockedAfterAdmission": true,
+        "immediateOwnedFollowthrough": "Sole app integrator owns four implemented corrections but exact source export was rejected; healthy sole corpus uploader continues. Prior no-ready-work assessment was incomplete: independent implementation decomposed four defects from broader held parents.",
+        "remainingInputHolds": "Broader source/rights/operator/device acceptance remains separate from these finite corrections. Tooling deployment/source custody holds are resolved.",
+        "assignmentRoute": "Reactivate existing owners and require actual admission/result receipt; report blocks immediately."
       },
       "existingReminderObservation": {
         "id": "6adfe4594890819190c493c2198ae9e4",
@@ -11589,7 +11897,24 @@
         "apiNextRunTime": null,
         "source": "Root confirmed actual wake; current automation enabled/schedule/prompt readback verified. Next-run timestamp not exposed.",
         "updatedAt": "2026-10-28T12:25:38.528774+00:00",
-        "morningReport": "One written actual-delivery report on the first existing wake at/after08:00 Australia/Melbourne; record real message receipt; no routine overnight pings."
+        "morningReport": "One written actual-delivery report on the first existing wake at/after08:00 Australia/Melbourne; record real message receipt; no routine overnight pings.",
+        "actualSubsequentWakes": [
+          {
+            "scheduled": "12:38",
+            "receivedUTC": "2026-10-28T12:37:42Z",
+            "source": "root actual receipt"
+          },
+          {
+            "scheduled": "13:38",
+            "receivedUTC": "2026-10-28T13:38:03Z",
+            "source": "root actual receipt"
+          },
+          {
+            "scheduled": "14:38",
+            "receivedUTC": "2026-10-28T14:33:33Z",
+            "source": "root actual receipt"
+          }
+        ]
       },
       "overnightExecution": {
         "owner": "prepare_common_corpus_publication",
@@ -11609,7 +11934,7 @@
       }
     },
     "unattendedReliabilityRepair": {
-      "asOfUTC": "2026-10-28T12:27:00Z",
+      "asOfUTC": "2026-10-28T14:49:00Z",
       "correctedCurrentSelectors": 26,
       "sourceDeltaSHA256": "6e51b9faf1783260af7ab5bf6471395fa17d6b5add613531caac082e327ec75a",
       "sourceHandoffSHA256": "bd647aed8bf0548a4fe085531996fce8a20359025b593134f1e477c876dbbcb2",
@@ -11621,8 +11946,16 @@
         "Recorded exact active uploader and terminal successor ownership; messages alone do not prove activation.",
         "Preserved historical values,89 rows/states/owners/counts and all genuine source/security holds."
       ],
-      "actualFollowthrough": "NorthStar final reviewed proof staged and consumed; derived transports/projectors prepared while healthy base upload continues. No ready-unowned runtime job established.",
-      "nextVerification": "Observe next actual existing hourly wake and its owner continuation; enablement/wake alone is not delivery completion."
+      "actualFollowthrough": "Four useful app fixes were implemented independently but their integration dispatch was missed by this coordinator between 14:21 and 14:44. Root reactivated existing app writer at 14:44; actual pickup 14:44:52. Source-export then encountered a separate platform rejection. Sole corpus publication continues; metrics/source custody completed.",
+      "nextVerification": "Actual source-export resolution and v195 served result; current corpus terminal/served successor; first morning report receipt. Existing wake arrival already observed repeatedly.",
+      "coordinationLapse": {
+        "owner": "audit_production_efficiency",
+        "firstHandoffUTC": "2026-10-28T14:21:00Z",
+        "actualIntegratorPickupUTC": "2026-10-28T14:44:52Z",
+        "failure": "Repeated root requests did not receive immediate status or activation from this coordinator; no unsupported service-cause claim.",
+        "correction": "Immediate concise status/blocker replies before ledger/audit work; verify actual existing-owner pickup and report failed handoffs promptly. No new manager or audit gate.",
+        "actualRecovery": "Root's existing-owner activation acknowledged; interrupted export reported immediately and canonical state corrected."
+      }
     },
     "currentUserFacingRoster": {
       "libraryFileId": "libfile_37547822965081918c149668e46a004f",
@@ -11639,7 +11972,137 @@
         "limitedScopeCompletion": 11,
         "eventTriggeredOrSetupCompleteDuty": 10
       },
-      "finiteAssignedSubstepsEvidenced": 31
+      "finiteAssignedSubstepsEvidenced": 31,
+      "supersededAsCurrentAtUTC": "2026-10-28T14:49:00Z",
+      "requiredRefresh": "12:20 report is a historical snapshot: tooling now complete; four app fixes implemented but exact export blocked; current upload job/counters changed. Preserve all 89 parent outcomes and broader holds."
+    },
+    "priorToolingStateBeforeDirectApprovalResolution": {
+      "latestToolingImplementation": {
+        "authorTask": "01a181e9-ee60-71fe-8036-0960ae187021",
+        "reviewTask": "01a181f1-8cbc-707c-b44d-b0b9edfaf037",
+        "approvedReviewTurn": "01a18210-32a0-71c2-a9ef-88ecf768e78e",
+        "baseSHA256": "3760b83e2678f89e2330a62f2ccdf0a8e935461f5cbc2168a3f57d0e725e9f38",
+        "candidateSHA256": "1e24c1d5ce2d5b6cecb47666f775f85c4a2b582215e951c1845815eb102fef67",
+        "sourceState": "R2 independently approved;15 mocked tests plus focused supervisor-termination check; current live task catalog preserved.",
+        "features": "Exact provenance-keyed reuse, bounded single-flight, structured validation and usage/unique-artifact accounting implemented in candidate.",
+        "acceptanceLimit": "Schema acceptance is not semantic correctness. No deployed cache or measured production token/time savings claimed.",
+        "liveAdoption": "user-approved-but-direct-platform-confirmation-binding-unresolved",
+        "storage": "Existing compose declares a worker-cache volume; live shared trusted POSIX mount and fork/signal runtime behavior are not yet verified. Ordinary resource state is not a lock; no new service/mount or bypass.",
+        "integrationTurn": "01a18219-6f22-7230-9bf9-3c6fe830984d",
+        "model": "Saved/default model with medium effort; exact resolved model not exposed.",
+        "metricsOnly": {
+          "patchSHA256": "06f906eb149a4c97b65e20c0f79a083d58c231b06e61a5600a8939477cf56575",
+          "reviewTurn": "01a1821f-f08f-7028-bbe4-2b91a311ad15",
+          "verdictRecoveryTurn": "01a1822b-15be-7210-8ac3-1f6fa5b45f9c",
+          "inventoryEntriesMatched": 8,
+          "mockedCasesPassed": 12,
+          "scope": "Metrics, structured validation and caller summary only; preserve existing uncached transport and live task catalog.",
+          "schemaNotSemanticAcceptance": true,
+          "cacheActivated": false,
+          "deployed": false
+        },
+        "terminalFilter": {
+          "state": "independently-reviewed-and-adopted-opt-in-local-tool",
+          "sourceSHA256": "c8792e91768176c10574d8b13dc2e9dc6f7ddeb9b54e0be81f4330a8a4e950cc",
+          "testSHA256": "f20fd311fb30c611b55603f2dfefb3641f0c9f0125ebf31f0aafbda4be1d5873",
+          "reviewSHA256": "75f88c3a12e0923f443fa2e6443c0fbad85e0bf69393e2eaf9ec173402cc36a2",
+          "adoptionTurn": "01a18242-fb46-7208-be34-23e593260ae0",
+          "releasePath": "/home/user/src/offmenu-local-tools/terminal-filter/r2/",
+          "invocation": "python /home/user/src/offmenu-local-tools/terminal-filter/r2/terminal_filter.py saved ai-reuse-r2 --max-bytes 1536",
+          "receipts": [
+            "ADOPTION.json",
+            "READBACK.json",
+            "RELEASE-INVENTORY.json"
+          ],
+          "scope": "Explicit named non-sensitive local development output only; no global hook, provider call, upload or production integration.",
+          "originalBytes": 2591,
+          "summaryBytes": 785,
+          "fullPrivateOriginalRetained": true,
+          "existingIdenticalReceiptReused": true,
+          "newUniqueProductArtifactClaimed": false,
+          "tokenOrProductionSavingsClaimed": false,
+          "authorFocusedTests": 11,
+          "independentCorrectionEvidence": "All10 inventory entries and both patches matched; two regression methods/four subcases preserved exit7/cancellation143 through persistence failures; extra child0+tool-failure check returns125, exact binary bytes retained and no fabricated finalized receipt.",
+          "fixedDefect": "TF-R1: known child status lost if finalization failed; now preserved while tool failure is explicit."
+        },
+        "sourceCustody": {
+          "status": "user-approved-local-frozen-platform-binding-unresolved",
+          "bundleBytes": 36863,
+          "bundleSHA256": "1a7cd9fa05dbc8352c4a13d7b9b1ae4cc5a2cf0b17f8898103067e6b7464d039",
+          "filesPlanned": 23,
+          "independentPreparation": "All20 payload hashes and both manifests matched;22 regular UTF-8 bundle members plus independent receipt, no links/traversal/duplicates/credentials/raw datasets.",
+          "repository": "maldous/offmenu",
+          "privateRepositoryVerified": true,
+          "existingPushPermissionVerified": true,
+          "branch": "integration/reviewed-local-source-custody-20261027",
+          "destinationPrefix": "dev/reviewed-local-source-custody-20261027/ai-efficiency-tooling-20261028/",
+          "denial": "Adapter saved as private inactive draft only; deployment denied before execution; live adapter/caller sources and private permissions unchanged. Git tree creation denied before execution; no commit/ref update. Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
+          "terminalFilterIncluded": false
+        },
+        "approvalReconciliation": {
+          "approvedUTC": "2026-10-28T12:05:00Z",
+          "sameOwnerTask": "01a181e9-ee60-71fe-8036-0960ae187021",
+          "attemptTurn": "01a18269-4379-71f2-8cf9-c3d26069f655",
+          "state": "user-approved-but-direct-platform-confirmation-binding-unresolved",
+          "actual": "Adapter saved as private inactive draft only; deployment denied before execution; live adapter/caller sources and private permissions unchanged. Git tree creation denied before execution; no commit/ref update.",
+          "cause": "Platform did not accept delegated voice approval as a trusted direct user message; no source/scope drift reported.",
+          "next": "Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
+          "cacheEnabled": false,
+          "providerCalls": 0
+        }
+      },
+      "latestNarrowAuthorityHold": {
+        "asOfUTC": "2026-10-28T12:27:00Z",
+        "approvedUTC": "2026-10-28T12:05:00Z",
+        "sameOwnerTask": "01a181e9-ee60-71fe-8036-0960ae187021",
+        "attemptTurn": "01a18269-4379-71f2-8cf9-c3d26069f655",
+        "state": "user-approved-but-direct-platform-confirmation-binding-unresolved",
+        "actual": "Adapter saved as private inactive draft only; deployment denied before execution; live adapter/caller sources and private permissions unchanged. Git tree creation denied before execution; no commit/ref update.",
+        "cause": "Platform did not accept delegated voice approval as a trusted direct user message; no source/scope drift reported.",
+        "next": "Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
+        "cacheEnabled": false,
+        "providerCalls": 0,
+        "unaffected": "Healthy base upload and authorized derived publication continue; other exact source/security/consent inputs remain scoped to their own rows."
+      }
+    },
+    "allHeldWorkReconciliation": {
+      "asOfUTC": "2026-10-28T14:49:00Z",
+      "parentRows": 89,
+      "classification": "Historical source/rights/operator/consent/security and consumer-contract holds remain exact row-level dependencies, not 36 requests for blanket approval.",
+      "toolingHoldResolved": true,
+      "newFiniteCorrectionsDecomposed": 4,
+      "unallocatedFiniteRuntimeTasksProven": 0,
+      "importantCorrection": "Do not infer no finite improvement is possible merely from a broader held parent; four actual defects were decomposed and implemented. Their integration is now owned but blocked on exact source transfer.",
+      "minimalInputBundle": {
+        "exhaustedCustodyOnly": [
+          {
+            "ids": [
+              "COUNTRY-32"
+            ],
+            "limit": "Existing bounded metadata recovery exhausted; no substitute manifest, raw acquisition or historical thread/review replay.",
+            "need": "Exact existing additive-v2 delivery manifest bytes or a recognized current custodian who can supply them.",
+            "owner": "Morgan/root existing custody escalation",
+            "sha256": [
+              "d735b422243ea06e80c8e5c66d69f8e669811e5594775a1c264ad89dd45ee881"
+            ]
+          },
+          {
+            "ids": [
+              "COUNTRY-43"
+            ],
+            "limit": "Existing bounded metadata recovery exhausted; metadata-only manifest review after exact bytes, no workbook/raw-source acquisition.",
+            "need": "Exact existing source-packet and manifest bytes or a recognized current custodian who can supply them.",
+            "owner": "Morgan/root existing custody escalation",
+            "sha256": [
+              "8dee99d6a3fdd0fc4320e118ca8c136cebe5d1e72ff284148ad73b60a65d68b8",
+              "e2af11e94f327b308025886fd84ebaf83d478880454e72c2bdfc9462f25b53ae"
+            ]
+          }
+        ],
+        "otherInputs": "Country source/version/use/scientific/verdict joins, owner02/C035 policy envelope, H59 successor/scope, retention operator receipts and product confirmed-producer/consumer contracts remain with their already-named custodians. Retained reviewed closure packages say no irreducible user input now; no blanket new permission request. Escalate only an exact named input/current custodian after existing custody explicitly cannot supply it; this turn made no such new search or exhaustion claim.",
+        "userApprovalRequestsNow": 0
+      },
+      "retainedDeferrals": "OSM remains physically retired/deferred; no new raw acquisition, AI install or paid provider route."
     }
   },
   "priorStatusBeforeProduction194Reconciliation": "full-production-allocated-corpus-active-product193-served",
@@ -11724,5 +12187,6 @@
   "priorTopLevelAsOfBeforeUnattendedRepair": {
     "asOfUTC": "2026-10-28T05:42:00Z",
     "statusAsOfUTC": "2026-10-28T07:00:00Z"
-  }
+  },
+  "priorTopLevelAsOfBeforeLatestHandoff": "2026-10-28T12:27:00Z"
 }
