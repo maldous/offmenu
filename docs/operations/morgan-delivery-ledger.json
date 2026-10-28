@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "capacity-ceiling-deployed-optimized-qualification-running",
-  "asOfUTC": "2026-10-28T05:09:00Z",
+  "status": "full-production-allocated-corpus-active-product193-served",
+  "asOfUTC": "2026-10-28T05:42:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -397,6 +397,10 @@
         "commit:443bd8c5fcb174a4190d5f54d0e11f8db3f1c51b",
         "windmill-job:01a180e8-a1e3-9b3b-1530-11cad400592f"
       ]
+    },
+    {
+      "atUTC": "2026-10-28T05:42:00Z",
+      "event": "All89 obligations allocated by current accountable ownership and dependencies, not claimed as89 running jobs. Production193 expiry correction served. SQL entrypoint published after exact user approval. Native dispatcher achieved4 workload overlap including children; default Runs chart excludes children, second user screenshot with all job kinds confirmed peak4."
     }
   ],
   "lanes": [
@@ -4927,7 +4931,7 @@
   },
   "currentDeliveryReconciliation": {
     "schema": "offmenu-current-delivery-evidence/1",
-    "asOfUTC": "2026-10-28T05:09:00Z",
+    "asOfUTC": "2026-10-28T05:42:00Z",
     "candidateOnly": false,
     "baseCommit": "062210db932a67f9d4f374c12fb577ce61579d07",
     "evidenceLimit": "Configured shared admission ceiling verified, plus normal qualification007 running through v3. No stress test or simultaneous64x256 capacity claim. Provider catalogs are distinct from useful inference; global qualification/publication not complete.",
@@ -4949,7 +4953,7 @@
           "normalizationComplete": 0,
           "fullProductComplete": 0
         },
-        "served": "Foundation preserved through version192; four app/server corrections delivered. No full corpus qualification/publication claimed.",
+        "served": "Foundation preserved through production193; five scoped app/server corrections delivered. No full corpus qualification/publication claimed.",
         "next": "Preserve served foundation; independently qualify additional source claims, recipe/nutrition joins and normalization before claiming them."
       },
       {
@@ -4981,13 +4985,14 @@
           "placesAssets": 12686,
           "finalCombinedTargetRecords": 22574390,
           "finalCombinedTargetSources": 22,
-          "qualificationBulkAssetsCommitted": 7530,
+          "qualificationBulkAssetsCommitted": 9347,
           "qualificationComplete": false,
           "published": false,
-          "activeQualificationJob": "01a180e8-a1e3-9b3b-1530-11cad400592f",
-          "configuredQualificationWorkers": 200
+          "activeQualificationJob": "01a18104-018a-1277-66b8-dce4910422c0",
+          "configuredQualificationWorkers": 128,
+          "qualificationCPUAllocation": 19
         },
-        "next": "Continue reviewed single-pass merge qualification from preserved checkpoint; 006 refused actual RAM admission without processing, corrected007 running. No producer rerun, stress test or speedup claim."
+        "next": "Continue pooled resource-declared qualification008; global proof and Netlify publication remain incomplete. Single-pass merge preserved correctness but full-run007 did not show throughput improvement."
       },
       {
         "id": "identity-only-candidate",
@@ -5171,6 +5176,56 @@
         "resultSHA256": "a60b4de8e10300e6f39748322131c177bb266a329729190051c0b42d9e8da713",
         "next": "Recover exact COUNTRY-43 and COUNTRY-32 artifacts; COUNTRY-33 historical custodian thread retrieval remains blocked by placement-format error. Do not count transport ACKs as acceptance.",
         "modelContribution": "Two scenario ideas manually corrected and adopted; incomplete generated JSON and invalid short-hash fixtures were rejected as executable artifacts. Seven passing tests is the reviewed snapshot, not a claim about later additions."
+      },
+      {
+        "id": "pantry-duration-expiry",
+        "state": "delivered-production193",
+        "owner": "Morgan/root",
+        "actual": {
+          "version": 193,
+          "focusedRegressionsPassed": 5,
+          "unchangedModules": 211,
+          "settingsBindingsPreserved": true,
+          "authenticatedUserJourneyTested": false
+        },
+        "evidence": [
+          "cloudflare-version:d572a1e0-f43d-432b-8033-fc78564ef7c9",
+          "cloudflare-deployment:acff5306-b021-42fb-9a2e-92ef7618b5fa",
+          "artifact-ref:offmenu-production-duration-20261028/deployment-receipt.json"
+        ],
+        "servedAppSHA256": "9b0d51064d746887ee70dbb79baee98e32a4eb57caf8652a7111d3b9e383bf67",
+        "scope": "Existing duration estimator advances simulated UTC dates and uses earliest-expiring stock first. No held shopping-deficit mapping adopted."
+      },
+      {
+        "id": "sql-query-entrypoint",
+        "state": "deployed-private-functional-route-verified",
+        "owner": "assess_windmill_storage_improvements",
+        "path": "u/admin/offmenu_sql_query_20261028",
+        "actual": {
+          "functionalRows": 3,
+          "configuredThreads": 8,
+          "performanceBenchmark": false,
+          "newCredentials": false,
+          "newExternalDatabase": false
+        },
+        "evidence": [
+          "windmill-job:01a180ff-9b94-264a-079f-d8c9bbab8220",
+          "windmill-job:01a18106-e370-7bfa-870f-ed85861cae58"
+        ],
+        "next": "Use declared engine threads, memory and spill budgets for actual approved derived Parquet work; no active proof database migration."
+      },
+      {
+        "id": "windmill-health64-coverage",
+        "state": "helper-installed-client-publication-awaits-specific-approval",
+        "owner": "configure_parallel_capacity_ceiling",
+        "path": "u/admin/offmenu_platform_check",
+        "actual": {
+          "liveClientMarkerCoverage": 2,
+          "reviewedCandidateCoverage": 64,
+          "oldSchedulesPreserved": true,
+          "undeployedDraftRemoved": true
+        },
+        "next": "Await specific approval requested05:40UTC; prior SQL approval does not authorize this separate deployment."
       }
     ],
     "historicalCoverage": {
@@ -5357,6 +5412,1910 @@
         "meaning": "Historical inventory, not completion counts. Every historical obligation remains preserved; no bulk closure inferred."
       },
       "fullHistoricalCrosswalk": "docs/operations/offmenu-delivery-obligation-crosswalk-20261028.json"
+    }
+  },
+  "currentObligationAllocation": {
+    "schema": "offmenu-all89-current-allocation/1",
+    "asOfUTC": "2026-10-28T05:42:00Z",
+    "baseCommit": "e2ec394485254ed2edc217078af67e72d8d608d7",
+    "candidateOnly": false,
+    "publishOwner": "Morgan/root",
+    "policy": "Every obligation has a current accountable owner and finite next action. Proposed lanes are READY not active agents. Completed-limited retains accepted subresults without closing parent. Explicit production supersedes generic old UI pause, not source/security holds. No work manufactured to fill slots.",
+    "fiveParallelismLayers": {
+      "reasoningDurables": "Distinct bounded owned tasks and independent review; do not equate slots to jobs.",
+      "windmillJobs": "Configured ceiling64 jobs; actual admitted useful jobs only.",
+      "fooProcesses": "Up to256configured workers per job is a ceiling; nativefanout4 overlap verified, no stress or hostcgroup guarantee.",
+      "freeProviders": "Verified freeGroq/Gemini for public/non-sensitive bounded tasks; Coherequalityfailed;429cooldown;401deferred; no paidcalls.",
+      "sqlEngine": "DuckDB usable query route owned separately; engineparallelism set from resource budget, not multiplied blindly by job/process fanout."
+    },
+    "existingExclusiveOwners": {
+      "corpus-globalproof": "assess_partial_corpus_resume / corpus007 / 01a180e8-a1e3-9b3b-1530-11cad400592f",
+      "duration-production": "Morgan/root",
+      "duckdb-query-route": "assess_windmill_storage_improvements",
+      "healthchecker64slots": "configure_parallel_capacity_ceiling",
+      "public-free-batch-entrypoint": "diagnose_provider_import_403"
+    },
+    "netlifyBlocker": "HistoricalCLI and official renamed netlify-deploy-site known; current exposeduploadtool absent, no authenticated cloudbrowser/CLI route. Source-only publisherhandoff prepared; not missingcredentials/providerinability.",
+    "readyDispatchLanes": {
+      "household-profile-planner": {
+        "owner": "Morgan/root (dispatch owner)",
+        "execution": "READY, not dispatched",
+        "reviewer": "independent product reviewer assigned by root before integration",
+        "scope": "Read selected retained app household profile/planner callers; exercise synthetic account-scoped diet/preferences/reservation journey; only reproduce and correct concrete defect.",
+        "sources": [
+          "public/household-model.js",
+          "public/menu-model.js",
+          "public/app.js"
+        ],
+        "deliverable": "Exact source pins, synthetic caller regression/result, minimal patch only if reproduced; account/stock invariants preserved.",
+        "stop": "Return evidence/patch or exact missing contract; no invented nutrition/rules or corpus admission."
+      },
+      "consumption-history": {
+        "owner": "Morgan/root (dispatch owner)",
+        "execution": "READY, not dispatched",
+        "reviewer": "independent product reviewer assigned by root",
+        "scope": "Trace cook/serve/leftover/history existing commit paths with synthetic state; reconcile one confirmed-serving vs remaining-batch journey without duplicate stock deduction.",
+        "sources": [
+          "public/cooking-model.js",
+          "public/journey-ui.js",
+          "public/app.js"
+        ],
+        "deliverable": "Actual caller/commit proof, synthetic invariants and smallest demonstrated correction; distinguish missing prior receipt from new accepted behavior.",
+        "stop": "No private profiles, health policy decision, receipt denial bypass or new external sources."
+      },
+      "collaborative-shopping": {
+        "owner": "/root/deliver_collaborative_shopping_join",
+        "execution": "Active source and synthetic caller review; no deployed change yet",
+        "reviewer": "independent product reviewer assigned by root",
+        "scope": "Map existing shopping list/shared kitchen caller and receive-stock boundary; synthetic two-member/revision/idempotence checks; preserve delivered sharing/account guards.",
+        "sources": [
+          "public/sharing-ui.js",
+          "public/sync-model.js",
+          "public/app.js",
+          "cloud/kitchens.mjs"
+        ],
+        "deliverable": "Exact source matched list/received-stock lifecycle proof or minimal correction; no calendar/outreach/receipt activation.",
+        "stop": "No auth replacement or real-user records."
+      },
+      "rights-cache-propagation": {
+        "owner": "Morgan/root (dispatch owner)",
+        "execution": "READY read-only preparation, not dispatched",
+        "reviewer": "independent security/source-policy reviewer assigned by root",
+        "scope": "Map actual retained store/cache/derived data/retention/backup consumers and policy inputs, without inventing missing rights grants.",
+        "sources": [
+          "public/record-policy.js",
+          "cloud/handler.mjs",
+          "cloud/kitchens.mjs"
+        ],
+        "deliverable": "One concrete store/caller/key propagation map plus exact missing policy/receipt dependencies for rights/cache/deletion/aggregate parents.",
+        "stop": "No deletes, feed polling, credential reads, migration or privacy judgement."
+      },
+      "country-receipt-disposition": {
+        "owner": "Morgan/root (dispatch owner)",
+        "execution": "READY metadata-only reconciliation, not dispatched",
+        "reviewer": "independent metadata reviewer assigned by root; historical numbered reviewers are provenance only",
+        "scope": "Use existing retained metadata and accepted scoped review receipts, tie each country row to exact present packet/review or missing hash.",
+        "sources": [
+          "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/"
+        ],
+        "deliverable": "Per-country metadata disposition; do not repeat accepted reviews or manufacture normalized coverage.",
+        "stop": "No workbook cells/raw data, acquisition, historical thread retries or source rights changes."
+      },
+      "operational-obligation-closure": {
+        "owner": "reconcile_full_delivery_ledger",
+        "execution": "Current roster preparation; no separate runtime job",
+        "reviewer": "Morgan/root",
+        "scope": "Close only exact documentary subresults; map durable interfaces/platform source to old operational obligations; retain unsupported historic integrations.",
+        "sources": [
+          "docs/operations/morgan-delivery-ledger.json"
+        ],
+        "deliverable": "Every-ID accountable roster, evidence links and next action; no stale historical owner claims.",
+        "stop": "No CIX restart, denied session retries or invented Freebuff route."
+      }
+    },
+    "rows": [
+      {
+        "id": "COUNTRY-04",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-04",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/0",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Read next eligible category or exhaustion disposition; route frozen delta to reserved reviewer",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-43",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "blocked-missing-artifact",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-43",
+        "dependency": "Exact manifest/source-packet bytes not recovered; bounded metadata recovery completed without target bytes.",
+        "nextUsefulAction": "Root owns custody escalation; no repeated broad search, synthesized substitute manifest, raw acquisition or historical thread retry.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/1",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway route exact source-packet SHA256 8dee99d6a3fdd0fc4320e118ca8c136cebe5d1e72ff284148ad73b60a65d68b8 and manifest SHA256 e2af11e94f327b308025886fd84ebaf83d478880454e72c2bdfc9462f25b53ae to reserved reviewer38 for metadata-only review; no workbook-cell reads. Keep country portfolio open and source-specific rights/access gaps intact.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "exactMissingSHA256": [
+          "8dee99d6a3fdd0fc4320e118ca8c136cebe5d1e72ff284148ad73b60a65d68b8",
+          "e2af11e94f327b308025886fd84ebaf83d478880454e72c2bdfc9462f25b53ae"
+        ],
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-55",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-55",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/2",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway return scoped metadata review to existing55. Existing13 must provide exact immutable BOBS receipt revision/handoff resolving historical b8f87cbe versus current e38ebcf9 before that binding is relied on; no correction invented or no-retry route retried. All30category gaps remain: require existing owner exact source/version, source-specific reuse decision and immutable accepted normalized/review handoff. MY38CPI reported output/review20 remains separately unaccepted here; PriceCatcher39/reader51/portability48/extraction30 ownership unchanged.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-19",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-19",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/3",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway select46 source-semantic review later for405f23aa manifest/14definitions/514links. Separate lineage-index acceptance pending. Preserve parent country incompleteness and all denied/source/ownership holds.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-01",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-01",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/4",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Exact eligible source/rights input or separately selected same-portfolio work; no repeated search",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-07",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "blocked-source-scope",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-07",
+        "dependency": "Specific historical portfolio source-scope hold not resolved by production instruction.",
+        "nextUsefulAction": "Root identifies exact retained finite permitted source boundary; do not reacquire under generic production approval.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/5",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "scope hold",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-08",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "blocked-source-scope",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-08",
+        "dependency": "Specific historical portfolio source-scope hold not resolved by production instruction.",
+        "nextUsefulAction": "Root identifies exact retained finite permitted source boundary; do not reacquire under generic production approval.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/6",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "scope hold",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-15",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "completed-limited",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-15",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/7",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway bind the existing exact SAME14 BG identity/credits/custody/rights-unknown scoped PASS to COUNTRY-15; preserve source owner40 and prior11 acceptance separately. No recipe/rights/translation/country/admission acceptance; select only separately authorized next work.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-16",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-16",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/8",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway select one finite retained pointer/qualification gap under existing owner16; if missing, name exact source/permission/semantic input. No acquisition/reprocess merely to fill30gaps.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-18",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-18",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/9",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Existing18 requires retained version-matched CBS2021 methodology/questionnaire or publisher erratum; no numerical extraction or acquisition selected.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-22",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-22",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/10",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway return scoped receipt to existing Owner22. Select only a distinct explicitly permitted exact publisher edition/reuse record or CG-issued/adopted numeric guideline with cited cells/context/rights; batch-b searches/metadata reads exhausted. No PDF acquisition or denied-route retry.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-23",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-23",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/11",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "14 bounded new metadata/rights/provenance review; old11PASS preserved",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-25",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-25",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/12",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway select capacity-qualified independent11 review of exact COUNTRY25 binding-parser module/test/closure/author receipt; no integration/admission or prior-work replay",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-26",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-26",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/13",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Route exact new delta to reserved reviewer with trusted messaging authority; preserve existing portfolio",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-27",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "blocked-source-scope",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-27",
+        "dependency": "Specific historical portfolio source-scope hold not resolved by production instruction.",
+        "nextUsefulAction": "Root identifies exact retained finite permitted source boundary; do not reacquire under generic production approval.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/14",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "scope hold",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-28",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-28",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/15",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "technical send failure",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-29",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "completed-limited",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-29",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/16",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Retain FR scoped PASS binding2888e670; do not replay. Portfolio gaps and licence qualification remain open; no new task started.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-32",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "blocked-missing-artifact",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-32",
+        "dependency": "Exact manifest/source-packet bytes not recovered; bounded metadata recovery completed without target bytes.",
+        "nextUsefulAction": "Root owns custody escalation; no repeated broad search, synthesized substitute manifest, raw acquisition or historical thread retry.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/17",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway route additivev2deliverymanifest [historical host locator; consult pinned source pointer] SHA256 d735b422243ea06e80c8e5c66d69f8e669811e5594775a1c264ad89dd45ee881 to SAME38manifest-onlyreview;preserveacceptedparentandTables1/2/4/6,Table4nullSTOP,GFhold;noclinicalnumericjoins/PDFreplay/admission.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "exactMissingSHA256": [
+          "d735b422243ea06e80c8e5c66d69f8e669811e5594775a1c264ad89dd45ee881"
+        ],
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-33",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "blocked-source-rights-output",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-33",
+        "dependency": "Historical custody33 known, current source-version operation-use decision and normalized output/six-rowmaps or scoped no-output absent.",
+        "nextUsefulAction": "Root joins valid existing source-use decision/output if available; do not demand new publisher permission if already valid.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/18",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway use exact GH historical thread01a139b7-e9d7-7161-a3ef-51e6e965866b and GN historical thread01a138ee-5252-7f63-8b43-cf730ecd7e05 to identify current recognized custodians. Obtain existing source-version operation-use decision and normalized manifest/output/six-row maps or scoped no-output confirmation. Do not require new publisher permission if valid existing decision suffices. GI/GM/GP prior exact prerequisites remain by reference.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-34",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-34",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/19",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway bind exact scoped receipt to original owner34 packet and return concerns. Existing source owners supply exact permitted missing original/version, applicable licence/attribution and finite coverage input before newly selected category work. No acquisition, extraction, admission or country completion authorized.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-35",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-35",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/20",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway route this exact frozen packet hash to reserved SAME11 for metadata-only review. Next required input is SAME11 report binding this author hash; any further source work requires exact selected scope plus source-specific version/permission/access evidence. No new source request selected.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-40",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-40",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/21",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway route frozen owner40 metadata delivery-manifest.json to reserved SAME38 for source/extent/scope-only independent review. No row projection or content admission; any later work requires exact retained eligible source/version/rights input within existing ownership and holds.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-42",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-42",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/22",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway select independent existing reviewer for exact569candidate+1held recordset/mapping/lineage. Source custodian44 unchanged. Resolve other country-specific prerequisites from country-stage-progress.json; no global no-ready inference.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-45",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-45",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/23",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway deduplicate this exact new JM Table3 manifest and route one independent review to current designated reviewer14 if eligible; do not replay IT/JE reviews. Qualify source-internal carbohydrate/sugars anomalies before numeric use. COUNTRY-45 remains open; IT bodies need publisher permission and measured whole-set plan from46; all IS/JO rights and denied-route holds persist.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-49",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-49",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/24",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "bootstrap interruption",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-54",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-54",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/25",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Route exact new delta to reserved reviewer with trusted messaging authority; preserve existing portfolio",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-47",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "completed-limited",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-47",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/26",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway dispose this exact COUNTER-01 closure to existing47. Counter ambiguity is closed for metadata interpretation:16historical intermediate, final18/18exhausted and0remaining. Original checkpoint and all30category/source/rights gaps remain; any future action needs distinct eligible current owner/source scope and prospective allocation where applicable. No unchanged review replay; messaging authorization hold separate.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-53",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-53",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/27",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "14 bounded new metadata/rights/provenance review; old11PASS preserved",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-59",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-59",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/28",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Up to6retainedLibyarows with exact marketID/unit/currency/date/price-type; no normalization/network",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-QUEUE",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-QUEUE",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Bind historical160assigned/89unallocated coverage to current source registry, not newworkers; assessor globalproof remains sole executionowner.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/29",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Use existingcountry-allocation-extension-20261016-001.json afterhistoricalmatrix:160accountabilityassigned/89unallocated. Gateway selects exactexisting-owner safeboundary forremainingallocation; no newworker, sourceownershipoverride orcountryacceptance. Preserveall72top-levelobligations.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "REVIEW-44",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Exact historical deliverable/review/text/version binding without replay",
+        "dependency": "Missing exact current artifact/receipt or historical bootstrap outcome; no session retry permission",
+        "nextUsefulAction": "Use retained custody and exact hashes; name missing bytes if unrecovered, no historical session redispatch.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/30",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Reconcile bootstrap interruption; no redispatch",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "REVIEW-46",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Exact historical deliverable/review/text/version binding without replay",
+        "dependency": "Missing exact current artifact/receipt or historical bootstrap outcome; no session retry permission",
+        "nextUsefulAction": "Use retained custody and exact hashes; name missing bytes if unrecovered, no historical session redispatch.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/31",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Original four complete; four unstarted follow-ons assigned to11 under latest owner scheduling direction; no platform restriction bypass",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "PRODUCT-03",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "completed-limited",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Retained local deliverable/review-bound result, not parent production acceptance",
+        "dependency": "Exact current receipt/artifact and any specific security/source hold must be matched",
+        "nextUsefulAction": "Recover result pointer then select missing adoption only; generic UI pause is not current blocker.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/32",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Owner binding verified; local deliverable complete, integration held",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "PRODUCT-20",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "completed-limited",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Retained local deliverable/review-bound result, not parent production acceptance",
+        "dependency": "Exact current receipt/artifact and any specific security/source hold must be matched",
+        "nextUsefulAction": "Recover result pointer then select missing adoption only; generic UI pause is not current blocker.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/33",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Review bound; publication/adoption held",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "PRODUCT-56",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "completed-limited",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Retained local deliverable/review-bound result, not parent production acceptance",
+        "dependency": "Exact current receipt/artifact and any specific security/source hold must be matched",
+        "nextUsefulAction": "Recover result pointer then select missing adoption only; generic UI pause is not current blocker.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/34",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Review bound; publication/adoption held",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "PRODUCT-31",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Exact historical deliverable/review/text/version binding without replay",
+        "dependency": "Missing exact current artifact/receipt or historical bootstrap outcome; no session retry permission",
+        "nextUsefulAction": "Use retained custody and exact hashes; name missing bytes if unrecovered, no historical session redispatch.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/35",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "24bootstrap interruption; no bypass",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "UX-HISTORY",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Exact historical deliverable/review/text/version binding without replay",
+        "dependency": "Missing exact current artifact/receipt or historical bootstrap outcome; no session retry permission",
+        "nextUsefulAction": "Use retained custody and exact hashes; name missing bytes if unrecovered, no historical session redispatch.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/36",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Resolve earliest-conversation chronology gaps against actual sources; do not label full history complete",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "SERVICES-GAPS",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "assess_windmill_storage_improvements",
+        "deliveryLane": "assess_windmill_storage_improvements",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Usable durable DuckDB query route and actual adopted Windmill interface receipts",
+        "dependency": "Usable SQLengine route output, not installation alone; no legacy all-worker adoption claim",
+        "nextUsefulAction": "Finish existing owner query route; separate durable reasoning/job/process/provider/SQL resource layers.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/37",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Separate enabled/configuration/deployment; selectedidentity only",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "IDENTITY-ASSESSMENT",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "blocked-security",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Preserve stable user IDs; recover approved separate migration/DEV configuration and rollout contract",
+        "dependency": "Specific auth/account migration and DEV security boundaries; not generic UI pause",
+        "nextUsefulAction": "Recover existing contract; do not replace NetlifyIdentity or migrate user data under concurrency approval.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/38",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "PreserveIDs/linking; managedDEVfirst/WireMockfallback",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "IDENTITY-DEV",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "blocked-security",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Preserve stable user IDs; recover approved separate migration/DEV configuration and rollout contract",
+        "dependency": "Specific auth/account migration and DEV security boundaries; not generic UI pause",
+        "nextUsefulAction": "Recover existing contract; do not replace NetlifyIdentity or migrate user data under concurrency approval.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/39",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Distinctapprovedproject/configuration/provisioning needed; sixsitesread noDEVidentified",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "IDENTITY-VALIDATOR",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "completed-limited",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Retain65df/SAME4 scoped PASS and unmounted BetterAuth seam evidence",
+        "dependency": "Parent auth migration not accepted",
+        "nextUsefulAction": "Bind existing scoped receipt only; no repeated validator or production adoption inference.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/40",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway bind exact65df/SAME4 scopedPASS to existing IDENTITY-VALIDATOR record andretain prior e481 findings/history. No worker implementation/adoption/release action selected; IDENTITY-DEV account/session/configuration boundaries and blocked ownership remain in ledger.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "IDENTITY-PROD",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "blocked-security",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Preserve stable user IDs; recover approved separate migration/DEV configuration and rollout contract",
+        "dependency": "Specific auth/account migration and DEV security boundaries; not generic UI pause",
+        "nextUsefulAction": "Recover existing contract; do not replace NetlifyIdentity or migrate user data under concurrency approval.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/41",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Configuration/independentreview/PRODrejectDEV/fulljourneys required; no deploy",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "UI-ROUTE",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "root-production",
+        "state": "completed-limited",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Production191 view history and preserved existing route composition",
+        "dependency": "Authenticated live history journey/GPU evidence remains unverified",
+        "nextUsefulAction": "Retain delivered191 source; do not re-open generic UI pause or rebuild wrappers.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/42",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Separate directUIowner; do not reopen",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "APPROVAL-HOLDS",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Current exact permissions/owner/result/ledger continuity without inflated completion",
+        "dependency": "Material new receipts; root authoritative integration",
+        "nextUsefulAction": "Maintain current roster/knownunknowns and clear titles; ACK/title/assignment not completion or execution authority.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/43",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Use current-denied-action-inventory.json;64/14dispatch released;Freebuff restored user-reported,connection unverified",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "SUPERVISOR-RESEARCH",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "configure_parallel_capacity_ceiling",
+        "deliveryLane": "configure_parallel_capacity_ceiling",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Current64slot healthchecker correction and actual resource-aware scheduler behavior",
+        "dependency": "Softwareceiling64jobsx256workers is not simultaneous load/hostcgroup guarantee",
+        "nextUsefulAction": "Finish existing healthchecker; measure useful admitted work, preserve single writers and exact checkpoint custody.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/44",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Apply delivered design in64candidate/14evaluation; research delivery does not prove live readiness",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "FREEBUFF-COMPAT",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "diagnose_provider_import_403",
+        "deliveryLane": "diagnose_provider_import_403",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current verified free-provider routing and precise legacy Freebuff distinction",
+        "dependency": "Current Groq/Gemini public-free route is usable; historical Freebuff identity/cost/roundtrip not established",
+        "nextUsefulAction": "Use current verified free routes for suitable public data; no blind401retry;429cooldown, Coherequalityfailure retained.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/45",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Qualify existing Alexander identity/MCP/cost/roundtrip with proper custodian; no restore or model invocation inferred",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "ROUTING-FAILOVER",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "diagnose_provider_import_403",
+        "deliveryLane": "diagnose_provider_import_403",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current verified free-provider routing and precise legacy Freebuff distinction",
+        "dependency": "Current Groq/Gemini public-free route is usable; historical Freebuff identity/cost/roundtrip not established",
+        "nextUsefulAction": "Use current verified free routes for suitable public data; no blind401retry;429cooldown, Coherequalityfailure retained.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/46",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Quiesce/reconcile/verifycapacity-cost-approval beforeFreebuffactivation",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "REPORTING-GATEWAYS",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Current exact permissions/owner/result/ledger continuity without inflated completion",
+        "dependency": "Material new receipts; root authoritative integration",
+        "nextUsefulAction": "Maintain current roster/knownunknowns and clear titles; ACK/title/assignment not completion or execution authority.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/47",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Keep uncertain sends open; UIseparate",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "MEMORY-HABITS",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Current exact permissions/owner/result/ledger continuity without inflated completion",
+        "dependency": "Material new receipts; root authoritative integration",
+        "nextUsefulAction": "Maintain current roster/knownunknowns and clear titles; ACK/title/assignment not completion or execution authority.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/48",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Use topicrecords; noOffMenumemorymapping/newplatform",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "BACKLOG-AUDIT",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "completed-limited",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Preserve accepted temporal trace/evaluation; only new observed delta review",
+        "dependency": "Actual new consumer or failure evidence required for new execution",
+        "nextUsefulAction": "Do not replay accepted reviews; integrate fresh evidence through existing root review.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/49",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Needs selected varying representation consumer/provider binding for furtherCACHE03 work; no speculative patch",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "AUDIT-CLOUD-PDF-VERSIONS",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Exact historical deliverable/review/text/version binding without replay",
+        "dependency": "Missing exact current artifact/receipt or historical bootstrap outcome; no session retry permission",
+        "nextUsefulAction": "Use retained custody and exact hashes; name missing bytes if unrecovered, no historical session redispatch.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/50",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Compare versions; matching size alone does not establish identity",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "SUPERVISOR-FULL-CANDIDATE",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "configure_parallel_capacity_ceiling",
+        "deliveryLane": "configure_parallel_capacity_ceiling",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Current64slot healthchecker correction and actual resource-aware scheduler behavior",
+        "dependency": "Softwareceiling64jobsx256workers is not simultaneous load/hostcgroup guarantee",
+        "nextUsefulAction": "Finish existing healthchecker; measure useful admitted work, preserve single writers and exact checkpoint custody.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/51",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Continue actual result/action/ledger/turn-end loop; investigate observed issues only",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "AUDIT-LOCAL-CORPUS-SUPERSESSION",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "assess_partial_corpus_resume",
+        "deliveryLane": "corpus-globalproof",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Global proof007 verified output and precise source/country provenance",
+        "dependency": "Single existing assessor; source rights and missing country metadata retained; Netlify uploadsurface unresolved",
+        "nextUsefulAction": "Monitor exact007 result; no producer replay, raw export, cloud deletion or new source acquisition.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/52",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Reconcile against Oct12 proposals and actual implementation; no cloud deletion authorized",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "ARCH-CURATED-CORPUS-DELIVERY",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "assess_partial_corpus_resume",
+        "deliveryLane": "corpus-globalproof",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Global proof007 verified output and precise source/country provenance",
+        "dependency": "Single existing assessor; source rights and missing country metadata retained; Netlify uploadsurface unresolved",
+        "nextUsefulAction": "Monitor exact007 result; no producer replay, raw export, cloud deletion or new source acquisition.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/53",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Pure bounded engine delivered; existing UI owns live route. Apply24/29/37 findings through equivalent-output end-to-end measurement, not migration.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "INTERIM-CAPTURE-RETIREMENT",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Current exact permissions/owner/result/ledger continuity without inflated completion",
+        "dependency": "Material new receipts; root authoritative integration",
+        "nextUsefulAction": "Maintain current roster/knownunknowns and clear titles; ACK/title/assignment not completion or execution authority.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/54",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Main/Gateway and worker controllers update relevant obligations on meaningful events and reconcile before end of turn; ACK does not close unresolved action",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "SESSION-DESCRIPTIVE-TITLES",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Current exact permissions/owner/result/ledger continuity without inflated completion",
+        "dependency": "Material new receipts; root authoritative integration",
+        "nextUsefulAction": "Maintain current roster/knownunknowns and clear titles; ACK/title/assignment not completion or execution authority.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/55",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Maintain unique task titles on assignment; unused OffMenu — NN; no execution authority from titles",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "GATEWAY-DURABLE-INTERFACES",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "assess_windmill_storage_improvements",
+        "deliveryLane": "assess_windmill_storage_improvements",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Usable durable DuckDB query route and actual adopted Windmill interface receipts",
+        "dependency": "Usable SQLengine route output, not installation alone; no legacy all-worker adoption claim",
+        "nextUsefulAction": "Finish existing owner query route; separate durable reasoning/job/process/provider/SQL resource layers.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/56",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "64 existing interface/custodian read-only follow-through dispatched; no new route/access/model invocation",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "OFFMENU-MEMPALACE-ROUTE",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "blocked-scope",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Preserve explicit paused CIX and no new OffMenu memory mapping",
+        "dependency": "Specific unrelated integration scope not released by OffMenu delivery instruction",
+        "nextUsefulAction": "No migration/restart; root retains accountable blocked disposition.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/57",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": null,
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "SUPERVISOR-INDEPENDENT-EVALUATION",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "completed-limited",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Preserve accepted temporal trace/evaluation; only new observed delta review",
+        "dependency": "Actual new consumer or failure evidence required for new execution",
+        "nextUsefulAction": "Do not replay accepted reviews; integrate fresh evidence through existing root review.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/58",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "No repeated evaluation; new observed delta only",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "REVIEW-38",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Exact historical deliverable/review/text/version binding without replay",
+        "dependency": "Missing exact current artifact/receipt or historical bootstrap outcome; no session retry permission",
+        "nextUsefulAction": "Use retained custody and exact hashes; name missing bytes if unrecovered, no historical session redispatch.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/59",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Reconcile current assignment authority and actual pickup without duplicate dispatch",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COMPACTION-RECOVERY",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Current exact permissions/owner/result/ledger continuity without inflated completion",
+        "dependency": "Material new receipts; root authoritative integration",
+        "nextUsefulAction": "Maintain current roster/knownunknowns and clear titles; ACK/title/assignment not completion or execution authority.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/60",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Persist corrected state and explicit unknowns; avoid historical bootstrap substitution",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "AUDIT-CLOUD68-TRANSFER",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Exact historical deliverable/review/text/version binding without replay",
+        "dependency": "Missing exact current artifact/receipt or historical bootstrap outcome; no session retry permission",
+        "nextUsefulAction": "Use retained custody and exact hashes; name missing bytes if unrecovered, no historical session redispatch.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/61",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Recover complete text/artifact and verify all68 IDs; cloud research exists, local transfer incomplete",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-6",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "ready-metadata-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-6",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/62",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Designated14 review exact metadata/negative scope; manager selects only a finite eligible guideline metadata lead after edition, coverage and rights evidence. No dataset/body acquisition authorized by this result.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-12",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-12",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/63",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Select only next eligible existing portfolio work;30source gaps remain",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "DEV7645-COUNTRY-PROGRESS-VIEW",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "root-production",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Country progress view from qualified current evidence, preserving old digest discrepancy",
+        "dependency": "Historical digest mismatch remains evidence; actual production source/qualified corpus status needed",
+        "nextUsefulAction": "No old debugrequest replay; root compares actual current view when relevant to integrated proof.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/64",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Morgan review of live-body-versus-pinned-local-reference digest mismatch before any further requests. Preserve both failed requests and unknown historical headers;continuation instrumented arm was not requested. Same soleUI/13 ownership;no budget expansion or inferred cause.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COUNTRY-13",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "country-receipt-disposition",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-13",
+        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/65",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Metadata-first portfolio; bounded5queries8HTTP2MiB, no deniedroute/body acquisition",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "PRIORITY-RECORD-PROVENANCE-CORRECTION",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "assess_partial_corpus_resume",
+        "deliveryLane": "corpus-globalproof",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Global proof007 verified output and precise source/country provenance",
+        "dependency": "Single existing assessor; source rights and missing country metadata retained; Netlify uploadsurface unresolved",
+        "nextUsefulAction": "Monitor exact007 result; no producer replay, raw export, cloud deletion or new source acquisition.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/66",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway forwards exact fa01b17a input specification to existing Worker1 and establishes the existing source custodian from custody history. Observe recipient admission/pickup and resolve01/12/16/23/30 first; then individually trace remaining25. Keep parent provenance OPEN; explicit missing-input outcomes if origin/asset/revision/licence/derivation evidence absent. All holds remain; no acquisition, ownership transfer or denied-route retry.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "CORE-BARCODE-CANONICAL-IDENTITY",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "assess_partial_corpus_resume",
+        "deliveryLane": "corpus-globalproof",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Qualified canonical/product-role source bindings, not fabricated GTIN identity",
+        "dependency": "Current global proof007, source-use/role/identity acceptance; identity-only local candidate remains unadmitted",
+        "nextUsefulAction": "Join proof output to exact permitted consumers; do not publish unqualified identity claims.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/67",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway incorporate D01/D04/D05/D07 design endorsements, resolve delegated technical detail and explicitly name owners within existing authority. Keep SAME11 review and every execution/promotion hold; implementation needs separate explicit authorization.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "PERMANENT-LEDGER-OPERATIONAL-ADOPTION",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Current exact permissions/owner/result/ledger continuity without inflated completion",
+        "dependency": "Material new receipts; root authoritative integration",
+        "nextUsefulAction": "Maintain current roster/knownunknowns and clear titles; ACK/title/assignment not completion or execution authority.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/68",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Materialize qualified groupedpackages through fixedowners andcorrectedgates; autonomouswake/full89acceptance remainunqualified.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "BULK-IDLE-WORKER-RECOVERY",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "configure_parallel_capacity_ceiling",
+        "deliveryLane": "configure_parallel_capacity_ceiling",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Current64slot healthchecker correction and actual resource-aware scheduler behavior",
+        "dependency": "Softwareceiling64jobsx256workers is not simultaneous load/hostcgroup guarantee",
+        "nextUsefulAction": "Finish existing healthchecker; measure useful admitted work, preserve single writers and exact checkpoint custody.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/69",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Consume eligible per-result inputs through existing owners; Worker30 remains closed and is not assigned recovery.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "UNIVERSAL-LOCAL-WORKFLOW-ADOPTION",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "assess_windmill_storage_improvements",
+        "deliveryLane": "assess_windmill_storage_improvements",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Usable durable DuckDB query route and actual adopted Windmill interface receipts",
+        "dependency": "Usable SQLengine route output, not installation alone; no legacy all-worker adoption claim",
+        "nextUsefulAction": "Finish existing owner query route; separate durable reasoning/job/process/provider/SQL resource layers.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/70",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway uses selector-v2; Owner6 verifies actual rollout, Owner16 Freebuff and SAME14 observed corrections. Gateway memory native0 remains separate; one-shot MCP adapter available.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "CIX-LINEAR-LOCAL-LEDGER-BOUNDARY",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "blocked-scope",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Preserve explicit paused CIX and no new OffMenu memory mapping",
+        "dependency": "Specific unrelated integration scope not released by OffMenu delivery instruction",
+        "nextUsefulAction": "No migration/restart; root retains accountable blocked disposition.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/71",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway route frozen paragraph to existing64; preserve CIX pause",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "CORE-APP-SCANNER-DELIVERY",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "household-profile-planner",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Selected scanner handoff/account inventory contract plus physical-device acceptance",
+        "dependency": "Actual authorized camera/device and authenticated session absent from present evidence",
+        "nextUsefulAction": "Prepare source-only handoff checks independently; keep real camera/ROI/torch/audio/vibration acceptance unverified.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/72",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway bind existing scanner source/owner and exact device acceptance scope; preserve broad UI/actual denial holds. Tracking parent creation itself needs no further approval.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "HOUSEHOLD-DURABLE-SYNC",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "collaborative-shopping",
+        "state": "completed-limited",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Production189 sharing scope and190 manual-save lifecycle fixes delivered; full household sync parent remains open",
+        "dependency": "Authenticated end-to-end household/enrollment acceptance not established",
+        "nextUsefulAction": "Retain delivered fixes; use synthetic collaborative journey for new concrete deltas only.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/73",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Bind exact existing caller/transport/enrollment adoption receipt or explicit missing pointer to the named component owners; no activation, migration or central-runtime edits.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "MEAL-DISCOVERY-DELIVERY",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "household-profile-planner",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Real recipe/stock identity, amount/unit, physical-basis/source-admission caller acceptance",
+        "dependency": "Qualified recipe/ingredient source package and exact promoted packet; helpers alone insufficient",
+        "nextUsefulAction": "Reuse existing meal helpers/callers; report exact missing semantic packet, not duplicate algorithm.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/74",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway identify exact promoted meal/source packet from retained22content evidence and current origin traceback; do not repeat disputed print-input review or denied meal-thread relay.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "HOUSEHOLD-DIET-PROFILES",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "household-profile-planner",
+        "state": "ready",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Existing profile/diet/preferences/planner caller invariants and minimal verified defect correction",
+        "dependency": "Selected current production app source; genuine ingredient/rule qualification remains required for semantic claims",
+        "nextUsefulAction": "Dispatch bounded synthetic existing-caller audit, not new recipe/diet policy implementation.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/75",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Bind current ingredient/rule and profile custodians plus exact representative package/market/version evidence; scope a permitted resolver before implementation.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "HOUSEHOLD-MEAL-PLANNING",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "household-profile-planner",
+        "state": "ready",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Existing profile/diet/preferences/planner caller invariants and minimal verified defect correction",
+        "dependency": "Selected current production app source; genuine ingredient/rule qualification remains required for semantic claims",
+        "nextUsefulAction": "Dispatch bounded synthetic existing-caller audit, not new recipe/diet policy implementation.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/76",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Gateway bind existing planner/stock-reservation owner and one exact household journey, separating functional plan from paused presentation work.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "SHOPPING-PLAN-DURATION",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "root-production",
+        "state": "active-owned",
+        "executionClaim": "Existing task ownership only; active runtime claimed only by its independent receipt",
+        "deliverable": "Reviewed pantry-duration expiry correction production release and served proof",
+        "dependency": "Parent owns current reviewed/buildready patch; separate shopping-deficit receipt/basis mapping hold unchanged",
+        "nextUsefulAction": "Do not duplicate duration implementation; root deploys actual candidate then verifies served change.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/77",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Resolve existing shopping planner source/custody and select a tiny ingredient/meal input; basket-report CLI is evidence of reporting only, not this algorithm.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "NUTRITION-HISTORY-GOALS",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "consumption-history",
+        "state": "ready",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Existing consumption/leftover/history round-trip without duplicate stock deduction",
+        "dependency": "Synthetic caller execution only; exact historical producer/confirmed-receipt artifact remains separate dependency",
+        "nextUsefulAction": "Trace one cook/serve/remaining-batch journey; distinguish known nutrition from missing values.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/78",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Identify current history/statistics source and named existing custodian; select one concrete metric journey without private-profile inspection or UI changes.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "CONSUMPTION-LEFTOVERS-RECONCILIATION",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "consumption-history",
+        "state": "ready",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Existing consumption/leftover/history round-trip without duplicate stock deduction",
+        "dependency": "Synthetic caller execution only; exact historical producer/confirmed-receipt artifact remains separate dependency",
+        "nextUsefulAction": "Trace one cook/serve/remaining-batch journey; distinguish known nutrition from missing values.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/79",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Receive already selected03 frozen producer/confirmed-receipt trace if available; otherwise record exact missing packet. Receipt-metadata integration denial stays; no replay or substitute actor.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "PRODUCT-PREFERENCE-QUALIFICATION",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "household-profile-planner",
+        "state": "ready",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Existing profile/diet/preferences/planner caller invariants and minimal verified defect correction",
+        "dependency": "Selected current production app source; genuine ingredient/rule qualification remains required for semantic claims",
+        "nextUsefulAction": "Dispatch bounded synthetic existing-caller audit, not new recipe/diet policy implementation.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/80",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Use retained ENRICH02–06 source/implementation joins to identify exact existing custody/selected consumer input; no full reread or source acquisition.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "GROWER-OPERATOR-QUALIFICATION",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "assess_partial_corpus_resume",
+        "deliveryLane": "corpus-globalproof",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Qualified canonical/product-role source bindings, not fabricated GTIN identity",
+        "dependency": "Current global proof007, source-use/role/identity acceptance; identity-only local candidate remains unadmitted",
+        "nextUsefulAction": "Join proof output to exact permitted consumers; do not publish unqualified identity claims.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/81",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Bind current source/entity-role custodian using retained ENRICH04/07/08 evidence, then select one exact permitted input, no fictional GTIN or forced joins.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "SOURCE-FIELD-PERMISSION-POLICY",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "rights-cache-propagation",
+        "state": "dependent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Production192 retention parity retained; exact parent evaluator/adoption binding",
+        "dependency": "Missing exact owner02/C035 result and source-use authority; successful API call is not rights",
+        "nextUsefulAction": "Recover existing exact receipt; no replacement evaluator or parent closure from parity fix.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/82",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Select current source-policy/caller input and existing custodian using bounded retained evidence; distinguish paid/BYOC rights from API success and user checkbox.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "CACHE-REPRESENTATION-ISOLATION",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "rights-cache-propagation",
+        "state": "ready-read-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Actual consumer/store/key propagation map with specific policy gaps",
+        "dependency": "Existing policy/rights authority; no operational deletion, privacy publication or feed permission inferred",
+        "nextUsefulAction": "Map retained actual consumer; preserve accepted CACHE52 trace and avoid speculative patch.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/83",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Bind exact varying consumer/provider/key input to actual existing cache custodian; reuse52accepted temporal trace and do not speculate a patch or repeat review.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "DERIVED-RIGHTS-SAFETY-INVALIDATION",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "rights-cache-propagation",
+        "state": "ready-read-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Actual consumer/store/key propagation map with specific policy gaps",
+        "dependency": "Existing policy/rights authority; no operational deletion, privacy publication or feed permission inferred",
+        "nextUsefulAction": "Map retained actual consumer; preserve accepted CACHE52 trace and avoid speculative patch.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/84",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Identify actual derived-store/caller and permitted recall/withdrawal feed authority from retained receipts; do not start feed polling, delete data or migrate stores.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "AGGREGATE-HEALTH-PRIVACY",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "rights-cache-propagation",
+        "state": "ready-read-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Actual consumer/store/key propagation map with specific policy gaps",
+        "dependency": "Existing policy/rights authority; no operational deletion, privacy publication or feed permission inferred",
+        "nextUsefulAction": "Map retained actual consumer; preserve accepted CACHE52 trace and avoid speculative patch.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/85",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Bind actual producer/store/privacy-policy authority via existing custody; validator review is not privacy judgement or publication authority.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "REVOCATION-DELETION-RESTORE",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "rights-cache-propagation",
+        "state": "ready-read-only",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Actual consumer/store/key propagation map with specific policy gaps",
+        "dependency": "Existing policy/rights authority; no operational deletion, privacy publication or feed permission inferred",
+        "nextUsefulAction": "Map retained actual consumer; preserve accepted CACHE52 trace and avoid speculative patch.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/86",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Bind current stores/retention/backup operator evidence; one read-only propagation map may precede any separately authorized operational delete. No deletion runs here.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "COLLABORATIVE-SHOPPING-LIST",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "Morgan/root",
+        "deliveryLane": "collaborative-shopping",
+        "state": "ready",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Actual collaborative list to received-stock lifecycle proof",
+        "dependency": "Existing auth/member/revision rules; no receipt integration or calendar publication",
+        "nextUsefulAction": "Dispatch narrow synthetic list/stock boundary audit.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/87",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Bind existing shopping-list consumer/source/owner and exact received-stock boundary; no calendar publication or receipt-integration denial bypass.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      },
+      {
+        "id": "HOUSEHOLD-PILOT-PROMOTION",
+        "accountableOwner": "Morgan/root",
+        "currentOwner": "reconcile_full_delivery_ledger",
+        "deliveryLane": "operational-obligation-closure",
+        "state": "blocked-consent",
+        "executionClaim": "No new job dispatched by allocation",
+        "deliverable": "Consented representative household pilot after concrete journey proof",
+        "dependency": "Named consenting participants and bounded outreach/pilot scope absent",
+        "nextUsefulAction": "No participant messages; prepare existing routine evidence only.",
+        "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
+        "evidence": {
+          "historicalPointer": "/obligations/88",
+          "historicalSource": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+          "historicalNextAction": "Retain deferred promotion/UI status; Gateway selects any future consented pilot or outreach only after concrete routine evidence and scope. No messages to participants.",
+          "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
+        },
+        "parentComplete": false,
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+      }
+    ],
+    "countsByState": {
+      "ready-metadata-only": 14,
+      "blocked-missing-artifact": 2,
+      "dependent": 25,
+      "blocked-source-scope": 3,
+      "completed-limited": 11,
+      "blocked-source-rights-output": 1,
+      "active-owned": 17,
+      "blocked-security": 3,
+      "blocked-scope": 2,
+      "ready": 6,
+      "ready-read-only": 4,
+      "blocked-consent": 1
     }
   }
 }
