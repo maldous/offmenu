@@ -72,20 +72,20 @@
     "route": "Authorized Windmill durable worker -> confined Foo execution -> bounded sanitized results and source-only custody -> direct Git/GitHub integration -> existing Cloudflare/Netlify connector deployment -> actual served result verification",
     "production": "Production194 served100% at06:19:42UTC, exact app9d5df398c92b…1edf8 andmodule7ef438457349…90fcc verified. Three scoped product fixes delivered with76merged syntheticchecks;211othermodules/settingsbindings preserved. Fullcorpus qualification/publication andauthenticated/device acceptance are not implied.",
     "actions": "prohibited: no dispatch/retry or source push triggering workflows",
-    "quotaBlockedFooCodex": "no retry until user explicitly confirms restored capacity; Windmill route is separate",
+    "quotaBlockedFooCodex": "Superseded: user confirmed restored Codex session usage2026-10-28 and authorized scoped retries. Reconcile interrupted ownership/results first; unrelated denial/security/source holds and no assumed API credit remain.",
     "capacity": {
-      "policy": "Maximize useful independent lanes using available measured resources; no invented Foo concurrency count, duplicate writers, quota retries or raw-data transfer. Single writer per output/checkpoint key; independent shards only with nonoverlapping custody.",
+      "policy": "Maximize useful accepted output with measured CPU/RAM/IO/disk admission, not worker occupancy. Reconcile restored-session retries before dispatch; one writer per output/checkpoint and no raw-data transfer.",
       "availableChatAgentSlotsIncludingCoordinator": 7,
       "specialistCapacityTarget": 6,
       "fooLiveConcurrencyClaimed": false,
       "fanoutDriver": "64service capacity independently verified, not64simultaneous heavy jobs; retain latest256target and measure actual resource admission.",
       "latestUserConcurrencyTarget": 256,
       "actualConcurrencyVerified": false,
-      "placesFallback": "128 only after an actual MemoryError, not speculative throttling",
-      "fooDispatchState": "maintenance cleared; resource-readmit and pinned places resume directed",
+      "placesFallback": "Historical ingestion fallback superseded by all packet ingestion complete; existing v5 global/final phases preserve their reviewed resource and hash-pause contracts.",
+      "fooDispatchState": "Corpus017 admitted at global-check checkpoint; NorthStar003 cleanly paused after9332/9797SQLimports,004reduced-reservation refill coordinated. National/basis await real disk headroom, not model quota or CPU registration.",
       "serviceWorkerTarget": 64,
       "serviceWorkersVerified": true,
-      "hourlyPrompt": "Parent reports updated to latest256target",
+      "hourlyPrompt": "Existing reminder updated/readback2026-10-28T08:38:55.195299Z for restored quota and supported6.1medium default; hourly schedule/enabled/timezone unchanged.",
       "verifiedServiceWorkers": 64,
       "verification": {
         "atUTC": "2026-10-28T03:27:00Z",
@@ -106,7 +106,8 @@
       "top": "Full production mode across authorized OffMenu ledger deliverables",
       "messageId": "Sentinel_497944df3ae48191912dd654846406f6",
       "messageUTC": "2026-10-28T01:31:37.839196Z",
-      "latest": "End-state-first full production; latest target256, places128 only after actualMemoryError; finish approved maintenance before resuming"
+      "latest": "Finish the finite authorized end state using accountable durable/Foo owners and Windmill; optimize useful throughput under actual disk/CPU/RAM limits. Restored Codex quota allows scoped retries;6.1medium default where supported, task-appropriate available model selection. User driving: quiet except critical or specifically requested Warframe, root consolidates nonurgent outcomes.",
+      "priorLatest": "End-state-first full production; latest target256, places128 only after actualMemoryError; finish approved maintenance before resuming"
     },
     "preservedHolds": [
       "Credentials/raw datasets stay private; no external live barcode/ingredient/recipe/nutrition/health lookup",
@@ -5523,7 +5524,7 @@
   },
   "currentObligationAllocation": {
     "schema": "offmenu-all89-current-allocation/1",
-    "asOfUTC": "2026-10-28T08:39:10Z",
+    "asOfUTC": "2026-10-28T08:51:30Z",
     "baseCommit": "e2ec394485254ed2edc217078af67e72d8d608d7",
     "candidateOnly": false,
     "publishOwner": "Morgan/root",
@@ -7603,10 +7604,10 @@
         "currentOwner": "assess_partial_corpus_resume; prepare_common_corpus_publication remains safe-idle until qualified proof",
         "deliveryLane": "corpus-globalproof",
         "state": "active-owned",
-        "executionClaim": "Existing016 owner confirms all packet ingestion complete08:33UTC; original global checks running. No final proof or new job from this reconciliation.",
+        "executionClaim": "Existing017 actually admitted/running after016cleanpause; allpacket ingestion complete,globalreference/translation checks passed; globalIDscan continues. Finalproof absent.",
         "deliverable": "Both corpus producers final and prior source custody/retained proof milestones remain accepted. Current global proof is016 per coordinator, not stale007. Native publisher ready with accepted source custody; no longer described as blocked by the previously absent connector upload surface.",
         "dependency": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred.",
-        "nextUsefulAction": "Existing owner continues original global and fresh-process final-hash phases to actual proof; same native publisher resumes only on qualified handoff. No producer replay, raw export or new acquisition.",
+        "nextUsefulAction": "Continue existing017 originalglobal/fresh-processfinalhashphases; reactivate samepublisher only on actualqualifiedproof/candidate. No producerreplay/rawexport/newacquisition.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/52",
@@ -7625,7 +7626,7 @@
           "nextUsefulAction": "Monitor exact007 result; no producer replay, raw export, cloud deletion or new source acquisition."
         },
         "receiptClosure": {
-          "asOfUTC": "2026-10-28T08:39:10Z",
+          "asOfUTC": "2026-10-28T08:51:30Z",
           "finiteDeliverableState": "existing-proof-active-not-closed",
           "broaderParentState": "active-existing-owner",
           "runnableNow": true,
@@ -7660,10 +7661,10 @@
         "currentOwner": "assess_partial_corpus_resume; prepare_common_corpus_publication remains safe-idle until qualified proof",
         "deliveryLane": "corpus-globalproof",
         "state": "active-owned",
-        "executionClaim": "Existing016 owner confirms all packet ingestion complete08:33UTC; original global checks running. No final proof or new job from this reconciliation.",
+        "executionClaim": "Existing017 actually admitted/running after016cleanpause; allpacket ingestion complete,globalreference/translation checks passed; globalIDscan continues. Finalproof absent.",
         "deliverable": "Both corpus producers final and prior source custody/retained proof milestones remain accepted. Current global proof is016 per coordinator, not stale007. Native publisher ready with accepted source custody; no longer described as blocked by the previously absent connector upload surface.",
         "dependency": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred.",
-        "nextUsefulAction": "Existing owner continues original global and fresh-process final-hash phases to actual proof; same native publisher resumes only on qualified handoff. No producer replay, raw export or new acquisition.",
+        "nextUsefulAction": "Continue existing017 originalglobal/fresh-processfinalhashphases; reactivate samepublisher only on actualqualifiedproof/candidate. No producerreplay/rawexport/newacquisition.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/53",
@@ -7682,7 +7683,7 @@
           "nextUsefulAction": "Monitor exact007 result; no producer replay, raw export, cloud deletion or new source acquisition."
         },
         "receiptClosure": {
-          "asOfUTC": "2026-10-28T08:39:10Z",
+          "asOfUTC": "2026-10-28T08:51:30Z",
           "finiteDeliverableState": "existing-proof-active-not-closed",
           "broaderParentState": "active-existing-owner",
           "runnableNow": true,
@@ -8155,10 +8156,10 @@
         "currentOwner": "assess_partial_corpus_resume; prepare_common_corpus_publication remains safe-idle until qualified proof",
         "deliveryLane": "corpus-globalproof",
         "state": "active-owned",
-        "executionClaim": "Existing016 owner confirms all packet ingestion complete08:33UTC; original global checks running. No final proof or new job from this reconciliation.",
+        "executionClaim": "Existing017 actually admitted/running after016cleanpause; allpacket ingestion complete,globalreference/translation checks passed; globalIDscan continues. Finalproof absent.",
         "deliverable": "Both corpus producers final and prior source custody/retained proof milestones remain accepted. Current global proof is016 per coordinator, not stale007. Native publisher ready with accepted source custody; no longer described as blocked by the previously absent connector upload surface.",
         "dependency": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred.",
-        "nextUsefulAction": "Existing owner continues original global and fresh-process final-hash phases to actual proof; same native publisher resumes only on qualified handoff. No producer replay, raw export or new acquisition.",
+        "nextUsefulAction": "Continue existing017 originalglobal/fresh-processfinalhashphases; reactivate samepublisher only on actualqualifiedproof/candidate. No producerreplay/rawexport/newacquisition.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/66",
@@ -8177,7 +8178,7 @@
           "nextUsefulAction": "Monitor exact007 result; no producer replay, raw export, cloud deletion or new source acquisition."
         },
         "receiptClosure": {
-          "asOfUTC": "2026-10-28T08:39:10Z",
+          "asOfUTC": "2026-10-28T08:51:30Z",
           "finiteDeliverableState": "existing-proof-active-not-closed",
           "broaderParentState": "active-existing-owner",
           "runnableNow": true,
@@ -9586,7 +9587,7 @@
   },
   "continuousEfficiencyReview": {
     "schema": "offmenu-continuous-efficiency-review/1",
-    "asOfUTC": "2026-10-28T08:39:10Z",
+    "asOfUTC": "2026-10-28T08:51:30Z",
     "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
     "state": "active-owned-ongoing",
     "currentOwner": "audit_production_efficiency",
@@ -9750,22 +9751,22 @@
         "runtimeStability": "012 completed1440.4seconds without priorcacheMemoryError;3.101Mresources added, expectedpause/cleanupverified. No causal cache-speedup assertion."
       },
       "activeRun": {
-        "run": "016",
-        "job": "01a18196-2dc2-72e0-0b58-93754d0ba886",
-        "startedAtApproxUTC": "2026-10-28T08:17:40Z",
-        "naturalBoundaryApproxUTC": "2026-10-28T08:41:40Z",
+        "run": "017",
+        "job": "01a181b2-9723-5d00-8710-2214de1d55e9",
+        "startedAtApproxUTC": "2026-10-28T08:48:40Z",
+        "naturalBoundaryApproxUTC": "2026-10-28T09:12:40Z",
         "workers": 64,
         "workerMiB": 256,
         "cpuReservation": 19,
         "wholeJobReservationGiB": 24.625,
         "cacheMiB": 3072,
         "sqlHardHeapMiB": 4096,
-        "additionalGrowthBytes": 23904047104,
+        "additionalGrowthBytes": 23496962048,
         "status": "capacity-admitted-and-running-owner-verified",
         "mayPauseEarlierAtCommittedHashTransition": true,
         "performanceBenefitEstablished": false,
         "phase": "global",
-        "progressAsOfUTC": "2026-10-28T08:33:47Z",
+        "progressAsOfUTC": "2026-10-28T08:49:25Z",
         "allPacketIngestionComplete": true,
         "ingestedTotals": {
           "resources": 23586626,
@@ -9774,7 +9775,8 @@
           "translations": 3242,
           "externalReferences": 94948126
         },
-        "finalProofWritten": false
+        "finalProofWritten": false,
+        "globalIdsScannedAtResume": 25250000
       },
       "otherEfficiencyFindings": [
         "Country lane14readyrows/76exactbindings/15assertions/7tests avoids stale repeat-reviews; zero country closures. Proposed native validators never admitted; payload-specific permission remains held after initial+one materially supported retry, no further retry.",
@@ -9905,39 +9907,75 @@
         "limit": "Observed lowerthroughput underconcurrentwork is not a causal cacheclaim; sameapprovedcode retained."
       },
       "latestDiskRefill": {
-        "priorAttempt": "016 firstattemptnotadmitted capacity_disk_reserved/noexecution; not successfromtransport",
-        "release": "NorthStarbulk002 clean08:16:06.01, exit0/childtreegone",
-        "order": "Corpus016 admittedfirst thenNorthStarSQL003; same70GiBreserve, noactivejobmutation/blindbusyloop/cancel",
-        "bulk002": {
-          "job": "01a1817b-b3ac-810e-87b8-90d714a0ddc2",
-          "shardsComplete": 9797,
-          "totalShards": 9797,
-          "packets": 9796656,
-          "contexts": 46795344,
-          "relations": 2915727,
-          "inputAssertions": 137295959,
-          "logicalOutputBytes": 19618542130,
-          "allocatedOutputBytes": 19686666240,
-          "cleanFreeBytes": 117126832128,
-          "sqlIndexComplete": false,
-          "fooAggregatePeakTelemetry": "notcollected; Windmill49616KiB bridgepeak is NOT Foochildaggregate"
-        }
+        "priorAttempt": "017 initially not admitted capacity_disk_reserved; no execution",
+        "release": "NorthStar003 clean08:46:00.34, child_tree_gone",
+        "order": "Corpus017 actually admitted first; measured8.353GBSQL004 refill coordinated through same owner; no reserve change.",
+        "additionalProofGrowthBytes": 23496962048,
+        "additionalSQLGrowthBytes": 8352591312,
+        "sharedReserveGiB": 70,
+        "nationalAndBasis": "4GiBnational and10GiBbasis still do not fit both current remaining reservations; ready reviewed lanes withheld by real diskadmission, not reasoningslots/quotas."
       },
       "northStarSQL003": {
         "job": "01a18197-1323-c9ff-d5a9-d2bad4a4ab71",
         "admittedAtUTC": "2026-10-28T08:18:44Z",
-        "status": "running-owner-confirmed",
+        "status": "succeeded-exit0-child-tree-gone-checkpoint-not-final",
         "cpuReservation": 1,
         "memoryReservationGiB": 1,
         "additionalGrowthBytes": 14808305102,
         "absoluteTotalOutputGiB": 32,
         "basis": "Phase-specific:0remainingworkertasks, streaming1MiBhashes/onecompressedindexrow, SQLitecache64MiB/temp_storeFILE,9797compactreceipts; no newworkload orstress.",
-        "constraints": "Declaredaggregate request, not measuredFooaggregate isolation; do not mutateactivejob. SQLcoverage/finalmanifest stillrequired."
+        "constraints": "Declaredaggregate request, not measuredFooaggregate isolation; do not mutateactivejob. SQLcoverage/finalmanifest stillrequired.",
+        "terminalAtUTC": "2026-10-28T08:46:00.34Z",
+        "indexShardsImported": 9332,
+        "totalShards": 9797,
+        "ownedLogicalBytes": 26074255920,
+        "ownedAllocatedBytes": 26142437376,
+        "cleanFreeBytes": 110182526976,
+        "nextAdditionalGrowthBytes": 8352591312,
+        "nextJob": "004 pending ordinary admission; do not assert running until owner receipt"
       },
       "otherReadyWork": {
         "recipe": "Recipev6 terminal succeeded08:21:35, exit0/child_tree_gone;51assets/25135packets exactsource reverified+SQLqueries in59s; existing1.36GBindex unchanged, no duplicatecopy/fullfileRAMread.47smallrecipe fidelity and308expansion repairs retained. Scoped receipt, not wholegraph closure.",
         "basis": "Puremodulecae8 reviewed; runner24b47729 reviewedfinitecorrections. Phase1named10GiB output remainsunlaunchedpendingactualheadroom/finalownerreview.",
         "national": "Reviewedcode staged bychild; fullnational4GiB output unlaunchedpendingactualheadroom."
+      },
+      "completedRun016": {
+        "job": "01a18196-2dc2-72e0-0b58-93754d0ba886",
+        "status": "expected-pause-cleanup-verified",
+        "allPacketIngestionComplete": true,
+        "uniquePendingReferencesChecked": 23786447,
+        "unresolvedReferences": 0,
+        "translationSourceChecksPassed": 3242,
+        "globalTableIndex": 2,
+        "globalIdsScanned": 25250000,
+        "finalProofWritten": false
+      },
+      "previousActiveRun016": {
+        "run": "016",
+        "job": "01a18196-2dc2-72e0-0b58-93754d0ba886",
+        "startedAtApproxUTC": "2026-10-28T08:17:40Z",
+        "naturalBoundaryApproxUTC": "2026-10-28T08:41:40Z",
+        "workers": 64,
+        "workerMiB": 256,
+        "cpuReservation": 19,
+        "wholeJobReservationGiB": 24.625,
+        "cacheMiB": 3072,
+        "sqlHardHeapMiB": 4096,
+        "additionalGrowthBytes": 23904047104,
+        "status": "capacity-admitted-and-running-owner-verified",
+        "mayPauseEarlierAtCommittedHashTransition": true,
+        "performanceBenefitEstablished": false,
+        "phase": "global",
+        "progressAsOfUTC": "2026-10-28T08:33:47Z",
+        "allPacketIngestionComplete": true,
+        "ingestedTotals": {
+          "resources": 23586626,
+          "assertions": 166914715,
+          "relations": 4036948,
+          "translations": 3242,
+          "externalReferences": 94948126
+        },
+        "finalProofWritten": false
       }
     },
     "latestUserOperatingPrinciple": {
@@ -10038,10 +10076,156 @@
         "turn": "01a181a8-cbcb-7351-bb52-89925f4af3d6",
         "scope": "Read-only actual disk/swap/process measurement, no mutations/browser/loadtest",
         "remote": "fragrant-tree-12463214",
-        "status": "admitted-awaiting-results"
-      }
+        "status": "completed-read-only-no-mutations",
+        "topologyTurn": "01a181af-7049-75c7-8f0a-2cc9c5954c61"
+      },
+      "authoritativeMemory": "save_current_task_updates saved and exact-readback verified08:44:02–03UTC; no memory mapping/new platform.",
+      "directMcpState": "Historical enabledCodexWindmill entry at/api/mcp after priorabsentlisting; current correct endpoint/tool authorization unverified. Priorconfiguration/adminhold not superseded byquota restoration; existingconnector continues."
+    },
+    "actualIODiagnosis": {
+      "observedAtUTC": "2026-10-28T08:38:33Z to08:41:17Z",
+      "source": "docs/operations/2026-10-28/efficiency-io-codex-custody.json",
+      "sourceCommit": "47535f1015ac270cc39e8b12b05cd2be0e2224b3",
+      "mode": "read-only-cloud-task-on-Foo",
+      "cpuIdlePercentRange": [
+        91,
+        93
+      ],
+      "ioWaitPercentRange": [
+        5,
+        6
+      ],
+      "swapInBytesOver10Seconds": 16384,
+      "swapOutBytesOver10Seconds": 0,
+      "dm0WriteKiBPerSecond": [
+        141508,
+        143106.4
+      ],
+      "dm0WriteAwaitMs": [
+        8.86,
+        8.43
+      ],
+      "dm0Queue": [
+        150.28,
+        149.61
+      ],
+      "dm0UtilPercent": [
+        92.4,
+        91.08
+      ],
+      "nvme0WriteAwaitMs": [
+        17.37,
+        16.15
+      ],
+      "nvme1WriteAwaitMs": [
+        1.68,
+        1.83
+      ],
+      "processMapping": {
+        "assessor016": "PID377989 D:md_flush_request→jbd2_log_wait_commit",
+        "northStar003": "PID380537 D:rq_qos_wait→folio_wait_bit_common;229961728writebytes/10s",
+        "trees": "6processes:3sleeping,3diskwait,0runnable; declared64workers not64readyCPUtasks"
+      },
+      "pressure": {
+        "cpuSomeAvg10": 0,
+        "memorySomeAndFullAvg10": 0.07,
+        "ioSomeAvg10": 17.06,
+        "ioFullAvg10": 16.12
+      },
+      "inference": "Disk/journal waits and disk reservation headroom constrain present useful production, not CPU availability or active swapthrashing. Aggregate devicewrites cannot all be attributed to two sampledPIDs.",
+      "topology": "Sharedext4/LVM/twoNVMeRAID0,128KiBchunks; cleanarray,matchedfirmware/links/settings,AER0,compositetempalarms0; no establishedfault/throttling. SMARTnodes unavailable in existingexecutionenvironment; no escalation.",
+      "action": "Continue acceptedwork; at natural cleanboundaries reconcile actualunique-owned min(logical,allocated)remaining output reservations and refill approved usefullanes. No swapoff/cacheflush/restarts/stress/devicechanges/newstorage/reserve relaxation."
+    },
+    "recoveredSourceCustody": {
+      "asOfUTC": "2026-10-28T08:51:30Z",
+      "evidence": "docs/operations/2026-10-28/efficiency-io-codex-custody.json",
+      "sourceInventoryTask": "01a17b7d-3c8b-70d0-bee2-eb9642e730e4",
+      "classificationOwner": "preserve_corpus_recovery_source",
+      "untrackedNames": 49,
+      "samePathAlreadyPreserved": 47,
+      "renamedReviewedSuccessorsPreserved": 2,
+      "unboundSourceLineagesByPathAndVersion": 0,
+      "currentFooByteEqualityVerified": false,
+      "limitation": "Names/statusonly; no current hashes captured. Do not overwrite earlier files or re-export/replay merely fromuntrackedstatus. Deliberateexit7smoke remainsnotretryable."
     }
   },
   "priorStatusBeforeProduction194Reconciliation": "full-production-allocated-corpus-active-product193-served",
-  "statusAsOfUTC": "2026-10-28T07:00:00Z"
+  "statusAsOfUTC": "2026-10-28T07:00:00Z",
+  "priorCurrentExecutionBeforeRestoredQuota0851": {
+    "sourceCommit": "748ae9f02d38369c5ba79c7c5eb7aca284b81789",
+    "integrationBranch": "integration/reviewed-local-source-custody-20261027",
+    "route": "Authorized Windmill durable worker -> confined Foo execution -> bounded sanitized results and source-only custody -> direct Git/GitHub integration -> existing Cloudflare/Netlify connector deployment -> actual served result verification",
+    "production": "Production194 served100% at06:19:42UTC, exact app9d5df398c92b…1edf8 andmodule7ef438457349…90fcc verified. Three scoped product fixes delivered with76merged syntheticchecks;211othermodules/settingsbindings preserved. Fullcorpus qualification/publication andauthenticated/device acceptance are not implied.",
+    "actions": "prohibited: no dispatch/retry or source push triggering workflows",
+    "quotaBlockedFooCodex": "no retry until user explicitly confirms restored capacity; Windmill route is separate",
+    "capacity": {
+      "policy": "Maximize useful independent lanes using available measured resources; no invented Foo concurrency count, duplicate writers, quota retries or raw-data transfer. Single writer per output/checkpoint key; independent shards only with nonoverlapping custody.",
+      "availableChatAgentSlotsIncludingCoordinator": 7,
+      "specialistCapacityTarget": 6,
+      "fooLiveConcurrencyClaimed": false,
+      "fanoutDriver": "64service capacity independently verified, not64simultaneous heavy jobs; retain latest256target and measure actual resource admission.",
+      "latestUserConcurrencyTarget": 256,
+      "actualConcurrencyVerified": false,
+      "placesFallback": "128 only after an actual MemoryError, not speculative throttling",
+      "fooDispatchState": "maintenance cleared; resource-readmit and pinned places resume directed",
+      "serviceWorkerTarget": 64,
+      "serviceWorkersVerified": true,
+      "hourlyPrompt": "Parent reports updated to latest256target",
+      "verifiedServiceWorkers": 64,
+      "verification": {
+        "atUTC": "2026-10-28T03:27:00Z",
+        "method": "MCP list_workers",
+        "live": 64,
+        "pythonCapable": 64,
+        "maxLastPingSeconds": 6,
+        "originalWorkersPreserved": [
+          "71969",
+          "c499"
+        ],
+        "evidenceId": "registrations-0327.json"
+      }
+    },
+    "coordinatorRole": "Morgan/root stays highly available: lightweight communication, ownership/integration coordination, user decisions and concise result verification. Durable owners perform substantive engineering/execution/monitoring; audit_production_efficiency owns currentledger efficiency/closure updates.",
+    "publicationWriter": "Morgan/root-authorized ledger reconciliation; direct Git/GitHub leased integration publication",
+    "currentUserPriority": {
+      "top": "Full production mode across authorized OffMenu ledger deliverables",
+      "messageId": "Sentinel_497944df3ae48191912dd654846406f6",
+      "messageUTC": "2026-10-28T01:31:37.839196Z",
+      "latest": "End-state-first full production; latest target256, places128 only after actualMemoryError; finish approved maintenance before resuming"
+    },
+    "preservedHolds": [
+      "Credentials/raw datasets stay private; no external live barcode/ingredient/recipe/nutrition/health lookup",
+      "Preserve current modules, user data, account boundaries and security holds",
+      "Identity-only local candidate needs its own admission; no promotion merely by turning selection on",
+      "No retries of specifically blocked native diagnostics or historical held jobs",
+      "No substitute deliverables or broad additional release-test gates"
+    ],
+    "historicalFieldInterpretation": "All pre-overlay lanes, rosters, publication records and prior* sections describe their stated historical cut. They are not current owner assignments, retry permission or proof of present production acceptance.",
+    "maintenanceHold": {
+      "active": false,
+      "sinceUTC": "2026-10-28T03:19:00Z",
+      "scope": "Historical03:19dispatch hold completed after host success and independent worker verification03:27.",
+      "approvedWork": "PostgreSQL max_connections320, brief restart after clean checkpoint, then64Windmill service workers",
+      "approval": "User explicitly approved in voice; no repeat approval required.",
+      "state": "Maintenance hold cleared. Root independently verified64live Python-capable workers via MCP; DB320 provenance is user's host receipt, not a direct MCP database query. Resource readmission and exact pinned places resume directed.",
+      "originalScalerOutcome": "Stopped before changes: current36 connections plus projected186 exceeds available97.",
+      "resumeCondition": "Assessor performs resource readmission and resumes same pinned places checkpoint; no checkpoint reset or duplicate producer.",
+      "hostResult": {
+        "messageId": "Sentinel_f36d03a7c058819192446a26c6362f20",
+        "reportedAtUTC": "2026-10-28T03:26:00Z",
+        "databaseMaxConnections": 320,
+        "registeredWorkers": 64,
+        "newContainers": 62,
+        "originalContainersAndConfigPreserved": true,
+        "receiptIds": [
+          "db320-159f7e8807ff44068bc2292117c15704",
+          "scale64-943944e925b24c03a8e018d5c447fec3"
+        ],
+        "independentlyVerified": "64worker registrations independently verified; DBmax320 remains hostreceipt provenance"
+      },
+      "clearedAtUTC": "2026-10-28T03:27:00Z"
+    },
+    "priorProductionBefore194": "Version192 deployed100%; shared-kitchen lifecycle, manual account-save lifecycle, view history and retention parity delivered. Full corpus qualification/publication and authenticated/device acceptance are not implied.",
+    "priorCoordinatorRoleBeforeDelegationReconciliation": "Morgan/root coordinates integration, task ownership, result verification, ledger and user progress."
+  }
 }
