@@ -1,0 +1,111 @@
+{
+  "bytes": 4497,
+  "report": {
+    "compressedSampleBytes": {
+      "basisGzip": 3640040,
+      "locatorGzip": 121801,
+      "matchedGzip": 150520
+    },
+    "estimatedAdditionalNamedBytes": {
+      "basisGzip": 7031742239,
+      "locatorGzip": 210969325,
+      "locatorSqlite": 1617570630,
+      "matchedGzip": 290770938,
+      "matchedSqlite": 633004390,
+      "receiptAndFixedOverhead": 81305600
+    },
+    "estimatedAdditionalNamedTotalBytes": 9865363122,
+    "fullNativeProfiles": 2924709,
+    "fullNormalizedResources": 9796656,
+    "indexManifestSha256": "d7de2786c96d246688ea15fd7d1e3e56d714872fbd00583bfb31e5eed59bd42a",
+    "limits": "Six deterministic manifest-spaced assets; estimate only, not guaranteed storage or full coverage. Absolute producer cap, actual free reserve and ordinary aggregate admission remain required. Includes retained native index plus sidecars, local matched/locator shard files, final matched/locator SQLite and receipt overhead. SQLite transient unlinked files are not fully bounded by named-output accounting.",
+    "loadedDerivationCodePins": {
+      "derive_north_star_bulk.py": "3adc476be2a6694d62c76bb4d539f0fc698810fd3b942dc9ae501e940efde7a1",
+      "north_star_basis_restoration.py": "cae8b86cbacdbf0d81b9a52bb508dadae56e29639cfd332f87fb2b71bd18566a",
+      "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+      "run_north_star_basis_restoration.py": "24b477296d17675f7eb2ef3c674e5ae153a603afa599743161a13d0e05106d59"
+    },
+    "measurementHelperSha256": "195bca997482c4be7dff936b7c2b61d18d38aeb692dacee915e80602f35bec3c",
+    "measurementOnly": true,
+    "measurementVersion": "north-star-basis-phase2-storage/1",
+    "nativeIndexSqliteSha256": "66677901ec78853ed791f9763149606433e7db448b107b713d71b4a01513d746",
+    "newDataFilesWritten": false,
+    "rawValuesExported": false,
+    "retainedNativeIndexBytes": 8162656256,
+    "sampleCounts": {
+      "basisTargets": 24224,
+      "matchedProfiles": 1514,
+      "packets": 5656,
+      "resources": 5656,
+      "sidecars": 1514
+    },
+    "sampleSqliteIncrementBytes": {
+      "locatorSqliteIncrementBytes": 933888,
+      "matchedSqliteIncrementBytes": 327680
+    },
+    "schemaVersion": "offmenu-basis-phase2-storage-estimate/1",
+    "selectedAssets": [
+      {
+        "bytes": 1129091,
+        "key": "packets/part-00000.jsonl.gz",
+        "ordinal": 0,
+        "packets": 1000,
+        "sha256": "4f67c0313bf3632306b29c069607972f0c04c333a261489a6ac2aa64d577c1b1"
+      },
+      {
+        "bytes": 1143907,
+        "key": "packets/part-01959.jsonl.gz",
+        "ordinal": 1959,
+        "packets": 1000,
+        "sha256": "046d792f596413cdcd9f4725b8044e591f80c8402650408847710a40218a40c5"
+      },
+      {
+        "bytes": 1130650,
+        "key": "packets/part-03918.jsonl.gz",
+        "ordinal": 3918,
+        "packets": 1000,
+        "sha256": "badb236af618b3d30343782b03a83be15157eb70380dd4e7418061a41f5a6b52"
+      },
+      {
+        "bytes": 1867252,
+        "key": "packets/part-05877.jsonl.gz",
+        "ordinal": 5877,
+        "packets": 1000,
+        "sha256": "e7fcb3d8bbf532ad38fd864811ad46c8adae3ca1a900ce393fb3ec481dd9fa46"
+      },
+      {
+        "bytes": 1865754,
+        "key": "packets/part-07836.jsonl.gz",
+        "ordinal": 7836,
+        "packets": 1000,
+        "sha256": "59096b537e1016af017ccfb6dda9086eb56311ee733e5a102471e7305e4d2b26"
+      },
+      {
+        "bytes": 459088,
+        "key": "packets/part-09796.jsonl.gz",
+        "ordinal": 9796,
+        "packets": 656,
+        "sha256": "1290b465b426eac1e06341713d74a6e730238dd32f3ad1a2652b550417e192b5"
+      }
+    ],
+    "sourceSelection": {
+      "codePins": {
+        "derive_north_star_bulk.py": "3adc476be2a6694d62c76bb4d539f0fc698810fd3b942dc9ae501e940efde7a1",
+        "north_star_basis_restoration.py": "cae8b86cbacdbf0d81b9a52bb508dadae56e29639cfd332f87fb2b71bd18566a",
+        "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+        "run_north_star_basis_restoration.py": "24b477296d17675f7eb2ef3c674e5ae153a603afa599743161a13d0e05106d59"
+      },
+      "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+      "nativeManifestByteSha256": "312a7f5ce7c32b81d1eb02251303a000073eea2d0b46d9ac710e09ff89dee895",
+      "normalizedManifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e",
+      "rulesetVersion": "north-star-per-nutrient-basis-restoration/1",
+      "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+      "selectedSources": [
+        "off",
+        "usda-files"
+      ]
+    },
+    "suggestedAbsoluteTotalBudgetBytes": 22017767383
+  },
+  "sha256": "95dc3eb7172401888033eff23a307e22e6a3a89a0aca51ace3b1c95887ff49c2"
+}

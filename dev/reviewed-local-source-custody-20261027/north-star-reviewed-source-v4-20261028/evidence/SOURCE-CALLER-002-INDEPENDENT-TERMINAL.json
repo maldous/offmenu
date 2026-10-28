@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "offmenu-independent-windmill-terminal/1",
+  "reviewer": "/root/align_north_star_graph",
+  "runId": "01a18251-6db2-6d9d-0453-6d848f373f97",
+  "observedAtUtc": "2026-10-28T11:44:33Z",
+  "runStatus": "success",
+  "ok": true,
+  "job_id": "north-star-source-caller-proof-002",
+  "receipt": {
+    "logs": {
+      "stderr": "/offmenu/data/.offmenu-platform/jobs/north-star-source-caller-proof-002/stderr.log",
+      "stdout": "/offmenu/data/.offmenu-platform/jobs/north-star-source-caller-proof-002/stdout.log"
+    },
+    "mode": "write",
+    "job_id": "north-star-source-caller-proof-002",
+    "status": "succeeded",
+    "version": 3,
+    "exit_code": 0,
+    "log_bytes": {
+      "stderr": 0,
+      "stdout": 479
+    },
+    "created_at": 1793187737.470427,
+    "started_at": 1793187737.475119,
+    "finished_at": 1793187753.2990825,
+    "heartbeat_at": 1793187753.2990859,
+    "output_bytes": {
+      "stderr": 0,
+      "stdout": 479
+    },
+    "runner_sha256": "2ae57cc8edc66d9b56f43ad26dd8871fda155d23e50563988d3b0cac89d21674",
+    "command_sha256": "5e0f3406457920843402559af75b316945a3f9174b057eca91a1ef27cde6b68f",
+    "logs_truncated": {
+      "stderr": false,
+      "stdout": false
+    },
+    "request_sha256": "682f35ee26b65e29c7f8f9c1cedb4bf8aeae2cfd972bb69efd361410a307ad42",
+    "child_tree_gone": true,
+    "timeout_seconds": 900,
+    "reconcile_required": false
+  },
+  "admitted": true,
+  "transport_ok": true,
+  "job_succeeded": true,
+  "limits": "Independent terminal/command binding only; source-bound finite caller report reviewed separately. No raw logs or runtime args exported."
+}
