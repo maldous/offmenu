@@ -1,0 +1,306 @@
+{
+  "schema": "offmenu-efficiency-delivery-checkpoint/1",
+  "asOfUTC": "2026-10-28T10:41:30Z",
+  "globalProof": {
+    "job": "01a181da-ce15-9f85-f2bb-f1968549da9b",
+    "status": "completed-and-clean",
+    "sha256": "9e60de075a9bf049e0348c666e4cc2cbe9edb07c6771bcab95649038dafd1226",
+    "bytes": 6327,
+    "localSanitizedReceiptSHA256": "55c4962a99ef16f40939f816b07a73da428fcedc9c7d32c916a95a90b51110af",
+    "evidence": {
+      "aggregateObservedCounts": {
+        "assertions": 166914715,
+        "assets": 24147,
+        "externalReferences": 94948126,
+        "packets": 9929609,
+        "relations": 4036948,
+        "resources": 23586626,
+        "translations": 3242
+      },
+      "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+      "contractTextIdentityRule": "A text identifier can be reused in multiple projections of the same original text (for example a resource name and the original data.name field). Repeated definitions must have identical language, value, source-text hash and citation set; conflicts are rejected. Source edition language is not proof of each embedded quoted string language; uncertain fields use und.",
+      "contractVersion": "offmenu-common-contract/1",
+      "database": {
+        "citations": 22574341,
+        "ids": 194541531,
+        "referencesRecorded": 23786447,
+        "texts": 216170809,
+        "translation_sources": 3242
+      },
+      "diskGuardBytes": 10737418240,
+      "packageCount": 8,
+      "packages": [
+        {
+          "admittedSourceRecords": {
+            "foodon": 29255,
+            "world-recipes": 25135
+          },
+          "directory": "/offmenu-corpus/common-data-reviewed-package-20261014",
+          "grandfathered": true,
+          "manifestByteSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+          "observedCounts": {
+            "assertions": 2199543,
+            "packets": 79534,
+            "relations": 459245,
+            "resources": 441391,
+            "translations": 3242
+          },
+          "packetFiles": 161,
+          "releaseId": "common-data-20261014"
+        },
+        {
+          "admittedSourceRecords": {
+            "dietary-guidelines": 100,
+            "wikibooks": 3796
+          },
+          "directory": "/offmenu-corpus/common-reference-delivery-final-20261014",
+          "grandfathered": false,
+          "manifestByteSha256": "bec93ffedf4d80eef10ec11000c18161024a3c30999697ad1f3db5f3318ff3e7",
+          "observedCounts": {
+            "assertions": 31168,
+            "packets": 3896,
+            "relations": 0,
+            "resources": 3896,
+            "translations": 0
+          },
+          "packetFiles": 9,
+          "releaseId": "common-references-20261014"
+        },
+        {
+          "admittedSourceRecords": {
+            "afcd": 1801,
+            "ciqual": 3484,
+            "cnf": 5690,
+            "cofid": 2887,
+            "fineli": 4232,
+            "foodfiles": 2857,
+            "frida": 1381,
+            "germany-bls": 7140,
+            "matvaretabellen": 2121,
+            "mext": 2538,
+            "sweden-food": 2606
+          },
+          "directory": "/offmenu-corpus/common-national-semantic-final-20261014",
+          "grandfathered": false,
+          "manifestByteSha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+          "observedCounts": {
+            "assertions": 2020535,
+            "packets": 36737,
+            "relations": 661266,
+            "resources": 661266,
+            "translations": 0
+          },
+          "packetFiles": 1470,
+          "releaseId": "common-national-20261014"
+        },
+        {
+          "admittedSourceRecords": {
+            "qudt-measurement-definitions": 56
+          },
+          "directory": "/offmenu-corpus/measurement-terminology-final-qualified-20261014",
+          "grandfathered": false,
+          "manifestByteSha256": "75c33340f1ee25c4121c57d8fc124621b4455412717fc6d9dd01bfb162351679",
+          "observedCounts": {
+            "assertions": 440,
+            "packets": 56,
+            "relations": 0,
+            "resources": 56,
+            "translations": 0
+          },
+          "packetFiles": 1,
+          "releaseId": "qudt-measurement-definitions-3.5.2-20261014"
+        },
+        {
+          "admittedSourceRecords": {
+            "Remarknl/Indisch-eten": 1,
+            "chefdelakarma/libre_cuisine": 6,
+            "clicat/Ricette": 2,
+            "lvisintini/recetasdemami": 33,
+            "rochacbruno/vegan_recipes": 0
+          },
+          "directory": "/offmenu-corpus/recipe-expansion-final-qualified-20261014/common-graph",
+          "grandfathered": false,
+          "manifestByteSha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
+          "observedCounts": {
+            "assertions": 1588,
+            "packets": 42,
+            "relations": 644,
+            "resources": 682,
+            "translations": 0
+          },
+          "packetFiles": 1,
+          "releaseId": "recipe-expansion-qualified-20261014"
+        },
+        {
+          "admittedSourceRecords": {
+            "smithsonian-archive": 5
+          },
+          "directory": "/offmenu-corpus/historical-recipe-quality-final-corrected-20261014",
+          "grandfathered": false,
+          "manifestByteSha256": "e4c06a1d4a2fcb492529c37c6245a595dd104061ef1a63427cbe9d65e7e2241f",
+          "observedCounts": {
+            "assertions": 256,
+            "packets": 5,
+            "relations": 66,
+            "resources": 66,
+            "translations": 0
+          },
+          "packetFiles": 1,
+          "releaseId": "historical-recipe-quality-final-20261014"
+        },
+        {
+          "admittedSourceRecords": {
+            "off": 5452981,
+            "prices": 317898,
+            "usda-files": 4025777
+          },
+          "directory": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/bulk-parallel",
+          "grandfathered": false,
+          "manifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e",
+          "observedCounts": {
+            "assertions": 137295959,
+            "packets": 9796656,
+            "relations": 2915727,
+            "resources": 9796656,
+            "translations": 0
+          },
+          "packetFiles": 9797,
+          "releaseId": "bulk-food-common-semantic-final-20261014"
+        },
+        {
+          "admittedSourceRecords": {
+            "overture-food-places": 12681108,
+            "wikidata-food-businesses": 1505
+          },
+          "directory": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/places",
+          "grandfathered": false,
+          "manifestByteSha256": "fc0952ab0cf03c1451239173ebc60cc1fbdda20b133f40d6714c07e5188caf77",
+          "observedCounts": {
+            "assertions": 25365226,
+            "packets": 12683,
+            "relations": 0,
+            "resources": 12682613,
+            "translations": 0
+          },
+          "packetFiles": 12683,
+          "releaseId": "common-places-20261014"
+        }
+      ],
+      "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+      "schemaId": "https://offmenu-corpus.netlify.app/common-data/schema.json",
+      "schemaVersion": "offmenu-common-expansion-qualification/1",
+      "scratchBudgetBytes": 64424509440,
+      "seconds": 21256.893,
+      "status": "all-packages-streamed-global-identities-references-and-provenance-checked"
+    }
+  },
+  "assembly": {
+    "status": "qualified-assembly-and-delta-complete",
+    "job": "01a181dd-050e-0278-8713-33adec32cfa2",
+    "deltaBytes": 5879185,
+    "deltaFiles": 24171,
+    "logicalPayloadGB": 27.165,
+    "deltaSHA256Prefix": "ec4f73f1",
+    "source": "Existing assessor and publisher receipts; exact complete delta hash retained by exclusive publisher."
+  },
+  "publication": {
+    "owner": "prepare_common_corpus_publication",
+    "deploy": "6ae1c3946435074ef6c08369",
+    "previousLiveBase": "6ade30f984233b1725dc0501",
+    "preparedMergedFiles": 117003,
+    "preservedExistingFiles": 92841,
+    "sources": 22,
+    "records": 22574390,
+    "state": "same-deploy-upload-in-progress-or-recovery; final served verification pending",
+    "knownCompletedAttempt": {
+      "job": "01a181ff-6d63-3885-5a5d-be0c627349a3",
+      "elapsedMs": 277777,
+      "result": "netlify_http_429; accepted partial uploads retained"
+    },
+    "corrections": "Observed transport thread-allocation and MaxSessions=1 failures corrected under reviewed same-deploy recovery; then actual HTTP500requests/min limit required shared480/min pacing and same-digest-only retry.",
+    "rateSourceSHA256": "91fe1f36835818976bfac8e417db9914f7bab85661b47fd0e592cb6526923b0b",
+    "review": "Same Foo reviewer approved supplied changed functions with8 focused mocks; full-file hash binding remains publisher responsibility, not a71-test independent rerun.",
+    "secondDeployCreated": false,
+    "servedQualificationClaimed": false
+  },
+  "basis": {
+    "phase1": {
+      "status": "completed",
+      "terminalUTC": "2026-10-28T10:08:28Z",
+      "assets": 8192,
+      "records": 9478758,
+      "nativeIndexBytes": 8162656256,
+      "requiredForPhase2": true
+    },
+    "phase2": {
+      "job": "01a1820e-077e-23ee-931e-75b7500cffdb",
+      "admittedAtUTC": "2026-10-28T10:28:40Z",
+      "state": "running-after-specific-user-approval-and-one-known-nonexecuted-retry",
+      "workers": 4,
+      "cpuReservation": 4,
+      "memoryGiB": 2,
+      "totalOutputGiB": 21,
+      "remainingGrowthBytes": 14453027134,
+      "sharedReserveGiB": 70,
+      "boundaryApproxUTC": "2026-10-28T10:55:55Z",
+      "sourceInputsReadOnly": true
+    }
+  },
+  "tooling": {
+    "authorTask": "01a181e9-ee60-71fe-8036-0960ae187021",
+    "reviewTask": "01a181f1-8cbc-707c-b44d-b0b9edfaf037",
+    "approvedReviewTurn": "01a18210-32a0-71c2-a9ef-88ecf768e78e",
+    "baseSHA256": "3760b83e2678f89e2330a62f2ccdf0a8e935461f5cbc2168a3f57d0e725e9f38",
+    "candidateSHA256": "1e24c1d5ce2d5b6cecb47666f775f85c4a2b582215e951c1845815eb102fef67",
+    "sourceState": "R2 independently approved;15 mocked tests plus focused supervisor-termination check; current live task catalog preserved.",
+    "features": "Exact provenance-keyed reuse, bounded single-flight, structured validation and usage/unique-artifact accounting implemented in candidate.",
+    "acceptanceLimit": "Schema acceptance is not semantic correctness. No deployed cache or measured production token/time savings claimed.",
+    "liveAdoption": "In progress through existing Foo author and durable connector coordination; native owner activation hit7-slot cap, not a reason to stop ready work.",
+    "storage": "Existing compose declares a worker-cache volume; live shared trusted POSIX mount and fork/signal runtime behavior are not yet verified. Ordinary resource state is not a lock; no new service/mount or bypass.",
+    "integrationTurn": "01a18219-6f22-7230-9bf9-3c6fe830984d",
+    "model": "Saved/default model with medium effort; exact resolved model not exposed."
+  },
+  "antigravity": {
+    "task": "01a181a8-c114-77b2-b98e-030c3a46c008",
+    "turn": "01a181eb-4d5d-769f-a9fb-4f10a47e5e52",
+    "observedUTC": "2026-10-28T09:50:56Z to09:51:25Z",
+    "desktopVersion": "2.4.2",
+    "cliVersion": "1.4.7",
+    "signedInState": "unverified",
+    "installedClientEntitlement": "unverified",
+    "numericRemainingAllowance": "unverified",
+    "modelListing": "Advertised read-only command failed during local helper initialization: loopback bind/profile-write restrictions. No inference, new OAuth, install or bypass.",
+    "mcp": "CLI advertises MCP commands; configured working connectivity not established."
+  },
+  "osm": {
+    "id": "SOURCE-OSM-DEFERRED",
+    "authority": "Explicit user retirement2026-10-28; remove OSM now and reconsider only after all current ledger work completes and storage is accounted for.",
+    "state": "retirement-authorized-execution-unconfirmed; future work deferred",
+    "target": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-63/dc7480cf5666cc2af990/planet-261005.osm.pbf.part",
+    "reportedAllocatedBytes": 95244251136,
+    "scope": "Exact OSM-only partial file; preserve all adjacent provenance and bound source manifests.",
+    "currentDependencyClearance": {
+      "qualifiedPackagesExcludeOSM": true,
+      "publisherAttestedNoOSMReader": true,
+      "northStarAttestedNoActiveOrPlannedOSMDependency": true,
+      "historicalProducerStopped": "2026-10-15 owner report",
+      "historicalOwnerResponseRequired": false
+    },
+    "remainingExecutionCheck": "Normal-host user-run script fails closed on active handles; restricted agent cannot claim full-host handle visibility.",
+    "noAutoDownloadOrRetry": true,
+    "reconsideration": "Only after all currently defined delivery work is complete, with explicit storage budget and permission; not an automatic reactivation.",
+    "physicalReclamationConfirmed": false,
+    "verifiedReclaimedBytes": 0,
+    "preserve": "Overture/Wikidata places, all non-OSM inputs/proofs/assembly/upload state, custom configuration, full native manifest, OFF and Trash holds.",
+    "cleanupOther": "Only identified installer/Ollama scripts delivered for user execution; Chrome/npm/uv caches withheld while browser/package work active. No bytes reclaimed claimed."
+  },
+  "reminder": {
+    "id": "6adfe4594890819190c493c2198ae9e4",
+    "updatedAt": "2026-10-28T10:37:45.171300+00:00",
+    "promptExact": true,
+    "schedule": "BEGIN:VEVENT\nDTSTART:20261026T233801Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+    "enabled": true,
+    "timezone": "Australia/Melbourne"
+  },
+  "counting": "All89 historical allocation rows retained;31 prior finite assigned substeps remain counted. OSM is a separately tracked deferred source, not a90th runnable job."
+}
