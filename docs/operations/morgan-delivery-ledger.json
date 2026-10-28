@@ -8767,7 +8767,7 @@
   },
   "continuousEfficiencyReview": {
     "schema": "offmenu-continuous-efficiency-review/1",
-    "asOfUTC": "2026-10-28T07:21:00Z",
+    "asOfUTC": "2026-10-28T07:52:00Z",
     "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
     "state": "active-owned-ongoing",
     "currentOwner": "audit_production_efficiency",
@@ -8814,7 +8814,7 @@
         "provider free eligibility/quota/reset metadata and quality",
         "source/security holds"
       ],
-      "nextMilestone": "Corpus014 checkpoint/completion at approximately07:39:52Z or earlier phase boundary; actualNorthStar dispatch/readydependency or capacity change. Continue owner-driven observation, no busy polling.",
+      "nextMilestone": "Actualcorpus015 phase/checkpoint or NorthStarbulk002 completion, then resource-aware refill and samepublisher reactivation only on readyqualified/derivedartifact. Normalcorpusbound≈08:12UTC; no repeatedacceptedchecks.",
       "cadence": "Milestone-driven bounded checks; remain owner while authorized production is active. Wait for meaningful milestones, not tight busy polling or arbitrary saturation.",
       "stop": "User cancels; authorized production/backlog completes; or explicit durable-owner handover. Pause only affected dependent action at an authorization/access boundary.",
       "routineTuning": "Send safe same-scope corrections through the existing execution owner; do not seize its writer, duplicate production or change scope/design."
@@ -8931,17 +8931,18 @@
         "runtimeStability": "012 completed1440.4seconds without priorcacheMemoryError;3.101Mresources added, expectedpause/cleanupverified. No causal cache-speedup assertion."
       },
       "activeRun": {
-        "run": "014",
-        "job": "01a1815d-8265-a182-c98d-8271c92c939a",
-        "startedAtUTC": "2026-10-28T07:15:52Z",
-        "naturalBoundaryApproxUTC": "2026-10-28T07:39:52Z",
+        "run": "015",
+        "job": "01a1817b-01e2-f70f-264a-ae391b244bfe",
+        "startedAtApproxUTC": "2026-10-28T07:47:59Z",
+        "naturalBoundaryApproxUTC": "2026-10-28T08:12:00Z",
         "workers": 64,
         "workerMiB": 256,
         "cpuReservation": 19,
         "wholeJobReservationGiB": 24.625,
         "cacheMiB": 3072,
         "sqlHardHeapMiB": 4096,
-        "status": "running-owner-reported",
+        "additionalGrowthBytes": 26156408832,
+        "status": "capacity-admitted-and-lane-running-owner-verified",
         "performanceBenefitEstablished": false
       },
       "otherEfficiencyFindings": [
@@ -9002,6 +9003,59 @@
         "finding": "About71seconds between013terminal and014launch versus1440seconds usefulrun; potential avoidable handoff overhead, not application failure.",
         "action": "Existing owner asked to reuse frozen plans, batch only required fresh cleanup/disk/admission metadata, resume then write nonblocking receipts.",
         "constraint": "No new controller/setup project, stress, duplicate tests or skipped required safety/admission checks. Prioritize finishing proof over speculative optimization."
+      },
+      "completedRun014": {
+        "job": "01a1815d-8265-a182-c98d-8271c92c939a",
+        "checkpointFrom": 8890,
+        "checkpointTo": 11104,
+        "resourcesAdded": 2214000,
+        "wallSeconds": 1440.48,
+        "resourcesPerSecondApprox": 1537,
+        "status": "expected-pause-cleanup-verified",
+        "placesResourcesIngested": 11104000,
+        "placesResourcesTotal": 12682613,
+        "placesResourcesRemaining": 1578613,
+        "finalProofWritten": false,
+        "limit": "Lower throughput during concurrentbulkwork is observed, not causal proof or reason to retune unchangedstablev5."
+      },
+      "diskResourceContention": {
+        "blockedSubmission": {
+          "job": "01a18174-b7ea-bc88-dd0b-e8049a0e9683",
+          "atUTC": "2026-10-28T07:41:12.560399Z",
+          "logicalJob": "corpus-global-qualification-cache-headroom-015-20261028",
+          "transportStatus": "success",
+          "admitted": false,
+          "reason": "capacity_disk_reserved",
+          "reserved": false,
+          "noProofWorkExecuted": true
+        },
+        "competingUsefulJob": {
+          "job": "01a18161-828b-8e41-a74a-78886a2f9e31",
+          "logicalJob": "north-star-full-bulk-001",
+          "startedAtUTC": "2026-10-28T07:20:13.713971Z",
+          "terminalAtUTC": "2026-10-28T07:47:15.68Z",
+          "status": "succeeded-exit0-child-tree-gone",
+          "shardsProcessed": 5985,
+          "totalShards": 9797,
+          "packetsProcessed": 5985000,
+          "declaredCPUs": 4,
+          "declaredMemoryGiB": 2
+        },
+        "resolution": "Waited for naturalfullbulkterminal; corpus015 admitted first, then reducedremaining-output bulk002 admitted. No cancellation,70GiBreserve reduction, blindbusyloop, newstorage/spend or userinput.",
+        "cleanFreeBytes": 130453516288,
+        "nextBulk": {
+          "logicalJob": "north-star-full-bulk-002",
+          "startedAtApproxUTC": "2026-10-28T07:48:50Z",
+          "status": "admitted-running-owner-reported",
+          "absoluteTotalOutputGiB": 32,
+          "actualAdditionalGrowthBytes": 25714786304,
+          "ownedAllocatedBytes": 8712060928,
+          "ownedLogicalBytes": 8673955132,
+          "accountingCorrection": "Submitted before correction;64MiBmargin leaves29003068bytes above32GiB-minus-logical. Preserve activejob; at nextnaturalboundary use uniqueinode min(logical,allocated)+64MiB =>25752892100bytes from thisreceipt. No active marker edits or replay.",
+          "sameCPUs": 4,
+          "sameMemoryGiB": 2
+        },
+        "constraints": "National4GiB and proposedsourcebasis10GiB wait actualheadroom. Physicalfree guards and producerabsolute caps unchanged. Useful concurrentjobs are actual2, not64heavyjobs claim."
       }
     },
     "latestUserOperatingPrinciple": {
