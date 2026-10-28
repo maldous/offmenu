@@ -1,0 +1,15 @@
+{
+  "baseCommit": "009caee01aed805db5d7d141a3fab9e845e72bdc",
+  "path": "public/integrations.js",
+  "preimageSHA256": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9",
+  "changes": [
+    {
+      "old": "import {planSummary,weekDates} from './menu-model.js';",
+      "new": "import {planSummary,weekDates} from './menu-model.js';\nimport {measuredIngredient} from './ingredients.js';"
+    },
+    {
+      "old": "plan.flatMap(p=>(recipes.find(r=>r.id===p.recipeId)?.ingredients||[]).filter(i=>!i.optional&&(i.quantity==null||!i.unit)).map(i=>i.raw||i.ingredient))",
+      "new": "plan.flatMap(p=>{const recipe=recipes.find(r=>r.id===p.recipeId);if(!recipe)return [];const demandKnown=!recipe.needsReview&&!recipe.servingsUnknown&&Number.isFinite(recipe.servings)&&recipe.servings>0&&Number.isFinite(p.servings)&&p.servings>0;return (recipe.ingredients||[]).filter(i=>!i.optional&&(!demandKnown||!measuredIngredient(i))).map(i=>i.raw||i.ingredient);})"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "exit_code": 1,
+  "summary": [
+    "\u2139 tests 8",
+    "\u2139 suites 0",
+    "\u2139 pass 2",
+    "\u2139 fail 6",
+    "\u2139 cancelled 0",
+    "\u2139 skipped 0",
+    "\u2139 todo 0",
+    "\u2139 duration_ms 45.202422"
+  ],
+  "tests": [
+    "\u2716 source review remains visible in shopping without an invented quantity (2.932196ms)",
+    "\u2716 unknown yield remains visible in shopping without an invented quantity (0.171929ms)",
+    "\u2716 invalid yield remains visible in shopping without an invented quantity (0.122741ms)",
+    "\u2716 zero required amount is unresolved rather than an empty shopping list (0.136859ms)",
+    "\u2714 partly measured recipe keeps only its unresolved ingredient in review (0.592946ms)",
+    "\u2714 optional unresolved ingredients never become purchases or review requirements (0.132583ms)",
+    "\u2716 pantry stock cannot resolve an unknown serving basis (0.453192ms)",
+    "\u2716 source text, checked state, custom additions and inputs are preserved (0.253216ms)",
+    "\u2716 failing tests:",
+    "\u2716 source review remains visible in shopping without an invented quantity (2.932196ms)",
+    "\u2716 unknown yield remains visible in shopping without an invented quantity (0.171929ms)",
+    "\u2716 invalid yield remains visible in shopping without an invented quantity (0.122741ms)",
+    "\u2716 zero required amount is unresolved rather than an empty shopping list (0.136859ms)",
+    "\u2716 pantry stock cannot resolve an unknown serving basis (0.453192ms)",
+    "\u2716 source text, checked state, custom additions and inputs are preserved (0.253216ms)"
+  ]
+}
