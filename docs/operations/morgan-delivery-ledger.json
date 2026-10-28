@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "maintenance-complete-capacity-verified-places-resume-directed",
-  "asOfUTC": "2026-10-28T03:27:00Z",
+  "status": "parallel-delivery-active-provider-auth-repairs-deferred",
+  "asOfUTC": "2026-10-28T04:39:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -382,6 +382,13 @@
       "atUTC": "2026-10-28T03:27:00Z",
       "event": "independent-worker-verification-maintenance-hold-cleared",
       "detail": "MCP list_workers64live/64Pythoncapable/maxlastping6seconds,originalworkerspreserved. DB320 is userhostreceipt provenance,notdirectMCPDBquery. Assessor directedresource-readmit andresume exactplacescheckpoint. No64heavyjobclaim."
+    },
+    {
+      "atUTC": "2026-10-28T04:39:00Z",
+      "event": "Reconciled real provider distribution and free-model development output; deferred SambaNova authentication repair; recorded capability ceiling separately from operating admission. Global qualification continues without producer reruns.",
+      "evidence": [
+        "windmill-job:01a180cd-6bd0-2251-dde3-8f832e06cd4a"
+      ]
     }
   ],
   "lanes": [
@@ -4912,10 +4919,10 @@
   },
   "currentDeliveryReconciliation": {
     "schema": "offmenu-current-delivery-evidence/1",
-    "asOfUTC": "2026-10-28T03:27:00Z",
+    "asOfUTC": "2026-10-28T04:39:00Z",
     "candidateOnly": false,
     "baseCommit": "062210db932a67f9d4f374c12fb577ce61579d07",
-    "evidenceLimit": "Coordinator verified64worker registrations viaMCP03:27; DB320 fromuserhostreceipt. Production/corpus exactreceipts attributed. No heavyjobconcurrency or fullcorpusqualification claimed.",
+    "evidenceLimit": "64 Windmill services verified; seven provider catalog jobs used distinct services. Foo global long-job serialization remains installed pending additive admission implementation. Complete producers do not establish completed global qualification or public serving.",
     "rows": [
       {
         "id": "production-foundation",
@@ -4949,35 +4956,26 @@
       },
       {
         "id": "common-corpus-expansion",
-        "state": "bulk-final-complete-places-pinned-resume-directed",
+        "state": "both-producers-final-global-qualification-running",
         "owner": "assess_partial_corpus_resume (sole Foo writer); prepare_places_checkpoint_batches (local producer); review_corpus_mount_delta (focused reviewer)",
         "evidence": [
           "artifact-ref:offmenu-source-evidence-20261027/coverage-state-7dd3ed8c.json",
           "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-INPUT-VERIFICATION-20261028.json",
-          "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-SOURCE-ALL-20261028.json"
+          "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-SOURCE-ALL-20261028.json",
+          "artifact-ref:qualification-parallel-20261028/ACTUAL-PARALLEL-004-EXPECTED-PAUSE.json"
         ],
         "actual": {
-          "bulk": {
-            "state": "FINAL complete",
-            "assets": 9800,
-            "packets": 9796656,
-            "bytes": 13880713510,
-            "manifestSHA256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e"
-          },
-          "places": {
-            "state": "verified partial checkpoint; maintenance cleared, resource readmission/resume directed",
-            "identities": 11037000,
-            "closedIdentities": 11036000,
-            "bufferIdentities": 1000,
-            "files": 11036,
-            "allFileHashesVerified": true,
-            "remaining": 1645613,
-            "checkpointSHA256": "7a55f37f8566054f768c7d51606ce2f674a7fad27c88628bbc99c0cf466b6a36"
-          },
-          "fullCorpusQualified": false,
-          "fullCorpusPublished": false
+          "bulkAssets": 9800,
+          "bulkPackets": 9796656,
+          "placesIdentities": 12682613,
+          "placesAssets": 12686,
+          "finalCombinedTargetRecords": 22574390,
+          "finalCombinedTargetSources": 22,
+          "qualificationBulkAssetsCommitted": 5539,
+          "qualificationComplete": false,
+          "published": false
         },
-        "next": "Assessor resource-readmits and resumes exact places checkpoint after verified64worker services. Bulk final retained. No64heavy-job execution claim."
+        "next": "Continue resumable existing global qualification at retained checkpoint, then assemble and publish through recovered authorized Netlify upload route."
       },
       {
         "id": "identity-only-candidate",
@@ -5079,6 +5077,80 @@
         "owner": "Morgan/root connector integration",
         "actual": "Historical CLI upload route and officially renamed MCP netlify-deploy-site recovered. Current exposed upload tool is missing; connected plugin exists. Not evidence of missing credentials or provider inability.",
         "next": "Restore/use the authorized exposed deployment route; do not ask for credentials or claim Netlify cannot deploy based on this tool-exposure gap."
+      },
+      {
+        "id": "windmill-capacity-ceiling",
+        "state": "64-services-live-confined-admission-successor-in-progress",
+        "owner": "configure_parallel_capacity_ceiling",
+        "target": {
+          "concurrentJobs": 64,
+          "processesPerJob": 256,
+          "stressTest": false
+        },
+        "actual": {
+          "registeredWorkers": 64,
+          "installedShortReadSlots": 2,
+          "installedLongJobSlots": 1,
+          "globalWriteExclusion": true,
+          "cgroupLimitsVerified": false
+        },
+        "next": "Prepare reviewed additive resource-aware admission. Separate configured ceiling from chosen actual load; preserve shared-write safety and active jobs."
+      },
+      {
+        "id": "free-provider-allocation",
+        "state": "verified-groq-useful-development-task-completed-more-readiness-active",
+        "owner": "diagnose_provider_import_403",
+        "actual": {
+          "encryptedEntries": 21,
+          "providerGroups": 18,
+          "privateResources": 12,
+          "distinctWorkersForSevenCatalogJobs": 7,
+          "paidInference": false,
+          "privateInputExport": false
+        },
+        "evidence": [
+          "windmill-job:01a180c5-781a-25b2-9b8c-b7ddb0b54afa",
+          "windmill-job:01a180cc-85d6-e4ce-15fb-c5cb24d566ca"
+        ],
+        "next": "Allocate suitable public/non-sensitive development tasks to verified free routes. Review model output; retain rate-limited routes with cooldowns."
+      },
+      {
+        "id": "provider-authentication-repairs",
+        "state": "deferred-nonblocking",
+        "owner": "Morgan/root",
+        "providers": [
+          {
+            "name": "sambanova",
+            "httpStatus": 401,
+            "evidence": "windmill-job:01a180c3-f760-76b0-88ae-bdd31cf341e1"
+          }
+        ],
+        "next": "Consider authorized authentication repair later; do not block available free-model delivery or blindly retry."
+      },
+      {
+        "id": "retained-country-custody-join",
+        "state": "pointers-recovered-not-acceptance",
+        "owner": "dispatch_independent_ledger_jobs",
+        "actual": {
+          "obligationsExamined": 89,
+          "pinnedMetadataDocuments": 11,
+          "historicalCustodyPointers": 69,
+          "countryObligationsWithPointers": 32,
+          "obligationsClosed": 0,
+          "focusedTestsPassed": 7,
+          "focusedTestsBreakdown": {
+            "originalJoinTests": 5,
+            "reviewedGroqDerivedAdditionalTests": 2
+          },
+          "focusedTestsAsOfUTC": "2026-10-28T04:38:35Z"
+        },
+        "evidence": [
+          "windmill-job:01a180ca-b3b4-1dd2-a714-5114cf3e2e71",
+          "windmill-job:01a180cb-ab9e-a12f-64e1-8ce5f3bfe0ff"
+        ],
+        "resultSHA256": "a60b4de8e10300e6f39748322131c177bb266a329729190051c0b42d9e8da713",
+        "next": "Recover exact COUNTRY-43 and COUNTRY-32 artifacts; COUNTRY-33 historical custodian thread retrieval remains blocked by placement-format error. Do not count transport ACKs as acceptance.",
+        "modelContribution": "Two scenario ideas manually corrected and adopted; incomplete generated JSON and invalid short-hash fixtures were rejected as executable artifacts. Seven passing tests is the reviewed snapshot, not a claim about later additions."
       }
     ],
     "historicalCoverage": {
