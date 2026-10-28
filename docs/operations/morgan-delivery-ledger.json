@@ -5154,7 +5154,7 @@
       },
       {
         "id": "retained-country-custody-join",
-        "state": "pointers-recovered-not-acceptance",
+        "state": "completed-limited-with-exact-source-dependencies",
         "owner": "dispatch_independent_ledger_jobs",
         "actual": {
           "obligationsExamined": 89,
@@ -5174,8 +5174,31 @@
           "windmill-job:01a180cb-ab9e-a12f-64e1-8ce5f3bfe0ff"
         ],
         "resultSHA256": "a60b4de8e10300e6f39748322131c177bb266a329729190051c0b42d9e8da713",
-        "next": "Recover exact COUNTRY-43 and COUNTRY-32 artifacts; COUNTRY-33 historical custodian thread retrieval remains blocked by placement-format error. Do not count transport ACKs as acceptance.",
-        "modelContribution": "Two scenario ideas manually corrected and adopted; incomplete generated JSON and invalid short-hash fixtures were rejected as executable artifacts. Seven passing tests is the reviewed snapshot, not a claim about later additions."
+        "next": "Do not rerun the completed retained custody join or the completed14-row receipt reconciliation. Preserve whole-country portfolios as open, non-runnable trackers; resume only the exact named receipt/source-use/mapping inputs in currentObligationAllocation.rows receiptClosure. COUNTRY25/53/6 exact verdicts are missing-input states, not live reviews. COUNTRY32/43 missing artifact bytes and COUNTRY33 holds remain unchanged.",
+        "modelContribution": "Two scenario ideas manually corrected and adopted; incomplete generated JSON and invalid short-hash fixtures were rejected as executable artifacts. Seven passing tests is the reviewed snapshot, not a claim about later additions.",
+        "priorStateBeforeReceiptClosure": {
+          "state": "pointers-recovered-not-acceptance",
+          "next": "Recover exact COUNTRY-43 and COUNTRY-32 artifacts; COUNTRY-33 historical custodian thread retrieval remains blocked by placement-format error. Do not count transport ACKs as acceptance."
+        },
+        "countryReceiptClosure": {
+          "state": "complete-metadata-disposition-only",
+          "rowCount": 14,
+          "finiteReceiptReconciliationDeliverablesCompleted": 14,
+          "receiptBindings": 76,
+          "finiteSubstepReceiptRecords": 30,
+          "wholeCountryObligationsClosed": 0,
+          "nativeJobs": 0,
+          "owner": "resolve_ready_country_dispositions (durable dependency owner; no running job)",
+          "evidence": "docs/operations/2026-10-28/country/country-receipt-dispositions.json",
+          "evidenceSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+          "missingInputClasses": [
+            "exact prior-review verdict/pickup proof",
+            "source/version/operation-use evidence",
+            "semantic mapping/dictionary/admission contract",
+            "scientific source clarification"
+          ],
+          "userInputRequiredNow": false
+        }
       },
       {
         "id": "pantry-duration-expiry",
@@ -5226,6 +5249,15 @@
           "undeployedDraftRemoved": true
         },
         "next": "Await specific approval requested05:40UTC; prior SQL approval does not authorize this separate deployment."
+      },
+      {
+        "id": "rights-propagation-finite-map",
+        "state": "completed-finite-map-with-exact-parent-dependencies",
+        "owner": "map_rights_cache_propagation (completed source-map author); audit_production_efficiency (current next-dispatch owner)",
+        "actual": "Four assigned read-only mapping deliverables completed:15concrete edges,39accepted static source/hash/build checks, immutable production193snapshot. No whole-parent closure or current194+equivalence claimed.",
+        "evidence": "docs/operations/2026-10-28/rights/propagation-map.json",
+        "resultSHA256": "dae3c0f8b26dc51d1c751f298062088d864d74fb8243e1c37df20af1258bb704",
+        "next": "Do not repeat map or acceptedCACHE52/invalidation/retention-parity reviews. Follow exact four current allocation receiptClosure inputs; root is decision/dispatch accountability, not broad-search executor."
       }
     ],
     "historicalCoverage": {
@@ -5416,7 +5448,7 @@
   },
   "currentObligationAllocation": {
     "schema": "offmenu-all89-current-allocation/1",
-    "asOfUTC": "2026-10-28T05:42:00Z",
+    "asOfUTC": "2026-10-28T06:52:00Z",
     "baseCommit": "e2ec394485254ed2edc217078af67e72d8d608d7",
     "candidateOnly": false,
     "publishOwner": "Morgan/root",
@@ -5478,8 +5510,8 @@
         "stop": "No auth replacement or real-user records."
       },
       "rights-cache-propagation": {
-        "owner": "Morgan/root (dispatch owner)",
-        "execution": "READY read-only preparation, not dispatched",
+        "owner": "audit_production_efficiency (next exact custody-input dispatch owner; no active operational job)",
+        "execution": "Completed finite metadata/map deliverable; no currently runnable job from this assignment",
         "reviewer": "independent security/source-policy reviewer assigned by root",
         "scope": "Map actual retained store/cache/derived data/retention/backup consumers and policy inputs, without inventing missing rights grants.",
         "sources": [
@@ -5488,11 +5520,13 @@
           "cloud/kitchens.mjs"
         ],
         "deliverable": "One concrete store/caller/key propagation map plus exact missing policy/receipt dependencies for rights/cache/deletion/aggregate parents.",
-        "stop": "No deletes, feed polling, credential reads, migration or privacy judgement."
+        "stop": "No deletes, feed polling, credential reads, migration or privacy judgement.",
+        "priorExecutionBeforeFiniteClosure": "READY read-only preparation, not dispatched",
+        "next": "Resume only named exact inputs in the affected rows' receiptClosure; do not replay accepted work or treat portfolio parents as forever-runnable."
       },
       "country-receipt-disposition": {
-        "owner": "Morgan/root (dispatch owner)",
-        "execution": "READY metadata-only reconciliation, not dispatched",
+        "owner": "resolve_ready_country_dispositions (durable dependency owner; no active job)",
+        "execution": "Completed finite metadata/map deliverable; no currently runnable job from this assignment",
         "reviewer": "independent metadata reviewer assigned by root; historical numbered reviewers are provenance only",
         "scope": "Use existing retained metadata and accepted scoped review receipts, tie each country row to exact present packet/review or missing hash.",
         "sources": [
@@ -5500,7 +5534,9 @@
           "docs/registry-candidate/2026-10-18/current249-r6/"
         ],
         "deliverable": "Per-country metadata disposition; do not repeat accepted reviews or manufacture normalized coverage.",
-        "stop": "No workbook cells/raw data, acquisition, historical thread retries or source rights changes."
+        "stop": "No workbook cells/raw data, acquisition, historical thread retries or source rights changes.",
+        "priorExecutionBeforeFiniteClosure": "READY metadata-only reconciliation, not dispatched",
+        "next": "Resume only named exact inputs in the affected rows' receiptClosure; do not replay accepted work or treat portfolio parents as forever-runnable."
       },
       "operational-obligation-closure": {
         "owner": "reconcile_full_delivery_ledger",
@@ -5518,13 +5554,13 @@
       {
         "id": "COUNTRY-04",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-04",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-source-metadata",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-04; ongoing country portfolio remains open.",
+        "dependency": "Exact AE release identifier plus finite extent/unit selectors and applicable existing operation-use decision.",
+        "nextUsefulAction": "Obtain the existing AE same-release composition extent/unit mapping and operation-specific use/version evidence from the recorded37 custody route; do not reopen30 or replay child0/GL reviews.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/0",
@@ -5533,7 +5569,56 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-04",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "Retain original child0 refusal 2249; successor 2282/review2311 resolves W11-C04-P01/P02 only, with exact scoped review already bound at2325. Do not replay accepted successor review. GL chronology scoped PASS remains separately preserved.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 2311,
+              "sourceSHA256": "23819d42b471b448b9da252440c309cde0b9b98417980bc0a4ad60f3a9ddee42",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/379",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 2325,
+              "sourceSHA256": "81a4f9bae8646aa6402ed9f712582a6270b47465cf5e1432bc97e04f2777a943",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/385",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Recorded source custodian37 through the durable country lane",
+          "smallestRemainingInput": "Exact AE release identifier plus finite extent/unit selectors and applicable existing operation-use decision.",
+          "remainingDependencies": "AE finite same-release composition extent/units and source-specific use/right/version evidence remain required; source reviewer344 retains no-reopen owner30 hold. No current country/category acceptance.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/0",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-43",
@@ -5562,13 +5647,13 @@
       {
         "id": "COUNTRY-55",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-55",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-custody-handoff",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-55; ongoing country portfolio remains open.",
+        "dependency": "Immutable BOBS revision/handoff explicitly linking or superseding the two recorded receipt versions; separately MY source-row map plus source-use decision.",
+        "nextUsefulAction": "Resolve the BOBS b8f87cbe/e38ebcf9 immutable receipt revision using recorded13; keep MY38 row mapping/use as a separate input. Do not repeat metadata/parser/CPI/dictionary reviews.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/2",
@@ -5577,18 +5662,79 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-55",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "Bind retained metadata packet9b6ae95d to review044a261e; do not resend metadata review. Successor74d99987/review9a6695c4 resolves parser P01/P02 only. CPI validator review2527 is exhausted; dictionary correction4621/review4636 is separately scoped accepted with no further correction. Real MY candidate source-row witness scope remains separate.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 385,
+              "sourceSHA256": "044a261ed1b0bc8f7b97d33c78907265e64c1ad71f72677c67fb3c2e9d5f422b",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/77",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 2195,
+              "sourceSHA256": "9a6695c492e88066ab3d17b5e665020cdf06c0c19bbae45f478472192490cb94",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/354",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 2527,
+              "sourceSHA256": "5b8c40a52f13861c185400a5d11c85a70ab01c82889e18f51d1a1368337057b5",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/55",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 4636,
+              "sourceSHA256": "7307fc616ebc1e680d88407f088dec81703d0fb2f6287dc175b2912e089e08e4",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/306",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Recorded BOBS custodian13; separate MY custody lead38",
+          "smallestRemainingInput": "Immutable BOBS revision/handoff explicitly linking or superseding the two recorded receipt versions; separately MY source-row map plus source-use decision.",
+          "remainingDependencies": "BOBS historical b8f87cbe versus e38ebcf9 requires exact immutable revision/handoff from recorded13. MY actual owner38 row mapping and source-use decision remain unqualified; BW/GA/KH/SH own source/use mappings remain distinct.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/1",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-19",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-19",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-lineage-disposition",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-19; ongoing country portfolio remains open.",
+        "dependency": "Exact lineage-index receipt/disposition binding d00f20ac8b538907047f2c3d62579f9e444edad5994d9584b18581b49dcd9df0, distinct from semantic review2937.",
+        "nextUsefulAction": "Obtain the existing scoped lineage-index verdict/admission disposition for manifestd00f20ac from the retained19/46 custody chain, or exact no-result confirmation. Do not re-review accepted405f23aa semantic roles/links.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/3",
@@ -5597,7 +5743,50 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-19",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "Author405f23aa and reviewb674047c are already accepted for14 source-role definitions and514 links only. The stale request for another source-semantic review is superseded; no fixes or replay needed.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 2937,
+              "sourceSHA256": "b674047c77a890250dd2a0d008fb0e6f70d8abfadd729a53f2970235e2f9daab",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/76",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Historical lineage reviewer46/source custodian10 through the durable country lane",
+          "smallestRemainingInput": "Exact lineage-index receipt/disposition binding d00f20ac8b538907047f2c3d62579f9e444edad5994d9584b18581b49dcd9df0, distinct from semantic review2937.",
+          "remainingDependencies": "Separate AF lineage-index d00f20ac acceptance/admission remains pending. Other finite release/licence/coverage inputs remain held; metadata PASS is not food/status/country qualification.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/2",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-01",
@@ -5742,13 +5931,13 @@
       {
         "id": "COUNTRY-23",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-23",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-semantic-contract",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-23; ongoing country portfolio remains open.",
+        "dependency": "Versioned source-entry pointers for the unresolved CI identity/state/eligibility/currency meanings and a compatible admission contract; no guessed canonical mapping.",
+        "nextUsefulAction": "Obtain the existing source-bound55 dictionary and56 terminology entries plus the compatible admission contract for CI; keep four identity alternatives and other unknowns unresolved. Do not replay CK/CI reviews.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/11",
@@ -5757,18 +5946,73 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-23",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "CK delta60f0b31c has existing independent14 receipt407b2187; CI source-preserving transformationb971fdbd/reviewca647470 is bound and must not replay. Exact CI English crosswalk0420d791/reviewcfce52d1 is retained with unknown alternatives.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 469,
+              "sourceSHA256": "407b218785e12498e08032a3da27c0197a5b33cd9230331fa833847f0121f45d",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/11",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 2725,
+              "sourceSHA256": "ca64747031b2d981cacd8bef4c871a6b927cd25e7705cb782f51d6188b4ed00c",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/64",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 2874,
+              "sourceSHA256": "cfce52d1e95a12b78be89bc20ba4a71fadcb57d9b6df69a635db258bcee150ff",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/482",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Recorded dictionary55 and terminology56 custody routes",
+          "smallestRemainingInput": "Versioned source-entry pointers for the unresolved CI identity/state/eligibility/currency meanings and a compatible admission contract; no guessed canonical mapping.",
+          "remainingDependencies": "Dictionary55/terminology56 exact inputs and actual admission contract missing; four identity alternatives, state/eligibility/currency unknowns, CM basis and CK rights/register/menu-date gaps stay unresolved. Older CM/11/46 results do not qualify later sources.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/3",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-25",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-25",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-review-receipt",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-25; ongoing country portfolio remains open.",
+        "dependency": "Exact verdict binding author receipt5b514f7d938d66b85870987d54015e2d52cff05db98c06a849f118829dec7eba and resolution of the retained pickup-owner proof hold.",
+        "nextUsefulAction": "Reconcile the already-admitted binding-parser review for author2408: obtain its immutable verdict and owner-bound pickup proof or explicit no-result. Do not resend2462 or rerun historical threads; delta02 correction stays done.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/12",
@@ -5777,18 +6021,61 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-25",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "Dietary metadata delta01 refusal265 is preserved; delta02f365d78f/review095e55e7 resolves only W11-COUNTRY25-D01. Binding-parser author5b514f7d has an admitted review2462 but no exact result in its retained record; do not treat admission/pickup as PASS or resend.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 415,
+              "sourceSHA256": "095e55e7cc544984849a5df679c8a1a201b472ff24ee68a05d60a242780c1e53",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/85",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Historical reviewer11/author25 custody leads through the durable country lane",
+          "smallestRemainingInput": "Exact verdict binding author receipt5b514f7d938d66b85870987d54015e2d52cff05db98c06a849f118829dec7eba and resolution of the retained pickup-owner proof hold.",
+          "remainingDependencies": "Binding-parser exact verdict/receipt and owner-bound pickup proof remain missing for author2408. Known proof hold: pickup owner not bound to next action. Root must obtain already-existing immutable verdict or explicit no-result, not restart historical thread. Metadata guide edition/licence/current applicability stay held.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/4",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-26",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-26",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-semantic-use-input",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-26; ongoing country portfolio remains open.",
+        "dependency": "Approved target dictionary/equivalence version and exact intended-use decision; CZ reuse entitlement/page scope remains a separate source-specific dependency.",
+        "nextUsefulAction": "Obtain qualified55/56 target dictionary/equivalence and operation-use inputs only for a separately selected canonical promotion; preserve141432 source-faithful candidates and corrected typed proposal. No repeated CZ/CA reviews.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/13",
@@ -5797,7 +6084,62 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-26",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "CZ e09ae860 metadata/custody review2dc36b2b already exists. CA finite StatCan transformationa2363b71/reviewf9f42876 accepted141432 candidate records, not country completion. Original typed-graph refusal2928 retained; successor99e5098f/review129fe09f resolves CA-TYPED-R1 only.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 191,
+              "sourceSHA256": "2dc36b2b4516b3fe505616bb0888140967f265b518ef65d1c0de02ed2b454dcf",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/39",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 2795,
+              "sourceSHA256": "f9f428765d5fec409848571ffd81a2453b10a75f0bbb62dd12f4d1a24ab451b9",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/457",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 2970,
+              "sourceSHA256": "129fe09f88a093842ed6fc62a26583685e727ec5b0f0be9260840da5f3743875",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/79",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Recorded dictionary55/schema56 custody routes",
+          "smallestRemainingInput": "Approved target dictionary/equivalence version and exact intended-use decision; CZ reuse entitlement/page scope remains a separate source-specific dependency.",
+          "remainingDependencies": "Canonical dictionary/equivalence/gold/admission and actual operation-specific source use remain unqualified. CZ body/recipe normalization needs exact reuse entitlement and finite page scope; no new data work selected.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/5",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-27",
@@ -5905,13 +6247,13 @@
       {
         "id": "COUNTRY-34",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-34",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-source-use-input",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-34; ongoing country portfolio remains open.",
+        "dependency": "For any selected slice: GQ lawful complete original/use; GT derivative-use grant/resource semantics; GU one-card entitlement/field roles; GW fidelity/unit/assay/currentness/adaptation evidence. These are separate dependencies, not one global gate.",
+        "nextUsefulAction": "Retain GW documentary correction2969/2981 and resolved array finding. Choose no new source operation until the existing16/20/21/24 custody route supplies that source-specific original/version, semantics and operation-use evidence; no failed-route retry.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/19",
@@ -5920,18 +6262,74 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-34",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "Existing metadata review8b394b26 is bound with missing-source concerns. Array-prototype refusal2172 resolved only by successor review3c318e30. GW documentary correctionb4046095 has exact review2969/disposition2981 in countryDecisionJoins; no review replay.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 371,
+              "sourceSHA256": "8b394b26ece9d259dc1a249e4acdcfcb343d5702269ac0e3e9dc66844d1cc686",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/7",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 2444,
+              "sourceSHA256": "3c318e308d504ba3cb22e9bc9ec0a907f9e1ecf9b74fd040a3a2b17d4e24d100",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/408",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 2981,
+              "reviewSequence": 2969,
+              "sourceSHA256": "a5b056914a28178d3984105e029e3f1cf21832de845dd9caabb456324b8685ae",
+              "primaryMetadataPointer": "/countryManagementCoverage/countryDecisionJoins/1",
+              "completion": "GW52-01 documentary correction only accepted; no source semantic/fidelity promotion"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Recorded source custodians16/20/21/24 through the durable country lane",
+          "smallestRemainingInput": "For any selected slice: GQ lawful complete original/use; GT derivative-use grant/resource semantics; GU one-card entitlement/field roles; GW fidelity/unit/assay/currentness/adaptation evidence. These are separate dependencies, not one global gate.",
+          "remainingDependencies": "GQ original16 failed/incomplete publisher responses; GT original20 no derivative-use licence; GU original21 one-card reuse/field-role entitlement and87-card remaining extent; GW source fidelity/semantics/assay/currentness and adaptation authority remain held. No national-membership promotion.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/6",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-35",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-35",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-source-use-or-review-input",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-35; ongoing country portfolio remains open.",
+        "dependency": "Existing operation-specific source/version/access evidence for the selected country slice; separately, a verdict binding c2ce29b98f9100c7f1789d886360a0104c70fec52b830001152dbef7d666c522 if adopting that synthetic child.",
+        "nextUsefulAction": "Do not replay category-gap387a6b24 or HN Table5 review4582. Obtain existing HK/HM/GY/HN/HR source-specific use/edition evidence as needed; if child0 adoption is selected, first obtain exact existing c2ce29b9 review/no-result.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/20",
@@ -5940,18 +6338,67 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-35",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "Category-gap packet387a6b24 and SAME11 receipt60835a19 were already explicitly bound without replay. Frozen-review-pending obligation text is stale for that packet. Later HN Table5 review4582 (9eb81853) already accepts literal fidelity/missing-period controls only; preserve it without replay. Separate synthetic child0 c2ce29b9 has no scoped review receipt in selected retained record.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 395,
+              "sourceSHA256": "60835a1993773bd4fea5d420f67f725c565a9126151a8c88a83b4a6c8ae633ba",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/79",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 4582,
+              "sourceSHA256": "9eb81853e0e7a7d1d7c399646e6eca7860ed4f08dfc0ee09790bc5b7f3daa89b",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/303",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Recorded source custody leads26/27/28/32/33/45; historical11 only for separate child0 receipt",
+          "smallestRemainingInput": "Existing operation-specific source/version/access evidence for the selected country slice; separately, a verdict binding c2ce29b98f9100c7f1789d886360a0104c70fec52b830001152dbef7d666c522 if adopting that synthetic child.",
+          "remainingDependencies": "Retain exact source/version/access/rights gaps under country owner35: HK27/45 authorization, HM28 reproduction/scope, GY26 source gap, HN CPI use and HR33 rights. Synthetic child0 requires its exact already-existing review or no-result confirmation before adoption; metadata review395 cannot substitute.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/7",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-40",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-40",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-custody-handoff",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-40; ongoing country portfolio remains open.",
+        "dependency": "Existing AHM05 decision/output metadata bound to resultca880fcddb89927f673ccb90e62a87140dfac026191f228158422bfc57f462f2; separate child0cd8c9f05 review needed only for its adoption.",
+        "nextUsefulAction": "Obtain AHM05 existing use decision plus row-mapping/normalized-output handoff, or scoped no-existing-decision/output confirmation, from the recognized current custodian; historical38 is only a lead. Do not repeat metadata review368.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/21",
@@ -5960,18 +6407,61 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-40",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "Owner40 a70b5d5f metadata reviewd62703ae is complete and bound; stale pending38 metadata-review request must not replay. Later support resultca880fcd identifies AHM05 decision/output handoff gap, not permission to project rows.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 368,
+              "sourceSHA256": "d62703ae11a03a99a55f4d3e95d81ec478439e54480dfd88108c9c156df8f509",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/5",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Recognized AHM05 custodian after confirmation of historical38 lead",
+          "smallestRemainingInput": "Existing AHM05 decision/output metadata bound to resultca880fcddb89927f673ccb90e62a87140dfac026191f228158422bfc57f462f2; separate child0cd8c9f05 review needed only for its adoption.",
+          "remainingDependencies": "AHM05 exact retained source-use decision, row mapping/normalized-output handoff or scoped no-existing-decision/output from current recognized custodian needed. Historical38 is only a custody lead. Synthetic child0cd8c9f05 has no reviewer14 receipt in selected record. HT/HU/ID/IE source-specific edition/basis/use gaps remain.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/8",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-42",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-42",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-mapping-admission-input",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-42; ongoing country portfolio remains open.",
+        "dependency": "Versioned mapping/canonical admission contract; any guideline-content scope additionally needs national issuer/version/pages/digest and applicable source rights.",
+        "nextUsefulAction": "Obtain the versioned mapping and exact admission/source-use inputs for any selected remaining slice via original44 custody; do not re-review569candidate+1held transformation or synthetic projection.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/22",
@@ -5980,18 +6470,73 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-42",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "Six dietary claims have existing provenance/authority-only review1d29bc6d. Authorad9caaff/review605d9316 already has exact source-preserving PASS for the569-candidate+1-held transformation; do not replay that review. Synthetic projection reviewc615a0cf is separately exhausted.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 166,
+              "sourceSHA256": "1d29bc6deb0ca642358a0c821425e13adcad354171bb1203ac0c5d12cfe94777",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/30",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 2727,
+              "sourceSHA256": "605d931690aceb911565f913f3f6383b9b7995d5386a62753512ff2e9e2e5d98",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/66",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 2449,
+              "sourceSHA256": "c615a0cfa841e61549bfdf671472b49117fc52eb10ff8fbaae7fa235591235db",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/50",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Recorded source custodian44 through the durable country lane",
+          "smallestRemainingInput": "Versioned mapping/canonical admission contract; any guideline-content scope additionally needs national issuer/version/pages/digest and applicable source rights.",
+          "remainingDependencies": "Remaining versioned mapping/canonical/admission prerequisites, national issuer/version/pages/digest and guideline rights remain missing. Recorded original custodian44 unchanged; underlying restricted originals not read.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/9",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-45",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-45",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-scientific-source-clarification",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-45; ongoing country portfolio remains open.",
+        "dependency": "Authoritative source/scientific clarification for row4/5 carbohydrate/sugars anomalies and abbreviation meanings. No new publisher outreach or source acquisition authorized.",
+        "nextUsefulAction": "Preserve JM literal/semantic and private IT eight-record acceptances. Numeric JM use awaits exact clarification of row4/5 anomalies and unresolved abbreviations; no arithmetic repair. Keep separate2025farmgate48 access/no-retry dependency.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/23",
@@ -6000,7 +6545,62 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-45",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "JM Table3 manifest337340fd/review2ac8384c already has literal-only scoped PASS. Later semantic88cdd80f/review45ba385d is bound for14 dish/13 column roles and14 links, preserving182 lexemes/27 censored/2 zero. IT first-eight private projection80bb9bcf/reviewc7c931e5 needs no correction; no IT/JE replay.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 1402,
+              "sourceSHA256": "2ac8384cd8ea402a651a7cc5bf78b7cacf4807a4f2446f7b5b50cd9a38ed087d",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/160",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 2977,
+              "sourceSHA256": "45ba385d8c23bbca873b8189193ac8350f43bc0655db245874881dbc10d22366",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/80",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 3592,
+              "sourceSHA256": "c7c931e50fde1e0d07e985be53f9a90ab58ade9feb0f6763a65fab004315d2a1",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/226",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Existing JM scientific/source metadata custodian via country45; recorded farmgate48 route separately",
+          "smallestRemainingInput": "Authoritative source/scientific clarification for row4/5 carbohydrate/sugars anomalies and abbreviation meanings. No new publisher outreach or source acquisition authorized.",
+          "remainingDependencies": "JM row4/5 numeric anomalies and unresolved abbreviations require scientific/source clarification; UK sample is not Jamaica national. Separate2025 farmgate original/use/currency/basis evidence from48 stays access-no-retry. Private IT eight-record scope grants no recipe/image/publication expansion.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/10",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-49",
@@ -6025,13 +6625,13 @@
       {
         "id": "COUNTRY-54",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-54",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-source-basis-use-input",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-54; ongoing country portfolio remains open.",
+        "dependency": "Source-specific KM reference-mass/preparation/unit/FCT mapping or existing authoritative erratum; KN edition/reuse, KP survey-use/selector and KR lawful-original/RDA-manifest are distinct inputs.",
+        "nextUsefulAction": "Do not repeat KN metadata or KM148 candidate-structure review. Obtain existing55 evidence for KM reference mass/preparation/unit/FCT/source issues; preserve independent body-fidelity gap. KN/KP/KR dependencies remain separate.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/25",
@@ -6040,7 +6640,56 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-54",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "KN retained7ecce16d review9389e4c1 exists for metadata/custody only. KN body/item-price normalization remains explicitly held. KM148-row candidate structure/metadata-consistency review4207 (50d0a262) is already scoped PASS without corrective findings; no replay. Later full-fidelity4397 remains additive author evidence, not independent body-fidelity acceptance.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 192,
+              "sourceSHA256": "9389e4c1a521cb5ee5de1721786ab02329e03fa63ac37ce62301d82793c5a160",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/40",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            },
+            {
+              "sequence": 4207,
+              "sourceSHA256": "50d0a262906a092955494b491fad6a81f135a5e22eedda4babd141a3f2454db6",
+              "primaryMetadataPointer": "/pendingManagementActions/disposed/273",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Recorded KM custodian55; other retained source custody routes separately",
+          "smallestRemainingInput": "Source-specific KM reference-mass/preparation/unit/FCT mapping or existing authoritative erratum; KN edition/reuse, KP survey-use/selector and KR lawful-original/RDA-manifest are distinct inputs.",
+          "remainingDependencies": "KN reuse entitlement and edition needed; ambiguous G,F/malformed legend must remain literal. KM source reference-mass/preparation/unit/FCT/source issues need exact original55 evidence; independent original-body fidelity remains unverified, without replay of accepted structure review4207. KP scoped survey/use and KR lawful-original/RDA-manifest dependencies remain distinct; no held takeover.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/11",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-47",
@@ -6065,13 +6714,13 @@
       {
         "id": "COUNTRY-53",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-53",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-review-receipt",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-53; ongoing country portfolio remains open.",
+        "dependency": "Exact reviewer52 verdict binding c11f225ac5d5d1c9eba2a7f988080b08c706341fd1bcc79fc3d691cdf6593c5f. Canonical dictionary/equivalence and LK authoritative explanation remain separate.",
+        "nextUsefulAction": "Obtain the already-admitted LU/LR reviewer52 verdict or exact no-result for c11f225a; do not resend2983 or repeat accepted595-crosswalk review. Preserve canonical nulls/collisions and literal LK discrepancies.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/27",
@@ -6080,7 +6729,50 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-53",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "595-crosswalk manifest3b861146/review17400bf3 already has scoped PASS; preserve null canonical targets and120 collision groups. LU/LR typed proposalc11f225a was admitted at2983, not accepted by that admission; no repeat dispatch.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 2805,
+              "sourceSHA256": "17400bf3a49c07bab2998e88efac1b3d62104c9818c8dc4093c8dd049aa1b9ab",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/464",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Recorded reviewer52 custody lead; dictionary56 separately",
+          "smallestRemainingInput": "Exact reviewer52 verdict binding c11f225ac5d5d1c9eba2a7f988080b08c706341fd1bcc79fc3d691cdf6593c5f. Canonical dictionary/equivalence and LK authoritative explanation remain separate.",
+          "remainingDependencies": "Exact LU/LR reviewer52 verdict absent from retained2957 record; obtain existing verdict/no-result. Canonical target dictionary/equivalence requires actual56 inputs. LK684 cells/148 blanks/eight discrepancies remain literal pending authoritative explanation; no repair or new raw reads. Separate synthetic2411 review unbound here.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/12",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-59",
@@ -6765,13 +7457,13 @@
       {
         "id": "COUNTRY-6",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
+        "currentOwner": "resolve_ready_country_dispositions (durable dependency owner; finite reconciliation complete, no running job)",
         "deliveryLane": "country-receipt-disposition",
-        "state": "ready-metadata-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-6",
-        "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
-        "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+        "state": "waiting-exact-review-receipt",
+        "executionClaim": "Finite retained receipt reconciliation complete; zero native jobs, no source processing or whole-country closure.",
+        "deliverable": "Completed: exact retained receipt/provenance disposition for COUNTRY-6; ongoing country portfolio remains open.",
+        "dependency": "Exact review receipt binding9e9b617c9f59bddc3b9264b0a208a10fb93dd2c9f32080851960e9b8b90fd7b0, or scoped confirmation none exists; no re-review of provenance-v2.",
+        "nextUsefulAction": "Obtain existing independent14 receipt for MF/MG batch-b9e9b617c or explicit no-review confirmation; earlier provenance-v2 review does not close batch-b. Preserve territorial/use/SPC chapter dependencies and412/no-body holds.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/62",
@@ -6780,7 +7472,50 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-metadata-only",
+          "currentOwner": "Morgan/root",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Current scoped metadata/source acceptance disposition for COUNTRY-6",
+          "dependency": "Exact retained current packet/review binding; country/source permissions and category gaps stay open.",
+          "nextUsefulAction": "Locate existing finite retained packet and scoped review in Git/custody; bind accepted results without replay; if missing, emit exact hash/path prerequisite.",
+          "parentComplete": false
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "ready-row retained receipt/provenance reconciliation",
+          "finiteDeliverableState": "complete",
+          "finiteDeliverableCompletionScope": "Owner06 provenance-v2 review74a12a36 is preserved. It is not a review of later MF/MG batch-b report9e9b617c; retained95 record contains no dispatch/effect/verdict binding. Do not use earlier v2 receipt to close batch-b.",
+          "completedFiniteSubsteps": [
+            {
+              "sequence": 1,
+              "sourceSHA256": "74a12a367b4ad5bb6c3b27256aaaf7edd85d73c016c6211ad5dd1bd47e71a1c6",
+              "primaryMetadataPointer": "/pendingManagementActions/pending/0",
+              "completion": "exact finite scoped receipt/disposition retained; not whole-country acceptance"
+            }
+          ],
+          "portfolioState": "open",
+          "portfolioKind": "country-portfolio-tracker; not a continuously runnable finite work item",
+          "runnableNow": false,
+          "nativeJobActive": false,
+          "nextEvidenceOwner": "Recorded reviewer14 through durable country lane; source leads34/36/37/38 separately",
+          "smallestRemainingInput": "Exact review receipt binding9e9b617c9f59bddc3b9264b0a208a10fb93dd2c9f32080851960e9b8b90fd7b0, or scoped confirmation none exists; no re-review of provenance-v2.",
+          "remainingDependencies": "Exact independent14 receipt binding report9e9b617c or explicit no-review confirmation required. MF territorial applicability/use and MH rights/exact SPC chapter scope remain missing from recorded34/36/37/38; ME catalogue-only and53 HTTP412 excluded. No guideline/body acquisition.",
+          "reactivationCondition": "Only receipt of the named existing evidence or an explicitly selected permitted source-specific scope; never periodic replay, synthetic filler or duplicate review.",
+          "userInputRequiredNow": false,
+          "irreducibleUserInput": null,
+          "userInputDisposition": "No irreducible user decision is established by this package. Resolve already-existing custody/evidence first; do not request optional native payload-sharing or assume new publisher permission is necessary when a valid existing decision may suffice.",
+          "parentComplete": false,
+          "sourceRightsReleased": false,
+          "receiptBytesReverified": false,
+          "validationBasis": "Previously completed local metadata binding checks only; no new tests or execution in this follow-through.",
+          "evidence": {
+            "packageSHA256": "b4bd514a2e09d00c0be8150ba7a73bf51bd88968895d74eca7e9bc6c8b9bc3f7",
+            "packagePointer": "/rows/13",
+            "primaryMetadataSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+            "packagePublicationPath": "docs/operations/2026-10-28/country/country-receipt-dispositions.json"
+          }
+        }
       },
       {
         "id": "COUNTRY-12",
@@ -7185,13 +7920,13 @@
       {
         "id": "CACHE-REPRESENTATION-ISOLATION",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
-        "deliveryLane": "rights-cache-propagation",
-        "state": "ready-read-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Actual consumer/store/key propagation map with specific policy gaps",
-        "dependency": "Existing policy/rights authority; no operational deletion, privacy publication or feed permission inferred",
-        "nextUsefulAction": "Map retained actual consumer; preserve accepted CACHE52 trace and avoid speculative patch.",
+        "currentOwner": "audit_production_efficiency (durable next-dispatch owner; finite map complete, no operational job)",
+        "deliveryLane": "rights-policy-custody-join",
+        "state": "waiting-exact-policy-custody-input",
+        "executionClaim": "Accepted read-only source/store/key map delivered; no rights grant, feed, operational delete/restore, or parent acceptance.",
+        "deliverable": "Completed finite deliverable: complete-current193-map; broader parent remains dependent on exact custody/authority/adoption inputs.",
+        "dependency": "Selected R01/R03/R04 consumer's exact existing source/version/operation-use policy and request clock; selected owner02 evaluator result+matching review or explicit no-result disposition; exact C035 caller envelope.",
+        "nextUsefulAction": "Through the existing durable custody lane, bind R01/R03/R04 selected consumer/provider/key profile to existing cache-policy custodian and exact owner02/C035 input; preserve accepted1735/1779C1-RL and audit52 temporal result, no replay. Outer owned-foundation route body/primary selected inventory policy remains exact bounded evidence gap.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/83",
@@ -7200,18 +7935,68 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-read-only",
+          "currentOwner": "Morgan/root",
+          "deliveryLane": "rights-cache-propagation",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Actual consumer/store/key propagation map with specific policy gaps",
+          "dependency": "Existing policy/rights authority; no operational deletion, privacy publication or feed permission inferred",
+          "nextUsefulAction": "Map retained actual consumer; preserve accepted CACHE52 trace and avoid speculative patch."
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "Current193 read-only source/store/key propagation and dependency map",
+          "finiteDeliverableState": "complete",
+          "snapshotProduction": 193,
+          "immutableSnapshotNotLatestProductionClaim": true,
+          "edgeCount": 15,
+          "acceptedStaticChecks": 39,
+          "broaderParentState": "open-exact-dependency",
+          "runnableNow": false,
+          "currentEvidenceOwner": "Existing source-policy/cache custodian (identity must be bound; historical16/14/52 are receipt provenance)",
+          "smallestRemainingInput": "Selected R01/R03/R04 consumer's exact existing source/version/operation-use policy and request clock; selected owner02 evaluator result+matching review or explicit no-result disposition; exact C035 caller envelope.",
+          "remainingDependencies": [
+            "Current policy/grant/source-version receipt and explicit request clocks",
+            "Existing1735author/1779review/2127preparation disposition with exact identities",
+            "owner02 evaluator result/review and C035 caller envelope"
+          ],
+          "reactivationCondition": "Receive the named existing packet/receipt or explicit source-specific authority/current-operator binding; no periodic replay, broad search, duplicated portable implementation or speculative policy.",
+          "userInputRequiredNow": false,
+          "userInputDisposition": "First use exact already-existing custody pointers. If no current holder/operator can supply them, root asks only for the named packet or holder identity; no generic new-source or native-sharing approval request.",
+          "mustNotDo": "Do not invent cache variation inputs, patch a portable kernel into production, or re-review CACHE52.",
+          "evidence": {
+            "path": "docs/operations/2026-10-28/rights/propagation-map.json",
+            "sha256": "dae3c0f8b26dc51d1c751f298062088d864d74fb8243e1c37df20af1258bb704",
+            "handoff": "docs/operations/2026-10-28/rights/HANDOFF.md",
+            "preservedScopedReceipts": {
+              "cacheC1RLAuthorSHA256": "ca0dc5170c04e62f952c8ca596937133f1455479df8bee245a2cd2fae4a73b21",
+              "cacheC1RLReviewSHA256": "1998eee4f4fe08d3cd40bf6f18a79e4f5d912b9794b81d48020beef1c022f87a",
+              "cacheIntegrationPreparationSHA256": "b69fd9a88a50eadcf2b636eaf313db9270d8007866a75244a9cc2f4eba04fbc6",
+              "acceptedAudit52TemporalSHA256": "7c0280aa4c6a0512b6562b45e86bacd1090dfd042b070e244bcbadb9f3f42e5c",
+              "invalidationAuthorSHA256": "280344cd8f0c79b142649e83c40465a2fa6bc341e09eaa4d1fed2e7d273c3705",
+              "invalidationReviewSHA256": "3198cdfb7dda18f7248948f106ac2b1562c60bcb57c42239a46f1f55e3d0d43c",
+              "invalidationBoundReturnSHA256": "299aa6b40f12d59fc0cc821e75537d25e4e22e8c5c9f70ba82f6aaf9c500fc18",
+              "aggregateAuthorSHA256": "34216e9711c6ac1f76f0fb706a49443e1204b2c007cbce449e331e78db3a317e",
+              "aggregateReviewSHA256": "d8e534b4ef4d90e13164a2d79e10dfdbddb69a5fef7a66c700a98d5b4f80d7c5",
+              "owner02SelectionSHA256": "99fedb83390187ddcb88d6435042ba7fed24393931d85d6f912a83fe53c81ce1",
+              "C035ResolutionSHA256": "fc82634f92e1f10668618b10f1c6e694e24f7f6b10171a7aa2e1fd42882ad412",
+              "meaning": "Retained projection binds hashes/events, not full artifact-byte recovery or current author/reviewer availability. Historical nextAction text is provenance, not new execution authority."
+            }
+          },
+          "parentComplete": false
+        }
       },
       {
         "id": "DERIVED-RIGHTS-SAFETY-INVALIDATION",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
-        "deliveryLane": "rights-cache-propagation",
-        "state": "ready-read-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Actual consumer/store/key propagation map with specific policy gaps",
-        "dependency": "Existing policy/rights authority; no operational deletion, privacy publication or feed permission inferred",
-        "nextUsefulAction": "Map retained actual consumer; preserve accepted CACHE52 trace and avoid speculative patch.",
+        "currentOwner": "audit_production_efficiency (durable next-dispatch owner; finite map complete, no operational job)",
+        "deliveryLane": "rights-policy-custody-join",
+        "state": "waiting-exact-source-event-adoption-input",
+        "executionClaim": "Accepted read-only source/store/key map delivered; no rights grant, feed, operational delete/restore, or parent acceptance.",
+        "deliverable": "Completed finite deliverable: complete-store-caller-dependency-map; broader parent remains dependent on exact custody/authority/adoption inputs.",
+        "dependency": "Exact permitted withdrawal/recall source/event/version and derived-copy treatment contract; existing operator/caller adoption receipt for accepted portable planner.",
+        "nextUsefulAction": "Use R05-R09/R11-R14 edges to obtain exact source->product->history/shared/backup dependency decisions and permitted recall/withdrawal feed authority. Preserve existing2035/2237/2242/2245 reviewed portable invalidation pair; do not recreate it.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/84",
@@ -7220,18 +8005,68 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-read-only",
+          "currentOwner": "Morgan/root",
+          "deliveryLane": "rights-cache-propagation",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Actual consumer/store/key propagation map with specific policy gaps",
+          "dependency": "Existing policy/rights authority; no operational deletion, privacy publication or feed permission inferred",
+          "nextUsefulAction": "Map retained actual consumer; preserve accepted CACHE52 trace and avoid speculative patch."
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "Current193 read-only source/store/key propagation and dependency map",
+          "finiteDeliverableState": "complete",
+          "snapshotProduction": 193,
+          "immutableSnapshotNotLatestProductionClaim": true,
+          "edgeCount": 15,
+          "acceptedStaticChecks": 39,
+          "broaderParentState": "open-exact-dependency",
+          "runnableNow": false,
+          "currentEvidenceOwner": "Existing derived-store/source-policy custodian and actual selected operator (historical52/44 receipts retained)",
+          "smallestRemainingInput": "Exact permitted withdrawal/recall source/event/version and derived-copy treatment contract; existing operator/caller adoption receipt for accepted portable planner.",
+          "remainingDependencies": [
+            "Permitted feed authority and source event/version identity",
+            "Derived-store treatment contract and exact operator/caller custody",
+            "Adoption receipt linking accepted portable planner to current stores"
+          ],
+          "reactivationCondition": "Receive the named existing packet/receipt or explicit source-specific authority/current-operator binding; no periodic replay, broad search, duplicated portable implementation or speculative policy.",
+          "userInputRequiredNow": false,
+          "userInputDisposition": "First use exact already-existing custody pointers. If no current holder/operator can supply them, root asks only for the named packet or holder identity; no generic new-source or native-sharing approval request.",
+          "mustNotDo": "No polling, operational deletes, migrations or automatic invalidation policy invented.",
+          "evidence": {
+            "path": "docs/operations/2026-10-28/rights/propagation-map.json",
+            "sha256": "dae3c0f8b26dc51d1c751f298062088d864d74fb8243e1c37df20af1258bb704",
+            "handoff": "docs/operations/2026-10-28/rights/HANDOFF.md",
+            "preservedScopedReceipts": {
+              "cacheC1RLAuthorSHA256": "ca0dc5170c04e62f952c8ca596937133f1455479df8bee245a2cd2fae4a73b21",
+              "cacheC1RLReviewSHA256": "1998eee4f4fe08d3cd40bf6f18a79e4f5d912b9794b81d48020beef1c022f87a",
+              "cacheIntegrationPreparationSHA256": "b69fd9a88a50eadcf2b636eaf313db9270d8007866a75244a9cc2f4eba04fbc6",
+              "acceptedAudit52TemporalSHA256": "7c0280aa4c6a0512b6562b45e86bacd1090dfd042b070e244bcbadb9f3f42e5c",
+              "invalidationAuthorSHA256": "280344cd8f0c79b142649e83c40465a2fa6bc341e09eaa4d1fed2e7d273c3705",
+              "invalidationReviewSHA256": "3198cdfb7dda18f7248948f106ac2b1562c60bcb57c42239a46f1f55e3d0d43c",
+              "invalidationBoundReturnSHA256": "299aa6b40f12d59fc0cc821e75537d25e4e22e8c5c9f70ba82f6aaf9c500fc18",
+              "aggregateAuthorSHA256": "34216e9711c6ac1f76f0fb706a49443e1204b2c007cbce449e331e78db3a317e",
+              "aggregateReviewSHA256": "d8e534b4ef4d90e13164a2d79e10dfdbddb69a5fef7a66c700a98d5b4f80d7c5",
+              "owner02SelectionSHA256": "99fedb83390187ddcb88d6435042ba7fed24393931d85d6f912a83fe53c81ce1",
+              "C035ResolutionSHA256": "fc82634f92e1f10668618b10f1c6e694e24f7f6b10171a7aa2e1fd42882ad412",
+              "meaning": "Retained projection binds hashes/events, not full artifact-byte recovery or current author/reviewer availability. Historical nextAction text is provenance, not new execution authority."
+            }
+          },
+          "parentComplete": false
+        }
       },
       {
         "id": "AGGREGATE-HEALTH-PRIVACY",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
-        "deliveryLane": "rights-cache-propagation",
-        "state": "ready-read-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Actual consumer/store/key propagation map with specific policy gaps",
-        "dependency": "Existing policy/rights authority; no operational deletion, privacy publication or feed permission inferred",
-        "nextUsefulAction": "Map retained actual consumer; preserve accepted CACHE52 trace and avoid speculative patch.",
+        "currentOwner": "audit_production_efficiency (durable next-dispatch owner; finite map complete, no operational job)",
+        "deliveryLane": "rights-policy-custody-join",
+        "state": "waiting-exact-successor-and-aggregate-scope",
+        "executionClaim": "Accepted read-only source/store/key map delivered; no rights grant, feed, operational delete/restore, or parent acceptance.",
+        "deliverable": "Completed finite deliverable: complete-current-private-producer-store-map; broader parent remains dependent on exact custody/authority/adoption inputs.",
+        "dependency": "Exact H59-PREFLIGHT-R1 corrected successor/current disposition, plus intended aggregate producer/store/audience/purpose and already-authorized source/consent/retention policy.",
+        "nextUsefulAction": "Through the existing durable custody lane, bind actual intended aggregate producer/store and privacy authority; obtain exact H59-PREFLIGHT-R1 corrected successor/disposition against retained2112closure and2194review before claiming validator accepted. Existing private descriptive statistics is not the aggregate-publication deliverable.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/85",
@@ -7240,18 +8075,68 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-read-only",
+          "currentOwner": "Morgan/root",
+          "deliveryLane": "rights-cache-propagation",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Actual consumer/store/key propagation map with specific policy gaps",
+          "dependency": "Existing policy/rights authority; no operational deletion, privacy publication or feed permission inferred",
+          "nextUsefulAction": "Map retained actual consumer; preserve accepted CACHE52 trace and avoid speculative patch."
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "Current193 read-only source/store/key propagation and dependency map",
+          "finiteDeliverableState": "complete",
+          "snapshotProduction": 193,
+          "immutableSnapshotNotLatestProductionClaim": true,
+          "edgeCount": 15,
+          "acceptedStaticChecks": 39,
+          "broaderParentState": "open-exact-dependency",
+          "runnableNow": false,
+          "currentEvidenceOwner": "Existing privacy/aggregate custodian; historical59/38 corrected-successor receipt holder to be identified",
+          "smallestRemainingInput": "Exact H59-PREFLIGHT-R1 corrected successor/current disposition, plus intended aggregate producer/store/audience/purpose and already-authorized source/consent/retention policy.",
+          "remainingDependencies": [
+            "Actual aggregate producer/store and authorized output audience/purpose",
+            "Source/consent/retention policy authority",
+            "Exact corrected successor and existing matching scoped review or explicit nonproduction result"
+          ],
+          "reactivationCondition": "Receive the named existing packet/receipt or explicit source-specific authority/current-operator binding; no periodic replay, broad search, duplicated portable implementation or speculative policy.",
+          "userInputRequiredNow": false,
+          "userInputDisposition": "First use exact already-existing custody pointers. If no current holder/operator can supply them, root asks only for the named packet or holder identity; no generic new-source or native-sharing approval request.",
+          "mustNotDo": "No privacy judgment, cross-account aggregation, public publication or fabricated consent.",
+          "evidence": {
+            "path": "docs/operations/2026-10-28/rights/propagation-map.json",
+            "sha256": "dae3c0f8b26dc51d1c751f298062088d864d74fb8243e1c37df20af1258bb704",
+            "handoff": "docs/operations/2026-10-28/rights/HANDOFF.md",
+            "preservedScopedReceipts": {
+              "cacheC1RLAuthorSHA256": "ca0dc5170c04e62f952c8ca596937133f1455479df8bee245a2cd2fae4a73b21",
+              "cacheC1RLReviewSHA256": "1998eee4f4fe08d3cd40bf6f18a79e4f5d912b9794b81d48020beef1c022f87a",
+              "cacheIntegrationPreparationSHA256": "b69fd9a88a50eadcf2b636eaf313db9270d8007866a75244a9cc2f4eba04fbc6",
+              "acceptedAudit52TemporalSHA256": "7c0280aa4c6a0512b6562b45e86bacd1090dfd042b070e244bcbadb9f3f42e5c",
+              "invalidationAuthorSHA256": "280344cd8f0c79b142649e83c40465a2fa6bc341e09eaa4d1fed2e7d273c3705",
+              "invalidationReviewSHA256": "3198cdfb7dda18f7248948f106ac2b1562c60bcb57c42239a46f1f55e3d0d43c",
+              "invalidationBoundReturnSHA256": "299aa6b40f12d59fc0cc821e75537d25e4e22e8c5c9f70ba82f6aaf9c500fc18",
+              "aggregateAuthorSHA256": "34216e9711c6ac1f76f0fb706a49443e1204b2c007cbce449e331e78db3a317e",
+              "aggregateReviewSHA256": "d8e534b4ef4d90e13164a2d79e10dfdbddb69a5fef7a66c700a98d5b4f80d7c5",
+              "owner02SelectionSHA256": "99fedb83390187ddcb88d6435042ba7fed24393931d85d6f912a83fe53c81ce1",
+              "C035ResolutionSHA256": "fc82634f92e1f10668618b10f1c6e694e24f7f6b10171a7aa2e1fd42882ad412",
+              "meaning": "Retained projection binds hashes/events, not full artifact-byte recovery or current author/reviewer availability. Historical nextAction text is provenance, not new execution authority."
+            }
+          },
+          "parentComplete": false
+        }
       },
       {
         "id": "REVOCATION-DELETION-RESTORE",
         "accountableOwner": "Morgan/root",
-        "currentOwner": "Morgan/root",
-        "deliveryLane": "rights-cache-propagation",
-        "state": "ready-read-only",
-        "executionClaim": "No new job dispatched by allocation",
-        "deliverable": "Actual consumer/store/key propagation map with specific policy gaps",
-        "dependency": "Existing policy/rights authority; no operational deletion, privacy publication or feed permission inferred",
-        "nextUsefulAction": "Map retained actual consumer; preserve accepted CACHE52 trace and avoid speculative patch.",
+        "currentOwner": "audit_production_efficiency (durable next-dispatch owner; finite map complete, no operational job)",
+        "deliveryLane": "rights-policy-custody-join",
+        "state": "waiting-exact-retention-operator-receipts",
+        "executionClaim": "Accepted read-only source/store/key map delivered; no rights grant, feed, operational delete/restore, or parent acceptance.",
+        "deliverable": "Completed finite deliverable: complete-current-action-and-restore-boundary-map; broader parent remains dependent on exact custody/authority/adoption inputs.",
+        "dependency": "Existing scheduler/retention-run and backup/restore/delete-verification receipts, covering named local/cloud/shared/offline/export copies and tombstone/version behavior; current operator identity.",
+        "nextUsefulAction": "Obtain current retention/backup operator receipt covering R08-R14, tombstone/version semantics and restore exclusion; record exactly whether unsupported cascade/restore controls are implementation prerequisites under existing selected authority.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/86",
@@ -7260,7 +8145,57 @@
           "currentOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation"
         },
         "parentComplete": false,
-        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds."
+        "historicalInstructionAuthority": "Evidence only; current production approval supersedes generic UI pause, not specific source/security holds.",
+        "priorAllocationDisposition20261028T0542": {
+          "state": "ready-read-only",
+          "currentOwner": "Morgan/root",
+          "deliveryLane": "rights-cache-propagation",
+          "executionClaim": "No new job dispatched by allocation",
+          "deliverable": "Actual consumer/store/key propagation map with specific policy gaps",
+          "dependency": "Existing policy/rights authority; no operational deletion, privacy publication or feed permission inferred",
+          "nextUsefulAction": "Map retained actual consumer; preserve accepted CACHE52 trace and avoid speculative patch."
+        },
+        "receiptClosure": {
+          "finiteDeliverable": "Current193 read-only source/store/key propagation and dependency map",
+          "finiteDeliverableState": "complete",
+          "snapshotProduction": 193,
+          "immutableSnapshotNotLatestProductionClaim": true,
+          "edgeCount": 15,
+          "acceptedStaticChecks": 39,
+          "broaderParentState": "open-exact-dependency",
+          "runnableNow": false,
+          "currentEvidenceOwner": "Actual storage/backup operator (current identity not established by inspected metadata)",
+          "smallestRemainingInput": "Existing scheduler/retention-run and backup/restore/delete-verification receipts, covering named local/cloud/shared/offline/export copies and tombstone/version behavior; current operator identity.",
+          "remainingDependencies": [
+            "Scheduler trigger and successful retention-run evidence",
+            "Cloud backup inventory/retention/restore replay and deletion verification receipts",
+            "Derived local/shared/offline/export scope decision with exact operator"
+          ],
+          "reactivationCondition": "Receive the named existing packet/receipt or explicit source-specific authority/current-operator binding; no periodic replay, broad search, duplicated portable implementation or speculative policy.",
+          "userInputRequiredNow": false,
+          "userInputDisposition": "First use exact already-existing custody pointers. If no current holder/operator can supply them, root asks only for the named packet or holder identity; no generic new-source or native-sharing approval request.",
+          "mustNotDo": "No delete or restore run, no auth migration, no broad production acceptance.",
+          "evidence": {
+            "path": "docs/operations/2026-10-28/rights/propagation-map.json",
+            "sha256": "dae3c0f8b26dc51d1c751f298062088d864d74fb8243e1c37df20af1258bb704",
+            "handoff": "docs/operations/2026-10-28/rights/HANDOFF.md",
+            "preservedScopedReceipts": {
+              "cacheC1RLAuthorSHA256": "ca0dc5170c04e62f952c8ca596937133f1455479df8bee245a2cd2fae4a73b21",
+              "cacheC1RLReviewSHA256": "1998eee4f4fe08d3cd40bf6f18a79e4f5d912b9794b81d48020beef1c022f87a",
+              "cacheIntegrationPreparationSHA256": "b69fd9a88a50eadcf2b636eaf313db9270d8007866a75244a9cc2f4eba04fbc6",
+              "acceptedAudit52TemporalSHA256": "7c0280aa4c6a0512b6562b45e86bacd1090dfd042b070e244bcbadb9f3f42e5c",
+              "invalidationAuthorSHA256": "280344cd8f0c79b142649e83c40465a2fa6bc341e09eaa4d1fed2e7d273c3705",
+              "invalidationReviewSHA256": "3198cdfb7dda18f7248948f106ac2b1562c60bcb57c42239a46f1f55e3d0d43c",
+              "invalidationBoundReturnSHA256": "299aa6b40f12d59fc0cc821e75537d25e4e22e8c5c9f70ba82f6aaf9c500fc18",
+              "aggregateAuthorSHA256": "34216e9711c6ac1f76f0fb706a49443e1204b2c007cbce449e331e78db3a317e",
+              "aggregateReviewSHA256": "d8e534b4ef4d90e13164a2d79e10dfdbddb69a5fef7a66c700a98d5b4f80d7c5",
+              "owner02SelectionSHA256": "99fedb83390187ddcb88d6435042ba7fed24393931d85d6f912a83fe53c81ce1",
+              "C035ResolutionSHA256": "fc82634f92e1f10668618b10f1c6e694e24f7f6b10171a7aa2e1fd42882ad412",
+              "meaning": "Retained projection binds hashes/events, not full artifact-byte recovery or current author/reviewer availability. Historical nextAction text is provenance, not new execution authority."
+            }
+          },
+          "parentComplete": false
+        }
       },
       {
         "id": "COLLABORATIVE-SHOPPING-LIST",
@@ -7304,6 +8239,33 @@
       }
     ],
     "countsByState": {
+      "waiting-exact-source-metadata": 1,
+      "blocked-missing-artifact": 2,
+      "waiting-exact-custody-handoff": 2,
+      "waiting-exact-lineage-disposition": 1,
+      "dependent": 25,
+      "blocked-source-scope": 3,
+      "completed-limited": 11,
+      "waiting-exact-semantic-contract": 1,
+      "waiting-exact-review-receipt": 3,
+      "waiting-exact-semantic-use-input": 1,
+      "blocked-source-rights-output": 1,
+      "waiting-exact-source-use-input": 1,
+      "waiting-exact-source-use-or-review-input": 1,
+      "waiting-exact-mapping-admission-input": 1,
+      "waiting-exact-scientific-source-clarification": 1,
+      "waiting-exact-source-basis-use-input": 1,
+      "active-owned": 17,
+      "blocked-security": 3,
+      "blocked-scope": 2,
+      "ready": 6,
+      "waiting-exact-policy-custody-input": 1,
+      "waiting-exact-source-event-adoption-input": 1,
+      "waiting-exact-successor-and-aggregate-scope": 1,
+      "waiting-exact-retention-operator-receipts": 1,
+      "blocked-consent": 1
+    },
+    "priorCountsByStateBeforeFiniteClosure": {
       "ready-metadata-only": 14,
       "blocked-missing-artifact": 2,
       "dependent": 25,
@@ -7316,11 +8278,54 @@
       "ready": 6,
       "ready-read-only": 4,
       "blocked-consent": 1
+    },
+    "finiteClosureCheckpoint": {
+      "asOfUTC": "2026-10-28T06:52:00Z",
+      "assignedFiniteDeliverablesCompleted": 18,
+      "countryReceiptReconciliations": 14,
+      "rightsReadOnlyMaps": 4,
+      "countryReceiptBindings": 76,
+      "countryScopedReceiptReferences": 30,
+      "rightsEdges": 15,
+      "allHistoricalObligationsRetained": 89,
+      "wholeCountryClosures": 0,
+      "wholeRightsParentClosures": 0,
+      "runnableJobsFromTheseCompletedAssignments": 0,
+      "evidenceCommit": "0fb3c659107f2444b02b4087d7e839c64266169c",
+      "interpretation": "18specified finite deliverables are delivered, not18whole historical parent requirements closed. Country portfolios and policy/operator-dependent parents remain explicit non-runnable trackers until named inputs arrive; no implication that89items must run forever.",
+      "nextDispatchPlan": [
+        {
+          "id": "country-exact-evidence",
+          "owner": "resolve_ready_country_dispositions",
+          "status": "waiting-named-existing-inputs",
+          "scope": "Only exact per-country receipt/version/use/mapping/scientific inputs named in14rows. No raw-source acquisition, no optional nativepayloadsharing, no repeated review or denied nativejob retry."
+        },
+        {
+          "id": "owner02-C035-policy-custody",
+          "owner": "audit_production_efficiency coordinates existing custody; root only required decision/input",
+          "status": "waiting-exact-existing-packet-or-custodian",
+          "scope": "Selected workQueue/items/38 evaluator attempt/result/review or explicitnoresult plus pending/297C035 full caller envelope. Unrelated identity callbacks cannot substitute; prior boundedsearch not repeated."
+        },
+        {
+          "id": "rights-adoption-and-health-successor",
+          "owner": "audit_production_efficiency coordinates existing source/privacy custody",
+          "status": "waiting-exact-existing-authority-and-successor",
+          "scope": "Preserve accepted cache/invalidation receipts; obtain exact selected source event/adoption contract or H59-PREFLIGHT-R1 successor and intended aggregate scope, not a new portable implementation."
+        },
+        {
+          "id": "retention-operator-evidence",
+          "owner": "audit_production_efficiency coordinates actual storage/backup operator",
+          "status": "waiting-current-operator-and-existing-receipts",
+          "scope": "Actual scheduler/run/backup/restore/delete receipts and tombstone/version coverage. Map is complete; no operational deletion or invented retention policy."
+        }
+      ],
+      "immediateUserApprovalRequests": 0,
+      "userEscalationRule": "Ask only for an exact missing packet or named current custodian/operator if existing custody cannot provide it. Do not request optional native payload-sharing just to increase job counts."
     }
   },
   "continuousEfficiencyReview": {
     "schema": "offmenu-continuous-efficiency-review/1",
-    "asOfUTC": "2026-10-28T06:25:00Z",
+    "asOfUTC": "2026-10-28T06:52:00Z",
     "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
     "state": "active-owned-ongoing",
     "currentOwner": "audit_production_efficiency",
@@ -7367,7 +8372,7 @@
         "provider free eligibility/quota/reset metadata and quality",
         "source/security holds"
       ],
-      "nextMilestone": "Corpus012 actual throughput/resource or early-failure evidence; natural boundary around2026-10-28T06:49Z or earlier committed hash-phase pause. Existing corpus owner executes; efficiency owner reviews evidence without duplicate probes.",
+      "nextMilestone": "Corpus013 checkpoint/completion at approximately07:14:40Z or earlier phase boundary; named custody inputs or actual ready-dispatch changes. No repeated accepted checks.",
       "cadence": "Milestone-driven bounded checks; remain owner while authorized production is active. Wait for meaningful milestones, not tight busy polling or arbitrary saturation.",
       "stop": "User cancels; authorized production/backlog completes; or explicit durable-owner handover. Pause only affected dependent action at an authorization/access boundary.",
       "routineTuning": "Send safe same-scope corrections through the existing execution owner; do not seize its writer, duplicate production or change scope/design."
@@ -7480,17 +8485,20 @@
         "preserved": "Original validation/helper/schema/contracts, FULL/DELETE, row+cursor transactions, source/runtime pins, fresh-process hash pauses,64MiBdefault, workerCPU/wholejobbudgets.",
         "adopted": true,
         "migrationJournal": "c80800e8c85f45db8c0ade424a854a4a",
-        "checkpointPreserved": 2734
+        "checkpointPreserved": 2734,
+        "runtimeStability": "012 completed1440.4seconds without priorcacheMemoryError;3.101Mresources added, expectedpause/cleanupverified. No causal cache-speedup assertion."
       },
       "activeRun": {
-        "run": "012",
-        "job": "01a1812e-f9ba-c52f-db3d-0e0f941c1699",
-        "startedAtUTC": "2026-10-28T06:25:00Z",
-        "naturalBoundaryApproxUTC": "2026-10-28T06:49:00Z",
+        "run": "013",
+        "job": "01a18146-732a-3df6-e197-fdd79179aec0",
+        "startedAtUTC": "2026-10-28T06:50:40Z",
+        "naturalBoundaryApproxUTC": "2026-10-28T07:14:40Z",
         "workers": 64,
         "workerMiB": 256,
         "cpuReservation": 19,
         "wholeJobReservationGiB": 24.625,
+        "cacheMiB": 3072,
+        "sqlHardHeapMiB": 4096,
         "status": "running-owner-reported",
         "performanceBenefitEstablished": false
       },
@@ -7498,7 +8506,50 @@
         "Country lane14readyrows/76exactbindings/15assertions/7tests avoids stale repeat-reviews; zero country closures. Proposed native validators never admitted; payload-specific permission remains held after initial+one materially supported retry, no further retry.",
         "Rights map15edges/4obligationdispositions/39staticchecks distinguishes root dispatch accountability from exact receipt-custody execution ownership; do not repeat accepted tests/broadsource search.",
         "Source-only throughput-tooling report identifies exact-result reuse/single-flight and model-compatible Groq prefix caching. Not adopted or dispatched solely for benchmarking; require real eligible task, actualcached_tokens, unique accepted artifacts and end-to-end rework/latency."
-      ]
-    }
+      ],
+      "completedRun012": {
+        "job": "01a1812e-f9ba-c52f-db3d-0e0f941c1699",
+        "checkpointFrom": 2734,
+        "checkpointTo": 5835,
+        "resourcesAdded": 3101000,
+        "wallSeconds": 1440.4,
+        "resourcesPerSecondApprox": 2153,
+        "peakDescendants": 36,
+        "parentRSSGB": 3.309,
+        "parentVMGB": 3.481,
+        "summedRSSGB": 5.45,
+        "averageAccountedCPU": 1.063,
+        "status": "expected-pause-cleanup-verified",
+        "limits": "Separate hostactivity/segment variations; summedRSS sampling and reapedCPU caveats retained; not controlledspeedup or physicalIO proof."
+      },
+      "diskAdmissionCorrection": {
+        "basis": "Clean proof lock after012cleanup;1000unique files,29625663488alreadyallocated/logicalbytes; subtract uniqueinode min(logical,allocated), not inputpackages, holes or unallocated spool reservations.",
+        "remainingGrowthBytes": 34865954816,
+        "totalScratchCapGiB": 60,
+        "sharedReserveGiB": 70,
+        "extraBoundedMarginMiB": 64,
+        "formula": "60GiB - alreadyAllocatedOwnedScratch +64MiB",
+        "noDeletionOrCapRelaxation": true
+      },
+      "publicationReadiness": {
+        "state": "Native reviewed seed/publisher deployed; actualfixedsite ready",
+        "job": "01a18138-a3cb-a6e8-ca68-56ef86e15ac8",
+        "durationMs": 1173,
+        "queueToStartMs": 6.276,
+        "memPeakKB": 32560,
+        "actualOverlapWithCorpusSeconds": 1.173,
+        "remainingDependency": "Actualqualifiedproof/assembly, not access/setup/capacity",
+        "dispatchGapFixed": "Queued message had not activated idle reviewer; existingowner followup_task activated existingreviewer. No duplicate and no actualslotlimit."
+      }
+    },
+    "latestUserOperatingPrinciple": {
+      "delivery": "Finite final-result-first delivery: finish defined authorized ledger deliverables to stable result, then assess; optimization/research supports delivery rather than creating setup backlog. Action genuinely ready work, reuse accepted results, avoid unnecessary broad gates and conservative ramps, preserve exactholds/no falseclosure.",
+      "capacityNotification": "Notify root promptly if genuinely ready authorized work is constrained by exhausted7reasoning slots includingroot;64Windmillworkers/256subprocesses are distinct. No heavy fallback into root or unlimitedcapacity claim; no everyfullpoolalert.",
+      "reminderUpdatedAtUTC": "2026-10-28T06:30:07.156239+00:00",
+      "reminderSchedulePreserved": true,
+      "memoryCapacityPreferenceVerifiedAtUTC": "2026-10-28T06:27:47.379263+00:00",
+      "memoryDeliveryPreferenceVerifiedAtUTC": "2026-10-28T06:38:20.560208+00:00"
+    },
+    "latestFiniteClosure": "18assigned finite country/rights deliverables now closed in current allocation; historical89 and all parentholds preserved. Exact dependency-input dispatch plan recorded; no nativejob retry or optionalsharing request."
   }
 }
