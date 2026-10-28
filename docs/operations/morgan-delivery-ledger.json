@@ -8767,7 +8767,7 @@
   },
   "continuousEfficiencyReview": {
     "schema": "offmenu-continuous-efficiency-review/1",
-    "asOfUTC": "2026-10-28T07:00:00Z",
+    "asOfUTC": "2026-10-28T07:18:00Z",
     "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
     "state": "active-owned-ongoing",
     "currentOwner": "audit_production_efficiency",
@@ -8814,7 +8814,7 @@
         "provider free eligibility/quota/reset metadata and quality",
         "source/security holds"
       ],
-      "nextMilestone": "Corpus013 checkpoint/completion at approximately07:14:40Z or earlier phase boundary; named custody inputs or actual ready-dispatch changes. No repeated accepted checks.",
+      "nextMilestone": "Corpus014 checkpoint/completion at approximately07:39:52Z or earlier phase boundary; actualNorthStar dispatch/readydependency or capacity change. Continue owner-driven observation, no busy polling.",
       "cadence": "Milestone-driven bounded checks; remain owner while authorized production is active. Wait for meaningful milestones, not tight busy polling or arbitrary saturation.",
       "stop": "User cancels; authorized production/backlog completes; or explicit durable-owner handover. Pause only affected dependent action at an authorization/access boundary.",
       "routineTuning": "Send safe same-scope corrections through the existing execution owner; do not seize its writer, duplicate production or change scope/design."
@@ -8931,10 +8931,10 @@
         "runtimeStability": "012 completed1440.4seconds without priorcacheMemoryError;3.101Mresources added, expectedpause/cleanupverified. No causal cache-speedup assertion."
       },
       "activeRun": {
-        "run": "013",
-        "job": "01a18146-732a-3df6-e197-fdd79179aec0",
-        "startedAtUTC": "2026-10-28T06:50:40Z",
-        "naturalBoundaryApproxUTC": "2026-10-28T07:14:40Z",
+        "run": "014",
+        "job": "01a1815d-8265-a182-c98d-8271c92c939a",
+        "startedAtUTC": "2026-10-28T07:15:52Z",
+        "naturalBoundaryApproxUTC": "2026-10-28T07:39:52Z",
         "workers": 64,
         "workerMiB": 256,
         "cpuReservation": 19,
@@ -8965,8 +8965,8 @@
         "limits": "Separate hostactivity/segment variations; summedRSS sampling and reapedCPU caveats retained; not controlledspeedup or physicalIO proof."
       },
       "diskAdmissionCorrection": {
-        "basis": "Clean proof lock after012cleanup;1000unique files,29625663488alreadyallocated/logicalbytes; subtract uniqueinode min(logical,allocated), not inputpackages, holes or unallocated spool reservations.",
-        "remainingGrowthBytes": 34865954816,
+        "basis": "Clean boundary; unique allocated owned scratch34661523456bytes; total60GiBscratch cap and70GiBshared reserve unchanged.",
+        "remainingGrowthBytes": 29830094848,
         "totalScratchCapGiB": 60,
         "sharedReserveGiB": 70,
         "extraBoundedMarginMiB": 64,
@@ -8982,6 +8982,26 @@
         "actualOverlapWithCorpusSeconds": 1.173,
         "remainingDependency": "Actualqualifiedproof/assembly, not access/setup/capacity",
         "dispatchGapFixed": "Queued message had not activated idle reviewer; existingowner followup_task activated existingreviewer. No duplicate and no actualslotlimit."
+      },
+      "completedRun013": {
+        "job": "01a18146-732a-3df6-e197-fdd79179aec0",
+        "checkpointFrom": 5835,
+        "checkpointTo": 8890,
+        "resourcesAdded": 3055000,
+        "wallSeconds": 1440.43,
+        "resourcesPerSecondApprox": 2121,
+        "peakDescendants": 33,
+        "parentRSSGB": 3.308,
+        "summedRSSGB": 5.294,
+        "averageAccountedCPU": 1.059,
+        "status": "expected-pause-cleanup-verified",
+        "source": "Existing assessor terminal receipt ACTUAL-HEADROOM-013-EXPECTED-PAUSE.json; no repeated execution.",
+        "limit": "Stable v5; no causal cache-speedup or physicalIO inference; finalproof notyetwritten."
+      },
+      "orchestrationFinding": {
+        "finding": "About71seconds between013terminal and014launch versus1440seconds usefulrun; potential avoidable handoff overhead, not application failure.",
+        "action": "Existing owner asked to reuse frozen plans, batch only required fresh cleanup/disk/admission metadata, resume then write nonblocking receipts.",
+        "constraint": "No new controller/setup project, stress, duplicate tests or skipped required safety/admission checks. Prioritize finishing proof over speculative optimization."
       }
     },
     "latestUserOperatingPrinciple": {
@@ -8992,7 +9012,17 @@
       "memoryCapacityPreferenceVerifiedAtUTC": "2026-10-28T06:27:47.379263+00:00",
       "memoryDeliveryPreferenceVerifiedAtUTC": "2026-10-28T06:38:20.560208+00:00"
     },
-    "latestFiniteClosure": "24assigned finite deliverables closed:14country receipts,4rights maps,6existing-product audits/fixes delivered194. Current89allocation has no stale ready rows among those24; broader parent/source/policy/operator/receipt dependencies remain. No repeat tests/build/deploy were performed for this reconciliation."
+    "latestFiniteClosure": "24assigned finite deliverables closed:14country receipts,4rights maps,6existing-product audits/fixes delivered194. Current89allocation has no stale ready rows among those24; broader parent/source/policy/operator/receipt dependencies remain. No repeat tests/build/deploy were performed for this reconciliation.",
+    "latestCapacityObservation": {
+      "atUTC": "2026-10-28T07:13:22Z",
+      "activeReasoningAgentsIncludingRoot": 6,
+      "reasoningSlotCap": 7,
+      "availableSlots": 1,
+      "actualReadyWorkBlockedBySlots": false,
+      "nativeRunningJobs": 1,
+      "nativeJob": "corpus013 at observation; since replaced by014",
+      "providerState": "Lastverifiedregistry:Groq/Gemini publicdevelopment+Cohere publicdocs qualified; no activeproviderinference. Mistral/OpenRouter/Z.ai require429resetmetadata; remainingroutesdeferred/unqualified. No freshcall/quota availability inferred."
+    }
   },
   "priorStatusBeforeProduction194Reconciliation": "full-production-allocated-corpus-active-product193-served",
   "statusAsOfUTC": "2026-10-28T07:00:00Z"
