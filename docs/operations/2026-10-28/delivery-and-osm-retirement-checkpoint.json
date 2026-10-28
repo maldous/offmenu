@@ -1,6 +1,6 @@
 {
   "schema": "offmenu-efficiency-delivery-checkpoint/1",
-  "asOfUTC": "2026-10-28T11:02:30Z",
+  "asOfUTC": "2026-10-28T11:29:30Z",
   "globalProof": {
     "job": "01a181da-ce15-9f85-f2bb-f1968549da9b",
     "status": "completed-and-clean",
@@ -227,15 +227,29 @@
       "result": "netlify_http_429; accepted partial uploads retained"
     },
     "currentRun": {
+      "job": "01a1823a-6636-466a-f02c-cc9b7a5f74af",
+      "status": "running-first-accepted-PUT-observed",
+      "observedUTC": "2026-10-28T11:23:57Z",
+      "requiredDigests": 23983,
+      "acceptedDigestsObserved": 1,
+      "acceptedBytesObserved": 151607,
+      "firstAcceptanceElapsedSeconds": 2.7,
+      "preCommandChannelCode2RetriesObserved": 4,
+      "uploadFailureEventObserved": false,
+      "sustainedRateEstablished": false
+    },
+    "channelSourceSHA256": "1d0af37859aeac37138bc3fe781f31623780151fd82435f803256662aaea29cf",
+    "channelReview": "Same Foo reviewer approved supplied narrow source with five focused mocks. Frozen full-file hash binding/readback by publisher; 74 local author tests, not independently rerun. Retry only known unexecuted channel-open code2, bounded seven attempts; no administrative-denial or post-dispatch retries.",
+    "previousRun": {
       "job": "01a18225-ea62-1fb2-9021-9c44602be268",
       "sourceDeployedReadbackUTC": "2026-10-28T10:54:00Z",
       "lastObservedUTC": "2026-10-28T10:58:00Z",
-      "status": "running-provider-preparation",
+      "status": "terminal-canceled-before-single-resume",
       "observedPeakKiB": 207104,
       "acceptedDigestCountersObserved": false
     },
-    "channelSourceSHA256": "1d0af37859aeac37138bc3fe781f31623780151fd82435f803256662aaea29cf",
-    "channelReview": "Same Foo reviewer approved supplied narrow source with five focused mocks. Frozen full-file hash binding/readback by publisher; 74 local author tests, not independently rerun. Retry only known unexecuted channel-open code2, bounded seven attempts; no administrative-denial or post-dispatch retries."
+    "boundedSchedulerSourceSHA256": "c245b44f8317dc607c2c97043d2030c12d4633979090a422fb4bb67ecaeeda9b",
+    "boundedSchedulerReview": "Same reviewer approved narrow supplied source with two focused mocks; exact full-byte binding/readback remains publisher,76 author tests not independently rerun. At most32 submitted operations, observe first failure before further refill, drain running tasks; first accepted counter emitted."
   },
   "basis": {
     "phase1": {
@@ -249,7 +263,7 @@
     "phase2": {
       "job": "01a1820e-077e-23ee-931e-75b7500cffdb",
       "admittedAtUTC": "2026-10-28T10:28:40Z",
-      "state": "restore001-clean-terminal; SQL-only-continuation-platform-held",
+      "state": "full-restoration-and-final-SQL-proof-complete; finite-caller-proof-pending",
       "workers": 4,
       "cpuReservation": 4,
       "memoryGiB": 2,
@@ -264,8 +278,21 @@
       "materializedBasisTargets": 46795344,
       "sqlImportedShards": 3156,
       "totalShards": 9797,
-      "finalManifestWritten": false,
+      "finalManifestWritten": true,
       "continuation": {
+        "job": "01a18238-74d1-6d01-a239-881e03305389",
+        "admittedAtUTC": "2026-10-28T11:15:00Z",
+        "terminalAtUTC": "2026-10-28T11:23:07Z",
+        "status": "succeeded-exit0-child-tree-gone",
+        "specificUserApprovalUTC": "2026-10-28T11:13:59Z",
+        "cpu": 1,
+        "workers": 1,
+        "memoryGiB": 2,
+        "totalOutputGiB": 21,
+        "sharedReserveGiB": 70,
+        "releasedGrowthBytes": 6241684497
+      },
+      "previousContinuation": {
         "attemptedUTC": "2026-10-28T11:00:00Z",
         "job": null,
         "executed": false,
@@ -277,7 +304,30 @@
         "sharedReserveGiB": 70,
         "freeBytesOwnerReportedApprox": 186525000000,
         "capacityBlocked": false
+      },
+      "final": {
+        "packetsAndLocators": 9796656,
+        "sourceProfiles": 2924709,
+        "basisTargets": 46795344,
+        "unmatched": 0,
+        "digestMismatches": 0,
+        "ownedLogicalBytes": 18032733156,
+        "freeGBApprox": 184.791,
+        "acceptedOrServedRowsClaimed": 0,
+        "manifestPath": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/north-star-derived-20261028/basis-restoration-v1/manifest.json",
+        "manifestBytes": 1406971,
+        "manifestSHA256": "3520dff24e7b96635fd3d8f8cfa60664d03d5bd65709b547059cee10b306e1a9",
+        "scope": "Source-literal candidate basis only; not upstream-verified, canonicalized, admitted or served."
       }
+    },
+    "callerProof": {
+      "job": "01a18243-e936-376b-34dc-054a1b8bd1e3",
+      "status": "admitted-running-owner-confirmed",
+      "cpu": 1,
+      "memoryMiB": 512,
+      "metadataOutputMiB": 64,
+      "corpusWrites": false,
+      "observedUTC": "2026-10-28T11:29:00Z"
     }
   },
   "tooling": {
@@ -303,6 +353,44 @@
       "schemaNotSemanticAcceptance": true,
       "cacheActivated": false,
       "deployed": false
+    },
+    "terminalFilter": {
+      "state": "independently-reviewed-and-adopted-opt-in-local-tool",
+      "sourceSHA256": "c8792e91768176c10574d8b13dc2e9dc6f7ddeb9b54e0be81f4330a8a4e950cc",
+      "testSHA256": "f20fd311fb30c611b55603f2dfefb3641f0c9f0125ebf31f0aafbda4be1d5873",
+      "reviewSHA256": "75f88c3a12e0923f443fa2e6443c0fbad85e0bf69393e2eaf9ec173402cc36a2",
+      "adoptionTurn": "01a18242-fb46-7208-be34-23e593260ae0",
+      "releasePath": "/home/user/src/offmenu-local-tools/terminal-filter/r2/",
+      "invocation": "python /home/user/src/offmenu-local-tools/terminal-filter/r2/terminal_filter.py saved ai-reuse-r2 --max-bytes 1536",
+      "receipts": [
+        "ADOPTION.json",
+        "READBACK.json",
+        "RELEASE-INVENTORY.json"
+      ],
+      "scope": "Explicit named non-sensitive local development output only; no global hook, provider call, upload or production integration.",
+      "originalBytes": 2591,
+      "summaryBytes": 785,
+      "fullPrivateOriginalRetained": true,
+      "existingIdenticalReceiptReused": true,
+      "newUniqueProductArtifactClaimed": false,
+      "tokenOrProductionSavingsClaimed": false,
+      "authorFocusedTests": 11,
+      "independentCorrectionEvidence": "All10 inventory entries and both patches matched; two regression methods/four subcases preserved exit7/cancellation143 through persistence failures; extra child0+tool-failure check returns125, exact binary bytes retained and no fabricated finalized receipt.",
+      "fixedDefect": "TF-R1: known child status lost if finalization failed; now preserved while tool failure is explicit."
+    },
+    "sourceCustody": {
+      "status": "frozen-local-publication-platform-held",
+      "bundleBytes": 36863,
+      "bundleSHA256": "1a7cd9fa05dbc8352c4a13d7b9b1ae4cc5a2cf0b17f8898103067e6b7464d039",
+      "filesPlanned": 23,
+      "independentPreparation": "All20 payload hashes and both manifests matched;22 regular UTF-8 bundle members plus independent receipt, no links/traversal/duplicates/credentials/raw datasets.",
+      "repository": "maldous/offmenu",
+      "privateRepositoryVerified": true,
+      "existingPushPermissionVerified": true,
+      "branch": "integration/reviewed-local-source-custody-20261027",
+      "destinationPrefix": "dev/reviewed-local-source-custody-20261027/ai-efficiency-tooling-20261028/",
+      "denial": "Initial upload and one materially supported same-action retry denied before execution; exact specific user confirmation pending. No commit/ref mutation or alternate route.",
+      "terminalFilterIncluded": false
     }
   },
   "antigravity": {
@@ -374,5 +462,5 @@
     "timezone": "Australia/Melbourne"
   },
   "counting": "All89 historical allocation rows retained;31 prior finite assigned substeps remain counted. OSM is a separately tracked deferred source, not a90th runnable job.",
-  "previousAsOfUTC": "2026-10-28T10:41:30Z"
+  "previousAsOfUTC": "2026-10-28T11:02:30Z"
 }
