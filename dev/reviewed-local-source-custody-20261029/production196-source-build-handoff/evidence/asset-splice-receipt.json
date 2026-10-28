@@ -1,0 +1,8 @@
+{
+  "baseSha256": "9a9a15c6da6c12e98c2b9683839da509060cb21e9974b6a562f78d5ebdfddd7d",
+  "candidateSha256": "7eca830edf22cca30ddb23e53247ed1723d853b8d95a29c2e19dd981457c091d",
+  "candidateBytes": 2511912,
+  "appSha256": "e510c7a4cc6f418cbda6d984e0ff7de90f0d7b85d350640b9f624fd9b818c057",
+  "appBytes": 468574,
+  "serverCodeAndOtherAssetsInvariant": true
+}

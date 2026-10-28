@@ -1,0 +1,11 @@
+const fs=require('fs'),a=require('../offmenu-production-fourfix195-20261029/toolchain/node_modules/acorn'),crypto=require('crypto'),assert=require('assert/strict');
+const p=__dirname+'/deployed-application.mjs',s=fs.readFileSync(p,'utf8'),ast=a.parse(s,{ecmaVersion:'latest',sourceType:'module'}),fn=ast.body.find(n=>n.type==='FunctionDeclaration'&&n.id.name==='W'),before=s.slice(fn.start,fn.end);
+const marker='return A.cookBatchId&&';assert.equal(before.split(marker).length-1,1);
+const early='if(A?.foundationSourceReference||A?.sourceIdentityReference)return _offmenuValidateSourceReferenceStock(A);';assert.equal(before.split(early).length-1,1);
+const after=before.replace(early,'if(A?.foundationSourceReference||A?.sourceIdentityReference){const validated=_offmenuValidateSourceReferenceStock(A);if(A.nutritionSelection)validated.nutritionSelection=__offmenuLotNutrition196.copyLotNutritionSelection(A.nutritionSelection);return validated;}').replace(marker,'if(A.nutritionSelection)I.nutritionSelection=__offmenuLotNutrition196.copyLotNutritionSelection(A.nutritionSelection);'+marker),helper=fs.readFileSync(__dirname+'/server-lot-validator.js','utf8');
+assert(!s.includes('__offmenuLotNutrition196'));const out=s.slice(0,fn.start)+helper+'\n'+after+s.slice(fn.end);
+a.parse(out,{ecmaVersion:'latest',sourceType:'module'});
+assert.equal(out.replace(helper+'\n','').replace(after,before),s);
+fs.writeFileSync(p,out);fs.writeFileSync(__dirname+'/server-lot-before.js',before);fs.writeFileSync(__dirname+'/server-lot-after.js',after);
+const sha=x=>crypto.createHash('sha256').update(x).digest('hex');const receipt={beforeSha256:sha(s),afterSha256:sha(out),moduleBytes:Buffer.byteLength(out),helperSHA256:sha(helper),onlyValidatorInjectionAndLotPreservation:true};
+fs.writeFileSync(__dirname+'/server-parity-receipt.json',JSON.stringify(receipt,null,2));console.log(receipt);

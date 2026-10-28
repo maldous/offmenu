@@ -1,0 +1,226 @@
+--- a/public/app.js
++++ b/public/app.js
+@@ -1,3 +1,4 @@
++import {createLotNutritionSelection} from './lot-nutrition.js';
+ import {loadPriceObservations,renderSavedPriceObservations} from './saved-price-observations.js';
+ import {PUBLIC_SCANNER_HANDOFF,SCANNER_COMPLETION,parsePublicScannerHandoff,publicHandoffFingerprint,validateScannerHandoffReceipts} from './scanner-kitchen-handoff.js';
+ import {localizedField,localizedLotName,displayName,multilingualSearchText,normalizeSearchText,showLocalized,showUserText} from './content-locale.js';
+@@ -287,7 +288,7 @@
+ $('developer-open').onclick=()=>{setView('integrations');$('developer-details').open=true;};
+ $('clear-local').onclick=async()=>{if(lifecycleFixture){msg('Use a new fixture run URL for a fresh synthetic kitchen. Shared storage is never inspected or cleared.');return;}if(!confirm(t('Clear this device’s account copy? Cloud data stays available. Export pending changes first.')))return;for(const key of Object.keys(localStorage))if([KEY,PRODUCTS,RECIPES,PROFILE,SELECTIONS].some(prefix=>key===prefix||key.startsWith(prefix+'-')))localStorage.removeItem(key);await clearPending(KEY);location.reload();};
+ const insights=setupInsights({getData:()=>({profile,recipes,inventory:lots,products,date:$('plan-date').value||today(),usePantry:$('use-pantry').checked}),persist:persistProfile,download:fileDownload,today,getIdentity:()=>requestIdentity,request:boundFetch});
+-const dataUi=lifecycleFixture?{reset(){},async render(){}}:setupData({getData:()=>({profile,inventory:lots}),getUser:()=>user,isDemo:()=>demoMode,refreshSession,persist:persistProfile,download:fileDownload,addRecipe:record=>{if(!sharing.canWrite())throw Error(t('Open an editable kitchen before adding recipes.'));const imported=recipeForReview(record);recipes=validateRecipes([...new Map([...recipes,imported].map(r=>[r.id,r])).values()]);localStorage.setItem(RECIPES,JSON.stringify(recipes));markDirty();findMeals();},applyNutrition:(lot,record,nutriments)=>{const p=products[lot.barcode]||{name:lot.name,quantity:lot.quantity+' '+lot.unit,product_quantity:lot.quantity,product_quantity_unit:lot.unit};products[lot.barcode]={...p,nutriments,nutritionProvenance:{...record.provenance,nutrientProfile:{id:record.id,basis:structuredClone(record.data.basis),status:record.status??record.data.status??null}}};localStorage.setItem(PRODUCTS,JSON.stringify(products));markDirty();findMeals();}});
++const dataUi=lifecycleFixture?{reset(){},async render(){}}:setupData({getData:()=>({profile,inventory:lots}),getUser:()=>user,isDemo:()=>demoMode,refreshSession,persist:persistProfile,download:fileDownload,addRecipe:record=>{if(!sharing.canWrite())throw Error(t('Open an editable kitchen before adding recipes.'));const imported=recipeForReview(record);recipes=validateRecipes([...new Map([...recipes,imported].map(r=>[r.id,r])).values()]);localStorage.setItem(RECIPES,JSON.stringify(recipes));markDirty();findMeals();},applyNutrition:(lot,record,nutriments)=>{if(!sharing.canWrite())throw Error(t('Open an editable kitchen before assigning nutrition.'));if(lots.find(current=>current.id===lot.id)!==lot)throw Error(t('Inventory item changed. Select the current pantry item.'));const selected=createLotNutritionSelection(lot,record,nutriments,{confirmed:true});save(lots.map(current=>current===lot?validateLot({...current,nutritionSelection:selected}):current));pantry();findMeals();}});
+ for(const option of $('country').options){if(option.value){const clone=option.cloneNode(true);$('source-country').append(clone);}}
+ const freshness=setupFreshness({getData:()=>({profile,inventory:lots}),save:next=>{save(next);pantry();findMeals();},persist:persistProfile,today,startWaste:(lot)=>{setView('checkout');setMode('waste');setArea(lot.location?.area||'Unassigned');$('shelf-name').value=lot.location?.shelf||'Unsorted';$('checkout-setup').hidden=false;$('checkout-complete').hidden=true;}});
+ await init();pendingScannerImport=readScannerImport();if(user&&!dirty&&!localStorage.getItem(KEY+'-shared-session'))try{await loadCloud(false);}catch(e){setLocalizedText($('sync-status'),e.message);}
+--- a/public/model.js
++++ b/public/model.js
+@@ -2,6 +2,7 @@
+ import {t} from './i18n.js';
+ import {canonicalIngredient,measuredIngredient} from './ingredients.js';
+ import {validSourceObservationReference as validV2Reference} from './scanner-identity-v2.js';
++import {copyLotNutritionSelection} from './lot-nutrition.js';
+ export const normalize = canonicalIngredient;
+ export function validSourceObservationReference(ref,barcode){
+  if(ref?.schema==='offmenu-identifier-observation/2')return validV2Reference(ref,barcode);
+@@ -23,6 +24,7 @@
+   if(value.sourceObservationReference){if(!validSourceObservationReference(value.sourceObservationReference,lot.barcode))throw Error('Retained source reference is incomplete or does not match the barcode.');lot.sourceObservationReference=value.sourceObservationReference;}
+   if(value.publicProductReference)lot.publicProductReference=copyPublicProductReference(value.publicProductReference,lot.barcode);
+   if(typeof value.needsReview==='boolean')lot.needsReview=value.needsReview;
++  if(value.nutritionSelection)lot.nutritionSelection=copyLotNutritionSelection(value.nutritionSelection);
+   if(value.freshnessReminder){if(!/^\d{4}-\d{2}-\d{2}$/.test(value.freshnessReminder)||!Number.isFinite(Date.parse(value.freshnessReminder)))throw Error(t('Invalid freshness reminder.'));lot.freshnessReminder=value.freshnessReminder;if(Number.isInteger(value.freshnessDays)&&value.freshnessDays>0&&value.freshnessDays<=3650)lot.freshnessDays=value.freshnessDays;lot.freshnessNote=typeof value.freshnessNote==='string'?value.freshnessNote.slice(0,200):'';}
+   if(value.discardQuantity!=null){if(!Number.isFinite(value.discardQuantity)||value.discardQuantity<=0||value.discardQuantity>lot.quantity)throw Error(t('Invalid discard amount.'));lot.discardQuantity=value.discardQuantity;}
+   if(value.cookBatchId)lot.cookBatchId=String(value.cookBatchId).slice(0,100);
+--- a/public/menu-model.js
++++ b/public/menu-model.js
+@@ -1,4 +1,5 @@
+ import {normalize,eligibleStock} from './model.js';
++import {nutritionForLot} from './lot-nutrition.js';
+ import {measuredIngredient} from './ingredients.js';
+ export const NUTRIENTS=[['energy-kcal_100g','Energy','kcal'],['proteins_100g','Protein','g'],['carbohydrates_100g','Carbs','g'],['fat_100g','Fat','g'],['sugars_100g','Sugars','g'],['salt_100g','Salt','g'],['sodium_mg_100g','Sodium','mg'],['saturated-fat_100g','Saturated fat','g'],['fiber_100g','Fibre','g'],['calcium_100g','Calcium','mg'],['iron_100g','Iron','mg'],['potassium_100g','Potassium','mg'],['vitamin-c_100g','Vitamin C','mg']];
+ export function nutrientValue(n,key){if(key==='sodium_mg_100g')return Number.isFinite(n?.sodium_100g)?n.sodium_100g*1000:Number.isFinite(n?.salt_100g)?n.salt_100g*400:undefined;if(['calcium_100g','iron_100g','potassium_100g','vitamin-c_100g'].includes(key))return Number.isFinite(n?.[key])?n[key]*1000:undefined;return n?.[key];}
+@@ -38,7 +39,7 @@
+     if(!eligibleStock(stock,meal.date)||normalize(stock.ingredient)!==normalize(ingredient.ingredient)||stock.unit!==ingredient.unit)continue;
+     const take=Math.min(stock.quantity,unallocated);
+     if(take>0){
+-     const product=products[stock.barcode];
++     const product=nutritionForLot(stock,products);
+      const compatible=nutrientBasisCompatible(product,stock.unit);
+      for(const [nutrient]of NUTRIENTS){
+       const total=totals[nutrient],value=nutrientValue(product?.nutriments,nutrient);
+--- a/public/cooking-model.js
++++ b/public/cooking-model.js
+@@ -1,9 +1,10 @@
+ import {t} from './i18n.js';
++import {nutritionForLot} from './lot-nutrition.js';
+ import {normalize,validateLot} from './model.js';
+ import {quantified} from './ingredients.js';
+ import {NUTRIENTS,nutrientValue,nutrientBasisCompatible} from './menu-model.js';
+ export function allocateIngredients(recipe,inventory,servings,date){if(!quantified(recipe)||!Number.isFinite(servings)||servings<=0)throw Error(t('This recipe needs complete quantities before cooking.'));const stock=inventory.map(l=>({...l})),deductions=[],missing=[];for(const i of recipe.ingredients){if(i.optional)continue;let remaining=i.quantity*servings/recipe.servings;for(const lot of [...stock].sort((a,b)=>(a.expires||'9999').localeCompare(b.expires||'9999')||a.id.localeCompare(b.id))){if(lot.needsReview||lot.quantity<=0||lot.expires&&lot.expires<date||normalize(lot.ingredient)!==normalize(i.ingredient)||lot.unit!==i.unit)continue;const quantity=Math.min(lot.quantity,remaining);if(quantity>0){deductions.push({lotId:lot.id,barcode:lot.barcode,ingredient:i.ingredient,unit:lot.unit,quantity,original:inventory.find(x=>x.id===lot.id)});lot.quantity-=quantity;remaining-=quantity;}if(remaining<1e-7)break;}if(remaining>1e-7)missing.push({ingredient:i.ingredient,unit:i.unit,quantity:remaining});}return {inventory:stock.filter(l=>l.quantity>1e-7),deductions,missing};}
+-export function cookMeal({recipe,inventory,products,servings,date,planId='',batches=[],mutationId=crypto.randomUUID()}){const existing=batches.find(b=>!b.undone&&(b.id===mutationId||planId&&b.planId===planId));if(existing)return {inventory,batch:existing,duplicate:true};const allocated=allocateIngredients(recipe,inventory,servings,date);if(allocated.missing.length)throw Error(t("Add or correct these ingredients first: {v0}", {v0:(allocated.missing.map(i=>i.ingredient+' '+Number(i.quantity.toFixed(3))+' '+i.unit).join(', '))}));const totals=Object.fromEntries(NUTRIENTS.map(([k])=>[k,{value:0,known:0,total:0}]));for(const d of allocated.deductions){const p=products[d.barcode];for(const [k]of NUTRIENTS){const n=totals[k];n.total++;const value=nutrientValue(p?.nutriments,k);if(nutrientBasisCompatible(p,d.unit)&&Number.isFinite(value)){n.value+=value*d.quantity/100;n.known++;}}}const batch={id:mutationId,planId,recipeId:recipe.id,title:recipe.title,date,createdAt:new Date().toISOString(),servings,remaining:servings,allocations:allocated.deductions,totals,events:[],undone:false};const lot=validateLot({id:'cooked-'+batch.id,barcode:'local:'+batch.id,name:recipe.title+' · cooked',ingredient:'cooked:'+batch.id,quantity:servings,unit:'count',location:{area:'Fridge',shelf:'Cooked meals'},cookBatchId:batch.id,amountBasis:'manual',needsReview:false});return {inventory:[...allocated.inventory,lot],batch,duplicate:false};}
++export function cookMeal({recipe,inventory,products,servings,date,planId='',batches=[],mutationId=crypto.randomUUID()}){const existing=batches.find(b=>!b.undone&&(b.id===mutationId||planId&&b.planId===planId));if(existing)return {inventory,batch:existing,duplicate:true};const allocated=allocateIngredients(recipe,inventory,servings,date);if(allocated.missing.length)throw Error(t("Add or correct these ingredients first: {v0}", {v0:(allocated.missing.map(i=>i.ingredient+' '+Number(i.quantity.toFixed(3))+' '+i.unit).join(', '))}));const totals=Object.fromEntries(NUTRIENTS.map(([k])=>[k,{value:0,known:0,total:0}]));for(const d of allocated.deductions){const p=nutritionForLot(d.original,products);for(const [k]of NUTRIENTS){const n=totals[k];n.total++;const value=nutrientValue(p?.nutriments,k);if(nutrientBasisCompatible(p,d.unit)&&Number.isFinite(value)){n.value+=value*d.quantity/100;n.known++;}}}const batch={id:mutationId,planId,recipeId:recipe.id,title:recipe.title,date,createdAt:new Date().toISOString(),servings,remaining:servings,allocations:allocated.deductions,totals,events:[],undone:false};const lot=validateLot({id:'cooked-'+batch.id,barcode:'local:'+batch.id,name:recipe.title+' · cooked',ingredient:'cooked:'+batch.id,quantity:servings,unit:'count',location:{area:'Fridge',shelf:'Cooked meals'},cookBatchId:batch.id,amountBasis:'manual',needsReview:false});return {inventory:[...allocated.inventory,lot],batch,duplicate:false};}
+ export function serveBatch({batch,inventory,portions,completion=null,remainder='unspecified',memberId='',date,slot='Dinner',eventId=crypto.randomUUID()}){if(batch.undone)throw Error(t('This cooking batch was undone.'));const existing=batch.events.find(e=>e.id===eventId);if(existing){const eaten=completion==null?null:portions*completion/100;if(existing.portions!==portions||existing.eaten!==eaten||existing.remainder!==remainder||existing.memberId!==memberId||existing.date!==date||existing.slot!==slot)throw Error(t('Serving event changed. Reconcile the existing serving before retrying.'));return {batch,inventory,duplicate:true};}if(!Number.isFinite(portions)||portions<=0||portions>batch.remaining+1e-7)throw Error(t('Choose portions within the cooked amount remaining.'));if(completion!=null&&(!Number.isFinite(completion)||completion<0||completion>100))throw Error(t('Completion must be 0–100%.'));const available=inventory.filter(l=>l.cookBatchId===batch.id);if(Math.abs(available.reduce((n,l)=>n+l.quantity,0)-batch.remaining)>1e-7)throw Error(t('Cooked stock changed. Reconcile the batch before serving.'));if(!['saved','discarded','shared','unspecified'].includes(remainder))throw Error(t('Choose a valid remainder action'));const eaten=completion==null?null:portions*completion/100,left=completion==null?0:portions-eaten;const saved=remainder==='saved'?left:0,draw=portions-saved;const totals=Object.fromEntries(Object.entries(batch.totals).map(([k,n])=>[k,{...n,value:eaten==null?0:n.value*eaten/batch.servings,known:eaten==null?0:n.known}]));const event={id:eventId,portions,eaten,saved,discarded:remainder==='discarded'?left:0,shared:remainder==='shared'?left:0,unknownRemainder:completion==null?portions:remainder==='unspecified'?left:0,draw,memberId,date,slot,remainder};const remaining=Math.max(0,batch.remaining-draw),next={...batch,remaining,events:[...batch.events,event]},nextInventory=drawCookedStock(inventory,batch.id,draw);const log={id:eventId,batchId:batch.id,recipeId:batch.recipeId,title:batch.title,date,slot,memberId,servings:eaten??0,servedPortions:portions,completion,intakeKnown:completion!==null,leftovers:remainder,createdAt:new Date().toISOString(),source:'Actual cooking lots · homogeneous-dish estimate'+(completion==null?' · completion unknown':''),totals,unresolved:0,note:completion==null?'Intake quantity is unknown. Serving recorded; no zero-intake claim.':'Based on actual allocated ingredient lots; mixed plates may need manual correction.'};return {batch:next,inventory:nextInventory,log,duplicate:false};}
+ function drawCookedStock(inventory,id,draw){return inventory.flatMap(l=>{if(l.cookBatchId!==id)return [l];const used=Math.min(l.quantity,draw);draw-=used;return l.quantity-used>1e-7?[{...l,quantity:l.quantity-used}]:[];});}
+ export function reconcileCookedStock(batches,inventory,{date,reason='inventory-removal'}={}){return batches.map(b=>{if(b.undone)return b;const remaining=inventory.filter(l=>l.cookBatchId===b.id).reduce((n,l)=>n+l.quantity,0);if(remaining>b.remaining+1e-7)throw Error(t('Cooked portions cannot increase without a new batch'));if(remaining>=b.remaining-1e-7)return b;return {...b,remaining,events:[...b.events,{id:crypto.randomUUID(),type:'inventory-removal',quantity:b.remaining-remaining,draw:b.remaining-remaining,reason,date}]};});}
+--- a/public/unified-data.js
++++ b/public/unified-data.js
+@@ -29,6 +29,6 @@
+ export function parseCSV(text){const rows=[];let row=[],cell='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}else if(c===','&&!quoted){row.push(cell);cell='';}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(x=>x!==''))rows.push(row);row=[];cell='';}else cell+=c;}if(quoted)throw Error(t('Unclosed CSV quote.'));row.push(cell);if(row.some(x=>x!==''))rows.push(row);return rows;}
+ export function normalizeCSV(text,source,mapping){const priceIds=new Set();const [headers,...rows]=parseCSV(text);if(!headers)throw Error(t('CSV is empty.'));const index=column=>headers.indexOf(column),read=(row,column)=>column?row[index(column)]??'':'';return rows.flatMap((row,i)=>{const name=read(row,mapping.name).trim();if(!name)return [];const barcode=read(row,mapping.barcode).trim(),id=read(row,mapping.id)||barcode||String(i+1),countries=mapping.country?[mapping.country]:[],common={countries,visibility:'private'};if(mapping.kind==='priceObservation'){const observationId=read(row,mapping.id);if(!mapping.id||!observationId.trim())throw Error(t('Map a source observation ID for every price row; a barcode identifies a product, not a dated price observation.'));if(priceIds.has(observationId))throw Error(t('Price observation IDs must be unique within the CSV batch.'));priceIds.add(observationId);const price=read(row,mapping.price),value=price===''?null:Number(price);if(value!=null&&(!Number.isFinite(value)||value<0))throw Error(t("Invalid price on CSV row {v0}{v1}", {v0:(i),v1:(2)}));return [record('priceObservation',observationId,{name,identifiers:barcode?[{system:'barcode',value:barcode}]:[],amount:value,currency:read(row,mapping.currency)||mapping.defaultCurrency||null,observedAt:read(row,mapping.date)||null,retailer:{name:read(row,mapping.retailer)||null},availability:'unknown',priceType:'user-import'},source,common)];}const basis={amount:100,unit:mapping.basis||'g',state:mapping.preparationState||'as-described'},nutrients={};for(const [key,unit]of [['energy','kcal'],['protein','g'],['fat','g'],['carbohydrate','g'],['sodium','mg'],['fibre','g'],['sugars','g']]){const v=read(row,mapping[key]);if(v!==''){const parsed=parseNutrientCell(v);const scale=key==='energy'&&mapping.energyUnit==='kJ'?1/4.184:key==='sodium'&&mapping.sodiumUnit==='g'?1000:1;nutrients[key]={...parsed,value:parsed.value==null?null:parsed.value*scale,...(parsed.limit!=null?{limit:parsed.limit*scale}:{}),unit,basis,method:'user-column-mapping'};}}const identifiers=barcode?[{system:'barcode',value:barcode}]:[];return [record('product',id,{name,names:mapping.language?{[mapping.language]:name}:{},identifiers,nutritionId:Object.keys(nutrients).length?source.id+':nutrientProfile:'+id:null},source,common),...(Object.keys(nutrients).length?[record('nutrientProfile',id,{foodName:name,identifiers,basis,nutrients},source,common)]:[])];});}
+ export function validateRecords(records,{privateOnly=false}={}){if(!Array.isArray(records)||records.length>2000)throw Error(t('Import up to 2,000 records at a time.'));return records.map(r=>{if(r.schemaVersion!==SCHEMA_VERSION||!DATA_KINDS.includes(r.kind)||typeof r.id!=='string'||!r.id||r.id.length>300||!r.data||typeof r.data!=='object'||Array.isArray(r.data)||JSON.stringify(r).length>200000)throw Error(t('Invalid unified record.'));if(!r.provenance||typeof r.provenance.sourceId!=='string'||typeof r.provenance.license!=='string'||typeof r.provenance.attribution!=='string')throw Error(t('Source and licence metadata are required.'));if(!Array.isArray(r.countries)||r.countries.some(c=>typeof c!=='string'||!/^([A-Z]{2})$/.test(c)))throw Error(t('Invalid record country.'));const check=value=>{if(typeof value==='number'&&!Number.isFinite(value))throw Error(t('Invalid numeric value.'));if(value&&typeof value==='object'){for(const [key,v]of Object.entries(value)){if(['__proto__','constructor','prototype'].includes(key))throw Error(t('Invalid record field.'));check(v);}}};check(r.data);return {...r,provenance:{...r.provenance,url:safeUrl(r.provenance.url),visibility:privateOnly?'private':r.provenance.visibility||'public'}};});}
+-export function asOffNutriments(profile,unit){if(profile.kind!=='nutrientProfile'||profile.data.basis?.amount!==100||profile.data.basis.unit!==unit)throw Error(t("Nutrition basis must match this inventory item: per 100 {v0}.", {v0:(unit)}));const keys={energy:['energy-kcal_100g','kcal',1],protein:['proteins_100g','g',1],carbohydrate:['carbohydrates_100g','g',1],fat:['fat_100g','g',1],sugars:['sugars_100g','g',1],salt:['salt_100g','g',1],sodium:['sodium_100g','mg',.001],saturatedFat:['saturated-fat_100g','g',1],fibre:['fiber_100g','g',1],calcium:['calcium_100g','mg',.001],iron:['iron_100g','mg',.001],potassium:['potassium_100g','mg',.001],vitaminC:['vitamin-c_100g','mg',.001]};const result={};for(const [name,[key,unit,factor]]of Object.entries(keys)){const nutrient=profile.data.nutrients?.[name];if(typeof nutrient?.value==='number'&&Number.isFinite(nutrient.value)&&nutrient.value>=0&&nutrient.unit===unit)result[key]=nutrient.value*factor;}return result;}
++export {asOffNutriments} from './nutrient-profile.js';
+ 
+ export function parseNutrientCell(raw){const s=String(raw).trim();if(!s||['-','NA','N/A','UNKNOWN'].includes(s.toUpperCase()))return {value:null,qualifier:'unknown'};if(s.toUpperCase()==='N')return {value:null,qualifier:'present-no-reliable-amount'};if(['ND','NOT DETECTED'].includes(s.toUpperCase()))return {value:null,qualifier:'not-detected'};if(['NOT TESTED','NT'].includes(s.toUpperCase()))return {value:null,qualifier:'not-tested'};if(['TR','TRACE'].includes(s.toUpperCase()))return {value:null,qualifier:'trace'};const m=s.match(/^<\s*(\d+(?:\.\d+)?)$/);if(m)return {value:null,qualifier:'less-than',limit:Number(m[1])};const value=Number(s);if(!Number.isFinite(value)||value<0)throw Error(t("Invalid nutrient value: {v0}", {v0:(s.slice(0,30))}));return {value,qualifier:'measured-or-source'};}
+--- /dev/null
++++ b/public/lot-nutrition.js
+@@ -0,0 +1,60 @@
++import {recordPermission} from './record-policy.js';
++import {asOffNutriments} from './nutrient-profile.js';
++
++// A user's explicit source-profile selection applies to one reviewed pantry lot.
++// It is not a canonical product/ingredient join or a new source-use grant.
++export const LOT_NUTRITION_SCHEMA='offmenu-lot-nutrition-selection/1';
++const keys=new Set(['energy-kcal_100g','proteins_100g','carbohydrates_100g','fat_100g','sugars_100g','salt_100g','sodium_100g','saturated-fat_100g','fiber_100g','calcium_100g','iron_100g','potassium_100g','vitamin-c_100g']);
++const provenanceKeys=['sourceId','recordId','releaseId','url','licenseUrl','license','attribution','fetchedAt','sourceDate','transform','visibility','privateUseConfirmed','recordUseVersion','policyVersion','retainUntil','accessExpiresAt','status','dependencies','sourceDocumentSha256'];
++const text=(v,n)=>typeof v==='string'&&v.length>0&&v.length<=n;
++const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
++function requireThat(value){if(!value)throw Error('Selected nutrition needs a complete lot, source profile and compatible per-100 basis.');}
++function jsonCopy(value){
++ function check(v,depth=0){requireThat(depth<=20);if(typeof v==='number')requireThat(Number.isFinite(v));if(v&&typeof v==='object')for(const[k,item]of Object.entries(v)){requireThat(!['__proto__','constructor','prototype'].includes(k));check(item,depth+1);}}
++ check(value);const encoded=JSON.stringify(value);requireThat(typeof encoded==='string'&&new TextEncoder().encode(encoded).length<=65536);
++ return JSON.parse(encoded);
++}
++function permitted(selection,now){
++ const record={kind:'nutrientProfile',provenance:selection.provenance};
++ return recordPermission(record,{action:'derive',confirmed:selection.provenance.privateUseConfirmed===true,now}).allowed&&recordPermission(record,{action:'persist',confirmed:selection.provenance.privateUseConfirmed===true,now}).allowed;
++}
++export function copyLotNutritionSelection(value){
++ requireThat(value?.schema===LOT_NUTRITION_SCHEMA&&value.relationship==='user-selected-for-this-lot'&&value.canonicalIdentityAsserted===false);
++ const s=value.scope,p=value.sourceProfile,b=p?.basis,provenance=value.provenance;
++ requireThat(object(s)&&text(s.lotId,300)&&text(s.barcode,128)&&text(s.ingredient,300)&&['g','ml'].includes(s.unit));
++ requireThat(p?.kind==='nutrientProfile'&&text(p.id,300)&&b?.amount===100&&b.unit===s.unit&&object(p.nutrients));
++ requireThat(object(provenance)&&text(provenance.sourceId,100)&&text(provenance.license,1000)&&text(provenance.attribution,1000));
++ requireThat(object(value.nutriments)&&Object.entries(value.nutriments).every(([k,v])=>keys.has(k)&&typeof v==='number'&&Number.isFinite(v)&&v>=0));
++ for(const n of Object.values(p.nutrients))if(typeof n?.value==='number'&&Object.hasOwn(n,'basis')){
++  requireThat(n.basis?.amount===100&&n.basis.unit===s.unit);
++  if(n.basis.state&&b.state)requireThat(n.basis.state===b.state);
++ }
++ const expected=asOffNutriments({kind:'nutrientProfile',data:p},s.unit);
++ const ordered=x=>JSON.stringify(Object.entries(x).sort(([a],[b])=>a.localeCompare(b)));
++ requireThat(ordered(value.nutriments)===ordered(expected));
++ return jsonCopy({schema:LOT_NUTRITION_SCHEMA,scope:s,sourceProfile:p,provenance,nutriments:value.nutriments,relationship:'user-selected-for-this-lot',canonicalIdentityAsserted:false});
++}
++export function createLotNutritionSelection(lot,record,nutriments,{confirmed=false,now=Date.now()}={}){
++ requireThat(confirmed===true&&record?.kind==='nutrientProfile'&&record.data?.basis?.amount===100&&record.data.basis.unit===lot?.unit);
++ for(const n of Object.values(record.data.nutrients||{}))if(typeof n?.value==='number'&&Object.hasOwn(n,'basis')){
++  requireThat(n.basis?.amount===100&&n.basis.unit===lot.unit);
++  if(n.basis.state&&record.data.basis.state)requireThat(n.basis.state===record.data.basis.state);
++ }
++ const provenance=Object.fromEntries(provenanceKeys.filter(k=>Object.hasOwn(record.provenance||{},k)).map(k=>[k,record.provenance[k]]));
++ if(['personal-import','retailer-browser'].includes(provenance.sourceId))provenance.privateUseConfirmed=true;
++ const selection=copyLotNutritionSelection({schema:LOT_NUTRITION_SCHEMA,scope:{lotId:lot.id,barcode:lot.barcode,ingredient:lot.ingredient,unit:lot.unit},
++  sourceProfile:{kind:'nutrientProfile',id:record.id,basis:record.data.basis,nutrients:record.data.nutrients||{},status:record.status??record.data.status??null},
++  provenance,nutriments,relationship:'user-selected-for-this-lot',canonicalIdentityAsserted:false});
++ if(!permitted(selection,now))throw Error('The selected source does not permit retaining and using this nutrient profile.');
++ return selection;
++}
++export function nutritionForLot(lot,products,{now=Date.now()}={}){
++ if(!lot?.nutritionSelection)return products?.[lot?.barcode];
++ try{
++  const selected=copyLotNutritionSelection(lot.nutritionSelection),s=selected.scope;
++  if(s.lotId!==lot.id||s.barcode!==lot.barcode||s.ingredient!==lot.ingredient||s.unit!==lot.unit||!permitted(selected,now))return null;
++  return {name:lot.name,nutriments:selected.nutriments,nutritionProvenance:{...selected.provenance,
++   nutrientProfile:{id:selected.sourceProfile.id,basis:selected.sourceProfile.basis,status:selected.sourceProfile.status},
++   relationship:selected.relationship,canonicalIdentityAsserted:false}};
++ }catch{return null;}
++}
+--- /dev/null
++++ b/public/nutrient-profile.js
+@@ -0,0 +1,2 @@
++import {t} from './i18n.js';
++export function asOffNutriments(profile,unit){if(profile.kind!=='nutrientProfile'||profile.data.basis?.amount!==100||profile.data.basis.unit!==unit)throw Error(t("Nutrition basis must match this inventory item: per 100 {v0}.", {v0:(unit)}));const keys={energy:['energy-kcal_100g','kcal',1],protein:['proteins_100g','g',1],carbohydrate:['carbohydrates_100g','g',1],fat:['fat_100g','g',1],sugars:['sugars_100g','g',1],salt:['salt_100g','g',1],sodium:['sodium_100g','mg',.001],saturatedFat:['saturated-fat_100g','g',1],fibre:['fiber_100g','g',1],calcium:['calcium_100g','mg',.001],iron:['iron_100g','mg',.001],potassium:['potassium_100g','mg',.001],vitaminC:['vitamin-c_100g','mg',.001]};const result={};for(const [name,[key,unit,factor]]of Object.entries(keys)){const nutrient=profile.data.nutrients?.[name];if(typeof nutrient?.value==='number'&&Number.isFinite(nutrient.value)&&nutrient.value>=0&&nutrient.unit===unit)result[key]=nutrient.value*factor;}return result;}
+--- /dev/null
++++ b/tests-web/lot-nutrition-wiring.test.mjs
+@@ -0,0 +1,80 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {readFileSync} from 'node:fs';
++import {createLotNutritionSelection,copyLotNutritionSelection,nutritionForLot} from '../public/lot-nutrition.js';
++import {validateLot} from '../public/model.js';
++import {planSummary} from '../public/menu-model.js';
++import {cookMeal} from '../public/cooking-model.js';
++import {asOffNutriments} from '../public/unified-data.js';
++import {validateState} from '../cloud/state.mjs';
++
++const date='2026-10-29';
++const recipe={id:'rice',title:'Rice',servings:1,source:'Synthetic fixture',license:'CC0',instructions:['Cook.'],ingredients:[{ingredient:'rice',quantity:100,unit:'g'}]};
++const fixture=()=>({inventory:[{id:'a',barcode:'1111',name:'Rice A',ingredient:'rice',quantity:100,unit:'g',needsReview:false},{id:'b',barcode:'1111',name:'Rice B',ingredient:'rice',quantity:100,unit:'g',needsReview:false}],products:{'1111':{name:'Barcode product',nutrition_data_per:'100g',nutriments:{fat_100g:1}}}});
++const sourceProfile=()=>({schemaVersion:'1.0',kind:'nutrientProfile',id:'usda-files:nutrientProfile:fixture',countries:[],provenance:{sourceId:'usda-files',recordId:'fixture',releaseId:'fixture-release',license:'CC0',attribution:'Synthetic fixture',visibility:'public',sourceDate:null},data:{status:'candidate',basis:{amount:100,unit:'g',state:'as-described'},nutrients:{fat:{value:7,unit:'g',basis:{amount:100,unit:'g',state:'as-described'},method:'source'},protein:{value:0,unit:'g',basis:{amount:100,unit:'g',state:'as-described'},method:'source'},sugars:{value:null,unit:'g',qualifier:'unknown'}}}});
++
++// Execute the actual application's callback, rather than a second implementation.
++function appFixture({writeAllowed=true}={}){
++ const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
++ const marker='applyNutrition:(lot,record,nutriments)=>{',start=app.indexOf(marker),end=app.indexOf('}});',start);
++ assert.ok(start>=0&&end>start);const callback=app.slice(start+'applyNutrition:'.length,end+1);
++ const build=new Function('createLotNutritionSelection','validateLot','initial','writeAllowed',`
++  let lots=initial.inventory,products=initial.products;
++  const sharing={canWrite:()=>writeAllowed},localStorage={setItem(){}},PRODUCTS='products';
++  const t=x=>x;function markDirty(){}function findMeals(){}function pantry(){}function save(next){lots=next;}
++  return {apply:${callback},state:()=>({inventory:lots,products}),replaceInventory:next=>{lots=next;}};
++ `);
++ return build(createLotNutritionSelection,validateLot,fixture(),writeAllowed);
++}
++function apply(ui){const record=sourceProfile(),lot=ui.state().inventory[0];ui.apply(lot,record,asOffNutriments(record,lot.unit));return ui.state();}
++
++test('existing source-data UI assigns nutrition only to the selected lot',()=>{
++ const ui=appFixture(),before=structuredClone(ui.state().products),state=apply(ui);
++ assert.deepEqual(state.products,before);assert.ok(state.inventory[0].nutritionSelection);assert.equal(state.inventory[1].nutritionSelection,undefined);
++});
++test('actual planner consumes selected and barcode profiles independently',()=>{
++ const state=apply(appFixture()),summary=planSummary([{recipeId:'rice',date,servings:2}],[recipe],state.inventory,state.products,[date]);
++ assert.equal(summary.totals.fat_100g.value,8);assert.deepEqual(summary.totals.proteins_100g,{value:0,known:1,total:2});assert.deepEqual(summary.totals.sugars_100g,{value:0,known:0,total:2});
++});
++test('actual cooking consumes each lot profile without contaminating the next batch',()=>{
++ const state=apply(appFixture()),first=cookMeal({recipe,...state,servings:1,date,mutationId:'first'});
++ const second=cookMeal({recipe,inventory:first.inventory,products:state.products,servings:1,date,mutationId:'second',batches:[first.batch]});
++ assert.equal(first.batch.totals.fat_100g.value,7);assert.equal(second.batch.totals.fat_100g.value,1);
++});
++test('cloud validation retains source, method, basis, unknown and zero across roundtrip',()=>{
++ const state=apply(appFixture()),roundtrip=validateState({...state,recipes:[recipe],profile:{country:'AU',units:'metric',servings:2}});
++ assert.deepEqual(roundtrip.inventory[0].nutritionSelection,state.inventory[0].nutritionSelection);
++ assert.equal(roundtrip.inventory[0].nutritionSelection.sourceProfile.status,'candidate');
++ assert.equal(roundtrip.inventory[0].nutritionSelection.canonicalIdentityAsserted,false);
++ assert.equal(roundtrip.inventory[0].nutritionSelection.sourceProfile.nutrients.protein.value,0);
++ assert.equal(roundtrip.inventory[0].nutritionSelection.sourceProfile.nutrients.sugars.value,null);
++});
++test('view-only kitchen cannot apply the source-data UI selection',()=>{
++ const ui=appFixture({writeAllowed:false}),before=JSON.stringify(ui.state());assert.throws(()=>apply(ui),/editable|view|permission/i);assert.equal(JSON.stringify(ui.state()),before);
++});
++test('stale inventory object cannot apply a source profile after replacement',()=>{
++ const ui=appFixture(),old=ui.state().inventory[0],record=sourceProfile();ui.replaceInventory(ui.state().inventory.map(l=>({...l})));
++ assert.throws(()=>ui.apply(old,record,asOffNutriments(record,'g')),/changed|current/i);
++});
++test('changed lot identity or unit makes its explicit selection unknown',()=>{
++ const lot=fixture().inventory[0],record=sourceProfile(),selection=createLotNutritionSelection(lot,record,asOffNutriments(record,'g'),{confirmed:true});
++ for(const change of [{id:'other'},{barcode:'2222'},{ingredient:'peas'},{unit:'ml'}])assert.equal(nutritionForLot({...lot,...change,nutritionSelection:selection},fixture().products),null);
++});
++test('rights-held, incompatible basis and unconfirmed selections are refused',()=>{
++ const lot=fixture().inventory[0],record=sourceProfile(),n=asOffNutriments(record,'g');
++ assert.throws(()=>createLotNutritionSelection(lot,record,n),/complete|source|basis/i);
++ assert.throws(()=>createLotNutritionSelection(lot,{...record,provenance:{...record.provenance,status:'withdrawn'}},n,{confirmed:true}),/permit/i);
++ assert.throws(()=>createLotNutritionSelection(lot,{...record,data:{...record.data,basis:{amount:100,unit:'ml'}}},n,{confirmed:true}),/basis/i);
++ const mismatch=structuredClone(record);mismatch.data.nutrients.fat.basis.unit='ml';assert.throws(()=>createLotNutritionSelection(lot,mismatch,n,{confirmed:true}),/basis/i);
++});
++test('expired selection remains retained but is excluded from consumption',()=>{
++ const lot=fixture().inventory[0],record=sourceProfile();record.provenance.retainUntil='2026-10-30T00:00:00Z';
++ const selected=createLotNutritionSelection(lot,record,asOffNutriments(record,'g'),{confirmed:true,now:Date.parse('2026-10-29T00:00:00Z')});
++ assert.equal(nutritionForLot({...lot,nutritionSelection:selected},fixture().products,{now:Date.parse('2026-10-31T00:00:00Z')}),null);
++});
++test('mapped values cannot diverge from the retained source profile or replace missing with zero',()=>{
++ const lot=fixture().inventory[0],record=sourceProfile(),selected=createLotNutritionSelection(lot,record,asOffNutriments(record,'g'),{confirmed:true});
++ for(const mutation of [s=>{s.nutriments.fat_100g=90;},s=>{s.nutriments.sugars_100g=0;}]){
++  const changed=structuredClone(selected);mutation(changed);assert.throws(()=>copyLotNutritionSelection(changed));assert.equal(nutritionForLot({...lot,nutritionSelection:changed},fixture().products),null);
++ }
++});
