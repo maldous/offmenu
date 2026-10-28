@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
   "status": "full-production-corpus-active-product194-served-finite-ready-assignments-closed",
-  "asOfUTC": "2026-10-28T05:42:00Z",
+  "asOfUTC": "2026-10-28T12:27:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -71,7 +71,7 @@
     "integrationBranch": "integration/reviewed-local-source-custody-20261027",
     "route": "Authorized Windmill durable worker -> confined Foo execution -> bounded sanitized results and source-only custody -> direct Git/GitHub integration -> existing Cloudflare/Netlify connector deployment -> actual served result verification",
     "production": "Production194 served100% at06:19:42UTC, exact app9d5df398c92b…1edf8 andmodule7ef438457349…90fcc verified. Three scoped product fixes delivered with76merged syntheticchecks;211othermodules/settingsbindings preserved. Fullcorpus qualification/publication andauthenticated/device acceptance are not implied.",
-    "actions": "prohibited: no dispatch/retry or source push triggering workflows",
+    "actions": "prohibited: no dispatch/retry or source push triggering workflows. Preserve one writer and exact approval/source bindings; do not bypass action-specific platform holds.",
     "quotaBlockedFooCodex": "Superseded: user confirmed restored Codex session usage2026-10-28 and authorized scoped retries. Reconcile interrupted ownership/results first; unrelated denial/security/source holds and no assumed API credit remain.",
     "capacity": {
       "policy": "Maximize useful accepted output with measured CPU/RAM/IO/disk admission, not worker occupancy. Reconcile restored-session retries before dispatch; one writer per output/checkpoint and no raw-data transfer.",
@@ -82,7 +82,7 @@
       "latestUserConcurrencyTarget": 256,
       "actualConcurrencyVerified": false,
       "placesFallback": "Historical ingestion fallback superseded by all packet ingestion complete; existing v5 global/final phases preserve their reviewed resource and hash-pause contracts.",
-      "fooDispatchState": "Global proof and qualified assembly/delta complete; basis restoration/final SQL complete, finite caller proof pending. Sole same-deploy uploader has actual first accepted PUT, not final serving. Opt-in local terminal filter adopted. Reviewed metrics-only live deployment and23-file source custody remain exact platform-confirmation holds; no cache activation.",
+      "fooDispatchState": "Global proof/assembly and NorthStar data, SQL, caller proof and final staging complete. One active base uploader; derived sequence prepared and owned. Local opt-in filter delivered. Two user-approved tooling operations remain blocked only by direct platform-confirmation binding; no duplicate jobs or cache activation.",
       "serviceWorkerTarget": 64,
       "serviceWorkersVerified": true,
       "hourlyPrompt": "Existing reminder updated/readback2026-10-28T08:38:55.195299Z for restored quota and supported6.1medium default; hourly schedule/enabled/timezone unchanged.",
@@ -99,7 +99,7 @@
         ],
         "evidenceId": "registrations-0327.json"
       },
-      "currentSnapshotUTC": "2026-10-28T11:29:30Z"
+      "currentSnapshotUTC": "2026-10-28T12:27:00Z"
     },
     "coordinatorRole": "Morgan/root stays highly available: lightweight communication, ownership/integration coordination, user decisions and concise result verification. Durable owners perform substantive engineering/execution/monitoring; audit_production_efficiency owns currentledger efficiency/closure updates.",
     "publicationWriter": "Morgan/root-authorized ledger reconciliation; direct Git/GitHub leased integration publication",
@@ -421,6 +421,30 @@
       "evidence": "docs/operations/2026-10-28/delivery-and-osm-retirement-checkpoint.json",
       "summary": "Basis full SQL proof complete under unchanged output/reserve caps, finite caller proof pending. Publisher first actual accepted PUT recorded. Independently reviewed terminal-filterR2 locally adopted with private originals and corrected exit/cancellation preservation; existing2591-byte log represented by785-byte summary, not a token/production gain or new product artifact. Exact metrics live-deployment and23-file source-custody operations remain platform-held; no reroute.",
       "counting": "All89 historical rows and31 finite assigned substeps unchanged; no extra runnable obligation or whole-feature closure."
+    },
+    {
+      "atUTC": "2026-10-28T12:27:00Z",
+      "type": "unattended-current-pointer-repair-and-overnight-owner-handoff",
+      "owner": "audit_production_efficiency",
+      "correctedSelectors": 26,
+      "historicalRowsPreserved": 89,
+      "actualProgress": {
+        "job": "01a1824d-4c33-00a0-9ccb-5656f4e47c95",
+        "deploy": "6ae1c3946435074ef6c08369",
+        "owner": "prepare_common_corpus_publication",
+        "observedUTC": "2026-10-28T12:24:00Z",
+        "status": "running-direct-MCP-readback",
+        "acceptedDigests": 4750,
+        "acceptedBytes": 5367345142,
+        "remainingDigests": 19233,
+        "uploadElapsedSeconds": 2422.2,
+        "servedVerificationPending": true,
+        "source": "Direct MCP get_run logs; accepted progress is not serving."
+      },
+      "reminderId": "6adfe4594890819190c493c2198ae9e4",
+      "reminderUpdatedAt": "2026-10-28T12:25:38.528774+00:00",
+      "scope": "Metadata/current-owner repair and actual overnight handoff, not a new automation/manager or whole-ledger completion.",
+      "userFacingRoster": "libfile_37547822965081918c149668e46a004f"
     }
   ],
   "lanes": [
@@ -791,7 +815,6 @@
     }
   ],
   "pendingUnassignedCandidateIds": [
-    "app-view-history-restoration",
     "scanner-device-acceptance",
     "source-permission-owner-result-recovery"
   ],
@@ -799,10 +822,10 @@
     "Sonar assessment/remediation owner and current result remain unverified"
   ],
   "nextPriorities": [
-    "Assessor resource-readmits and resumes exact pinned placescheckpoint; report actualoutput not workerregistration counts.",
-    "Latest usertarget256;128places only after actualMemoryError.64live worker services verified, not64heavyjobs or256liveconcurrency.",
-    "Qualify completed corpus outputs before publishing; do not conflate producer completion with served food coverage",
-    "Continue independent source-only preparation and exact deployment-route recovery without starting Windmilljobs"
+    "Existing sole publisher continues the current same-deploy base job and independently prepares reviewed basis projection from the consumed NorthStar final proof. Report actual progress/failure/terminal state; no duplicate uploader/deploy.",
+    "After actual served base pin, the same existing publisher performs already-authorized additive derived publication. NorthStar final proof handoff is complete; no parent/caller/staging replay or new data job.",
+    "Use /continuousEfficiencyReview/currentDeliveryHandoffs for owner/trigger/stop contracts. Activate an idle existing owner only for a genuinely ready outstanding action; do not equate messages with activation.",
+    "Preserve specific metrics/custody confirmation holds and genuine source/security/input holds. No repeat cleanup, completed audit/proof, provider probe or new schedule."
   ],
   "duplicateSuppression": [
     "Do not restart 64 historical sessions",
@@ -1253,10 +1276,11 @@
     "note": "PR41 exact26paths and full CI accepted and merged. Origin integration reviewed locally; supported read-only metadata task admitted with private result pending, no GitHub comment/control/service changes."
   },
   "activeWork": [
-    "Maintenance completed: userhostreceipt DB320; independentMCP64livePythonworkers/maxlastping6seconds/originalworkerspreserved. Resource readmission and sameplaces checkpointresume directed.",
-    "Bulk FINALcomplete; places11037000verified identities/1645613remaining; exactcheckpoint retained; resumed output not yet observed at this snapshot.",
-    "Production192four corrections delivered; full corpus qualification/publication still open",
-    "Netlify current exposed upload route missing; historical CLI and renamed official MCP route recovered; plugin connected"
+    "Base uploader: 4750 accepted digests / 5367345142 bytes, 19233 remaining at the12:24 UTC direct MCP snapshot; no serving claim. Same job and deploy, one publisher.",
+    "Same publisher automatically completes served verification and then bulk, national, recipe and basis additive publication, preserving current-deploy pins and original scope.",
+    "Global proof/assembly and NorthStar producer/caller/staging work are complete; no replay is ready.",
+    "Tooling metrics and23-file custody have explicit user approval but remain blocked by direct same-task/platform confirmation binding. No alternate route or blind retry.",
+    "Exact source/security/consent/operator input holds remain row-specific; OSM physical removal is verified and future OSM work remains deferred."
   ],
   "supersededOperationalCheckpoint": {
     "asOfUTC": "2026-10-18T00:18:00Z",
@@ -5599,12 +5623,12 @@
       },
       {
         "id": "osm-source-retirement",
-        "state": "removal-authorized-execution-unconfirmed-future-work-deferred",
+        "state": "physical-retirement-verified-future-source-work-deferred",
         "owner": "Existing Foo disk owner for exact cleanup package; audit_production_efficiency for ledger/no-retry policy",
         "actual": {
           "id": "SOURCE-OSM-DEFERRED",
           "authority": "Explicit user retirement2026-10-28; remove OSM now and reconsider only after all current ledger work completes and storage is accounted for.",
-          "state": "retirement-authorized-execution-unconfirmed; future work deferred",
+          "state": "physical-retirement-verified; future-source-work-deferred",
           "target": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-63/dc7480cf5666cc2af990/planet-261005.osm.pbf.part",
           "reportedAllocatedBytes": 95244251136,
           "scope": "Exact OSM-only partial file; preserve all adjacent provenance and bound source manifests.",
@@ -5615,15 +5639,42 @@
             "historicalProducerStopped": "2026-10-15 owner report",
             "historicalOwnerResponseRequired": false
           },
-          "remainingExecutionCheck": "Normal-host user-run script fails closed on active handles; restricted agent cannot claim full-host handle visibility.",
+          "remainingExecutionCheck": "Completed user-run removal reconciled by the same Foo owner; no further OSM deletion or retry.",
           "noAutoDownloadOrRetry": true,
           "reconsideration": "Only after all currently defined delivery work is complete, with explicit storage budget and permission; not an automatic reactivation.",
-          "physicalReclamationConfirmed": false,
-          "verifiedReclaimedBytes": 0,
+          "physicalReclamationConfirmed": true,
           "preserve": "Overture/Wikidata places, all non-OSM inputs/proofs/assembly/upload state, custom configuration, full native manifest, OFF and Trash holds.",
-          "cleanupOther": "Only identified installer/Ollama scripts delivered for user execution; Chrome/npm/uv caches withheld while browser/package work active. No bytes reclaimed claimed."
+          "cleanupOther": {
+            "verifiedRemoved": "Both installer copies and selected Ollama runtime/model files",
+            "customConfigurationAndBackupChecksumPass": true,
+            "hostBeforeFreeGiB": 88.85,
+            "hostAfterFreeGiB": 173.85,
+            "hostNetFreeGainGiB": 85,
+            "usedPercentBefore": 95,
+            "usedPercentAfter": 90,
+            "inodeUsedPercent": 7,
+            "netSpaceCaveat": "Net free-space change includes concurrent production writes; do not add snapshot deltas or equate them with exact removed-file bytes.",
+            "remainingOptionalCachesGiBApprox": 7.93,
+            "cacheExecutionCondition": "Wait until Chrome, npm/Netlify package operations and uv are idle.",
+            "unchangedHolds": [
+              "OFF retained archive integrity/publisher hold",
+              "Trash selective document-retention hold"
+            ]
+          },
+          "priorState": "retirement-authorized-execution-unconfirmed; future work deferred",
+          "receiptReportedGainGiB": 88.7,
+          "executionVerification": {
+            "ownerTask": "01a181fd-8267-750b-a565-1b23e6e76012",
+            "turn": "01a18225-7cf2-72fd-ab49-50d361a19ae8",
+            "receipt": "/home/user/src/2026-10-28/task-5/disk-audit/RECONCILIATION.md",
+            "readBackAtUTC": "2026-10-28T11:00:00Z",
+            "exactTargetGone": true,
+            "adjacentProvenanceIntact": true,
+            "repeatRemovalNotNeeded": true
+          },
+          "evidence": "docs/operations/2026-10-28/delivery-and-osm-retirement-checkpoint.json"
         },
-        "next": "Execute only the exact approved OSM target through supported user-run host route with active-handle guard; record actual result. No OSM reconsideration until all current defined delivery work is complete and storage is budgeted.",
+        "next": "Exact OSM target removal is already verified by existing disk owner; retain reconciliation/provenance and do not repeat deletion, acquisition or retry. Future OSM work stays deferred until all current delivery work completes and storage is accounted for. No further cleanup is authorized here.",
         "evidence": "docs/operations/2026-10-28/delivery-and-osm-retirement-checkpoint.json",
         "parentComplete": false
       }
@@ -5829,13 +5880,13 @@
       "sqlEngine": "DuckDB usable query route owned separately; engineparallelism set from resource budget, not multiplied blindly by job/process fanout."
     },
     "existingExclusiveOwners": {
-      "corpus-globalproof": "assess_partial_corpus_resume / corpus007 / 01a180e8-a1e3-9b3b-1530-11cad400592f",
+      "corpus-globalproof": "assess_partial_corpus_resume / global020 proof and qualified assembly completed; no active proof job or replay. Existing exclusive publisher owns publication follow-through.",
       "duration-production": "Morgan/root",
       "duckdb-query-route": "assess_windmill_storage_improvements",
       "healthchecker64slots": "configure_parallel_capacity_ceiling",
       "public-free-batch-entrypoint": "diagnose_provider_import_403"
     },
-    "netlifyBlocker": "Resolved: reviewed native seed/fixed-site publisher deployed and existing fixedsite ready verified. Remaining dependency is actual qualified corpus candidate/assembly; no credential or connector exposure blocker and no user action needed.",
+    "netlifyBlocker": "Qualified global proof and assembly/delta are complete; existing native route is available. Sole owner prepare_common_corpus_publication continues same deploy6ae1c3946435074ef6c08369, job01a1824d-4c33-00a0-9ccb-5656f4e47c95. Remaining dependency is actual upload completion/served verification, then owned additive derived publication; no candidate/route recovery or user action is needed for current authorized publication.",
     "readyDispatchLanes": {
       "household-profile-planner": {
         "owner": "prepare_production_integration (delivered); exact remaining input custody retained in allocation rows",
@@ -5928,7 +5979,7 @@
         "eventTriggeredDuties": 7,
         "activeCorpusRows": 3,
         "newJobsDispatched": 0,
-        "next": "Existing corpus owner finishes proof; operational duties react to material changes; no stale SQL/health/duration setup reruns."
+        "next": "Proof/assembly and final NorthStar proof handoff are complete. Existing publisher owns active base upload plus independent reviewed basis projection preparation; react to its progress/terminal/served-base trigger and reconcile actual delivery. Do not repeat parent/caller/staging/proof/SQL/health/duration work or held actions."
       }
     },
     "rows": [
@@ -7898,7 +7949,7 @@
         "state": "qualified-publication-in-progress",
         "executionClaim": "Actual020 global proof and qualified assembly/delta complete; Netlify prepare/upload recovery is in progress, served verification not yet established.",
         "deliverable": "Both corpus producers final and prior source custody/retained proof milestones remain accepted. Current global proof is016 per coordinator, not stale007. Native publisher ready with accepted source custody; no longer described as blocked by the previously absent connector upload surface.",
-        "dependency": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred.",
+        "dependency": "Global020 proof and qualified assembly/delta are complete. Remaining publication dependency is completion/actual served verification of the existing same deploy by its exclusive publisher. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No whole-country or whole-corpus serving/acceptance closure is inferred.",
         "nextUsefulAction": "Finish the same authorized Netlify deployment, retain accepted partial uploads, verify served publication, then reconcile the finite delivery receipt. Preserve all exact country/source dependencies and newly deferred OSM.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
@@ -7962,7 +8013,7 @@
         "state": "qualified-publication-in-progress",
         "executionClaim": "Actual020 global proof and qualified assembly/delta complete; Netlify prepare/upload recovery is in progress, served verification not yet established.",
         "deliverable": "Both corpus producers final and prior source custody/retained proof milestones remain accepted. Current global proof is016 per coordinator, not stale007. Native publisher ready with accepted source custody; no longer described as blocked by the previously absent connector upload surface.",
-        "dependency": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred.",
+        "dependency": "Global020 proof and qualified assembly/delta are complete. Remaining publication dependency is completion/actual served verification of the existing same deploy by its exclusive publisher. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No whole-country or whole-corpus serving/acceptance closure is inferred.",
         "nextUsefulAction": "Finish the same authorized Netlify deployment, retain accepted partial uploads, verify served publication, then reconcile the finite delivery receipt. Preserve all exact country/source dependencies and newly deferred OSM.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
@@ -8464,7 +8515,7 @@
         "state": "qualified-publication-in-progress",
         "executionClaim": "Actual020 global proof and qualified assembly/delta complete; Netlify prepare/upload recovery is in progress, served verification not yet established.",
         "deliverable": "Both corpus producers final and prior source custody/retained proof milestones remain accepted. Current global proof is016 per coordinator, not stale007. Native publisher ready with accepted source custody; no longer described as blocked by the previously absent connector upload surface.",
-        "dependency": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred.",
+        "dependency": "Global020 proof and qualified assembly/delta are complete. Remaining publication dependency is completion/actual served verification of the existing same deploy by its exclusive publisher. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No whole-country or whole-corpus serving/acceptance closure is inferred.",
         "nextUsefulAction": "Finish the same authorized Netlify deployment, retain accepted partial uploads, verify served publication, then reconcile the finite delivery receipt. Preserve all exact country/source dependencies and newly deferred OSM.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
@@ -8528,7 +8579,7 @@
         "state": "dependent",
         "executionClaim": "No new job dispatched by allocation",
         "deliverable": "Qualified canonical/product-role source bindings, not fabricated GTIN identity",
-        "dependency": "Current global proof007, source-use/role/identity acceptance; identity-only local candidate remains unadmitted",
+        "dependency": "Global020 proof is complete and retained. Exact source-use/role/identity acceptance and permitted consumer binding remain required; identity-only local candidate remains unadmitted. No corpus007 proof replay.",
         "nextUsefulAction": "Join proof output to exact permitted consumers; do not publish unqualified identity claims.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
@@ -9946,7 +9997,7 @@
   },
   "continuousEfficiencyReview": {
     "schema": "offmenu-continuous-efficiency-review/1",
-    "asOfUTC": "2026-10-28T11:29:30Z",
+    "asOfUTC": "2026-10-28T12:27:00Z",
     "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
     "state": "active-owned-ongoing",
     "currentOwner": "audit_production_efficiency",
@@ -9993,7 +10044,7 @@
         "provider free eligibility/quota/reset metadata and quality",
         "source/security holds"
       ],
-      "nextMilestone": "Actual016 phase/checkpoint (bound≈08:41:40Z) or SQL003 finalindex/manifest; sharedresource-aware refill and existingpublisher reactivation only for actualreadyartifact. No duplicateacceptedchecks, setupbacklog, stress or newpaidcapacity.",
+      "nextMilestone": "Current sole uploader job01a1824d-4c33-00a0-9ccb-5656f4e47c95 next progress/failure/terminal event, reviewed basis projection readiness with same publisher, then actual same-deploy served base pin and owned additive publication. Final NorthStar proof is already staged/consumed; no old016/SQL003 or caller/staging replay.",
       "cadence": "Milestone-driven bounded checks; remain owner while authorized production is active. Wait for meaningful milestones, not tight busy polling or arbitrary saturation.",
       "stop": "User cancels; authorized production/backlog completes; or explicit durable-owner handover. Pause only affected dependent action at an authorization/access boundary.",
       "routineTuning": "Send safe same-scope corrections through the existing execution owner; do not seize its writer, duplicate production or change scope/design."
@@ -10171,16 +10222,17 @@
           "result": "netlify_http_429; accepted partial uploads retained"
         },
         "currentRun": {
-          "job": "01a1823a-6636-466a-f02c-cc9b7a5f74af",
-          "status": "running-first-accepted-PUT-observed",
-          "observedUTC": "2026-10-28T11:23:57Z",
-          "requiredDigests": 23983,
-          "acceptedDigestsObserved": 1,
-          "acceptedBytesObserved": 151607,
-          "firstAcceptanceElapsedSeconds": 2.7,
-          "preCommandChannelCode2RetriesObserved": 4,
-          "uploadFailureEventObserved": false,
-          "sustainedRateEstablished": false
+          "job": "01a1824d-4c33-00a0-9ccb-5656f4e47c95",
+          "deploy": "6ae1c3946435074ef6c08369",
+          "owner": "prepare_common_corpus_publication",
+          "observedUTC": "2026-10-28T12:24:00Z",
+          "status": "running-direct-MCP-readback",
+          "acceptedDigests": 4750,
+          "acceptedBytes": 5367345142,
+          "remainingDigests": 19233,
+          "uploadElapsedSeconds": 2422.2,
+          "servedVerificationPending": true,
+          "source": "Direct MCP get_run logs; accepted progress is not serving."
         },
         "channelSourceSHA256": "1d0af37859aeac37138bc3fe781f31623780151fd82435f803256662aaea29cf",
         "channelReview": "Same Foo reviewer approved supplied narrow source with five focused mocks. Frozen full-file hash binding/readback by publisher; 74 local author tests, not independently rerun. Retry only known unexecuted channel-open code2, bounded seven attempts; no administrative-denial or post-dispatch retries.",
@@ -10286,8 +10338,8 @@
       },
       "latestDiskRefill": {
         "proof": "Global proof complete.",
-        "basis": "Full basis restoration/final SQL complete;6,241,684,497-byte reservation released. Only finite metadata caller proof pending.",
-        "publication": "Sole same-deploy bounded uploader has first actual accepted digest; no final served verification or sustained throughput claim.",
+        "basis": "Basis restoration, final SQL, caller002 and final reviewed-consumer proof handoff are complete; no active NorthStar data job remains. Existing publisher has consumed proof and owns independent reviewed basis projection preparation; no duplicate runtime, proof or staging task.",
+        "publication": "Sole same-deploy job01a1824d-4c33-00a0-9ccb-5656f4e47c95 observed250accepted digests/280360299bytes,23733remaining at11:44:19Z, no current429/errors reported. Final serving remains pending; not sustained throughput proof.",
         "cleanup": "Previously verified OSM/installer/Ollama removal retained; no additional cleanup claim.",
         "noStressOrReserveRelaxation": true
       },
@@ -10312,7 +10364,7 @@
       },
       "otherReadyWork": {
         "recipe": "Recipev6 terminal succeeded08:21:35, exit0/child_tree_gone;51assets/25135packets exactsource reverified+SQLqueries in59s; existing1.36GBindex unchanged, no duplicatecopy/fullfileRAMread.47smallrecipe fidelity and308expansion repairs retained. Scoped receipt, not wholegraph closure.",
-        "basis": "Reviewed and staged10GiB phase1. Genuine disk blocker removed by018 phase-specific output declaration; now held only for new staging/destination authority, with no submission bypass.",
+        "basis": "Basis final manifest3520dff24e7b96635fd3d8f8cfa60664d03d5bd65709b547059cee10b306e1a9 and caller002 complete. Final reviewed-consumer proof79d2adae3713a7604c8b4965027be7acc0512de58fa02c3c18f131b8fef2f05a staged/consumed11:47:49Z. Existing publisher prepares reviewed basis projection while base upload continues; no new NorthStar data job or old staging hold is inferred.",
         "national": "Full national derivation completed locally; exact counts above. No accepted or served claim."
       },
       "completedRun016": {
@@ -10716,7 +10768,7 @@
         "phase2": {
           "job": "01a1820e-077e-23ee-931e-75b7500cffdb",
           "admittedAtUTC": "2026-10-28T10:28:40Z",
-          "state": "full-restoration-and-final-SQL-proof-complete; finite-caller-proof-pending",
+          "state": "full-restoration-final-SQL-caller002-and-final-reviewed-consumer-proof-handoff-complete; no-active-NorthStar-data-job",
           "workers": 4,
           "cpuReservation": 4,
           "memoryGiB": 2,
@@ -10774,13 +10826,25 @@
           }
         },
         "callerProof": {
-          "job": "01a18243-e936-376b-34dc-054a1b8bd1e3",
-          "status": "admitted-running-owner-confirmed",
-          "cpu": 1,
-          "memoryMiB": 512,
-          "metadataOutputMiB": 64,
-          "corpusWrites": false,
-          "observedUTC": "2026-10-28T11:29:00Z"
+          "completedUTC": "2026-10-28T11:42:33Z",
+          "elapsedSeconds": 15.824,
+          "finalReviewedConsumerProof": {
+            "bytes": 13130,
+            "path": "reviewed-consumer-proof.json",
+            "publisherConsumed": true,
+            "sha256": "79d2adae3713a7604c8b4965027be7acc0512de58fa02c3c18f131b8fef2f05a",
+            "source": "Trusted parent handoff; no new fetch or execution.",
+            "stagedUTC": "2026-10-28T11:47:49Z",
+            "stagingJob": "01a18256-8003-7b0f-f4e1-8d7a41973958"
+          },
+          "job": "01a18251-6db2-6d9d-0453-6d848f373f97",
+          "owner": "align_north_star_graph",
+          "reportBytes": 3306,
+          "reportSHA256": "921fa2113c67b05213786dbebfb10e350e2716a45a325b977f44c18e7bacf61b",
+          "run": "caller002",
+          "scope": "Finite caller002 proof complete; final reviewed-consumer proof has also been staged and consumed by publisher. No active NorthStar data job remains; not admission/canonicalization/serving.",
+          "source": "Trusted parent handoff; exact report bytes not fetched or execution repeated.",
+          "status": "succeeded-owner-reported"
         }
       }
     },
@@ -10834,13 +10898,18 @@
       "providerState": "Lastverifiedregistry:Groq/Gemini publicdevelopment+Cohere publicdocs qualified; no activeproviderinference. Mistral/OpenRouter/Z.ai require429resetmetadata; remainingroutesdeferred/unqualified. No freshcall/quota availability inferred."
     },
     "publisherWaitingHandoff": {
-      "asOfUTC": "2026-10-28T11:23:57Z",
-      "state": "sole-publisher-active-with-actual-accepted-PUT",
-      "exclusiveOwner": "prepare_common_corpus_publication",
-      "job": "01a1823a-6636-466a-f02c-cc9b7a5f74af",
+      "job": "01a1824d-4c33-00a0-9ccb-5656f4e47c95",
       "deploy": "6ae1c3946435074ef6c08369",
+      "owner": "prepare_common_corpus_publication",
+      "observedUTC": "2026-10-28T12:24:00Z",
+      "status": "running-direct-MCP-readback",
+      "acceptedDigests": 4750,
+      "acceptedBytes": 5367345142,
+      "remainingDigests": 19233,
+      "uploadElapsedSeconds": 2422.2,
       "servedVerificationPending": true,
-      "next": "Continue bounded same-deploy publication; report accepted counters and actual served receipt."
+      "source": "Direct MCP get_run logs; accepted progress is not serving.",
+      "next": "Same owner completes base upload/served verification, then bulk, national, recipe and basis sequential publication under existing approval."
     },
     "modelServiceCapacityEvent": {
       "atApproxUTC": "2026-10-28T08:15:00Z",
@@ -10953,12 +11022,17 @@
       "limitation": "Names/statusonly; no current hashes captured. Do not overwrite earlier files or re-export/replay merely fromuntrackedstatus. Deliberateexit7smoke remainsnotretryable."
     },
     "latestNarrowAuthorityHold": {
-      "asOfUTC": "2026-10-28T11:29:30Z",
-      "state": "two-tooling-specific-platform-confirmations-pending",
-      "liveMetrics": "Exact reviewed metrics/validation-only deployment denied before admission, initial plus one materially supported retry; no mutation/inference or reroute.",
-      "sourceCustody": "Exact23-file source-only private Git custody upload denied before execution, initial plus one materially supported retry; verified private repo/push access, no commit or alternate route.",
-      "basis": "Specific11:13:59 user approval resumed exact continuation; full final SQL/proof completed11:23:07. No ongoing basis scope hold inferred.",
-      "unaffected": "Opt-in local terminal filter independently reviewed and adopted; existing sole publisher remains active."
+      "asOfUTC": "2026-10-28T12:27:00Z",
+      "approvedUTC": "2026-10-28T12:05:00Z",
+      "sameOwnerTask": "01a181e9-ee60-71fe-8036-0960ae187021",
+      "attemptTurn": "01a18269-4379-71f2-8cf9-c3d26069f655",
+      "state": "user-approved-but-direct-platform-confirmation-binding-unresolved",
+      "actual": "Adapter saved as private inactive draft only; deployment denied before execution; live adapter/caller sources and private permissions unchanged. Git tree creation denied before execution; no commit/ref update.",
+      "cause": "Platform did not accept delegated voice approval as a trusted direct user message; no source/scope drift reported.",
+      "next": "Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
+      "cacheEnabled": false,
+      "providerCalls": 0,
+      "unaffected": "Healthy base upload and authorized derived publication continue; other exact source/security/consent inputs remain scoped to their own rows."
     },
     "latestToolingImplementation": {
       "authorTask": "01a181e9-ee60-71fe-8036-0960ae187021",
@@ -10969,7 +11043,7 @@
       "sourceState": "R2 independently approved;15 mocked tests plus focused supervisor-termination check; current live task catalog preserved.",
       "features": "Exact provenance-keyed reuse, bounded single-flight, structured validation and usage/unique-artifact accounting implemented in candidate.",
       "acceptanceLimit": "Schema acceptance is not semantic correctness. No deployed cache or measured production token/time savings claimed.",
-      "liveAdoption": "Metrics-only patch independently approved; same-owner live adoption denied twice before admission (initial plus one materially supported retry). No live mutation, cache activation or provider call; exact specific platform confirmation pending.",
+      "liveAdoption": "user-approved-but-direct-platform-confirmation-binding-unresolved",
       "storage": "Existing compose declares a worker-cache volume; live shared trusted POSIX mount and fork/signal runtime behavior are not yet verified. Ordinary resource state is not a lock; no new service/mount or bypass.",
       "integrationTurn": "01a18219-6f22-7230-9bf9-3c6fe830984d",
       "model": "Saved/default model with medium effort; exact resolved model not exposed.",
@@ -11009,7 +11083,7 @@
         "fixedDefect": "TF-R1: known child status lost if finalization failed; now preserved while tool failure is explicit."
       },
       "sourceCustody": {
-        "status": "frozen-local-publication-platform-held",
+        "status": "user-approved-local-frozen-platform-binding-unresolved",
         "bundleBytes": 36863,
         "bundleSHA256": "1a7cd9fa05dbc8352c4a13d7b9b1ae4cc5a2cf0b17f8898103067e6b7464d039",
         "filesPlanned": 23,
@@ -11019,8 +11093,19 @@
         "existingPushPermissionVerified": true,
         "branch": "integration/reviewed-local-source-custody-20261027",
         "destinationPrefix": "dev/reviewed-local-source-custody-20261027/ai-efficiency-tooling-20261028/",
-        "denial": "Initial upload and one materially supported same-action retry denied before execution; exact specific user confirmation pending. No commit/ref mutation or alternate route.",
+        "denial": "Adapter saved as private inactive draft only; deployment denied before execution; live adapter/caller sources and private permissions unchanged. Git tree creation denied before execution; no commit/ref update. Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
         "terminalFilterIncluded": false
+      },
+      "approvalReconciliation": {
+        "approvedUTC": "2026-10-28T12:05:00Z",
+        "sameOwnerTask": "01a181e9-ee60-71fe-8036-0960ae187021",
+        "attemptTurn": "01a18269-4379-71f2-8cf9-c3d26069f655",
+        "state": "user-approved-but-direct-platform-confirmation-binding-unresolved",
+        "actual": "Adapter saved as private inactive draft only; deployment denied before execution; live adapter/caller sources and private permissions unchanged. Git tree creation denied before execution; no commit/ref update.",
+        "cause": "Platform did not accept delegated voice approval as a trusted direct user message; no source/scope drift reported.",
+        "next": "Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
+        "cacheEnabled": false,
+        "providerCalls": 0
       }
     },
     "latestAntigravityVerification": {
@@ -11183,10 +11268,382 @@
         "capacityBlocked": false
       },
       "unaffected": "Existing sole publisher continuation remains active; completed source/proof outputs retained. No new quota or disk-capacity blocker inferred."
+    },
+    "priorCurrentPointersBeforeUnattendedRepair20261028T114419": {
+      "baseCommit": "b163301ccfc92863ca0ede1f43d6f7f74c2343d4",
+      "baseBlobSHA": "f1211bc8dfbd109b47fc6a47ce95c30fb0d75b1c",
+      "before": [
+        {
+          "selector": {
+            "pointer": "/currentExecution/actions"
+          },
+          "value": "prohibited: no dispatch/retry or source push triggering workflows"
+        },
+        {
+          "selector": {
+            "pointer": "/currentExecution/capacity/fooDispatchState"
+          },
+          "value": "Global proof and qualified assembly/delta complete; basis restoration/final SQL complete, finite caller proof pending. Sole same-deploy uploader has actual first accepted PUT, not final serving. Opt-in local terminal filter adopted. Reviewed metrics-only live deployment and23-file source custody remain exact platform-confirmation holds; no cache activation."
+        },
+        {
+          "selector": {
+            "pointer": "/currentExecution/capacity/currentSnapshotUTC"
+          },
+          "value": "2026-10-28T11:29:30Z"
+        },
+        {
+          "selector": {
+            "pointer": "/activeWork"
+          },
+          "value": [
+            "Maintenance completed: userhostreceipt DB320; independentMCP64livePythonworkers/maxlastping6seconds/originalworkerspreserved. Resource readmission and sameplaces checkpointresume directed.",
+            "Bulk FINALcomplete; places11037000verified identities/1645613remaining; exactcheckpoint retained; resumed output not yet observed at this snapshot.",
+            "Production192four corrections delivered; full corpus qualification/publication still open",
+            "Netlify current exposed upload route missing; historical CLI and renamed official MCP route recovered; plugin connected"
+          ]
+        },
+        {
+          "selector": {
+            "pointer": "/nextPriorities"
+          },
+          "value": [
+            "Assessor resource-readmits and resumes exact pinned placescheckpoint; report actualoutput not workerregistration counts.",
+            "Latest usertarget256;128places only after actualMemoryError.64live worker services verified, not64heavyjobs or256liveconcurrency.",
+            "Qualify completed corpus outputs before publishing; do not conflate producer completion with served food coverage",
+            "Continue independent source-only preparation and exact deployment-route recovery without starting Windmilljobs"
+          ]
+        },
+        {
+          "selector": {
+            "pointer": "/pendingUnassignedCandidateIds"
+          },
+          "value": [
+            "app-view-history-restoration",
+            "scanner-device-acceptance",
+            "source-permission-owner-result-recovery"
+          ]
+        },
+        {
+          "selector": {
+            "pointer": "/currentObligationAllocation/existingExclusiveOwners/corpus-globalproof"
+          },
+          "value": "assess_partial_corpus_resume / corpus007 / 01a180e8-a1e3-9b3b-1530-11cad400592f"
+        },
+        {
+          "selector": {
+            "pointer": "/currentObligationAllocation/netlifyBlocker"
+          },
+          "value": "Resolved: reviewed native seed/fixed-site publisher deployed and existing fixedsite ready verified. Remaining dependency is actual qualified corpus candidate/assembly; no credential or connector exposure blocker and no user action needed."
+        },
+        {
+          "selector": {
+            "pointer": "/currentObligationAllocation/readyDispatchLanes/operational-obligation-closure/next"
+          },
+          "value": "Existing corpus owner finishes proof; operational duties react to material changes; no stale SQL/health/duration setup reruns."
+        },
+        {
+          "selector": {
+            "array": "/currentObligationAllocation/rows",
+            "field": "dependency",
+            "id": "AUDIT-LOCAL-CORPUS-SUPERSESSION"
+          },
+          "value": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred."
+        },
+        {
+          "selector": {
+            "array": "/currentObligationAllocation/rows",
+            "field": "dependency",
+            "id": "ARCH-CURATED-CORPUS-DELIVERY"
+          },
+          "value": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred."
+        },
+        {
+          "selector": {
+            "array": "/currentObligationAllocation/rows",
+            "field": "dependency",
+            "id": "PRIORITY-RECORD-PROVENANCE-CORRECTION"
+          },
+          "value": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred."
+        },
+        {
+          "selector": {
+            "array": "/currentObligationAllocation/rows",
+            "field": "dependency",
+            "id": "CORE-BARCODE-CANONICAL-IDENTITY"
+          },
+          "value": "Current global proof007, source-use/role/identity acceptance; identity-only local candidate remains unadmitted"
+        },
+        {
+          "selector": {
+            "pointer": "/continuousEfficiencyReview/reviewMethod/nextMilestone"
+          },
+          "value": "Actual016 phase/checkpoint (bound≈08:41:40Z) or SQL003 finalindex/manifest; sharedresource-aware refill and existingpublisher reactivation only for actualreadyartifact. No duplicateacceptedchecks, setupbacklog, stress or newpaidcapacity."
+        },
+        {
+          "selector": {
+            "pointer": "/continuousEfficiencyReview/latestMilestone/publicationReadiness/currentRun"
+          },
+          "value": {
+            "job": "01a1823a-6636-466a-f02c-cc9b7a5f74af",
+            "status": "running-first-accepted-PUT-observed",
+            "observedUTC": "2026-10-28T11:23:57Z",
+            "requiredDigests": 23983,
+            "acceptedDigestsObserved": 1,
+            "acceptedBytesObserved": 151607,
+            "firstAcceptanceElapsedSeconds": 2.7,
+            "preCommandChannelCode2RetriesObserved": 4,
+            "uploadFailureEventObserved": false,
+            "sustainedRateEstablished": false
+          }
+        },
+        {
+          "selector": {
+            "pointer": "/continuousEfficiencyReview/publisherWaitingHandoff"
+          },
+          "value": {
+            "asOfUTC": "2026-10-28T11:23:57Z",
+            "state": "sole-publisher-active-with-actual-accepted-PUT",
+            "exclusiveOwner": "prepare_common_corpus_publication",
+            "job": "01a1823a-6636-466a-f02c-cc9b7a5f74af",
+            "deploy": "6ae1c3946435074ef6c08369",
+            "servedVerificationPending": true,
+            "next": "Continue bounded same-deploy publication; report accepted counters and actual served receipt."
+          }
+        },
+        {
+          "selector": {
+            "pointer": "/continuousEfficiencyReview/latestMilestone/basisRestoration/phase2/state"
+          },
+          "value": "full-restoration-and-final-SQL-proof-complete; finite-caller-proof-pending"
+        },
+        {
+          "selector": {
+            "pointer": "/continuousEfficiencyReview/latestMilestone/basisRestoration/callerProof"
+          },
+          "value": {
+            "job": "01a18243-e936-376b-34dc-054a1b8bd1e3",
+            "status": "admitted-running-owner-confirmed",
+            "cpu": 1,
+            "memoryMiB": 512,
+            "metadataOutputMiB": 64,
+            "corpusWrites": false,
+            "observedUTC": "2026-10-28T11:29:00Z"
+          }
+        },
+        {
+          "selector": {
+            "pointer": "/continuousEfficiencyReview/latestMilestone/otherReadyWork/basis"
+          },
+          "value": "Reviewed and staged10GiB phase1. Genuine disk blocker removed by018 phase-specific output declaration; now held only for new staging/destination authority, with no submission bypass."
+        },
+        {
+          "selector": {
+            "pointer": "/continuousEfficiencyReview/latestMilestone/latestDiskRefill/basis"
+          },
+          "value": "Full basis restoration/final SQL complete;6,241,684,497-byte reservation released. Only finite metadata caller proof pending."
+        },
+        {
+          "selector": {
+            "pointer": "/continuousEfficiencyReview/latestMilestone/latestDiskRefill/publication"
+          },
+          "value": "Sole same-deploy bounded uploader has first actual accepted digest; no final served verification or sustained throughput claim."
+        },
+        {
+          "selector": {
+            "array": "/currentDeliveryReconciliation/rows",
+            "field": "state",
+            "id": "osm-source-retirement"
+          },
+          "value": "removal-authorized-execution-unconfirmed-future-work-deferred"
+        },
+        {
+          "selector": {
+            "array": "/currentDeliveryReconciliation/rows",
+            "field": "next",
+            "id": "osm-source-retirement"
+          },
+          "value": "Execute only the exact approved OSM target through supported user-run host route with active-handle guard; record actual result. No OSM reconsideration until all current defined delivery work is complete and storage is budgeted."
+        },
+        {
+          "selector": {
+            "array": "/currentDeliveryReconciliation/rows",
+            "field": "actual/state",
+            "id": "osm-source-retirement"
+          },
+          "value": "retirement-authorized-execution-unconfirmed; future work deferred"
+        },
+        {
+          "selector": {
+            "array": "/currentDeliveryReconciliation/rows",
+            "field": "actual/remainingExecutionCheck",
+            "id": "osm-source-retirement"
+          },
+          "value": "Normal-host user-run script fails closed on active handles; restricted agent cannot claim full-host handle visibility."
+        },
+        {
+          "selector": {
+            "array": "/currentDeliveryReconciliation/rows",
+            "field": "actual/physicalReclamationConfirmed",
+            "id": "osm-source-retirement"
+          },
+          "value": false
+        }
+      ]
+    },
+    "currentDeliveryHandoffs": {
+      "schema": "offmenu-current-owner-handoff/1",
+      "asOfUTC": "2026-10-28T12:27:00Z",
+      "authority": "Existing user-authorized delivery scope and exact source/runtime approvals travel with each same-owner activation; this contract adds no permission. Named source/security/platform holds remain.",
+      "precedence": "Use these current pointers and latest authoritative receipts; prior*, historical lanes/rosters, old job labels and retained blocked attempts are provenance, not a runnable queue. Refresh an active snapshot from its owner before issuing any mutation.",
+      "activation": "For a genuinely ready finite action, activate the existing idle owner with its established follow-up mechanism. A message alone is not activation or running evidence. If already active, steer that owner; do not spawn a duplicate writer. A ready unowned action is returned only to audit_production_efficiency for assignment.",
+      "handoffRequired": [
+        "existing owner/task and current idle/running/terminal evidence",
+        "exact job/checkpoint/deploy and artifact/source hashes",
+        "next finite action and actual dependency/terminal trigger",
+        "existing user scope plus exact approval/review binding, or affected denial/unknown-outcome state",
+        "safe continuation/stop condition and final receipt destination"
+      ],
+      "lanes": [
+        {
+          "id": "qualified-corpus-publication",
+          "ownerTask": "prepare_common_corpus_publication",
+          "checkpoint": {
+            "job": "01a1824d-4c33-00a0-9ccb-5656f4e47c95",
+            "deploy": "6ae1c3946435074ef6c08369",
+            "owner": "prepare_common_corpus_publication",
+            "observedUTC": "2026-10-28T12:24:00Z",
+            "status": "running-direct-MCP-readback",
+            "acceptedDigests": 4750,
+            "acceptedBytes": 5367345142,
+            "remainingDigests": 19233,
+            "uploadElapsedSeconds": 2422.2,
+            "servedVerificationPending": true,
+            "source": "Direct MCP get_run logs; accepted progress is not serving."
+          },
+          "nextActualTrigger": "Clean base terminal and verified served pin, then bulk -> national -> recipe -> basis using each actual current deploy as complete-map base; no optional acceptance or nudge.",
+          "safeContinuation": "Same owner continues current job. On a terminal failure/cancellation, reconcile accepted partial uploads and confirm terminal/drained state before any separately authorized same-deploy resume. Retain exact map/journal/source pins and existing retry boundaries; no new deployment or parallel uploader. All four reviewed HTTP-reuse publishers are deployed/readback; four projectors and consumer receipts staged. Preserve each release's served-byte/count verification.",
+          "activation": "Already running at the reported checkpoint; no activation or extra upload is needed. If it later becomes idle with ready authorized follow-through, reactivate this same owner, not a notification-only handoff.",
+          "stopOrApproval": "Stop affected mutation on identity/map/serving mismatch, uncertain active uploader or exact denial. Preserve source/security holds. Do not claim food/corpus serving from accepted PUT counts.",
+          "evidenceDestination": "Existing publisher final served receipt -> audit_production_efficiency -> sole ledger writer."
+        },
+        {
+          "id": "north-star-reviewed-proof-handoff",
+          "ownerTask": "align_north_star_graph (handoff complete); prepare_common_corpus_publication owns reviewed projection follow-through",
+          "checkpoint": {
+            "basisManifestSHA256": "3520dff24e7b96635fd3d8f8cfa60664d03d5bd65709b547059cee10b306e1a9",
+            "callerProof": {
+              "owner": "align_north_star_graph",
+              "job": "01a18251-6db2-6d9d-0453-6d848f373f97",
+              "run": "caller002",
+              "status": "succeeded-owner-reported",
+              "completedUTC": "2026-10-28T11:42:33Z",
+              "elapsedSeconds": 15.824,
+              "reportSHA256": "921fa2113c67b05213786dbebfb10e350e2716a45a325b977f44c18e7bacf61b",
+              "reportBytes": 3306,
+              "source": "Trusted parent handoff; exact report bytes not fetched or execution repeated.",
+              "scope": "Finite caller proof complete; parent retains final receipt and existing child create-only staging. Not admitted/canonical/served product acceptance."
+            },
+            "finalReviewedConsumerProof": {
+              "path": "reviewed-consumer-proof.json",
+              "bytes": 13130,
+              "sha256": "79d2adae3713a7604c8b4965027be7acc0512de58fa02c3c18f131b8fef2f05a",
+              "stagingJob": "01a18256-8003-7b0f-f4e1-8d7a41973958",
+              "stagedUTC": "2026-10-28T11:47:49Z",
+              "publisherConsumed": true,
+              "source": "Trusted parent handoff; no new fetch or execution."
+            }
+          },
+          "nextActualTrigger": "Existing publisher already consumed final reviewed-consumer proof and is preparing reviewed basis projection while base upload continues; next is projection readiness and actual served base pin, not parent/caller/staging rerun.",
+          "safeContinuation": "Retain exact basis manifest, caller002 report and staged final reviewed proof. Existing publisher alone prepares the reviewed projection and performs additive publication only after actual served base pin. No active NorthStar data job remains.",
+          "activation": "No NorthStar data/caller/staging activation is needed. Existing publisher already owns the active base upload and projection preparation; steer the same owner on material receipt/terminal changes.",
+          "stopOrApproval": "Missing/conflicting exact report or create-only target binding stops only that dependent action. Source-literal basis and caller proof are not upstream verification, canonicalization, admission or serving. No new runtime step is reported unallocated.",
+          "evidenceDestination": "Existing publisher projection/served receipts -> audit_production_efficiency -> sole ledger writer."
+        },
+        {
+          "id": "tooling-exact-holds",
+          "ownerTask": "audit_production_efficiency coordinates existing tooling author and root",
+          "checkpoint": {
+            "metricsPatchSHA256": "06f906eb149a4c97b65e20c0f79a083d58c231b06e61a5600a8939477cf56575",
+            "custodyBundleSHA256": "1a7cd9fa05dbc8352c4a13d7b9b1ae4cc5a2cf0b17f8898103067e6b7464d039",
+            "custodyFiles": 23,
+            "status": "user-approved-but-direct-platform-confirmation-binding-unresolved"
+          },
+          "nextActualTrigger": "Wait for exact direct confirmation in the same task/platform surface. No further delegated transcript retry, generic approval ask, alternate writer or route.",
+          "safeContinuation": "Retain exact approved artifacts and inactive draft; source-only/private publish and live metrics adoption resume only on accepted same-task/platform confirmation. Local opt-in filter already delivered; cache remains off.",
+          "stopOrApproval": "User approval exists; platform binding remains unresolved. Do not reclassify as generic permission missing or retry through another executor."
+        }
+      ],
+      "terminalFollowthrough": "Existing owners perform bounded metadata-only, phase-aware checks near expected completion (the already-recorded 60–90-second final-phase practice); on terminal receipt, reconcile and activate the ready dependent existing owner in the same owner cycle. Record checkpoint time/detected time/next activation evidence. No new supervisor, automation, manager or broad test gate.",
+      "readyUnownedAssessment": {
+        "provenReadyUnownedRuntimeTasks": 0,
+        "immediateOwnedFollowthrough": "No new ready unowned/runtime step: NorthStar final proof handoff is complete; existing sole publisher owns base upload and reviewed projection preparation.",
+        "remainingInputHolds": "Scanner/device acceptance, exact country/rights/custody inputs and held tooling actions are not free runnable tasks. Historical pending IDs do not prove readiness.",
+        "assignmentRoute": "Any newly proven ready unowned finite action goes only to audit_production_efficiency; this payload assigns none."
+      },
+      "existingReminderObservation": {
+        "id": "6adfe4594890819190c493c2198ae9e4",
+        "scheduledWakeUTC": "2026-10-28T11:38:01Z",
+        "arrivedUTC": "2026-10-28T11:41:32Z",
+        "enabled": true,
+        "scheduleChanged": false,
+        "apiNextRunTime": null,
+        "source": "Root confirmed actual wake; current automation enabled/schedule/prompt readback verified. Next-run timestamp not exposed.",
+        "updatedAt": "2026-10-28T12:25:38.528774+00:00",
+        "morningReport": "One written actual-delivery report on the first existing wake at/after08:00 Australia/Melbourne; record real message receipt; no routine overnight pings."
+      },
+      "overnightExecution": {
+        "owner": "prepare_common_corpus_publication",
+        "sequence": [
+          "base-upload-complete",
+          "base-actual-served-and-full-readback",
+          "bulk",
+          "national",
+          "recipe",
+          "basis"
+        ],
+        "allDerivedPublishersDeployedAndReadback": true,
+        "allProjectorsAndReceiptsStaged": true,
+        "optionalRootAcceptanceRequired": false,
+        "limits": "Per-release pins, one writer, resource admission, idempotent journals and terminal/drain checks retained; mandatory holds still apply.",
+        "morningReportSent": false
+      }
+    },
+    "unattendedReliabilityRepair": {
+      "asOfUTC": "2026-10-28T12:27:00Z",
+      "correctedCurrentSelectors": 26,
+      "sourceDeltaSHA256": "6e51b9faf1783260af7ab5bf6471395fa17d6b5add613531caac082e327ec75a",
+      "sourceHandoffSHA256": "bd647aed8bf0548a4fe085531996fce8a20359025b593134f1e477c876dbbcb2",
+      "allPreconditionsMatched": true,
+      "corrections": [
+        "Removed completed proof/route/view-history work from current dispatch pointers.",
+        "Reconciled duplicate OSM current row with verified physical cleanup receipt; no repeat deletion.",
+        "Preserved explicit no-Actions dispatch/retry/push prohibition.",
+        "Recorded exact active uploader and terminal successor ownership; messages alone do not prove activation.",
+        "Preserved historical values,89 rows/states/owners/counts and all genuine source/security holds."
+      ],
+      "actualFollowthrough": "NorthStar final reviewed proof staged and consumed; derived transports/projectors prepared while healthy base upload continues. No ready-unowned runtime job established.",
+      "nextVerification": "Observe next actual existing hourly wake and its owner continuation; enablement/wake alone is not delivery completion."
+    },
+    "currentUserFacingRoster": {
+      "libraryFileId": "libfile_37547822965081918c149668e46a004f",
+      "fileId": "file_000000004fc881f5bdaf82a7fc14099a",
+      "filename": "OffMenu-delivery-ledger-2026-10-28.md",
+      "asOfUTC": "2026-10-28T12:20:00Z",
+      "bytes": 87830,
+      "sha256": "3d334a107d0e0d86d1768f01bcd60a3de434df89c8d6688d25c0c9183cd1d4b4",
+      "parentRows": 89,
+      "groups": {
+        "activeSharedPublication": 3,
+        "dependent": 29,
+        "exactInputScopeConsentCustodyHold": 36,
+        "limitedScopeCompletion": 11,
+        "eventTriggeredOrSetupCompleteDuty": 10
+      },
+      "finiteAssignedSubstepsEvidenced": 31
     }
   },
   "priorStatusBeforeProduction194Reconciliation": "full-production-allocated-corpus-active-product193-served",
-  "statusAsOfUTC": "2026-10-28T07:00:00Z",
+  "statusAsOfUTC": "2026-10-28T12:27:00Z",
   "priorCurrentExecutionBeforeRestoredQuota0851": {
     "sourceCommit": "748ae9f02d38369c5ba79c7c5eb7aca284b81789",
     "integrationBranch": "integration/reviewed-local-source-custody-20261027",
@@ -11263,5 +11720,9 @@
     },
     "priorProductionBefore194": "Version192 deployed100%; shared-kitchen lifecycle, manual account-save lifecycle, view history and retention parity delivered. Full corpus qualification/publication and authenticated/device acceptance are not implied.",
     "priorCoordinatorRoleBeforeDelegationReconciliation": "Morgan/root coordinates integration, task ownership, result verification, ledger and user progress."
+  },
+  "priorTopLevelAsOfBeforeUnattendedRepair": {
+    "asOfUTC": "2026-10-28T05:42:00Z",
+    "statusAsOfUTC": "2026-10-28T07:00:00Z"
   }
 }
