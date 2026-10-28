@@ -1,0 +1,103 @@
+{
+  "original_sha256": "e40260e8015641993c885b639e9ef77e03c3b6cc8e448991a2238e2e5e0c592d",
+  "sanitization": "private source locators omitted; source hashes retained",
+  "receipt": {
+    "schema": "offmenu-collaborative-shopping-handoff/1",
+    "base": "production193 retained source",
+    "baseModuleSha256": "0e4420ef0152586a80cf982d7084582180b9e8798d9dd87cb6aae304da305a34",
+    "sourceInputs": [
+      {
+        "path": "public/app.js",
+        "beforeSha256": "55bc0086192208e7fe0892ef7fe8a0d34c67f293290c48f33b7597929f997ee2",
+        "afterSha256": "d2125a6842435d5e866f8730bff876fc53c9ef32d8ba7e6cb1ecd9c0e2e641f8",
+        "changed": true
+      },
+      {
+        "path": "public/insights-ui.js",
+        "beforeSha256": "45937c6133b3f70af1c2a0cbc589c9d7d889d5fc190a2dd00afd24a1ec39e863",
+        "afterSha256": "2c1b41fc8c4045c0b8970350b294f06be7a654513f3cf69b338e9c7e0236d50f",
+        "changed": true
+      },
+      {
+        "path": "public/integrations.js",
+        "beforeSha256": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9",
+        "afterSha256": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9",
+        "changed": false
+      },
+      {
+        "path": "public/sync-model.js",
+        "beforeSha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+        "afterSha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+        "changed": false
+      },
+      {
+        "path": "public/sync-ui.js",
+        "beforeSha256": "bf35b0e04b8c77f1e8f453124d12fee69b99e39d7210bb8763218c9ea00759db",
+        "afterSha256": "bf35b0e04b8c77f1e8f453124d12fee69b99e39d7210bb8763218c9ea00759db",
+        "changed": false
+      },
+      {
+        "path": "public/sharing-ui.js",
+        "beforeSha256": "8ce72cc27171e0b2c4eb3e016409e0bebf59289bed28b41e549d80a403159913",
+        "afterSha256": "8ce72cc27171e0b2c4eb3e016409e0bebf59289bed28b41e549d80a403159913",
+        "changed": false
+      },
+      {
+        "path": "public/checkout-model.js",
+        "beforeSha256": "5343262bab8a3f95300037feb238b2ad7b06be52f0937964bd2012563051c0e7",
+        "afterSha256": "5343262bab8a3f95300037feb238b2ad7b06be52f0937964bd2012563051c0e7",
+        "changed": false
+      },
+      {
+        "path": "public/scoped-kitchen-request.js",
+        "beforeSha256": "802473f7d488f06f76d5e38ba0301d890ec90521ebadfb3fd2dc5fcf035d9733",
+        "afterSha256": "802473f7d488f06f76d5e38ba0301d890ec90521ebadfb3fd2dc5fcf035d9733",
+        "changed": false
+      },
+      {
+        "path": "cloud/state.mjs",
+        "beforeSha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce",
+        "afterSha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce",
+        "changed": false
+      }
+    ],
+    "tests": {
+      "focusedBaseline": {
+        "pass": 3,
+        "fail": 8
+      },
+      "focusedCandidate": {
+        "pass": 11,
+        "fail": 0
+      },
+      "contract": {
+        "pass": 6,
+        "fail": 0
+      },
+      "allAvailable": {
+        "pass": 53,
+        "fail": 0
+      },
+      "syntax": "pass",
+      "parentReviewRegression": {
+        "beforeCorrection": {
+          "pass": 10,
+          "fail": 1
+        },
+        "afterCorrection": {
+          "pass": 11,
+          "fail": 0
+        },
+        "description": "After editable planned check is persisted and write capability is revoked, rejected/repeated onchange restores current canonical checked state without profile mutation or persist."
+      }
+    },
+    "mutationBoundary": "Only own isolated candidate; no shared source writes, Git writes, production deploy, remote DB calls, or private user data",
+    "publishOwner": "Morgan/root",
+    "limitations": [
+      "Synthetic DOM, not real-browser authenticated acceptance",
+      "In-memory SQLite adapter to exact retained Worker, not live D1",
+      "No source-bound list-item/receive-stock linkage exists; no receipt integration implemented",
+      "No claim of completed parent collaborative-shopping obligation"
+    ]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "original_sha256": "11ed7575b3fb99ee42227523b42f86c92624af4a8ef8ff0c49c656252fd5a748",
+  "sanitization": "private source locators omitted; source hashes retained",
+  "receipt": {
+    "schema": "offmenu-household-planner-source-pins/1",
+    "source": "production193 exact retained app tree selected by parent",
+    "files": [
+      {
+        "path": "app/public/app.js",
+        "preimageSha256": "55bc0086192208e7fe0892ef7fe8a0d34c67f293290c48f33b7597929f997ee2",
+        "candidateSha256": "7cc662886fa5c46c9bca09ff404fb6a2da255d201cf4aad3e7c1e169a1138c5a",
+        "changed": true
+      },
+      {
+        "path": "app/public/household-model.js",
+        "preimageSha256": "e01dd557d86520d279434f53fdde80097de1921084775517f95c65f9ab3b3d72",
+        "candidateSha256": "e01dd557d86520d279434f53fdde80097de1921084775517f95c65f9ab3b3d72",
+        "changed": false
+      },
+      {
+        "path": "app/public/menu-model.js",
+        "preimageSha256": "71a4f4f4e05d8c62a49ac55233448be42346427e528c485ecc76b7a7cbaeec16",
+        "candidateSha256": "71a4f4f4e05d8c62a49ac55233448be42346427e528c485ecc76b7a7cbaeec16",
+        "changed": false
+      },
+      {
+        "path": "app/public/ingredients.js",
+        "preimageSha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab",
+        "candidateSha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab",
+        "changed": false
+      },
+      {
+        "path": "app/public/model.js",
+        "preimageSha256": "4f37f779f445e27bcc8a73f6c03c4604033dae7e6ca153fc4a2cad5395f79807",
+        "candidateSha256": "4f37f779f445e27bcc8a73f6c03c4604033dae7e6ca153fc4a2cad5395f79807",
+        "changed": false
+      },
+      {
+        "path": "app/public/sync-model.js",
+        "preimageSha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+        "candidateSha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+        "changed": false
+      },
+      {
+        "path": "app/cloud/meal-preference-owner20.mjs",
+        "preimageSha256": "0f49e01eeb5209fd98e39b50efc94b789f066c4a7c00cd4ea4764d54762a741e",
+        "candidateSha256": "0f49e01eeb5209fd98e39b50efc94b789f066c4a7c00cd4ea4764d54762a741e",
+        "changed": false
+      },
+      {
+        "path": "app/cloud/state.mjs",
+        "preimageSha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce",
+        "candidateSha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce",
+        "changed": false
+      }
+    ]
+  }
+}

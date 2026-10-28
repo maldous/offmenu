@@ -1,0 +1,98 @@
+{
+  "ok": true,
+  "mode": "health",
+  "counts": {
+    "jobs_checked": 93,
+    "items_checked": 93,
+    "items_skipped": 0,
+    "entries_scanned": 93,
+    "markers_checked": 1,
+    "checkpoints_verified": 0,
+    "artifact_objects_hashed": 0,
+    "artifact_manifests_verified": 0
+  },
+  "status": "ok",
+  "budgets": {
+    "max_bytes": 67108864,
+    "max_items": 100,
+    "bytes_read": 92537,
+    "max_seconds": 8
+  },
+  "coverage": {
+    "scope": "recent job metadata and fixed in-flight markers",
+    "full_coverage": false,
+    "stopped_reason": null,
+    "selection_truncated": false,
+    "selected_scope_complete": true
+  },
+  "findings": [
+    {
+      "code": "ACTIVE_INFLIGHT_JOB",
+      "job_id": "corpus-global-qualification-scoped-009-20261028",
+      "severity": "info"
+    },
+    {
+      "code": "COMPLETED_NON_SUCCESS",
+      "job_id": "corpus-global-qualification-scoped-008-20261028",
+      "status": "failed",
+      "severity": "info"
+    },
+    {
+      "code": "COMPLETED_NON_SUCCESS",
+      "job_id": "corpus-global-qualification-merge-006-20261028",
+      "status": "failed",
+      "severity": "info"
+    },
+    {
+      "code": "COMPLETED_NON_SUCCESS",
+      "job_id": "corpus-global-qualification-parallel-003-20261028",
+      "status": "failed",
+      "severity": "info"
+    },
+    {
+      "code": "COMPLETED_NON_SUCCESS",
+      "job_id": "corpus-global-qualification-001-20261028",
+      "status": "failed",
+      "severity": "info"
+    },
+    {
+      "code": "COMPLETED_NON_SUCCESS",
+      "job_id": "corpus-places256-012-20261028",
+      "status": "failed",
+      "severity": "info"
+    },
+    {
+      "code": "COMPLETED_NON_SUCCESS",
+      "job_id": "corpus-direct256-008-20261028",
+      "status": "failed",
+      "severity": "info"
+    },
+    {
+      "code": "COMPLETED_NON_SUCCESS",
+      "job_id": "corpus-direct64-005-20261028",
+      "status": "failed",
+      "severity": "info"
+    },
+    {
+      "code": "COMPLETED_NON_SUCCESS",
+      "job_id": "corpus-places-b001-20261028-v1",
+      "status": "failed",
+      "severity": "info"
+    },
+    {
+      "code": "COMPLETED_NON_SUCCESS",
+      "job_id": "platform-phase2-failure-smoke-20261027",
+      "status": "failed",
+      "severity": "info"
+    },
+    {
+      "code": "COMPLETED_NON_SUCCESS",
+      "job_id": "platform-storage-validation-20261027",
+      "status": "failed",
+      "severity": "info"
+    }
+  ],
+  "checked_at": "2026-10-28T05:56:57.627520+00:00",
+  "schema_version": 1,
+  "native_config_private": true
+}
