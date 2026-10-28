@@ -8767,7 +8767,7 @@
   },
   "continuousEfficiencyReview": {
     "schema": "offmenu-continuous-efficiency-review/1",
-    "asOfUTC": "2026-10-28T07:52:00Z",
+    "asOfUTC": "2026-10-28T08:21:00Z",
     "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
     "state": "active-owned-ongoing",
     "currentOwner": "audit_production_efficiency",
@@ -8814,7 +8814,7 @@
         "provider free eligibility/quota/reset metadata and quality",
         "source/security holds"
       ],
-      "nextMilestone": "Actualcorpus015 phase/checkpoint or NorthStarbulk002 completion, then resource-aware refill and samepublisher reactivation only on readyqualified/derivedartifact. Normalcorpusbound≈08:12UTC; no repeatedacceptedchecks.",
+      "nextMilestone": "Actual016 phase/checkpoint (bound≈08:41:40Z) or SQL003 finalindex/manifest; sharedresource-aware refill and existingpublisher reactivation only for actualreadyartifact. No duplicateacceptedchecks, setupbacklog, stress or newpaidcapacity.",
       "cadence": "Milestone-driven bounded checks; remain owner while authorized production is active. Wait for meaningful milestones, not tight busy polling or arbitrary saturation.",
       "stop": "User cancels; authorized production/backlog completes; or explicit durable-owner handover. Pause only affected dependent action at an authorization/access boundary.",
       "routineTuning": "Send safe same-scope corrections through the existing execution owner; do not seize its writer, duplicate production or change scope/design."
@@ -8931,18 +8931,19 @@
         "runtimeStability": "012 completed1440.4seconds without priorcacheMemoryError;3.101Mresources added, expectedpause/cleanupverified. No causal cache-speedup assertion."
       },
       "activeRun": {
-        "run": "015",
-        "job": "01a1817b-01e2-f70f-264a-ae391b244bfe",
-        "startedAtApproxUTC": "2026-10-28T07:47:59Z",
-        "naturalBoundaryApproxUTC": "2026-10-28T08:12:00Z",
+        "run": "016",
+        "job": "01a18196-2dc2-72e0-0b58-93754d0ba886",
+        "startedAtApproxUTC": "2026-10-28T08:17:40Z",
+        "naturalBoundaryApproxUTC": "2026-10-28T08:41:40Z",
         "workers": 64,
         "workerMiB": 256,
         "cpuReservation": 19,
         "wholeJobReservationGiB": 24.625,
         "cacheMiB": 3072,
         "sqlHardHeapMiB": 4096,
-        "additionalGrowthBytes": 26156408832,
-        "status": "capacity-admitted-and-lane-running-owner-verified",
+        "additionalGrowthBytes": 23904047104,
+        "status": "capacity-admitted-and-running-owner-verified",
+        "mayPauseEarlierAtCommittedHashTransition": true,
         "performanceBenefitEstablished": false
       },
       "otherEfficiencyFindings": [
@@ -9056,6 +9057,57 @@
           "sameMemoryGiB": 2
         },
         "constraints": "National4GiB and proposedsourcebasis10GiB wait actualheadroom. Physicalfree guards and producerabsolute caps unchanged. Useful concurrentjobs are actual2, not64heavyjobs claim."
+      },
+      "completedRun015": {
+        "job": "01a1817b-01e2-f70f-264a-ae391b244bfe",
+        "checkpointFrom": 11104,
+        "checkpointTo": 12431,
+        "resourcesAdded": 1327000,
+        "wallSeconds": 1440.6,
+        "resourcesPerSecondApprox": 921,
+        "peakDescendants": 34,
+        "averageAccountedCPU": 0.66,
+        "summedRSSGB": 5.33,
+        "status": "expected-pause-cleanup-verified",
+        "placesResourcesIngested": 12431000,
+        "placesResourcesRemaining": 251613,
+        "finalProofWritten": false,
+        "limit": "Observed lowerthroughput underconcurrentwork is not a causal cacheclaim; sameapprovedcode retained."
+      },
+      "latestDiskRefill": {
+        "priorAttempt": "016 firstattemptnotadmitted capacity_disk_reserved/noexecution; not successfromtransport",
+        "release": "NorthStarbulk002 clean08:16:06.01, exit0/childtreegone",
+        "order": "Corpus016 admittedfirst thenNorthStarSQL003; same70GiBreserve, noactivejobmutation/blindbusyloop/cancel",
+        "bulk002": {
+          "job": "01a1817b-b3ac-810e-87b8-90d714a0ddc2",
+          "shardsComplete": 9797,
+          "totalShards": 9797,
+          "packets": 9796656,
+          "contexts": 46795344,
+          "relations": 2915727,
+          "inputAssertions": 137295959,
+          "logicalOutputBytes": 19618542130,
+          "allocatedOutputBytes": 19686666240,
+          "cleanFreeBytes": 117126832128,
+          "sqlIndexComplete": false,
+          "fooAggregatePeakTelemetry": "notcollected; Windmill49616KiB bridgepeak is NOT Foochildaggregate"
+        }
+      },
+      "northStarSQL003": {
+        "job": "01a18197-1323-c9ff-d5a9-d2bad4a4ab71",
+        "admittedAtUTC": "2026-10-28T08:18:44Z",
+        "status": "running-owner-confirmed",
+        "cpuReservation": 1,
+        "memoryReservationGiB": 1,
+        "additionalGrowthBytes": 14808305102,
+        "absoluteTotalOutputGiB": 32,
+        "basis": "Phase-specific:0remainingworkertasks, streaming1MiBhashes/onecompressedindexrow, SQLitecache64MiB/temp_storeFILE,9797compactreceipts; no newworkload orstress.",
+        "constraints": "Declaredaggregate request, not measuredFooaggregate isolation; do not mutateactivejob. SQLcoverage/finalmanifest stillrequired."
+      },
+      "otherReadyWork": {
+        "recipe": "Priorv5failed wholefilehashRAM after1.36GBindex;47smallrecipefidelity and308expansionrepairs durable. Sameowner preparedread-onlystreamingreverification ofuntouchedexistingindex with64MiBnewmetadata/512MiBRAM, no new1.36GBcopy; submissionnotassertedhere.",
+        "basis": "Puremodulecae8 reviewed; runner24b47729 reviewedfinitecorrections. Phase1named10GiB output remainsunlaunchedpendingactualheadroom/finalownerreview.",
+        "national": "Reviewedcode staged bychild; fullnational4GiB output unlaunchedpendingactualheadroom."
       }
     },
     "latestUserOperatingPrinciple": {
@@ -9117,6 +9169,21 @@
       "noActiveUpload": true,
       "exclusiveOwner": "prepare_common_corpus_publication",
       "next": "Reactivate sameowner on proof/derivedmanifest handoff, do not hold a reasoning slot merely while waiting."
+    },
+    "modelServiceCapacityEvent": {
+      "atApproxUTC": "2026-10-28T08:15:00Z",
+      "affectedOwner": "align_north_star_graph",
+      "kind": "selected-model-service-capacity turnfailure",
+      "notReasoningSevenSlotLimit": true,
+      "notFooCodexQuota": true,
+      "userNotifiedByRootAtApproxUTC": "2026-10-28T08:16:00Z",
+      "recovery": "Root issued bounded sameownerfollowup withoutmodeloverride; sameowner confirmedactive08:18. Existingchild/nativejobs remainedowned andcontinued, no duplicateexecution.",
+      "temporaryCoordination": "Efficiencyowner reconciled childjobs/artifacts and sharedresourcehandoff; no heavywork returnedtoroot.",
+      "preservedOwnership": {
+        "fullBulkSQLNationalBasisRunner": "align_north_star_graph/scale_north_star_derivation",
+        "recipeAndPureBasis": "align_north_star_graph",
+        "publication": "prepare_common_corpus_publication remains sameowner safe-idle until realartifact"
+      }
     }
   },
   "priorStatusBeforeProduction194Reconciliation": "full-production-allocated-corpus-active-product193-served",
