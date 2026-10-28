@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "offmenu-north-star-reviewed-source-custody/2",
+  "asOfUtc": "2026-10-28T08:52:00Z",
+  "status": "reviewed-source-and-finite-actual-recipe-proof-not-full-north-star-completion",
+  "originalEightPackageArtifactsModified": false,
+  "servedApplicationQueries": 0,
+  "acceptedIdentityJoins": 0,
+  "fullNorthStarComplete": false,
+  "bulk": {
+    "allSourcePacketsDerived": true,
+    "sourcePackets": 9796656,
+    "derivedNutrientContexts": 46795344,
+    "derivedStructuralRelations": 2915727,
+    "derivedUnitAliasCandidates": 2924709,
+    "consumerIndexComplete": false,
+    "lastCleanImportedAssets": 9332,
+    "expectedAssets": 9797,
+    "reference": "evidence/FULL-BULK-SLICE-RECEIPTS.json",
+    "note": "Local candidate totals are not accepted barcode coverage or publication."
+  },
+  "recipes": {
+    "corePacketsExactSourceReverified": 25135,
+    "coreActualProof": "evidence/CORE-RECIPE-ACTUAL-QUERY-PROOF.json",
+    "expansionRestoredCandidates": 308,
+    "expansionManifestSha256": "e10deb8b50cddce89b15a29f82aa664b71b87d1fdff56a901826aa793a9e53e5",
+    "historicalNativeInputFidelityRecords": 5,
+    "applicationAdoption": false
+  },
+  "national": {
+    "sourceReviewed": true,
+    "productionRunStarted": false
+  },
+  "perNutrientBasis": {
+    "pureModuleReviewed": true,
+    "runnerReviewed": true,
+    "productionRunStarted": false
+  },
+  "scope": "Private repository source/tests/review/provenance and sanitized aggregate receipts only. No raw source records, datasets, recipe prose, SQLite indices, native projections, runtime arguments, credentials or publication receipt.",
+  "historicalAllowlistSuperseded": "e1694abdc5577f09d5f1d2bb226b33c2a3bcb917638873b27c189d4f6f210e7c (not published)"
+}

@@ -1,0 +1,236 @@
+{
+  "repository": "maldous/offmenu",
+  "files": [
+    {
+      "path": "README.md",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 28854,
+      "sha256": "c6b3a4991f9cdbace5a5b4f60776167f27e4ad892f1e5c6894b370a9a4ee8e3b",
+      "gitBlob": "1bb6cb6a177ea1d8c8c98cce3747f2c973769e78"
+    },
+    {
+      "path": "corpus/common-data-contract.json",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 46420,
+      "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+      "gitBlob": "642fe54371c15a9f8882bf2e771f77b28ce8babb"
+    },
+    {
+      "path": "corpus/common-data.schema.json",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 19633,
+      "sha256": "f1968889c5e1500e841517bd7546af9c223bf97dce40bb68a3f584e93559298c",
+      "gitBlob": "2a68bfc80cd56c87aa384fea0f566703e34c0ada"
+    },
+    {
+      "path": "corpus/common-source-mappings.json",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 21955,
+      "sha256": "cf0251cbdb7b42476059a52bd8b291a0fb519969b19c6b4ec3bcdb8cdb6719a2",
+      "gitBlob": "858c4de5f6e27deb049ee8bc27567a40461bad49"
+    },
+    {
+      "path": "docs/common-data-type-discovery-20261014.json",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 5362,
+      "sha256": "6a336a98dee848c282e82f84c138c76b7eb51c4809a277e156d61f5520a1a37a",
+      "gitBlob": "89f14c16aed55d01f8189b7a16be025370ad2958"
+    },
+    {
+      "path": "docs/curation-architecture.md",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 29123,
+      "sha256": "670b2391038b2af7472a365a49a8f8bddf54e90e171c0e11b90f8aca9d4a0795",
+      "gitBlob": "5e535f7ee26043fc740785d7ccf01983abfd4348"
+    },
+    {
+      "path": "docs/delivery-reconciliation.json",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 73320,
+      "sha256": "fa6e3e5baa6f8bf02d5a5fece98a58167eee68d342c7fc914f914d5a6fdd62e1",
+      "gitBlob": "8cc23dc10a1ee02a89cf4e089d52fa20629f1284"
+    },
+    {
+      "path": "docs/maintainer.md",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 19440,
+      "sha256": "2fb8328f1e34d2c6b34bf50ef35b140a2c3a5d70b0ee6af51370fb45959cae19",
+      "gitBlob": "1689d30e3d328a9b66549dd8d04c1ae2cd80e963"
+    },
+    {
+      "path": "docs/recommendation-delivery-register.json",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 84697,
+      "sha256": "ec5334252dbfdbc946b401ac94eadf270812053d22e8248d9a361af7fc4fedc8",
+      "gitBlob": "46a70fba650b8275bf64859f4a14157a81651dbb"
+    },
+    {
+      "path": "docs/research-delivery-plan.md",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 30899,
+      "sha256": "8cd221641016246f9cfeaab56f580203bff7a4b81f075f764c394c8dccbce47e",
+      "gitBlob": "ebc1cdd6af2ac8e09db4d2cd0e0d749cad6a6885"
+    },
+    {
+      "path": "docs/source-acceptance-contract.md",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 9176,
+      "sha256": "e6e3935e4501c49c39e10e2707e4be6df91d4b415aebe3b171c53660c08b082e",
+      "gitBlob": "cd543ad11dcbaf65f4bc63e05d109bd3733b12d9"
+    },
+    {
+      "path": "public/common-corpus-locale.js",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 11249,
+      "sha256": "728a26ac7eae0a6e55fdf03df2d347ffb5fd7f7a8a44334b243cd6b7df2f14b7",
+      "gitBlob": "6887d007ae8fe705c936f61477f749f288259c10"
+    },
+    {
+      "path": "public/cooking-model.js",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 8148,
+      "sha256": "96d160f5fd8c75f6e84148d4001ba7ec5ae991f487bf9c4b0777828cb2baed42",
+      "gitBlob": "fe267bce2065bb50619b09aa83772f7578bf6bab"
+    },
+    {
+      "path": "public/data-ui.js",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 23348,
+      "sha256": "ca5e89125bbc896cc7ec5f8e383d7875f1515dc6af2a6a92405efc5cd6e567ed",
+      "gitBlob": "400cbf5c42fd9b4ead947eff730da30cfa2ff6e8"
+    },
+    {
+      "path": "public/household-model.js",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 7253,
+      "sha256": "88a375ef4062fe84646af2cc7661749c2c2f2bc2dd8178852ff58ccbefbce587",
+      "gitBlob": "88424bbf2a6e0aa8cb81d002d9ae01bcc3d62abc"
+    },
+    {
+      "path": "public/ingredients.js",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 5212,
+      "sha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab",
+      "gitBlob": "d92d570bf13efdfb651242dfd55de482a120dd1d"
+    },
+    {
+      "path": "public/menu-model.js",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 4308,
+      "sha256": "71a4f4f4e05d8c62a49ac55233448be42346427e528c485ecc76b7a7cbaeec16",
+      "gitBlob": "bf6c454584c5f097d3f5f54cb6d578729b4eafde"
+    },
+    {
+      "path": "public/model.js",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 7059,
+      "sha256": "74ae172868765650cd08a90ae356ae8072b04529e7be00469a3e30973e8b4785",
+      "gitBlob": "64729ae4465efcff3d8201350d9d459f7d957502"
+    },
+    {
+      "path": "scripts/align-bulk-food-common.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 16127,
+      "sha256": "8903017e6f40b26f19720ff7a4e34e37a3361131ebb0fab0905fa6e0bdb02653",
+      "gitBlob": "fead9389669d9e8a6c712b42bbfc65afe72c4417"
+    },
+    {
+      "path": "scripts/align-national-common.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 20681,
+      "sha256": "2f81bbf4f4ebc371ecc9ce48f4c04d72afe0ebcea7cd9955f476c52dcbc110fa",
+      "gitBlob": "934cb8f2cd0d94fdcd8521da505ce1ef477a58cd"
+    },
+    {
+      "path": "scripts/align-recipe-data.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 14022,
+      "sha256": "ba6f1fb3beaf3e7ee20e51c28026b31c2b96af519f9ca39e1ee66a9667e9a62a",
+      "gitBlob": "2140269a84243d31212b7c7f1e028c0c22df56e0"
+    },
+    {
+      "path": "scripts/align-reference-common.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 7547,
+      "sha256": "47af1e4e228107ca0a65c4cb88837fd2754d304c4e155caf300092a80fbb2886",
+      "gitBlob": "c33bf8e9adaac2754c139a1cb826a9dec5184313"
+    },
+    {
+      "path": "scripts/assemble-common-corpus.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 8148,
+      "sha256": "9925580c54bdc384984e6bb5229a4d9bdfc0fd9106a699407c91c29e19ebb7a7",
+      "gitBlob": "77570f0b856b5128b5eb55f5c04b1b2bd0b793ac"
+    },
+    {
+      "path": "scripts/collect-recipe-expansion-20261014.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 26179,
+      "sha256": "fa9cbbcb15fb1d2d1e0024aaf0e912bda1e7f699b78b23cf75ec1f92480debd4",
+      "gitBlob": "ddfaf0f32ed587e7232d392e1441af4fd7d32053"
+    },
+    {
+      "path": "scripts/package-common-data.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 6658,
+      "sha256": "ed3d814d6d2132aa0aa411dcd3e7a54f3635a58b932130f04a68b39aad8b71fa",
+      "gitBlob": "3241a2faf790c9df8b9491f9887700180f71fd40"
+    },
+    {
+      "path": "scripts/publish-common-data.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 7080,
+      "sha256": "e3449bbcde6895a312889a8f7889d56ded34d744f7f7d34d19b2ab013f6b25f6",
+      "gitBlob": "0d31b1a53f03f1b85430f1b6effef2d24ada11d2"
+    },
+    {
+      "path": "scripts/qualify-common-expansion.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 27073,
+      "sha256": "37aa195b0bbf798eb361be9ee1803ed185c5e74fa38b79c3c4efe8a6dfcc6965",
+      "gitBlob": "5e35b939749bdcc94d6741f5cfc3dd8d770bc534"
+    },
+    {
+      "path": "scripts/recover-historical-recipes-20261014.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 17321,
+      "sha256": "1cf6843a29e8d65f653d850f188480264c10145611e859c39026eb83bd6dfa43",
+      "gitBlob": "bdd7d800b67d5238533d587ee76958c9407eba12"
+    },
+    {
+      "path": "scripts/refine-recipe-quantities.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 2405,
+      "sha256": "1d398cd2d0a7d0d77347e2472774e0c6968699d6a284e083ed9fb766dcfcf2ad",
+      "gitBlob": "349488066752b033189d32f41480e73c1a8f6933"
+    },
+    {
+      "path": "scripts/verify-common-data.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 3356,
+      "sha256": "2a2f54c0e0f39cce89cd97f295cb8dfba3676ce365e4b70f50d2cbab74a1a9e4",
+      "gitBlob": "02cbca7e214c481ad463429be015d6109ee2319e"
+    },
+    {
+      "path": "scripts/verify-common-publication.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 3650,
+      "sha256": "e1a2965dca443caa82a798f4dfbaee15647a9d069605285a4333f5fb541711fd",
+      "gitBlob": "3f19abd7ecf9cb8fbe08893692b47d675dafbb52"
+    },
+    {
+      "path": "tests/test_bulk_food_common.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 5582,
+      "sha256": "b06dc17f44b5b2f26d3e2af79bf84c25dd56e0afd06a4d010258b1c591d301d0",
+      "gitBlob": "618d7f8a6c1074cb2d3ba7bce182670dfa7f5963"
+    },
+    {
+      "path": "tests/test_common_data.py",
+      "commit": "04df9172621e858f21580ac330a4bab3ff606955",
+      "bytes": 3538,
+      "sha256": "86f46d67445936f88cb9033d68f379616beb665e79087797b9557ff6bace9bbe",
+      "gitBlob": "272321967b7bec9d75b1a38869cac349eff743ca"
+    }
+  ]
+}
