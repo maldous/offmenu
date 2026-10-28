@@ -1,0 +1,85 @@
+{
+  "status": "corrected_privacy_r2_source_build_ready_for_independent_re_review_not_deployed",
+  "source_revision": "privacy-r2",
+  "source_manifest_sha256": "e38b407322956450bd6ee509a6b18a0451f8c03bc74d70c80523331495c30344",
+  "r1_to_r2_integration_delta_sha256": "65b5dcec8276ce0114bb9c96b0c5f17f74079dd73d8317572e922816a9e6bbb3",
+  "author_complete_patch_sha256": "fe55a6394bbe10e4437a01086987ec5069665b83e47b2b6655252dc330db17e9",
+  "author_r1_to_r2_patch_sha256": "b8234b05e125e4fbea1565173ba0d4a95d42e30aaf3dd651898a3658ef2362c8",
+  "corrected_source_sha256": {
+    "public/cooking-witness.js": "8b2032742e0b3f14bae9d5f6ae314cca8f1162a2aa6aa1591bea573047afe304",
+    "cloud/cooking-witness-parity.mjs": "dfbf8109dc81b0f1d4c62dd7642e00cafe0432c645d1a7461509b4bee6b5cdee",
+    "tests-web/cooking-witness-ns196-g2.test.mjs": "deb1a89e639c3859d24fca40ec2c9126f2b23b9cc4da08413050deda56689d71"
+  },
+  "focused_tests_passed": 18,
+  "legacy_cases_passed": 7,
+  "combined_tests_passed": 146,
+  "failed": 0,
+  "skipped": 0,
+  "cancelled": 0,
+  "browser_recipe_runs_this_revision": 1,
+  "parity_component_compilations_this_revision": 1,
+  "browser_outputs": [
+    {
+      "group": "app",
+      "output": "app.js",
+      "bytes": 476307,
+      "sha256": "19c11668db13b88a4c77ddd565dbf7853928b9c0c22cebe1da87fa3742cdb7a5",
+      "externalImports": []
+    },
+    {
+      "group": "scanner",
+      "output": "shelf-scanner.js",
+      "bytes": 735236,
+      "sha256": "d25bedb3516b482dff7353230a50a7fd9b9445a6614d9269d5c60626eba0d889",
+      "externalImports": []
+    },
+    {
+      "group": "guest",
+      "output": "full-scanner.js",
+      "bytes": 730678,
+      "sha256": "5d1f71e7056ecf95d596717c93afb3554cc622514b75038f54089c80e1c2f25a",
+      "externalImports": []
+    }
+  ],
+  "component": {
+    "namespace": "__offmenuCookingWitness198",
+    "bytes": 6446,
+    "sha256": "b98427279bb9a04fa081140cbbbb2711f6146ffe6bee37599122da8ee18c1193",
+    "inputs": [
+      {
+        "path": "public/cooking-witness.js",
+        "bytes": 10223,
+        "sha256": "8b2032742e0b3f14bae9d5f6ae314cca8f1162a2aa6aa1591bea573047afe304"
+      },
+      {
+        "path": "cloud/cooking-witness-parity.mjs",
+        "bytes": 505,
+        "sha256": "dfbf8109dc81b0f1d4c62dd7642e00cafe0432c645d1a7461509b4bee6b5cdee"
+      }
+    ],
+    "exports": [
+      "copyCookingWitness",
+      "finishCookingWitnessState",
+      "preserveCookingWitnesses",
+      "sharedCookingBatch"
+    ]
+  },
+  "protected_outputs_match_v197": {
+    "shelf-scanner.js": "d25bedb3516b482dff7353230a50a7fd9b9445a6614d9269d5c60626eba0d889",
+    "full-scanner.js": "5d1f71e7056ecf95d596717c93afb3554cc622514b75038f54089c80e1c2f25a"
+  },
+  "v197_shopping_preserved": true,
+  "superseded_R1_preserved": true,
+  "all_three_worker_hooks_required": [
+    "SA",
+    "lg",
+    "CA"
+  ],
+  "full_worker_integration_or_deployment": false,
+  "real_profiles_or_datasets_used": false,
+  "installs": 0,
+  "DNS_auth_or_permission_changes": 0,
+  "Git_pushes": 0,
+  "provider_calls": 0,
+  "source_transfers_this_revision": 1
+}
