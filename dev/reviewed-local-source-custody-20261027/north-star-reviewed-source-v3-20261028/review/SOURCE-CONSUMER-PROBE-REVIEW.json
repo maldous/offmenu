@@ -1,0 +1,38 @@
+{
+  "author": "/root/align_north_star_graph",
+  "checked": [
+    "finite strict 1..128 keys and 1..1200 second bounds; default64 keys",
+    "existing primary-key selection order uses no temporary B-tree in fixture EXPLAIN QUERY PLAN",
+    "shared locks for both immutable candidate inputs; byte-pinned read-only consumer construction",
+    "literal candidate opt-in and no admission/planning/served flags allowed",
+    "only source/release/namespace aggregate counts and immutable pins leave worker, no lexical identifiers or record values",
+    "create-only hardlink report with fsync and temporary-file cleanup; refuses replacement",
+    "elapsed initialization deadline cannot create success receipt",
+    "fixture input SQLite hashes unchanged"
+  ],
+  "codePins": {
+    "candidate/scripts/derive_north_star_bulk.py": "3adc476be2a6694d62c76bb4d539f0fc698810fd3b942dc9ae501e940efde7a1",
+    "candidate/scripts/exercise_source_scoped_consumer.py": "ecb88b1c814987e7e266b7431825c6a9a9629deeea8856d67614b7f88e0b865e",
+    "candidate/scripts/north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+    "candidate/scripts/source_scoped_north_star_consumer.py": "a87b2117981ffa6beba37547a23b8ee36040bb7b8bec17aaec99b22ff70322f0"
+  },
+  "limitations": [
+    "No actual data caller invocation yet: requires completed source-basis locator package.",
+    "Whole-index coverage is separately established by namespace SQL; finite returned values are occurrences, not distinct-food or full-corpus coverage.",
+    "Quantity null is reported as absent scalar value; exact source quantity range/limit/unit/basis retained by consumer and no comparability inferred.",
+    "Script self-deadline uses cooperative checks, while enclosing existing Foo job supplies process-tree timeout."
+  ],
+  "observedAtUtc": "2026-10-28T09:13:15Z",
+  "reviewer": "/root/align_north_star_graph/scale_north_star_derivation",
+  "schemaVersion": "offmenu-independent-code-review/1",
+  "testPins": {
+    "candidate/tests/test_source_consumer_probe.py": "71bd124eac62a51d761c0e73be009b62fb5e1307d93d881172850709b0a8bd58",
+    "review/test_source_consumer_probe_independent.py": "b1a2705471d2d1cfea0fe0c8997995a7165895f38338193e5456f799f73e8e13"
+  },
+  "tests": {
+    "authoredIndependentlyRun": 6,
+    "failed": 0,
+    "independentAdditional": 3
+  },
+  "verdict": "approved-focused-finite-caller-exercise"
+}
