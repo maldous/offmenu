@@ -1,0 +1,113 @@
+{
+  "schema": "offmenu-reviewed-source-custody/1",
+  "snapshot_at_utc": "2026-10-28T01:23:30Z",
+  "parent_commit": "d7d9ed78d63dbaa7170624f849a359f8fe2e374b",
+  "purpose": "Reviewed incremental readonly corpus input access; owner installation and actual worker metadata verification",
+  "raw_dataset_rows_included": false,
+  "credentials_included": false,
+  "production_changed": false,
+  "files": [
+    {
+      "path": "ACTUAL-INPUT-METADATA-20261028.json",
+      "bytes": 8052,
+      "sha256": "5d4d934f9ab369247f1c9a90de64c45fbdaa6a53ab0ca5af0191554fbcb70ea0",
+      "git_blob_sha": "4a114a8c883fe21c84c5e8490696d21f99e0243f"
+    },
+    {
+      "path": "ACTUAL-INPUT-WORKER-RECEIPT.json",
+      "bytes": 570,
+      "sha256": "6fbc57d9c13be50232e836ded2292f5e954de75425c2384332cd139f341b384f",
+      "git_blob_sha": "a3a785bfd6591beedd9104e13b28d4894626ccb2"
+    },
+    {
+      "path": "INSTALLATION-OUTCOME.md",
+      "bytes": 3839,
+      "sha256": "ca27aafe242aadd80327a5a6268fd65dfb98863faa25bbfdc1be46564a800b61",
+      "git_blob_sha": "0db470d69961d1979efde1d47159eb02fc203ad4"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3154,
+      "sha256": "31a789f913ef9dc6aa8287fe5149c62ec18768a028a496083956e59f6680b234",
+      "git_blob_sha": "c6007a3b51d6c185fc994bd0e385501fbd645560"
+    },
+    {
+      "path": "REVIEW.md",
+      "bytes": 3117,
+      "sha256": "5898c9223e5ea4224d2a686f7f180ef5cb8cca1508cd3b5dbdd17affb16516e8",
+      "git_blob_sha": "8e51a3f6d190bf4225ccb5c220d171a2ee29fd78"
+    },
+    {
+      "path": "acl_io.py",
+      "bytes": 3605,
+      "sha256": "b4acfe5ea25a89bbf7e840c7a2c1c27bf9e238258f1e70a07218140ea1ecfd9c",
+      "git_blob_sha": "9237969af831462c482858069a58e7970c989fcf"
+    },
+    {
+      "path": "approved-input-scope.json",
+      "bytes": 816,
+      "sha256": "2b8b1ddcc4fdc352a5c3bfe466b4dffc5cb6ce32657c208ac7284f2dd8440e0a",
+      "git_blob_sha": "b9fb025ad66574bd90d77d6778eb5debc50e7b7a"
+    },
+    {
+      "path": "build.py",
+      "bytes": 898,
+      "sha256": "f5c6b5820b7db91e2eb2afc3dc2995856e249a3a26ee44076b45e68eb902ef73",
+      "git_blob_sha": "86fce2f0aa652d9f8100e54111f0605ff360f704"
+    },
+    {
+      "path": "incremental_core.py",
+      "bytes": 24780,
+      "sha256": "e13b6f3f1c372707d9907849084dd817dbbad7487eec9bd009db52ff874df05e",
+      "git_blob_sha": "23f36071d0b011c3dbdb7f959dac11da7429afd4"
+    },
+    {
+      "path": "input_metadata_probe.py",
+      "bytes": 2208,
+      "sha256": "5f8092ec92ef1bcb0b533a82407e7d42986d23473c3502ef4a2a728d56fdfc99",
+      "git_blob_sha": "26520a385047d03c92458c05692833b14012ee28"
+    },
+    {
+      "path": "launcher-template.txt",
+      "bytes": 8680,
+      "sha256": "78903ba47765cdae94286b9231530bcfc4abc03dc905150ca45c88ef47c650ca",
+      "git_blob_sha": "e68a706d50b1af31aa58a449ec1064f770571f76"
+    },
+    {
+      "path": "offmenu_input_readonly_acl_mount.py",
+      "bytes": 50441,
+      "sha256": "7a0754128163b1e560256d99b4fd01c90e7066f83290e600d73cfc7cf66c8e81",
+      "git_blob_sha": "f05fe79785c0ef635b78fa81eb38312e7c9fce42"
+    },
+    {
+      "path": "original-launcher-template.txt",
+      "bytes": 6817,
+      "sha256": "5a7fae99ca5a02ac0e36c45a765553c4ce4a2a34b0e5266e9176db84caf9bc46",
+      "git_blob_sha": "9a9e15eb91e61bb3dc213088f3ba1ed818892d41"
+    },
+    {
+      "path": "readonly_acl.py",
+      "bytes": 4932,
+      "sha256": "68342bfd2e3b37c0c4c16a96c4a0ab8edf310435f953ccb66928d755cb43f2d2",
+      "git_blob_sha": "3b3cd75126880bc75f07319e15c80e0cfa595fab"
+    },
+    {
+      "path": "runtime_helper.txt",
+      "bytes": 3566,
+      "sha256": "c8e23ca7f0c2b8ef97e87b9b4133b387090bf99ff0fa735f358744fe8dc56f58",
+      "git_blob_sha": "7ceae37a0030263bd1f4ec6f29a9f626dc27f35f"
+    },
+    {
+      "path": "test_incremental.py",
+      "bytes": 7924,
+      "sha256": "f3f77faeceb423777859dcca6a407c4129c9263a3e591dfeaca102396787aa96",
+      "git_blob_sha": "8c132776eb7f1ab3c7422662de31d66cd0919b9d"
+    },
+    {
+      "path": "test_runtime_optional.py",
+      "bytes": 5937,
+      "sha256": "089acd6b5dd5dd7615327729537481a30da0667711506918af8ea9fb3dd0bf64",
+      "git_blob_sha": "53e2634a516bc60ffdd5649fe604e5afc574257f"
+    }
+  ]
+}
