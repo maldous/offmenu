@@ -1,0 +1,885 @@
+{
+  "schema": "offmenu-current-rights-cache-propagation-map/1",
+  "asOfUTC": "2026-10-28T06:10:29.532Z",
+  "scope": "Read-only current source/metadata join for four ready ledger obligations; not a new security scan, portable-evaluator replacement, live user-data test or source-rights decision.",
+  "snapshot": {
+    "version": 193,
+    "versionId": "d572a1e0-f43d-432b-8033-fc78564ef7c9",
+    "deploymentId": "acff5306-b021-42fb-9a2e-92ef7618b5fa",
+    "observedServingAt": "2026-10-28T06:04:43.258Z",
+    "observedPercentage": 100,
+    "applicationSHA256": "0e4420ef0152586a80cf982d7084582180b9e8798d9dd87cb6aae304da305a34",
+    "appSHA256": "9b0d51064d746887ee70dbb79baee98e32a4eb57caf8652a7111d3b9e383bf67",
+    "landingSHA256": "078b1c26b5b363427e6a42f550918935db80b923c0781d63686e7cc1bb11b4ca",
+    "workerSHA256": "7cef6c38c9a35e4b94d5e7d7d25702a04d64abf35a8497fbd6f91be848f0eabd",
+    "laterVersions": "Parent may publish194+; no claim that193 remains latest after observation."
+  },
+  "sourcePins": [
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-source-root/candidate-source/app/public/record-policy.js",
+      "sha256": "048c6cfe0491c341f11424cd39a062c80d317f8bd13ff513c798867f848818a9",
+      "bytes": 2376,
+      "role": "production193 app build input"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-source-root/candidate-source/app/public/app.js",
+      "sha256": "55bc0086192208e7fe0892ef7fe8a0d34c67f293290c48f33b7597929f997ee2",
+      "bytes": 108646,
+      "role": "production193 app build input"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-source-root/candidate-source/app/public/data-ui.js",
+      "sha256": "ca5e89125bbc896cc7ec5f8e383d7875f1515dc6af2a6a92405efc5cd6e567ed",
+      "bytes": 23348,
+      "role": "production193 app build input"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-source-root/candidate-source/app/public/recipe-review.js",
+      "sha256": "06c291981207ee25288a8bdfe7f1c5fd8eee41eb266cf249f067fddcd4b7600c",
+      "bytes": 1006,
+      "role": "production193 app build input"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-source-root/candidate-source/app/public/pantry-backup.js",
+      "sha256": "15043b581af000070ac9db1499af0693eb6dad9dd7071e741f18e70da7c24c80",
+      "bytes": 2118,
+      "role": "production193 app build input"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-source-root/candidate-source/app/public/sync-ui.js",
+      "sha256": "bf35b0e04b8c77f1e8f453124d12fee69b99e39d7210bb8763218c9ea00759db",
+      "bytes": 5535,
+      "role": "production193 app build input"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-source-root/candidate-source/app/public/sync-model.js",
+      "sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+      "bytes": 3990,
+      "role": "production193 app build input"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-source-root/candidate-source/app/public/sharing-ui.js",
+      "sha256": "8ce72cc27171e0b2c4eb3e016409e0bebf59289bed28b41e549d80a403159913",
+      "bytes": 7338,
+      "role": "production193 app build input"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-source-root/candidate-source/app/public/cooking-model.js",
+      "sha256": "96d160f5fd8c75f6e84148d4001ba7ec5ae991f487bf9c4b0777828cb2baed42",
+      "bytes": 8148,
+      "role": "production193 app build input"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-source-root/candidate-source/app/public/insights-model.js",
+      "sha256": "f8008145063c8bbcf2c9322ece541ee10dc5a9f63678af78fb6f6167bf51f678",
+      "bytes": 6815,
+      "role": "production193 app build input"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-source-root/candidate-source/app/public/menu-model.js",
+      "sha256": "71a4f4f4e05d8c62a49ac55233448be42346427e528c485ecc76b7a7cbaeec16",
+      "bytes": 4308,
+      "role": "production193 app build input"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-source-root/candidate-source/app/cloud/state.mjs",
+      "sha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce",
+      "bytes": 6798,
+      "role": "production193 app build input"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/deployed-application.mjs",
+      "sha256": "0e4420ef0152586a80cf982d7084582180b9e8798d9dd87cb6aae304da305a34",
+      "bytes": 2507100,
+      "role": "exact deployed193 application module"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/deployment-receipt.json",
+      "sha256": "a89828e21cfd8f8d3cbae7115fbbeb93625e8d394e61544d4a2edecff2d3823d",
+      "bytes": 621,
+      "role": "retained193 deployment receipt"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/candidate-build/build-manifest.json",
+      "sha256": "b03a8ea447eecc67fe4fd43ea635af8af693722e9b9aa4a881129f9fe96ee55e",
+      "bytes": 54216,
+      "role": "source-to-app build binding"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-duration-20261028/deployed-application.mjs.asset-splice.json",
+      "sha256": "12f2a7b053ebf8bc09e5a9b8a55cdd0779434e21ec62ef16946744ff15acec63",
+      "bytes": 791,
+      "role": "192server preservation into193"
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-retention-20261028/deployment-receipt.json",
+      "sha256": "31723b69802d204966ac434a01a4e09113f597de90e6212ed1be85ab30445f57",
+      "bytes": 1302,
+      "role": "192accepted retention-parity deployment"
+    },
+    {
+      "path": "/workspace/shared/offmenu-handover-rev3/operational-ledger/management-summary.json",
+      "sha256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+      "bytes": 3282752,
+      "role": "historical projection only; sequence5271"
+    },
+    {
+      "path": "/workspace/shared/offmenu-ledger-reconciliation-20261018/policy-join-addendum/source-permission-evidence-join.md",
+      "sha256": "252e206ba48ed2e65cf6f424cf11d3dc2c51b3308cd561b06ffb4279900233a2",
+      "bytes": 11331,
+      "role": "bounded owner02/C035 evidence join; no repeated search"
+    },
+    {
+      "path": "/workspace/shared/offmenu-all89-allocation-20261028/all89-current-roster.json",
+      "sha256": "e5ebf2803503f34e4dab222090a1102e8490e131c92b147ad0110fb802475129",
+      "bytes": 133673,
+      "role": "four ready-read-only lane inputs"
+    }
+  ],
+  "exactFunctionPins": [
+    {
+      "name": "hA",
+      "start": 5528,
+      "end": 6818,
+      "bytes": 1290,
+      "sha256": "58a67da2ede887c935a9ce561b7ae24663226d0765b83835d70f3d784c8f59d5",
+      "sql": [],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "HA",
+      "start": 7503,
+      "end": 8073,
+      "bytes": 570,
+      "sha256": "dae23351db6a22afbda1d3c0702c13c69c721890bb4a25fccf3bc6c614d91534",
+      "sql": [],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "uA",
+      "start": 8375,
+      "end": 9829,
+      "bytes": 1454,
+      "sha256": "71a16774bad2b4b0d9cf8aa724e249e16c6a81b4169cc95b90ecca5ed43ae1a4",
+      "sql": [],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "Cg",
+      "start": 44048,
+      "end": 44263,
+      "bytes": 215,
+      "sha256": "5ef57ac3492cc2a61e8c41a9a87d5554f6ae946165d512c95894f10c33ac2d2b",
+      "sql": [
+        "SELECT document,revision,active FROM source_policies WHERE id=?"
+      ],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "sA",
+      "start": 44263,
+      "end": 45031,
+      "bytes": 768,
+      "sha256": "290746f145a59dd3d3343075b02c4192805d8573a4746e3cdf2adcbd28ccb89a",
+      "sql": [
+        "SELECT id,document FROM unified_records WHERE owner=? AND (?='' OR kind=?) AND (?='' OR source_id=?) AND id>? ORDER BY id LIMIT ?"
+      ],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "gI",
+      "start": 45031,
+      "end": 46086,
+      "bytes": 1055,
+      "sha256": "bb10c6369d4f5b7d2aae9f7bdb03b3e81febea26d5fc11d92870919bdccd420a",
+      "sql": [
+        "INSERT INTO unified_records(owner,id,kind,source_id,countries,document,updated_at) VALUES(?,?,?,?,?,?,?) ON CONFLICT(owner,id) DO UPDATE SET kind=excluded.kind,source_id=excluded.source_id,countries=excluded.countries,document=excluded.document,updated_at=excluded.updated_at"
+      ],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "Qg",
+      "start": 46086,
+      "end": 53090,
+      "bytes": 7004,
+      "sha256": "b193cfe635f78bb5ea4de131e320c03fb186fe49e74a8651fee939f7876ef329",
+      "sql": [
+        "SELECT source_id,label,updated_at FROM provider_connections WHERE user_id=?",
+        "DELETE FROM provider_connections WHERE user_id=? AND source_id=?",
+        "DELETE FROM unified_records WHERE owner=? AND source_id=?",
+        "INSERT INTO provider_connections(user_id,source_id,label,sealed,updated_at) VALUES(?,?,?,?,?) ON CONFLICT(user_id,source_id) DO UPDATE SET label=excluded.label,sealed=excluded.sealed,updated_at=excluded.updated_at",
+        "DELETE FROM unified_records WHERE owner=? AND id=?"
+      ],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "og",
+      "start": 57752,
+      "end": 58658,
+      "bytes": 906,
+      "sha256": "3e357d4d90fd4193eb6093adb0fb29c8b19c141a6028574ce6d3755d67bc9153",
+      "sql": [],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "kA",
+      "start": 58658,
+      "end": 58817,
+      "bytes": 159,
+      "sha256": "88c333758bd8e131db4db132de1ef33b5e1e57432e521b983e24c05d3df3e286",
+      "sql": [],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "tg",
+      "start": 58817,
+      "end": 59412,
+      "bytes": 595,
+      "sha256": "fdf1275059900455759fdc2c7be9777c8b46c8dda80183b07037c72a4da4f1d5",
+      "sql": [],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "UA",
+      "start": 59412,
+      "end": 60457,
+      "bytes": 1045,
+      "sha256": "81cf66c57c5a81f1fe239cacc5dd599e29d0d7e4d9acc263adae6713cdd6b901",
+      "sql": [],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "BA",
+      "start": 64440,
+      "end": 64910,
+      "bytes": 470,
+      "sha256": "34d59967ad12c390f516f76df99fa419a26677ac24fe1a00827dc1dfc10134fa",
+      "sql": [
+        "SELECT id,revision,document,updated_at FROM private_documents WHERE owner=? AND kind=? AND id>? ORDER BY id LIMIT ?"
+      ],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "QI",
+      "start": 64910,
+      "end": 65526,
+      "bytes": 616,
+      "sha256": "1abeeda37f33585a2846a177a32cb9f8271f3a6487d3b515e45ecb21d3ec2f8b",
+      "sql": [
+        "INSERT INTO private_documents(owner,kind,id,revision,document,updated_at) VALUES(?,?,?,1,?,?) ON CONFLICT(owner,kind,id) DO NOTHING RETURNING revision",
+        "UPDATE private_documents SET revision=revision+1,document=?,updated_at=? WHERE owner=? AND kind=? AND id=? AND revision=? RETURNING revision"
+      ],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "rg",
+      "start": 66356,
+      "end": 71328,
+      "bytes": 4972,
+      "sha256": "b6b52166863966f09b05847ee5e0b10ed8607eed0ca2fa6e0b83bf58013b35a9",
+      "sql": [
+        "SELECT kind,COUNT(*) AS records FROM catalogue GROUP BY kind",
+        "SELECT source_id,COUNT(*) AS records FROM unified_records WHERE owner LIKE 'public:%' GROUP BY source_id",
+        "SELECT document,version FROM catalogue WHERE kind='country' AND id=?",
+        "DELETE FROM private_documents WHERE owner=? AND kind=? AND id=?"
+      ],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "EI",
+      "start": 71956,
+      "end": 73373,
+      "bytes": 1417,
+      "sha256": "12bb7ff0fdf4326f3b86c3aab5ab0f8b6a635d3822efccbe1b71f5633502a6dc",
+      "sql": [],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "wg",
+      "start": 73373,
+      "end": 76969,
+      "bytes": 3596,
+      "sha256": "6941370b47c0531ff101f8858f890bdb0cb0c268b266ba8ef8aef922740e98c5",
+      "sql": [
+        "SELECT document,active FROM source_policies WHERE id=?",
+        "INSERT INTO integration_limits(key,bucket,count) VALUES(?,?,1) ON CONFLICT(key,bucket) DO UPDATE SET count=count+1 RETURNING count",
+        "SELECT document,fresh_until,retry_after,failures FROM resolver_cache WHERE key=?",
+        "INSERT INTO resolver_leases(key,expires_at) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET expires_at=excluded.expires_at WHERE resolver_leases.expires_at<? RETURNING key",
+        "SELECT document,active FROM source_policies WHERE id=?",
+        "INSERT INTO resolver_cache(key,source_id,document,fresh_until,retry_after,failures,updated_at) VALUES(?,?,?,?,0,0,?) ON CONFLICT(key) DO UPDATE SET document=excluded.document,fresh_until=excluded.fresh_until,retry_after=0,failures=0,updated_at=excluded.updated_at",
+        "INSERT INTO resolver_cache(key,source_id,document,fresh_until,retry_after,failures,updated_at) VALUES(?,?,NULL,0,?,?,?) ON CONFLICT(key) DO UPDATE SET retry_after=excluded.retry_after,failures=excluded.failures",
+        "DELETE FROM resolver_leases WHERE key=? AND expires_at=?"
+      ],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "CA",
+      "start": 81464,
+      "end": 86491,
+      "bytes": 5027,
+      "sha256": "74aca03056595a79d7674d53f33ca6431e38fa0b823165c203846df4cc19b0d3",
+      "sql": [],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "SA",
+      "start": 86491,
+      "end": 87549,
+      "bytes": 1058,
+      "sha256": "e94d48aa477e8ce1ddec6af8312582979468086878fc074c0bffd13d76275c13",
+      "sql": [],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "hg",
+      "start": 87783,
+      "end": 87819,
+      "bytes": 36,
+      "sha256": "52b3d8e1563af9d144132c9f9242a47149f514c0c1fa0a3b4bb9cd2f962be046",
+      "sql": [],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "yg",
+      "start": 87819,
+      "end": 92064,
+      "bytes": 4245,
+      "sha256": "4bf6f9ff39bc3b8c1c9d3dcd5664651e3d11af86fafa7eb01835dc0bc9ad3bee",
+      "sql": [
+        "SELECT k.id,k.name,m.role FROM kitchens k JOIN kitchen_members m ON m.kitchen_id=k.id WHERE m.user_id=?",
+        "INSERT INTO kitchens(id,name,revision,state_json,updated_at) VALUES(?,?,1,?,?)",
+        "INSERT INTO kitchen_members(kitchen_id,user_id,role) VALUES(?,?,'owner')",
+        "SELECT * FROM kitchen_invites WHERE token_hash=? AND expires_at>? AND used_at IS NULL",
+        "INSERT INTO kitchen_members(kitchen_id,user_id,role) SELECT kitchen_id,?,role FROM kitchen_invites WHERE token_hash=? AND used_at IS NULL AND expires_at>? ON CONFLICT(kitchen_id,user_id) DO NOTHING",
+        "UPDATE kitchen_invites SET used_at=? WHERE token_hash=? AND used_at IS NULL",
+        "SELECT role FROM kitchen_members WHERE kitchen_id=? AND user_id=?",
+        "SELECT revision,state_json,updated_at FROM kitchens WHERE id=?",
+        "UPDATE kitchens SET revision=revision+1,state_json=?,updated_at=? WHERE id=? AND revision=? RETURNING revision",
+        "SELECT user_id,role FROM kitchen_members WHERE kitchen_id=?",
+        "SELECT role FROM kitchen_members WHERE kitchen_id=? AND user_id=?",
+        "DELETE FROM kitchen_members WHERE kitchen_id=? AND user_id=?",
+        "INSERT INTO kitchen_invites(token_hash,kitchen_id,role,expires_at) VALUES(?,?,?,?)"
+      ],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "wA",
+      "start": 94091,
+      "end": 94458,
+      "bytes": 367,
+      "sha256": "b92794a729d06b0d16c5643c4a4ffbae18cce7a9bdc4cb1c79c471bbcf6d5865",
+      "sql": [
+        "SELECT user_id,scopes,resource FROM integration_tokens WHERE token_hash=? AND revoked_at IS NULL AND expires_at>?"
+      ],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "pg",
+      "start": 94458,
+      "end": 94735,
+      "bytes": 277,
+      "sha256": "4b5b61423f7214aacf1c2786cca20626ca5a347a5f27115b3822f2b684b04318",
+      "sql": [
+        "SELECT state_json,revision,updated_at FROM user_state WHERE user_id=?"
+      ],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "kg",
+      "start": 94735,
+      "end": 95308,
+      "bytes": 573,
+      "sha256": "d4309495c91553491b2dd80b227591c5371e41b547ae84c59725aa1b294f1471",
+      "sql": [],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "Yg",
+      "start": 96095,
+      "end": 107133,
+      "bytes": 11038,
+      "sha256": "79cf2aa1e6fc1d948e17ebea31572f52cbdd8bd14e466ca1759328d1f9230fa1",
+      "sql": [
+        "INSERT INTO integration_limits(key,bucket,count) VALUES(?,?,1) ON CONFLICT(key,bucket) DO UPDATE SET count=count+1 RETURNING count",
+        "DELETE FROM integration_limits WHERE bucket<?",
+        "INSERT INTO oauth_clients(id,name,redirect_uris,created_at) VALUES(?,?,?,?)",
+        "SELECT id,name,redirect_uris FROM oauth_clients WHERE id=?",
+        "INSERT INTO oauth_codes(code_hash,user_id,client_id,redirect_uri,challenge,scopes,resource,expires_at) VALUES(?,?,?,?,?,?,?,?)",
+        "DELETE FROM oauth_codes WHERE code_hash=? AND client_id=? AND redirect_uri=? AND challenge=? AND resource=? AND expires_at>? RETURNING *",
+        "UPDATE integration_tokens SET revoked_at=? WHERE token_hash=?",
+        "SELECT id,name,scopes,resource,created_at,expires_at,revoked_at FROM integration_tokens WHERE user_id=? ORDER BY created_at DESC LIMIT 100",
+        "UPDATE integration_tokens SET revoked_at=? WHERE id=? AND user_id=?",
+        "SELECT COUNT(*) AS n FROM integration_tokens WHERE user_id=? AND revoked_at IS NULL AND expires_at>?"
+      ],
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "uB",
+      "start": 2500205,
+      "end": 2506583,
+      "bytes": 6378,
+      "sha256": "c5a42396ed1c0d5bc8faa2b937743a3da05a075dcf556f05756517afaa5bc2b0",
+      "module": "deployed-application.mjs"
+    },
+    {
+      "name": "mA",
+      "start": 5973,
+      "end": 7717,
+      "sha256": "1f7c876e5345eb6d57a21461b3d605852ab19bd16970af20185a7e167ec9f275",
+      "module": "worker.mjs"
+    },
+    {
+      "name": "_",
+      "start": 7717,
+      "end": 8484,
+      "sha256": "8da96cd79015cfc558a3b69c774c84c2f187472819dd65a9afa71ffc8ec61137",
+      "module": "worker.mjs"
+    },
+    {
+      "name": "$",
+      "start": 8777,
+      "end": 9748,
+      "sha256": "65c0f5516ed910833db1a842459413cf2bd42899b9ed9c0ac714d38c51a031c4",
+      "module": "worker.mjs"
+    },
+    {
+      "name": "tA",
+      "start": 11763,
+      "end": 12273,
+      "sha256": "a6577fcf9653b29feee678d8854ff8bd8927cb2ec5209973d622b26a97a2b569",
+      "module": "worker.mjs"
+    },
+    {
+      "name": "EA",
+      "start": 12437,
+      "end": 13136,
+      "sha256": "53822aaa3ae5af5052ee2baa212941dbf1648f6b0a16e527da8fb2db75ecd618",
+      "module": "worker.mjs"
+    },
+    {
+      "name": "gA",
+      "start": 13136,
+      "end": 13469,
+      "sha256": "f0321d5689dccce03dc313004c878400434c1addbc62f0db5ae2b9a98c20aa2d",
+      "module": "worker.mjs"
+    }
+  ],
+  "rows": [
+    {
+      "id": "R01",
+      "consumer": "landing-only.fetch -> selected public inventory handler",
+      "store": "in-memory existingPublicInventoryPromise; embedded qualified public inventory module",
+      "key": "request pathname /api/data/public AND source=off AND releaseId=offmenu-off-selected-products-20261025-v1",
+      "policyInputs": "Exact source/release selection; public-inventory-provider module pin e8eb2f715543e65b7ec29b89296bb2c6603fc4d3a55294a86dc4cc09f017d460; exact manifest pin 1bf09a371a164ebd8215fd9b44a1b2ac9816caaa65cd13504086defad76d4e8f recorded in module metadata",
+      "propagation": "This intercept precedes worker auth/fallback. Failures return503 no-store. Provider handles only exact selected release; its complete store/cache implementation was not inspected here.",
+      "sourceReferences": "outer-route-evidence.json: landing lines124,185,234",
+      "remainingDependency": "Exact provider handle/policy receipt; no inferred upstream grant or scope beyond selected qualified route.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R02",
+      "consumer": "worker._offmenuOwnedFoundationResponse -> UA.fetch -> EA/gA -> U.fetch",
+      "store": "HTTP response boundary; no app data cache here",
+      "key": "protected pathname classification, plus Cookie and Authorization as Vary dimensions",
+      "policyInputs": "worker.tA distinguishes protected API/data/documents from original MCP/OAuth protocol; EA verifies identity; gA forces no-store, strips ETag, preserves and adds Vary:Cookie,Authorization",
+      "propagation": "Protected fallback /api/data/records, /api/state, /api/kitchens, /api/personal and /api/catalogue/enrich receive response isolation. Own-foundation override runs before that fallback. Generic /api/product,/api/prices,/api/data/public cannot reach corresponding old application routes.",
+      "sourceReferences": "worker-prefix.mjs:tA,EA,gA; outer-route-evidence.json:worker.routeTail",
+      "remainingDependency": "Owned-foundation module hash dcde08ee9d7299e1c406208210a2f07145742b5610a6209fc2718e5597af505b is bound; named route-function selector did not locate its body. Do not claim override audit or end-to-end rights qualification.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R03",
+      "consumer": "worker.$ -> _ -> mA selected curated lookup fallback",
+      "store": "Cloudflare caches.default manifest + query result",
+      "key": "manifest: exact approved origin + selected release prefix + /manifest.json; query: https://offmenu.aldous.info/__curation-cache/{manifest.manifestSha256}?filters={encodeURIComponent(JSON.stringify({source,barcode,query,kind,country,cursor,limit}))}&manifestFile={selected manifest file SHA}",
+      "policyInputs": "G exact source/release/file SHA; manifest bytes SHA, release, privateProviderData=false, accepted curation state; per-file bytes+SHA; record curation guards; cursor binds release+filter hash",
+      "propagation": "Manifest60s; result300s. Partition cache variable is null (do not claim86400s partition storage just because header expression contains it). File checksums and source bounds retained. Cache does not read current source_policies. This is a secondary fallback branch; primary selected request may already be consumed by R01.",
+      "sourceReferences": "worker-prefix.mjs:mA,_,$; worker-function-index.json",
+      "remainingDependency": "Bind exact selected-release rights/withdrawal receipt and primary-versus-fallback caller disposition before selecting any invalidation patch. No request/provider call executed.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R04",
+      "consumer": "application.wg /api/catalogue/enrich via protected fallback",
+      "store": "D1 resolver_cache; resolver_leases; integration_limits",
+      "key": "cache/lease SHA256(JSON.stringify({source,query:trimmed query,policy:source_policies.document,normalizer:P[source].version})); hourly budget SHA256(\"enrichment:\"+CF-Connecting-IP),bucket=floor(now/3600000)",
+      "policyInputs": "source in gleif|wikidata; query <=100 (Wikidata exact Q ID); source_policies active/document; UA action display/public before hit; after fetch exact unchanged document, active and persist/public; normalizer metadata version2026-10-13",
+      "propagation": "Fresh24h. Lease30s. Refusal under lease retryAfter+2s. Backoff60s doubling cap1h. Policy document changes select different key; inactive/expired policy denies before cached hit. Scheduled stale-row cleanup uses fresh_until<now-14d and retry_after<now. Provider JSON Accept is fixed, user identity not a representation input to this public evidence representation.",
+      "sourceReferences": "actual-wg.mjs; actual-UA.mjs; actual-uB.mjs",
+      "remainingDependency": "Actual policy document/version/countries/time authority is not read here; accepted C1-RL/CACHE52+owner02/C035 caller profile must be joined by custodian. No new cache/lease needed. External fetch only described, never invoked.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R05",
+      "consumer": "application.Qg GET/POST /api/data/records; integrations reuse sA for export",
+      "store": "D1 unified_records and source_policies",
+      "key": "record(owner=verified user ID,id); source policy(id=record.provenance.sourceId); filters kind/source/cursor/country",
+      "policyInputs": "recordPermission: sensitive kind reject; retainUntil/accessExpiresAt parse+expiry; withdrawn/quarantined; dependency allowed and valid retainUntil; policy active/expiry/actions/private audience/countries/conditional version. Existing named open-source and confirmed private-import fallback retained, not granted by this report.",
+      "propagation": "Read sA reloads source policies per page and filters denied records. Persist gI validates private records, checks all records then writes recordUseVersion/policyVersion and owner/id upserts. Explicit deletes remove only direct record or source scope. No dependency traversal/tombstone write in these callers.",
+      "sourceReferences": "record-policy.js:3-22; actual-Cg.mjs; actual-sA.mjs; actual-gI.mjs; actual-Qg.mjs; actual-Yg.mjs",
+      "remainingDependency": "Exact selected owner02 evaluator result/review and C035 full endpoint/field/action/purpose/audience/geography/time/source-version mapping are absent in retained join. Malformed-dependency expiry correction was already delivered192 and preserved193.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R06",
+      "consumer": "data-ui derive -> app.applyNutrition; recipeForReview -> app.addRecipe",
+      "store": "browser products[barcode], recipes[id], profile.dataRecords[id]",
+      "key": "product key lot.barcode; nutritionProvenance includes source provenance + nutrientProfile.id/basis/status; recipe keeps provenance/id; browser profile dataRecords keyed id",
+      "policyInputs": "client recordPermission derive/persist/export; callers provide action+confirmation but no server policy object; recipeForReview separately checks derive",
+      "propagation": "Normalization/derive admission is evaluated at action time, then copied into local product/recipe/profile. Signed save uses R05; guest save caps500records/1MB. Browser my-records display directly reads profile.dataRecords. No server source_policies refresh or invalidation traversal is wired into those local reads.",
+      "sourceReferences": "public/data-ui.js:52-57; public/recipe-review.js:5-15; public/app.js:345",
+      "remainingDependency": "Need authoritative dependency decision: withhold, quarantine, refresh or preserve snapshot by action and source/version. A checkbox is not rights authority. Do not patch policy semantics from this map.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R07",
+      "consumer": "cookMeal/serveBatch; mealSnapshot/intakeSummary",
+      "store": "profile.batches[id] and profile.history[id] plus local/profile/cloud snapshots",
+      "key": "batch.id; batch.allocations[*].lotId/barcode/original; serving log.batchId/recipeId/memberId; numeric totals",
+      "policyInputs": "nutrientBasisCompatible + mapped product estimates; intakeKnown distinguishes unknown; prior history snapshots explicitly unchanged by nutrient reassignment",
+      "propagation": "Totals are materialized from current products, copied into batches and history. Snapshot rows do not store per-nutrient input record IDs/policyVersion in their totals. A source-record invalidation cannot be assumed to reach these by unified_records key alone.",
+      "sourceReferences": "public/cooking-model.js:5-11; public/insights-model.js:4-25; public/data-ui.js:52",
+      "remainingDependency": "Dependency-index/caller receipt must specify source->product->batch/history joins and treatment of immutable historic observations. No nutrition/privacy judgment made.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R08",
+      "consumer": "app currentState/loadCloud + sync-ui run/reset/recover",
+      "store": "D1 user_state; browser account localStorage; IndexedDB offmenu-pending-v1/pending",
+      "key": "user_state.user_id; local keys offmenu-{pantry,products,recipes,profile,selections}-v1-user-{id} (guest bare; demo -demo); checkpoint key KEY; KEY-sync-base/revision/dirty",
+      "policyInputs": "state validation/revision/account lifecycle guards; not recordPermission on every snapshot field",
+      "propagation": "Whole snapshot includes products, recipes, profile.dataRecords, batches/history. Three-way merge and checkpoint recovery can reintroduce previously copied values; server GET parses stored state, PUT validates state. No deletion tombstone or source-policy-version join in these inspected snapshot paths.",
+      "sourceReferences": "actual-uB.mjs /api/state; actual-CA.mjs; public/app.js:160,163,331-335; public/sync-ui.js:5-16; public/sync-model.js:2-4",
+      "remainingDependency": "Restore/invalidation operator needs same source-version decision plus checkpoint/baseline scope. This is a dependency gap, not a newly approved deletion.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R09",
+      "consumer": "sharing-ui -> kitchenProjection -> application.yg",
+      "store": "D1 kitchens,kitchen_members,kitchen_invites; browser shared snapshot and sync queue",
+      "key": "kitchens.id; members(kitchen_id,user_id); invites token_hash; KEY-shared-session; KEY-kitchen-{id} queue/baseline",
+      "policyInputs": "verified membership; role viewer blocks PUT; revision compare; kitchenProjection strips private nutrition fields when nutritionProvenance.visibility=private, memberIds/adjustments and private profile fields; serving events become inventory-removal",
+      "propagation": "Membership DELETE removes only membership. Next guarded request denies; browser resume/60s membership check returns to stored original account and removes shared-session marker. No remote wipe of existing exported copies or source-derived cascade. Server hg validates projection; no recordPermission in kitchen update.",
+      "sourceReferences": "actual-yg.mjs; actual-functions.json:SA,hg; public/sync-model.js:5-6; public/sharing-ui.js:6-18",
+      "remainingDependency": "Need exact retention/tombstone/backup operator policy for derived shared copies, revocation semantics and stale offline checkpoints; preserve189account/sharing guards.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R10",
+      "consumer": "application.rg /api/personal/health,statistics,settings -> BA/QI/tg",
+      "store": "D1 private_documents; statistics computed in memory",
+      "key": "private_documents(owner,kind,id),revision; statistics same verified owner health documents; dedup[source,sourceRecordId OR observedAt:value:unit,type,memberId]",
+      "policyInputs": "health import consent accepted=true/version=offmenu-health/1; acceptedAt and purpose private measurement history/descriptive statistics; normalization/dedupe; settings forces aggregateActivity=false/backgroundRefresh=false",
+      "propagation": "GETstatistics returns private-account descriptive results and cursor/completeness; no cross-account health aggregate publication/store in this inspected route. DELETE is owner/kind/id only. Generic recordPermission rejects sensitive kinds; these are separate workflows, not a grant to publish health aggregates.",
+      "sourceReferences": "actual-rg.mjs; actual-BA.mjs; actual-QI.mjs; actual-functions.json:og,kA,tg; record-policy.js:5,9",
+      "remainingDependency": "Actual aggregate producer/store/privacy authority remains unbound. Retained author59 closure34216e97 + review38d8e534b4 named H59-PREFLIGHT-R1; exact successor/disposition needed, not another privacy assessment.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R11",
+      "consumer": "application.Qg DELETE connections/records; rg DELETE personal document",
+      "store": "provider_connections and unified_records; private_documents",
+      "key": "provider(user_id,source_id); record(owner,id) or(owner,source_id); private_document(owner,kind,id)",
+      "policyInputs": "verified owner and same-origin non-GET; no source-rights grants created",
+      "propagation": "Disconnect removes connection and direct private provider records only. Record delete does not remove browser product caches, profile.dataRecords/history, user_state, kitchens, checkpoints, downloaded backups or curated releases. Personal document delete does not establish retention outcome for separate profile history.",
+      "sourceReferences": "actual-Qg.mjs; actual-rg.mjs",
+      "remainingDependency": "Require exact scope/idempotence/cascade operator receipt under existing selected invalidation result; no DELETE run here.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R12",
+      "consumer": "application.Yg revoke + wA validate token; kitchen membership revoke",
+      "store": "integration_tokens and kitchen_members",
+      "key": "token_hash or token(id,user_id); kitchen_id/user_id",
+      "policyInputs": "revoked_at/expiry checked on integration-token access; verified owner for token management; kitchen role membership",
+      "propagation": "Access revocation is not record deletion. Token revoke changes token only; member revoke changes membership only. Existing copies/exports remain a distinct dependency.",
+      "sourceReferences": "actual-Yg.mjs; function-index.json:wA; actual-yg.mjs",
+      "remainingDependency": "Revocation-to-derived retention/deletion policy and actual operator evidence remain required; no auth migration or credential reads.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R13",
+      "consumer": "app export/restore -> pantry-backup; cloud restore; clear-local",
+      "store": "downloaded pantry JSON v1; localStorage account keys; IndexedDB pending",
+      "key": "backup version1 inventory/products/recipes/profile/selections; browser-account namespace; clearPending(KEY)",
+      "policyInputs": "recursive credential-key exclusion; lot/state validation; account meal-preference validation when present; restore staged writes/rollback; 20MB UI cap; account-change guard",
+      "propagation": "Backup validation does not consult source_policies or invalidation tombstones. Restore copies provenance/dataRecords/history snapshots then marks dirty for cloud sync. Clear-local removes selected namespace+subkeys and all pending entries whose keys start with KEY, including KEY-kitchen-id, explicitly leaves cloud and downloaded exports intact. This is account-namespace clearing, not a whole-device or cloud purge.",
+      "sourceReferences": "public/pantry-backup.js:5-33; public/app.js:130-148,163,343; public/sync-ui.js:5-16; public/sharing-ui.js:10",
+      "remainingDependency": "Cloud/D1 backup schedule, restore replay filters, retention owner, erase receipts and external user-export disposition not supplied by retained metadata. Gateway restore-readiness is messaging custody, not storage recovery evidence.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R14",
+      "consumer": "application.uB scheduled -> previous.scheduled chain",
+      "store": "resolver_cache,resolver_leases,unified_records,evidence_assertions,integration_limits",
+      "key": "table-specific predicates: cache fresh_until+retry_after; lease expires_at; record JSON retainUntil; evidence retain_until; hourly bucket",
+      "policyInputs": "Date.now for cache/leases/evidence; ISO timestamp+julianday for unified retention; private owner NOT LIKE public:%",
+      "propagation": "Scheduled code removes expired direct private retainUntil records. It does not traverse dependencies, accessExpiresAt, source-policy expiry, user_state/kitchens/private_documents/checkpoints/backups. Malformed dates remain read-denied by192 helper; SQL cleanup coverage is a different question. A wired scheduled function is not evidence of a cron trigger or a successful deletion run.",
+      "sourceReferences": "actual-uB.mjs; outer-route-evidence.json:landing234 and worker.routeTail",
+      "remainingDependency": "Actual scheduler/backup custodian receipt with retention clocks, scope and deletion/restore outcome needed. No scheduler or DB changes made.",
+      "disposition": "source-bound; operational result not asserted"
+    },
+    {
+      "id": "R15",
+      "consumer": "main embedded service-worker fetch handler (outer asset precedence unqualified)",
+      "store": "browser CacheStorage offmenu-shell-v10-functional",
+      "key": "fixed static FILES URL list; Request key for offline match",
+      "policyInputs": "GET same-origin only; excludes /api/,/.netlify/,/oauth/,/.well-known/,/mcp,/openapi.json",
+      "propagation": "Embedded shell logic is network-first with offline static fallback and versioned cache cleanup on activation; not a cache of private API responses. This is the main embedded asset, not proof outer wrapper serves it unchanged.",
+      "sourceReferences": "actual-sw.js SHA12b7b558305a3d70c20e43004c91344ca8ff983cee5614ed79e2806f5fc99f84",
+      "remainingDependency": "Actual served SW/outer asset precedence may be bound by publisher if required; no cache purge or asset replacement selected.",
+      "disposition": "source-bound; operational result not asserted"
+    }
+  ],
+  "obligationDispositions": [
+    {
+      "id": "CACHE-REPRESENTATION-ISOLATION",
+      "readOnlyDeliverable": "complete-current193-map",
+      "parentComplete": false,
+      "nextOwner": "Morgan/root (current accountable integration owner)",
+      "nextAction": "Bind R01/R03/R04 selected consumer/provider/key profile to existing cache-policy custodian and exact owner02/C035 input; preserve accepted1735/1779C1-RL and audit52 temporal result, no replay. Outer owned-foundation route body/primary selected inventory policy remains exact bounded evidence gap.",
+      "missing": [
+        "Current policy/grant/source-version receipt and explicit request clocks",
+        "Existing1735author/1779review/2127preparation disposition with exact identities",
+        "owner02 evaluator result/review and C035 caller envelope"
+      ],
+      "mustNotDo": "Do not invent cache variation inputs, patch a portable kernel into production, or re-review CACHE52."
+    },
+    {
+      "id": "DERIVED-RIGHTS-SAFETY-INVALIDATION",
+      "readOnlyDeliverable": "complete-store-caller-dependency-map",
+      "parentComplete": false,
+      "nextOwner": "Morgan/root; bind existing derived-store/source-policy custodian before any operational writer",
+      "nextAction": "Use R05-R09/R11-R14 edges to obtain exact source->product->history/shared/backup dependency decisions and permitted recall/withdrawal feed authority. Preserve existing2035/2237/2242/2245 reviewed portable invalidation pair; do not recreate it.",
+      "missing": [
+        "Permitted feed authority and source event/version identity",
+        "Derived-store treatment contract and exact operator/caller custody",
+        "Adoption receipt linking accepted portable planner to current stores"
+      ],
+      "mustNotDo": "No polling, operational deletes, migrations or automatic invalidation policy invented."
+    },
+    {
+      "id": "AGGREGATE-HEALTH-PRIVACY",
+      "readOnlyDeliverable": "complete-current-private-producer-store-map",
+      "parentComplete": false,
+      "nextOwner": "Morgan/root; existing privacy-policy custodian/author59 receipt holder identity to be confirmed, historical number is not active worker",
+      "nextAction": "Bind actual intended aggregate producer/store and privacy authority; obtain exact H59-PREFLIGHT-R1 corrected successor/disposition against retained2112closure and2194review before claiming validator accepted. Existing private descriptive statistics is not the aggregate-publication deliverable.",
+      "missing": [
+        "Actual aggregate producer/store and authorized output audience/purpose",
+        "Source/consent/retention policy authority",
+        "Exact corrected successor and existing matching scoped review or explicit nonproduction result"
+      ],
+      "mustNotDo": "No privacy judgment, cross-account aggregation, public publication or fabricated consent."
+    },
+    {
+      "id": "REVOCATION-DELETION-RESTORE",
+      "readOnlyDeliverable": "complete-current-action-and-restore-boundary-map",
+      "parentComplete": false,
+      "nextOwner": "Morgan/root; actual storage/backup operator identity remains unbound",
+      "nextAction": "Obtain current retention/backup operator receipt covering R08-R14, tombstone/version semantics and restore exclusion; record exactly whether unsupported cascade/restore controls are implementation prerequisites under existing selected authority.",
+      "missing": [
+        "Scheduler trigger and successful retention-run evidence",
+        "Cloud backup inventory/retention/restore replay and deletion verification receipts",
+        "Derived local/shared/offline/export scope decision with exact operator"
+      ],
+      "mustNotDo": "No delete or restore run, no auth migration, no broad production acceptance."
+    }
+  ],
+  "preservedEvidence": {
+    "cacheC1RLAuthorSHA256": "ca0dc5170c04e62f952c8ca596937133f1455479df8bee245a2cd2fae4a73b21",
+    "cacheC1RLReviewSHA256": "1998eee4f4fe08d3cd40bf6f18a79e4f5d912b9794b81d48020beef1c022f87a",
+    "cacheIntegrationPreparationSHA256": "b69fd9a88a50eadcf2b636eaf313db9270d8007866a75244a9cc2f4eba04fbc6",
+    "acceptedAudit52TemporalSHA256": "7c0280aa4c6a0512b6562b45e86bacd1090dfd042b070e244bcbadb9f3f42e5c",
+    "invalidationAuthorSHA256": "280344cd8f0c79b142649e83c40465a2fa6bc341e09eaa4d1fed2e7d273c3705",
+    "invalidationReviewSHA256": "3198cdfb7dda18f7248948f106ac2b1562c60bcb57c42239a46f1f55e3d0d43c",
+    "invalidationBoundReturnSHA256": "299aa6b40f12d59fc0cc821e75537d25e4e22e8c5c9f70ba82f6aaf9c500fc18",
+    "aggregateAuthorSHA256": "34216e9711c6ac1f76f0fb706a49443e1204b2c007cbce449e331e78db3a317e",
+    "aggregateReviewSHA256": "d8e534b4ef4d90e13164a2d79e10dfdbddb69a5fef7a66c700a98d5b4f80d7c5",
+    "owner02SelectionSHA256": "99fedb83390187ddcb88d6435042ba7fed24393931d85d6f912a83fe53c81ce1",
+    "C035ResolutionSHA256": "fc82634f92e1f10668618b10f1c6e694e24f7f6b10171a7aa2e1fd42882ad412",
+    "meaning": "Retained projection binds hashes/events, not full artifact-byte recovery or current author/reviewer availability. Historical nextAction text is provenance, not new execution authority."
+  },
+  "accessBoundary": {
+    "readOnlyProductionModuleGETs": true,
+    "privateUserData": false,
+    "credentialsRead": false,
+    "bindingsOutput": false,
+    "rawDatasetsIncluded": false,
+    "externalFoodLookup": false,
+    "sourceOrLedgerWrites": false,
+    "operationalDeletion": false,
+    "feedPolling": false,
+    "quotaCodex": false,
+    "denial": "Exact-source-slice read initially rejected as unrelated/private-source scope; stopped. Parent supplied additional verbatim ongoing-OffMenu approval and separately scoped research history, authorizing one known-unexecuted retry. Minimum worker prefix retry accepted06:10:29; no bypass. Owned-foundation named function not found by bounded selector, no further retrieval.",
+    "materialization": "Initial whole wrapper source was output-truncated; rejected as exact local materialization and deleted. Only complete source excerpts, hashes and metadata retained; never represent truncated file as exact."
+  },
+  "validation": {
+    "kind": "static source/pin/build-input verification only",
+    "checks": [
+      {
+        "check": "build-input:public/record-policy.js",
+        "passed": true
+      },
+      {
+        "check": "build-input:public/app.js",
+        "passed": true
+      },
+      {
+        "check": "build-input:public/data-ui.js",
+        "passed": true
+      },
+      {
+        "check": "build-input:public/recipe-review.js",
+        "passed": true
+      },
+      {
+        "check": "build-input:public/pantry-backup.js",
+        "passed": true
+      },
+      {
+        "check": "build-input:public/sync-ui.js",
+        "passed": true
+      },
+      {
+        "check": "build-input:public/sync-model.js",
+        "passed": true
+      },
+      {
+        "check": "build-input:public/sharing-ui.js",
+        "passed": true
+      },
+      {
+        "check": "build-input:public/cooking-model.js",
+        "passed": true
+      },
+      {
+        "check": "build-input:public/insights-model.js",
+        "passed": true
+      },
+      {
+        "check": "build-input:public/menu-model.js",
+        "passed": true
+      },
+      {
+        "check": "build-input:cloud/state.mjs",
+        "passed": true
+      },
+      {
+        "check": "deployed193-main-pin",
+        "passed": true
+      },
+      {
+        "check": "outer-worker-prefix-pin",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:hA",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:HA",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:uA",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:Cg",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:sA",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:gI",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:Qg",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:og",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:kA",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:tg",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:UA",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:BA",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:QI",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:rg",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:EI",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:wg",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:CA",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:SA",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:hg",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:yg",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:pg",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:Yg",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:uB",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:wA",
+        "passed": true
+      },
+      {
+        "check": "extracted-function:kg",
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "notRun": [
+      "No historical tests repeated",
+      "No live private-data/authenticated endpoint tests",
+      "No scheduled cleanup, delete, restore, feed or provider calls",
+      "No full security/privacy audit"
+    ],
+    "newPatch": false
+  }
+}
