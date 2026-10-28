@@ -1,0 +1,30 @@
+{
+  "release": {
+    "version": "abead872-5f5e-48f8-96f8-7cb96446fbbe",
+    "sha256": "e510c7a4cc6f418cbda6d984e0ff7de90f0d7b85d350640b9f624fd9b818c057",
+    "bytes": 468574
+  },
+  "scope": "Only changed lot-specific nutrition integration executed after frozen v195 journey. Four earlier isolated regressions and full journey not rerun.",
+  "passed": [
+    "Exact production applyNutrition callback stores a confirmed synthetic source profile on the selected lot without overwriting the shared product nutrition cache.",
+    "Actual menu and planned cook use selected rice200kcal/100g rather than shared-cache100, plus peas50: total250kcal. Salt0 remains known; vitaminC remains unknown.",
+    "Actual serving logs125kcal and batchId. Reselecting profileV2 on the current lot then actual local reload retains originalV1 profile/release and250kcal batch/125kcal history."
+  ],
+  "NS195-G1": "Resolved/narrowed for selected-lot path by history.batchId -> profile.batches[id].allocations[].original.nutritionSelection. Legacy cache-only nutrition is not retroactively given a source witness. Do not report the full v195 finding as an unchanged v196 defect.",
+  "remainingFinding": "NS196-G2 recipe version/source witness not explicitly frozen.",
+  "previousJourney": {
+    "directory": "/home/user/src/offmenu-north-star-acceptance-v195-20261028",
+    "manifestSHA256": "bc5107bf45df21fffbde05c0f8a126bf34e0fc22ec2f773c819b15ac8d2b5ab6",
+    "executionSHA256": "8d35b0eab5916a720e549d0a13fecc357389a63ae522087648aea8c60f956719",
+    "coverageSHA256": "409b6be316aff6bed5eab9b8ac19a42ee27a4cb5b2303c1d5f96b6e10e5220fe",
+    "releaseLimit": "v195 exact frozen bundle only, not an assertion that every earlier stage was rerun againstv196."
+  },
+  "notEstablished": [
+    "Real browser layout/accessibility/camera/device acceptance",
+    "Authenticated account/household/person-health authority or multi-device recovery",
+    "Qualified-real-source product/ingredient/recipe/nutrition semantic joins",
+    "History-informed planning, opted-in preference learning and new-plan leftover selection",
+    "Actual external-client/retailer ordering, payment, physical receipt or received-goods observation",
+    "Whole North Star or whole-corpus acceptance"
+  ]
+}

@@ -1,0 +1,9 @@
+# v196 changed integration acceptance
+
+Exact public bundle468574bytes/SHAe510c7a4cc6f418cbda6d984e0ff7de90f0d7b85d350640b9f624fd9b818c057, parent-reported served releaseabead872-5f5e-48f8-96f8-7cb96446fbbe. v195 full connected journey remains frozen separately. Only the changed source-nutrition production callback through actual menu/cook/serve/history/local reload was exercised here; no full journey or prior four isolated regressions repeated.
+
+The source picker UI is disabled in synthetic fixture mode. The harness extracts the exact production applyNutrition arrow callback and passes an explicitly confirmed normalized synthetic private-import profile; subsequent menu/cooking/serving handlers are unchanged actual served callers. This is callback integration evidence, not a browser picker/permissions test. Runtime fetches are denied by the fixture stub; no private account/session/device/provider data is accessed.
+
+Selected200kcal/100g rice plus50kcal peas produces250kcal batch and125kcal serving; salt0 is known, vitaminC unknown. Reselecting a current-lotV2 profile leaves the originalV1 source profile and release in cooked allocation.original.nutritionSelection. History.batchId resolves that retained batch witness after local reload. NS195-G1 must therefore not be carried forward as an unchanged selected-lot defect. Remaining narrower NS196-G2 records the missing explicit immutable recipe-version/source snapshot/reference.
+
+Do not rerun in this frozen evidence directory. Copies of app.js and delta-harness.mjs can be used in a fresh private scratch directory; the installed acorn source parser path is required and no installation was performed. Whole North Star, real-source semantic, authentication/privacy, device and retailer acceptance remain unestablished. Existing owners receive cases; this lane edits no app candidate, makes no deployment and creates no broad release gate.
