@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "parallel-delivery-active-provider-auth-repairs-deferred",
-  "asOfUTC": "2026-10-28T04:39:00Z",
+  "status": "capacity-ceiling-deployed-optimized-qualification-running",
+  "asOfUTC": "2026-10-28T05:09:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -388,6 +388,14 @@
       "event": "Reconciled real provider distribution and free-model development output; deferred SambaNova authentication repair; recorded capability ceiling separately from operating admission. Global qualification continues without producer reruns.",
       "evidence": [
         "windmill-job:01a180cd-6bd0-2251-dde3-8f832e06cd4a"
+      ]
+    },
+    {
+      "atUTC": "2026-10-28T05:09:00Z",
+      "event": "Verified create-only supervisor v3 and shared Windmill client deployment, preserving original supervisor and private permissions. Checkpoint migration preserved7530; qualification007 running after observed-RAM correction. Published41 reviewed custody files with exact readback and zero Actions.",
+      "evidence": [
+        "commit:443bd8c5fcb174a4190d5f54d0e11f8db3f1c51b",
+        "windmill-job:01a180e8-a1e3-9b3b-1530-11cad400592f"
       ]
     }
   ],
@@ -4919,10 +4927,10 @@
   },
   "currentDeliveryReconciliation": {
     "schema": "offmenu-current-delivery-evidence/1",
-    "asOfUTC": "2026-10-28T04:39:00Z",
+    "asOfUTC": "2026-10-28T05:09:00Z",
     "candidateOnly": false,
     "baseCommit": "062210db932a67f9d4f374c12fb577ce61579d07",
-    "evidenceLimit": "64 Windmill services verified; seven provider catalog jobs used distinct services. Foo global long-job serialization remains installed pending additive admission implementation. Complete producers do not establish completed global qualification or public serving.",
+    "evidenceLimit": "Configured shared admission ceiling verified, plus normal qualification007 running through v3. No stress test or simultaneous64x256 capacity claim. Provider catalogs are distinct from useful inference; global qualification/publication not complete.",
     "rows": [
       {
         "id": "production-foundation",
@@ -4962,7 +4970,9 @@
           "artifact-ref:offmenu-source-evidence-20261027/coverage-state-7dd3ed8c.json",
           "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-INPUT-VERIFICATION-20261028.json",
           "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-SOURCE-ALL-20261028.json",
-          "artifact-ref:qualification-parallel-20261028/ACTUAL-PARALLEL-004-EXPECTED-PAUSE.json"
+          "artifact-ref:qualification-parallel-20261028/ACTUAL-PARALLEL-004-EXPECTED-PAUSE.json",
+          "artifact-ref:qualification-parallel-20261028/ACTUAL-PARALLEL-005-EXPECTED-PAUSE.json",
+          "artifact-ref:qualification-merge-20261028/ACTUAL-MERGE-007-LIVE.json"
         ],
         "actual": {
           "bulkAssets": 9800,
@@ -4971,11 +4981,13 @@
           "placesAssets": 12686,
           "finalCombinedTargetRecords": 22574390,
           "finalCombinedTargetSources": 22,
-          "qualificationBulkAssetsCommitted": 5539,
+          "qualificationBulkAssetsCommitted": 7530,
           "qualificationComplete": false,
-          "published": false
+          "published": false,
+          "activeQualificationJob": "01a180e8-a1e3-9b3b-1530-11cad400592f",
+          "configuredQualificationWorkers": 200
         },
-        "next": "Continue resumable existing global qualification at retained checkpoint, then assemble and publish through recovered authorized Netlify upload route."
+        "next": "Continue reviewed single-pass merge qualification from preserved checkpoint; 006 refused actual RAM admission without processing, corrected007 running. No producer rerun, stress test or speedup claim."
       },
       {
         "id": "identity-only-candidate",
@@ -5080,7 +5092,7 @@
       },
       {
         "id": "windmill-capacity-ceiling",
-        "state": "64-services-live-confined-admission-successor-in-progress",
+        "state": "deployed-and-normal-operation-verified",
         "owner": "configure_parallel_capacity_ceiling",
         "target": {
           "concurrentJobs": 64,
@@ -5089,12 +5101,20 @@
         },
         "actual": {
           "registeredWorkers": 64,
-          "installedShortReadSlots": 2,
-          "installedLongJobSlots": 1,
-          "globalWriteExclusion": true,
-          "cgroupLimitsVerified": false
+          "configuredJobSlots": 64,
+          "configuredComputationWorkersPerJob": 256,
+          "overheadProcessesPerJobMax": 8,
+          "sharedAdmission": "opt-in resource declarations, aggregate accounting and disjoint-write controls",
+          "legacyDefaultExclusionPreserved": true,
+          "cgroupLimitsVerified": false,
+          "stressTest": false,
+          "normalOperationJob": "01a180e8-a1e3-9b3b-1530-11cad400592f"
         },
-        "next": "Prepare reviewed additive resource-aware admission. Separate configured ceiling from chosen actual load; preserve shared-write safety and active jobs."
+        "next": "Choose operating resource mix for useful tasks; do not treat configured ceiling as sustainable simultaneous load.",
+        "evidence": [
+          "https://github.com/maldous/offmenu/commit/443bd8c5fcb174a4190d5f54d0e11f8db3f1c51b",
+          "windmill-job:01a180e6-667a-b883-375b-659b7108e80b"
+        ]
       },
       {
         "id": "free-provider-allocation",
