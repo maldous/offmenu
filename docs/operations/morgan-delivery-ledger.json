@@ -82,7 +82,7 @@
       "latestUserConcurrencyTarget": 256,
       "actualConcurrencyVerified": false,
       "placesFallback": "Historical ingestion fallback superseded by all packet ingestion complete; existing v5 global/final phases preserve their reviewed resource and hash-pause contracts.",
-      "fooDispatchState": "Corpus017 admitted at global-check checkpoint; NorthStar003 cleanly paused after9332/9797SQLimports,004reduced-reservation refill coordinated. National/basis await real disk headroom, not model quota or CPU registration.",
+      "fooDispatchState": "Corpus018 runs original global/final phases with reviewed64MiB additional growth. Full bulk SQL, national derivation and namespace proof completed locally; new NorthStar staging/basis writes await exact destination authority, not quota or disk headroom.",
       "serviceWorkerTarget": 64,
       "serviceWorkersVerified": true,
       "hourlyPrompt": "Existing reminder updated/readback2026-10-28T08:38:55.195299Z for restored quota and supported6.1medium default; hourly schedule/enabled/timezone unchanged.",
@@ -5524,7 +5524,7 @@
   },
   "currentObligationAllocation": {
     "schema": "offmenu-all89-current-allocation/1",
-    "asOfUTC": "2026-10-28T08:51:30Z",
+    "asOfUTC": "2026-10-28T09:19:30Z",
     "baseCommit": "e2ec394485254ed2edc217078af67e72d8d608d7",
     "candidateOnly": false,
     "publishOwner": "Morgan/root",
@@ -7604,10 +7604,10 @@
         "currentOwner": "assess_partial_corpus_resume; prepare_common_corpus_publication remains safe-idle until qualified proof",
         "deliveryLane": "corpus-globalproof",
         "state": "active-owned",
-        "executionClaim": "Existing017 actually admitted/running after016cleanpause; allpacket ingestion complete,globalreference/translation checks passed; globalIDscan continues. Finalproof absent.",
+        "executionClaim": "Existing018 actually admitted/running after017 clean pause. All packet ingestion and global reference/translation/ID checks complete; texts/citations and final hashes still pending. No final proof.",
         "deliverable": "Both corpus producers final and prior source custody/retained proof milestones remain accepted. Current global proof is016 per coordinator, not stale007. Native publisher ready with accepted source custody; no longer described as blocked by the previously absent connector upload surface.",
         "dependency": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred.",
-        "nextUsefulAction": "Continue existing017 originalglobal/fresh-processfinalhashphases; reactivate samepublisher only on actualqualifiedproof/candidate. No producerreplay/rawexport/newacquisition.",
+        "nextUsefulAction": "Continue existing018 original global and fresh-process final-hash phases; same publisher resumes only on actual qualified handoff. No producer replay or raw export.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/52",
@@ -7626,7 +7626,7 @@
           "nextUsefulAction": "Monitor exact007 result; no producer replay, raw export, cloud deletion or new source acquisition."
         },
         "receiptClosure": {
-          "asOfUTC": "2026-10-28T08:51:30Z",
+          "asOfUTC": "2026-10-28T09:19:30Z",
           "finiteDeliverableState": "existing-proof-active-not-closed",
           "broaderParentState": "active-existing-owner",
           "runnableNow": true,
@@ -7661,10 +7661,10 @@
         "currentOwner": "assess_partial_corpus_resume; prepare_common_corpus_publication remains safe-idle until qualified proof",
         "deliveryLane": "corpus-globalproof",
         "state": "active-owned",
-        "executionClaim": "Existing017 actually admitted/running after016cleanpause; allpacket ingestion complete,globalreference/translation checks passed; globalIDscan continues. Finalproof absent.",
+        "executionClaim": "Existing018 actually admitted/running after017 clean pause. All packet ingestion and global reference/translation/ID checks complete; texts/citations and final hashes still pending. No final proof.",
         "deliverable": "Both corpus producers final and prior source custody/retained proof milestones remain accepted. Current global proof is016 per coordinator, not stale007. Native publisher ready with accepted source custody; no longer described as blocked by the previously absent connector upload surface.",
         "dependency": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred.",
-        "nextUsefulAction": "Continue existing017 originalglobal/fresh-processfinalhashphases; reactivate samepublisher only on actualqualifiedproof/candidate. No producerreplay/rawexport/newacquisition.",
+        "nextUsefulAction": "Continue existing018 original global and fresh-process final-hash phases; same publisher resumes only on actual qualified handoff. No producer replay or raw export.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/53",
@@ -7683,7 +7683,7 @@
           "nextUsefulAction": "Monitor exact007 result; no producer replay, raw export, cloud deletion or new source acquisition."
         },
         "receiptClosure": {
-          "asOfUTC": "2026-10-28T08:51:30Z",
+          "asOfUTC": "2026-10-28T09:19:30Z",
           "finiteDeliverableState": "existing-proof-active-not-closed",
           "broaderParentState": "active-existing-owner",
           "runnableNow": true,
@@ -8156,10 +8156,10 @@
         "currentOwner": "assess_partial_corpus_resume; prepare_common_corpus_publication remains safe-idle until qualified proof",
         "deliveryLane": "corpus-globalproof",
         "state": "active-owned",
-        "executionClaim": "Existing017 actually admitted/running after016cleanpause; allpacket ingestion complete,globalreference/translation checks passed; globalIDscan continues. Finalproof absent.",
+        "executionClaim": "Existing018 actually admitted/running after017 clean pause. All packet ingestion and global reference/translation/ID checks complete; texts/citations and final hashes still pending. No final proof.",
         "deliverable": "Both corpus producers final and prior source custody/retained proof milestones remain accepted. Current global proof is016 per coordinator, not stale007. Native publisher ready with accepted source custody; no longer described as blocked by the previously absent connector upload surface.",
         "dependency": "Continue existing016 proof to actual terminal output/checkpoint; publish only qualified accepted results via existing native publisher when dependencies meet. MissingCOUNTRY32/43artifact bytes andCOUNTRY33source-use/output remain. No proof/country/fullcorpus-publication closure inferred.",
-        "nextUsefulAction": "Continue existing017 originalglobal/fresh-processfinalhashphases; reactivate samepublisher only on actualqualifiedproof/candidate. No producerreplay/rawexport/newacquisition.",
+        "nextUsefulAction": "Continue existing018 original global and fresh-process final-hash phases; same publisher resumes only on actual qualified handoff. No producer replay or raw export.",
         "reviewer": "Morgan/root coordinates independent scoped reviewer; no historical numbered reviewer assumed active",
         "evidence": {
           "historicalPointer": "/obligations/66",
@@ -8178,7 +8178,7 @@
           "nextUsefulAction": "Monitor exact007 result; no producer replay, raw export, cloud deletion or new source acquisition."
         },
         "receiptClosure": {
-          "asOfUTC": "2026-10-28T08:51:30Z",
+          "asOfUTC": "2026-10-28T09:19:30Z",
           "finiteDeliverableState": "existing-proof-active-not-closed",
           "broaderParentState": "active-existing-owner",
           "runnableNow": true,
@@ -9587,7 +9587,7 @@
   },
   "continuousEfficiencyReview": {
     "schema": "offmenu-continuous-efficiency-review/1",
-    "asOfUTC": "2026-10-28T08:51:30Z",
+    "asOfUTC": "2026-10-28T09:19:30Z",
     "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
     "state": "active-owned-ongoing",
     "currentOwner": "audit_production_efficiency",
@@ -9751,22 +9751,22 @@
         "runtimeStability": "012 completed1440.4seconds without priorcacheMemoryError;3.101Mresources added, expectedpause/cleanupverified. No causal cache-speedup assertion."
       },
       "activeRun": {
-        "run": "017",
-        "job": "01a181b2-9723-5d00-8710-2214de1d55e9",
-        "startedAtApproxUTC": "2026-10-28T08:48:40Z",
-        "naturalBoundaryApproxUTC": "2026-10-28T09:12:40Z",
+        "run": "018",
+        "job": "01a181cb-5043-ffb7-be3e-2679bcabd16f",
+        "startedAtApproxUTC": "2026-10-28T09:15:45Z",
+        "naturalBoundaryApproxUTC": "2026-10-28T09:39:45Z",
         "workers": 64,
         "workerMiB": 256,
         "cpuReservation": 19,
         "wholeJobReservationGiB": 24.625,
         "cacheMiB": 3072,
         "sqlHardHeapMiB": 4096,
-        "additionalGrowthBytes": 23496962048,
+        "additionalGrowthBytes": 67108864,
         "status": "capacity-admitted-and-running-owner-verified",
         "mayPauseEarlierAtCommittedHashTransition": true,
         "performanceBenefitEstablished": false,
         "phase": "global",
-        "progressAsOfUTC": "2026-10-28T08:49:25Z",
+        "progressAsOfUTC": "2026-10-28T09:16:45Z",
         "allPacketIngestionComplete": true,
         "ingestedTotals": {
           "resources": 23586626,
@@ -9776,7 +9776,8 @@
           "externalReferences": 94948126
         },
         "finalProofWritten": false,
-        "globalIdsScannedAtResume": 25250000
+        "globalTextsCountedAtResume": 90810000,
+        "globalIdsChecked": 194541531
       },
       "otherEfficiencyFindings": [
         "Country lane14readyrows/76exactbindings/15assertions/7tests avoids stale repeat-reviews; zero country closures. Proposed native validators never admitted; payload-specific permission remains held after initial+one materially supported retry, no further retry.",
@@ -9815,7 +9816,15 @@
         "memPeakKB": 32560,
         "actualOverlapWithCorpusSeconds": 1.173,
         "remainingDependency": "Actualqualifiedproof/assembly, not access/setup/capacity",
-        "dispatchGapFixed": "Queued message had not activated idle reviewer; existingowner followup_task activated existingreviewer. No duplicate and no actualslotlimit."
+        "dispatchGapFixed": "Queued message had not activated idle reviewer; existingowner followup_task activated existingreviewer. No duplicate and no actualslotlimit.",
+        "frozenBulkBinding": {
+          "job": "01a181c2-5369-f354-1395-ddfb2ef342db",
+          "receipt": "FROZEN-NORTH-STAR-BINDING-20261028T0906.json",
+          "state": "Exact final bulk manifest bound; reviewed public scope/citation/private artifact exclusions. No corpus payload output, upload or Foo writes.",
+          "owner": "prepare_common_corpus_publication",
+          "safeIdleAfterStep": true,
+          "next": "Exact namespace proof and reviewed consumer receipt and/or actual completed base proof, followed by original assembly/served pin prerequisites."
+        }
       },
       "completedRun013": {
         "job": "01a18146-732a-3df6-e197-fdd79179aec0",
@@ -9907,13 +9916,11 @@
         "limit": "Observed lowerthroughput underconcurrentwork is not a causal cacheclaim; sameapprovedcode retained."
       },
       "latestDiskRefill": {
-        "priorAttempt": "017 initially not admitted capacity_disk_reserved; no execution",
-        "release": "NorthStar003 clean08:46:00.34, child_tree_gone",
-        "order": "Corpus017 actually admitted first; measured8.353GBSQL004 refill coordinated through same owner; no reserve change.",
-        "additionalProofGrowthBytes": 23496962048,
-        "additionalSQLGrowthBytes": 8352591312,
-        "sharedReserveGiB": 70,
-        "nationalAndBasis": "4GiBnational and10GiBbasis still do not fit both current remaining reservations; ready reviewed lanes withheld by real diskadmission, not reasoningslots/quotas."
+        "order": "Bulk004 finished and released its reservation; national plus namespace proof admitted and completed. After017 clean pause, exact final-phase review allowed018 to admit with64MiB instead of23.497GB future growth. No total-cap or shared-reserve reduction.",
+        "proofJob": "01a181cb-5043-ffb7-be3e-2679bcabd16f",
+        "northStarWritersActive": false,
+        "basis": "Reviewed10GiB phase is resource-ready after phase declaration reduction but new writes withheld pending the separate exact destination authority denial; no bypass.",
+        "physicalIO": "Earlier measured disk/journal bottleneck retained as historical sample, not a claim that current IO saturation persists after writer completion."
       },
       "northStarSQL003": {
         "job": "01a18197-1323-c9ff-d5a9-d2bad4a4ab71",
@@ -9936,8 +9943,8 @@
       },
       "otherReadyWork": {
         "recipe": "Recipev6 terminal succeeded08:21:35, exit0/child_tree_gone;51assets/25135packets exactsource reverified+SQLqueries in59s; existing1.36GBindex unchanged, no duplicatecopy/fullfileRAMread.47smallrecipe fidelity and308expansion repairs retained. Scoped receipt, not wholegraph closure.",
-        "basis": "Puremodulecae8 reviewed; runner24b47729 reviewedfinitecorrections. Phase1named10GiB output remainsunlaunchedpendingactualheadroom/finalownerreview.",
-        "national": "Reviewedcode staged bychild; fullnational4GiB output unlaunchedpendingactualheadroom."
+        "basis": "Reviewed and staged10GiB phase1. Genuine disk blocker removed by018 phase-specific output declaration; now held only for new staging/destination authority, with no submission bypass.",
+        "national": "Full national derivation completed locally; exact counts above. No accepted or served claim."
       },
       "completedRun016": {
         "job": "01a18196-2dc2-72e0-0b58-93754d0ba886",
@@ -9976,6 +9983,100 @@
           "externalReferences": 94948126
         },
         "finalProofWritten": false
+      },
+      "completedRun017": {
+        "job": "01a181b2-9723-5d00-8710-2214de1d55e9",
+        "status": "expected-pause-cleanup-verified",
+        "globalIdsChecked": 194541531,
+        "globalTextsCounted": 90810000,
+        "uniqueReferencesChecked": 23786447,
+        "unresolvedReferences": 0,
+        "translationSourceChecksPassed": 3242,
+        "phase": "global",
+        "table": 3,
+        "finalProofWritten": false
+      },
+      "previousActiveRun017": {
+        "run": "017",
+        "job": "01a181b2-9723-5d00-8710-2214de1d55e9",
+        "startedAtApproxUTC": "2026-10-28T08:48:40Z",
+        "naturalBoundaryApproxUTC": "2026-10-28T09:12:40Z",
+        "workers": 64,
+        "workerMiB": 256,
+        "cpuReservation": 19,
+        "wholeJobReservationGiB": 24.625,
+        "cacheMiB": 3072,
+        "sqlHardHeapMiB": 4096,
+        "additionalGrowthBytes": 23496962048,
+        "status": "capacity-admitted-and-running-owner-verified",
+        "mayPauseEarlierAtCommittedHashTransition": true,
+        "performanceBenefitEstablished": false,
+        "phase": "global",
+        "progressAsOfUTC": "2026-10-28T08:49:25Z",
+        "allPacketIngestionComplete": true,
+        "ingestedTotals": {
+          "resources": 23586626,
+          "assertions": 166914715,
+          "relations": 4036948,
+          "translations": 3242,
+          "externalReferences": 94948126
+        },
+        "finalProofWritten": false,
+        "globalIdsScannedAtResume": 25250000
+      },
+      "completedNorthStarBulk004": {
+        "job": "01a181b3-4525-d5c6-9ef8-fb0dab41ebae",
+        "startedAtUTC": "2026-10-28T08:49:32.438Z",
+        "terminalAtUTC": "2026-10-28T08:58:25.899Z",
+        "status": "succeeded-exit0-child-tree-gone",
+        "manifestSHA256": "83773291ac70931a110f60e872ae47a2bd470b5f397c709195dcf016c0bf0694",
+        "shards": 9797,
+        "packets": 9796656,
+        "finalSQLCoverageComplete": true,
+        "resolvedProductProfileContextEdges": 2915727,
+        "uniqueIdentifierPathKeys": 2980298,
+        "ambiguousKeysRetainedUnmerged": 400164,
+        "releasedGrowthBytes": 8352591312,
+        "acceptedOrServedRowsClaimed": 0
+      },
+      "completedNorthStarNational": {
+        "job": "01a181bf-c416-8068-da08-852b39d3f5ee",
+        "admittedAtUTC": "2026-10-28T09:03:11Z",
+        "terminalAtUTC": "2026-10-28T09:09:19Z",
+        "status": "succeeded-exit0-child-tree-gone",
+        "foods": 36737,
+        "foodProfileMetricContextPaths": 587792,
+        "releasedOutputReservationGiB": 4,
+        "acceptedOrServedRowsClaimed": 0
+      },
+      "completedNamespaceProof": {
+        "job": "01a181c4-c80e-f765-0663-a7d7d5195d5c",
+        "submittedAtUTC": "2026-10-28T09:08:40Z",
+        "terminalAtUTC": "2026-10-28T09:09:48Z",
+        "status": "succeeded-exit0-child-tree-gone",
+        "sourceScopedBarcodeProductProfileContextKeys": 1055792,
+        "crossSourceIdentityClaimed": false,
+        "releasedOutputReservationMiB": 64,
+        "acceptedOrServedRowsClaimed": 0
+      },
+      "finalPhaseAdmission": {
+        "evidence": "docs/operations/2026-10-28/final-phase-output-admission.json",
+        "evidenceCommit": "611b8c022f4e88554999b707ba4547cda34f8cbe",
+        "reviewer": "audit_production_efficiency",
+        "author": "assess_partial_corpus_resume",
+        "reviewSHA256": "c1a2cd00b803d2c4b8b0bbcfeeb934a7d8d0a2244497bbb84c432c5af9bcdaed",
+        "metadataSHA256": "bd92ac7238df0f53da87961f5a97dab9f5a3cb3d800d5459e10617b7678345f7",
+        "checkpointBytes": 4097,
+        "packageMetadataBytes": 3863,
+        "previousGrowthBytes": 23496962048,
+        "adoptedGrowthBytes": 67108864,
+        "unusedFutureReservationReleasedBytes": 23429853184,
+        "absoluteProofScratchCapGiB": 60,
+        "sharedReserveGiB": 70,
+        "basis": "Remaining PK-ordered global scans and pinned final hashes are read-only except one small checkpoint row and bounded result/temp/journal/log writes; no sort spool, new data tables, shards or indexes. Exact code/runtime/inputs and original validation unchanged.",
+        "activeMarkerEdits": false,
+        "forcedRestart": false,
+        "testsRepeated": 0
       }
     },
     "latestUserOperatingPrinciple": {
@@ -10147,6 +10248,16 @@
       "unboundSourceLineagesByPathAndVersion": 0,
       "currentFooByteEqualityVerified": false,
       "limitation": "Names/statusonly; no current hashes captured. Do not overwrite earlier files or re-export/replay merely fromuntrackedstatus. Deliberateexit7smoke remainsnotretryable."
+    },
+    "latestNarrowAuthorityHold": {
+      "reportedUTC": "2026-10-28T09:16:08Z",
+      "owner": "align_north_star_graph and scale_north_star_derivation",
+      "actions": "Reviewed caller-code staging and a separate metadata-only consumer receipt staging to existing Foo destination.",
+      "result": "Both denied before execution; no UUID, retry or alternative route.",
+      "reasonReported": "Auto-review cites insufficient destination/action authority beyond GitHub and unverified Foo destination.",
+      "dependentWork": "New basis writes to that destination withheld rather than used to evade denial; exact paths/pins held by root for next suitable user interaction.",
+      "unaffected": "Existing authorized corpus018 remains running; completed outputs, existing Windmill connector operations and source custody remain intact.",
+      "userInteraction": "User driving; no direct noncritical message. Root will bundle the exact authorization request when suitable."
     }
   },
   "priorStatusBeforeProduction194Reconciliation": "full-production-allocated-corpus-active-product193-served",
