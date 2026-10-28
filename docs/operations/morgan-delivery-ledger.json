@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "production-delivery-active-evidence-reconciled",
-  "asOfUTC": "2026-10-28T01:46:00Z",
+  "status": "maintenance-complete-capacity-verified-places-resume-directed",
+  "asOfUTC": "2026-10-28T03:27:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -67,10 +67,10 @@
     "originalHistoryEdited": false
   },
   "currentExecution": {
-    "sourceCommit": "062210db932a67f9d4f374c12fb577ce61579d07",
+    "sourceCommit": "748ae9f02d38369c5ba79c7c5eb7aca284b81789",
     "integrationBranch": "integration/reviewed-local-source-custody-20261027",
     "route": "Authorized Windmill durable worker -> confined Foo execution -> bounded sanitized results and source-only custody -> direct Git/GitHub integration -> existing Cloudflare/Netlify connector deployment -> actual served result verification",
-    "production": "required-for-deliverables; version189 deployed100% at2026-10-28T01:44:02.150401Z; limited shared-kitchen lifecycle improvement, no broader product acceptance implied",
+    "production": "Version192 deployed100%; shared-kitchen lifecycle, manual account-save lifecycle, view history and retention parity delivered. Full corpus qualification/publication and authenticated/device acceptance are not implied.",
     "actions": "prohibited: no dispatch/retry or source push triggering workflows",
     "quotaBlockedFooCodex": "no retry until user explicitly confirms restored capacity; Windmill route is separate",
     "capacity": {
@@ -78,14 +78,35 @@
       "availableChatAgentSlotsIncludingCoordinator": 7,
       "specialistCapacityTarget": 6,
       "fooLiveConcurrencyClaimed": false,
-      "fanoutDriver": "reviewed, not deployed; no64live-worker claim"
+      "fanoutDriver": "64service capacity independently verified, not64simultaneous heavy jobs; retain latest256target and measure actual resource admission.",
+      "latestUserConcurrencyTarget": 256,
+      "actualConcurrencyVerified": false,
+      "placesFallback": "128 only after an actual MemoryError, not speculative throttling",
+      "fooDispatchState": "maintenance cleared; resource-readmit and pinned places resume directed",
+      "serviceWorkerTarget": 64,
+      "serviceWorkersVerified": true,
+      "hourlyPrompt": "Parent reports updated to latest256target",
+      "verifiedServiceWorkers": 64,
+      "verification": {
+        "atUTC": "2026-10-28T03:27:00Z",
+        "method": "MCP list_workers",
+        "live": 64,
+        "pythonCapable": 64,
+        "maxLastPingSeconds": 6,
+        "originalWorkersPreserved": [
+          "71969",
+          "c499"
+        ],
+        "evidenceId": "registrations-0327.json"
+      }
     },
     "coordinatorRole": "Morgan/root coordinates integration, task ownership, result verification, ledger and user progress.",
     "publicationWriter": "Morgan/root-authorized ledger reconciliation; direct Git/GitHub leased integration publication",
     "currentUserPriority": {
       "top": "Full production mode across authorized OffMenu ledger deliverables",
       "messageId": "Sentinel_497944df3ae48191912dd654846406f6",
-      "messageUTC": "2026-10-28T01:31:37.839196Z"
+      "messageUTC": "2026-10-28T01:31:37.839196Z",
+      "latest": "End-state-first full production; latest target256, places128 only after actualMemoryError; finish approved maintenance before resuming"
     },
     "preservedHolds": [
       "Credentials/raw datasets stay private; no external live barcode/ingredient/recipe/nutrition/health lookup",
@@ -94,7 +115,31 @@
       "No retries of specifically blocked native diagnostics or historical held jobs",
       "No substitute deliverables or broad additional release-test gates"
     ],
-    "historicalFieldInterpretation": "All pre-overlay lanes, rosters, publication records and prior* sections describe their stated historical cut. They are not current owner assignments, retry permission or proof of present production acceptance."
+    "historicalFieldInterpretation": "All pre-overlay lanes, rosters, publication records and prior* sections describe their stated historical cut. They are not current owner assignments, retry permission or proof of present production acceptance.",
+    "maintenanceHold": {
+      "active": false,
+      "sinceUTC": "2026-10-28T03:19:00Z",
+      "scope": "Historical03:19dispatch hold completed after host success and independent worker verification03:27.",
+      "approvedWork": "PostgreSQL max_connections320, brief restart after clean checkpoint, then64Windmill service workers",
+      "approval": "User explicitly approved in voice; no repeat approval required.",
+      "state": "Maintenance hold cleared. Root independently verified64live Python-capable workers via MCP; DB320 provenance is user's host receipt, not a direct MCP database query. Resource readmission and exact pinned places resume directed.",
+      "originalScalerOutcome": "Stopped before changes: current36 connections plus projected186 exceeds available97.",
+      "resumeCondition": "Assessor performs resource readmission and resumes same pinned places checkpoint; no checkpoint reset or duplicate producer.",
+      "hostResult": {
+        "messageId": "Sentinel_f36d03a7c058819192446a26c6362f20",
+        "reportedAtUTC": "2026-10-28T03:26:00Z",
+        "databaseMaxConnections": 320,
+        "registeredWorkers": 64,
+        "newContainers": 62,
+        "originalContainersAndConfigPreserved": true,
+        "receiptIds": [
+          "db320-159f7e8807ff44068bc2292117c15704",
+          "scale64-943944e925b24c03a8e018d5c447fec3"
+        ],
+        "independentlyVerified": "64worker registrations independently verified; DBmax320 remains hostreceipt provenance"
+      },
+      "clearedAtUTC": "2026-10-28T03:27:00Z"
+    }
   },
   "chronologicalEvents": [
     {
@@ -322,6 +367,21 @@
       "atUTC": "2026-10-28T01:46:00Z",
       "event": "current-delivery-evidence-reconciliation",
       "detail": "Supersedes stale production pause,Actions route and oldowner claims. Records189shared-kitchen delivery and active incompletecorpus/productwork. Historical evidence retained; no blanket backlogclosure."
+    },
+    {
+      "atUTC": "2026-10-28T03:25:00Z",
+      "event": "approved-maintenance-hold-and-current-production-corpus-update",
+      "detail": "All Foo producer/read jobs finished; next dispatch held since03:19 for explicitly approved DB320/restart/64workers; helper delivered awaitingrunresult, nochangesclaimed. Bulk FINALcomplete, placesverifiedpartialpinned. Production192fourfixeslive. Latest256target not livecapacityclaim."
+    },
+    {
+      "atUTC": "2026-10-28T03:26:00Z",
+      "event": "host-maintenance-helper-success-reported",
+      "detail": "User helperSUCCESS DB320,64registeredworkers,62newcontainers,originalcontainers/configpreserved; root independentverification pending. Prior hold is historical, not awaitinghostadmin."
+    },
+    {
+      "atUTC": "2026-10-28T03:27:00Z",
+      "event": "independent-worker-verification-maintenance-hold-cleared",
+      "detail": "MCP list_workers64live/64Pythoncapable/maxlastping6seconds,originalworkerspreserved. DB320 is userhostreceipt provenance,notdirectMCPDBquery. Assessor directedresource-readmit andresume exactplacescheckpoint. No64heavyjobclaim."
     }
   ],
   "lanes": [
@@ -700,10 +760,10 @@
     "Sonar assessment/remediation owner and current result remain unverified"
   ],
   "nextPriorities": [
-    "Finish already-owned bounded common corpus recovery without duplicating writers",
-    "Prepare and deploy reviewed independent current app improvements preserving existing production modules",
-    "Bind actual meal/shopping/preferences/source-permission callers; do not confuse pure helper tests with feature acceptance",
-    "Reconcile remaining historical obligations to exact current receipts; preserve unknowns and holds"
+    "Assessor resource-readmits and resumes exact pinned placescheckpoint; report actualoutput not workerregistration counts.",
+    "Latest usertarget256;128places only after actualMemoryError.64live worker services verified, not64heavyjobs or256liveconcurrency.",
+    "Qualify completed corpus outputs before publishing; do not conflate producer completion with served food coverage",
+    "Continue independent source-only preparation and exact deployment-route recovery without starting Windmilljobs"
   ],
   "duplicateSuppression": [
     "Do not restart 64 historical sessions",
@@ -1154,10 +1214,10 @@
     "note": "PR41 exact26paths and full CI accepted and merged. Origin integration reviewed locally; supported read-only metadata task admitted with private result pending, no GitHub comment/control/service changes."
   },
   "activeWork": [
-    "Common corpus: bounded513000packet bulk checkpoint incomplete; places safe failure correction active; existing owners retained",
-    "Production integration: preserve189shared-kitchen fix; landingcoverage running; GPU/render acceptance unverified",
-    "Productcallerjoins: manual cloud-save lifecycle correction prepared; independentreview pending; broader calleracceptance not claimed",
-    "Apphistory: confirmed current source gap; narrow implementation eligible"
+    "Maintenance completed: userhostreceipt DB320; independentMCP64livePythonworkers/maxlastping6seconds/originalworkerspreserved. Resource readmission and sameplaces checkpointresume directed.",
+    "Bulk FINALcomplete; places11037000verified identities/1645613remaining; exactcheckpoint retained; resumed output not yet observed at this snapshot.",
+    "Production192four corrections delivered; full corpus qualification/publication still open",
+    "Netlify current exposed upload route missing; historical CLI and renamed official MCP route recovered; plugin connected"
   ],
   "supersededOperationalCheckpoint": {
     "asOfUTC": "2026-10-18T00:18:00Z",
@@ -4852,10 +4912,10 @@
   },
   "currentDeliveryReconciliation": {
     "schema": "offmenu-current-delivery-evidence/1",
-    "asOfUTC": "2026-10-28T01:46:00Z",
+    "asOfUTC": "2026-10-28T03:27:00Z",
     "candidateOnly": false,
     "baseCommit": "062210db932a67f9d4f374c12fb577ce61579d07",
-    "evidenceLimit": "Production189 receipt from integration owner is included in repository. Parent-reported corpus checkpoint facts remain attributed. Historical source-only or asset coverage evidence is not authenticated/device/semantic product acceptance.",
+    "evidenceLimit": "Coordinator verified64worker registrations viaMCP03:27; DB320 fromuserhostreceipt. Production/corpus exactreceipts attributed. No heavyjobconcurrency or fullcorpusqualification claimed.",
     "rows": [
       {
         "id": "production-foundation",
@@ -4874,30 +4934,50 @@
           "normalizationComplete": 0,
           "fullProductComplete": 0
         },
-        "served": "Foundation retained by production189; all212modulepins verified,211unchanged; foundation observations/queries unchanged. dev/reviewed-local-source-custody-20261028/shared-kitchen-scope-production189/deployment-receipt.json",
+        "served": "Foundation preserved through version192; four app/server corrections delivered. No full corpus qualification/publication claimed.",
         "next": "Preserve served foundation; independently qualify additional source claims, recipe/nutrition joins and normalization before claiming them."
       },
       {
         "id": "landing-served-assets",
-        "state": "historical335verified-current189coverage-in-progress",
+        "state": "production189-full335-coverage-verified",
         "owner": "prepare_production_integration",
         "evidence": [
           "artifact-ref:landing188-assets.log"
         ],
-        "actual": "335/335same-origin assets matched188 at2026-10-27T08:08:42Z; production189fullcoverage check active. Browser reported WEBGL_REQUIRED; actualGPU execution remains unverified, not an assetcoverage failure.",
+        "actual": "Integration owner verified189 all335served assets HTTP200/MIME/bytes/SHA with zero mismatches at01:48:22UTC. Later releases preserve landing modules; no new full192landing run or GPU acceptance claimed.",
         "next": "Compare current production module inventory and integrate only reviewed current deltas."
       },
       {
         "id": "common-corpus-expansion",
-        "state": "active-not-production-serving",
+        "state": "bulk-final-complete-places-pinned-resume-directed",
         "owner": "assess_partial_corpus_resume (sole Foo writer); prepare_places_checkpoint_batches (local producer); review_corpus_mount_delta (focused reviewer)",
         "evidence": [
           "artifact-ref:offmenu-source-evidence-20261027/coverage-state-7dd3ed8c.json",
           "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-INPUT-VERIFICATION-20261028.json",
           "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-SOURCE-ALL-20261028.json"
         ],
-        "actual": "Parent-reported latest bounded bulk checkpoint:513assets/513000packets,413retained+100fresh. Checkpoint incomplete/no finalmanifest. Earlier retained17/22sources and95121packets are a different coverage cut; do not add these counts. Placesfirstattempt failedsafe beforestate onformatkey mismatch; correctionactive.",
-        "next": "Existing soleFoo writer and places author finish correction and bounded durable output. Fanoutdriver reviewed/notdeployed; actualdisjoint capacity must be verified before concurrent dispatch."
+        "actual": {
+          "bulk": {
+            "state": "FINAL complete",
+            "assets": 9800,
+            "packets": 9796656,
+            "bytes": 13880713510,
+            "manifestSHA256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e"
+          },
+          "places": {
+            "state": "verified partial checkpoint; maintenance cleared, resource readmission/resume directed",
+            "identities": 11037000,
+            "closedIdentities": 11036000,
+            "bufferIdentities": 1000,
+            "files": 11036,
+            "allFileHashesVerified": true,
+            "remaining": 1645613,
+            "checkpointSHA256": "7a55f37f8566054f768c7d51606ce2f674a7fad27c88628bbc99c0cf466b6a36"
+          },
+          "fullCorpusQualified": false,
+          "fullCorpusPublished": false
+        },
+        "next": "Assessor resource-readmits and resumes exact places checkpoint after verified64worker services. Bulk final retained. No64heavy-job execution claim."
       },
       {
         "id": "identity-only-candidate",
@@ -4933,24 +5013,24 @@
       },
       {
         "id": "app-view-history",
-        "state": "confirmed-current-source-gap",
+        "state": "delivered-production191-preserved192",
         "owner": "prepare_production_integration",
         "evidence": [
           "artifact-ref:offmenu-wiring-cloud-20261027/ROUTE-WIRING-MAP.md"
         ],
-        "actual": "Production integration owner inspected actual188app.js: setViewline182 toggles8views, no pushState/replaceState/popstate; only line233#homehashchange.189changes sharedkitchen only. View-specific Back/Forward remains open.",
-        "next": "Implement narrow history restoration against current selected app; no redesign/whole-file replacement."
+        "actual": "Version1911684dc68-51fe-48d5-95b8-2bffb229d095 deployed100%01:55:48UTC; servedappSHAd43a11eb3b9f0c67403a664484fc59782f48655aeb7e70918864fb06fbbbfaf8;36focused+8splice checks. Authenticated live Back/Forward acceptance unresolved withoutsession.",
+        "next": "Preserve delivered history and OAuthquery behavior; no authenticated acceptance claim."
       },
       {
         "id": "product-caller-joins",
-        "state": "open-source-present-parent-acceptance-not-established",
+        "state": "manual-save-delivered190-broader-joins-open",
         "owner": "complete_product_caller_joins",
         "evidence": [
           "https://github.com/maldous/offmenu/blob/062210db932a67f9d4f374c12fb577ce61579d07/docs/operations/morgan-delivery-ledger.json",
           "artifact-ref:offmenu-ledger-reconciliation-20261018/noncollection-read-model.json"
         ],
-        "actual": "Existing meal/shopping callers found; no missing basic caller implementation claimed. Actual manual cloud-save response can cross account or erase in-flight dirty/preferences revision; narrow candidate prepared, independentreview pending. Broader ingredient/unit/sourceadmission and authenticated roundtrip remain unaccepted.",
-        "next": "Review exact current manual-save lifecycle candidate, integrate if accepted; retain broader meal/shopping/permission acceptance unknown."
+        "actual": "Manual account-save lifecycle correction delivered190365fc932-2767-4c32-9876-d3b265889fdb at01:52:50UTC;23focused+8splice checks,211othermodules unchanged; retained191/192. Basic meal/shopping callers exist; broader identity/unit/sourceadmission and real authenticated roundtrip remain unaccepted.",
+        "next": "Preserve delivered lifecycle fix; close broader exact caller acceptance only with its own evidence."
       },
       {
         "id": "scanner-device-acceptance",
@@ -4972,6 +5052,33 @@
         ],
         "actual": "BetterAuth foundation/seam unmounted historically; current NetlifyIdentity guards must remain.",
         "next": "Recover exact stable-user-ID migration contract; no credential/user migration or auth replacement inferred from general speed approval."
+      },
+      {
+        "id": "retention-parity",
+        "state": "delivered-production192-parent-policy-open",
+        "owner": "prepare_production_integration",
+        "actual": {
+          "version": 192,
+          "versionId": "8f4ba1ba-6f4f-4174-8d87-244d392a53c5",
+          "deploymentId": "0a3be202-6a95-4c7e-933e-58dfa7e2ec07",
+          "percentage": 100,
+          "createdUTC": "2026-10-28T02:09:46Z",
+          "moduleSHA256": "7b41d23cdf8149f19c4c20605d961826de8d22aa63e17230526d8724cc0fcc68",
+          "unchangedOtherModules": 211,
+          "helperAssertions": 48,
+          "actualCallerAssertions": 6
+        },
+        "next": "SOURCE-FIELD-PERMISSION-POLICY remains open: exactowner02/C035missing; no private-userdata test or full policy closure.",
+        "evidence": [
+          "Coordinator and production integration owner verified deployment receipt; existing authentication boundaries preserved."
+        ]
+      },
+      {
+        "id": "netlify-upload-route",
+        "state": "blocked-current-tool-exposure",
+        "owner": "Morgan/root connector integration",
+        "actual": "Historical CLI upload route and officially renamed MCP netlify-deploy-site recovered. Current exposed upload tool is missing; connected plugin exists. Not evidence of missing credentials or provider inability.",
+        "next": "Restore/use the authorized exposed deployment route; do not ask for credentials or claim Netlify cannot deploy based on this tool-exposure gap."
       }
     ],
     "historicalCoverage": {
@@ -4981,5 +5088,183 @@
       "meaning": "Historical inventory, not completion counts. Every historical obligation remains preserved; no bulk closure inferred."
     },
     "fullHistoricalCrosswalk": "docs/operations/offmenu-delivery-obligation-crosswalk-20261028.json"
+  },
+  "prior20261028T0146ExecutionCheckpoint": {
+    "asOfUTC": "2026-10-28T01:46:00Z",
+    "status": "production-delivery-active-evidence-reconciled",
+    "currentExecution": {
+      "sourceCommit": "062210db932a67f9d4f374c12fb577ce61579d07",
+      "integrationBranch": "integration/reviewed-local-source-custody-20261027",
+      "route": "Authorized Windmill durable worker -> confined Foo execution -> bounded sanitized results and source-only custody -> direct Git/GitHub integration -> existing Cloudflare/Netlify connector deployment -> actual served result verification",
+      "production": "required-for-deliverables; version189 deployed100% at2026-10-28T01:44:02.150401Z; limited shared-kitchen lifecycle improvement, no broader product acceptance implied",
+      "actions": "prohibited: no dispatch/retry or source push triggering workflows",
+      "quotaBlockedFooCodex": "no retry until user explicitly confirms restored capacity; Windmill route is separate",
+      "capacity": {
+        "policy": "Maximize useful independent lanes using available measured resources; no invented Foo concurrency count, duplicate writers, quota retries or raw-data transfer. Single writer per output/checkpoint key; independent shards only with nonoverlapping custody.",
+        "availableChatAgentSlotsIncludingCoordinator": 7,
+        "specialistCapacityTarget": 6,
+        "fooLiveConcurrencyClaimed": false,
+        "fanoutDriver": "reviewed, not deployed; no64live-worker claim"
+      },
+      "coordinatorRole": "Morgan/root coordinates integration, task ownership, result verification, ledger and user progress.",
+      "publicationWriter": "Morgan/root-authorized ledger reconciliation; direct Git/GitHub leased integration publication",
+      "currentUserPriority": {
+        "top": "Full production mode across authorized OffMenu ledger deliverables",
+        "messageId": "Sentinel_497944df3ae48191912dd654846406f6",
+        "messageUTC": "2026-10-28T01:31:37.839196Z"
+      },
+      "preservedHolds": [
+        "Credentials/raw datasets stay private; no external live barcode/ingredient/recipe/nutrition/health lookup",
+        "Preserve current modules, user data, account boundaries and security holds",
+        "Identity-only local candidate needs its own admission; no promotion merely by turning selection on",
+        "No retries of specifically blocked native diagnostics or historical held jobs",
+        "No substitute deliverables or broad additional release-test gates"
+      ],
+      "historicalFieldInterpretation": "All pre-overlay lanes, rosters, publication records and prior* sections describe their stated historical cut. They are not current owner assignments, retry permission or proof of present production acceptance."
+    },
+    "activeWork": [
+      "Common corpus: bounded513000packet bulk checkpoint incomplete; places safe failure correction active; existing owners retained",
+      "Production integration: preserve189shared-kitchen fix; landingcoverage running; GPU/render acceptance unverified",
+      "Productcallerjoins: manual cloud-save lifecycle correction prepared; independentreview pending; broader calleracceptance not claimed",
+      "Apphistory: confirmed current source gap; narrow implementation eligible"
+    ],
+    "nextPriorities": [
+      "Finish already-owned bounded common corpus recovery without duplicating writers",
+      "Prepare and deploy reviewed independent current app improvements preserving existing production modules",
+      "Bind actual meal/shopping/preferences/source-permission callers; do not confuse pure helper tests with feature acceptance",
+      "Reconcile remaining historical obligations to exact current receipts; preserve unknowns and holds"
+    ],
+    "currentDeliveryReconciliation": {
+      "schema": "offmenu-current-delivery-evidence/1",
+      "asOfUTC": "2026-10-28T01:46:00Z",
+      "candidateOnly": false,
+      "baseCommit": "062210db932a67f9d4f374c12fb577ce61579d07",
+      "evidenceLimit": "Production189 receipt from integration owner is included in repository. Parent-reported corpus checkpoint facts remain attributed. Historical source-only or asset coverage evidence is not authenticated/device/semantic product acceptance.",
+      "rows": [
+        {
+          "id": "production-foundation",
+          "state": "delivered-limited-scope",
+          "owner": "Morgan/root production integration",
+          "evidence": [
+            "https://github.com/maldous/offmenu/blob/062210db932a67f9d4f374c12fb577ce61579d07/dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/production-publication-receipt.json",
+            "artifact-ref:offmenu-owned-foundation-production-20261027/production-publication-receipt.json",
+            "dev/reviewed-local-source-custody-20261028/shared-kitchen-scope-production189/deployment-receipt.json"
+          ],
+          "actual": {
+            "sourceObservations": 11527,
+            "sourceSpecificQueries": 4908,
+            "partitions": 512,
+            "goldAdmitted": 0,
+            "normalizationComplete": 0,
+            "fullProductComplete": 0
+          },
+          "served": "Foundation retained by production189; all212modulepins verified,211unchanged; foundation observations/queries unchanged. dev/reviewed-local-source-custody-20261028/shared-kitchen-scope-production189/deployment-receipt.json",
+          "next": "Preserve served foundation; independently qualify additional source claims, recipe/nutrition joins and normalization before claiming them."
+        },
+        {
+          "id": "landing-served-assets",
+          "state": "historical335verified-current189coverage-in-progress",
+          "owner": "prepare_production_integration",
+          "evidence": [
+            "artifact-ref:landing188-assets.log"
+          ],
+          "actual": "335/335same-origin assets matched188 at2026-10-27T08:08:42Z; production189fullcoverage check active. Browser reported WEBGL_REQUIRED; actualGPU execution remains unverified, not an assetcoverage failure.",
+          "next": "Compare current production module inventory and integrate only reviewed current deltas."
+        },
+        {
+          "id": "common-corpus-expansion",
+          "state": "active-not-production-serving",
+          "owner": "assess_partial_corpus_resume (sole Foo writer); prepare_places_checkpoint_batches (local producer); review_corpus_mount_delta (focused reviewer)",
+          "evidence": [
+            "artifact-ref:offmenu-source-evidence-20261027/coverage-state-7dd3ed8c.json",
+            "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-INPUT-VERIFICATION-20261028.json",
+            "artifact-ref:offmenu-partial-resume-20261028/ACTUAL-BULK-SOURCE-ALL-20261028.json"
+          ],
+          "actual": "Parent-reported latest bounded bulk checkpoint:513assets/513000packets,413retained+100fresh. Checkpoint incomplete/no finalmanifest. Earlier retained17/22sources and95121packets are a different coverage cut; do not add these counts. Placesfirstattempt failedsafe beforestate onformatkey mismatch; correctionactive.",
+          "next": "Existing soleFoo writer and places author finish correction and bounded durable output. Fanoutdriver reviewed/notdeployed; actualdisjoint capacity must be verified before concurrent dispatch."
+        },
+        {
+          "id": "identity-only-candidate",
+          "state": "held-public-admission-not-issued",
+          "owner": "Morgan/root source admission",
+          "evidence": [
+            "https://github.com/maldous/offmenu/blob/062210db932a67f9d4f374c12fb577ce61579d07/dev/reviewed-local-source-custody-20261027/cloud-native-reference-v1/integration-manifest.json"
+          ],
+          "actual": "Parent reports2574claims,16overlap,2558additional unadmitted; localhost-only/publicfalse/runtimefalse.",
+          "next": "Recover exact qualification and rights evidence; do not select for production until valid admission. Not equivalent to completed product identity."
+        },
+        {
+          "id": "shared-kitchen-lifecycle",
+          "state": "delivered-production189",
+          "owner": "prepare_production_integration",
+          "evidence": [
+            "dev/reviewed-local-source-custody-20261028/shared-kitchen-scope-production189/deployment-receipt.json"
+          ],
+          "actual": {
+            "version": 189,
+            "versionId": "87c48387-4dfa-4065-b847-55a2637725ac",
+            "deploymentId": "ce744f57-27c9-4fc6-986d-bb0fc7e060d4",
+            "percentage": 100,
+            "servedAppStatus": 200,
+            "servedAppSHA256": "95bed7782af7d3f2e2b708a804813fa9b2ae29bd216e16fbf34c6fa4949d06f7",
+            "verifiedModulePins": 212,
+            "unchangedModules": 211,
+            "focusedTests": 13,
+            "spliceTests": 8,
+            "authenticatedEndToEndVerified": false
+          },
+          "next": "Preserve deployed fix; do not claim broader authenticated kitchen acceptance from synthetic regressions."
+        },
+        {
+          "id": "app-view-history",
+          "state": "confirmed-current-source-gap",
+          "owner": "prepare_production_integration",
+          "evidence": [
+            "artifact-ref:offmenu-wiring-cloud-20261027/ROUTE-WIRING-MAP.md"
+          ],
+          "actual": "Production integration owner inspected actual188app.js: setViewline182 toggles8views, no pushState/replaceState/popstate; only line233#homehashchange.189changes sharedkitchen only. View-specific Back/Forward remains open.",
+          "next": "Implement narrow history restoration against current selected app; no redesign/whole-file replacement."
+        },
+        {
+          "id": "product-caller-joins",
+          "state": "open-source-present-parent-acceptance-not-established",
+          "owner": "complete_product_caller_joins",
+          "evidence": [
+            "https://github.com/maldous/offmenu/blob/062210db932a67f9d4f374c12fb577ce61579d07/docs/operations/morgan-delivery-ledger.json",
+            "artifact-ref:offmenu-ledger-reconciliation-20261018/noncollection-read-model.json"
+          ],
+          "actual": "Existing meal/shopping callers found; no missing basic caller implementation claimed. Actual manual cloud-save response can cross account or erase in-flight dirty/preferences revision; narrow candidate prepared, independentreview pending. Broader ingredient/unit/sourceadmission and authenticated roundtrip remain unaccepted.",
+          "next": "Review exact current manual-save lifecycle candidate, integrate if accepted; retain broader meal/shopping/permission acceptance unknown."
+        },
+        {
+          "id": "scanner-device-acceptance",
+          "state": "open-no-device-proof",
+          "owner": "unassigned-after-production-source-comparison",
+          "evidence": [
+            "artifact-ref:offmenu-scanner-integration-handoff.md",
+            "artifact-ref:offmenu-wiring-cloud-20261027/ROUTE-WIRING-MAP.md"
+          ],
+          "actual": "Current source/design references do not establish camera permission/ROI/torch/audio/vibration or real inventory idempotence. Scanner handoff exists develop; older contained181 lacks it; do not overwrite newerR8.",
+          "next": "Compare deployed scanner/stock handoff first; fix code independently where evidence exists; physical device acceptance remains explicitly unverified."
+        },
+        {
+          "id": "auth-migration",
+          "state": "security-hold-existing-auth-preserved",
+          "owner": "unassigned-no-rollout-authorized-by-this-reconciliation",
+          "evidence": [
+            "https://github.com/maldous/offmenu/blob/062210db932a67f9d4f374c12fb577ce61579d07/docs/operations/morgan-delivery-ledger.json"
+          ],
+          "actual": "BetterAuth foundation/seam unmounted historically; current NetlifyIdentity guards must remain.",
+          "next": "Recover exact stable-user-ID migration contract; no credential/user migration or auth replacement inferred from general speed approval."
+        }
+      ],
+      "historicalCoverage": {
+        "originalObligations": 89,
+        "noncountryObligations": 56,
+        "countryObligations": 33,
+        "meaning": "Historical inventory, not completion counts. Every historical obligation remains preserved; no bulk closure inferred."
+      },
+      "fullHistoricalCrosswalk": "docs/operations/offmenu-delivery-obligation-crosswalk-20261028.json"
+    }
   }
 }
