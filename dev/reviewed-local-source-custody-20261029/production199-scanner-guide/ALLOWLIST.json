@@ -1,0 +1,119 @@
+{
+  "files": [
+    {
+      "relativePath": "README.md",
+      "sha256": "5afd7f27206f29a63ec170d92434dd6eaf34c3c24559d21e3a22ecb3b2c4692d",
+      "bytes": 464
+    },
+    {
+      "relativePath": "evidence/INDEPENDENT-SCANNER-CSS-REVIEW.md",
+      "sha256": "00e64312ed14d02158027b54b9d4106f55b9b3fb7cb3a030a775be8a16dda034",
+      "bytes": 1444
+    },
+    {
+      "relativePath": "evidence/baseline-fingerprint.json",
+      "sha256": "44c534ec3c906909d1574e0b195578234a6d95da20fa96231530fbcda2ffa5ed",
+      "bytes": 757
+    },
+    {
+      "relativePath": "evidence/deployed-static-runtime-proof.json",
+      "sha256": "fcfdb9a7a5d898d6b861a5fc3199465b7ce03bc723bb74e86508983099425e68",
+      "bytes": 1235
+    },
+    {
+      "relativePath": "evidence/deployment-receipt.json",
+      "sha256": "a66cf6ff81f8d8009784549b5bebd19bd8693633b573dc0b434369c852c50c18",
+      "bytes": 1417
+    },
+    {
+      "relativePath": "evidence/served-probes.json",
+      "sha256": "c42c697a2760d70106c93c41e61f0923096739bf0f7673fe590d9df0d4492a00",
+      "bytes": 2697
+    },
+    {
+      "relativePath": "evidence/upload-inactive.js",
+      "sha256": "0a45a2e558ec25aa5e1b5de2f680be02b639f27281ae3102b2ad4b06651a22c4",
+      "bytes": 2687
+    },
+    {
+      "relativePath": "evidence/version-fingerprint.json",
+      "sha256": "49f506b804b05f448ba66170c236ec61c9a5f73bafefc562721bbaa1a2acf5d3",
+      "bytes": 757
+    },
+    {
+      "relativePath": "evidence/worker-dryrun-receipt.json",
+      "sha256": "8a835099558f93a334de7ce3f0764ee838857df643331b77eda2054b187942f6",
+      "bytes": 2355
+    },
+    {
+      "relativePath": "reviewed-source/EXPORT-RECEIPT.json",
+      "sha256": "b2c91d1677fc1411b5972897cf04c1dd4a072484ff66e15caea38988602eabd6",
+      "bytes": 320
+    },
+    {
+      "relativePath": "reviewed-source/FOO-TEST-EVIDENCE.json",
+      "sha256": "0155dc3d110c8e18c8b0d4fde281219c0f4a095d65d2d9882bb6012be035411d",
+      "bytes": 4366
+    },
+    {
+      "relativePath": "reviewed-source/FUNCTION-LOCAL-REPLACEMENT.json",
+      "sha256": "f395281f35101bd325e91af7172177a52480a566f402439009be3506c044b780",
+      "bytes": 954
+    },
+    {
+      "relativePath": "reviewed-source/HANDOFF.md",
+      "sha256": "b5ca8e86f4a65a9875792efbd40bde37ff0d49d59b96142fd5037db1ab1b96b1",
+      "bytes": 3521
+    },
+    {
+      "relativePath": "reviewed-source/MANIFEST.json",
+      "sha256": "65c4468221b76fa0c57d27b1637f19cd6293d3963763e8181a6744758a471245",
+      "bytes": 2769
+    },
+    {
+      "relativePath": "reviewed-source/V198-SOURCE-RECEIPT.json",
+      "sha256": "8c049da10837c37ebe1e136c06130aeb4f4c07912e5e270ae135ef9a4c465090",
+      "bytes": 2210
+    },
+    {
+      "relativePath": "reviewed-source/baseline/offmenu-system.css",
+      "sha256": "223df367294c0c9391e99cfbfdce43e28d5b5df5b1f5b6c4a9d73d762d55b264",
+      "bytes": 46847
+    },
+    {
+      "relativePath": "reviewed-source/baseline/shelf-scanner-inline.css",
+      "sha256": "0bfe2640b19f7862605e659dc20ddd11a90dc4744000bbb2a52e6bbd205fc93e",
+      "bytes": 34458
+    },
+    {
+      "relativePath": "reviewed-source/baseline/shelf-scanner.html.excerpt.html",
+      "sha256": "2d5f2e55ce2f4cf8ed444ac12a6697e7bcddd077b7acd11811f9719eec6ebdb5",
+      "bytes": 1140
+    },
+    {
+      "relativePath": "reviewed-source/candidate/offmenu-system.css",
+      "sha256": "223df367294c0c9391e99cfbfdce43e28d5b5df5b1f5b6c4a9d73d762d55b264",
+      "bytes": 46847
+    },
+    {
+      "relativePath": "reviewed-source/candidate/shelf-scanner-inline.css",
+      "sha256": "ee8f8e8bfa058c9f5840c103cfe00f1bf7e753be3b700d163edf9fe901a34477",
+      "bytes": 34403
+    },
+    {
+      "relativePath": "reviewed-source/candidate/shelf-scanner.html.excerpt.html",
+      "sha256": "2d5f2e55ce2f4cf8ed444ac12a6697e7bcddd077b7acd11811f9719eec6ebdb5",
+      "bytes": 1140
+    },
+    {
+      "relativePath": "reviewed-source/guide-occlusion.test.py",
+      "sha256": "2cf2bdd56efb570c8caacd2c65559eb2ac689cc6f3b44dbe951db777a22e1d01",
+      "bytes": 6937
+    },
+    {
+      "relativePath": "reviewed-source/scanner-guide.patch",
+      "sha256": "6de504dca10a25f0bec2d6196dfe51560c0bbb3fd28dabdccf035c1403fc8372",
+      "bytes": 1687
+    }
+  ]
+}
