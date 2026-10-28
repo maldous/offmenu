@@ -7317,5 +7317,121 @@
       "ready-read-only": 4,
       "blocked-consent": 1
     }
+  },
+  "continuousEfficiencyReview": {
+    "schema": "offmenu-continuous-efficiency-review/1",
+    "asOfUTC": "2026-10-28T06:11:00Z",
+    "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
+    "state": "active-owned-ongoing",
+    "currentOwner": "audit_production_efficiency",
+    "ownerTask": "/root/audit_production_efficiency",
+    "rootRole": "Lightweight communication, ownership/integration coordination, necessary user decisions and concise result verification; not heavy local engineering, configuration, builds or personally polling each lane.",
+    "instructionAuthority": "Latest explicit user direction on 2026-10-28: delegation-first is the default; substantial work goes to a durable owner for suitable Windmill execution. The durable review owner folds this into the ledger, existing reminder and owner handoffs so root stays highly available and lightly loaded.",
+    "countingRule": "All 89 historical obligations and current allocation rows are preserved unchanged. This is one additional ongoing parallel operating lane, not a claim of 90 runnable tasks or 90 concurrent jobs.",
+    "defaultDispatch": "Reuse the existing accountable durable owner/session; delegate suitable deterministic/parallel work to authorized Windmill/Foo jobs and verified free providers. Refill only genuinely ready independent work, with disjoint writers and exact dependency ownership. No duplicate manager, fabricated work or slot-filling.",
+    "fiveReviewLayers": [
+      {
+        "layer": "reasoning-durables-and-MCP",
+        "review": "Keep root highly available. Distinguish 7 reasoning-agent slots including root from Windmill workers; use bounded owner deliverables and concise receipts. Batch metadata reads; inspect only new failures or changed evidence, not accepted checks repeatedly."
+      },
+      {
+        "layer": "Windmill-native-fanout",
+        "review": "Measure actual parent AND child job overlap and accepted useful outputs; service registrations alone do not prove useful concurrency. Prefer native fan-out for independent jobs when connector enqueue latency would serialize short jobs."
+      },
+      {
+        "layer": "Foo-per-job-processes",
+        "review": "Admit aggregate CPU/RAM/IO and parent/child reservations before useful work. The configured ceiling64 jobs x256 subprocesses is not required load, proven host isolation, or free aggregate capacity. Count checkpoint/cancellation and serialization costs."
+      },
+      {
+        "layer": "all-configured-free-providers",
+        "review": "Review all18 provider registry entries for free eligibility, actual quotas/reset metadata, auth status, task-specific output quality and accepted-output throughput. Keep429 providers configured with evidence-based cooldowns; auth failures deferred; no blind retries or assumed paid/subscription entitlement."
+      },
+      {
+        "layer": "SQL-engine-parallelism",
+        "review": "Coordinate query threads with aggregate job/process budgets. Private DuckDB route8-thread functional result is not performance/scaling proof. Use actual necessary query workloads, not synthetic saturation."
+      }
+    ],
+    "reviewMethod": {
+      "triggers": [
+        "Actual production checkpoint, completion or failure",
+        "Material resource, provider quota/quality, dependency or ready-lane change",
+        "Owner handover or changed accepted throughput"
+      ],
+      "evidence": [
+        "actual running/completed parent and child jobs",
+        "accepted outputs and useful work per elapsed time",
+        "ready dispatch/refill and named dependency owner",
+        "CPU, RAM, IO and aggregate memory admission",
+        "cancel/checkpoint/serialization cost",
+        "MCP/connector enqueue latency",
+        "provider free eligibility/quota/reset metadata and quality",
+        "source/security holds"
+      ],
+      "nextMilestone": "Corpus owner stages reviewedcache-v4 after clean009 boundary, then reports successor010 and accepted throughput/resource evidence.",
+      "cadence": "Milestone-driven bounded checks; remain owner while authorized production is active. Wait for meaningful milestones, not tight busy polling or arbitrary saturation.",
+      "stop": "User cancels; authorized production/backlog completes; or explicit durable-owner handover. Pause only affected dependent action at an authorization/access boundary.",
+      "routineTuning": "Send safe same-scope corrections through the existing execution owner; do not seize its writer, duplicate production or change scope/design."
+    },
+    "initialEvidence": {
+      "corpus": {
+        "owner": "assess_partial_corpus_resume",
+        "job": "01a1810b-5e54-29be-3a49-512d7e7989cf",
+        "logicalRun": "corpus-global-qualification-scoped-009-20261028",
+        "observedRunningAtUTC": "2026-10-28T06:09:00Z",
+        "runningListCount": 1,
+        "processes": 64,
+        "childBudgetMiB": 256,
+        "parentBudgetGiB": 8,
+        "trackerMiB": 128,
+        "totalReservedGiB": 24.625,
+        "cpuReservation": 19,
+        "progress": "Owner reports first7packages ingested; places1.622M resources at05:59:41, approximately2.1k/s steady. Cache-v4 reviewed and staged for clean boundary, not live-mutated.",
+        "terminal": "Owner reports009 expected pause, cleanup true. Places0→1922assets=1.922Mresources/3.844Massertions in1440.7s (about1334resources/s fullrun). Actual33descendant peak,3.06GB summedRSS,0.654average accountedCPU, proofDB21.566GB; physicalIO not measured. Last segment slower than initial2.1k/s. Approved cache-v4 staging for successor010, checkpoint preserved."
+      },
+      "overlap": {
+        "acceptedHistoricalEvidence": "Native dispatcher parent01a180ed-6843-1600-0ac5-7161658a43d2;3meaningful provider children overlapped1.174s,4workloads including corpus; coordinator excluded.",
+        "limit": "No assertion that presently64jobs or256processes are simultaneously active; distinctworkerIDs alone are not overlap proof.",
+        "connectorLatency": "Prior connector enqueue about3seconds exceeded short provider task duration; native child enqueue0.76ms and start spread0.550ms."
+      },
+      "providers": {
+        "registry": "All18configured entries reviewed in provider_registry_all18_receipt.json; credentials remain private.",
+        "usefulQualified": "Groq and Gemini bounded public development scenarios; Cohere task-specific public documentation now qualified, earlier parser outputs remain rejected.",
+        "holds": "Mistral/OpenRouter429resetmetadata required; authdeferred where recorded; NVIDIA authorization-change refusal remains no execution/no retry without material authorized evidence."
+      },
+      "sql": "Private8-thread functional route live; do not label functional correctness a performance benchmark.",
+      "knownUnknowns": [
+        "Hidden cgroup enforcement is not certified",
+        "Current per-process CPU/RAM/IO and checkpoint costs require actual owner receipt",
+        "Quota catalog/auth success alone is not free useful output"
+      ]
+    },
+    "foldingIn": {
+      "existingReminder": {
+        "id": "6adfe4594890819190c493c2198ae9e4",
+        "title": "OffMenu delivery follow-through",
+        "updatedAtUTC": "2026-10-28T06:09:28.917723+00:00",
+        "change": "Prompt-only append preserving every existing instruction; delegation-first and this durable ongoing owner added.",
+        "scheduleUnchanged": true,
+        "enabledUnchanged": true,
+        "noDuplicateCreated": true
+      },
+      "informedExistingOwners": [
+        "assess_partial_corpus_resume",
+        "map_rights_cache_propagation",
+        "prepare_common_corpus_publication",
+        "resolve_ready_country_dispositions"
+      ],
+      "persistentPreference": "Existing /root/save_current_task_updates owner identified; handoff pending available reasoning slot. No separate memory worker created."
+    },
+    "constraints": [
+      "No new spend, paid inference, topups or new access",
+      "No external live food/health lookup",
+      "No raw datasets or credentials exported",
+      "No stress tests, filler or artificial load",
+      "No GitHub Actions dispatch/retry or workflow-triggering source push",
+      "No quota-blocked Foo/Codex retry without user-confirmed restored capacity",
+      "All original source/security and specific no-retry holds preserved",
+      "No scope/design substitution, added delivery gates or delivery trade-off without explicit user approval"
+    ]
   }
 }
