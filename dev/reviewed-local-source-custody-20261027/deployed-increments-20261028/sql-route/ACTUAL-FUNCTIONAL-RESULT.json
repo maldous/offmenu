@@ -1,0 +1,67 @@
+{
+  "duplicate_refused": true,
+  "functional_only_not_benchmark": true,
+  "ok": true,
+  "receipt": {
+    "cpu_to_wall_ratio": 1.427074614962692,
+    "engine": {
+      "memory_gib": 1,
+      "spill_gib": 1,
+      "threads": 8,
+      "version": "1.5.6"
+    },
+    "format": "offmenu-duckdb-query-receipt-v1",
+    "input_content_hash_verified": false,
+    "input_row_groups": 1,
+    "input_rows": 3,
+    "input_stat": {
+      "bytes": 210,
+      "ctime_ns": 1793165598429586400,
+      "device": 64512,
+      "inode": 14943843,
+      "mtime_ns": 1793165598429586400
+    },
+    "job_id": "sql-functional-20261028-0527",
+    "plan_sha256": "43b7591c1fbd567754b0026eb2ce0385439943a224c8d15ddcbf757223991b47",
+    "process_peak_rss_kib": 63240,
+    "profile_sha256": "a6681046ee53e7694bc47ea738a447eca156dd07a592523ed45ad167f11af68b",
+    "query_cpu_seconds": 0.0022833949999999936,
+    "query_wall_seconds": 0.0016000529867596924,
+    "result_bytes": 227,
+    "result_rows": 1,
+    "result_sha256": "4048c66c5acbbb5d40947d77658c1a2ea5c3ee4d7d69f16a4f3419ef06fa6b87",
+    "security": {
+      "configuration_locked": true,
+      "extension_autoinstall": false,
+      "extension_autoload": false,
+      "external_access": false
+    },
+    "sql_sha256": "269cd3d97c34ad6ade05f375a0fe02f8debc96c872a99017b3be7119f3c73f95",
+    "status": "completed"
+  },
+  "source_sha256": "f076511b0a5f988ea845a80546aca0965f37bec7bdb43a9186b21b147c1fcca4",
+  "status_readback": {
+    "cpu_to_wall_ratio": 1.427074614962692,
+    "engine": {
+      "memory_gib": 1,
+      "spill_gib": 1,
+      "threads": 8,
+      "version": "1.5.6"
+    },
+    "input_content_hash_verified": false,
+    "input_row_groups": 1,
+    "input_rows": 3,
+    "job_id": "sql-functional-20261028-0527",
+    "plan_sha256": "43b7591c1fbd567754b0026eb2ce0385439943a224c8d15ddcbf757223991b47",
+    "process_peak_rss_kib": 63240,
+    "profile_sha256": "a6681046ee53e7694bc47ea738a447eca156dd07a592523ed45ad167f11af68b",
+    "query_cpu_seconds": 0.0022833949999999936,
+    "query_wall_seconds": 0.0016000529867596924,
+    "result_bytes": 227,
+    "result_content_reverified": false,
+    "result_rows": 1,
+    "result_sha256": "4048c66c5acbbb5d40947d77658c1a2ea5c3ee4d7d69f16a4f3419ef06fa6b87",
+    "sql_sha256": "269cd3d97c34ad6ade05f375a0fe02f8debc96c872a99017b3be7119f3c73f95",
+    "status": "completed"
+  }
+}
