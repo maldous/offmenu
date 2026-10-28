@@ -1,0 +1,16 @@
+{
+  "job_id": "corpus-partial-integrity-20261028-v1",
+  "run_id": "01a1800c-7560-de02-b98e-f1ae8054ee3d",
+  "safe_output_read_run_id": "01a1800c-c837-1eaf-8a14-da274b9da45a",
+  "mode": "read",
+  "timeout_seconds": 120,
+  "exit_code": 0,
+  "cleanup_verified": true,
+  "probe_sha256": "e0442cf28f23d74a7069da19d543ffa7545f0e91ebf3fbf21e13d14db169d911",
+  "stdout_bytes": 5980,
+  "stderr_bytes": 0,
+  "truncated": false,
+  "full_schema_verified": false,
+  "source_equivalence_verified": false,
+  "qualification_established": false
+}

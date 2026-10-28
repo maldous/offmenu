@@ -1,0 +1,85 @@
+{
+  "all_declared_assets_match": true,
+  "elapsed_seconds": 0.589,
+  "packages": [
+    {
+      "bytes_hashed": 176202800,
+      "checked": 170,
+      "complete": true,
+      "errors": [],
+      "listed": 170,
+      "manifest_sha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+      "matched": 170,
+      "mismatched": 0,
+      "package": "common-data-reviewed-package-20261014",
+      "planned_bytes": 176202800
+    },
+    {
+      "bytes_hashed": 2311494,
+      "checked": 9,
+      "complete": true,
+      "errors": [],
+      "listed": 9,
+      "manifest_sha256": "bec93ffedf4d80eef10ec11000c18161024a3c30999697ad1f3db5f3318ff3e7",
+      "matched": 9,
+      "mismatched": 0,
+      "package": "common-reference-delivery-final-20261014",
+      "planned_bytes": 2311494
+    },
+    {
+      "bytes_hashed": 222345473,
+      "checked": 1470,
+      "complete": true,
+      "errors": [],
+      "listed": 1470,
+      "manifest_sha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+      "matched": 1470,
+      "mismatched": 0,
+      "package": "common-national-semantic-final-20261014",
+      "planned_bytes": 222345473
+    },
+    {
+      "bytes_hashed": 37978,
+      "checked": 2,
+      "complete": true,
+      "errors": [],
+      "listed": 2,
+      "manifest_sha256": "75c33340f1ee25c4121c57d8fc124621b4455412717fc6d9dd01bfb162351679",
+      "matched": 2,
+      "mismatched": 0,
+      "package": "measurement-terminology-final-qualified-20261014",
+      "planned_bytes": 37978
+    },
+    {
+      "bytes_hashed": 203471,
+      "checked": 7,
+      "complete": true,
+      "errors": [],
+      "listed": 7,
+      "manifest_sha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
+      "matched": 7,
+      "mismatched": 0,
+      "package": "recipe-expansion-final-qualified-20261014/common-graph",
+      "planned_bytes": 203471
+    },
+    {
+      "bytes_hashed": 27014,
+      "checked": 3,
+      "complete": true,
+      "errors": [],
+      "listed": 3,
+      "manifest_sha256": "e4c06a1d4a2fcb492529c37c6245a595dd104061ef1a63427cbe9d65e7e2241f",
+      "matched": 3,
+      "mismatched": 0,
+      "package": "historical-recipe-quality-final-corrected-20261014",
+      "planned_bytes": 27014
+    }
+  ],
+  "payloads_exported": false,
+  "qualification_rerun": false,
+  "schema": "offmenu-six-package-asset-checks/1",
+  "stopped_reason": null,
+  "total_assets_checked": 1661,
+  "total_assets_matched": 1661,
+  "total_bytes_read": 401128230
+}
