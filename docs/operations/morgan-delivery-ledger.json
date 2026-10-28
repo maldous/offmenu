@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
   "status": "full-production-corpus-active-product194-served-finite-ready-assignments-closed",
-  "asOfUTC": "2026-10-28T14:49:00Z",
+  "asOfUTC": "2026-10-28T17:26:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -82,7 +82,7 @@
       "latestUserConcurrencyTarget": 256,
       "actualConcurrencyVerified": false,
       "placesFallback": "Historical ingestion fallback superseded by all packet ingestion complete; existing v5 global/final phases preserve their reviewed resource and hash-pause contracts.",
-      "fooDispatchState": "Global proof/assembly and NorthStar data, SQL, caller proof and final staging complete. One active same-deploy base uploader; derived sequence fully prepared/owned. Metrics and validation deployed, exact 23-file custody published, local filter delivered, cache disabled. Four new finite app corrections implemented; sole app integrator admitted but source-only export interrupted by platform review. Version194 still served, no195 claim.",
+      "fooDispatchState": "Base uploader completed all23,983 required digests and provider reports READY; actual full served verifier and published-inventory inspection are admitted. Same publisher owns derived sequence without optional root acceptance. Metrics/caller deployment and23-file custody complete; local filter adopted, reuse cache disabled. Four app corrections implemented but exact source-only export hold remains; v194 still served.",
       "serviceWorkerTarget": 64,
       "serviceWorkersVerified": true,
       "hourlyPrompt": "Existing reminder updated/readback2026-10-28T08:38:55.195299Z for restored quota and supported6.1medium default; hourly schedule/enabled/timezone unchanged.",
@@ -99,7 +99,7 @@
         ],
         "evidenceId": "registrations-0327.json"
       },
-      "currentSnapshotUTC": "2026-10-28T14:49:00Z"
+      "currentSnapshotUTC": "2026-10-28T17:26:00Z"
     },
     "coordinatorRole": "Morgan/root stays highly available: lightweight communication, ownership/integration coordination, user decisions and concise result verification. Durable owners perform substantive engineering/execution/monitoring; audit_production_efficiency owns currentledger efficiency/closure updates.",
     "publicationWriter": "Morgan/root-authorized ledger reconciliation; direct Git/GitHub leased integration publication",
@@ -548,6 +548,40 @@
       },
       "historicalRowsPreserved": 89,
       "noNewExecution": true
+    },
+    {
+      "atUTC": "2026-10-28T17:26:00Z",
+      "type": "base-upload-complete-full-serving-verifier-admitted",
+      "owner": "audit_production_efficiency",
+      "publication": {
+        "owner": "prepare_common_corpus_publication",
+        "reportedUTC": "2026-10-28T17:24:33Z",
+        "source": "Existing exclusive publisher phase-change receipt",
+        "uploadJob": "01a182cd-6e6e-07f9-0030-f030f346e232",
+        "uploadState": "terminal-success",
+        "uploadedDigests": 23983,
+        "deploy": "6ae1c3946435074ef6c08369",
+        "providerState": "READY",
+        "providerStatusJob": "01a1838a-1f30-fc8f-3444-60a086da93c1",
+        "mergedFiles": 117003,
+        "preservedExistingFiles": 92841,
+        "servedVerifierJob": "01a1838a-88d5-e48a-d23a-b5650880919e",
+        "servedVerifierState": "admitted",
+        "publishedInventoryInspectorJob": "01a1838a-3d19-c3a7-0a65-18697d2874bc",
+        "publishedInventoryInspectorState": "running-at-owner-report",
+        "fullServedCoverageVerified": false,
+        "expectedCoveragePendingVerification": {
+          "sources": 22,
+          "records": 22574390
+        },
+        "next": "Actual full base serving verification, then existing sequential bulk -> national -> recipe -> basis publication and per-release served verification.",
+        "optionalRootAcceptance": false
+      },
+      "currentAppVersion": 194,
+      "appCorrectionExportHoldUnchanged": true,
+      "toolingComplete": true,
+      "historicalParentRowsPreserved": 89,
+      "custodyRoutingFindingsPreserved": true
     }
   ],
   "lanes": [
@@ -10173,7 +10207,7 @@
   },
   "continuousEfficiencyReview": {
     "schema": "offmenu-continuous-efficiency-review/1",
-    "asOfUTC": "2026-10-28T14:49:00Z",
+    "asOfUTC": "2026-10-28T17:26:00Z",
     "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
     "state": "active-owned-ongoing",
     "currentOwner": "audit_production_efficiency",
@@ -10288,741 +10322,30 @@
       "No scope/design substitution, added delivery gates or delivery trade-off without explicit user approval"
     ],
     "latestMilestone": {
-      "state": "approved-correction-deployed-production-continuing",
-      "failedOptimization": {
-        "run": "010",
-        "job": "01a18123-840f-232b-ac10-b37aad8bb233",
-        "status": "failed-SQLite-INSERT-MemoryError",
-        "elapsedSecondsApprox": 64,
-        "resourcesAdded": 44000,
-        "checkpoint": 1966,
-        "cleanupVerified": true,
-        "observedPeakRSSGB": 4.39,
-        "observedPeakVMGB": 4.56,
-        "cause": "4GiB main-cache target equalled4GiB process-global SQLite hard heap; no overhead headroom. Not a worker-pool failure.",
-        "optimizationBenefitEstablished": false
-      },
-      "safeBridge": {
-        "run": "011",
-        "job": "01a18128-722c-4510-b26f-3578aea3b8e8",
-        "cacheMiB": 64,
-        "resourcesAdded": 768000,
-        "wallSeconds": 300.2848927974701,
-        "resourcesPerSecondApprox": 2557.6,
-        "checkpointFrom": 1966,
-        "checkpointTo": 2734,
-        "status": "expected-pause",
-        "cleanupVerified": true,
-        "note": "Actual useful production continued while correction was authored/reviewed; not idle or filler. Different segments are not a controlled speedup benchmark."
-      },
-      "correction": {
-        "author": "assess_partial_corpus_resume",
-        "independentReviewer": "audit_production_efficiency",
-        "source": "22502c8f01c4b2c97f724ef09ddba01ec58b6c8cbd9110f5ac10f846c9baa8a7",
-        "migration": "4eafb917c97120d707430d197ca453e451002241fd7f78d706345b2ba31eafe9",
-        "adapter": "2ec322084b8f04c7f6e9d4f3fd0756209c104843cd200d8188c52a94287a90f1",
-        "reviewSHA256": "fa8969334b43da3a0abf2409c1997a5a03aaf68ac5dcbf6ccec4d44b9ce6b06e",
-        "independentFocusedTestsPassed": 23,
-        "authorBroaderTestsPassed": 70,
-        "mainCacheMiB": 3072,
-        "softHeapMiB": 3072,
-        "hardSqlHeapMiB": 4096,
-        "parentGiB": 8,
-        "nonSqlVMReserveMiB": 256,
-        "additionalLaneMemoryBytes": 0,
-        "preserved": "Original validation/helper/schema/contracts, FULL/DELETE, row+cursor transactions, source/runtime pins, fresh-process hash pauses,64MiBdefault, workerCPU/wholejobbudgets.",
-        "adopted": true,
-        "migrationJournal": "c80800e8c85f45db8c0ade424a854a4a",
-        "checkpointPreserved": 2734,
-        "runtimeStability": "012 completed1440.4seconds without priorcacheMemoryError;3.101Mresources added, expectedpause/cleanupverified. No causal cache-speedup assertion."
-      },
-      "activeRun": {
-        "run": "020",
-        "job": "01a181da-ce15-9f85-f2bb-f1968549da9b",
-        "status": "completed-qualified-and-child-tree-gone",
-        "finalProofWritten": true,
-        "proofSHA256": "9e60de075a9bf049e0348c666e4cc2cbe9edb07c6771bcab95649038dafd1226",
-        "proofBytes": 6327,
-        "active": false
-      },
-      "otherEfficiencyFindings": [
-        "Country lane14readyrows/76exactbindings/15assertions/7tests avoids stale repeat-reviews; zero country closures. Proposed native validators never admitted; payload-specific permission remains held after initial+one materially supported retry, no further retry.",
-        "Rights map15edges/4obligationdispositions/39staticchecks distinguishes root dispatch accountability from exact receipt-custody execution ownership; do not repeat accepted tests/broadsource search.",
-        "Source-only throughput-tooling report identifies exact-result reuse/single-flight and model-compatible Groq prefix caching. Not adopted or dispatched solely for benchmarking; require real eligible task, actualcached_tokens, unique accepted artifacts and end-to-end rework/latency."
-      ],
-      "completedRun012": {
-        "job": "01a1812e-f9ba-c52f-db3d-0e0f941c1699",
-        "checkpointFrom": 2734,
-        "checkpointTo": 5835,
-        "resourcesAdded": 3101000,
-        "wallSeconds": 1440.4,
-        "resourcesPerSecondApprox": 2153,
-        "peakDescendants": 36,
-        "parentRSSGB": 3.309,
-        "parentVMGB": 3.481,
-        "summedRSSGB": 5.45,
-        "averageAccountedCPU": 1.063,
-        "status": "expected-pause-cleanup-verified",
-        "limits": "Separate hostactivity/segment variations; summedRSS sampling and reapedCPU caveats retained; not controlledspeedup or physicalIO proof."
-      },
-      "diskAdmissionCorrection": {
-        "basis": "Clean boundary; unique allocated owned scratch34661523456bytes; total60GiBscratch cap and70GiBshared reserve unchanged.",
-        "remainingGrowthBytes": 29830094848,
-        "totalScratchCapGiB": 60,
-        "sharedReserveGiB": 70,
-        "extraBoundedMarginMiB": 64,
-        "formula": "60GiB - alreadyAllocatedOwnedScratch +64MiB",
-        "noDeletionOrCapRelaxation": true
-      },
-      "publicationReadiness": {
-        "owner": "prepare_common_corpus_publication",
-        "deploy": "6ae1c3946435074ef6c08369",
-        "previousLiveBase": "6ade30f984233b1725dc0501",
-        "preparedMergedFiles": 117003,
-        "preservedExistingFiles": 92841,
+      "atUTC": "2026-10-28T17:26:00Z",
+      "type": "base-upload-terminal-ready-serving-verification-admitted",
+      "owner": "prepare_common_corpus_publication",
+      "reportedUTC": "2026-10-28T17:24:33Z",
+      "source": "Existing exclusive publisher phase-change receipt",
+      "uploadJob": "01a182cd-6e6e-07f9-0030-f030f346e232",
+      "uploadState": "terminal-success",
+      "uploadedDigests": 23983,
+      "deploy": "6ae1c3946435074ef6c08369",
+      "providerState": "READY",
+      "providerStatusJob": "01a1838a-1f30-fc8f-3444-60a086da93c1",
+      "mergedFiles": 117003,
+      "preservedExistingFiles": 92841,
+      "servedVerifierJob": "01a1838a-88d5-e48a-d23a-b5650880919e",
+      "servedVerifierState": "admitted",
+      "publishedInventoryInspectorJob": "01a1838a-3d19-c3a7-0a65-18697d2874bc",
+      "publishedInventoryInspectorState": "running-at-owner-report",
+      "fullServedCoverageVerified": false,
+      "expectedCoveragePendingVerification": {
         "sources": 22,
-        "records": 22574390,
-        "state": "same-deploy-upload-in-progress-or-recovery; final served verification pending",
-        "knownCompletedAttempt": {
-          "durationMs": 962807,
-          "result": "SSH OPEN_FAILURE code 2 before command dispatch; not another HTTP429"
-        },
-        "corrections": "Observed transport thread-allocation and MaxSessions=1 failures corrected under reviewed same-deploy recovery; then actual HTTP500requests/min limit required shared480/min pacing and same-digest-only retry.",
-        "rateSourceSHA256": "91fe1f36835818976bfac8e417db9914f7bab85661b47fd0e592cb6526923b0b",
-        "review": "Same Foo reviewer approved supplied changed functions with8 focused mocks; full-file hash binding remains publisher responsibility, not a71-test independent rerun.",
-        "secondDeployCreated": false,
-        "servedQualificationClaimed": false,
-        "priorKnownCompletedAttempt": {
-          "job": "01a181ff-6d63-3885-5a5d-be0c627349a3",
-          "elapsedMs": 277777,
-          "result": "netlify_http_429; accepted partial uploads retained"
-        },
-        "currentRun": {
-          "job": "01a1824d-4c33-00a0-9ccb-5656f4e47c95",
-          "deploy": "6ae1c3946435074ef6c08369",
-          "owner": "prepare_common_corpus_publication",
-          "observedUTC": "2026-10-28T12:24:00Z",
-          "status": "running-direct-MCP-readback",
-          "acceptedDigests": 4750,
-          "acceptedBytes": 5367345142,
-          "remainingDigests": 19233,
-          "uploadElapsedSeconds": 2422.2,
-          "servedVerificationPending": true,
-          "source": "Direct MCP get_run logs; accepted progress is not serving."
-        },
-        "channelSourceSHA256": "1d0af37859aeac37138bc3fe781f31623780151fd82435f803256662aaea29cf",
-        "channelReview": "Same Foo reviewer approved supplied narrow source with five focused mocks. Frozen full-file hash binding/readback by publisher; 74 local author tests, not independently rerun. Retry only known unexecuted channel-open code2, bounded seven attempts; no administrative-denial or post-dispatch retries.",
-        "previousRun": {
-          "job": "01a18225-ea62-1fb2-9021-9c44602be268",
-          "sourceDeployedReadbackUTC": "2026-10-28T10:54:00Z",
-          "lastObservedUTC": "2026-10-28T10:58:00Z",
-          "status": "terminal-canceled-before-single-resume",
-          "observedPeakKiB": 207104,
-          "acceptedDigestCountersObserved": false
-        },
-        "boundedSchedulerSourceSHA256": "c245b44f8317dc607c2c97043d2030c12d4633979090a422fb4bb67ecaeeda9b",
-        "boundedSchedulerReview": "Same reviewer approved narrow supplied source with two focused mocks; exact full-byte binding/readback remains publisher,76 author tests not independently rerun. At most32 submitted operations, observe first failure before further refill, drain running tasks; first accepted counter emitted."
+        "records": 22574390
       },
-      "completedRun013": {
-        "job": "01a18146-732a-3df6-e197-fdd79179aec0",
-        "checkpointFrom": 5835,
-        "checkpointTo": 8890,
-        "resourcesAdded": 3055000,
-        "wallSeconds": 1440.43,
-        "resourcesPerSecondApprox": 2121,
-        "peakDescendants": 33,
-        "parentRSSGB": 3.308,
-        "summedRSSGB": 5.294,
-        "averageAccountedCPU": 1.059,
-        "status": "expected-pause-cleanup-verified",
-        "source": "Existing assessor terminal receipt ACTUAL-HEADROOM-013-EXPECTED-PAUSE.json; no repeated execution.",
-        "limit": "Stable v5; no causal cache-speedup or physicalIO inference; finalproof notyetwritten."
-      },
-      "orchestrationFinding": {
-        "finding": "About71seconds between013terminal and014launch versus1440seconds usefulrun; potential avoidable handoff overhead, not application failure.",
-        "action": "Existing owner asked to reuse frozen plans, batch only required fresh cleanup/disk/admission metadata, resume then write nonblocking receipts.",
-        "constraint": "No new controller/setup project, stress, duplicate tests or skipped required safety/admission checks. Prioritize finishing proof over speculative optimization."
-      },
-      "completedRun014": {
-        "job": "01a1815d-8265-a182-c98d-8271c92c939a",
-        "checkpointFrom": 8890,
-        "checkpointTo": 11104,
-        "resourcesAdded": 2214000,
-        "wallSeconds": 1440.48,
-        "resourcesPerSecondApprox": 1537,
-        "status": "expected-pause-cleanup-verified",
-        "placesResourcesIngested": 11104000,
-        "placesResourcesTotal": 12682613,
-        "placesResourcesRemaining": 1578613,
-        "finalProofWritten": false,
-        "limit": "Lower throughput during concurrentbulkwork is observed, not causal proof or reason to retune unchangedstablev5."
-      },
-      "diskResourceContention": {
-        "blockedSubmission": {
-          "job": "01a18174-b7ea-bc88-dd0b-e8049a0e9683",
-          "atUTC": "2026-10-28T07:41:12.560399Z",
-          "logicalJob": "corpus-global-qualification-cache-headroom-015-20261028",
-          "transportStatus": "success",
-          "admitted": false,
-          "reason": "capacity_disk_reserved",
-          "reserved": false,
-          "noProofWorkExecuted": true
-        },
-        "competingUsefulJob": {
-          "job": "01a18161-828b-8e41-a74a-78886a2f9e31",
-          "logicalJob": "north-star-full-bulk-001",
-          "startedAtUTC": "2026-10-28T07:20:13.713971Z",
-          "terminalAtUTC": "2026-10-28T07:47:15.68Z",
-          "status": "succeeded-exit0-child-tree-gone",
-          "shardsProcessed": 5985,
-          "totalShards": 9797,
-          "packetsProcessed": 5985000,
-          "declaredCPUs": 4,
-          "declaredMemoryGiB": 2
-        },
-        "resolution": "Waited for naturalfullbulkterminal; corpus015 admitted first, then reducedremaining-output bulk002 admitted. No cancellation,70GiBreserve reduction, blindbusyloop, newstorage/spend or userinput.",
-        "cleanFreeBytes": 130453516288,
-        "nextBulk": {
-          "logicalJob": "north-star-full-bulk-002",
-          "startedAtApproxUTC": "2026-10-28T07:48:50Z",
-          "status": "admitted-running-owner-reported",
-          "absoluteTotalOutputGiB": 32,
-          "actualAdditionalGrowthBytes": 25714786304,
-          "ownedAllocatedBytes": 8712060928,
-          "ownedLogicalBytes": 8673955132,
-          "accountingCorrection": "Submitted before correction;64MiBmargin leaves29003068bytes above32GiB-minus-logical. Preserve activejob; at nextnaturalboundary use uniqueinode min(logical,allocated)+64MiB =>25752892100bytes from thisreceipt. No active marker edits or replay.",
-          "sameCPUs": 4,
-          "sameMemoryGiB": 2
-        },
-        "constraints": "National4GiB and proposedsourcebasis10GiB wait actualheadroom. Physicalfree guards and producerabsolute caps unchanged. Useful concurrentjobs are actual2, not64heavyjobs claim."
-      },
-      "completedRun015": {
-        "job": "01a1817b-01e2-f70f-264a-ae391b244bfe",
-        "checkpointFrom": 11104,
-        "checkpointTo": 12431,
-        "resourcesAdded": 1327000,
-        "wallSeconds": 1440.6,
-        "resourcesPerSecondApprox": 921,
-        "peakDescendants": 34,
-        "averageAccountedCPU": 0.66,
-        "summedRSSGB": 5.33,
-        "status": "expected-pause-cleanup-verified",
-        "placesResourcesIngested": 12431000,
-        "placesResourcesRemaining": 251613,
-        "finalProofWritten": false,
-        "limit": "Observed lowerthroughput underconcurrentwork is not a causal cacheclaim; sameapprovedcode retained."
-      },
-      "latestDiskRefill": {
-        "proof": "Global proof complete.",
-        "basis": "Basis restoration, final SQL, caller002 and final reviewed-consumer proof handoff are complete; no active NorthStar data job remains. Existing publisher has consumed proof and owns independent reviewed basis projection preparation; no duplicate runtime, proof or staging task.",
-        "publication": "Sole same-deploy job01a1824d-4c33-00a0-9ccb-5656f4e47c95 observed250accepted digests/280360299bytes,23733remaining at11:44:19Z, no current429/errors reported. Final serving remains pending; not sustained throughput proof.",
-        "cleanup": "Previously verified OSM/installer/Ollama removal retained; no additional cleanup claim.",
-        "noStressOrReserveRelaxation": true
-      },
-      "northStarSQL003": {
-        "job": "01a18197-1323-c9ff-d5a9-d2bad4a4ab71",
-        "admittedAtUTC": "2026-10-28T08:18:44Z",
-        "status": "succeeded-exit0-child-tree-gone-checkpoint-not-final",
-        "cpuReservation": 1,
-        "memoryReservationGiB": 1,
-        "additionalGrowthBytes": 14808305102,
-        "absoluteTotalOutputGiB": 32,
-        "basis": "Phase-specific:0remainingworkertasks, streaming1MiBhashes/onecompressedindexrow, SQLitecache64MiB/temp_storeFILE,9797compactreceipts; no newworkload orstress.",
-        "constraints": "Declaredaggregate request, not measuredFooaggregate isolation; do not mutateactivejob. SQLcoverage/finalmanifest stillrequired.",
-        "terminalAtUTC": "2026-10-28T08:46:00.34Z",
-        "indexShardsImported": 9332,
-        "totalShards": 9797,
-        "ownedLogicalBytes": 26074255920,
-        "ownedAllocatedBytes": 26142437376,
-        "cleanFreeBytes": 110182526976,
-        "nextAdditionalGrowthBytes": 8352591312,
-        "nextJob": "004 pending ordinary admission; do not assert running until owner receipt"
-      },
-      "otherReadyWork": {
-        "recipe": "Recipev6 terminal succeeded08:21:35, exit0/child_tree_gone;51assets/25135packets exactsource reverified+SQLqueries in59s; existing1.36GBindex unchanged, no duplicatecopy/fullfileRAMread.47smallrecipe fidelity and308expansion repairs retained. Scoped receipt, not wholegraph closure.",
-        "basis": "Basis final manifest3520dff24e7b96635fd3d8f8cfa60664d03d5bd65709b547059cee10b306e1a9 and caller002 complete. Final reviewed-consumer proof79d2adae3713a7604c8b4965027be7acc0512de58fa02c3c18f131b8fef2f05a staged/consumed11:47:49Z. Existing publisher prepares reviewed basis projection while base upload continues; no new NorthStar data job or old staging hold is inferred.",
-        "national": "Full national derivation completed locally; exact counts above. No accepted or served claim."
-      },
-      "completedRun016": {
-        "job": "01a18196-2dc2-72e0-0b58-93754d0ba886",
-        "status": "expected-pause-cleanup-verified",
-        "allPacketIngestionComplete": true,
-        "uniquePendingReferencesChecked": 23786447,
-        "unresolvedReferences": 0,
-        "translationSourceChecksPassed": 3242,
-        "globalTableIndex": 2,
-        "globalIdsScanned": 25250000,
-        "finalProofWritten": false
-      },
-      "previousActiveRun016": {
-        "run": "016",
-        "job": "01a18196-2dc2-72e0-0b58-93754d0ba886",
-        "startedAtApproxUTC": "2026-10-28T08:17:40Z",
-        "naturalBoundaryApproxUTC": "2026-10-28T08:41:40Z",
-        "workers": 64,
-        "workerMiB": 256,
-        "cpuReservation": 19,
-        "wholeJobReservationGiB": 24.625,
-        "cacheMiB": 3072,
-        "sqlHardHeapMiB": 4096,
-        "additionalGrowthBytes": 23904047104,
-        "status": "capacity-admitted-and-running-owner-verified",
-        "mayPauseEarlierAtCommittedHashTransition": true,
-        "performanceBenefitEstablished": false,
-        "phase": "global",
-        "progressAsOfUTC": "2026-10-28T08:33:47Z",
-        "allPacketIngestionComplete": true,
-        "ingestedTotals": {
-          "resources": 23586626,
-          "assertions": 166914715,
-          "relations": 4036948,
-          "translations": 3242,
-          "externalReferences": 94948126
-        },
-        "finalProofWritten": false
-      },
-      "completedRun017": {
-        "job": "01a181b2-9723-5d00-8710-2214de1d55e9",
-        "status": "expected-pause-cleanup-verified",
-        "globalIdsChecked": 194541531,
-        "globalTextsCounted": 90810000,
-        "uniqueReferencesChecked": 23786447,
-        "unresolvedReferences": 0,
-        "translationSourceChecksPassed": 3242,
-        "phase": "global",
-        "table": 3,
-        "finalProofWritten": false
-      },
-      "previousActiveRun017": {
-        "run": "017",
-        "job": "01a181b2-9723-5d00-8710-2214de1d55e9",
-        "startedAtApproxUTC": "2026-10-28T08:48:40Z",
-        "naturalBoundaryApproxUTC": "2026-10-28T09:12:40Z",
-        "workers": 64,
-        "workerMiB": 256,
-        "cpuReservation": 19,
-        "wholeJobReservationGiB": 24.625,
-        "cacheMiB": 3072,
-        "sqlHardHeapMiB": 4096,
-        "additionalGrowthBytes": 23496962048,
-        "status": "capacity-admitted-and-running-owner-verified",
-        "mayPauseEarlierAtCommittedHashTransition": true,
-        "performanceBenefitEstablished": false,
-        "phase": "global",
-        "progressAsOfUTC": "2026-10-28T08:49:25Z",
-        "allPacketIngestionComplete": true,
-        "ingestedTotals": {
-          "resources": 23586626,
-          "assertions": 166914715,
-          "relations": 4036948,
-          "translations": 3242,
-          "externalReferences": 94948126
-        },
-        "finalProofWritten": false,
-        "globalIdsScannedAtResume": 25250000
-      },
-      "completedNorthStarBulk004": {
-        "job": "01a181b3-4525-d5c6-9ef8-fb0dab41ebae",
-        "startedAtUTC": "2026-10-28T08:49:32.438Z",
-        "terminalAtUTC": "2026-10-28T08:58:25.899Z",
-        "status": "succeeded-exit0-child-tree-gone",
-        "manifestSHA256": "83773291ac70931a110f60e872ae47a2bd470b5f397c709195dcf016c0bf0694",
-        "shards": 9797,
-        "packets": 9796656,
-        "finalSQLCoverageComplete": true,
-        "resolvedProductProfileContextEdges": 2915727,
-        "uniqueIdentifierPathKeys": 2980298,
-        "ambiguousKeysRetainedUnmerged": 400164,
-        "releasedGrowthBytes": 8352591312,
-        "acceptedOrServedRowsClaimed": 0
-      },
-      "completedNorthStarNational": {
-        "job": "01a181bf-c416-8068-da08-852b39d3f5ee",
-        "admittedAtUTC": "2026-10-28T09:03:11Z",
-        "terminalAtUTC": "2026-10-28T09:09:19Z",
-        "status": "succeeded-exit0-child-tree-gone",
-        "foods": 36737,
-        "foodProfileMetricContextPaths": 587792,
-        "releasedOutputReservationGiB": 4,
-        "acceptedOrServedRowsClaimed": 0
-      },
-      "completedNamespaceProof": {
-        "job": "01a181c4-c80e-f765-0663-a7d7d5195d5c",
-        "submittedAtUTC": "2026-10-28T09:08:40Z",
-        "terminalAtUTC": "2026-10-28T09:09:48Z",
-        "status": "succeeded-exit0-child-tree-gone",
-        "sourceScopedBarcodeProductProfileContextKeys": 1055792,
-        "crossSourceIdentityClaimed": false,
-        "releasedOutputReservationMiB": 64,
-        "acceptedOrServedRowsClaimed": 0
-      },
-      "finalPhaseAdmission": {
-        "evidence": "docs/operations/2026-10-28/final-phase-output-admission.json",
-        "evidenceCommit": "611b8c022f4e88554999b707ba4547cda34f8cbe",
-        "reviewer": "audit_production_efficiency",
-        "author": "assess_partial_corpus_resume",
-        "reviewSHA256": "c1a2cd00b803d2c4b8b0bbcfeeb934a7d8d0a2244497bbb84c432c5af9bcdaed",
-        "metadataSHA256": "bd92ac7238df0f53da87961f5a97dab9f5a3cb3d800d5459e10617b7678345f7",
-        "checkpointBytes": 4097,
-        "packageMetadataBytes": 3863,
-        "previousGrowthBytes": 23496962048,
-        "adoptedGrowthBytes": 67108864,
-        "unusedFutureReservationReleasedBytes": 23429853184,
-        "absoluteProofScratchCapGiB": 60,
-        "sharedReserveGiB": 70,
-        "basis": "Remaining PK-ordered global scans and pinned final hashes are read-only except one small checkpoint row and bounded result/temp/journal/log writes; no sort spool, new data tables, shards or indexes. Exact code/runtime/inputs and original validation unchanged.",
-        "activeMarkerEdits": false,
-        "forcedRestart": false,
-        "testsRepeated": 0
-      },
-      "previousActiveRun018": {
-        "run": "018",
-        "job": "01a181cb-5043-ffb7-be3e-2679bcabd16f",
-        "startedAtApproxUTC": "2026-10-28T09:15:45Z",
-        "naturalBoundaryApproxUTC": "2026-10-28T09:39:45Z",
-        "workers": 64,
-        "workerMiB": 256,
-        "cpuReservation": 19,
-        "wholeJobReservationGiB": 24.625,
-        "cacheMiB": 3072,
-        "sqlHardHeapMiB": 4096,
-        "additionalGrowthBytes": 67108864,
-        "status": "capacity-admitted-and-running-owner-verified",
-        "mayPauseEarlierAtCommittedHashTransition": true,
-        "performanceBenefitEstablished": false,
-        "phase": "global",
-        "progressAsOfUTC": "2026-10-28T09:16:45Z",
-        "allPacketIngestionComplete": true,
-        "ingestedTotals": {
-          "resources": 23586626,
-          "assertions": 166914715,
-          "relations": 4036948,
-          "translations": 3242,
-          "externalReferences": 94948126
-        },
-        "finalProofWritten": false,
-        "globalTextsCountedAtResume": 90810000,
-        "globalIdsChecked": 194541531
-      },
-      "globalQualificationComplete": {
-        "job": "01a181da-ce15-9f85-f2bb-f1968549da9b",
-        "status": "completed-and-clean",
-        "sha256": "9e60de075a9bf049e0348c666e4cc2cbe9edb07c6771bcab95649038dafd1226",
-        "bytes": 6327,
-        "localSanitizedReceiptSHA256": "55c4962a99ef16f40939f816b07a73da428fcedc9c7d32c916a95a90b51110af",
-        "evidence": {
-          "aggregateObservedCounts": {
-            "assertions": 166914715,
-            "assets": 24147,
-            "externalReferences": 94948126,
-            "packets": 9929609,
-            "relations": 4036948,
-            "resources": 23586626,
-            "translations": 3242
-          },
-          "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
-          "contractTextIdentityRule": "A text identifier can be reused in multiple projections of the same original text (for example a resource name and the original data.name field). Repeated definitions must have identical language, value, source-text hash and citation set; conflicts are rejected. Source edition language is not proof of each embedded quoted string language; uncertain fields use und.",
-          "contractVersion": "offmenu-common-contract/1",
-          "database": {
-            "citations": 22574341,
-            "ids": 194541531,
-            "referencesRecorded": 23786447,
-            "texts": 216170809,
-            "translation_sources": 3242
-          },
-          "diskGuardBytes": 10737418240,
-          "packageCount": 8,
-          "packages": [
-            {
-              "admittedSourceRecords": {
-                "foodon": 29255,
-                "world-recipes": 25135
-              },
-              "directory": "/offmenu-corpus/common-data-reviewed-package-20261014",
-              "grandfathered": true,
-              "manifestByteSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
-              "observedCounts": {
-                "assertions": 2199543,
-                "packets": 79534,
-                "relations": 459245,
-                "resources": 441391,
-                "translations": 3242
-              },
-              "packetFiles": 161,
-              "releaseId": "common-data-20261014"
-            },
-            {
-              "admittedSourceRecords": {
-                "dietary-guidelines": 100,
-                "wikibooks": 3796
-              },
-              "directory": "/offmenu-corpus/common-reference-delivery-final-20261014",
-              "grandfathered": false,
-              "manifestByteSha256": "bec93ffedf4d80eef10ec11000c18161024a3c30999697ad1f3db5f3318ff3e7",
-              "observedCounts": {
-                "assertions": 31168,
-                "packets": 3896,
-                "relations": 0,
-                "resources": 3896,
-                "translations": 0
-              },
-              "packetFiles": 9,
-              "releaseId": "common-references-20261014"
-            },
-            {
-              "admittedSourceRecords": {
-                "afcd": 1801,
-                "ciqual": 3484,
-                "cnf": 5690,
-                "cofid": 2887,
-                "fineli": 4232,
-                "foodfiles": 2857,
-                "frida": 1381,
-                "germany-bls": 7140,
-                "matvaretabellen": 2121,
-                "mext": 2538,
-                "sweden-food": 2606
-              },
-              "directory": "/offmenu-corpus/common-national-semantic-final-20261014",
-              "grandfathered": false,
-              "manifestByteSha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
-              "observedCounts": {
-                "assertions": 2020535,
-                "packets": 36737,
-                "relations": 661266,
-                "resources": 661266,
-                "translations": 0
-              },
-              "packetFiles": 1470,
-              "releaseId": "common-national-20261014"
-            },
-            {
-              "admittedSourceRecords": {
-                "qudt-measurement-definitions": 56
-              },
-              "directory": "/offmenu-corpus/measurement-terminology-final-qualified-20261014",
-              "grandfathered": false,
-              "manifestByteSha256": "75c33340f1ee25c4121c57d8fc124621b4455412717fc6d9dd01bfb162351679",
-              "observedCounts": {
-                "assertions": 440,
-                "packets": 56,
-                "relations": 0,
-                "resources": 56,
-                "translations": 0
-              },
-              "packetFiles": 1,
-              "releaseId": "qudt-measurement-definitions-3.5.2-20261014"
-            },
-            {
-              "admittedSourceRecords": {
-                "Remarknl/Indisch-eten": 1,
-                "chefdelakarma/libre_cuisine": 6,
-                "clicat/Ricette": 2,
-                "lvisintini/recetasdemami": 33,
-                "rochacbruno/vegan_recipes": 0
-              },
-              "directory": "/offmenu-corpus/recipe-expansion-final-qualified-20261014/common-graph",
-              "grandfathered": false,
-              "manifestByteSha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
-              "observedCounts": {
-                "assertions": 1588,
-                "packets": 42,
-                "relations": 644,
-                "resources": 682,
-                "translations": 0
-              },
-              "packetFiles": 1,
-              "releaseId": "recipe-expansion-qualified-20261014"
-            },
-            {
-              "admittedSourceRecords": {
-                "smithsonian-archive": 5
-              },
-              "directory": "/offmenu-corpus/historical-recipe-quality-final-corrected-20261014",
-              "grandfathered": false,
-              "manifestByteSha256": "e4c06a1d4a2fcb492529c37c6245a595dd104061ef1a63427cbe9d65e7e2241f",
-              "observedCounts": {
-                "assertions": 256,
-                "packets": 5,
-                "relations": 66,
-                "resources": 66,
-                "translations": 0
-              },
-              "packetFiles": 1,
-              "releaseId": "historical-recipe-quality-final-20261014"
-            },
-            {
-              "admittedSourceRecords": {
-                "off": 5452981,
-                "prices": 317898,
-                "usda-files": 4025777
-              },
-              "directory": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/bulk-parallel",
-              "grandfathered": false,
-              "manifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e",
-              "observedCounts": {
-                "assertions": 137295959,
-                "packets": 9796656,
-                "relations": 2915727,
-                "resources": 9796656,
-                "translations": 0
-              },
-              "packetFiles": 9797,
-              "releaseId": "bulk-food-common-semantic-final-20261014"
-            },
-            {
-              "admittedSourceRecords": {
-                "overture-food-places": 12681108,
-                "wikidata-food-businesses": 1505
-              },
-              "directory": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/places",
-              "grandfathered": false,
-              "manifestByteSha256": "fc0952ab0cf03c1451239173ebc60cc1fbdda20b133f40d6714c07e5188caf77",
-              "observedCounts": {
-                "assertions": 25365226,
-                "packets": 12683,
-                "relations": 0,
-                "resources": 12682613,
-                "translations": 0
-              },
-              "packetFiles": 12683,
-              "releaseId": "common-places-20261014"
-            }
-          ],
-          "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
-          "schemaId": "https://offmenu-corpus.netlify.app/common-data/schema.json",
-          "schemaVersion": "offmenu-common-expansion-qualification/1",
-          "scratchBudgetBytes": 64424509440,
-          "seconds": 21256.893,
-          "status": "all-packages-streamed-global-identities-references-and-provenance-checked"
-        }
-      },
-      "qualifiedAssembly": {
-        "status": "qualified-assembly-and-delta-complete",
-        "job": "01a181dd-050e-0278-8713-33adec32cfa2",
-        "deltaBytes": 5879185,
-        "deltaFiles": 24171,
-        "logicalPayloadGB": 27.165,
-        "deltaSHA256Prefix": "ec4f73f1",
-        "source": "Existing assessor and publisher receipts; exact complete delta hash retained by exclusive publisher."
-      },
-      "finalHashRecovery": {
-        "failedRun": "019",
-        "failedJob": "01a181d8-b2b6-5c01-bb0f-f5b69e6ef21e",
-        "result": "RuntimeError: cannot start new thread under parent virtual-address cap",
-        "elapsedSecondsApprox": 6.3,
-        "observedParentVMGB": 8.461,
-        "observedParentRSSMB": 342,
-        "childTreeGone": true,
-        "committedProgressPreserved": true,
-        "correction": "Same pinned hash checks resumed with64 hash threads instead of256; no source migration, input change or proof weakening.",
-        "successfulRun": "020",
-        "remainingAssetsHashed": 3214,
-        "wallSeconds": 2.392668315966148,
-        "sampledParentVMBytes": 3466805248,
-        "sampledParentRSSBytes": 160763904,
-        "perProcessASCapBytes": 8589934592,
-        "outputGrowthBytes": 67108864,
-        "limit": "This is successful correction of the remaining hash work, not a whole-corpus2.39second benchmark or measured causal speedup."
-      },
-      "terminalDetectionGap": {
-        "run": "018",
-        "actualTerminalUTC": "2026-10-28T09:21:52Z",
-        "detectedApproxUTC": "2026-10-28T09:29:00Z",
-        "finding": "About8minutes of avoidable critical-path idle before refill.",
-        "correction": "Existing owner switched to phase-aware60–90second checks for expected early final-phase completion, immediate clean handoff and nonblocking receipt writing. No new supervisor, duplicate job or root polling."
-      },
-      "basisRestoration": {
-        "phase1": {
-          "status": "completed",
-          "terminalUTC": "2026-10-28T10:08:28Z",
-          "assets": 8192,
-          "records": 9478758,
-          "nativeIndexBytes": 8162656256,
-          "requiredForPhase2": true
-        },
-        "phase2": {
-          "job": "01a1820e-077e-23ee-931e-75b7500cffdb",
-          "admittedAtUTC": "2026-10-28T10:28:40Z",
-          "state": "full-restoration-final-SQL-caller002-and-final-reviewed-consumer-proof-handoff-complete; no-active-NorthStar-data-job",
-          "workers": 4,
-          "cpuReservation": 4,
-          "memoryGiB": 2,
-          "totalOutputGiB": 21,
-          "remainingGrowthBytes": 14453027134,
-          "sharedReserveGiB": 70,
-          "boundaryApproxUTC": "2026-10-28T10:55:55Z",
-          "sourceInputsReadOnly": true,
-          "priorState": "running-after-specific-user-approval-and-one-known-nonexecuted-retry",
-          "terminalUTC": "2026-10-28T10:55:55Z",
-          "materializedPacketsAndLocators": 9796656,
-          "materializedBasisTargets": 46795344,
-          "sqlImportedShards": 3156,
-          "totalShards": 9797,
-          "finalManifestWritten": true,
-          "continuation": {
-            "job": "01a18238-74d1-6d01-a239-881e03305389",
-            "admittedAtUTC": "2026-10-28T11:15:00Z",
-            "terminalAtUTC": "2026-10-28T11:23:07Z",
-            "status": "succeeded-exit0-child-tree-gone",
-            "specificUserApprovalUTC": "2026-10-28T11:13:59Z",
-            "cpu": 1,
-            "workers": 1,
-            "memoryGiB": 2,
-            "totalOutputGiB": 21,
-            "sharedReserveGiB": 70,
-            "releasedGrowthBytes": 6241684497
-          },
-          "previousContinuation": {
-            "attemptedUTC": "2026-10-28T11:00:00Z",
-            "job": null,
-            "executed": false,
-            "reason": "Platform scope denial despite prior explicit basis-continuation approval; parent resolving exact authority. No retry or reroute.",
-            "cpu": 1,
-            "memoryGiB": 2,
-            "remainingGrowthBytes": 6241684497,
-            "totalOutputGiB": 21,
-            "sharedReserveGiB": 70,
-            "freeBytesOwnerReportedApprox": 186525000000,
-            "capacityBlocked": false
-          },
-          "final": {
-            "packetsAndLocators": 9796656,
-            "sourceProfiles": 2924709,
-            "basisTargets": 46795344,
-            "unmatched": 0,
-            "digestMismatches": 0,
-            "ownedLogicalBytes": 18032733156,
-            "freeGBApprox": 184.791,
-            "acceptedOrServedRowsClaimed": 0,
-            "manifestPath": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/north-star-derived-20261028/basis-restoration-v1/manifest.json",
-            "manifestBytes": 1406971,
-            "manifestSHA256": "3520dff24e7b96635fd3d8f8cfa60664d03d5bd65709b547059cee10b306e1a9",
-            "scope": "Source-literal candidate basis only; not upstream-verified, canonicalized, admitted or served."
-          }
-        },
-        "callerProof": {
-          "completedUTC": "2026-10-28T11:42:33Z",
-          "elapsedSeconds": 15.824,
-          "finalReviewedConsumerProof": {
-            "bytes": 13130,
-            "path": "reviewed-consumer-proof.json",
-            "publisherConsumed": true,
-            "sha256": "79d2adae3713a7604c8b4965027be7acc0512de58fa02c3c18f131b8fef2f05a",
-            "source": "Trusted parent handoff; no new fetch or execution.",
-            "stagedUTC": "2026-10-28T11:47:49Z",
-            "stagingJob": "01a18256-8003-7b0f-f4e1-8d7a41973958"
-          },
-          "job": "01a18251-6db2-6d9d-0453-6d848f373f97",
-          "owner": "align_north_star_graph",
-          "reportBytes": 3306,
-          "reportSHA256": "921fa2113c67b05213786dbebfb10e350e2716a45a325b977f44c18e7bacf61b",
-          "run": "caller002",
-          "scope": "Finite caller002 proof complete; final reviewed-consumer proof has also been staged and consumed by publisher. No active NorthStar data job remains; not admission/canonicalization/serving.",
-          "source": "Trusted parent handoff; exact report bytes not fetched or execution repeated.",
-          "status": "succeeded-owner-reported"
-        }
-      }
+      "next": "Actual full base serving verification, then existing sequential bulk -> national -> recipe -> basis publication and per-release served verification.",
+      "optionalRootAcceptance": false
     },
     "latestUserOperatingPrinciple": {
       "delivery": "Finite final-result-first delivery: finish defined authorized ledger deliverables to stable result, then assess; optimization/research supports delivery rather than creating setup backlog. Action genuinely ready work, reuse accepted results, avoid unnecessary broad gates and conservative ramps, preserve exactholds/no falseclosure.",
@@ -11719,7 +11042,7 @@
     },
     "currentDeliveryHandoffs": {
       "schema": "offmenu-current-owner-handoff/1",
-      "asOfUTC": "2026-10-28T14:49:00Z",
+      "asOfUTC": "2026-10-28T17:26:00Z",
       "authority": "Existing user-authorized delivery scope and exact source/runtime approvals travel with each same-owner activation; this contract adds no permission. Named source/security/platform holds remain.",
       "precedence": "Use these current pointers and latest authoritative receipts; prior*, historical lanes/rosters, old job labels and retained blocked attempts are provenance, not a runnable queue. Refresh an active snapshot from its owner before issuing any mutation.",
       "activation": "For a genuinely ready finite action, activate the existing idle owner with its established follow-up mechanism. A message alone is not activation or running evidence. If already active, steer that owner; do not spawn a duplicate writer. A ready unowned action is returned only to audit_production_efficiency for assignment.",
@@ -11735,24 +11058,32 @@
           "id": "qualified-corpus-publication",
           "ownerTask": "prepare_common_corpus_publication",
           "checkpoint": {
-            "job": "01a182cd-6e6e-07f9-0030-f030f346e232",
-            "deploy": "6ae1c3946435074ef6c08369",
             "owner": "prepare_common_corpus_publication",
-            "observedUTC": "2026-10-28T14:41:19Z",
-            "status": "running-owner-reported",
-            "acceptedDigests": 4500,
-            "acceptedBytes": 5039016233,
-            "remainingDigests": 19483,
-            "uploadElapsedSeconds": 2262.8,
-            "source": "Existing publisher's already-observed normal receipt; no extra probe.",
-            "servedVerificationPending": true,
-            "nonAdditiveCounterCaveat": "Previous job ended on SSH rekey timeout after 15,250 accepted. Same-deploy refreshed provider inventory returned 23,983 digests; current counters are not additive to prior-run acceptance.",
-            "sameDeployResumeUTC": "2026-10-28T13:57:00Z",
-            "reviewedRecoverySourcePrefix": "3250423c"
+            "reportedUTC": "2026-10-28T17:24:33Z",
+            "source": "Existing exclusive publisher phase-change receipt",
+            "uploadJob": "01a182cd-6e6e-07f9-0030-f030f346e232",
+            "uploadState": "terminal-success",
+            "uploadedDigests": 23983,
+            "deploy": "6ae1c3946435074ef6c08369",
+            "providerState": "READY",
+            "providerStatusJob": "01a1838a-1f30-fc8f-3444-60a086da93c1",
+            "mergedFiles": 117003,
+            "preservedExistingFiles": 92841,
+            "servedVerifierJob": "01a1838a-88d5-e48a-d23a-b5650880919e",
+            "servedVerifierState": "admitted",
+            "publishedInventoryInspectorJob": "01a1838a-3d19-c3a7-0a65-18697d2874bc",
+            "publishedInventoryInspectorState": "running-at-owner-report",
+            "fullServedCoverageVerified": false,
+            "expectedCoveragePendingVerification": {
+              "sources": 22,
+              "records": 22574390
+            },
+            "next": "Actual full base serving verification, then existing sequential bulk -> national -> recipe -> basis publication and per-release served verification.",
+            "optionalRootAcceptance": false
           },
-          "nextActualTrigger": "Clean base terminal and verified served pin, then bulk -> national -> recipe -> basis using each actual current deploy as complete-map base; no optional acceptance or nudge.",
-          "safeContinuation": "Same owner continues current job. On a terminal failure/cancellation, reconcile accepted partial uploads and confirm terminal/drained state before any separately authorized same-deploy resume. Retain exact map/journal/source pins and existing retry boundaries; no new deployment or parallel uploader. All four reviewed HTTP-reuse publishers are deployed/readback; four projectors and consumer receipts staged. Preserve each release's served-byte/count verification.",
-          "activation": "Already running at the reported checkpoint; no activation or extra upload is needed. If it later becomes idle with ready authorized follow-through, reactivate this same owner, not a notification-only handoff.",
+          "nextActualTrigger": "Actual full base serving verification, then existing sequential bulk -> national -> recipe -> basis publication and per-release served verification.",
+          "safeContinuation": "Keep exact base descriptor/seed/deploy pins and full served verification. Derived transports already reviewed/deployed/readback with durable inventory and per-digest 2xx receipts, same-generation resume, explicit contradiction stop, bounded SSH and HTTPS reuse. One writer and actual current-deploy pins retained.",
+          "activation": "Existing publisher active after interrupted-turn recovery; full verifier actually admitted immediately after provider READY. No new uploader or manager.",
           "stopOrApproval": "Stop affected mutation on identity/map/serving mismatch, uncertain active uploader or exact denial. Preserve source/security holds. Do not claim food/corpus serving from accepted PUT counts.",
           "evidenceDestination": "Existing publisher final served receipt -> audit_production_efficiency -> sole ledger writer."
         },
@@ -11913,6 +11244,16 @@
             "scheduled": "14:38",
             "receivedUTC": "2026-10-28T14:33:33Z",
             "source": "root actual receipt"
+          },
+          {
+            "scheduled": "15:38",
+            "receivedUTC": "2026-10-28T15:41:47Z",
+            "source": "root actual receipt"
+          },
+          {
+            "scheduled": "16:38",
+            "receivedUTC": "2026-10-28T16:41:44Z",
+            "source": "root actual receipt"
           }
         ]
       },
@@ -11931,6 +11272,50 @@
         "optionalRootAcceptanceRequired": false,
         "limits": "Per-release pins, one writer, resource admission, idempotent journals and terminal/drain checks retained; mandatory holds still apply.",
         "morningReportSent": false
+      },
+      "turnRecovery": {
+        "observedInterruptedUTC": "2026-10-28T17:08:00Z",
+        "publisherResumedUTC": "2026-10-28T17:08:50Z",
+        "efficiencyPickupUTC": "2026-10-28T17:09:07Z",
+        "activeRuntimeUninterrupted": true,
+        "scope": "Reasoning turns were resumed; no duplicate runtime job, new schedule or writer."
+      },
+      "exactCustodyRoutingResult": {
+        "asOfUTC": "2026-10-28T15:02:00Z",
+        "owner": "map_rights_cache_propagation",
+        "actualPickupUTC": "2026-10-28T14:54:39Z",
+        "terminalReason": "Selected-model-capacity failure during remote compaction at 15:01; earlier exact findings retained.",
+        "owner02": {
+          "historicalTask": "01a138a4-8da3-7321-b3b0-5e73f349ef8d",
+          "readError": "unsupported placement-format v3",
+          "currentBindingVerified": false,
+          "activationAttempted": false
+        },
+        "H59": {
+          "historicalTask": "01a139ab-ddf3-7471-8e79-6c327d19c2d7",
+          "reviewer38": "01a1399a-71d4-7080-bc17-e6fa17e00e28",
+          "readError": "unsupported placement region11",
+          "currentBindingVerified": false,
+          "activationAttempted": false
+        },
+        "owner16HistoricalTask": "01a138f2-0657-7d60-be9e-a0e100d68bfd",
+        "retention": {
+          "actualOperatorIdentity": null,
+          "componentOnly": "Worker04 D1",
+          "need": "Actual storage/backup operator and scheduler/retention/backup/restore/delete receipts; component/preparation is not operational evidence."
+        },
+        "owner03": {
+          "historicalTask": "01a138a4-c8ab-77d2-a70b-a43efddc3b8a",
+          "reportedPreparationSelector": "pending/200",
+          "preparationManifestPrefix": "6d477666",
+          "reportedRecoveryEnvelopeSelector": "exchange/200",
+          "recoveryEnvelopePrefix": "5154805b",
+          "confirmedProducerTracePresent": false,
+          "currentConsumptionPacketStrongerPointer": false
+        },
+        "interpretation": "Exact historical aliases are not current callable identities. Routing failures do not prove status or absent result. No guessed environment, activation, alternate route, repeated failed read, substitute producer or operational deletion.",
+        "need": "Verified current callable task/environment binding or exact retained results; retention actual operator identity. Not blanket user approval.",
+        "receiptProvenance": "Preserved from exact owner/coordinator messages. A prior local receipt was written with SHA693bc52059a524f03cf59201f89bcd0e561651475d75b16a65acc2fdfe88553f; shared-workspace copy was no longer present at17:25, so this record does not claim a fresh byte read."
       }
     },
     "unattendedReliabilityRepair": {
@@ -11959,11 +11344,11 @@
     },
     "currentUserFacingRoster": {
       "libraryFileId": "libfile_37547822965081918c149668e46a004f",
-      "fileId": "file_000000004fc881f5bdaf82a7fc14099a",
+      "fileId": "file_00000000abb481fd8f71aa520e25f0c5",
       "filename": "OffMenu-delivery-ledger-2026-10-28.md",
-      "asOfUTC": "2026-10-28T12:20:00Z",
-      "bytes": 87830,
-      "sha256": "3d334a107d0e0d86d1768f01bcd60a3de434df89c8d6688d25c0c9183cd1d4b4",
+      "asOfUTC": "2026-10-28T14:51:00Z",
+      "bytes": 92261,
+      "sha256": "5e133bdd79c044b25164af701b7f40d8f7104ba6951a4dfd6b775da1f874d1d4",
       "parentRows": 89,
       "groups": {
         "activeSharedPublication": 3,
@@ -11974,7 +11359,10 @@
       },
       "finiteAssignedSubstepsEvidenced": 31,
       "supersededAsCurrentAtUTC": "2026-10-28T14:49:00Z",
-      "requiredRefresh": "12:20 report is a historical snapshot: tooling now complete; four app fixes implemented but exact export blocked; current upload job/counters changed. Preserve all 89 parent outcomes and broader holds."
+      "requiredRefresh": "Version1 remains an evidence-bound14:51 snapshot. Current base upload completed17:24 and serving verification is admitted; latest live state is canonical ledger. Do not recreate a duplicate Library item.",
+      "version": 1,
+      "libraryReplaceReceiptUTC": "2026-10-28T14:54:42Z",
+      "localCopyCurrentlyAvailable": false
     },
     "priorToolingStateBeforeDirectApprovalResolution": {
       "latestToolingImplementation": {
@@ -12103,6 +11491,22 @@
         "userApprovalRequestsNow": 0
       },
       "retainedDeferrals": "OSM remains physically retired/deferred; no new raw acquisition, AI install or paid provider route."
+    },
+    "priorPublicationCheckpointBeforeBaseUploadTerminal": {
+      "job": "01a182cd-6e6e-07f9-0030-f030f346e232",
+      "deploy": "6ae1c3946435074ef6c08369",
+      "owner": "prepare_common_corpus_publication",
+      "observedUTC": "2026-10-28T14:41:19Z",
+      "status": "running-owner-reported",
+      "acceptedDigests": 4500,
+      "acceptedBytes": 5039016233,
+      "remainingDigests": 19483,
+      "uploadElapsedSeconds": 2262.8,
+      "source": "Existing publisher's already-observed normal receipt; no extra probe.",
+      "servedVerificationPending": true,
+      "nonAdditiveCounterCaveat": "Previous job ended on SSH rekey timeout after 15,250 accepted. Same-deploy refreshed provider inventory returned 23,983 digests; current counters are not additive to prior-run acceptance.",
+      "sameDeployResumeUTC": "2026-10-28T13:57:00Z",
+      "reviewedRecoverySourcePrefix": "3250423c"
     }
   },
   "priorStatusBeforeProduction194Reconciliation": "full-production-allocated-corpus-active-product193-served",
@@ -12188,5 +11592,6 @@
     "asOfUTC": "2026-10-28T05:42:00Z",
     "statusAsOfUTC": "2026-10-28T07:00:00Z"
   },
-  "priorTopLevelAsOfBeforeLatestHandoff": "2026-10-28T12:27:00Z"
+  "priorTopLevelAsOfBeforeLatestHandoff": "2026-10-28T12:27:00Z",
+  "priorTopLevelAsOfBeforeBaseUploadTerminal": "2026-10-28T14:49:00Z"
 }
