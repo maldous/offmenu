@@ -8767,7 +8767,7 @@
   },
   "continuousEfficiencyReview": {
     "schema": "offmenu-continuous-efficiency-review/1",
-    "asOfUTC": "2026-10-28T07:18:00Z",
+    "asOfUTC": "2026-10-28T07:21:00Z",
     "id": "OPS-CONTINUOUS-EFFICIENCY-REVIEW",
     "state": "active-owned-ongoing",
     "currentOwner": "audit_production_efficiency",
@@ -9014,6 +9014,36 @@
     },
     "latestFiniteClosure": "24assigned finite deliverables closed:14country receipts,4rights maps,6existing-product audits/fixes delivered194. Current89allocation has no stale ready rows among those24; broader parent/source/policy/operator/receipt dependencies remain. No repeat tests/build/deploy were performed for this reconciliation.",
     "latestCapacityObservation": {
+      "atUTC": "2026-10-28T07:21:01Z",
+      "activeReasoningAgentsIncludingRoot": 5,
+      "reasoningSlotCap": 7,
+      "otherObservedStates": "review_corpus_mount_delta interrupted; prepare_common_corpus_publication completed safe-idle turn",
+      "limit": "Point-in-time metadata, not continuing guarantee of free slots; allocation can change immediately.",
+      "actualConstraintEvent": {
+        "reportedIntervalUTC": "2026-10-28T07:15Z to2026-10-28T07:20Z",
+        "readyUserTaskBlocked": true,
+        "spawnResult": "agent thread limit reached",
+        "activeReasoningAgentsIncludingRoot": 7,
+        "userNotifiedByRoot": true,
+        "privateTaskContentExcluded": true,
+        "windmillCapacityDoesNotResolveReasoningLimit": true
+      },
+      "resolution": {
+        "state": "waiting-publisher-safe-idled-to-free-slot",
+        "owner": "prepare_common_corpus_publication",
+        "checkpoint": "offmenu-netlify-publisher-20261028/SAFE-IDLE-HANDOFF-20261028T0720.json",
+        "noActiveUpload": true,
+        "noUncertainMutation": true,
+        "ownerCancelled": false,
+        "sameExclusiveOwnerRetained": true,
+        "reactivationOwner": "audit_production_efficiency/assessor event-driven handoff; root lightweight coordination",
+        "reactivationTrigger": "Actual qualifiedproof/candidate or derivedmanifest ready",
+        "method": "followup_task existingowner, notsend_message-only and notduplicatepublisher",
+        "rootHeavyFallback": false,
+        "privateInputsSentToExternalModels": false
+      }
+    },
+    "priorCapacityObservation0713": {
       "atUTC": "2026-10-28T07:13:22Z",
       "activeReasoningAgentsIncludingRoot": 6,
       "reasoningSlotCap": 7,
@@ -9022,6 +9052,17 @@
       "nativeRunningJobs": 1,
       "nativeJob": "corpus013 at observation; since replaced by014",
       "providerState": "Lastverifiedregistry:Groq/Gemini publicdevelopment+Cohere publicdocs qualified; no activeproviderinference. Mistral/OpenRouter/Z.ai require429resetmetadata; remainingroutesdeferred/unqualified. No freshcall/quota availability inferred."
+    },
+    "publisherWaitingHandoff": {
+      "asOfUTC": "2026-10-28T07:20:00Z",
+      "state": "safe-idle-awaiting-real-artifact",
+      "basePublisher": "deployed and authenticatedstatusverified",
+      "assemblyRuntime": "staged locally for assessor",
+      "derivedPublisher": "locallyprepared;review/finalartifacts pending",
+      "testsReported": 45,
+      "noActiveUpload": true,
+      "exclusiveOwner": "prepare_common_corpus_publication",
+      "next": "Reactivate sameowner on proof/derivedmanifest handoff, do not hold a reasoning slot merely while waiting."
     }
   },
   "priorStatusBeforeProduction194Reconciliation": "full-production-allocated-corpus-active-product193-served",
