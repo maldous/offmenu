@@ -1,0 +1,104 @@
+{
+  "activationPerformed": false,
+  "authorHandoffPreservedByteForByte": true,
+  "baseCommit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+  "branch": "feature/source-facts-diagnostic-20261029",
+  "deploymentPerformed": false,
+  "excluded": [
+    "raw captures",
+    "runtime arguments",
+    "logs",
+    "generated build output",
+    "ZIP archives",
+    "credentials",
+    "datasets",
+    "node_modules",
+    "environments",
+    "caches"
+  ],
+  "files": [
+    {
+      "bytes": 890,
+      "path": "source/protocol-pins.mjs",
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a"
+    },
+    {
+      "bytes": 16505,
+      "path": "source/reviewed-hydration/source-barcode-client.mjs",
+      "sha256": "273afcb617a208c9e7385026351bc3f748e133b17a2eb37f5454b230b5351197"
+    },
+    {
+      "bytes": 11810,
+      "path": "source/reviewed-hydration/source-barcode-hydrator.mjs",
+      "sha256": "a2d96a9736942982408f51233384e503df7b7795ea24533a3f9d5f94c76300d9"
+    },
+    {
+      "bytes": 208,
+      "path": "source/reviewed-hydration/source-barcode-selection.mjs",
+      "sha256": "adaddd1ea29bc47860e4ed557b477240bab677b5eb431dc255a5c5887159f71e"
+    },
+    {
+      "bytes": 8591,
+      "path": "source/source-barcode-facts-handler.mjs",
+      "sha256": "583ba256fb429284f1935f53e3e916fe25500de0afce27cf80bcc4b7a8741f5a"
+    },
+    {
+      "bytes": 16176,
+      "path": "source/source-barcode-handler.mjs",
+      "sha256": "56723cd22ecb72713b5dd4cc98b1a24adbb262200d25796e2d74f4a069d9d9eb"
+    },
+    {
+      "bytes": 3888,
+      "path": "source/stream-shard.mjs",
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a"
+    },
+    {
+      "bytes": 2044,
+      "path": "source/strict-json.mjs",
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099"
+    },
+    {
+      "bytes": 6837,
+      "path": "tests/facts-diagnostic.test.mjs",
+      "sha256": "f684adedd3f154d4e761f0c8a246482ff96bd42c5732d43c57119d5362913c7c"
+    },
+    {
+      "bytes": 1154,
+      "path": "build-facts.mjs",
+      "sha256": "026966b3c597166fe356d3c3910a14c11ed9a6fec1a6e38dff69da37d0439647"
+    },
+    {
+      "bytes": 4496,
+      "path": "facts-diagnostic-only.patch",
+      "sha256": "e09a18e82d8e8431bdbb1e914543e11319a9eb1509a3ab63f92cad7971b03e25"
+    },
+    {
+      "bytes": 4132,
+      "path": "HANDOFF.md",
+      "sha256": "58f16c65f77988bc6e5a11cbd3858f273f8f7f1ac64122cbc88dacce65ba253c"
+    }
+  ],
+  "productionChanged": false,
+  "pushSafety": {
+    "actionsDispatchRequested": false,
+    "branchIsRunnerJobs": false,
+    "thirdPartyWorkflowManualOnly": true
+  },
+  "reviewEvidence": {
+    "reviewDocument": "offmenu-facts-diagnostic-20261029/INDEPENDENT-FACTS-DIAGNOSTIC-REVIEW.md",
+    "reviewDocumentSha256": "87094bf0209ca2bce6abaa76bb0ade8015ac0608309ba54f6fb0d3c55c71424a",
+    "reviewedBundleSha256": "1ada50fa19089eb80e1153ff64945ab809d0082c8d97ef68fabb3754ae929bd7",
+    "reviewedFactsSourceSha256": "583ba256fb429284f1935f53e3e916fe25500de0afce27cf80bcc4b7a8741f5a",
+    "status": "independent native review complete; reported by coordinator",
+    "testsPassed": 2,
+    "testsRerunForPreservation": false,
+    "testsTotal": 2
+  },
+  "reviewStatusNote": "The original author HANDOFF may predate the later independent review recorded above. No activation or production fix is implied.",
+  "schemaVersion": "offmenu-source-preservation-custody/1",
+  "scope": "reviewed source-only diagnostic; inactive; not a scanner fix",
+  "workflowsUnchanged": {
+    ".github/workflows/foo-runner.yml": "3b487342fc6fac3ec19266e1cbcf6c9d51e1294b",
+    ".github/workflows/third-party-services.yml": "c1643006a1cf375935e4b135339fa2355567b0b0"
+  }
+}

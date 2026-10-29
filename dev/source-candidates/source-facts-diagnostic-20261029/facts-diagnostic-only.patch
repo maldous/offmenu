@@ -1,0 +1,59 @@
+--- a/source/source-barcode-facts-handler.mjs
++++ b/source/source-barcode-facts-handler.mjs
+@@ -51,25 +51,27 @@
+   return parseSourceBarcodeJSON(selected.join(''));
+  }finally{if(!done)void reader.cancel().catch(()=>{});reader.releaseLock();}
+ }
+-async function hydrateOriginal(candidateLookup,request,fetchImpl) {
++async function hydrateOriginal(candidateLookup,request,fetchImpl,diagnostic) {
++ diagnostic.stage='asset-reference';
+  const reference=validateSourceBarcodeReference(candidateLookup.candidates[0],PUBLIC_BASE),a=reference.asset;
+  need(a.bytes<=FACTS_BOUNDS.compressedBytes&&a.packetCount<=FACTS_BOUNDS.packets&&a.path.endsWith('.jsonl.gz'));
+  const url=new URL(a.path,ORIGIN);need(url.origin===ORIGIN&&url.pathname===a.path&&!url.search&&!url.hash&&!url.username&&!url.password);
+  const life=lifetime(request);let response;
+  try {
+-  response=await life.run(()=>fetchImpl(url.href,{method:'GET',redirect:'manual',credentials:'omit',cache:'no-store',
++  diagnostic.stage='asset-fetch';response=await life.run(()=>fetchImpl(url.href,{method:'GET',redirect:'manual',credentials:'omit',cache:'no-store',
+    headers:{Accept:'application/gzip','Accept-Encoding':'identity'},signal:life.signal}));
+-  need(response.status===200&&!response.redirected&&(!response.url||response.url===url.href));
++  diagnostic.stage='asset-response';need(response.status===200&&!response.redirected&&(!response.url||response.url===url.href));
+   need(!response.headers.get('content-encoding')||response.headers.get('content-encoding')==='identity');
+   const declared=response.headers.get('content-length');if(declared!==null)need(/^\d+$/.test(declared)&&Number(declared)===a.bytes);
+-  const bytes=await compressedBytes(response.body,a.bytes,life);need(await life.run(()=>sha(bytes))===a.sha256);
++  diagnostic.stage='asset-bytes';const bytes=await compressedBytes(response.body,a.bytes,life);
++  diagnostic.stage='asset-sha';need(await life.run(()=>sha(bytes))===a.sha256);
+   let offset=0;const input=new ReadableStream({pull(c){if(offset===bytes.length){c.close();return;}
+    const end=Math.min(bytes.length,offset+65536);c.enqueue(bytes.subarray(offset,end));offset=end;}});
+-  const graph=await selectOriginalPacket(input.pipeThrough(new DecompressionStream('gzip')),a,life);
++  diagnostic.stage='packet-stream';const graph=await selectOriginalPacket(input.pipeThrough(new DecompressionStream('gzip')),a,life);
+   const context={query:candidateLookup.query,reference};
+-  const projection=await life.run(()=>projectOriginalPacket(graph,context,life.signal));need(!life.signal.aborted);
++  diagnostic.stage='original-projection';const projection=await life.run(()=>projectOriginalPacket(graph,context,life.signal));need(!life.signal.aborted);
+   return projection;
+- }finally{
++ }catch(error){diagnostic.aborted=life.signal.aborted;throw error;}finally{
+   life.close();if(response?.body&&!response.body.locked)void response.body.cancel().catch(()=>{});
+  }
+ }
+@@ -96,10 +98,18 @@
+   if(base.status!==200)return respond(factsEnvelope(candidateLookup,'index-unavailable'),base);
+   if(candidateLookup.candidateTotal===0)return respond(factsEnvelope(candidateLookup,'source-key-not-found'),base);
+   if(candidateLookup.candidateTotal>1)return respond(factsEnvelope(candidateLookup,'selection-required'),base);
++  const diagnostic={stage:'candidate-page',aborted:false};
+   try {
+    need(candidateLookup.candidateTotal===1&&candidateLookup.candidates.length===1);
+-   const originalFacts=await hydrateOriginal(candidateLookup,request,fetchImpl);
+-   return respond(factsEnvelope(candidateLookup,'verified-original-public-packet',originalFacts),base);
+-  }catch{return respond(factsEnvelope(candidateLookup,'facts-unavailable'),base,503);}
++   const originalFacts=await hydrateOriginal(candidateLookup,request,fetchImpl,diagnostic);
++   diagnostic.stage='facts-response';return respond(factsEnvelope(candidateLookup,'verified-original-public-packet',originalFacts),base);
++  }catch(error){
++   if(typeof onDiagnostic==='function'){
++    const types=new Set(['Error','TypeError','RangeError','AbortError','DataError','OperationError']);
++    try{onDiagnostic(Object.freeze({schema:'offmenu-source-barcode-facts-internal-diagnostic/1',stage:diagnostic.stage,
++     code:diagnostic.aborted?'abort-or-deadline':'facts-stage-failed',errorType:types.has(error?.name)?error.name:'UnknownError'}));}catch{}
++   }
++   return respond(factsEnvelope(candidateLookup,'facts-unavailable'),base,503);
++  }
+  };
+ }

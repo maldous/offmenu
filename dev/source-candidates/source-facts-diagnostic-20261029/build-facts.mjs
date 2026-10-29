@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url),esbuild=require('/home/user/src/offmenu/node_modules/esbuild');
+if(esbuild.version!=='0.25.12')throw Error('esbuild pin');
+const root=new URL('./',import.meta.url).pathname;fs.mkdirSync(root+'build',{recursive:true});
+const result=await esbuild.build({entryPoints:[root+'source/source-barcode-facts-handler.mjs'],outfile:root+'build/source-barcode-handler.bundle.mjs',bundle:true,format:'esm',platform:'browser',target:'es2022',metafile:true,write:true});
+if(Object.values(result.metafile.outputs).some(o=>o.imports.length))throw Error('external import');
+fs.writeFileSync(root+'build/metafile.json',JSON.stringify(result.metafile,null,2)+'\n');
+const bundle=fs.readFileSync(root+'build/source-barcode-handler.bundle.mjs','utf8');
+if(/redirect:\s*["']error["']/.test(bundle))throw Error('browser-only redirect reached Worker bundle');
+console.log(JSON.stringify({esbuild:esbuild.version,inputFiles:Object.keys(result.metafile.inputs).length,externalImports:0,unsupportedRedirectCalls:0,scope:'same-export endpoint facts component only'}));
