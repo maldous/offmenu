@@ -1,0 +1,268 @@
+{
+  "utc": "2026-10-29T03:51:20.817051+00:00",
+  "packets": [
+    {
+      "name": "worker00-foo-native-api-20261023",
+      "originalWorktree": "/home/user/src/offmenu-worktrees/worker00-foo-native-api-20261023",
+      "originalBranch": "feature/foo-native-ownership-api-20261023",
+      "originalHead": "7c0ddcffbfe79a758446d44bba31a0d34cd7c71f",
+      "trackedWipFiles": 2,
+      "files": [
+        {
+          "path": "source/scripts/dispatch-foo-job.py",
+          "sourcePath": "scripts/dispatch-foo-job.py",
+          "bytes": 52245,
+          "sha256": "32e4395632104295aa5eddc03372370d97010ddf48a198072a735ba04310974a",
+          "priorDiscoveryContentPin": true
+        },
+        {
+          "path": "base/scripts/dispatch-foo-job.py",
+          "sourcePath": "scripts/dispatch-foo-job.py",
+          "bytes": 51509,
+          "sha256": "ac6c75aae09b0dd5563ba596dc8a7a408af81d3d1f4d531b864e0272ad376b66",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "source/tests/test_foo_ownership.py",
+          "sourcePath": "tests/test_foo_ownership.py",
+          "bytes": 18531,
+          "sha256": "66094329dee29a9d37be629a5da49dce0af75fa218845d1eab9c601318e3223d",
+          "priorDiscoveryContentPin": true
+        },
+        {
+          "path": "base/tests/test_foo_ownership.py",
+          "sourcePath": "tests/test_foo_ownership.py",
+          "bytes": 13742,
+          "sha256": "c0b0cea0e0e294e01d7ca463dca0143546ff59ca96e2ad9eae037169cfc8b7e4",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "tracked-wip.patch",
+          "bytes": 8000,
+          "sha256": "3adb9731b7b6042617e61f0ad26f69faa779110296cc3edaef7f10fc9c408189"
+        }
+      ],
+      "status": "unreviewed historical WIP source custody; no application integration/activation",
+      "untrackedAndIgnoredMaterial": "preserved in original location, excluded from source packet; metadata/data/config/dependency holds not resolved"
+    },
+    {
+      "name": "worker05-app-3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879",
+      "originalWorktree": "/home/user/src/offmenu-worktrees/worker05-app-3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879",
+      "originalBranch": "codex/worker05-live-dev-20261016",
+      "originalHead": "3eb230d27c6db16fe6369a54b9b908dded274772",
+      "trackedWipFiles": 1,
+      "files": [
+        {
+          "path": "source/extension/popup.js",
+          "sourcePath": "extension/popup.js",
+          "bytes": 81698,
+          "sha256": "30377c496663e947e5af254bab66d5841afc056629f698b49376de16cf017aeb",
+          "priorDiscoveryContentPin": true
+        },
+        {
+          "path": "base/extension/popup.js",
+          "sourcePath": "extension/popup.js",
+          "bytes": 81635,
+          "sha256": "4966fabc3f1ed59a707e46d2e7abeeb743a6d5b5abae882a1897a6169bdb3339",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "tracked-wip.patch",
+          "bytes": 163484,
+          "sha256": "a604c5a2b60ed2d40027e69854c283b82e28ad0a96adf4a220e1f86fccbbeeb5"
+        }
+      ],
+      "status": "unreviewed historical WIP source custody; no application integration/activation",
+      "untrackedAndIgnoredMaterial": "preserved in original location, excluded from source packet; metadata/data/config/dependency holds not resolved"
+    },
+    {
+      "name": "worker05-production-app-3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879",
+      "originalWorktree": "/home/user/src/offmenu-worktrees/worker05-production-app-3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879",
+      "originalBranch": "codex/worker05-production-copy-20261016",
+      "originalHead": "ac2df940d0c485078d4d56d8338a7ec3f4611f17",
+      "trackedWipFiles": 11,
+      "files": [
+        {
+          "path": "source/cloud/handler.mjs",
+          "sourcePath": "cloud/handler.mjs",
+          "bytes": 11899,
+          "sha256": "17f918092646d5a1791fc3595886e32b787c6996983221fe3dfdc0f130ef8a7f",
+          "priorDiscoveryContentPin": true
+        },
+        {
+          "path": "base/cloud/handler.mjs",
+          "sourcePath": "cloud/handler.mjs",
+          "bytes": 9981,
+          "sha256": "135084cff9d4ec6169c03a132e504c101a7d350a2de1a4c9c8077519cd9fdc4e",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "source/extension/popup.js",
+          "sourcePath": "extension/popup.js",
+          "bytes": 23256,
+          "sha256": "f10ce0706b942ac7b4e05ff1d3b8307303ff2adf708630b13953b3e5fe5d40ec",
+          "priorDiscoveryContentPin": true
+        },
+        {
+          "path": "base/extension/popup.js",
+          "sourcePath": "extension/popup.js",
+          "bytes": 23256,
+          "sha256": "843c00666c3aae7c4967c99446664275ea7bf8aa7c2b21b351081dd7c63ca7a0",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "source/public/app.js",
+          "sourcePath": "public/app.js",
+          "bytes": 87338,
+          "sha256": "fc5bcf28eaae4b6905ef278e7def05f9972ae941a72308a7008108980052f240",
+          "priorDiscoveryContentPin": true
+        },
+        {
+          "path": "base/public/app.js",
+          "sourcePath": "public/app.js",
+          "bytes": 77050,
+          "sha256": "b773c0090d259ccc74e1d532b3e8397d17354ccb3d0bdb22a1bfb7254982be15",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "source/public/checkout-model.js",
+          "sourcePath": "public/checkout-model.js",
+          "bytes": 3480,
+          "sha256": "84059f3fbd55a0ee02c3e063e15620f014b397791109a99a6a1f775cc2be7424",
+          "priorDiscoveryContentPin": true
+        },
+        {
+          "path": "base/public/checkout-model.js",
+          "sourcePath": "public/checkout-model.js",
+          "bytes": 3372,
+          "sha256": "8744466e7919ff9d06369816480458ea02556d2025a4ad6349708acde158396b",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "source/public/household-model.js",
+          "sourcePath": "public/household-model.js",
+          "bytes": 7354,
+          "sha256": "58c083f49201545295471ef21ff6b077fcc64e1a8df39d96832fe290feeae851",
+          "priorDiscoveryContentPin": true
+        },
+        {
+          "path": "base/public/household-model.js",
+          "sourcePath": "public/household-model.js",
+          "bytes": 7298,
+          "sha256": "4263d2d566f39486c25486d96a34820490bbd259f8bdcea9c08f8390800d4b48",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "source/public/index.html",
+          "sourcePath": "public/index.html",
+          "bytes": 56526,
+          "sha256": "7627414b7022111bfd1826a529c9890137909f86143856e13953dc40508c28e3",
+          "priorDiscoveryContentPin": false
+        },
+        {
+          "path": "base/public/index.html",
+          "sourcePath": "public/index.html",
+          "bytes": 56291,
+          "sha256": "ea0ff3f0fdb17fa81018695c019724f6dd7da6eeccd079c9ee3ce2ff0c8b1114",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "source/public/model.js",
+          "sourcePath": "public/model.js",
+          "bytes": 6402,
+          "sha256": "ded1e96a97f2111f31f6f4ff07ee7b4cdb434067d4d61daf126199418161c3b9",
+          "priorDiscoveryContentPin": true
+        },
+        {
+          "path": "base/public/model.js",
+          "sourcePath": "public/model.js",
+          "bytes": 4391,
+          "sha256": "0e0009262d19eddd1db13ff7fdd18fb235ec9c30ef6b10d8f19cdaa604475b7d",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "source/public/scanner-model.js",
+          "sourcePath": "public/scanner-model.js",
+          "bytes": 3559,
+          "sha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228",
+          "priorDiscoveryContentPin": true
+        },
+        {
+          "path": "base/public/scanner-model.js",
+          "sourcePath": "public/scanner-model.js",
+          "bytes": 3498,
+          "sha256": "df11379546c78c531bcd69574236fba89bd6446edae58ff3ed79bba3d99f49c1",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "source/public/scanner-ui.js",
+          "sourcePath": "public/scanner-ui.js",
+          "bytes": 15813,
+          "sha256": "4b8630a793ebde15694329b88b20ec92130ec2f3bd539fff33f4b5cceffc6585",
+          "priorDiscoveryContentPin": true
+        },
+        {
+          "path": "base/public/scanner-ui.js",
+          "sourcePath": "public/scanner-ui.js",
+          "bytes": 14660,
+          "sha256": "8ff37f9bf987cf762d0f13455241c697096963b3de4130124c40f1c3c189e09c",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "source/public/style.css",
+          "sourcePath": "public/style.css",
+          "bytes": 42006,
+          "sha256": "58a9a580e1058fca5f2dc9879c016d08cb3ffa65cf9a6c0943e1fdeea43d2d70",
+          "priorDiscoveryContentPin": false
+        },
+        {
+          "path": "base/public/style.css",
+          "sourcePath": "public/style.css",
+          "bytes": 41923,
+          "sha256": "131f42752f8ce900f0b55a7bbe7b65849dd46aa91eb461cf20a117ecd1b89848",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "source/scripts/build.mjs",
+          "sourcePath": "scripts/build.mjs",
+          "bytes": 5077,
+          "sha256": "8b6331073f7cce7be3ee766ddf52195f37005e7b509fa3f48b1fcc477c0148e8",
+          "priorDiscoveryContentPin": true
+        },
+        {
+          "path": "base/scripts/build.mjs",
+          "sourcePath": "scripts/build.mjs",
+          "bytes": 2181,
+          "sha256": "143a5e1dcaff0168051f67321027b1ca65975db1134d0a148b3ea83cde1ef9a1",
+          "priorDiscoveryContentPin": null
+        },
+        {
+          "path": "tracked-wip.patch",
+          "bytes": 209638,
+          "sha256": "ae0cf4a42ca7b16f7bcd74c2316533aa74fcb477446b38d5915126cc7925de8c"
+        }
+      ],
+      "status": "unreviewed historical WIP source custody; no application integration/activation",
+      "untrackedAndIgnoredMaterial": "preserved in original location, excluded from source packet; metadata/data/config/dependency holds not resolved"
+    }
+  ],
+  "base": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+  "newlyEstablishedSourcePins": [
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker05-production-app-3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879/public/index.html",
+      "bytes": 56526,
+      "sha256": "7627414b7022111bfd1826a529c9890137909f86143856e13953dc40508c28e3",
+      "basis": "frozen tracked status and same HEAD; current source bytes newly pinned, not a previous frozen-byte verification"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker05-production-app-3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879/public/style.css",
+      "bytes": 42006,
+      "sha256": "58a9a580e1058fca5f2dc9879c016d08cb3ffa65cf9a6c0943e1fdeea43d2d70",
+      "basis": "frozen tracked status and same HEAD; current source bytes newly pinned, not a previous frozen-byte verification"
+    }
+  ],
+  "priorDiscoveryContentPinsMatched": 12,
+  "testsRun": false,
+  "appFilesModified": false,
+  "scope": "14 tracked source edits with preimages and source-only patches; 12 frozen hashes matched, two frozen status-only paths newly byte-pinned; no untracked export"
+}
