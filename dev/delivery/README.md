@@ -109,3 +109,39 @@ raises failed/blocked outcomes so Windmill cannot interpret transport success as
 accepted delivery. The local writer lock supplies admission without depending on
 Windmill enterprise concurrency features. Existing platform job supervision and
 storage remain separate; this runner does not replace their capacity/backup claims.
+
+## Existing Windmill bridge and separate execution identity
+
+The verified deployed entrypoint is `u/admin/foo_jobs_20261027` in workspace
+`offmenu`. It runs reviewed commands through the existing `offmenu-wm` SSH jail,
+where the source is `/offmenu`. Use `mode=write` for graph checkpoint creation,
+even when checks read source. Its service account cannot write the developer's
+private `.delivery/`; do not loosen that directory's permissions.
+
+Create a service-owned source workspace under the already approved data mount.
+The source repo is explicitly trusted for this clone invocation only; no global
+Git trust setting or access grant is changed. `--no-local` and the explicit
+upload-pack command propagate that narrow trust to the local Git server process.
+Use a new chosen workspace/task ID per reviewed immutable source version and
+reconcile an uncertain prior job before creating another:
+
+```sh
+git clone --no-local --upload-pack='git -c safe.directory=/offmenu/.git -c safe.directory=/offmenu upload-pack' --single-branch --branch feature/langgraph-delivery-standardization /offmenu /offmenu/data/.offmenu-platform/workspaces/SELECTED-WORKSPACE
+```
+
+Inside that new clone, use the existing project interpreter read-only:
+
+```sh
+/offmenu/.venv-delivery/bin/python -m offmenu.delivery prepare --task-id SELECTED-TASK --owner offmenu-windmill-writer
+```
+
+```sh
+/offmenu/.venv-delivery/bin/python -m offmenu.delivery run .delivery/SELECTED-TASK.json --pause-after standards
+```
+
+A later Windmill job runs the same `run` command without `--pause-after`. Task,
+checkpoint and acceptance IDs remain stable across those jobs. Inspect graph
+acceptance, not merely the supervisor's exit0. Reentry revalidates output hashes
+without rerunning successful checks. Keep source checkouts and runtime state
+owned by their execution identity; never reuse another actor's private task root
+or clear permissions/markers to force admission.

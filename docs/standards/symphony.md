@@ -274,3 +274,10 @@ same-auth-path symlink, no config copying, cleanup and preservation of the sourc
 files. A second regression test distinguishes a native failure from normal turn
 completion. Eight focused tests pass. The native coding rerun remains a separate
 execution receipt; these tests do not claim a coding session completed.
+
+A live OffMenu-only session subsequently created11 meaningful CLI integration
+tests. Its finite180-second supervisor deadline stopped it after a normal turn
+while native continuation was still active; this was reported as unaccepted,
+not green completion. The integration writer independently reviewed and ran
+all11 tests successfully. The launcher now permits one coding turn so native
+continuation does not duplicate a task after its candidate is produced.

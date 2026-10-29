@@ -13,7 +13,9 @@
     "test:auth": "node --test tests/web/auth-principal.test.mjs tests/edge/better-auth.test.mjs",
     "validate:dev": "node scripts/validate.mjs dev",
     "validate:release": "node scripts/validate.mjs release",
-    "check:repository": "python3 -m offmenu.delivery check"
+    "check:repository": "python3 -m offmenu.delivery check",
+    "delivery:bootstrap": "python3 scripts/bootstrap_delivery.py",
+    "test:delivery": ".venv-delivery/bin/python -m unittest discover -s tests/delivery -v"
   },
   "dependencies": {
     "@netlify/identity": "^2.0.0",

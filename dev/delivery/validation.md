@@ -75,3 +75,37 @@ The preceding same-ID status established not_found before submission.
 An isolated transient systemd user process injected the existing tracker
 credential using LoadCredential and verified read access to the exact OffMenu
 project UUID. No credential was printed or persisted, and CIX was unchanged.
+
+## Live graph execution through Windmill
+
+The developer-private checkpoint directory correctly denied the service actor's
+first graph bootstrap. A source clone initially failed Git's ownership guard;
+client-only -c settings do not propagate through local clone's server boundary.
+No checkpoint or coding work was started by those failures. The final selected
+workspace uses an explicit narrowly trusted upload-pack command, a service-owned
+checkout and its private graph state. No permissions or global Git trust changed.
+
+Windmill prepare/pause run:01a1868c-d9d5-1845-dbc2-953de6366d6c.
+Resume/reentry run:01a1868d-445c-2bdd-ba78-786f8e3049df. Both admitted,
+succeeded, exit0, child_tree_gone=true, reconcile_required=false.
+Graph task windmill-layout-20261029-v2 accepted source
+1cc9011a68f0a865c29dfef46dbf123ee9ee783e under standard1.1.0,
+verified four declared outputs, and recorded exactly one check start/attempt1.
+Acceptance receipt SHA256:
+8aaaebdf3f18d0831966bc0101322b38051c49e748603f204af53cfc7d7ab908.
+The private receipt remains in the approved runtime mount.
+
+## Native Symphony coding output
+
+The first selected attempt failed before thread/start because inherited Codex
+home configuration blocked initialize. An exact-command initialize-only A/B
+reproduced the failure and proved isolated OffMenu configuration initializes.
+The fix references the existing authentication path through a private ephemeral
+symlink, without reading/copying credentials or inheriting workstation plugins.
+
+The second session passed thread/start and produced tests/delivery/test_cli.py:
+11 real offline CLI lifecycle tests. Root review and an independent rerun passed
+all11 in7.1seconds. The finite180-second supervisor deadline stopped the native
+continuation, so the process receipt correctly stayed unaccepted. Source output
+acceptance is separate and was established by review and behavioral tests.
+One-turn admission is now selected to prevent redundant continuation.
