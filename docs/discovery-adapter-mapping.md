@@ -35,7 +35,7 @@ Ledger: 1,701,843 bytes, SHA-256
 `2f3c917a6463153824b8c807b41707870e7f763c65b5ff7957ec4988cd96bfcf`.
 Matrix: 133,210 bytes, SHA-256
 `894e05f09744c76b790f8e5f159141bed6c308a9af3d90c3c82aa79105cf5ea8`.
-Historical mapping evidence remains `corpus/common-source-mappings.json`, Git blob
+Historical mapping evidence remains `contracts/corpus/common-source-mappings.json`, Git blob
 `858c4de5f6e27deb049ee8bc27567a40461bad49`, as documented by existing coverage.
 
 Supported formats are the reviewed local contracts: exact national workbooks or

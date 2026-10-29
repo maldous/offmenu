@@ -10,7 +10,7 @@ from unittest.mock import patch
 
 from offmenu.refresh import survey
 ROOT=Path(__file__).resolve().parents[1]
-spec=importlib.util.spec_from_file_location('survey_dispatch',ROOT/'scripts/dispatch-foo-job.py')
+spec=importlib.util.spec_from_file_location('survey_dispatch',ROOT/'tools/operations/dispatch_foo_job.py')
 jobs=importlib.util.module_from_spec(spec);spec.loader.exec_module(jobs)
 
 

@@ -1,9 +1,9 @@
 import {parse} from 'acorn';
 import {readFile,writeFile,readdir} from 'node:fs/promises';
-import {ARABIC} from '../public/locales/ar.js';
+import {ARABIC} from '../apps/web/src/locales/ar.js';
 
 const messages = new Map();
-const arabicTree=parse(await readFile('public/locales/ar.js','utf8'),{ecmaVersion:'latest',sourceType:'module'});
+const arabicTree=parse(await readFile('apps/web/src/locales/ar.js','utf8'),{ecmaVersion:'latest',sourceType:'module'});
 const catalogueKeys=new Set();
 for(const entry of arabicTree.body[0].declaration.declarations[0].init.arguments[0].properties){
   if(catalogueKeys.has(entry.key.value))throw Error('Duplicate Arabic message key: '+entry.key.value);
@@ -11,10 +11,10 @@ for(const entry of arabicTree.body[0].declaration.declarations[0].init.arguments
 }
 const decode = value => value.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
 const add = (key, file) => { if (key?.trim()) { if (!messages.has(key)) messages.set(key,new Set()); messages.get(key).add(file); } };
-const files = (await readdir('public')).filter(file => file.endsWith('.js') && !['i18n.js','content-locale.js','scanner-worker.js'].includes(file)).map(file => 'public/'+file);
-files.push('public/integration-owner03.mjs');
-files.push('extension/popup-source.js');
-files.push(...(await readdir('cloud')).filter(file=>file.endsWith('.mjs')&&file!=='generated.mjs').map(file=>'cloud/'+file));
+const files = (await readdir('apps/web/src')).filter(file => file.endsWith('.js') && !['i18n.js','content-locale.js','scanner-worker.js'].includes(file)).map(file => 'apps/web/src/'+file);
+files.push('apps/web/src/integration-owner03.mjs');
+files.push('apps/retailer-extension/popup-source.js');
+files.push(...(await readdir('apps/web/server')).filter(file=>file.endsWith('.mjs')&&file!=='generated.mjs').map(file=>'apps/web/server/'+file));
 for (const file of files) {
   const source = await readFile(file,'utf8');
   const tree = parse(source,{ecmaVersion:'latest',sourceType:'module'});
@@ -34,11 +34,11 @@ for (const file of files) {
   }
   walk(tree);
 }
-for (const file of ['public/index.html','public/data-workspace.html','extension/popup.html','netlify-return/index.html']) {
+for (const file of ['apps/web/assets/index.html','apps/web/assets/data-workspace.html','apps/retailer-extension/popup.html','deploy/auth-return/index.html']) {
   const source = await readFile(file,'utf8');
   for (const match of source.matchAll(/data-i18n(?:-[\w-]+)?="([^"]*)"/g)) add(decode(match[1]),file);
 }
-for (const key of Object.keys(ARABIC)) add(key,'public/locales/ar.js');
+for (const key of Object.keys(ARABIC)) add(key,'apps/web/src/locales/ar.js');
 const keys = [...messages.keys()].sort();
 const english = Object.fromEntries(keys.map(key => [key,key]));
 const placeholders = text => [...String(text).matchAll(/\{(\w+)\}/g)].map(match => match[1]).sort().join(',');
@@ -52,7 +52,7 @@ const missing = keys.filter(key => !Object.hasOwn(ARABIC,key));
 const report = {schema:'offmenu-ui-catalogue/1',sourceLanguage:'en',messages:keys.length,arabicTranslated:keys.length-missing.length,
   arabicMissing:missing.length,arabicComplete:missing.length===0,
   entries:Object.fromEntries(keys.map(key => [key,{sources:[...messages.get(key)].sort(),arabic:!missing.includes(key)}]))};
-const outputs = [['public/locales/en.json',JSON.stringify(english,null,2)+'\n'],['docs/i18n-coverage.json',JSON.stringify(report,null,2)+'\n']];
+const outputs = [['apps/web/assets/locales/en.json',JSON.stringify(english,null,2)+'\n'],['docs/i18n-coverage.json',JSON.stringify(report,null,2)+'\n']];
 if (process.argv.includes('--check')) {
   for (const [path,expected] of outputs) if (await readFile(path,'utf8') !== expected) throw Error('Translation inventory changed. Run npm run i18n:extract: '+path);
 } else for (const [path,content] of outputs) await writeFile(path,content);

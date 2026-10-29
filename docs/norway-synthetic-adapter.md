@@ -10,7 +10,7 @@ production activation in this change.
 From the repository root, with Python and no extra runtime dependencies:
 
 ```sh
-python3 -B scripts/run-norway-synthetic.py --output /tmp/offmenu-norway-synthetic
+python3 -B tools/data-processing/run_norway_synthetic.py --output /tmp/offmenu-norway-synthetic
 python3 -B -m unittest discover -s tests -p 'test_norway*.py' -v
 ```
 
@@ -24,7 +24,7 @@ rejected by default. To explicitly test the same pinned synthetic data and
 implementation on your current runtime:
 
 ```sh
-python3 -B scripts/run-norway-synthetic.py \
+python3 -B tools/data-processing/run_norway_synthetic.py \
   --repin-synthetic-runtime --output /tmp/offmenu-norway-synthetic-current
 ```
 

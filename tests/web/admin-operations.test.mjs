@@ -2,11 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
-import {adminOperationsRoutes} from '../../cloud/admin-operations.mjs';
+import {adminOperationsRoutes} from '../../apps/web/server/admin-operations.mjs';
 
 const database=new DatabaseSync(':memory:');
-database.exec(readFileSync(new URL('../../cloud/catalogue-schema.sql',import.meta.url),'utf8'));
-database.exec(readFileSync(new URL('../../cloud/admin-operations-schema.sql',import.meta.url),'utf8'));
+database.exec(readFileSync(new URL('../../apps/web/server/catalogue-schema.sql',import.meta.url),'utf8'));
+database.exec(readFileSync(new URL('../../apps/web/server/admin-operations-schema.sql',import.meta.url),'utf8'));
 const queries=[];
 let beforeBatch=null;
 const DB={prepare(sql){queries.push(sql);const make=args=>({async first(){return database.prepare(sql).get(...args)||null;},async all(){return {results:database.prepare(sql).all(...args)};},async run(){return database.prepare(sql).run(...args);},_run(){const statement=database.prepare(sql);if(/^\s*(UPDATE|INSERT).*RETURNING/i.test(sql))return {results:statement.all(...args)};const meta=statement.run(...args);return {results:[],meta:{changes:meta.changes}};}});return {...make([]),bind(...args){return make(args);}}},async batch(statements){beforeBatch?.();beforeBatch=null;return statements.map(statement=>statement._run());}};

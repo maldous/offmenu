@@ -2,7 +2,7 @@ import importlib.util
 import unittest
 from pathlib import Path
 
-spec = importlib.util.spec_from_file_location('overture', Path(__file__).parents[1] / 'scripts/collect-overture.py')
+spec = importlib.util.spec_from_file_location('overture', Path(__file__).parents[1] / 'tools/data-processing/collect_overture.py')
 collector = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(collector)
 

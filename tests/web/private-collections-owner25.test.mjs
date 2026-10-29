@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createPrivateCollections} from '../../public/private-collections-owner25.mjs';
-import {kitchenProjection} from '../../public/sync-model.js';
+import {createPrivateCollections} from '../../apps/web/src/private-collections-owner25.mjs';
+import {kitchenProjection} from '../../apps/web/src/sync-model.js';
 const reference={sourceId:'manual-source',recipeId:'recipe-one',version:'v1',rightsVersion:'policy1',sourceUrl:'https://example.test/recipe'};
 function fixture() {
   let state={version:1,accountId:'a',revision:0,collections:[]},live=true,sourceStatus='available',copyAllowed=true,authBarrier,commitBarrier,lost=false,afterLoad,resolverPatch={},afterResolve,beforeAuth,commitNull=false;

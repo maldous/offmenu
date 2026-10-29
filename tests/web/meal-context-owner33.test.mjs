@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {emptyMealContext, validateMealContext, transitionMealContext, mealContextAt} from '../../public/meal-context-model.js';
+import {emptyMealContext, validateMealContext, transitionMealContext, mealContextAt} from '../../apps/web/src/meal-context-model.js';
 const source = {label: 'Original user declaration — العربية', reference: null};
 const declaration = (id, kind, extra = {}) => ({id, kind, label: '  Original label  ', source, qualifiers: ['unknown suitability', 'as stated'], status: 'declared', ...extra});
 const caller = {accountId: 'a', actorId: 'user-a', permit: () => ({allowed: true})};

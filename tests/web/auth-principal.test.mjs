@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {toOffMenuPrincipal, getOffMenuPrincipal} from '../../cloud/auth-principal.mjs';
-import {createOffMenuAuth} from '../../cloud/auth.mjs';
+import {toOffMenuPrincipal, getOffMenuPrincipal} from '../../apps/web/server/auth-principal.mjs';
+import {createOffMenuAuth} from '../../apps/web/server/auth.mjs';
 
 const user = {id: 'Original-Subject_01', email: 'alice@example.test', emailVerified: true,
   name: 'Alice', appRoles: '["offmenu-admin"]', password: 'must-not-leak',

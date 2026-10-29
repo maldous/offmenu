@@ -1,7 +1,7 @@
 // Synthetic DOM harness only: no browser, backend export, real identity or crypto qualification.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {setupOwnedBackupAccount} from '../../public/owned-backup-account-ui.js';
+import {setupOwnedBackupAccount} from '../../apps/web/src/owned-backup-account-ui.js';
 const metadata=()=>({packageId:'synthetic-package',recoveryRef:'synthetic-recovery',keyReference:{keyRef:'synthetic-reference',keyVersion:1}});
 const sealed=()=>({schemaVersion:'offmenu-private-portable-package/1',packageId:'synthetic-package',kind:'owned-backup',source:{namespace:'synthetic-instance',schemaVersion:'offmenu-household-domain/1'},identity:{ownerUserId:'synthetic-owner',issuer:'https://synthetic.invalid/issuer',subject:'synthetic-subject'},recipient:{ownerUserId:'synthetic-owner',issuer:'https://synthetic.invalid/issuer',subject:'synthetic-subject'},createdAt:'2026-10-26T00:00:00.000Z',scope:{fields:[],records:[]},consent:{id:'synthetic-consent',revision:1},protection:{recoveryRef:'synthetic-recovery'},manifestDigest:'a'.repeat(64),checksum:'b'.repeat(64),envelope:{version:1,algorithm:'AES-256-GCM',custody:'server-envelope',keyRef:'synthetic-reference',keyVersion:1,nonce:'AAAAAAAAAAAAAAAA',ciphertext:'AAAAAAAAAAAAAAAAAAAAAAAA'}});
 const response=(value=sealed(),options={})=>Response.json(value,{status:200,headers:{'Content-Disposition':'attachment; filename="offmenu-owned-backup.json"',...options.headers},...options});

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { analyzeWaste } from '../../public/waste-analysis-model.js';
+import { analyzeWaste } from '../../apps/web/src/waste-analysis-model.js';
 const row = { accountId:'kitchen-a', receiptId:'receipt-1', sourceId:'lot-1', quantity:125, unit:'g', measured:true, reason:'oversized-pack', season:'spring', costSnapshot:{sourceId:'lot-1', quantity:500, unit:'g', amount:4, currency:'AUD'}, packOptions:[{sourceId:'offer-1', quantity:250, unit:'g', season:'spring'}] };
 const run = records => analyzeWaste(records, {accountId:'kitchen-a'});
 test('partial measured discard values proportionally and retains missing cost coverage', () => {

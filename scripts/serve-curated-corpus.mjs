@@ -1,7 +1,7 @@
 import {readFile} from 'node:fs/promises';
 import {resolve,sep} from 'node:path';
 import {createServer} from 'node:http';
-import {createEngine} from '../corpus/engine.mjs';
+import {createEngine} from '../tools/corpus/engine.mjs';
 const [release,port='8891']=process.argv.slice(2);if(!release)throw Error('Usage: node scripts/serve-curated-corpus.mjs release-directory [port]');
 const root=resolve(release,'blobs');
 const engine=await createEngine(async key=>{const file=resolve(root,key);if(!file.startsWith(root+sep))throw Error('Invalid blob path');try{return await readFile(file);}catch(e){if(e.code==='ENOENT')return null;throw e;}});

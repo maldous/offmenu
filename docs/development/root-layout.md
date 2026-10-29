@@ -1,45 +1,54 @@
 # Repository root disposition
 
-The root is a mixed Python and JavaScript workspace. Its directories have
-separate runtime, packaging, provenance, and deployment contracts. A smaller
-root should come from grouping related work with verified consumers, rather
-than relocating production assets or private data without their owners.
+Repository standard 2.0.0 replaces the transitional root classification. The
+reasoning and compatibility obligations are in [ADR 0003](../adr/0003-final-repository-layout.md).
 
-The 2026-10-29 changes consolidate web, edge, and compatibility tests under
-`tests/`, and selected source-processing tools under `tools/source-processing/`.
-Their nine guides live under `docs/source-processing/` using lower-case kebab
-filenames. Current callers were updated. Historical custody and pinned snapshot
-paths remain descriptions of their original revisions.
+```text
+src/                 offmenu, offmenu_ciqual, offmenu_norway installed packages
+apps/                web/{src,assets,server}, retailer-extension
+deploy/              netlify/public, auth-return
+integrations/        staged/{auth,private-product-lookup}, candidates
+contracts/           corpus, schemas
+config/              reviewed configuration and source-bindings
+tools/               delivery, data-processing, operations, corpus,
+                     diagnostics/public-field, source-processing
+scripts/             build, bootstrap and validation entrypoints
+tests/               Python suites, web, edge, compat, support/wiremock
+docs/                current guides, standards, ADRs, research and dated evidence
+examples/            authored offline examples
+archive/             immutable release-custody and migrations
+```
 
-| Root paths | Classification and disposition |
+Keep root `AGENTS.md`, `README.md`, `pyproject.toml`, `MANIFEST.in`, `package.json`,
+`package-lock.json`, `netlify.toml`, `repository-standard.json`, `.editorconfig`,
+`.gitignore`, `.github/` and `.agents/`: these are conventional tool entrypoints.
+This is one mixed application repository with explicit internal responsibilities,
+not a collection of new independently versioned packages.
+
+| Local category | Disposition |
 | --- | --- |
-| `offmenu/`, `offmenu_ciqual/`, `offmenu_norway/` | Python packages found by the existing setuptools manifest. Keep import paths and package resource contracts stable. A future `src/` migration requires wheel/install/import validation and adapter-lock version decisions. |
-| `public/`, `cloud/`, `extension/` | Authored browser, Worker, and extension source. Keep current bundler and deployment entrypoints stable. |
-| `netlify/`, `netlify-return/`, `netlify.toml` | Distinct static hosting and authentication return surfaces. Their names are deployment contracts; any grouping needs routing/build checks. |
-| `auth-source-preparation/`, `private-product-lookup/`, `dev/` | Retained integration seams and unfinished work with separate acceptance. Keep their boundaries; moving them is not permission to integrate or activate them. New unrelated tools belong in `tools/` or `scripts/`. |
-| `tools/` | Cohesive developer/source tools, their schemas and seam-local tests. Selected source processing is grouped here; developer guides live in `docs/`. |
-| `scripts/` | Repository command entrypoints and bounded build/validation helpers. Historical public CLI filenames may use kebab case; importable Python modules use snake case. |
-| `tests/`, `examples/` | Runtime-specific tests and authored examples. Pinned fixture internals retain their exact bytes and local imports. |
-| `corpus/`, `bindings/`, `schemas/`, `config/` | Authored data contracts, mapping/policy definitions, and reviewed configuration. These are source, not bulk datasets. Avoid combining them without checking schema IDs and consumer paths. |
-| `docs/`, `research/`, `migration/` | Human guides, source/provenance material, and historical migration evidence including a Git bundle. Their retention is not current runtime acceptance. |
-| `data/`, `output/`, `.delivery/` | Ignored local data and operational state. Preserve selected-input/configuration/evidence holds; do not publish them through a source-only commit. |
-| `dist/`, `cloud/generated.mjs`, `netlify-return/i18n.js`, `node_modules/`, `offmenu.egg-info/` | Ignored generated build or installed dependency state. Their local presence is not source duplication. Rebuild or dependency-install contracts own their lifecycle. |
+| `node_modules/`, `dist/`, `build/`, virtual environments, package metadata and caches | Ignored generated/dependency state. Commands regenerate it; it is never source acceptance. |
+| `data/`, `output/`, `.delivery/` | Existing private mounts/output/checkpoints. Preserve access restrictions and operational consumers. No raw data or receipts enter Git. |
+| Existing private tool directories | Retain their ignored tool-owned state; no speculative cleanup of active consumers. |
+| 49 exact held `scripts/windmill/` files | Preserve paths for the existing bridge. They remain untracked and individually enumerated in the standard's runtime holds. |
+| Retired generated roots and loose private `knowledge.md` | Recoverably relocate to ignored `.cache/retired-layout/`; private restore journal records original and retained paths. |
+| Dated custody/imported names | Exact explicit naming exceptions, with reasons. The migration map distinguishes historic paths from current physical locations. |
 
-## Naming baseline classification
+[Final-layout migration map](../standards/layout-migration-v2.json) records every
+tracked move from the accepted base. Historical evidence is not rewritten to
+claim the new paths existed at its old revision. Current usage is documented in
+[Python layout](python-layout.md), [web layout](web-layout.md) and
+[data/tool layout](data-tool-layout.md).
 
-Policy 1.0.0 recorded 137 exceptions before the additional source-tool migration.
-That baseline contains these distinct categories:
+Validate encoded structure with the installed environment:
 
-| Count | Category | Disposition |
-| ---: | --- | --- |
-| 9 | Upper-case `manual-action/*.md` guides | Migrated to lower-case kebab names under `docs/source-processing/`. |
-| 71 | Python command filenames: 67 under `scripts/`, two under `cloud/`, one under `dev/`, one under `private-product-lookup/` | Existing CLI path contracts; allow by declared entrypoint role or migrate with consumer and source-pin evidence. Do not rename every command solely to match importable-module conventions. |
-| 52 | Provenance and pinned names: 38 historical/custody docs, nine research registers/reports, five upstream/pinned fixture names | Keep exact names and hashes, including source workbook and candidate `A`/`B` names. These are evidence fidelity requirements. |
-| 4 | Private Python module names beginning `_` under `offmenu/` | Conventional Python names; the naming policy should recognize private modules. |
-| 1 | `netlify-return/_headers` | Hosting framework filename contract. |
+```sh
+.venv-delivery/bin/python -m offmenu.delivery discover
+.venv-delivery/bin/python -m offmenu.delivery check
+.venv-delivery/bin/python scripts/check_final_layout.py
+```
 
-Standard 1.1 recognizes the five conventional private/framework names directly, leaving 123 exact exceptions: 71 command contracts and 52 evidence identities. Every retained exception has a reason in the machine-readable policy. They are not a single rename backlog.
-New source and guides follow the versioned standards; changing a legacy path
-requires its actual references and applicable hash, build, packaging, and
-runtime contracts to be checked. Standards changes use a new policy version
-and ADR, rather than silently blessing new exceptions.
+These checks verify classification/names and required architecture. Installed
+wheel resources, web imports/build, targeted behavior checks and graph accepted
+output hashes establish the changed behavior. Full application or production
+acceptance remains separate.

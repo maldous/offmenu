@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {validateState} from '../../cloud/state.mjs';
-import {matchMeals,normalize} from '../../public/model.js';
+import {validateState} from '../../apps/web/server/state.mjs';
+import {matchMeals,normalize} from '../../apps/web/src/model.js';
 const state=()=>({inventory:[],products:{},recipes:[],selections:[],profile:{country:'AU',units:'metric',servings:2}});
 test('profile and barcode cache retained',()=>assert.deepEqual(validateState(state()),state()));
 test('invalid country rejected',()=>assert.throws(()=>validateState({...state(),profile:{country:'Australia',servings:2}})));

@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-SCRIPT = Path(__file__).resolve().parents[1] / 'scripts/worker63_staging_bindings.py'
+SCRIPT = Path(__file__).resolve().parents[1] / 'tools/data-processing/worker63_staging_bindings.py'
 spec = importlib.util.spec_from_file_location('worker63_io', SCRIPT)
 m = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(m)

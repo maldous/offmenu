@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {resolveNamedReference} from '../../cloud/named-reference-owner22.mjs';
-import {calculateBasket} from '../../public/basket-model.js';
+import {resolveNamedReference} from '../../apps/web/server/named-reference-owner22.mjs';
+import {calculateBasket} from '../../apps/web/src/basket-model.js';
 
 test('null and non-object input is withheld before invoking owner dependencies', async () => {
   let calls = 0;

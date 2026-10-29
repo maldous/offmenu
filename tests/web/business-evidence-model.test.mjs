@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {ownershipPath, parseIdentifier} from '../../public/evidence-model.js';
-import {adaptBusinessEvidence, businessOwnershipPath} from '../../public/business-evidence-model.js';
+import {ownershipPath, parseIdentifier} from '../../apps/web/src/evidence-model.js';
+import {adaptBusinessEvidence, businessOwnershipPath} from '../../apps/web/src/business-evidence-model.js';
 
 const now = Date.parse('2026-10-14T00:00:00Z');
 const entities = [

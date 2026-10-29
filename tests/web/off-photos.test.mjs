@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {createOffPhotoRoutes} from '../../cloud/off-photos.mjs';
-import {createOffMenuHandler} from '../../cloud/handler.mjs';
-import {OFF_PHOTOS,selectedPublisherPhotos} from '../../public/off-photo-catalogue.js';
-import {selectProductVisual} from '../../public/product-visual-selector.js';
+import {createOffPhotoRoutes} from '../../apps/web/server/off-photos.mjs';
+import {createOffMenuHandler} from '../../apps/web/server/handler.mjs';
+import {OFF_PHOTOS,selectedPublisherPhotos} from '../../apps/web/src/off-photo-catalogue.js';
+import {selectProductVisual} from '../../apps/web/src/product-visual-selector.js';
 import {photoFixture} from './fixtures/off-photos/context.mjs';
 
 const jpeg=new Uint8Array([255,216,255,224,0,0,255,217]);
@@ -60,7 +60,7 @@ test('exact current source observation binds the separately observed photo, with
 test('actual handler mounts the fixed image route and preserves exact existing CSP source bytes',async()=>{
   const handler=createOffMenuHandler({photoFetch:async()=>image()});
   assert.equal((await handler.fetch(request(),{},{})).status,200);
-  const source=await readFile(new URL('../../cloud/handler.mjs',import.meta.url),'utf8');
+  const source=await readFile(new URL('../../apps/web/server/handler.mjs',import.meta.url),'utf8');
   assert.match(source,/img-src 'self' blob:; media-src 'self' blob:; connect-src 'self' https:\/\/offmenu-corpus.netlify.app;/);
   assert.equal(source.includes("img-src 'self' blob: https://images.openfoodfacts.org"),false);
 });

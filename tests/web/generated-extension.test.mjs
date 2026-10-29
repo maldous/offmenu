@@ -11,9 +11,9 @@ import {checkGeneratedExtension, main} from '../../scripts/check-generated-exten
 async function fixture(t) {
   const root = await mkdtemp(join(tmpdir(), 'offmenu generated extension '));
   t.after(() => rm(root, {recursive: true, force: true}));
-  await mkdir(join(root, 'extension'));
-  await writeFile(join(root, 'extension/popup-source.js'), "import {message} from './message.js'; console.log(message);\n");
-  await writeFile(join(root, 'extension/message.js'), "export const message = 'current';\n");
+  await mkdir(join(root, 'apps/retailer-extension'), {recursive:true});
+  await writeFile(join(root, 'apps/retailer-extension/popup-source.js'), "import {message} from './message.js'; console.log(message);\n");
+  await writeFile(join(root, 'apps/retailer-extension/message.js'), "export const message = 'current';\n");
   return root;
 }
 
@@ -29,7 +29,7 @@ function reporter() {
 
 test('application build and generated-file check share the original extension options', async () => {
   assert.deepEqual(extensionBuildOptions, {
-    entryPoints: ['extension/popup-source.js'], bundle: true, minify: true, outfile: 'extension/popup.js',
+    entryPoints: ['apps/retailer-extension/popup-source.js'], bundle: true, minify: true, outfile: 'apps/retailer-extension/popup.js',
   });
   const source = await readFile(new URL('../../scripts/build.mjs', import.meta.url), 'utf8');
   assert.match(source, /await build\(extensionBuildOptions\)/);
@@ -51,7 +51,7 @@ test('current output is verified byte-for-byte without changing file metadata', 
 
 test('changed transitive input reports drift and leaves committed bytes untouched', async t => {
   const root = await fixture(t), bytes = await generate(root);
-  await writeFile(join(root, 'extension/message.js'), "export const message = 'changed';\n");
+  await writeFile(join(root, 'apps/retailer-extension/message.js'), "export const message = 'changed';\n");
   const result = await checkGeneratedExtension(root);
   assert.equal(result.status, 'drift');
   assert.notEqual(result.generated.sha256, result.committed.sha256);
@@ -60,11 +60,11 @@ test('changed transitive input reports drift and leaves committed bytes untouche
 
 test('missing generated file is reported and is not recreated', async t => {
   const root = await fixture(t);
-  const before = await readdir(join(root, 'extension'));
+  const before = await readdir(join(root, 'apps/retailer-extension'));
   const result = await checkGeneratedExtension(root);
   assert.equal(result.status, 'missing');
   assert.equal(result.committed, null);
-  assert.deepEqual(await readdir(join(root, 'extension')), before);
+  assert.deepEqual(await readdir(join(root, 'apps/retailer-extension')), before);
 });
 
 test('empty committed output is drift rather than a missing file', async t => {
@@ -87,7 +87,7 @@ test('CLI entry returns zero and reports matching hashes for current output', as
 
 test('CLI entry returns one for drift with actionable read-only diagnostics', async t => {
   const root = await fixture(t), bytes = await generate(root);
-  await writeFile(join(root, 'extension/message.js'), "export const message = 'drift';\n");
+  await writeFile(join(root, 'apps/retailer-extension/message.js'), "export const message = 'drift';\n");
   const output = reporter();
   assert.equal(await main(root, output), 1);
   assert.equal(JSON.parse(output.output[0]).status, 'drift');
@@ -104,7 +104,7 @@ test('CLI entry returns one for missing output without creating it', async t => 
 
 test('syntax errors return two without masking the failure or overwriting output', async t => {
   const root = await fixture(t), bytes = await generate(root);
-  await writeFile(join(root, 'extension/popup-source.js'), 'import {');
+  await writeFile(join(root, 'apps/retailer-extension/popup-source.js'), 'import {');
   const output = reporter();
   assert.equal(await main(root, output), 2);
   assert.match(output.errors[0], /could not complete/);

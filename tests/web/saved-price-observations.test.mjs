@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {normalizeCSV} from '../../public/unified-data.js';
-const root=new URL(process.env.SAVED_PRICE_PREIMAGE?'../../../preimage/public/':'../../public/',import.meta.url);
+import {normalizeCSV} from '../../apps/web/src/unified-data.js';
+const root=new URL(process.env.SAVED_PRICE_PREIMAGE?'../../../preimage/public/':'../../apps/web/src/',import.meta.url);
 const source={id:'personal-import',name:'Synthetic import',license:'Authored synthetic only',url:'https://example.invalid'};
 function records(){return normalizeCSV('id,name,code,amount,currency,date,store\na,Example,00123,0,EUR,2026-10-01,A\nb,Example,00123,3,EUR,2026-10-02,B\n',source,{kind:'priceObservation',id:'id',name:'name',barcode:'code',price:'amount',currency:'currency',date:'date',retailer:'store',country:'AU'}).map(r=>({...r,provenance:{...r.provenance,privateUseConfirmed:true}}));}
 function node(tag='div'){return {tag,children:[],textContent:'',value:'',append(...items){this.children.push(...items);},replaceChildren(...items){this.children=items;this.textContent='';}};}
@@ -16,7 +16,7 @@ async function click({upstreamFails=false}={}){
  const s=readFileSync(new URL('insights-ui.js',root),'utf8'),start=s.indexOf("$('integration-prices').onclick="),end=s.indexOf('\nreturn {render',start);
  vm.runInNewContext('let priceRequest=0;'+s.slice(start,end),context);const previous=globalThis.document;globalThis.document=context.document;try{await $('integration-prices').onclick();return flatten($('integration-price-results'));}finally{globalThis.document=previous;}
 }
-let module={};try{module=await import('../../public/saved-price-observations.js');}catch(e){if(e.code!=='ERR_MODULE_NOT_FOUND')throw e;}
+let module={};try{module=await import('../../apps/web/src/saved-price-observations.js');}catch(e){if(e.code!=='ERR_MODULE_NOT_FOUND')throw e;}
 test('actual Insights handler displays both saved dated observations',async()=>{const output=await click();assert.match(output,/2026-10-01/);assert.match(output,/2026-10-02/);assert.match(output,/personal-import/);assert.match(output,/not verified current stock/);});
 test('actual Insights handler retains saved prices when optional upstream fails',async()=>{const output=await click({upstreamFails:true});assert.match(output,/2026-10-01/);assert.match(output,/unavailable/i);});
 test('selector preserves lexical joins, native IDs and rights without inferring matches',()=>{

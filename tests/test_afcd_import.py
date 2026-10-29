@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 import openpyxl
 
-spec = importlib.util.spec_from_file_location('afcd', Path(__file__).parents[1] / 'scripts/import-afcd.py')
+spec = importlib.util.spec_from_file_location('afcd', Path(__file__).parents[1] / 'tools/data-processing/import_afcd.py')
 afcd = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(afcd)
 

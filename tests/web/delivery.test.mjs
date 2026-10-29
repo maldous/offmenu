@@ -2,13 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
-import {catalogueRows} from '../../cloud/catalogue.mjs';
-import {normalizeOFF,asOffNutriments} from '../../public/unified-data.js';
-import {sourceById} from '../../public/sources.js';
+import {catalogueRows} from '../../apps/web/server/catalogue.mjs';
+import {normalizeOFF,asOffNutriments} from '../../apps/web/src/unified-data.js';
+import {sourceById} from '../../apps/web/src/sources.js';
 
 test('source country filtering keeps documented global routes and excludes other countries',async()=>{
  const db=new DatabaseSync(':memory:');
- db.exec(readFileSync(new URL('../../cloud/catalogue-schema.sql',import.meta.url),'utf8'));
+ db.exec(readFileSync(new URL('../../apps/web/server/catalogue-schema.sql',import.meta.url),'utf8'));
  for(const [id,country]of [['a','AU'],['b','GB'],['c','']]){
   db.prepare('INSERT INTO catalogue VALUES(?,?,?,?,?,?)').run('source',id,'',JSON.stringify({id}),id,'1');
   db.prepare('INSERT INTO catalogue_source_countries VALUES(?,?)').run(id,country);

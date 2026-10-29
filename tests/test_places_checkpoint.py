@@ -8,7 +8,7 @@ from unittest.mock import patch
 import test_places_common
 places = test_places_common.places
 
-spec = importlib.util.spec_from_file_location('preflight', Path(__file__).parents[1] / 'scripts/places-recovery-preflight.py')
+spec = importlib.util.spec_from_file_location('preflight', Path(__file__).parents[1] / 'tools/data-processing/places_recovery_preflight.py')
 preflight = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(preflight)
 

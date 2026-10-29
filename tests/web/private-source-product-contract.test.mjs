@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createPrivateSourceProductRoutes,SNAPSHOT,SOURCE_SCOPE} from '../../private-product-lookup/private-source-product-route.mjs';
-import {createPrivateSourceProductComposition} from '../../private-product-lookup/current-entry-binding/private-source-product-composition.mjs';
-import {createNativePrivateSourceLookup} from '../../private-product-lookup/current-entry-binding/native-private-source-lookup.mjs';
+import {createPrivateSourceProductRoutes,SNAPSHOT,SOURCE_SCOPE} from '../../integrations/staged/private-product-lookup/private-source-product-route.mjs';
+import {createPrivateSourceProductComposition} from '../../integrations/staged/private-product-lookup/current-entry-binding/private-source-product-composition.mjs';
+import {createNativePrivateSourceLookup} from '../../integrations/staged/private-product-lookup/current-entry-binding/native-private-source-lookup.mjs';
 
 // Generated in-process contracts only: no listener, real identity or source file.
 const origin='http://127.0.0.1:7645';

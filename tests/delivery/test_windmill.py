@@ -7,7 +7,7 @@ from unittest.mock import patch
 from test_engine import DeliveryFixture
 from offmenu.delivery.engine import Engine, writer, DeliveryError
 
-MODULE = Path(__file__).resolve().parents[2] / 'dev/delivery/windmill_entrypoint.py'
+MODULE = Path(__file__).resolve().parents[2] / 'tools/delivery/windmill_entrypoint.py'
 spec = importlib.util.spec_from_file_location('windmill_entrypoint', MODULE)
 adapter = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(adapter)

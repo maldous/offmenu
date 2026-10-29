@@ -39,7 +39,7 @@ class RetainedProductClockTest(unittest.TestCase):
         scope = self.asset(c.scope_evidence.path, {
             'sourceId': c.source_id, 'releaseId': c.release_id, 'scopeId': c.scope_id,
             'acquisitionClock': {'status': 'unknown-retained', 'evidenceSha256': clock.sha256}})
-        schema = json.loads((Path(__file__).parents[1] / 'schemas/retained-product-clock-v2.schema.json').read_text())
+        schema = json.loads((Path(__file__).parents[1] / 'contracts/schemas/retained-product-clock-v2.schema.json').read_text())
         schemas = {kind: {'allOf': [s, schema]} for kind, s in c.schemas.items()}
         self.f.contract = replace(c, acquired_at=None, acquisition_clock_status='unknown-retained',
             clock_evidence=clock, scope_evidence=scope,

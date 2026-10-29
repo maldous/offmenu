@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "offmenu_ledger_audit.py"
+SCRIPT = Path(__file__).resolve().parents[1] / 'tools/operations' / 'offmenu_ledger_audit.py'
 spec = importlib.util.spec_from_file_location("ledger_audit", SCRIPT)
 audit = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(audit)

@@ -8,7 +8,7 @@ from pathlib import Path
 import unittest
 from unittest.mock import patch
 
-PATH = Path(__file__).resolve().parents[1] / 'offmenu/refresh/reference_adapters.py'
+PATH = Path(__file__).resolve().parents[1] / 'src/offmenu/refresh/reference_adapters.py'
 spec = importlib.util.spec_from_file_location('reference_adapters', PATH)
 a = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(a)
@@ -18,7 +18,7 @@ STAMP = '2026-10-13T12:00:00Z'
 def normalize(source, value):
     payload = value if isinstance(value, bytes) else json.dumps(value, ensure_ascii=False).encode()
     records = a.normalize_reference(source, a.CONTRACTS[source][0], payload, acquired_at=STAMP)
-    schema = json.loads((PATH.parents[2] / 'schemas/reference-candidate.schema.json').read_text())
+    schema = json.loads((Path(__file__).resolve().parents[1] / 'contracts/schemas/reference-candidate.schema.json').read_text())
     for record in records:
         jsonschema.Draft202012Validator(schema).validate(record)
         assert a.reference_semantics(record) == []

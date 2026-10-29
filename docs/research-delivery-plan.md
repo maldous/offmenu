@@ -166,12 +166,12 @@ Final acceptance requires all applicable recommendation IDs resolved, all source
 
 ## Research traceability and current bulk-source references
 
-- `research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf`: quantity/state/edible basis, 45 metrics, 17 groups, seven comparison views, costs, qualifications and reproducibility.
-- `research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf`: P0/P1/P2 feature portfolio, datasets/integrations, household routine, privacy/safety, accessibility/locales and promotion/pilots.
-- `research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf`: identity, companies/growers/providers, origin, ownership, certification, regulatory and recall evidence; all country leads.
-- `research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf`: field-level rights, resolver partitions, grants, refresh/invalidation, contribution, privacy and collection/reuse acceptance.
-- `research/reports/05-OffMenu_Global_Shopping_Baskets.pdf`: all country findings and separation of editorial/statistical/basic-needs/meal-planning baskets.
-- All four `research/OffMenu*.json` registers and `research/manifest.json` remain the original evidence baseline; the accompanying delivery ledger adds status without rewriting research.
+- `docs/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf`: quantity/state/edible basis, 45 metrics, 17 groups, seven comparison views, costs, qualifications and reproducibility.
+- `docs/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf`: P0/P1/P2 feature portfolio, datasets/integrations, household routine, privacy/safety, accessibility/locales and promotion/pilots.
+- `docs/research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf`: identity, companies/growers/providers, origin, ownership, certification, regulatory and recall evidence; all country leads.
+- `docs/research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf`: field-level rights, resolver partitions, grants, refresh/invalidation, contribution, privacy and collection/reuse acceptance.
+- `docs/research/reports/05-OffMenu_Global_Shopping_Baskets.pdf`: all country findings and separation of editorial/statistical/basic-needs/meal-planning baskets.
+- All four `docs/research/OffMenu*.json` registers and `docs/research/manifest.json` remain the original evidence baseline; the accompanying delivery ledger adds status without rewriting research.
 
 Primary documentation checked 13 October 2026:
 - [Open Food Facts API/reuse guidance](https://github.com/openfoodfacts/openfoodfacts-server/blob/main/docs/api/index.md): use bulk exports for large acquisition; verify database, contents and image rights separately.

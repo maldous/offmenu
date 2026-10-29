@@ -12,9 +12,9 @@ import zipfile
 import zlib
 
 ROOT=Path(__file__).resolve().parents[1]
-spec=importlib.util.spec_from_file_location('worker64_usda_slice',ROOT/'offmenu/refresh/usda_nutrient_reference_slice.py')
+spec=importlib.util.spec_from_file_location('worker64_usda_slice',ROOT/'src/offmenu/refresh/usda_nutrient_reference_slice.py')
 m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
-SCRATCH=ROOT/'generated-slice-test-scratch';SCRATCH.mkdir(exist_ok=True)
+SCRATCH=ROOT/'.cache/tests/usda-nutrient-slices';SCRATCH.mkdir(parents=True,exist_ok=True)
 
 
 def fixture(root, *, nutrient_rows=None, nutrient_header=None, nutrient_count=2):

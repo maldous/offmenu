@@ -5,16 +5,16 @@ import {fileURLToPath} from 'node:url';
 import {build} from 'esbuild';
 import {Miniflare, createFetchMock} from 'miniflare';
 import {getMigrations} from 'better-auth/db/migration';
-import {createOffMenuAuth} from '../../cloud/auth.mjs';
+import {createOffMenuAuth} from '../../apps/web/server/auth.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
-const schema = readFileSync(new URL('../../cloud/auth-schema.sql', import.meta.url), 'utf8');
+const schema = readFileSync(new URL('../../apps/web/server/auth-schema.sql', import.meta.url), 'utf8');
 const origin = 'https://offmenu.test';
 const secret = 'synthetic-only-native-D1-test-secret-never-deploy-000000';
 const sessionPolicy = {expiresIn: 3600, updateAge: 600};
 const source = `
-import {createOffMenuAuth} from './cloud/auth.mjs';
-import {getOffMenuPrincipal} from './cloud/auth-principal.mjs';
+import {createOffMenuAuth} from './apps/web/server/auth.mjs';
+import {getOffMenuPrincipal} from './apps/web/server/auth-principal.mjs';
 let verificationMail = [], resetMail = [];
 export default {async fetch(request, env) {
   const auth = createOffMenuAuth(env, {sessionPolicy: {expiresIn: 3600, updateAge: 600},

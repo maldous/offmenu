@@ -6,7 +6,7 @@ import unittest
 import zipfile
 from pathlib import Path
 
-path = Path(__file__).parent.parent / 'scripts/collect-usda.py'
+path = Path(__file__).parent.parent / 'tools/data-processing/collect_usda.py'
 spec = importlib.util.spec_from_file_location('collector', path)
 collector = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(collector)

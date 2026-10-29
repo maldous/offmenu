@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {calculateShoppingDeficit as calculate} from '../../dev/shopping-deficit.mjs';
+import {calculateShoppingDeficit as calculate} from '../../integrations/candidates/shopping-deficit.mjs';
 const row=(rowRef,quantity,extra={})=>({rowRef,ingredientId:'synthetic:rice',unit:'g',basis:'synthetic:dry-edible',quantity,...extra});
 function frozen(x){if(x&&typeof x==='object'){Object.values(x).forEach(frozen);Object.freeze(x);}return x;}
 test('exact coverage, partial stock, known zero, explicit empty stock and surplus',()=>{

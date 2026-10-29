@@ -1,13 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {planSummary} from '../../public/menu-model.js';
-import {matchMeals} from '../../public/model.js';
-import {quantified} from '../../public/ingredients.js';
+import {planSummary} from '../../apps/web/src/menu-model.js';
+import {matchMeals} from '../../apps/web/src/model.js';
+import {quantified} from '../../apps/web/src/ingredients.js';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {cookMeal} from '../../public/cooking-model.js';
-import {validateState} from '../../cloud/state.mjs';
-import {kitchenProjection,applyKitchen} from '../../public/sync-model.js';
+import {cookMeal} from '../../apps/web/src/cooking-model.js';
+import {validateState} from '../../apps/web/server/state.mjs';
+import {kitchenProjection,applyKitchen} from '../../apps/web/src/sync-model.js';
 
 // Synthetic ingredient joins and product nutrition; no corpus or private inputs.
 const date='2026-10-26';
@@ -70,7 +70,7 @@ test('expired/review stock, incompatible nutrient units and cooked plans do not 
 });
 
 test('real applyNutrition callback retains imported profile binding separately from500ml package',()=>{
- const source=readFileSync(new URL('../../public/app.js',import.meta.url),'utf8');
+ const source=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
  const start=source.indexOf('applyNutrition:(lot,record,nutriments)=>');
  assert.ok(start>=0);
  const callback=source.slice(start+'applyNutrition:'.length,source.indexOf('}});',start)+1);
@@ -111,7 +111,7 @@ test('real applyNutrition callback retains imported profile binding separately f
 });
 
 test('findMeals wording describes allocated lots and unknown uncovered nutrition',()=>{
- const source=readFileSync(new URL('../../public/app.js',import.meta.url),'utf8');
+ const source=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
  const handler=source.slice(source.indexOf('function findMeals(){'),source.indexOf("\n$('refresh').onclick"));
  assert.ok(handler.includes('Based on allocated ingredient lots with a compatible nutrition basis'));
  assert.ok(handler.includes('Uncovered amounts and missing nutrition remain unknown.'));
@@ -119,7 +119,7 @@ test('findMeals wording describes allocated lots and unknown uncovered nutrition
 });
 
 test('renderPlan caption uses localized contribution counts including uncovered demand',()=>{
- const source=readFileSync(new URL('../../public/app.js',import.meta.url),'utf8');
+ const source=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
  const handler=source.slice(source.indexOf('function renderPlan(){'));
  const start=handler.indexOf('n.known<n.total?');
  const expression=handler.slice(start,handler.indexOf(');}for(const [id,list]',start));

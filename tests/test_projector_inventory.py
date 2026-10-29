@@ -10,7 +10,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "offmenu_projector_inventory.py"
+SCRIPT = Path(__file__).resolve().parents[1] / 'tools/operations' / 'offmenu_projector_inventory.py'
 spec = importlib.util.spec_from_file_location("projector_inventory", SCRIPT)
 inventory = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(inventory)

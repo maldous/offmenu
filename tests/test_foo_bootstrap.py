@@ -10,7 +10,7 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location('foo_bootstrap', ROOT / 'scripts/bootstrap-foo-runner.py')
+spec = importlib.util.spec_from_file_location('foo_bootstrap', ROOT / 'tools/operations/bootstrap_foo_runner.py')
 b = importlib.util.module_from_spec(spec); spec.loader.exec_module(b)
 
 class BootstrapTests(unittest.TestCase):

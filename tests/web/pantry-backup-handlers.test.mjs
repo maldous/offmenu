@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {parse} from 'acorn';
-import {createPantryBackup,restorePantryBackup} from '../../public/pantry-backup.js';
-import {reconcileCookedStock} from '../../public/cooking-model.js';
+import {createPantryBackup,restorePantryBackup} from '../../apps/web/src/pantry-backup.js';
+import {reconcileCookedStock} from '../../apps/web/src/cooking-model.js';
 
 // Execute the actual browser handlers without starting the app or touching real storage.
-const source=readFileSync(new URL('../../public/app.js',import.meta.url),'utf8');
+const source=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
 const ast=parse(source,{ecmaVersion:'latest',sourceType:'module'});
 function fixture({failKey,absent=false}={}){
  const nodes=new Map(),messages=[],downloads=[],sync=[];

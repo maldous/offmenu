@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
-import {adminSettingsRoutes,loadAdminRuntime} from '../../cloud/admin-settings.mjs';
-import {parseGlobalSettings} from '../../cloud/global-settings.mjs';
+import {adminSettingsRoutes,loadAdminRuntime} from '../../apps/web/server/admin-settings.mjs';
+import {parseGlobalSettings} from '../../apps/web/server/global-settings.mjs';
 
-const database=new DatabaseSync(':memory:');database.exec(readFileSync(new URL('../../cloud/admin-schema.sql',import.meta.url),'utf8'));
+const database=new DatabaseSync(':memory:');database.exec(readFileSync(new URL('../../apps/web/server/admin-schema.sql',import.meta.url),'utf8'));
 const queries=[];
 const DB={prepare(sql){queries.push(sql);const make=args=>({async first(){return database.prepare(sql).get(...args)||null;},async all(){return {results:database.prepare(sql).all(...args)};},async run(){return database.prepare(sql).run(...args);},_run(){const stmt=database.prepare(sql);if(/^\s*(UPDATE|INSERT).*RETURNING/i.test(sql))return {results:stmt.all(...args)};return {results:[],meta:stmt.run(...args)};}});return {...make([]),bind(...args){return make(args);}}},async batch(statements){database.exec('BEGIN');try{const results=statements.map(statement=>statement._run());database.exec('COMMIT');return results;}catch(error){database.exec('ROLLBACK');throw error;}}};
 const env={DB,PROVIDER_VAULT_KEY:'a'.repeat(64),THIRD_PARTY_CONFIG:'{}',SENTRY_DSN:'https://0123456789abcdef@o1.ingest.sentry.io/2',BREVO_API_KEY:'legacy-secret',BREVO_SENDER_EMAIL:'sender@example.test',BREVO_SENDER_NAME:'OffMenu',SUPPORT_EMAIL:'support@example.test'};

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {diagnosticPublicResponse,DIAGNOSTIC_MEDIA} from '../../dev/public-field-capture/diagnostic-response.mjs';
+import {diagnosticPublicResponse,DIAGNOSTIC_MEDIA} from '../../tools/diagnostics/public-field/diagnostic-response.mjs';
 const key={databaseSha256:'a'.repeat(64),run_id:'generated',input_id:'generated-input',record_ordinal:1,assertion_id:2};
 const product=()=>({observationKey:{...key},sourceObservation:{source_id:'generated'},
   sourceBinding:{sourceId:'generated'},fields:{names:{state:'present',value:{en:'Generated'}},

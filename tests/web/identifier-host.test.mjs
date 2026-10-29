@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import {mkdtemp,writeFile,rm,readFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
-import {createIdentifierAdapter,identifierForms} from '../../cloud/identifier-host.mjs';
-import {lookupIdentityPage,lookupExactObservationDetail,sourceObservationReference as uiReference,DETAIL_SELECTION} from '../../public/scanner-identity-v2.js';
-import {validateLot} from '../../public/model.js';
+import {createIdentifierAdapter,identifierForms} from '../../apps/web/server/identifier-host.mjs';
+import {lookupIdentityPage,lookupExactObservationDetail,sourceObservationReference as uiReference,DETAIL_SELECTION} from '../../apps/web/src/scanner-identity-v2.js';
+import {validateLot} from '../../apps/web/src/model.js';
 const DB='97c2f7390f75d8d187b49c927652515cd829e095301d7b305a0081120c7502f0';
 const BACKEND='retained-product-federation-v1';
 async function fixture(mode='valid',delay=0,timeoutMs=7000,records=null,failDisposition=null){

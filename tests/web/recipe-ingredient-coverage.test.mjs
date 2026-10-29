@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {recipeIngredientCoverage} from '../../public/recipe-ingredient-coverage.js';
-import {planSummary} from '../../public/menu-model.js';
-import {allocateIngredients} from '../../public/cooking-model.js';
+import {recipeIngredientCoverage} from '../../apps/web/src/recipe-ingredient-coverage.js';
+import {planSummary} from '../../apps/web/src/menu-model.js';
+import {allocateIngredients} from '../../apps/web/src/cooking-model.js';
 
 // Explicit generated recipe/lot/product associations, never source/name joins.
 const date='2026-10-26';

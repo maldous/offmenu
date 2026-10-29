@@ -14,8 +14,8 @@ def load(name, path):
     spec.loader.exec_module(module)
     return module
 
-census = load('global_readiness_test_subject', ROOT / 'scripts/global-readiness.py')
-dispatch = load('global_readiness_dispatch_subject', ROOT / 'scripts/dispatch-foo-job.py')
+census = load('global_readiness_test_subject', ROOT / 'tools/operations/global_readiness.py')
+dispatch = load('global_readiness_dispatch_subject', ROOT / 'tools/operations/dispatch_foo_job.py')
 OBSERVED = '2026-10-18T02:00:00Z'
 
 

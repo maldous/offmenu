@@ -239,7 +239,7 @@ class InstalledCatalogueTests(unittest.TestCase):
     def test_inert_literal_matches_original_pins_and_is_copy_isolated(self):
         root = Path(__file__).resolve().parents[1]
         original = strict_json((root/'docs/operations/portfolio-au-ir-pn.json').read_bytes())
-        module = root/'offmenu/refresh/portfolio_au_ir_pn_catalogue.py'
+        module = root/'src/offmenu/refresh/portfolio_au_ir_pn_catalogue.py'
         tree = ast.parse(module.read_text())
         self.assertEqual(len(tree.body), 2)  # Docstring and one literal assignment.
         self.assertIsInstance(tree.body[1], ast.Assign)

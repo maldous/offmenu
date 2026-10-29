@@ -1,0 +1,164 @@
+{
+  "format": "offmenu-delivery-review-verification-v1",
+  "tested_commit": "0b67239ae1c34b80a8ae17203139e376594db576",
+  "tested_tree": "0def59be2d2585921b8e66357adce320c22f44d3",
+  "branch": "feature/langgraph-delivery-standardization",
+  "findings_closed": [
+    "observed-output-evidence-and-budgeted-safe-reexecution",
+    "exact-selected-branch-binding",
+    "reserved-control-identifier-rejection"
+  ],
+  "selected_tests": 63,
+  "focused_graph_regressions": 8,
+  "additional_cli_regressions": 3,
+  "local": {
+    "status": "passed",
+    "tests": 63,
+    "elapsed_seconds": 21.183
+  },
+  "windmill": {
+    "ok": true,
+    "job_id": "offmenu-review-fixes-63-20261029",
+    "receipt": {
+      "mode": "read",
+      "job_id": "offmenu-review-fixes-63-20261029",
+      "status": "succeeded",
+      "version": 3,
+      "exit_code": 0,
+      "log_bytes": {
+        "stderr": 99,
+        "stdout": 41
+      },
+      "created_at": 1793260716.4702344,
+      "started_at": 1793260716.4759727,
+      "finished_at": 1793260736.1809163,
+      "heartbeat_at": 1793260736.1809206,
+      "output_bytes": {
+        "stderr": 99,
+        "stdout": 41
+      },
+      "runner_sha256": "2ae57cc8edc66d9b56f43ad26dd8871fda155d23e50563988d3b0cac89d21674",
+      "command_sha256": "865b1c2f568eee3f5fa7fa2c4d2e2c70925383170b0e3deb3aaa047d60ca47c4",
+      "logs_truncated": {
+        "stderr": false,
+        "stdout": false
+      },
+      "request_sha256": "9ec6371de24356232153c7577015297ebe5d5070f9953420dbaaa90197972daf",
+      "child_tree_gone": true,
+      "timeout_seconds": 60,
+      "reconcile_required": false
+    },
+    "admitted": true,
+    "transport_ok": true,
+    "job_succeeded": true,
+    "url": "https://windmill.aldous.info/run/01a186aa-ff70-27c6-cfc1-f909a487b1eb?workspace=offmenu"
+  },
+  "retained_output": {
+    "stdout": "0b67239ae1c34b80a8ae17203139e376594db576\n",
+    "stderr": "----------------------------------------------------------------------\nRan 63 tests in 19.587s\n\nOK\n",
+    "stdout_sha256": "6807782f788893c230793659552f2fcf4569e003e00e21d602586bc6a96d192b",
+    "stderr_sha256": "61d319d753e933971616c80ba4cd772a4ae0b8de9c7ccfc63dd2a13f41ad3f4e"
+  },
+  "scope": "Safe source identity and unittest summary only; raw task inputs, private log paths and runtime data excluded.",
+  "follow_up_failed_reconciliation": {
+    "finding": "https://github.com/maldous/offmenu/pull/141#discussion_r4410698611",
+    "outcome": "confirmed-and-fixed",
+    "tested_commit": "b2de61d8840ceb0d419ee7731e73f17b45c910c1",
+    "tested_tree": "801ee741764196af985436e63e49c2c79112df19",
+    "base_merge": "2ff34332844932a1c41515b802d5e2bdc9a4cbbd",
+    "selected_tests": 66,
+    "focused_reproductions": {
+      "before": "3 failed",
+      "after": "3 passed",
+      "cases": [
+        "untracked source created before timeout",
+        "tracked source modified before timeout",
+        "source manifest removed before timeout"
+      ],
+      "additional_guards": [
+        "different owner rejected",
+        "success on changed source rejected",
+        "original binding remains byte-identical",
+        "execution remains source-bound",
+        "new writer admitted after stopped failure reconciled"
+      ]
+    },
+    "windmill": {
+      "ok": true,
+      "job_id": "offmenu-reconciliation-fix-66-20261029",
+      "receipt": {
+        "mode": "read",
+        "job_id": "offmenu-reconciliation-fix-66-20261029",
+        "status": "succeeded",
+        "version": 3,
+        "exit_code": 0,
+        "log_bytes": {
+          "stderr": 99,
+          "stdout": 41
+        },
+        "created_at": 1793267104.4606245,
+        "started_at": 1793267104.4646974,
+        "finished_at": 1793267128.6385198,
+        "heartbeat_at": 1793267128.6385238,
+        "output_bytes": {
+          "stderr": 99,
+          "stdout": 41
+        },
+        "runner_sha256": "2ae57cc8edc66d9b56f43ad26dd8871fda155d23e50563988d3b0cac89d21674",
+        "command_sha256": "865b1c2f568eee3f5fa7fa2c4d2e2c70925383170b0e3deb3aaa047d60ca47c4",
+        "logs_truncated": {
+          "stderr": false,
+          "stdout": false
+        },
+        "request_sha256": "9ec6371de24356232153c7577015297ebe5d5070f9953420dbaaa90197972daf",
+        "child_tree_gone": true,
+        "timeout_seconds": 60,
+        "reconcile_required": false
+      },
+      "admitted": true,
+      "transport_ok": true,
+      "job_succeeded": true,
+      "url": "https://windmill.aldous.info/run/01a1870c-792c-8c7b-39d1-c2aee0b06140?workspace=offmenu"
+    },
+    "retained_output": {
+      "stdout": "b2de61d8840ceb0d419ee7731e73f17b45c910c1\n",
+      "stderr": "----------------------------------------------------------------------\nRan 66 tests in 24.060s\n\nOK\n",
+      "stdout_sha256": "ac8cbcadcfe359bea9a01b42101b9197d3e8c22ec915e8cff70aa66b3c1f1b00",
+      "stderr_sha256": "b721cf65564e137681bd4430c47c723b0d0b8f90cb12476a1910ddaa6bdd9ce1"
+    },
+    "workflow": {
+      "task_id": "failed-reconciliation-fix-20261029",
+      "status": "accepted",
+      "revision": "b2de61d8840ceb0d419ee7731e73f17b45c910c1",
+      "outputs_verified": 4,
+      "check_starts": 1,
+      "attempt": 1,
+      "receipt_sha256": "5a7ca93e20cb9fc8a4e0824766e177e41047c1f7de62cfdf59dc68ed76ae6bb7"
+    }
+  },
+  "final_layout_native_symphony": {
+    "source_branch": "feature/langgraph-delivery-standardization",
+    "source_head": "c3e75993b577e85731cb57b01a5441cead9c0d35",
+    "model_requested": "gpt-6.1-sol",
+    "native_service_started": true,
+    "tracker_scope_verified": true,
+    "admitted_issue": "UIF-90",
+    "candidate_count": 1,
+    "native_outcome": "normal_turn_completed",
+    "exit_code": 1,
+    "finite_deadline_or_interrupt": false,
+    "coding_attempt_ended": true,
+    "accepted_delivery": false,
+    "session_id": "01a1872f-fd89-7761-9be4-9ad0b1e382b4-01a18730-00fa-7032-bdfc-d4ef1f4a6986",
+    "systemd_unit": "offmenu-symphony-layout-20261029.service",
+    "billing_route": "Existing ChatGPT Codex login, authorized subscription allowance; no API key/provider purchase",
+    "reviewed_outputs": {
+      "scripts/check_final_layout.py": "7ceb6dda3ba4acacc4933fed50e693a6cee7652a1af0e7acaa67d93c15a51a71",
+      "tests/delivery/test_final_layout.py": "fcb6db938b97ad3eeba84a467cf8797ff4858b2b43a210432c3520c749d19383"
+    },
+    "independent_delivery_suite": {
+      "tests": 79,
+      "result": "passed"
+    }
+  }
+}

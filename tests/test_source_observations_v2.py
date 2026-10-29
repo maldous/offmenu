@@ -3,7 +3,7 @@ import importlib.util
 from pathlib import Path
 import unittest
 
-spec = importlib.util.spec_from_file_location('v2', Path(__file__).parents[1] / 'scripts/normalize_source_observations_v2.py')
+spec = importlib.util.spec_from_file_location('v2', Path(__file__).parents[1] / 'tools/data-processing/normalize_source_observations_v2.py')
 v2 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(v2)
 

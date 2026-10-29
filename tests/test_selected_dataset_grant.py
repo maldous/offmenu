@@ -12,7 +12,7 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
-SCRIPT=Path(__file__).resolve().parents[1]/'scripts/grant-selected-dataset-view-v1.py'
+SCRIPT=Path(__file__).resolve().parents[1]/'tools/operations/grant_selected_dataset_view_v1.py'
 spec=importlib.util.spec_from_file_location('selected_grant',SCRIPT)
 m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 
@@ -22,7 +22,7 @@ class GrantTests(unittest.TestCase):
         # Production traversal intentionally rejects writable ancestors. CI's
         # conventional /tmp is1777, so place controlled fixtures under the
         # resolved checkout rather than depending on host temp-root modes.
-        self.tmp=tempfile.TemporaryDirectory(prefix='.grant-test-',dir=SCRIPT.parents[1]);self.addCleanup(self.tmp.cleanup)
+        self.tmp=tempfile.TemporaryDirectory(prefix='.grant-test-',dir=SCRIPT.parents[2]);self.addCleanup(self.tmp.cleanup)
         self.root=Path(self.tmp.name)
         self.runner=SimpleNamespace(pw_uid=99999,pw_gid=99999)
         self.owner=SimpleNamespace(pw_uid=os.geteuid(),pw_gid=os.getegid())
@@ -325,7 +325,7 @@ class GrantTests(unittest.TestCase):
     def test_content_addressed_inspector_preserves_previous_private_leaf_and_retries(self):
         backup=self.root/'private';backup.mkdir(mode=0o700)
         old=backup/'approved-inspector.py';old.write_bytes(b'previous-helper-owned-inspector');old.chmod(0o600)
-        old_stat=old.stat();body=(SCRIPT.parent/'inspect-selected-datasets.py').read_bytes()
+        old_stat=old.stat();body=(SCRIPT.parent/'inspect_selected_datasets.py').read_bytes()
         private=backup/('approved-inspector-'+m.INSPECTOR_SHA+'.py')
         regular=m.regular_bytes
         with patch.object(m,'BACKUP',backup),patch.object(m,'safe_parents'),patch.object(m,'regular_bytes',side_effect=lambda p,c:regular(p,c,owner=os.geteuid())):
@@ -339,15 +339,15 @@ class GrantTests(unittest.TestCase):
             private.write_bytes(b'unrecognized-current-leaf')
             with self.assertRaisesRegex(m.Blocked,'versioned-file-conflict'):m.reference_parser()
             self.assertEqual(b'unrecognized-current-leaf',private.read_bytes())
-        wrapper_spec=importlib.util.spec_from_file_location('retry_wrapper',SCRIPT.parent/'run-selected-dataset-grant.py')
+        wrapper_spec=importlib.util.spec_from_file_location('retry_wrapper',SCRIPT.parent/'run_selected_dataset_grant.py')
         wrapper=importlib.util.module_from_spec(wrapper_spec);wrapper_spec.loader.exec_module(wrapper)
         self.assertEqual(hashlib.sha256(body).hexdigest(),m.INSPECTOR_SHA)
-        for path,pin in wrapper.PINS.items():self.assertEqual(pin,hashlib.sha256((SCRIPT.parents[1]/path).read_bytes()).hexdigest())
+        for path,pin in wrapper.PINS.items():self.assertEqual(pin,hashlib.sha256((SCRIPT.parents[2]/path).read_bytes()).hexdigest())
 
     def test_previous_unsupported_stage_cleans_up_then_content_schema_retry_succeeds(self):
         selected=sorted(m.GROUPS['NO']);backup=self.root/'private';backup.mkdir(mode=0o700)
         stage=backup/'.stage';snapshot=backup/'snapshot'
-        spec=importlib.util.spec_from_file_location('retry_inspector',SCRIPT.parent/'inspect-selected-datasets.py')
+        spec=importlib.util.spec_from_file_location('retry_inspector',SCRIPT.parent/'inspect_selected_datasets.py')
         inspector=importlib.util.module_from_spec(spec);spec.loader.exec_module(inspector)
         reference=vars(inspector);selection=dict(inspector.SELECTION);decl=[];records=[]
         for key in inspector.SOURCES['NO'][2]:
@@ -486,7 +486,7 @@ class GrantTests(unittest.TestCase):
     def test_existing_nine_asset_snapshot_revalidated_without_expansion_or_writes(self):
         # Real inspector hashes the published files again; only root ownership
         # checks are adapted to the unprivileged test account.
-        spec=importlib.util.spec_from_file_location('snapshot_inspector',SCRIPT.parent/'inspect-selected-datasets.py')
+        spec=importlib.util.spec_from_file_location('snapshot_inspector',SCRIPT.parent/'inspect_selected_datasets.py')
         inspector=importlib.util.module_from_spec(spec);spec.loader.exec_module(inspector)
         saved=sorted(set(m.GROUPS['NO'])|set(m.GROUPS['FR']));selected=sorted(m.FILES)
         backup=self.root/'private';backup.mkdir(mode=0o700);snapshot=backup/'snapshot';snapshot.mkdir(mode=0o750);snapshot.chmod(0o750)

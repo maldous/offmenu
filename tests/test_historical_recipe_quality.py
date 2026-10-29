@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-SCRIPT = ROOT / 'scripts/recover-historical-recipes-20261014.py'
+SCRIPT = ROOT / 'tools/data-processing/recover_historical_recipes_20261014.py'
 SPEC = importlib.util.spec_from_file_location('historical_recipe_recovery', SCRIPT)
 RECOVERY = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(RECOVERY)
@@ -57,7 +57,7 @@ class HistoricalRecipeQualityTest(unittest.TestCase):
     def test_retained_source_recovery(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary) / 'recovery'
-            subprocess.run([sys.executable, str(ROOT / 'scripts/recover-historical-recipes-20261014.py'), '--output', str(output)], check=True)
+            subprocess.run([sys.executable, str(ROOT / 'tools/data-processing/recover_historical_recipes_20261014.py'), '--output', str(output)], check=True)
             self.assert_recovery(output)
 
     def assert_recovery(self, output):

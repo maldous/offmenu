@@ -172,7 +172,7 @@ follows from this prerequisite.
 Owner-selected headline: **From product to pantry to plate**. The former
 “From bag to dinner” ad copy is superseded; no ad regeneration or new tagline
 selection follows. Exact owner-approved feature copy is the existing
-[75-entry key/value asset](../public/feature-copy.v1.json),
+[75-entry key/value asset](../apps/web/assets/feature-copy.v1.json),
 SHA-256 `2445a3b24770472a288f1d7c2ec866da93f07bcb938fa39bbdcca4d6e217b4a5`
 (13,258 bytes), approval source `Sentinel_01846dd6563081919eaf261c16669512`,
 25 October 2026 06:45:23.250881 UTC. Preserve exact keys, values and mapping;
@@ -301,9 +301,9 @@ OffMenu's schema does not remove upstream rights obligations.
 1. Collect the entire permitted named release locally. Reconcile all rows and
    required related tables; preserve original archives and hashes.
 2. Run `scripts/exercise-collection.mjs` over every normalized record.
-3. Run `scripts/build-curated-corpus.py` against admitted local releases, choosing
+3. Run `tools/data-processing/build_curated_corpus.py` against admitted local releases, choosing
    a new immutable output/version. The publication projection is
-   `corpus/curation.py`, governed by `corpus/policy.json`.
+   `tools/corpus/curation.py`, governed by `contracts/corpus/policy.json`.
 4. Run `scripts/exercise-curated-corpus.mjs` over all curated output. This gate
    checks checksums, source/private payload exclusion, joins and consumer paths.
 5. Set `OFFMENU_CURATED_RELEASE` locally to that accepted release directory.
@@ -335,8 +335,8 @@ price observations 1; `public_products` 0. These are pending deletion, not remov
 Never drop the shared account DB or mixed `unified_records` table. Keep the
 40 existing curated application recipes and private/application tables.
 
-`cloud/provider-data.mjs` retires national source replica serving and excludes
-replica counts from current operational coverage. `cloud/handler.mjs` stops raw
+`apps/web/server/provider-data.mjs` retires national source replica serving and excludes
+replica counts from current operational coverage. `apps/web/server/handler.mjs` stops raw
 product/price response cache reads and writes. Deploy and verify that code before
 claiming those retirement changes are live.
 

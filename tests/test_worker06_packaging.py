@@ -39,7 +39,7 @@ class Worker06PackagingTests(unittest.TestCase):
             root = Path(temporary)
             source = root / 'source'
             source.mkdir()
-            shutil.copytree(repository / 'offmenu', source / 'offmenu',
+            shutil.copytree(repository / 'src/offmenu', source / 'src/offmenu',
                             ignore=shutil.ignore_patterns('__pycache__'))
             shutil.copy2(repository / 'pyproject.toml', source / 'pyproject.toml')
             artifacts = root / 'artifacts'

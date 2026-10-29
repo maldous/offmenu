@@ -2,15 +2,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
-import handler from '../../cloud/handler.mjs';
-import {parseServiceConfig,serviceConfiguration,serviceCSP,serviceHTML,sentryDestination} from '../../cloud/service-config.mjs';
-import {diagnosticEvent,diagnosticRoutes,reportDiagnostic,routeGroup} from '../../cloud/service-observability.mjs';
+import handler from '../../apps/web/server/handler.mjs';
+import {parseServiceConfig,serviceConfiguration,serviceCSP,serviceHTML,sentryDestination} from '../../apps/web/server/service-config.mjs';
+import {diagnosticEvent,diagnosticRoutes,reportDiagnostic,routeGroup} from '../../apps/web/server/service-observability.mjs';
 
 const dsn='https://0123456789abcdef0123456789abcdef@o123.ingest.de.sentry.io/456';
 const configured={THIRD_PARTY_CONFIG:JSON.stringify({client:{diagnostics:{enabled:true}}}),SENTRY_DSN:dsn};
 function storage(){
   const db=new DatabaseSync(':memory:');
-  db.exec(readFileSync(new URL('../../cloud/schema.sql',import.meta.url),'utf8'));
+  db.exec(readFileSync(new URL('../../apps/web/server/schema.sql',import.meta.url),'utf8'));
   return {db,DB:{prepare(sql){const make=args=>({async first(){return db.prepare(sql).get(...args)||null;},async run(){return db.prepare(sql).run(...args);}});return {...make([]),bind(...args){return make(args);}}}}};
 }
 const req=(body,origin='https://offmenu.test')=>new Request('https://offmenu.test/api/services/diagnostics',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify(body)});

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
-const modulePath=new URL('../../public/source-field-page-presenter.js',import.meta.url);
+const modulePath=new URL('../../apps/web/src/source-field-page-presenter.js',import.meta.url);
 assert.equal(createHash('sha256').update(readFileSync(modulePath)).digest('hex'),'347a6ce9c7ae1963465113af583aabaa6ce31978d10bc3b166c572c8a540b9c3');
 const {mountSourceFieldPagePresenter}=await import(modulePath);
 const {cases}=JSON.parse(readFileSync(new URL('./fixtures/full-field-paging/final-node-presenter-fixtures.json',import.meta.url)));

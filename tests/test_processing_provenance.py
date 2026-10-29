@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
 SPEC = importlib.util.spec_from_file_location(
-    'build_processing_provenance', ROOT / 'scripts/build-processing-provenance.py')
+    'build_processing_provenance', ROOT / 'tools/data-processing/build_processing_provenance.py')
 BUILDER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(BUILDER)
 

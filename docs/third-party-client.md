@@ -1,6 +1,6 @@
 # Third-party client consent boundary
 
-`public/services-ui.js` fetches the public, sanitised `/api/services` configuration and stores device choices only under `offmenu-third-party-consent-v1`. This record is separate from the pantry, profile, account and health stores. Every optional category is off initially: privacy CMP, analytics, diagnostics, support and advertising.
+`apps/web/src/services-ui.js` fetches the public, sanitised `/api/services` configuration and stores device choices only under `offmenu-third-party-consent-v1`. This record is separate from the pantry, profile, account and health stores. Every optional category is off initially: privacy CMP, analytics, diagnostics, support and advertising.
 
 The client accepts only schema version 1 and numeric vendor IDs. It can load only these fixed URLs after the matching choice:
 

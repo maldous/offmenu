@@ -10,7 +10,7 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location('delivery_dispatch', ROOT / 'scripts/dispatch-foo-job.py')
+spec = importlib.util.spec_from_file_location('delivery_dispatch', ROOT / 'tools/operations/dispatch_foo_job.py')
 jobs = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(jobs)
 
@@ -29,9 +29,9 @@ class DeliveryDiagnosticsTests(unittest.TestCase):
         return {'status': status, 'exitCode': exit_code, 'durationSeconds': 0.01, 'evidence': evidence or {}}
 
     def complete_child(self, command, code, timeout=240):
-        if 'scripts/offmenu_ledger_audit.py' in command:
+        if 'tools/operations/offmenu_ledger_audit.py' in command:
             return self.result(evidence={'ledgerAudit': {'schemaVersion': 'offmenu-ledger-structural-audit/1', 'status': 'complete'}})
-        if 'scripts/inspect-selected-datasets.py' in command:
+        if 'tools/operations/inspect_selected_datasets.py' in command:
             return self.result('failed', 2, {'selectedDataInventory': {'schemaVersion': 'offmenu-selected-data-inventory/1', 'status': 'incomplete'}})
         return self.result(evidence={'resultAction': 'verified-no-op'})
 
@@ -61,7 +61,7 @@ class DeliveryDiagnosticsTests(unittest.TestCase):
 
     def test_actual_failure_is_never_relabelled_incomplete(self):
         def fake(command, code, timeout=240):
-            if 'scripts/offmenu_ledger_audit.py' in command:
+            if 'tools/operations/offmenu_ledger_audit.py' in command:
                 return self.result('failed', 1, {'ledgerAudit': {'status': 'failed'}})
             return self.complete_child(command, code, timeout)
         report = self.report(fake)
@@ -166,7 +166,7 @@ class DeliveryDiagnosticsTests(unittest.TestCase):
 
 
     def test_real_sanitizers_reject_or_drop_unrecognized_content(self):
-        spec = importlib.util.spec_from_file_location('dataset_boundary', ROOT / 'scripts/inspect-selected-datasets.py')
+        spec = importlib.util.spec_from_file_location('dataset_boundary', ROOT / 'tools/operations/inspect_selected_datasets.py')
         data = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(data)
         with tempfile.TemporaryDirectory() as tmp:

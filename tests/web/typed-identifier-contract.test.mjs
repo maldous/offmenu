@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {analyzeIdentifier, validateGTIN, validateISBN10, validateISBN13,
   expandUPCE, isbn10To13, isbn13To10, janNaming, representationFromCarrier,
-  CONTRACT_VERSION, CITATIONS} from '../../public/typed-identifier-contract.mjs';
+  CONTRACT_VERSION, CITATIONS} from '../../apps/web/src/typed-identifier-contract.mjs';
 
 const fixtures=JSON.parse(readFileSync(new URL('./fixtures/typed-identifier-contract.generated.json',import.meta.url),'utf8'));
 const input=(original,representationHint=null,extra={})=>({original,namespace:'barcode',representationHint,...extra});

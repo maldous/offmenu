@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {finishInventory} from '../../public/checkout-model.js';
-import {prepareReceipt, reviewReceipt, receiptRetentionPlan} from '../../public/receipt-review-model.js';
+import {finishInventory} from '../../apps/web/src/checkout-model.js';
+import {prepareReceipt, reviewReceipt, receiptRetentionPlan} from '../../apps/web/src/receipt-review-model.js';
 
 const context = (overrides = {}) => ({accountId: 'account-a', now: 100,
   consent: {accountId: 'account-a', receiptReview: true, expiresAt: 500},

@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {wasteInsight} from '../../public/integration-owner03.mjs';
-import {setupInsights} from '../../public/insights-ui.js';
-import {finishInventory} from '../../public/checkout-model.js';
-import {validateState} from '../../cloud/state.mjs';
-import {setLanguage,formatNumber} from '../../public/i18n.js';
+import {wasteInsight} from '../../apps/web/src/integration-owner03.mjs';
+import {setupInsights} from '../../apps/web/src/insights-ui.js';
+import {finishInventory} from '../../apps/web/src/checkout-model.js';
+import {validateState} from '../../apps/web/server/state.mjs';
+import {setLanguage,formatNumber} from '../../apps/web/src/i18n.js';
 
 const today='2026-10-14',dates=[today];
 const context={accountId:'account-a',sessionEpoch:'epoch-1',consent:true,canReadWasteObservations:true};
@@ -14,7 +14,7 @@ const receipt={id:'receipt-1',mode:'waste',area:'Bench',shelf:'Bowl',startedAt:t
 const observation={id:'obs-1',accountId:'account-a',receiptId:'receipt-1',sourceId:'lot-1',observedAt:receipt.finishedAt,quantity:125,unit:'g',reason:null,provenance:{sourceRef:'receipt-1/lot-1',method:'measured'}};
 
 test('normal locale inventory includes consumer display templates and fallback diagnostics',()=>{
-  const english=JSON.parse(readFileSync(new URL('../../public/locales/en.json',import.meta.url),'utf8'));
+  const english=JSON.parse(readFileSync(new URL('../../apps/web/assets/locales/en.json',import.meta.url),'utf8'));
   const coverage=JSON.parse(readFileSync(new URL('../../docs/i18n-coverage.json',import.meta.url),'utf8'));
   for(const message of ['Recorded cleanup evidence',
     '{receipts} cleanup receipts · {items} recorded stock-removal items',
@@ -26,7 +26,7 @@ test('normal locale inventory includes consumer display templates and fallback d
     'Partial recorded observations only; not all waste or person-level attribution.',
     'Cost snapshots are not admitted by this observation contract; waste value remains unknown.']) {
     assert.equal(english[message],message);
-    assert.ok(coverage.entries[message].sources.includes('public/integration-owner03.mjs'));
+    assert.ok(coverage.entries[message].sources.includes('apps/web/src/integration-owner03.mjs'));
     assert.equal(coverage.entries[message].arabic,false);
   }
 });
@@ -101,6 +101,6 @@ test('production setupInsights render invokes the consumer on existing completio
     assert.match(panels[0].text,/Stock removal is not a measured-waste/);assert.equal(writes,0);assert.deepEqual(profile,before);
     assert.equal(panels[0].children[0].lang,'en');assert.equal(panels[0].children[0].dir,'auto');
     ui.render();assert.equal(target.children.filter(n=>n.dataset.owner03==='waste-insight').length,1);
-    const app=readFileSync(new URL('../../public/app.js',import.meta.url),'utf8');assert.match(app,/import \{setupInsights\} from '.\/insights-ui.js'/);assert.match(app,/const insights=setupInsights/);
+    const app=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');assert.match(app,/import \{setupInsights\} from '.\/insights-ui.js'/);assert.match(app,/const insights=setupInsights/);
   } finally {setLanguage('en');globalThis.document=previous;}
 });

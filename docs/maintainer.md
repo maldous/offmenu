@@ -24,18 +24,19 @@ integration/runtime receipt for the actual accepted commit and runtime pin.
 ## Dependencies
 
 CI uses Node.js 24 and Python 3.12; the Python package declares Python 3.10 or
-newer. Use the committed lockfile and declared extras for a fresh development
-environment:
+newer. Bootstrap the pinned delivery environment and install this checkout
+editable so the packages under `src/` resolve correctly:
 
 ```sh
-python3 -m venv .venv
-. .venv/bin/activate
-python3 -m pip install -e '.[test]'
+python3.12 scripts/bootstrap_delivery.py
+. .venv-delivery/bin/activate
 npm ci
 ```
 
-The build invokes `python3` as well as Node. The test extra supplies the parser,
-schema, image and spreadsheet dependencies used by the Python suite. Collection
+Use this activated environment for the Python commands below. The build invokes
+`python3` as well as Node. For the full Python suite, also install the declared
+test extra with `python -m pip install -e '.[test]'`; it supplies the parser,
+schema, image and spreadsheet dependencies beyond the delivery lock. Collection
 extras are separate; installing dependencies does not select a source, grant
 source-use rights or start acquisition.
 
@@ -79,10 +80,10 @@ these local checks and remain subject to their current configuration and holds.
 | Command/output | Effect |
 | --- | --- |
 | `npm run i18n:check` | Checks the generated locale inventory without rewriting it. |
-| `npm run i18n:extract` | Rewrites `public/locales/en.json` and `docs/i18n-coverage.json`; review both diffs. |
+| `npm run i18n:extract` | Rewrites `apps/web/assets/locales/en.json` and `docs/i18n-coverage.json`; review both diffs. |
 | `npm run build` | Checks locale inventory, builds browser assets and the Worker, and creates the extension archive. |
-| `dist/`, `cloud/generated.mjs`, `netlify-return/i18n.js` | Ignored generated outputs. `dist/worker.mjs` is a Worker module, not a standalone static-site server. |
-| `extension/popup.js` | Tracked generated file from `extension/popup-source.js`; a build can change it. Review the generated diff. |
+| `dist/`, `apps/web/server/generated.mjs`, `deploy/auth-return/i18n.js` | Ignored generated outputs. `dist/worker.mjs` is a Worker module, not a standalone static-site server. |
+| `apps/retailer-extension/popup.js` | Tracked generated file from `apps/retailer-extension/popup-source.js`; a build can change it. Review the generated diff. |
 | `npm run check:generated` | Compares that tracked extension output with an in-memory build; writes no replacement output. |
 
 Builds embed the checkout's Git HEAD and a build timestamp. Building dirty source
@@ -110,11 +111,10 @@ open a schema-initializing connection; use the demo database rather than treatin
 this CLI as a read-only Gold inspector. Repeating example imports updates the
 example records in that database.
 
-The server serves `offmenu/web.html` and its local SQLite API. Open
+The server serves `src/offmenu/web.html` and its local SQLite API. Open
 `http://127.0.0.1:8765`; stop your own server with Ctrl-C. This is the small Python
-interface, not the Cloudflare app under `public/` and not the owner-held native
-preview. There is no `npm run dev` or `npm start` script. Use the preview owner's
-current run instructions for the full web app; do not substitute the Python
+interface. The full web application lives under `apps/web/`; use the preview
+owner's current run instructions for the owner-held native preview; do not substitute the Python
 server or run `dist/worker.mjs` directly with Node. LAN camera testing additionally
 needs the trusted HTTPS setup described in the README; physical device checks
 remain separate from automated tests.
@@ -131,7 +131,7 @@ remain separate from automated tests.
 | `BETTER_AUTH_URL` | A deployment-owned explicit HTTPS origin. `https://offmenu.example.invalid` is a documentation placeholder, not a working environment. |
 | `BETTER_AUTH_SECRET` | A separately provisioned deployment secret; no real or reusable example value belongs in source or this guide. |
 
-The main handler now wires `cloud/auth-runtime.mjs` before its legacy proxy and
+The main handler now wires `apps/web/server/auth-runtime.mjs` before its legacy proxy and
 protected routes. Its default export retains Netlify authentication. Selecting
 Better Auth requires a trusted deployment entry point with explicit auth options;
 changing the mode alone does not supply them. Source integration and synthetic
@@ -156,15 +156,18 @@ that a clean full application build passed with lifecycle scripts disabled.
 Keep private environment values in the existing local/deployment configuration;
 changing a variable in a file does not mount an adapter or qualify activation.
 
-## Automatic work tracking
+## Work tracking and historical operational ledger
 
-OffMenu work, deliverables and action status belong in the existing canonical
-ledger, not GitHub Issues. GitHub pull requests remain the code-review route.
-Existing operational callers must record meaningful actions automatically as
-part of their workflow: pickup, result, review, failure, merge, activation,
-pause and cleanup. Returning a chat answer or changing an issue is not a ledger
-record. This rule does not introduce a new tracker or imply that a background
-scheduler is running.
+Current discovery, delivery and maintenance use the versioned repository standard
+and private LangGraph task receipts. Linear may record selected work and acceptance;
+it is optional for local deterministic execution. GitHub pull requests remain the
+code-review route. Neither assignment nor issue closure proves execution.
+
+The following ledger contract belongs to the retained historical operational
+lanes and their existing callers. It is preserved for their eventual authorized
+handoff; it does not gate this workstream, start a scheduler, or resume workers.
+Those existing callers retain their original pickup/result/review/activation/pause
+records. A source migration does not rewrite those historical obligations.
 
 The same authority is
 `/home/user/src/offmenu-data/runtime/control/interim-obligation-index.json` plus

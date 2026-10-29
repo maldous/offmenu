@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {qualify} from '../../public/evidence-model.js';
-import {packageRestrictionEvidence} from '../../public/package-restriction-evidence.js';
+import {qualify} from '../../apps/web/src/evidence-model.js';
+import {packageRestrictionEvidence} from '../../apps/web/src/package-restriction-evidence.js';
 
 const now = Date.parse('2026-10-14T06:40:59.087Z');
 const rule = {predicate: 'halal', operator: 'include', value: true, certifiedOnly: true};

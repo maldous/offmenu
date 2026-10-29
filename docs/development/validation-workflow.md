@@ -19,8 +19,8 @@ when affected. A local fast pass is evidence for that scope, not a release pass.
 1. Check syntax of changed JavaScript entry points or modules. For example:
 
    ```sh
-   node --check public/checkout-model.js
-   node --check public/app.js
+   node --check apps/web/src/checkout-model.js
+   node --check apps/web/src/app.js
    ```
 
 2. Run the existing tests that exercise the changed interface or invariant.
@@ -47,7 +47,7 @@ when affected. A local fast pass is evidence for that scope, not a release pass.
    npm run build
    ```
 
-   A build regenerates tracked `extension/popup.js`. Do not use that regeneration
+   A build regenerates tracked `apps/retailer-extension/popup.js`. Do not use that regeneration
    to conceal prior drift. Resolve and review drift deliberately; keep its
    initial failure evidence. A build checks compilation and asset packaging,
    not the serving instance, phone, authentication or full API behavior.

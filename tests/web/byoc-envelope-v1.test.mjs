@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createEnvelopeCryptor,credentialUseAllowed} from '../../cloud/byoc-envelope-v1.mjs';
+import {createEnvelopeCryptor,credentialUseAllowed} from '../../apps/web/server/byoc-envelope-v1.mjs';
 const subject={ownerUserId:'owner-a',kitchenId:null,objectType:'connection',objectId:'connection-a',purpose:'provider_credentials',providerId:'fixture-provider'};
 const reference={keyRef:'opaque-fixture-key',keyVersion:1};
 async function fixture(){ const key=await crypto.subtle.generateKey({name:'AES-GCM',length:256},false,['encrypt','decrypt']);return createEnvelopeCryptor({resolveKey:async request=>request.keyRef===reference.keyRef&&request.keyVersion===1?key:null}); }

@@ -7,8 +7,8 @@ import {gzipSync} from 'node:zlib';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {gzipLines} from '../../scripts/gzip-jsonl.mjs';
-import {createEngine,assertCurated} from '../../corpus/engine.mjs';
-import {corpusLookup} from '../../cloud/corpus.mjs';
+import {createEngine,assertCurated} from '../../tools/corpus/engine.mjs';
+import {corpusLookup} from '../../apps/web/server/corpus.mjs';
 test('cold Worker pages stay within 50 operations and resume sparse filters without losing records',async()=>{
  const files=new Map(),entries=[];
  const add=(key,value)=>files.set(key,gzipSync(value));
@@ -46,7 +46,7 @@ test('local compiler and serving engine publish selected facts, page Unicode/bar
   const input=join(dir,'input'),output=join(dir,'release');execFileSync('mkdir',['-p',input]);
   await writeFile(join(input,'normalized.jsonl.gz'),gzipSync(JSON.stringify([row])+'\n'));
   await writeFile(join(input,'manifest.json'),JSON.stringify({sourceId:'off',status:'normalized',releaseId:'fixture',normalizedRows:1,scope:'fixture',license:'ODbL',archiveSha256:'test'}));
-  execFileSync('python3',['scripts/build-curated-corpus.py','--release-dir',input,'--output',output,'--version','test'],{cwd:process.cwd()});
+  execFileSync('python3',['tools/data-processing/build_curated_corpus.py','--release-dir',input,'--output',output,'--version','test'],{cwd:process.cwd()});
   const engine=await createEngine(key=>readFile(join(output,'blobs',key)));
   const page=await engine.lookup({source:'off',barcode:'00012345',country:'JP'});assert.equal(page.records.length,1);assertCurated(page.records[0]);assert.equal(page.records[0].data.ingredientsText,undefined);assert.equal(page.records[0].data.rawNutriments,undefined);assert.equal(page.records[0].curation.automaticDietQualification,false);
   assert.equal((await engine.lookup({source:'off',query:'日本語'})).records.length,1);assert.equal((await engine.lookup({source:'off',country:'FR'})).records.length,0);
@@ -66,7 +66,7 @@ test('local compiler and serving engine publish selected facts, page Unicode/bar
   const previousManifest={...manifest,releaseId:'previous-test'};
   await writeFile(join(previous,'blobs/manifest.json'),JSON.stringify(previousManifest));
   await writeFile(join(output,'blobs/manifest.json'),JSON.stringify(manifest));
-  await mkdir(join(dir,'netlify/public'),{recursive:true});await writeFile(join(dir,'netlify/public/index.html'),'<h1>Curation</h1>');
+  await mkdir(join(dir,'deploy/netlify/public'),{recursive:true});await writeFile(join(dir,'deploy/netlify/public/index.html'),'<h1>Curation</h1>');
   const publisher=join(process.cwd(),'scripts/prepare-curated-publication.mjs');
   const noticeBytes=Buffer.from('Fixture publisher notice\n');
   const notice={key:'notices/off/fixture/NOTICE.txt',bytes:noticeBytes.length,sha256:createHash('sha256').update(noticeBytes).digest('hex')};
@@ -90,7 +90,7 @@ test('local compiler and serving engine publish selected facts, page Unicode/bar
   await assert.rejects(readFile(join(published,'manifest.json')),/ENOENT/);
   assert.throws(()=>assertCurated({...page.records[0],data:{credentials:'secret'}}),/private payload/);
   await writeFile(join(input,'normalized.jsonl.gz'),gzipSync(JSON.stringify([{...row,provenance:{...provenance,visibility:'private'}}])+'\n'));
-  assert.throws(()=>execFileSync('python3',['scripts/build-curated-corpus.py','--release-dir',input,'--output',join(dir,'private-output'),'--version','bad'],{stdio:'pipe'}),/Command failed/);
+  assert.throws(()=>execFileSync('python3',['tools/data-processing/build_curated_corpus.py','--release-dir',input,'--output',join(dir,'private-output'),'--version','bad'],{stdio:'pipe'}),/Command failed/);
   await assert.rejects(readFile(join(dir,'private-output/blobs/manifest.json')),/ENOENT/);
  }finally{await rm(dir,{recursive:true,force:true});}
 });

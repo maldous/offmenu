@@ -3,16 +3,16 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {parse} from 'acorn';
-import {finishInventory,locationKey,makeAutoLot} from '../../public/checkout-model.js';
-import {validateLot,validSourceObservationReference} from '../../public/model.js';
-import {IDENTIFIER_DB,IDENTIFIER_RUN,DETAIL_SELECTION} from '../../public/scanner-identity-v2.js';
-import {reconcileCookedStock} from '../../public/cooking-model.js';
-import {t,setLocalizedText,getLanguage} from '../../public/i18n.js';
-import * as handoff from '../../public/scanner-kitchen-handoff.js';
+import {finishInventory,locationKey,makeAutoLot} from '../../apps/web/src/checkout-model.js';
+import {validateLot,validSourceObservationReference} from '../../apps/web/src/model.js';
+import {IDENTIFIER_DB,IDENTIFIER_RUN,DETAIL_SELECTION} from '../../apps/web/src/scanner-identity-v2.js';
+import {reconcileCookedStock} from '../../apps/web/src/cooking-model.js';
+import {t,setLocalizedText,getLanguage} from '../../apps/web/src/i18n.js';
+import * as handoff from '../../apps/web/src/scanner-kitchen-handoff.js';
 
 // Execute the shipped callbacks, not copies of their logic. The small DOM/storage
 // doubles intentionally make no browser, camera, network, or cloud-sync claim.
-const source=readFileSync(new URL('../../public/app.js',import.meta.url),'utf8');
+const source=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
 const nodes=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body;
 const names=['draftKey','saveDraft','readScannerImport','completeScannerHandoff','scannerScopeMatches','today','save','canEditCheckout','autoAccept','trustedIngredient','mappedIngredient','openWorkspace','startCheckout','renderBasket','saveReceipt','renderFinalReceipt','editReceiptItem'];
 const functions=names.flatMap(name=>nodes.filter(n=>n.type==='FunctionDeclaration'&&n.id.name===name).map(n=>source.slice(n.start,n.end)));

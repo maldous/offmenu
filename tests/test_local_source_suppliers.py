@@ -9,7 +9,7 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location('supplier_candidate', ROOT / 'offmenu/refresh/local_source_suppliers.py')
+SPEC = importlib.util.spec_from_file_location('supplier_candidate', ROOT / 'src/offmenu/refresh/local_source_suppliers.py')
 module = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(module)
 SCHEMA = (ROOT / 'tests/fixtures/source_supplier_reference_v1.sql').read_bytes()

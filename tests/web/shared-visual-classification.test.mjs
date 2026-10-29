@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {associateProductVisual,afterProductVisualAssociationFailure} from '../../public/product-visual-association.js';
+import {associateProductVisual,afterProductVisualAssociationFailure} from '../../apps/web/src/product-visual-association.js';
 import {photoFixture} from './fixtures/off-photos/context.mjs';
 // All classification IDs, evidence and presentations in this file are generated
 // contract fixtures, not actual source mappings or admitted icon assets.

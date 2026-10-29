@@ -169,11 +169,11 @@ class EvidenceWorkTests(unittest.TestCase):
 class EnglishWheelResourceTests(unittest.TestCase):
     def test_offline_wheel_isolated_resource_matches_canonical_schema(self):
         repository = Path(__file__).resolve().parents[1]
-        expected = hashlib.sha256((repository / 'offmenu/refresh/english_extension.schema.json').read_bytes()).hexdigest()
+        expected = hashlib.sha256((repository / 'src/offmenu/refresh/english_extension.schema.json').read_bytes()).hexdigest()
         with tempfile.TemporaryDirectory(dir=WORK) as temporary:
             root = Path(temporary)
             source = root / 'source'; source.mkdir()
-            shutil.copytree(repository / 'offmenu', source / 'offmenu', ignore=shutil.ignore_patterns('__pycache__'))
+            shutil.copytree(repository / 'src/offmenu', source / 'src/offmenu', ignore=shutil.ignore_patterns('__pycache__'))
             shutil.copy2(repository / 'pyproject.toml', source / 'pyproject.toml')
             artifacts = root / 'wheels'; artifacts.mkdir()
             guard = "import socket\ndef denied(*a,**k): raise AssertionError('network forbidden')\nsocket.socket.connect=denied\nsocket.create_connection=denied\nsocket.getaddrinfo=denied\n"

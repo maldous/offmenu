@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
-import {sourceCategoryClaims,unknownCategoryDisposition} from '../../public/source-category-claims.js';
-import {normalizeOFF,normalizeUSDA,record} from '../../public/unified-data.js';
+import {sourceCategoryClaims,unknownCategoryDisposition} from '../../apps/web/src/source-category-claims.js';
+import {normalizeOFF,normalizeUSDA,record} from '../../apps/web/src/unified-data.js';
 
 const source={id:'off',name:'Generated source',url:'https://source.invalid/',license:'synthetic',countries:[]};
 test('OFF source category terms, code paths, language, version and extensions survive normalization exactly',()=>{
@@ -64,7 +64,7 @@ test('browser and offline OFF adapters preserve the same source fields and prove
   const browser=sourceCategoryClaims(raw);
   const script=`import json,sys\nfrom offmenu.refresh.product_adapters import ProductContext,_off\nc=ProductContext('off','fixture','2026-10-25T00:00:00Z','synthetic','fixture','a'*64,'b'*64)\np=list(_off(c,json.load(sys.stdin)))[0]\nprint(json.dumps({'fields':p['data']['sourceCategoryFields'],'evidence':p['provenance']['sourceCategoryFields']}))`;
   const offline=JSON.parse(execFileSync('python3',['-I','-B','-c',
-    `import sys;sys.path.insert(0,${JSON.stringify(new URL('../../',import.meta.url).pathname)});\n`+script],
+    `import sys;sys.path.insert(0,${JSON.stringify(new URL('../../src/',import.meta.url).pathname)});\n`+script],
     {input:JSON.stringify(raw),encoding:'utf8',timeout:5000}));
   assert.deepEqual(browser.fields,offline.fields);
   assert.deepEqual(browser.evidence,offline.evidence);

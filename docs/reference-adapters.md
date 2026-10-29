@@ -18,7 +18,7 @@ is bounded to 64 MiB; eager parsing occurs in memory, not streaming. Emitted
 canonical output is bounded to 64 MiB, 8 MiB per record and 100,000 records.
 Execution process memory isolation remains the caller's responsibility. Large retained releases stay in Foo.
 
-The explicit output schema is `schemas/reference-candidate.schema.json`.
+The explicit output schema is `contracts/schemas/reference-candidate.schema.json`.
 
 ## Supported retained input contracts
 
@@ -66,6 +66,9 @@ imported. The exact blobs retained in the repository are:
 | FoodOn | scripts/collect-foodon-definitions.py | fa232aabeb8162e2bbbd51ef71775e4b46193cb2 |
 | QUDT | scripts/collect-measurement-terminology-20261014.py | 73a0dcbeea567f478fcf394870bc03ebbd728127 |
 | Overture | scripts/collect-overture.py | 831a3123936c88a6dcddffdf12486bbd83477797 |
+
+The table preserves the historical source paths and blobs. Maintained collection
+tools now live under `tools/data-processing/` with Python filenames in snake case.
 
 No source-wide licence is substituted for mixed Overture provider rights.
 FoodOn own-namespace and QUDT reference rights are scoped separately; notices,

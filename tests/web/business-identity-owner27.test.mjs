@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {evaluateBusinessIdentity} from '../../cloud/business-identity-owner27.mjs';
+import {evaluateBusinessIdentity} from '../../apps/web/server/business-identity-owner27.mjs';
 const ref = id => ({sourceId: 'synthetic:registry', recordId: id});
 const common = {status: 'active', reviewStatus: 'admitted', matchStatus: 'verified', rightsRevision: 'fixture/1',
   sourceRecordId: 'record-proof', validFrom: '2026-01-01', freshUntil: '2027-01-01', jurisdiction: 'AU', market: 'AU'};

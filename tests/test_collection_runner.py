@@ -346,7 +346,7 @@ class CollectionRunnerTests(unittest.TestCase):
         path.write_bytes(canonical(self.registry))
         output = self.root / label
         command = [sys.executable, '-B', str(Path(__file__).resolve().parents[1] /
-                   'scripts/collect-source-access.py'), str(output), '--collection-registry',
+                   'tools/data-processing/collect_source_access.py'), str(output), '--collection-registry',
                    str(path), '--registry-sha256', sha(path.read_bytes()), '--country', 'AU']
         return subprocess.run(command, capture_output=True, text=True), output
 

@@ -5,9 +5,9 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from dev.delivery import symphony_launch as launch
-from dev.delivery import symphony_workspace as workspace
-from dev.delivery.symphony_codex import isolated_codex_environment
+from tools.delivery import symphony_launch as launch
+from tools.delivery import symphony_workspace as workspace
+from tools.delivery.symphony_codex import isolated_codex_environment
 
 
 class NativeAdmission(unittest.TestCase):

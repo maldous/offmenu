@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {planSummary} from '../../public/menu-model.js';
-import {matchMeals} from '../../public/model.js';
+import {planSummary} from '../../apps/web/src/menu-model.js';
+import {matchMeals} from '../../apps/web/src/model.js';
 const date='2026-10-26';
 const recipe={id:'generated:review-boundary',servings:2,ingredients:[{ingredient:'rice',quantity:100,unit:'g'}]};
 const plan=[{recipeId:recipe.id,date,servings:2}];

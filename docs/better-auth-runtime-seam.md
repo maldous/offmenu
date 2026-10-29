@@ -4,7 +4,7 @@ Base: [72a8a74919773238e402b2a6f5a089bf8a4cefa2](https://github.com/maldous/offm
 
 ## Delivered scope
 
-`cloud/auth-runtime.mjs` is an **unmounted** adapter. The current dispatcher does not import it. No live authentication switch, environment setting, credential, provider, schema application, deployment or browser change is included.
+`apps/web/server/auth-runtime.mjs` is an **unmounted** adapter. The current dispatcher does not import it. No live authentication switch, environment setting, credential, provider, schema application, deployment or browser change is included.
 
 Missing `OFFMENU_AUTH_MODE` or exact `netlify` returns the supplied legacy verifier unchanged and declines all route handling. Exact `better-auth` constructs the existing reviewed factory with deployment-owned options. Other values fail closed. Never derive mode, factory options or verifier from the request or mutable administrative settings.
 
@@ -26,7 +26,7 @@ The unchanged catalogue extractor ran against all 91 verified current inputs plu
 - Obtain explicit activation approval and provision origin, independent secret, native D1, session policy and delivery providers through approved secret channels. Apply the additive auth schema under the migration/backup plan.
 - Import exact legacy IDs and trusted roles, including disabled-account handling. Verify original private-state keys and provider-vault AAD against staging imports. Do not normalize subjects or fall back by matching email.
 - Treat principal lookup as read-only: it disables hidden session refresh. Deliver renewal via explicit Better Auth routes and preserve their Set-Cookie headers at the eventual dispatcher/browser boundary.
-- Migrate delegated administrative proofs. Current `cloud/admin-mcp.mjs` still encrypts a legacy bearer and checks it through Netlify on each fresh authorization. This module does not make those proofs compatible. Use an explicitly versioned proof tied to a trusted verified session identifier and original owner, check live session expiry/revocation and fresh roles, retain encryption/expiry/audience/PKCE restrictions, and provide bounded legacy-proof handling or reconsent. Never reinterpret old bearer contents as a new session ID or accept a caller-supplied owner. Normal integration grants retain their existing logout contract.
+- Migrate delegated administrative proofs. Current `apps/web/server/admin-mcp.mjs` still encrypts a legacy bearer and checks it through Netlify on each fresh authorization. This module does not make those proofs compatible. Use an explicitly versioned proof tied to a trusted verified session identifier and original owner, check live session expiry/revocation and fresh roles, retain encryption/expiry/audience/PKCE restrictions, and provide bounded legacy-proof handling or reconsent. Never reinterpret old bearer contents as a new session ID or accept a caller-supplied owner. Normal integration grants retain their existing logout contract.
 - Complete native staging acceptance, original-account continuity, provider/password policy, recovery and rollback checks from the approved migration plan. No activation is implied by source integration.
 
 Source references: [factory](https://github.com/maldous/offmenu/blob/72a8a74919773238e402b2a6f5a089bf8a4cefa2/cloud/auth.mjs), [principal](https://github.com/maldous/offmenu/blob/72a8a74919773238e402b2a6f5a089bf8a4cefa2/cloud/auth-principal.mjs), [current admin proofs](https://github.com/maldous/offmenu/blob/72a8a74919773238e402b2a6f5a089bf8a4cefa2/cloud/admin-mcp.mjs).

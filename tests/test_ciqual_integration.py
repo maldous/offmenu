@@ -13,7 +13,7 @@ from unittest.mock import patch
 from offmenu_ciqual import adapter
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / 'scripts/run-ciqual-synthetic.py'
+SCRIPT = ROOT / 'tools/data-processing/run_ciqual_synthetic.py'
 FIXTURES = ROOT / 'tests/fixtures/ciqual'
 EVIDENCE = ROOT / 'docs/evidence/ciqual-synthetic/approved-artifact'
 spec = importlib.util.spec_from_file_location('ciqual_synthetic_entry', SCRIPT)
@@ -31,7 +31,7 @@ class CiqualIntegrationTests(unittest.TestCase):
     def test_four_implementation_files_match_independent_approval(self):
         self.assertEqual(len(self.lock['dependencies']), 4)
         for pin in self.lock['dependencies']:
-            raw = (ROOT / pin['path']).read_bytes()
+            raw = (ROOT / 'src' / pin['path']).read_bytes()
             self.assertEqual(len(raw), pin['bytes'])
             self.assertEqual(hashlib.sha256(raw).hexdigest(), pin['sha256'])
         self.assertEqual({pin['path'] for pin in self.lock['inputs']}, set(adapter.INPUTS))
@@ -108,8 +108,8 @@ class CiqualIntegrationTests(unittest.TestCase):
 
     def test_manifest_preserves_norway_and_includes_ciqual_contract(self):
         lines = (ROOT / 'MANIFEST.in').read_text().splitlines()
-        self.assertIn('include offmenu_norway/contract.json', lines)
-        self.assertIn('include offmenu_ciqual/contract.json', lines)
+        self.assertIn('include src/offmenu_norway/contract.json', lines)
+        self.assertIn('include src/offmenu_ciqual/contract.json', lines)
 
 
 if __name__ == '__main__':

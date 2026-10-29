@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {memberSuitability,groupSuitability,generateHouseholdDay,ingredientUnlocks,pantryDuration} from '../../public/household-model.js';
-import {finishInventory} from '../../public/checkout-model.js';import {validateState} from '../../cloud/state.mjs';import {buildDocument,documentHTML,documentEPUB} from '../../public/documents.js';
+import {memberSuitability,groupSuitability,generateHouseholdDay,ingredientUnlocks,pantryDuration} from '../../apps/web/src/household-model.js';
+import {finishInventory} from '../../apps/web/src/checkout-model.js';import {validateState} from '../../apps/web/server/state.mjs';import {buildDocument,documentHTML,documentEPUB} from '../../apps/web/src/documents.js';
 const member={id:'sam',name:'Sam',portion:1,age:30,height:180,weight:80,avoid:['cilantro'],advisors:['balanced']};
 const recipe={id:'r',title:'Coconut rice',servings:1,source:'Example',license:'CC0',instructions:['Simmer.'],ingredients:[{ingredient:'rice',quantity:100,unit:'g'},{ingredient:'coconut milk',quantity:100,unit:'ml'}]};
 const stock=[{id:'rice',barcode:'1111',name:'Rice',ingredient:'rice',quantity:300,unit:'g'},{id:'milk',barcode:'2222',name:'Coconut milk',ingredient:'coconut milk',quantity:300,unit:'ml'}];

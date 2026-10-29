@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
 SPEC = importlib.util.spec_from_file_location(
-    'reconcile_source_inventory_lineage', ROOT / 'scripts/reconcile-source-inventory-lineage.py')
+    'reconcile_source_inventory_lineage', ROOT / 'tools/data-processing/reconcile_source_inventory_lineage.py')
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
 

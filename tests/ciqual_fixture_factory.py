@@ -115,7 +115,7 @@ def write_fixture(root):
 if __name__ == '__main__':
     root = Path(__file__).resolve().parents[1]
     write_fixture(root / 'tests/fixtures/ciqual')
-    (root / 'offmenu_ciqual/contract.json').write_bytes(canonical({
+    (root / 'src/offmenu_ciqual/contract.json').write_bytes(canonical({
         'schemaVersion': 'offmenu-ciqual-contract/1', 'sourceId': 'ciqual', 'releaseId': '2025',
         'scope': 'synthetic-fixture', 'columnMap': MAP,
         'historicalInputsEnabled': False,

@@ -8,8 +8,8 @@ import {createHash} from 'node:crypto';
 import {gzipLines as lines} from './gzip-jsonl.mjs';
 import {once} from 'node:events';
 import {finished} from 'node:stream/promises';
-import {normalizeOFF,normalizePrices,record,validateRecords} from '../public/unified-data.js';
-import {sourceById} from '../public/sources.js';
+import {normalizeOFF,normalizePrices,record,validateRecords} from '../apps/web/src/unified-data.js';
+import {sourceById} from '../apps/web/src/sources.js';
 
 async function hash(path){const h=createHash('sha256');for await(const b of createReadStream(path))h.update(b);return h.digest('hex');}
 const [sourceId,release,input,directory,locationInput,proofInput]=process.argv.slice(2);

@@ -2,10 +2,10 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { DatabaseSync } from 'node:sqlite';
-import { careUpdateRoutes, notifyCare } from '../../cloud/care-updates.mjs';
+import { careUpdateRoutes, notifyCare } from '../../apps/web/server/care-updates.mjs';
 
 function database(){
- const sqlite=new DatabaseSync(':memory:');sqlite.exec(readFileSync(new URL('../../cloud/care-updates-schema.sql',import.meta.url),'utf8'));
+ const sqlite=new DatabaseSync(':memory:');sqlite.exec(readFileSync(new URL('../../apps/web/server/care-updates-schema.sql',import.meta.url),'utf8'));
  const statement=sql=>({bind(...args){const query=sqlite.prepare(sql);return {first:async()=>query.get(...args)||null,all:async()=>({results:query.all(...args)}),run:async()=>query.run(...args)};}});
  return {sqlite,DB:{prepare:statement,batch:async statements=>Promise.all(statements.map(statement=>statement.all?.()))}};
 }

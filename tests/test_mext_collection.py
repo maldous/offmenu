@@ -2,7 +2,7 @@ import importlib.util
 import unittest
 from pathlib import Path
 
-spec = importlib.util.spec_from_file_location('mext', Path(__file__).parents[1] / 'scripts/collect-mext.py')
+spec = importlib.util.spec_from_file_location('mext', Path(__file__).parents[1] / 'tools/data-processing/collect_mext.py')
 mext = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mext)
 

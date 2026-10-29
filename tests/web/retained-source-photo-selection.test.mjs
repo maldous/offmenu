@@ -3,14 +3,14 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {createRequire} from 'node:module';
-import {qualifyRetainedSourcePhoto} from '../../dev/retained-source-photo-catalogue.mjs';
-import {retainedSourcePhotoCandidate} from '../../public/retained-source-photo-selection.js';
-import {associateProductVisual} from '../../public/product-visual-association.js';
-import {mountScannerProductVisual} from '../../public/scanner-product-visuals.js';
+import {qualifyRetainedSourcePhoto} from '../../integrations/candidates/retained-source-photo-catalogue.mjs';
+import {retainedSourcePhotoCandidate} from '../../apps/web/src/retained-source-photo-selection.js';
+import {associateProductVisual} from '../../apps/web/src/product-visual-association.js';
+import {mountScannerProductVisual} from '../../apps/web/src/scanner-product-visuals.js';
 import {photoFixture} from './fixtures/off-photos/context.mjs';
-import {OFF_PHOTOS} from '../../public/off-photo-catalogue.js';
+import {OFF_PHOTOS} from '../../apps/web/src/off-photo-catalogue.js';
 const {parse}=createRequire(import.meta.url)('acorn');
-const scannerSource=fs.readFileSync(new URL('../../public/production-scanner/shelf-scanner.js',import.meta.url),'utf8');
+const scannerSource=fs.readFileSync(new URL('../../apps/web/src/production-scanner/shelf-scanner.js',import.meta.url),'utf8');
 function actualPhotoArguments(detail){let call;const walk=n=>{if(!n||typeof n!=='object')return;if(n.type==='CallExpression'&&n.callee.object?.name==='productVisual'&&n.callee.property?.name==='show')call=n;for(const v of Object.values(n))if(Array.isArray(v))v.forEach(walk);else if(v&&typeof v==='object')walk(v);};walk(parse(scannerSource,{ecmaVersion:'latest',sourceType:'module'}));assert.ok(call);return vm.runInNewContext('('+scannerSource.slice(call.arguments[0].start,call.arguments[0].end)+')',{selected:{detail,name:'Generated curated primary label'},current:{id:'generated-entry'},generation:1,document:{documentElement:{dataset:{theme:'light'}}},navigator:{onLine:true}});}
 // Generated identity, source binding, admission and review fixtures only.
 // No real private catalogue/native data is imported into this source test.

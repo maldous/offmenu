@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {validateState} from '../../cloud/state.mjs';
+import {validateState} from '../../apps/web/server/state.mjs';
 const lot={id:'synthetic-stock',barcode:'12345678',name:'Rice',ingredient:'rice',quantity:500,unit:'g',location:{area:'Bench',shelf:'Bowl'}};
 const receipt=(id='receipt:1')=>({id,mode:'waste',area:'Bench',shelf:'Bowl',startedAt:'2026-10-14T10:00:00Z',finishedAt:'2026-10-14T10:01:00Z',items:[{...lot}]});
 const state=(r=receipt())=>({inventory:[{...lot}],products:{},recipes:[],profile:{servings:1,uiLanguage:'ar',dataLanguage:'ja',lastReceipt:r,waste:[r]}});

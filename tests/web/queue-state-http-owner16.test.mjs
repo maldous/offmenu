@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createQueueStateHttpHandler} from '../../cloud/queue-state-bridge-owner16.mjs';
+import {createQueueStateHttpHandler} from '../../apps/web/server/queue-state-bridge-owner16.mjs';
 const origin = 'https://offmenu.test';
 const command = {operationId: 'synthetic_operation_http1', expectedVersion: 0,
   state: {profile: {ownerMetadata: {source: 'synthetic', qualifier: 'unknown'}}}};

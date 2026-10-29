@@ -13,7 +13,7 @@ async function fixture({mode, configured = false, authSchema = true} = {}) {
   const key = configured ? 'configured' : 'default';
   if (!compiled.has(key)) {
     const source = `
-import defaultHandler, {createOffMenuHandler} from './cloud/handler.mjs';
+import defaultHandler, {createOffMenuHandler} from './apps/web/server/handler.mjs';
 let verification;
 const handler = ${configured ? `createOffMenuHandler({authOptions: {
  sessionPolicy: {expiresIn: 3600, updateAge: 600},
@@ -48,11 +48,11 @@ export default {async fetch(request, env, ctx) {
     const db = await worker.getD1Database('DB');
     const schema = new DatabaseSync(':memory:');
     try {
-      schema.exec(readFileSync(new URL('../../cloud/schema.sql', import.meta.url), 'utf8'));
+      schema.exec(readFileSync(new URL('../../apps/web/server/schema.sql', import.meta.url), 'utf8'));
       for (const {sql} of schema.prepare("SELECT sql FROM sqlite_master WHERE sql IS NOT NULL AND name NOT LIKE 'sqlite_%' ORDER BY CASE type WHEN 'table' THEN 0 ELSE 1 END").all())
         await db.prepare(sql).run();
     } finally {schema.close();}
-    if (authSchema) await db.exec(readFileSync(new URL('../../cloud/auth-schema.sql', import.meta.url), 'utf8'));
+    if (authSchema) await db.exec(readFileSync(new URL('../../apps/web/server/auth-schema.sql', import.meta.url), 'utf8'));
     const request = (path, {method = 'GET', body, cookie, bearer, requestOrigin = origin, headers = {}} = {}) =>
       worker.dispatchFetch(origin + path, {method, redirect: 'manual',
         headers: {Origin: requestOrigin, 'Content-Type': 'application/json', 'cf-connecting-ip': '192.0.2.19',

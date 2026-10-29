@@ -158,7 +158,7 @@ result = witness_retained_input(contract, evidence_bundle, fresh_private_destina
                                input_root=retained_originals, limits=limits)
 ```
 
-`scripts/witness-retained-products.py` provides this exact fixed-source API as a
+`tools/data-processing/witness_retained_products.py` provides this exact fixed-source API as a
 CLI. Evidence arguments are explicit `relative-path:bytes:sha256` pins, never an
 arbitrary JSON contract/plugin. It returns2 for an incomplete or anomalous
 witness,0 only for a clean scope witness, never a data-acceptance claim. Required

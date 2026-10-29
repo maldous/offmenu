@@ -8,7 +8,7 @@ test('fresh canonical schema supports compiled care ownership and public recipe 
  mock.get('https://offmenu-accounts.netlify.app').intercept({path:'/.netlify/identity/user',method:'GET'}).reply(200,({headers})=>{const id=(headers.authorization||headers.Authorization).replace('Bearer ','');return JSON.stringify({id,app_metadata:{roles:id==='admin'?['admin']:[]},user_metadata:{roles:['admin']}});}).persist();
  const worker=new Miniflare({modules:true,scriptPath:'dist/worker.mjs',compatibilityDate:'2026-08-06',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],fetchMock:mock,bindings:{PROVIDER_VAULT_KEY:'a'.repeat(64)}});
  try{
-  const db=await worker.getD1Database('DB'),schema=new DatabaseSync(':memory:');schema.exec(readFileSync('cloud/schema.sql','utf8'));
+  const db=await worker.getD1Database('DB'),schema=new DatabaseSync(':memory:');schema.exec(readFileSync('apps/web/server/schema.sql','utf8'));
   for(const {sql} of schema.prepare("SELECT sql FROM sqlite_master WHERE sql IS NOT NULL AND name NOT LIKE 'sqlite_%' ORDER BY CASE type WHEN 'table' THEN 0 ELSE 1 END").all())await db.prepare(sql).run();schema.close();
   const call=(path,token,method='GET',body)=>worker.dispatchFetch('https://offmenu.test'+path,{method,headers:{...(token?{Authorization:'Bearer '+token}:{}),Origin:'https://offmenu.test','Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
   let response=await call('/api/care/cases','alice','POST',{confirmed:true,idempotencyKey:'compiled_case_creation_01',category:'recipe',title:'Correction',message:'The displayed public quantity needs checking.'});assert.equal(response.status,201);const caseId=(await response.json()).case.id;

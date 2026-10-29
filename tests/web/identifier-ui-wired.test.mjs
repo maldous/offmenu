@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {IDENTIFIER_DB,IDENTIFIER_RUN,DETAIL_SELECTION,expectedForms} from '../../public/scanner-identity-v2.js';
-import {projectIdentifierPage,mergeIdentifierPages,loadSelectedDetails,sourceObservationReference,currentSavedReference} from '../../public/scanner-identifiers.js';
-import {validSourceObservationReference,validateLot} from '../../public/model.js';
+import {IDENTIFIER_DB,IDENTIFIER_RUN,DETAIL_SELECTION,expectedForms} from '../../apps/web/src/scanner-identity-v2.js';
+import {projectIdentifierPage,mergeIdentifierPages,loadSelectedDetails,sourceObservationReference,currentSavedReference} from '../../apps/web/src/scanner-identifiers.js';
+import {validSourceObservationReference,validateLot} from '../../apps/web/src/model.js';
 
 const original='036000291452',alias='0036000291452';
 const row=(id,lexical=original,disposition='source-asserted')=>({assertion_id:id,run_id:IDENTIFIER_RUN,

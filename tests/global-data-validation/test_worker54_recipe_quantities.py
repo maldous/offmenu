@@ -2,7 +2,7 @@ import importlib.util
 import pathlib
 import unittest
 ROOT=pathlib.Path(__file__).resolve().parents[2]
-spec=importlib.util.spec_from_file_location('w54',ROOT/'scripts/global-data-validation/worker-54-recipe-quantities.py')
+spec=importlib.util.spec_from_file_location('w54',ROOT/'tools/data-processing/global-data-validation/worker_54_recipe_quantities.py')
 w=importlib.util.module_from_spec(spec);spec.loader.exec_module(w)
 class SyntheticQuantityCases(unittest.TestCase):
     """Synthetic grammar cases, not retained recipe evidence."""

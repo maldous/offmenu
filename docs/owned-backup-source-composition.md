@@ -1,6 +1,6 @@
 # Owned backup source composition
 
-`cloud/private-portability-owned-backup-v1.mjs` composes the independently accepted `owned-snapshot-extractor.mjs` with the existing private portability exporter. Each invocation owns its component instances and authority stamp. Every extraction/export authority read must preserve the same complete context. A changed identity, namespace, consent, deletion scope or revision requires a fresh call. The exporter still requires an independently supplied package-bound complete inventory and payload digest.
+`apps/web/server/private-portability-owned-backup-v1.mjs` composes the independently accepted `owned-snapshot-extractor.mjs` with the existing private portability exporter. Each invocation owns its component instances and authority stamp. Every extraction/export authority read must preserve the same complete context. A changed identity, namespace, consent, deletion scope or revision requires a fresh call. The exporter still requires an independently supplied package-bound complete inventory and payload digest.
 
 Only `packageId`, `recoveryRef` and `keyReference` are caller inputs. Trusted server adapters supply `readAuthority`, `openSnapshot`, `authorizeSourceRecord` and `resolveKey`. Do not infer verified issuer/subject from an email or create attestation from extraction completeness. Connections retain their safe archival shape; credentials and active grants are excluded.
 

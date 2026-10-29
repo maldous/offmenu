@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {createOffMenuAuthRuntime, offMenuAuthMode} from '../../cloud/auth-runtime.mjs';
+import {createOffMenuAuthRuntime, offMenuAuthMode} from '../../apps/web/server/auth-runtime.mjs';
 import {workerRuntimeBuildOptions} from '../../scripts/worker-build-options.mjs';
 
 test('missing setting preserves exact legacy verifier without D1 or secrets', async () => {
@@ -36,6 +36,6 @@ test('workerd conditions are confined to the final Worker bundle', () => {
   assert(Object.isFrozen(workerRuntimeBuildOptions));
   const source = readFileSync(new URL('../../scripts/build.mjs', import.meta.url), 'utf8');
   assert.equal((source.match(/\.\.\.workerRuntimeBuildOptions/g) || []).length, 1);
-  assert.match(source, /build\(\{\.\.\.workerRuntimeBuildOptions,entryPoints:\['cloud\/generated\.mjs'\]/);
-  assert.match(source, /build\(\{entryPoints:\['public\/app\.js'\],bundle:true/);
+  assert.match(source, /build\(\{\.\.\.workerRuntimeBuildOptions,entryPoints:\['apps\/web\/server\/generated\.mjs'\]/);
+  assert.match(source, /build\(\{entryPoints:\['apps\/web\/src\/app\.js'\],bundle:true/);
 });

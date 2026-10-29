@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { matchRecall } from '../../public/evidence-model.js';
-import { evaluateRecallScope } from '../../public/recall-scope-model.js';
+import { matchRecall } from '../../apps/web/src/evidence-model.js';
+import { evaluateRecallScope } from '../../apps/web/src/recall-scope-model.js';
 
 const asOf = '2026-10-14T06:00:00Z';
 const notice = () => ({

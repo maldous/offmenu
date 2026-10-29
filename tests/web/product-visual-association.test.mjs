@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {associateProductVisual,afterProductVisualAssociationFailure,
-  PRODUCT_VISUAL_ASSOCIATION} from '../../public/product-visual-association.js';
-import {PRODUCT_VISUAL_SELECTOR,appProductVisualFallback} from '../../public/product-visual-selector.js';
+  PRODUCT_VISUAL_ASSOCIATION} from '../../apps/web/src/product-visual-association.js';
+import {PRODUCT_VISUAL_SELECTOR,appProductVisualFallback} from '../../apps/web/src/product-visual-selector.js';
 import {photoFixture} from './fixtures/off-photos/context.mjs';
 
 test('all future consumers get the same exact qualified association, credit and versions',()=>{

@@ -7,7 +7,7 @@ import {Miniflare, createFetchMock} from 'miniflare';
 import {workerRuntimeBuildOptions} from '../../scripts/worker-build-options.mjs';
 const origin = 'https://offmenu.test';
 const source = `
-import {createOffMenuAuthRuntime} from './cloud/auth-runtime.mjs';
+import {createOffMenuAuthRuntime} from './apps/web/server/auth-runtime.mjs';
 let verification;
 export default {async fetch(request, env) {
  const runtime = createOffMenuAuthRuntime(env, {
@@ -37,7 +37,7 @@ async function fixture({schema = true} = {}) {
    BETTER_AUTH_URL: origin, BETTER_AUTH_SECRET: 'synthetic-runtime-seam-only-never-deploy-0000000000'}});
  try {
  const db = await worker.getD1Database('DB');
- if(schema) await db.exec(readFileSync(new URL('../../cloud/auth-schema.sql', import.meta.url), 'utf8'));
+ if(schema) await db.exec(readFileSync(new URL('../../apps/web/server/auth-schema.sql', import.meta.url), 'utf8'));
  const request = (path, {method = 'GET', body, cookie, requestOrigin = origin} = {}) => worker.dispatchFetch(origin + path,
   {method, redirect: 'manual', headers: {Origin: requestOrigin, 'Content-Type': 'application/json',
    'cf-connecting-ip': '192.0.2.25', ...(cookie ? {Cookie: cookie} : {})},

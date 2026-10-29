@@ -3,7 +3,7 @@
 This branch adds native customer care, public recipe/community participation,
 opt-in community profiles and trophies, owner-scoped personal AI preferences and
 MCP actions, and separately scoped administrator MCP operations. Canonical
-`cloud/schema.sql` includes the additive feature tables for a fresh database.
+`apps/web/server/schema.sql` includes the additive feature tables for a fresh database.
 
 Verification on 14 October 2026 (Melbourne): 264 JavaScript tests, five compiled
 Worker tests, and 36 Python tests pass. The compiled care and MCP tests use only the

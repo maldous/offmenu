@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {transitionMealPlan19, createMealPlanOwner19} from '../../public/meal-plan-owner19.mjs';
-import {planSummary} from '../../public/menu-model.js';
-import {validateState} from '../../cloud/state.mjs';
+import {transitionMealPlan19, createMealPlanOwner19} from '../../apps/web/src/meal-plan-owner19.mjs';
+import {planSummary} from '../../apps/web/src/menu-model.js';
+import {validateState} from '../../apps/web/server/state.mjs';
 
 const clock = () => '2026-10-14T10:00:00.000Z';
 function state() {

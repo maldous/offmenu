@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {calculateShoppingDeficit} from '../../dev/shopping-deficit.mjs';
+import {calculateShoppingDeficit} from '../../integrations/candidates/shopping-deficit.mjs';
 const row=(rowRef,quantity)=>({rowRef,quantity,ingredientId:'synthetic:a',unit:'g',basis:'synthetic:dry'});
 test('rejects exact requirement aggregates above binary64 maximum before rounding',()=>{
  assert.throws(()=>calculateShoppingDeficit({requirements:[row('r1',Number.MAX_VALUE),row('r2',1e292)],available:[row('a1',Number.MAX_VALUE)]}),RangeError);

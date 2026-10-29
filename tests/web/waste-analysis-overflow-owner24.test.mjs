@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {analyzeWaste} from '../../public/waste-analysis-model.js';
+import {analyzeWaste} from '../../apps/web/src/waste-analysis-model.js';
 const context={accountId:'a'};
 const row={accountId:'a',receiptId:'r',sourceId:'s',measured:true,quantity:1,unit:'g',costSnapshot:{sourceId:'s',quantity:1,unit:'g',amount:1,currency:'AUD'}};
 test('finite quantities whose sum overflows reject instead of JSON null with known coverage',()=>{

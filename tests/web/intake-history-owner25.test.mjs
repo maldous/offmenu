@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {readFileSync} from 'node:fs';
-import {createIntakeHistory} from '../../cloud/intake-history-owner25.mjs';
-import {validateState} from '../../cloud/state.mjs';
+import {createIntakeHistory} from '../../apps/web/server/intake-history-owner25.mjs';
+import {validateState} from '../../apps/web/server/state.mjs';
 // Test-only exact snapshot of 59d8bca52cc3281741862d17f2579668d6e6140d:
 // public/intake-entry-model.js. No Git object access or production model adoption.
 import * as entryModel from './fixtures/intake-entry-model-owner25.mjs';

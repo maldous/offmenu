@@ -16,7 +16,7 @@ from tests.test_product_detail_query import IDENTIFIER_SCHEMA
 
 
 def ddl(name):
-    tree=ast.parse(Path('offmenu/refresh/'+name+'.py').read_text())
+    tree=ast.parse(Path('src/offmenu/refresh/'+name+'.py').read_text())
     return next(ast.literal_eval(n.value) for n in tree.body if isinstance(n,ast.Assign)
         and any(isinstance(t,ast.Name) and t.id=='DDL' for t in n.targets))
 

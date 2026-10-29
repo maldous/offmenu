@@ -4,7 +4,7 @@ from pathlib import Path
 import shutil
 import unittest
 from PIL import Image, ImageDraw, ImageFont
-spec = importlib.util.spec_from_file_location('ocr18', Path(__file__).resolve().parents[2] / 'scripts/receipt-image-ocr-owner18.py')
+spec = importlib.util.spec_from_file_location('ocr18', Path(__file__).resolve().parents[2] / 'tools/data-processing/receipt_image_ocr_owner18.py')
 ocr = importlib.util.module_from_spec(spec); spec.loader.exec_module(ocr)
 def context():
     return {'accountId':'a','sourceId':'private-user','now':100,'retainUntil':400,'ownerConfirmed':True,

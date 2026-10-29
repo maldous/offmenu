@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createMealPreferences, setMealPreferences, resetMealPreferences, withMealPreferences} from '../../public/meal-preference-model.js';
-import {validateState} from '../../cloud/state.mjs';
-import {memberSuitability} from '../../public/household-model.js';
+import {createMealPreferences, setMealPreferences, resetMealPreferences, withMealPreferences} from '../../apps/web/src/meal-preference-model.js';
+import {validateState} from '../../apps/web/server/state.mjs';
+import {memberSuitability} from '../../apps/web/src/household-model.js';
 
 const scope = {accountId: 'synthetic-account', memberId: 'sam'};
 const filled = () => setMealPreferences(createMealPreferences(scope), scope, {likes: ['rice'], textures: ['crunchy'], spice: 'mild'});

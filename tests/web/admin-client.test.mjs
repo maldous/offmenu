@@ -1,3 +1,3 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {credentialPatch,previewAdminChanges} from '../../public/admin-model.js';
+import test from 'node:test';import assert from 'node:assert/strict';import {credentialPatch,previewAdminChanges} from '../../apps/web/src/admin-model.js';
 test('admin credential patch never includes kept or plaintext absent values',()=>{assert.deepEqual(credentialPatch({SENTRY_DSN:{mode:'keep',value:'secret'},BREVO_API_KEY:{mode:'disable'}}),{BREVO_API_KEY:null});assert.throws(()=>credentialPatch({SENTRY_DSN:{mode:'replace',value:''}}));});
 test('admin preview contains paths and credential names only',()=>{const preview=previewAdminChanges({services:{a:false},global:{units:'metric'}},{services:{a:true},global:{units:'metric'}},{BREVO_API_KEY:'secret'});assert.deepEqual(preview,{paths:['services.a'],credentials:['BREVO_API_KEY']});assert.equal(JSON.stringify(preview).includes('secret'),false);});

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {copyReviewedWeek} from '../../public/plan-template-model.js';
-import {planSummary} from '../../public/menu-model.js';
+import {copyReviewedWeek} from '../../apps/web/src/plan-template-model.js';
+import {planSummary} from '../../apps/web/src/menu-model.js';
 
 function fixture() {
   return {

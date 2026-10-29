@@ -14,8 +14,8 @@ def load_module(name, path):
     spec.loader.exec_module(module)
     return module
 
-PARSER = load_module('source_faithful_parse', ROOT / 'offmenu/refresh/source_faithful_parse.py')
-AI = load_module('assistant_intermediate', ROOT / 'offmenu/refresh/assistant_intermediate.py')
+PARSER = load_module('source_faithful_parse', ROOT / 'src/offmenu/refresh/source_faithful_parse.py')
+AI = load_module('assistant_intermediate', ROOT / 'src/offmenu/refresh/assistant_intermediate.py')
 
 HTML = '''<!doctype html><html><body><main class="field--name-body">
 <h1>Fixture bake</h1><h2>Ingredients</h2><ul>

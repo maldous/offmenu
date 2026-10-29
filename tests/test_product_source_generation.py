@@ -199,8 +199,8 @@ class ProductGenerationTests(unittest.TestCase):
             build([row], reference_ids=[PROTECTED[0]])
 
     def test_f04_contract_and_protection_can_be_injected_without_runtime_tree(self):
-        contract = (adapter.REPO_ROOT / 'corpus/common-data-contract.json').read_bytes()
-        schema = (adapter.REPO_ROOT / 'corpus/common-data.schema.json').read_bytes()
+        contract = (adapter.REPO_ROOT / 'contracts/corpus/common-data-contract.json').read_bytes()
+        schema = (adapter.REPO_ROOT / 'contracts/corpus/common-data.schema.json').read_bytes()
         packet = build([fixture()], contract_raw=contract, schema_raw=schema)
         self.assertEqual(packet['curation']['sharedContractSha256'], adapter.CONTRACT_SHA)
         self.assertEqual(packet['curation']['protectedDefinitionCount'], len(PROTECTED))

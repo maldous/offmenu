@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {sessionFetch} from '../../public/session-fetch.js';
+import {sessionFetch} from '../../apps/web/src/session-fetch.js';
 test('account switch during refresh prevents pending write submission',async()=>{
  let identity={owner:'alice'},calls=0;
  const run=sessionFetch({identity:()=>identity,refresh:async()=>{identity={owner:'bob'};},currentUser:async()=>({id:'bob'}),request:async()=>{calls++;}});

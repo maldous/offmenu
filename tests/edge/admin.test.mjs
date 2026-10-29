@@ -12,7 +12,7 @@ test('compiled administrator controls preserve private ownership, fresh roles, C
  const worker=new Miniflare({modules:true,scriptPath:'dist/worker.mjs',compatibilityDate:'2026-08-06',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],fetchMock:mock,bindings:{THIRD_PARTY_CONFIG:JSON.stringify({client:{diagnostics:{enabled:true}}}),SENTRY_DSN:'https://0123456789abcdef@o1.ingest.sentry.io/2',PROVIDER_VAULT_KEY:'a'.repeat(64),BREVO_API_KEY:'environment-secret-key',BREVO_SENDER_NAME:'OffMenu',BREVO_SENDER_EMAIL:'sender@example.test',SUPPORT_EMAIL:'support@example.test'}});
  try{
   const db=await worker.getD1Database('DB'),schema=new DatabaseSync(':memory:');
-  for(const file of ['schema.sql','catalogue-schema.sql','corpus-schema.sql'])schema.exec(readFileSync('cloud/'+file,'utf8'));
+  for(const file of ['schema.sql','catalogue-schema.sql','corpus-schema.sql'])schema.exec(readFileSync('apps/web/server/'+file,'utf8'));
   for(const {sql} of schema.prepare("SELECT sql FROM sqlite_master WHERE sql IS NOT NULL AND name NOT LIKE 'sqlite_%' ORDER BY CASE type WHEN 'table' THEN 0 ELSE 1 END").all())await db.prepare(sql).run();
   for(const row of schema.prepare('SELECT id,document,revision,active FROM source_policies').all())await db.prepare('INSERT INTO source_policies(id,document,revision,active) VALUES(?,?,?,?)').bind(row.id,row.document,row.revision,row.active).run();schema.close();
   await db.prepare("INSERT INTO user_state(user_id,revision,state_json,updated_at) VALUES('alice',1,?,?)").bind(JSON.stringify({private:'ALICE_PRIVATE_RESULT'}),new Date().toISOString()).run();

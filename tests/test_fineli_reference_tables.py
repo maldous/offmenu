@@ -1,6 +1,6 @@
 import gzip,importlib.util,json,tempfile,unittest
 from pathlib import Path
-spec=importlib.util.spec_from_file_location('fineli_refs',Path(__file__).parents[1]/'scripts/collect-fineli-reference-tables.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+spec=importlib.util.spec_from_file_location('fineli_refs',Path(__file__).parents[1]/'tools/data-processing/collect_fineli_reference_tables.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
 class FineliReferenceTests(unittest.TestCase):
  def test_formula_yield_and_source_diet_tags_remain_unreviewed(self):
   with tempfile.TemporaryDirectory() as temp:

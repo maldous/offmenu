@@ -2,13 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
-import { createRecallConsumer, RECALL_HELPER_PIN } from '../../public/recall-binding-owner26.mjs';
+import { createRecallConsumer, RECALL_HELPER_PIN } from '../../apps/web/src/recall-binding-owner26.mjs';
 
 // Execute the selected integrated helper, verifying its retained exact bytes.
-const helper=readFileSync(new URL('../../public/recall-scope-model.js',import.meta.url));
+const helper=readFileSync(new URL('../../apps/web/src/recall-scope-model.js',import.meta.url));
 assert.equal(createHash('sha1').update(`blob ${helper.length}\0`).update(helper).digest('hex'),'d83cdd7acb64b9ccece7549df2868fb29efc31b9');
 assert.equal(RECALL_HELPER_PIN,'643c130eed6d4d64a7e755d6c233128fa978aaa8');
-const {evaluateRecallScope}=await import('../../public/recall-scope-model.js');
+const {evaluateRecallScope}=await import('../../apps/web/src/recall-scope-model.js');
 const consume = createRecallConsumer({ evaluateScope: evaluateRecallScope, helperPin: RECALL_HELPER_PIN, independentlyReviewed: true });
 const asOf = '2026-10-14T06:00:00.100Z';
 const lot = { id: 'lot-A', productId: 'product', productVersion: 'v1', barcode: '4006381333931', market: 'AU', lotCode: 'A', labelVersion: 'v1' };

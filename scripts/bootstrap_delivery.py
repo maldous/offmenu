@@ -14,7 +14,7 @@ import venv
 
 ROOT = Path(__file__).resolve().parents[1]
 ENVIRONMENT = ROOT / '.venv-delivery'
-LOCK = ROOT / 'dev/delivery/requirements.lock'
+LOCK = ROOT / 'tools/delivery/requirements.lock'
 
 
 def main():
@@ -46,6 +46,12 @@ sys.exit(bool(errors))
     if result.returncode:
         return result.returncode
     subprocess.run([str(interpreter), '-m', 'pip', 'check', '--disable-pip-version-check'], check=True)
+    # Install the src-layout project itself; locked dependencies/build tools are
+    # already checked above, so this step needs neither resolution nor network.
+    subprocess.run([str(interpreter), '-m', 'pip', 'install', '--disable-pip-version-check',
+                    '--no-input', '--no-deps', '--no-build-isolation', '-e', str(ROOT)], check=True)
+    subprocess.run([str(interpreter), '-I', '-c',
+                    'import offmenu, offmenu_ciqual, offmenu_norway'], cwd=ROOT.parent, check=True)
     print(json.dumps({'environment': '.venv-delivery', 'python': str(interpreter),
                       'status': 'ready', 'services_started': False}))
     return 0

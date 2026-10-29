@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {acceptLanguages,excludedLocales,negotiateLocale,providerLocale,cookieValue,LOCALE_COOKIE,ACCOUNT_LOCALE_COOKIE} from '../../public/locale-negotiation.js';
-import {requestLocale} from '../../cloud/locale.mjs';
-import {browserLocaleDecision,applyAccountLanguage,setLanguage,onLanguagePreference} from '../../public/i18n.js';
-import {validateState} from '../../cloud/state.mjs';
-import {kitchenProjection} from '../../public/sync-model.js';
+import {acceptLanguages,excludedLocales,negotiateLocale,providerLocale,cookieValue,LOCALE_COOKIE,ACCOUNT_LOCALE_COOKIE} from '../../apps/web/src/locale-negotiation.js';
+import {requestLocale} from '../../apps/web/server/locale.mjs';
+import {browserLocaleDecision,applyAccountLanguage,setLanguage,onLanguagePreference} from '../../apps/web/src/i18n.js';
+import {validateState} from '../../apps/web/server/state.mjs';
+import {kitchenProjection} from '../../apps/web/src/sync-model.js';
 
 test('request languages respect quality, exclusions, subtags and invalid preferences',()=>{
   assert.deepEqual(acceptLanguages('ar;q=0,en-GB;q=0.8,fr;q=1,ar-EG;q=0.4'),['fr','en-GB','ar-EG']);

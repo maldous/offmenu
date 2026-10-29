@@ -18,7 +18,7 @@ ROOT=Path(__file__).resolve().parents[1]
 def module(name,path):
     spec=importlib.util.spec_from_file_location(name,path)
     result=importlib.util.module_from_spec(spec);spec.loader.exec_module(result);return result
-m=module('owner_batch',ROOT/'scripts/run-selected-dataset-grant.py')
+m=module('owner_batch',ROOT/'tools/operations/run_selected_dataset_grant.py')
 grant=module('grant_fixture',ROOT/m.HELPER)
 inspector=module('inspector_fixture',ROOT/m.INSPECTOR)
 projector=module('projector_fixture',ROOT/m.PROJECTOR)
@@ -233,7 +233,7 @@ class OwnerBatchTests(unittest.TestCase):
     def test_checkout_pins_and_git_tree_bytes(self):
         bodies={key:(ROOT/key).read_bytes() for key in [m.SELF,*m.PINS]}
         for key,body in bodies.items():
-            path=self.root/key;path.parent.mkdir(exist_ok=True);path.write_bytes(body)
+            path=self.root/key;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(body)
         def capture(args,*unused,**kwargs):
             body=b'a'*40+b'\n' if args[-1]=='HEAD' else bodies[args[-1].split(':',1)[1]]
             return {'exitCode':0,'overflow':False,'stdout':body}
@@ -250,7 +250,7 @@ class OwnerBatchTests(unittest.TestCase):
         def captured(args,*a,**kwargs):
             calls.append(args)
             if args[0]=='/usr/bin/sudo':return result
-            return {'exitCode':2,'overflow':False,'stdout':json.dumps(evidence).encode(),'outcome':'finished'}
+            return {'exitCode':0 if evidence['status']=='complete' else 2,'overflow':False,'stdout':json.dumps(evidence).encode(),'outcome':'finished'}
         with patch.object(m.sys,'flags',SimpleNamespace(isolated=1)),patch.object(m.os,'geteuid',return_value=1000),patch.object(m,'tool_preflight',return_value=self.tools),patch.object(m,'verify_checkout',return_value=bodies),patch.object(m,'verified_owner'),patch.object(m,'capture',side_effect=captured),patch.object(m.sys.stdin,'isatty',return_value=True),patch.object(m.subprocess,'run',return_value=SimpleNamespace(returncode=0)),patch.object(m,'publish',side_effect=lambda report,directory,gh:posted.append(report) or {'status':'uncertain-no-retry'}),patch('builtins.print'):
             code=m.run('a'*40)
         return code,calls,posted
@@ -273,7 +273,7 @@ class OwnerBatchTests(unittest.TestCase):
         evidence=projector.inspect() if hasattr(projector,'inspect') else projector.inventory()
         def captured(args,*a,**kwargs):
             if args[0]=='/usr/bin/sudo':raise OSError('SECRET_CANARY')
-            return {'exitCode':2,'overflow':False,'stdout':json.dumps(evidence).encode(),'outcome':'finished'}
+            return {'exitCode':0 if evidence['status']=='complete' else 2,'overflow':False,'stdout':json.dumps(evidence).encode(),'outcome':'finished'}
         with patch.object(m.sys,'flags',SimpleNamespace(isolated=1)),patch.object(m.os,'geteuid',return_value=1000),patch.object(m,'tool_preflight',return_value=self.tools),patch.object(m,'verify_checkout',return_value=bodies),patch.object(m,'verified_owner'),patch.object(m,'capture',side_effect=captured),patch.object(m.sys.stdin,'isatty',return_value=True),patch.object(m.subprocess,'run',return_value=SimpleNamespace(returncode=0)),patch.object(m,'publish',side_effect=lambda report,directory,gh:posted.append(report) or {'status':'posted'}),patch('builtins.print',side_effect=lambda *args,**kwargs:messages.append(str(args))):
             self.assertEqual(124,m.run('a'*40))
         self.assertEqual('unknown-outcome',posted[0]['grant']['status']);self.assertNotIn('SECRET_CANARY',json.dumps(posted))
@@ -294,7 +294,7 @@ class OwnerBatchTests(unittest.TestCase):
         def captured(args,*a,**kwargs):
             calls.append(args)
             if args[0]=='/usr/bin/sudo':return overrides.get('grant_result',result)
-            return {'exitCode':2,'overflow':False,'stdout':json.dumps(evidence).encode(),'outcome':'finished'}
+            return {'exitCode':0 if evidence['status']=='complete' else 2,'overflow':False,'stdout':json.dumps(evidence).encode(),'outcome':'finished'}
         settings={'tool_preflight':{'return_value':self.tools},'verify_checkout':{'return_value':bodies},
                   'verified_owner':{'return_value':None},'capture':{'side_effect':captured},
                   'publish':{'side_effect':lambda report,directory,gh:posted.append(copy.deepcopy(report)) or {'status':'posted'}}}

@@ -8,14 +8,14 @@ data/
 
 node_modules/
 dist/
-cloud/generated.mjs
+apps/web/server/generated.mjs
 
 .netlify/
 
 .playwright-cli/
 output/playwright/
 output/third-party-compatibility/
-netlify-return/i18n.js
+deploy/auth-return/i18n.js
 
 .env
 .env.*
@@ -26,3 +26,8 @@ netlify-return/i18n.js
 .delivery/
 
 .venv-delivery/
+
+# Local packaging output and recoverable retired generated files
+build/
+.cache/
+integrations/staged/auth/dist/

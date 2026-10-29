@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {cameraCrop} from '../../public/scanner-ui.js';
+import {cameraCrop} from '../../apps/web/src/scanner-ui.js';
 
 test('visible cover guide maps to the same source rectangle for native and fallback decoders',()=>{
  const frame={left:0,top:0,width:400,height:800};

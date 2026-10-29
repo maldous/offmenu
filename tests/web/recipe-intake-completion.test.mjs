@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {recipeIntakeSnapshot,intakeSummary,validateInsights} from '../../public/insights-model.js';
+import {recipeIntakeSnapshot,intakeSummary,validateInsights} from '../../apps/web/src/insights-model.js';
 
 const date='2026-10-25';
 const input=()=>({date,slot:'Dinner',servings:2,memberId:'sam',note:'User note',

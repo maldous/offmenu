@@ -1,9 +1,9 @@
 import test from 'node:test';
-import {readRetailBarcodes} from '../../public/scanner-decode.js';
+import {readRetailBarcodes} from '../../apps/web/src/scanner-decode.js';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {readBarcodes,prepareZXingModule} from 'zxing-wasm/reader';
-import {validGTIN,retailCode,createPresentationGate,enhanceContrast,RETAIL_FORMATS} from '../../public/scanner-model.js';
+import {validGTIN,retailCode,createPresentationGate,enhanceContrast,RETAIL_FORMATS} from '../../apps/web/src/scanner-model.js';
 prepareZXingModule({overrides:{wasmBinary:await readFile('node_modules/zxing-wasm/dist/reader/zxing_reader.wasm')}});
 const code='4006381333931';
 test('retail validation rejects errors, wrong lengths, non-retail data and bad checksums',()=>{

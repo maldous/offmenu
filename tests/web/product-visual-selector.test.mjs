@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {selectProductVisual,afterVisualLoadFailure} from '../../public/product-visual-selector.js';
+import {selectProductVisual,afterVisualLoadFailure} from '../../apps/web/src/product-visual-selector.js';
 const ref={schema:'offmenu-identifier-observation/2',namespace:'barcode',originalLexicalValue:'generated-code',
   sourceLexicalValue:'generated-source-code',sourceId:'off',releaseId:'generated-release',
   observationKey:{run_id:'generated',input_id:'generated',record_ordinal:7,assertion_id:9}};

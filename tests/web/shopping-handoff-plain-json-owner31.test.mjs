@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {proposeShoppingHandoff,confirmShoppingHandoff} from '../../public/shopping-handoff-model.js';
+import {proposeShoppingHandoff,confirmShoppingHandoff} from '../../apps/web/src/shopping-handoff-model.js';
 const options={now:Date.parse('2026-10-16T00:00:00Z')};
 const draft=()=>({id:'direct-1',scope:'account:a/kitchen:k',revision:'r1',kind:'retailer',records:[{id:'source:rice',kind:'product',data:{quantity:null,unit:null},provenance:{sourceId:'off',attribution:'synthetic'}}],detail:{destinationId:'manual-list'}});
 test('direct helper rejects root/nested accessors without invoking them',()=>{
