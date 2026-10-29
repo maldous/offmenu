@@ -11,6 +11,34 @@ test('pantry quantities aggregate compatible lots and exclude unusable stock',()
  assert.notEqual(recipeIngredientKey({name:'cooked rice'}),recipeIngredientKey({name:'rice'}));
  assert.equal(recipeIngredientKey({name:'鸡蛋'}),'egg');
 });
+for(const [scenario,amounts,quantities]of [
+ ['requirement overflow',[Number.MAX_VALUE,Number.MAX_VALUE],[100]],
+ ['stock overflow',[100],[Number.MAX_VALUE,Number.MAX_VALUE]],
+ ['requirement and stock overflow',[Number.MAX_VALUE,Number.MAX_VALUE],[Number.MAX_VALUE,Number.MAX_VALUE]],
+])test(`pantry quantities remain unknown for ${scenario}`,()=>{
+ const recipe={ingredients:amounts.map(amount=>item(amount))};
+ const inventory=quantities.map(quantity=>({ingredient:'rice',quantity,unit:'g'}));
+ const before=structuredClone({recipe,inventory});
+ const result=matchRecipeStock(recipe,inventory,{today:'2026-10-29'});
+ assert.equal(result.quantitiesAvailable,false);
+ assert.deepEqual(result.unknown,['rice']);
+ assert.deepEqual(result.missing,[]);
+ assert.equal(result.required,amounts.length);assert.equal(result.presence,amounts.length);
+ assert.equal(result.coverage,1);assert.deepEqual(result.missingNames,[]);assert.equal(result.needsReview,true);
+ assert.deepEqual({recipe,inventory},before);
+});
+test('large finite pantry totals and deficits remain measurable',()=>{
+ const half=Number.MAX_VALUE/2;
+ const recipe={ingredients:[item(half),item(half)]};
+ const inventory=[{ingredient:'rice',quantity:half,unit:'g'},{ingredient:'rice',quantity:half,unit:'g'}];
+ const before=structuredClone({recipe,inventory});
+ const available=matchRecipeStock(recipe,inventory);
+ assert.equal(available.quantitiesAvailable,true);assert.deepEqual(available.unknown,[]);assert.deepEqual(available.missing,[]);
+ const missing=matchRecipeStock(recipe,inventory.slice(0,1));
+ assert.equal(missing.quantitiesAvailable,false);assert.deepEqual(missing.unknown,[]);
+ assert.deepEqual(missing.missing,[{ingredient:'rice',unit:'g',quantity:half}]);
+ assert.deepEqual({recipe,inventory},before);
+});
 test('personal recipe requires explicit review and does not alter the public source',()=>{
  const r=record(),before=JSON.stringify(r),ingredients=[{name:'rice',amount:100,unit:'g',optional:false}];
  assert.throws(()=>personallyReviewedRecipe(r,{servings:2,ingredients,confirmed:false}));
