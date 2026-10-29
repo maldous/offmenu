@@ -4,6 +4,30 @@ This runbook applies the existing ADR 0004 resource policy and ADR 0005 integrat
 boundaries. It changes neither admission ceilings nor publication authority and
 introduces no manager, scheduler, provider entitlement or service dependency.
 
+## Reuse frameworks while preserving project semantics
+
+The project owner's architectural history distinguishes USF, the Universal Service
+Foundation, from UIF, the infrastructure beneath it for Cloudflare, Netlify and
+external services. Its semantic graph service definitions addressed some concerns
+that OffMenu now wants to serve with existing LangChain/LangGraph capabilities.
+That overlap is motivation to evaluate reuse, not evidence of technical equivalence.
+
+Prefer an appropriate existing framework capability for graph execution, typed
+integration or checkpoint persistence when it satisfies the actual OffMenu contract.
+Do not grow another custom universal framework merely to recreate those features.
+Retain valuable domain definitions, provenance, source eligibility and acceptance
+semantics. LangGraph checkpoints alone do not replace the operation journal's
+external-effect reconciliation or the authenticated integration owner's authority.
+Any replacement needs an explicit mapping of responsibilities and evidence that
+the relevant behavior is preserved; framework availability alone is insufficient.
+
+This guidance is scoped to OffMenu. It does not authorize rewriting USF, UIF or
+CIX, importing their entire backlog, or migrating an active operation. The Linear
+owner is reconciling OffMenu's organizational placement: resolve current tracker
+bindings through that owner rather than hardcoding a new team identity. Keep
+existing issue/run/operation/job identifiers and running work stable while that
+placement is resolved.
+
 ## Select the smallest useful execution lane
 
 | Work | Execution owner and route | Completion evidence |
