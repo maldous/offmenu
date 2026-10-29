@@ -62,9 +62,22 @@ Stokowski does not become an MCP server because workers can use MCP. The initial
 isolated Codex configuration does not inherit workstation MCP servers or their
 credentials. Configure selected worker tools explicitly only when useful and
 authorized. Do not copy broad workstation configuration into every coding child.
-The current Stokowski adapter does not yet submit Windmill validation jobs itself;
-the existing integration writer submits and reconciles those jobs. Full automatic
-stage-to-job-to-merge synchronization is the pending ADR 0005 implementation.
+The journal and validation continuation now submit Windmill jobs through native
+MCP and a typed Windmill-side SDK dispatcher. This path is proven in explicit
+draft-test mode, including terminal restart and backend cancellation, at source
+`8815c61bca80cf6546919ac9394cfdf7b8e9d252`. The dispatcher remains a private
+draft: automatic approval review rejected deployment of the new workspace item
+pending specific user authorization. No alternate deployment was attempted.
+The normal deployed route is therefore not enabled yet. Full stage-to-job-to-merge
+synchronization remains the pending ADR 0005 implementation.
+
+The native MCP client reuses the existing configured Windmill OAuth session in
+coordinator memory; no token/grant is created or copied into worker processes.
+It calls only the typed dispatcher. That script uses Windmill's job-scoped SDK
+authentication to address the fixed existing bridge and exact server job UUID.
+The adapter reads the current Codex-owned OAuth cache and does not overwrite or
+renew it. Refused/expired authentication defers work; unattended renewal still
+belongs to the existing credential manager's lifecycle, not an invented grant.
 
 Correlate issue UUID, immutable manifest, runtime path, source SHA, exact lease,
 native session and Windmill job ID. One component owns each state transition.
@@ -114,3 +127,29 @@ intent/readback, reconciliation and Linear acceptance updates, as specified in
 [ADR 0005](../adr/0005-autonomous-integration.md). It also requires evolving the
 adopted standard and active configuration together. This guide does not claim
 those pending stages are already enabled.
+
+## Verified validation continuation
+
+`stokowski_stage.py bind` verifies the selected task, native output receipt,
+unchanged native clone identity, candidate head, output hashes and the accepted
+base's exact untracked holds. It preserves an explicit derivation record when
+the integration writer adapts native output. It does not publish source or merge.
+The Stokowski launcher can resume that bound stage with `--validation-stage`;
+`--preview-dispatch` is an explicit test option, never an automatic fallback
+after a deployment or permission refusal. Default mode selects the deployed item.
+
+Each operation records issue/stage/base/head/acceptance/policy/executor identity,
+one owner, deterministic Windmill UUID and Foo logical job ID. Requests are fsynced
+to the journal before submission. A lost acknowledgement is inspected by the
+same UUID; absence after an uncertain submission does not authorize blind replay.
+Backend status observations use separate durable identities. An API wrapper's
+failure or cancellation is not subprocess termination evidence. Cancellation
+targets the Foo backend and waits for its reconciled receipt. Source/branch,
+untracked maintained files and output hashes are checked before and after tests.
+
+The real preview-mode validation passed 143 delivery tests (four optional native
+checks skipped there; all 48 Stokowski tests pass in its environment). Seven output
+hashes were verified. Reopening the completed stage produced no second submission.
+A separate bounded validation operation reconciled to backend `cancelled` with
+no remaining child tree. Neither result constitutes application or merge acceptance.
+See [verification](stokowski-verification.json) for exact job IDs and hashes.

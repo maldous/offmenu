@@ -65,5 +65,62 @@
     "Initial tracker transition raced shutdown; fixed and regression tested; metadata reconciled without coding replay",
     "Existing resources and permission boundaries unchanged; legacy workers and hourly automation paused",
     "No CIX changes, Claude, public dashboard, new API charges or raw private receipts published"
-  ]
+  ],
+  "handoff": {
+    "verified_code_revision": "8815c61bca80cf6546919ac9394cfdf7b8e9d252",
+    "mode": "explicit-draft-test",
+    "native_mcp_authenticated": true,
+    "new_credentials_or_grants": false,
+    "dispatcher_path": "u/admin/offmenu_delivery_dispatch",
+    "dispatcher_source_sha256": "4908969d73c2b2b0464771f543d35657da880c39c3b0162731d548aad2bb66b7",
+    "dispatcher_deployed": false,
+    "deployment_status": "denied-before-execution-specific-approval-required",
+    "deployment_rejection": "Automatic approval review classified a new Windmill workspace script deployment as consequential and required explicit authorization for this new item. Draft/test execution remained available. No alternate deployment attempted.",
+    "validation_operation_key": "c42918166ccd0bee96e3b66f6413e9a79fd18b3b519a0a7928e4e52533d871a9",
+    "validation_windmill_job_id": "e0a4719f-369f-53a4-aacf-6908e31fe458",
+    "validation_url": "https://windmill.aldous.info/run/e0a4719f-369f-53a4-aacf-6908e31fe458?workspace=offmenu",
+    "validation_status": "succeeded",
+    "validation_submitted_events": 1,
+    "validation_receipt_canonical_sha256": "1105fe933fba3ce75c5fab82d7c17481e06f2c4ddbd9e15149345894132fc730",
+    "validation_receipt_file_sha256": "d6d8afe56a18263ae50790674b6d84aff85bbbd204835da5912e77e438ae3c52",
+    "accepted_output_sha256": {
+      "tests/delivery/test_stokowski_worker_regressions.py": "ddca011c75f7f17af85010147e20fd6abdfa4151a47f5248756b466d4e0b8b6e",
+      "tools/delivery/stokowski_adapter.py": "a3658455b3676a42db92a4b6f11343a8df90a32ba1d95c8d6223dd76d82ce1a4",
+      "tools/delivery/stokowski_mcp.py": "35b5195b62e56b6b8ad20c9d2af165d84247381de1710f279032b876efc59d76",
+      "tools/delivery/stokowski_operations.py": "b97d79a485cc8c0c25b495a8a652cdc6b7dcd67bfbb0f247125a78c6b2800247",
+      "tools/delivery/stokowski_stage.py": "a67c1b125d6e939c5abfaa8a4e6926f33b6a411f343bc1365291db4e81d32253",
+      "tools/delivery/stokowski_worker.py": "eb1e0b5895a21df721094dc247de03406cae44378b0dc50490b6e327f566ac8d",
+      "tools/delivery/windmill_dispatcher.py": "4908969d73c2b2b0464771f543d35657da880c39c3b0162731d548aad2bb66b7"
+    },
+    "source_base": "eca287b36b8b2027e9d32aa4899ffb204563236c",
+    "acceptance_sha256": "43fb6a927ad559a2d51f82cbb0a5c4d307b8ab0691314f1a48431fb109348370",
+    "delivery_tests": 143,
+    "delivery_skipped_optional_native_tests": 4,
+    "delivery_duration_seconds": 26.79,
+    "native_tests_passed": 48,
+    "stdout_sha256": "4e9e4e969ebd06bf524c3bb47103f3b04799525476096fb169e7a0b51abf5a55",
+    "stderr_sha256": "17c87685ac22e4c611e4165e5b210a038d7ce617d617250f45a93db11e30587c",
+    "reopened_terminal_stage_without_resubmission": true,
+    "cancellation_operation_key": "e1551fb01dc1f9ea3c76a7efa5270818fd845bec7571ba312d9c251aeb50dd23",
+    "cancellation_windmill_job_id": "704d9692-0482-56e9-a805-8f5e978cd8d0",
+    "cancellation_status": "cancelled",
+    "cancellation_submitted_events": 1,
+    "cancellation_receipt_canonical_sha256": "5791ecc8d9d82a369cd8f9e34fc76b2301c5f1f8b189d034f48a875da5920623",
+    "cancellation_receipt_file_sha256": "2fec1a968e419ebf090d41abd7327048967cf45ea2a7c158da5f669bb7a7c564",
+    "cancellation_child_tree_gone": true,
+    "cancellation_reconcile_required": false,
+    "cancellation_scope": "Backend cancellation receipt verified; not a claim that a running child was killed rather than cancelled before execution. Real running/detached-child termination is covered separately by supervisor tests.",
+    "merge_accepted": false
+  },
+  "review_corrections": {
+    "reviewed_head": "5753de04eb339e8e58b535ec272b0848b0d413ae",
+    "fix_revision": "5c76f1c58",
+    "findings": [
+      "Final delta/output evidence now uses the admitted revision and rejects final HEAD/branch drift",
+      "Prompt delivery is nonblocking and included in the same timeout/cancellation/resource monitoring loop"
+    ],
+    "focused_tests_after_fix": 22,
+    "review_threads_resolved": true,
+    "fresh_current_head_review_pending": true
+  }
 }
