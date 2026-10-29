@@ -1,109 +1,57 @@
 # OffMenu Symphony integration
 
-OffMenu has its own on-demand Symphony launcher, workspace hooks, Linear binding
-and Codex configuration. It uses the existing installed native engine and Codex
-executable; it does not start, reconfigure or inherit CIX services, policies or
-workflow hooks. The static template remains default-off. The launcher creates
-a separately admitted finite runtime for the selected issue.
+The supported capability is eight concurrent admitted coding sessions, selected
+by [capacity-policy.json](../../tools/delivery/capacity-policy.json). Native
+Symphony, workspace hooks and Codex state are OffMenu-owned. CIX services and
+credentials are not reconfigured. Capacity does not automatically start sessions
+or resume paused application workers.
 
-## Responsibilities and admission
+Use the [parallel-capacity guide](../development/parallel-capacity.md) and
+[ADR 0004](../adr/0004-resource-aware-parallel-capacity.md). Exact-source reviewed
+manifests select the OffMenu project, issue IDs, tracker label, owners, write
+scopes, resources and acceptance criteria. The tracker preflight rejects missing
+or extra candidates. The legacy convenience default selects UIF-90; it does not
+restrict manifests or the eight-session reservation pool to one issue.
 
-Linear records work, dependencies, acceptance and the current workpad. Symphony
-runs a coding session in an isolated source clone. LangGraph owns finite
-workflow state/checkpoints. Windmill executes deterministic bounded commands
-through the existing SSH jail. The integration writer reviews candidate changes
-and verifies output/test evidence before publication. No component infers
-acceptance from another component's successful API response.
+Native hooks create private same-branch source clones, reserve resources before
+coding, enforce disjoint logical write ownership, retain immutable task/source
+bindings and record completion separately from acceptance. After-run scope
+checks preserve violations as failed evidence. Cancellation retains resource
+holds until the owned process tree is observed stopped. Unknown state does not
+release a lease through time expiry or permit silent replay.
 
-Current binding: project UUID ce60c1ab-a732-4a71-8471-14c9dc393886, team UIF,
-issue UIF-90. Native Symphony requires project slugId `ccd080f4f6f0`; the browser
-URL uses `offmenu-ccd080f4f6f0`. The tracker preflight verifies the exact project,
-team, issue, In Progress state and unique `offmenu-uif-90` label, and checks that
-exactly one candidate is admitted. Source branch/head and installed engine hash
-are pinned. All sessions use the same authorized feature branch name.
+Codex app-server uses the existing ChatGPT login with no new API purchase.
+Each workspace has separate Codex SQLite state. OffMenu's temporary auth reference
+uses a private symlink to the existing auth file, without copying credentials or
+inheriting workstation plugins. The native supervisor reaps its owned child tree
+and retains unresolved outcomes. Provider-session readiness is refreshed without
+starting a coding turn; a locally selected eight-session ceiling is not a vendor
+quota guarantee. New paid API use and paid OpenRouter models remain outside scope.
 
-The launcher permits one agent and one coding turn, at most two hook admissions,
-and a selected finite deadline. No permanent service/schedule is registered.
-Workspace creation refuses existing content; retries preserve attempt records.
-A completion marker means an attempt ended, not that its code is accepted.
-Failed, unknown and deadline outcomes remain explicit. The integration writer
-checks the diff and relevant tests before accepting source output.
-
-## Existing authentication and isolated state
-
-The existing tracker key is delivered in memory through an explicitly selected
-environment or systemd LoadCredential `linear-api-key`. Its OffMenu project
-access was verified by an isolated transient user process. No key is printed,
-copied into source/configuration, replaced, or granted broader access. MCP
-credentials are not exported. CIX's service remains unchanged.
-
-A native no-turn preflight verified the existing ChatGPT Pro Codex route, quota
-availability and available default `gpt-6.1-sol` with medium reasoning. This
-selects the existing included subscription route; no API key/provider purchase
-is configured. Record the actually selected/requested model and any resolution
-limits rather than claiming an unset resolver model.
-
-An exact-command A/B test reproduced initialize timeout with inherited Codex
-home/configuration and initialized successfully with an isolated home. The
-inherited home includes workstation MCP/plugin/hook configuration; no individual
-plugin was singled out without evidence. OffMenu now creates a private temporary
-Codex home referencing the existing auth path through a symlink. It never reads
-or copies auth content and cleans that reference after the owned process ends.
-Only OffMenu SQLite state and private runtime logs/checkpoints are retained.
-This excludes unrelated workstation configuration without changing it.
-
-## Commands
-
-Bootstrap the project environment first, then run offline admission checks:
+The selected tracker key is delivered by the existing credential-injected
+OffMenu environment. MCP credentials are not transferred. Native tracker polling
+uses HTTPS GraphQL and a configured 60-second interval; it is not a webhook.
+Linear records selected work; local LangGraph tasks remain independent of it.
 
 ```sh
-.venv-delivery/bin/python -m unittest discover -s tests/delivery -p test_symphony.py -v
+.venv-delivery/bin/python -m unittest discover -s tests/delivery -v
 ```
 
 ```sh
-python3 tools/delivery/symphony_launch.py preflight
+.venv-delivery/bin/python tools/delivery/symphony_launch.py prepare --runtime /home/user/src/offmenu-data/runtime/SELECTED-RUN --model gpt-6.1-sol --manifest /private/reviewed-tasks.json
 ```
 
-```sh
-python3 tools/delivery/symphony_launch.py preflight --probe
-```
+Preparation validates source/branch/native bundle, immutable inputs and native
+configuration without starting tracker/model execution. `run` requires the same
+explicit manifest, a new finite runtime, existing credential route and
+`--inference-authorized`. Inspect the exact admitted commands and acceptance
+before invoking it. `cancel --runtime ...` records intent; observation of stopped
+processes establishes cleanup. No push, merge, deployment or issue assignment is
+performed automatically.
 
-The last command queries initialization/account/model/quota only: no thread or
-turn starts. Network access must be available for the existing account endpoints.
-`prepare`/`run` refuse tracked-dirty source, wrong branch or altered engine hash.
-Run only from the existing credential-injected user process, selecting a new
-private runtime and reviewed task admission:
-
-```sh
-python3 tools/delivery/symphony_launch.py run --runtime /home/user/src/offmenu-data/runtime/SELECTED-OFFMENU-RUN --model gpt-6.1-sol --inference-authorized --duration-seconds 180
-```
-
-The authority flag records already established authorization; it does not grant
-access. The configured task is deliberately limited to the selected OffMenu
-work item and allowed paths. Extend that contract explicitly for future tasks.
-No automatic push, merge, deployment, Actions, old-worker activation or external
-product lookup occurs. Runtime state/receipts are private and excluded from Git.
-
-## Verified useful work and recovery
-
-The live coding session created eleven CLI integration tests. Independent review
-and rerun passed all eleven, after which the integration writer committed them.
-That session's supervisor hit its finite deadline during continuation; its
-receipt correctly remained unaccepted. A subsequent one-turn session completed normally before its deadline and added five reviewed CLI regressions. Its after-run marker ended the owned polling process cleanly. One-turn configuration avoids
-continuing the same coding task after its candidate is produced. Source-output
-acceptance remains separate from process/session completion.
-
-See [validation evidence](../../tools/delivery/validation.md) for exact source,
-Windmill graph acceptance, checks and remaining limitations. The local engine's
-`.beam` workflow/config parsers can also be invoked without starting Symphony
-using `tools/delivery/symphony_validate.py` and the installed bundle selected in
-the source binding. No CIX launcher or compatibility shim is called.
-
-## Existing allowance policy
-
-The user authorizes existing Codex and Antigravity subscription/session allowances
-and OpenRouter free models. A paid account does not authorize paid OpenRouter
-models, new API charges or top-ups. The demonstrated native route is Codex
-`gpt-6.1-sol`/medium using the existing ChatGPT login; it is independent of
-Windmill provider selection. A fresh account/model probe may report unavailable
-account/quota metadata; record that limit instead of inventing a plan or balance.
+Historical one-turn native sessions produced reviewed CLI tests and the
+final-layout audit. Their recorded outcomes and limitations remain in
+[validation.md](../../tools/delivery/validation.md). Those pilot receipts do not
+set current operating capacity. The eight-session capability is verified through
+real concurrent reservation tests, multi-task native configuration and failure/
+cancellation/ownership cases, without an eight-model filler workload.
