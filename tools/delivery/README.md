@@ -111,6 +111,18 @@ accepted delivery. The local writer lock supplies admission without depending on
 Windmill enterprise concurrency features. Existing platform job supervision and
 storage remain separate; this runner does not replace their capacity/backup claims.
 
+The Stokowski operation journal observes a running API wrapper for a finite 210s
+grace (180s reviewed computation timeout plus 30s wrapper completion). A stale
+wrapper permits only the existing status-only backend observation with its
+original logical job identity, never a computation resubmit. Terminal acceptance
+still requires the bound command/runner/policy and stopped child tree. A live
+backend rearms the grace; missing or refused observations retain uncertainty.
+Cancellation continues through the original backend control intent. Existing
+operations remain bound to their reviewed executor hash; do not silently migrate
+their IDs/specs to a new executor. These hooks require an admitted stage invocation;
+they do not add continuous supervision, voice intake or native approval/session
+continuation APIs. A 403 is a refusal, not evidence of a pending approval.
+
 ## Existing Windmill bridge and separate execution identity
 
 The verified deployed entrypoint is `u/admin/foo_jobs_20261027` in workspace
