@@ -1,0 +1,46 @@
+{
+  "appSourceChanged": false,
+  "baseCommit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+  "environmentValuesIncluded": false,
+  "files": [
+    {
+      "bytes": 9368,
+      "path": "GITFLOW-AND-NEXT-BATCHES.md",
+      "sha256": "a9e295307d8befd8e37596329b7473734c401aebc0eebe5827af2cb561015bb9"
+    },
+    {
+      "bytes": 1469,
+      "path": "OWNER-BRANCH-HANDOFFS.json",
+      "sha256": "9b8291e9edf7aded545e66bb7bc1a86cae785fd3305772bdd251fd3e86c3a587"
+    },
+    {
+      "bytes": 5315,
+      "path": "PUBLICATION-FACTS-DIAGNOSTIC.json",
+      "sha256": "117426d32d914c382780e59c858bbff20d20c302c069bfe21f6e5960a0013471"
+    },
+    {
+      "bytes": 4473,
+      "path": "PUBLICATION-INDEX-BUDGET.json",
+      "sha256": "61ce799f2cf24713cedc8acf3f5e2550dfbbe572ff1639e5f653fb35a99288c1"
+    },
+    {
+      "bytes": 2896,
+      "path": "README.md",
+      "sha256": "e6b64d81f9ad6acac3893cb263db23453b404a414141a106172cd7e7ba8ddd5b"
+    },
+    {
+      "bytes": 36922,
+      "path": "WORKTREE-MAP.json",
+      "sha256": "891ff2c8a7471176062dc45845e7172598d2fcc86e5b50cec36ea95e6a4fc75b"
+    },
+    {
+      "bytes": 13663,
+      "path": "WORKTREE-MAP.md",
+      "sha256": "203ff63639c475d0da3ed9a4d5d84baf5e6ae5df17da3829a3c0caf11711fb18"
+    }
+  ],
+  "productionChanged": false,
+  "runtimeArgumentsIncluded": false,
+  "schemaVersion": "offmenu-reconciliation-docs-source-manifest/1",
+  "sourceOnly": true
+}

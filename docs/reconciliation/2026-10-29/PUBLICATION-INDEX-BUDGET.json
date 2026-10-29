@@ -1,0 +1,101 @@
+{
+  "baseCommit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+  "branch": "bugfix/source-barcode-index-budget-20261029",
+  "checkedUTC": "2026-10-29T02:45:35.912415+00:00",
+  "correctionApplied": false,
+  "currentIndexDeadlineMs": 10000,
+  "deploymentPerformed": false,
+  "files": [
+    {
+      "bytes": 3278,
+      "gitBlob": "ebff2cffbdbdf68534da8ad9816bbd14a949f2a4",
+      "path": "dev/source-candidates/source-barcode-index-budget-20261029/CUSTODY.json",
+      "sha256": "51b4ca7641f3541ae02cece7f007c8e3cc3f0936eefe196876eb49a9bf12e066"
+    },
+    {
+      "bytes": 1406,
+      "gitBlob": "28ffc59bc7003012eae7387f0ec83c44a5dd72e4",
+      "path": "dev/source-candidates/source-barcode-index-budget-20261029/OWNER-HANDOFF.md",
+      "sha256": "b30c6effc6c7eac9c51964c6e562e345e1c3f47720ba4b33acd9d1e92dbc033d"
+    },
+    {
+      "bytes": 1154,
+      "gitBlob": "263efd1000fbca4cefeac45cb147203f707a52e8",
+      "path": "dev/source-candidates/source-barcode-index-budget-20261029/build-facts.mjs",
+      "sha256": "026966b3c597166fe356d3c3910a14c11ed9a6fec1a6e38dff69da37d0439647"
+    },
+    {
+      "bytes": 890,
+      "gitBlob": "92a74c489ed6aba365b65a2598905bd1e3337d1a",
+      "path": "dev/source-candidates/source-barcode-index-budget-20261029/source/protocol-pins.mjs",
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a"
+    },
+    {
+      "bytes": 16505,
+      "gitBlob": "0e60c18ecb01c494dae7a34ebf36ff52c4281b55",
+      "path": "dev/source-candidates/source-barcode-index-budget-20261029/source/reviewed-hydration/source-barcode-client.mjs",
+      "sha256": "273afcb617a208c9e7385026351bc3f748e133b17a2eb37f5454b230b5351197"
+    },
+    {
+      "bytes": 11810,
+      "gitBlob": "96bf2800432ed03a4f65cfaec88113c82d803250",
+      "path": "dev/source-candidates/source-barcode-index-budget-20261029/source/reviewed-hydration/source-barcode-hydrator.mjs",
+      "sha256": "a2d96a9736942982408f51233384e503df7b7795ea24533a3f9d5f94c76300d9"
+    },
+    {
+      "bytes": 208,
+      "gitBlob": "2c8f6c68a06f9c77de05346f9a9ef4e97f5cdc92",
+      "path": "dev/source-candidates/source-barcode-index-budget-20261029/source/reviewed-hydration/source-barcode-selection.mjs",
+      "sha256": "adaddd1ea29bc47860e4ed557b477240bab677b5eb431dc255a5c5887159f71e"
+    },
+    {
+      "bytes": 7750,
+      "gitBlob": "5c15ce87abb928cb6613fd03f78e5028f4e96047",
+      "path": "dev/source-candidates/source-barcode-index-budget-20261029/source/source-barcode-facts-handler.mjs",
+      "sha256": "ea987c6bb5e00d7d71f6f6c27d52313bbd5aabce8a7d9a3946ba4672ff89aaac"
+    },
+    {
+      "bytes": 16176,
+      "gitBlob": "4b4302b3cc7520915f4ef028495d646aa5ab993a",
+      "path": "dev/source-candidates/source-barcode-index-budget-20261029/source/source-barcode-handler.mjs",
+      "sha256": "56723cd22ecb72713b5dd4cc98b1a24adbb262200d25796e2d74f4a069d9d9eb"
+    },
+    {
+      "bytes": 3888,
+      "gitBlob": "b3e023326ca04fbef8a9d35b344d430ec1fde27d",
+      "path": "dev/source-candidates/source-barcode-index-budget-20261029/source/stream-shard.mjs",
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a"
+    },
+    {
+      "bytes": 2044,
+      "gitBlob": "9bc7b8659942904ba2fd82f2e31b75c91a99da7d",
+      "path": "dev/source-candidates/source-barcode-index-budget-20261029/source/strict-json.mjs",
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099"
+    },
+    {
+      "bytes": 9547,
+      "gitBlob": "c162c7f16d54a24ad7efb2fbd925c08655e26365",
+      "path": "dev/source-candidates/source-barcode-index-budget-20261029/tests/index-budget.test.mjs",
+      "sha256": "0c2511f69995d7e82d219578188944efa286d8a5f501f1537cd5c3d3a018e730"
+    }
+  ],
+  "localCommit": "5b3086ba67e88ae624846dfd119c769b06d5e0f0",
+  "matchingActionsRunsObserved": 0,
+  "metadataFileCount": 2,
+  "noMatchingPushTrigger": true,
+  "normalNonforcePushSucceeded": true,
+  "ownerResumed": false,
+  "ownerTask": "01a181e9",
+  "productionChanged": false,
+  "remoteBlobMismatchCount": 0,
+  "remoteCommit": "5b3086ba67e88ae624846dfd119c769b06d5e0f0",
+  "remoteTreeTruncated": false,
+  "schemaVersion": "offmenu-source-publication-receipt/1",
+  "sourceFileCount": 10,
+  "status": "UNREVIEWED INACTIVE WIP",
+  "testsRun": false,
+  "workflowsUnchanged": {
+    ".github/workflows/foo-runner.yml": "3b487342fc6fac3ec19266e1cbcf6c9d51e1294b",
+    ".github/workflows/third-party-services.yml": "c1643006a1cf375935e4b135339fa2355567b0b0"
+  }
+}
