@@ -59,5 +59,81 @@
     "stdout_sha256": "6807782f788893c230793659552f2fcf4569e003e00e21d602586bc6a96d192b",
     "stderr_sha256": "61d319d753e933971616c80ba4cd772a4ae0b8de9c7ccfc63dd2a13f41ad3f4e"
   },
-  "scope": "Safe source identity and unittest summary only; raw task inputs, private log paths and runtime data excluded."
+  "scope": "Safe source identity and unittest summary only; raw task inputs, private log paths and runtime data excluded.",
+  "follow_up_failed_reconciliation": {
+    "finding": "https://github.com/maldous/offmenu/pull/141#discussion_r4410698611",
+    "outcome": "confirmed-and-fixed",
+    "tested_commit": "b2de61d8840ceb0d419ee7731e73f17b45c910c1",
+    "tested_tree": "801ee741764196af985436e63e49c2c79112df19",
+    "base_merge": "2ff34332844932a1c41515b802d5e2bdc9a4cbbd",
+    "selected_tests": 66,
+    "focused_reproductions": {
+      "before": "3 failed",
+      "after": "3 passed",
+      "cases": [
+        "untracked source created before timeout",
+        "tracked source modified before timeout",
+        "source manifest removed before timeout"
+      ],
+      "additional_guards": [
+        "different owner rejected",
+        "success on changed source rejected",
+        "original binding remains byte-identical",
+        "execution remains source-bound",
+        "new writer admitted after stopped failure reconciled"
+      ]
+    },
+    "windmill": {
+      "ok": true,
+      "job_id": "offmenu-reconciliation-fix-66-20261029",
+      "receipt": {
+        "mode": "read",
+        "job_id": "offmenu-reconciliation-fix-66-20261029",
+        "status": "succeeded",
+        "version": 3,
+        "exit_code": 0,
+        "log_bytes": {
+          "stderr": 99,
+          "stdout": 41
+        },
+        "created_at": 1793267104.4606245,
+        "started_at": 1793267104.4646974,
+        "finished_at": 1793267128.6385198,
+        "heartbeat_at": 1793267128.6385238,
+        "output_bytes": {
+          "stderr": 99,
+          "stdout": 41
+        },
+        "runner_sha256": "2ae57cc8edc66d9b56f43ad26dd8871fda155d23e50563988d3b0cac89d21674",
+        "command_sha256": "865b1c2f568eee3f5fa7fa2c4d2e2c70925383170b0e3deb3aaa047d60ca47c4",
+        "logs_truncated": {
+          "stderr": false,
+          "stdout": false
+        },
+        "request_sha256": "9ec6371de24356232153c7577015297ebe5d5070f9953420dbaaa90197972daf",
+        "child_tree_gone": true,
+        "timeout_seconds": 60,
+        "reconcile_required": false
+      },
+      "admitted": true,
+      "transport_ok": true,
+      "job_succeeded": true,
+      "url": "https://windmill.aldous.info/run/01a1870c-792c-8c7b-39d1-c2aee0b06140?workspace=offmenu"
+    },
+    "retained_output": {
+      "stdout": "b2de61d8840ceb0d419ee7731e73f17b45c910c1\n",
+      "stderr": "----------------------------------------------------------------------\nRan 66 tests in 24.060s\n\nOK\n",
+      "stdout_sha256": "ac8cbcadcfe359bea9a01b42101b9197d3e8c22ec915e8cff70aa66b3c1f1b00",
+      "stderr_sha256": "b721cf65564e137681bd4430c47c723b0d0b8f90cb12476a1910ddaa6bdd9ce1"
+    },
+    "workflow": {
+      "task_id": "failed-reconciliation-fix-20261029",
+      "status": "accepted",
+      "revision": "b2de61d8840ceb0d419ee7731e73f17b45c910c1",
+      "outputs_verified": 4,
+      "check_starts": 1,
+      "attempt": 1,
+      "receipt_sha256": "5a7ca93e20cb9fc8a4e0824766e177e41047c1f7de62cfdf59dc68ed76ae6bb7"
+    }
+  }
 }
