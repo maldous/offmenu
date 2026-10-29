@@ -316,6 +316,8 @@ if __name__ == '__main__':
     parser.add_argument('--duration', type=int, default=240)
     parser.add_argument('--dry-run', action='store_true')
     parser.add_argument('--reconcile-metadata', action='store_true')
+    parser.add_argument('--validation-stage', action='store_true')
+    parser.add_argument('--preview-dispatch', action='store_true')
     args = parser.parse_args()
     if not 1 <= args.duration <= 900:
         raise SystemExit('Finite coordinator duration must be 1..900 seconds')
@@ -323,7 +325,11 @@ if __name__ == '__main__':
     with (runtime/'coordinator.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX|fcntl.LOCK_NB)
         try:
-            if args.reconcile_metadata:
+            if args.validation_stage:
+                from stokowski_stage import continue_stage
+                result = asyncio.run(continue_stage(runtime,args.duration,args.preview_dispatch))
+                print(json.dumps(result))
+            elif args.reconcile_metadata:
                 asyncio.run(reconcile_metadata(runtime))
             else:
                 asyncio.run(run(runtime, args.duration, args.dry_run))

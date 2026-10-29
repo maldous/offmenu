@@ -81,13 +81,18 @@ def bridge_arguments(spec, action='run'):
         return {'action':action,'job_id':logical_id}
     output_code = ("import hashlib,json,pathlib; expected=json.loads("+repr(json.dumps(spec['outputs'],sort_keys=True))+
         "); root=pathlib.Path('/offmenu'); "
-        "assert all(not (root/p).is_symlink() and (root/p).is_file() and "
+        "assert all(not any(x.is_symlink() for x in [root/p,*(root/p).parents]) "
+        "and (root/p).resolve().is_relative_to(root.resolve()) and (root/p).is_file() and "
         "hashlib.sha256((root/p).read_bytes()).hexdigest()==h for p,h in expected.items()); "
         "print(json.dumps({'accepted_outputs':expected},sort_keys=True))")
     head = shlex.quote(spec['head'])
+    held_code = ("import subprocess,json; policy=json.loads(subprocess.check_output(['git','show',"+
+                 repr(spec['base']+':repository-standard.json')+
+                 "])); actual=set(filter(None,subprocess.check_output(['git','ls-files','--others','--exclude-standard','-z']).decode().split('\\0'))); "
+                 "assert not actual-set(policy.get('runtime_hold_paths',[]))")
     identity = ('test "$(git rev-parse HEAD)" = '+head+
                 ' && test "$(git branch --show-current)" = feature/langgraph-delivery-standardization'
-                ' && git diff --quiet HEAD --')
+                ' && git diff --quiet HEAD -- && python3 -c '+shlex.quote(held_code))
     commands = ['cd /offmenu',
         'export PYTHONPATH=/offmenu/src GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0=/offmenu',
         identity, shlex.join(PROFILES[spec['profile']]),
