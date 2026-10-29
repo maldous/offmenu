@@ -29,9 +29,30 @@ issue/run/operation/job identifiers and running work stable.
 
 ## Documentation homes and update responsibility
 
+The UIF team is the umbrella for sibling projects. Allocate by the outcome being
+accepted, not by the repository containing an adapter or by an inherited issue
+prefix:
+
+| Project | Subject home |
+| --- | --- |
+| [UIF](https://linear.app/maldous/project/uif-21558318e036) | Current reusable infrastructure, orchestration and governance, including reusable harnesses, adapters, recovery and routing. |
+| [OffMenu](https://linear.app/maldous/project/offmenu-ccd080f4f6f0) | Product outcomes, product defects and their acceptance. |
+| [CIX](https://linear.app/maldous/project/cix-36ab0f59f007) | Future product realization; organizational placement does not implement or activate it. |
+
+Link product issues to reusable UIF work through dependencies and acceptance
+references. Do not copy the same outcome into competing queues. Classification,
+project creation and legacy-archive status belong in Linear; this source map is
+the durable allocation rule, not a mirror of those changing statuses. Resolve
+canonical project links through the Linear owner. Preserve existing issue/run/
+operation/job identities and running bindings; organizational classification alone
+does not authorize a migration, generic framework rewrite or CIX implementation.
+An already-admitted issue keeps its current project/filter binding until the
+operation owner reconciles a safe checkpoint with the Linear/integration owners.
+For example, UIF-106's subject allocation does not itself move its active binding.
+
 | Subject | Canonical home | Who updates it and what other homes reference |
 | --- | --- | --- |
-| Active outcomes, bugs, owner, status, dependencies and acceptance | Existing [OffMenu Linear project](https://linear.app/maldous/project/offmenu-ccd080f4f6f0) and its issues, for example [UIF-106](https://linear.app/maldous/issue/UIF-106) | The issue owner records work/evidence; the Linear owner maintains project organization and reconciles duplicates. Repo handovers link the active issue and evidence, not a copied active queue. |
+| Active outcomes, bugs, owner, status, dependencies and acceptance | Applicable existing Linear project and its issues under the allocation above, for example [UIF-106](https://linear.app/maldous/issue/UIF-106) | The issue owner records work/evidence; the Linear owner maintains project organization and reconciles duplicates. Repo handovers link the active issue and evidence, not a copied active queue. |
 | Architecture, source/interface contracts, setup and runbooks | Versioned repository, indexed by [docs/README.md](../README.md); [maintainer setup](../maintainer.md), [layout](root-layout.md), [protocols](execution-protocols.md) and [delivery workflow](../../tools/delivery/README.md) | The source-change owner updates affected maintained guides/interfaces in the same reviewed candidate. Linear links the relevant path and source revision instead of copying the full document. |
 | Decisions, rationale and supersession | [Repository ADRs](../adr/), including [ADR 0004](../adr/0004-resource-aware-parallel-capacity.md) and [ADR 0005](../adr/0005-autonomous-integration.md) | The decision owner proposes a new ADR when required; review records adoption/supersession. Preserve old rationale and mark superseded decisions with a successor reference rather than rewriting history. Standards changes still require the normal version/ADR process. |
 | Actionable agent entry rules | [AGENTS.md](../../AGENTS.md) | The repo-doc/source owner maintains concise actions and links to canonical guides. AGENTS does not duplicate architecture prose, the Linear queue or private receipts; new instructions remain subject to the existing authority boundaries. |
@@ -46,8 +67,9 @@ report's old pending status does not override a newer verified issue/readback.
 Mutable branch links are useful navigation, not immutable acceptance evidence.
 
 The existing [UIF Home](https://linear.app/maldous/document/uif-home-build-first-delivery-model-96eeea3357ee)
-provides umbrella context with OffMenu first; a future generic template is planned,
-not delivered infrastructure. The [source-ID mapping](https://linear.app/maldous/document/offmenu-backlog-reconciliation-and-source-id-mapping-29-october-2026-371f5733c73e)
+provides umbrella context with OffMenu first. Reusable infrastructure already
+serves delivery; future generic-template and CIX capabilities are not delivered
+merely by defining their projects. The [source-ID mapping](https://linear.app/maldous/document/offmenu-backlog-reconciliation-and-source-id-mapping-29-october-2026-371f5733c73e)
 preserves reconciliation coverage and unresolved provenance. These complementary
 documents link to repository rules rather than copying them. Organizational
 placement does not change existing task filters, credentials or operation bindings.
@@ -107,6 +129,37 @@ Project handovers and working context should link to the active Linear issue,
 current owner and latest evidence/checkpoint. Historical ledgers provide provenance;
 they are not a second active queue. Keep private receipts under ignored `.delivery/`
 and publish only reviewed source and suitable provenance summaries.
+
+## One finite outcome from intake to closure
+
+1. Select or refine the existing Linear outcome, its subject project, owner,
+   dependencies and acceptance. Preserve active bindings; project placement is
+   neither execution admission nor permission to migrate historical work.
+2. Select the lane above. Use cloud reasoning only when its actual task/provider
+   availability is established. Admit Foo/Stokowski repository work with an owned
+   branch, finite scope, resource budget and explicit acceptance revision.
+3. Bind deterministic work to the existing operation journal and Windmill route.
+   Persist intent/job identity, observe bounded execution and cleanup, and retain
+   LangGraph checkpoints and exact command/output evidence. Recover from receipts.
+4. Review the immutable candidate independently, route findings to bounded repair,
+   and let the sole integration owner validate exact base/head and consume the
+   controller action. GitHub source review and canonical merge readback establish
+   source integration; neither establishes that a deployed feature works.
+5. Where separately authorized, the designated publisher handles deployment under
+   its existing custody, configuration and platform approval boundaries, then
+   verifies served behavior against the issue's acceptance criteria. Preserve
+   existing routes/modules and private configuration. A publication blocker is
+   recorded precisely; it does not invalidate independently accepted source work.
+6. Close the applicable acceptance phase in Linear with commit, operation/job,
+   independent review and readback references. Distinguish local validation,
+   accepted source and production-served acceptance. Do not close unknown effects.
+7. Update affected canonical repo guidance with the reviewed change; the Linear
+   owner maintains project/home/status references. Subsequent maintenance starts
+   from the same evidence and issue dependencies, not a duplicate queue or an
+   assumption that an earlier successful job still proves current behavior.
+
+This sequence connects existing owners and finite interfaces. It adds no automatic
+deployment, scheduler, manager or background supervision service.
 
 ## Recovery at phase boundaries
 
@@ -173,6 +226,15 @@ the issue outputs, exact head/base and canonical merge. See the curated
 [product source summary](product-delivery-20261029.json). This demonstrates source
 delivery, not production-served acceptance, and does not make the older summary's
 historical pending status current.
+
+For [UIF-115](https://linear.app/maldous/issue/UIF-115), the shopping-display repair
+passed 62 focused checks, independent review and three-output Windmill acceptance
+before [PR150](https://github.com/maldous/offmenu/pull/150) integrated it at
+`d80b894e89a8cbadf621cc1249bd332b375300c1`. The retained local validation run was
+also inspected through the additive evidence view: seven completed checks and
+three matching output hashes, with zero command replay or receipt/checkpoint file
+changes. These are observed source/inspection outcomes, not a claim of served
+deployment or continuous supervision.
 
 Current adoption is partial: native coding, resource-declared Windmill jobs, local
 checkpointed validation and authenticated integration have real retained receipts.
