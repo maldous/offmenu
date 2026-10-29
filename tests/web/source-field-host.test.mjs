@@ -1,7 +1,7 @@
 // Generated Requests, wire and fake callbacks only; no network/store/mount/keys.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createSourceFieldAdapter} from '../../cloud/source-field-host.mjs';
+import {createSourceFieldAdapter} from '../../apps/web/server/source-field-host.mjs';
 
 const URL='https://offmenu-source-fields.invalid/__dev/source-field-slice';
 const encoder=new TextEncoder();

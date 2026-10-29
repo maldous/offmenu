@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import {createGunzip} from 'node:zlib';
 import {createInterface} from 'node:readline';
 import {dirname,resolve,relative} from 'node:path';
-import {createCommonCorpus} from '../public/common-corpus-locale.js';
+import {createCommonCorpus} from '../apps/web/src/common-corpus-locale.js';
 
 const manifestPath=resolve(process.argv[2]||''),root=dirname(manifestPath),bytes=await readFile(manifestPath);
 const manifest=JSON.parse(bytes);

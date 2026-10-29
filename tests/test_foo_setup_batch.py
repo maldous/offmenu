@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location("check_foo_setup", ROOT / "scripts/check-foo-setup.py")
+spec = importlib.util.spec_from_file_location("check_foo_setup", ROOT / "tools/operations/check_foo_setup.py")
 batch = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(batch)
 

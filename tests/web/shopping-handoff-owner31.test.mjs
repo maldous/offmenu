@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createShoppingHandoff, RETAINED_HELPER_PIN} from '../../public/shopping-handoff-owner31.mjs';
-import {shoppingItems} from '../../public/integrations.js';
-import * as retained from '../../public/shopping-handoff-model.js';
+import {createShoppingHandoff, RETAINED_HELPER_PIN} from '../../apps/web/src/shopping-handoff-owner31.mjs';
+import {shoppingItems} from '../../apps/web/src/integrations.js';
+import * as retained from '../../apps/web/src/shopping-handoff-model.js';
 const fixture=()=>({accountId:'alice',kitchenId:'one',revision:'r7',sessionEpoch:'login-1',canExport:true,demo:false,policies:{},data:{profile:{country:'AU',plan:[],shopping:[{id:'custom:rice',name:'Rice',amount:'Review source amount',checked:false}]},recipes:[],inventory:[],products:{},date:'2026-10-14',usePantry:true},bindings:[{lineId:'custom:rice',accountId:'alice',kitchenId:'one',revision:'r7',admitted:true,record:{id:'personal:rice',kind:'product',data:{quantity:null,unit:null},provenance:{sourceId:'personal-import',privateUseConfirmed:true,attribution:'Synthetic personal fixture'}}}]});
 function setup(){let state=fixture(), clock=Date.parse('2026-10-14T10:00:00Z');const controller=createShoppingHandoff({read:()=>state,now:()=>clock,helper:{pin:RETAINED_HELPER_PIN,reviewRef:'synthetic-test-only-not-independent-review',propose:retained.proposeShoppingHandoff,confirm:retained.confirmShoppingHandoff}});return {controller,state,tick:n=>clock+=n,request:{id:'handoff-1',kind:'retailer',destinationId:'retailer:manual'}};}
 test('actual shoppingItems entrypoint feeds quantity/provenance preview and confirmation, without mutation',()=>{
@@ -48,7 +48,7 @@ test('composition on current develop calculates the reviewed recipe gap without 
  assert.equal(controller.confirm(p,{confirmed:true}).draft.detail.lines[0].quantity,400);
 });
 test('changed locale fallback composes with preserved Arabic labels, null quantity and source identity',async()=>{
- const {browserLocaleDecision}=await import('../../public/i18n.js');
+ const {browserLocaleDecision}=await import('../../apps/web/src/i18n.js');
  const decision=browserLocaleDecision({documentElement:{dataset:{offmenuDefaultLocale:'ar'}},cookie:''},{getItem:()=>null},{languages:[]});
  assert.deepEqual(decision,{locale:'ar',source:'default'});
  const {state,controller,request}=setup();

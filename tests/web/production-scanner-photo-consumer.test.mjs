@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {createRequire} from 'node:module';
-import {mountScannerProductVisual} from '../../public/production-scanner/scanner-product-visuals-production.js';
+import {mountScannerProductVisual} from '../../apps/web/src/production-scanner/scanner-product-visuals-production.js';
 import {photoFixture} from './fixtures/off-photos/context.mjs';
-import {OFF_PHOTOS} from '../../public/off-photo-catalogue.js';
+import {OFF_PHOTOS} from '../../apps/web/src/off-photo-catalogue.js';
 const {parse}=createRequire(import.meta.url)('acorn');
-const source=fs.readFileSync(new URL('../../public/production-scanner/shelf-scanner.js',import.meta.url),'utf8');
+const source=fs.readFileSync(new URL('../../apps/web/src/production-scanner/shelf-scanner.js',import.meta.url),'utf8');
 class Node {
  constructor(tag,doc){this.tagName=tag;this.ownerDocument=doc;this.children=[];this.dataset={};this.textContent='';}
  append(...nodes){this.children.push(...nodes);}replaceChildren(...nodes){this.children=[...nodes];}get firstChild(){return this.children[0];}

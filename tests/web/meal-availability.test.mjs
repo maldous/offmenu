@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mealAvailability} from '../../dev/meal-availability.mjs';
+import {mealAvailability} from '../../integrations/candidates/meal-availability.mjs';
 
 // Synthetic opaque identifiers only; no recipe or pantry bodies.
 const r = (ingredientId = 'synthetic-a', amount = 100, unit = 'g', basis = 'synthetic-edible') => ({ingredientId, amount, unit, basis});

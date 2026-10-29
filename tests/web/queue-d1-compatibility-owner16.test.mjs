@@ -19,7 +19,7 @@ for (const file of inputs.files) {
 const origin = 'https://owner16-compatibility.invalid', audience = origin + '/api/state';
 const script = `
 import {createD1SessionStateProtocol,SESSION_STATE_D1_DDL} from 'compat04:cloud/session-state-d1-owner04.mjs';
-import {createQueueStateWorker} from './cloud/queue-state-entry-owner16.mjs';
+import {createQueueStateWorker} from './apps/web/server/queue-state-entry-owner16.mjs';
 const origin=${JSON.stringify(origin)},audience=${JSON.stringify(audience)},realm='local_owner16_native_realm';
 // Explicit synthetic HTTP credentials only, never body-selected auth.
 const authenticate=async request=>{const token=request.headers.get('Authorization');return token==='Bearer fixture-alice'?{id:'synthetic-alice'}:token==='Bearer fixture-bob'?{id:'synthetic-bob'}:null;};

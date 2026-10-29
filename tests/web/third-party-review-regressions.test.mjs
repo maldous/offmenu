@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
-import handler from '../../cloud/handler.mjs';
+import handler from '../../apps/web/server/handler.mjs';
 
 test('static assets and unknown paths do not read administrative settings',async()=>{
  const previous=globalThis.ASSETS;
@@ -18,7 +18,7 @@ test('static assets and unknown paths do not read administrative settings',async
 });
 
 test('scheduled cleanup deletes expired direct and OAuth proofs but preserves live proofs',async()=>{
- const db=new DatabaseSync(':memory:');db.exec(readFileSync(new URL('../../cloud/schema.sql',import.meta.url),'utf8'));db.exec(readFileSync(new URL('../../cloud/catalogue-schema.sql',import.meta.url),'utf8'));
+ const db=new DatabaseSync(':memory:');db.exec(readFileSync(new URL('../../apps/web/server/schema.sql',import.meta.url),'utf8'));db.exec(readFileSync(new URL('../../apps/web/server/catalogue-schema.sql',import.meta.url),'utf8'));
  const now=Date.now();for(const table of ['admin_mcp_proofs','oauth_admin_proofs']){
   const key=table==='admin_mcp_proofs'?'token_id':'code_hash';
   db.prepare(`INSERT INTO ${table}(${key},sealed,expires_at) VALUES(?,?,?)`).run('expired','synthetic expired ciphertext',now-60000);

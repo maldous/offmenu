@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {loadPriceObservations,renderSavedPriceObservations} from '../../public/saved-price-observations.js';
-import {normalizeCSV} from '../../public/unified-data.js';
-const root=new URL(process.env.SAVED_PRICE_V1?'../../../saved-price-lookup-20261026/candidate/public/':'../../public/',import.meta.url);
+import {loadPriceObservations,renderSavedPriceObservations} from '../../apps/web/src/saved-price-observations.js';
+import {normalizeCSV} from '../../apps/web/src/unified-data.js';
+const root=new URL(process.env.SAVED_PRICE_V1?'../../../saved-price-lookup-20261026/candidate/public/':'../../apps/web/src/',import.meta.url);
 const app=readFileSync(new URL('app.js',root),'utf8'),insights=readFileSync(new URL('insights-ui.js',root),'utf8');
 function node(tag='div'){return {tag,children:[],textContent:'',value:'',append(...items){this.children.push(...items);},replaceChildren(...items){this.children=items;this.textContent='';}};}
 function flatten(n){return [n.textContent,...n.children.flatMap(flatten)].join(' ');}

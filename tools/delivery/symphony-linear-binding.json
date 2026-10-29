@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "enabled": false,
+  "repository": "maldous/offmenu",
+  "branch": "feature/langgraph-delivery-standardization",
+  "integration_branch": "develop",
+  "linear": {
+    "team_id": "53f584e7-70a1-4b1e-b982-b815210e47d4",
+    "project_id": "ce60c1ab-a732-4a71-8471-14c9dc393886",
+    "project_slug": "ccd080f4f6f0",
+    "issue_id": "37f82d6a-fb4a-470e-8bde-82e4796dd656",
+    "issue_identifier": "UIF-90",
+    "admitted_state_ids": [
+      "837a9ce3-147e-4a43-8503-14e2521ae3bd"
+    ],
+    "admitted_state_names": [
+      "In Progress"
+    ],
+    "required_label_ids": [
+      "32ce8454-2fa9-4a64-9666-a85c2a4e605e"
+    ],
+    "required_label_names": [
+      "offmenu-uif-90"
+    ],
+    "workpad_comment_id": "7dfe44db-cf40-4447-9d7c-6609f934e555",
+    "team_key": "UIF",
+    "project_url": "https://linear.app/maldous/project/offmenu-ccd080f4f6f0",
+    "state_catalog": {
+      "Backlog": "60ae9731-ffb3-4f29-92f6-fd0977971894",
+      "Todo": "c641f624-0059-49a1-8bca-c9e77cbf89de",
+      "In Progress": "837a9ce3-147e-4a43-8503-14e2521ae3bd",
+      "In Review": "ad7cf30c-7a54-4ead-a102-31143cff146a",
+      "Done": "6588646d-b364-42e3-af1e-51bca5941d40"
+    },
+    "issues": {
+      "UIF-88": {
+        "id": "4f894e1b-cc90-44fe-a450-7c6ece3c52c3",
+        "purpose": "standards"
+      },
+      "UIF-89": {
+        "id": "ffc80bc3-5170-43a4-b24c-de7f40047dfd",
+        "purpose": "contracts"
+      },
+      "UIF-90": {
+        "id": "37f82d6a-fb4a-470e-8bde-82e4796dd656",
+        "purpose": "lifecycle"
+      },
+      "UIF-91": {
+        "id": "e09f908f-5f35-4c3e-8f75-e817bf4dfd7a",
+        "purpose": "verified-delivery"
+      }
+    },
+    "project_browser_slug": "offmenu-ccd080f4f6f0",
+    "native_slug_field": "slugId"
+  },
+  "ownership": {
+    "integration_writer": "offmenu-integration-writer",
+    "allowed_paths": [
+      "tests/delivery/test_cli.py",
+      "src/offmenu/delivery/__main__.py"
+    ],
+    "expected_source_head": null,
+    "standard_version": "2.0.0"
+  },
+  "execution": {
+    "symphony_binary": "/home/user/.local/share/cix/symphony/0c01ff0975da80ded7044a5ad76a44ac87053670-d215a99ac5a44941/bin/symphony",
+    "symphony_version_or_sha": "bundle-directory-source-sha-0c01ff0975da80ded7044a5ad76a44ac87053670;not-upstream-verified",
+    "codex_command": null,
+    "resolved_model": null,
+    "max_concurrent_agents": 1,
+    "windmill_workspace": "offmenu",
+    "langgraph_checkpoint_run_id": null,
+    "automatic_push": false,
+    "automatic_merge": false,
+    "automatic_actions_dispatch": false,
+    "production_deployment": false,
+    "telemetry_enabled": false,
+    "symphony_escript_sha256": "d215a99ac5a4494181389f9fe5b2cca5de9895003d2ce4977904590d416478b4",
+    "credential_environment": {
+      "OFFMENU_LINEAR_API_KEY": "absent-at-discovery",
+      "LINEAR_API_KEY": "absent-at-discovery"
+    },
+    "windmill_script": "u/admin/foo_jobs_20261027",
+    "credential_scope_verified": true,
+    "credential_delivery": "existing-systemd-LoadCredential-in-isolated-OffMenu-user-process",
+    "executor_account_type": "chatgpt",
+    "executor_plan": "pro",
+    "available_model": "gpt-6.1-sol",
+    "reasoning_effort": "medium"
+  }
+}

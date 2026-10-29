@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {recordPermission} from '../../public/record-policy.js';
+import {recordPermission} from '../../apps/web/src/record-policy.js';
 
 const now = Date.parse('2026-10-18T00:00:00Z');
 const record = (sourceId, dependencies) => ({kind:'food', provenance:{sourceId, dependencies}});

@@ -13,7 +13,7 @@ from offmenu.refresh.english_extension import (EnglishPolicy, Grant, ResolvedCla
 ROOT = Path(__file__).resolve().parents[1]
 WORK = ROOT.parent / 'synthetic-runs'
 WORK.mkdir(exist_ok=True)
-SCHEMA = json.loads((ROOT / 'offmenu/refresh/english_extension.schema.json').read_text())
+SCHEMA = json.loads((ROOT / 'src/offmenu/refresh/english_extension.schema.json').read_text())
 def digest(raw): return hashlib.sha256(raw).hexdigest()
 def encode(obj): return json.dumps(obj, ensure_ascii=False, separators=(',', ':')).encode()
 

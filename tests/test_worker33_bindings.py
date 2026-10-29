@@ -113,7 +113,7 @@ class Worker33BindingTests(unittest.TestCase):
 
     def test_retained_config_closed_scope_without_opening_data_paths(self):
         config = json.loads((Path(__file__).resolve().parents[1] /
-                             'offmenu/refresh/worker33_portfolio.json').read_text())
+                             'src/offmenu/refresh/worker33_portfolio.json').read_text())
         self.assertEqual(config['countries'], ['GH', 'GI', 'GM', 'GN'])
         self.assertEqual(len(config['bindings']), 5)
         for spec in config['bindings']:

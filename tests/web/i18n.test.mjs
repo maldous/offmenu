@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {resolveLanguage,setLanguage,getLanguage,t,hasTranslation,formatNumber,formatDate,formatCurrency,translateUI,setupLanguage,LANGUAGE_KEY,apiError,setLocalizedText} from '../../public/i18n.js';
-import {localizedField,localizedRecipe,localizedLotName,multilingualSearchText,normalizeSearchText,configureCorpusResolver,showLocalized,showUserText} from '../../public/content-locale.js';
-import {matchRecipeStock} from '../../public/recipe-library-model.js';
-import {buildDocument,documentHTML,documentEPUB} from '../../public/documents.js';
-import {validateState} from '../../cloud/state.mjs';
+import {resolveLanguage,setLanguage,getLanguage,t,hasTranslation,formatNumber,formatDate,formatCurrency,translateUI,setupLanguage,LANGUAGE_KEY,apiError,setLocalizedText} from '../../apps/web/src/i18n.js';
+import {localizedField,localizedRecipe,localizedLotName,multilingualSearchText,normalizeSearchText,configureCorpusResolver,showLocalized,showUserText} from '../../apps/web/src/content-locale.js';
+import {matchRecipeStock} from '../../apps/web/src/recipe-library-model.js';
+import {buildDocument,documentHTML,documentEPUB} from '../../apps/web/src/documents.js';
+import {validateState} from '../../apps/web/server/state.mjs';
 
 test('locale negotiation respects explicit supported preferences and language subtags',()=>{
   assert.equal(resolveLanguage(['ja-JP','ar-EG','en']), 'ar');
@@ -98,7 +98,7 @@ test('HTML and EPUB exports declare the selected language and retain safe source
   } finally {setLanguage('en');}
 });
 test('static meal-slot options have explicit canonical values in a translated page',async()=>{
-  const html=await readFile(new URL('../../public/index.html',import.meta.url),'utf8');
+  const html=await readFile(new URL('../../apps/web/assets/index.html',import.meta.url),'utf8');
   for(const slot of ['Breakfast','Lunch','Dinner','Snack'])assert.match(html,new RegExp('<option[^>]*value="'+slot+'"[^>]*data-i18n="'+slot+'"'));
 });
 test('personal text does not become a UI translation and API decisions retain source messages',()=>{

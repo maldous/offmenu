@@ -1,6 +1,6 @@
 # Administrative service settings
 
-This is an additive D1 migration: apply `cloud/admin-schema.sql` after the
+This is an additive D1 migration: apply `apps/web/server/admin-schema.sql` after the
 account schema. It creates one `app_settings` row (`id = global`) and a
 value-free audit table. The audit records only the current verified Identity
 actor ID, resulting revision, changed setting paths and timestamp.

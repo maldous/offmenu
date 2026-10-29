@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {weekDates,planSummary} from '../../public/menu-model.js';import {validateState} from '../../cloud/state.mjs';
+import {weekDates,planSummary} from '../../apps/web/src/menu-model.js';import {validateState} from '../../apps/web/server/state.mjs';
 const recipe={id:'rice',servings:2,ingredients:[{ingredient:'rice',quantity:100,unit:'g'}]};
 const inventory=[{barcode:'1111',ingredient:'rice',quantity:150,unit:'g'}];
 const products={'1111':{product_quantity:500,product_quantity_unit:'g',nutrition_data_per:'100g',nutriments:{'energy-kcal_100g':350,proteins_100g:7}}};

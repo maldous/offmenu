@@ -1,6 +1,6 @@
 # Private support and explicit email
 
-`cloud/services-schema.sql` is additive to the account D1 schema. It retains a
+`apps/web/server/services-schema.sql` is additive to the account D1 schema. It retains a
 sealed support or email payload for 30 days and only exposes request metadata to
 the owner. At expiry `cleanupServiceRequests(env)` erases the sealed payload but
 retains an idempotency tombstone, then removes old hourly rate-limit buckets.

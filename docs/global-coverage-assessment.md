@@ -10,6 +10,10 @@ The 249 ISO entries and 13 required domain names yield 3,237 country/domain cell
 
 The compact `capabilities.py` reconciles all 22 retained releases from `corpus/common-source-mappings.json` (Git blob `858c4de5f6e27deb049ee8bc27567a40461bad49`). It records 21 historical collector/normalizer implementations, 23 discovery-to-source-family/domain mappings and 22 discovery entries with historical handler evidence. The remaining 1,281 discovery entries have no handler evidence in this compact registry. This does not claim no other code exists; it states the evidenced mapping coverage. Source-family matching is not proof that a discovery API and retained release share format or scope. In particular the Canadian discovery entry describes 2026, while the retained CNF parser handles 2015.
 
+The current physical location of that mapping is
+`contracts/corpus/common-source-mappings.json`; the cited blob above retains its
+historical source identity.
+
 Every retained release includes its source ID, release, historical count, canonical types, scope, parser path and inspected Git blob when available. None is an executable binding. National domain links are only attached where both country linkage and handler country scope agree. Global routes are kept separate and never multiplied into all countries. No country acceptance or fresh payload verification was performed.
 
 ## Historical capability priorities
@@ -18,7 +22,7 @@ Every retained release includes its source ID, release, historical count, canoni
 2. Preserve NO/FR native crash restrictions and Fineli force-download/zero-interpretation holds. The Danish four-definition basis/curation boundary remains. Production and CIX stay paused.
 3. Reuse the eight-source private v2 observation normalizer only within its exact adapter pin contracts. Its existence does not grant acquisition, source acceptance or cross-source semantic equivalence.
 4. SourceProposalLookup is an exact pinned lookup over 88 external proposals: 14 DOSM CPI division labels and 74 Fineli component terminology proposals. No canonical, translation or semantic equivalence acceptance follows. CPI is not a retail price/basket dataset.
-5. `cloud/cache-invalidation-owner29.mjs` handles bounded D1 resolver envelopes and policy/dependency epochs. It is not an immutable raw-dataset cache or a national-source acquisition handler. Its adoption boundary remains explicit.
+5. `apps/web/server/cache-invalidation-owner29.mjs` handles bounded D1 resolver envelopes and policy/dependency epochs. It is not an immutable raw-dataset cache or a national-source acquisition handler. Its adoption boundary remains explicit.
 6. Complete exact source/release/endpoint binding, original asset set, rights-by-operation and pinned normalization contract for the eligible sources. Registration of remaining discoveries can remain explicit unsupported records while independent permitted sources progress.
 
 ## Required next bounded Foo assessment contract

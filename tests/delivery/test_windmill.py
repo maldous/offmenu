@@ -7,7 +7,7 @@ from unittest.mock import patch
 from test_engine import DeliveryFixture
 from offmenu.delivery.engine import Engine, writer, DeliveryError
 
-MODULE = Path(__file__).resolve().parents[2] / 'dev/delivery/windmill_entrypoint.py'
+MODULE = Path(__file__).resolve().parents[2] / 'tools/delivery/windmill_entrypoint.py'
 spec = importlib.util.spec_from_file_location('windmill_entrypoint', MODULE)
 adapter = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(adapter)
@@ -36,6 +36,23 @@ class WindmillTests(DeliveryFixture):
         with patch.object(adapter, 'CHECKOUT_ROOT', str(self.root)):
             with self.assertRaisesRegex(DeliveryError, 'binding mismatch'):
                 adapter.main(task_path)
+
+    def test_relocated_reviewed_task_directory_is_admitted(self):
+        task_path = self.prepare()
+        directory = self.root / 'tools/delivery'
+        directory.mkdir(parents=True)
+        (directory / 'task.json').write_text(json.dumps(self.task))
+        with patch.object(adapter, 'CHECKOUT_ROOT', str(self.root)):
+            self.assertEqual(adapter.main('tools/delivery/task.json')['status'], 'not_accepted')
+
+    def test_retired_task_directory_is_rejected(self):
+        self.prepare()
+        directory = self.root / 'dev/delivery'
+        directory.mkdir(parents=True)
+        (directory / 'task.json').write_text(json.dumps(self.task))
+        with patch.object(adapter, 'CHECKOUT_ROOT', str(self.root)):
+            with self.assertRaisesRegex(ValueError, 'reviewed delivery'):
+                adapter.main('dev/delivery/task.json')
 
     def test_rejects_outside_task_path(self):
         with patch.object(adapter, 'CHECKOUT_ROOT', str(self.root)):

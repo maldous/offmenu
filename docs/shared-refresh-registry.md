@@ -8,7 +8,7 @@ move accepted pointers, or publish/deploy data.
 
 The reviewed Norway library remains byte-identical. CIQUAL remains a separate,
 reviewed library until an additional fixed registry entry is reviewed. The old
-`scripts/run-norway-synthetic.py` helper is unchanged for compatibility and is
+`tools/data-processing/run_norway_synthetic.py` helper is unchanged for compatibility and is
 legacy-only: use the shared CLI for lifecycle work. Converting that helper to a
 forwarding shim is a separate interface migration, not part of this slice.
 

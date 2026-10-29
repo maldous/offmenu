@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {validateState} from '../../cloud/state.mjs';
-import {validateWasteObservation,wasteObservationCoverage,persistWasteObservation} from '../../cloud/waste-observation-owner24.mjs';
+import {validateState} from '../../apps/web/server/state.mjs';
+import {validateWasteObservation,wasteObservationCoverage,persistWasteObservation} from '../../apps/web/server/waste-observation-owner24.mjs';
 const context={accountId:'a',sessionEpoch:'epoch-1',consent:true};
 const row={id:'o1',accountId:'a',receiptId:'r1',sourceId:'lot1',observedAt:'2026-10-14T10:00:00.000Z',quantity:125,unit:'g',reason:'uneaten',provenance:{sourceRef:'receipt:r1/lot:lot1',method:'measured'}};
 test('actual production state entrypoint drops observations: integration remains blocked',()=>{

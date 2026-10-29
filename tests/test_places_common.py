@@ -8,7 +8,7 @@ from pathlib import Path
 import jsonschema_rs
 
 ROOT = Path(__file__).parents[1]
-spec = importlib.util.spec_from_file_location("places", ROOT / "scripts/align-places-common.py")
+spec = importlib.util.spec_from_file_location("places", ROOT / "tools/data-processing/align_places_common.py")
 places = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(places)
 
@@ -53,7 +53,7 @@ class PlacesCommonTests(unittest.TestCase):
             self.assertEqual(original_id["value"]["kind"], "identifier")
             self.assertEqual(manifest["candidateRelationships"]["count"], 0)
             self.assertTrue(manifest["complete"])
-            schema = json.loads((ROOT / "corpus/common-data.schema.json").read_text())
+            schema = json.loads((ROOT / "contracts/corpus/common-data.schema.json").read_text())
             validator = jsonschema_rs.Draft202012Validator(schema, validate_formats=True)
             for packet in packets:
                 validator.validate(packet)

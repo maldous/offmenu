@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {validateHealthImport,HEALTH_IMPORT_SCHEMA} from '../../cloud/health-import-owner28.mjs';
+import {validateHealthImport,HEALTH_IMPORT_SCHEMA} from '../../apps/web/server/health-import-owner28.mjs';
 // SYNTHETIC ONLY: no native or vendor export fixture has been qualified.
 const ctx={owner:'a',memberId:'m',revision:2,now:Date.parse('2026-10-15T00:00:00Z'),consent:{id:'grant:1',status:'active',owner:'a',memberId:'m',expiresAt:'2026-11-01T00:00:00Z',purposes:['health-import'],sources:['vendor:1'],types:['weight','steps']}};
 const envelope={schemaVersion:HEALTH_IMPORT_SCHEMA,owner:'a',memberId:'m',revision:2,source:{kind:'manual-export',sourceId:'vendor:1',exportId:'export:1'},records:[{id:'r',sourceRecordId:'native:r',type:'weight',unit:'kg',value:80,observedAt:'2026-10-14T00:00:00Z'}]};

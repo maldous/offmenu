@@ -10,7 +10,7 @@ from unittest.mock import patch
 from pathlib import Path
 
 
-SCRIPT = Path(__file__).parents[1] / "scripts" / "repair-bulk-controls-20261014.py"
+SCRIPT = Path(__file__).parents[1] / 'tools/data-processing' / 'repair_bulk_controls_20261014.py'
 SPEC = importlib.util.spec_from_file_location("bulk_repair", SCRIPT)
 repair = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(repair)

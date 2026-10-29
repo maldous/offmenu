@@ -9,7 +9,7 @@ test('compiled Worker uses canonical additive schema and exposes only configured
  try {
   const db=await worker.getD1Database('DB');
   const source=new DatabaseSync(':memory:');
-  for(const file of ['schema.sql','catalogue-schema.sql','corpus-schema.sql'])source.exec(readFileSync('cloud/'+file,'utf8'));
+  for(const file of ['schema.sql','catalogue-schema.sql','corpus-schema.sql'])source.exec(readFileSync('apps/web/server/'+file,'utf8'));
   for(const {sql} of source.prepare("SELECT sql FROM sqlite_master WHERE sql IS NOT NULL AND name NOT LIKE 'sqlite_%' ORDER BY CASE type WHEN 'table' THEN 0 ELSE 1 END").all())await db.prepare(sql).run();
   source.close();
   const response=await worker.dispatchFetch('https://offmenu.test/api/services');assert.equal(response.status,200);

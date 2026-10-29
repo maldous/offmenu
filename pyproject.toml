@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools==68.1.2", "wheel==0.42.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -17,7 +17,11 @@ collection = ["duckdb==1.5.6", "pyarrow==26.0.0", "requests==2.34.2", "beautiful
 [project.scripts]
 offmenu = "offmenu.cli:main"
 
+[tool.setuptools]
+package-dir = {"" = "src"}
+
 [tool.setuptools.packages.find]
+where = ["src"]
 include = ["offmenu*"]
 
 [tool.setuptools.package-data]
@@ -26,3 +30,6 @@ offmenu = ["web.html"]
 "offmenu.refresh" = ["portfolio37_bindings.json", "source_recipe_template.schema.json", "english_extension.schema.json", "owner19_bindings.json", "owner20_bindings.json", "portfolio_w35.json", "portfolio47_sources.json", "portfolio_owner51.json", "portfolio55.json"]
 "offmenu.refresh.portfolios" = ["worker23.json"]
 "offmenu.portfolio32" = ["catalog.json"]
+
+"offmenu_ciqual" = ["contract.json", "native-contract-v1.json"]
+"offmenu_norway" = ["contract.json"]

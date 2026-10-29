@@ -1,0 +1,23 @@
+import {t} from './i18n.js';
+import aliases from '../assets/recipe-ingredient-aliases.json' with {type:'json'};
+import {canonicalIngredient} from './ingredients.js';
+import {recipeForReview} from './recipe-review.js';
+const norm=value=>String(value||'').normalize('NFKD').replace(/\p{M}/gu,'').toLowerCase().trim();
+const lookup=new Map(Object.entries(aliases).flatMap(([key,values])=>values.map(value=>[norm(value),key])));
+export function recipeIngredientKey(item){return item.ingredientId||lookup.get(norm(item.name||item.ingredient))||canonicalIngredient(item.name||item.ingredient);}
+export function matchRecipeStock(recipe,inventory,{today=new Date().toISOString().slice(0,10)}={}){
+ if(recipe.ingredientExtractionComplete===false||recipe.publisher==='smithsonian-archive'||recipe.sourcePublisher==='smithsonian-archive')return {required:0,presence:0,coverage:0,missingNames:[],missing:[],unknown:['Historical OCR ingredient list needs transcription'],quantitiesAvailable:false,needsReview:true,incomplete:true};
+ const stock=new Map(),present=new Set();for(const lot of inventory){if(lot.needsReview||lot.expires&&lot.expires<today||!Number.isFinite(lot.quantity)||lot.quantity<=0)continue;const key=recipeIngredientKey({name:lot.ingredient});present.add(key);const identity=key+'|'+lot.unit;stock.set(identity,(stock.get(identity)||0)+lot.quantity);}
+ const needs=new Map(),unknown=[],missingNames=[];let required=0,presence=0;
+ for(const ingredient of recipe.ingredients||[]){if(ingredient.optional)continue;required++;const key=recipeIngredientKey(ingredient);if(present.has(key))presence++;else missingNames.push(ingredient.name);if(!Number.isFinite(ingredient.amount)||ingredient.amount<=0||!['g','ml','count'].includes(ingredient.unit)){unknown.push(ingredient.name);continue;}const id=key+'|'+ingredient.unit;needs.set(id,(needs.get(id)||0)+ingredient.amount);}
+ const missing=[];for(const [key,quantity]of needs){const available=stock.get(key)||0;if(available<quantity)missing.push({ingredient:key.split('|')[0],unit:key.split('|')[1],quantity:quantity-available});}
+ return {required,presence,coverage:required?presence/required:0,missingNames:[...new Set(missingNames)],missing,unknown,quantitiesAvailable:required>0&&!unknown.length&&!missing.length,needsReview:true};
+}
+export function personallyReviewedRecipe(record,{servings,ingredients,confirmed},now=new Date().toISOString()){
+ if(record.data.ingredientExtractionComplete===false||record.data.sourcePublisher==='smithsonian-archive')throw Error(t('Transcribe the complete historical OCR ingredient list before creating a kitchen recipe.'));
+ if(!confirmed)throw Error(t('Confirm your ingredient matches, measurements and instructions.'));
+ if(!Number.isFinite(servings)||servings<=0||!ingredients.length||ingredients.length!==record.data.ingredients.length||!ingredients.some(i=>!i.optional))throw Error(t('Enter a positive yield and at least one required ingredient.'));
+ const items=ingredients.map((edit,index)=>{if(!edit.name?.trim()||!edit.optional&&(!Number.isFinite(edit.amount)||edit.amount<=0||!['g','ml','count'].includes(edit.unit)))throw Error(t('Measure every required ingredient in g, ml or count.'));return {...record.data.ingredients[index],name:edit.name.trim(),ingredientId:canonicalIngredient(edit.name),amount:edit.optional&&edit.amount==null?null:edit.amount,unit:edit.optional&&edit.amount==null?null:edit.unit,optional:!!edit.optional,foodMatchStatus:'personally-reviewed',sourceScaling:record.data.ingredients[index].scaling||'linear',scaling:'linear'};});
+ const copy={...record,data:{...record.data,yield:{value:servings,unit:'portion'},ingredients:items}};const recipe=recipeForReview(copy);recipe.needsReview=false;recipe.servingsUnknown=false;recipe.provenance={...recipe.provenance,visibility:'private',personalReview:{reviewedAt:now,sourceRecipeId:record.id,scope:'User ingredient, quantity and linear-scaling review; no independent dietary certification'}};return recipe;
+}
+export function recipeJSONLD(record){const d=record.data;return {'@context':'https://schema.org','@type':'Recipe','@id':record.id,name:d.name,...(d.ingredientExtractionComplete===false?{description:'Historical OCR candidate with partial ingredient extraction; complete transcription is required before pantry matching or kitchen use.'}:{}),inLanguage:d.languages,recipeIngredient:d.ingredients.map(i=>i.originalText||i.name),recipeInstructions:d.directions.map((text,index)=>({'@type':'HowToStep',position:index+1,text})),...(d.yield?.value?{recipeYield:String(d.yield.value)+' portions'}:{}),license:record.provenance.licenseUrl,creditText:record.provenance.attribution,isBasedOn:record.provenance.url,citation:record.provenance.historyUrl||record.provenance.url};}

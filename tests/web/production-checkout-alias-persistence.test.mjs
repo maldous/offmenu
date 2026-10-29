@@ -5,14 +5,14 @@ import os from 'node:os';
 import path from 'node:path';
 import vm from 'node:vm';
 import {createRequire} from 'node:module';
-import {validateLot,validSourceObservationReference} from '../../public/model.js';
-import {finishInventory,makeAutoLot,locationKey} from '../../public/checkout-model.js';
-import {reconcileCookedStock} from '../../public/cooking-model.js';
-import {t,setLocalizedText,getLanguage} from '../../public/i18n.js';
-import * as handoff from '../../public/scanner-kitchen-handoff.js';
-import {createPublicLookup,mergeIdentifierPages} from '../../public/production-scanner/scanner-production-lookup.js';
+import {validateLot,validSourceObservationReference} from '../../apps/web/src/model.js';
+import {finishInventory,makeAutoLot,locationKey} from '../../apps/web/src/checkout-model.js';
+import {reconcileCookedStock} from '../../apps/web/src/cooking-model.js';
+import {t,setLocalizedText,getLanguage} from '../../apps/web/src/i18n.js';
+import * as handoff from '../../apps/web/src/scanner-kitchen-handoff.js';
+import {createPublicLookup,mergeIdentifierPages} from '../../apps/web/src/production-scanner/scanner-production-lookup.js';
 const {parse}=createRequire(import.meta.url)('acorn');
-const root=new URL('../..',import.meta.url),app=fs.readFileSync(new URL('public/app.js',root),'utf8'),nodes=parse(app,{ecmaVersion:'latest',sourceType:'module'}).body;
+const root=new URL('../..',import.meta.url),app=fs.readFileSync(new URL('apps/web/src/app.js',root),'utf8'),nodes=parse(app,{ecmaVersion:'latest',sourceType:'module'}).body;
 const uuid=n=>String(n).padStart(8,'0')+'-1111-4111-8111-111111111111';
 const inputs=[1,2].map(n=>({operationId:uuid(n),barcode:'000000001313'+n,name:'Generated product '+n,brand:null,publicProductReference:{schema:handoff.PUBLIC_PRODUCT_REFERENCE,...handoff.PUBLIC_PRODUCT_SELECTION,recordId:'offmenu:generated:'+n,namespace:'barcode',lexicalValue:'000000001313'+n,provenance:{sourceId:'off',visibility:'public',license:'Generated source declaration',attribution:'Generated fixture',url:null,sourceDate:null}}}));
 class Element{constructor(){this.children=[];this.dataset={};this.value='';this.textContent='';this.hidden=false;this.open=false;this.classList={toggle(){}};}append(...v){this.children.push(...v);}replaceChildren(...v){this.children=[...v];}setAttribute(k,v){this[k]=v;}showModal(){this.open=true;}close(){this.open=false;}focus(){}}
@@ -46,7 +46,7 @@ function harness(store,tab,{writable=true,key='generated-pantry-A',owner=null,re
 function stage(h,tab){tab.setItem(handoff.SCANNER_HANDOFF_KEY,JSON.stringify({schema:handoff.PUBLIC_SCANNER_HANDOFF,items:inputs,KEY:'foreign-space',owner:'not-authority'}));h.ctx.pendingScannerImport=h.ctx.readScannerImport();assert.ok(h.ctx.pendingScannerImport,'actual receiver accepts the typed public handoff');h.ctx.startCheckout();}
 function review(h){for(const item of h.ctx.session.items){h.ctx.editingId=item.id;h.$('name').value=item.name;h.$('ingredient').value='unmapped';h.$('quantity').value='25';h.$('unit').value='g';h.$('expires').value='';h.$('add').onsubmit({preventDefault(){}});}}
 function scannerHarness(tab){
- const source=fs.readFileSync(new URL('public/production-scanner/shelf-scanner.js',root),'utf8'),ast=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body,elements=new Map(),$=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};let requests=0;
+ const source=fs.readFileSync(new URL('apps/web/src/production-scanner/shelf-scanner.js',root),'utf8'),ast=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body,elements=new Map(),$=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};let requests=0;
  const query=createPublicLookup({selection:handoff.PUBLIC_PRODUCT_SELECTION,fetchImpl:async url=>{requests++;const q=new URL(url,'https://generated.invalid').searchParams;assert.equal(q.get('manifestSha256'),handoff.PUBLIC_PRODUCT_SELECTION.manifestSha256);const raw=q.get('barcode');return Response.json({releaseId:handoff.PUBLIC_PRODUCT_SELECTION.releaseId,manifestSha256:handoff.PUBLIC_PRODUCT_SELECTION.manifestSha256,records:[{id:'offmenu:generated:'+raw,kind:'product',provenance:{sourceId:'off',visibility:'public',license:'Generated declaration',attribution:'Generated source',url:null,sourceDate:null},data:{name:'Generated '+raw,pack:'500 g source package is not stock',identifiers:[{system:'barcode',value:raw}]}}],nextCursor:null});}});
  const ctx={...handoff,$,crypto,document:{createElement:()=>new Element(),documentElement:{dataset:{theme:'light'}}},window:{},navigator:{onLine:true},innerWidth:900,performance,
   active:true,paused:false,finished:false,processed:new Set(),generation:0,queue:[],current:null,selected:null,mode:'Explore',sheetTouched:false,streaming:false,sound:false,audio:null,

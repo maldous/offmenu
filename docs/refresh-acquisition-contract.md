@@ -112,11 +112,11 @@ large-source configuration gates, and post-EOF walltime enforcement.
 
 ## Pinned raw collection selections
 
-The existing `scripts/collect-source-access.py OUTPUT` retains its legacy landing
+The existing `tools/data-processing/collect_source_access.py OUTPUT` retains its legacy landing
 access mode. Actual raw collection is explicit:
 
 ```sh
-python3 -B scripts/collect-source-access.py REPORT_DIRECTORY \
+python3 -B tools/data-processing/collect_source_access.py REPORT_DIRECTORY \
   --collection-registry /absolute/reviewed-selection.json \
   --registry-sha256 EXACT_REVIEWED_SELECTION_SHA256
 ```
@@ -209,7 +209,7 @@ version and exact SHA identify a run; ledger results separately bind that identi
 Catalog evidence is pinned local metadata, not fresh proof of raw-file presence.
 
 ```sh
-python3 -B scripts/collect-source-access.py METADATA_OUTPUT \
+python3 -B tools/data-processing/collect_source_access.py METADATA_OUTPUT \
   --collection-registry REGISTRY --registry-sha256 SHA --describe-registry
 ```
 
@@ -289,9 +289,9 @@ must explicitly catalogue their verified receipt witnesses; preserve original
 source/custody qualifications when doing so.
 
 ```sh
-python3 -B scripts/collect-source-access.py LOOKUP_OUTPUT \
+python3 -B tools/data-processing/collect_source_access.py LOOKUP_OUTPUT \
   --collection-registry SAME_REGISTRY --registry-sha256 SHA --country US
-python3 -B scripts/collect-source-access.py LOOKUP_OUTPUT \
+python3 -B tools/data-processing/collect_source_access.py LOOKUP_OUTPUT \
   --collection-registry SAME_REGISTRY --registry-sha256 SHA \
   --country AU --required-type food_composition
 ```

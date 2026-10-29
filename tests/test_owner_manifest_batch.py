@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-P=Path(__file__).resolve().parents[1]/'scripts/run-owner-manifest-metadata.py'
+P=Path(__file__).resolve().parents[1]/'tools/data-processing/run_owner_manifest_metadata.py'
 spec=importlib.util.spec_from_file_location('owner_batch',P)
 m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 

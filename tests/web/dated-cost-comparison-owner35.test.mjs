@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
-import {compareDatedCosts} from '../../public/dated-cost-comparison-owner35.mjs';
+import {compareDatedCosts} from '../../apps/web/src/dated-cost-comparison-owner35.mjs';
 
 const clone = x => structuredClone(x);
 const conditions = {tax:'included', delivery:'included', promotion:'none', loyalty:'none'};

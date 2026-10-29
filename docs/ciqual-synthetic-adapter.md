@@ -6,7 +6,7 @@ source inputs, acquisition, acceptance, public export or production changes.
 
 ## Verified source contract
 
-The private repository's `scripts/collect-national.py:ciqual` was read at
+The private repository's `tools/data-processing/collect_national.py:ciqual` was read at
 commit `208d7b2dff1a844925996ebbf60278dd627b0bf2`. Its bytes match the recovered
 design's pinned collector. The two unchanged files in `tests/fixtures/ciqual-reference/` are regression
 evidence, not scripts to run as a batch:
@@ -40,7 +40,7 @@ Its reported 3,484 profiles are not this candidate's measured count.
 
 ## What this package does
 
-The implementation is isolated under `offmenu_ciqual/`; it does not import or
+The implementation is isolated under `src/offmenu_ciqual/`; it does not import or
 modify the shared refresh core, runner, Norway adapter, common-data graph,
 accepted pointers or consumer integrations. It uses only the Python standard
 library at runtime. The legacy parity test uses the repository's already-pinned
@@ -109,7 +109,7 @@ locked input set can be complete.
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_ciqual*.py' -v
 PYTHONDONTWRITEBYTECODE=1 python3 -O -m unittest discover -s tests -p 'test_ciqual*.py' -v
-PYTHONDONTWRITEBYTECODE=1 python3 scripts/run-ciqual-synthetic.py --output /tmp/offmenu-ciqual-candidate
+PYTHONDONTWRITEBYTECODE=1 python3 tools/data-processing/run_ciqual_synthetic.py --output /tmp/offmenu-ciqual-candidate
 ```
 
 The output parent must already exist. The repository CLI accepts only the checked-in

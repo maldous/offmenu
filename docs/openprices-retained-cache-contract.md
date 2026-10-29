@@ -28,7 +28,7 @@ this code does not allocate another job or budget. Current source metadata:
 
 The accepted source baseline is `c670fb4aefa90c820bf902f311959871f19b5343`.
 The projection is `scripts/collect-jsonl.mjs` with `normalizePrices` in
-`public/unified-data.js`. It differs from a fresh-source `product_adapters._price`
+`apps/web/src/unified-data.js`. It differs from a fresh-source `product_adapters._price`
 output; mixing their schemas would fabricate source fields or drop cache fields.
 
 ## Minimal API

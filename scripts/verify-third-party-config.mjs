@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import process from 'node:process';
-import { parseServiceConfig } from '../cloud/service-config.mjs';
-import { serviceEmailConfigured } from '../cloud/service-support.mjs';
+import { parseServiceConfig } from '../apps/web/server/service-config.mjs';
+import { serviceEmailConfigured } from '../apps/web/server/service-support.mjs';
 
 const examplePath = new URL('../config/third-party.example.json', import.meta.url);
 export const parseThirdPartyConfig = parseServiceConfig;

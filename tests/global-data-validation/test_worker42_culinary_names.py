@@ -1,7 +1,7 @@
 import importlib.util
 from pathlib import Path
 import unittest
-s = importlib.util.spec_from_file_location('culinary42', Path(__file__).resolve().parents[2] / 'scripts/global-data-validation/worker-42-culinary-names.py')
+s = importlib.util.spec_from_file_location('culinary42', Path(__file__).resolve().parents[2] / 'tools/data-processing/global-data-validation/worker_42_culinary_names.py')
 m = importlib.util.module_from_spec(s)
 s.loader.exec_module(m)
 class CulinaryNames(unittest.TestCase):

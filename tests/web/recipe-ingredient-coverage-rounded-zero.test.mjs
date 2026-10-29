@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {recipeIngredientCoverage} from '../../public/recipe-ingredient-coverage.js';
-import {matchMeals} from '../../public/model.js';
-import {allocateIngredients} from '../../public/cooking-model.js';
+import {recipeIngredientCoverage} from '../../apps/web/src/recipe-ingredient-coverage.js';
+import {matchMeals} from '../../apps/web/src/model.js';
+import {allocateIngredients} from '../../apps/web/src/cooking-model.js';
 
 test('W06-RECIPE-COVERAGE-ROUNDED-ZERO-01: zero/nonfinite matching gaps withhold the choice while core evidence stays exact',()=>{
  const date='2026-10-26',recipe={id:'generated-rounding-recipe',servings:1,

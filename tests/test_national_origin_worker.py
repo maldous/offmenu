@@ -106,14 +106,14 @@ class NationalOriginWorkerTests(unittest.TestCase):
             # cross the output bound after origins are attached. No production
             # limit, script pin, or admission is changed.
             isolated = root / 'bounded-worker'
-            shutil.copytree(ROOT / 'offmenu', isolated / 'offmenu', ignore=shutil.ignore_patterns('__pycache__'))
-            implementation = isolated / 'offmenu/refresh/execution.py'
+            shutil.copytree(ROOT / 'src/offmenu', isolated / 'src/offmenu', ignore=shutil.ignore_patterns('__pycache__'))
+            implementation = isolated / 'src/offmenu/refresh/execution.py'
             code = implementation.read_text()
             self.assertIn('MAX_OUTPUT = 256 * 1024**2', code)
             implementation.write_text(code.replace('MAX_OUTPUT = 256 * 1024**2', 'MAX_OUTPUT = 15000'))
             destination = root / 'oversize'
             request = {'entry':dataclasses.asdict(entry), 'bundle':str(bundle), 'destination':str(destination), 'repository':str(ROOT)}
-            worker = isolated / 'offmenu/refresh/execution_worker.py'
+            worker = isolated / 'src/offmenu/refresh/execution_worker.py'
             diagnostic_call = 'import runpy; runpy.run_path(' + repr(str(worker)) + ')["main"]()'
             process = subprocess.run([sys.executable, '-I', '-c', diagnostic_call],
                                      input=json.dumps(request).encode(), capture_output=True, timeout=30)

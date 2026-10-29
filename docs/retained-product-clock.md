@@ -47,7 +47,7 @@ Its other independently reviewed count and ID declarations remain intact.
 
 Candidates preserve `provenance.fetchedAt: null`; manifests preserve
 `acquiredAt: null`. Both carry the exact `acquisitionClock` object. The new local
-`schemas/retained-product-clock-v2.schema.json` is a clock overlay for a trusted
+`contracts/schemas/retained-product-clock-v2.schema.json` is a clock overlay for a trusted
 contract's full source-specific product/nutrient schemas, not a complete semantic
 schema. The unrelated reference schema remains strict and unchanged. Clock
 metadata does not invent field origins into raw source bytes.

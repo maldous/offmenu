@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {parse} from 'acorn';
 import vm from 'node:vm';
-import {mountScannerProductVisual} from '../../public/scanner-product-visuals.js';
-import {sourceObservationReference} from '../../public/scanner-identity-v2.js';
+import {mountScannerProductVisual} from '../../apps/web/src/scanner-product-visuals.js';
+import {sourceObservationReference} from '../../apps/web/src/scanner-identity-v2.js';
 import {photoFixture} from './fixtures/off-photos/context.mjs';
 
 class Element {
@@ -55,7 +55,7 @@ test('actual offline state or invalid source reference stays on the app fallback
 });
 
 test('actual scanner render sends its current selected observation and detail to the photo renderer',async()=>{
-  const source=await readFile(new URL('../../public/shelf-scanner.js',import.meta.url),'utf8');
+  const source=await readFile(new URL('../../apps/web/src/shelf-scanner.js',import.meta.url),'utf8');
   const ast=parse(source,{ecmaVersion:'latest',sourceType:'module'});
   const node=ast.body.find(node=>node.type==='FunctionDeclaration'&&node.id.name==='render');assert.ok(node);
   const fixture=photoFixture(),nodes=new Map(),{doc,thumbnail,caption}=dom();let passed;

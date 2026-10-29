@@ -196,7 +196,7 @@ class PortfolioBindingTests(unittest.TestCase):
         self.assertEqual(self.run_binding(b,s)['status'],'malformed')
 
     def test_actual_portfolio_descriptors_remain_held_without_original_access(self):
-        root=Path(__file__).resolve().parents[1]/'research/portfolio40'
+        root=Path(__file__).resolve().parents[1]/'docs/research/portfolio40'
         bindings=strict_json((root/'bindings.json').read_bytes())['bindings']
         snapshots=strict_json((root/'snapshots.json').read_bytes())
         with patch('builtins.open',side_effect=AssertionError('original read')), patch('socket.socket',side_effect=AssertionError('network')):

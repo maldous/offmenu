@@ -2,7 +2,7 @@
  * Caller owns snapshot admission, source-use permission and evidence selection.
  * This module cannot establish actual recipe/product equivalence or cooked yield.
  */
-import {calculateBasket, CALCULATION_VERSION} from '../../public/basket-model.js';
+import {calculateBasket, CALCULATION_VERSION} from '../../apps/web/src/basket-model.js';
 
 export const SCENARIO_VERSION = 'offmenu.source-label-input-scenario/1';
 const sha = x => typeof x === 'string' && /^[a-f0-9]{64}$/.test(x);

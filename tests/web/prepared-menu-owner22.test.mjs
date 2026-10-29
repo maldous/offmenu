@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {preparedMenuComposition} from '../../public/prepared-menu-owner22.mjs';
-import {recipeForReview} from '../../public/recipe-review.js';
+import {preparedMenuComposition} from '../../apps/web/src/prepared-menu-owner22.mjs';
+import {recipeForReview} from '../../apps/web/src/recipe-review.js';
 
 // Portable source-shape regression fixture, not a source recipe or admission.
 const actual={kind:'recipe',id:'synthetic:prepared-menu-null-yield',
@@ -41,7 +41,7 @@ test('portable source-shape fixture: actual caller gap preserves unknown yield a
 });
 
 test('existing authored source quantities are not prepared serving mass or retention evidence',()=>{
-  const starter=JSON.parse(readFileSync(new URL('../../public/recipes.json',import.meta.url),'utf8'))[0];
+  const starter=JSON.parse(readFileSync(new URL('../../apps/web/assets/recipes.json',import.meta.url),'utf8'))[0];
   // Explicit source-shape bridge, no claim that recipe.servings is measured mass.
   const record={kind:'recipe',id:starter.id,version:starter.version,provenance:{sourceId:'offmenu-original',
     attribution:starter.attribution,license:starter.license},data:{yield:{value:starter.servings,unit:'portion'},

@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {edibleMass} from '../../public/basket-model.js';
-import {convertQuantity} from '../../public/dimensional-unit-engine.js';
+import {edibleMass} from '../../apps/web/src/basket-model.js';
+import {convertQuantity} from '../../apps/web/src/dimensional-unit-engine.js';
 
 const unit = name => 'urn:offmenu:unit:' + name;
 const quantity = (value = 1500, name = 'mg', extra = {}) => ({
@@ -18,7 +18,7 @@ test('demonstrates existing mg gap and isolated conversion without altering bask
 });
 
 test('supported units agree with the actual corpus registry and round trip', () => {
-  const contract = JSON.parse(readFileSync(new URL('../../corpus/common-data-contract.json', import.meta.url)));
+  const contract = JSON.parse(readFileSync(new URL('../../contracts/corpus/common-data-contract.json', import.meta.url)));
   for (const [name, dimension, value, target, expected] of [
     ['kg', 'mass', 2, 'g', 2000], ['mg', 'mass', 1500, 'g', 1.5],
     ['microgram', 'mass', 1000, 'mg', 1], ['l', 'volume', 2, 'ml', 2000],

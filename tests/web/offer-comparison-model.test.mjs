@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { evaluateOfferBasket } from '../../public/offer-comparison-model.js';
+import { evaluateOfferBasket } from '../../apps/web/src/offer-comparison-model.js';
 
 const date = '2026-10-14';
 const provenance = { sourceId: 'synthetic', recordId: '001', license: 'test-only', rights: 'fixture', visibility: 'private' };

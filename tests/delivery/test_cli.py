@@ -51,7 +51,7 @@ class CliTests(unittest.TestCase):
         self.task_path = self.root / '.delivery' / 'task.json'
         self.save_task()
         source = Path(__file__).resolve().parents[2]
-        self.env = {**os.environ, 'PYTHONPATH': str(source),
+        self.env = {**os.environ, 'PYTHONPATH': str(source / 'src'),
                     'LANGCHAIN_TRACING_V2': 'false', 'LANGSMITH_TRACING': 'false'}
 
     def git(self, *args):

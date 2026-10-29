@@ -1,6 +1,6 @@
 # Source-local category consumers
 
-The reviewed pure modules in `public/source-categories` provide current-source category labels and declared parent candidates, plus a separate source-root type/icon candidate. They perform no network, storage, profile, product join or shared-resolver mutation.
+The reviewed pure modules in `apps/web/src/source-categories` provide current-source category labels and declared parent candidates, plus a separate source-root type/icon candidate. They perform no network, storage, profile, product join or shared-resolver mutation.
 
 ```js
 import {compileCategoryConsumer, compileTypeRules} from './public/source-categories/index.mjs';

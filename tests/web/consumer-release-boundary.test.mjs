@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {gzipSync} from 'node:zlib';
-import {providerDataRoutes} from '../../cloud/provider-data.mjs';
+import {providerDataRoutes} from '../../apps/web/server/provider-data.mjs';
 
 // Invented in-memory serving fixture, not a real source or acceptance receipt.
 const origin='https://offmenu-corpus.netlify.app';

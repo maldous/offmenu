@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 import {parse} from 'acorn';
-import {sessionFetch} from '../../public/session-fetch.js';
+import {sessionFetch} from '../../apps/web/src/session-fetch.js';
 
-const source = await readFile(new URL('../../public/app.js', import.meta.url), 'utf8');
+const source = await readFile(new URL('../../apps/web/src/app.js', import.meta.url), 'utf8');
 const ast = parse(source, {ecmaVersion: 'latest', sourceType: 'module'});
 const actualFunction = name => {
   const node = ast.body.find(node => node.type === 'FunctionDeclaration' && node.id.name === name);

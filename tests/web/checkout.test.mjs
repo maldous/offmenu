@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {finishInventory,nutritionRows,packAmount,makeAutoLot,createScanGate} from '../../public/checkout-model.js';
-import {validateLot,matchMeals} from '../../public/model.js';import {validateState} from '../../cloud/state.mjs';
+import {finishInventory,nutritionRows,packAmount,makeAutoLot,createScanGate} from '../../apps/web/src/checkout-model.js';
+import {validateLot,matchMeals} from '../../apps/web/src/model.js';import {validateState} from '../../apps/web/server/state.mjs';
 const lot=(id,area='Pantry',shelf='Shelf 1')=>({id,barcode:'0000000000001',name:'Rice',ingredient:'rice',quantity:100,unit:'g',location:{area,shelf}});
 const session=(mode='shelf')=>({mode,area:'Pantry',shelf:'Shelf 1',items:[lot('new')],startedAt:'2026-10-12T09:00:00Z'});
 test('shelf reset replaces only the selected shelf',()=>{const original=[lot('old'),lot('other-shelf','Pantry','Shelf 2'),lot('fridge','Fridge'),{...lot('legacy'),location:undefined}];const result=finishInventory(original,session());assert.deepEqual(result.map(x=>x.id),['other-shelf','fridge','legacy','new']);assert.equal(original.length,4);});

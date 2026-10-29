@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';import {readFileSync} from 'node:fs';
-import {cacheInvalidationAdapter} from '../../cloud/cache-invalidation-owner29.mjs';
-import {admission} from '../../public/evidence-model.js';
+import {cacheInvalidationAdapter} from '../../apps/web/server/cache-invalidation-owner29.mjs';
+import {admission} from '../../apps/web/src/evidence-model.js';
 // Injected test double ONLY for this exact two-node synthetic fixture. This
 // does not implement or adopt the unaccepted general f2e195b evaluator.
 function fixtureDependencyGate(rows,{clock,permit}) {
@@ -14,7 +14,7 @@ function fixtureDependencyGate(rows,{clock,permit}) {
  return [{allowed:rootAllowed},{allowed:rootAllowed&&bound&&permit(derived,{now}).allowed===true}];
 }
 function setup(){
- const db=new DatabaseSync(':memory:');db.exec(readFileSync(new URL('../../cloud/catalogue-schema.sql',import.meta.url),'utf8'));
+ const db=new DatabaseSync(':memory:');db.exec(readFileSync(new URL('../../apps/web/server/catalogue-schema.sql',import.meta.url),'utf8'));
  const policy=JSON.stringify({active:true,actions:['display','persist'],audiences:['private']});db.prepare('INSERT INTO source_policies VALUES(?,?,1,1)').run('s',policy);
  const DB={prepare(sql){return {bind(...args){return {async first(){return db.prepare(sql).get(...args)||null;}};}}}};
  let now=1000,calls=0,allowed=true;

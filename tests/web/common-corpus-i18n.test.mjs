@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {createCommonCorpus} from '../../public/common-corpus-locale.js';
-import {configureCorpusResolver,localizedRecipe} from '../../public/content-locale.js';
+import {createCommonCorpus} from '../../apps/web/src/common-corpus-locale.js';
+import {configureCorpusResolver,localizedRecipe} from '../../apps/web/src/content-locale.js';
 
 const sha=value=>createHash('sha256').update(value).digest('hex');
 const scope={visibility:'public'};

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {PUBLIC_PRODUCT_REFERENCE,PUBLIC_PRODUCT_SELECTION,validPublicProductReference,copyPublicProductReference,createPublicScannerHandoff,publicHandoffFingerprint} from '../../public/scanner-kitchen-handoff.js';
+import {PUBLIC_PRODUCT_REFERENCE,PUBLIC_PRODUCT_SELECTION,validPublicProductReference,copyPublicProductReference,createPublicScannerHandoff,publicHandoffFingerprint} from '../../apps/web/src/scanner-kitchen-handoff.js';
 const raw='0000000013131',origin='https://world.openfoodfacts.org';
 function reference(url=origin){return {schema:PUBLIC_PRODUCT_REFERENCE,...PUBLIC_PRODUCT_SELECTION,recordId:'offmenu:generated:url-compatibility',namespace:'barcode',lexicalValue:raw,provenance:{sourceId:'off',visibility:'public',license:'Generated licence',attribution:'Generated attribution',url,licenseUrl:null,sourceDate:null}};}
 test('bare HTTPS source origin is valid and survives copy, handoff and fingerprint literally',()=>{

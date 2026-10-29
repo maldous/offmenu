@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
-import {createQueueStateBridge} from '../../cloud/queue-state-bridge-owner16.mjs';
+import {createQueueStateBridge} from '../../apps/web/server/queue-state-bridge-owner16.mjs';
 import {verifyFixtures} from './fixtures/queue-state-owner16/verify.mjs';
 import {createSessionStateProtocol, createSqliteStateStore, SESSION_STATE_DDL} from './fixtures/queue-state-owner16/sqlite04/cloud/session-state-owner04.mjs';
 import {createStateQueueClient} from './fixtures/queue-state-owner16/predecessor16/public/durable-queue-owner16.mjs';

@@ -21,12 +21,12 @@ def module(name, path):
     spec.loader.exec_module(value)
     return value
 
-A = module('preserved_afcd', 'scripts/dataset-normalization/owner48_afcd.py')
-C = module('preserved_conflicts', 'scripts/dataset-normalization/owner48_afcd_conflicts.py')
-V = module('preserved_verify', 'scripts/dataset-normalization/owner48_verify_packets.py')
-J = module('preserved_japan', 'scripts/owner51-normalization/japan_a.py')
-S = module('preserved_six', 'scripts/owner51-normalization/apply_six_v2.py')
-L = module('preserved_lookup', 'scripts/source_proposal_lookup_owner56.py')
+A = module('preserved_afcd', 'tools/data-processing/dataset-normalization/owner48_afcd.py')
+C = module('preserved_conflicts', 'tools/data-processing/dataset-normalization/owner48_afcd_conflicts.py')
+V = module('preserved_verify', 'tools/data-processing/dataset-normalization/owner48_verify_packets.py')
+J = module('preserved_japan', 'tools/data-processing/owner51-normalization/japan_a.py')
+S = module('preserved_six', 'tools/data-processing/owner51-normalization/apply_six_v2.py')
+L = module('preserved_lookup', 'tools/data-processing/source_proposal_lookup_owner56.py')
 
 class AFCDSyntheticTests(unittest.TestCase):
     def setUp(self):

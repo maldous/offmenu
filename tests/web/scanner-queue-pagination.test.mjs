@@ -5,9 +5,9 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import vm from 'node:vm';
 import {parse} from 'acorn';
-import {createIdentifierAdapter} from '../../cloud/identifier-host.mjs';
-import * as shim from '../../public/scanner-identifiers.js';
-import {IDENTIFIER_DB,IDENTIFIER_RUN} from '../../public/scanner-identity-v2.js';
+import {createIdentifierAdapter} from '../../apps/web/server/identifier-host.mjs';
+import * as shim from '../../apps/web/src/scanner-identifiers.js';
+import {IDENTIFIER_DB,IDENTIFIER_RUN} from '../../apps/web/src/scanner-identity-v2.js';
 
 test('actual queue callbacks retain bound continuation across another capture, pause and a failed lane',async t=>{
  const dir=await mkdtemp(join(tmpdir(),'offmenu-queue-cursor-'));
@@ -30,7 +30,7 @@ print(json.dumps({'databaseSha256':'${IDENTIFIER_DB}','rows':rows,'hasMore':more
  const adapter=createIdentifierAdapter({scriptPath:script}),previousFetch=globalThis.fetch;
  globalThis.fetch=(path,options)=>adapter(new Request('https://offmenu-identifiers.invalid'+path,options));
  t.after(()=>{globalThis.fetch=previousFetch;});
- const source=await readFile(new URL('../../public/shelf-scanner.js',import.meta.url),'utf8'),nodes=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body;
+ const source=await readFile(new URL('../../apps/web/src/shelf-scanner.js',import.meta.url),'utf8'),nodes=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body;
  const functions=['el','btn','capture','showMatches','renderQueue'].map(name=>{const node=nodes.find(n=>n.type==='FunctionDeclaration'&&n.id.name===name);assert.ok(node,name);return source.slice(node.start,node.end);});
  const formats=nodes.find(n=>n.type==='VariableDeclaration'&&n.declarations.some(d=>d.id.name==='CAPTURE_FORMATS'));
  const pause=nodes.find(n=>n.type==='ExpressionStatement'&&n.expression.type==='AssignmentExpression'&&n.expression.left.type==='MemberExpression'&&n.expression.left.property.name==='onclick'&&n.expression.left.object.type==='CallExpression'&&n.expression.left.object.arguments[0]?.value==='pause');

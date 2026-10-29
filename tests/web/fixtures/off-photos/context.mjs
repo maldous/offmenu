@@ -1,4 +1,4 @@
-import {IDENTIFIER_DB,IDENTIFIER_RUN,DETAIL_SELECTION} from '../../../../public/scanner-identity-v2.js';
+import {IDENTIFIER_DB,IDENTIFIER_RUN,DETAIL_SELECTION} from '../../../../apps/web/src/scanner-identity-v2.js';
 export function photoFixture() {
   const key={run_id:IDENTIFIER_RUN,input_id:'generated-source',record_ordinal:7,assertion_id:9};
   const reference={schema:'offmenu-identifier-observation/2',databaseSha256:IDENTIFIER_DB,runId:IDENTIFIER_RUN,

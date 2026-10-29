@@ -1,5 +1,5 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {DatabaseSync} from 'node:sqlite';import {readFileSync} from 'node:fs';import {kitchenRoutes} from '../../cloud/kitchens.mjs';
-const db=new DatabaseSync(':memory:');db.exec(readFileSync(new URL('../../cloud/schema.sql',import.meta.url),'utf8'));
+import test from 'node:test';import assert from 'node:assert/strict';import {DatabaseSync} from 'node:sqlite';import {readFileSync} from 'node:fs';import {kitchenRoutes} from '../../apps/web/server/kitchens.mjs';
+const db=new DatabaseSync(':memory:');db.exec(readFileSync(new URL('../../apps/web/server/schema.sql',import.meta.url),'utf8'));
 function prepare(sql){return {bind(...args){return stmt(sql,args)},...stmt(sql,[])};}function stmt(sql,args){return {async first(){return db.prepare(sql).get(...args)||null;},async all(){return {results:db.prepare(sql).all(...args)};},async run(){const m=db.prepare(sql).run(...args);return {meta:{changes:Number(m.changes)}};}};}
 const env={DB:{prepare,async batch(stmts){db.exec('BEGIN');try{const r=[];for(const s of stmts)r.push(await s.run());db.exec('COMMIT');return r;}catch(e){db.exec('ROLLBACK');throw e;}}}};
 const helpers={verifiedUser:async request=>({id:request.headers.get('Authorization')}),boundedJSON:request=>request.json()};

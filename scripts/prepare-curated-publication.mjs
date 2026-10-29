@@ -4,7 +4,7 @@ import {readFile,writeFile,mkdir,rm,copyFile,realpath} from 'node:fs/promises';
 import {resolve,dirname,sep} from 'node:path';
 import {createHash} from 'node:crypto';
 import {gunzipSync} from 'node:zlib';
-import {assertCurated,createEngine} from '../corpus/engine.mjs';
+import {assertCurated,createEngine} from '../tools/corpus/engine.mjs';
 const release=process.argv[2]||process.env.OFFMENU_CURATED_RELEASE;
 if(!release)throw Error('Manual local build requires OFFMENU_CURATED_RELEASE');
 const source=await realpath(resolve(release,'blobs'));
@@ -48,6 +48,6 @@ if(retainIndex>=0){
  console.log(JSON.stringify({status:'accepted-prior-curation-retained',releaseId:old.releaseId,files:old.files.length}));
 }
 await copyFile(resolve(source,'manifest.json'),resolve(target,'manifest.json'));
-await copyFile('netlify/public/index.html',resolve(target,'index.html'));
+await copyFile('deploy/netlify/public/index.html',resolve(target,'index.html'));
 await writeFile(resolve(target,'_headers'),'/*\n  Cache-Control: public, max-age=60\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: default-src \'none\'; style-src \'self\'\n');
 console.log(JSON.stringify({status:'curation-only-publication-prepared',releaseId:manifest.releaseId,records:verified,rawSourcesPublished:false}));

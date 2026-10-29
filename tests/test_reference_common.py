@@ -1,7 +1,7 @@
 import gzip,hashlib,importlib.util,json,tempfile,unittest
 from pathlib import Path
 ROOT=Path(__file__).parents[1]
-spec=importlib.util.spec_from_file_location('reference_align',ROOT/'scripts/align-reference-common.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+spec=importlib.util.spec_from_file_location('reference_align',ROOT/'tools/data-processing/align_reference_common.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
 class ReferenceAlignmentTests(unittest.TestCase):
  def test_curated_input_is_complete_and_raw_fields_are_not_restored(self):
   with tempfile.TemporaryDirectory() as temp:

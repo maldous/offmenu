@@ -18,7 +18,7 @@ class CatalogueTransportTests(unittest.TestCase):
         raw = (ROOT / 'config/source-bindings/portfolio16.json').read_bytes()
         self.assertEqual(sha(raw), MIRROR_SHA256)
         expected = strict_json(raw)
-        module = ast.parse((ROOT / 'offmenu/refresh/portfolio16_catalogue.py').read_text())
+        module = ast.parse((ROOT / 'src/offmenu/refresh/portfolio16_catalogue.py').read_text())
         self.assertEqual(len(module.body), 2)
         self.assertIsInstance(module.body[0], ast.Expr)
         assignment = module.body[1]

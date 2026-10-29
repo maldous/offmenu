@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {matchRecipeStock,personallyReviewedRecipe,recipeJSONLD,recipeIngredientKey} from '../../public/recipe-library-model.js';
+import {matchRecipeStock,personallyReviewedRecipe,recipeJSONLD,recipeIngredientKey} from '../../apps/web/src/recipe-library-model.js';
 const item=(amount=100,unit='g')=>({name:'rice',ingredientId:'rice',amount,unit,originalText:'100 g rice',optional:false,sourceQuantity:{value:100,unit:'g',original:'100 g rice',status:'parsed'}});
 const record=()=>({id:'world-recipes:recipe:test',kind:'recipe',countries:[],provenance:{sourceId:'world-recipes',visibility:'public',license:'CC BY-SA 4.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',url:'https://example.org/recipe',attribution:'Recipe author'},data:{name:'Rice',languages:['en'],yield:{value:null,unit:'portion'},ingredients:[item()],directions:['Boil rice.'],automaticPlanningEligible:false}});
 test('pantry quantities aggregate compatible lots and exclude unusable stock',()=>{

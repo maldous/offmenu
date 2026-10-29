@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {memberSuitability,generateHouseholdDay} from '../../public/household-model.js';
+import {memberSuitability,generateHouseholdDay} from '../../apps/web/src/household-model.js';
 
 test('an unknown ingredient stays review-required for an unrestricted household member',()=>{
  const members=[

@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {makeAutoLot,finishInventory} from '../../public/checkout-model.js';
-import {validateLot} from '../../public/model.js';
-import {cookMeal,serveBatch,reconcileCookedStock,undoCook} from '../../public/cooking-model.js';
+import {makeAutoLot,finishInventory} from '../../apps/web/src/checkout-model.js';
+import {validateLot} from '../../apps/web/src/model.js';
+import {cookMeal,serveBatch,reconcileCookedStock,undoCook} from '../../apps/web/src/cooking-model.js';
 // Every product, ingredient choice, recipe, household event and amount below is SYNTHETIC.
 // This exercises accounting code only; it is not food, nutrient or user-data qualification.
 const date='2026-10-26';

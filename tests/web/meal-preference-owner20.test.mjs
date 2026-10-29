@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import handler from '../../cloud/handler.mjs';
-import {validateState} from '../../cloud/state.mjs';
-import {memberSuitability} from '../../public/household-model.js';
-import {kitchenProjection, applyKitchen} from '../../public/sync-model.js';
-import {validateMealPreferences, validateAccountMealState, updateAccountMealPreferences} from '../../cloud/meal-preference-owner20.mjs';
+import handler from '../../apps/web/server/handler.mjs';
+import {validateState} from '../../apps/web/server/state.mjs';
+import {memberSuitability} from '../../apps/web/src/household-model.js';
+import {kitchenProjection, applyKitchen} from '../../apps/web/src/sync-model.js';
+import {validateMealPreferences, validateAccountMealState, updateAccountMealPreferences} from '../../apps/web/server/meal-preference-owner20.mjs';
 
 const context = {accountId: 'account-a', memberId: 'sam', consent: true};
 const pref = () => ({version: 1, scope: {accountId: 'account-a', memberId: 'sam'}, likes: ['rice'], textures: ['Crisp'], spice: null});

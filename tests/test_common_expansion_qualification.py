@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
-    "common_expansion_qualification", ROOT / "scripts/qualify-common-expansion.py"
+    "common_expansion_qualification", ROOT / "tools/data-processing/qualify_common_expansion.py"
 )
 qualification = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(qualification)
@@ -109,9 +109,9 @@ class CommonExpansionQualificationTests(unittest.TestCase):
             self.assertEqual(evidence["database"]["ids"], 3)
             self.assertEqual(evidence["packages"][0]["admittedSourceRecords"], {"fixture": 1})
             self.assertEqual(evidence["schemaByteSha256"], hashlib.sha256(
-                (ROOT / "corpus/common-data.schema.json").read_bytes()).hexdigest())
+                (ROOT / "contracts/corpus/common-data.schema.json").read_bytes()).hexdigest())
             self.assertEqual(evidence["contractByteSha256"], hashlib.sha256(
-                (ROOT / "corpus/common-data-contract.json").read_bytes()).hexdigest())
+                (ROOT / "contracts/corpus/common-data-contract.json").read_bytes()).hexdigest())
             self.assertTrue((root / "evidence.json").is_file())
 
     def test_rejects_partial_or_benchmark_package_before_streaming(self):

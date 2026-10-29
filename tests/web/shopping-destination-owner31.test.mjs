@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {createShoppingDestinationBoundary} from '../../public/shopping-destination-owner31.mjs';
-import {createShoppingHandoff,RETAINED_HELPER_PIN} from '../../public/shopping-handoff-owner31.mjs';
-import * as helper from '../../public/shopping-handoff-model.js';
+import {createShoppingDestinationBoundary} from '../../apps/web/src/shopping-destination-owner31.mjs';
+import {createShoppingHandoff,RETAINED_HELPER_PIN} from '../../apps/web/src/shopping-handoff-owner31.mjs';
+import * as helper from '../../apps/web/src/shopping-handoff-model.js';
 function setup(){
  let clock=1000,calls=0;
  const state={accountId:'alice',kitchenId:'one',revision:'r1',sessionEpoch:'s1',canExport:true,demo:false,policies:{},data:{profile:{country:'AU',plan:[],shopping:[{id:'rice',name:'أرز',amount:'unknown pack',checked:false}]},recipes:[],inventory:[],products:{},date:'2026-10-15',usePantry:true},bindings:[{lineId:'rice',accountId:'alice',kitchenId:'one',revision:'r1',admitted:true,record:{id:'personal:rice',kind:'product',data:{quantity:null,unit:null},provenance:{sourceId:'personal-import',privateUseConfirmed:true,attribution:'synthetic owner fixture'}}}]};

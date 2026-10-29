@@ -4,15 +4,15 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 import {parse} from 'acorn';
-import {appendRecipeIngredientCoverage} from '../../public/recipe-ingredient-coverage-ui.js';
-import {recipeIngredientCoverage} from '../../public/recipe-ingredient-coverage.js';
-import {rankedMenus} from '../../public/household-model.js';
-import {quantified,displayAmount} from '../../public/ingredients.js';
-import {normalize} from '../../public/model.js';
-import {locationKey} from '../../public/checkout-model.js';
-import {planSummary,NUTRIENTS} from '../../public/menu-model.js';
-import {t,setLocalizedText,getLanguage} from '../../public/i18n.js';
-import {normalizeSearchText,multilingualSearchText,showLocalized,localizedField,displayName} from '../../public/content-locale.js';
+import {appendRecipeIngredientCoverage} from '../../apps/web/src/recipe-ingredient-coverage-ui.js';
+import {recipeIngredientCoverage} from '../../apps/web/src/recipe-ingredient-coverage.js';
+import {rankedMenus} from '../../apps/web/src/household-model.js';
+import {quantified,displayAmount} from '../../apps/web/src/ingredients.js';
+import {normalize} from '../../apps/web/src/model.js';
+import {locationKey} from '../../apps/web/src/checkout-model.js';
+import {planSummary,NUTRIENTS} from '../../apps/web/src/menu-model.js';
+import {t,setLocalizedText,getLanguage} from '../../apps/web/src/i18n.js';
+import {normalizeSearchText,multilingualSearchText,showLocalized,localizedField,displayName} from '../../apps/web/src/content-locale.js';
 const date='2026-10-26';
 class Element{
  constructor(tag,document){this.tagName=tag;this.ownerDocument=document;this.children=[];this.dataset={};this.style={};this.className='';this.ownText='';this.value='';this.checked=false;this.attributes={};this.classList={toggle:(name,on)=>{this.classes??=new Set();on?this.classes.add(name):this.classes.delete(name);}};}
@@ -34,7 +34,7 @@ function render({r=recipe(),inventory=[],products={},members=[],status}={}){
  const before=structuredClone(input);freeze(input);const result=appendRecipeIngredientCoverage(card,input);assert.deepEqual(input,before);
  return {...result,card,doc,input};
 }
-const source=readFileSync(new URL('../../public/app.js',import.meta.url),'utf8');
+const source=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
 const findMeals=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body.find(n=>n.type==='FunctionDeclaration'&&n.id.name==='findMeals');
 
 test('actual proposed findMeals card append uses the same admitted context and two allocated locations',()=>{

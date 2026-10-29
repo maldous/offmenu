@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {pantryDuration} from '../../public/household-model.js';
+import {pantryDuration} from '../../apps/web/src/household-model.js';
 const date='2026-10-18';
 const recipe={id:'rice',title:'Synthetic measured rice',servings:1,ingredients:[{ingredient:'rice',quantity:100,unit:'g'}]};
 const lot=(overrides={})=>({ingredient:'rice',quantity:100,unit:'g',...overrides});

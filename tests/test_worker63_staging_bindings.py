@@ -15,7 +15,7 @@ from offmenu.refresh.acceptance import (Asset, SourceContract, canonical as pack
 from offmenu.refresh.core import canonical
 from offmenu.refresh.field_provenance import field_origin_errors
 
-PATH = Path(__file__).resolve().parents[1] / 'scripts/worker63_staging_bindings.py'
+PATH = Path(__file__).resolve().parents[1] / 'tools/data-processing/worker63_staging_bindings.py'
 spec = importlib.util.spec_from_file_location('worker63_bindings', PATH)
 m = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(m)

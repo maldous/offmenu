@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-spec = importlib.util.spec_from_file_location('merge', Path(__file__).parents[1] / 'scripts/merge-curated-corpus.py')
+spec = importlib.util.spec_from_file_location('merge', Path(__file__).parents[1] / 'tools/data-processing/merge_curated_corpus.py')
 merger = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(merger)
 

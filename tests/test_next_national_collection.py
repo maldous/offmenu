@@ -1,7 +1,7 @@
 import importlib.util,unittest,tempfile
 from pathlib import Path
 import openpyxl
-spec=importlib.util.spec_from_file_location('next_national',Path(__file__).parents[1]/'scripts/collect-next-national.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+spec=importlib.util.spec_from_file_location('next_national',Path(__file__).parents[1]/'tools/data-processing/collect_next_national.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
 class NationalFileTests(unittest.TestCase):
  def test_fineli_units_locales_and_unquoted_bibliography_continuation(self):
   with tempfile.TemporaryDirectory() as temp:

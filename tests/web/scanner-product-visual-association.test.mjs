@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mountScannerProductVisual} from '../../public/scanner-product-visuals.js';
+import {mountScannerProductVisual} from '../../apps/web/src/scanner-product-visuals.js';
 import {photoFixture} from './fixtures/off-photos/context.mjs';
 
 class Element {

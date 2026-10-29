@@ -7,7 +7,7 @@ import unittest
 import jsonschema
 from offmenu.refresh.recipe_candidate_generation import build_generated_fixture, canonical, digest, NS
 
-CONTRACT_ROOT = Path(__file__).resolve().parents[1] / 'corpus'
+CONTRACT_ROOT = Path(__file__).resolve().parents[1] / 'contracts' / 'corpus'
 CONTRACT = (CONTRACT_ROOT / 'common-data-contract.json').read_bytes()
 SCHEMA = (CONTRACT_ROOT / 'common-data.schema.json').read_bytes()
 
@@ -72,7 +72,7 @@ class AdapterTests(unittest.TestCase):
     def test_actual_source_and_first_assets_rejected(self):
         row = fixture(); row['sourceId'] = 'wikibooks:recipe:held'
         with self.assertRaisesRegex(ValueError, 'not admitted'): self.build([row])
-        row = fixture(); row['assetPath'] = 'public/recipe-ingredient-aliases.json'
+        row = fixture(); row['assetPath'] = 'apps/web/assets/recipe-ingredient-aliases.json'
         with self.assertRaisesRegex(ValueError, 'excluded'): self.build([row])
 
     def test_duplicate_and_foreign_occurrence_rejected(self):

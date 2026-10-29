@@ -14,7 +14,7 @@ from offmenu_ciqual import source_native as native
 from test_ciqual_source_native import fixture
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location('native_dispatch', ROOT / 'scripts/dispatch-foo-job.py')
+spec = importlib.util.spec_from_file_location('native_dispatch', ROOT / 'tools/operations/dispatch_foo_job.py')
 jobs = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(jobs)
 

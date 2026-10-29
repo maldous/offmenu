@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createOffMenuIdentityClient} from '../../public/offmenu-identity-client.js';
+import {createOffMenuIdentityClient} from '../../apps/web/src/offmenu-identity-client.js';
 
 const user = id => ({user: {id, name: 'Invented User', email: 'invented@example.test'}, session: {userId: id}});
 function fake(sequence) {
@@ -84,7 +84,7 @@ test('redirect, non-JSON response, malformed session and refresh outage are surf
 });
 
 test('accepted account guard rejects an in-flight owner switch without accepting the body', async () => {
-  const {sessionFetch} = await import('../../public/session-fetch.js');
+  const {sessionFetch} = await import('../../apps/web/src/session-fetch.js');
   let owner = {owner: 'opaque-A'}, requests = 0;
   const bound = sessionFetch({identity: () => owner, refresh: async () => {},
     currentUser: async () => ({id: 'opaque-A'}),

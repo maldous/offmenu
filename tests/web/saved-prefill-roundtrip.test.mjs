@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 import {parse} from 'acorn';
-import * as identity from '../../public/scanner-identity-v2.js';
-import * as shim from '../../public/scanner-identifiers.js';
-import {PUBLIC_SCANNER_HANDOFF} from '../../public/scanner-kitchen-handoff.js';
-const source=readFileSync(new URL('../../public/shelf-scanner.js',import.meta.url),'utf8');
+import * as identity from '../../apps/web/src/scanner-identity-v2.js';
+import * as shim from '../../apps/web/src/scanner-identifiers.js';
+import {PUBLIC_SCANNER_HANDOFF} from '../../apps/web/src/scanner-kitchen-handoff.js';
+const source=readFileSync(new URL('../../apps/web/src/shelf-scanner.js',import.meta.url),'utf8');
 const nodes=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body;
 const fn=name=>{const n=nodes.find(n=>n.type==='FunctionDeclaration'&&n.id.name===name);assert.ok(n);return source.slice(n.start,n.end);};
 const assignment=(id,property)=>{const n=nodes.find(n=>n.type==='ExpressionStatement'&&n.expression.type==='AssignmentExpression'&&n.expression.left.type==='MemberExpression'&&n.expression.left.property.name===property&&n.expression.left.object.type==='CallExpression'&&n.expression.left.object.arguments[0]?.value===id);assert.ok(n,id);return source.slice(n.start,n.end);};
@@ -36,7 +36,7 @@ for(const [namespace,symbology,raw] of [
 });
 
 test('supported saved camera hints are actual manual choices, not inferred from eight digits',()=>{
- const html=readFileSync(new URL('../../public/shelf-scanner.html',import.meta.url),'utf8');
+ const html=readFileSync(new URL('../../apps/web/assets/shelf-scanner.html',import.meta.url),'utf8');
  for(const format of ['UPC-A','EAN-13','EAN-8','GTIN-14','UPC-E'])
   assert.match(html,new RegExp('<option value="'+format+'">'));
  assert.deepEqual(identity.expectedForms('01234558',null).map(form=>form.lexicalValue),['01234558']);
@@ -65,7 +65,7 @@ for(const [namespace,symbology,raw] of [['USDA-FDC',null,'001105904'],['barcode'
  try{
   const detail=await shim.loadSelectedDetails(match,page,7);assert.equal(detail.status,'loaded');assert.equal(detail.variants.length,1);assert.equal(detail.reference.namespace,namespace);assert.equal(detail.reference.originalLexicalValue,raw);
   assert.equal(requests[0].path,'/__dev/identifiers/status');assert.equal(requests[0].options.body,undefined);
-  const app=readFileSync(new URL('../../public/app.js',import.meta.url),'utf8'),appNodes=parse(app,{ecmaVersion:'latest',sourceType:'module'}).body,reader=appNodes.find(n=>n.type==='FunctionDeclaration'&&n.id.name==='readScannerImport');
+  const app=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8'),appNodes=parse(app,{ecmaVersion:'latest',sourceType:'module'}).body,reader=appNodes.find(n=>n.type==='FunctionDeclaration'&&n.id.name==='readScannerImport');
   const payload={schema:'offmenu-scanner-kitchen-handoff/1',operationId:'11111111-1111-4111-8111-111111111111',barcode:raw,identifierNamespace:namespace,representationHint:symbology,sourceId:ref.sourceId,releaseId:ref.releaseId,name:'Generated',brand:null,assertionId:ref.observationKey.assertion_id,sourceObservationReference:ref};let stored=JSON.stringify(payload);
   const ctx={PUBLIC_SCANNER_HANDOFF,lifecycleFixture:false,location:{search:'?scan=staged'},URLSearchParams,KITCHEN_HANDOFF:'generated-handoff',validSourceObservationReference:identity.validSourceObservationReference,sessionStorage:{getItem:()=>stored},crypto};vm.createContext(ctx);vm.runInContext(app.slice(reader.start,reader.end),ctx);
   const result=ctx.readScannerImport();assert.ok(result);assert.equal(result.barcode,raw);assert.equal(result.identifierNamespace,namespace);assert.equal(result.representationHint,symbology);assert.equal(result.sourceObservationReference.namespace,namespace);

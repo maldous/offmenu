@@ -3,13 +3,13 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {webcrypto} from 'node:crypto';
-import {appendRecipeIngredientCoverage} from '../../public/recipe-ingredient-coverage-ui.js';
+import {appendRecipeIngredientCoverage} from '../../apps/web/src/recipe-ingredient-coverage-ui.js';
 import {pathToFileURL} from 'node:url';
 
 // Execute the real rendered-menu and diner-checkbox handlers with synthetic
 // state. This is source/handler evidence, not a browser or real-user test.
-const source=readFileSync(process.env.OFFMENU_APP_SOURCE||new URL('../../public/app.js',import.meta.url),'utf8');
-const moduleURL=(variable,name)=>process.env[variable]?pathToFileURL(process.env[variable]).href:new URL('../../public/'+name,import.meta.url).href;
+const source=readFileSync(process.env.OFFMENU_APP_SOURCE||new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
+const moduleURL=(variable,name)=>process.env[variable]?pathToFileURL(process.env[variable]).href:new URL('../../apps/web/src/'+name,import.meta.url).href;
 const {planSummary,NUTRIENTS}=await import(moduleURL('OFFMENU_MENU_MODULE','menu-model.js'));
 const {rankedMenus,householdPortions}=await import(moduleURL('OFFMENU_HOUSEHOLD_MODULE','household-model.js'));
 const {quantified}=await import(moduleURL('OFFMENU_INGREDIENT_MODULE','ingredients.js'));

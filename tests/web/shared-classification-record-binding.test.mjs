@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {associateProductVisual} from '../../public/product-visual-association.js';
+import {associateProductVisual} from '../../apps/web/src/product-visual-association.js';
 import {photoFixture} from './fixtures/off-photos/context.mjs';
 // Generated record IDs/evidence only. The native source record ID deliberately
 // differs from the consumer's federated record ID; neither is inferred/rewritten.

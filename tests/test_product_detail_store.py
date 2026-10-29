@@ -75,7 +75,7 @@ class ProductDetailStoreTests(unittest.TestCase):
         self.assertIs(usda['additionalProperties'], False)
         self.assertEqual(store.USDA_NATIVE_PRODUCT_KEYS, frozenset(usda['properties']))
         # collect-jsonl.mjs imports this exact normalizer, not off_native_policy.
-        code = "import {normalizeOFF} from './public/unified-data.js'; console.log(JSON.stringify(Object.keys(normalizeOFF({code:'00123'},{id:'off',url:'https://example.invalid',license:'fixture',name:'fixture'})[0].data)));"
+        code = "import {normalizeOFF} from './apps/web/src/unified-data.js'; console.log(JSON.stringify(Object.keys(normalizeOFF({code:'00123'},{id:'off',url:'https://example.invalid',license:'fixture',name:'fixture'})[0].data)));"
         keys = json.loads(subprocess.check_output(['node', '--input-type=module', '-e', code],
             cwd=store.Path(__file__).resolve().parents[1], text=True))
         self.assertEqual(store.OFF_LEGACY_PRODUCT_KEYS, frozenset(keys))

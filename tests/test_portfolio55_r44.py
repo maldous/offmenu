@@ -10,7 +10,7 @@ from offmenu.refresh.portfolio55 import assess_portfolio, proposed_origin_errors
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / 'tests/fixtures/portfolio55'
-BINDINGS = json.loads((ROOT / 'offmenu/refresh/portfolio55.json').read_text())['bindings']
+BINDINGS = json.loads((ROOT / 'src/offmenu/refresh/portfolio55.json').read_text())['bindings']
 REQUEST = json.loads((FIXTURES / 'valid-metadata.json').read_text())
 ROW = json.loads((FIXTURES / 'authored-envelope.json').read_text())['row']
 

@@ -19,8 +19,8 @@ def load(name, path):
     return module
 
 
-host = load("runner_host_setup", ROOT / "scripts/runner_host_setup.py")
-jobs = load("dispatch_foo_job", ROOT / "scripts/dispatch-foo-job.py")
+host = load("runner_host_setup", ROOT / "tools/operations/runner_host_setup.py")
+jobs = load("dispatch_foo_job", ROOT / "tools/operations/dispatch_foo_job.py")
 
 
 class SetupTests(unittest.TestCase):

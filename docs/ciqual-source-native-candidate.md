@@ -61,7 +61,7 @@ redistribution. It produces only the requested private candidate on Foo.
 The parent integration owns CLI, registry, dispatcher, runner and packaging
 changes. This change set modifies none of those files.
 
-1. Add `include offmenu_ciqual/native-contract-v1.json` to `MANIFEST.in` when
+1. Add `include src/offmenu_ciqual/native-contract-v1.json` to `MANIFEST.in` when
    packaging this adapter.
 2. Call `offmenu_ciqual.source_native.build_selected(output)` from a trusted
    normal-user Foo runner. Input paths are fixed by the existing survey module;

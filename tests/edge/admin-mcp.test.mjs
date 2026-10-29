@@ -9,7 +9,7 @@ test('compiled MCP enforces delegated tool scopes and fresh administrator roles'
  mock.get('https://offmenu-accounts.netlify.app').intercept({path:'/.netlify/identity/user',method:'GET'}).reply(200,()=>JSON.stringify({id:'staff',app_metadata:{roles:role?['offmenu-admin']:[]}})).persist();
  const worker=new Miniflare({modules:true,scriptPath:'dist/worker.mjs',compatibilityDate:'2026-08-06',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],fetchMock:mock,bindings:{PROVIDER_VAULT_KEY:'a'.repeat(64)}});
  try{
-  const db=await worker.getD1Database('DB'),schema=new DatabaseSync(':memory:');schema.exec(readFileSync('cloud/schema.sql','utf8'));
+  const db=await worker.getD1Database('DB'),schema=new DatabaseSync(':memory:');schema.exec(readFileSync('apps/web/server/schema.sql','utf8'));
   for(const {sql} of schema.prepare("SELECT sql FROM sqlite_master WHERE sql IS NOT NULL AND name NOT LIKE 'sqlite_%' ORDER BY CASE type WHEN 'table' THEN 0 ELSE 1 END").all())await db.prepare(sql).run();schema.close();
   const post=(path,token,body)=>worker.dispatchFetch('https://offmenu.test'+path,{method:'POST',headers:{Authorization:'Bearer '+token,Origin:'https://offmenu.test','Content-Type':'application/json'},body:JSON.stringify(body)});
   const mint=async scopes=>{const r=await post('/api/integrations/tokens',identity,{name:'Compiled scoped test',scopes});assert.equal(r.status,201);return (await r.json()).access_token;};

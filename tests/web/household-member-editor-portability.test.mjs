@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {parse} from 'acorn';
-import {householdPortions} from '../../public/household-model.js';
+import {householdPortions} from '../../apps/web/src/household-model.js';
 
 test('editing a household member preserves stored typed and scoped preferences',()=>{
- const source=readFileSync(new URL('../../public/app.js',import.meta.url),'utf8');
+ const source=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
  const ast=parse(source,{ecmaVersion:'latest',sourceType:'module'});
  const matches=ast.body.filter(n=>n.type==='ExpressionStatement'&&n.expression.type==='AssignmentExpression'&&source.slice(n.expression.left.start,n.expression.left.end)==="$('member-form').onsubmit");
  assert.equal(matches.length,1);

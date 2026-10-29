@@ -14,7 +14,7 @@ import jsonschema
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.dont_write_bytecode=True
-spec=importlib.util.spec_from_file_location('worker64_nutrient_candidate',ROOT/'offmenu/refresh/nutrient_reference_generation.py')
+spec=importlib.util.spec_from_file_location('worker64_nutrient_candidate',ROOT/'src/offmenu/refresh/nutrient_reference_generation.py')
 m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 FIXTURES=ROOT/'tests/fixtures/nutrient_reference_generation'
 CONTRACT=(FIXTURES/'common-data-contract.json').read_bytes()
@@ -24,7 +24,7 @@ assert hashlib.sha256(CONTRACT).hexdigest()==m.CONTRACT_SHA
 assert hashlib.sha256((FIXTURES/'common-data.schema.json').read_bytes()).hexdigest()=='f1968889c5e1500e841517bd7546af9c223bf97dce40bb68a3f584e93559298c'
 # Generated collision fixtures only. Real operations inject the selected first-generation exclusions.
 PROTECTED=['urn:offmenu:fixture:protected:resource-a','urn:offmenu:unit:g']
-SCRATCH=ROOT/'generated-test-scratch';SCRATCH.mkdir(exist_ok=True)
+SCRATCH=ROOT/'.cache/tests/nutrient-generation';SCRATCH.mkdir(parents=True,exist_ok=True)
 fixture_paths=[]
 
 

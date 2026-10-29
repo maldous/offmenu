@@ -4,7 +4,7 @@ from pathlib import Path
 import unittest
 
 spec = importlib.util.spec_from_file_location(
-    "private_source_lookup_contract", Path(__file__).parents[1] / "private-product-lookup" / "lookup.py")
+    "private_source_lookup_contract", Path(__file__).parents[1] / "integrations/staged/private-product-lookup" / "lookup.py")
 lookup = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(lookup)
 

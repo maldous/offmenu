@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {IDENTIFIER_DB, IDENTIFIER_RUN, DETAIL_SELECTION, expectedForms,
   lookupIdentityPage, projectIdentityPage, mergeIdentityPages,
-  sourceObservationReference, validSourceObservationReference, exactDetailRequest} from '../../public/scanner-identity-v2.js';
-import {projectIdentifierPage, currentSavedReference} from '../../public/scanner-identifiers.js';
-import {validateLot} from '../../public/model.js';
+  sourceObservationReference, validSourceObservationReference, exactDetailRequest} from '../../apps/web/src/scanner-identity-v2.js';
+import {projectIdentifierPage, currentSavedReference} from '../../apps/web/src/scanner-identifiers.js';
+import {validateLot} from '../../apps/web/src/model.js';
 
 const key = (id, namespace, lexical) => ({assertion_id:id,run_id:IDENTIFIER_RUN,
   input_id:'invented-input',record_ordinal:id,namespace,lexical_value:lexical,

@@ -16,8 +16,8 @@ from unittest.mock import patch
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRATCH = ROOT/'generated-scratch'
-SCRATCH.mkdir(exist_ok=True)
+SCRATCH = ROOT/'.cache/tests/source-field'
+SCRATCH.mkdir(parents=True, exist_ok=True)
 sys.dont_write_bytecode = True
 denied, relative_paths, fixture_paths = [], [], []
 
@@ -40,12 +40,12 @@ def audit(event, args):
 
 if __name__ == '__main__':
     sys.addaudithook(audit)
-reader_path = ROOT/'offmenu/refresh/source_json_slices.py'
+reader_path = ROOT/'src/offmenu/refresh/source_json_slices.py'
 assert hashlib.sha256(reader_path.read_bytes()).hexdigest() == '5391963a06a129987695122cb3d7addb84bfbfa4653bb7634bfbd0c1646b0ded'
 pkg = types.ModuleType('_worker64_source_field_fixture')
 pkg.__path__ = [str(reader_path.parent)]
 sys.modules[pkg.__name__] = pkg
-spec = importlib.util.spec_from_file_location(pkg.__name__+'.source_field_operation', ROOT/'offmenu/refresh/source_field_operation.py')
+spec = importlib.util.spec_from_file_location(pkg.__name__+'.source_field_operation', ROOT/'src/offmenu/refresh/source_field_operation.py')
 api = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = api
 spec.loader.exec_module(api)

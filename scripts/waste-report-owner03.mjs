@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import {createReadStream} from 'node:fs';
-import {analyzeWaste} from '../public/waste-analysis-model.js';
+import {analyzeWaste} from '../apps/web/src/waste-analysis-model.js';
 
 const usage='Usage: node scripts/waste-report-owner03.mjs --account ACCOUNT [--input FILE|-] [--json]\nReads an owner-adapted JSON array from stdin by default (maximum 2 MiB, 1000 records).\nAccount selection is a scope check, not authentication. No unit/currency conversion.';
 const MAX_BYTES=2*1024*1024;

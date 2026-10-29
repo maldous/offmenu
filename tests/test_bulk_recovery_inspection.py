@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-SCRIPT = Path(__file__).parents[1] / "scripts/verify-bulk-repair-checkpoint.py"
+SCRIPT = Path(__file__).parents[1] / "tools/data-processing/verify_bulk_repair_checkpoint.py"
 SPEC = importlib.util.spec_from_file_location("recovery_inspection", SCRIPT)
 inspection = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(inspection)

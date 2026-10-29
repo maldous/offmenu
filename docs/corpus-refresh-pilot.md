@@ -2,7 +2,7 @@
 
 This is a small, transport-neutral vertical slice based on `develop`
 `922ab2d3f0cb56f0b034752f13b24c391b14744a`. It reuses the historical
-`scripts/collect-wikibooks.py` adapter and its existing `offmenu-collection/1`
+`tools/data-processing/collect_wikibooks.py` adapter and its existing `offmenu-collection/1`
 manifest and normalized recipe records. It does not migrate the entire corpus
 or claim current source or country completion.
 

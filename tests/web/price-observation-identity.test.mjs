@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import * as fixed from '../../public/unified-data.js';
-import {storePrivateRecords} from '../../cloud/provider-data.mjs';
+import * as fixed from '../../apps/web/src/unified-data.js';
+import {storePrivateRecords} from '../../apps/web/server/provider-data.mjs';
 
 const source = {id: 'personal-import', name: 'Authored synthetic regional price fixture',
   url: 'https://example.invalid/synthetic', license: 'Authored test data only', countries: []};

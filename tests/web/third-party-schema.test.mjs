@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { DatabaseSync } from 'node:sqlite';
 
-const path=name=>new URL('../../cloud/'+name,import.meta.url);
+const path=name=>new URL('../../apps/web/server/'+name,import.meta.url);
 const features=['admin-schema.sql','admin-operations-schema.sql','admin-mcp-schema.sql','services-schema.sql','care-cases-schema.sql','care-community-schema.sql','care-updates-schema.sql','recipe-community-schema.sql','community-ai-schema.sql','personal-ai-schema.sql'];
 const normalizeSql=sql=>sql?.replace(/--[^\n]*/g,'').replace(/\s+/g,' ').replace(/\(\s+/g,'(').replace(/\s+\)/g,')').replace(/\s*,\s*/g,',').trim();
 const rows=db=>db.prepare("SELECT type,name,sql FROM sqlite_master WHERE type IN ('table','index') AND name NOT LIKE 'sqlite_%' ORDER BY type,name").all().map(row=>({...row,sql:normalizeSql(row.sql)}));

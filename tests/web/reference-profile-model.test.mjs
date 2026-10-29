@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {calculateBasket} from '../../public/basket-model.js';
-import {referenceViews, COMPARISON_VIEWS} from '../../public/reference-profile-model.js';
+import {calculateBasket} from '../../apps/web/src/basket-model.js';
+import {referenceViews, COMPARISON_VIEWS} from '../../apps/web/src/reference-profile-model.js';
 
 const metrics = [{metric_id:'protein_g', unit:'g'}, {metric_id:'energy_kcal', unit:'kcal'}];
 function fixture() {

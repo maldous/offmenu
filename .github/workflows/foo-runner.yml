@@ -60,6 +60,14 @@ jobs:
           path: trusted-code
           persist-credentials: false
           fetch-depth: 1
+      - name: Bootstrap reviewed project environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          CODE="$GITHUB_WORKSPACE/trusted-code"
+          [[ "$(git -C "$CODE" rev-parse HEAD)" == "$TRUSTED_CODE_SHA" ]] || { echo 'Trusted code revision mismatch.' >&2; exit 2; }
+          [[ -z "$(git -C "$CODE" status --porcelain --untracked-files=no)" ]] || { echo 'Trusted code checkout is dirty.' >&2; exit 2; }
+          python3 -B "$CODE/scripts/bootstrap_delivery.py"
       - name: Check out immutable ledger evidence only
         # Keep independent diagnostics running if evidence checkout is blocked.
         # The fixed audit validates revision, file hashes and structure itself.
@@ -102,5 +110,6 @@ jobs:
             REQUEST="$GITHUB_WORKSPACE/submission/.github/offmenu-runner/request.json"
           fi
           # No pipes: the dispatcher's nonzero exit cannot be hidden by tee/cat.
-          python3 -B "$GITHUB_WORKSPACE/trusted-code/scripts/dispatch-foo-job.py" \
+          "$GITHUB_WORKSPACE/trusted-code/.venv-delivery/bin/python" -B \
+            "$GITHUB_WORKSPACE/trusted-code/tools/operations/dispatch_foo_job.py" \
             --request "$REQUEST" --trusted-code-sha "$TRUSTED_CODE_SHA"

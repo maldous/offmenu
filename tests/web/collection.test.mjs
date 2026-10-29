@@ -1,13 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {normalizeOFF,normalizeUSDA,normalizePrices,normalizeCSV} from '../../public/unified-data.js';
-import {sourceById} from '../../public/sources.js';
-import {recipeForReview} from '../../public/recipe-review.js';
-import {quantified} from '../../public/ingredients.js';
-import {cookMeal} from '../../public/cooking-model.js';
-import {generateHouseholdDay,pantryDuration} from '../../public/household-model.js';
-import {corpusLookup} from '../../cloud/corpus.mjs';
-import handler from '../../cloud/handler.mjs';
+import {normalizeOFF,normalizeUSDA,normalizePrices,normalizeCSV} from '../../apps/web/src/unified-data.js';
+import {sourceById} from '../../apps/web/src/sources.js';
+import {recipeForReview} from '../../apps/web/src/recipe-review.js';
+import {quantified} from '../../apps/web/src/ingredients.js';
+import {cookMeal} from '../../apps/web/src/cooking-model.js';
+import {generateHouseholdDay,pantryDuration} from '../../apps/web/src/household-model.js';
+import {corpusLookup} from '../../apps/web/server/corpus.mjs';
+import handler from '../../apps/web/server/handler.mjs';
 
 test('bulk price fields retain discount and unit semantics',()=>{
  const [r]=normalizePrices({items:[{id:1,price:'1.25',price_is_discounted:true,price_without_discount:'2.50',price_per:'KILOGRAM',proof_id:12,duplicate_of:null,location:{osm_address_country_code:'fr'}}]},sourceById('prices'));

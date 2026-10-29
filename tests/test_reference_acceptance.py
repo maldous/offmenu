@@ -27,7 +27,7 @@ class ReferenceAcceptanceTests(unittest.TestCase):
                 assets.append(q.Asset(name, len(content), hashlib.sha256(content).hexdigest()))
             rows = a.normalize_reference(source, release, payload, acquired_at=acquired_at)
             candidate = root / 'candidate.jsonl'; candidate.write_bytes(a.candidate_bytes(rows))
-            schema = json.loads((Path(__file__).resolve().parents[1] / 'schemas/reference-candidate.schema.json').read_text())
+            schema = json.loads((Path(__file__).resolve().parents[1] / 'contracts/schemas/reference-candidate.schema.json').read_text())
             schemas = {'recipe-discovery-reference': schema}
             contract = q.SourceContract(source_id=source, release_id=release,
                 scope_id='authored-reference-fixture-only', acquired_at=acquired_at,

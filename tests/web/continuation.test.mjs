@@ -2,22 +2,22 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
-import {recordPermission} from '../../public/record-policy.js';
-import {record,normalizePrices} from '../../public/unified-data.js';
-import {sourceById} from '../../public/sources.js';
-import {storePrivateRecords,listPrivateRecords,providerDataRoutes} from '../../cloud/provider-data.mjs';
-import {catalogueRoutes} from '../../cloud/catalogue.mjs';
-import {enrichmentRoutes} from '../../cloud/enrichment.mjs';
-import {calculateBasket,compareBaskets,cookedComposition} from '../../public/basket-model.js';
-import {cookMeal,serveBatch,reconcileCookedStock,validateBatches} from '../../public/cooking-model.js';
-import {kitchenProjection} from '../../public/sync-model.js';
-import {healthStatistics,validateHealthRecords} from '../../public/health-model.js';
-import {qualify} from '../../public/evidence-model.js';
-import {integrationRoutes} from '../../cloud/integrations.mjs';
-const spec=JSON.parse(readFileSync(new URL('../../research/OffMenu_Basket_Normalization_Spec.json',import.meta.url)));
+import {recordPermission} from '../../apps/web/src/record-policy.js';
+import {record,normalizePrices} from '../../apps/web/src/unified-data.js';
+import {sourceById} from '../../apps/web/src/sources.js';
+import {storePrivateRecords,listPrivateRecords,providerDataRoutes} from '../../apps/web/server/provider-data.mjs';
+import {catalogueRoutes} from '../../apps/web/server/catalogue.mjs';
+import {enrichmentRoutes} from '../../apps/web/server/enrichment.mjs';
+import {calculateBasket,compareBaskets,cookedComposition} from '../../apps/web/src/basket-model.js';
+import {cookMeal,serveBatch,reconcileCookedStock,validateBatches} from '../../apps/web/src/cooking-model.js';
+import {kitchenProjection} from '../../apps/web/src/sync-model.js';
+import {healthStatistics,validateHealthRecords} from '../../apps/web/src/health-model.js';
+import {qualify} from '../../apps/web/src/evidence-model.js';
+import {integrationRoutes} from '../../apps/web/server/integrations.mjs';
+const spec=JSON.parse(readFileSync(new URL('../../docs/research/OffMenu_Basket_Normalization_Spec.json',import.meta.url)));
 function database(){
  const db=new DatabaseSync(':memory:');
- for(const file of ['schema.sql','catalogue-schema.sql'])db.exec(readFileSync(new URL('../../cloud/'+file,import.meta.url),'utf8'));
+ for(const file of ['schema.sql','catalogue-schema.sql'])db.exec(readFileSync(new URL('../../apps/web/server/'+file,import.meta.url),'utf8'));
  const env={DB:{prepare(sql){const stmt=args=>({async first(){return db.prepare(sql).get(...args)||null;},async all(){return {results:db.prepare(sql).all(...args)};},async run(){return db.prepare(sql).run(...args);}});return {...stmt([]),bind(...args){return stmt(args);}}}}};return {db,env};
 }
 const origin='https://app.example';
@@ -105,10 +105,10 @@ test('public enrichment caches only within unchanged source policy and denies wi
  }finally{globalThis.fetch=oldFetch;}
 });
 
-import {generateHouseholdDay} from '../../public/household-model.js';
+import {generateHouseholdDay} from '../../apps/web/src/household-model.js';
 test('automatic planning withholds menus with unresolved strict dietary evidence',()=>{const member={id:'a',name:'A',portion:1,advisors:[],restrictions:[{type:'allergy',term:'peanut'}]};assert.equal(generateHouseholdDay([recipe],raw,{},[member],'2026-10-13').length,0);});
 
-import handler from '../../cloud/handler.mjs';
+import handler from '../../apps/web/server/handler.mjs';
 test('the full Worker dispatcher reaches public enrichment instead of catalogue 404',async()=>{const {env}=database(),original=globalThis.fetch;globalThis.fetch=async(url,options)=>{assert.equal(options.redirect,'manual');return Response.json({data:[]});};try{const r=await handler.fetch(request('/api/catalogue/enrich?source=gleif&query=Example'),env);assert.equal(r.status,200);assert.equal((await r.json()).cache,'miss');}finally{globalThis.fetch=original;}});
 
 test('REST and MCP private-document reads paginate without crossing account scopes',async()=>{

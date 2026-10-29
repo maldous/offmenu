@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
 SPEC = importlib.util.spec_from_file_location(
-    'source_faithful_parse', ROOT / 'offmenu/refresh/source_faithful_parse.py')
+    'source_faithful_parse', ROOT / 'src/offmenu/refresh/source_faithful_parse.py')
 PARSER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(PARSER)
 

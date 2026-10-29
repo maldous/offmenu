@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {validateLot} from '../../public/model.js';
-import {finishInventory} from '../../public/checkout-model.js';
-import {transitionStock} from '../../public/stock-transition-model.js';
+import {validateLot} from '../../apps/web/src/model.js';
+import {finishInventory} from '../../apps/web/src/checkout-model.js';
+import {transitionStock} from '../../apps/web/src/stock-transition-model.js';
 
 const at = '2026-10-14T06:40:46.000Z';
 const lot = () => ({id:'lot-a',barcode:'12345678',name:'Milk',ingredient:'milk',quantity:125.5,

@@ -6,7 +6,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-MODULE = Path(__file__).resolve().parents[1] / 'offmenu/jsonstat_selection.py'
+MODULE = Path(__file__).resolve().parents[1] / 'src/offmenu/jsonstat_selection.py'
 spec = importlib.util.spec_from_file_location('selection', MODULE)
 s = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(s)

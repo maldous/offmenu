@@ -55,7 +55,7 @@ launcher remains held.
 Read-only invocation (prints JSON; no allocation or alignment):
 
 ```sh
-/home/user/src/offmenu/.venv/bin/python scripts/places-recovery-preflight.py \
+/home/user/src/offmenu/.venv/bin/python tools/data-processing/places_recovery_preflight.py \
   --data-root /home/user/src/offmenu-data \
   --legacy-partial /home/user/src/offmenu-data/common-places-semantic-final-20261014.partial \
   --historical-count 2393 --output-gib 50 --checkpoint-gib 8 \

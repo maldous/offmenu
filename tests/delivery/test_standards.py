@@ -18,11 +18,11 @@ class StandardsTests(unittest.TestCase):
         self.git('config', 'user.email', 'standards@example.invalid')
         (self.root / '.gitignore').write_text('.delivery/\ndata/\n')
         self.policy = {'version': '1.0.0', 'roots': {
-            '.gitignore': {}, 'repository-standard.json': {}, 'offmenu': {}, 'tests': {}},
+            '.gitignore': {}, 'repository-standard.json': {}, 'src': {}, 'tests': {}},
             'legacy_paths': []}
         self.write_policy()
-        (self.root / 'offmenu').mkdir()
-        (self.root / 'offmenu' / '__init__.py').write_text('')
+        (self.root / 'src/offmenu').mkdir(parents=True)
+        (self.root / 'src/offmenu' / '__init__.py').write_text('')
         self.git('add', '.')
         self.git('commit', '-qm', 'Fixture')
 
@@ -36,7 +36,7 @@ class StandardsTests(unittest.TestCase):
         result = discover(self.root)
         self.assertEqual(result['branch'], 'feature/test')
         self.assertEqual(result['revision'], self.git('rev-parse', 'HEAD'))
-        self.assertEqual(result['roots']['offmenu'], 1)
+        self.assertEqual(result['roots']['src'], 1)
         self.assertEqual(result['tracked_files'], 3)
         self.assertEqual(len(result['manifests']['repository-standard.json']), 64)
 
@@ -48,20 +48,20 @@ class StandardsTests(unittest.TestCase):
         self.assertEqual({e['rule'] for e in result['errors']}, {'unclassified-root', 'filename'})
 
     def test_new_conforming_python_file_passes(self):
-        (self.root / 'offmenu' / 'safe_module.py').write_text('')
+        (self.root / 'src/offmenu' / 'safe_module.py').write_text('')
         result = check(self.root)
         self.assertEqual(result['status'], 'passed')
         self.assertEqual(result['standard_version'], '1.0.0')
 
     def test_explicit_legacy_exception_is_path_specific(self):
-        (self.root / 'offmenu' / 'BadName.py').write_text('')
-        self.policy['legacy_paths'] = ['offmenu/BadName.py']
+        (self.root / 'src/offmenu' / 'BadName.py').write_text('')
+        self.policy['legacy_paths'] = ['src/offmenu/BadName.py']
         self.write_policy()
         self.assertEqual(check(self.root)['status'], 'passed')
-        (self.root / 'offmenu' / 'OtherBadName.py').write_text('')
+        (self.root / 'src/offmenu' / 'OtherBadName.py').write_text('')
         result = check(self.root)
         self.assertEqual(result['status'], 'failed')
-        self.assertEqual(result['errors'], [{'path': 'offmenu/OtherBadName.py', 'rule': 'filename'}])
+        self.assertEqual(result['errors'], [{'path': 'src/offmenu/OtherBadName.py', 'rule': 'filename'}])
 
     def test_ignored_private_runtime_and_data_are_excluded(self):
         for name in ('.delivery', 'data'):
@@ -81,7 +81,7 @@ class StandardsTests(unittest.TestCase):
 
     def test_python_and_conventional_names(self):
         for value in ('offmenu/__init__.py', 'offmenu/__main__.py', 'offmenu/safe_module.py',
-                      'docs/README.md', 'public/scanner-worker.js'):
+                      'docs/README.md', 'apps/web/src/scanner-worker.js'):
             self.assertTrue(valid_name(value), value)
         for value in ('offmenu/BadModule.py', 'offmenu/bad-module.py', 'docs/Bad Name.md'):
             self.assertFalse(valid_name(value), value)

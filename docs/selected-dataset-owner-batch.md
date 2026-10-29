@@ -5,7 +5,7 @@ runner queue quiet until the resulting grant receipt has been reviewed. In a nor
 owner terminal, run this one command with the supplied full 40-character commit:
 
 ```sh
-/usr/bin/python3 -I -B scripts/run-selected-dataset-grant.py --expected-commit FULL_REVIEWED_COMMIT
+/usr/bin/python3 -I -B tools/operations/run_selected_dataset_grant.py --expected-commit FULL_REVIEWED_COMMIT
 ```
 
 This is a single self-diagnosing batch; no separate manual pre-auth probe is needed.

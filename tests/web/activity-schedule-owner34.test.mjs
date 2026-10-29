@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createActivitySchedule, validateActivityEntry, transitionActivitySchedule, resolveActivityStart, expandActivitySchedule, summarizeActivitySchedule} from '../../public/activity-schedule-model.js';
+import {createActivitySchedule, validateActivityEntry, transitionActivitySchedule, resolveActivityStart, expandActivitySchedule, summarizeActivitySchedule} from '../../apps/web/src/activity-schedule-model.js';
 
 const provenance = {kind: 'user-entered', source: 'My activity notes', sourceRecordId: null, recordedAt: '2026-10-14T12:00:00Z'};
 const consent = {granted: true, scope: 'activity-schedule', recordedAt: '2026-10-14T12:00:00Z'};

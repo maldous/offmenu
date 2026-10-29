@@ -1,6 +1,6 @@
 import gzip,hashlib,importlib.util,json,tempfile,unittest
 from pathlib import Path
-spec=importlib.util.spec_from_file_location('country_index',Path(__file__).parents[1]/'scripts/index-curated-countries.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+spec=importlib.util.spec_from_file_location('country_index',Path(__file__).parents[1]/'tools/data-processing/index_curated_countries.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
 from test_curation_merge import release,merger
 class CountryIndexTests(unittest.TestCase):
  def test_complete_country_postings_survive_source_offset_merge(self):

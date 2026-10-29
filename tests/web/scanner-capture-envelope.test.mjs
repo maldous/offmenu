@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {captureFromDecoder,captureEvidence,projectZXingResult,requiresUPCEConfirmation,selectableCaptures,verifyCaptureEvidence} from '../../public/scanner-capture-envelope.js';
+import {captureFromDecoder,captureEvidence,projectZXingResult,requiresUPCEConfirmation,selectableCaptures,verifyCaptureEvidence} from '../../apps/web/src/scanner-capture-envelope.js';
 import {expectedForms,projectIdentityPage,sourceObservationReference,
- validSourceObservationReference,exactDetailRequest,IDENTIFIER_DB,IDENTIFIER_RUN} from '../../public/scanner-identity-v2.js';
-import {setupScanner} from '../../public/scanner-ui.js';
+ validSourceObservationReference,exactDetailRequest,IDENTIFIER_DB,IDENTIFIER_RUN} from '../../apps/web/src/scanner-identity-v2.js';
+import {setupScanner} from '../../apps/web/src/scanner-ui.js';
 
 // Worker19 decoder-fixtures-verified/generation-and-decode-proof.json,
 // reviewed by Worker56. These are invented symbols, never catalogue records.
@@ -12,7 +12,7 @@ const upce={text:'0012345000058',format:'UPCE',error:null,extra:'{"UPCE":"012345
 const upca={text:'0012345000058',format:'UPCA',error:null,extra:null};
 
 test('worker projection retains exact ZXing text, format, error and extra; UPC-E lookup stays compressed',()=>{
- const worker=readFileSync(new URL('../../public/scanner-worker.js',import.meta.url),'utf8');
+ const worker=readFileSync(new URL('../../apps/web/src/scanner-worker.js',import.meta.url),'utf8');
  assert.match(worker,/results\.map\(projectZXingResult\)/);
  assert.deepEqual(projectZXingResult(upce),upce);
  const capture=captureFromDecoder(projectZXingResult(upce),'zxing-wasm');

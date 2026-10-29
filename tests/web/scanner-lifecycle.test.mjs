@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {setupScanner} from '../../public/scanner-ui.js';
-import {NATIVE_FORMATS} from '../../public/scanner-model.js';
+import {setupScanner} from '../../apps/web/src/scanner-ui.js';
+import {NATIVE_FORMATS} from '../../apps/web/src/scanner-model.js';
 function environment(getUserMedia){
  const elements=new Map();
  class Element {

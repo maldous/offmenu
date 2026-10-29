@@ -42,7 +42,7 @@ def close_legacy_workbooks():
 
 
 def load(name):
-    spec = importlib.util.spec_from_file_location(name.replace('-', '_'), ROOT / 'scripts' / name)
+    spec = importlib.util.spec_from_file_location(name.replace('-', '_'), ROOT / 'tools/data-processing' / name)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -76,7 +76,7 @@ def afcd(root):
         ['Authored title'], [], header,
         ['F001', 10, 'calculated', 'Authored food', 418.4, 'TR', '< 0.2', None, 3, 4],
     ] for title in ('All solids & liquids per 100 g', 'Liquids only per 100 mL')})
-    module = load('import-afcd.py')
+    module = load('import_afcd.py')
     with close_legacy_workbooks():
         rows = module.records(root)
     for row in rows:
@@ -97,7 +97,7 @@ def mext(root):
     rows[13][1] = 'ignored-note'
     rows[14][:4] = [2, '00002', 3, 'Second food']
     save(root, MEXT_MAIN, {'Authored main': rows})
-    module = load('collect-mext.py')
+    module = load('collect_mext.py')
     output = root / 'legacy-output'
     with close_legacy_workbooks():
         module.collect(root, output)

@@ -61,11 +61,11 @@ Bootstrap the project environment first, then run offline admission checks:
 ```
 
 ```sh
-python3 dev/delivery/symphony_launch.py preflight
+python3 tools/delivery/symphony_launch.py preflight
 ```
 
 ```sh
-python3 dev/delivery/symphony_launch.py preflight --probe
+python3 tools/delivery/symphony_launch.py preflight --probe
 ```
 
 The last command queries initialization/account/model/quota only: no thread or
@@ -75,7 +75,7 @@ Run only from the existing credential-injected user process, selecting a new
 private runtime and reviewed task admission:
 
 ```sh
-python3 dev/delivery/symphony_launch.py run --runtime /home/user/src/offmenu-data/runtime/SELECTED-OFFMENU-RUN --model gpt-6.1-sol --inference-authorized --duration-seconds 180
+python3 tools/delivery/symphony_launch.py run --runtime /home/user/src/offmenu-data/runtime/SELECTED-OFFMENU-RUN --model gpt-6.1-sol --inference-authorized --duration-seconds 180
 ```
 
 The authority flag records already established authorization; it does not grant
@@ -93,8 +93,17 @@ receipt correctly remained unaccepted. A subsequent one-turn session completed n
 continuing the same coding task after its candidate is produced. Source-output
 acceptance remains separate from process/session completion.
 
-See [validation evidence](../../dev/delivery/validation.md) for exact source,
+See [validation evidence](../../tools/delivery/validation.md) for exact source,
 Windmill graph acceptance, checks and remaining limitations. The local engine's
 `.beam` workflow/config parsers can also be invoked without starting Symphony
-using `dev/delivery/symphony_validate.py` and the installed bundle selected in
+using `tools/delivery/symphony_validate.py` and the installed bundle selected in
 the source binding. No CIX launcher or compatibility shim is called.
+
+## Existing allowance policy
+
+The user authorizes existing Codex and Antigravity subscription/session allowances
+and OpenRouter free models. A paid account does not authorize paid OpenRouter
+models, new API charges or top-ups. The demonstrated native route is Codex
+`gpt-6.1-sol`/medium using the existing ChatGPT login; it is independent of
+Windmill provider selection. A fresh account/model probe may report unavailable
+account/quota metadata; record that limit instead of inventing a plan or balance.

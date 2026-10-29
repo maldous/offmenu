@@ -8,7 +8,7 @@ import tempfile
 import unittest
 
 from offmenu.refresh.ingredient_vocabulary_generation import (
-    AFCD, ALIAS, PHOTO, PINS, build_generation, canonical, digest,
+    AFCD, ALIAS, PHOTO, PINS, HISTORICAL_PINS, VERSION, build_generation, canonical, digest,
     inspect_generation, persist_new_generation, propose_revision,
 )
 
@@ -18,12 +18,20 @@ class IngredientVocabularyGenerationTests(unittest.TestCase):
     def setUpClass(cls):
         cls.root = Path(os.environ.get('OFFMENU_VOCABULARY_TEST_ASSET_ROOT', Path(__file__).resolve().parents[1]))
         cls.assets = {path: (cls.root / path).read_bytes() for path in PINS}
-        cls.contract = (cls.root / 'corpus/common-data-contract.json').read_bytes()
+        cls.contract = (cls.root / 'contracts/corpus/common-data-contract.json').read_bytes()
 
     def generate(self, **changes):
         return build_generation(changes.get('assets', self.assets), changes.get('contract', self.contract),
                                 generation_version=changes.get('version', 'review-v1'),
                                 actor_reference='generated-test-actor')
+
+    def test_old_layout_asset_selection_is_not_implicitly_requalified(self):
+        self.assertEqual(VERSION, 'offmenu.ingredient-vocabulary-generation/2')
+        self.assertEqual(HISTORICAL_PINS['public/off-photo-catalogue.js'][0],
+                         'f7e0b953c0f3c6609f8d72597de576d050df90ec16a65e99df84c4b936707e8b')
+        historical = dict(zip(HISTORICAL_PINS, self.assets.values()))
+        with self.assertRaisesRegex(ValueError, 'exact three selected assets required'):
+            self.generate(assets=historical)
 
     def test_real_three_asset_pins_and_bounded_populated_counts(self):
         result = self.generate()

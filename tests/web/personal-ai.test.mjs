@@ -2,12 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
-import {callPersonalAITool,PERSONAL_AI_TOOLS,personalAIRoutes} from '../../cloud/personal-ai.mjs';
-import {setupPersonalAI} from '../../public/personal-ai-ui.js';
+import {callPersonalAITool,PERSONAL_AI_TOOLS,personalAIRoutes} from '../../apps/web/server/personal-ai.mjs';
+import {setupPersonalAI} from '../../apps/web/src/personal-ai-ui.js';
 
 const db=new DatabaseSync(':memory:');
-db.exec(readFileSync(new URL('../../cloud/schema.sql',import.meta.url),'utf8'));
-db.exec(readFileSync(new URL('../../cloud/personal-ai-schema.sql',import.meta.url),'utf8'));
+db.exec(readFileSync(new URL('../../apps/web/server/schema.sql',import.meta.url),'utf8'));
+db.exec(readFileSync(new URL('../../apps/web/server/personal-ai-schema.sql',import.meta.url),'utf8'));
 const env={
  PROVIDER_VAULT_KEY:'a'.repeat(64),
  DB:{prepare(sql){
@@ -59,7 +59,7 @@ test('preferences are encrypted, bounded, and scoped to their owner',async()=>{
  const unsafe=await call('save_ai_preferences',{confirmed:true,revision:1,preferences:{agentName:'ok',rules:'x'.repeat(5001)}});assert.equal(unsafe.status,400);
 });
 test('a personal AI identity must be selected before public AI attribution',async()=>{
- const freshDb=new DatabaseSync(':memory:');freshDb.exec(readFileSync(new URL('../../cloud/schema.sql',import.meta.url),'utf8'));freshDb.exec(readFileSync(new URL('../../cloud/personal-ai-schema.sql',import.meta.url),'utf8'));
+ const freshDb=new DatabaseSync(':memory:');freshDb.exec(readFileSync(new URL('../../apps/web/server/schema.sql',import.meta.url),'utf8'));freshDb.exec(readFileSync(new URL('../../apps/web/server/personal-ai-schema.sql',import.meta.url),'utf8'));
  const freshEnv={...env,DB:{prepare(sql){const bound=args=>({async first(){return freshDb.prepare(sql).get(...args)||null;},async all(){return {results:freshDb.prepare(sql).all(...args)};},async run(){return freshDb.prepare(sql).run(...args);}});return {...bound([]),bind(...args){return bound(args);}}}}};
  const output=await callPersonalAITool({name:'contribute_recipe',args:{idempotencyKey:'abcdefghijklmnop',confirmed:true,rightsConfirmed:true,alias:'Alice',license:'CC0-1.0',recipe:{license:'CC0-1.0'}},user:{...user(['community:contribute']),name:'Private token label'},request,env:freshEnv,verifiedUser:async()=>({id:'alice'}),boundedJSON:r=>r.json()});assert.equal(output.structuredContent.status,400);assert.match(output.structuredContent.error,/assistant name/);
 });

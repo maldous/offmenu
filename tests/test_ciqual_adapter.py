@@ -68,7 +68,7 @@ class CandidateTests(unittest.TestCase):
             tree = ast.parse(path.read_text())
             tree.body = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in names]
             exec(compile(tree, str(path), 'exec'), namespace)
-        reference = a.ROOT / 'tests/fixtures/ciqual-reference'
+        reference = Path(__file__).resolve().parent / 'fixtures/ciqual-reference'
         expected = {'collect-national.py': '3f1140b6809d4909a8be415ad51a67ee6677ad57c17d580ec5fbda57edc196e5',
                     'import-national-tables.py': '99216f9ed0aa279b0e15b194c2782dcd8548b86362ea9c55038ad287162cf6c8'}
         for file, digest in expected.items():

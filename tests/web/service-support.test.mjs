@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
-import {cleanupServiceRequests,serviceSupportRoutes} from '../../cloud/service-support.mjs';
+import {cleanupServiceRequests,serviceSupportRoutes} from '../../apps/web/server/service-support.mjs';
 
-const database=new DatabaseSync(':memory:');database.exec(readFileSync(new URL('../../cloud/services-schema.sql',import.meta.url),'utf8'));
+const database=new DatabaseSync(':memory:');database.exec(readFileSync(new URL('../../apps/web/server/services-schema.sql',import.meta.url),'utf8'));
 const env={DB:{prepare(sql){const make=params=>({async first(){return database.prepare(sql).get(...params)||null;},async run(){return database.prepare(sql).run(...params);},async all(){return {results:database.prepare(sql).all(...params)};}});return {...make([]),bind(...params){return make(params);}}}},BREVO_API_KEY:'secret-api-key-value',BREVO_SENDER_EMAIL:'mail@offmenu.example',BREVO_SENDER_NAME:'OffMenu',SUPPORT_EMAIL:'help@offmenu.example',PROVIDER_VAULT_KEY:'a'.repeat(64)};
 const origin='https://offmenu.example',options={verifiedUser:async request=>request.headers.get('Cookie')==='alice'?{id:'alice',email:'alice@example.test',confirmed_at:'2026-01-01T00:00:00Z',user_metadata:{email:'attacker@example.test'}}:request.headers.get('Cookie')==='bob'?{id:'bob',email:'bob@example.test',email_confirmed_at:'2026-01-01T00:00:00Z'}:request.headers.get('Cookie')==='unconfirmed'?{id:'unconfirmed',email:'unconfirmed@example.test',user_metadata:{email:'attacker@example.test'}}:null,boundedJSON:request=>request.json()};
 const request=(path,{method='POST',cookie='alice',body,originHeader=origin}={})=>new Request(origin+path,{method,headers:{Origin:originHeader,...(cookie?{Cookie:cookie}:{})},body:body===undefined?undefined:JSON.stringify(body)}),call=(path,args)=>serviceSupportRoutes(request(path,args),env,options),key='0123456789abcdef';

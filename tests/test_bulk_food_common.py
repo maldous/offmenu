@@ -3,7 +3,7 @@ import importlib.util
 import unittest
 from pathlib import Path
 
-SPEC = importlib.util.spec_from_file_location('bulk_common', Path(__file__).parents[1] / 'scripts' / 'align-bulk-food-common.py')
+SPEC = importlib.util.spec_from_file_location('bulk_common', Path(__file__).parents[1] / 'tools/data-processing' / 'align_bulk_food_common.py')
 MOD = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MOD)
 

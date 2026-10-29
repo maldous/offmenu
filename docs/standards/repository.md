@@ -1,4 +1,4 @@
-# Repository standard 1.1.0
+# Repository standard 2.0.0
 
 Status: adopted after source and implementation review. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
@@ -7,39 +7,40 @@ explains decisions; historical handovers do not override it.
 
 ## Decisions from discovery
 
-OffMenu is a Python package and a browser/Worker application in one repository.
-`pyproject.toml` discovers `offmenu*`; `scripts/build.mjs` consumes `public/`,
-`cloud/`, `extension/` and `netlify-return/`; `netlify.toml` publishes a curated
-build. Those are actual dependency boundaries. A generic conversion to `src/`
-or a new JavaScript monorepo would break imports and publication without solving
-workflow continuity. Keep these entry points explicit and stable. The root
-contract classifies each permitted tracked root by responsibility and ownership.
-An owner is a review responsibility, not a claim that a suspended worker resumed.
-
-Use the following layout for new work:
+OffMenu has three installed Python packages, a browser/Worker application,
+a retailer extension, hosting adapters, source contracts and inactive integration
+seams. Standard 2.0.0 groups those actual responsibilities and updates their
+consumers. [ADR 0003](../adr/0003-final-repository-layout.md) supersedes the earlier
+transitional root decision. A filename-check pass alone does not establish an
+adequate architecture.
 
 | Location | Responsibility |
 | --- | --- |
-| `offmenu/`, `offmenu_ciqual/`, `offmenu_norway/` | Importable Python runtime and selected source adapters. |
-| `public/`, `cloud/`, `extension/`, `netlify/`, `netlify-return/` | Browser, Worker and hosting entry points. |
-| `scripts/` | Bounded developer/build/operations commands; no private receipts. |
-| `tests/` | Automated verification, grouped by runtime or feature. Browser, edge and compatibility suites belong under `web/`, `edge/`, `compat/`. |
-| `config/`, `bindings/`, `schemas/` | Reviewed non-secret configuration, source binding contracts and schemas. |
-| `docs/standards/`, `docs/adr/` | Current standards and reasoned changes. |
-| `docs/` | Maintainer guides and explicitly historical evidence. |
-| `examples/` | Small authored offline examples safe to redistribute. |
-| `dev/`, `auth-source-preparation/`, `private-product-lookup/` | Existing distinct integration seams; no new unrelated work belongs here. |
-| `tools/source-processing/`, `docs/source-processing/` | Source-processing tools and their current guides, migrated together with their consumers. |
-| `corpus/`, `research/`, `migration/` | Existing provenance and migration material; read status before reuse. |
+| `src/offmenu/`, `src/offmenu_ciqual/`, `src/offmenu_norway/` | Installed Python packages with explicit resource packaging. |
+| `apps/web/{src,assets,server}/`, `apps/retailer-extension/` | Browser/Worker application and retailer extension. |
+| `deploy/netlify/public/`, `deploy/auth-return/` | Hosting adapters; published routes remain compatible. |
+| `integrations/staged/`, `integrations/candidates/` | Inactive source seams; moving them does not activate them. |
+| `contracts/{corpus,schemas}/`, `config/source-bindings/` | Source/provenance schemas and reviewed non-secret configuration. |
+| `tools/` | Delivery, source-processing, corpus, data-processing, diagnostics and operations programs. |
+| `scripts/` | Small build/bootstrap/validation entrypoints. |
+| `tests/` | Python suites and `web/`, `edge/`, `compat/`, `support/` runtime verification. |
+| `docs/`, `examples/`, `archive/` | Current guides and ADRs, offline examples, and explicitly frozen custody. |
 
-Generated `dist/`, `node_modules/`, `.venv/`, `*.egg-info/` and Python caches are
-local artifacts, excluded from Git. The ignored `.delivery/` directory can hold local delivery checkpoints; never commit it.
-Runtime checkpoints, source databases,
-private screenshots, tokens and custody receipts belong outside the checkout,
-under an explicitly selected private runtime/data root. Existing held paths are
-not safe to relocate merely because they are ignored. Preserve the consumers
-and recovery journals recorded in the
-[developer pickup](../reconciliation/2026-10-29/EXTERNAL-DEVELOPER-PICKUP.md).
+Root manifests/configuration remain where their tools require them. Ignored
+`node_modules/`, `dist/`, `build/`, virtual environments, package metadata and
+caches remain generated local state. Private `data/`, `output/` and `.delivery/`
+remain excluded from Git and preserve existing access/consumers. The exact 49
+held operational files retain their paths. Other retired generated directories
+are recoverably relocated, with a private restore journal. See
+[root disposition](../development/root-layout.md) and the
+[tracked migration map](layout-migration-v2.json). Dated evidence paths remain
+historical; no raw datasets, secrets or private receipts are published.
+
+Run both `python -m offmenu.delivery check` and
+`python scripts/check_final_layout.py` in the bootstrapped environment. The former
+checks classification/names; the latter enforces required architecture and
+rejects retired maintained roots or tracked private artifacts. Neither replaces
+behavior, packaging or accepted-output checks.
 
 ## Naming and coding conventions
 
@@ -59,12 +60,12 @@ Do not reformat unrelated files. Python tests use `unittest`; JavaScript tests
 use `node:test`. Check the smallest materially affected command surface, then
 expand only for dependencies or failures. Installation alone is not validation.
 
-The explicit `legacy_paths` list records exact compatibility and provenance exceptions, each classified in `legacy_exception_reasons`. The 1.1 review migrated nine avoidable guide names, recognizes four legitimate private Python module names and the required Netlify `_headers` filename, and retains 71 published command paths and 52 historical/imported identities for stated reasons. See [root disposition](../development/root-layout.md). It allows
-incremental compliance without falsely asserting old material has been fixed.
-New violations cannot be added silently to that list. A migration must update
-consumers, imports, build/package/routing references and selected tests together.
-Do not rewrite dated provenance references as if the original evidence used a
-new path. A baseline exception never authorizes new copies of that name. Private Python modules may have one leading underscore. Established Python command files retain their exact published paths as explicitly enumerated exceptions; new importable modules use snake case.
+The exact `legacy_paths` list retains only imported, historic custody and pinned
+fixture identities, with a reason for each path. Authored Python CLI names now
+use snake case under `tools/`; their current callers moved with them. New
+exceptions require an ADR. Migration updates imports, packaging, build/routing
+consumers and tests together. Logical provenance identities and dataset
+qualification are not silently replaced by current physical source paths.
 
 ## Branch and merge discipline
 

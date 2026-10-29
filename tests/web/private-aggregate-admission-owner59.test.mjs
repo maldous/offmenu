@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createPrivateAggregateValidator, RECEIPT_KINDS, aggregateDigest, canonicalAggregateJSON} from '../../public/private-aggregate-admission-owner59.js';
+import {createPrivateAggregateValidator, RECEIPT_KINDS, aggregateDigest, canonicalAggregateJSON} from '../../apps/web/src/private-aggregate-admission-owner59.js';
 
 // Fabricated, isolated capability; no real producer, user, DB or rights grant.
 async function fixture() {

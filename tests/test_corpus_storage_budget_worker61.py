@@ -8,7 +8,7 @@ import json
 from unittest.mock import patch
 import unittest
 
-spec = importlib.util.spec_from_file_location('budget61', Path(__file__).resolve().parents[1] / 'scripts/corpus-storage-budget-worker61.py')
+spec = importlib.util.spec_from_file_location('budget61', Path(__file__).resolve().parents[1] / 'tools/data-processing/corpus_storage_budget_worker61.py')
 b = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(b)
 
@@ -157,7 +157,7 @@ except b.BudgetRefusal:sys.exit(2)
             with self.assertRaises(b.BudgetRefusal):budget.snapshot()
 
     def test_historical_measurement_entrypoint_refuses_before_work(self):
-        script=Path(b.__file__).with_name('measure-corpus-storage-worker61.py')
+        script=Path(b.__file__).with_name('measure_corpus_storage_worker61.py')
         p=subprocess.run([sys.executable,str(script)],capture_output=True,text=True,timeout=10)
         self.assertNotEqual(p.returncode,0)
         self.assertIn('Historical measurement rerun disabled',p.stderr)

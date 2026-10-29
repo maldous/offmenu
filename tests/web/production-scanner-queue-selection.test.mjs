@@ -2,17 +2,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import {localRetainedCategorySelected,lookupLocalRetainedCategory} from '../../public/production-scanner/local-retained-category-client.js';
+import {localRetainedCategorySelected,lookupLocalRetainedCategory} from '../../apps/web/src/production-scanner/local-retained-category-client.js';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {pathToFileURL} from 'node:url';
 const {parse}=createRequire(import.meta.url)('acorn');
 const root=process.env.OFFMENU_SCANNER_SOURCE_ROOT||path.resolve(new URL('../..',import.meta.url).pathname);
-const sourcePath=path.join(root,'public/production-scanner/shelf-scanner.js'),source=fs.readFileSync(sourcePath,'utf8');
+const sourcePath=path.join(root,'apps/web/src/production-scanner/shelf-scanner.js'),source=fs.readFileSync(sourcePath,'utf8');
 const nodes=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body;
 let attemptedNetwork=0;const originalFetch=globalThis.fetch;globalThis.fetch=async()=>{attemptedNetwork++;throw Error('Network disabled in generated scanner checks');};
-const lookup=await import(pathToFileURL(path.join(root,'public/production-scanner/scanner-production-lookup.js')));globalThis.fetch=originalFetch;
-const handoff=await import(pathToFileURL(path.join(root,'public/scanner-kitchen-handoff.js')));
+const lookup=await import(pathToFileURL(path.join(root,'apps/web/src/production-scanner/scanner-production-lookup.js')));globalThis.fetch=originalFetch;
+const handoff=await import(pathToFileURL(path.join(root,'apps/web/src/scanner-kitchen-handoff.js')));
 class Element{constructor(){this.children=[];this.dataset={};this.value='';this.textContent='';this.hidden=false;this.open=false;}append(...xs){this.children.push(...xs);}replaceChildren(...xs){this.children=[...xs];}setAttribute(k,v){this[k]=v;}showModal(){this.open=true;}close(){this.open=false;}}
 function harness(query=lookup.lookupIdentifiers){
  const elements=new Map(),$=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};let storageWrites=0;

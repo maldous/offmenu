@@ -100,7 +100,7 @@ Keep the existing requirement identities in the [detailed delivery programme](do
 
 ## Architecture and development
 
-OffMenu keeps its existing stack: a JavaScript browser/PWA application under `public/`, a Cloudflare Worker/D1 application backend under `cloud/`, and a separate Python/SQLite CLI and small local interface. The [local curation/static delivery architecture](docs/curation-architecture.md) keeps original source releases local and separates qualified publication projections from private account state. Do not recreate a hosted raw-source corpus simply to build a feature.
+OffMenu keeps its existing stack: a JavaScript browser/PWA application under `apps/web/src/`, a Cloudflare Worker/D1 application backend under `apps/web/server/`, and a separate Python/SQLite CLI and small local interface. The [local curation/static delivery architecture](docs/curation-architecture.md) keeps original source releases local and separates qualified publication projections from private account state. Do not recreate a hosted raw-source corpus simply to build a feature.
 
 The existing interface contracts include REST `/api/v1`, MCP `/mcp` and OpenAPI `/openapi.json`; access is scoped and may read the saved account snapshot rather than unsaved browser edits. [Personal AI](docs/personal-ai.md) has its own capability and reviewed-action boundaries. The app's [optional operational services](docs/third-party-services.md), such as diagnostics, consent and support, are separate from Phase 3 household/retailer integrations; configuration is not activation.
 
@@ -135,7 +135,7 @@ The following notes preserve the earlier README's small-CLI scope and historical
 | --- | --- |
 | [Open Food Facts products](https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz) | The small CLI's `import-products` accepts JSONL/gzip, preserves barcode strings and existing ingredient mappings, and can filter supplied country tags; that filter is not exhaustive national coverage. The importer does not download photos. Historical licence notes distinguish the ODbL database from DbCL contents; image rights are separate. |
 | [Native OffMenu recipe JSON](examples/recipes.json) | `import-recipes` accepts the example array format with source/licence provenance, explicit culinary ingredient names and quantities in `g`, `ml` or `count`. Missing amounts remain unresolved. This command is not a direct Wikibooks or RecipeNLG importer. |
-| [Wikibooks Cookbook candidate](https://huggingface.co/datasets/gossminn/wikibooks-cookbook) | The historical candidate declared CC BY-SA 4.0. Collection/extraction tools are retained in [`collect-wikibooks.py`](scripts/collect-wikibooks.py) and [`collect-wikibooks-live.py`](scripts/collect-wikibooks-live.py); the small CLI still requires its own interchange format. Earlier adapter/parsing roadmap items and later recipe-library work are distinct scopes, not evidence that every recipe is reviewed or usable. |
+| [Wikibooks Cookbook candidate](https://huggingface.co/datasets/gossminn/wikibooks-cookbook) | The historical candidate declared CC BY-SA 4.0. Collection/extraction tools are retained in [`collect-wikibooks.py`](tools/data-processing/collect_wikibooks.py) and [`collect-wikibooks-live.py`](tools/data-processing/collect_wikibooks_live.py); the small CLI still requires its own interchange format. Earlier adapter/parsing roadmap items and later recipe-library work are distinct scopes, not evidence that every recipe is reviewed or usable. |
 | [RecipeNLG](https://recipenlg.cs.put.poznan.pl/) | Recorded as restricted to non-commercial research/education and not bundled. Its appearance in the source inventory is not approval for commercial ingestion or redistribution. |
 | [Open Prices](https://github.com/openfoodfacts/open-prices/blob/main/docs/guides/data.md) | The small CLI's `import-prices` expects product code, price, currency and date; retailer/location metadata is optional. Unjoined locations show an unknown retailer. Repeated imports historically append duplicate observations. `shops` returns dated observations, not current stock; Australian coverage was unmeasured. Historical licence note: ODbL. |
 | [WhichGrocer](https://www.whichgrocer.com/developers) | A future optional backend connector in the earlier README, with no account, calls or paid service configured at that checkpoint. Issued access, attribution and cache/retention terms need review; catalogue prices do not establish store-level stock. |
@@ -182,7 +182,7 @@ For a phone on the same network, camera access needs HTTPS with a certificate tr
 - [Documentation index](docs/README.md): current guides and specialist evidence.
 - [Maintainer guide](docs/maintainer.md) and [operations](docs/operations.md): setup, source/configuration boundaries and release procedure.
 - [Source acceptance contract](docs/source-acceptance-contract.md) and [curation architecture](docs/curation-architecture.md): source rights, original data, qualified projections and publication boundaries.
-- [Common data contract](corpus/common-data-contract.json): shared identities, source assertions, quantities, citations and private/public distinctions.
+- [Common data contract](contracts/corpus/common-data-contract.json): shared identities, source assertions, quantities, citations and private/public distinctions.
 - [Internationalization](docs/i18n.md): interface and source languages, original text and explicit fallback. Arabic remains a preview, not a fully translated release.
 - [Private portability contract](docs/schema/private-portability-v1.md): the bounded source implementation and remaining identity, consent, custody and restore dependencies.
 - [Historical product review](docs/product-review-status.md) and [acceptance register](docs/acceptance-register.md): dated evidence and limitations, not certification of the current runtime.
@@ -192,7 +192,18 @@ Source licences and per-record attribution remain attached to the data; normaliz
 ## Developer delivery
 
 Start with [the repository standard](docs/standards/repository.md),
-[the repeatable developer workflow](dev/delivery/README.md) and
+[the repeatable developer workflow](tools/delivery/README.md) and
 [agent instructions](AGENTS.md). Run `npm run check:repository` to check the
 versioned layout and naming contract. Browser, edge and compatibility tests now
 live under `tests/web`, `tests/edge` and `tests/compat`.
+
+## Current repository layout
+
+Maintained Python packages live under `src/`; application source under `apps/`;
+hosting adapters under `deploy/`; inactive seams under `integrations/`;
+contracts under `contracts/`; developer and operations programs under `tools/`.
+See [root disposition](docs/development/root-layout.md),
+[standard 2.0.0](docs/standards/repository.md) and
+[ADR 0003](docs/adr/0003-final-repository-layout.md) for the complete structure.
+Bootstrap with `python3.12 scripts/bootstrap_delivery.py`; use the installed
+`.venv-delivery/bin/python` for package commands and graph validation.

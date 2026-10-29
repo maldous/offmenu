@@ -50,7 +50,7 @@ review and after the queue is confirmed idle.
 Its privileged invocation is:
 
 ```sh
-sudo /usr/bin/python3 -I -B scripts/grant-selected-dataset-view-v1.py --apply
+sudo /usr/bin/python3 -I -B tools/operations/grant_selected_dataset_view_v1.py --apply
 ```
 
 `-I` is mandatory: user-controlled import paths must not affect root execution.
@@ -139,7 +139,7 @@ current invocation; a crash cannot authorize deletion of pre-existing files.
 After the grant receipt is checked, the fixed reviewed runner profile invokes:
 
 ```sh
-python3 -B scripts/inspect-selected-datasets.py --cache-root /srv/offmenu-refresh/cache
+python3 -B tools/operations/inspect_selected_datasets.py --cache-root /srv/offmenu-refresh/cache
 ```
 
 The inspector emits at most 12 KiB using schema

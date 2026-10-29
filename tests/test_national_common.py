@@ -5,7 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
-    "national_common", ROOT / "scripts" / "align-national-common.py"
+    "national_common", ROOT / 'tools/data-processing' / 'align_national_common.py'
 )
 national = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(national)

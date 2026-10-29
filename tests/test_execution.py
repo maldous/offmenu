@@ -53,7 +53,7 @@ class ExecutionTests(unittest.TestCase):
         import openpyxl
         from unittest.mock import patch
         repository = Path(__file__).resolve().parents[1]
-        if not (repository / 'scripts/import-afcd.py').exists():
+        if not (repository / 'tools/data-processing/import_afcd.py').exists():
             self.skipTest('requires composed repository with pinned legacy scripts')
         for source in ('afcd', 'mext', 'cofid', 'germany-bls', 'sweden-food'):
             with self.subTest(source=source), tempfile.TemporaryDirectory() as folder:
@@ -90,13 +90,15 @@ class ExecutionTests(unittest.TestCase):
                 entry=execution.Admission(source, execution._release(source)['releaseId'], pins, '2026-10-18T00:00:00Z','a'*64,'b'*64,count)
                 with patch.dict(execution.ADMISSIONS,{source:entry}):
                     receipt=execution.execute(source,bundle,root/'output',repository=repository)
+                    self.assertEqual('offmenu-source-layout/2', receipt['sourceLayoutVersion'])
+                    self.assertEqual(execution._release(source)['handler']['gitBlobSha'], receipt['parserSourceGitBlob'])
                 if source == 'afcd':
                     # A valid timestamp/size .pyc must never replace pinned source.
                     import importlib.util, importlib._bootstrap_external, shutil
-                    isolated=root/'poisoned-code'; (isolated/'scripts').mkdir(parents=True)
-                    for filename in ['import-afcd.py','import-national-tables.py']:
-                        codepath=isolated/'scripts'/filename
-                        shutil.copyfile(repository/'scripts'/filename,codepath)
+                    isolated=root/'poisoned-code'; (isolated/'tools/data-processing').mkdir(parents=True)
+                    for filename in ['import_afcd.py','import_national_tables.py']:
+                        codepath=isolated/'tools/data-processing'/filename
+                        shutil.copyfile(repository/'tools/data-processing'/filename,codepath)
                         cache=Path(importlib.util.cache_from_source(str(codepath)));cache.parent.mkdir(exist_ok=True)
                         poison=compile("raise RuntimeError('unverified-bytecode-executed')",str(codepath),'exec')
                         cache.write_bytes(importlib._bootstrap_external._code_to_timestamp_pyc(poison,int(codepath.stat().st_mtime),codepath.stat().st_size))

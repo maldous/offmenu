@@ -29,14 +29,14 @@ const runtimeEntry=name=>{
 };
 const {Miniflare}=await import(runtimeEntry('miniflare'));
 const {build}=await import(runtimeEntry('esbuild'));
-import {SESSION_STATE_D1_DDL,createD1SessionStateProtocol} from '../../cloud/session-state-d1-owner04.mjs';
-import {validateState} from '../../cloud/state.mjs';
+import {SESSION_STATE_D1_DDL,createD1SessionStateProtocol} from '../../apps/web/server/session-state-d1-owner04.mjs';
+import {validateState} from '../../apps/web/server/state.mjs';
 
 const realm='local_owner04_d1_realm';
 const audience='https://offmenu.example/api/state';
 const state=()=>validateState({inventory:[],profile:{servings:2}});
 const bundle=await build({stdin:{contents:`
-import {createD1SessionStateProtocol} from './cloud/session-state-d1-owner04.mjs';
+import {createD1SessionStateProtocol} from './apps/web/server/session-state-d1-owner04.mjs';
 export default {async fetch(request,env){
  const input=await request.json();
  const protocol=createD1SessionStateProtocol({database:env.DB,audience:${JSON.stringify(audience)},realm:${JSON.stringify(realm)},ttlMs:60000,

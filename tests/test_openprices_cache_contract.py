@@ -156,8 +156,8 @@ class RetainedOpenPricesTests(unittest.TestCase):
     def test_source_schema_matches_actual_accepted_js_projection_on_synthetic_input(self):
         # Invoke only the pure accepted normalizer with an authored row, never
         # collect-jsonl, a cache file, source.sqlite or an acquisition adapter.
-        code="""import {normalizePrices} from './public/unified-data.js';
-        import {sourceById} from './public/sources.js';
+        code="""import {normalizePrices} from './apps/web/src/unified-data.js';
+        import {sourceById} from './apps/web/src/sources.js';
         const rows=normalizePrices({items:[{id:'fixture',product_code:'00123',price:0,
           currency:'EUR',date:'2026-10-12',location_id:7,price_is_discounted:false,
           location:{osm_name:'Synthetic Shop',osm_display_name:'Synthetic place',osm_address_country_code:'de'}}]},sourceById('prices'));

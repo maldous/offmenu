@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {matchRecipeStockInput} from '../../dev/match-recipe-stock-input.mjs';
-import {mealAvailability} from '../../dev/meal-availability.mjs';
+import {matchRecipeStockInput} from '../../integrations/candidates/match-recipe-stock-input.mjs';
+import {mealAvailability} from '../../integrations/candidates/meal-availability.mjs';
 
 // Synthetic source-batch contracts only; no recipe/pantry bodies.
 const options = {today:'2026-10-16'};

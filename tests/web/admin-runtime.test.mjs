@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { serviceConfiguration } from '../../cloud/service-config.mjs';
-import { serviceSupportRoutes } from '../../cloud/service-support.mjs';
-import { diagnosticRoutes } from '../../cloud/service-observability.mjs';
+import { serviceConfiguration } from '../../apps/web/server/service-config.mjs';
+import { serviceSupportRoutes } from '../../apps/web/server/service-support.mjs';
+import { diagnosticRoutes } from '../../apps/web/server/service-observability.mjs';
 
 const vault = 'a'.repeat(64);
 const services = { client: { diagnostics: { enabled: true }, analytics: { enabled: false, provider: 'zaraz', purposeId: '' }, consent: { siteId: '', cookiePolicyId: '', tcfEnabled: false, policyLanguage: 'en' }, feedback: { productId: '', boardUrl: '' }, ads: { client: '', slot: '', approved: false } }, links: {}, seo: {} };

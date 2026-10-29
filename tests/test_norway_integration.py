@@ -13,7 +13,7 @@ from unittest.mock import patch
 from offmenu_norway import adapter
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / 'scripts/run-norway-synthetic.py'
+SCRIPT = ROOT / 'tools/data-processing/run_norway_synthetic.py'
 FIXTURES = ROOT / 'tests/fixtures/norway'
 EVIDENCE = ROOT / 'docs/evidence/norway-synthetic/approved-artifact'
 spec = importlib.util.spec_from_file_location('norway_synthetic_entry', SCRIPT)
@@ -30,7 +30,7 @@ class NorwayIntegrationTests(unittest.TestCase):
 
     def test_three_implementation_files_match_independent_approval(self):
         for pin in self.lock['dependencies']:
-            raw = (ROOT / pin['path']).read_bytes()
+            raw = (ROOT / 'src' / pin['path']).read_bytes()
             self.assertEqual(len(raw), pin['bytes'])
             self.assertEqual(hashlib.sha256(raw).hexdigest(), pin['sha256'])
         self.assertEqual(set(pin['path'] for pin in self.lock['inputs']), set(adapter.INPUTS))
@@ -104,7 +104,7 @@ class NorwayIntegrationTests(unittest.TestCase):
             self.assertEqual(proc.returncode, 0, proc.stderr)
 
     def test_contract_is_requested_in_package_manifest(self):
-        self.assertIn('include offmenu_norway/contract.json', (ROOT / 'MANIFEST.in').read_text().splitlines())
+        self.assertIn('include src/offmenu_norway/contract.json', (ROOT / 'MANIFEST.in').read_text().splitlines())
 
 
 if __name__ == '__main__':

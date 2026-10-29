@@ -9,14 +9,14 @@ latency policy; tests generate small synthetic sources. Resource limits are expl
 ## Evidence and supported formats
 
 Baseline: `d8e212fb7927e4dca0610e974be97076679c1e32`.
-Historical handler evidence retained in `offmenu/refresh/capabilities.py`:
+Historical handler evidence retained in `src/offmenu/refresh/capabilities.py`:
 
 - OFF release `2026-10-12`: `scripts/collect-jsonl.mjs`, blob
   `3116933b6444871f2f437ccc1e9f48d414db9c51`: gzip JSONL product dump.
 - Open Prices release `2026-10-12`: same handler, prices gzip JSONL plus required
   locations and proofs gzip JSONL. This adapter checks references against both
   related exports, avoiding in-memory location maps and global identity sets.
-- USDA release `usda-2026-04`: `scripts/normalize-usda.py`, blob
+- USDA release `usda-2026-04`: `tools/data-processing/normalize_usda.py`, blob
   `950bb3d83fbb59149c073a3c7e9a9b672768f1d2`, and historical `collect-usda.py`:
   full ZIP containing relational CSV tables. Every CSV table is retained as original
   strings in private SQLite; supporting non-CSV assets stay in the pinned ZIP.

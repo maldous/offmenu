@@ -6,7 +6,7 @@ import unittest
 from offmenu.refresh.portfolio55 import assess, assess_portfolio, proposed_origin_errors
 
 ROOT = Path(__file__).resolve().parents[1]
-BINDINGS = json.loads((ROOT / 'offmenu/refresh/portfolio55.json').read_text())['bindings']
+BINDINGS = json.loads((ROOT / 'src/offmenu/refresh/portfolio55.json').read_text())['bindings']
 FIXTURES = ROOT / 'tests/fixtures/portfolio55'
 REQUEST = json.loads((FIXTURES / 'valid-metadata.json').read_text())
 MY = BINDINGS[-1]

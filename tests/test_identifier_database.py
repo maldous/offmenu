@@ -379,7 +379,15 @@ class IdentifierDatabaseTests(unittest.TestCase):
                     self.assertEqual(json.loads(row[0]),expected)
                     self.assertEqual(json.loads(row[1]),asset)
 
-    def test_fixed_selected22_descriptor_uses_only_control_metadata(self):
+    def test_old_selected22_qualification_blocks_current_code_without_source_reads(self):
+        operation = {'schemaVersion': 'offmenu-selected22-identifier-operation/1'}
+        with patch.object(os, 'open', side_effect=AssertionError('no source open')):
+            with self.assertRaisesRegex(s.RefreshError, 'identifier-db-selected22-native-code-binding'):
+                s.selected22_input(operation)
+
+    def test_recorded_selected22_and_full_retained_metadata_remain_stale(self):
+        # Recorded real-data qualification does not become current merely
+        # because packaging and source routing changed.
         q={'schemaVersion':'offmenu-source-qualification/1','sourceId':'usda-files','releaseId':'2026-04-30',
            'scopeId':'usda-20260430-private-native-products-v1','outputScope':'native','outputVisibility':'private',
            'fixture':False,'normalizedRecords':4202558,'candidateSha256':'706c767d47d0feebf64915c6f0d3aba45840b012ab07bb7a2d21915f303b06a3',
@@ -400,10 +408,8 @@ class IdentifierDatabaseTests(unittest.TestCase):
            'cached_lookup_job':{'id':'cached-fixture','engine':None,'version':None,
                                 'unknowns':['engine','version'],'receipt':'fixture-only'}}
         with patch.object(os,'open',side_effect=AssertionError('no source open during preparation')):
-            spec=s.selected22_input(operation);manifest=s.prepare_identifier_manifest((spec,))
-        self.assertEqual(spec.contract.expected_records,4202558)
-        self.assertEqual(manifest['inputs'][0]['expectedRecords'],22)
-        self.assertEqual(manifest['inputs'][0]['candidateSha256'],s.SELECTED22_SHA256)
+            with self.assertRaisesRegex(s.RefreshError, 'identifier-db-selected22-native-code-binding'):
+                s.selected22_input(operation)
 
         full_usda=dict(operation,input_identity=None,native_candidate_job=operation['cached_lookup_job'])
         off_citation=dict(citation,citation_id='off-fixture-citation',release_id='2026-10-12',source_id='off')
@@ -417,13 +423,11 @@ class IdentifierDatabaseTests(unittest.TestCase):
                   max_identifier_bytes=4096,max_identifiers_per_record=2,max_exceptions=1000,
                   max_database_bytes=64*1024**3,max_storage_bytes=128*1024**3,max_seconds=86400)}
         with patch.object(os,'open',side_effect=AssertionError('no body open')),patch.object(Path,'stat',side_effect=AssertionError('no body stat')):
-            inputs=s.full_retained_inputs(full);s._full_limits(full,inputs)
-            manifest=s.prepare_identifier_manifest(inputs)
-        self.assertEqual([m['expectedRecords'] for m in manifest['inputs']],[4202558,4807663])
-        self.assertEqual([m['expectedProducts'] for m in manifest['inputs']],[2101279,0])
-        self.assertIsNone(manifest['inputs'][1]['contractSha256'])
-        self.assertEqual(manifest['inputs'][1]['occurrenceAudit']['distinctValidKeys'],4807217)
-        with self.assertRaises(RefreshError):s._full_limits(dict(full,limits=dict(full['limits'],max_seconds=0)),inputs)
+            with self.assertRaisesRegex(s.RefreshError, 'identifier-db-selected22-native-code-binding'):
+                s.full_retained_inputs(full)
+        # Invalid resource limits remain rejected independently of source admission.
+        with self.assertRaises(RefreshError):
+            s._full_limits(dict(full, limits=dict(full['limits'], max_seconds=0)), ())
 
 
 if __name__=='__main__':unittest.main()

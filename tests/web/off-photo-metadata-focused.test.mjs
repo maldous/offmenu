@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {extractRetainedOFFPhotos,offPhotoStorageCode,retainedCataloguePhotoAttribution} from '../../public/off-photo-metadata.js';
-import {OFF_PHOTOS,selectedPublisherPhotos} from '../../public/off-photo-catalogue.js';
-import {associateProductVisual} from '../../public/product-visual-association.js';
-import {mountScannerProductVisual} from '../../public/scanner-product-visuals.js';
+import {extractRetainedOFFPhotos,offPhotoStorageCode,retainedCataloguePhotoAttribution} from '../../apps/web/src/off-photo-metadata.js';
+import {OFF_PHOTOS,selectedPublisherPhotos} from '../../apps/web/src/off-photo-catalogue.js';
+import {associateProductVisual} from '../../apps/web/src/product-visual-association.js';
+import {mountScannerProductVisual} from '../../apps/web/src/scanner-product-visuals.js';
 import {photoFixture} from './fixtures/off-photos/context.mjs';
 const C='3017620422003',D='4061464939738',base='https://images.openfoodfacts.org/images/products/301/762/042/2003/';
 const url=(role='front',rev='7',size='400',lang='en')=>base+role+'_'+lang+'.'+rev+'.'+size+'.jpg';

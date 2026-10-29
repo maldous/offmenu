@@ -42,7 +42,7 @@ The sections below document individual stages for inspection and troubleshooting
 Check out the reviewed setup branch/commit on foo. Inspect the scripts before running them.
 
 ```sh
-python3 -B scripts/check-foo-setup.py --publish --issue 30
+python3 -B tools/operations/check_foo_setup.py --publish --issue 30
 ```
 
 This single command runs preflight, the runner setup/batch tests, and the refresh tests independently, then posts one combined sanitized report to OffMenu PR #30 through your existing `gh` login. A failing earlier check does not prevent the other test group from running. Every step includes its real exit code, duration, and status. Raw test output stays in a private local temporary directory, limited to 1 MiB per output stream per step; its location is printed only locally. The GitHub report contains no raw logs, credentials, source paths, or dataset contents. An uncertain publication is not retried automatically; inspect PR #30 before repeating `--publish`.
@@ -58,7 +58,7 @@ Supported by this script: Linux x86-64 or ARM64, CPython 3.10+, systemd 247+, cu
 Supply the actual canonical, dataset-only cache directory. Do not select a whole home directory, repository containing private configuration, or a directory with credentials. The selected source is never modified by this setup.
 
 ```sh
-bash scripts/setup-foo-runner.sh admin-plan \
+bash tools/operations/setup-foo-runner.sh admin-plan \
   --cache-root /actual/canonical/dataset-cache > /tmp/offmenu-runner-admin-plan.sh
 less /tmp/offmenu-runner-admin-plan.sh
 bash /tmp/offmenu-runner-admin-plan.sh
@@ -161,7 +161,7 @@ Results appear once as `OFFMENU_JOB_REPORT {...}` in the workflow job log and in
 For one optional setup preflight comment after local setup, use your normal account and an explicitly chosen existing issue or PR:
 
 ```sh
-bash scripts/setup-foo-runner.sh publish-report --issue EXISTING_ISSUE_OR_PR_NUMBER
+bash tools/operations/setup-foo-runner.sh publish-report --issue EXISTING_ISSUE_OR_PR_NUMBER
 ```
 
 This uses your existing `gh` login only. It creates a fresh fixed-field report rather than accepting an arbitrary file, and posts only to `maldous/offmenu`. It does not authenticate, create tokens, grant access, or copy credentials. Run it once after the compatible setup/diagnostic steps; do not publish one comment per command.
@@ -199,7 +199,7 @@ The workflow checks out only the following eight tracked files into sibling `led
 - `docs/handover/2026-10-17/morgan-batches-20261017/current-checkpoint.json`
 - `docs/handover/2026-10-17/morgan-batches-20261017/transport-checkpoint-current.json`
 
-This checkout alone has `continue-on-error` so an input checkout failure does not suppress unrelated diagnostics. The ledger audit independently verifies its fixed source revision and all file byte counts, SHA-256 and Git blob pins from `scripts/offmenu-ledger-source-pins.json`. Missing or invalid inputs fail the ledger step and overall job. The audit streams the complete 9,647,254-byte journal, reports JSON/object/newline structure and bounded top-level field/type counts, and compares the 5,269-record prefix and retained 5,271/5,105 lineage cuts. It does not reconstruct semantic state, current ownership, current worker capacity or sequence semantics.
+This checkout alone has `continue-on-error` so an input checkout failure does not suppress unrelated diagnostics. The ledger audit independently verifies its fixed source revision and all file byte counts, SHA-256 and Git blob pins from `tools/operations/offmenu-ledger-source-pins.json`. Missing or invalid inputs fail the ledger step and overall job. The audit streams the complete 9,647,254-byte journal, reports JSON/object/newline structure and bounded top-level field/type counts, and compares the 5,269-record prefix and retained 5,271/5,105 lineage cuts. It does not reconstruct semantic state, current ownership, current worker capacity or sequence semantics.
 
 ### Selected-cache boundaries
 

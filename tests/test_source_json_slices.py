@@ -8,7 +8,7 @@ import sys
 import time
 import unittest
 
-_path = Path(__file__).resolve().parents[1] / 'offmenu/refresh/source_json_slices.py'
+_path = Path(__file__).resolve().parents[1] / 'src/offmenu/refresh/source_json_slices.py'
 _spec = importlib.util.spec_from_file_location('_source_json_slices_under_test', _path)
 api = importlib.util.module_from_spec(_spec)
 sys.modules[_spec.name] = api
