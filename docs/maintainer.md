@@ -70,7 +70,7 @@ extension drift. If it reports drift, reconcile the source and regenerate/review
 the output deliberately; do not treat a subsequent build as evidence that the
 original output was current.
 
-`npm test` selects `tests-web/*.test.mjs`; it does not select `tests-edge/`.
+`npm test` selects `tests/web/*.test.mjs`; it does not select `tests/edge/`.
 `npm run test:auth` is an additional focused authentication command. The workflow
 also names a bounded portable receipt-OCR check; retain that check when changing
 its extraction or admission path. Optional external scans are separate from
@@ -302,7 +302,7 @@ current-versus-historical navigation are in the [docs index](README.md).
 For the actual operation contracts, see [source acceptance](source-acceptance-contract.md),
 [refresh and acquisition](refresh-acquisition-contract.md),
 [local ingredient ingestion](ingredient-ingestion.md), and the source-only
-[barcode](../manual-action/GOLD-BARCODE-LOOKUP.md) and
-[literal-facts](../manual-action/SOURCE-RECIPE-LITERAL-FACTS.md) interfaces.
+[barcode](source-processing/gold-barcode-lookup.md) and
+[literal-facts](source-processing/source-recipe-literal-facts.md) interfaces.
 Collection, normalization, publication and deployment use their selected owner,
 input manifest, review and finite limits; they are not onboarding smoke tests.

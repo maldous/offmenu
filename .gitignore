@@ -21,3 +21,8 @@ netlify-return/i18n.js
 .env.*
 .dev.vars
 .dev.vars.*
+
+# Private graph checkpoints, task logs and local acceptance receipts
+.delivery/
+
+.venv-delivery/

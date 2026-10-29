@@ -13,7 +13,7 @@ receipt for the work; dated reports do not establish current activation.
 | Retailer extension | `extension/popup-source.js`; [extension guide](../extension/README.md). |
 | Authentication seam | [foundation](better-auth-foundation.md), [unmounted runtime seam](better-auth-runtime-seam.md); source integration is not activation. |
 | Local originals / static delivery | [curation architecture](curation-architecture.md), [source acceptance](source-acceptance-contract.md), [refresh/acquisition](refresh-acquisition-contract.md). |
-| Private source-only processing | [ingredient ingestion](ingredient-ingestion.md), `manual-action/` source interfaces; selected inputs and review are required. |
+| Private source-only processing | [ingredient ingestion](ingredient-ingestion.md), [`tools/source-processing/`](source-processing/README.md) source interfaces; selected inputs and review are required. |
 | Work and action status | [automatic canonical-ledger tracking](maintainer.md#automatic-work-tracking); GitHub PRs are code review, not a replacement task tracker. |
 
 ## Historical and specialist evidence
