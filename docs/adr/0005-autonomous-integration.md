@@ -45,6 +45,40 @@ MCP access in a cloud task is not local credential availability. Local autonomou
 operation needs an inspected, authorized API route independent of an interactive
 chat; a temporary cloud connector response is not a production credential plan.
 
+## Existing Codex integrations and utilization
+
+GitHub's existing Codex review is the preferred independent PR review route,
+rather than launching an additional equivalent review session by default.
+The PR 144 receipt from `chatgpt-codex-connector` explicitly records reviewed
+commit `fa8db46274`; the final PR head was `e96d8d055171c6f23ce5da3b1ae80c8f87e54df4`.
+This demonstrates the integration exists, and also why resolving findings alone
+cannot establish a fresh review of a repaired head. Request/reconcile review of
+the exact current head, verify reviewer identity and completion, consume all
+findings, and deduplicate requests by repository/PR/head/reviewer. A timeout or
+absence of comments is not a clean review. Do not count the same review again
+as a separate local independent review. Existing historical merges are not
+retroactively certified under the proposed autonomous policy.
+
+Linear project P-UIF-14 remains the OffMenu record authority. Readback confirms
+access to project UUID ce60c1ab-a732-4a71-8471-14c9dc393886. Native Linear Codex
+delegation is not yet verified: the advertised MCP `get_agent_context` operation
+returned `Tool get_agent_context not found` during inspection. That does not prove
+the Linear Codex application is absent; MCP connectivity, shared notes and native
+agent delegation are distinct capabilities. Use the working Linear API path for
+Stokowski and durable issue records. Do not make the unavailable notes operation
+a dependency of delivery, or silently replace repository decisions with it.
+
+If native Linear Codex delegation is available, admit it through the same ownership
+and capacity policy as Stokowski sessions. Select exactly one execution owner per
+issue/attempt. Prefer it for useful discovery or triage only when it can return
+bound evidence and its quota/cost/credentials are understood; do not simultaneously
+assign the same coding task through both services. GitHub Codex review, local
+coding, cloud delegation and deterministic computation have distinct capacity
+budgets. Record actual usage/latency and accepted outcomes, not utilization alone.
+Use model selection and eligible fallback to improve completed work; never launch
+duplicate work merely to keep subscriptions busy. Configuration authorization
+does not imply unlimited provider capacity or permission to buy more.
+
 ## Evidence required for each candidate
 
 Bind a candidate to repository, issue, requirement/acceptance revision, base SHA,
