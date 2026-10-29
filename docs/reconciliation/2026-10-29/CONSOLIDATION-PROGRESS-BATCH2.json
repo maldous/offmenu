@@ -1,0 +1,453 @@
+{
+  "utc": "2026-10-29T03:55:25.992361+00:00",
+  "canonical": {
+    "path": "/home/user/src/offmenu",
+    "branch": "develop",
+    "head": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+    "untrackedOperationalFilesPreserved": 49
+  },
+  "main": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+  "verifiedOriginSourceHeads": {
+    "feature/source-facts-diagnostic-20261029": "6c4ee1495a7daf3baa6b55a01e0e166b183118ea",
+    "bugfix/source-barcode-index-budget-20261029": "5b3086ba67e88ae624846dfd119c769b06d5e0f0",
+    "bugfix/scanner-ui-209-20261029": "fa1f04015b0fddd479bc76364f8198d5442fd4e0",
+    "feature/windmill-platform-source-20261029": "4632dd238e2bffefc60246bcb328264a6fb85f9e",
+    "feature/historical-tooling-source-20261029": "dceef4c5314e352633713b07979532d0869cc6a8",
+    "feature/ai-tooling-source-20261029": "bbb2e489afdc30dab7d87a0f3653bbd2887cb54a",
+    "feature/reviewed-app-source-custody-20261029": "6bfe2165c79e9152b4396d9c75b735665be47707",
+    "feature/retained-worker-wip-20261029": "40a321392e7c5bdfb55ee951d26ddee6d4a004fa",
+    "feature/repository-reconciliation-20261029": "9ba7c91ea937eaf7ea5c3a7ba9993cfade28e7d0"
+  },
+  "batch": {
+    "newSourceCustodyCommits": [
+      "6bfe2165c79e9152b4396d9c75b735665be47707",
+      "40a321392e7c5bdfb55ee951d26ddee6d4a004fa"
+    ],
+    "newWorktreeMoves": 12,
+    "testsBuildsDeploys": 0
+  },
+  "cumulative": {
+    "individualFilesMoved": 73,
+    "packetDirectoriesMoved": 8,
+    "registeredWorktreesMoved": 24,
+    "totalMoveOperations": 105,
+    "reclaimedBytes": 0,
+    "permanentDeletion": false
+  },
+  "originalInventoryCounts": {
+    "retained-essential": 3,
+    "recoverably relocated": 14,
+    "retained-unresolved": 589
+  },
+  "privateLedger": {
+    "filename": "CONSOLIDATION-DISPOSITION-606-BATCH2.json",
+    "sha256": "a1a33338d4d44f40a5b2e632e376dac8ac5fa946d2faf9da870805d7a3d8f008"
+  },
+  "journals": [
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "sha256": "c0ce29c945fc8da259097f9f657eac8314f03fb7c0a0f133a5c711d7c0a4c44e",
+      "moves": 22,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-02-RECEIPT.json",
+      "sha256": "5c47cb81edc8f10489cfc9cf9d2fbd9d5b9ff634c7521301904af9af2fde0505",
+      "moves": 1,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-03-RECEIPT.json",
+      "sha256": "eb9a3a7e7efe8cf82c7a03fef4878109de2d52310ecc41c7a177980fcb968e98",
+      "moves": 7,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "sha256": "6a05e019f5ebd6b406ede8158f1a7246c5fb600c7b1f6d771570958da6229698",
+      "moves": 51,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "sha256": "f30a07d61230c52c1e1756bc2a4a4db1d1636bd8dae5453b48c3e7cb7368058e",
+      "moves": 12,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-06-RECEIPT.json",
+      "sha256": "239190ebd3c73e45554df93d9a1dfcd44d2b2ec86121d5d7ac77d55533853971",
+      "moves": 3,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-07-RECEIPT.json",
+      "sha256": "1b92c5f32b67a86cf4ad7ab3d5e12f97727a5d664f79b79ca2ac014b51b9963d",
+      "moves": 3,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-08-RECEIPT.json",
+      "sha256": "9febfeef7e625c38c6763bcd524b21f37e83fb5c57e913fceecce5052aa1eafb",
+      "moves": 6,
+      "state": "complete"
+    }
+  ],
+  "remainingHistoricalWorktrees": 23,
+  "remainingPaths": [
+    {
+      "path": "/home/user/src/offmenu-worktrees/develop",
+      "branch": "develop",
+      "purpose": "shared develop worktree",
+      "retainedReason": "Clean at completed read-only inventory; preserve existing ref/detached HEAD; no deletion/prune."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/offmenu-third-party",
+      "branch": "third-party-services",
+      "purpose": "historical services worktree",
+      "retainedReason": "Clean at completed read-only inventory; preserve existing ref/detached HEAD; no deletion/prune."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker-05",
+      "branch": "codex/worker05-central-c996-20261015",
+      "purpose": "historical services worktree",
+      "retainedReason": "Cache/dependency symlink only; preserve in place, exclude from Git."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker-06",
+      "branch": "sync/worker-06/f6cb92ae-20261015",
+      "purpose": "historical services worktree",
+      "retainedReason": "Exclude environments/dependencies and .local deployment/export payloads; preserve in place; no bulk upload."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker-25",
+      "branch": "sync/worker-25/f6cb92ae-20261015",
+      "purpose": "historical services worktree",
+      "retainedReason": "Historical review/source snapshots; preserve source allowlist and sanitized metadata only after owner/source comparison."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker-57",
+      "branch": "sync/worker-57/f6cb92ae-20261015",
+      "purpose": "historical services worktree",
+      "retainedReason": "Pair module and focused test on a fresh feature branch after content/redundancy review."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker-58",
+      "branch": "sync/worker-58/f6cb92ae-20261015",
+      "purpose": "historical services worktree",
+      "retainedReason": "Preserve QA source separately; review metadata for personal/session/runtime exclusions."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-accepted-product-58f9a9c-20261025",
+      "branch": "DETACHED",
+      "purpose": "historical worker-00",
+      "retainedReason": "Clean at completed read-only inventory; preserve existing ref/detached HEAD; no deletion/prune."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-foo-native-api-20261023",
+      "branch": "feature/foo-native-ownership-api-20261023",
+      "purpose": "historical worker-00",
+      "retainedReason": "Preserve tracked source diff and tests separately; no dispatcher activation."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025",
+      "branch": "codex/local-onboarding-audio-20261025",
+      "purpose": "historical worker-00",
+      "retainedReason": "Dependency symlink only; exclude."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-product-association-source-slices-20261025",
+      "branch": "codex/approved-scanner-7645-20261025",
+      "purpose": "historical worker-00",
+      "retainedReason": "Dependency symlink only; exclude."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-production-landing-idp-scanner-20261025",
+      "branch": "codex/production-landing-idp-scanner-20261025",
+      "purpose": "historical worker-00",
+      "retainedReason": "Dependency symlink only; exclude."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-production-landing-login-preserved-20261025",
+      "branch": "codex/production-landing-login-preserved-20261025",
+      "purpose": "historical worker-00",
+      "retainedReason": "Preserve overlay source separately; exclude dependency symlink; do not apply to production."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-retained-identity-ui-20261025",
+      "branch": "DETACHED",
+      "purpose": "historical worker-00",
+      "retainedReason": "Clean at completed read-only inventory; preserve existing ref/detached HEAD; no deletion/prune."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-retained-product-identity-20261025",
+      "branch": "codex/retained-product-identity-20261025",
+      "purpose": "historical worker-00",
+      "retainedReason": "Clean at completed read-only inventory; preserve existing ref/detached HEAD; no deletion/prune."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026",
+      "branch": "codex/foundation-phase-contract-v1-20261027",
+      "purpose": "historical worker-00",
+      "retainedReason": "Preserve response module/test as source only; exclude dependency and image bodies."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-vocabulary-source-catalogue-batch-20261025",
+      "branch": "codex/scanner-feedback-layout-20261025",
+      "purpose": "historical worker-00",
+      "retainedReason": "Dependency symlink only; exclude."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker05-app-3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879",
+      "branch": "codex/worker05-live-dev-20261016",
+      "purpose": "historical worker-05",
+      "retainedReason": "Preserve popup source diff on bugfix/feature branch after comparison; exclude dependency symlink."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker05-pr54-selected-20261023",
+      "branch": "feature/pr54-optional-generated-checker-20261023",
+      "purpose": "historical worker-05",
+      "retainedReason": "Environment/dependency symlinks only; exclude."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker05-production-app-3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879",
+      "branch": "codex/worker05-production-copy-20261016",
+      "purpose": "historical worker-05",
+      "retainedReason": "Preserve exact source WIP in bounded batches; quarantine generated dictionaries, assets, raw/data candidates and caches. Historical tree, not live209; no wholesale merge."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker19-pr84-selected-20261023",
+      "branch": "feature/pr84-selected-native-envelope-20261023",
+      "purpose": "historical worker-19",
+      "retainedReason": "Environment/dependency symlinks only; exclude."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker26-openprices-contract--worker-26",
+      "branch": "codex/worker26-openprices-contract-20261021",
+      "purpose": "historical worker-26",
+      "retainedReason": "Clean at completed read-only inventory; preserve existing ref/detached HEAD; no deletion/prune."
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker26-pr49-selected-20261023",
+      "branch": "feature/pr49-selected-bindings-20261023",
+      "purpose": "historical worker-26",
+      "retainedReason": "Environment/dependency symlinks only; exclude."
+    }
+  ],
+  "integrationRequirement": "Historical packets and unreviewed WIP need selected current application source closure and reconciliation of their original base/interfaces before application integration. Known-failing209 is not a verified release. No extra review approval is claimed or invented.",
+  "onboarding": {
+    "gitFlowDocs": "present on reconciliation feature branch",
+    "buildAndRunRecipes": "existing package scripts and source build recipes preserved; not executed",
+    "nonsecretEnvTemplate": "not completed; selected current application binding/required-variable contract not established; secrets excluded"
+  },
+  "nextFiniteBatch": {
+    "sourceWorktree": "/home/user/src/offmenu-worktrees/worker05-production-app-3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879",
+    "action": "Preserve the existing discovery-pinned untracked source/docs files as a separate source-only packet, excluding all dictionaries/data/binary assets/dependency symlinks. Recheck listed pins; leave originals and holds until verified source custody.",
+    "fileCount": 40,
+    "files": [
+      {
+        "relative_path": "art/masters/README.md",
+        "bytes": 993,
+        "sha256": "10264378807fc0736a4618ed31043b5121ccda04d420af3db9b9e5304984396e"
+      },
+      {
+        "relative_path": "art/masters/build_animatic.py",
+        "bytes": 5105,
+        "sha256": "cea26dd50905aa64eea564de4b6e1f16875f6ca1625d246cfbeace19ec192587"
+      },
+      {
+        "relative_path": "art/masters/line_materials.py",
+        "bytes": 1782,
+        "sha256": "7c0e70549b910f2bba430955a6ea52470ade5bcf1fa47a3e1a096d282972f0a7"
+      },
+      {
+        "relative_path": "cloud/identifier-federated-query.py",
+        "bytes": 8154,
+        "sha256": "fd3f0ab5d9bb1916ecce94d54ba6a1dda50ffb18422879e23b3677ee3421ec23"
+      },
+      {
+        "relative_path": "cloud/identifier-host.mjs",
+        "bytes": 5099,
+        "sha256": "ff80251e69bab4c626343a931e588fe8443425325002fe02ff8c3e1a70bff0ed"
+      },
+      {
+        "relative_path": "cloud/identifier-query-route.mjs",
+        "bytes": 2621,
+        "sha256": "d9c82e09c20758e4f8f114a6c65055924a5f36feb9d0c0cb3469c08e6e935568"
+      },
+      {
+        "relative_path": "cloud/identifier-query.py",
+        "bytes": 12262,
+        "sha256": "8701b87410558d60a67ca2aa215f356b8d386e00582f3e9d5e0484076fb49611"
+      },
+      {
+        "relative_path": "cloud/perf-query-engine.mjs",
+        "bytes": 14068,
+        "sha256": "7ae4f935782b9208877c8405d1d2a2d04e41244bec7457cdb312bf92a9890d84"
+      },
+      {
+        "relative_path": "cloud/perf-query-route.mjs",
+        "bytes": 7154,
+        "sha256": "d33551972fa73282518354a51c5f6430c246e0e6332442fdf2840904515e369e"
+      },
+      {
+        "relative_path": "cloud/perf-timing-adapter.mjs",
+        "bytes": 3551,
+        "sha256": "2c36db4603e263f1fb83ad3329ca9382a45004a226eeb38892a71f2f72fb039e"
+      },
+      {
+        "relative_path": "docs/ui/README.md",
+        "bytes": 545,
+        "sha256": "ffea2d4d0ae2eb7b264084a3de85fa5e23f3c5f4ddd9655badb4585fcabf16b8"
+      },
+      {
+        "relative_path": "docs/ui/art/CREATION-BRIEF.md",
+        "bytes": 1980,
+        "sha256": "f3a8750353f0c6c0a9f26969b6b093ccc74a564132b7eadbf9cdd8a71a2ec7d6"
+      },
+      {
+        "relative_path": "docs/ui/art/STORYBOARD.md",
+        "bytes": 2643,
+        "sha256": "36d72db2f9e8da08c7f92589536d6608d89e54a933a47a13c17c4274ea3a1774"
+      },
+      {
+        "relative_path": "docs/ui/art/STYLE-GUIDE.md",
+        "bytes": 5067,
+        "sha256": "9be684439a795e4cf3ba40252bdadb6c2f764ac8c73c39461fb2533e8d4e9963"
+      },
+      {
+        "relative_path": "docs/ui/design-system/README.md",
+        "bytes": 14199,
+        "sha256": "97659c895df2fb5b13caf75e49a004a7ac9cea985bbe9fef784e670c566e33b1"
+      },
+      {
+        "relative_path": "public/asset-family/capability-probe.js",
+        "bytes": 4301,
+        "sha256": "93dc7a72b19d3a913802be20972aa4a558a5b531e81720dbe766597643472a45"
+      },
+      {
+        "relative_path": "public/asset-family/geometry.js",
+        "bytes": 7583,
+        "sha256": "b8a05112c2dcbeca6b3e1b13dc690426db54e123a4ce6449e0001173a38cff5a"
+      },
+      {
+        "relative_path": "public/asset-family/renderer.js",
+        "bytes": 9251,
+        "sha256": "c06e5d6d84ef14ef074e6b3cb385da0212410531f2738043f24bde43a84b78ef"
+      },
+      {
+        "relative_path": "public/barcode-schema.js",
+        "bytes": 23523,
+        "sha256": "c18fd5df14011245844482fe8b0afb1756986855a96a9278dec576d662bace40"
+      },
+      {
+        "relative_path": "public/country-progress.js",
+        "bytes": 10082,
+        "sha256": "4741c765922a3e30c0be12451f26f4aee0ff604ce77b319e12cb8a9d227a8f89"
+      },
+      {
+        "relative_path": "public/data-browser.js",
+        "bytes": 12224,
+        "sha256": "d1d216f20910236972a76390e9818e59e28307af024cf4220fb1879758296c17"
+      },
+      {
+        "relative_path": "public/experience.js",
+        "bytes": 18373,
+        "sha256": "b25a6151abcda1832e3cc7132d10c2914aca7fd77d0ddbb20b695ac4691e042d"
+      },
+      {
+        "relative_path": "public/landing.js",
+        "bytes": 5070,
+        "sha256": "a775b4dc71ee535430b9b08ecbf51def0d1ec0fbc5a41c067615cce7497c46f6"
+      },
+      {
+        "relative_path": "public/lifecycle-fixture.js",
+        "bytes": 2512,
+        "sha256": "ae75bc08ce8818278b6a330b1872943868ad19991cf536bb4d9863a6fadb40d1"
+      },
+      {
+        "relative_path": "public/offmenu-system.js",
+        "bytes": 2573,
+        "sha256": "6af2dd9b06633597e568ac088d6325b62e9f957a7128562539e7eba2e005d363"
+      },
+      {
+        "relative_path": "public/overview.js",
+        "bytes": 1266,
+        "sha256": "bd40f4a4341f1799cf53bb572503aa8d3b5b79e9b61ce324e7bb79206b101712"
+      },
+      {
+        "relative_path": "public/perf-query-engine.js",
+        "bytes": 14068,
+        "sha256": "7ae4f935782b9208877c8405d1d2a2d04e41244bec7457cdb312bf92a9890d84"
+      },
+      {
+        "relative_path": "public/performance.js",
+        "bytes": 17128,
+        "sha256": "2d7043552aaa3e26962769abba6b7fb1c5ddb04374d6211c1506200daff6d350"
+      },
+      {
+        "relative_path": "public/playground.js",
+        "bytes": 60725,
+        "sha256": "f757e3a037deedf91c58695a404ed1040797003ac27a134f8b9461a8e175bc38"
+      },
+      {
+        "relative_path": "public/rpc-workspace.js",
+        "bytes": 56710,
+        "sha256": "074a6e157e39db83d48c231d96f4706665a8bb74139a62a16b4dc6b2043e59eb"
+      },
+      {
+        "relative_path": "public/scanner-identifiers.js",
+        "bytes": 7574,
+        "sha256": "56d598ab2386bf612fe4ba369768132fffc62f0adf5e3a8ce64a4fd1c550bd0f"
+      },
+      {
+        "relative_path": "public/scanner-saved-result.js",
+        "bytes": 2597,
+        "sha256": "0404666d8896bcd935bed69e4cc489efa60b7c452ab0899e94fc6b21cac1de85"
+      },
+      {
+        "relative_path": "public/scanner-surrogate.js",
+        "bytes": 1710,
+        "sha256": "28113b32ffa15448ecb9fec997b036a6170dd6fc84209c774f36747d1dfcee43"
+      },
+      {
+        "relative_path": "public/scanner-theme-init.js",
+        "bytes": 353,
+        "sha256": "72efbf9e3c15e08a27d9f2fe1a8156615445033bec8fb49fa0453e0b984e686f"
+      },
+      {
+        "relative_path": "public/scanner-three.js",
+        "bytes": 487719,
+        "sha256": "316e4a74c70140ee8253c44032b2f1a3e683f8f36608c8fce2a789256fd8fe8a"
+      },
+      {
+        "relative_path": "public/shelf-scanner.js",
+        "bytes": 44168,
+        "sha256": "63862d7c454c8610234c739ee813f3f26f69a566545314b51cedd4ff87f0e49b"
+      },
+      {
+        "relative_path": "scripts/build-art.mjs",
+        "bytes": 5441,
+        "sha256": "181e6a9f75403d5afb8742deefdda072001c8728f30e6fb4153d4bcea69b8584"
+      },
+      {
+        "relative_path": "scripts/nutrition_projection.py",
+        "bytes": 1815,
+        "sha256": "1548aa2898b13e311d9bd8f04840f54c630161e467e2d363747080563059457b"
+      },
+      {
+        "relative_path": "scripts/refresh-country-overview.py",
+        "bytes": 7247,
+        "sha256": "003d376fddbacf17de5d262bd48b9021e90ccb31acaf602dbd02d1d5d3e35fe8"
+      },
+      {
+        "relative_path": "scripts/refresh-country-progress.py",
+        "bytes": 13646,
+        "sha256": "66435b39b58a4b75e67832a4bd368f0a08769b491a6d8b7e9028932ee2c82fcd"
+      }
+    ]
+  },
+  "pendingOperation": null,
+  "appWorkersResumed": false,
+  "productionChanged": false
+}

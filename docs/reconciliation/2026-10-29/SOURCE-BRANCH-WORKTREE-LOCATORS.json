@@ -1,0 +1,47 @@
+{
+  "utc": "2026-10-29T03:53:54.094738+00:00",
+  "currentLocators": [
+    {
+      "branch": "feature/source-facts-diagnostic-20261029",
+      "head": "6c4ee1495a7daf3baa6b55a01e0e166b183118ea",
+      "historicalWorktree": "/home/user/src/offmenu-worktrees/source-facts-diagnostic-20261029",
+      "currentWorktree": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/source-facts-diagnostic-20261029",
+      "publicationReceipt": "PUBLICATION-RECEIPT.json"
+    },
+    {
+      "branch": "feature/windmill-platform-source-20261029",
+      "head": "4632dd238e2bffefc60246bcb328264a6fb85f9e",
+      "historicalWorktree": "/home/user/src/offmenu-worktrees/windmill-platform-source-20261029",
+      "currentWorktree": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/windmill-platform-source-20261029",
+      "publicationReceipt": "WINDMILL-SOURCE-PUBLICATION.json"
+    },
+    {
+      "branch": "feature/historical-tooling-source-20261029",
+      "head": "dceef4c5314e352633713b07979532d0869cc6a8",
+      "historicalWorktree": "/home/user/src/offmenu-worktrees/historical-tooling-source-20261029",
+      "currentWorktree": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/historical-tooling-source-20261029",
+      "publicationReceipt": "HISTORICAL-TOOLING-PUBLICATION.json"
+    },
+    {
+      "branch": "feature/ai-tooling-source-20261029",
+      "head": "bbb2e489afdc30dab7d87a0f3653bbd2887cb54a",
+      "historicalWorktree": "/home/user/src/offmenu-worktrees/ai-tooling-source-20261029",
+      "currentWorktree": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/ai-tooling-source-20261029",
+      "publicationReceipt": "AI-TOOLING-PUBLICATION.json"
+    },
+    {
+      "branch": "feature/reviewed-app-source-custody-20261029",
+      "head": "6bfe2165c79e9152b4396d9c75b735665be47707",
+      "historicalWorktree": "/home/user/src/offmenu-worktrees/reviewed-app-source-custody-20261029",
+      "currentWorktree": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/reviewed-app-source-custody-20261029",
+      "publicationReceipt": "REVIEWED-APP-SOURCE-PUBLICATION.json"
+    },
+    {
+      "branch": "feature/retained-worker-wip-20261029",
+      "head": "40a321392e7c5bdfb55ee951d26ddee6d4a004fa",
+      "historicalWorktree": "/home/user/src/offmenu-worktrees/retained-worker-wip-20261029",
+      "currentWorktree": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/retained-worker-wip-20261029",
+      "publicationReceipt": "RETAINED-WORKER-WIP-PUBLICATION.json"
+    }
+  ]
+}

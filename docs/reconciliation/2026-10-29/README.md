@@ -21,3 +21,6 @@ GITFLOW-AND-NEXT-BATCHES describes source selection, feature/bugfix bases, check
 ## Verification
 
 Publication receipts bind exact remote refs and member blobs. Workflow blobs remained3b487342fc6fac3ec19266e1cbcf6c9d51e1294b and c1643006a1cf375935e4b135339fa2355567b0b0; ordinary feature/bugfix pushes do not match their event filters. Zero matching Actions runs were observed for the two source commits. No tests or build were rerun for preservation and no instrumentation was activated.
+
+
+Latest bounded consolidation checkpoint: see CONSOLIDATION-PROGRESS-BATCH2.json and CLEANUP-RESTORE-MAP-BATCH2.json. Original point-in-time maps and receipts remain historical evidence. Source-only custody worktree locations have changed; SOURCE-BRANCH-WORKTREE-LOCATORS.json records current locations. This remains a coordination/docs branch, not an integrated app release.

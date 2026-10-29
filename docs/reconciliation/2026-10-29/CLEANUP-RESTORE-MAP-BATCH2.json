@@ -1,0 +1,896 @@
+{
+  "utc": "2026-10-29T03:55:25.992361+00:00",
+  "moves": [
+    {
+      "source": "/home/user/src/offmenu-source-barcode-facts-diagnostic-20261029/source/protocol-pins.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-facts-diagnostic-20261029/source/protocol-pins.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a",
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-facts-diagnostic-20261029/source/reviewed-hydration/source-barcode-client.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-facts-diagnostic-20261029/source/reviewed-hydration/source-barcode-client.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "273afcb617a208c9e7385026351bc3f748e133b17a2eb37f5454b230b5351197",
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-facts-diagnostic-20261029/source/reviewed-hydration/source-barcode-hydrator.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-facts-diagnostic-20261029/source/reviewed-hydration/source-barcode-hydrator.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "a2d96a9736942982408f51233384e503df7b7795ea24533a3f9d5f94c76300d9",
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-facts-diagnostic-20261029/source/reviewed-hydration/source-barcode-selection.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-facts-diagnostic-20261029/source/reviewed-hydration/source-barcode-selection.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "adaddd1ea29bc47860e4ed557b477240bab677b5eb431dc255a5c5887159f71e",
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-facts-diagnostic-20261029/source/source-barcode-facts-handler.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-facts-diagnostic-20261029/source/source-barcode-facts-handler.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "583ba256fb429284f1935f53e3e916fe25500de0afce27cf80bcc4b7a8741f5a",
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-facts-diagnostic-20261029/source/source-barcode-handler.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-facts-diagnostic-20261029/source/source-barcode-handler.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "56723cd22ecb72713b5dd4cc98b1a24adbb262200d25796e2d74f4a069d9d9eb",
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-facts-diagnostic-20261029/source/stream-shard.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-facts-diagnostic-20261029/source/stream-shard.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a",
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-facts-diagnostic-20261029/source/strict-json.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-facts-diagnostic-20261029/source/strict-json.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099",
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-facts-diagnostic-20261029/tests/facts-diagnostic.test.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-facts-diagnostic-20261029/tests/facts-diagnostic.test.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "f684adedd3f154d4e761f0c8a246482ff96bd42c5732d43c57119d5362913c7c",
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-facts-diagnostic-20261029/build-facts.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-facts-diagnostic-20261029/build-facts.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "026966b3c597166fe356d3c3910a14c11ed9a6fec1a6e38dff69da37d0439647",
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-facts-diagnostic-20261029/facts-diagnostic-only.patch",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-facts-diagnostic-20261029/facts-diagnostic-only.patch",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "e09a18e82d8e8431bdbb1e914543e11319a9eb1509a3ab63f92cad7971b03e25",
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-facts-diagnostic-20261029/HANDOFF.md",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-facts-diagnostic-20261029/HANDOFF.md",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "58f16c65f77988bc6e5a11cbd3858f273f8f7f1ac64122cbc88dacce65ba253c",
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-index-budget-20261029/build-facts.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-index-budget-20261029/build-facts.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "026966b3c597166fe356d3c3910a14c11ed9a6fec1a6e38dff69da37d0439647",
+      "branch": "bugfix/source-barcode-index-budget-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-index-budget-20261029/source/protocol-pins.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-index-budget-20261029/source/protocol-pins.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a",
+      "branch": "bugfix/source-barcode-index-budget-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-index-budget-20261029/source/reviewed-hydration/source-barcode-client.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-index-budget-20261029/source/reviewed-hydration/source-barcode-client.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "273afcb617a208c9e7385026351bc3f748e133b17a2eb37f5454b230b5351197",
+      "branch": "bugfix/source-barcode-index-budget-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-index-budget-20261029/source/reviewed-hydration/source-barcode-hydrator.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-index-budget-20261029/source/reviewed-hydration/source-barcode-hydrator.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "a2d96a9736942982408f51233384e503df7b7795ea24533a3f9d5f94c76300d9",
+      "branch": "bugfix/source-barcode-index-budget-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-index-budget-20261029/source/reviewed-hydration/source-barcode-selection.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-index-budget-20261029/source/reviewed-hydration/source-barcode-selection.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "adaddd1ea29bc47860e4ed557b477240bab677b5eb431dc255a5c5887159f71e",
+      "branch": "bugfix/source-barcode-index-budget-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-index-budget-20261029/source/source-barcode-facts-handler.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-index-budget-20261029/source/source-barcode-facts-handler.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "ea987c6bb5e00d7d71f6f6c27d52313bbd5aabce8a7d9a3946ba4672ff89aaac",
+      "branch": "bugfix/source-barcode-index-budget-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-index-budget-20261029/source/source-barcode-handler.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-index-budget-20261029/source/source-barcode-handler.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "56723cd22ecb72713b5dd4cc98b1a24adbb262200d25796e2d74f4a069d9d9eb",
+      "branch": "bugfix/source-barcode-index-budget-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-index-budget-20261029/source/stream-shard.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-index-budget-20261029/source/stream-shard.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a",
+      "branch": "bugfix/source-barcode-index-budget-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-index-budget-20261029/source/strict-json.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-index-budget-20261029/source/strict-json.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099",
+      "branch": "bugfix/source-barcode-index-budget-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-index-budget-20261029/tests/index-budget.test.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-index-budget-20261029/tests/index-budget.test.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "head": null,
+      "sha256": "0c2511f69995d7e82d219578188944efa286d8a5f501f1537cd5c3d3a018e730",
+      "branch": "bugfix/source-barcode-index-budget-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-index-budget-20261029",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/retired-workspaces/offmenu-source-barcode-index-budget-20261029",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-02-RECEIPT.json",
+      "head": null,
+      "sha256": null,
+      "branch": null
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r4",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/retired-workspaces/offmenu-source-barcode-handler-20261029-r4",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-03-RECEIPT.json",
+      "head": null,
+      "sha256": null,
+      "branch": null
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r5",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/retired-workspaces/offmenu-source-barcode-handler-20261029-r5",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-03-RECEIPT.json",
+      "head": null,
+      "sha256": null,
+      "branch": null
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-publisher-candidate-20261029",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/retired-workspaces/offmenu-source-barcode-publisher-candidate-20261029",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-03-RECEIPT.json",
+      "head": null,
+      "sha256": null,
+      "branch": null
+    },
+    {
+      "source": "/home/user/src/offmenu-terminal-filter-independent-review-20261028",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/retired-workspaces/offmenu-terminal-filter-independent-review-20261028",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-03-RECEIPT.json",
+      "head": null,
+      "sha256": null,
+      "branch": null
+    },
+    {
+      "source": "/home/user/src/offmenu-terminal-filter-independent-review-20261028-r2",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/retired-workspaces/offmenu-terminal-filter-independent-review-20261028-r2",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-03-RECEIPT.json",
+      "head": null,
+      "sha256": null,
+      "branch": null
+    },
+    {
+      "source": "/home/user/src/offmenu-unattended-delivery-repair-20261028",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/retired-workspaces/offmenu-unattended-delivery-repair-20261028",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-03-RECEIPT.json",
+      "head": null,
+      "sha256": null,
+      "branch": null
+    },
+    {
+      "source": "/home/user/src/offmenu-unattended-delivery-repair-20261028-update-114749",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/retired-workspaces/offmenu-unattended-delivery-repair-20261028-update-114749",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-03-RECEIPT.json",
+      "head": null,
+      "sha256": null,
+      "branch": null
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029/build-handler.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029/build-handler.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "d289f57badcfc47f21c39812a32e2b41d68df80b086505029256254c09551647",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029/HANDOFF.md",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029/HANDOFF.md",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "b7cca6ff767ed51f600e19410d8aeced45fa8ea4555c4522c6d2ffca3af78fbe",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029/dispatcher-only.patch",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029/dispatcher-only.patch",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "aca51911efda5031c7cba33d5aaff47ef7558e1e65bb6f9d03c327de3959a740",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029/source/protocol-pins.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029/source/protocol-pins.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029/source/strict-json.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029/source/strict-json.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029/source/source-barcode-handler.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029/source/source-barcode-handler.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "03d782e6305eaa912bbd8ae5c989688a6b6296184fca9682b6a88a685febf9ff",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029/tests/source-barcode-handler.test.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029/tests/source-barcode-handler.test.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "c620cca9029b1e916528818a6a72fd916aa0d76856a82ed2d0bda45f5f1c494f",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/build-handler.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r2/build-handler.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "d289f57badcfc47f21c39812a32e2b41d68df80b086505029256254c09551647",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/HANDOFF.md",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r2/HANDOFF.md",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "3f61bf207e12c64379b8cdf8f1006519aefd5e080b666e9e83b66cc698a7cbd5",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/R1-to-R2.patch",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r2/R1-to-R2.patch",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "acc92feb96879ff23b430f1291f9df291b8d3b37aa98b2d7a846689da6b48b0d",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/dispatcher-only.patch",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r2/dispatcher-only.patch",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "aca51911efda5031c7cba33d5aaff47ef7558e1e65bb6f9d03c327de3959a740",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/source/protocol-pins.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r2/source/protocol-pins.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/source/strict-json.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r2/source/strict-json.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/source/source-barcode-handler.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r2/source/source-barcode-handler.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "a735f9f02b013b740c4ab18f285202a7becf325e8ead33cb55dfb7dec12d7f68",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/source/stream-shard.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r2/source/stream-shard.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/tests/source-barcode-handler.test.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r2/tests/source-barcode-handler.test.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "feeeb40be87c9d8734ddd32f41fd0483f87acdf7715e3970d3c545a7a8eba8b2",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/DIAGNOSTIC-HANDOFF.md",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r3/DIAGNOSTIC-HANDOFF.md",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "80acc37ff94a616de78ec50ee3c2b21b314cdc2fe92245eb9013945be2c8c082",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/build-handler.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r3/build-handler.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "d289f57badcfc47f21c39812a32e2b41d68df80b086505029256254c09551647",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/source/protocol-pins.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r3/source/protocol-pins.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/source/strict-json.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r3/source/strict-json.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/source/source-barcode-handler.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r3/source/source-barcode-handler.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "39903a97a586479229d0c0afabee90789de1ed1fb01001203a72a78c69a382ad",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/source/stream-shard.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r3/source/stream-shard.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/tests/source-barcode-handler.test.mjs",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-source-barcode-handler-20261029-r3/tests/source-barcode-handler.test.mjs",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "feeeb40be87c9d8734ddd32f41fd0483f87acdf7715e3970d3c545a7a8eba8b2",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-terminal-filter-candidate-20261028/terminal_filter.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-terminal-filter-candidate-20261028/terminal_filter.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "f507ceb4d68c3c7232218f9b62e71d9a979a970bd6d72ecc9afddea34f0894e5",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-terminal-filter-candidate-20261028/HANDOFF.md",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-terminal-filter-candidate-20261028/HANDOFF.md",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "f3f6e6c124fe7b3ba8cdaaa1b75bff897b06d839d599311a3a7cd6d24d02099d",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-terminal-filter-candidate-20261028/test_terminal_filter.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-terminal-filter-candidate-20261028/test_terminal_filter.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "952b4d39e251a8719cfec22210557f7327278bed5839c27ab1ab99a48e23b96c",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/terminal_filter.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-terminal-filter-candidate-20261028-r2/terminal_filter.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "c8792e91768176c10574d8b13dc2e9dc6f7ddeb9b54e0be81f4330a8a4e950cc",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/review.patch",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-terminal-filter-candidate-20261028-r2/review.patch",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "7570d88408dc3c7e7ca8d77aaa812001cd4984b8011aa3f44c32ae9256a1a3c2",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/HANDOFF.md",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-terminal-filter-candidate-20261028-r2/HANDOFF.md",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "f18758ec958b436a55f9a2a3d8b1268f1bad817c9a2c098622f0261920efbd11",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/source.patch",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-terminal-filter-candidate-20261028-r2/source.patch",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "b25f25b4057116f0628c9536c368fde4b776b738814b8a748c5514b1bb6b12a4",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/test_terminal_filter.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-terminal-filter-candidate-20261028-r2/test_terminal_filter.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "f20fd311fb30c611b55603f2dfefb3641f0c9f0125ebf31f0aafbda4be1d5873",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/base/terminal_filter.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-terminal-filter-candidate-20261028-r2/base/terminal_filter.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "f507ceb4d68c3c7232218f9b62e71d9a979a970bd6d72ecc9afddea34f0894e5",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/base/test_terminal_filter.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-terminal-filter-candidate-20261028-r2/base/test_terminal_filter.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "952b4d39e251a8719cfec22210557f7327278bed5839c27ab1ab99a48e23b96c",
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-integration-20261028-live-adapter.source.txt",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-integration-20261028-live-adapter.source.txt",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "3760b83e2678f89e2330a62f2ccdf0a8e935461f5cbc2168a3f57d0e725e9f38",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-integration-20261028-live-caller.source.txt",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-integration-20261028-live-caller.source.txt",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "cef944eedb0a6990cd6500b49abac023103d289551506c741b7162bdb6f829dd",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-integration-20261028-metrics-adapter.source.txt",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-integration-20261028-metrics-adapter.source.txt",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "133572094dedd81d42a66413cfcc160145d923491684cc3cbe384431b51f083b",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-integration-20261028-metrics-caller.source.txt",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-integration-20261028-metrics-caller.source.txt",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "9cec2d0eb2286cbd07a82bd2e9d43395794e868c6071a3ed6889fa77871c9ca2",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-integration-20261028-metrics-only.patch",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-integration-20261028-metrics-only.patch",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "06f906eb149a4c97b65e20c0f79a083d58c231b06e61a5600a8939477cf56575",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-integration-20261028-PLAN.md",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-integration-20261028-PLAN.md",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "49f802a4143da207cc1d6009a5acf390aa4a3e3a83af0b1a1d99368fb98b6c00",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-reuse-candidate-20261028/HANDOFF.md",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-reuse-candidate-20261028/HANDOFF.md",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "e5efdfbb080830e4a4e93f0a413af63435139f39ee1bdac2fed9ee980c58948c",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-reuse-candidate-20261028/candidate/offmenu_groq_public_development_20261028.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-reuse-candidate-20261028/candidate/offmenu_groq_public_development_20261028.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "3a44af33dace00e1262b89505dedb379b2fe5c47ede89a468fa3edbadec01d2d",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-reuse-candidate-20261028/candidate/test_accepted_reuse.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-reuse-candidate-20261028/candidate/test_accepted_reuse.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "019112efc402ca941b3505cff4517aceb1f1558d6edfafb64bf48d8047e0c7a5",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-reuse-candidate-20261028-r2/HANDOFF.md",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-reuse-candidate-20261028-r2/HANDOFF.md",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "392758fd611fa668e8d7e3ca4b1dc17f8c0d649fc836c9dcd0c09d53c68f7fcc",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-reuse-candidate-20261028-r2/candidate/offmenu_groq_public_development_20261028.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-reuse-candidate-20261028-r2/candidate/offmenu_groq_public_development_20261028.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "1e24c1d5ce2d5b6cecb47666f775f85c4a2b582215e951c1845815eb102fef67",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-reuse-candidate-20261028-r2/candidate/test_accepted_reuse.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-reuse-candidate-20261028-r2/candidate/test_accepted_reuse.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "8cb3c094b68f917ab3313e005546c226e829ee3dd2a8fe9c0731dfdf36acdbb8",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-reuse-candidate-20261028-r2/candidate/test_deadline_and_live_tasks.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-reuse-candidate-20261028-r2/candidate/test_deadline_and_live_tasks.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "13484e36a78208d45e5743361fa4354f8f0c982965265d1303be9f453b07dbb1",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-reuse-candidate-20261028/adapter.patch",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-reuse-candidate-20261028/adapter.patch",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "a9aef94cbd80b836e116338958f9ab9b45eae5d8588d8e8cca8f15db80a9f8d7",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-reuse-candidate-20261028/base/offmenu_groq_public_development_20261028.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-reuse-candidate-20261028/base/offmenu_groq_public_development_20261028.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "2a69d92cb8c6d68eaab5c129c82f56c63847f4243bc107d5c31eb666627cc85b",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-reuse-candidate-20261028-r2/adapter.patch",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-reuse-candidate-20261028-r2/adapter.patch",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "072c6e39d8b572e940ad2596ed2e7efae8d5e1b1dd1d3441aa51dfbcf5228431",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-reuse-candidate-20261028-r2/base/offmenu_groq_public_development_20261028.py",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-reuse-candidate-20261028-r2/base/offmenu_groq_public_development_20261028.py",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "3760b83e2678f89e2330a62f2ccdf0a8e935461f5cbc2168a3f57d0e725e9f38",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-ai-reuse-candidate-20261028-r2/review.patch",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/source-duplicates/offmenu-ai-reuse-candidate-20261028-r2/review.patch",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "head": null,
+      "sha256": "10703ce67a7a9da6fd18c77cd7a199dbaf910ad2d4f5dda0de497f74ec749b2c",
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker00-accepted-consumer-33736b4-20261025",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker00-accepted-consumer-33736b4-20261025",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "head": "33736b4c70fa3f1da8dc92a68fd764a8a3153937",
+      "sha256": null,
+      "branch": ""
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker00-sr-reference-fixtures-20261024",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker00-sr-reference-fixtures-20261024",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "head": "c71ec4424fe6d318ab4ee65b3dbbc96d200ec3fa",
+      "sha256": null,
+      "branch": "codex/sr-reference-fixtures-20261024"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker05-documentary-product-fit-20261024",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker05-documentary-product-fit-20261024",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "head": "fe2ba6d3bb7621864be9bba4f06483b4166c28ab",
+      "sha256": null,
+      "branch": "codex/documentary-product-fit-20261024"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker05-gold-barcode-query-20261024",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker05-gold-barcode-query-20261024",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "head": "c2fae36e1d5d64efa45dc53c57568e409bda55f8",
+      "sha256": null,
+      "branch": "codex/bounded-gold-barcode-query-20261024"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker05-source-literal-quantities-20261024",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker05-source-literal-quantities-20261024",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "head": "29ba6f9a8cf39f605e444651fa44259e514bddf6",
+      "sha256": null,
+      "branch": "codex/source-literal-quantities-20261024"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker05-source-recipe-product-proofs-20261025",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker05-source-recipe-product-proofs-20261025",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "head": "4bf5f4be70dec0c8ad034b66b7fb4035420b7047",
+      "sha256": null,
+      "branch": "codex/source-recipe-literal-facts-20261025"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker05-sugar-alternative-selection-20261024",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker05-sugar-alternative-selection-20261024",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "head": "e9ddac9fd2b50bfdfcdacde4d1b33715038d006d",
+      "sha256": null,
+      "branch": "codex/sugar-alternative-selection-20261024"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker57-off-occurrence-accepted--worker-57",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker57-off-occurrence-accepted--worker-57",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "head": "33321b6b9a748489a6d90d66a7956d801a9abbc5",
+      "sha256": null,
+      "branch": ""
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker57-off-occurrence-runtime--worker-57",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker57-off-occurrence-runtime--worker-57",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "head": "4e73d5a3de581edfa8fa8494b8ef4b222cc74f60",
+      "sha256": null,
+      "branch": ""
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker64-beurre-label-scenario-20261024",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker64-beurre-label-scenario-20261024",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "head": "6750f45cd911f353a3bdf3fd1e81ba74b65aa68c",
+      "sha256": null,
+      "branch": "codex/worker64-beurre-label-scenario-20261024"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker64-generated-menu-20261024",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker64-generated-menu-20261024",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "head": "053774a14f95136dfbbe86f4af0359b6487c0309",
+      "sha256": null,
+      "branch": "codex/generated-menu-20261024"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker64-source-context-presentation-20261025",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker64-source-context-presentation-20261025",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "head": "117c64a7f6ea77ae64ce6d91b6634bbac31621e2",
+      "sha256": null,
+      "branch": "codex/admitted-snapshot-consumers-20261025"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker00-menu-demand-stock-join-20261026",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker00-menu-demand-stock-join-20261026",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-06-RECEIPT.json",
+      "head": "590c72d88683fb52abef7cb931edb22b7c154dbf",
+      "sha256": null,
+      "branch": "codex/menu-demand-stock-join-20261026"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker00-producer-validator-batch-20261025",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker00-producer-validator-batch-20261025",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-06-RECEIPT.json",
+      "head": "91a9e09df008bf9e25cf36cac15e5a8ac9b88143",
+      "sha256": null,
+      "branch": "codex/producer-validator-20261025"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker00-production-selected-lookup-20261026",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker00-production-selected-lookup-20261026",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-06-RECEIPT.json",
+      "head": "d22590723c943050edc56919ad5618956dd837e6",
+      "sha256": null,
+      "branch": "codex/production-selected-lookup-prep-20261026"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker00-household-unknown-review-20261026",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker00-household-unknown-review-20261026",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-07-RECEIPT.json",
+      "head": "326c6fabf89ad8a984bcf36b6beae7f51b66b0a9",
+      "sha256": null,
+      "branch": "codex/household-unknown-review-20261026"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker00-photo-adapter-reviewed-r1-20261026",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker00-photo-adapter-reviewed-r1-20261026",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-07-RECEIPT.json",
+      "head": "c5a5c846629f44e32ba64af9ebcecb7cf2678f5f",
+      "sha256": null,
+      "branch": "codex/photo-adapter-reviewed-r1-20261026"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/worker00-recipe-discovery-reviewed-r1-20261026",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/worker00-recipe-discovery-reviewed-r1-20261026",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-07-RECEIPT.json",
+      "head": "1ec8f5cbbf224df33e942850baf9b8aec9108a61",
+      "sha256": null,
+      "branch": "codex/recipe-discovery-reviewed-r1-20261026"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/source-facts-diagnostic-20261029",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/source-facts-diagnostic-20261029",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-08-RECEIPT.json",
+      "head": "6c4ee1495a7daf3baa6b55a01e0e166b183118ea",
+      "sha256": null,
+      "branch": "feature/source-facts-diagnostic-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/windmill-platform-source-20261029",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/windmill-platform-source-20261029",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-08-RECEIPT.json",
+      "head": "4632dd238e2bffefc60246bcb328264a6fb85f9e",
+      "sha256": null,
+      "branch": "feature/windmill-platform-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/historical-tooling-source-20261029",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/historical-tooling-source-20261029",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-08-RECEIPT.json",
+      "head": "dceef4c5314e352633713b07979532d0869cc6a8",
+      "sha256": null,
+      "branch": "feature/historical-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/ai-tooling-source-20261029",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/ai-tooling-source-20261029",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-08-RECEIPT.json",
+      "head": "bbb2e489afdc30dab7d87a0f3653bbd2887cb54a",
+      "sha256": null,
+      "branch": "feature/ai-tooling-source-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/reviewed-app-source-custody-20261029",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/reviewed-app-source-custody-20261029",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-08-RECEIPT.json",
+      "head": "6bfe2165c79e9152b4396d9c75b735665be47707",
+      "sha256": null,
+      "branch": "feature/reviewed-app-source-custody-20261029"
+    },
+    {
+      "source": "/home/user/src/offmenu-worktrees/retained-worker-wip-20261029",
+      "target": "/home/user/src/offmenu-all-held-reconciliation-20261028/repository-quarantine-20261029/registered-worktrees/retained-worker-wip-20261029",
+      "receipt": "RECOVERABLE-CLEANUP-BATCH-08-RECEIPT.json",
+      "head": "40a321392e7c5bdfb55ee951d26ddee6d4a004fa",
+      "sha256": null,
+      "branch": "feature/retained-worker-wip-20261029"
+    }
+  ],
+  "journals": [
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-01-RECEIPT.json",
+      "sha256": "c0ce29c945fc8da259097f9f657eac8314f03fb7c0a0f133a5c711d7c0a4c44e",
+      "moves": 22,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-02-RECEIPT.json",
+      "sha256": "5c47cb81edc8f10489cfc9cf9d2fbd9d5b9ff634c7521301904af9af2fde0505",
+      "moves": 1,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-03-RECEIPT.json",
+      "sha256": "eb9a3a7e7efe8cf82c7a03fef4878109de2d52310ecc41c7a177980fcb968e98",
+      "moves": 7,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-04-RECEIPT.json",
+      "sha256": "6a05e019f5ebd6b406ede8158f1a7246c5fb600c7b1f6d771570958da6229698",
+      "moves": 51,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-05-RECEIPT.json",
+      "sha256": "f30a07d61230c52c1e1756bc2a4a4db1d1636bd8dae5453b48c3e7cb7368058e",
+      "moves": 12,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-06-RECEIPT.json",
+      "sha256": "239190ebd3c73e45554df93d9a1dfcd44d2b2ec86121d5d7ac77d55533853971",
+      "moves": 3,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-07-RECEIPT.json",
+      "sha256": "1b92c5f32b67a86cf4ad7ab3d5e12f97727a5d664f79b79ca2ac014b51b9963d",
+      "moves": 3,
+      "state": "complete"
+    },
+    {
+      "path": "/home/user/src/2026-10-28/task-2/repository-reconciliation-20261029/RECOVERABLE-CLEANUP-BATCH-08-RECEIPT.json",
+      "sha256": "9febfeef7e625c38c6763bcd524b21f37e83fb5c57e913fceecce5052aa1eafb",
+      "moves": 6,
+      "state": "complete"
+    }
+  ],
+  "restoreRule": "Require original source absent; verify hash/HEAD; use Git worktree move for worktrees and rename for files/packet directories. No overwrite, reset, prune or deletion."
+}
