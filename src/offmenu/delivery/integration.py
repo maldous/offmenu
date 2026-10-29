@@ -226,7 +226,10 @@ class Controller:
             current = self.status()
             if kind not in ('merge','linear') or current.get(kind+'_effect') != 'pending':
                 raise DeliveryError('No matching durable API intent')
-            if outcome == 'refused':
+            if outcome == 'not-issued':
+                current.update(status='stale-candidate' if kind=='merge' else 'merge-verified',action=None)
+                current[kind+'_effect']='not-issued'
+            elif outcome == 'refused':
                 current.update(status='authority-refused',action=None,refused_kind=kind)
                 current[kind+'_effect']='refused'
             elif outcome in ('uncertain','succeeded'):
@@ -261,7 +264,7 @@ def main():
     parser.add_argument('--binding',type=Path,required=True)
     parser.add_argument('--observation',type=Path)
     parser.add_argument('--kind',choices=['merge','linear'])
-    parser.add_argument('--outcome',choices=['succeeded','uncertain','refused'])
+    parser.add_argument('--outcome',choices=['succeeded','uncertain','refused','not-issued'])
     parser.add_argument('--authority-receipt-sha256')
     parser.add_argument('--claim-root',type=Path)
     args = parser.parse_args()

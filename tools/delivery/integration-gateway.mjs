@@ -16,8 +16,7 @@ export async function advanceIntegration({controller, github, linear, observe}) 
         pr.base_sha !== action.expected_base_sha || pr.base !== 'develop' ||
         pr.head !== action.expected_head_branch ||
         pr.draft !== false || pr.mergeable !== true) {
-      await controller.outcome('merge', 'uncertain');
-      return await controller.step(await observe());
+      return await controller.outcome('merge', 'not-issued');
     }
     let outcome;
     try {
@@ -33,9 +32,20 @@ export async function advanceIntegration({controller, github, linear, observe}) 
       outcome = error.knownRefused === true ? 'refused' : 'uncertain';
     }
     await controller.outcome('merge', outcome);
-    return await controller.step(await observe());
+    const reconciled = await controller.step(await observe());
+    if (reconciled.action?.kind === 'update-linear') {
+      return await completeMetadata(reconciled.action, {controller, linear, observe});
+    }
+    return reconciled;
   }
   if (action.kind === 'update-linear') {
+    return await completeMetadata(action, {controller, linear, observe});
+  }
+  // Repairs are work packets, not arbitrary executable commands.
+  return decision;
+}
+
+async function completeMetadata(action, {controller, linear, observe}) {
     let outcome;
     try {
       await linear.completeIssue(action.issue_id, {
@@ -48,7 +58,4 @@ export async function advanceIntegration({controller, github, linear, observe}) 
     }
     await controller.outcome('linear', outcome);
     return await controller.step(await observe());
-  }
-  // Repairs are work packets, not arbitrary executable commands.
-  return decision;
 }

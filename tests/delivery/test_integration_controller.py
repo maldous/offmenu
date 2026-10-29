@@ -158,6 +158,14 @@ class IntegrationControllerTests(unittest.TestCase):
         self.step(stale)
         self.assertEqual(self.controller.record_api_outcome('merge','uncertain')['merge_effect'],'unknown')
 
+    def test_known_preflight_nonexecution_releases_intent_for_new_candidate(self):
+        self.step()
+        state=self.controller.record_api_outcome('merge','not-issued')
+        self.assertEqual(state['merge_effect'],'not-issued')
+        other=Controller(self.root/'new-base',dict(self.binding,base='9'*40))
+        snapshot=copy.deepcopy(self.snapshot);snapshot['github']['base']='9'*40
+        self.assertEqual(other.run(snapshot)['status'],'awaiting-validation')
+
     def test_old_review_cannot_authorize_new_head(self):
         self.snapshot['review']['head'] = '9'*40
         self.assertEqual(self.step()['status'],'awaiting-independent-review')
