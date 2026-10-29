@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "status": "bounded-use-demonstrated-source-review-pending",
+  "upstream": {
+    "revision": "339cbf4f3f6d9acdf808f9ba4c639d029cdd8e16",
+    "version": "1.1.0",
+    "installed_packages": 31,
+    "tests_passed": 269,
+    "tests_skipped": 1
+  },
+  "implementation_base": "eca287b36b8b2027e9d32aa4899ffb204563236c",
+  "verified_candidate": "db992de4969fd17e20536ca6c7a4f36e038dc0e6",
+  "native_task": {
+    "issue": "UIF-92",
+    "issue_uuid": "8daac134-01ab-4a02-a4d2-c0c417d0bd32",
+    "source_head": "82dc9175476f85b66ec30e51c6ec4ea186e6dddc",
+    "session_id": "01a187bc-e588-7642-ae36-d10a9f19678b",
+    "provider_route": "codex-chatgpt",
+    "requested_model": "gpt-6.1-sol",
+    "resolved_model_independently_verified": false,
+    "status": "succeeded",
+    "exit_code": 0,
+    "child_tree_gone": true,
+    "accepted_delivery": false,
+    "scope_violations": [],
+    "original_output_sha256": {
+      "tests/delivery/test_stokowski_worker_regressions.py": "c27a37f66b1726ba3d69427fbac5c8cd17e7f28421fc54292c7ffffaf8e6685f"
+    },
+    "integrated_test_sha256": "e47f5faacc1d44f41c72f3702261885dc5ecab41390d4cd96a102a34c8a0cef4",
+    "integration_adjustment": "Optional native-SDK test skips in the delivery environment; original meaningful assertions retained. The four native checks all pass in the isolated Stokowski environment.",
+    "regressions_produced": 11,
+    "finding": "Retained intent with recovered/lost pool could replay. Integration writer added guard; original failing regression now passes.",
+    "coding_replayed": false,
+    "metadata_reconciled_to": "In Review",
+    "receipt_sha256": "e08fd36f8ea936bb200c5a9bf290ab28fb633aa95c2b8c97157310ff49e7c150"
+  },
+  "checks": {
+    "native_adapter_tests": 19,
+    "native_adapter_status": "passed",
+    "delivery_tests": 114,
+    "delivery_skipped_optional_native_tests": 4,
+    "delivery_status": "passed",
+    "local_duration_seconds": 28.706,
+    "standards": "passed",
+    "final_layout": "passed"
+  },
+  "windmill": {
+    "job_id": "offmenu-stokowski-114-db992de49-20261029",
+    "url": "https://windmill.aldous.info/run/01a187c5-4b58-8225-0a0c-a88973ee3901?workspace=offmenu",
+    "observed_stdout_revision": "db992de4969fd17e20536ca6c7a4f36e038dc0e6",
+    "status": "succeeded",
+    "exit_code": 0,
+    "child_tree_gone": true,
+    "reconcile_required": false,
+    "tests": 114,
+    "skipped": 4,
+    "duration_seconds": 25.1,
+    "stdout_sha256": "1b96b8c4088b774a0c33cfd2b6807b37fecfccdc69f17b0ddbafa9f7acc599d7",
+    "stderr_sha256": "6c34fda7238b327f2619304fe67f3c92f7a4045872036e830d87f344db3e6043",
+    "capacity_policy_sha256": "993519fb7528260af20d0b3f653a9b6e0a3c6997fcb0a58f0b8ca1559fdb8480"
+  },
+  "limits": [
+    "No autonomous merge controller or Stokowski-to-Windmill API dispatcher enabled yet",
+    "No native Codex turn/session resume claimed",
+    "Initial tracker transition raced shutdown; fixed and regression tested; metadata reconciled without coding replay",
+    "Existing resources and permission boundaries unchanged; legacy workers and hourly automation paused",
+    "No CIX changes, Claude, public dashboard, new API charges or raw private receipts published"
+  ]
+}
