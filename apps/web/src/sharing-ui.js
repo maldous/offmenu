@@ -6,7 +6,7 @@ export function setupSharing({getUser,isDemo,getKey,snapshot,apply,refreshSessio
 // Contexts bind every continuation and detached control to its initiating scope.
 const context=()=>({generation,user:getUser()?.id,key:getKey(),demo:isDemo()});
 const current=ctx=>!!ctx&&ctx.generation===generation&&ctx.user===getUser()?.id&&ctx.key===getKey()&&ctx.demo===isDemo()&&!!ctx.user&&!ctx.demo;
-const stale=Symbol('stale-sharing-scope');
+const stale=new DOMException('Stale sharing scope','AbortError');
 function guard(ctx){if(!current(ctx))throw stale;}
 const active=()=>!!selected&&current(selectionContext);
 async function action(ctx,run){if(!current(ctx))return;try{return await run();}catch(e){if(!current(ctx)||e===stale)return;notice=e.message;await render();}}
