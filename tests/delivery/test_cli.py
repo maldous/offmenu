@@ -363,6 +363,61 @@ class CliTests(unittest.TestCase):
         self.assert_blocked('run', self.task_path, reason='already bound')
         self.assertEqual((self.root / 'counter.txt').read_text(), '1')
 
+    def source_change_timeout(self, statement):
+        self.task['checks'][0].update(
+            argv=[sys.executable, '-c',
+                  "from pathlib import Path; import time; " + statement + "; time.sleep(5)"],
+            timeout=1, attempts=2, retry_safe=True)
+        self.save_task()
+        result = self.cli('run', self.task_path, code=2)
+        self.assertEqual(result['status'], 'blocked')
+        evidence = self.root / '.delivery' / 'source-drift-evidence.json'
+        evidence.write_text(json.dumps({'observer': 'offline-cli-test',
+            'reason': 'Observed stopped supervisor after bounded local command',
+            'process_tree_gone': True}))
+        return evidence, self.receipt('binding.json').read_bytes()
+
+    def assert_source_drift_failed_reconciliation(self, statement):
+        evidence, binding = self.source_change_timeout(statement)
+        args = ('reconcile', self.task_path, '--check-id', 'counter', '--evidence', evidence)
+        original_owner = self.task['owner']
+        self.task['owner'] = 'different-owner'
+        self.save_task()
+        self.assert_blocked(*args, '--outcome', 'failed', reason='binding mismatch')
+        self.task['owner'] = original_owner
+        self.save_task()
+        self.assert_blocked(*args, '--outcome', 'succeeded', reason='already bound')
+        self.assertEqual(self.cli(*args, '--outcome', 'failed'), {
+            'status': 'reconciled', 'check': 'counter', 'outcome': 'failed'})
+        self.assertEqual(self.receipt('binding.json').read_bytes(), binding)
+        record = self.cli('status', self.task_path)['checks'][0]
+        self.assertEqual((record['status'], record['attempt']), ('failed', 1))
+        self.assertTrue(record['reconciled'])
+        self.assert_blocked('run', self.task_path, reason='already bound')
+        self.assertFalse(self.receipt('accepted.json').exists())
+        self.assertEqual(self.cli('prepare', '--task-id', 'repair-source', '--owner', 'reviewer')['status'],
+                         'prepared_for_review')
+
+    def test_failed_reconciliation_unblocks_after_untracked_source_creation(self):
+        self.assert_source_drift_failed_reconciliation(
+            "Path('created-source.txt').write_text('interrupted output\\n')")
+        self.assertEqual((self.root / 'created-source.txt').read_text(), 'interrupted output\n')
+
+    def test_failed_reconciliation_unblocks_after_tracked_source_modification(self):
+        self.assert_source_drift_failed_reconciliation(
+            "p=Path('.gitignore'); p.write_text(p.read_text() + '# unintended change\\n')")
+        self.assertIn('# unintended change', (self.root / '.gitignore').read_text())
+
+    def test_failed_reconciliation_needs_no_surviving_source_manifest(self):
+        evidence, binding = self.source_change_timeout("Path('repository-standard.json').unlink()")
+        self.assertEqual(self.cli('reconcile', self.task_path, '--check-id', 'counter',
+            '--evidence', evidence, '--outcome', 'failed')['status'], 'reconciled')
+        self.assertFalse((self.root / 'repository-standard.json').exists())
+        self.assertEqual(self.receipt('binding.json').read_bytes(), binding)
+        self.assertEqual(self.cli('status', self.task_path)['checks'][0]['status'], 'failed')
+        with writer(self.root):
+            pass
+
 
 if __name__ == '__main__':
     unittest.main()

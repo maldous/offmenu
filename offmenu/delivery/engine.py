@@ -141,19 +141,31 @@ class State(TypedDict, total=False):
 
 
 class Engine:
-    def __init__(self, root, directory, task):
+    def __init__(self, root, directory, task, failed_reconciliation=False):
         validate_task(task)
         self.root = root
         self.task = task
+        self.directory = directory / task['id']
+        binding = self.directory / 'binding.json'
+        if failed_reconciliation:
+            # Recording a stopped failure is not execution or acceptance. Its
+            # original identity must match, but damaged/changed source must not
+            # make the durable hold impossible to reconcile. Never rebind it.
+            if not binding.is_file():
+                raise DeliveryError('Task not found; no original binding to reconcile')
+            previous = json.loads(binding.read_text())
+            identity = {'task_sha256': digest(task), 'root': str(root), 'owner': task['owner']}
+            if any(previous.get(key) != value for key, value in identity.items()):
+                raise DeliveryError('Task binding mismatch')
+            self.branch = previous['branch']
+            return
         current_branch = git(root, 'branch', '--show-current')
         if not current_branch.startswith(('feature/', 'bugfix/')):
             raise DeliveryError('Delivery requires a feature/ or bugfix/ branch')
         self.branch = task.get('branch', current_branch)
         if self.branch != current_branch:
             raise DeliveryError('Selected branch differs from current branch')
-        self.directory = directory / task['id']
         self.directory.mkdir(mode=0o700, exist_ok=True)
-        binding = self.directory / 'binding.json'
         value = {'task_sha256': digest(task), 'root': str(root), 'owner': task['owner'],
                  'source_sha256': self.source_digest(), 'branch': self.branch}
         if binding.exists() and json.loads(binding.read_text()) != value:
