@@ -11,6 +11,15 @@ uses its own exact bound feature/bugfix branch. There is one Git integration wri
 Existing workers and the hourly automation remain suspended. Do not infer that
 a Linear assignment or a prepared Symphony workflow permits their resumption.
 
+Select work using [task routing and tracking](docs/development/task-routing.md).
+Keep immediate bounded answers and genuine decisions with the coordinating owner;
+use available independent reasoning for separable analysis, owned Foo/Stokowski
+branches for repository work, and resource-admitted Windmill jobs for long-running
+deterministic work. Link runs and evidence to the existing Linear outcome rather
+than creating issues for messages or subprocesses. Recover from durable receipts;
+chat polling is not an execution or recovery mechanism. Capacity ceilings describe
+available capabilities, not utilization targets or permission to resume workers.
+
 Classify source, generated files, historical evidence and private runtime data
 before moving anything. Preserve data/configuration holds in the reconciliation
 handoff. Keep checkpoints/logs private under ignored `.delivery/`; never add raw
