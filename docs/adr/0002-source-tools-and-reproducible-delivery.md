@@ -1,6 +1,6 @@
 # ADR 0002: Source tools and reproducible delivery
 
-- Status: adopted on the standardization feature branch
+- Status: adopted after source and implementation review
 - Standard: repository 1.1.0
 - Supersedes: the naming-baseline classification and manual-action disposition in ADR 0001
 

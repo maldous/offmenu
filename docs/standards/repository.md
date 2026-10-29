@@ -1,7 +1,7 @@
 # Repository standard 1.1.0
 
-Status: adopted for the delivery-standardization feature branch; promotion to
-`develop` requires review. The machine-readable contract is
+Status: adopted after source and implementation review. Changes enter `develop`
+through the reviewed GitFlow integration process. The machine-readable contract is
 [`repository-standard.json`](../../repository-standard.json). This document
 explains decisions; historical handovers do not override it.
 

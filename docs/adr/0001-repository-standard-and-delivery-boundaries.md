@@ -1,7 +1,7 @@
 # ADR 0001: Architecture-aware standards and durable delivery
 
 - Date: 2026-10-29
-- Status: accepted on the standardization feature branch; pending integration review
+- Status: accepted after source and implementation review
 - Standard: repository 1.0.0
 
 ## Context
