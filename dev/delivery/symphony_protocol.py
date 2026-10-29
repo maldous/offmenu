@@ -10,17 +10,17 @@ import time
 BINARY = '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex'
 
 
-def probe(binary=BINARY, timeout=25):
+def probe(binary=BINARY, timeout=25, argv=None, client_name="offmenu-readiness", isolate_home=True, cwd=None, initialize_only=False):
     state = tempfile.TemporaryDirectory(prefix='offmenu-codex-state-')
     environment = os.environ.copy()
     environment['CODEX_SQLITE_HOME'] = state.name
     from pathlib import Path
     original_home = Path(environment.get('CODEX_HOME', str(Path.home()/'.codex')))
     original_auth = original_home/'auth.json'
-    if original_auth.is_file():
+    if isolate_home and original_auth.is_file():
         (Path(state.name)/'auth.json').symlink_to(original_auth)
         environment['CODEX_HOME'] = state.name
-    process = subprocess.Popen([binary, 'app-server'], env=environment, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+    process = subprocess.Popen(argv or [binary, 'app-server'], cwd=cwd, env=environment, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
     messages = queue.Queue()
     def receive():
         for line in process.stdout:
@@ -51,11 +51,13 @@ def probe(binary=BINARY, timeout=25):
             if time.monotonic() >= deadline:
                 raise TimeoutError('app-server probe timed out')
     try:
-        initialized = request('initialize', {'clientInfo': {'name': 'offmenu-readiness', 'version': '1.0.0'}, 'capabilities': {'experimentalApi': True}})
+        initialized = request('initialize', {'clientInfo': {'name': client_name, 'title': 'Symphony Orchestrator', 'version': '0.1.0'}, 'capabilities': {'experimentalApi': True}})
         if initialized.get('probe_error'):
             return {'initialized': False, 'model_calls': False}
         process.stdin.write(json.dumps({'method': 'initialized', 'params': {}})+'\n')
         process.stdin.flush()
+        if initialize_only:
+            return {'initialized': True, 'stage': 'initialize', 'thread_started': False, 'turn_started': False, 'model_calls': False}
         account = request('account/read', {'refreshToken': False})
         models = request('model/list', {'limit': 100})
         quotas = request('account/rateLimits/read', {})

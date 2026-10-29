@@ -7,6 +7,7 @@ from unittest.mock import patch
 
 from dev.delivery import symphony_launch as launch
 from dev.delivery import symphony_workspace as workspace
+from dev.delivery.symphony_codex import isolated_codex_environment
 
 
 class NativeAdmission(unittest.TestCase):
@@ -49,6 +50,37 @@ class NativeAdmission(unittest.TestCase):
         with patch('sys.argv', ['hook', 'admit', '--source', '/tmp/source', '--head', 'a'*40]), patch.object(Path, 'cwd', return_value=Path('/tmp/UIF-89')):
             with self.assertRaises(SystemExit):
                 workspace.main()
+
+
+class CodexIsolation(unittest.TestCase):
+    def test_owned_home_references_auth_without_config_copy_and_cleans_up(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            original = root/'existing'
+            original.mkdir()
+            auth = original/'auth.json'
+            auth.write_text('fake fixture; never a real credential')
+            (original/'config.toml').write_text('workstation_fixture = true')
+            runtime = root/'runtime'
+            runtime.mkdir()
+            with isolated_codex_environment({'CODEX_HOME': str(original)}, runtime) as environment:
+                owned = Path(environment['CODEX_HOME'])
+                self.assertEqual(owned.stat().st_mode & 0o777, 0o700)
+                self.assertTrue((owned/'auth.json').is_symlink())
+                self.assertEqual((owned/'auth.json').resolve(), auth)
+                self.assertFalse((owned/'config.toml').exists())
+                self.assertEqual(environment['CODEX_SQLITE_HOME'], str(runtime/'codex-state'))
+            self.assertFalse(owned.exists())
+            self.assertTrue(auth.exists())
+            self.assertTrue((original/'config.toml').exists())
+
+    def test_native_failure_is_not_normal_turn_completion(self):
+        with tempfile.TemporaryDirectory() as directory:
+            runtime = Path(directory)
+            logs = runtime/'logs'
+            logs.mkdir()
+            (logs/'symphony.log.1').write_text('Agent run failed for issue_id='+launch.ISSUE_ID+': initialize timeout')
+            self.assertEqual(launch.native_outcome(runtime), 'failed')
 
 
 if __name__ == '__main__':

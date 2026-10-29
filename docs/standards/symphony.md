@@ -233,9 +233,11 @@ already established inference authority; no background service is registered.
 A run must be followed by source/test evidence review and exact outcome
 reconciliation, not a claim of completion based on the job starting.
 
-The coding-run launcher leaves the existing default user authentication route
-unchanged and sets only `CODEX_SQLITE_HOME` to owned runtime state. It does not
-copy or symlink authentication for a coding run. The root integration confirmed
+The coding-run launcher uses an OffMenu-owned temporary `CODEX_HOME` (mode 0700),
+references the existing user `auth.json` through a symlink, and selects owned
+SQLite state. It reads or copies no authentication content and does not inherit
+the workstation config, plugins or hooks. The home is removed only after the
+owned process group has stopped. The root integration confirmed
 the existing included ChatGPT Pro route for this explicitly authorized finite
 coding task; no new paid API provider or key is required. Exact launch after a
 clean source commit, from the already credential-injected process:
@@ -247,3 +249,28 @@ python3 dev/delivery/symphony_launch.py run --runtime /home/user/src/offmenu-dat
 The launcher stops its owned process group when the first native after-run hook
 produces a completion marker. Review the resulting clone diff and focused tests;
 `accepted_delivery` remains false in the process receipt until that review.
+
+## Initialize timeout diagnosis and bounded correction
+
+The first real admitted run created its UIF-90 clone but timed out during native
+`initialize`, before any thread, turn or code change. The after-run marker meant
+only attempt ended. The launcher now records `coding_attempt_ended`, parses a
+sanitized native outcome (`failed`, `normal_turn_completed` or `unknown`) and
+returns a failure for failed/unknown outcomes. It never equates the marker with
+successful delivery; `accepted_delivery` stays false pending review.
+
+Following the systematic-debugging workflow, an initialize-only A/B comparison
+held the native Bash login-shell command, model flags, clone cwd and
+`symphony-orchestrator` client identity constant. Inherited default Codex home
+reproduced the timeout. An isolated home referencing the same authentication
+initialized successfully. No threads/turns or inference were started. The
+workstation config contains multiple MCP/plugin and hook integrations; the
+comparison identifies inherited home/config initialization collectively, not a
+particular plugin. No companion FD requirement was found in launcher source.
+
+`dev/delivery/symphony_codex.py` applies the proven isolation boundary to the
+coding run. A regression test uses fake fixture files to verify private mode,
+same-auth-path symlink, no config copying, cleanup and preservation of the source
+files. A second regression test distinguishes a native failure from normal turn
+completion. Eight focused tests pass. The native coding rerun remains a separate
+execution receipt; these tests do not claim a coding session completed.

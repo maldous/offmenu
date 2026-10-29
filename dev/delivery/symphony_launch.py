@@ -17,8 +17,10 @@ import urllib.request
 
 if __package__:
     from .symphony_protocol import BINARY, probe
+    from .symphony_codex import isolated_codex_environment
 else:
     from symphony_protocol import BINARY, probe
+    from symphony_codex import isolated_codex_environment
 
 BUNDLE = Path('/home/user/.local/share/cix/symphony/0c01ff0975da80ded7044a5ad76a44ac87053670-d215a99ac5a44941')
 BUNDLE_SHA = 'd215a99ac5a4494181389f9fe5b2cca5de9895003d2ce4977904590d416478b4'
@@ -95,6 +97,16 @@ def prepare(runtime, model):
     return workflow, receipt
 
 
+def native_outcome(runtime):
+    logs = list((Path(runtime)/'logs').rglob('symphony.log*'))
+    text = '\n'.join(path.read_text(errors='replace') for path in logs if path.is_file())
+    if 'Agent run failed for issue_id='+ISSUE_ID in text:
+        return 'failed'
+    if 'Completed agent run for issue_id='+ISSUE_ID in text:
+        return 'normal_turn_completed'
+    return 'unknown'
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=['preflight','prepare','run'])
@@ -126,8 +138,6 @@ def main():
         parser.error('finite run duration must be between 1 and 1800 seconds')
     environment = os.environ.copy()
     receipt.update(tracker_preflight(environment))
-    # Keep existing authentication route; only SQLite and logs move to owned state.
-    environment['CODEX_SQLITE_HOME'] = str(runtime/'codex-state')
     environment['ERL_ROOTDIR'] = str(BUNDLE/'otp')
     environment['ERL_FLAGS'] = '+S 2:2'
     environment['OFFMENU_SYMPHONY_PROJECT_ID'] = PROJECT_ID
@@ -136,32 +146,34 @@ def main():
     finished = runtime/'workspaces/uif-90-run-finished.json'
     if finished.exists():
         raise RuntimeError('Runtime already has a completed attempt; use its receipt')
-    with (runtime/'process.log').open('a') as logs:
-        process = subprocess.Popen(command, env=environment, stdout=logs, stderr=subprocess.STDOUT, start_new_session=True)
-        timed_out = False
-        attempt_finished = False
-        try:
-            deadline = time.monotonic()+args.duration_seconds
-            while process.poll() is None and time.monotonic()<deadline:
-                if finished.exists():
-                    attempt_finished = True
-                    break
-                time.sleep(0.5)
-            if process.poll() is None:
-                raise subprocess.TimeoutExpired(command, args.duration_seconds)
-            code = process.returncode
-        except (subprocess.TimeoutExpired, KeyboardInterrupt):
-            timed_out = not attempt_finished
-            os.killpg(process.pid, signal.SIGTERM)
+    with isolated_codex_environment(environment, runtime) as environment:
+        with (runtime/'process.log').open('a') as logs:
+            process = subprocess.Popen(command, env=environment, stdout=logs, stderr=subprocess.STDOUT, start_new_session=True)
+            timed_out = False
+            attempt_finished = False
             try:
-                code = process.wait(timeout=15)
-            except subprocess.TimeoutExpired:
-                os.killpg(process.pid, signal.SIGKILL)
-                code = process.wait(timeout=10)
-        receipt.update({'native_service_started': True, 'exit_code': code, 'finite_deadline_or_interrupt': timed_out, 'coding_attempt_finished': attempt_finished, 'accepted_delivery': False})
-        (runtime/'process-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
-        print(json.dumps(receipt))
-    return 0 if (code == 0 or attempt_finished) and not timed_out else 2
+                deadline = time.monotonic()+args.duration_seconds
+                while process.poll() is None and time.monotonic()<deadline:
+                    if finished.exists():
+                        attempt_finished = True
+                        break
+                    time.sleep(0.5)
+                if process.poll() is None:
+                    raise subprocess.TimeoutExpired(command, args.duration_seconds)
+                code = process.returncode
+            except (subprocess.TimeoutExpired, KeyboardInterrupt):
+                timed_out = not attempt_finished
+                os.killpg(process.pid, signal.SIGTERM)
+                try:
+                    code = process.wait(timeout=15)
+                except subprocess.TimeoutExpired:
+                    os.killpg(process.pid, signal.SIGKILL)
+                    code = process.wait(timeout=10)
+            outcome = native_outcome(runtime)
+            receipt.update({'native_outcome': outcome, 'native_service_started': True, 'exit_code': code, 'finite_deadline_or_interrupt': timed_out, 'coding_attempt_ended': attempt_finished, 'accepted_delivery': False})
+            (runtime/'process-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
+            print(json.dumps(receipt))
+    return 0 if outcome == 'normal_turn_completed' and not timed_out else 2
 
 
 if __name__ == '__main__':
