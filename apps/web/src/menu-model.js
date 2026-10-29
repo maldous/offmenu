@@ -57,6 +57,10 @@ export function planSummary(plan,recipes,inventory,products,dates){
    }
   }
  }
- const missing=[...gaps.values()].map(x=>({...x,quantity:Math.round(x.quantity*1000)/1000}));
+ const missing=[...gaps.values()].map(x=>{
+  const rounded=Math.round(x.quantity*1000)/1000;
+  // Preserve the measured shortfall if rounding would erase it or overflow.
+  return {...x,quantity:Number.isFinite(rounded)&&rounded>0?rounded:x.quantity};
+ });
  return {meals:selected.length,portions,unresolved,totals,requirements:[...requirements.values()],missing};
 }
