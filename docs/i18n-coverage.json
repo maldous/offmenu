@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3978,
+  "messages": 3979,
   "arabicTranslated": 376,
-  "arabicMissing": 3602,
+  "arabicMissing": 3603,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -15146,6 +15146,12 @@
     "Raw retained nutriments: ": {
       "sources": [
         "apps/web/src/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Raw stock identity changed. Reconcile the batch before undoing cooking.": {
+      "sources": [
+        "apps/web/src/cooking-model.js"
       ],
       "arabic": false
     },
