@@ -1,0 +1,63 @@
+{
+  "format": "offmenu-delivery-review-verification-v1",
+  "tested_commit": "0b67239ae1c34b80a8ae17203139e376594db576",
+  "tested_tree": "0def59be2d2585921b8e66357adce320c22f44d3",
+  "branch": "feature/langgraph-delivery-standardization",
+  "findings_closed": [
+    "observed-output-evidence-and-budgeted-safe-reexecution",
+    "exact-selected-branch-binding",
+    "reserved-control-identifier-rejection"
+  ],
+  "selected_tests": 63,
+  "focused_graph_regressions": 8,
+  "additional_cli_regressions": 3,
+  "local": {
+    "status": "passed",
+    "tests": 63,
+    "elapsed_seconds": 21.183
+  },
+  "windmill": {
+    "ok": true,
+    "job_id": "offmenu-review-fixes-63-20261029",
+    "receipt": {
+      "mode": "read",
+      "job_id": "offmenu-review-fixes-63-20261029",
+      "status": "succeeded",
+      "version": 3,
+      "exit_code": 0,
+      "log_bytes": {
+        "stderr": 99,
+        "stdout": 41
+      },
+      "created_at": 1793260716.4702344,
+      "started_at": 1793260716.4759727,
+      "finished_at": 1793260736.1809163,
+      "heartbeat_at": 1793260736.1809206,
+      "output_bytes": {
+        "stderr": 99,
+        "stdout": 41
+      },
+      "runner_sha256": "2ae57cc8edc66d9b56f43ad26dd8871fda155d23e50563988d3b0cac89d21674",
+      "command_sha256": "865b1c2f568eee3f5fa7fa2c4d2e2c70925383170b0e3deb3aaa047d60ca47c4",
+      "logs_truncated": {
+        "stderr": false,
+        "stdout": false
+      },
+      "request_sha256": "9ec6371de24356232153c7577015297ebe5d5070f9953420dbaaa90197972daf",
+      "child_tree_gone": true,
+      "timeout_seconds": 60,
+      "reconcile_required": false
+    },
+    "admitted": true,
+    "transport_ok": true,
+    "job_succeeded": true,
+    "url": "https://windmill.aldous.info/run/01a186aa-ff70-27c6-cfc1-f909a487b1eb?workspace=offmenu"
+  },
+  "retained_output": {
+    "stdout": "0b67239ae1c34b80a8ae17203139e376594db576\n",
+    "stderr": "----------------------------------------------------------------------\nRan 63 tests in 19.587s\n\nOK\n",
+    "stdout_sha256": "6807782f788893c230793659552f2fcf4569e003e00e21d602586bc6a96d192b",
+    "stderr_sha256": "61d319d753e933971616c80ba4cd772a4ae0b8de9c7ccfc63dd2a13f41ad3f4e"
+  },
+  "scope": "Safe source identity and unittest summary only; raw task inputs, private log paths and runtime data excluded."
+}

@@ -144,3 +144,10 @@ three additional CLI subprocess regressions. Scope remains the delivery engine,
 CLI, their tests and documentation; no legacy worker or application work resumed.
 A separate sanitized verification receipt retains the subsequent Windmill
 source identity, supervisor result and actual test summary for external review.
+
+The retained safe receipt is [review-verification.json](review-verification.json).
+It binds the exact tested commit/tree to the Windmill supervisor receipt,
+actual source-hash stdout, successful 63-test stderr summary and both stream
+hashes. No raw task inputs, credential material or private log locations are
+included. The final evidence commit changes only this receipt and documentation;
+behavioral tests ran against its recorded immutable code commit.
