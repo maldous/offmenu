@@ -186,8 +186,8 @@ with `--directory`, `--binding`, `--observation`, and the shared
 action is consumed by `integration-gateway.mjs`: it refreshes head/base, uses the
 normal exact-head merge API, records its known/unknown outcome, and obtains a
 fresh observation. Canonical merge parents/tree and develop ancestry must match
-before it requests a Linear Done update. Run the next finite tick to consume that
-metadata action. A timeout never implies that a mutation did not execute.
+before it requests a Linear Done update. The gateway consumes that metadata
+action and any immediately returned bounded retry within the same finite invocation. A timeout never implies that a mutation did not execute.
 
 The same gateway accepts injected authenticated GitHub/Linear adapters; it does
 not create credentials or turn a coding child into an integration identity.

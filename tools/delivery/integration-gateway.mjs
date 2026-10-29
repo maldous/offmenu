@@ -19,7 +19,7 @@ export async function advanceIntegration({controller, github, linear, observe}) 
         // merge effect. Explicit permission refusals still stop for authority.
         return await controller.outcome('merge', error.knownRefused === true ? 'refused' : 'not-issued');
       }
-      if (pr.merged || pr.head_sha !== action.expected_head_sha ||
+      if (!pr || pr.merged || pr.head_sha !== action.expected_head_sha ||
           pr.base_sha !== action.expected_base_sha || pr.base !== 'develop' ||
           pr.head !== action.expected_head_branch ||
           pr.draft !== false || pr.mergeable !== true) {
