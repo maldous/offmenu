@@ -15,7 +15,7 @@ import sqlite3
 import time
 from uuid import UUID, uuid5, NAMESPACE_URL
 
-from symphony_capacity import digest
+from symphony_capacity import digest, valid_branch
 
 BRIDGE = 'u/admin/foo_jobs_20261027'
 BASE_URL = 'https://windmill.aldous.info'
@@ -39,8 +39,10 @@ class RequestRefused(OperationError):
 def validated(spec):
     fields = {'version','issue_id','issue','stage','head','base','owner','policy_sha256',
               'acceptance_sha256','outputs','profile','runner_sha256','executor_sha256'}
-    if not isinstance(spec,dict) or set(spec) != fields or type(spec['version']) is not int or spec['version'] != 1:
+    if not isinstance(spec,dict) or set(spec) not in (fields,fields|{'branch'}) or type(spec['version']) is not int or spec['version'] != 1:
         raise OperationError('Invalid operation fields')
+    if not valid_branch(spec.get('branch','feature/langgraph-delivery-standardization')):
+        raise OperationError('Invalid exact selected branch')
     if str(UUID(spec['issue_id'])) != spec['issue_id'] or not re.fullmatch(r'UIF-[1-9][0-9]*',spec['issue']):
         raise OperationError('Invalid issue identity')
     if not re.fullmatch(r'[a-z][a-z0-9-]{0,39}',spec['stage']):
@@ -72,6 +74,38 @@ def operation_key(spec):
     return digest({k:v for k,v in spec.items() if k != 'owner'})
 
 
+def trusted_validation_command(spec):
+    """Load authoritative tests from the immutable accepted control commit.
+
+    Only authored regular test files are materialized. Runtime imports and tool
+    paths point at the candidate so old checks exercise its actual behavior.
+    Candidate tests also run separately; they cannot replace this baseline.
+    """
+    code = """import io,os,pathlib,subprocess,tarfile,tempfile
+root=pathlib.Path('/offmenu')
+base=CONTROL_BASE
+archive=subprocess.check_output(['git','-C',str(root),'archive',base,'tests/delivery'])
+with tempfile.TemporaryDirectory(prefix='offmenu-accepted-validation-') as directory:
+ control=pathlib.Path(directory)
+ with tarfile.open(fileobj=io.BytesIO(archive)) as bundle:
+  for member in bundle:
+   path=pathlib.PurePosixPath(member.name)
+   assert not path.is_absolute() and '..' not in path.parts
+   if member.isdir(): continue
+   assert path.parts[:2]==('tests','delivery')
+   assert member.isfile(), 'nonregular accepted validator'
+   target=control/path
+   target.parent.mkdir(parents=True,exist_ok=True)
+   target.write_bytes(bundle.extractfile(member).read())
+ for child in root.iterdir():
+  if child.name!='tests': (control/child.name).symlink_to(child)
+ env=dict(os.environ,PYTHONPATH=str(root/'src')+':'+str(root))
+ print('ACCEPTED_CONTROL_VALIDATORS '+base,flush=True)
+ subprocess.run([str(root/'.venv-delivery/bin/python'),'-m','unittest','discover','-s',str(control/'tests/delivery'),'-q'],cwd=control,env=env,check=True)
+""".replace('CONTROL_BASE',repr(spec['base']))
+    return 'python3 -c '+shlex.quote(code)
+
+
 def bridge_arguments(spec, action='run'):
     key = operation_key(spec)
     logical_id = 'offmenu-'+key[:48]
@@ -91,11 +125,11 @@ def bridge_arguments(spec, action='run'):
                  "])); actual=set(filter(None,subprocess.check_output(['git','ls-files','--others','--exclude-standard','-z']).decode().split('\\0'))); "
                  "assert not actual-set(policy.get('runtime_hold_paths',[]))")
     identity = ('test "$(git rev-parse HEAD)" = '+head+
-                ' && test "$(git branch --show-current)" = feature/langgraph-delivery-standardization'
+                ' && test "$(git branch --show-current)" = '+shlex.quote(spec.get('branch','feature/langgraph-delivery-standardization'))+
                 ' && git diff --quiet HEAD -- && python3 -c '+shlex.quote(held_code))
     commands = ['cd /offmenu',
         'export PYTHONPATH=/offmenu/src GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0=/offmenu',
-        identity, shlex.join(PROFILES[spec['profile']]),
+        identity, trusted_validation_command(spec), shlex.join(PROFILES[spec['profile']]),
         'python3 -c '+shlex.quote(output_code), identity]
     return {'action':'run','job_id':logical_id,'command':' && '.join(commands),
             'mode':'read','timeout_seconds':180,

@@ -33,12 +33,14 @@ class IntegrationState(TypedDict, total=False):
 class Controller:
     def __init__(self,directory,binding,claim_root=None):
         required = {'version','repository','pr_number','issue_id','owner','head','base','tree',
-                    'policy_sha256','capacity_policy_sha256','validation_operation_key','outputs'}
+                    'policy_sha256','capacity_policy_sha256','validation_operation_key','outputs','head_branch'}
         if set(binding) != required or type(binding['version']) is not int or binding['version'] != 1:
             raise DeliveryError('Invalid integration binding')
         if (binding['repository'] != 'maldous/offmenu' or type(binding['pr_number']) is not int
             or binding['pr_number'] < 1 or not binding['owner'] or not binding['outputs']):
             raise DeliveryError('Invalid integration identity')
+        if not re.fullmatch(r'(?:feature|bugfix)/[a-z0-9][a-z0-9/-]{0,159}',str(binding['head_branch'])) or binding['head_branch'].endswith('/') or '//' in binding['head_branch']:
+            raise DeliveryError('Invalid exact selected branch')
         UUID(binding['issue_id'])
         for key in ('head','base','tree','policy_sha256','capacity_policy_sha256','validation_operation_key'):
             if not re.fullmatch('[0-9a-f]{'+str(40 if key in ('head','base','tree') else 64)+'}',binding[key]):
@@ -72,9 +74,11 @@ class Controller:
                 if not previous.is_relative_to(self.claim_root):
                     raise DeliveryError('Invalid previous integration claim')
                 state = json.loads((previous/'state.json').read_text())
-                safe_repair = state['status']=='repair-required' and not state.get('qualification_sha256')
-                metadata_only = state['status'] in ('linear-intent','linear-unknown',
-                    'linear-reconciliation-required','metadata-repair-required') and state.get('merge_commit_sha')
+                if state.get('merge_effect') in ('pending','unknown'):
+                    raise DeliveryError('Repository integration outcome must reconcile before another owner')
+                safe_repair = state['status']=='repair-required' and (not state.get('qualification_sha256')
+                    or (state.get('canonical_effect_verified') is True and state.get('merge_commit_sha')))
+                metadata_only = state.get('merge_effect')=='verified' and state.get('merge_commit_sha')
                 if not safe_repair and not metadata_only and state['status'] not in ('prepared','awaiting-independent-review','awaiting-validation',
                         'awaiting-fresh-observation','awaiting-mergeability','stale-candidate','disabled','accepted','cancelled'):
                     raise DeliveryError('Repository integration outcome must reconcile before another owner')
@@ -103,10 +107,6 @@ class Controller:
             return self.result('awaiting-fresh-observation')
         if snapshot.get('publisher_owner') != b['owner']:
             return self.result('quarantined',reason='publisher-owner-mismatch')
-        if snapshot.get('cancel_requested'):
-            if prior.get('qualification_sha256'):
-                return self.result('reconciliation-required',reason='cancel-after-possible-effect')
-            return self.result('cancelled')
         pr = snapshot.get('github',{})
         if pr.get('repository') != b['repository'] or pr.get('number') != b['pr_number']:
             return self.result('quarantined',reason='wrong-pr')
@@ -117,41 +117,50 @@ class Controller:
             if not re.fullmatch('[0-9a-f]{40}',str(pr.get('merge_commit_sha',''))):
                 return self.result('merged-unverified',reason='awaiting-canonical-merge-id')
             if (commit.get('sha') != pr.get('merge_commit_sha')
-                or commit.get('parents') != [b['base'],b['head']]
-                or commit.get('tree') != b['tree']
                 or snapshot.get('develop_contains_merge') is not True):
+                return self.result('merged-unverified',reason='awaiting-canonical-commit-and-develop-ancestry')
+            if (commit.get('parents') != [b['base'],b['head']] or commit.get('tree') != b['tree']):
                 return self.result('repair-required',reason='merged-tree-or-parent-readback-mismatch',
+                    merge_commit_sha=commit['sha'],canonical_effect_verified=True,merge_effect='verified',
                     action={'kind':'prepare-corrective-candidate','repository':b['repository'],
                             'merge_commit_sha':pr.get('merge_commit_sha'),'force':False})
+            def merged_result(status,action=None,**extra):
+                return self.result(status,action,merge_effect='verified',merge_commit_sha=commit['sha'],**extra)
             linear = snapshot.get('linear',{})
             if linear.get('id') != b['issue_id'] or linear.get('project_id') != 'ce60c1ab-a732-4a71-8471-14c9dc393886':
-                return self.result('merge-verified',merge_commit_sha=commit['sha'],reason='awaiting-linear-readback')
+                return merged_result('merge-verified',reason='awaiting-linear-readback')
             if linear.get('state') == 'Done':
-                return self.result('accepted',merge_commit_sha=commit['sha'],tree=commit['tree'])
-            if prior['status']=='metadata-repair-required':
-                return prior
-            if prior['status']=='authority-refused' and prior.get('refused_kind')=='linear':
-                return prior
+                return merged_result('accepted',tree=commit['tree'])
+            if snapshot.get('cancel_requested'):
+                return merged_result('merge-verified',reason='cancelled-after-confirmed-merge-no-new-metadata-mutation')
+            if prior.get('linear_exhausted'):
+                return merged_result('metadata-repair-required')
+            if prior.get('linear_effect')=='refused':
+                return merged_result('authority-refused',refused_kind='linear')
             retries = prior.get('linear_retry_count',0)
-            if prior['status'] in ('linear-intent','linear-unknown','linear-reconciliation-required'):
+            if prior.get('linear_effect') in ('pending','unknown'):
                 if at-prior.get('linear_requested_at',at) < 10:
-                    return self.result('linear-reconciliation-required',merge_commit_sha=commit['sha'])
+                    return merged_result('linear-reconciliation-required')
                 if retries >= 2:
-                    return self.result('metadata-repair-required',merge_commit_sha=commit['sha'])
+                    return merged_result('metadata-repair-required',linear_exhausted=True)
                 retries += 1
-            return self.result('linear-intent',merge_commit_sha=commit['sha'],action={
+            return merged_result('linear-intent',linear_effect='pending',action={
                 'kind':'update-linear','issue_id':b['issue_id'],'state':'Done',
                 'merge_commit_sha':commit['sha'],'validation_operation_key':b['validation_operation_key']},
                 linear_retry_count=retries,linear_requested_at=time.time())
-        if prior['status'] in ('merge-intent','merge-unknown','reconciliation-required'):
+        if prior.get('merge_effect') in ('pending','unknown'):
             # An open PR after an uncertain request is not proof of nonexecution.
             # The API owner must reconcile that immutable action explicitly.
             return self.result('reconciliation-required')
-        if prior['status'] in ('authority-refused','repair-required'):
+        if snapshot.get('cancel_requested'):
+            return self.result('cancelled')
+        if prior.get('merge_effect')=='refused':
+            return self.result('authority-refused',refused_kind='merge')
+        if prior['status']=='repair-required':
             return prior
         if (pr.get('state') != 'open' or pr.get('draft') is not False
             or pr.get('head') != b['head'] or pr.get('base') != b['base']
-            or pr.get('head_branch') != 'feature/langgraph-delivery-standardization'
+            or pr.get('head_branch') != b['head_branch']
             or pr.get('base_branch') != 'develop'):
             return self.result('stale-candidate')
         if pr.get('mergeable') is not True:
@@ -182,10 +191,10 @@ class Controller:
             return self.result('quarantined',reason='source-or-trigger-mismatch')
         if snapshot.get('automatic_integration_enabled') is not True:
             return self.result('disabled')
-        return self.result('merge-intent',qualification_sha256=fingerprint({
+        return self.result('merge-intent',merge_effect='pending',qualification_sha256=fingerprint({
             'validation':validation,'review':review,'tree':b['tree'],'policy':b['policy_sha256']}),
             action={'kind':'merge-pr','repository':b['repository'],
-            'pr_number':b['pr_number'],'expected_head_sha':b['head'],
+            'pr_number':b['pr_number'],'expected_head_sha':b['head'],'expected_head_branch':b['head_branch'],
             'expected_base_sha':b['base'],'merge_method':'merge','bypass_protection':False,
             'operation_key':fingerprint({'binding':self.key,'action':'merge'})})
 
@@ -200,7 +209,7 @@ class Controller:
             def persist(state):
                 # Durable intent exists before the API gateway receives action.
                 previous = self.status()
-                for field in ('qualification_sha256','authority_receipts','linear_retry_count','linear_requested_at'):
+                for field in ('qualification_sha256','authority_receipts','linear_retry_count','linear_requested_at','merge_effect','linear_effect','linear_exhausted','merge_commit_sha','canonical_effect_verified'):
                     if field in previous:
                         state['result'].setdefault(field,previous[field])
                 atomic(self.directory/'state.json',state['result'])
@@ -215,15 +224,16 @@ class Controller:
     def record_api_outcome(self,kind,outcome):
         with self.ownership():
             current = self.status()
-            expected = 'merge-intent' if kind == 'merge' else 'linear-intent'
-            if kind not in ('merge','linear') or current['status'] != expected:
+            if kind not in ('merge','linear') or current.get(kind+'_effect') != 'pending':
                 raise DeliveryError('No matching durable API intent')
             if outcome == 'refused':
                 current.update(status='authority-refused',action=None,refused_kind=kind)
+                current[kind+'_effect']='refused'
             elif outcome in ('uncertain','succeeded'):
                 # Even API success requires canonical commit/ref or Linear
                 # readback. Never repeat the mutation to recover metadata.
                 current.update(status='merge-unknown' if kind=='merge' else 'linear-unknown',action=None)
+                current[kind+'_effect']='unknown'
             else:
                 raise DeliveryError('Invalid API outcome')
             atomic(self.directory/'state.json',current)
@@ -237,6 +247,7 @@ class Controller:
                 or not re.fullmatch('[0-9a-f]{64}',str(authority_receipt_sha256))
                 or authority_receipt_sha256 in used):
                 raise DeliveryError('A new trusted authority receipt and known refusal are required')
+            current[current['refused_kind']+'_effect']='not-issued'
             current.update(status='prepared',action=None,
                            authority_receipts=[*used,authority_receipt_sha256])
             atomic(self.directory/'state.json',current)

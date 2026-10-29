@@ -223,7 +223,7 @@ def install_adapters(runtime, manifest, key):
 
 async def run(runtime, duration, dry_run=False):
     verify_install(runtime)
-    manifest = load_manifest(runtime/'manifest.json')
+    manifest = load_manifest(runtime/'manifest.json',expected_branch=None)
     policy = json.loads((runtime/'capacity-policy.json').read_text())
     if policy != json.loads((SOURCE/'tools/delivery/capacity-policy.json').read_text()):
         raise AdmissionError('Runtime policy differs from reviewed source')
@@ -280,7 +280,7 @@ async def run(runtime, duration, dry_run=False):
 async def reconcile_metadata(runtime):
     """Reconcile the already-ended attempt's tracker state; never run coding."""
     verify_install(runtime)
-    manifest = load_manifest(runtime/'manifest.json')
+    manifest = load_manifest(runtime/'manifest.json',expected_branch=None)
     from stokowski.linear import LinearClient
     client = LinearClient(endpoint='https://api.linear.app/graphql', api_key=credential())
     results = []

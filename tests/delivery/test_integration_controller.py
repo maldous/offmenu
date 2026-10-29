@@ -17,7 +17,7 @@ class IntegrationControllerTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.binding = {'version':1,'repository':'maldous/offmenu','pr_number':145,
             'issue_id':'8daac134-01ab-4a02-a4d2-c0c417d0bd32','owner':'cloud-github-owner',
-            'head':'a'*40,'base':'b'*40,'tree':'c'*40,'policy_sha256':'d'*64,
+            'head_branch':'feature/langgraph-delivery-standardization','head':'a'*40,'base':'b'*40,'tree':'c'*40,'policy_sha256':'d'*64,
             'capacity_policy_sha256':'e'*64,'validation_operation_key':'f'*64,
             'outputs':{'tests/behavior.py':'1'*64}}
         self.directory = self.root/'selected'
@@ -94,7 +94,7 @@ class IntegrationControllerTests(unittest.TestCase):
     def test_exhausted_metadata_budget_stays_stopped(self):
         self.step();self.step(self.merged())
         current = self.controller.status()
-        current.update(status='linear-unknown',linear_retry_count=2,linear_requested_at=time.time()-20)
+        current.update(status='linear-unknown',linear_effect='unknown',linear_retry_count=2,linear_requested_at=time.time()-20)
         from offmenu.delivery.engine import atomic
         atomic(self.directory/'state.json',current)
         self.assertEqual(self.step(self.merged())['status'],'metadata-repair-required')
@@ -105,6 +105,58 @@ class IntegrationControllerTests(unittest.TestCase):
         self.step();self.step(self.merged())
         self.controller.record_api_outcome('linear','refused')
         self.assertEqual(self.step(self.merged())['status'],'authority-refused')
+
+    def test_new_product_bugfix_has_exact_separate_branch_binding(self):
+        branch = 'bugfix/scanner-facts-consumer'
+        binding = dict(self.binding,head_branch=branch)
+        controller = Controller(self.root/'product',binding)
+        snapshot = copy.deepcopy(self.snapshot);snapshot['github']['head_branch'] = branch
+        self.assertEqual(controller.run(snapshot)['action']['expected_head_branch'],branch)
+        snapshot['github']['head_branch'] = 'bugfix/another'
+        # An outstanding action must reconcile, never be retargeted at another branch.
+        self.assertEqual(controller.run(snapshot)['status'],'reconciliation-required')
+
+    def test_other_branch_at_same_head_is_not_an_admitted_candidate(self):
+        self.snapshot['github']['head_branch'] = 'bugfix/other'
+        self.assertEqual(self.step()['status'],'stale-candidate')
+
+    def test_stale_observation_cannot_erase_uncertain_merge_or_release_owner(self):
+        self.step();self.controller.record_api_outcome('merge','uncertain')
+        stale = copy.deepcopy(self.snapshot);stale['observed_at'] -= 120
+        self.assertEqual(self.step(stale)['status'],'awaiting-fresh-observation')
+        self.assertEqual(self.step()['status'],'reconciliation-required')
+        other = Controller(self.root/'other',dict(self.binding,head='9'*40))
+        with self.assertRaises(DeliveryError):other.run(self.snapshot)
+
+    def test_missing_linear_readback_cannot_clear_refusal_or_exhaustion(self):
+        self.step();self.step(self.merged())
+        self.controller.record_api_outcome('linear','refused')
+        missing = self.merged();missing.pop('linear')
+        self.assertEqual(self.step(missing)['status'],'merge-verified')
+        self.assertEqual(self.step(self.merged())['status'],'authority-refused')
+        current = self.controller.status();current.update(linear_effect='unknown',linear_exhausted=True)
+        from offmenu.delivery.engine import atomic
+        atomic(self.directory/'state.json',current)
+        self.step(missing)
+        self.assertEqual(self.step(self.merged())['status'],'metadata-repair-required')
+
+    def test_persistent_cancel_allows_completed_merge_reconciliation(self):
+        self.step()
+        observed=self.merged(done=True);observed['cancel_requested']=True
+        self.assertEqual(self.step(observed)['status'],'accepted')
+
+    def test_cancelled_completed_merge_does_not_emit_new_metadata_mutation(self):
+        self.step()
+        observed=self.merged();observed['cancel_requested']=True
+        result=self.step(observed)
+        self.assertEqual(result['status'],'merge-verified');self.assertIsNone(result['action'])
+        self.assertEqual(result['merge_effect'],'verified')
+
+    def test_stale_observation_during_api_call_does_not_erase_matching_intent(self):
+        self.step()
+        stale=copy.deepcopy(self.snapshot);stale['observed_at']-=120
+        self.step(stale)
+        self.assertEqual(self.controller.record_api_outcome('merge','uncertain')['merge_effect'],'unknown')
 
     def test_old_review_cannot_authorize_new_head(self):
         self.snapshot['review']['head'] = '9'*40
@@ -192,6 +244,23 @@ class IntegrationControllerTests(unittest.TestCase):
         self.assertEqual(result['status'],'repair-required')
         self.assertEqual(result['action']['kind'],'prepare-corrective-candidate')
         self.assertFalse(result['action']['force'])
+
+    def test_verified_bad_merge_allows_corrective_candidate_without_rewrite(self):
+        self.step()
+        observed = self.merged();observed['merge_commit']['tree'] = '9'*40
+        result = self.step(observed)
+        self.assertTrue(result['canonical_effect_verified'])
+        other = Controller(self.root/'correction',dict(self.binding,head='9'*40))
+        corrected = copy.deepcopy(self.snapshot);corrected['github']['head'] = '9'*40
+        self.assertEqual(other.run(corrected)['status'],'awaiting-validation')
+
+    def test_missing_develop_ancestry_is_unknown_not_permission_to_repair(self):
+        self.step()
+        observed = self.merged();observed['develop_contains_merge'] = False
+        self.assertEqual(self.step(observed)['status'],'merged-unverified')
+        other = Controller(self.root/'other',dict(self.binding,head='9'*40))
+        with self.assertRaises(DeliveryError):
+            other.run(self.snapshot)
 
     def test_unadmitted_external_merge_is_not_certified(self):
         result = self.step(self.merged(done=True))

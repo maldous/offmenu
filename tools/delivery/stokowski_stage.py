@@ -28,8 +28,10 @@ def git(root,*args):
 
 def bind(runtime,spec,derivation_reason=None):
     runtime = runtime.resolve()
-    manifest = load_manifest(runtime/'manifest.json')
+    manifest = load_manifest(runtime/'manifest.json',expected_branch=None)
     validated(spec)
+    if spec.get('branch','feature/langgraph-delivery-standardization') != manifest['branch']:
+        raise OperationError('Validation branch differs from admitted coding branch')
     issue = spec['issue']
     if issue not in manifest['tasks'] or spec['issue_id'] != manifest['tasks'][issue]['issue_id']:
         raise OperationError('Issue is not admitted to the selected Stokowski runtime')

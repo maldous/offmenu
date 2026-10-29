@@ -5,6 +5,8 @@ import hashlib
 from pathlib import Path
 import sys
 import tempfile
+import subprocess
+import shlex
 import unittest
 
 TOOLS = Path(__file__).resolve().parents[2]/'tools/delivery'
@@ -68,6 +70,38 @@ class OperationRecoveryTests(unittest.TestCase):
     def tick(self):
         # Reopen the durable journal each time, as after a process restart.
         return asyncio.run(operations.Journal(self.root).tick(self.key,self.remote))
+
+    def test_accepted_validator_cannot_be_replaced_by_weakened_candidate_test(self):
+        root=self.root/'candidate';root.mkdir()
+        (root/'tests/delivery').mkdir(parents=True)
+        (root/'src').mkdir()
+        validator=root/'tests/delivery/test_baseline.py'
+        validator.write_text('import unittest, target\nclass Baseline(unittest.TestCase):\n def test_contract(self): self.assertEqual(target.answer,42)\n')
+        (root/'src/target.py').write_text('answer=42\n')
+        subprocess.run(['git','init','-q',str(root)],check=True)
+        subprocess.run(['git','-C',str(root),'add','.'],check=True)
+        subprocess.run(['git','-C',str(root),'-c','user.name=Fixture','-c','user.email=fixture@example.invalid','commit','-qm','accepted validators'],check=True)
+        base=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip()
+        validator.write_text('import unittest\nclass Weakened(unittest.TestCase):\n def test_empty(self): pass\n')
+        (root/'src/target.py').write_text('answer=0\n')
+        (root/'.venv-delivery/bin').mkdir(parents=True)
+        (root/'.venv-delivery/bin/python').symlink_to(sys.executable)
+        command=operations.trusted_validation_command(dict(self.spec,base=base))
+        argv=shlex.split(command);argv[2]=argv[2].replace("pathlib.Path('/offmenu')",'pathlib.Path('+repr(str(root))+')')
+        result=subprocess.run(argv,text=True,capture_output=True,timeout=20)
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn('ACCEPTED_CONTROL_VALIDATORS '+base,result.stdout,result.stderr)
+        self.assertIn('0 != 42',result.stderr)
+
+    def test_product_branch_is_bound_to_operation_and_checked_on_foo(self):
+        selected = dict(self.spec,branch='bugfix/scanner-facts-consumer')
+        self.assertNotEqual(operations.operation_key(selected),self.key)
+        command = operations.bridge_arguments(selected)['command']
+        self.assertIn('= bugfix/scanner-facts-consumer',command)
+        with self.assertRaises(operations.OperationError):
+            operations.validated(dict(selected,branch='develop'))
+        with self.assertRaises(operations.OperationError):
+            operations.validated(dict(selected,branch='bugfix/x; false'))
 
     def test_lost_submit_response_is_reconciled_without_second_submission(self):
         self.remote.lose_ack = True

@@ -124,12 +124,19 @@ while unrelated work may proceed within admission. Observe child-tree terminatio
 before releasing capacity. CPU affinity and sampled RAM/process limits are not
 hard RAM/device-I/O cgroups.
 
-Full unattended operation still requires trusted deterministic validation stages,
-independent current-head review, automatic bounded rework, transactional merge
-intent/readback, reconciliation and Linear acceptance updates, as specified in
-[ADR 0005](../adr/0005-autonomous-integration.md). It also requires evolving the
-adopted standard and active configuration together. This guide does not claim
-those pending stages are already enabled.
+The versioned integration policy now enables qualified develop integration through
+`offmenu.delivery.integration` and `integration-gateway.mjs`, as specified in
+[ADR 0005](../adr/0005-autonomous-integration.md). Trusted validators are loaded
+from the accepted base before the candidate suite runs. Mutation state survives
+stale/missing observations independently of display status, preventing retries
+from erasing unknown effects or refused/exhausted metadata state. Cancellation
+blocks new mutations while allowing read-only reconciliation of an issued merge.
+Fresh independent review and canonical integration acceptance remain actual
+runtime requirements, never inferred from the enabled policy. The current
+publisher is the authenticated cloud connector owner; a permanent native GitHub
+publisher grant/launcher has not been configured. Context loss therefore defers
+publication with durable intent intact, rather than claiming uninterrupted
+unattended operation. No credential is transferred to coding children.
 
 ## Verified validation continuation
 

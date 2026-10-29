@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {advanceIntegration} from '../../tools/delivery/integration-gateway.mjs';
 function fixture(kind='merge-pr') {
-  const action={kind,repository:'maldous/offmenu',pr_number:145,expected_head_sha:'a'.repeat(40),expected_base_sha:'b'.repeat(40),issue_id:'issue',merge_commit_sha:'c'.repeat(40),validation_operation_key:'d'.repeat(64)};
+  const action={kind,repository:'maldous/offmenu',pr_number:145,expected_head_branch:'feature/langgraph-delivery-standardization',expected_head_sha:'a'.repeat(40),expected_base_sha:'b'.repeat(40),issue_id:'issue',merge_commit_sha:'c'.repeat(40),validation_operation_key:'d'.repeat(64)};
   const f={calls:[],decision:{status:kind==='merge-pr'?'merge-intent':'linear-intent',action}};
   f.controller={step:async()=>{const d=f.decision;f.decision={status:'reconciliation-required',action:null};return d;},outcome:async(...args)=>f.calls.push(['outcome',...args])};
   f.github={getPullRequest:async()=>({merged:false,head_sha:action.expected_head_sha,base_sha:action.expected_base_sha,head:'feature/langgraph-delivery-standardization',base:'develop',draft:false,mergeable:true}),mergePullRequest:async args=>{f.calls.push(['merge',args]);return {merged:true};}};

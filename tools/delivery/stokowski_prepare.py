@@ -17,7 +17,7 @@ def main():
     args = parser.parse_args()
     from symphony_tasks import load_manifest
     head = subprocess.check_output(['git','-C',str(SOURCE),'rev-parse','HEAD'],text=True).strip()
-    manifest = load_manifest(args.manifest, expected_head=head)
+    manifest = load_manifest(args.manifest, expected_head=head,expected_branch=None)
     runtime = args.runtime.resolve()
     if not runtime.is_relative_to(SOURCE/'.delivery/stokowski') or runtime.exists():
         raise SystemExit('Select a new private Stokowski runtime directory')

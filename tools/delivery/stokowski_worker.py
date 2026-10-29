@@ -146,7 +146,7 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
 
 def execute(runtime, issue, request):
     runtime = runtime.resolve()
-    manifest = load_manifest(runtime/'manifest.json')
+    manifest = load_manifest(runtime/'manifest.json',expected_branch=None)
     task = manifest['tasks'][issue]
     policy = json.loads((runtime/'capacity-policy.json').read_text())
     workspace = runtime/'workspaces'/issue

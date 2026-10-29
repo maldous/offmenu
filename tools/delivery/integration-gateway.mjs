@@ -14,7 +14,7 @@ export async function advanceIntegration({controller, github, linear, observe}) 
     const pr = await github.getPullRequest(action.repository, action.pr_number);
     if (pr.merged || pr.head_sha !== action.expected_head_sha ||
         pr.base_sha !== action.expected_base_sha || pr.base !== 'develop' ||
-        pr.head !== 'feature/langgraph-delivery-standardization' ||
+        pr.head !== action.expected_head_branch ||
         pr.draft !== false || pr.mergeable !== true) {
       await controller.outcome('merge', 'uncertain');
       return await controller.step(await observe());

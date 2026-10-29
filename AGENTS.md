@@ -5,8 +5,9 @@ ADR before changing structure. Read `tools/delivery/README.md` for the repeatabl
 workflow. Discover the actual source/manifests before proposing new rules.
 
 Use `develop` for integration, `main` for reviewed releases, and a reviewed
-`feature/` or `bugfix/` branch for changes. This workstream has one branch,
-`feature/langgraph-delivery-standardization`, and one Git integration writer.
+`feature/` or `bugfix/` branch for changes. The standardization workstream uses
+`feature/langgraph-delivery-standardization`. New qualified product/backlog work
+uses its own exact bound feature/bugfix branch. There is one Git integration writer.
 Existing workers and the hourly automation remain suspended. Do not infer that
 a Linear assignment or a prepared Symphony workflow permits their resumption.
 
