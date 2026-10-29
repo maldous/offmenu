@@ -1,6 +1,6 @@
 # ADR 0005: Autonomous, evidence-bound integration
 
-- Status: accepted direction; coding and validation adapters proven in bounded tests; dispatcher deployment and merge-controller activation pending
+- Status: accepted direction; coding/validation adapters proven and typed dispatcher deployed; merge-controller implementation and activation pending
 - Proposed standard: 2.2.0; current adopted standard remains 2.1.0
 - Decision basis: the user explicitly requests autonomous, reliable integration
   without routine intervention, across the existing services, models and evidence

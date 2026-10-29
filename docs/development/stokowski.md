@@ -65,10 +65,13 @@ authorized. Do not copy broad workstation configuration into every coding child.
 The journal and validation continuation now submit Windmill jobs through native
 MCP and a typed Windmill-side SDK dispatcher. This path is proven in explicit
 draft-test mode, including terminal restart and backend cancellation, at source
-`8815c61bca80cf6546919ac9394cfdf7b8e9d252`. The dispatcher remains a private
-draft: automatic approval review rejected deployment of the new workspace item
-pending specific user authorization. No alternate deployment was attempted.
-The normal deployed route is therefore not enabled yet. Full stage-to-job-to-merge
+`8815c61bca80cf6546919ac9394cfdf7b8e9d252`. Automatic approval review initially
+rejected deployment of the new workspace item. After the user explicitly approved
+the exact source, one normal retry deployed `u/admin/offmenu_delivery_dispatch`.
+Deployed SHA-256 `4908969d73c2b2b0464771f543d35657da880c39c3b0162731d548aad2bb66b7`
+matches reviewed source; extra permissions remain empty. Native MCP inspection of
+the completed validation through the deployed route confirms success and cleanup.
+No alternate deployment route was attempted. Full stage-to-job-to-merge
 synchronization remains the pending ADR 0005 implementation.
 
 The native MCP client reuses the existing configured Windmill OAuth session in

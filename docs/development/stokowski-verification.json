@@ -73,8 +73,8 @@
     "new_credentials_or_grants": false,
     "dispatcher_path": "u/admin/offmenu_delivery_dispatch",
     "dispatcher_source_sha256": "4908969d73c2b2b0464771f543d35657da880c39c3b0162731d548aad2bb66b7",
-    "dispatcher_deployed": false,
-    "deployment_status": "denied-before-execution-specific-approval-required",
+    "dispatcher_deployed": true,
+    "deployment_status": "explicit-user-approval-normal-retry-succeeded",
     "deployment_rejection": "Automatic approval review classified a new Windmill workspace script deployment as consequential and required explicit authorization for this new item. Draft/test execution remained available. No alternate deployment attempted.",
     "validation_operation_key": "c42918166ccd0bee96e3b66f6413e9a79fd18b3b519a0a7928e4e52533d871a9",
     "validation_windmill_job_id": "e0a4719f-369f-53a4-aacf-6908e31fe458",
@@ -110,7 +110,18 @@
     "cancellation_child_tree_gone": true,
     "cancellation_reconcile_required": false,
     "cancellation_scope": "Backend cancellation receipt verified; not a claim that a running child was killed rather than cancelled before execution. Real running/detached-child termination is covered separately by supervisor tests.",
-    "merge_accepted": false
+    "merge_accepted": false,
+    "deployment_url": "https://windmill.aldous.info/scripts/get/u/admin/offmenu_delivery_dispatch?workspace=offmenu",
+    "deployed_source_sha256": "4908969d73c2b2b0464771f543d35657da880c39c3b0162731d548aad2bb66b7",
+    "deployed_extra_permissions": {},
+    "native_deployed_inspection": {
+      "job_id": "e0a4719f-369f-53a4-aacf-6908e31fe458",
+      "backend_status": "succeeded",
+      "child_tree_gone": true,
+      "reconcile_required": false,
+      "credential_exported": false
+    },
+    "deployment_reconciliation": "Initial rejection was known not executed. User explicitly approved the exact reviewed dispatcher. One normal retry succeeded; deployed source matches exactly and native MCP readback works. No alternate deployment route or new credential/grant was used."
   },
   "review_corrections": {
     "reviewed_head": "5753de04eb339e8e58b535ec272b0848b0d413ae",
