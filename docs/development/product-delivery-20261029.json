@@ -1,14 +1,15 @@
 {
   "schema": "offmenu-finite-product-batch/1",
   "base": "63ff1db205213860aabde9380d6fd28d143223ce",
-  "checked_source_revision": "5e02b29b8af2eef4669d3e62127f77129f4ba00e",
+  "checked_source_revision": "b7818fc7887d6beaed9b48973525bdbce40c8f13",
   "status": "behavior-checked; combined independent review and integration pending",
   "source_candidates": {
     "UIF-93": "72d1b1e0c9ffaa4cc9da2ba368fe5a6575253ae1",
     "UIF-94": "d9120c7a539f1427904a4742de64abc003848814",
-    "UIF-111": "9ef1cb108",
-    "UIF-112": "eb782b66e",
-    "UIF-113": "7e030b49e"
+    "UIF-111": "9ef1cb108dc4623cb5881c576494127760374e5d",
+    "UIF-112": "eb782b66eda922258dc49bee150768e1602317a4",
+    "UIF-113": "7e030b49ee879967dbc35e1b7cb262baa0510fd7",
+    "UIF-114": "a0d06b64b92dbab0278c018bc2eee8632ec29fdf"
   },
   "native_stokowski_sessions": {
     "UIF-111": "01a1882c-0436-7be1-9022-8dbaf61467a7",
@@ -22,13 +23,14 @@
     "Exact207 endpoint source closure retained; index deadline10s to30s, finite expiry/cancel/no-retry retained.",
     "Nonfinite meal requirement/stock/deficit cannot assert known availability.",
     "Account and kitchen generation guards discard stale sharing continuations before state/storage changes.",
-    "Cooking undo qualifies original lot identity before any restoration; incompatible identities require reconciliation."
+    "Cooking undo qualifies original lot identity before any restoration; incompatible identities require reconciliation.",
+    "Pantry duration filters expiry at each future meal day rather than counting stock beyond expiry."
   ],
   "validation": {
     "combined_focused_node_checks": {
-      "passed": 178,
+      "passed": 192,
       "failed": 0,
-      "includes": "scanner/index/facts, recipe and meal availability, sharing/kitchens/session/continuations and cook/journey/household; synthetic/retained offline inputs only"
+      "includes": "scanner/index/facts, recipe/meal availability, sharing/kitchens/session/continuations including stale-sync cancellation, cook/journey/household and pantry expiry; synthetic/retained offline inputs only"
     },
     "normal_application_build": {
       "status": "passed",
@@ -43,7 +45,7 @@
     },
     "standard_and_layout": "passed; standard2.2.0;41 historical exceptions"
   },
-  "catalogue_derivation": "Integration writer updated the English inventory/coverage for scanner and new undo message; native two-file task allowlists stayed intact.",
+  "catalogue_derivation": "Integration writer updated English inventory/coverage for required scanner/undo messages and the corrected sync message expression; native two-file allowlists remained intact.",
   "limitations": [
     "Historical production503 cause remains unproven; delayed pinned-input regression establishes a bounded valid-input correction.",
     "Normal24-asset build is not a complete replacement for the213-module served graph; no application deployment is performed by this batch.",
@@ -54,5 +56,10 @@
     "scope": "only reviewed source-barcode-handler-205.mjs and the two exact scanner assets; preserve all other modules/settings/bindings",
     "baseline_api207_module_sha256": "1ac95b6b63ec2794e5e670658bd6c2c4ce3b66af9426469d0c80ea196efa808f",
     "full_graph_custody_and_supported_upload_route": "still being reconciled; no fullgraph-read retry after known connector limit"
+  },
+  "review_correction": {
+    "finding": "https://github.com/maldous/offmenu/pull/149#discussion_r4414385532",
+    "behavior": "Standard AbortError cancellation plus scope checks at the sync catch boundary discard stale editor responses without TypeError, stale status or rejected background promise.",
+    "regressions": "21 focused sharing/sync checks passed, including three real sync-runner boundary cases."
   }
 }

@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3979,
+  "messages": 3980,
   "arabicTranslated": 376,
-  "arabicMissing": 3603,
+  "arabicMissing": 3604,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -18777,6 +18777,12 @@
     "Stale schedule revision": {
       "sources": [
         "apps/web/src/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "Stale sharing scope": {
+      "sources": [
+        "apps/web/src/sharing-ui.js"
       ],
       "arabic": false
     },
