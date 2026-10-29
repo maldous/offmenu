@@ -383,5 +383,3 @@ def main(action: str = "status", job_id: str = "", command: str = "",
                 client.close()
             except Exception:
                 pass
-
-
