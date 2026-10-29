@@ -1,0 +1,11 @@
+--- a/source/source-barcode-handler.mjs
++++ b/source/source-barcode-handler.mjs
+@@ -173,7 +173,7 @@
+     referenceCoverageComplete:refs.length===total,manifestSha256:selection.manifestSha256,indexReleaseId:INDEX_RELEASE,
+     sourcePins:m.sourcePins,publicBase:m.publicBase};
+ }
+-export function createSourceBarcodeHandler({selection,fetchImpl=globalThis.fetch,onDiagnostic}={}) {
++export function createSourceBarcodeHandler({selection,fetchImpl=(...args)=>globalThis.fetch(...args),onDiagnostic}={}) {
+   let pinned=null;try{pinned=selectionCopy(selection);}catch{/* absent/unverified pin stays unavailable */}
+   return async function handle(request) {
+     const url=new URL(request.url);if(url.pathname!=='/api/corpus/source-barcode')return null;

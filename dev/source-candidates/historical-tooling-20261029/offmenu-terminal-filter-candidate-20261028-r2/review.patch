@@ -1,0 +1,108 @@
+--- a/terminal_filter.py
++++ b/terminal_filter.py
+@@ -120,10 +120,14 @@
+         self.signum = signum
+ 
+ 
+-def capture_command(command, directory, *, profile, cwd):
++def capture_command(command, directory, *, profile, cwd, capture_state=None):
+     """Internal runner; CLI accepts only COMMANDS names, never caller-supplied argv."""
+     started = time.monotonic()
+     path, stream = new_artifact(directory)
++    if capture_state is None:
++        capture_state = {}
++    capture_state.update(original_artifact=str(path.resolve()),
++                         process_returncode=None, cancelled=False, cancellation_signal=None)
+     process = None
+     cancelled = False
+     cancellation_signal = None
+@@ -158,6 +162,10 @@
+         # Leave partial bytes private; never forge a finalized hash/status receipt.
+         raise
+     finally:
++        # Carry observed outcome independently of successful persistence/return.
++        # This state is not a finalized receipt and contains no invented hash.
++        capture_state.update(process_returncode=process.returncode if process else None,
++                             cancelled=cancelled, cancellation_signal=cancellation_signal)
+         signal.signal(signal.SIGTERM, prior_term)
+     return finalize(path, profile=profile, returncode=process.returncode if process else None,
+                     cancelled=cancelled, elapsed=time.monotonic()-started,
+@@ -261,19 +269,26 @@
+     if not 1024 <= args.max_bytes <= 16384:
+         parser.error('--max-bytes must be 1024..16384')
+     metadata = None
++    capture_state = {'process_returncode': None, 'cancelled': False, 'cancellation_signal': None}
+     try:
+         if args.mode == 'saved':
+             metadata = save_named_log(args.profile, ROOT/'artifacts')
+         else:
+-            metadata = capture_command(COMMANDS[args.profile], ROOT/'artifacts', profile=args.profile, cwd=ROOT)
++            metadata = capture_command(COMMANDS[args.profile], ROOT/'artifacts', profile=args.profile, cwd=ROOT, capture_state=capture_state)
+         sys.stdout.buffer.write(summarize(metadata, args.max_bytes))
+         return shell_status(metadata)
+     except Exception as error:
+         # Avoid arbitrary exception text/traceback; this is not a redaction claim.
++        outcome = metadata or capture_state
+         print(json.dumps({'tool_status': 'failed_closed', 'error_type': type(error).__name__,
+                           'notice': 'No success claim. Inspect private artifacts/receipts if created.',
+-                          'process_returncode': metadata['process_returncode'] if metadata else None}), file=sys.stderr)
+-        return shell_status(metadata) if metadata and shell_status(metadata) != 0 else 125
++                          'process_returncode': outcome.get('process_returncode'),
++                          'cancelled': outcome.get('cancelled', False),
++                          'cancellation_signal': outcome.get('cancellation_signal'),
++                          'original_artifact': outcome.get('original_artifact'),
++                          'finalized_receipt_returned': metadata is not None,
++                          'capture_receipt': metadata.get('capture_receipt') if metadata else None}), file=sys.stderr)
++        return shell_status(outcome) if shell_status(outcome) != 0 else 125
+ 
+ 
+ if __name__ == '__main__':
+--- a/test_terminal_filter.py
++++ b/test_terminal_filter.py
+@@ -100,6 +100,46 @@
+             result = json.loads(output.getvalue())
+             self.assertEqual(result['process_returncode'], 9)
+             self.assertEqual(result['execution_outcome'], 'exited_nonzero')
++
++    def test_post_exit_persistence_failure_preserves_known_nonzero_cli_status(self):
++        command = (sys.executable, '-c', "import os,sys;os.write(1,b'ERROR retained failure\\n');sys.exit(7)")
++        for target in ('finalize', 'os.fsync'):
++            with self.subTest(failed_operation=target), tempfile.TemporaryDirectory() as root:
++                output, errors = io.BytesIO(), io.StringIO()
++                with patch.object(f, 'ROOT', Path(root)), patch.dict(f.COMMANDS, {'synthetic-test-only': command}), patch.object(f.sys, 'stdout', SimpleNamespace(buffer=output)), patch.object(f.sys, 'stderr', errors), patch('terminal_filter.'+target, side_effect=OSError):
++                    status = f.main(['run', 'synthetic-test-only'])
++                self.assertEqual(status, 7)
++                report = json.loads(errors.getvalue())
++                self.assertEqual(report['tool_status'], 'failed_closed')
++                self.assertEqual(report['error_type'], 'OSError')
++                self.assertEqual(report['process_returncode'], 7)
++                self.assertFalse(report['finalized_receipt_returned'])
++                self.assertIsNone(report['capture_receipt'])
++                self.assertNotIn('original_sha256', report)
++                self.assertEqual(output.getvalue(), b'')
++                artifact = Path(report['original_artifact'])
++                self.assertEqual(artifact.read_bytes(), b'ERROR retained failure\n')
++                self.assertEqual(artifact.stat().st_mode & 0o077, 0)
++
++    def test_cancellation_and_persistence_failure_preserve_cli_143(self):
++        command = (sys.executable, '-c', 'pass')
++        for target in ('finalize', 'os.fsync'):
++            with self.subTest(failed_operation=target), tempfile.TemporaryDirectory() as root:
++                output, errors = io.BytesIO(), io.StringIO()
++                with patch.object(f, 'ROOT', Path(root)), patch.dict(f.COMMANDS, {'synthetic-test-only': command}), patch.object(f.subprocess, 'Popen', side_effect=f.CaptureCancelled(signal.SIGTERM)), patch.object(f.sys, 'stdout', SimpleNamespace(buffer=output)), patch.object(f.sys, 'stderr', errors), patch('terminal_filter.'+target, side_effect=OSError):
++                    status = f.main(['run', 'synthetic-test-only'])
++                self.assertEqual(status, 143)
++                report = json.loads(errors.getvalue())
++                self.assertEqual(report['tool_status'], 'failed_closed')
++                self.assertEqual(report['error_type'], 'OSError')
++                self.assertIsNone(report['process_returncode'])
++                self.assertTrue(report['cancelled'])
++                self.assertEqual(report['cancellation_signal'], signal.SIGTERM)
++                self.assertFalse(report['finalized_receipt_returned'])
++                self.assertIsNone(report['capture_receipt'])
++                self.assertNotIn('original_sha256', report)
++                self.assertEqual(Path(report['original_artifact']).read_bytes(), b'')
++                self.assertEqual(output.getvalue(), b'')
+ 
+     def test_cli_rejects_arbitrary_commands_and_paths_before_capture(self):
+         with patch.object(f, 'capture_command') as capture, patch.object(f, 'save_named_log') as save:

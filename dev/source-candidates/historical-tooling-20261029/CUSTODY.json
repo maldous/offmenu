@@ -1,0 +1,401 @@
+{
+  "status": "historical source custody; versions intentionally separate; no automatic adoption or runtime activation",
+  "base": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+  "files": [
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029/build-handler.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029/build-handler.mjs",
+      "bytes": 963,
+      "sha256": "d289f57badcfc47f21c39812a32e2b41d68df80b086505029256254c09551647",
+      "inventoryRow": 586
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029/HANDOFF.md",
+      "relativePath": "offmenu-source-barcode-handler-20261029/HANDOFF.md",
+      "bytes": 8875,
+      "sha256": "b7cca6ff767ed51f600e19410d8aeced45fa8ea4555c4522c6d2ffca3af78fbe",
+      "inventoryRow": 586
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029/dispatcher-only.patch",
+      "relativePath": "offmenu-source-barcode-handler-20261029/dispatcher-only.patch",
+      "bytes": 2666,
+      "sha256": "aca51911efda5031c7cba33d5aaff47ef7558e1e65bb6f9d03c327de3959a740",
+      "inventoryRow": 586
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029/source/protocol-pins.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029/source/protocol-pins.mjs",
+      "bytes": 890,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a",
+      "inventoryRow": 586
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029/source/strict-json.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029/source/strict-json.mjs",
+      "bytes": 2044,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099",
+      "inventoryRow": 586
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029/source/source-barcode-handler.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029/source/source-barcode-handler.mjs",
+      "bytes": 14650,
+      "sha256": "03d782e6305eaa912bbd8ae5c989688a6b6296184fca9682b6a88a685febf9ff",
+      "inventoryRow": 586
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029/tests/source-barcode-handler.test.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029/tests/source-barcode-handler.test.mjs",
+      "bytes": 14920,
+      "sha256": "c620cca9029b1e916528818a6a72fd916aa0d76856a82ed2d0bda45f5f1c494f",
+      "inventoryRow": 586
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/build-handler.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r2/build-handler.mjs",
+      "bytes": 963,
+      "sha256": "d289f57badcfc47f21c39812a32e2b41d68df80b086505029256254c09551647",
+      "inventoryRow": 587
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/HANDOFF.md",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r2/HANDOFF.md",
+      "bytes": 8723,
+      "sha256": "3f61bf207e12c64379b8cdf8f1006519aefd5e080b666e9e83b66cc698a7cbd5",
+      "inventoryRow": 587
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/R1-to-R2.patch",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r2/R1-to-R2.patch",
+      "bytes": 13332,
+      "sha256": "acc92feb96879ff23b430f1291f9df291b8d3b37aa98b2d7a846689da6b48b0d",
+      "inventoryRow": 587
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/dispatcher-only.patch",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r2/dispatcher-only.patch",
+      "bytes": 2666,
+      "sha256": "aca51911efda5031c7cba33d5aaff47ef7558e1e65bb6f9d03c327de3959a740",
+      "inventoryRow": 587
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/source/protocol-pins.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r2/source/protocol-pins.mjs",
+      "bytes": 890,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a",
+      "inventoryRow": 587
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/source/strict-json.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r2/source/strict-json.mjs",
+      "bytes": 2044,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099",
+      "inventoryRow": 587
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/source/source-barcode-handler.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r2/source/source-barcode-handler.mjs",
+      "bytes": 14734,
+      "sha256": "a735f9f02b013b740c4ab18f285202a7becf325e8ead33cb55dfb7dec12d7f68",
+      "inventoryRow": 587
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/source/stream-shard.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r2/source/stream-shard.mjs",
+      "bytes": 3888,
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a",
+      "inventoryRow": 587
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r2/tests/source-barcode-handler.test.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r2/tests/source-barcode-handler.test.mjs",
+      "bytes": 17614,
+      "sha256": "feeeb40be87c9d8734ddd32f41fd0483f87acdf7715e3970d3c545a7a8eba8b2",
+      "inventoryRow": 587
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/DIAGNOSTIC-HANDOFF.md",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r3/DIAGNOSTIC-HANDOFF.md",
+      "bytes": 3075,
+      "sha256": "80acc37ff94a616de78ec50ee3c2b21b314cdc2fe92245eb9013945be2c8c082",
+      "inventoryRow": 588
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/build-handler.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r3/build-handler.mjs",
+      "bytes": 963,
+      "sha256": "d289f57badcfc47f21c39812a32e2b41d68df80b086505029256254c09551647",
+      "inventoryRow": 588
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/source/protocol-pins.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r3/source/protocol-pins.mjs",
+      "bytes": 890,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a",
+      "inventoryRow": 588
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/source/strict-json.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r3/source/strict-json.mjs",
+      "bytes": 2044,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099",
+      "inventoryRow": 588
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/source/source-barcode-handler.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r3/source/source-barcode-handler.mjs",
+      "bytes": 16155,
+      "sha256": "39903a97a586479229d0c0afabee90789de1ed1fb01001203a72a78c69a382ad",
+      "inventoryRow": 588
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/source/stream-shard.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r3/source/stream-shard.mjs",
+      "bytes": 3888,
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a",
+      "inventoryRow": 588
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r3/tests/source-barcode-handler.test.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r3/tests/source-barcode-handler.test.mjs",
+      "bytes": 17614,
+      "sha256": "feeeb40be87c9d8734ddd32f41fd0483f87acdf7715e3970d3c545a7a8eba8b2",
+      "inventoryRow": 588
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r4/build-handler.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r4/build-handler.mjs",
+      "bytes": 963,
+      "sha256": "d289f57badcfc47f21c39812a32e2b41d68df80b086505029256254c09551647",
+      "inventoryRow": 589
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r4/HANDOFF.md",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r4/HANDOFF.md",
+      "bytes": 5274,
+      "sha256": "6899eaebdf8cac9d31df9bcb2f9d8bac6b05f9c7592caa61ea0d65fbc4c046ae",
+      "inventoryRow": 589
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r4/R2-binding-only.patch",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r4/R2-binding-only.patch",
+      "bytes": 725,
+      "sha256": "99566dcbcb1b282447cde40647fb1a2ce70efe4449431e203be204a48a460e8a",
+      "inventoryRow": 589
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r4/R3-to-R4.patch",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r4/R3-to-R4.patch",
+      "bytes": 751,
+      "sha256": "372009783f3ba38a18f928f6be11235ec4637dd9d149dac50dfee78d6fd38af5",
+      "inventoryRow": 589
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r4/source/protocol-pins.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r4/source/protocol-pins.mjs",
+      "bytes": 890,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a",
+      "inventoryRow": 589
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r4/source/strict-json.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r4/source/strict-json.mjs",
+      "bytes": 2044,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099",
+      "inventoryRow": 589
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r4/source/source-barcode-handler.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r4/source/source-barcode-handler.mjs",
+      "bytes": 16175,
+      "sha256": "077703d8135b826e78a81747d9723967a90f4e9811ec54650b5cead76e89be26",
+      "inventoryRow": 589
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r4/source/stream-shard.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r4/source/stream-shard.mjs",
+      "bytes": 3888,
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a",
+      "inventoryRow": 589
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r4/tests/fetch-receiver.test.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r4/tests/fetch-receiver.test.mjs",
+      "bytes": 4246,
+      "sha256": "ec36b4b61bdba0b847f932334994587bc6505c0544897bc52a1ee3314ff8a8fa",
+      "inventoryRow": 589
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r5/R4-to-R5.patch",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r5/R4-to-R5.patch",
+      "bytes": 544,
+      "sha256": "a44948f0e0f67c314e2b5a93253892733b55b962970dd82438a17e2aec555671",
+      "inventoryRow": 590
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r5/build-handler.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r5/build-handler.mjs",
+      "bytes": 963,
+      "sha256": "d289f57badcfc47f21c39812a32e2b41d68df80b086505029256254c09551647",
+      "inventoryRow": 590
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r5/HANDOFF.md",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r5/HANDOFF.md",
+      "bytes": 5535,
+      "sha256": "8bffe19f6d19d394a5c754ba5efd210ebb0e044d146fe53a6e77db5ca9d0b4d3",
+      "inventoryRow": 590
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r5/source/protocol-pins.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r5/source/protocol-pins.mjs",
+      "bytes": 890,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a",
+      "inventoryRow": 590
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r5/source/strict-json.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r5/source/strict-json.mjs",
+      "bytes": 2044,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099",
+      "inventoryRow": 590
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r5/source/source-barcode-handler.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r5/source/source-barcode-handler.mjs",
+      "bytes": 16176,
+      "sha256": "56723cd22ecb72713b5dd4cc98b1a24adbb262200d25796e2d74f4a069d9d9eb",
+      "inventoryRow": 590
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r5/source/stream-shard.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r5/source/stream-shard.mjs",
+      "bytes": 3888,
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a",
+      "inventoryRow": 590
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-handler-20261029-r5/tests/worker-fetch-contract.test.mjs",
+      "relativePath": "offmenu-source-barcode-handler-20261029-r5/tests/worker-fetch-contract.test.mjs",
+      "bytes": 5460,
+      "sha256": "85084f7e5c15dcb3e283774e993d900135c0a4d51b05fd9760c552b9117f5260",
+      "inventoryRow": 590
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-publisher-candidate-20261029/netlify_source_barcode_index_publisher.py",
+      "relativePath": "offmenu-source-barcode-publisher-candidate-20261029/netlify_source_barcode_index_publisher.py",
+      "bytes": 31780,
+      "sha256": "9f01666039a60c60b514eb6c79c058e0e9e429781d559f9825dbae7b2ab9c781",
+      "inventoryRow": 592
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-publisher-candidate-20261029/test_source_barcode_index_publisher.py",
+      "relativePath": "offmenu-source-barcode-publisher-candidate-20261029/test_source_barcode_index_publisher.py",
+      "bytes": 7587,
+      "sha256": "83f0665c7bfdbec8a5097f2394fca1ab7032df9b2ec6bc005502be2e4bbc6867",
+      "inventoryRow": 592
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-publisher-candidate-20261029/HANDOFF.md",
+      "relativePath": "offmenu-source-barcode-publisher-candidate-20261029/HANDOFF.md",
+      "bytes": 1438,
+      "sha256": "9caa794fbd52f630d23670d7bc70be983cd9c05946109e7f189d4707b6b23226",
+      "inventoryRow": 592
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-publisher-candidate-20261029/recipe_transport_exact.py",
+      "relativePath": "offmenu-source-barcode-publisher-candidate-20261029/recipe_transport_exact.py",
+      "bytes": 31549,
+      "sha256": "0bf9f679b4b6dd3643456c31387e9396073d3e97ebc7058e2ff735dd6bc70bbb",
+      "inventoryRow": 592
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-publisher-candidate-20261029/netlify_north_star_recipe_publisher_http_reuse_durable_candidate.py",
+      "relativePath": "offmenu-source-barcode-publisher-candidate-20261029/netlify_north_star_recipe_publisher_http_reuse_durable_candidate.py",
+      "bytes": 31628,
+      "sha256": "1065a6ec8f6db4e0b92a5affb63dccaf551967051be6c15d266a00bf7f808279",
+      "inventoryRow": 592
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-source-barcode-publisher-candidate-20261029/candidate.patch",
+      "relativePath": "offmenu-source-barcode-publisher-candidate-20261029/candidate.patch",
+      "bytes": 3146,
+      "sha256": "fdccd0ffd0d25dcd22c9ec2dfd5610f7fbac0f43ff34955056cd99d6ffd44f7c",
+      "inventoryRow": 592
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-terminal-filter-candidate-20261028/terminal_filter.py",
+      "relativePath": "offmenu-terminal-filter-candidate-20261028/terminal_filter.py",
+      "bytes": 12491,
+      "sha256": "f507ceb4d68c3c7232218f9b62e71d9a979a970bd6d72ecc9afddea34f0894e5",
+      "inventoryRow": 593
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-terminal-filter-candidate-20261028/HANDOFF.md",
+      "relativePath": "offmenu-terminal-filter-candidate-20261028/HANDOFF.md",
+      "bytes": 6964,
+      "sha256": "f3f6e6c124fe7b3ba8cdaaa1b75bff897b06d839d599311a3a7cd6d24d02099d",
+      "inventoryRow": 593
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-terminal-filter-candidate-20261028/test_terminal_filter.py",
+      "relativePath": "offmenu-terminal-filter-candidate-20261028/test_terminal_filter.py",
+      "bytes": 8817,
+      "sha256": "952b4d39e251a8719cfec22210557f7327278bed5839c27ab1ab99a48e23b96c",
+      "inventoryRow": 593
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/terminal_filter.py",
+      "relativePath": "offmenu-terminal-filter-candidate-20261028-r2/terminal_filter.py",
+      "bytes": 13618,
+      "sha256": "c8792e91768176c10574d8b13dc2e9dc6f7ddeb9b54e0be81f4330a8a4e950cc",
+      "inventoryRow": 594
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/review.patch",
+      "relativePath": "offmenu-terminal-filter-candidate-20261028-r2/review.patch",
+      "bytes": 6884,
+      "sha256": "7570d88408dc3c7e7ca8d77aaa812001cd4984b8011aa3f44c32ae9256a1a3c2",
+      "inventoryRow": 594
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/HANDOFF.md",
+      "relativePath": "offmenu-terminal-filter-candidate-20261028-r2/HANDOFF.md",
+      "bytes": 4537,
+      "sha256": "f18758ec958b436a55f9a2a3d8b1268f1bad817c9a2c098622f0261920efbd11",
+      "inventoryRow": 594
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/source.patch",
+      "relativePath": "offmenu-terminal-filter-candidate-20261028-r2/source.patch",
+      "bytes": 3352,
+      "sha256": "b25f25b4057116f0628c9536c368fde4b776b738814b8a748c5514b1bb6b12a4",
+      "inventoryRow": 594
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/test_terminal_filter.py",
+      "relativePath": "offmenu-terminal-filter-candidate-20261028-r2/test_terminal_filter.py",
+      "bytes": 11853,
+      "sha256": "f20fd311fb30c611b55603f2dfefb3641f0c9f0125ebf31f0aafbda4be1d5873",
+      "inventoryRow": 594
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/base/terminal_filter.py",
+      "relativePath": "offmenu-terminal-filter-candidate-20261028-r2/base/terminal_filter.py",
+      "bytes": 12491,
+      "sha256": "f507ceb4d68c3c7232218f9b62e71d9a979a970bd6d72ecc9afddea34f0894e5",
+      "inventoryRow": 594
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-terminal-filter-candidate-20261028-r2/base/test_terminal_filter.py",
+      "relativePath": "offmenu-terminal-filter-candidate-20261028-r2/base/test_terminal_filter.py",
+      "bytes": 8817,
+      "sha256": "952b4d39e251a8719cfec22210557f7327278bed5839c27ab1ab99a48e23b96c",
+      "inventoryRow": 594
+    }
+  ],
+  "excluded": "private input/diagnostics/artifacts, caches, generated builds, logs, archive bytes, runtime arguments and opaque receipts",
+  "testsRun": false,
+  "highConfidenceSecretPatternMatches": 0
+}

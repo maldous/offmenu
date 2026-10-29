@@ -1,0 +1,11 @@
+--- a/source/source-barcode-handler.mjs
++++ b/source/source-barcode-handler.mjs
+@@ -125,7 +125,7 @@
+   }
+ }
+ async function fetchBytes(url,max,life,fetchImpl,exact=null) {
+-  const res=await life.run(()=>fetchImpl(url,{method:'GET',redirect:'error',credentials:'omit',cache:'no-store',
++  const res=await life.run(()=>fetchImpl(url,{method:'GET',redirect:'manual',credentials:'omit',cache:'no-store',
+     headers:{Accept:'application/json, application/gzip','Accept-Encoding':'identity'},signal:life.signal}));
+   let consumed=false;
+   try {

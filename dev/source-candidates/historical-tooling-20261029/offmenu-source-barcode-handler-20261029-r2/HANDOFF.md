@@ -1,0 +1,43 @@
+# Source-barcode adapter R2 — incremental decoded-shard validation
+
+Supersedes R1 archive80bb73be7db0d2870ae04d073ae44e042cd84b0ee74460cf383d775820331c6c, retained unchanged. R1's4MiB compressed/8MiB expanded/16384-entry limits did not accommodate the producer's now-measured output. This R2 is a source-only readiness correction, not deployment. No real shard, producer data tree, database, graph or new source was read. No producer tests, proof/build, whole-app build or live change ran.
+
+## Actual supplied producer facts and activation boundary
+
+Existing owner reported completed producer manifest d22d0c464d32ea8df1b81da1f74701db5b563cd3c5b69c1d4e0f9b116709c839 and proof28663a999f75e61da39ca808822054e05adaaac10ab1db6c45902235e770ce29. Reported maxima:4,322,325 compressed bytes;25,303,410 decoded bytes. Reported groups:off/2026-10-12 and usda-files/usda-2026-04. Reported4,917,889 keys,400,164 ambiguous keys,877 capped keys. These facts were supplied by the owning task; they were not independently recomputed/downloaded here. Publication/served proof was pending at handoff. Sole integrator binds the actual immutable manifest only after publication verification. No synthetic or not-yet-served manifest is activated by this packet.
+
+## Required correction and bounded allocation structure
+
+source/stream-shard.mjs scans the gzip decoded stream incrementally. It NEVER calls text()/arrayBuffer() on the decoded shard, never concatenates a whole decoded JSON string, and never builds the entries array/object graph. It parses the three root fields in any order, rejects duplicate/unknown root fields and invalid trailing JSON, and processes exactly one bounded entry at a time. Each entry goes through strict duplicate-key/finite-number/depth/node validation and the original exact key/ref/count checks. It retains only the requested match while continuing through every entry and EOF; a malformed later entry, trailer, gzip CRC/length error or count mismatch invalidates the entire result. No early match or partial search can become accepted/not-found.
+
+Compressed bytes are bounded to8MiB, checked against exact descriptor size and SHA before gzip decode. Input is fed to DecompressionStream in64KiB slices with pull/backpressure, not one giant write. Decoded size is bounded to32MiB and must equal the descriptor exactly. Every returned native decoded chunk is byte-count checked and processed in64KiB UTF-8 windows, avoiding a whole-chunk UTF-16 allocation even if the native stream returns a large chunk. One entry token is at most262144 UTF-8 bytes (also bounded during accumulation by character count),8192 parsed JSON nodes and depth32. One selected match has the same bound. The complete manifest remains separately bounded to2MiB/200000 JSON nodes. Response remains256KiB; cursor32768 bytes; request budget10seconds with cancellation and no duplicate fallback.
+
+Explicitly retained collections are bounded compressed network chunks plus their joined buffer (at most2*8MiB during joining), a single native decoded chunk (at most32MiB by the descriptor check), one64KiB decode window, one entry token/object and selected match (each at most256KiB source JSON/8192 nodes), and the separately bounded small manifest. There is no25MB decoded string or25MB decoded object graph. This is a structural allocation bound, not a measured V8 heap/native-decompressor overhead or concurrency benchmark. Native runtime/CPU/heap qualification remains the sole integrator's existing review; no limit increase/config change is assumed. The actual measured compressed/decoded maxima fit8/32MiB.
+
+The65536-entry cap also accommodates the measured maximum independently of key distribution: the mandatory JSON field names/colons of one valid entry plus its required key, at least one candidate, asset and identifier assertion alone require at least434 UTF-8 bytes (ignoring all values/commas/braces). Thus25,303,410 decoded bytes can contain at most58,302 valid entries, below65536. This conservative proof uses only frozen schema/source, not a real data scan. Bounds exceeding any valid runtime limit remain explicit index-unavailable, never absence or a reduced source subset.
+
+## Protocol and lexical behavior
+
+Factory API remains createSourceBarcodeHandler({selection,fetchImpl}) -> async handle(request). Request query remains source,release,namespace=barcode,value plus optional limit/cursor. Dedicated candidate-reference endpoint is the HTTP opt-in. Query hashing is exact UTF8 compact JSON array[source,release,namespace,lexical], first2hex. No source subset/filter was introduced. ANY nonempty original source/release/lexical strings satisfying the frozen16,384-byte tuple bound are accepted, including non-food and non-digit identifiers, spaces, Unicode and leading zeros. R1 already behaved this way; R2 adds an explicit regression for a non-food identifier containing letters, slash and beta. No trim/GTIN/food/identity gate exists.
+
+The frozen offmenu-source-barcode-candidates/1 envelope and four statuses are unchanged. Ambiguous/capped totals, cursor query/manifest/limit binding, page truncation, null unresolved evidence, original locators and false canonical-identity/planning/aggregation flags are preserved. Complete means exact validated lookup, not hydration/nutrition completeness. Missing selection/integrity/resource/cursor/network errors return503 index-unavailable with unknown count; invalid query400; wrong method405; unrelated routes null. Not-found occurs only after complete selected shard validation.
+
+## Exact integration (sole integrator)
+
+Use the source modules or build/source-barcode-handler.bundle.mjs, which exports createSourceBarcodeHandler and PUBLIC_BASE; SOURCE_PINS remains in source/protocol-pins.mjs. Create a trusted fixed selection with manifestUrl exactly https://offmenu-corpus.netlify.app/common-data/derived-releases/source-barcode-index-v1-20261029/manifest.json, actual verified published manifestSha256, indexReleaseId source-barcode-index-v1-20261029, exact SOURCE_PINS and PUBLIC_BASE. Do not select pins/URLs from request parameters. Missing/mismatching selection cannot fetch or assert absence.
+
+The supplied current-v201 seam is still input/endpoint-seam201.json SHA45bc8b9a7eb6dbd609cb2683aede1490028d6ca6a4c7bf583cc1ae5a8ea66fbc. Reconcile newer actual dispatcher source. Add only the module import/fixed closure and this route immediately AFTER its existing environment fallback and BEFORE /api/data/public:
+
+    if(new URL(request.url).pathname==='/api/corpus/source-barcode')return sourceBarcode(request);
+
+The dispatcher-only patch is an excerpt, NOT a replacement full Worker. All other auth/settings/routes/headers/assets/cache behavior remains unchanged. Existing session/tenant controls, previous.fetch and scheduled forwarding remain with the integrator. Rollback removes only this route/closure/import/new module while preserving newer changes. No app edits or live deployment are included.
+
+The fixed gzip URL must expose original file bytes with absent/identity Content-Encoding. Fetch requests identity encoding and refuses redirects, changed URL, auto-encoded responses and hash/length mismatch; do not relax integrity for hosting transformations. Integrator still verifies actual served bytes/headers and published manifest. Public hydration remains the separate app author's work; this endpoint returns refs and does not fabricate detail facts.
+
+## Verification and custody
+
+19 focused tests pass (focused-tests.log): existing semantics and seam coverage, plus incremental one-byte chunk boundaries/escaped strings/UTF8, duplicate root fields/schema/trailer/count failures, bounded single entry, malformed suffix after a match, non-food lexical keys and actual-size descriptor feasibility without allocating a real shard. The synthetic fixture isolation was corrected to prevent intentional mutation cases from contaminating later tests. No stress/saturation or real-data proof was run.
+
+Existing Node24.16.0 and esbuild0.25.12 only; no installs. build-handler.mjs bundles the four-file component with zero external imports. It is not a full app/Worker build. Its Foo-local esbuild module path must be reconciled to another executor's existing pinned toolchain, never installed automatically. Tests: node --test tests/source-barcode-handler.test.mjs. Build: node build-handler.mjs.
+
+Original protocol source11382bytes SHA5a70c8ec6945149dfdc7f02abf19ebef3d6c8f3c1a5bfe418004a84f31328af1 and CONTRACT15181bytes SHA3a640a9f7dcb66eb14338f793072c81374e84aa524305411dd7008dfd4cf4cbf remain exact. All changes/pins are in R1-to-R2.patch, CANDIDATE-RECEIPT.json and MANIFEST.json. R1 is preserved but unsuitable for the measured real shard sizes.

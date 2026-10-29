@@ -1,0 +1,184 @@
+--- a/source/source-barcode-handler.mjs
++++ b/source/source-barcode-handler.mjs
+@@ -1,5 +1,6 @@
+ import {SOURCE_PINS} from './protocol-pins.mjs';
+ import {strictJSON} from './strict-json.mjs';
++import {scanShard} from './stream-shard.mjs';
+ export const INDEX_RELEASE = 'source-barcode-index-v1-20261029';
+ export const ORIGIN = 'https://offmenu-corpus.netlify.app';
+ export const PREFIX = '/common-data/derived-releases/' + INDEX_RELEASE + '/';
+@@ -8,8 +9,8 @@
+   manifestPath:BASE+'manifest.json',manifestSha256:SOURCE_PINS.publicBaseManifestSha256,
+   sourcePackageManifestPath:BASE+'bulk-food/source-package-manifest.json',
+   sourcePackageManifestSha256:SOURCE_PINS.sourceManifestSha256,assetPrefix:BASE+'bulk-food/'});
+-export const RESOURCE_BOUNDS = Object.freeze({manifestBytes:2*1024*1024,compressedBytes:4*1024*1024,
+-  expandedBytes:8*1024*1024,entries:16384,jsonNodes:200000,responseBytes:256*1024,cursorBytes:32768,deadlineMs:10000});
++export const RESOURCE_BOUNDS = Object.freeze({manifestBytes:2*1024*1024,compressedBytes:8*1024*1024,
++  expandedBytes:32*1024*1024,entries:65536,jsonNodes:200000,responseBytes:256*1024,cursorBytes:32768,deadlineMs:10000});
+ const SCHEMA='offmenu-source-barcode-candidates/1', ENC=new TextEncoder();
+ // Exact security headers from the supplied v201 landing-only seam. No CORS or auth policy changes.
+ const HEADERS={'X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer',
+@@ -147,19 +148,23 @@
+     d.indexedKeys<=RESOURCE_BOUNDS.entries,'worker-resource-bound');
+   const bytes=await fetchBytes(ORIGIN+d.publicPath,d.bytes,life,fetchImpl,d.bytes);
+   need(await life.run(()=>digest(bytes))===d.sha256,'shard-sha');
+-  const input=new ReadableStream({start(controller){controller.enqueue(bytes);controller.close();}});
+-  const expanded=await boundedBytes(input.pipeThrough(new DecompressionStream('gzip')),d.uncompressedBytes,life,d.uncompressedBytes);
+-  const shard=decode(expanded);need(object(shard)&&shard.schemaVersion==='offmenu-source-barcode-index-shard/1'&&
+-    shard.prefix===prefix&&Array.isArray(shard.entries)&&shard.entries.length===d.indexedKeys,'shard');
++  let compressedOffset=0;
++  const input=new ReadableStream({pull(controller){
++    if(compressedOffset===bytes.length){controller.close();return;}
++    const end=Math.min(bytes.length,compressedOffset+65536);
++    controller.enqueue(bytes.subarray(compressedOffset,end));compressedOffset=end;
++  }});
+   let previous='',entry=null;
+-  for(const e of shard.entries) {
++  await scanShard(input.pipeThrough(new DecompressionStream('gzip')),{
++    expectedBytes:d.uncompressedBytes,expectedPrefix:prefix,expectedEntries:d.indexedKeys,
++    maxEntries:RESOURCE_BOUNDS.entries,life,onEntry:async e=>{
+     life.check();validateQuery(e.key);const h=await life.run(()=>keySha(e.key));
+     need(h===e.keySha256&&h.startsWith(prefix)&&h>previous,'key-binding');previous=h;
+     need(integer(e.candidateTotal,1)&&Array.isArray(e.candidates)&&e.candidates.length===Math.min(e.candidateTotal,20)&&
+       e.returnedCount===e.candidates.length&&e.truncated===(e.candidateTotal>e.candidates.length),'candidate-count');
+     const seen=new Set();for(const ref of e.candidates){validateRef(ref);need(!seen.has(ref.sourceResourceId),'duplicate-resource');seen.add(ref.sourceResourceId);}
+     if(h===hash){need(same(e.key,query)&&entry===null,'exact-tuple');entry=e;}
+-  }
++  }});
+   const refs=entry?.candidates||[],total=entry?.candidateTotal||0;need(offset<=refs.length,'cursor-offset');
+   const page=refs.slice(offset,offset+limit),next=offset+page.length;
+   return {...unavailable(query),status:total===0?'source-key-not-found':total>1?'ambiguous-source-key':'source-scoped-candidates',
+--- /dev/null
++++ b/source/stream-shard.mjs
+@@ -0,0 +1,71 @@
++import {strictJSON} from './strict-json.mjs';
++// No whole-shard JSON string/array/object is assembled. Retain only one entry token,
++// one parsed entry and the consumer's selected match while validating to EOF.
++export async function scanShard(stream,{expectedBytes,expectedPrefix,expectedEntries,maxEntries,maxEntryBytes=262144,
++  maxEntryNodes=8192,life,onEntry}) {
++  const fail=()=>{throw Error('invalid-streamed-shard');};
++  const reader=stream.getReader(),decoder=new TextDecoder('utf-8',{fatal:true}),encoder=new TextEncoder();
++  let totalBytes=0,done=false,state='root',key='',token='',escaped=false,inString=false,depth=0,count=0;
++  const keys=new Set();const isSpace=c=>c===' '||c==='\n'||c==='\r'||c==='\t';
++  async function consume(chunk) {
++    for(let i=0;i<chunk.length;i++) {
++      const c=chunk[i];
++      if(state==='entry') {
++        token+=c;if(token.length>maxEntryBytes)fail();
++        if(inString){if(escaped)escaped=false;else if(c==='\\')escaped=true;else if(c==='"')inString=false;}
++        else if(c==='"')inString=true;else if(c==='{'||c==='[')depth++;else if(c==='}'||c===']')depth--;
++        if(depth===0) {
++          if(encoder.encode(token).length>maxEntryBytes||++count>maxEntries)fail();
++          const entry=strictJSON(token,life.check,maxEntryNodes);token='';
++          await onEntry(entry);state='after-entry';life.check();
++        }
++        continue;
++      }
++      if(state==='key-token'||state==='meta-token') {
++        token+=c;if(token.length>256)fail();
++        if(escaped){escaped=false;continue;}if(c==='\\'){escaped=true;continue;}
++        if(c==='"') {
++          const value=strictJSON(token,life.check,4);token='';
++          if(state==='key-token') {
++            if(!['entries','prefix','schemaVersion'].includes(value)||keys.has(value))fail();
++            keys.add(value);key=value;state='colon';
++          } else {
++            if(key==='prefix'?value!==expectedPrefix:value!=='offmenu-source-barcode-index-shard/1')fail();
++            state='after-value';
++          }
++        }
++        continue;
++      }
++      if(isSpace(c))continue;
++      switch(state) {
++        case 'root':if(c!=='{')fail();state='key';break;
++        case 'key':if(c!=='"')fail();token='"';escaped=false;state='key-token';break;
++        case 'colon':if(c!==':')fail();state='value';break;
++        case 'value':
++          if(key==='entries'){if(c!=='[')fail();state='first-entry';}
++          else {if(c!=='"')fail();token='"';escaped=false;state='meta-token';}break;
++        case 'first-entry':case 'next-entry':
++          if(c===']'&&state==='first-entry'){state='after-value';break;}
++          if(c!=='{')fail();token='{';depth=1;escaped=false;inString=false;state='entry';break;
++        case 'after-entry':if(c===',')state='next-entry';else if(c===']')state='after-value';else fail();break;
++        case 'after-value':if(c===',')state='key';else if(c==='}')state='done';else fail();break;
++        default:fail(); // non-whitespace after root; no concatenated JSON accepted
++      }
++    }
++  }
++  try {
++    while(true) {
++      const part=await life.run(()=>reader.read());if(part.done){done=true;break;}
++      if(!(part.value instanceof Uint8Array))fail();totalBytes+=part.value.byteLength;
++      if(totalBytes>expectedBytes)fail();
++      // A runtime decompressor can return a large native byte chunk; never turn that
++      // whole chunk into a UTF-16 string. Decode/process at most64KiB at a time.
++      for(let offset=0;offset<part.value.byteLength;offset+=65536) {
++        await consume(decoder.decode(part.value.subarray(offset,offset+65536),{stream:true}));life.check();
++      }
++    }
++    await consume(decoder.decode());
++    if(totalBytes!==expectedBytes||state!=='done'||keys.size!==3||count!==expectedEntries)fail();
++    life.check();return {entries:count,decodedBytes:totalBytes};
++  } finally {if(!done)void reader.cancel().catch(()=>{});reader.releaseLock();}
++}
+--- a/tests/source-barcode-handler.test.mjs
++++ b/tests/source-barcode-handler.test.mjs
+@@ -7,6 +7,7 @@
+ import {createSourceBarcodeHandler,canonical,keySha,INDEX_RELEASE,ORIGIN,PREFIX,PUBLIC_BASE,RESOURCE_BOUNDS} from '../source/source-barcode-handler.mjs';
+ import {SOURCE_PINS} from '../source/protocol-pins.mjs';
+ import {strictJSON} from '../source/strict-json.mjs';
++import {scanShard} from '../source/stream-shard.mjs';
+ const hash=b=>createHash('sha256').update(b).digest('hex'), bytes=x=>Buffer.from(canonical(x)+'\n');
+ const query={source:'synthetic-source',release:'synthetic-release',namespace:'barcode',lexical:'00001234'};
+ const keyHash={algorithm:'SHA256',input:'UTF-8 canonical JSON array [source,release,namespace,lexical]',
+@@ -16,14 +17,14 @@
+  identifierAssertion:{id:'synthetic-assertion-'+i,canonicalSha256:'b'.repeat(64),matchingAssertionCount:1,referencesTruncated:false},
+  sourceAssertionStatus:null,sourceAssertionStatusState:'resolve-original-public-assertion',citationRefs:null,ingredientRefs:null,nutrientRefs:null};}
+ async function fixture({q=query,total=1,found=true,mutateShard=()=>{},mutateManifest=()=>{},rawManifest=null,rawShard=null}={}) {
+- const h=await keySha(q),prefix=h.slice(0,2);
++ q=structuredClone(q);const h=await keySha(q),prefix=h.slice(0,2);
+  const shard={schemaVersion:'offmenu-source-barcode-index-shard/1',prefix,entries:found?[{key:q,keySha256:h,candidateTotal:total,
+    returnedCount:Math.min(total,20),truncated:total>20,candidates:Array.from({length:Math.min(total,20)},(_,i)=>ref(i))}]:[]};
+  mutateShard(shard);const decoded=rawShard?Buffer.from(rawShard(shard)):bytes(shard),compressed=gzipSync(decoded);
+  const shards={};for(let i=0;i<256;i++){const p=i.toString(16).padStart(2,'0');shards[p]={path:'shards/'+p+'.json.gz',publicPath:PREFIX+'shards/'+p+'.json.gz',
+  bytes:compressed.length,sha256:hash(compressed),uncompressedBytes:decoded.length,indexedKeys:shard.entries.length};}
+- const manifest={schemaVersion:'offmenu-source-barcode-index/1',indexReleaseId:INDEX_RELEASE,complete:true,sourcePins:SOURCE_PINS,
+- publicBase:PUBLIC_BASE,candidateReferenceCap:20,keyHash,shards,canonicalIdentityAsserted:false,automaticPlanningEligible:false,nutritionAggregationEligible:false};
++ const manifest={schemaVersion:'offmenu-source-barcode-index/1',indexReleaseId:INDEX_RELEASE,complete:true,sourcePins:structuredClone(SOURCE_PINS),
++ publicBase:structuredClone(PUBLIC_BASE),candidateReferenceCap:20,keyHash:structuredClone(keyHash),shards,canonicalIdentityAsserted:false,automaticPlanningEligible:false,nutritionAggregationEligible:false};
+  mutateManifest(manifest);const manifestBytes=rawManifest?Buffer.from(rawManifest(manifest)):bytes(manifest);
+  const selection={manifestUrl:ORIGIN+PREFIX+'manifest.json',manifestSha256:hash(manifestBytes),indexReleaseId:INDEX_RELEASE,
+   sourcePins:SOURCE_PINS,publicBase:PUBLIC_BASE};
+@@ -145,3 +146,31 @@
+   unavailable(await pending);assert.equal(calls,1);
+  } finally {t.mock.timers.reset();}
+ });
++
++test('arbitrary supported non-food identifiers remain exact; no digits-only or food-only gate',async()=>{
++ const q={...query,source:'non-food-source',lexical:'part: A-001 / β '};const f=await fixture({q});
++ const r=await result(f);assert.equal(r.value.status,'source-scoped-candidates');assert.equal(r.value.query.lexical,q.lexical);
++});
++const immediateLife={check(){},run:fn=>fn()};
++function streamChunks(parts){return new ReadableStream({start(c){for(const p of parts)c.enqueue(Buffer.from(p));c.close();}});}
++test('incremental parser handles every one-byte boundary, escapes and UTF8; validates EOF/count/schema',async()=>{
++ const entry={key:{...query,lexical:'β \"quoted\" \\ brace }'},marker:'[{}]'};
++ const raw=bytes({entries:[entry],prefix:'ab',schemaVersion:'offmenu-source-barcode-index-shard/1'});let selected;
++ await scanShard(streamChunks([...raw].map(b=>Buffer.from([b]))),{expectedBytes:raw.length,expectedPrefix:'ab',expectedEntries:1,maxEntries:2,life:immediateLife,onEntry:async e=>selected=e});
++ assert.deepEqual(JSON.parse(JSON.stringify(selected)),entry);
++ for(const malformed of ['{"entries":[],"prefix":"ab","schemaVersion":"wrong"}',
++ '{"entries":[],"entries":[],"prefix":"ab","schemaVersion":"offmenu-source-barcode-index-shard/1"}',
++ '{"entries":[{},],"prefix":"ab","schemaVersion":"offmenu-source-barcode-index-shard/1"}',
++ '{"entries":[],"prefix":"ab","schemaVersion":"offmenu-source-barcode-index-shard/1"}{}']) {
++ const raw=Buffer.from(malformed);await assert.rejects(()=>scanShard(streamChunks([raw]),{expectedBytes:raw.length,expectedPrefix:'ab',expectedEntries:0,maxEntries:2,life:immediateLife,onEntry:async()=>{}}));}
++});
++test('incremental parser enforces one-entry bound and validates suffix after the selected entry',async()=>{
++ const raw=bytes({entries:[{large:'x'.repeat(300)}],prefix:'ab',schemaVersion:'offmenu-source-barcode-index-shard/1'});
++ await assert.rejects(()=>scanShard(streamChunks([raw]),{expectedBytes:raw.length,expectedPrefix:'ab',expectedEntries:1,maxEntries:2,maxEntryBytes:100,life:immediateLife,onEntry:async()=>{}}));
++ const f=await fixture({rawShard:s=>canonical(s)+'TRAILER'});unavailable(await result(f));
++ const f2=await fixture({mutateShard:s=>s.prefix='ff'});unavailable(await result(f2));
++});
++test('measured real maximum descriptor sizes fit runtime bounds without allocating a real shard',()=>{
++ assert.ok(4322325<=RESOURCE_BOUNDS.compressedBytes);assert.ok(25303410<=RESOURCE_BOUNDS.expandedBytes);
++ // No full real index download, dataset allocation, stress test or producer replay.
++});

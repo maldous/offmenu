@@ -1,0 +1,15 @@
+# Native failure localization — diagnostic candidate only, not a claimed fix
+
+The exact frozen R2 source was reproduced once using only the approved published manifest and milk shard85, both fetched once from the fixed origin with bounded sizes/hash verification. No other shard/graph/data tree was accessed. Published manifest245767bytes SHA d22d0c464d32ea8df1b81da1f74701db5b563cd3c5b69c1d4e0f9b116709c839. Milk shard4160082compressedbytes SHA992dd13bd543d3af7050544ec48dea9e4536fa1afcb9044e3a0bf0c8690f9ba3,24350008declared decodedbytes,18809entries. Both Content-Encoding absent. Payloads remain private under input/ and are NOT exported.
+
+Exact R2 local/injected-fetch result: HTTP200 source-scoped-candidates, candidateTotal1, returnedCount1,countKnown:true,complete:true,truncated:false; two fixed local reads,1467.366042ms. It did not reproduce the native203 shaped503. No integrity/resource/canonicalization change is justified by these facts. R2 source/parser and selection match the reported deployed bundle5414ca57aaca3f006a54c8cf72e992a3318145061fbc291ca9ee9e07a9b2f9a4. The native owner also reports selection/manifest passed and shard85requested; focus native trace on shard-fetch,shard-sha,shard-stream,response.
+
+This packet adds only an optional internal onDiagnostic(event) callback and request-local stage labels. Default/public HTTP behavior remains unchanged. The event contains only fixed schema,static stage,whitelisted error code and whitelisted error type. No URL,query,key,resource ID,reference,headers,token,raw error message or stack is emitted. Unknown messages collapse to runtime-operation-failed. An observer exception is ignored without changing the HTTP result. No global state/log hook/cache/credential/runtime limit change exists.
+
+Sole integrator can review diagnostic-only.patch and, if authorized through its existing live publication process, replace the endpoint component and opt in at its fixed factory closure:
+
+    onDiagnostic: event => console.warn('source-barcode-failure', JSON.stringify(event))
+
+Run only the known failing milk request once and return its emitted stage/code/errorType with HTTP status/elapsed time. No unrelated logs or payloads are needed. I have performed NO live mutation or live Worker probe. A native rejection event is still required before claiming a root cause or correction. Remove the optional observer to roll back logging; original R2 remains frozen unchanged.
+
+Two focused diagnostic tests pass: fixed-field event/missing-selection semantics and uncontrolled-error exclusion/observer failure preservation. The original R2 product suite was NOT rerun. Component bundle built once with existing esbuild0.25.12, zero external imports; no full app build/install. The source/stream-shard,strict-json,protocol-pins bytes are unchanged from R2. The new handler/bundle hashes are diagnostic candidates, NOT a superseding repaired release. The sanitized local before.log and transfer-receipt.json are included; actual public manifest/shard bodies and instrumented local raw-stack helper are excluded.

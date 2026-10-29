@@ -1,0 +1,48 @@
+--- recipe_transport_exact.py
++++ netlify_source_barcode_index_publisher.py
+@@ -5,8 +5,8 @@
+ import base64, concurrent.futures, hashlib, http.client, io, json, re, shlex, ssl, tempfile, time, threading, queue
+ SITE='a1df1508-4bb9-4b55-ab1f-88611e456e61'
+ BASE='/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/final-common-publication'
+-ROOT=BASE+'/north-star-recipe-publication-delta'
+-DESCRIPTOR=BASE+'/north-star-recipe-publication-delta.json'
++ROOT=BASE+'/source-barcode-index-publication-delta'
++DESCRIPTOR=BASE+'/source-barcode-index-publication-delta.json'
+ SECRET='u/admin/offmenu_netlify_api_token'
+ SSH_SECRET='u/admin/foo_ssh_key_20261027'
+ HOST_KEY='AAAAC3NzaC1lZDI1NTE5AAAAIAgv17VNww/UZBfIohmz0jg0Xmim5s8FJuPyi4L9qZ0H'
+@@ -16,10 +16,11 @@
+ def sha(value,n=64):return isinstance(value,str) and bool(re.fullmatch('[0-9a-f]{'+str(n)+'}',value))
+ def valid_path(path):
+     return isinstance(path,str) and path.startswith('/') and not any(p in ('','..','.') for p in path[1:].split('/')) and not any(c in path for c in ('\\','\x00','\r','\n','?','#'))
+-PREFIX='/common-data/derived-releases/north-star-recipe-context-v1-20261028/'
++PREFIX='/common-data/derived-releases/source-barcode-index-v1-20261029/'
++EXPECTED_PATHS={PREFIX+'manifest.json'}|{PREFIX+'shards/'+format(i,'02x')+'.json.gz' for i in range(256)}
+ BASE_MANIFEST_PATH='/common-data/releases/common-corpus-expanded-20261014/manifest.json'
+ def allowed_delta(path):
+-    return path in (PREFIX+'manifest.json',PREFIX+'recipe-context.jsonl.gz')
++    return isinstance(path,str) and path in EXPECTED_PATHS
+ 
+ def verify_served_base(expected_sha):
+     c=http.client.HTTPSConnection('offmenu-corpus.netlify.app',timeout=120,context=ssl.create_default_context())
+@@ -192,15 +193,17 @@
+     raise Stop('private_read_retry_exhausted')
+ 
+ def validate_descriptor(d,proof_sha,assembly_sha):
+-    if d.get('schemaVersion')!='offmenu-netlify-north-star-recipe-delta/1' or d.get('siteId')!=SITE:raise Stop('descriptor_scope')
++    if not isinstance(d,dict) or d.get('schemaVersion')!='offmenu-netlify-source-barcode-index-delta/1' or d.get('siteId')!=SITE:raise Stop('descriptor_scope')
+     if d.get('consumerProofSha256')!=proof_sha or d.get('producerManifestSha256')!=assembly_sha:raise Stop('candidate_pin_mismatch')
+     if d.get('semanticStatus')!='candidate-not-admitted' or d.get('acceptedIdentityJoins')!=0 or d.get('servedAppQueries')!=0:raise Stop('candidate_semantics_mismatch')
++    if not isinstance(d.get('files'),list):raise Stop('delta_entry_invalid')
+     files={}
+-    for f in d.get('files',[]):
++    for f in d['files']:
++        if not isinstance(f,dict):raise Stop('delta_entry_invalid')
+         p=f.get('path')
+         if not valid_path(p) or not allowed_delta(p) or p in files or not sha(f.get('sha256')) or not sha(f.get('sha1'),40) or type(f.get('bytes')) is not int or f['bytes']<0:raise Stop('delta_entry_invalid')
+         files[p]=f
+-    if PREFIX+'manifest.json' not in files or len(files)<2:raise Stop('delta_incomplete')
++    if set(files)!=EXPECTED_PATHS:raise Stop('delta_incomplete')
+     return files
+ 
+ def inventory(token,expected):
