@@ -1,0 +1,157 @@
+{
+  "timestampUTC": "2026-10-29T03:19:25.292711+00:00",
+  "archiveSha256": "a1af464a026f41644b9077593383e5c6808b10f4e57f5db0f05dab28f186b7d2",
+  "sourceOnlySelectedMembers": [
+    {
+      "path": "integration/FINAL-DELIVERY-RECEIPT.md",
+      "bytes": 3461,
+      "sha256": "df590124b70d0e59a87920a9f10255171444be15464443d02bae9cf64c629517"
+    },
+    {
+      "path": "review/ACTUAL-PUBLIC209-MILK-ACCEPTANCE.md",
+      "bytes": 2434,
+      "sha256": "a4edde0ea6cb03e1ef8f3f964aa22fe818a388dc5fdd09ce0f9a8ecfef61751f"
+    },
+    {
+      "path": "review/INDEPENDENT-SCANNER209-SOURCE-REVIEW.md",
+      "bytes": 3271,
+      "sha256": "dea409174bbe006b90d29585a51c64852bcce6c784100d1db5b4ca9f01a14888"
+    },
+    {
+      "path": "source/BUILD-COMMAND.txt",
+      "bytes": 305,
+      "sha256": "c3521d55f18f797c5095f2ecd359bd7ca7596455f41e2f1a766f13d23c8b0567"
+    },
+    {
+      "path": "source/EXPORT-MANIFEST.json",
+      "bytes": 4068,
+      "sha256": "69934fb830666fb863d96f80593178d3515fed64f94c3d0642c7a30c5fcf5cf7"
+    },
+    {
+      "path": "source/FUNCTION-LOCAL-HANDOFF.json",
+      "bytes": 93861,
+      "sha256": "890da5cbd0f3bb9b471a996ab1c9ef066e7761ce5c93ff1416008d2698e0d6d5"
+    },
+    {
+      "path": "source/HANDOFF.md",
+      "bytes": 6190,
+      "sha256": "beb9ea83e7194e16861c590d9bc45f66ef4524495d7c740bf186ae7cfca4d202"
+    },
+    {
+      "path": "source/TEST-SUMMARY.json",
+      "bytes": 739,
+      "sha256": "873b312dc0abb9b70b6b47de36d5a1334b1999a6e839a61d4613eb9417a7ee6f"
+    },
+    {
+      "path": "source/USER-MILK-FACTS-RESPONSE.json",
+      "bytes": 5976,
+      "sha256": "604b9d1e98f43eb9fdc22d624d9bbede8385b85cbdb7929ae4ee3927aa3b3388"
+    },
+    {
+      "path": "source/baseline/source-barcode-client.mjs",
+      "bytes": 16505,
+      "sha256": "273afcb617a208c9e7385026351bc3f748e133b17a2eb37f5454b230b5351197"
+    },
+    {
+      "path": "source/baseline/source-barcode-selection.mjs",
+      "bytes": 208,
+      "sha256": "adaddd1ea29bc47860e4ed557b477240bab677b5eb431dc255a5c5887159f71e"
+    },
+    {
+      "path": "source/consumed-routes.test.cjs",
+      "bytes": 11948,
+      "sha256": "6ae08bccd61a7c2097994a6cd2eee8433c743649e668f75095d4896863a796c7"
+    },
+    {
+      "path": "source/facts-client.test.mjs",
+      "bytes": 8078,
+      "sha256": "404417773df3b9c4821f4eddf6c4f62ef1b9a1fd7adf5f3533743053581aeee9"
+    },
+    {
+      "path": "source/facts-from-current208-helper.patch",
+      "bytes": 20498,
+      "sha256": "b5dcbaf50058c797c2c91a3d9159a41a755fb06fb7c8e742debf173384b0e4f3"
+    },
+    {
+      "path": "source/fixtures/ACTUAL-MILK-FACTS-RECEIPT.json",
+      "bytes": 3639,
+      "sha256": "1e9619b70b7c454939e0f4562864092925ac50d8dccb31eacaae07b8e0c52bb3"
+    },
+    {
+      "path": "source/fixtures/producer-protocol-fixtures.json",
+      "bytes": 3286,
+      "sha256": "0ab29ed78a207751cdb1cce6999f43ed1ad7f3829617c5bef54247a951d1be1c"
+    },
+    {
+      "path": "source/input/demo-full-scanner.js",
+      "bytes": 938651,
+      "sha256": "beea29c67e4688f624fb464e22ca96b18aaa796e9bb32c447ee627d2dddedfe0"
+    },
+    {
+      "path": "source/input/shelf-scanner.js",
+      "bytes": 736195,
+      "sha256": "d45abaeebd57eca53f50dd1036f9ae7ce8a1dd7fd49951264445e370d174416d"
+    },
+    {
+      "path": "source/make-seams.py",
+      "bytes": 8737,
+      "sha256": "ee8186e186473625def7eeda4f50315289a02b0917c88a2e108cbd4f35fe91b1"
+    },
+    {
+      "path": "source/metafile.json",
+      "bytes": 2361,
+      "sha256": "6ea55f1a69998e8c0a0329f2bdb4fe2b2198b4ffa90a28e656a10bf33b4b3d18"
+    },
+    {
+      "path": "source/source-barcode-client.mjs",
+      "bytes": 20819,
+      "sha256": "7d18f145d6d32b051ae51a906c64c18a6a4694532d5614bd6a6f974f6e0e8678"
+    },
+    {
+      "path": "source/source-barcode-entry.mjs",
+      "bytes": 93,
+      "sha256": "10d06549384d73c3045d72d9efcd37186625c417ea0fc3f4ee3478ff7134456f"
+    },
+    {
+      "path": "source/source-barcode-hydrator.mjs",
+      "bytes": 11810,
+      "sha256": "a2d96a9736942982408f51233384e503df7b7795ea24533a3f9d5f94c76300d9"
+    },
+    {
+      "path": "source/source-barcode-inventory.mjs",
+      "bytes": 9207,
+      "sha256": "b8d37c4d093fdb1ef59d3f0f18df2225d10d9c32d9be700bcb22aad157ef955d"
+    },
+    {
+      "path": "source/source-barcode-selection.mjs",
+      "bytes": 208,
+      "sha256": "adaddd1ea29bc47860e4ed557b477240bab677b5eb431dc255a5c5887159f71e"
+    },
+    {
+      "path": "source/source-barcode.iife.js",
+      "bytes": 24876,
+      "sha256": "3f5794d3205ec2e33f90a0bf9dfc03cc8dd7e4d2ca45ee7e0cc47e2ed6203d17"
+    }
+  ],
+  "excludedMembers": [
+    "integration/assemble.py",
+    "integration/demo-full-scanner.js",
+    "integration/deployment-receipt.json",
+    "integration/dryrun-receipt.json",
+    "integration/dryrun.js",
+    "integration/full-readback-receipt.json",
+    "integration/live-deployment-receipt.json",
+    "integration/shelf-scanner.js",
+    "integration/upload-inactive.js",
+    "integration/upload-receipt.json",
+    "source/consumed-tests.log",
+    "source/focused-tests.log"
+  ],
+  "checks": {
+    "allSelectedOriginalBytesVerified": true,
+    "highConfidenceSecretPatternMatches": 0,
+    "noTestsOrBuildRun": true
+  },
+  "status": "source custody; 27 historical offline tests; actual public209 UI FAIL; inactive; not a verified release",
+  "owner": "01a182db"
+}

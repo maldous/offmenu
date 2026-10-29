@@ -1,0 +1,1 @@
+/tmp/offmenu-local-candidate-build/node_modules/esbuild/bin/esbuild scanner-facts208/source-barcode-entry.mjs --bundle --platform=browser --target=esnext --format=iife --global-name=_OffMenuSourceBarcode --minify --metafile=scanner-facts208/metafile.json --outfile=scanner-facts208/source-barcode.iife.js

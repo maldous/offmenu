@@ -1,0 +1,85 @@
+{
+  "inputs": {
+    "scanner-facts208/source-barcode-selection.mjs": {
+      "bytes": 208,
+      "imports": [],
+      "format": "esm"
+    },
+    "scanner-facts208/source-barcode-client.mjs": {
+      "bytes": 20819,
+      "imports": [
+        {
+          "path": "scanner-facts208/source-barcode-selection.mjs",
+          "kind": "import-statement",
+          "original": "./source-barcode-selection.mjs"
+        }
+      ],
+      "format": "esm"
+    },
+    "scanner-facts208/source-barcode-hydrator.mjs": {
+      "bytes": 11810,
+      "imports": [
+        {
+          "path": "scanner-facts208/source-barcode-client.mjs",
+          "kind": "import-statement",
+          "original": "./source-barcode-client.mjs"
+        }
+      ],
+      "format": "esm"
+    },
+    "scanner-facts208/source-barcode-inventory.mjs": {
+      "bytes": 9207,
+      "imports": [
+        {
+          "path": "scanner-facts208/source-barcode-hydrator.mjs",
+          "kind": "import-statement",
+          "original": "./source-barcode-hydrator.mjs"
+        },
+        {
+          "path": "scanner-facts208/source-barcode-client.mjs",
+          "kind": "import-statement",
+          "original": "./source-barcode-client.mjs"
+        }
+      ],
+      "format": "esm"
+    },
+    "scanner-facts208/source-barcode-entry.mjs": {
+      "bytes": 93,
+      "imports": [
+        {
+          "path": "scanner-facts208/source-barcode-client.mjs",
+          "kind": "import-statement",
+          "original": "./source-barcode-client.mjs"
+        },
+        {
+          "path": "scanner-facts208/source-barcode-inventory.mjs",
+          "kind": "import-statement",
+          "original": "./source-barcode-inventory.mjs"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "scanner-facts208/source-barcode.iife.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "scanner-facts208/source-barcode-entry.mjs",
+      "inputs": {
+        "scanner-facts208/source-barcode-entry.mjs": {
+          "bytesInOutput": 581
+        },
+        "scanner-facts208/source-barcode-client.mjs": {
+          "bytesInOutput": 15929
+        },
+        "scanner-facts208/source-barcode-hydrator.mjs": {
+          "bytesInOutput": 1569
+        },
+        "scanner-facts208/source-barcode-inventory.mjs": {
+          "bytesInOutput": 6329
+        }
+      },
+      "bytes": 24876
+    }
+  }
+}

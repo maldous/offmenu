@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "offmenu-one-original-public-product-api-facts-parity/1",
+  "boundary": "local bundled API handler; one original asset fetched externally once; retained index bytes reused; NOT deployed API acceptance",
+  "httpStatus": 200,
+  "schema": "offmenu-source-barcode-facts/1",
+  "factsStatus": "verified-original-public-packet",
+  "manifestSha256": "d22d0c464d32ea8df1b81da1f74701db5b563cd3c5b69c1d4e0f9b116709c839",
+  "assetSha256": "5a242e24b4d21ce485210b9069070adc9973664092649b45ec64e6fd10d4f8a3",
+  "assetBytes": 1148789,
+  "packetOrdinal": 119,
+  "packetCount": 1000,
+  "candidateTotal": 1,
+  "candidateCountKnown": true,
+  "candidateLookupComplete": true,
+  "originalName": "Champ iced coffee",
+  "originalFieldCount": 9,
+  "citationCount": 1,
+  "unknownMarkerCount": 3,
+  "explicitZeroMarkerCount": 0,
+  "unresolvedRelatedResourceCount": 1,
+  "exactReturnedFields": [
+    {
+      "label": "name",
+      "formattedOriginalValueSha256": "dd15bae75e631656d9d0be2a0b3a0eca15d934d9949dd45845870019a662f628",
+      "status": "source-asserted",
+      "sourcePath": "data",
+      "citationCount": 1
+    },
+    {
+      "label": "names",
+      "formattedOriginalValueSha256": "f63bd9ca285ab895704601b7dea67f1b63ca2dd96147101af3cb76e4ac9c9998",
+      "status": "source-asserted",
+      "sourcePath": "data",
+      "citationCount": 1
+    },
+    {
+      "label": "brand",
+      "formattedOriginalValueSha256": "92b99dd34d7da70b8fce3fc66f2f19c293b545765a2e2f03cc7c18e98ab60f03",
+      "status": "source-asserted",
+      "sourcePath": "data",
+      "citationCount": 1
+    },
+    {
+      "label": "pack",
+      "formattedOriginalValueSha256": "3ef793c0f7754cd49f70e15fa98a656cd1d21e2839bafb3bc29dc269ba3e71a1",
+      "status": "source-asserted",
+      "sourcePath": "data",
+      "citationCount": 1
+    },
+    {
+      "label": "identifiers",
+      "formattedOriginalValueSha256": "28619065c5d6af75352cc68432f211bc95ca77da747008b7ec2a0a43dbd1651a",
+      "status": "source-asserted",
+      "sourcePath": "data",
+      "citationCount": 1
+    },
+    {
+      "label": "nutritionId",
+      "formattedOriginalValueSha256": "18a61524241dbb05f0531062e505b0a2543b6f5fa9bdcd3e269537a23d35fe10",
+      "status": "source-asserted",
+      "sourcePath": "data",
+      "citationCount": 1
+    },
+    {
+      "label": "ingredientConcepts",
+      "formattedOriginalValueSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": "source-asserted",
+      "sourcePath": "data",
+      "citationCount": 1
+    },
+    {
+      "label": "ingredientMappingStatus",
+      "formattedOriginalValueSha256": "27a888c9d5e6c6c2d1530d15680651f4eefc9a98aaba319953362e3cf5a24996",
+      "status": "source-asserted",
+      "sourcePath": "data",
+      "citationCount": 1
+    },
+    {
+      "label": "qualificationStatus",
+      "formattedOriginalValueSha256": "b23a6a8439c0dde5515893e7c90c1e3233b8616e634470f20dc4928bcf3609bc",
+      "status": "source-asserted",
+      "sourcePath": "data",
+      "citationCount": 1
+    }
+  ],
+  "citationsAllSourceBound": true,
+  "citationsAllLicensed": true,
+  "apiResponseSha256": "9ef78e296b81965ba362bb519a59afd5e800781a39d0596dbc78b1cf38509cf9",
+  "apiResponseBytes": 5975,
+  "calls": [
+    "retained-manifest",
+    "retained-milk-shard",
+    "one-original-asset"
+  ],
+  "elapsedMs": 1484.017987,
+  "canonicalIdentityAsserted": false,
+  "automaticPlanningEligible": false,
+  "nutritionAggregationEligible": false,
+  "qualifications": "Original display fields only; references stay unresolved; no complete nutrition/ingredient coverage, zero filling, cross-packet resolution or planning admission"
+}

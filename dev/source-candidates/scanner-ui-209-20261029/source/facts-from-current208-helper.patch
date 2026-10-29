@@ -1,0 +1,164 @@
+--- a/source-barcode-client.mjs
++++ b/source-barcode-client.mjs
+@@ -1,5 +1,6 @@
+ import {SOURCE_BARCODE_SELECTION} from './source-barcode-selection.mjs';
+ 
++export const SOURCE_BARCODE_REQUEST_TIMEOUT_MS=40000;
+ export const SOURCE_BARCODE_SCHEMA='offmenu-source-barcode-candidates/1';
+ export const SOURCE_BARCODE_INDEX_RELEASE='source-barcode-index-v1-20261029';
+ export const SOURCE_BARCODE_PINS=Object.freeze({
+@@ -89,30 +90,58 @@
+  if(offset+value.returnedCount<retained){need(value.nextCursor!==null);need(cursorBody(value.nextCursor,query,limit,selection).offset===offset+value.returnedCount);}else need(value.nextCursor===null);
+  return clone(value);
+ }
++export function validateSourceFactsEnvelope(value,query,selection,{limit=20,cursor=null,httpStatus=200}={}){
++ need(exact(value,['schemaVersion','candidateLookup','factsStatus','originalFacts','canonicalIdentityAsserted','automaticPlanningEligible','nutritionAggregationEligible'])&&value.schemaVersion==='offmenu-source-barcode-facts/1');
++ for(const key of ['canonicalIdentityAsserted','automaticPlanningEligible','nutritionAggregationEligible'])need(value[key]===false);
++ const lane=validateSourceBarcodeEnvelope(value.candidateLookup,query,selection,{limit,cursor});
++ const state=value.factsStatus;
++ if(state==='index-unavailable'){need(httpStatus===503&&lane.status==='index-unavailable'&&value.originalFacts===null);return {...lane,factsStatus:state,originalFacts:null};}
++ need(lane.complete===true);
++ if(state==='source-key-not-found'){need(httpStatus===200&&lane.candidateTotal===0&&value.originalFacts===null);return {...lane,factsStatus:state,originalFacts:null};}
++ if(state==='selection-required'){need(httpStatus===200&&lane.candidateTotal>1&&value.originalFacts===null);return {...lane,factsStatus:state,originalFacts:null};}
++ need(lane.candidateTotal===1&&lane.candidates.length===1);
++ if(state==='facts-unavailable'){need(httpStatus===503&&value.originalFacts===null);return {...lane,factsStatus:state,originalFacts:null};}
++ need(state==='verified-original-public-packet'&&httpStatus===200);
++ const f=value.originalFacts;
++ need(exact(f,['name','names','resourceType','identityStatus','identifierStatus','facts','citations','unresolvedRelations','canonicalIdentityAsserted','automaticPlanningEligible','nutritionAggregationEligible']));
++ for(const key of ['canonicalIdentityAsserted','automaticPlanningEligible','nutritionAggregationEligible'])need(f[key]===false);
++ need(Array.isArray(f.names)&&f.names.every(v=>typeof v==='string')&&(f.name===null&&f.names.length===0||typeof f.name==='string'&&f.name===f.names[0]));
++ need(nonempty(f.resourceType)&&nonempty(f.identityStatus)&&['source-asserted','candidate','editor-authored','reviewed','verified'].includes(f.identifierStatus));
++ need(Array.isArray(f.citations)&&f.citations.length>0&&Array.isArray(f.facts)&&Array.isArray(f.unresolvedRelations));
++ const ids=new Set();
++ for(const citation of f.citations){need(exact(citation,['id','sourceId','revisionId','originalRecordId','license','attribution','originalUrl','rightsEvidenceUrl'])&&nonempty(citation.id)&&!ids.has(citation.id)&&citation.sourceId===query.source&&citation.revisionId===query.release&&nonempty(citation.license)&&nonempty(citation.attribution));
++  for(const key of ['originalRecordId','originalUrl','rightsEvidenceUrl'])need(citation[key]===null||typeof citation[key]==='string');ids.add(citation.id);
++ }
++ for(const fact of f.facts)need(exact(fact,['label','text','assertionId','status','sourcePath','citationIds'])&&typeof fact.label==='string'&&typeof fact.text==='string'&&nonempty(fact.assertionId)&&nonempty(fact.status)&&fact.status!=='superseded'&&(fact.sourcePath===null||typeof fact.sourcePath==='string')&&Array.isArray(fact.citationIds)&&fact.citationIds.length>0&&fact.citationIds.every(id=>ids.has(id)));
++ for(const edge of f.unresolvedRelations)need(exact(edge,['predicateId','objectId','status'])&&nonempty(edge.predicateId)&&nonempty(edge.objectId)&&nonempty(edge.status)&&edge.status!=='superseded');
++ return {...lane,factsStatus:state,originalFacts:clone(f)};
++}
+ function unavailable(query,reason){return {schemaVersion:SOURCE_BARCODE_SCHEMA,query:clone(query),status:'index-unavailable',candidateTotal:null,countKnown:false,complete:false,returnedCount:0,truncated:null,candidates:[],nextCursor:null,referenceCoverageComplete:false,canonicalIdentityAsserted:false,automaticPlanningEligible:false,nutritionAggregationEligible:false,clientError:reason};}
+ export function sourceBarcodeMatch(ref,lane){
+  const id=stable(['source-barcode-candidate',lane.manifestSha256,lane.query,ref.sourceResourceId,ref.asset.sha256,ref.asset.packetOrdinal,ref.identifierAssertion.canonicalSha256]);
+- return {kind:'source-barcode-candidate',id,name:null,brand:null,provenance:{sourceId:lane.query.source,releaseId:lane.query.release},sourceBarcodeCandidate:{query:clone(lane.query),manifestSha256:lane.manifestSha256,indexReleaseId:lane.indexReleaseId,publicBase:clone(lane.publicBase),reference:clone(ref),hydrationState:'not-loaded',factsState:'details-pending',canonicalIdentityAsserted:false,automaticPlanningEligible:false,nutritionAggregationEligible:false}};
++ const facts=lane.originalFacts||null;const brands=facts?.facts.filter(f=>f.label==='brand').map(f=>f.text).filter(v=>v&&v!=='Unknown')||[];const brand=brands.length&&new Set(brands).size===1?brands[0]:null;
++ return {kind:'source-barcode-candidate',id,name:facts?.name??null,brand,provenance:{sourceId:lane.query.source,releaseId:lane.query.release},sourceBarcodeCandidate:{query:clone(lane.query),manifestSha256:lane.manifestSha256,indexReleaseId:lane.indexReleaseId,publicBase:clone(lane.publicBase),reference:clone(ref),hydrationState:facts?'verified':lane.factsStatus==='facts-unavailable'?'unavailable':'not-loaded',factsState:facts?'verified-original-public-packet':lane.factsStatus==='facts-unavailable'?'technical-details-unavailable':'details-pending',...(facts?{facts,hydrationSource:'same-origin-owned-facts-api'}:{}),canonicalIdentityAsserted:false,automaticPlanningEligible:false,nutritionAggregationEligible:false}};
+ }
+ function result(raw,generation,symbology,lanes,selection){
+  return {enabled:true,original:raw,namespace:'barcode',generation,symbology,manifestSha256:selection.manifestSha256,indexReleaseId:selection.indexReleaseId,lanes,matches:lanes.flatMap(l=>l.candidates.map(r=>sourceBarcodeMatch(r,l))),hasMore:lanes.some(l=>l.nextCursor!==null),complete:lanes.every(l=>l.complete===true),ambiguous:lanes.some(l=>l.candidateTotal>1),referenceCoverageComplete:lanes.every(l=>l.referenceCoverageComplete===true)};
+ }
+ export function createSourceBarcodeLookup({selection=SOURCE_BARCODE_SELECTION,fetchImpl=globalThis.fetch,limit=20}={}){
+  let fixed;try{fixed=validateSourceBarcodeSelection(selection);need(Number.isSafeInteger(limit)&&limit>=1&&limit<=20);}catch{fixed=null;}
+- let closed=false;const controllers=new Set();
++ let closed=false,activeGeneration=null;const controllers=new Set();
+  async function page(query,limit,cursor){
+   if(closed)return unavailable(query,'SOURCE_BARCODE_CLOSED');
+   if(cursor!==null)cursorBody(cursor,query,limit,fixed);
+-  const url=new URL('/api/corpus/source-barcode','https://offmenu.invalid');for(const[k,v]of Object.entries({source:query.source,release:query.release,namespace:query.namespace,value:query.lexical,limit}))url.searchParams.set(k,String(v));if(cursor!==null)url.searchParams.set('cursor',cursor);
+-  const controller=new AbortController();controllers.add(controller);const timer=setTimeout(()=>controller.abort(),12000);
++  const url=new URL('/api/corpus/source-barcode','https://offmenu.invalid');for(const[k,v]of Object.entries({source:query.source,release:query.release,namespace:query.namespace,value:query.lexical,limit}))url.searchParams.set(k,String(v));if(cursor!==null)url.searchParams.set('cursor',cursor);url.searchParams.set('include','facts');
++  const controller=new AbortController();controllers.add(controller);const timer=setTimeout(()=>controller.abort(),SOURCE_BARCODE_REQUEST_TIMEOUT_MS);
+   try{
+    const response=await fetchImpl(url.pathname+url.search,{method:'GET',credentials:'omit',cache:'no-store',redirect:'error',mode:'same-origin',headers:{Accept:'application/json'},signal:controller.signal});
+    if(closed||controller.signal.aborted)return unavailable(query,'SOURCE_BARCODE_CLOSED');
+-   if(response.status!==200)return unavailable(query,'SOURCE_BARCODE_TRANSPORT_UNAVAILABLE');
+-   const body=await boundedResponseText(response);if(closed||controller.signal.aborted)return unavailable(query,'SOURCE_BARCODE_CLOSED');const checked=validateSourceBarcodeEnvelope(parseSourceBarcodeJSON(body),query,fixed,{limit,cursor});return {...checked,requestCursor:cursor,limit};
++   if(response.status!==200&&response.status!==503)return unavailable(query,'SOURCE_BARCODE_TRANSPORT_UNAVAILABLE');
++   const body=await boundedResponseText(response);if(closed||controller.signal.aborted)return unavailable(query,'SOURCE_BARCODE_CLOSED');const checked=validateSourceFactsEnvelope(parseSourceBarcodeJSON(body),query,fixed,{limit,cursor,httpStatus:response.status});return {...checked,requestCursor:cursor,limit};
+   }catch{return unavailable(query,'SOURCE_BARCODE_RESPONSE_UNAVAILABLE');}finally{clearTimeout(timer);controllers.delete(controller);}
+  }
+  async function lookup(raw,generation,symbology=null,namespace='barcode'){
++  if(Number.isSafeInteger(generation)&&activeGeneration!==generation){for(const c of controllers)c.abort();controllers.clear();activeGeneration=generation;}
+   if(!fixed)return {enabled:selection!==null&&selection!==undefined,matches:[],lanes:[],hasMore:false,complete:false,configurationError:selection!==null&&selection!==undefined,reason:'SOURCE_BARCODE_NOT_CONFIGURED'};
+   let queries;try{need(Number.isSafeInteger(generation),'SOURCE_BARCODE_QUERY_UNAVAILABLE');queries=fixed.scopes.map(s=>queryFor(s,raw,namespace));}catch{return result(raw,generation,symbology,fixed.scopes.map(s=>unavailable({source:s.source,release:s.release,namespace,lexical:raw},'SOURCE_BARCODE_QUERY_UNAVAILABLE')),fixed);}
+   return result(raw,generation,symbology,await Promise.all(queries.map(q=>page(q,limit,null))),fixed);
+@@ -128,7 +157,7 @@
+    return {...next,candidates:[...old.candidates,...next.candidates],returnedCount:old.candidates.length+next.candidates.length};
+   }));return result(previous.original,previous.generation,previous.symbology,lanes,fixed);
+  }
+- return Object.assign(lookup,{more,destroy(){closed=true;for(const controller of controllers)controller.abort();controllers.clear();}});
++ return Object.assign(lookup,{more,cancel(){for(const controller of controllers)controller.abort();controllers.clear();},destroy(){closed=true;for(const controller of controllers)controller.abort();controllers.clear();}});
+ }
+ export function sourceBarcodeReadout(match,entry,tab='overview'){
+  const c=match?.sourceBarcodeCandidate;if(!c)return [];
+--- a/source-barcode-inventory.mjs
++++ b/source-barcode-inventory.mjs
+@@ -1,4 +1,4 @@
+-import {createSourceBarcodeHydrator,hydratedSourceBarcodeReadout} from './source-barcode-hydrator.mjs';
++import {hydratedSourceBarcodeReadout} from './source-barcode-hydrator.mjs';
+ import {createSourceBarcodeLookup,sourceBarcodeReadout} from './source-barcode-client.mjs';
+ 
+ const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+@@ -10,7 +10,7 @@
+  // canonical foundation record merely because they share a barcode or subject.
+  const matches=[...foundation.matches,...candidates];
+  const foundationFailure=(foundation.providerStates||[]).some(l=>l.error)||!!foundation.error&&!['UNSUPPORTED_EXACT_BARCODE'].includes(foundation.error);
+- const indexFailure=source.configurationError||source.lanes.some(l=>l.status==='index-unavailable'||l.pageError);
++ const indexFailure=source.configurationError||source.lanes.some(l=>l.status==='index-unavailable'||l.pageError||l.factsStatus==='facts-unavailable');
+  const failed=foundationFailure||indexFailure;
+  const status=matches.length?(failed?'partial':matches.length>1||foundation.hasMore||source.ambiguous?'ambiguous':'source-match'):failed?'unavailable':foundation.hasMore?'searching':source.complete&&source.lanes.every(l=>l.status==='source-key-not-found')?'scoped-miss':'unavailable';
+  return {...foundation,matches,status,foundationResult:foundation,sourceBarcodeResult:source,
+@@ -21,11 +21,13 @@
+ export function createSourceBarcodeInventory({foundationInventory,selection,fetchImpl=globalThis.fetch,limit=20}={}){
+  if(!foundationInventory||typeof foundationInventory.lookupIdentifiers!=='function'||typeof foundationInventory.mergeIdentifierPages!=='function'||typeof foundationInventory.destroy!=='function')throw Error('EXISTING_FOUNDATION_INVENTORY_REQUIRED');
+  const candidateLookup=createSourceBarcodeLookup({selection,fetchImpl,limit});let closed=false;
+- const hydrator=createSourceBarcodeHydrator({selection,fetchImpl});
+  async function lookupIdentifiers(raw,generation,cursor=null,symbology=null,namespace='barcode'){
++  // Both owned source paths start together; the extra index never adds a
++  // serial40s wait after the foundation request has already completed.
++  const sourcePending=!closed&&namespace==='barcode'&&cursor===null?candidateLookup(raw,generation,symbology,namespace):null;
+   const foundation=await foundationInventory.lookupIdentifiers(raw,generation,cursor,symbology,namespace);
+   if(closed||namespace!=='barcode'||cursor!==null)return {...foundation,foundationResult:foundation};
+-  const source=await candidateLookup(raw,generation,symbology,namespace);
++  const source=await sourcePending;
+   if(closed)return {...foundation,foundationResult:foundation};
+   return combine(foundation,source);
+  }
+@@ -44,18 +46,20 @@
+  async function hydrateSourceBarcode(entry,match){
+   if(closed||!entry?.matches?.includes(match)||match?.kind!=='source-barcode-candidate'||entry.sourceBarcodeResult?.generation!==(entry.queryGeneration??entry.generation))throw Error('SOURCE_DETAILS_CONTEXT_CHANGED');
+   const state=entry.sourceBarcodeResult;
+-  const hydrated=await hydrator.hydrate(match);
++  if(match.sourceBarcodeCandidate.hydrationState!=='verified')throw Error('OWNED_API_FACTS_UNAVAILABLE');
++  const hydrated=match;
+   if(closed||entry.sourceBarcodeResult!==state||!entry.matches.includes(match))throw Error('SOURCE_DETAILS_CONTEXT_CHANGED');
+   return {...entry,matches:entry.matches.map(m=>m===match?hydrated:m)};
+  }
+- return Object.freeze({lookupIdentifiers,mergeIdentifierPages,moreSourceBarcode,hydrateSourceBarcode,destroy(){if(closed)return;closed=true;candidateLookup.destroy();hydrator.destroy();foundationInventory.destroy();}});
++ return Object.freeze({lookupIdentifiers,mergeIdentifierPages,moreSourceBarcode,hydrateSourceBarcode,cancelPendingSourceBarcode(){candidateLookup.cancel();},destroy(){if(closed)return;closed=true;candidateLookup.destroy();foundationInventory.destroy();}});
+ }
+ export function inventoryReadout(foundationReadout,match,entry,tab='overview'){
+- if(match?.kind==='source-barcode-candidate')return hydratedSourceBarcodeReadout(match)||[...sourceBarcodeReadout(match,entry,tab),...(match.sourceBarcodeCandidate.hydrationState==='unavailable'?[{label:'Source details unavailable',text:'Technical verification or loading failed. Identifier retained; no source absence is established.'}]:[])];
++ if(entry?.status==='pending')return [{label:'Owned source lookup',text:'Original code '+(entry.raw||entry.original||'')+' retained · checking owned source facts (up to40seconds).'}];
++ if(match?.kind==='source-barcode-candidate'){const rows=hydratedSourceBarcodeReadout(match)||[...sourceBarcodeReadout(match,entry,tab),...(match.sourceBarcodeCandidate.hydrationState==='unavailable'?[{label:'Source details unavailable',text:'Technical verification or loading failed. Identifier retained; no source absence is established.'}]:[])];if(entry?.sourceBarcodeResult?.enabled&&(!entry.sourceBarcodeResult.complete||entry.sourceBarcodeResult.lanes.some(l=>l.status==='index-unavailable'||l.pageError)))rows.push({label:'Additional source coverage unavailable',text:'This source match is retained. Another selected source could not be checked completely; no complete search or global absence is asserted.'});return rows;}
+  const rows=foundationReadout(match,entry,tab);
+  const source=entry?.sourceBarcodeResult;if(!source?.enabled)return rows;
+- const count=source.matches.length,unknown=source.configurationError||!source.complete||source.lanes.some(l=>l.status==='index-unavailable'||l.pageError);
+- return [...rows,{label:'Additional source identifier index',text:count?count+' source-scoped identifier reference(s) loaded. Choose a reference for its exact source binding; original facts remain pending verified hydration.':unknown?'The additional index could not be checked completely. The original identifier is retained; no source absence is established.':'No source key in the selected complete public index scopes. Other sources may differ; the original identifier is retained.'}];
++ const count=source.matches.length,unknown=source.configurationError||!source.complete||source.lanes.some(l=>l.status==='index-unavailable'||l.pageError||l.factsStatus==='facts-unavailable');
++ return [...rows,{label:'Additional source identifier index',text:source.lanes.some(l=>l.factsStatus==='facts-unavailable')?'Additional source identifier references are retained, but their owned API details could not be verified. Existing foundation facts remain available; no complete fact coverage is claimed.':count?count+' source-scoped identifier reference(s) loaded. Choose a reference for its exact source binding; original facts remain pending verified hydration.':unknown?'The additional index could not be checked completely. The original identifier is retained; no source absence is established.':'No source key in the selected complete public index scopes. Other sources may differ; the original identifier is retained.'}];
+ }
+ 
+ // Additional coverage failure must not erase an existing unambiguous source
+@@ -63,7 +67,15 @@
+ export function automaticSourceSelection(result){
+  if(result?.status==='source-match'&&result.matches?.length===1)return result.matches[0];
+  const foundation=result?.foundationResult,source=result?.sourceBarcodeResult;
++ if(result?.status==='partial'&&result.matches?.length===1&&!foundation?.hasMore&&!source?.ambiguous)return result.matches[0];
++ const factsUnavailable=source?.enabled&&source.lanes?.some(l=>l.factsStatus==='facts-unavailable');
++ if(factsUnavailable&&foundation?.status==='source-match'&&foundation.matches?.length===1&&!foundation.hasMore&&source.matches.every(m=>m.sourceBarcodeCandidate?.hydrationState!=='verified'))return foundation.matches[0];
+  const additionalUnavailable=source?.enabled&&(source.configurationError||!source.complete||source.lanes?.some(l=>l.status==='index-unavailable'||l.pageError));
+  if(additionalUnavailable&&source.matches?.length===0&&foundation?.status==='source-match'&&foundation.matches?.length===1&&!foundation.hasMore)return foundation.matches[0];
+  return null;
+ }
++
++export function sourceFactField(match,label){const rows=match?.sourceBarcodeCandidate?.facts?.facts.filter(f=>f.label===label)||[];const values=[...new Set(rows.map(r=>r.text))];return values.length===1?values[0]:null;}
++export function foundationStatusText(entry){if(entry?.status==='pending')return 'Original code retained · checking owned source facts (up to40seconds)';const f=entry.foundationResult||entry,source=entry.sourceBarcodeResult;
++ const text=f.status==='scoped-miss'?'Barcode retained · no qualified details in the selected source indexes. Other sources may differ.':f.status==='searching'?'Barcode retained · more selected representations remain to check.':f.status==='unavailable'?'Code read · selected foundation data unavailable; no global absence established':f.matches.length+' source foundation observation(s) · full product not established';
++ return text+(source?.enabled&&(source.configurationError||!source.complete||source.lanes?.some(l=>l.status==='index-unavailable'||l.pageError||l.factsStatus==='facts-unavailable'))?' · Additional source facts or coverage unavailable; inspect retained observations.':'');}
+--- a/source-barcode-entry.mjs
++++ b/source-barcode-entry.mjs
+@@ -1,3 +1,2 @@
+ export * from './source-barcode-client.mjs';
+ export * from './source-barcode-inventory.mjs';
+-export * from './source-barcode-hydrator.mjs';

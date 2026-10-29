@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "offmenu-current208-scanner-facts-offline-results/1",
+  "consumedRouteTests": 14,
+  "consumedRoutePass": 14,
+  "factsContractTests": 13,
+  "factsContractPass": 13,
+  "userFixtureBytes": 5976,
+  "userFixtureSha256": "604b9d1e98f43eb9fdc22d624d9bbede8385b85cbdb7929ae4ee3927aa3b3388",
+  "actualUserNameRenderedBothRoutes": "Champ iced coffee",
+  "actualUserBrandRenderedBothRoutes": "Farmdale",
+  "sourceCitationRendered": true,
+  "pendingShowsProgress": true,
+  "decoderSameCodeDoesNotRestart": true,
+  "changedCodeCancelsPriorSource": true,
+  "identityAndPlanningFlags": false,
+  "browserGraphDecompressionIncluded": false,
+  "liveAPIOrCameraCalls": 0,
+  "authOrBackendChanges": false,
+  "productionMutation": false
+}
