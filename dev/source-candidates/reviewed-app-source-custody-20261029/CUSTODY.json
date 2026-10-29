@@ -1,0 +1,181 @@
+{
+  "utc": "2026-10-29T03:47:28.932837+00:00",
+  "packets": [
+    {
+      "name": "worker00-household-unknown-review-20261026",
+      "originalWorktree": "/home/user/src/offmenu-worktrees/worker00-household-unknown-review-20261026",
+      "originalBranch": "codex/household-unknown-review-20261026",
+      "originalHead": "326c6fabf89ad8a984bcf36b6beae7f51b66b0a9",
+      "originalMergeBase": "05096910c651cc7bd518982fd87aa382a223d812",
+      "originalCommitSummary": "326c6fabf89ad8a984bcf36b6beae7f51b66b0a9 Require review for unknown ingredients for every household member",
+      "files": [
+        {
+          "path": "source/public/household-model.js",
+          "sourcePath": "public/household-model.js",
+          "bytes": 7253,
+          "sha256": "88a375ef4062fe84646af2cc7661749c2c2f2bc2dd8178852ff58ccbefbce587",
+          "gitBlob": "88424bbf2a6e0aa8cb81d002d9ae01bcc3d62abc"
+        },
+        {
+          "path": "source/tests-web/household-unknown-ingredient.test.mjs",
+          "sourcePath": "tests-web/household-unknown-ingredient.test.mjs",
+          "bytes": 1205,
+          "sha256": "32b7a7eae0be35de3814102e003d4194a6a74fcb760b5839eed1c95af6e24a22",
+          "gitBlob": "0e10dd8ccc9ada2fb860d9cb84f813a634de1fab"
+        },
+        {
+          "path": "base/public/household-model.js",
+          "sourcePath": "public/household-model.js",
+          "bytes": 7354,
+          "sha256": "58c083f49201545295471ef21ff6b077fcc64e1a8df39d96832fe290feeae851",
+          "gitBlob": "1e7520e70f52468ad059a5cddccd47a90f52f0ec"
+        },
+        {
+          "path": "source-delta.patch",
+          "bytes": 7780,
+          "sha256": "fc7f4fcaa1a5d37dca0d5fa79520cae3c1d3d9e5182f2f0e7535224f797cf1b7"
+        }
+      ],
+      "status": "historical source custody; current application integration and release acceptance not established; no tests/build/deploy run"
+    },
+    {
+      "name": "worker00-photo-adapter-reviewed-r1-20261026",
+      "originalWorktree": "/home/user/src/offmenu-worktrees/worker00-photo-adapter-reviewed-r1-20261026",
+      "originalBranch": "codex/photo-adapter-reviewed-r1-20261026",
+      "originalHead": "c5a5c846629f44e32ba64af9ebcecb7cf2678f5f",
+      "originalMergeBase": "05096910c651cc7bd518982fd87aa382a223d812",
+      "originalCommitSummary": "c5a5c846629f44e32ba64af9ebcecb7cf2678f5f Preserve retained photo metadata language and integrated attribution details",
+      "files": [
+        {
+          "path": "source/public/off-photo-catalogue.js",
+          "sourcePath": "public/off-photo-catalogue.js",
+          "bytes": 4008,
+          "sha256": "991791f2b176c0e216cfe3d96c9e9d7daf86a3a2d89ab0b527d578098ebab430",
+          "gitBlob": "5fe8e30c03b3bf0ad529f62eabc2f4d901b11580"
+        },
+        {
+          "path": "source/public/off-photo-metadata.js",
+          "sourcePath": "public/off-photo-metadata.js",
+          "bytes": 8143,
+          "sha256": "1a3808a413e4302b440fe71e7c326e4e66c84a9d6a653bcc55dc7da9f18f9280",
+          "gitBlob": "7d77711b8e9d3e8f1a0a4a038286dc484b58e892"
+        },
+        {
+          "path": "source/public/product-visual-selector.js",
+          "sourcePath": "public/product-visual-selector.js",
+          "bytes": 8551,
+          "sha256": "054fa519bde028e02f282d2f7fe498d06d9407afa6512592dc6f9fec6dfcc8bd",
+          "gitBlob": "0203d3af146f52f4749e5e0694daecefed493c1a"
+        },
+        {
+          "path": "source/public/scanner-product-visuals.js",
+          "sourcePath": "public/scanner-product-visuals.js",
+          "bytes": 3354,
+          "sha256": "084e5cbbcbb1ca38ca386e798c1d0482c309d22fd630ed2be32fc5be0fb77de6",
+          "gitBlob": "4dae7c35a7dd7f176252725b4471ca6097a30882"
+        },
+        {
+          "path": "source/tests-web/off-photo-metadata-focused.test.mjs",
+          "sourcePath": "tests-web/off-photo-metadata-focused.test.mjs",
+          "bytes": 10318,
+          "sha256": "a0bb9eda23ace247d484ed6ac24003e191b12386df26c29a5e5494eb19f076fa",
+          "gitBlob": "f0d1f7a09362edae96a7ed0c4b016c5bf34dc78d"
+        },
+        {
+          "path": "source/tests-web/product-visual-selector.test.mjs",
+          "sourcePath": "tests-web/product-visual-selector.test.mjs",
+          "bytes": 6062,
+          "sha256": "0637e1cd506f05eaff2f7bba5b26c869ee847b18d713529afc33d9bf0f600c94",
+          "gitBlob": "9480f73919a664e6849989ba2d32c8935804f9dd"
+        },
+        {
+          "path": "source/tests-web/scanner-product-visual-association.test.mjs",
+          "sourcePath": "tests-web/scanner-product-visual-association.test.mjs",
+          "bytes": 5714,
+          "sha256": "f6f0986dc8950804640e05804948c3757b5e3b04e0bfa3d54cb9804cb82ec933",
+          "gitBlob": "32c529406da1c6e516ca9d46246a282ddd3f24e7"
+        },
+        {
+          "path": "base/public/off-photo-catalogue.js",
+          "sourcePath": "public/off-photo-catalogue.js",
+          "bytes": 3771,
+          "sha256": "f7e0b953c0f3c6609f8d72597de576d050df90ec16a65e99df84c4b936707e8b",
+          "gitBlob": "e2f0b8e04d722544d6b42a6d6f5e3c14c4ad8e8b"
+        },
+        {
+          "path": "base/public/product-visual-selector.js",
+          "sourcePath": "public/product-visual-selector.js",
+          "bytes": 8621,
+          "sha256": "ebac841504ba5a5e9ae7c363a284201c1a891f591601f12635c44fa2717ac5a7",
+          "gitBlob": "a589bdef9024657a5077a14445d7af7872f74e7b"
+        },
+        {
+          "path": "base/public/scanner-product-visuals.js",
+          "sourcePath": "public/scanner-product-visuals.js",
+          "bytes": 2858,
+          "sha256": "9c891391600be0d2cd09c1a5a435dfa34f9c37503375e0edac86b38d9f2e915e",
+          "gitBlob": "b3a0af82bb76a5efa4efe2a1adbc13189dc953d9"
+        },
+        {
+          "path": "base/tests-web/product-visual-selector.test.mjs",
+          "sourcePath": "tests-web/product-visual-selector.test.mjs",
+          "bytes": 5996,
+          "sha256": "2e955d42552e128b217b019965102410f21f5559c82a01721bf28dd0907c5cb3",
+          "gitBlob": "7d6253bef2353e0ba2f4be7c5ebca2d82e1c910a"
+        },
+        {
+          "path": "base/tests-web/scanner-product-visual-association.test.mjs",
+          "sourcePath": "tests-web/scanner-product-visual-association.test.mjs",
+          "bytes": 5505,
+          "sha256": "cfc9930e1c4b11633489283009f1e1d5f0a6f40e9d22abf1da89126e348a37ec",
+          "gitBlob": "a0eca7c3af5a337c797cadbd9565d26decd2a936"
+        },
+        {
+          "path": "source-delta.patch",
+          "bytes": 25457,
+          "sha256": "ee5fb4ed10ed0ad1bb0feaa866b12b21a527b8b52fd81bd246e79afa1b693ac9"
+        }
+      ],
+      "status": "historical source custody; current application integration and release acceptance not established; no tests/build/deploy run"
+    },
+    {
+      "name": "worker00-recipe-discovery-reviewed-r1-20261026",
+      "originalWorktree": "/home/user/src/offmenu-worktrees/worker00-recipe-discovery-reviewed-r1-20261026",
+      "originalBranch": "codex/recipe-discovery-reviewed-r1-20261026",
+      "originalHead": "1ec8f5cbbf224df33e942850baf9b8aec9108a61",
+      "originalMergeBase": "05096910c651cc7bd518982fd87aa382a223d812",
+      "originalCommitSummary": "1ec8f5cbbf224df33e942850baf9b8aec9108a61 Keep recipe continuation bounded and use same-origin manifest\n7f9ae609c196c283086ae542a3f1c280f8b4200b Connect bounded recipe discovery with reviewed loaded-record cap",
+      "files": [
+        {
+          "path": "source/public/recipe-discovery-client.js",
+          "sourcePath": "public/recipe-discovery-client.js",
+          "bytes": 4022,
+          "sha256": "e8e026682f06bd803091c3dfc72cdcee86a822d87d230629b5784f48702ea562",
+          "gitBlob": "ee3d8de4623d8ea01de0f396a958f29837747e0c"
+        },
+        {
+          "path": "source/public/recipe-library-ui.js",
+          "sourcePath": "public/recipe-library-ui.js",
+          "bytes": 8930,
+          "sha256": "9873ff604170e7df5a0120c5f771540ac83ec910df9609f1a5cb368ad6c6e7fc",
+          "gitBlob": "5d4ee2380a4986546ad0319f339d313e97a932d6"
+        },
+        {
+          "path": "base/public/recipe-library-ui.js",
+          "sourcePath": "public/recipe-library-ui.js",
+          "bytes": 9601,
+          "sha256": "22847d90e0aa2c2bc3fd3566fab71d7087197f39f09ab9ec264d37d023e16b28",
+          "gitBlob": "ab6fde8ee2dbc46c8e54ccc2908882033b10de92"
+        },
+        {
+          "path": "source-delta.patch",
+          "bytes": 20149,
+          "sha256": "c4ef4a081334649a748961e8a90e965440d228c013a73157cfaf4b5f6e1e0ab0"
+        }
+      ],
+      "status": "historical source custody; current application integration and release acceptance not established; no tests/build/deploy run"
+    }
+  ],
+  "newBranchBase": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+  "scope": "source/preimage/patch preservation only; original source status unchanged"
+}

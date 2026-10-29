@@ -1,0 +1,280 @@
+diff --git a/public/off-photo-catalogue.js b/public/off-photo-catalogue.js
+index e2f0b8e04..5fe8e30c0 100644
+--- a/public/off-photo-catalogue.js
++++ b/public/off-photo-catalogue.js
+@@ -1,3 +1,5 @@
++import {retainedCataloguePhotoAttribution} from './off-photo-metadata.js';
++export {extractRetainedOFFPhotos} from './off-photo-metadata.js';
+ // Exact publisher photo URLs verified by Morgan on 25 October 2026 and relayed
+ // through Gateway. These are current publisher observations, not retained-image
+ // index results or proof that a photo belongs to a historical snapshot.
+@@ -37,5 +39,6 @@ export function selectedPublisherPhotos(reference,detail) {
+       contributor:photo.contributor,contributorRole:'publisher-reported-uploader; independent-authorship-unverified'},
+     rights:{displayPermitted:true,license:photo.license,attribution:'Open Food Facts · contributor '+photo.contributor,
+       licenseUrl:photo.licenseUrl,sourcePage:photo.sourcePage,photoLicensePage:photo.licensePage,
+-      changes:'Image bytes relayed unchanged; displayed to fit.',evidenceReference:'docs/off-publisher-photos.md#'+photo.key}}));
++      changes:'Image bytes relayed unchanged; displayed to fit.',evidenceReference:'docs/off-publisher-photos.md#'+photo.key,
++      attributionDetails:retainedCataloguePhotoAttribution(photo,reference.sourceLexicalValue)}}));
+ }
+diff --git a/public/off-photo-metadata.js b/public/off-photo-metadata.js
+new file mode 100644
+index 000000000..7d77711b8
+--- /dev/null
++++ b/public/off-photo-metadata.js
+@@ -0,0 +1,83 @@
++// Pure retained-metadata adapter. No network, image bytes or use-right admission.
++export const OFF_PHOTO_METADATA='offmenu-off-photo-metadata/1';
++export const OFF_PHOTO_LICENSE=Object.freeze({name:'CC BY-SA 3.0',url:'https://creativecommons.org/licenses/by-sa/3.0/'});
++const ROLES=['front','nutrition','ingredients','packaging'],SIZES=['display','small','thumb'];
++const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
++const text=v=>typeof v==='string'&&v.length>0&&v.length<=8192?v:null;
++const code=v=>typeof v==='string'&&/^\d{1,32}$/.test(v)?v:null;
++const integer=v=>typeof v==='string'&&/^\d{1,16}$/.test(v)?v:Number.isSafeInteger(v)&&v>=0?String(v):null;
++const pointer=s=>s.replaceAll('~','~0').replaceAll('/','~1');
++// This is OFF's storage-path convention, never an identity/equivalence join.
++export function offPhotoStorageCode(value){
++ if(!code(value))return null;
++ const significant=value.replace(/^0+/,'')||'0';
++ return significant.length<=8?significant.padStart(8,'0'):significant.length<=12?significant.padStart(13,'0'):significant;
++}
++function folder(value){const stored=offPhotoStorageCode(value);return stored?.length<=8?stored:stored?.replace(/^(...)(...)(...)(.*)$/,'$1/$2/$3/$4');}
++function imageURL(value,sourceCode,role,language=null){
++ if(!text(value)||value.length>4096)return null;
++ try{const u=new URL(value),prefix='/images/products/'+folder(sourceCode)+'/';
++  if(u.protocol!=='https:'||u.hostname!=='images.openfoodfacts.org'||u.port||u.username||u.password||u.search||u.hash||u.href!==value||!u.pathname.startsWith(prefix))return null;
++  const match=/^(front|nutrition|ingredients|packaging)_([a-z]{2})\.(\d{1,16})\.(100|200|400|full)\.(?:jpg|jpeg|png|webp)$/.exec(u.pathname.slice(prefix.length));
++  if(!match||match[1]!==role||language&&match[2]!==language)return null;
++  return {url:value,role:match[1],language:match[2],revision:match[3],resolution:match[4],selectedKey:match[1]+'_'+match[2]};
++ }catch{return null;}
++}
++const noticeFields=['title','copyright','copyright_notice','license_notice','disclaimer','attribution'];
++function credit(sourceCode,photo,{selected=null,raw=null,catalogue=null}={}){
++ const paths={selected:'/images/'+pointer(photo.selectedKey),raw:'/images/'+pointer(integer(selected?.imgid)||''),catalogue:'OFF_PHOTOS[key='+String(catalogue?.key||'')+']'};
++ const notices=[];for(const [origin,entry]of [['selected',selected],['raw',raw],['catalogue',catalogue]])for(const field of noticeFields)if(text(entry?.[field]))notices.push({field,text:entry[field],origin,sourceField:paths[origin]+(origin==='catalogue'?'.':'/')+field});
++ const uploader=text(raw?.uploader)||text(selected?.uploader)||text(catalogue?.contributor);
++ const adaptations={};for(const field of ['imgid','rev','angle','normalize','white_magic','x1','x2','y1','y2','geometry','coordinates_image_size'])if(selected&&Object.hasOwn(selected,field)&&(selected[field]===null||typeof selected[field]==='boolean'||typeof selected[field]==='number'&&Number.isFinite(selected[field])||typeof selected[field]==='string'&&selected[field].length<=8192))adaptations[field]=selected[field];
++ return {schema:OFF_PHOTO_METADATA,sourceName:'Open Food Facts',sourceCode,
++  productUrl:'https://world.openfoodfacts.org/product/'+sourceCode,
++  photoPage:'https://world.openfoodfacts.org/cgi/product_image.pl?code='+sourceCode+'&id='+photo.selectedKey,
++  photoLicense:{...OFF_PHOTO_LICENSE,scope:'Publisher-stated product-photo licence; not database licensing'},
++  databaseLicenses:[{name:'ODbL',url:'https://opendatacommons.org/licenses/odbl/1-0/'},{name:'DbCL',url:'https://opendatacommons.org/licenses/dbcl/1-0/'}],
++  author:uploader?{value:uploader,role:'publisher-reported uploader; independent authorship unverified',sourceField:text(raw?.uploader)?paths.raw+'/uploader':text(selected?.uploader)?paths.selected+'/uploader':paths.catalogue+'.contributor'}:null,
++  notices,adaptationProvenance:{retainedSourceSelection:adaptations,offmenuImageChanges:[],imageBytesFetched:false,imageBytesChanged:false,
++   previousChanges:text(catalogue?.changes)||null,statement:'Metadata selection/URL construction only; no new image adaptation performed.'},
++  packagingRights:{status:'not-universally-cleared',qualification:'Packaging artwork and other underlying rights remain separate; the photo licence alone does not establish all permissions for a proposed use.'},
++  placement:'accessible-photo-details',compactHeaderCredit:false};
++}
++
++/** Extract at most one selected reference per role; metadata is NOT display authority. */
++export function extractRetainedOFFPhotos(product,{selectedSourceCode,language=null}={}){
++ const sourceCode=code(product?.code),packet={schema:OFF_PHOTO_METADATA,sourceCode,photos:[],unavailable:[],usePermissionEstablished:false,imageFetches:0};
++ if(!object(product)||!sourceCode||selectedSourceCode!==sourceCode){packet.unavailable.push({reason:'exact-selected-source-code-mismatch-or-missing'});return packet;}
++ const lang=typeof language==='string'&&/^[a-z]{2}$/.test(language)?language:null;
++ for(const role of ROLES){
++  let chosen=null,evidencePointer=null,kind=null;const rejected=[];
++  if(lang)for(const size of SIZES){const value=product.selected_images?.[role]?.[size]?.[lang];if(value==null)continue;
++   const candidate=imageURL(value,sourceCode,role,lang);if(candidate){chosen=candidate;evidencePointer='/selected_images/'+role+'/'+size+'/'+lang;kind='retained-selected-image-url';break;}
++   rejected.push({pointer:'/selected_images/'+role+'/'+size+'/'+lang,reason:'URL-role-language-or-product-identity-not-qualified'});
++  }
++  if(!chosen)for(const field of ['image_'+role+'_url','image_'+role+'_small_url','image_'+role+'_thumb_url']){
++   if(product[field]==null)continue;const candidate=imageURL(product[field],sourceCode,role,lang);
++   if(candidate){chosen=candidate;evidencePointer='/'+field;kind='retained-image-role-url';break;}
++   rejected.push({pointer:'/'+field,reason:'URL-role-or-product-identity-not-qualified'});
++  }
++  const key=lang?role+'_'+lang:null,selection=key&&object(product.images?.[key])?product.images[key]:null;
++  if(!chosen&&selection){const revision=integer(selection.rev),resolution=['400','200','100','full'].find(size=>Object.hasOwn(selection.sizes||{},size));
++   if(revision&&resolution){chosen=imageURL('https://images.openfoodfacts.org/images/products/'+folder(sourceCode)+'/'+key+'.'+revision+'.'+resolution+'.jpg',sourceCode,role,lang);evidencePointer='/images/'+pointer(key)+'/rev';kind='reconstructed-from-retained-image-revision-and-size';}
++  }
++  if(!chosen){packet.unavailable.push({role,reason:'no-qualified-retained-role-URL-or-explicit-revision-and-size',rejected});continue;}
++  // Do not borrow an uploader/transform from a different revision/language.
++  const boundSelection=object(product.images?.[chosen.selectedKey])&&integer(product.images[chosen.selectedKey].rev)===chosen.revision?product.images[chosen.selectedKey]:null;
++  const rawId=integer(boundSelection?.imgid),raw=rawId&&object(product.images?.[rawId])?product.images[rawId]:null;
++  packet.photos.push({...chosen,selectionKind:kind,sourcePointer:evidencePointer,sourceCode,
++   imageId:rawId,availability:'metadata-reference-only; image bytes and display use unverified',
++   attribution:credit(sourceCode,chosen,{selected:boundSelection,raw}),rejectedAlternatives:rejected});
++ }
++ return packet;
++}
++
++/** Map already-retained fixed-catalogue facts without pretending they are API fields. */
++export function retainedCataloguePhotoAttribution(entry,selectedSourceCode){
++ if(!object(entry)||!code(entry.sourceCode)||entry.sourceCode!==selectedSourceCode||entry.license!==OFF_PHOTO_LICENSE.name||entry.licenseUrl!==OFF_PHOTO_LICENSE.url)return null;
++ const photo=imageURL(entry.url,entry.sourceCode,'front');if(!photo||photo.revision!==entry.revision)return null;
++ return {...credit(entry.sourceCode,photo,{catalogue:entry}),retainedSourceUrl:entry.url,
++  retainedSourcePage:entry.sourcePage,retainedPhotoLicensePage:entry.licensePage,
++  imageId:entry.imageId,revision:entry.revision,sourceKind:'retained-fixed-catalogue-metadata',
++  snapshotMembership:'unverified; current publisher observation only'};
++}
+diff --git a/public/product-visual-selector.js b/public/product-visual-selector.js
+index a589bdef9..0203d3af1 100644
+--- a/public/product-visual-selector.js
++++ b/public/product-visual-selector.js
+@@ -103,7 +103,7 @@ export function selectProductVisual(input,{failedSources=[]}={}) {
+     return {tier:'product-photo',kind:'image',src,
+       alt:currentPublisher?'Current Open Food Facts photo for source code '+candidate.provenance.sourceCode+
+         '; retained label '+name+'; snapshot image unverified':'Source product photo for '+name,
+-      caption:(currentPublisher?'Current publisher photo':'Source product photo')+' · '+candidate.rights.attribution+' · '+candidate.rights.license,
++      caption:currentPublisher?'Current publisher photo':'Source product photo',
+       provenance:candidate.provenance,rights:candidate.rights,
+       identity:{sourceObservationReference:input.sourceObservationReference},
+       competingPhotoCount:photos.length};
+diff --git a/public/scanner-product-visuals.js b/public/scanner-product-visuals.js
+index b3a0af82b..4dae7c35a 100644
+--- a/public/scanner-product-visuals.js
++++ b/public/scanner-product-visuals.js
+@@ -22,12 +22,17 @@ export function mountScannerProductVisual(thumbnail,captionRoot,{onChange=()=>{}
+     }else thumbnail.append(text('span',result.text));
+     captionRoot.append(text('p',result.caption));
+     if(result.tier==='product-photo'){
+-      captionRoot.append(text('p','Current publisher photo; membership in the retained snapshot is unverified.'));
+-      for(const [label,url] of [['Photo source',result.rights.sourcePage],['Photo licence',result.rights.photoLicensePage],
++      const details=text('details',''),credit=result.rights.attributionDetails;
++      details.append(text('summary','Photo source and licence'),text('p',result.rights.attribution));
++      details.append(text('p','Current publisher photo; membership in the retained snapshot is unverified.'));
++      for(const [label,url] of [['Product on Open Food Facts',credit?.productUrl||result.rights.sourcePage],['Photo source',result.rights.sourcePage],['Photo licence',result.rights.photoLicensePage],
+         [result.rights.license,result.rights.licenseUrl]]){
+-        const link=text('a',label);link.href=url;link.target='_blank';link.rel='noopener noreferrer';captionRoot.append(link);
++        const link=text('a',label);link.href=url;link.target='_blank';link.rel='noopener noreferrer';details.append(link);
+       }
+-      captionRoot.append(text('p',result.rights.changes));
++      for(const notice of credit?.notices||[])details.append(text('p',notice.field+': '+notice.text));
++      details.append(text('p',result.rights.changes));
++      if(credit?.packagingRights?.qualification)details.append(text('p',credit.packagingRights.qualification));
++      captionRoot.append(details);
+     }
+     if(notify)onChange(result);return result;
+   }
+diff --git a/tests-web/off-photo-metadata-focused.test.mjs b/tests-web/off-photo-metadata-focused.test.mjs
+new file mode 100644
+index 000000000..f0d1f7a09
+--- /dev/null
++++ b/tests-web/off-photo-metadata-focused.test.mjs
+@@ -0,0 +1,98 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {extractRetainedOFFPhotos,offPhotoStorageCode,retainedCataloguePhotoAttribution} from '../public/off-photo-metadata.js';
++import {OFF_PHOTOS,selectedPublisherPhotos} from '../public/off-photo-catalogue.js';
++import {associateProductVisual} from '../public/product-visual-association.js';
++import {mountScannerProductVisual} from '../public/scanner-product-visuals.js';
++import {photoFixture} from './fixtures/off-photos/context.mjs';
++const C='3017620422003',D='4061464939738',base='https://images.openfoodfacts.org/images/products/301/762/042/2003/';
++const url=(role='front',rev='7',size='400',lang='en')=>base+role+'_'+lang+'.'+rev+'.'+size+'.jpg';
++const extract=(p,opts={})=>extractRetainedOFFPhotos(p,{selectedSourceCode:C,language:'en',...opts});
++const front=p=>extract(p).photos.find(p=>p.role==='front');
++
++test('requested-language legacy fallback uses matching English reconstruction instead of French URL',()=>{
++ for(const field of ['image_front_url','image_front_small_url','image_front_thumb_url']){
++  const input={code:C,[field]:url('front','7','400','fr'),images:{front_en:{rev:'19',sizes:{400:{}}}}},original=structuredClone(input);
++  const result=front(input);assert.equal(result.language,'en');assert.equal(result.url,url('front','19'));assert.equal(result.selectionKind,'reconstructed-from-retained-image-revision-and-size');assert.deepEqual(input,original);
++ }
++});
++
++test('requested-language legacy fallback is unavailable without matching English revision; unknown request preserves actual language',()=>{
++ for(const field of ['image_front_url','image_front_small_url','image_front_thumb_url']){
++  const input={code:C,[field]:url('front','7','400','fr')},original=structuredClone(input);
++  assert.equal(front(input),undefined);
++  assert.equal(extract(input,{language:null}).photos[0].language,'fr');
++  assert.deepEqual(input,original);
++ }
++});
++
++test('synthetic selected_images display/small/thumb order precedes retained image_front URLs, originals exact',()=>{
++ for(const selected of [{display:{en:url('front','11')},small:{en:url('front','12')},thumb:{en:url('front','13')}},{small:{en:url('front','12')},thumb:{en:url('front','13')}},{thumb:{en:url('front','13')}}]){
++  const product={code:C,selected_images:{front:selected},image_front_url:url('front','1')},copy=structuredClone(product),expected=Object.values(selected)[0].en;
++  const result=front(product);assert.equal(result.url,expected);assert.equal(result.selectionKind,'retained-selected-image-url');assert.deepEqual(product,copy);assert.equal(extract(product).usePermissionEstablished,false);
++ }
++});
++
++test('synthetic retained legacy front URLs preserved without revision rewrite',()=>{
++ for(const field of ['image_front_url','image_front_small_url','image_front_thumb_url']){
++  const product={code:C,[field]:url('front','3'),images:{front_en:{rev:'999',imgid:'2',sizes:{400:{}}},2:{uploader:'DO NOT BORROW FROM OTHER REVISION'}}};
++  const result=front(product);assert.equal(result.url,product[field]);assert.equal(result.revision,'3');assert.equal(result.attribution.author,null);assert.deepEqual(result.attribution.adaptationProvenance.retainedSourceSelection,{});
++ }
++});
++
++test('synthetic reconstruction requires actual retained role revision and size, no guessed default',()=>{
++ const product={code:C,images:{front_en:{rev:'17',imgid:'2',sizes:{200:{}},angle:90},2:{uploader:'fixture-uploader',copyright_notice:'fixture notice',disclaimer:'fixture disclaimer'}}};
++ const result=front(product);assert.equal(result.url,url('front','17','200'));assert.equal(result.sourcePointer,'/images/front_en/rev');assert.equal(result.imageId,'2');assert.equal(result.attribution.author.value,'fixture-uploader');assert.equal(result.attribution.adaptationProvenance.retainedSourceSelection.angle,90);assert.equal(result.attribution.notices.length,2);
++ for(const images of [{front_en:{sizes:{400:{}}}},{front_en:{rev:'17'}},{front_en:{rev:true,sizes:{400:{}}}},{front_en:{rev:'NaN',sizes:{400:{}}}}])assert.equal(front({code:C,images}),undefined);
++});
++
++test('EAN8 storage differs from9–12 padding, identity strings unchanged',()=>{
++ const cases=[['12345670','12345670'],['00123456','00123456'],['123456789','0000123456789'],['1234567890','0001234567890'],['12345678901','0012345678901'],['123456789012','0123456789012'],['3017620422003','3017620422003']];
++ for(const [code,storage]of cases){assert.equal(offPhotoStorageCode(code),storage);const p={code,images:{front_en:{rev:'8',sizes:{400:{}}}}},packet=extract(p,{selectedSourceCode:code});assert.equal(packet.sourceCode,code);assert.equal(packet.photos[0].sourceCode,code);if(code.length===8)assert.match(packet.photos[0].url,new RegExp('/products/'+code+'/front_en'));else assert.notEqual(packet.photos[0].url.includes('/products/'+code+'/'),true);}
++});
++
++test('four image roles remain separate, never substitute nutrition/ingredients/packaging for front',()=>{
++ const selected=Object.fromEntries(['front','nutrition','ingredients','packaging'].map(role=>[role,{display:{en:url(role)}}]));
++ const result=extract({code:C,selected_images:selected});assert.deepEqual(result.photos.map(p=>p.role),['front','nutrition','ingredients','packaging']);
++ assert.equal(front({code:C,selected_images:{nutrition:selected.nutrition}}),undefined);
++ assert.equal(front({code:C,selected_images:{front:{display:{en:url('nutrition')}}}}),undefined);
++});
++
++test('exact selected sourcecode prevents301 photo association with406 and does not normalize identity joins',()=>{
++ assert.equal(extract({code:C,image_front_url:url()},{selectedSourceCode:D}).photos.length,0);
++ assert.equal(extract({code:D,image_front_url:url()},{selectedSourceCode:D}).photos.length,0);
++ assert.equal(extract({code:'03017620422003',image_front_url:url()},{selectedSourceCode:C}).photos.length,0);
++ assert.equal(retainedCataloguePhotoAttribution(OFF_PHOTOS[1],D),null);
++});
++
++test('URL safety and declared language are checked; unknown alternatives never acquire credentials or unrelated fields',()=>{
++ for(const value of ['https://user:secret@images.openfoodfacts.org/images/products/301/762/042/2003/front_en.7.400.jpg',url()+'?x=1','http:'+url().slice(6),url('front','7','400','fr'),'https://example.invalid/front_en.7.400.jpg']){
++  const packet=extract({code:C,selected_images:{front:{display:{en:value}}},credentials:'PRIVATE'});assert.equal(packet.photos.length,0);assert.ok(!JSON.stringify(packet).includes('secret'));assert.ok(!JSON.stringify(packet).includes('PRIVATE'));
++ }
++});
++
++test('no language is invented for selected_images or revision reconstruction',()=>{
++ const p={code:C,selected_images:{front:{display:{en:url()}}},images:{front_en:{rev:'7',sizes:{400:{}}}}};assert.equal(extract(p,{language:null}).photos.length,0);
++});
++
++test('photoCCBYSA3 separate fromODbL/DbCL, notices/adaptation and packaging limits stay explicit',()=>{
++ const result=front({code:C,image_front_url:url()});const dto=result.attribution;
++ assert.equal(dto.photoLicense.name,'CC BY-SA 3.0');assert.equal(dto.photoLicense.url,'https://creativecommons.org/licenses/by-sa/3.0/');assert.deepEqual(dto.databaseLicenses.map(x=>x.name),['ODbL','DbCL']);assert.equal(dto.productUrl,'https://world.openfoodfacts.org/product/'+C);assert.equal(dto.placement,'accessible-photo-details');assert.equal(dto.compactHeaderCredit,false);assert.equal(dto.packagingRights.status,'not-universally-cleared');assert.equal(dto.adaptationProvenance.imageBytesFetched,false);assert.equal(dto.adaptationProvenance.imageBytesChanged,false);
++});
++
++test('actual two retained catalogue entries map exact saved URLs/contributors/revisions without claiming raw API extraction or custody',()=>{
++ const evidence=OFF_PHOTOS.map(entry=>{const before=structuredClone(entry),dto=retainedCataloguePhotoAttribution(entry,entry.sourceCode);assert.ok(dto);assert.equal(dto.retainedSourceUrl,entry.url);assert.equal(dto.author.value,entry.contributor);assert.equal(dto.revision,entry.revision);assert.deepEqual(entry,before);return {key:entry.key,sourceCode:entry.sourceCode,savedURL:entry.url,dto};});
++ assert.equal(evidence.length,2);
++});
++
++test('existing catalogue exact observation binding retained; no301 on406 or private10300 enrichment',()=>{
++ const f=photoFixture(),candidate=selectedPublisherPhotos(f.reference,f.detail)[0];assert.ok(candidate.rights.attributionDetails);assert.equal(candidate.provenance.sourceCode,'0078742003986');
++ const packet=structuredClone(f);packet.reference.sourceLexicalValue=D;packet.reference.originalLexicalValue=D;packet.detail.sourceObservation.lexical_value=D;packet.detail.records[0].data.identifiers[0].value=D;assert.deepEqual(selectedPublisherPhotos(packet.reference,packet.detail),[]);
++ const result=associateProductVisual(f);assert.equal(result.visual.tier,'product-photo');assert.equal(result.visual.caption,'Current publisher photo');assert.ok(!result.visual.caption.includes('foodless'));assert.equal(result.visual.rights.attributionDetails.author.value,'foodless');
++});
++
++class Node {constructor(tag,doc){this.tagName=tag;this.ownerDocument=doc;this.children=[];this.dataset={};this.textContent='';}append(...n){this.children.push(...n);}replaceChildren(...n){this.children=[...n];}get firstChild(){return this.children[0];}}
++test('credit/source/licence links are in native accessible details, compact caption contains no credit; no image network infakeDOM',()=>{
++ const doc={documentElement:{dataset:{theme:'light'}},createElement:tag=>new Node(tag,doc)},thumb=new Node('div',doc),caption=new Node('div',doc);const mounted=mountScannerProductVisual(thumb,caption);mounted.show(photoFixture());
++ assert.equal(caption.children[0].textContent,'Current publisher photo');const details=caption.children.find(n=>n.tagName==='details');assert.ok(details);assert.equal(details.children[0].tagName,'summary');assert.equal(details.children[0].textContent,'Photo source and licence');assert.ok(details.children.some(n=>n.textContent.includes('foodless')));assert.ok(details.children.some(n=>n.tagName==='a'&&n.href==='https://creativecommons.org/licenses/by-sa/3.0/'));assert.ok(details.children.some(n=>n.tagName==='a'&&n.href==='https://world.openfoodfacts.org/product/0078742003986'));assert.ok(details.children.some(n=>n.textContent.includes('Packaging artwork')));mounted.destroy();
++});
+diff --git a/tests-web/product-visual-selector.test.mjs b/tests-web/product-visual-selector.test.mjs
+index 7d6253bef..9480f7391 100644
+--- a/tests-web/product-visual-selector.test.mjs
++++ b/tests-web/product-visual-selector.test.mjs
+@@ -26,7 +26,8 @@ test('qualified exact OFF front photo wins with source attribution; ingredient s
+   const result=selectProductVisual(input({photoCandidates:[photo()],ingredientStatus:'non-food'}));
+   assert.equal(result.tier,'product-photo');assert.equal(result.src,url);
+   assert.match(result.alt,/Generated source name/);
+-  assert.match(result.caption,/Generated fixture contributor/);
++  assert.equal(result.caption,'Source product photo');
++  assert.match(result.rights.attribution,/Generated fixture contributor/);
+   assert.equal(result.provenance.sourceId,'off');
+   assert.equal(result.rights.license,'Fixture CC BY-SA');
+ });
+diff --git a/tests-web/scanner-product-visual-association.test.mjs b/tests-web/scanner-product-visual-association.test.mjs
+index a0eca7c3a..32c529406 100644
+--- a/tests-web/scanner-product-visual-association.test.mjs
++++ b/tests-web/scanner-product-visual-association.test.mjs
+@@ -32,7 +32,10 @@ test('actual caller uses the shared typed association and preserves photo credit
+   assert.ok(!JSON.stringify(value).includes('DO NOT COPY')); // proves the shared typed snapshot is used
+   assert.match(caption.textContent,/foodless/);assert.match(caption.textContent,/CC BY-SA 3.0/);
+   assert.match(caption.textContent,/membership in the retained snapshot is unverified/);
+-  const links=caption.children.filter(node=>node.tagName==='a');assert.equal(links.length,3);
++  assert.equal(caption.children[0].textContent,'Current publisher photo');
++  const disclosure=caption.children.find(node=>node.tagName==='details');
++  assert.equal(disclosure.firstChild.tagName,'summary');
++  const links=disclosure.children.filter(node=>node.tagName==='a');assert.equal(links.length,4);
+   for(const link of links){assert.equal(link.target,'_blank');assert.equal(link.rel,'noopener noreferrer');}
+   assert.equal(changes.length,0);assert.equal(presenter.current(),value);
+ });
