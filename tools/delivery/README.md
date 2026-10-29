@@ -164,3 +164,10 @@ An isolated Windmill clone owns its `.delivery/` checkpoints and uses its own
 
 See the [architecture handover](../../docs/development/delivery-architecture.md)
 for records versus checkpoints, proven adapters and remaining optional capabilities.
+
+## Parallel operating capacity
+
+Use the reviewed [8/16/32/64 capacity policy](capacity-policy.json),
+[parallel task admission](../../docs/development/parallel-capacity.md) and
+[protocol handover](../../docs/development/execution-protocols.md). The earlier
+one-issue pilot receipts remain historical proof, not current capacity limits.
