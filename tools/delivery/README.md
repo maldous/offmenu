@@ -30,6 +30,11 @@ and child commands, even if a developer's shell enables it.
 
 ## Reviewed task contract
 
+Use the [routing and tracking runbook](../../docs/development/task-routing.md)
+to select an execution lane, retain one operation owner and link its evidence.
+The [validation handoff example](../../examples/validation-handoff.json) is
+schema-valid illustrative input, not an admitted or executable production task.
+
 Create a task JSON under ignored `.delivery/` with `version:1`, a lowercase hyphenated
 `id`, `owner`, `purpose`, immutable `base_revision` (40-character HEAD SHA), an optional explicit `branch` (the generated task includes it),
 `checks:[{id,argv,timeout,attempts,retry_safe}]` and
