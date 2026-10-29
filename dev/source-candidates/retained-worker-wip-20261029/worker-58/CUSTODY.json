@@ -1,0 +1,23 @@
+{
+  "utc": "2026-10-29T04:12:33.637998+00:00",
+  "historicalWorker": 58,
+  "sourceQualificationSha256": "5efec40f2316e95b65c8cd411576622fccff89e65597e5b2bc6c1b5f923fdecd",
+  "files": [
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-58/scripts/authenticated-browser-qa-admission.mjs",
+      "relativePath": "scripts/authenticated-browser-qa-admission.mjs",
+      "bytes": 19702,
+      "sha256": "9a94cccd6d8be7121e86d8ba15fe2af70fdf0cc308eb8694203f72cf548532da"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-58/scripts/authenticated-browser-qa-driver.mjs",
+      "relativePath": "scripts/authenticated-browser-qa-driver.mjs",
+      "bytes": 4150,
+      "sha256": "dcabd650f784e47367dd07a98a6225d3618c67eb1bdbd63f872907f23db9a63c"
+    }
+  ],
+  "status": "source-only historical custody; no app integration, execution or activation",
+  "scope": "original source code/contracts only; opaque evidence/data/config/session exports excluded",
+  "executionDependencyClosure": "not claimed complete; original source packet dependencies and retained holds remain prerequisites",
+  "testsBuildsBrowserRuntimeUsed": false
+}

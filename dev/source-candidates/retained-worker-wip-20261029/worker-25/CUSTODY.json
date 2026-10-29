@@ -1,0 +1,95 @@
+{
+  "utc": "2026-10-29T04:12:33.637692+00:00",
+  "historicalWorker": 25,
+  "sourceQualificationSha256": "bda70acc06aa6acbd3ce4a396f50e20edd147f98bf0283054ce145dbe5e19ce0",
+  "files": [
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/probes.mjs",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/probes.mjs",
+      "bytes": 7401,
+      "sha256": "091f1dafcac6d62fab45928259a5f1b46c2ebf09b23422bbf8a23ac0b03cde15"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/cloud/state.mjs",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/cloud/state.mjs",
+      "bytes": 6238,
+      "sha256": "801c68accc3a21fa59756e8cc8029251319ff0266ad93152563ad499f666b88b"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/docs/queue-state-bridge-owner16.md",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/docs/queue-state-bridge-owner16.md",
+      "bytes": 12966,
+      "sha256": "35971c2ff62a84794cc981dd0189bbeab982fc3c0d77cef7b72ba06495c3b729"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/checkout-model.js",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/checkout-model.js",
+      "bytes": 3416,
+      "sha256": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/cooking-model.js",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/cooking-model.js",
+      "bytes": 7863,
+      "sha256": "f41d1f8af6c018393e58445a91d46ec934069331121390e6c48dc80651a059c7"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/i18n.js",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/i18n.js",
+      "bytes": 8341,
+      "sha256": "682f78fc69b6ead8fbcd970e2f076dcdff8348d2210475681452d1f93a8ed9fe"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/ingredients.js",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/ingredients.js",
+      "bytes": 5143,
+      "sha256": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/insights-model.js",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/insights-model.js",
+      "bytes": 5798,
+      "sha256": "86a2b1b8359581df5108b08c0b9cfbeee2ec5f84dba4ff230384cb1d165cf0f9"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/locale-negotiation.js",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/locale-negotiation.js",
+      "bytes": 2675,
+      "sha256": "1546a2356af07841d81d1d8f1aa60cbd0ed051ff92820f0fefb7a4e8cac34009"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/menu-model.js",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/menu-model.js",
+      "bytes": 3306,
+      "sha256": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/model.js",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/model.js",
+      "bytes": 4450,
+      "sha256": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/unified-data.js",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/public/unified-data.js",
+      "bytes": 14640,
+      "sha256": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/tests-web/queue-state-bridge-owner16.test.mjs",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/tests-web/queue-state-bridge-owner16.test.mjs",
+      "bytes": 10359,
+      "sha256": "7cf6fff5da79587b1ae2be68914f0d18b1a0d96358e6158bd915f38c8aeb9215"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker-25/docs/reviews/worker25-digest-11c8373-20261015/snapshot/tests-web/queue-state-native-owner16.test.mjs",
+      "relativePath": "docs/reviews/worker25-digest-11c8373-20261015/snapshot/tests-web/queue-state-native-owner16.test.mjs",
+      "bytes": 10104,
+      "sha256": "89ca83e44c10a1590bdc1cc2ff015ecc88ac77eeb6f09b28e2ff7d0842f3b9a7"
+    }
+  ],
+  "status": "source-only historical custody; no app integration, execution or activation",
+  "scope": "original source code/contracts only; opaque evidence/data/config/session exports excluded",
+  "executionDependencyClosure": "not claimed complete; original source packet dependencies and retained holds remain prerequisites",
+  "testsBuildsBrowserRuntimeUsed": false
+}
