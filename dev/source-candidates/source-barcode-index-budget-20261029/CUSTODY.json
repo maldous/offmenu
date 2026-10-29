@@ -1,0 +1,93 @@
+{
+  "activationPerformed": false,
+  "baseCommit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+  "baselineEvidence": {
+    "correctionApplied": false,
+    "currentIndexDeadlineMs": 10000,
+    "lastTestExitCode": 1,
+    "newBuildPerformed": false,
+    "newTestMethods": 4,
+    "passingAfterRun": false,
+    "proposed30000msNotApplied": true,
+    "testsRunForPreservation": false,
+    "valid18SecondSyntheticInput": "rejected503/index-unavailable at manifest-fetch/cancelled-or-deadline"
+  },
+  "branch": "bugfix/source-barcode-index-budget-20261029",
+  "context": "Same actual209 failure investigation; server candidate deadline10000ms versus reported40000ms client and approximately10.8s503. Causality unproven.",
+  "deploymentPerformed": false,
+  "excluded": [
+    "failing-before.log",
+    "captures",
+    "runtime arguments",
+    "generated builds",
+    "archives",
+    "credentials",
+    "datasets",
+    "dependencies",
+    "caches"
+  ],
+  "files": [
+    {
+      "bytes": 1154,
+      "path": "build-facts.mjs",
+      "sha256": "026966b3c597166fe356d3c3910a14c11ed9a6fec1a6e38dff69da37d0439647"
+    },
+    {
+      "bytes": 890,
+      "path": "source/protocol-pins.mjs",
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a"
+    },
+    {
+      "bytes": 16505,
+      "path": "source/reviewed-hydration/source-barcode-client.mjs",
+      "sha256": "273afcb617a208c9e7385026351bc3f748e133b17a2eb37f5454b230b5351197"
+    },
+    {
+      "bytes": 11810,
+      "path": "source/reviewed-hydration/source-barcode-hydrator.mjs",
+      "sha256": "a2d96a9736942982408f51233384e503df7b7795ea24533a3f9d5f94c76300d9"
+    },
+    {
+      "bytes": 208,
+      "path": "source/reviewed-hydration/source-barcode-selection.mjs",
+      "sha256": "adaddd1ea29bc47860e4ed557b477240bab677b5eb431dc255a5c5887159f71e"
+    },
+    {
+      "bytes": 7750,
+      "path": "source/source-barcode-facts-handler.mjs",
+      "sha256": "ea987c6bb5e00d7d71f6f6c27d52313bbd5aabce8a7d9a3946ba4672ff89aaac"
+    },
+    {
+      "bytes": 16176,
+      "path": "source/source-barcode-handler.mjs",
+      "sha256": "56723cd22ecb72713b5dd4cc98b1a24adbb262200d25796e2d74f4a069d9d9eb"
+    },
+    {
+      "bytes": 3888,
+      "path": "source/stream-shard.mjs",
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a"
+    },
+    {
+      "bytes": 2044,
+      "path": "source/strict-json.mjs",
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099"
+    },
+    {
+      "bytes": 9547,
+      "path": "tests/index-budget.test.mjs",
+      "sha256": "0c2511f69995d7e82d219578188944efa286d8a5f501f1537cd5c3d3a018e730"
+    }
+  ],
+  "ownerResumed": false,
+  "ownerTask": "01a181e9",
+  "productionChanged": false,
+  "relatedScannerOwnerTask": "01a182db",
+  "resumeSourcePrefix": "dev/source-candidates/source-barcode-index-budget-20261029",
+  "schemaVersion": "offmenu-source-preservation-custody/1",
+  "status": "UNREVIEWED INACTIVE WIP; not a demonstrated fix",
+  "workflowsUnchanged": {
+    ".github/workflows/foo-runner.yml": "3b487342fc6fac3ec19266e1cbcf6c9d51e1294b",
+    ".github/workflows/third-party-services.yml": "c1643006a1cf375935e4b135339fa2355567b0b0"
+  },
+  "worktree": "/home/user/src/offmenu-worktrees/source-barcode-index-budget-20261029"
+}
