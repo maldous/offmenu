@@ -109,3 +109,21 @@ all11 in7.1seconds. The finite180-second supervisor deadline stopped the native
 continuation, so the process receipt correctly stayed unaccepted. Source output
 acceptance is separate and was established by review and behavioral tests.
 One-turn admission is now selected to prevent redundant continuation.
+
+## Completed one-turn native session
+
+The OffMenu-only v3 session admitted exactly UIF-90 on source
+7283d8227ae724f1cb376ed30750faa0a3ed43ab, requestedgpt-6.1-sol/medium
+through the verified existing Pro account, and ended normal_turn_completed.
+The after-run marker was observed before the deadline; finite_deadline_or_interrupt
+wasfalse. The wrapper deliberately stopped its owned native polling process
+after the task ended, and the transient unit finished success. No legacy service
+was started. Its process receipt still marks accepted_delivery=false because
+source review belongs to the integration writer.
+
+The reviewed output adds five CLI regressions: successful safe retry without
+replay, timeout plus explicit reconciliation/retry, writer contention, source
+drift across process resume, and output verification at final acceptance.
+Combined with the preceding eleven, the CLI suite now has16 tests.
+
+Sanitized native process receipt SHA256: 987677e7df3c0fe9c731beca171542df94b3c806cab94cb3cd9ce52b6dd5568b.

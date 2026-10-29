@@ -229,6 +229,100 @@ class CliTests(unittest.TestCase):
         self.assert_blocked('run', self.task_path, reason='retry_safe')
         self.assertFalse(self.receipt('binding.json').exists())
 
+    def test_retry_safe_failure_can_succeed_without_replaying_on_reentry(self):
+        step = self.task['checks'][0]
+        step.update(attempts=2, retry_safe=True)
+        step['argv'][2] += "; raise SystemExit(7 if p.read_text() == '1' else 0)"
+        self.save_task()
+        self.assertEqual(self.cli('run', self.task_path)['status'], 'accepted')
+        record = json.loads(self.receipt('counter.json').read_text())
+        self.assertEqual((record['status'], record['returncode'], record['attempt']),
+                         ('succeeded', 0, 2))
+        events = [json.loads(path.read_text())
+                  for path in self.receipt('binding.json').parent.glob('event-*.json')]
+        self.assertEqual(sorted(event['attempt'] for event in events
+                                if event['event'] == 'check-started'), [1, 2])
+        accepted = self.cli('status', self.task_path)
+        self.assertEqual(self.cli('run', self.task_path), accepted)
+        self.assertEqual((self.root / 'counter.txt').read_text(), '2')
+        self.assertEqual(json.loads(self.receipt('counter.json').read_text()), record)
+
+    def test_timeout_holds_all_writers_until_reconciled_then_uses_safe_retry(self):
+        step = self.task['checks'][0]
+        step.update(timeout=1, attempts=2, retry_safe=True)
+        step['argv'][2] += "; import time; time.sleep(10 if p.read_text() == '1' else 0)"
+        self.save_task()
+        self.assert_blocked('run', self.task_path, reason='timed_out')
+        record = self.cli('status', self.task_path)['checks'][0]
+        self.assertEqual((record['status'], record['attempt']), ('timed_out', 1))
+        self.assertNotEqual(record['returncode'], 0)
+        self.assertEqual((self.root / 'counter.txt').read_text(), '1')
+
+        other_path = self.root / '.delivery' / 'other.json'
+        other_path.write_text(json.dumps({**self.task, 'id': 'other-task'}))
+        for path in (self.task_path, other_path):
+            with self.subTest(task=path.name):
+                self.assert_blocked('run', path, reason='blocked_reconciliation')
+        self.assert_blocked('prepare', '--task-id', 'review-task', '--owner', 'reviewer',
+                            reason='blocked_reconciliation')
+        self.assertFalse((self.root / '.delivery' / 'other-task').exists())
+        self.assertFalse((self.root / '.delivery' / 'review-task.json').exists())
+        self.assertEqual(self.cli('status', self.task_path)['checks'][0], record)
+        self.assertEqual((self.root / 'counter.txt').read_text(), '1')
+
+        evidence = self.root / '.delivery' / 'timeout-evidence.json'
+        evidence.write_text(json.dumps({
+            'observer': 'offline-test', 'reason': 'Local timeout receipt after child reap',
+            'process_tree_gone': True}))
+        self.assertEqual(self.cli('reconcile', self.task_path, '--check-id', 'counter',
+                                 '--outcome', 'failed', '--evidence', evidence), {
+            'status': 'reconciled', 'check': 'counter', 'outcome': 'failed'})
+        self.assertEqual(self.cli('run', self.task_path)['status'], 'accepted')
+        final = json.loads(self.receipt('counter.json').read_text())
+        self.assertEqual((final['status'], final['attempt']), ('succeeded', 2))
+        self.cli('run', self.task_path)
+        self.assertEqual((self.root / 'counter.txt').read_text(), '2')
+
+    def test_writer_contention_blocks_run_and_prepare_without_binding_tasks(self):
+        with writer(self.root):
+            self.assert_blocked('run', self.task_path, reason='busy')
+            self.assert_blocked('prepare', '--task-id', 'review-task', '--owner', 'reviewer',
+                                reason='busy')
+            self.assertEqual(self.cli('status', self.task_path)['status'], 'not_found')
+            self.assertFalse(self.receipt('binding.json').parent.exists())
+            self.assertFalse((self.root / '.delivery' / 'review-task.json').exists())
+            self.assertFalse((self.root / 'counter.txt').exists())
+        self.assertEqual(self.cli('run', self.task_path)['status'], 'accepted')
+        self.assertEqual((self.root / 'counter.txt').read_text(), '1')
+
+    def test_source_drift_blocks_cross_process_resume_without_replaying_checks(self):
+        self.cli('run', self.task_path, '--pause-after', 'execute')
+        binding = self.receipt('binding.json').read_bytes()
+        record = self.receipt('counter.json').read_bytes()
+        source = self.root / 'package.json'
+        original = source.read_bytes()
+        source.write_text('{"changed": true}\n')
+        self.assert_blocked('run', self.task_path, reason='already bound')
+        self.assertEqual(self.git('rev-parse', 'HEAD'), self.task['base_revision'])
+        self.assertEqual(self.receipt('binding.json').read_bytes(), binding)
+        self.assertEqual(self.receipt('counter.json').read_bytes(), record)
+        self.assertFalse(self.receipt('accepted.json').exists())
+        source.write_bytes(original)
+        self.assertEqual(self.cli('run', self.task_path)['status'], 'accepted')
+        self.assertEqual((self.root / 'counter.txt').read_text(), '1')
+
+    def test_accept_revalidates_outputs_after_verify_process_exits(self):
+        paused = self.cli('run', self.task_path, '--pause-after', 'verify')
+        self.assertEqual(paused['next'], ['accept'])
+        self.assertFalse(self.receipt('accepted.json').exists())
+        (self.root / 'result.txt').write_text('changed after verification\n')
+        self.assert_blocked('run', self.task_path, reason='hash mismatch')
+        self.assertFalse(self.receipt('accepted.json').exists())
+        self.assertEqual(self.cli('status', self.task_path)['status'], 'not_accepted')
+        (self.root / 'result.txt').write_text('accepted bytes\n')
+        self.assertEqual(self.cli('run', self.task_path)['status'], 'accepted')
+        self.assertEqual((self.root / 'counter.txt').read_text(), '1')
+
 
 if __name__ == '__main__':
     unittest.main()
