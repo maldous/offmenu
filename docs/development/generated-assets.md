@@ -31,7 +31,7 @@ hold is evidence to retain; it does not authorize changing the held artifact.
 The focused tests are part of `npm test` and can be run independently:
 
 ```sh
-node --test tests-web/generated-extension.test.mjs
+node --test tests/web/generated-extension.test.mjs
 ```
 
 This is an optional local check, not a new required CI gate. It covers the tracked

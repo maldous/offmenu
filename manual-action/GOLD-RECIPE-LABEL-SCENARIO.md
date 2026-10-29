@@ -100,7 +100,7 @@ bindings, context, units, definitions, methods, citation rights,
 ambiguous observations, snapshot selection and bounds:
 
 ```sh
-node --test tests-web/gold-recipe-label-scenario.test.mjs
+node --test tests/web/gold-recipe-label-scenario.test.mjs
 ```
 
 Actual demonstrations remain in the worker's private retained evidence packet.

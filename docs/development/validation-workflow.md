@@ -27,13 +27,13 @@ when affected. A local fast pass is evidence for that scope, not a release pass.
    For receipt, shelf replacement, undo, resume or inventory consequences:
 
    ```sh
-   node --test tests-web/checkout.test.mjs tests-web/checkout-ui.test.mjs tests-web/receipt-identity-ui.test.mjs tests-web/receipt-identity-preservation.test.mjs
+   node --test tests/web/checkout.test.mjs tests/web/checkout-ui.test.mjs tests/web/receipt-identity-ui.test.mjs tests/web/receipt-identity-preservation.test.mjs
    ```
 
    These names are examples for that seam, not a requirement to run checkout
    tests for unrelated documentation. Syntax checks do not exercise behavior.
 
-   `npm run validate:dev -- tests-web/scanner-capture-envelope.test.mjs` runs only
+   `npm run validate:dev -- tests/web/scanner-capture-envelope.test.mjs` runs only
    explicitly selected test files and deduplicates repeated paths. No paths is
    an error. Add `--plan` to list the command without executing tests. Select
    auth, isolation and data-integrity cases when their dependency boundary changes;
@@ -56,7 +56,7 @@ when affected. A local fast pass is evidence for that scope, not a release pass.
    identifier UI/host boundary, the repository has:
 
    ```sh
-   node --test tests-web/identifier-ui-wired.test.mjs tests-web/identifier-host.test.mjs
+   node --test tests/web/identifier-ui-wired.test.mjs tests/web/identifier-host.test.mjs
    ```
 
    The Node/Python native host and the Worker are different runtime boundaries.
@@ -75,10 +75,10 @@ Choose by the behavior changed, preserving existing auth and isolation checks:
 
 | Affected seam | Existing command / evidence boundary |
 | --- | --- |
-| Principal/session verification or auth adapter | `npm run test:auth`; runtime seam changes also use `node --test tests-web/auth-runtime.test.mjs tests-edge/auth-runtime.test.mjs`. Synthetic auth tests do not activate a provider or migrate users. |
-| Shared-kitchen permissions | `node --test tests-web/kitchens.test.mjs`; retain owner/read-only/account isolation assertions. |
+| Principal/session verification or auth adapter | `npm run test:auth`; runtime seam changes also use `node --test tests/web/auth-runtime.test.mjs tests/edge/auth-runtime.test.mjs`. Synthetic auth tests do not activate a provider or migrate users. |
+| Shared-kitchen permissions | `node --test tests/web/kitchens.test.mjs`; retain owner/read-only/account isolation assertions. |
 | Checkout, receipt identity, replacement or cancellation | The focused checkout/receipt command above; preserve source observation identity, resumed drafts, undo and final-confirmation consequences. |
-| Account persistence or queued state | Select affected cases in `tests-web/session-state-d1-owner04.test.mjs` and `tests-web/queue-state-http-owner16.test.mjs`; state changes must preserve account separation, revisions, conflict and replay semantics. |
+| Account persistence or queued state | Select affected cases in `tests/web/session-state-d1-owner04.test.mjs` and `tests/web/queue-state-http-owner16.test.mjs`; state changes must preserve account separation, revisions, conflict and replay semantics. |
 | Source/data admission, privacy or schema | Use the selected owner's exact synthetic contract checks and reviewed input/admission evidence. Do not replay held corpora, use live private data or treat a generated fixture as real-input acceptance. |
 
 A failure affecting unauthorized access, account mixing, secret exposure,

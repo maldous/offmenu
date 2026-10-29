@@ -70,7 +70,7 @@ extension drift. If it reports drift, reconcile the source and regenerate/review
 the output deliberately; do not treat a subsequent build as evidence that the
 original output was current.
 
-`npm test` selects `tests-web/*.test.mjs`; it does not select `tests-edge/`.
+`npm test` selects `tests/web/*.test.mjs`; it does not select `tests/edge/`.
 `npm run test:auth` is an additional focused authentication command. The workflow
 also names a bounded portable receipt-OCR check; retain that check when changing
 its extraction or admission path. Optional external scans are separate from

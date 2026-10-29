@@ -188,3 +188,11 @@ For a phone on the same network, camera access needs HTTPS with a certificate tr
 - [Historical product review](docs/product-review-status.md) and [acceptance register](docs/acceptance-register.md): dated evidence and limitations, not certification of the current runtime.
 
 Source licences and per-record attribution remain attached to the data; normalization does not relicense it. Credentials, private customer records and raw datasets do not belong in this repository. Health interpretation, high-risk dietary claims and physical-device reliability require evidence beyond source code and automated fixtures.
+
+## Developer delivery
+
+Start with [the repository standard](docs/standards/repository.md),
+[the repeatable developer workflow](dev/delivery/README.md) and
+[agent instructions](AGENTS.md). Run `npm run check:repository` to check the
+versioned layout and naming contract. Browser, edge and compatibility tests now
+live under `tests/web`, `tests/edge` and `tests/compat`.

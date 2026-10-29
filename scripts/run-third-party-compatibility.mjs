@@ -56,7 +56,7 @@ function suite(name, files) {
 
 try {
   await mkdir(logs, { recursive: true });
-  for (const name of ['scripts/run-third-party-compatibility.mjs', 'scripts/lib/third-party-compatibility.mjs', 'tests-compat/pinned-schema-runtime.test.mjs']) {
+  for (const name of ['scripts/run-third-party-compatibility.mjs', 'scripts/lib/third-party-compatibility.mjs', 'tests/compat/pinned-schema-runtime.test.mjs']) {
     report.runnerFiles[name] = sha256(await readFile(join(root, name)));
   }
   const main = snapshot(root, PINNED_MAIN), thirdParty = snapshot(root, PINNED_THIRD_PARTY);
@@ -71,6 +71,8 @@ try {
     method: 'Main leaf entries plus third-party delta from common ancestor; distinct overlapping edits fail closed. No Git merge/tree objects written.' };
   await writeFile(join(logs, 'composed-manifest.json'), JSON.stringify(composed.manifest, null, 2) + '\n');
   const read = name => blob(root, composed.entries.get(name));
+  // These are paths inside immutable historical commit snapshots, not today's
+  // checkout. Keep their original spelling so source-pin replay stays truthful.
   const unitFiles = ['third-party-schema', 'care-cases', 'care-community', 'care-updates', 'recipe-community',
     'community-ai', 'personal-ai', 'admin-settings', 'admin-operations', 'admin-mcp', 'admin-runtime',
     'service-system', 'service-support', 'services-config-check', 'locale-negotiation', 'i18n']
@@ -98,12 +100,12 @@ try {
   await put('package.json', '{"type":"module","private":true}\n');
   await symlink(report.fixture.dependencies, join(fixture, 'node_modules'), 'dir');
   const mainSchema = blob(root, main.get('cloud/schema.sql'));
-  await put('tests-compat/main-schema.sql', mainSchema);
-  await put('tests-compat/pinned-schema-runtime.test.mjs', await readFile(join(root, 'tests-compat/pinned-schema-runtime.test.mjs')));
+  await put('tests/compat/main-schema.sql', mainSchema);
+  await put('tests/compat/pinned-schema-runtime.test.mjs', await readFile(join(root, 'tests/compat/pinned-schema-runtime.test.mjs')));
   report.schema = { baseline: 'Actual pinned main cloud/schema.sql', mainSchemaSHA256: sha256(mainSchema),
     canonicalSchemaSHA256: sha256(read('cloud/schema.sql')),
     migrations: MIGRATIONS.map(name => ({ path: 'cloud/' + name, sha256: sha256(read('cloud/' + name)) })) };
-  await put('tests-compat/inputs.json', JSON.stringify({ ...report.sources, migrations: MIGRATIONS }));
+  await put('tests/compat/inputs.json', JSON.stringify({ ...report.sources, migrations: MIGRATIONS }));
   const assets = { 'recipes.json': '[]', 'afcd-nutrient-details.json': '{}', 'scanner.wasm': '', 'retailer-extension.zip': '' };
   for (const name of ['index.html', 'data-workspace.html', 'style.css', 'icon.svg', 'manifest.webmanifest', 'manifest-ar.webmanifest']) assets[name] = read('public/' + name).toString();
   for (const [name, format] of [['app', 'esm'], ['data-workspace', 'esm'], ['sw', 'iife']]) {
@@ -118,7 +120,7 @@ try {
     compiledBrowserEntries: ['app.js', 'data-workspace.js', 'sw.js'], compatibilityDate: '2026-08-06' };
   for (const name of ['esbuild', 'miniflare', 'workerd']) report.fixture[name + 'Version'] = JSON.parse(await readFile(join(report.fixture.dependencies, name, 'package.json'), 'utf8')).version;
   const results = [suite('targeted-unit', unitFiles), suite('compiled-worker', edgeFiles),
-    suite('pinned-main-replay-runtime', ['tests-compat/pinned-schema-runtime.test.mjs'])];
+    suite('pinned-main-replay-runtime', ['tests/compat/pinned-schema-runtime.test.mjs'])];
   for (const { check, output } of results) await writeFile(join(root, check.log), output);
   report.state = results.every(({ check }) => check.passed) ? 'ready-for-morgan-review' : 'failed';
 } catch (error) {

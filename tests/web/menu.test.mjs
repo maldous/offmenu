@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {weekDates,planSummary} from '../../public/menu-model.js';import {validateState} from '../../cloud/state.mjs';
+const recipe={id:'rice',servings:2,ingredients:[{ingredient:'rice',quantity:100,unit:'g'}]};
+const inventory=[{barcode:'1111',ingredient:'rice',quantity:150,unit:'g'}];
+const products={'1111':{product_quantity:500,product_quantity_unit:'g',nutrition_data_per:'100g',nutriments:{'energy-kcal_100g':350,proteins_100g:7}}};
+const plan=[{id:'a',recipeId:'rice',date:'2026-10-12',slot:'Dinner',servings:2},{id:'b',recipeId:'rice',date:'2026-10-13',slot:'Lunch',servings:2}];
+test('week starts Monday across month boundary',()=>assert.deepEqual(weekDates('2026-11-01'),['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30','2026-10-31','2026-11-01']));
+test('weekly shopping requirements share the available stock',()=>{const s=planSummary(plan,[recipe],inventory,products,weekDates('2026-10-12'));assert.equal(s.requirements[0].quantity,200);assert.equal(s.missing[0].quantity,50);assert.deepEqual(s.totals['energy-kcal_100g'],{value:525,known:2,total:3});});
+test('daily totals include only the selected date',()=>assert.equal(planSummary(plan,[recipe],inventory,products,['2026-10-12']).totals['energy-kcal_100g'].value,350));
+test('missing nutrition is unknown, not zero',()=>{const s=planSummary(plan,[recipe],inventory,products,['2026-10-12']);assert.equal(s.totals.fat_100g.known,0);assert.equal(s.totals.fat_100g.total,1);});
+test('plan survives cloud validation',()=>{const s=validateState({inventory:[],products:{},recipes:[],selections:[],profile:{country:'AU',units:'metric',servings:2,plan}});assert.equal(s.profile.plan[1].date,'2026-10-13');});

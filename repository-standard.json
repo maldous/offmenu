@@ -1,0 +1,387 @@
+{
+  "schema_version": 1,
+  "version": "1.0.0",
+  "status": "adopted-on-feature-pending-integration",
+  "roots": {
+    ".agents": {
+      "kind": "agent-guidance",
+      "owner": "developer-experience"
+    },
+    ".github": {
+      "kind": "automation-contracts",
+      "owner": "developer-experience"
+    },
+    ".gitignore": {
+      "kind": "repository-config",
+      "owner": "developer-experience"
+    },
+    "MANIFEST.in": {
+      "kind": "python-packaging",
+      "owner": "python-runtime"
+    },
+    "README.md": {
+      "kind": "entrypoint-documentation",
+      "owner": "maintainers"
+    },
+    "auth-source-preparation": {
+      "kind": "staged-integration",
+      "owner": "authentication"
+    },
+    "bindings": {
+      "kind": "source-contracts",
+      "owner": "source-maintainers"
+    },
+    "cloud": {
+      "kind": "worker-runtime",
+      "owner": "web-runtime"
+    },
+    "config": {
+      "kind": "reviewed-configuration",
+      "owner": "maintainers"
+    },
+    "corpus": {
+      "kind": "source-provenance",
+      "owner": "source-maintainers"
+    },
+    "dev": {
+      "kind": "existing-integration-seams",
+      "owner": "maintainers"
+    },
+    "docs": {
+      "kind": "documentation",
+      "owner": "maintainers"
+    },
+    "examples": {
+      "kind": "authored-fixtures",
+      "owner": "maintainers"
+    },
+    "extension": {
+      "kind": "browser-extension",
+      "owner": "web-runtime"
+    },
+    "manual-action": {
+      "kind": "selected-source-processing",
+      "owner": "source-maintainers"
+    },
+    "migration": {
+      "kind": "historical-migration-evidence",
+      "owner": "maintainers"
+    },
+    "netlify": {
+      "kind": "hosting-runtime",
+      "owner": "web-runtime"
+    },
+    "netlify-return": {
+      "kind": "hosting-return-runtime",
+      "owner": "authentication"
+    },
+    "netlify.toml": {
+      "kind": "hosting-config",
+      "owner": "web-runtime"
+    },
+    "offmenu": {
+      "kind": "python-runtime",
+      "owner": "python-runtime"
+    },
+    "offmenu_ciqual": {
+      "kind": "python-source-adapter",
+      "owner": "source-maintainers"
+    },
+    "offmenu_norway": {
+      "kind": "python-source-adapter",
+      "owner": "source-maintainers"
+    },
+    "package-lock.json": {
+      "kind": "javascript-lockfile",
+      "owner": "web-runtime"
+    },
+    "package.json": {
+      "kind": "javascript-manifest",
+      "owner": "web-runtime"
+    },
+    "private-product-lookup": {
+      "kind": "selected-private-source-processing",
+      "owner": "source-maintainers"
+    },
+    "public": {
+      "kind": "browser-runtime",
+      "owner": "web-runtime"
+    },
+    "pyproject.toml": {
+      "kind": "python-manifest",
+      "owner": "python-runtime"
+    },
+    "research": {
+      "kind": "source-provenance",
+      "owner": "source-maintainers"
+    },
+    "schemas": {
+      "kind": "data-contracts",
+      "owner": "source-maintainers"
+    },
+    "scripts": {
+      "kind": "developer-and-operations-tools",
+      "owner": "developer-experience"
+    },
+    "tests": {
+      "kind": "automated-verification",
+      "owner": "maintainers"
+    },
+    "repository-standard.json": {
+      "kind": "versioned-repository-contract",
+      "owner": "developer-experience"
+    },
+    "AGENTS.md": {
+      "kind": "agent-entrypoint",
+      "owner": "developer-experience"
+    },
+    ".editorconfig": {
+      "kind": "editor-conventions",
+      "owner": "developer-experience"
+    }
+  },
+  "naming": {
+    "python": "snake_case",
+    "javascript": "kebab-case",
+    "docs": "kebab-case",
+    "python_pattern": "^(?:[a-z][a-z0-9_]*|__init__|__main__)\\.py$",
+    "other_pattern": "^\\.?[a-z0-9][a-z0-9_.-]*$",
+    "conventional_names": [
+      "LICENSE",
+      "LICENSE.txt",
+      "MANIFEST.in",
+      "NOTICE.md",
+      "PROVENANCE.md",
+      "README.md",
+      "SKILL.md",
+      "UPSTREAM-MANIFEST.json",
+      "__init__.py",
+      "__main__.py",
+      "AGENTS.md"
+    ]
+  },
+  "git": {
+    "integration": "develop",
+    "release": "main",
+    "branch_prefixes": [
+      "feature/",
+      "bugfix/",
+      "hotfix/"
+    ],
+    "workstream_branch": "feature/langgraph-delivery-standardization",
+    "one_integration_writer": true
+  },
+  "runtime_paths": [
+    ".delivery/",
+    ".venv/",
+    "node_modules/",
+    "dist/",
+    "data/",
+    "output/",
+    "*.egg-info/",
+    "__pycache__/"
+  ],
+  "migration_policy": {
+    "existing_exceptions_are_debt": true,
+    "new_exceptions_require_adr": true,
+    "private_runtime_moves_require_consumer_handoff": true,
+    "history_is_not_current_status": true,
+    "test_locations": [
+      "tests/",
+      "tests/web/",
+      "tests/edge/",
+      "tests/compat/"
+    ],
+    "preserve_held_paths": true
+  },
+  "legacy_paths": [
+    "cloud/identifier-federated-query.py",
+    "cloud/identifier-query.py",
+    "dev/production-release-custody/20261026-existing-fullscanner-vertical/build-scoped-package.py",
+    "docs/CODEX_HANDOVER.md",
+    "docs/CODEX_PROMPT.txt",
+    "docs/I18N_DATA_HANDOFF.json",
+    "docs/MIGRATION.md",
+    "docs/OFFMENU_CORPUS_INDEX.md",
+    "docs/OFFMENU_CORPUS_REFS.json",
+    "docs/OFFMENU_CUSTODY_HANDOVER_20261014.json",
+    "docs/consolidation/2026-10-18/knowledge/CATALOGUE.md",
+    "docs/consolidation/2026-10-20/SYNCHRONIZATION-HANDOVER.md",
+    "docs/evidence/ciqual-synthetic/approved-artifact/candidate-v3-A/content-manifest.json",
+    "docs/evidence/ciqual-synthetic/approved-artifact/candidate-v3-A/normalized.jsonl.gz",
+    "docs/evidence/ciqual-synthetic/approved-artifact/candidate-v3-A/source-metadata.json",
+    "docs/evidence/ciqual-synthetic/approved-artifact/candidate-v3-B/content-manifest.json",
+    "docs/evidence/ciqual-synthetic/approved-artifact/candidate-v3-B/normalized.jsonl.gz",
+    "docs/evidence/ciqual-synthetic/approved-artifact/candidate-v3-B/source-metadata.json",
+    "docs/evidence/norway-synthetic/approved-artifact/candidate-v2-A/content-manifest.json",
+    "docs/evidence/norway-synthetic/approved-artifact/candidate-v2-A/normalized.jsonl.gz",
+    "docs/evidence/norway-synthetic/approved-artifact/candidate-v2-A/source-metadata.json",
+    "docs/evidence/norway-synthetic/approved-artifact/candidate-v2-B/content-manifest.json",
+    "docs/evidence/norway-synthetic/approved-artifact/candidate-v2-B/normalized.jsonl.gz",
+    "docs/evidence/norway-synthetic/approved-artifact/candidate-v2-B/source-metadata.json",
+    "docs/reconciliation/2026-10-29/CLEANUP-RESTORE-MAP-BATCH2.json",
+    "docs/reconciliation/2026-10-29/CLEANUP-RESTORE-MAP.json",
+    "docs/reconciliation/2026-10-29/CONSOLIDATION-PROGRESS-BATCH2.json",
+    "docs/reconciliation/2026-10-29/CONSOLIDATION-PROGRESS.json",
+    "docs/reconciliation/2026-10-29/EXTERNAL-DEVELOPER-BRANCH-QUEUE.json",
+    "docs/reconciliation/2026-10-29/EXTERNAL-DEVELOPER-PICKUP.md",
+    "docs/reconciliation/2026-10-29/GITFLOW-AND-NEXT-BATCHES.md",
+    "docs/reconciliation/2026-10-29/ONBOARDING.env.example",
+    "docs/reconciliation/2026-10-29/ONBOARDING.md",
+    "docs/reconciliation/2026-10-29/OWNER-BRANCH-HANDOFFS.json",
+    "docs/reconciliation/2026-10-29/PUBLICATION-FACTS-DIAGNOSTIC.json",
+    "docs/reconciliation/2026-10-29/PUBLICATION-INDEX-BUDGET.json",
+    "docs/reconciliation/2026-10-29/RETAINED-HOLDS-AND-OWNER-HANDOFF.md",
+    "docs/reconciliation/2026-10-29/SOURCE-BRANCH-WORKTREE-LOCATORS.json",
+    "docs/reconciliation/2026-10-29/SOURCE-MANIFEST.json",
+    "docs/reconciliation/2026-10-29/WORKTREE-MAP.json",
+    "docs/reconciliation/2026-10-29/WORKTREE-MAP.md",
+    "manual-action/GOLD-BARCODE-LOOKUP.md",
+    "manual-action/GOLD-GENERATED-MENU.md",
+    "manual-action/GOLD-RECIPE-LABEL-SCENARIO.md",
+    "manual-action/RELATION-ALTERNATIVES.md",
+    "manual-action/SOURCE-CONTEXT-PRESENTATION.md",
+    "manual-action/SOURCE-LITERAL-RECIPE-QUANTITIES.md",
+    "manual-action/SOURCE-RECIPE-LITERAL-FACTS.md",
+    "manual-action/SOURCE-RECIPE-PRODUCT-PROOFS.md",
+    "manual-action/SOURCE-REFERENCE-PROFILE.md",
+    "netlify-return/_headers",
+    "offmenu/refresh/_portfolio08_catalogue.py",
+    "offmenu/refresh/_portfolio36_catalogue.py",
+    "offmenu/refresh/_worker27_catalog.py",
+    "offmenu/refresh/portfolio48/_bindings.py",
+    "private-product-lookup/lookup-cli.py",
+    "research/OffMenu_Basket_Normalization_Spec.json",
+    "research/OffMenu_Country_Basket_Register.json",
+    "research/OffMenu_Enrichment_Source_Register_249.json",
+    "research/OffMenu_Global_Data_Source_Register.json",
+    "research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+    "research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+    "research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+    "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+    "research/reports/05-OffMenu_Global_Shopping_Baskets.pdf",
+    "scripts/align-bulk-food-common.py",
+    "scripts/align-national-common.py",
+    "scripts/align-places-common.py",
+    "scripts/align-recipe-data.py",
+    "scripts/align-reference-common.py",
+    "scripts/assemble-common-corpus.py",
+    "scripts/bootstrap-foo-runner.py",
+    "scripts/build-curated-corpus.py",
+    "scripts/build-processing-provenance.py",
+    "scripts/catalogue-sql.py",
+    "scripts/check-foo-setup.py",
+    "scripts/collect-business-references.py",
+    "scripts/collect-cnf.py",
+    "scripts/collect-fineli-reference-tables.py",
+    "scripts/collect-foodon-definitions.py",
+    "scripts/collect-measurement-terminology-20261014.py",
+    "scripts/collect-mext.py",
+    "scripts/collect-national.py",
+    "scripts/collect-next-national.py",
+    "scripts/collect-overture.py",
+    "scripts/collect-owner-manifest-metadata.py",
+    "scripts/collect-recipe-expansion-20261014.py",
+    "scripts/collect-source-access.py",
+    "scripts/collect-usda.py",
+    "scripts/collect-wikibooks-live.py",
+    "scripts/collect-wikibooks.py",
+    "scripts/collect-world-recipe-wikis.py",
+    "scripts/collect-world-recipes.py",
+    "scripts/consolidate-research.py",
+    "scripts/corpus-sql.py",
+    "scripts/corpus-storage-budget-worker61.py",
+    "scripts/discover-global-recipe-sources-20261014.py",
+    "scripts/dispatch-foo-job.py",
+    "scripts/global-data-validation/worker-42-culinary-names.py",
+    "scripts/global-data-validation/worker-54-recipe-quantities.py",
+    "scripts/global-readiness.py",
+    "scripts/grant-selected-dataset-view-v1.py",
+    "scripts/import-afcd.py",
+    "scripts/import-national-tables.py",
+    "scripts/import-wikibooks-sample.py",
+    "scripts/index-curated-countries.py",
+    "scripts/inspect-national-acquisition-shape.py",
+    "scripts/inspect-selected-datasets.py",
+    "scripts/measure-corpus-storage-worker61.py",
+    "scripts/merge-curated-corpus.py",
+    "scripts/normalize-usda.py",
+    "scripts/package-common-data.py",
+    "scripts/places-recovery-preflight.py",
+    "scripts/publish-common-data.py",
+    "scripts/qualify-common-expansion.py",
+    "scripts/receipt-image-ocr-owner18.py",
+    "scripts/reconcile-source-inventory-lineage.py",
+    "scripts/recover-historical-recipes-20261014.py",
+    "scripts/refine-recipe-quantities.py",
+    "scripts/repair-bulk-controls-20261014.py",
+    "scripts/report-country-execution.py",
+    "scripts/run-ciqual-synthetic.py",
+    "scripts/run-norway-synthetic.py",
+    "scripts/run-owner-manifest-metadata.py",
+    "scripts/run-selected-dataset-grant.py",
+    "scripts/source-territories.py",
+    "scripts/verify-bulk-repair-checkpoint.py",
+    "scripts/verify-common-data.py",
+    "scripts/verify-common-publication.py",
+    "scripts/verify-expanded-knowledge.py",
+    "scripts/verify-knowledge-baseline.py",
+    "scripts/witness-retained-products.py",
+    "tests/fixtures/ciqual-reference/collect-national.py",
+    "tests/fixtures/ciqual-reference/import-national-tables.py",
+    "tests/fixtures/ciqual/Table Ciqual 2025_ENG_2025_11_03.xlsx",
+    "tests/fixtures/norway-reference/collect-national.py",
+    "tests/fixtures/norway-reference/import-national-tables.py"
+  ],
+  "runtime_hold_paths": [
+    "scripts/windmill/PLATFORM-BASELINE.md",
+    "scripts/windmill/README.md",
+    "scripts/windmill/deployment-receipt.json",
+    "scripts/windmill/duckdb/ARTIFACT-SHA256SUMS",
+    "scripts/windmill/duckdb/DEPLOYMENT-RECEIPT.json",
+    "scripts/windmill/duckdb/INDEPENDENT-VERIFICATION.json",
+    "scripts/windmill/duckdb/LICENSE.duckdb",
+    "scripts/windmill/duckdb/README.md",
+    "scripts/windmill/duckdb/build_worker.py",
+    "scripts/windmill/duckdb/finalize_existing.py",
+    "scripts/windmill/duckdb/install_offline.py",
+    "scripts/windmill/duckdb/lock.json",
+    "scripts/windmill/duckdb/requirements.lock",
+    "scripts/windmill/duckdb/runtime.py",
+    "scripts/windmill/duckdb/test_offline_runtime.py",
+    "scripts/windmill/duckdb/transfer_helper.py",
+    "scripts/windmill/duckdb/windmill_duckdb_offline.py",
+    "scripts/windmill/job_runner.py",
+    "scripts/windmill/job_runner_capacity_v3.py",
+    "scripts/windmill/native/DEPLOYMENT-RECEIPT.json",
+    "scripts/windmill/native/README.md",
+    "scripts/windmill/native/build_native.py",
+    "scripts/windmill/native/incident_selftest.py",
+    "scripts/windmill/native/platform_check_entrypoint.py",
+    "scripts/windmill/native/schedule_receipt.py",
+    "scripts/windmill/native/skill-resources.json",
+    "scripts/windmill/native/ssh_transport.py",
+    "scripts/windmill/native/test_platform_check.py",
+    "scripts/windmill/native/test_schedule_receipt.py",
+    "scripts/windmill/native/test_windmill_incidents.py",
+    "scripts/windmill/native/windmill_incidents.py",
+    "scripts/windmill/native/windmill_platform_check.py",
+    "scripts/windmill/phase2-deployment-receipt.json",
+    "scripts/windmill/platform_check.py",
+    "scripts/windmill/platform_check_capacity64.py",
+    "scripts/windmill/skills/README.md",
+    "scripts/windmill/skills/reference-pins.json",
+    "scripts/windmill/storage/README.md",
+    "scripts/windmill/storage/checkpoint-record.schema.json",
+    "scripts/windmill/storage/deployment-receipt.json",
+    "scripts/windmill/storage/offmenu_storage.py",
+    "scripts/windmill/storage/source-manifest.json",
+    "scripts/windmill/storage/test_offmenu_storage.py",
+    "scripts/windmill/storage/test_windmill_checkpoint.py",
+    "scripts/windmill/storage/windmill_checkpoint.py",
+    "scripts/windmill/test_job_runner.py",
+    "scripts/windmill/test_platform_check.py",
+    "scripts/windmill/test_windmill_foo_jobs.py",
+    "scripts/windmill/windmill_foo_jobs.py"
+  ]
+}

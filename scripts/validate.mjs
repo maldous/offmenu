@@ -39,8 +39,8 @@ export function makePlan(args) {
   const tests = [...new Set(files.map(file => {
     const absolute = resolve(root, file);
     const path = relative(root, absolute).replaceAll('\\', '/');
-    if (!/^(tests-web|tests-edge)\/.+\.test\.mjs$/.test(path) || !statSync(absolute).isFile())
-      throw new Error('Development checks require existing tests-web/ or tests-edge/ .test.mjs files: ' + file);
+    if (!/^tests\/(web|edge)\/.+\.test\.mjs$/.test(path) || !statSync(absolute).isFile())
+      throw new Error('Development checks require existing tests/web/ or tests/edge/ .test.mjs files: ' + file);
     return path;
   }))];
   return {profile, mode: dryRun ? 'PLAN_ONLY' : 'RUN', commands: [['node', '--test', ...tests]]};
