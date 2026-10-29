@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {planSummary} from '../../apps/web/src/menu-model.js';
 import {shoppingItems} from '../../apps/web/src/integrations.js';
+import {buildDocument} from '../../apps/web/src/documents.js';
 
 const date='2026-10-29';
 const recipe={id:'synthetic-rice',title:'Synthetic rice',servings:1,needsReview:false,ingredients:[{ingredient:'rice',quantity:100,unit:'g'}]};
@@ -73,4 +74,15 @@ test('rounding cannot turn a finite positive deficit into Infinity',()=>{
   const item=shopping([],selected)[0];
   assert.equal(item.quantity,1e308);
   assert.ok(Number.isFinite(Number(item.amount.split(' ')[0])));
+});
+
+for(const usePantry of [true,false])test('largest finite measured requirement stays finite in shopping and its document, pantry deduction '+usePantry,()=>{
+  const selected={...recipe,ingredients:[{ingredient:'rice',quantity:Number.MAX_VALUE,unit:'g'}]};
+  const profile={plan:[meal]},items=shoppingItems(profile,[selected],[],{},date,usePantry);
+  assert.equal(items[0].quantity,Number.MAX_VALUE);
+  assert.equal(items[0].amount,Number.MAX_VALUE+' g');
+  assert.ok(Number.isFinite(Number(items[0].amount.split(' ')[0])));
+  const doc=buildDocument('shopping',{profile,recipes:[selected],inventory:[],products:{},date,usePantry});
+  assert.ok(doc.body.includes(Number.MAX_VALUE+' g'));
+  assert.doesNotMatch(doc.body,/Infinity|NaN/);
 });
