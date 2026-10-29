@@ -52,3 +52,7 @@ These checks verify classification/names and required architecture. Installed
 wheel resources, web imports/build, targeted behavior checks and graph accepted
 output hashes establish the changed behavior. Full application or production
 acceptance remains separate.
+
+The [accepted verification summary](final-layout-verification.json) records exact
+code revision, local and Windmill graph acceptance, native Symphony output,
+bootstrap/build/test evidence and remaining baseline failures.
