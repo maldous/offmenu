@@ -1,0 +1,100 @@
+{
+  "status": "historical AI tooling source snapshots and reuse candidates; no activation or inference",
+  "files": [
+    {
+      "originalPath": "/home/user/src/offmenu-ai-integration-20261028-live-adapter.source.txt",
+      "relativePath": "integration-snapshots/offmenu-ai-integration-20261028-live-adapter.source.txt",
+      "bytes": 4241,
+      "sha256": "3760b83e2678f89e2330a62f2ccdf0a8e935461f5cbc2168a3f57d0e725e9f38",
+      "inventoryRow": 555
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-ai-integration-20261028-live-caller.source.txt",
+      "relativePath": "integration-snapshots/offmenu-ai-integration-20261028-live-caller.source.txt",
+      "bytes": 11127,
+      "sha256": "cef944eedb0a6990cd6500b49abac023103d289551506c741b7162bdb6f829dd",
+      "inventoryRow": 556
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-ai-integration-20261028-metrics-adapter.source.txt",
+      "relativePath": "integration-snapshots/offmenu-ai-integration-20261028-metrics-adapter.source.txt",
+      "bytes": 8830,
+      "sha256": "133572094dedd81d42a66413cfcc160145d923491684cc3cbe384431b51f083b",
+      "inventoryRow": 557
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-ai-integration-20261028-metrics-caller.source.txt",
+      "relativePath": "integration-snapshots/offmenu-ai-integration-20261028-metrics-caller.source.txt",
+      "bytes": 11658,
+      "sha256": "9cec2d0eb2286cbd07a82bd2e9d43395794e868c6071a3ed6889fa77871c9ca2",
+      "inventoryRow": 558
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-ai-integration-20261028-metrics-only.patch",
+      "relativePath": "integration-snapshots/offmenu-ai-integration-20261028-metrics-only.patch",
+      "bytes": 12775,
+      "sha256": "06f906eb149a4c97b65e20c0f79a083d58c231b06e61a5600a8939477cf56575",
+      "inventoryRow": 559
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-ai-integration-20261028-PLAN.md",
+      "relativePath": "integration-snapshots/offmenu-ai-integration-20261028-PLAN.md",
+      "bytes": 7073,
+      "sha256": "49f802a4143da207cc1d6009a5acf390aa4a3e3a83af0b1a1d99368fb98b6c00",
+      "inventoryRow": 560
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-ai-reuse-candidate-20261028/HANDOFF.md",
+      "relativePath": "offmenu-ai-reuse-candidate-20261028/HANDOFF.md",
+      "bytes": 6790,
+      "sha256": "e5efdfbb080830e4a4e93f0a413af63435139f39ee1bdac2fed9ee980c58948c",
+      "inventoryRow": 563
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-ai-reuse-candidate-20261028/candidate/offmenu_groq_public_development_20261028.py",
+      "relativePath": "offmenu-ai-reuse-candidate-20261028/candidate/offmenu_groq_public_development_20261028.py",
+      "bytes": 13721,
+      "sha256": "3a44af33dace00e1262b89505dedb379b2fe5c47ede89a468fa3edbadec01d2d",
+      "inventoryRow": 563
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-ai-reuse-candidate-20261028/candidate/test_accepted_reuse.py",
+      "relativePath": "offmenu-ai-reuse-candidate-20261028/candidate/test_accepted_reuse.py",
+      "bytes": 9978,
+      "sha256": "019112efc402ca941b3505cff4517aceb1f1558d6edfafb64bf48d8047e0c7a5",
+      "inventoryRow": 563
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-ai-reuse-candidate-20261028-r2/HANDOFF.md",
+      "relativePath": "offmenu-ai-reuse-candidate-20261028-r2/HANDOFF.md",
+      "bytes": 6341,
+      "sha256": "392758fd611fa668e8d7e3ca4b1dc17f8c0d649fc836c9dcd0c09d53c68f7fcc",
+      "inventoryRow": 564
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-ai-reuse-candidate-20261028-r2/candidate/offmenu_groq_public_development_20261028.py",
+      "relativePath": "offmenu-ai-reuse-candidate-20261028-r2/candidate/offmenu_groq_public_development_20261028.py",
+      "bytes": 20957,
+      "sha256": "1e24c1d5ce2d5b6cecb47666f775f85c4a2b582215e951c1845815eb102fef67",
+      "inventoryRow": 564
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-ai-reuse-candidate-20261028-r2/candidate/test_accepted_reuse.py",
+      "relativePath": "offmenu-ai-reuse-candidate-20261028-r2/candidate/test_accepted_reuse.py",
+      "bytes": 10073,
+      "sha256": "8cb3c094b68f917ab3313e005546c226e829ee3dd2a8fe9c0731dfdf36acdbb8",
+      "inventoryRow": 564
+    },
+    {
+      "originalPath": "/home/user/src/offmenu-ai-reuse-candidate-20261028-r2/candidate/test_deadline_and_live_tasks.py",
+      "relativePath": "offmenu-ai-reuse-candidate-20261028-r2/candidate/test_deadline_and_live_tasks.py",
+      "bytes": 5703,
+      "sha256": "13484e36a78208d45e5743361fa4354f8f0c982965265d1303be9f453b07dbb1",
+      "inventoryRow": 564
+    }
+  ],
+  "testsRun": false,
+  "opaqueConfigAndApprovalRecordsExcluded": true,
+  "noRightsOrCapacityClaim": true,
+  "highConfidenceSecretPatternMatches": 0
+}
