@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3977,
+  "messages": 3980,
   "arabicTranslated": 376,
-  "arabicMissing": 3601,
+  "arabicMissing": 3604,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -11570,6 +11570,12 @@
       ],
       "arabic": false
     },
+    "Lookup unavailable": {
+      "sources": [
+        "apps/web/src/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
     "Lookup unavailable · ": {
       "sources": [
         "apps/web/src/shelf-scanner.js"
@@ -15140,6 +15146,12 @@
     "Raw retained nutriments: ": {
       "sources": [
         "apps/web/src/shelf-scanner.js"
+      ],
+      "arabic": false
+    },
+    "Raw stock identity changed. Reconcile the batch before undoing cooking.": {
+      "sources": [
+        "apps/web/src/cooking-model.js"
       ],
       "arabic": false
     },
@@ -18765,6 +18777,12 @@
     "Stale schedule revision": {
       "sources": [
         "apps/web/src/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "Stale sharing scope": {
+      "sources": [
+        "apps/web/src/sharing-ui.js"
       ],
       "arabic": false
     },
