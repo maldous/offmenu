@@ -1,0 +1,67 @@
+{
+  "schema": "offmenu-source-barcode-api-source-provenance/1",
+  "base_commit": "eca287b36b8b2027e9d32aa4899ffb204563236c",
+  "custody_commit": "24c71f6c7fc518b61d7f71eadc5e8958512fb35a",
+  "custody_manifest": "dev/source-candidates/qualified-source-recovery-20261029/SOURCE-CUSTODY.json",
+  "historical_endpoint_module": "source-barcode-handler-205.mjs",
+  "historical_endpoint_sha256": "1ac95b6b63ec2794e5e670658bd6c2c4ce3b66af9426469d0c80ea196efa808f",
+  "source_files": [
+    {
+      "path": "apps/web/server/source-barcode-api/protocol-pins.mjs",
+      "original_path": "source/source/protocol-pins.mjs",
+      "original_sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a",
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a",
+      "change": "byte-exact recovered source"
+    },
+    {
+      "path": "apps/web/server/source-barcode-api/reviewed-hydration/source-barcode-client.mjs",
+      "original_path": "source/source/reviewed-hydration/source-barcode-client.mjs",
+      "original_sha256": "273afcb617a208c9e7385026351bc3f748e133b17a2eb37f5454b230b5351197",
+      "sha256": "273afcb617a208c9e7385026351bc3f748e133b17a2eb37f5454b230b5351197",
+      "change": "byte-exact recovered source"
+    },
+    {
+      "path": "apps/web/server/source-barcode-api/reviewed-hydration/source-barcode-hydrator.mjs",
+      "original_path": "source/source/reviewed-hydration/source-barcode-hydrator.mjs",
+      "original_sha256": "a2d96a9736942982408f51233384e503df7b7795ea24533a3f9d5f94c76300d9",
+      "sha256": "a2d96a9736942982408f51233384e503df7b7795ea24533a3f9d5f94c76300d9",
+      "change": "byte-exact recovered source"
+    },
+    {
+      "path": "apps/web/server/source-barcode-api/reviewed-hydration/source-barcode-selection.mjs",
+      "original_path": "source/source/reviewed-hydration/source-barcode-selection.mjs",
+      "original_sha256": "adaddd1ea29bc47860e4ed557b477240bab677b5eb431dc255a5c5887159f71e",
+      "sha256": "adaddd1ea29bc47860e4ed557b477240bab677b5eb431dc255a5c5887159f71e",
+      "change": "byte-exact recovered source"
+    },
+    {
+      "path": "apps/web/server/source-barcode-api/source-barcode-facts-handler.mjs",
+      "original_path": "source/source/source-barcode-facts-handler.mjs",
+      "original_sha256": "ea987c6bb5e00d7d71f6f6c27d52313bbd5aabce8a7d9a3946ba4672ff89aaac",
+      "sha256": "ea987c6bb5e00d7d71f6f6c27d52313bbd5aabce8a7d9a3946ba4672ff89aaac",
+      "change": "byte-exact recovered source"
+    },
+    {
+      "path": "apps/web/server/source-barcode-api/source-barcode-handler.mjs",
+      "original_path": "source/source/source-barcode-handler.mjs",
+      "original_sha256": "56723cd22ecb72713b5dd4cc98b1a24adbb262200d25796e2d74f4a069d9d9eb",
+      "sha256": "44f8a62af502364bba465125bcab806126927039f552f2387c44f11ac5ef23cb",
+      "change": "deadlineMs 10000 to 30000"
+    },
+    {
+      "path": "apps/web/server/source-barcode-api/stream-shard.mjs",
+      "original_path": "source/source/stream-shard.mjs",
+      "original_sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a",
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a",
+      "change": "byte-exact recovered source"
+    },
+    {
+      "path": "apps/web/server/source-barcode-api/strict-json.mjs",
+      "original_path": "source/source/strict-json.mjs",
+      "original_sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099",
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099",
+      "change": "byte-exact recovered source"
+    }
+  ],
+  "runtime_boundary": "Standalone compatibility component; not added to the canonical application dispatcher by this source commit. Existing publisher must preserve the full production graph and current selection."
+}

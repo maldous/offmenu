@@ -1,0 +1,13 @@
+import {build,version} from 'esbuild';
+import {mkdir,readFile,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+if(version!=='0.25.12')throw Error('Use the pinned esbuild 0.25.12');
+const directory='.delivery/source-barcode-api';
+await mkdir(directory,{recursive:true});
+const output=directory+'/source-barcode-handler.bundle.mjs';
+const result=await build({entryPoints:['apps/web/server/source-barcode-api/source-barcode-facts-handler.mjs'],outfile:output,bundle:true,format:'esm',platform:'browser',target:'es2022',metafile:true});
+if(Object.values(result.metafile.outputs).some(o=>o.imports.length))throw Error('Unexpected external module import');
+const bytes=await readFile(output);
+if(/redirect:\s*["']error["']/.test(bytes.toString()))throw Error('Unsupported browser redirect option in Worker component');
+await writeFile(directory+'/metafile.json',JSON.stringify(result.metafile,null,2)+'\n');
+console.log(JSON.stringify({scope:'endpoint component only; no deployment',inputs:Object.keys(result.metafile.inputs).length,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')}));
