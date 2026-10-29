@@ -1,4 +1,4 @@
-# Repository standard 2.0.0
+# Repository standard 2.1.0
 
 Status: adopted after source and implementation review. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
@@ -102,3 +102,12 @@ revision; it cannot silently rewrite the standard, approve its own migration,
 claim completion from an intermediate job, or convert an exception into success.
 Deterministic local checks remain the acceptance authority for encoded rules.
 For guarantees that require judgment, preserve the reviewer decision and scope.
+
+## Parallel execution capacity
+
+Standard 2.1.0 adopts [ADR 0004](../adr/0004-resource-aware-parallel-capacity.md)
+and the explicit [8/16/32/64 policy](../../tools/delivery/capacity-policy.json).
+See [admission and resource limits](../development/parallel-capacity.md) and
+[actual protocol boundaries](../development/execution-protocols.md). Capacity
+selects ceilings; it does not activate workers, invent work or grant provider
+entitlement. The single integration writer and existing pause boundaries remain.

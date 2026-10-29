@@ -60,14 +60,14 @@
       "src/offmenu/delivery/__main__.py"
     ],
     "expected_source_head": null,
-    "standard_version": "2.0.0"
+    "standard_version": "2.1.0"
   },
   "execution": {
     "symphony_binary": "/home/user/.local/share/cix/symphony/0c01ff0975da80ded7044a5ad76a44ac87053670-d215a99ac5a44941/bin/symphony",
     "symphony_version_or_sha": "bundle-directory-source-sha-0c01ff0975da80ded7044a5ad76a44ac87053670;not-upstream-verified",
     "codex_command": null,
     "resolved_model": null,
-    "max_concurrent_agents": 1,
+    "max_concurrent_agents": 8,
     "windmill_workspace": "offmenu",
     "langgraph_checkpoint_run_id": null,
     "automatic_push": false,

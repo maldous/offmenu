@@ -21,8 +21,8 @@ hooks:
     echo 'OffMenu Symphony is disabled: review project binding, workspace ownership and admission before activation.' >&2
     exit 78
 agent:
-  max_concurrent_agents: 1
-  max_turns: 8
+  max_concurrent_agents: 8
+  max_turns: 1
 codex:
   command: "false"
   approval_policy: never
@@ -48,7 +48,7 @@ blocked run. Preserve all pre-existing changes. Exactly one integration writer
 owns repository mutations; other sessions supply read-only proposals and evidence.
 No session may resume suspended workers, hourly automation, CIX services or prior
 application work. Do not automatically push, merge, deploy, dispatch Actions,
-create credentials or call paid inference. Do not perform external product/data
+create credentials or introduce new paid API charges. Do not perform external product/data
 lookups. Model identity must be recorded as actually resolved, never inferred from
 a preference. Existing consumer ChatGPT sessions do not prove API eligibility.
 

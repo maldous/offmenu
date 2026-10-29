@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "2.0.0",
+  "version": "2.1.0",
   "status": "adopted",
   "roots": {
     ".agents": {
@@ -461,5 +461,6 @@
     "tests/compat",
     "docs/adr/0003-final-repository-layout.md",
     "scripts/check_final_layout.py"
-  ]
+  ],
+  "execution_capacity_policy": "tools/delivery/capacity-policy.json"
 }
