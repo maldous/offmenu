@@ -5,9 +5,9 @@ from pathlib import Path
 import re
 from uuid import UUID
 try:
-    from .symphony_capacity import AdmissionError, BRANCH, positive, scope
+    from .symphony_capacity import AdmissionError, BRANCH, positive, scope, valid_branch
 except ImportError:
-    from symphony_capacity import AdmissionError, BRANCH, positive, scope
+    from symphony_capacity import AdmissionError, BRANCH, positive, scope, valid_branch
 
 PROJECT_ID='ce60c1ab-a732-4a71-8471-14c9dc393886'
 
@@ -34,7 +34,7 @@ def load_manifest(path,expected_head=None,expected_branch=BRANCH):
     d=json.loads(Path(path).read_text(),object_pairs_hook=unique)
     if not isinstance(d,dict) or set(d)!={'version','branch','base_revision','project_id','label','tasks'}:raise AdmissionError('manifest_fields')
     if type(d['version']) is not int or d['version']!=1 or d['project_id']!=PROJECT_ID:raise AdmissionError('manifest_identity')
-    if d['branch']!=expected_branch or not isinstance(d['base_revision'],str) or not re.fullmatch(r'[0-9a-f]{40}',d['base_revision']):raise AdmissionError('manifest_source')
+    if (d['branch']!=expected_branch if expected_branch is not None else not valid_branch(d['branch'])) or not isinstance(d['base_revision'],str) or not re.fullmatch(r'[0-9a-f]{40}',d['base_revision']):raise AdmissionError('manifest_source')
     if expected_head is not None and d['base_revision']!=expected_head:raise AdmissionError('manifest_source')
     if not isinstance(d['label'],str) or not re.fullmatch(r'[a-z][a-z0-9-]{0,79}',d['label']):raise AdmissionError('manifest_label')
     if not isinstance(d['tasks'],dict) or not 1<=len(d['tasks'])<=256:raise AdmissionError('manifest_tasks')

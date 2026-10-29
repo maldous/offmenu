@@ -34,7 +34,7 @@
   "execution": {
     "automatic_start": false,
     "automatic_push": false,
-    "automatic_merge": false,
+    "automatic_merge": true,
     "production_deployment": false,
     "legacy_workers_resume": false
   }

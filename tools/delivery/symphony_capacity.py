@@ -28,6 +28,11 @@ def positive(value, name, zero=False):
     return value
 
 
+def valid_branch(value):
+    return (isinstance(value,str) and bool(re.fullmatch(r'(?:feature|bugfix)/[a-z0-9][a-z0-9/-]{0,159}',value))
+            and not value.endswith('/') and '//' not in value)
+
+
 def scope(value):
     if (not isinstance(value,str) or not value or value.startswith('/') or '\\' in value
         or any(x in value for x in ['*','?','[','\x00','\n'])
@@ -89,7 +94,7 @@ class Pool:
     def admit(self,task_id,binding,provider,host):
         if not isinstance(task_id,str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,79}',task_id):raise AdmissionError('invalid_task_id')
         if set(binding)!={'branch','head','owner','write_roots','resources','task_sha256'}:raise AdmissionError('invalid_binding_fields')
-        if binding['branch']!=BRANCH or not re.fullmatch(r'[0-9a-f]{40}',str(binding['head'])):raise AdmissionError('invalid_source_identity')
+        if not valid_branch(binding['branch']) or not re.fullmatch(r'[0-9a-f]{40}',str(binding['head'])):raise AdmissionError('invalid_source_identity')
         if not isinstance(binding['owner'],str) or not binding['owner'].strip():raise AdmissionError('invalid_owner')
         paths=binding['write_roots']
         if not isinstance(paths,list) or not paths or len(paths)>64 or len(set(paths))!=len(paths):raise AdmissionError('invalid_write_scope')

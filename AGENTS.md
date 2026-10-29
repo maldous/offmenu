@@ -5,8 +5,9 @@ ADR before changing structure. Read `tools/delivery/README.md` for the repeatabl
 workflow. Discover the actual source/manifests before proposing new rules.
 
 Use `develop` for integration, `main` for reviewed releases, and a reviewed
-`feature/` or `bugfix/` branch for changes. This workstream has one branch,
-`feature/langgraph-delivery-standardization`, and one Git integration writer.
+`feature/` or `bugfix/` branch for changes. The standardization workstream uses
+`feature/langgraph-delivery-standardization`. New qualified product/backlog work
+uses its own exact bound feature/bugfix branch. There is one Git integration writer.
 Existing workers and the hourly automation remain suspended. Do not infer that
 a Linear assignment or a prepared Symphony workflow permits their resumption.
 
@@ -27,11 +28,11 @@ Use the pinned delivery environment for the graph and its tests. Runtime test
 locations are `tests/web`, `tests/edge`, `tests/compat`; Python suites stay under
 `tests/`. Historical pinned snapshot paths remain historical.
 
-Linear records work/dependencies/acceptance; Symphony provides admitted coding
+Linear records work/dependencies/acceptance; Stokowski provides admitted coding
 sessions; Windmill executes bounded deterministic jobs; LangGraph tracks finite
 workflow decisions/checkpoints. Review task command arrays as executable code.
 Reconcile uncertain effects before retrying the same immutable task ID. No
-recursive managers, automatic merge/push/deploy, new schedules, new paid API charges or private telemetry are enabled by this workflow.
+recursive managers, automatic push/deploy, new schedules, new paid API charges or private telemetry are enabled by this workflow. Evidence-bound automatic integration into develop is enabled under ADR 0005 and tools/delivery/integration-policy.json; only the authenticated integration owner may consume its typed actions. Coding children cannot authorize their own merge.
 
 No Actions execution/dispatch/retry, production deployment, live food/barcode
 lookups, local model installation, force push/reset/clean or permanent data
