@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3977,
+  "messages": 3978,
   "arabicTranslated": 376,
-  "arabicMissing": 3601,
+  "arabicMissing": 3602,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -11567,6 +11567,12 @@
     "Lookup timed out. Manual entry remains available.": {
       "sources": [
         "apps/web/server/handler.mjs"
+      ],
+      "arabic": false
+    },
+    "Lookup unavailable": {
+      "sources": [
+        "apps/web/src/shelf-scanner.js"
       ],
       "arabic": false
     },

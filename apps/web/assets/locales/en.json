@@ -1855,6 +1855,7 @@
   "Lookup pending. Confirming now keeps this as an unknown package.": "Lookup pending. Confirming now keeps this as an unknown package.",
   "Lookup temporarily unavailable.": "Lookup temporarily unavailable.",
   "Lookup timed out. Manual entry remains available.": "Lookup timed out. Manual entry remains available.",
+  "Lookup unavailable": "Lookup unavailable",
   "Lookup unavailable · ": "Lookup unavailable · ",
   "Lookup unavailable.": "Lookup unavailable.",
   "Lot: surrogate:lot:oats-01 · separate test state": "Lot: surrogate:lot:oats-01 · separate test state",
