@@ -171,3 +171,33 @@ Use the reviewed [8/16/32/64 capacity policy](capacity-policy.json),
 [parallel task admission](../../docs/development/parallel-capacity.md) and
 [protocol handover](../../docs/development/execution-protocols.md). The earlier
 one-issue pilot receipts remain historical proof, not current capacity limits.
+
+## Evidence-bound develop integration
+
+ADR 0005 and `integration-policy.json` enable the integration controller for the
+existing authenticated connector owner. A coding worker does not publish an
+observation or invoke this gateway with its own report as authority.
+
+The publisher reads GitHub/Linear through its authenticated connectors, and reads
+the exact terminal Windmill operation and immutable candidate binding on Foo.
+It invokes `.venv-delivery/bin/python -m offmenu.delivery.integration step`
+with `--directory`, `--binding`, `--observation`, and the shared
+`--claim-root /home/user/src/offmenu/.delivery/integration`. The resulting typed
+action is consumed by `integration-gateway.mjs`: it refreshes head/base, uses the
+normal exact-head merge API, records its known/unknown outcome, and obtains a
+fresh observation. Canonical merge parents/tree and develop ancestry must match
+before it requests a Linear Done update. Run the next finite tick to consume that
+metadata action. A timeout never implies that a mutation did not execute.
+
+The same gateway accepts injected authenticated GitHub/Linear adapters; it does
+not create credentials or turn a coding child into an integration identity.
+Repository claims, observations, graph checkpoints and API receipts stay private
+under `.delivery/integration`. A controller restart reconciles retained intent;
+it does not resubmit. Policy/review changes bind a new candidate. Refused actions
+remain stopped unless genuinely new authority is recorded through normal review.
+
+An enabled policy is distinct from publisher service availability. The current
+publisher route uses the durable cloud connector owner's context; native Foo has
+no independently configured GitHub API grant. Loss of that context pauses source
+publication with durable evidence intact. Do not describe that as an installed
+unattended local publisher or silently transfer cloud credentials into Foo.

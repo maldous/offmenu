@@ -1,7 +1,7 @@
 # ADR 0005: Autonomous, evidence-bound integration
 
-- Status: accepted direction; coding/validation adapters proven and typed dispatcher deployed; merge-controller implementation and activation pending
-- Proposed standard: 2.2.0; current adopted standard remains 2.1.0
+- Status: adopted in standard 2.2.0; deterministic controller and connector gateway implemented; runtime acceptance recorded separately
+- Adopted standard: 2.2.0
 - Decision basis: the user explicitly requests autonomous, reliable integration
   without routine intervention, across the existing services, models and evidence
 - Baseline: develop eca287b36b8b2027e9d32aa4899ffb204563236c
@@ -13,16 +13,16 @@ Do not require a human approval state for each ordinary implementation, review,
 repair or merge. This decision supersedes the assumption that Stokowski's example
 human gates are mandatory OffMenu workflow stages. It does not enable production
 deployment or promotion to `main`, alter platform access controls or resume held
-workers. The present policy still disables automatic merge until the following
-integration is implemented and verified.
+workers. The integration policy enables qualified develop merges through the authenticated
+connector owner; a policy setting alone does not prove runtime availability.
 
 Use Stokowski as the sole OffMenu issue/coding orchestrator, replacing OffMenu
 Symphony dispatch. Keep CIX unchanged. Stokowski owns stage transitions and
 bounded rework, not the authority to certify its own source for merge. Retain
 eight admitted coding agents and the existing aggregate resource reservations.
 
-Place the merge decision in a small deterministic Windmill integration job,
-using the existing Foo execution route. This is the single integration writer,
+Place the merge decision in a small deterministic LangGraph transaction on Foo,
+with candidate validation executed by Windmill through the existing Foo route. This is the single integration writer,
 not another planning agent, scheduler or recursive manager. Serialize integrations
 per repository/base branch with durable ownership. Windmill's job state is not
 by itself that repository lock; use a persistent claim and reconcile any uncertain
@@ -171,6 +171,12 @@ neither is asserted to be configured by this ADR. Installation/execution of the
 new third-party package and credential provisioning retain their required
 action-time confirmation. Historical Symphony evidence remains historical.
 
-Activation must update the adopted standard/version, operational configuration,
-AGENTS.md and handover together. Until then, this ADR records the authorized
-end state, not a claim that autonomous integration is running.
+The adopted standard, integration/capacity policies and AGENTS.md are updated
+together. `offmenu.delivery.integration` owns durable decisions and repository
+claims; `integration-gateway.mjs` consumes only typed actions through injected
+authenticated connectors. No candidate commands or credentials cross that boundary.
+The gateway runs in the connector owner's durable execution context. It is not a
+new locally authenticated GitHub daemon: loss of that owner pauses publication
+while preserving intent. Persistent unattended availability beyond that context
+requires an actual authenticated publisher invocation route, not a config claim.
+Runtime acceptance and that availability distinction belong in the handover.

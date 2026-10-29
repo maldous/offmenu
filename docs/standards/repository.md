@@ -1,4 +1,4 @@
-# Repository standard 2.1.0
+# Repository standard 2.2.0
 
 Status: adopted after source and implementation review. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
@@ -111,3 +111,14 @@ See [admission and resource limits](../development/parallel-capacity.md) and
 [actual protocol boundaries](../development/execution-protocols.md). Capacity
 selects ceilings; it does not activate workers, invent work or grant provider
 entitlement. The single integration writer and existing pause boundaries remain.
+
+## Autonomous integration
+
+Standard 2.2.0 adopts [ADR 0005](../adr/0005-autonomous-integration.md).
+The [integration policy](../../tools/delivery/integration-policy.json) enables
+the deterministic controller for an authenticated connector owner. Persist intent
+before mutation, compare exact head/base, require bound independent review and
+Windmill validation, and verify canonical merge parents/tree and develop ancestry.
+Linear metadata failure retries only metadata. Unknown external effects retain
+repository ownership until reconciled. This authority does not enable Actions,
+production deployment, main promotion or suspended historical workers.
