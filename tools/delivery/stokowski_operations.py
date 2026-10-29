@@ -1,0 +1,355 @@
+"""Durable, single-owner asynchronous handoff to the existing Windmill bridge.
+
+This is an operation journal, not a scheduler. A Stokowski stage calls one tick;
+network ambiguity never creates a new operation or retries a side effect blindly.
+"""
+from contextlib import contextmanager
+import fcntl
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import shlex
+import sqlite3
+import time
+from uuid import UUID, uuid5, NAMESPACE_URL
+
+from symphony_capacity import digest
+
+BRIDGE = 'u/admin/foo_jobs_20261027'
+BASE_URL = 'https://windmill.aldous.info'
+POLICY = Path(__file__).with_name('capacity-policy.json')
+PROFILES = {'delivery-suite':['.venv-delivery/bin/python','-m','unittest','discover','-s','tests/delivery','-q']}
+TERMINAL = {'succeeded','failed','cancelled','refused','quarantined'}
+
+
+class OperationError(RuntimeError):
+    pass
+
+
+class TransportUnavailable(OperationError):
+    pass
+
+
+class RequestRefused(OperationError):
+    pass
+
+
+def validated(spec):
+    fields = {'version','issue_id','issue','stage','head','base','owner','policy_sha256',
+              'acceptance_sha256','outputs','profile','runner_sha256','executor_sha256'}
+    if not isinstance(spec,dict) or set(spec) != fields or type(spec['version']) is not int or spec['version'] != 1:
+        raise OperationError('Invalid operation fields')
+    if str(UUID(spec['issue_id'])) != spec['issue_id'] or not re.fullmatch(r'UIF-[1-9][0-9]*',spec['issue']):
+        raise OperationError('Invalid issue identity')
+    if not re.fullmatch(r'[a-z][a-z0-9-]{0,39}',spec['stage']):
+        raise OperationError('Invalid stage')
+    if not isinstance(spec['owner'],str) or not spec['owner'].strip():
+        raise OperationError('Missing operation owner')
+    for name,width in [('head',40),('base',40),('policy_sha256',64),('acceptance_sha256',64),
+                       ('runner_sha256',64),('executor_sha256',64)]:
+        if not isinstance(spec[name],str) or not re.fullmatch('[0-9a-f]{'+str(width)+'}',spec[name]):
+            raise OperationError('Invalid '+name)
+    if spec['profile'] not in PROFILES:
+        raise OperationError('Unreviewed validation profile')
+    if not isinstance(spec['outputs'],dict) or not 1 <= len(spec['outputs']) <= 64:
+        raise OperationError('Missing accepted outputs')
+    for name,value in spec['outputs'].items():
+        path = PurePosixPath(name)
+        if (not name or path.is_absolute() or '\\' in name or str(path) != name
+            or any(p in ('','.','..') for p in name.split('/'))
+            or path.parts[0] not in ('src','apps','tests','tools','scripts','docs','contracts','config')
+            or not isinstance(value,str) or not re.fullmatch('[0-9a-f]{64}',value)):
+            raise OperationError('Invalid output binding')
+    return spec
+
+
+def operation_key(spec):
+    validated(spec)
+    # Changing the owner does not manufacture a different operation. The same
+    # semantic operation with a different owner fails the immutable binding.
+    return digest({k:v for k,v in spec.items() if k != 'owner'})
+
+
+def bridge_arguments(spec, action='run'):
+    key = operation_key(spec)
+    logical_id = 'offmenu-'+key[:48]
+    if action != 'run':
+        if action not in ('status','cancel'):
+            raise OperationError('Invalid bridge action')
+        return {'action':action,'job_id':logical_id}
+    output_code = ("import hashlib,json,pathlib; expected=json.loads("+repr(json.dumps(spec['outputs'],sort_keys=True))+
+        "); root=pathlib.Path('/offmenu'); "
+        "assert all(not (root/p).is_symlink() and (root/p).is_file() and "
+        "hashlib.sha256((root/p).read_bytes()).hexdigest()==h for p,h in expected.items()); "
+        "print(json.dumps({'accepted_outputs':expected},sort_keys=True))")
+    head = shlex.quote(spec['head'])
+    identity = ('test "$(git rev-parse HEAD)" = '+head+
+                ' && test "$(git branch --show-current)" = feature/langgraph-delivery-standardization'
+                ' && git diff --quiet HEAD --')
+    commands = ['cd /offmenu',
+        'export PYTHONPATH=/offmenu/src GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0=/offmenu',
+        identity, shlex.join(PROFILES[spec['profile']]),
+        'python3 -c '+shlex.quote(output_code), identity]
+    return {'action':'run','job_id':logical_id,'command':' && '.join(commands),
+            'mode':'read','timeout_seconds':180,
+            'resources':{'workers':1,'overhead_processes':8,'cpu_millis':1000,
+                         'memory_bytes':2147483648,'io_slots':1,'output_bytes':0,
+                         'read_roots':['/offmenu'],'write_roots':[]}}
+
+
+class Journal:
+    def __init__(self,root):
+        self.root = Path(root)
+        for part in (self.root,*self.root.parents):
+            if part.is_symlink():
+                raise OperationError('Symlink operation root')
+        self.root.mkdir(parents=True,exist_ok=True,mode=0o700)
+        self.path = self.root/'operations.sqlite'
+        if self.path.is_symlink():
+            raise OperationError('Symlink operation database')
+        with self.db() as db:
+            db.execute('CREATE TABLE IF NOT EXISTS operations (key TEXT PRIMARY KEY,spec TEXT NOT NULL,state TEXT NOT NULL)')
+            db.execute('CREATE TABLE IF NOT EXISTS events (sequence INTEGER PRIMARY KEY,key TEXT NOT NULL,event TEXT NOT NULL,at REAL NOT NULL)')
+
+    @contextmanager
+    def db(self):
+        db = sqlite3.connect(self.path,timeout=10)
+        os.chmod(self.path,0o600)
+        try:
+            with db:
+                yield db
+        finally:
+            db.close()
+
+    @contextmanager
+    def claim(self,key):
+        if not re.fullmatch('[0-9a-f]{64}',key):
+            raise OperationError('Invalid operation key')
+        fd = os.open(self.root/(key+'.lock'),os.O_CREAT|os.O_RDWR|os.O_NOFOLLOW,0o600)
+        try:
+            try:
+                fcntl.flock(fd,fcntl.LOCK_EX|fcntl.LOCK_NB)
+            except BlockingIOError:
+                raise OperationError('Operation already owned by another tick') from None
+            yield
+        finally:
+            os.close(fd)
+
+    def prepare(self,spec):
+        key = operation_key(spec)
+        with self.claim(key),self.db() as db:
+            existing = db.execute('SELECT spec FROM operations WHERE key=?',(key,)).fetchone()
+            canonical = json.dumps(spec,sort_keys=True)
+            if existing:
+                if existing[0] != canonical:
+                    raise OperationError('Immutable operation/owner conflict')
+                return key
+            state = {'status':'prepared','windmill_job_id':str(uuid5(NAMESPACE_URL,'offmenu:run:'+key)),
+                     'cancel_job_id':str(uuid5(NAMESPACE_URL,'offmenu:cancel:'+key)),
+                     'logical_job_id':bridge_arguments(spec)['job_id'],'cancel_requested':False}
+            db.execute('INSERT INTO operations VALUES(?,?,?)',(key,canonical,json.dumps(state)))
+            db.execute('INSERT INTO events(key,event,at) VALUES(?,?,?)',(key,'prepared',time.time()))
+        return key
+
+    def read(self,key):
+        with self.db() as db:
+            row = db.execute('SELECT spec,state FROM operations WHERE key=?',(key,)).fetchone()
+            if not row:
+                raise OperationError('Unknown operation')
+            return json.loads(row[0]),json.loads(row[1])
+
+    def save(self,key,state,event):
+        with self.db() as db:
+            db.execute('UPDATE operations SET state=? WHERE key=?',(json.dumps(state,sort_keys=True),key))
+            db.execute('INSERT INTO events(key,event,at) VALUES(?,?,?)',(key,event,time.time()))
+
+    def cancel(self,key):
+        with self.claim(key):
+            _,state = self.read(key)
+            if state['status'] not in TERMINAL:
+                state['cancel_requested'] = True
+                self.save(key,state,'cancellation-requested')
+
+    async def tick(self,key,transport):
+        with self.claim(key):
+            spec,state = self.read(key)
+            if state['status'] in TERMINAL:
+                return state
+            if (hashlib.sha256(POLICY.read_bytes()).hexdigest() != spec['policy_sha256']
+                or hashlib.sha256(Path(__file__).read_bytes()).hexdigest() != spec['executor_sha256']):
+                state['status'] = 'quarantined'
+                self.save(key,state,'policy-drift')
+                return state
+            try:
+                remote = await transport.inspect(state['windmill_job_id'])
+                if remote is None:
+                    if state['status'] != 'prepared':
+                        state['status'] = 'unknown'
+                        self.save(key,state,'unseen-submission-requires-reconciliation')
+                        return state
+                    if state['cancel_requested']:
+                        state['status'] = 'cancelled'
+                        self.save(key,state,'cancelled-before-submission')
+                        return state
+                    # Persist before network mutation. Even a crash or lost API
+                    # response leaves the exact UUID available for inspection.
+                    state['status'] = 'submit-intent'
+                    self.save(key,state,'submit-intent')
+                    await transport.submit(state['windmill_job_id'],bridge_arguments(spec))
+                    state['status'] = 'submitted'
+                    self.save(key,state,'submitted')
+                    return state
+                if (remote.get('id') != state['windmill_job_id'] or remote.get('workspace_id') != 'offmenu'
+                    or remote.get('script_path') != BRIDGE or remote.get('args') != bridge_arguments(spec)):
+                    state['status'] = 'quarantined'
+                    self.save(key,state,'remote-binding-conflict')
+                    return state
+                if state['cancel_requested'] and remote.get('type','').lower() != 'completedjob':
+                    control = await transport.inspect(state['cancel_job_id'])
+                    if control is not None and (control.get('id') != state['cancel_job_id']
+                        or control.get('workspace_id') != 'offmenu' or control.get('script_path') != BRIDGE
+                        or control.get('args') != bridge_arguments(spec,'cancel')):
+                        state['status'] = 'quarantined'
+                        self.save(key,state,'cancel-binding-conflict')
+                        return state
+                    if control is None and not state.get('cancel_intent'):
+                        state['cancel_intent'] = True
+                        self.save(key,state,'backend-cancel-intent')
+                        await transport.submit(state['cancel_job_id'],bridge_arguments(spec,'cancel'))
+                    # Cancelling the API wrapper alone cannot prove the Foo
+                    # subprocess stopped. Keep ownership until its receipt does.
+                    state['status'] = 'cancel-requested'
+                    self.save(key,state,'awaiting-backend-termination')
+                    return state
+                if remote.get('type','').lower() != 'completedjob':
+                    state['status'] = 'running' if remote.get('running') else 'queued'
+                    self.save(key,state,'observed-'+state['status'])
+                    return state
+                result = remote.get('result')
+                if (not isinstance(result,dict) or not isinstance(result.get('receipt'),dict)
+                    or result['receipt'].get('status') not in ('succeeded','failed','timed_out','cancelled')):
+                    # A failed Windmill wrapper may still have a fully reconciled
+                    # business failure in Foo. Observe that receipt; never rerun
+                    # the validation just to recover its result.
+                    result = await self.backend_observation(key,spec,state,transport)
+                    if result is None:
+                        return state
+                if not isinstance(result,dict) or result.get('job_id') != state['logical_job_id']:
+                    state['status'] = 'unknown'
+                    self.save(key,state,'wrapper-result-not-backend-proof')
+                    return state
+                receipt = result.get('receipt',{})
+                status = receipt.get('status')
+                expected = bridge_arguments(spec)
+                bound = (receipt.get('command_sha256') == hashlib.sha256(expected['command'].encode()).hexdigest()
+                         and receipt.get('runner_sha256') == spec['runner_sha256']
+                         and receipt.get('capacity_policy_sha256') == spec['policy_sha256'])
+                if status == 'succeeded' and (bound
+                    and result.get('job_succeeded') is True and receipt.get('exit_code') == 0
+                    and receipt.get('child_tree_gone') is True
+                    and receipt.get('reconcile_required') is False
+                    and receipt.get('capacity_policy_sha256') == spec['policy_sha256']):
+                    state['status'] = 'cancelled' if state['cancel_requested'] else 'succeeded'
+                elif status in ('failed','cancelled','timed_out') and bound and receipt.get('child_tree_gone') is True:
+                    state['status'] = 'failed' if status == 'timed_out' else status
+                else:
+                    state['status'] = 'unknown'
+                state['receipt_sha256'] = digest(receipt)
+                state['accepted_output_sha256'] = spec['outputs'] if state['status'] == 'succeeded' else {}
+                state['acceptance_sha256'] = spec['acceptance_sha256']
+                self.save(key,state,'observed-'+state['status'])
+                return state
+            except TransportUnavailable:
+                # An observation outage changes no operation identity or intent.
+                self.save(key,state,'service-unavailable')
+                return dict(state,deferred='service-unavailable')
+            except RequestRefused:
+                state['status'] = 'refused' if state['status'] in ('prepared','submit-intent') else 'unknown'
+                self.save(key,state,'authorization-refused-no-protocol-fallback')
+                return state
+            except Exception:
+                state['status'] = 'unknown'
+                self.save(key,state,'network-or-protocol-outcome-unknown')
+                return state
+
+    async def backend_observation(self,key,spec,state,transport):
+        sequence = state.get('observation_sequence',0)
+        job_id = str(uuid5(NAMESPACE_URL,'offmenu:observe:'+key+':'+str(sequence)))
+        expected = bridge_arguments(spec,'status')
+        observed = await transport.inspect(job_id)
+        if observed is None:
+            if state.get('observation_intent'):
+                state['status'] = 'unknown'
+                self.save(key,state,'observer-outcome-unknown')
+                return None
+            state['observation_intent'] = True
+            self.save(key,state,'backend-observation-intent')
+            await transport.submit(job_id,expected)
+            return None
+        if (observed.get('id') != job_id or observed.get('workspace_id') != 'offmenu'
+            or observed.get('script_path') != BRIDGE or observed.get('args') != expected):
+            state['status'] = 'quarantined'
+            self.save(key,state,'observer-binding-conflict')
+            return None
+        if observed.get('type','').lower() != 'completedjob':
+            return None
+        value = observed.get('result')
+        status = value.get('receipt',{}).get('status') if isinstance(value,dict) else None
+        if status in ('running','starting','queued'):
+            # Another pure observation may follow later; never a new business
+            # submission. Persist the next observer's identity before use.
+            state['observation_sequence'] = sequence+1
+            state['observation_intent'] = False
+            self.save(key,state,'backend-still-running')
+            return None
+        return value
+
+
+class WindmillAPI:
+    """Existing injected authentication only; no token creation or grant API."""
+    def __init__(self,token,client=None):
+        if not token:
+            raise OperationError('Existing Windmill authentication was not injected')
+        import httpx
+        self.client = client or httpx.AsyncClient(base_url=BASE_URL+'/api',timeout=20,
+                    headers={'Authorization':'Bearer '+token},follow_redirects=False)
+
+    async def inspect(self,job_id):
+        import httpx
+        try:
+            response = await self.client.get('/w/offmenu/jobs_u/get/'+str(UUID(job_id)))
+        except httpx.TransportError:
+            raise TransportUnavailable('Windmill observation unavailable') from None
+        if response.status_code == 404:
+            return None
+        if response.status_code >= 500:
+            raise TransportUnavailable('Windmill observation unavailable')
+        if response.status_code in (401,403):
+            raise RequestRefused('Windmill observation refused')
+        response.raise_for_status()
+        return response.json()
+
+    async def submit(self,job_id,args):
+        # v1.850.0 NewJobId is server-enforced across queued/completed jobs.
+        response = await self.client.post('/w/offmenu/jobs/run/p/'+BRIDGE,
+                    params={'job_id':str(UUID(job_id))},json=args)
+        if response.status_code in (401,403):
+            raise RequestRefused('Windmill submission refused')
+        response.raise_for_status()
+        if response.text.strip().strip('"') != job_id:
+            raise OperationError('Unexpected Windmill job UUID')
+
+    async def close(self):
+        await self.client.aclose()
+
+    @classmethod
+    def injected(cls):
+        token = os.environ.get('OFFMENU_WINDMILL_TOKEN')
+        if not token and os.environ.get('WM_WORKSPACE') == 'offmenu':
+            token = os.environ.get('WM_TOKEN')
+        directory = os.environ.get('CREDENTIALS_DIRECTORY')
+        if not token and directory and (Path(directory)/'windmill-api-token').is_file():
+            token = (Path(directory)/'windmill-api-token').read_text().strip()
+        return cls(token)

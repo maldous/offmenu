@@ -1,0 +1,165 @@
+"""Operation crash/restart tests with actual durable SQLite and faulted API edges."""
+import asyncio
+import copy
+import hashlib
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+
+TOOLS = Path(__file__).resolve().parents[2]/'tools/delivery'
+sys.path.insert(0,str(TOOLS))
+import stokowski_operations as operations
+
+
+class FaultedWindmill:
+    def __init__(self):
+        self.jobs = {}
+        self.submissions = []
+        self.lose_ack = False
+        self.offline = False
+        self.refused = False
+
+    async def inspect(self,job_id):
+        if self.offline:
+            raise operations.TransportUnavailable('offline')
+        return copy.deepcopy(self.jobs.get(job_id))
+
+    async def submit(self,job_id,args):
+        if self.refused:
+            raise operations.RequestRefused('403')
+        if job_id in self.jobs:
+            raise RuntimeError('Duplicate UUID')
+        self.submissions.append((job_id,copy.deepcopy(args)))
+        self.jobs[job_id] = {'id':job_id,'workspace_id':'offmenu',
+            'script_path':operations.BRIDGE,'args':copy.deepcopy(args),
+            'type':'QueuedJob','running':True}
+        if self.lose_ack:
+            self.lose_ack = False
+            raise TimeoutError('response lost after accepting the job')
+
+    def complete(self,job_id,spec,status='succeeded',wrapper_success=True):
+        args = operations.bridge_arguments(spec)
+        receipt = {'job_id':args['job_id'],'status':status,'exit_code':0 if status == 'succeeded' else 1,
+                   'child_tree_gone':True,'reconcile_required':False,
+                   'capacity_policy_sha256':spec['policy_sha256'],
+                   'runner_sha256':spec['runner_sha256'],
+                   'command_sha256':hashlib.sha256(args['command'].encode()).hexdigest()}
+        self.jobs[job_id].update(type='CompletedJob',success=wrapper_success,
+            result={'job_id':args['job_id'],'job_succeeded':status=='succeeded','receipt':receipt})
+
+
+class OperationRecoveryTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.journal = operations.Journal(self.root)
+        self.spec = {'version':1,'issue':'UIF-92','issue_id':'8daac134-01ab-4a02-a4d2-c0c417d0bd32',
+                     'stage':'verify','owner':'integration-writer','head':'a'*40,'base':'b'*40,
+                     'policy_sha256':hashlib.sha256(operations.POLICY.read_bytes()).hexdigest(),
+                     'runner_sha256':hashlib.sha256((TOOLS/'windmill_runner.py').read_bytes()).hexdigest(),
+                     'executor_sha256':hashlib.sha256(Path(operations.__file__).read_bytes()).hexdigest(),
+                     'acceptance_sha256':'c'*64,'profile':'delivery-suite',
+                     'outputs':{'tests/meaningful.py':'d'*64}}
+        self.key = self.journal.prepare(self.spec)
+        self.remote = FaultedWindmill()
+
+    def tick(self):
+        # Reopen the durable journal each time, as after a process restart.
+        return asyncio.run(operations.Journal(self.root).tick(self.key,self.remote))
+
+    def test_lost_submit_response_is_reconciled_without_second_submission(self):
+        self.remote.lose_ack = True
+        self.assertEqual(self.tick()['status'],'unknown')
+        self.assertEqual(len(self.remote.submissions),1)
+        job_id = self.journal.read(self.key)[1]['windmill_job_id']
+        self.remote.complete(job_id,self.spec)
+        self.assertEqual(self.tick()['status'],'succeeded')
+        self.assertEqual(len(self.remote.submissions),1)
+
+    def test_unknown_missing_remote_job_is_not_blindly_resubmitted(self):
+        self.remote.lose_ack = True
+        self.tick()
+        self.remote.jobs.clear()
+        self.assertEqual(self.tick()['status'],'unknown')
+        self.assertEqual(len(self.remote.submissions),1)
+
+    def test_observation_outage_defers_prepared_work_without_claiming_submission(self):
+        self.remote.offline = True
+        result = self.tick()
+        self.assertEqual(result['status'],'prepared')
+        self.assertEqual(result['deferred'],'service-unavailable')
+        self.assertEqual(self.remote.submissions,[])
+        self.remote.offline = False
+        self.assertEqual(self.tick()['status'],'submitted')
+
+    def test_second_owner_cannot_create_duplicate_operation(self):
+        other = dict(self.spec,owner='competing-worker')
+        self.assertEqual(operations.operation_key(other),self.key)
+        with self.assertRaisesRegex(operations.OperationError,'owner conflict'):
+            self.journal.prepare(other)
+
+    def test_claim_excludes_another_writer(self):
+        with self.journal.claim(self.key):
+            with self.assertRaisesRegex(operations.OperationError,'already owned'):
+                self.tick()
+        self.assertEqual(self.remote.submissions,[])
+
+    def test_cancel_before_submission_does_not_start_a_job(self):
+        self.journal.cancel(self.key)
+        self.assertEqual(self.tick()['status'],'cancelled')
+        self.assertEqual(self.remote.submissions,[])
+
+    def test_cancel_targets_foo_backend_and_waits_for_termination(self):
+        state = self.tick()
+        self.journal.cancel(self.key)
+        state = self.tick()
+        self.assertEqual(state['status'],'cancel-requested')
+        self.assertEqual(self.remote.submissions[-1][1],operations.bridge_arguments(self.spec,'cancel'))
+        count = len(self.remote.submissions)
+        self.tick()
+        self.assertEqual(len(self.remote.submissions),count)
+        self.remote.complete(state['windmill_job_id'],self.spec,'cancelled')
+        self.assertEqual(self.tick()['status'],'cancelled')
+
+    def test_foreign_remote_identity_is_quarantined(self):
+        state = self.tick()
+        self.remote.jobs[state['windmill_job_id']]['workspace_id'] = 'another-workspace'
+        self.assertEqual(self.tick()['status'],'quarantined')
+
+    def test_wrong_command_receipt_does_not_pass(self):
+        state = self.tick()
+        self.remote.complete(state['windmill_job_id'],self.spec)
+        self.remote.jobs[state['windmill_job_id']]['result']['receipt']['command_sha256'] = '0'*64
+        self.assertEqual(self.tick()['status'],'unknown')
+
+    def test_authorization_refusal_does_not_choose_an_alternate_protocol(self):
+        self.remote.refused = True
+        self.assertEqual(self.tick()['status'],'refused')
+        self.assertEqual(self.remote.submissions,[])
+        self.remote.refused = False
+        self.assertEqual(self.tick()['status'],'refused')
+        self.assertEqual(self.remote.submissions,[])
+
+    def test_failed_api_wrapper_recovers_business_failure_from_status_receipt(self):
+        state = self.tick()
+        job_id = state['windmill_job_id']
+        self.remote.jobs[job_id].update(type='CompletedJob',success=False,result={'error':'business failed'})
+        self.tick()
+        observer_id,args = self.remote.submissions[-1]
+        self.assertEqual(args,operations.bridge_arguments(self.spec,'status'))
+        self.remote.complete(observer_id,self.spec,'failed')
+        self.assertEqual(self.tick()['status'],'failed')
+        self.assertEqual(len([a for _,a in self.remote.submissions if a['action']=='run']),1)
+
+    def test_output_and_profile_schema_reject_private_paths_and_shell_commands(self):
+        for outputs in ({'data/private.json':'a'*64},{'tests/../data/private.json':'a'*64}):
+            with self.assertRaises(operations.OperationError):
+                self.journal.prepare(dict(self.spec,outputs=outputs))
+        with self.assertRaises(operations.OperationError):
+            self.journal.prepare(dict(self.spec,profile='unreviewed shell command'))
+
+
+if __name__ == '__main__':
+    unittest.main()
