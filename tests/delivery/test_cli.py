@@ -114,6 +114,7 @@ class CliTests(unittest.TestCase):
         task = json.loads(original)
         self.assertEqual(task['base_revision'], self.task['base_revision'])
         self.assertEqual(task['owner'], 'reviewer')
+        self.assertEqual(task['branch'], 'feature/cli-test')
         self.assertEqual(task['checks'][0]['argv'], [sys.executable, '-m',
                          'unittest', 'discover', '-s', 'tests/delivery', '-v'])
         self.assertEqual(set(task['accepted_outputs']), {
@@ -321,6 +322,45 @@ class CliTests(unittest.TestCase):
         self.assertEqual(self.cli('status', self.task_path)['status'], 'not_accepted')
         (self.root / 'result.txt').write_text('accepted bytes\n')
         self.assertEqual(self.cli('run', self.task_path)['status'], 'accepted')
+        self.assertEqual((self.root / 'counter.txt').read_text(), '1')
+
+    def test_checked_output_cannot_be_replaced_before_cross_process_acceptance(self):
+        (self.root / 'result.txt').write_text('wrong bytes seen by command\n')
+        self.task['checks'][0]['argv'][2] += "; print(Path('result.txt').read_text())"
+        self.save_task()
+        self.cli('run', self.task_path, '--pause-after', 'execute')
+        (self.root / 'result.txt').write_text('accepted bytes\n')
+        self.assert_blocked('run', self.task_path, reason='cached check evidence differs')
+        self.assertFalse(self.receipt('accepted.json').exists())
+        self.assertEqual((self.root / 'counter.txt').read_text(), '1')
+
+    def test_output_drift_consumes_only_declared_safe_recheck_budget(self):
+        (self.root / 'result.txt').write_text('wrong bytes seen by command\n')
+        self.task['checks'][0].update(attempts=2, retry_safe=True)
+        self.task['checks'][0]['argv'][2] += "; print(Path('result.txt').read_text())"
+        self.save_task()
+        self.cli('run', self.task_path, '--pause-after', 'execute')
+        (self.root / 'result.txt').write_text('accepted bytes\n')
+        self.assertEqual(self.cli('run', self.task_path)['status'], 'accepted')
+        self.assertEqual((self.root / 'counter.txt').read_text(), '2')
+        receipt = json.loads(self.receipt('counter.json').read_text())
+        self.assertEqual(receipt['attempt'], 2)
+        self.assertEqual(receipt['output_state'], self.task['accepted_outputs'])
+        self.assertIn('accepted bytes', self.receipt('counter-2.log').read_text())
+        self.cli('run', self.task_path)
+        self.assertEqual((self.root / 'counter.txt').read_text(), '2')
+
+    def test_same_head_other_branch_cannot_resume_or_reuse_acceptance(self):
+        self.cli('run', self.task_path, '--pause-after', 'execute')
+        self.git('switch', '-qc', 'feature/other-cli')
+        self.assert_blocked('run', self.task_path, reason='already bound')
+        self.assertFalse(self.receipt('accepted.json').exists())
+        self.git('switch', '-q', 'feature/cli-test')
+        self.assertEqual(self.cli('run', self.task_path)['status'], 'accepted')
+        accepted = self.cli('status', self.task_path)
+        self.assertEqual(accepted['branch'], 'feature/cli-test')
+        self.git('switch', '-q', 'feature/other-cli')
+        self.assert_blocked('run', self.task_path, reason='already bound')
         self.assertEqual((self.root / 'counter.txt').read_text(), '1')
 
 

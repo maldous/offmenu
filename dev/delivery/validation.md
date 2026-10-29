@@ -127,3 +127,20 @@ drift across process resume, and output verification at final acceptance.
 Combined with the preceding eleven, the CLI suite now has16 tests.
 
 Sanitized native process receipt SHA256: 987677e7df3c0fe9c731beca171542df94b3c806cab94cb3cd9ce52b6dd5568b.
+
+## Independent review corrections
+
+Review of fdadf958 identified three correctness defects: substituted output
+bytes could reuse a successful check, same-HEAD branch switches were not bound,
+and check IDs could collide with control receipts. The fixes record actual
+post-command output state and source evidence, bind the exact branch, and reject
+reserved names/path variants before writing controls. Output drift blocks by
+default; only the original explicit safe-retry declarations and remaining budgets
+allow graph reexecution. Generated outputs and known failed-producer recovery
+remain supported. Historical bindings lacking this evidence are not auto-upgraded.
+
+63 selected tests pass locally, including eight focused graph regressions and
+three additional CLI subprocess regressions. Scope remains the delivery engine,
+CLI, their tests and documentation; no legacy worker or application work resumed.
+A separate sanitized verification receipt retains the subsequent Windmill
+source identity, supervisor result and actual test summary for external review.

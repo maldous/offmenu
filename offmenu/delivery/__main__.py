@@ -45,9 +45,12 @@ def main():
                 task = {'version': 1, 'id': args.task_id, 'owner': args.owner,
                         'purpose': 'Accept the repository standard and durable developer workflow',
                         'base_revision': git(root, 'rev-parse', 'HEAD'),
+                        'branch': git(root, 'branch', '--show-current'),
                         'checks': [{'id': 'durable-workflow', 'argv': [sys.executable, '-m', 'unittest',
                                     'discover', '-s', 'tests/delivery', '-v'], 'timeout': 60}],
                         'accepted_outputs': {p: hashlib.sha256((root / p).read_bytes()).hexdigest() for p in outputs}}
+                from .engine import validate_task
+                validate_task(task)
                 atomic(path, task)
                 result = {'status': 'prepared_for_review', 'task': str(path)}
         elif args.action in ('discover', 'check'):
@@ -98,7 +101,12 @@ def main():
                             verify_outputs(root, task)
                         engine.event('reconciled', {'check': args.check_id, 'outcome': args.outcome,
                                                    'evidence': evidence})
-                        record.update(status=args.outcome, reconciled=True)
+                        from .engine import output_state, digest
+                        step = next(s for s in task['checks'] if s['id'] == args.check_id)
+                        record.update(status=args.outcome, reconciled=True,
+                                      argv_sha256=digest(step['argv']),
+                                      source_sha256=engine.source_digest(),
+                                      output_state=output_state(root, task))
                         atomic(receipt, record)
                         result = {'status': 'reconciled', 'check': args.check_id, 'outcome': args.outcome}
                     else:
