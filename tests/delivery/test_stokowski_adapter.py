@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 
 TOOLS = Path(__file__).resolve().parents[2]/'tools/delivery'
@@ -76,6 +77,19 @@ class StokowskiBoundaryTests(unittest.TestCase):
                      {'memory_bytes':1024**3},64)
             self.assertEqual(result['status'],'cancelled')
             self.assertTrue(result['child_tree_gone'])
+
+    def test_large_prompt_to_nonreading_child_is_inside_deadline(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            directory = root/'attempts'/'UIF-92'
+            directory.mkdir(parents=True)
+            started = time.monotonic()
+            result = worker.supervise([sys.executable,'-c','import time;time.sleep(60)'],
+                     'x'*1048576, root, worker.child_environment(os.environ),directory,1,
+                     {'memory_bytes':1024**3},64)
+            self.assertEqual(result['status'],'timed_out')
+            self.assertTrue(result['child_tree_gone'])
+            self.assertLess(time.monotonic()-started,4)
 
 
 if __name__ == '__main__':

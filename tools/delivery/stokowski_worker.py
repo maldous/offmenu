@@ -47,9 +47,9 @@ def git(workspace, *args):
                                    env=child_environment(os.environ), text=True).strip()
 
 
-def changed_paths(workspace):
+def changed_paths(workspace, base_revision='HEAD'):
     paths = subprocess.check_output(['git', '-C', str(workspace), 'diff',
-                                     '--name-only', 'HEAD', '-z']).decode().split('\0')
+                                     '--name-only', base_revision, '-z']).decode().split('\0')
     paths += subprocess.check_output(['git', '-C', str(workspace), 'ls-files',
                                       '--others', '--exclude-standard', '-z']).decode().split('\0')
     return sorted(set(p for p in paths if p))
@@ -89,13 +89,13 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
 
     previous = {s: signal.signal(s, stop) for s in (signal.SIGTERM, signal.SIGINT)}
     try:
+        deadline = time.monotonic()+timeout
         with (directory/'stdout.jsonl').open('wb') as out, (directory/'stderr.log').open('wb') as err:
             proc = subprocess.Popen(command, cwd=workspace, env=environment,
                                     stdin=subprocess.PIPE, stdout=out, stderr=err,
-                                    start_new_session=True)
-            proc.stdin.write(prompt.encode())
-            proc.stdin.close()
-            deadline = time.monotonic()+timeout
+                                    start_new_session=True, bufsize=0)
+            os.set_blocking(proc.stdin.fileno(), False)
+            remaining_prompt = memoryview(prompt.encode())
             while proc.poll() is None:
                 usage = capacity_usage()
                 reason = None
@@ -112,7 +112,18 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
                 if reason:
                     result['status'] = reason
                     break
-                time.sleep(.1)
+                if proc.stdin and not proc.stdin.closed:
+                    if remaining_prompt:
+                        try:
+                            sent = os.write(proc.stdin.fileno(),remaining_prompt[:65536])
+                            remaining_prompt = remaining_prompt[sent:]
+                        except BlockingIOError:
+                            pass
+                        except BrokenPipeError:
+                            proc.stdin.close()
+                    else:
+                        proc.stdin.close()
+                time.sleep(.02)
             if proc.poll() is not None:
                 result.update(exit_code=proc.returncode,
                               status='succeeded' if proc.returncode == 0 else 'failed')
@@ -121,6 +132,8 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
     finally:
         try:
             if proc is not None:
+                if proc.stdin and not proc.stdin.closed:
+                    proc.stdin.close()
                 result['child_tree_gone'] = cleanup(proc)
                 result['exit_code'] = proc.returncode
         finally:
@@ -181,17 +194,23 @@ def execute(runtime, issue, request):
                                policy['windmill']['computation_subprocesses_per_job'])
         if (directory/'stdout.jsonl').exists():
             result.update(summarize_events(directory/'stdout.jsonl'))
-        paths = changed_paths(workspace)
+        final_head = git(workspace,'rev-parse','HEAD')
+        final_branch = git(workspace,'branch','--show-current')
+        identity_changed = (final_head != manifest['base_revision']
+                            or final_branch != manifest['branch'])
+        paths = changed_paths(workspace, manifest['base_revision'])
         violations = [p for p in paths if not any(p == a or p.startswith(a+'/')
                                                  for a in task['allowed_paths'])]
         outputs = {p: hashlib.sha256((workspace/p).read_bytes()).hexdigest()
                    for p in paths if (workspace/p).is_file() and not (workspace/p).is_symlink()}
         result.update(issue=issue, lease=lease, binding_sha256=digest(binding),
                       source_head=manifest['base_revision'], scope_violations=violations,
+                      final_head=final_head, final_branch=final_branch,
+                      source_identity_changed=identity_changed,
                       output_sha256=outputs, accepted_delivery=False,
                       provider_route='codex-chatgpt', requested_model=MODEL,
                       credential_exported=False)
-        if violations or not result.get('turn_completed'):
+        if identity_changed or violations or not result.get('turn_completed'):
             result['status'] = 'failed'
     finally:
         # Retain admission whenever termination cannot be proven. A crash before

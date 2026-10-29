@@ -227,6 +227,33 @@ class WorkerRegressions(unittest.TestCase):
         self.git(workspace, 'switch', '-c', 'feature/unreviewed')
         self.assert_source_rejected()
 
+    def test_committed_out_of_scope_change_is_observed_against_admitted_base(self):
+        workspace = self.runtime/'workspaces'/self.issue
+        def committed(command,prompt,selected,environment,directory,*args):
+            (workspace/'outside.txt').write_text('unexpected committed output\n')
+            self.git(workspace,'add','outside.txt')
+            self.git(workspace,'commit','-m','Unexpected worker commit')
+            return self.completed_process(command,prompt,selected,environment,directory,*args)
+        self.process.side_effect = committed
+        result = worker.execute(self.runtime,self.issue,self.request)
+        self.assertEqual(result['status'],'failed')
+        self.assertTrue(result['source_identity_changed'])
+        self.assertIn('outside.txt',result['scope_violations'])
+        self.assertIn('outside.txt',result['output_sha256'])
+        self.assertNotEqual(result['final_head'],result['source_head'])
+
+    def test_branch_change_at_same_head_is_not_success(self):
+        workspace = self.runtime/'workspaces'/self.issue
+        def switched(command,prompt,selected,environment,directory,*args):
+            self.git(workspace,'switch','-c','feature/unselected-final')
+            return self.completed_process(command,prompt,selected,environment,directory,*args)
+        self.process.side_effect = switched
+        result = worker.execute(self.runtime,self.issue,self.request)
+        self.assertEqual(result['status'],'failed')
+        self.assertEqual(result['final_head'],result['source_head'])
+        self.assertTrue(result['source_identity_changed'])
+        self.assertEqual(result['final_branch'],'feature/unselected-final')
+
     def test_changed_head_fails_before_admission_or_coding(self):
         workspace = self.runtime / 'workspaces' / self.issue
         self.git(workspace, 'commit', '--allow-empty', '-m', 'Unselected revision')
