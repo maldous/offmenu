@@ -56,8 +56,8 @@
   "ownership": {
     "integration_writer": "offmenu-integration-writer",
     "allowed_paths": [
-      "scripts/check_final_layout.py",
-      "tests/delivery/test_final_layout.py"
+      "tests/delivery/test_cli.py",
+      "src/offmenu/delivery/__main__.py"
     ],
     "expected_source_head": null,
     "standard_version": "2.0.0"

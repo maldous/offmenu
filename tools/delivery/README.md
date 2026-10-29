@@ -133,11 +133,11 @@ git clone --no-local --upload-pack='git -c safe.directory=/offmenu/.git -c safe.
 Inside that new clone, use the existing project interpreter read-only:
 
 ```sh
-/offmenu/.venv-delivery/bin/python -m offmenu.delivery prepare --task-id SELECTED-TASK --owner offmenu-windmill-writer
+PYTHONPATH=src /offmenu/.venv-delivery/bin/python -m offmenu.delivery prepare --task-id SELECTED-TASK --owner offmenu-windmill-writer
 ```
 
 ```sh
-/offmenu/.venv-delivery/bin/python -m offmenu.delivery run .delivery/SELECTED-TASK.json --pause-after standards
+PYTHONPATH=src /offmenu/.venv-delivery/bin/python -m offmenu.delivery run .delivery/SELECTED-TASK.json --pause-after standards
 ```
 
 A later Windmill job runs the same `run` command without `--pause-after`. Task,
@@ -148,3 +148,19 @@ owned by their execution identity; never reuse another actor's private task root
 or clear permissions/markers to force admission.
 
 Checkpoints predating exact branch/output evidence remain retained historical records. They are not silently upgraded into new verification evidence; the runner refuses to reuse their incomplete binding. Reconcile their recorded outcome and prepare a reviewed task on the fixed source.
+
+## Alternate checkout mounts
+
+An editable install records its installation path. The existing SSH jail mounts
+this checkout at `/offmenu`, not `/home/user/src/offmenu`. For that bridge, run
+package commands with `PYTHONPATH=/offmenu/src` (or `PYTHONPATH=src` after changing
+to an isolated workspace). The pinned interpreter still supplies dependencies.
+Do not assume a host editable path exists inside a jail. For the existing
+explicitly trusted canonical repository, process-scoped Git safe.directory may
+select `/offmenu`; do not change global trust or broaden data permissions.
+
+An isolated Windmill clone owns its `.delivery/` checkpoints and uses its own
+`src` path; the canonical developer checkpoint directory remains private.
+
+See the [architecture handover](../../docs/development/delivery-architecture.md)
+for records versus checkpoints, proven adapters and remaining optional capabilities.

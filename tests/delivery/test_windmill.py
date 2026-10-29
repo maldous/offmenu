@@ -37,6 +37,23 @@ class WindmillTests(DeliveryFixture):
             with self.assertRaisesRegex(DeliveryError, 'binding mismatch'):
                 adapter.main(task_path)
 
+    def test_relocated_reviewed_task_directory_is_admitted(self):
+        task_path = self.prepare()
+        directory = self.root / 'tools/delivery'
+        directory.mkdir(parents=True)
+        (directory / 'task.json').write_text(json.dumps(self.task))
+        with patch.object(adapter, 'CHECKOUT_ROOT', str(self.root)):
+            self.assertEqual(adapter.main('tools/delivery/task.json')['status'], 'not_accepted')
+
+    def test_retired_task_directory_is_rejected(self):
+        self.prepare()
+        directory = self.root / 'dev/delivery'
+        directory.mkdir(parents=True)
+        (directory / 'task.json').write_text(json.dumps(self.task))
+        with patch.object(adapter, 'CHECKOUT_ROOT', str(self.root)):
+            with self.assertRaisesRegex(ValueError, 'reviewed delivery'):
+                adapter.main('dev/delivery/task.json')
+
     def test_rejects_outside_task_path(self):
         with patch.object(adapter, 'CHECKOUT_ROOT', str(self.root)):
             with self.assertRaisesRegex(ValueError, 'reviewed delivery'):

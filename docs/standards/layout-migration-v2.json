@@ -801,7 +801,7 @@
       "to": "tools/delivery/README.md",
       "base_git_blob": "322e411a194411f74808ae5130301229b329845e",
       "base_sha256": "b918f403229f1e54fc1243e5f6693287593fda76541abccc96b61b67a4a16e64",
-      "migrated_sha256": "4d0659f02fa4ca4e60d16b176cc7b3bda333651cbb54851408134ce83b5a60b3",
+      "migrated_sha256": "4534b1970669cb18eab92bbf4608e614551a2bd71339e50d141dd88769d08911",
       "bytes_preserved": false
     },
     {
@@ -833,7 +833,7 @@
       "to": "tools/delivery/symphony-linear-binding.json",
       "base_git_blob": "fd4d29f622503853f966b56985f94cf3d4869bd3",
       "base_sha256": "80ac641a2c23cbd3b9adb222ba249a8459f1cb49d0b2d1f9526f165fc9af4682",
-      "migrated_sha256": "3d09220816e6250fe898e90107e4da3d83d73b88f5beff932a631673b5323e2a",
+      "migrated_sha256": "c456bb278f912a70810a9ad81c3cbb9329a0ab6a4b6054433cb0e6f798985e53",
       "bytes_preserved": false
     },
     {
@@ -857,7 +857,7 @@
       "to": "tools/delivery/symphony_launch.py",
       "base_git_blob": "0886dc70d68c439279b2a7631409a62f300e5d4d",
       "base_sha256": "5df25469564874d1246a04c3809a1225761e7b8ed67079464af0badbcaa6859d",
-      "migrated_sha256": "e132d676664df9c49debf32fcc385dd6f54cbf4c19977bb7f60d131793c6c74c",
+      "migrated_sha256": "94c2784f0fc5c8fdfcd2aa4f38a323f954737ab99931e4dc6a07bb486d675f31",
       "bytes_preserved": false
     },
     {
@@ -897,8 +897,8 @@
       "to": "tools/delivery/windmill_entrypoint.py",
       "base_git_blob": "098475e2b02bd7a65a97574c6eb53e9617614497",
       "base_sha256": "d4438fc361337cbb23dc80f41477c4cef6920543904d59a721edf45c82edd22b",
-      "migrated_sha256": "d4438fc361337cbb23dc80f41477c4cef6920543904d59a721edf45c82edd22b",
-      "bytes_preserved": true
+      "migrated_sha256": "dc8c1e8263cdf5659abf73f35d634867c5b716434701036c988345774b1fa7eb",
+      "bytes_preserved": false
     },
     {
       "from": "dev/isolated-local-testuser-owned-backup-adapters.mjs",

@@ -18,7 +18,7 @@ def main(task_path: str, action: str = 'status') -> dict:
     from offmenu.delivery.engine import DeliveryError, Engine, digest, load_task, writer
     root = Path(CHECKOUT_ROOT).resolve()
     task_file = (root / task_path).resolve()
-    approved = [root / 'dev' / 'delivery', root / '.delivery']
+    approved = [root / 'tools' / 'delivery', root / '.delivery']
     if not any(task_file.is_relative_to(p) for p in approved) or task_file.suffix != '.json':
         raise ValueError('Only reviewed delivery task files are allowed')
     task = load_task(task_file)
