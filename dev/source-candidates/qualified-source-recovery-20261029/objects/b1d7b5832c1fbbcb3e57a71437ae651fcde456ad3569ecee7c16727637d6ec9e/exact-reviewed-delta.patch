@@ -1,0 +1,198 @@
+diff --git a/docs/operations/worker45-staging-bindings.md b/docs/operations/worker45-staging-bindings.md
+index 1edb44b0..4dc39f09 100644
+--- a/docs/operations/worker45-staging-bindings.md
++++ b/docs/operations/worker45-staging-bindings.md
+@@ -97,6 +97,25 @@ independent review and develop integration. Golden promotion remains later.
+ 
+ ## Verification
+ 
++### PR48 explicit JSON nesting correction
++
++CLI serialized JSON now has an explicit maximum of48 nested array/object
++containers. A bounded byte scan checks nesting **before** `strict_json`, ignoring
++structural characters inside strings and handling escaped quotes/backslashes.
++The shared decoder still owns full syntax, UTF-8 and duplicate-key validation.
++Over-depth input consistently exits2 with the fixed diagnostic
++`metadata-input-invalid: json-nesting-limit`, independent of whether a runtime's
++JSON decoder raises `RecursionError`. Direct Python API per-peer containment is
++unchanged; this new48-container contract applies to serialized CLI JSON ingress.
++
++`python3 -B -m unittest tests.test_portfolio45_depth_delta -v` exercises boundary,
++mixed-container, escaped-string, permissive-decoder, actual CLI and ordinary-held
++controls using authored data. Seven tests passed on available Python3.12.3.
++Python3.14 was unavailable locally and was **not run**. The permissive-decoder
++probe establishes pre-decode rejection, not a claim of executing Python3.14.
++Prior reader/isolation, selector/hold, cache-intent and replay scopes remain under
++their existing evidence; SAME33 reviews this owned delta before00 integration.
++
+ ### Reviewer33 correction (6428)
+ 
+ The local CLI now opens metadata once using no-follow directory descriptors and
+diff --git a/offmenu/refresh/portfolio45.py b/offmenu/refresh/portfolio45.py
+index d756fa19..eb9d5374 100644
+--- a/offmenu/refresh/portfolio45.py
++++ b/offmenu/refresh/portfolio45.py
+@@ -16,10 +16,44 @@ from .field_provenance import field_origin_errors
+ from .portfolio45_catalog import CATALOG
+ 
+ MAX_BYTES = 32768
++MAX_JSON_DEPTH = 48
+ KEYS = {'bindingId', 'row', 'inputSha256', 'manifestSha256',
+         'originalAcquiredAt', 'validatedAt', 'priorReplayKey'}
+ 
+ 
++class MetadataNestingError(ValueError):
++    """Explicit ingress depth violation, independent of decoder recursion."""
++
++
++def load_metadata_json(raw):
++    """Bound serialized container nesting before the shared JSON decoder.
++
++Only JSON structural bytes outside strings contribute to depth; escaped quotes
++and backslashes do not end strings. Full syntax/UTF-8/duplicate-key validation
++stays with strict_json. This does not depend on a Python recursion threshold.
++"""
++    if not isinstance(raw, bytes) or len(raw) > 16 * MAX_BYTES:
++        raise ValueError('metadata-json-byte-bound')
++    depth, in_string, escaped = 0, False, False
++    for byte in raw:
++        if in_string:
++            if escaped:
++                escaped = False
++            elif byte == 92:  # backslash
++                escaped = True
++            elif byte == 34:  # quote
++                in_string = False
++        elif byte == 34:
++            in_string = True
++        elif byte in (91, 123):  # array/object open
++            depth += 1
++            if depth > MAX_JSON_DEPTH:
++                raise MetadataNestingError('json-nesting-limit')
++        elif byte in (93, 125):
++            depth -= 1
++    return strict_json(raw)
++
++
+ def read_metadata_input(path):
+     """Open once through no-follow directories; read only a bounded regular FD.
+ 
+@@ -214,10 +248,12 @@ def main():
+         if args.templates and args.input is None:
+             result = [template(b) for b in catalog()['bindings']]
+         elif args.input is not None and args.as_of and not args.templates:
+-            result = assess_many(strict_json(read_metadata_input(args.input)), as_of=args.as_of)
++            result = assess_many(load_metadata_json(read_metadata_input(args.input)), as_of=args.as_of)
+         else:
+             raise ValueError('select-templates-or-input-with-clock')
+         print(canonical(result).decode())
++    except MetadataNestingError:
++        parser.exit(2, 'metadata-input-invalid: json-nesting-limit\n')
+     except (ValueError, OSError, UnicodeError, TypeError, RecursionError) as error:
+         parser.exit(2, 'metadata-input-invalid: ' + type(error).__name__ + '\n')
+ 
+diff --git a/tests/test_portfolio45_depth_delta.py b/tests/test_portfolio45_depth_delta.py
+new file mode 100644
+index 00000000..8dc2003c
+--- /dev/null
++++ b/tests/test_portfolio45_depth_delta.py
+@@ -0,0 +1,99 @@
++"""PR48 comment4306286777: explicit depth, authored bytes only."""
++import contextlib
++import io
++import json
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu.refresh import portfolio45 as p
++from offmenu.refresh.core import canonical
++
++
++class DepthDeltaTests(unittest.TestCase):
++    def test_explicit_container_boundary_arrays_and_objects(self):
++        raw = b'[' * p.MAX_JSON_DEPTH + b'0' + b']' * p.MAX_JSON_DEPTH
++        value = p.load_metadata_json(raw)
++        levels = 0
++        while isinstance(value, list):
++            levels += 1
++            value = value[0]
++        self.assertEqual(levels, p.MAX_JSON_DEPTH)
++        mixed = b'{"k":[' * (p.MAX_JSON_DEPTH // 2) + b'0' + b']}' * (p.MAX_JSON_DEPTH // 2)
++        p.load_metadata_json(mixed)
++        with self.assertRaises(p.MetadataNestingError):
++            p.load_metadata_json(b'[' + mixed + b']')
++
++    def test_excess_depth_rejects_before_even_a_permissive_decoder(self):
++        for levels in (p.MAX_JSON_DEPTH + 1, 20000):
++            with self.subTest(levels=levels):
++                raw = b'[' * levels + b'0' + b']' * levels
++                with patch.object(p, 'strict_json', return_value=[]) as decoder:
++                    with self.assertRaises(p.MetadataNestingError):
++                        p.load_metadata_json(raw)
++                    decoder.assert_not_called()
++
++    def test_quotes_backslashes_and_structural_bytes_in_strings(self):
++        value = {'literal': ('[]{}' * 1000) + '\\"' + '\\\\' + '"escaped"',
++                 'unicode': 'braces { and [ with café', 'tail': [{'value': 0}]}
++        raw = json.dumps(value, ensure_ascii=False).encode()
++        self.assertEqual(p.load_metadata_json(raw), value)
++        # JSON unicode escapes for quote/backslash remain inside the string.
++        self.assertEqual(p.load_metadata_json(b'"\\u0022[]{}\\u005c"'), '"[]{}\\')
++
++    def test_shared_json_syntax_and_duplicate_key_validation_preserved(self):
++        for raw in (b'{"a":0,"a":1}', b'{"bad":NaN}', b'][', b'"unterminated'):
++            with self.subTest(raw=raw), self.assertRaises(ValueError):
++                p.load_metadata_json(raw)
++
++    def test_actual_cli_depth_diagnostic_is_fixed(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            path = Path(tmp) / 'metadata.json'
++            for levels in (p.MAX_JSON_DEPTH + 1, 20000):
++                path.write_bytes(b'[' * levels + b'0' + b']' * levels)
++                run = subprocess.run(
++                    [sys.executable, '-B', '-m', 'offmenu.refresh.portfolio45',
++                     '--input', str(path), '--as-of', '2026-10-18T00:00:00Z'],
++                    capture_output=True, text=True, timeout=3)
++                self.assertEqual(run.returncode, 2)
++                self.assertEqual(run.stdout, '')
++                self.assertEqual(run.stderr, 'metadata-input-invalid: json-nesting-limit\n')
++
++    def test_cli_never_decodes_or_assesses_excess_depth(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            path = Path(tmp) / 'metadata.json'
++            path.write_bytes(b'[' * 20000 + b'0' + b']' * 20000)
++            args = ['portfolio45', '--input', str(path), '--as-of', '2026-10-18T00:00:00Z']
++            stdout, stderr = io.StringIO(), io.StringIO()
++            with patch.object(sys, 'argv', args), patch.object(p, 'strict_json', return_value=[]) as decoder, \
++                    patch.object(p, 'assess_many') as assessor, \
++                    contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
++                with self.assertRaises(SystemExit) as exit_info:
++                    p.main()
++                self.assertEqual(exit_info.exception.code, 2)
++                decoder.assert_not_called()
++                assessor.assert_not_called()
++            self.assertEqual(stdout.getvalue(), '')
++            self.assertEqual(stderr.getvalue(), 'metadata-input-invalid: json-nesting-limit\n')
++
++    def test_ordinary_metadata_cli_remains_held_without_source_io(self):
++        descriptors = [p.template(b) for b in p.catalog()['bindings']]
++        with tempfile.TemporaryDirectory() as tmp:
++            path = Path(tmp) / 'metadata.json'
++            path.write_bytes(canonical(descriptors))
++            run = subprocess.run(
++                [sys.executable, '-B', '-m', 'offmenu.refresh.portfolio45',
++                 '--input', str(path), '--as-of', '2026-10-18T00:00:00Z'],
++                capture_output=True, text=True, timeout=3)
++            self.assertEqual(run.returncode, 0, run.stderr)
++            result = json.loads(run.stdout)
++            self.assertEqual(len(result), 7)
++            self.assertTrue(all(r['status'] == 'held' and not r['datasetAccepted'] for r in result))
++            self.assertTrue(all(r['networkRequests'] == 0 for r in result))
++
++
++if __name__ == '__main__':
++    unittest.main()

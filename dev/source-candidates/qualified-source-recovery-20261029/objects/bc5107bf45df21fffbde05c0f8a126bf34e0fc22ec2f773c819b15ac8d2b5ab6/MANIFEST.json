@@ -1,0 +1,53 @@
+{
+  "kind": "frozen-independent-v195-caller-evidence",
+  "files": {
+    "ACCEPTANCE-CASES.json": {
+      "bytes": 3666,
+      "sha256": "8f9b4608411545c7116982853719ad0945e7d95f6f346e324e60e07d7fa2d61d"
+    },
+    "COVERAGE.json": {
+      "bytes": 7375,
+      "sha256": "409b6be316aff6bed5eab9b8ac19a42ee27a4cb5b2303c1d5f96b6e10e5220fe"
+    },
+    "EXECUTED-JOURNEY.json": {
+      "bytes": 211100,
+      "sha256": "8d35b0eab5916a720e549d0a13fecc357389a63ae522087648aea8c60f956719"
+    },
+    "FINDING-NS195-G1.json": {
+      "bytes": 2854,
+      "sha256": "1d254e566f282854820abd3d1372792628d5f9b005db424912dee35bcf3b9c9e"
+    },
+    "HANDOFF.md": {
+      "bytes": 2185,
+      "sha256": "038fdb0ce6ab6e78b37408e9d3edec13633c12ec7f27b383ece130fbaa168fcb"
+    },
+    "RECEIPT.json": {
+      "bytes": 2324,
+      "sha256": "a45abce9f5ce9a6d46f16e7646feccdabef3bb1cc18e3bc4777b6ca4e5b30058"
+    },
+    "SOURCE-BOUNDARIES.json": {
+      "bytes": 2379,
+      "sha256": "27af9cf1d82998c610ea28566f63d3873456805ba48cdb734e521b0b5ff4098b"
+    },
+    "app.formatted.js": {
+      "bytes": 548787,
+      "sha256": "c012150e141b87bf19493644b3cb4a3f2378e1ef487aaa3f170462d75534bf03"
+    },
+    "app.js": {
+      "bytes": 464652,
+      "sha256": "fce748582a1e4aa940022b00ccaab7ac00ec5d1ca5d357d5f45f4ff0756e1fdf"
+    },
+    "basis/README.md": {
+      "bytes": 28854,
+      "sha256": "c6b3a4991f9cdbace5a5b4f60776167f27e4ad892f1e5c6894b370a9a4ee8e3b"
+    },
+    "basis/research-delivery-plan.md": {
+      "bytes": 30899,
+      "sha256": "8cd221641016246f9cfeaab56f580203bff7a4b81f075f764c394c8dccbce47e"
+    },
+    "journey-harness.mjs": {
+      "bytes": 13694,
+      "sha256": "7ce1942f00c5a566a15d1c81ca1b3dce06b569e5dbf12cc320d9ba26a79f8f15"
+    }
+  }
+}

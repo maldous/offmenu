@@ -1,0 +1,86 @@
+diff --git a/offmenu/portfolio_owner02.py b/offmenu/portfolio_owner02.py
+index 856d6178..65cca1f8 100644
+--- a/offmenu/portfolio_owner02.py
++++ b/offmenu/portfolio_owner02.py
+@@ -38,6 +38,8 @@ def _pointer(document, pointer):
+         raise ValueError('invalid-selector')
+     value = document
+     for part in pointer[1:].split('/'):
++        if re.search(r'~(?:[^01]|$)', part):
++            raise ValueError('invalid-selector')
+         key = part.replace('~1', '/').replace('~0', '~')
+         if isinstance(value, list):
+             if not key.isdecimal() or str(int(key)) != key:
+@@ -104,7 +106,8 @@ def evaluate_binding(spec, evidence, *, now, previous_key=None):
+                 value = _pointer(doc, declaration['pointer'])
+                 if not (value is None or isinstance(value, (str, bool, int, float))):
+                     raise ValueError('scalar-field-required')
+-                if 'expected' in declaration and value != declaration['expected']:
++                if 'expected' in declaration and (type(value) is not type(declaration['expected'])
++                                                 or value != declaration['expected']):
+                     errors.add('field-literal-mismatch')
+                 data[field] = value
+                 origins[target] = {'kind': 'source', 'sourceId': spec['sourceId'],
+diff --git a/tests/test_portfolio_owner02.py b/tests/test_portfolio_owner02.py
+index cca22030..86df1241 100644
+--- a/tests/test_portfolio_owner02.py
++++ b/tests/test_portfolio_owner02.py
+@@ -34,6 +34,58 @@ def fixture():
+ 
+ 
+ class PortfolioBindingTests(unittest.TestCase):
++    def test_pointer_escapes_reject_invalid_tokens_and_preserve_valid_selectors(self):
++        selectors = [('/release~2name', 'release~2name', False),
++                     ('/release~', 'release~', False),
++                     ('/release~~0', 'release~~0', False),
++                     ('/release~0name', 'release~name', True),
++                     ('/release~1name', 'release/name', True),
++                     ('/release~01name', 'release~1name', True),
++                     ('/items/0', None, True), ('/items/00', None, False)]
++        for pointer, key, valid in selectors:
++            with self.subTest(pointer=pointer):
++                spec, evidence = fixture()
++                doc = json.loads(evidence['fixture/receipt.json'])
++                doc['items'] = ['synthetic-release']
++                if key is not None:
++                    doc[key] = 'synthetic-release'
++                raw = canonical(doc)
++                evidence['fixture/receipt.json'] = raw
++                spec['metadata'].update(sha256=sha(raw), bytes=len(raw))
++                bad = copy.deepcopy(spec)
++                bad['fields']['releaseLabel']['pointer'] = pointer
++                results = evaluate_portfolio([bad, spec], evidence, now=NOW)
++                self.assertEqual([r['status'] for r in results],
++                                 ['METADATA_READY' if valid else 'MALFORMED', 'METADATA_READY'])
++                if valid:
++                    self.assertEqual(results[0]['candidate']['data']['releaseLabel'], 'synthetic-release')
++                    self.assertEqual(results[0]['candidate']['provenance']['fieldOrigins']
++                                     ['/data/releaseLabel']['sourceField'], pointer)
++                else:
++                    self.assertIsNone(results[0]['candidate'])
++
++    def test_expected_literal_requires_identical_scalar_type_and_value(self):
++        pairs = [(1, True), (True, 1), (0, False), (False, 0),
++                 (1.0, True), (1, 1.0), (1.0, 1), ('1', 1), (None, 0),
++                 (True, True), (False, False), (1, 1), (1.0, 1.0), (None, None), ('v', 'v')]
++        for actual, expected in pairs:
++            with self.subTest(actual=actual, actual_type=type(actual), expected_type=type(expected)):
++                spec, evidence = fixture()
++                doc = json.loads(evidence['fixture/receipt.json'])
++                doc['literal'] = actual
++                raw = canonical(doc)
++                evidence['fixture/receipt.json'] = raw
++                spec['metadata'].update(sha256=sha(raw), bytes=len(raw))
++                check = copy.deepcopy(spec)
++                check['fields']['releaseLabel'] = {'kind': 'source', 'pointer': '/literal', 'expected': expected}
++                results = evaluate_portfolio([check, spec], evidence, now=NOW)
++                exact = type(actual) is type(expected) and actual == expected
++                self.assertEqual([r['status'] for r in results],
++                                 ['METADATA_READY' if exact else 'MALFORMED', 'METADATA_READY'])
++                if not exact:
++                    self.assertEqual(results[0]['diagnostics'], ['field-literal-mismatch'])
++                    self.assertIsNone(results[0]['candidate'])
++
+     def test_unhashable_source_ids_preserve_valid_siblings(self):
+         spec, evidence = fixture()
+         for source_id in ([], {}):

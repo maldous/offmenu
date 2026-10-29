@@ -1,0 +1,535 @@
+diff --git a/docs/operations/worker24/README.md b/docs/operations/worker24/README.md
+index 1793f1dd..10d2193e 100644
+--- a/docs/operations/worker24/README.md
++++ b/docs/operations/worker24/README.md
+@@ -11,7 +11,10 @@ python3 -m offmenu.refresh.worker24_bindings --now 2026-10-18T00:00:00Z
+ python3 -m unittest discover -s tests -p test_worker24_bindings.py
+ ```
+ 
+-The CLI reads only committed binding metadata. Embedded absolute evidence and
++The CLI loads the inert `worker24_catalogue.BINDINGS` module included in wheel
++and sdist builds. Its literals exactly match the retained `bindings.json`
++document; runtime loading does not depend on that repository document.
++Embedded absolute evidence and
+ candidate paths are Foo custody pointers, never opened by the CLI. The report
+ does not certify current asset availability, bytes, rights or data acceptance.
+ The original immutable candidates/manifests remain unchanged. This metadata
+diff --git a/offmenu/refresh/worker24_bindings.py b/offmenu/refresh/worker24_bindings.py
+index d9227fca..1e38d6ed 100644
+--- a/offmenu/refresh/worker24_bindings.py
++++ b/offmenu/refresh/worker24_bindings.py
+@@ -5,16 +5,20 @@ SourceContracts, acceptance receipts or automatic refresh jobs are installed.
+ """
+ import argparse
+ from copy import deepcopy
+-from pathlib import Path
+ import re
+ 
+-from .core import RefreshError, canonical, sha, strict_json, timestamp
++from .core import RefreshError, canonical, sha, timestamp
+ from .field_provenance import field_origin_errors
++from .worker24_catalogue import BINDINGS
+ 
+-CONFIG = Path(__file__).resolve().parents[2] / 'docs/operations/worker24/bindings.json'
+ COUNTRIES = {'PF', 'SL', 'TF', 'UY'}
+ 
+ 
++def catalogue():
++    """Return an isolated copy of the inert packaged metadata declarations."""
++    return deepcopy(BINDINGS)
++
++
+ def origin_template(profile, input_path, record_id):
+     """Declare lexical cell origins; coordinate/value checking remains external.
+ 
+@@ -137,8 +141,8 @@ def main():
+     parser.add_argument('--now', required=True, help='Explicit UTC observation timestamp')
+     parser.add_argument('--previous-key')
+     args = parser.parse_args()
+-    # Fixed committed metadata only. Paths embedded in it are never followed.
+-    document = strict_json(CONFIG.read_bytes())
++    # Fixed packaged declarations only. Embedded paths are never followed.
++    document = catalogue()
+     print(canonical(plan(document, now=args.now, previous_key=args.previous_key)).decode(), end='')
+ 
+ 
+diff --git a/offmenu/refresh/worker24_catalogue.py b/offmenu/refresh/worker24_catalogue.py
+new file mode 100644
+index 00000000..ea2c2c75
+--- /dev/null
++++ b/offmenu/refresh/worker24_catalogue.py
+@@ -0,0 +1,374 @@
++"""Frozen Worker24 metadata declarations; no source processing or admission."""
++
++BINDINGS = {'schemaVersion': 'offmenu-worker24-binding/1',
++ 'baseline': 'abecb99ee1125730ccbc2824b6ec49ffc5cc4302',
++ 'fixture': False,
++ 'profiles': [{'country': 'PF',
++               'sourceId': 'ispf-agriculture-690ba547e068527bfd8ebca5',
++               'releaseId': 'retained-member-versions',
++               'holds': [],
++               'scope': 'private lexical metadata planning only',
++               'applicability': {'ingredients': 'support-reference-only',
++                                 'recipes': 'not-established',
++                                 'nutrition': 'not-established',
++                                 'retailers/providers': 'not-established',
++                                 'prices/baskets': 'not-established',
++                                 'dietary references': 'not-established'},
++               'candidate': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/agricultural-tables.lexical-candidate.jsonl',
++                             'sha256': 'fbb46d1f52a5fae2a958158726ff67546117b64c1d6d3439dc5b868e7932b9e7',
++                             'bytes': 110841},
++               'evidence': [{'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json',
++                             'sha256': 'ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a'},
++                            {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/projection-validation.json',
++                             'sha256': 'bfce279502a073cc5c9409817086b5274deed96b3ca6344b3ac843d594881e73'}],
++               'inputs': [{'path': '11406.csv',
++                           'sha256': '49f41413dabb84890fdf2954a2de4ab7995c39d428e15bec5fc83b4ce3af5163',
++                           'bytes': 307,
++                           'releaseId': '2025-11-18T20:20:17.169000+00:00',
++                           'selectorEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json',
++                                                'sha256': 'ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a'},
++                           'selector': '/tables/0',
++                           'headers': ['Sexe',
++                                       'Filière bovine',
++                                       'Filière caprine',
++                                       'Filière porcine',
++                                       'Filière avicole',
++                                       'Filière apicole',
++                                       'Filière vanille',
++                                       'Filière cucurbitacées',
++                                       'Filière solanacées',
++                                       'Filière légumes feuilles',
++                                       'Filière horticole'],
++                           'expectedLexicalRecords': 2,
++                           'nativeUnit': None,
++                           'nativeBasis': None,
++                           'unitBasisPolicy': 'Preserve source header/title; no per-cell canonical '
++                                              'unit/basis inferred.',
++                           'title': 'Répartition par sexe des responsables d’exploitations '
++                                    'agricoles par filière en Polynésie française en 2023'},
++                          {'path': '11405.csv',
++                           'sha256': '192e23e6e29b80e2ad5e3eea207176ee32bf2df3d0d5a0d8b7192fe2b9290f37',
++                           'bytes': 458,
++                           'releaseId': '2025-11-18T20:20:15.147000+00:00',
++                           'selectorEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json',
++                                                'sha256': 'ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a'},
++                           'selector': '/tables/1',
++                           'headers': ['Végétal', 'Part de la surface certifiée bio'],
++                           'expectedLexicalRecords': 22,
++                           'nativeUnit': None,
++                           'nativeBasis': None,
++                           'unitBasisPolicy': 'Preserve source header/title; no per-cell canonical '
++                                              'unit/basis inferred.',
++                           'title': 'Part des surfaces cultivées certifiées en agriculture '
++                                    'biologique selon les types de végétaux en Polynésie française '
++                                    'en 2023'},
++                          {'path': '11404.csv',
++                           'sha256': '20f9efb30103be133205839232a4f2b30d462bb4bc70a1397e64160810d2a361',
++                           'bytes': 2290,
++                           'releaseId': '2025-11-18T20:20:13.058000+00:00',
++                           'selectorEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json',
++                                                'sha256': 'ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a'},
++                           'selector': '/tables/2',
++                           'headers': ['Archipel',
++                                       'Agrumes - Nombre exploitations',
++                                       'Agrumes - Surface exploitation',
++                                       'Avocat - Nombre exploitations',
++                                       'Avocat - Surface exploitation',
++                                       'Ananas - Nombre exploitations',
++                                       'Ananas - Surface exploitation',
++                                       'Cocotier fruitier - Nombre exploitations',
++                                       'Cocotier fruitier - Surface exploitation',
++                                       'Coprah - Nombre exploitations',
++                                       'Cocoteraies - Nombre exploitations',
++                                       'Tubercules - Nombre exploitations',
++                                       'Tubercules - Surface exploitation',
++                                       'Bananes - Nombre exploitations',
++                                       'Bananes - Surface exploitation',
++                                       'Uru - Nombre exploitations',
++                                       'Uru - Surface exploitation',
++                                       'Cucurbitacées - Nombre exploitations',
++                                       'Cucurbitacées - Surface exploitation',
++                                       'Solanacées - Nombre exploitations',
++                                       'Solanacées - Surface exploitation',
++                                       'Légumes feuilles - Nombre exploitations',
++                                       'Légumes feuilles - Surface exploitation',
++                                       'Carotte - Nombre exploitations',
++                                       'Carotte - Surface exploitation',
++                                       'Vanille - Nombre exploitations',
++                                       'Vanille - Surface exploitation',
++                                       'Canne à sucre - Nombre exploitations',
++                                       'Canne à sucre - Surface exploitation',
++                                       'Café - Nombre exploitations',
++                                       'Café - Surface exploitation',
++                                       'Cacao - Nombre exploitations',
++                                       'Cacao - Surface exploitation',
++                                       'Noni - Nombre exploitations',
++                                       'Noni - Surface exploitation',
++                                       'Autres PAM - Nombre exploitations',
++                                       'Mangue* - Nombre exploitations',
++                                       'Mangue - Surface exploitation',
++                                       'Litchi - Nombre exploitations',
++                                       'Ramboutans - Surface exploitation',
++                                       'Papaye - Surface exploitation',
++                                       'Pitaya - Surface exploitation',
++                                       'Corossol - Surface exploitation',
++                                       'Goyave - Surface exploitation'],
++                           'expectedLexicalRecords': 6,
++                           'nativeUnit': None,
++                           'nativeBasis': None,
++                           'unitBasisPolicy': 'Preserve source header/title; no per-cell canonical '
++                                              'unit/basis inferred.',
++                           'title': 'Exploitations végétales par archipel en Polynésie française '
++                                    'en 2023 : nombre et surfaces cultivées'},
++                          {'path': '12001.csv',
++                           'sha256': 'c57f29ffaa3e9f6b4668fbf22242803f0d225b0783999a77de27cc93c7e2c7b7',
++                           'bytes': 827,
++                           'releaseId': '2025-11-05T20:31:40.425000+00:00',
++                           'selectorEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json',
++                                                'sha256': 'ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a'},
++                           'selector': '/tables/3',
++                           'headers': ['Année',
++                                       'Superficie autorisée - Tuamotu (dont Marutea Sud)',
++                                       'Superficie autorisée - Gambier',
++                                       'Superficie autorisée - Îles Sous-le-Vent',
++                                       'Superficie autorisée totale',
++                                       "Nombre d'autorisations - Stations de colletage",
++                                       "Nombre d'autorisations - Producteurs"],
++                           'expectedLexicalRecords': 17,
++                           'nativeUnit': None,
++                           'nativeBasis': None,
++                           'unitBasisPolicy': 'Preserve source header/title; no per-cell canonical '
++                                              'unit/basis inferred.',
++                           'title': 'Évolution des superficies perlicoles autorisées'},
++                          {'path': '11903.csv',
++                           'sha256': 'bb29882fdd7b4998b14c417efc1203e02f4ca85114bc99929bd6844842ba1d23',
++                           'bytes': 513,
++                           'releaseId': '2025-11-05T19:37:35.993000+00:00',
++                           'selectorEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json',
++                                                'sha256': 'ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a'},
++                           'selector': '/tables/4',
++                           'headers': ['Année',
++                                       'Thon à nageoires jaunes',
++                                       'Bonite',
++                                       'Thon germon',
++                                       'Thon obèse',
++                                       'Total thonidés',
++                                       'Mahi mahi',
++                                       'Marlins (bleu, rayé, voilier)',
++                                       'Thazard',
++                                       'Poissons du lagon',
++                                       'Paru',
++                                       'Divers pélagiques',
++                                       'Petits pélagiques',
++                                       'Mollusques / Crustacés',
++                                       'Marara',
++                                       'Total'],
++                           'expectedLexicalRecords': 5,
++                           'nativeUnit': None,
++                           'nativeBasis': None,
++                           'unitBasisPolicy': 'Preserve source header/title; no per-cell canonical '
++                                              'unit/basis inferred.',
++                           'title': 'Évolution des captures déclarées de la pêche côtière par '
++                                    'espèce (poids vif en tonnes)'},
++                          {'path': '11902.csv',
++                           'sha256': 'd8cf71982e34384a38e9e78b49ca6710bf7fa99598101b93bb36c6b4748052e2',
++                           'bytes': 624,
++                           'releaseId': '2025-11-05T19:37:33.956000+00:00',
++                           'selectorEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json',
++                                                'sha256': 'ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a'},
++                           'selector': '/tables/5',
++                           'headers': ['Année',
++                                       'Thon Germon',
++                                       'Thon à nageoires jaunes',
++                                       'Thon obèse',
++                                       'Marlin bleu',
++                                       'Thazard',
++                                       'Mahi mahi',
++                                       'Espadon',
++                                       'Saumon des dieux',
++                                       'Marlin rayé',
++                                       'Bonite',
++                                       'Papio',
++                                       'Marlin noir',
++                                       'Makaire à rostre court',
++                                       'Voilier d’Indo-Pacifique',
++                                       'Thon rouge du Pacifique',
++                                       'Total'],
++                           'expectedLexicalRecords': 6,
++                           'nativeUnit': None,
++                           'nativeBasis': None,
++                           'unitBasisPolicy': 'Preserve source header/title; no per-cell canonical '
++                                              'unit/basis inferred.',
++                           'title': 'Évolution\xa0de\xa0la\xa0production\xa0commerciale de la '
++                                    'pêche palangrière\xa0par\xa0espèce\xa0(poids\xa0vif\xa0en\xa0'
++                                    'tonnes)'},
++                          {'path': '11901.csv',
++                           'sha256': '4b54274723bc39ef8509f0aeeb3b4cf5da6fc401d1552614ea156d19efbc5b2a',
++                           'bytes': 593,
++                           'releaseId': '2025-11-05T19:37:31.758000+00:00',
++                           'selectorEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json',
++                                                'sha256': 'ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a'},
++                           'selector': '/tables/6',
++                           'headers': ['Année', 'Navires actifs', 'Production', 'Hameçons'],
++                           'expectedLexicalRecords': 25,
++                           'nativeUnit': None,
++                           'nativeBasis': None,
++                           'unitBasisPolicy': 'Preserve source header/title; no per-cell canonical '
++                                              'unit/basis inferred.',
++                           'title': 'Évolution de la flotte palangrière active et de l’effort de '
++                                    'pêche'},
++                          {'path': '11402.csv',
++                           'sha256': '106d60b6ce4221b2f064f56ca3c8719d9f090e39ec8abc448d8051fa9fa325b1',
++                           'bytes': 522,
++                           'releaseId': '2025-11-05T19:37:48.544000+00:00',
++                           'selectorEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json',
++                                                'sha256': 'ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a'},
++                           'selector': '/tables/7',
++                           'headers': ['Type de culture',
++                                       'Surface en 2012 (ha)',
++                                       'Surface en 2023 (ha)'],
++                           'expectedLexicalRecords': 10,
++                           'nativeUnit': None,
++                           'nativeBasis': None,
++                           'unitBasisPolicy': 'Preserve source header/title; no per-cell canonical '
++                                              'unit/basis inferred.',
++                           'title': 'Surface agricole utilisée par type de culture'},
++                          {'path': '11401.csv',
++                           'sha256': '397b8d4f56592fff7b62547a76257cfbc85298255c8db464406f79ccd3be95bf',
++                           'bytes': 15655,
++                           'releaseId': '2025-11-05T19:37:44.915000+00:00',
++                           'selectorEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json',
++                                                'sha256': 'ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a'},
++                           'selector': '/tables/8',
++                           'headers': ['Mois',
++                                       'Coprah entré en silo Tous archipels',
++                                       'Coprah entré en silo aux Australes ',
++                                       'Coprah entré en silo aux Marquises',
++                                       'Coprah entré en silo aux Tuamotu-Gambier',
++                                       'Coprah entré en silo aux îles du vent',
++                                       'Coprah entré en silo aux îles sous le vent'],
++                           'expectedLexicalRecords': 457,
++                           'nativeUnit': None,
++                           'nativeBasis': None,
++                           'unitBasisPolicy': 'Preserve source header/title; no per-cell canonical '
++                                              'unit/basis inferred.',
++                           'title': 'Production de coprah'},
++                          {'path': '11403.csv',
++                           'sha256': 'ca8eadb18d2b603aa7d7b80b47bb1ff4523a7d006f7e943308a4788a8a105c4a',
++                           'bytes': 601,
++                           'releaseId': '2025-11-18T20:20:10.560000+00:00',
++                           'selectorEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json',
++                                                'sha256': 'ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a'},
++                           'selector': '/tables/9',
++                           'headers': ['Archipel',
++                                       'Bovins élevages',
++                                       'Bovins animaux',
++                                       'Porcins élevages',
++                                       'Porcins animaux',
++                                       'Volailles élevages',
++                                       'Volailles animaux',
++                                       'Poules pondeuses élevages',
++                                       'Poules pondeuses animaux',
++                                       'Abeilles élevages',
++                                       'Abeilles ruches',
++                                       'Caprins élevages',
++                                       'Caprins animaux'],
++                           'expectedLexicalRecords': 6,
++                           'nativeUnit': None,
++                           'nativeBasis': None,
++                           'unitBasisPolicy': 'Preserve source header/title; no per-cell canonical '
++                                              'unit/basis inferred.',
++                           'title': 'Nombre d’élevages et d’animaux par subdivision'}],
++               'acquisition': {'originalAcquiredAt': None, 'lastValidatedAt': None},
++               'remaining': ['original-acquisition-evidence',
++                             'reviewed-native-staging-schema',
++                             'per-datum-source-coordinate-validation',
++                             'SourceContract-and-independent-review',
++                             'IEOM-operation-specific-corpus-use-unresolved',
++                             'PNDB-handoff-is-metadata-only-not-PF-data'],
++               'permittedOperations': [],
++               'candidateUse': 'Existing attributed lexical projection retained; no operation '
++                               'expanded by this metadata package.'},
++              {'country': 'UY',
++               'sourceId': 'sipc-35d8f45e-2aa7-48b5-98dd-f973b05cf8ba',
++               'releaseId': 'SIPC2025-v1.0-product-resource-2025-08-27T14:23:17.537759',
++               'holds': [],
++               'scope': 'private lexical metadata planning only',
++               'applicability': {'ingredients': 'support-reference-only',
++                                 'recipes': 'not-established',
++                                 'nutrition': 'not-established',
++                                 'retailers/providers': 'not-established',
++                                 'prices/baskets': 'not-established',
++                                 'dietary references': 'not-established'},
++               'candidate': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/UY/products.lexical-candidate.jsonl',
++                             'sha256': '3cb006c44bc78861656204638dabdea7a448e7f34758475066941b4e6cd073da',
++                             'bytes': 78184},
++               'evidence': [{'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/UY/support-validation.json',
++                             'sha256': '13cbb0f08cf7c0898b2279cc17412b7ceb0bf0b680ba785545a5b22ef055eb4e'},
++                            {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/UY/support-use-and-attribution.json',
++                             'sha256': '6daf34cdf081c27317be99e08c69d84bc6a77583cb5bd6ce3fdd2cbcd3fc83e3'}],
++               'inputs': [{'path': 'productos.csv',
++                           'sha256': '7c87d4186eaf88a935abc82e0b25cdc5665abb788f8863c951d46f2acdbf0349',
++                           'bytes': 29877,
++                           'releaseId': '2025-08-27T14:23:17.537759',
++                           'selectorEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/UY/support-validation.json',
++                                                'sha256': '13cbb0f08cf7c0898b2279cc17412b7ceb0bf0b680ba785545a5b22ef055eb4e'},
++                           'selector': '/tables/0',
++                           'headers': ['id.producto',
++                                       'producto',
++                                       'marca',
++                                       'especificacion',
++                                       'nombre'],
++                           'expectedLexicalRecords': 379,
++                           'nativeUnit': None,
++                           'nativeBasis': None,
++                           'unitBasisPolicy': 'Preserve source header/title; no per-cell canonical '
++                                              'unit/basis inferred.',
++                           'title': None}],
++               'acquisition': {'originalAcquiredAt': None, 'lastValidatedAt': None},
++               'remaining': ['original-acquisition-evidence',
++                             'reviewed-native-staging-schema',
++                             'per-datum-source-coordinate-validation',
++                             'SourceContract-and-independent-review',
++                             '47-price-body-allocation-and-2024-2025-schema-applicability',
++                             '45-composition-primary-edition-and-rights'],
++               'permittedOperations': [],
++               'candidateUse': 'Existing attributed lexical projection retained; no operation '
++                               'expanded by this metadata package.'},
++              {'country': 'SL',
++               'sourceId': 'SL-unbound',
++               'releaseId': None,
++               'holds': ['explicit-403-no-retry-no-qualified-release'],
++               'inputs': [],
++               'evidence': [],
++               'acquisition': {'originalAcquiredAt': None, 'lastValidatedAt': None},
++               'applicability': {'ingredients': 'not-established',
++                                 'recipes': 'not-established',
++                                 'nutrition': 'not-established',
++                                 'retailers/providers': 'not-established',
++                                 'prices/baskets': 'not-established',
++                                 'dietary references': 'not-established'},
++               'remaining': ['qualified-exact-release-and-use-evidence'],
++               'permittedOperations': []},
++              {'country': 'TF',
++               'sourceId': 'TF-unbound',
++               'releaseId': None,
++               'holds': ['IGEDD-policy-403-and-exact-report-use-section-attribution-unresolved'],
++               'inputs': [],
++               'evidence': [],
++               'acquisition': {'originalAcquiredAt': None, 'lastValidatedAt': None},
++               'applicability': {'ingredients': 'not-established',
++                                 'recipes': 'not-established',
++                                 'nutrition': 'not-established',
++                                 'retailers/providers': 'not-established',
++                                 'prices/baskets': 'not-established',
++                                 'dietary references': 'not-established'},
++               'remaining': ['qualified-exact-release-and-use-evidence'],
++               'permittedOperations': []}],
++ 'productionAdmission': False,
++ 'countryAcceptance': False,
++ 'policy': {'minimumReuseDays': 30,
++            'networkEnabled': False,
++            'forceBypassAllowed': False,
++            'validationResetsAcquisitionAge': False,
++            'unknownsRemainNull': True}}
+diff --git a/offmenu/refresh/worker24_metadata_diagnostic.py b/offmenu/refresh/worker24_metadata_diagnostic.py
+index 2172c55e..0698c364 100644
+--- a/offmenu/refresh/worker24_metadata_diagnostic.py
++++ b/offmenu/refresh/worker24_metadata_diagnostic.py
+@@ -10,7 +10,7 @@ from pathlib import Path
+ import stat
+ 
+ from .core import RefreshError, canonical, sha, strict_json
+-from .worker24_bindings import CONFIG
++from .worker24_bindings import catalogue
+ 
+ MAX_EVIDENCE_BYTES = 256 * 1024
+ 
+@@ -93,7 +93,7 @@ def main(argv=None):
+                         help='Explicitly read private pinned metadata evidence on Foo')
+     parser.parse_args(argv)
+     try:
+-        document = strict_json(read_metadata_evidence(CONFIG))
++        document = catalogue()
+     except (RefreshError, ValueError) as exc:
+         code = str(exc) if isinstance(exc, RefreshError) else 'metadata-config-invalid'
+         print(canonical({'errorCode': code, 'sourceBodiesRead': 0,
+diff --git a/tests/test_worker24_bindings.py b/tests/test_worker24_bindings.py
+index 843c756a..a19a3071 100644
+--- a/tests/test_worker24_bindings.py
++++ b/tests/test_worker24_bindings.py
+@@ -1,5 +1,8 @@
+ """Authored synthetic metadata/cells only; no retained source bodies opened."""
+ from copy import deepcopy
++import ast
++import contextlib
++import io
+ import json
+ import os
+ from pathlib import Path
+@@ -109,7 +112,7 @@ class Worker24Bindings(unittest.TestCase):
+         self.assertIn('binding-selector-mismatch', binding.authored_row_errors(profile, 'authored.csv', row))
+ 
+     def test_committed_metadata_no_payload_reads_and_expected_holds(self):
+-        document = json.loads(binding.CONFIG.read_text())
++        document = binding.catalogue()
+         # A planner attempting to follow embedded evidence/candidate/raw paths fails.
+         with patch('pathlib.Path.open', side_effect=AssertionError('unexpected file read')):
+             result = binding.plan(document, now='2026-10-18T00:00:00Z')
+@@ -127,6 +130,36 @@ class Worker24Bindings(unittest.TestCase):
+         self.assertEqual(binding.plan(document, now='2026-10-18T00:00:00Z')['profiles'][1]['diagnostics'], ['duplicate-country-binding'])
+ 
+ 
++class PackagedCatalogueTests(unittest.TestCase):
++    def test_literal_equivalence_and_copy_isolation(self):
++        frozen = json.loads((Path(__file__).parents[1] /
++                             'docs/operations/worker24/bindings.json').read_text())
++        source = Path(binding.__file__).with_name('worker24_catalogue.py')
++        tree = ast.parse(source.read_text())
++        self.assertEqual(len(tree.body), 2)  # docstring + inert literal assignment
++        self.assertIsInstance(tree.body[1], ast.Assign)
++        self.assertEqual(tree.body[1].targets[0].id, 'BINDINGS')
++        self.assertEqual(ast.literal_eval(tree.body[1].value), frozen)
++        first = binding.catalogue()
++        self.assertEqual(first, frozen)
++        first['profiles'][0]['inputs'][0]['sha256'] = 'changed-only-in-copy'
++        self.assertEqual(binding.catalogue(), frozen)
++        self.assertEqual(binding.plan(binding.catalogue(), now='2026-10-18T00:00:00Z'),
++                         binding.plan(frozen, now='2026-10-18T00:00:00Z'))
++
++    def test_diagnostic_catalogue_needs_no_repository_resource(self):
++        output = io.StringIO()
++        with patch('pathlib.Path.open', side_effect=AssertionError('no repository resource')):
++            with patch.object(diagnostic, 'read_metadata_evidence',
++                              side_effect=RefreshError('metadata-evidence-unavailable')):
++                with contextlib.redirect_stdout(output):
++                    code = diagnostic.main(['--foo-metadata'])
++        self.assertEqual(code, 2)
++        rows = json.loads(output.getvalue())['results']
++        self.assertEqual(len(rows), 11)
++        self.assertTrue(all(r['code'] == 'metadata-evidence-unavailable' for r in rows))
++
++
+ class MetadataReaderTests(unittest.TestCase):
+     def test_regular_metadata_is_preserved_and_limits_are_typed(self):
+         with tempfile.TemporaryDirectory() as directory:
+@@ -189,7 +222,7 @@ class MetadataReaderTests(unittest.TestCase):
+             # Test only the successor. Timeout prevents a regression hanging CI.
+             code = ('from pathlib import Path; import sys; '
+                     'from offmenu.refresh import worker24_metadata_diagnostic as d; '
+-                    'd.CONFIG=Path(sys.argv[1]); '
++                    'import json; d.catalogue=lambda:json.loads(d.read_metadata_evidence(sys.argv[1])); '
+                     'raise SystemExit(d.main(["--foo-metadata"]))')
+             run = subprocess.run([sys.executable, '-B', '-c', code, str(config)],
+                                  capture_output=True, timeout=3)
+@@ -200,7 +233,8 @@ class MetadataReaderTests(unittest.TestCase):
+                              ['metadata-evidence-not-regular', 'metadata-selector-matched'])
+             self.assertEqual(regular.read_bytes(), raw)
+             self.assertEqual(config.read_bytes(), before)
+-            # The config reader is guarded by the same descriptor boundary.
++            # Test-only authored catalogue injection exercises the reader too;
++            # the real catalogue is an inert module with no config-path read.
+             run = subprocess.run([sys.executable, '-B', '-c', code, str(fifo)],
+                                  capture_output=True, timeout=3)
+             self.assertEqual(run.returncode, 2, run.stderr)

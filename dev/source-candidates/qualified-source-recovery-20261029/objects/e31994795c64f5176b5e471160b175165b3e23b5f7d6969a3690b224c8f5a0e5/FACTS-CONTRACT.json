@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "offmenu-source-barcode-facts/1",
+  "factory": "createSourceBarcodeHandler({selection,fetchImpl,onDiagnostic})",
+  "optIn": "include=facts",
+  "default": "unchanged candidate-only R5",
+  "fields": [
+    "schemaVersion",
+    "candidateLookup",
+    "factsStatus",
+    "originalFacts",
+    "canonicalIdentityAsserted",
+    "automaticPlanningEligible",
+    "nutritionAggregationEligible"
+  ],
+  "factsStatus": {
+    "verified-original-public-packet": 200,
+    "selection-required": 200,
+    "source-key-not-found": 200,
+    "index-unavailable": 503,
+    "facts-unavailable": 503
+  },
+  "ambiguous": "no hydration or arbitrary choice",
+  "originalFacts": "unchanged reviewed display projection, NOT structured nutrition",
+  "canonicalIdentityAsserted": false,
+  "automaticPlanningEligible": false,
+  "nutritionAggregationEligible": false,
+  "nullReferences": "unresolved, not absent/zero",
+  "integration": {
+    "replaceOnlyEndpointModulePreimage": "f8b9cfc68091d2505d7c689fe0e35ce97d090f1a0c5ba52a484fa74891863cbd",
+    "preserveOtherModules": 212,
+    "productionMutation": false
+  }
+}

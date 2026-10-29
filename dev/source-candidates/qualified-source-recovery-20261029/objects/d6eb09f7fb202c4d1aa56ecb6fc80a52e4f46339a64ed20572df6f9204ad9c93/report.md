@@ -1,0 +1,40 @@
+# Nightly lifecycle delta — 17 October 2026
+
+This is the due, user-requested nightly assessment selected and dispatched by Gateway through existing fixed owners. It is management-triggered execution, not proof of autonomous nightly wake or scheduling. Initial lifecycle assessment2297 and binding2428 are reused; no initial scan, reproduction, broad test or source implementation was repeated. Actual nightly pickup is2557. Times and authority cuts are pinned in the accompanying JSON evidence.
+
+## Material changes
+
+| Area | Baseline at2297/2428 | Current evidence | Remaining outcome |
+| --- | --- | --- | --- |
+| Source writer | Exact correction appointment unmade | Gateway2479 appointed existing UI owner `01a1415d-b449-77e0-843a-84b53c8e80fd`; active correction turn and source result2512 exist | Preserve this sole writer; no competing model/schema/planner author |
+| GitFlow owner | Recorded integrator retirement/handoff unresolved | Gateway2480 retained `01a1371c-66f7-70e0-9e3b-a79d2b2eee9f`; actual pickup reconciled2484 and native final confirms retained role | Same integrator consumes the frozen author delta; no new repository writer |
+| Integration target | Local refs alone were not a qualified merge target | Integrator2489 qualified actual provider `develop` at `922ab2d3f0cb56f0b034752f13b24c391b14744a`, tree `7d1e2011e2080ee7f6a54a27369e5d5a0eb0edad`, through its retained authenticated connector read | Recheck at integration action cut; do not replace this with stale local `develop`/tracking refs |
+| All three defects | Reproduced, no authored correction | UI source2512 frozen at `04e08ea83705c7cf50f40abb99da3311a88e2ddf`, tree `6de6436d20678470e2c93c7c5cfc7e04c7b4660c` | Localized integration composition, applicable exact-composition review/adoption and Worker31 corrected journey remain unobserved in the checked cut |
+| UI implementation | Initial model journey only | Separate UI results2465/2466 and2544 report served landing/auth/app and mobile build36 evidence | Preserve synthetic auth/device limits. Mobile work does not prove lifecycle GitFlow integration or corrected journey |
+| Sonar | Docker socket access denied; no verified project or scan | No new legitimate authorized access route supplied in the checked ledger and custodian-report namespace | Separate OFFMENU-SONAR-ASSESSMENT-REMEDIATION remains OPEN; zero scan this turn |
+
+The frozen correction now has **three relevant paths**, not only the original two: `public/model.js`, `public/household-model.js`, and the required Q02 caller guard in `public/app.js`. The latter withholds scaled quantities/nutrition when demand is unknown. `04e08ea8…` supersedes the intermediate two-file commit `fd524a8c…`. Integrator must consume this exact three-path behavioral projection, preserve the localized target's `t` import/error wrappers, and avoid full-file copying the DEV projection or unrelated landing/auth/mobile changes.
+
+Nine retained source-closure/evidence attachments were SHA-checked. The author's focused before/after/caller results are retained author evidence, not rerun tests or independent integration acceptance by Worker31. Source code is still UI-owned. No corrected full journey is claimed on the authored DEV delta alone.
+
+## Requirements versus delivered outcomes
+
+The same89 requirement IDs remain. The initial snapshot-to-current comparison finds one changed selected presentation field: COUNTRY-25's `nextAction` now refers to the parser review. However, later exact events establish that review is already done and bound: COUNTRY25 review2467 → Gateway2481; COUNTRY55 review2527 → Gateway2530. Neither should be requeued for its unchanged review. These are scoped technical results; country/source/rights/mapping/integration parents remain open.
+
+No new whole-product acceptance was established by this delta. The `wholeRequirementAccepted` field has zero explicit true values in this checked projection; missing fields are not converted into rejection, and existing `done-local` components remain their scoped evidence. Row labels alone do not supersede later exact source-bound result/disposition events. Requirements-delta.json preserves the comparison without editing the canonical rows or creating another tracker.
+
+The useful initial five-food → three-choice → plan/list → cook → serve/save-leftovers → validated-save walkthrough remains the retained baseline. It was not repeated. The three error corrections have progressed from findings to frozen source, while integration and final lifecycle verification are still separate deliverables. This keeps the nightly assessment off daily development's critical path and avoids making it a new blanket gate.
+
+## Sonar access delta
+
+The retained actual access observation is Gateway's permission denial at `/var/run/docker.sock`, source baseline SHA `36b953c92f2311bb4aa07b015db1ac8c119481694e84009feb9dfd9b41d8eebe`. This worker did not retry Docker, use sudo, change groups/permissions, probe another endpoint/port, install a service or obtain credentials. The absence of a new route is scoped to the checked current journal and existing custodian report namespace; it is not a fresh claim that every possible service route fails.
+
+Exact prerequisite: the existing host/service custodian supplies an authorized existing invocation route and actual endpoint/service-version/project/source-scope identity through the approved channel. Only then can the separately selected full Sonar assessment record actual analyzed revision/coverage, baseline findings and new/reopened findings. Those fields are presently unknown, not zero. No scan, findings suppression, blanket exclusions or weakened gate occurred. Initial full Sonar assessment/remediation remains OPEN and separate from these lifecycle fixes.
+
+## Existing support and next actions
+
+Gateway dispatched existing25 for tooling/static delta and existing24 for instructions/checkpoint/compatibility delta. Actual pickup and results are now observed: Worker24 result2564 (instructions/checkpoint/compatibility) and Worker25 result2578 (tooling/static), with source/report pins consumed in support-evidence.json. Worker24 confirms the stale cut1337 instruction draft, resolved appointments/target, supervisor dependency at its cut2562 and Freebuff2189 zero-read boundary. Later journal2575 records a scoped PASS for the2552 TD14-F1/F2 successor, while retained evidence/native-invocation limits remain; its notification2579 is uncertain-or-rejected and is not retried or replaced by this assessment. Worker25 reports an isolated unchanged5f5 build emitting15 assets, eight generated JS parse passes, nine pinned artifacts and verified ZIP/WASM consistency. It reports1698 missing Arabic entries, unavailable lint/format tooling and unassessed vulnerability/runtime qualification. Two external snapshot-closure omissions were repaired by25; neither is a product defect. These checks were not duplicated by31. The tooling build does not validate author04e or localized integration on target922. No support worker was messaged or new coordinator created. Active UI work and64repair/14review remain untouched.
+
+Gateway's concrete next lifecycle action is to reconcile whether exact source2512 has already reached the retained integrator; if not, forward that frozen three-path source once, obtain the selected localized composition and applicable review, and carry the already authorized integration/adoption through to Worker31's final corrected journey. Do not redispatch the UI author, repeat the initial assessment, replace source facts or silently select an old target. Existing Main nightly scheduling, automatic Page sync and Freebuff verification remain separate commitments.
+
+This result completes the selected nightly delta only. Lifecycle remediation and final journey remain OPEN. All source/privacy/rights/custody, actual-denial, mandatory reviewer, publication, production and CIX holds are preserved. No files in shared source/runtime worktrees were changed, and no new worker, service, scheduler, voice call, install or application network run occurred.

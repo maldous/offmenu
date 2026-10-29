@@ -1,0 +1,287 @@
+diff --git a/docs/operations/portfolio-au-ir-pn.md b/docs/operations/portfolio-au-ir-pn.md
+index 6b96a5be..f825f228 100644
+--- a/docs/operations/portfolio-au-ir-pn.md
++++ b/docs/operations/portfolio-au-ir-pn.md
+@@ -6,6 +6,14 @@ Owned paths are this document, `portfolio-au-ir-pn.json`,
+ `offmenu/refresh/portfolio_au_ir_pn.py`, and its dedicated test file.
+ There are no shared-core, source-reader, runner, production or admission edits.
+ 
++The fixed runtime catalogue is now the inert literal Python module
++`offmenu/refresh/portfolio_au_ir_pn_catalogue.py`, automatically included by the
++existing `offmenu*` package discovery. The JSON remains a checkout evidence copy,
++not a runtime resource dependency. Literal equivalence covers every source pin,
++hold and unknown; `catalogue()` returns an independent copy. No shared packaging
++configuration is changed. Wheel/sdist loading must work outside the checkout
++without a `docs/` directory; this addresses live PR43 P1 comment4305926950.
++
+ The catalogue contains six trusted portfolio declarations: AFCD Release 3,
+ ABS 2025 statistical weights, three FSANZ notices, the IR PERSIAN supplement v1,
+ and two explicitly missing/held PN inputs. Paths and SHA256 references identify
+diff --git a/offmenu/refresh/portfolio_au_ir_pn.py b/offmenu/refresh/portfolio_au_ir_pn.py
+index f8923e92..fe379062 100644
+--- a/offmenu/refresh/portfolio_au_ir_pn.py
++++ b/offmenu/refresh/portfolio_au_ir_pn.py
+@@ -5,17 +5,17 @@ Uses shared strict JSON, timestamps, provenance diagnostics and stage receipts.
+ No declared source path is opened. OS isolation remains the integrator's boundary.
+ """
+ import argparse
++from copy import deepcopy
+ import json
+ import os
+-from pathlib import Path
+ import stat
+ 
+ from .acceptance import fingerprint
+ from .core import RefreshError, safe_path, strict_json, timestamp
+ from .field_provenance import field_origin_errors
+ from .global_run import StageResult
++from .portfolio_au_ir_pn_catalogue import CATALOGUE
+ 
+-CATALOGUE = Path(__file__).resolve().parents[2] / 'docs/operations/portfolio-au-ir-pn.json'
+ MAX_METADATA = 256 * 1024
+ READ_ERRORS = frozenset(('metadata-not-regular', 'metadata-bound-exceeded',
+                          'metadata-changed-during-read'))
+@@ -58,7 +58,7 @@ def _read_metadata(path):
+ 
+ 
+ def catalogue():
+-    return strict_json(CATALOGUE.read_bytes())
++    return deepcopy(CATALOGUE)
+ 
+ 
+ def origin_errors(row, input_pins, *, policy_pins=()):
+diff --git a/offmenu/refresh/portfolio_au_ir_pn_catalogue.py b/offmenu/refresh/portfolio_au_ir_pn_catalogue.py
+new file mode 100644
+index 00000000..37e67b12
+--- /dev/null
++++ b/offmenu/refresh/portfolio_au_ir_pn_catalogue.py
+@@ -0,0 +1,198 @@
++"""Inert AU/IR/PN declarations; no I/O, processing authority or source admission."""
++
++CATALOGUE = {'schemaVersion': 'offmenu-au-ir-pn-binding-catalogue/1',
++ 'baseCommit': 'abecb99ee1125730ccbc2824b6ec49ffc5cc4302',
++ 'scope': 'Metadata declarations only; not SourceContracts, rights grants, production registry or '
++          'payload admission',
++ 'profiles': [{'bindingId': 'au-afcd-r3',
++               'country': 'AU',
++               'sourceId': 'afcd',
++               'releaseId': '3',
++               'dataType': 'composition',
++               'metadataEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/afcd-deliverable-check.json',
++                                    'sha256': 'ff604fbfbcd43b54490a5a3a6813a1c36bb3f79b19003e272d7189a28a4b4a76'},
++               'inputs': {'normalized.jsonl.gz': 'a9f139768cb6f3ae721ae384b147f4d3f2bb537d11bb2d29b20dd2bde813e2fe',
++                          'Food group information.xlsx': 'e2d0507394ce5c2abe1f186d36058affa6d532c0d50ea18cf98908e368e17e90',
++                          'Food-Details.xlsx': '69aa096c45cb0699db60a9c544442312e9ff09af587b99c42dc78bc26f689629',
++                          'Nutrient-details.xlsx': '7c455129a90e65d29840ecd188fa223cca8bdf0729b21efebc286884d69fafaa',
++                          'Nutrient-profiles.xlsx': '14cb3e73dbf58987b440e6299624c0fefd7a4e61591fc1f753995d9534e0efc9',
++                          'Recipes.xlsx': '81925cd790b4d914e9016fe71e273e4b5823cbcea7d6aafc277ebbc160e762ef',
++                          'Reference List.xlsx': '970bd41a4a85f172ca152c61561027c7970c70ed179e757a7b3c541e02497160'},
++               'fieldSelectors': {'source-food-key': {'status': 'candidate-locator-declaration-not-production-validated',
++                                                      'locator': 'source food key; precise staged '
++                                                                 'field mapping not yet selected',
++                                                      'evidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/afcd-deliverable-check.json',
++                                                                   'sha256': 'ff604fbfbcd43b54490a5a3a6813a1c36bb3f79b19003e272d7189a28a4b4a76'}},
++                                  'nutrient-cell': {'status': 'candidate-locator-declaration-not-production-validated',
++                                                    'locator': 'workbook/sheet/row/component from '
++                                                               'retained validation; per-datum '
++                                                               'serialized origins not accepted',
++                                                    'evidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/afcd-deliverable-check.json',
++                                                                 'sha256': 'ff604fbfbcd43b54490a5a3a6813a1c36bb3f79b19003e272d7189a28a4b4a76'}}},
++               'nativeUnits': ['per-component: unknown until reviewed dictionary allowlist'],
++               'nativeBases': ['100 g', '100 mL'],
++               'holds': ['reviewed-unit-dictionary-missing',
++                         'per-datum-selector-binding-missing',
++                         'dataset-agreement-notices-required',
++                         'staging-scope-not-reviewed',
++                         'original-acquisition-evidence-missing'],
++               'permittedOperation': 'metadata-preflight-only',
++               'productionAdmission': False,
++               'originalAcquiredAt': None,
++               'acquisitionEvidence': None},
++              {'bindingId': 'au-abs-weights-2025',
++               'country': 'AU',
++               'sourceId': 'au-abs-cpi-weights',
++               'releaseId': '2025 weighting pattern',
++               'dataType': 'statistical-weighting',
++               'metadataEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/abs-weighting-validation.json',
++                                    'sha256': '75010166ae29be3c356a34baab3172f68e70ae37c47559af8cdf0370bef180c3'},
++               'inputs': {'weighting.xlsx': '2bfe75f9da76d974801128418bcd36d49d9affd452f2e6f264a87ca36673c494'},
++               'fieldSelectors': {'workbook-cell': {'status': 'candidate-locator-declaration-not-production-validated',
++                                                    'locator': 'sheet + cell coordinate + source '
++                                                               'value/type/numberFormat; six '
++                                                               'retained sheets',
++                                                    'evidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/abs-weighting-validation.json',
++                                                                 'sha256': '75010166ae29be3c356a34baab3172f68e70ae37c47559af8cdf0370bef180c3'}}},
++               'nativeUnits': ['cell-specific: percent or index contribution; never currency '
++                               'inferred'],
++               'nativeBases': ['2025 weighting pattern; source table dependent'],
++               'holds': ['cell-unit-dictionary-not-reviewed', 'staging-scope-not-reviewed'],
++               'permittedOperation': 'metadata-preflight-only',
++               'productionAdmission': False,
++               'originalAcquiredAt': '2026-10-14T22:09:03.476113+00:00',
++               'acquisitionEvidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-27/AU/a1c2c773c4603acb15a9/receipt.json',
++                                       'sha256': '7da99c2a8ca900827c6c52da188cef093b9580428099a806afd9d456f7a52127'},
++               'acquisitionSelector': '/new_requests (matching original SHA256)/utc'},
++              {'bindingId': 'au-fsanz-notices-20261014',
++               'country': 'AU',
++               'sourceId': 'au-fsanz-recalls',
++               'releaseId': 'snapshot-2026-10-14',
++               'dataType': 'recall-notice',
++               'metadataEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/fsanz-distribution-correction-v1/completion-evidence.json',
++                                    'sha256': '5f28b1db84e11df9319487c0805af4d8921563d72eca4b117227af9b4e9521b5'},
++               'inputs': {'tweedvale-dairies-reduced-fat-milk-1l-and-2l.html': '11e725f5d2ec4e79ad351ed5b09f8e76c5b1b62dfa2287079fdb70ffffb0b965',
++                          'nissin-salt-and-sesame-oil-noodles-aburasoba-82g.html': '234324744e90748f2f203ccc983be3c2eab224fb4928bcb9f5dc0c894e77c84c',
++                          'astor-chocolate-wafer-stick-150g.html': 'ae1c54e0555b923f32d6a9bb9a7f7e0eaccfe4db5f95a46b3344ae66bef3616e'},
++               'fieldSelectors': {'Distributed in': {'status': 'candidate-locator-declaration-not-production-validated',
++                                                     'locator': 'fieldsVerbatimWhitespaceNormalized/Distributed '
++                                                                'in; label-parent descendant '
++                                                                'field-item',
++                                                     'evidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/fsanz-distribution-correction-v1/completion-evidence.json',
++                                                                  'sha256': '5f28b1db84e11df9319487c0805af4d8921563d72eca4b117227af9b4e9521b5'}},
++                                  'notice-text': {'status': 'candidate-locator-declaration-not-production-validated',
++                                                  'locator': 'selected notice publisher text only; '
++                                                             'no asset or business ownership '
++                                                             'inference',
++                                                  'evidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/fsanz-distribution-correction-v1/completion-evidence.json',
++                                                               'sha256': '5f28b1db84e11df9319487c0805af4d8921563d72eca4b117227af9b4e9521b5'}}},
++               'nativeUnits': ['not-applicable: verbatim notice text'],
++               'nativeBases': ['three notices only; not archive completeness'],
++               'holds': ['third-party-field-origin-rights-not-held',
++                         'current-applicability-not-established',
++                         'staging-scope-not-reviewed'],
++               'permittedOperation': 'metadata-preflight-only',
++               'productionAdmission': False,
++               'originalAcquiredAt': '2026-10-14T20:48:14.587881+00:00',
++               'acquisitionEvidence': {'path': '/home/user/src/offmenu-data/originals/country-acquisition-20261015/AU/recalls/owner-43/acquisition-receipt.json',
++                                       'sha256': '3a43ff9a83d55b557f898b94775ed7b4a6f0cf0debea9a3f0d2c890989a9b0e4'},
++               'acquisitionSelector': 'max /artifacts/2..4/utc; selected bundle complete',
++               'rightsEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/fsanz-recall-validation.json',
++                                  'sha256': '4e673f0c9925a9b9e87d2b40d3a0ec04da56d67f6e236d271d2544ad7344072c'}},
++              {'bindingId': 'ir-persian-ffq-s001-v1',
++               'country': 'IR',
++               'sourceId': 'ir-persian-ffq-research',
++               'releaseId': '10.3389/fnut.2023.1059870.s001:v1',
++               'dataType': 'research-correlation',
++               'metadataEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/IR/supplement-validation.json',
++                                    'sha256': '5d90163a893c11a1d6e120f3ea372f503afd455298bfcb40785cdd1eec886a0f'},
++               'inputs': {'supplement.pdf': 'fffd38e8de95b1df83b0fe46a35b1b411479803d2d304117cfae9d9260cd87c8'},
++               'fieldSelectors': {'coefficient': {'status': 'candidate-locator-declaration-not-production-validated',
++                                                  'locator': 'PDF '
++                                                             'page/table/sourceLine/sourceColumn; '
++                                                             'source point and confidence interval '
++                                                             'unchanged',
++                                                  'evidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/IR/supplement-validation.json',
++                                                               'sha256': '5d90163a893c11a1d6e120f3ea372f503afd455298bfcb40785cdd1eec886a0f'}}},
++               'nativeUnits': ['dimensionless'],
++               'nativeBases': ['study comparison/sex/adjustment; no dietary recommendation'],
++               'holds': ['source-anomaly-quarantined', 'staging-scope-not-reviewed'],
++               'permittedOperation': 'metadata-preflight-only',
++               'productionAdmission': False,
++               'originalAcquiredAt': '2026-10-14T22:12:08.911538+00:00',
++               'acquisitionEvidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-44/IR/55b466f9c9939211fb8f/receipt.json',
++                                       'sha256': '7998b12e549c336dfe028a522df46fe0453c471463b026c60d791931645a9f73'},
++               'acquisitionSelector': '/requests (matching original PDF SHA256)/utc'},
++              {'bindingId': 'pn-mpi-standard',
++               'country': 'PN',
++               'sourceId': 'pn-mpi-honey',
++               'releaseId': 'unknown',
++               'dataType': 'regulatory-context',
++               'metadataEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/PN/pn-source-role-validation.json',
++                                    'sha256': 'ca602f025147b0ad7377b5efb95cc56b1a436a39749da141270843238e43dfe1'},
++               'inputs': {},
++               'fieldSelectors': {},
++               'nativeUnits': [],
++               'nativeBases': [],
++               'holds': ['complete-original-missing',
++                         'no-retry-source-challenge',
++                         'source-use-not-qualified',
++                         'parsed-body-custodian-unestablished',
++                         'original-acquisition-evidence-missing'],
++               'permittedOperation': 'metadata-preflight-only',
++               'productionAdmission': False,
++               'originalAcquiredAt': None,
++               'acquisitionEvidence': None},
++              {'bindingId': 'pn-regional-pndb',
++               'country': 'PN',
++               'sourceId': 'pacific-pndb',
++               'releaseId': 'SPC_REG_2020_PNDB_v01_M',
++               'dataType': 'regional-catalogue',
++               'metadataEvidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/PN/pn-source-role-validation.json',
++                                    'sha256': 'ca602f025147b0ad7377b5efb95cc56b1a436a39749da141270843238e43dfe1'},
++               'inputs': {},
++               'fieldSelectors': {},
++               'nativeUnits': [],
++               'nativeBases': [],
++               'holds': ['regional-not-national-applicability',
++                         'dataset-specific-licence-missing',
++                         'body-unit-basis-and-parsed-export-missing',
++                         'original-acquisition-evidence-missing'],
++               'permittedOperation': 'metadata-preflight-only',
++               'productionAdmission': False,
++               'originalAcquiredAt': None,
++               'acquisitionEvidence': None}],
++ 'retainedManifestPins': [{'path': '/home/user/src/offmenu-data/afcd-3/manifest.json',
++                           'sha256': 'ff4a6ab34b8ae56e58c021af62424851063692d886502f30bc17d416fd90a80a'},
++                          {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/batch-result.json',
++                           'sha256': '22a0d9c5ef9d7ee77205c56661ee10629ead05edfa7666bba3c4cf2afeacea43'},
++                          {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/current-delivery-overlay-v1.json',
++                           'sha256': 'c65a441043770f11baa6ef1e3a4ca520f3363871e479f823bdba0f8edc95fd9c'},
++                          {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/B01-W03/resolution.json',
++                           'sha256': 'acd678a303daf44297c79f40059d392b24594e0b041344bf62a4f9e47d8128a9'},
++                          {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/M-RESTORE-20261018-W03/reconciliation.json',
++                           'sha256': '847dbf01671037dbb7cfe08e435467841c486efe15222dc23d8641354b5e293b'}],
++ 'acquisitionEvidence': 'metadataEvidence references original acquisition receipts; '
++                        'originalAcquiredAt must be copied exactly from the selected original '
++                        'receipt, never validation time or file mtime',
++ 'unknownReleaseRule': 'unknown is an explicit blocker; not a usable release identity',
++ 'preservedHolds': ['Finland/Frida',
++                    'native NO/FR crashes',
++                    '403/412/challenge/private/credentials/denied actions',
++                    'production/CIX/DEV7645'],
++ 'countsMeaning': 'AFCD1801/ABS4758/FSANZ3/IR572 are retained scoped counts, not independently '
++                  'accepted staging counts',
++ 'requiredCountryTypes': ['ingredients',
++                          'recipes',
++                          'nutrition',
++                          'retailers/providers',
++                          'prices/baskets',
++                          'dietary references'],
++ 'coverageEvidencePins': [{'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/category-coverage-and-gaps.json',
++                           'sha256': '8b21be0617917ef1bfb170761e91fe3b63e5675decb3f6ed06a0e1cae6e30b5b'},
++                          {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/IR/category-coverage-and-gaps.json',
++                           'sha256': 'dd9951e364dce4ee9abbd3f7619affa87659a6f7c866addac194668937e0b6be'},
++                          {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/PN/category-coverage-and-gaps.json',
++                           'sha256': 'c5fdc5eb5cfbf79220ff471590cc99e34bebef6272ab3c4f1b8ae87f97c56b27'}],
++ 'coverageRule': 'Bindings describe finite source roles only; missing category sources remain '
++                 'required, not not-applicable. No country completeness from six bindings.'}
+diff --git a/tests/test_portfolio_au_ir_pn.py b/tests/test_portfolio_au_ir_pn.py
+index ae4e8ad8..e7390dc2 100644
+--- a/tests/test_portfolio_au_ir_pn.py
++++ b/tests/test_portfolio_au_ir_pn.py
+@@ -1,5 +1,6 @@
+ """Authored metadata and one synthetic record only; never read country bodies."""
+ import copy
++import ast
+ from datetime import datetime, timezone
+ import hashlib
+ import contextlib
+@@ -234,5 +235,19 @@ class MetadataEntrypointTests(unittest.TestCase):
+                     _read_metadata(p)
+ 
+ 
++class InstalledCatalogueTests(unittest.TestCase):
++    def test_inert_literal_matches_original_pins_and_is_copy_isolated(self):
++        root = Path(__file__).resolve().parents[1]
++        original = strict_json((root/'docs/operations/portfolio-au-ir-pn.json').read_bytes())
++        module = root/'offmenu/refresh/portfolio_au_ir_pn_catalogue.py'
++        tree = ast.parse(module.read_text())
++        self.assertEqual(len(tree.body), 2)  # Docstring and one literal assignment.
++        self.assertIsInstance(tree.body[1], ast.Assign)
++        self.assertEqual(ast.literal_eval(tree.body[1].value), original)
++        self.assertEqual(catalogue(), original)
++        changed = catalogue(); changed['profiles'][0]['holds'].clear()
++        self.assertEqual(catalogue(), original)
++
++
+ if __name__ == '__main__':
+     unittest.main()

@@ -1,0 +1,154 @@
+--- a/candidate-source-root/candidate-source/app/cloud/cooking-witness-parity.mjs
++++ b/candidate-source-root/candidate-source/app/cloud/cooking-witness-parity.mjs
+@@ -1,5 +1,5 @@
+ import {preserveCookingWitnesses} from '../public/cooking-witness.js';
+-export {copyCookingWitness,preserveCookingWitnesses} from '../public/cooking-witness.js';
++export {copyCookingWitness,preserveCookingWitnesses,sharedCookingBatch} from '../public/cooking-witness.js';
+ // Invoke after the existing authenticated state validator, without replacing its
+ // authorization, revision checks, quantities, history or unrelated normalization.
+ export function finishCookingWitnessState(input,normalized){
+--- a/candidate-source-root/candidate-source/app/public/cooking-witness.js
++++ b/candidate-source-root/candidate-source/app/public/cooking-witness.js
+@@ -17,8 +17,37 @@
+ function provenance(p){
+  const out=pick(p,provenanceKeys);
+  if(object(p?.personalReview))out.personalReview=pick(p.personalReview,['reviewedAt','sourceRecipeId','revision','version']);
+- if(Array.isArray(p?.citations))out.citations=p.citations.map(c=>pick(c,['id',...provenanceKeys]));
++ if(Array.isArray(p?.citations))out.citations=p.citations.map(citation);
++ if(object(p?.provenance))out.provenance=provenance(p.provenance);
+  return out;
++}
++function citation(c){
++ const out={...pick(c,['id',...provenanceKeys])};
++ if(object(c?.provenance))out.provenance=provenance(c.provenance);
++ if(Array.isArray(c?.citations))out.citations=c.citations.map(citation);
++ return out;
++}
++// Every retained evidence node needs explicit public visibility. Private wins
++// anywhere in retained metadata; absent citation/source visibility is unknown.
++function evidenceVisibility(value,required=false){
++ if(!value||typeof value!=='object')return required?['unknown']:[];
++ if(Array.isArray(value))return value.flatMap(v=>evidenceVisibility(v,required));
++ const states=required?[value.visibility??value.provenance?.visibility??'unknown']:[];
++ for(const [key,v]of Object.entries(value)){
++  if(key==='visibility')states.push(v);
++  else if(v&&typeof v==='object'){
++   if(['citations','sources','references'].includes(key)&&Array.isArray(v))states.push(...v.flatMap(x=>evidenceVisibility(x,true)));
++   else if(key==='sourceReferences')states.push(...Object.values(v).flatMap(x=>evidenceVisibility(x,true)));
++   else states.push(...evidenceVisibility(v,['provenance','sourceBinding','observation','citation','sourceReference'].includes(key)));
++  }
++ }
++ return states;
++}
++function witnessVisibility(recipe,allocations,nutrientInputs,declared='public'){
++ const states=[declared,...evidenceVisibility(recipe.provenance,true),...evidenceVisibility(recipe,false),
++  ...nutrientInputs.flatMap(n=>[...evidenceVisibility(n.provenance,true),...evidenceVisibility(n.sourceNutrientContext,false),...evidenceVisibility(n.profileReference,false)]),
++  ...allocations.flatMap(a=>Object.values(a.sourceReferences).flatMap(r=>evidenceVisibility(r,true)))];
++ return states.includes('private')?'private':states.every(s=>s==='public')?'public':'unknown';
+ }
+ function freeze(v){if(v&&typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v);}return v;}
+ export function captureNutrientInput(allocation,product){
+@@ -39,8 +68,7 @@
+  const hasVersion=hasDeclaredVersion(snapshot);
+  const inputs=allocations.map(a=>({lotId:a.lotId,barcode:a.barcode,ingredient:a.ingredient,quantity:a.quantity,unit:a.unit,
+   sourceReferences:pick(a.original,['publicProductReference','sourceObservationReference','foundationSourceReference','sourceIdentityReference'])}));
+- const states=[recipe.provenance?.visibility,...nutrientInputs.map(n=>n.provenance.visibility),...inputs.flatMap(a=>Object.values(a.sourceReferences).map(r=>r?.provenance?.visibility??r?.visibility))];
+- const visibility=states.includes('private')?'private':states.every(s=>s==='public')?'public':'unknown';
++ const visibility=witnessVisibility(snapshot,inputs,nutrientInputs);
+  return copyCookingWitness({schema:COOKING_WITNESS_SCHEMA,batchId,recipeId:recipe.id,recipe:snapshot,
+   sourceVersionState:hasVersion?'supplied':'unknown',allocations:inputs,nutrientInputs,visibility,canonicalIdentityAsserted:false},{batchId,recipeId:recipe.id});
+ }
+@@ -60,14 +88,15 @@
+  const nutrientInputs=value.nutrientInputs.map(n=>({...pick(n,['lotId','quantity','unit','profileState','declaredBasisLabel','relationship']),
+   profileReference:n.profileReference===null?null:pick(n.profileReference,['id','basis','status']),sourceNutrientContext:n.sourceNutrientContext===null?null:clone(n.sourceNutrientContext),provenance:provenance(n.provenance),nutriments:pick(n.nutriments,nutrientKeys),canonicalIdentityAsserted:false}));
+  // Public visibility must be explicit on every retained source; no default grant.
+- const states=[recipe.provenance.visibility,...nutrientInputs.map(n=>n.provenance.visibility),...allocations.flatMap(a=>Object.values(a.sourceReferences).map(r=>r?.provenance?.visibility??r?.visibility))];
+- requireThat(value.visibility!=='public'||states.every(s=>s==='public'));
++ const visibility=witnessVisibility(recipe,allocations,nutrientInputs,value.visibility);
+  return freeze(clone({schema:COOKING_WITNESS_SCHEMA,batchId:value.batchId,recipeId:value.recipeId,recipe,
+-  sourceVersionState:value.sourceVersionState,allocations,nutrientInputs,visibility:value.visibility,canonicalIdentityAsserted:false}));
++  sourceVersionState:value.sourceVersionState,allocations,nutrientInputs,visibility,canonicalIdentityAsserted:false}));
+ }
+ export function sharedCookingBatch(batch){
+  const {cookingWitness,...rest}=batch;
+- return cookingWitness?.visibility==='public'?{...rest,cookingWitness:copyCookingWitness(cookingWitness,{batchId:batch.id,recipeId:batch.recipeId})}:rest;
++ if(!cookingWitness)return rest;
++ const checked=copyCookingWitness(cookingWitness,{batchId:batch.id,recipeId:batch.recipeId});
++ return checked.visibility==='public'?{...rest,cookingWitness:checked}:rest;
+ }
+ export function historyCookingWitness(row){
+  requireThat(text(row?.batchId,100)&&text(row.recipeId,200));
+--- a/candidate-source-root/candidate-source/app/tests-web/cooking-witness-ns196-g2.test.mjs
++++ b/candidate-source-root/candidate-source/app/tests-web/cooking-witness-ns196-g2.test.mjs
+@@ -83,3 +83,43 @@
+  assert.equal(w.allocations[0].barcode.length,512);assert.equal(w.allocations[0].sourceReferences.sourceObservationReference.sourceRecordId,'retained-source');assert.equal(w.visibility,'unknown');
+  const shared=kitchenProjection({...state(c,served(c)),profile:{batches:[{...c.batch,cookingWitness:w}]}});assert.equal(shared.profile.batches[0].cookingWitness,undefined);assert.ok(!JSON.stringify(shared.profile.batches).includes('SOURCE_REFERENCE_PRIVATE_NOTE'));
+ });
++
++import * as serverWitness from '../cloud/cooking-witness-parity.mjs';
++function citationFixture(visibility){return {id:'source-citation',sourceId:'synthetic',recordId:'citation-v1',...(visibility===undefined?{}:{visibility}),citations:[{id:'nested-citation',sourceId:'synthetic',visibility:'public'}]};}
++test('public recipe cannot publish private or unqualified retained citations',()=>{
++ for(const visibility of ['private','unknown',undefined,'public']){
++  const f=fixture();f.recipe.provenance.citations=[citationFixture(visibility)];const c=cooked(f),w=c.batch.cookingWitness;
++  assert.equal(w.visibility,visibility==='public'?'public':visibility==='private'?'private':'unknown');assert.equal(w.recipe.provenance.citations[0].recordId,'citation-v1');assert.equal(w.recipe.provenance.citations[0].citations[0].id,'nested-citation');
++  const shared=kitchenProjection(state(c,served(c)));assert.equal(!!shared.profile.batches[0].cookingWitness,visibility==='public');
++ }
++});
++test('selected nutrient provenance retains citations and uses all child visibility',()=>{
++ for(const visibility of ['private','unknown',undefined,'public']){
++  const f=fixture();f.lot.nutritionSelection.provenance.citations=[citationFixture(visibility)];const c=cooked(f),w=c.batch.cookingWitness;
++  assert.equal(w.visibility,visibility==='public'?'public':visibility==='private'?'private':'unknown');assert.equal(w.nutrientInputs[0].provenance.citations[0].recordId,'citation-v1');
++  assert.equal(!!kitchenProjection(state(c,served(c))).profile.batches[0].cookingWitness,visibility==='public');
++ }
++});
++test('nested source-reference evidence cannot inherit a public grant from its parent',()=>{
++ for(const visibility of ['private','unknown',undefined,'public']){
++  const c=cooked(),a=structuredClone(c.batch.allocations[0]);a.original.sourceObservationReference={visibility:'public',observation:{provenance:{visibility:'public',citations:[citationFixture(visibility)]}}};
++  const w=createCookingWitness(c.f.recipe,c.batch.id,[a],[captureNutrientInput(a,nutritionForLot(a.original,c.f.products))]);
++  assert.equal(w.visibility,visibility==='public'?'public':visibility==='private'?'private':'unknown');assert.equal(w.allocations[0].sourceReferences.sourceObservationReference.observation.provenance.citations[0].recordId,'citation-v1');
++  const shared=kitchenProjection({...state(c,served(c)),profile:{batches:[{...c.batch,cookingWitness:w}]}});assert.equal(!!shared.profile.batches[0].cookingWitness,visibility==='public');
++ }
++});
++test('server parity shared-batch contract rechecks misleading public flags and preserves batch fields',()=>{
++ assert.equal(typeof serverWitness.sharedCookingBatch,'function');
++ const c=cooked(),w=structuredClone(c.batch.cookingWitness);w.recipe.provenance.citations=[citationFixture('private')];w.visibility='public';
++ const filtered=serverWitness.sharedCookingBatch({...c.batch,cookingWitness:w});assert.equal(filtered.cookingWitness,undefined);assert.equal(filtered.id,c.batch.id);assert.equal(filtered.totals,c.batch.totals);assert.equal(filtered.events,c.batch.events);
++ assert.equal(copyCookingWitness(w).visibility,'private');
++ w.recipe.provenance.citations[0].visibility='public';assert.equal(serverWitness.sharedCookingBatch({...c.batch,cookingWitness:w}).cookingWitness.visibility,'public');
++ delete w.recipe.provenance.citations[0].visibility;assert.equal(serverWitness.sharedCookingBatch({...c.batch,cookingWitness:w}).cookingWitness,undefined);
++});
++test('retained per-nutrient evidence context also gates shared visibility',()=>{
++ for(const visibility of ['private','unknown',undefined,'public']){
++  const f=fixture();f.lot.nutritionSelection.sourceProfile.nutrients.protein.provenance={visibility:'public',citations:[citationFixture(visibility)]};const c=cooked(f),w=c.batch.cookingWitness;
++  assert.equal(w.visibility,visibility==='public'?'public':visibility==='private'?'private':'unknown');assert.equal(w.nutrientInputs[0].sourceNutrientContext.protein.provenance.citations[0].recordId,'citation-v1');
++  assert.equal(!!serverWitness.sharedCookingBatch(c.batch).cookingWitness,visibility==='public');
++ }
++});
+--- a/candidate-source-root/candidate-source-manifest.json
++++ b/candidate-source-root/candidate-source-manifest.json
+@@ -1357,17 +1357,19 @@
+       "group": "app",
+       "path": "public/cooking-witness.js",
+       "sourceAvailable": true,
+-      "bytes": 8818,
+-      "afterSha256": "a6b6406475482faeea52e78db007b1ff9870e05646eca8aecf9f72974637f8ea",
+-      "v198Correction": "NS196-G2"
++      "bytes": 10223,
++      "afterSha256": "8b2032742e0b3f14bae9d5f6ae314cca8f1162a2aa6aa1591bea573047afe304",
++      "v198Correction": "NS196-G2",
++      "v198Revision": "privacy-r2"
+     },
+     {
+       "group": "app",
+       "path": "cloud/cooking-witness-parity.mjs",
+       "sourceAvailable": true,
+-      "bytes": 486,
+-      "afterSha256": "f6cce26e7c415cb9a2bfb765caf1b4f2306eec8b7198a6c76cd997e3299a8a12",
+-      "v198Correction": "NS196-G2"
++      "bytes": 505,
++      "afterSha256": "dfbf8109dc81b0f1d4c62dd7642e00cafe0432c645d1a7461509b4bee6b5cdee",
++      "v198Correction": "NS196-G2",
++      "v198Revision": "privacy-r2"
+     }
+   ],
+   "literalImports": [

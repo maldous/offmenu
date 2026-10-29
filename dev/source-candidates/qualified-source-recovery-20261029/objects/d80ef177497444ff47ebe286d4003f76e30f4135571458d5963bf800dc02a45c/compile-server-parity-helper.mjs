@@ -1,0 +1,22 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {resolve,join} from 'node:path';
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import vm from 'node:vm';
+const root=resolve(process.argv[2]),app=join(root,'candidate-source-root/candidate-source/app'),out=join(root,'candidate-build/cooking-witness-parity.iife.js');
+const require=createRequire(join(root,'build-browser.mjs')),esbuild=require('./toolchain/node_modules/esbuild');
+const sha=b=>createHash('sha256').update(b).digest('hex');
+if(esbuild.version!=='0.25.12')throw Error('esbuild pin');
+const manifest=JSON.parse(await readFile(join(root,'candidate-source-root/candidate-source-manifest.json'),'utf8'));
+const pins=new Map(manifest.files.filter(x=>x.group==='app'&&['cloud/cooking-witness-parity.mjs','public/cooking-witness.js'].includes(x.path)).map(x=>[resolve(app,x.path),x.afterSha256]));
+if(pins.size!==2)throw Error('exact helper input closure');
+const result=await esbuild.build({absWorkingDir:app,entryPoints:['cloud/cooking-witness-parity.mjs'],bundle:true,minify:true,format:'iife',globalName:'__offmenuCookingWitness198',platform:'browser',write:false,metafile:true,outfile:out,legalComments:'eof'});
+const inputs=[];
+for(const p of Object.keys(result.metafile.inputs)){const path=resolve(app,p),b=await readFile(path);if(sha(b)!==pins.get(path))throw Error('unpinned parity input');inputs.push({path:p,bytes:b.length,sha256:sha(b)});}
+if(inputs.length!==2||Object.values(result.metafile.outputs).some(x=>x.imports.some(i=>i.external)))throw Error('parity closure or external import');
+const bytes=result.outputFiles.find(f=>f.path===out).contents;
+const exports=vm.runInNewContext(Buffer.from(bytes).toString('utf8')+';Object.keys(__offmenuCookingWitness198).sort()', {structuredClone});
+if(JSON.stringify(exports)!==JSON.stringify(['copyCookingWitness','finishCookingWitnessState','preserveCookingWitnesses','sharedCookingBatch']))throw Error('parity namespace exports');
+await writeFile(out,bytes);await writeFile(out+'.metafile.json',JSON.stringify(result.metafile,null,2));
+const receipt={namespace:'__offmenuCookingWitness198',esbuild:esbuild.version,output:out,bytes:bytes.length,sha256:sha(bytes),inputs,exports,scope:'Compiled component only; no claim of full Worker state/history wiring or authenticated acceptance.'};
+await writeFile(out+'.receipt.json',JSON.stringify(receipt,null,2));console.log(JSON.stringify(receipt));

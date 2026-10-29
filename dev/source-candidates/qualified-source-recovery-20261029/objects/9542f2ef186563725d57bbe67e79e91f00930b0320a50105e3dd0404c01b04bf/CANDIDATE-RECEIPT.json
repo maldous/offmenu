@@ -1,0 +1,122 @@
+{
+  "task": "pure additive source-barcode candidate-reference Worker adapter",
+  "status": "review-ready source only; no live pin/activation/deployment",
+  "inputPins": {
+    "source_barcode_protocol.py": "5a70c8ec6945149dfdc7f02abf19ebef3d6c8f3c1a5bfe418004a84f31328af1",
+    "CONTRACT.md": "3a640a9f7dcb66eb14338f793072c81374e84aa524305411dd7008dfd4cf4cbf",
+    "endpoint-seam201.json": "45bc8b9a7eb6dbd609cb2683aede1490028d6ca6a4c7bf583cc1ae5a8ea66fbc"
+  },
+  "tests": {
+    "node": "v24.16.0",
+    "command": "node --test tests/source-barcode-handler.test.mjs",
+    "exitCode": 0,
+    "passed": 15,
+    "failed": 0,
+    "durationMs": 154.232226,
+    "syntheticOnly": true,
+    "logSha256": "7b4d9b154ee9f6cc3d923552b1c60371cdb355d1dfabdf0d61e41be5d4a53146"
+  },
+  "build": {
+    "esbuild": "0.25.12",
+    "scope": "pure endpoint three-file module only",
+    "externalImports": 0,
+    "artifactSha256": "84c2cbc282d46c96a6c4e35071c02bf7ec6cd548b913faf962a3c066e6832d2b",
+    "bundleSmokeExitCode": 0
+  },
+  "actualManifestSelection": null,
+  "productionMutations": 0,
+  "realIndexFetches": 0,
+  "producerTestsOrBuilds": 0,
+  "files": [
+    {
+      "path": "source/protocol-pins.mjs",
+      "bytes": 890,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a"
+    },
+    {
+      "path": "source/source-barcode-handler.mjs",
+      "bytes": 14650,
+      "sha256": "03d782e6305eaa912bbd8ae5c989688a6b6296184fca9682b6a88a685febf9ff"
+    },
+    {
+      "path": "source/strict-json.mjs",
+      "bytes": 2044,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099"
+    },
+    {
+      "path": "tests/source-barcode-handler.test.mjs",
+      "bytes": 14920,
+      "sha256": "c620cca9029b1e916528818a6a72fd916aa0d76856a82ed2d0bda45f5f1c494f"
+    },
+    {
+      "path": "build/metafile.json",
+      "bytes": 1738,
+      "sha256": "c9b067049cbde8f6822eaad9798bb3176a75634e61f9c259ca28bb7690822eb7"
+    },
+    {
+      "path": "build/source-barcode-handler.bundle.mjs",
+      "bytes": 19037,
+      "sha256": "84c2cbc282d46c96a6c4e35071c02bf7ec6cd548b913faf962a3c066e6832d2b"
+    },
+    {
+      "path": "input/source_barcode_protocol.py",
+      "bytes": 11382,
+      "sha256": "5a70c8ec6945149dfdc7f02abf19ebef3d6c8f3c1a5bfe418004a84f31328af1"
+    },
+    {
+      "path": "input/CONTRACT.md",
+      "bytes": 15181,
+      "sha256": "3a640a9f7dcb66eb14338f793072c81374e84aa524305411dd7008dfd4cf4cbf"
+    },
+    {
+      "path": "input/endpoint-seam201.json",
+      "bytes": 5210,
+      "sha256": "45bc8b9a7eb6dbd609cb2683aede1490028d6ca6a4c7bf583cc1ae5a8ea66fbc"
+    },
+    {
+      "path": "build-handler.mjs",
+      "bytes": 963,
+      "sha256": "d289f57badcfc47f21c39812a32e2b41d68df80b086505029256254c09551647"
+    },
+    {
+      "path": "build.log",
+      "bytes": 122,
+      "sha256": "ddbc671551fb98160e33815b1b54c0aa01cb0ac57a36bbd1577f945ac7b9b0e0"
+    },
+    {
+      "path": "bundle-smoke.log",
+      "bytes": 108,
+      "sha256": "74cd305cd21b708eb3f762617d264a4f721e6a514cb06908815534306db71076"
+    },
+    {
+      "path": "focused-tests.log",
+      "bytes": 1711,
+      "sha256": "7b4d9b154ee9f6cc3d923552b1c60371cdb355d1dfabdf0d61e41be5d4a53146"
+    },
+    {
+      "path": "dispatcher-before.txt",
+      "bytes": 1241,
+      "sha256": "fa9b9befc1de8ec9751a51c5e837a16c87365e1205356dc95a86dc4cc10eee12"
+    },
+    {
+      "path": "dispatcher-after.txt",
+      "bytes": 1335,
+      "sha256": "3474a65942688fab1ee71083c9afab11b8faeb0dbf925a24a292338bdd232052"
+    },
+    {
+      "path": "dispatcher-only.patch",
+      "bytes": 2666,
+      "sha256": "aca51911efda5031c7cba33d5aaff47ef7558e1e65bb6f9d03c327de3959a740"
+    },
+    {
+      "path": "SELECTION-TEMPLATE-NOT-ACTIVE.json",
+      "bytes": 458,
+      "sha256": "a9f14dfccc4268b2df5912031117cc436c2165a624459dd9c220ad5bb54ef22e"
+    },
+    {
+      "path": "HANDOFF.md",
+      "bytes": 8875,
+      "sha256": "b7cca6ff767ed51f600e19410d8aeced45fa8ea4555c4522c6d2ffca3af78fbe"
+    }
+  ]
+}

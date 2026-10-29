@@ -1,0 +1,16 @@
+--- a/source-barcode-inventory.mjs
++++ b/source-barcode-inventory.mjs
+@@ -57,3 +57,13 @@
+  const count=source.matches.length,unknown=source.configurationError||!source.complete||source.lanes.some(l=>l.status==='index-unavailable'||l.pageError);
+  return [...rows,{label:'Additional source identifier index',text:count?count+' source-scoped identifier reference(s) loaded. Choose a reference for its exact source binding; original facts remain pending verified hydration.':unknown?'The additional index could not be checked completely. The original identifier is retained; no source absence is established.':'No source key in the selected complete public index scopes. Other sources may differ; the original identifier is retained.'}];
+ }
++
++// Additional coverage failure must not erase an existing unambiguous source
++// observation. Overall status remains partial, with a visible coverage warning.
++export function automaticSourceSelection(result){
++ if(result?.status==='source-match'&&result.matches?.length===1)return result.matches[0];
++ const foundation=result?.foundationResult,source=result?.sourceBarcodeResult;
++ const additionalUnavailable=source?.enabled&&(source.configurationError||!source.complete||source.lanes?.some(l=>l.status==='index-unavailable'||l.pageError));
++ if(additionalUnavailable&&source.matches?.length===0&&foundation?.status==='source-match'&&foundation.matches?.length===1&&!foundation.hasMore)return foundation.matches[0];
++ return null;
++}

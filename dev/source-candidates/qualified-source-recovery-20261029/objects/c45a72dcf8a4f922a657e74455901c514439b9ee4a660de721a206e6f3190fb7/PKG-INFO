@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: offmenu
+Version: 0.1.0
+Summary: Offline barcode inventory, recipe matching and retailer observations
+Requires-Python: >=3.10
+Provides-Extra: collection
+Provides-Extra: test

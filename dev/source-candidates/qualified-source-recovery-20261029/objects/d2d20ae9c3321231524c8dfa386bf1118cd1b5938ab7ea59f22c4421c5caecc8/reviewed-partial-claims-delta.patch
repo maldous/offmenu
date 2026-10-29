@@ -1,0 +1,144 @@
+diff --git a/docs/portfolio15-staging-binding.md b/docs/portfolio15-staging-binding.md
+index 0ce41bf2..a7b15638 100644
+--- a/docs/portfolio15-staging-binding.md
++++ b/docs/portfolio15-staging-binding.md
+@@ -163,3 +163,8 @@ not six processed data releases. Source-specific manifests, rights, actual body
+ custody, selectors, field semantics and independent acceptance remain typed
+ dependencies. Raw data stays Foo; Finland/Frida, native NO/FR, 403, privacy,
+ production/CIX and DEV7645 restrictions are unchanged.
++
++Every `MALFORMED` planner exit clears its record, build key, replay and cache,
++and removes partial applicability, source-asset, manifest and adapter claims.
++Binding identity, source holds and fixed diagnostics remain available; a malformed
++result cannot expose a partial candidate for downstream use.
+diff --git a/offmenu/refresh/portfolio15.py b/offmenu/refresh/portfolio15.py
+index 6b3f32ae..e45943ab 100644
+--- a/offmenu/refresh/portfolio15.py
++++ b/offmenu/refresh/portfolio15.py
+@@ -203,6 +203,12 @@ def plan(binding, inputs, *, now, operation='metadata-bind', previous_build=None
+                                    'realBodyAdapter': 'UNSUPPORTED_FOR_THIS_METADATA_SCOPE'}}
+ 
+     def stop(status, *codes):
++        if status == 'MALFORMED':
++            # Every malformed exit discards all partially assembled artifacts.
++            for name in ('applicability', 'sourceAssetClaim', 'metadataManifestPins',
++                         'sourceAssetVerifiedByThisPlan', 'sharedAdapterCandidates'):
++                result.pop(name, None)
++            result.update(record=None, buildKey=None, replay=None, cache=None)
+         result.update(status=status, diagnostics=sorted(set(codes)))
+         return result
+ 
+@@ -328,10 +334,6 @@ def plan(binding, inputs, *, now, operation='metadata-bind', previous_build=None
+         result['status'] = 'READY_METADATA_ONLY'
+         return result
+     except (_MetadataDepthExceeded, RecursionError):
+-        # Discard partially assembled claims if another recursive operation fails.
+-        for name in ('applicability', 'sourceAssetClaim', 'metadataManifestPins'):
+-            result.pop(name, None)
+-        result.update(record=None, buildKey=None, replay=None, cache=None)
+         return stop('MALFORMED', 'metadata-depth-limit-exceeded')
+     except (RefreshError, KeyError, TypeError, ValueError, OverflowError):
+         # No source values, paths, credentials or exception text in diagnostics.
+diff --git a/tests/test_portfolio15_partial_artifact_delta.py b/tests/test_portfolio15_partial_artifact_delta.py
+new file mode 100644
+index 00000000..517b4553
+--- /dev/null
++++ b/tests/test_portfolio15_partial_artifact_delta.py
+@@ -0,0 +1,97 @@
++"""Authored PR47 partial-artifact boundary regressions; no source I/O."""
++import json
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++
++from offmenu.refresh import portfolio15 as p
++from offmenu.refresh.core import canonical
++from tests.test_portfolio15_binding import contract, NOW
++
++
++class PartialArtifactDeltaTests(unittest.TestCase):
++    def assert_clean_malformed(self, result):
++        self.assertEqual(result['status'], 'MALFORMED')
++        for name in ('record', 'buildKey', 'replay', 'cache'):
++            self.assertIsNone(result[name], name)
++        for name in ('applicability', 'sourceAssetClaim', 'metadataManifestPins',
++                     'sourceAssetVerifiedByThisPlan', 'sharedAdapterCandidates'):
++            self.assertNotIn(name, result)
++        self.assertEqual(result['sourceBodyReads'], 0)
++        self.assertEqual(result['networkRequests'], 0)
++        self.assertFalse(result['sourceAccepted'])
++        self.assertFalse(result['goldAdmitted'])
++        self.assertTrue(result['sourceHolds'])
++
++    def invalid_clock(self):
++        _, raw = contract()
++        doc = json.loads(raw)
++        doc['originalAcquiredAt'] = 'authored-invalid-clock'
++        return contract(canonical(doc))
++
++    def test_invalid_original_acquisition_clears_record_and_claims(self):
++        binding, raw = self.invalid_clock()
++        result = p.plan(binding, {'fixture': raw}, now=NOW)
++        self.assertEqual(result['diagnostics'], ['binding-or-metadata-invalid'])
++        self.assert_clean_malformed(result)
++
++    def test_missing_cache_meaning_clears_build_key_and_replay(self):
++        binding, raw = contract()
++        del binding['cache']['meaning']
++        result = p.plan(binding, {'fixture': raw}, now=NOW)
++        self.assertEqual(result['diagnostics'], ['binding-or-metadata-invalid'])
++        self.assert_clean_malformed(result)
++
++    def test_explicit_malformed_return_and_depth_share_cleanup(self):
++        _, raw = contract()
++        doc = json.loads(raw);doc['country'] = 'BE'
++        binding, raw = contract(canonical(doc))
++        result = p.plan(binding, {'fixture': raw}, now=NOW)
++        self.assertEqual(result['diagnostics'], ['metadata-country-mismatch'])
++        self.assert_clean_malformed(result)
++        binding, raw = contract(b'[' * 20000 + b'0' + b']' * 20000)
++        result = p.plan(binding, {'fixture': raw}, now=NOW)
++        self.assertEqual(result['diagnostics'], ['metadata-depth-limit-exceeded'])
++        self.assert_clean_malformed(result)
++
++    def test_valid_and_noop_keep_claims_and_holds(self):
++        binding, raw = contract()
++        first = p.plan(binding, {'fixture': raw}, now=NOW)
++        again = p.plan(binding, {'fixture': raw}, now='2026-10-19T00:00:00Z',
++                       previous_build=first['buildKey'])
++        self.assertEqual(first['status'], 'READY_METADATA_ONLY')
++        self.assertEqual(again['status'], 'READY_METADATA_ONLY')
++        self.assertEqual(again['replay'], 'NO_OP')
++        self.assertEqual(first['record'], again['record'])
++        self.assertEqual(first['buildKey'], again['buildKey'])
++        self.assertTrue(again['metadataManifestPins'])
++        self.assertTrue(again['sourceAssetClaim'])
++        self.assertTrue(again['sourceHolds'])
++
++    def test_cli_two_bad_bindings_do_not_suppress_valid_peer(self):
++        bad_clock, clock_raw = self.invalid_clock()
++        bad_meaning, meaning_raw = contract();del bad_meaning['cache']['meaning']
++        good, good_raw = contract()
++        with tempfile.TemporaryDirectory() as temp:
++            root = Path(temp)
++            bindings = []
++            for i, (binding, raw) in enumerate([(bad_clock, clock_raw), (bad_meaning, meaning_raw), (good, good_raw)]):
++                binding['id'] = 'authored-peer-' + str(i)
++                path = root / (str(i) + '.json');path.write_bytes(raw)
++                binding['evidence']['fixture']['recordedPath'] = str(path)
++                bindings.append(binding)
++            catalog = root / 'catalog.json'
++            catalog.write_bytes(canonical({'schemaVersion': p.VERSION, 'bindings': bindings}))
++            code = ('import sys,json;from pathlib import Path;from offmenu.refresh import portfolio15 as p;'
++                    'p.CATALOGUE=json.loads(Path(sys.argv[1]).read_bytes());'
++                    'sys.argv=["portfolio15","--now","2026-10-18T00:00:00Z"];p.main()')
++            run = subprocess.run([sys.executable, '-B', '-c', code, str(catalog)],
++                cwd=Path(__file__).resolve().parents[1], capture_output=True, text=True, timeout=5)
++        self.assertEqual(run.returncode, 0, run.stderr)
++        rows = [json.loads(line) for line in run.stdout.splitlines()]
++        self.assertEqual([r['status'] for r in rows], ['MALFORMED','MALFORMED','READY_METADATA_ONLY'])
++        for row in rows[:2]:self.assert_clean_malformed(row)
++        self.assertIsNotNone(rows[2]['record'])
++        self.assertIsNotNone(rows[2]['buildKey'])

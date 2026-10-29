@@ -1,0 +1,623 @@
+diff --git a/docs/refresh-acquisition-contract.md b/docs/refresh-acquisition-contract.md
+index e5dbe38..dd2438c 100644
+--- a/docs/refresh-acquisition-contract.md
++++ b/docs/refresh-acquisition-contract.md
+@@ -108,3 +108,79 @@ bodies, interruption recovery, retry bounds, response-size restrictions,
+ retention directives, secret-header exclusion, symlink rejection, immutable
+ evidence tampering, publisher Retry-After, cumulative transfer and disk budgets,
+ large-source configuration gates, and post-EOF walltime enforcement.
++
++## Pinned raw collection selections
++
++The existing `scripts/collect-source-access.py OUTPUT` retains its legacy landing
++access mode. Actual raw collection is explicit:
++
++```sh
++python3 -B scripts/collect-source-access.py REPORT_DIRECTORY \
++  --collection-registry /absolute/reviewed-selection.json \
++  --registry-sha256 EXACT_REVIEWED_SELECTION_SHA256
++```
++
++This invokes `offmenu.refresh.acquisition.collect_registry`, using the same
++`CachedAcquirer`, locks, content-addressed objects and recovery receipts. It
++does not invoke host bootstrap, source parsers, fixture admission, normalization,
++AI, or gold/publication. The hash identifies configuration; it grants no rights.
++
++The selection schema `offmenu-acquisition-selection/1` has exactly five fields:
++
++- `resources`: `storageRoot`, `maxTransferBytes`, `minimumFreeBytes`, `maxSeconds`.
++  The caller qualifies actual execution host and storage separately. Byte and
++  deadline limits also apply across the batch, including failed network reads.
++- `sources`: entries with `spec` (the existing `SourceSpec` fields), `operation`,
++  `claim`, `holds`, `retained`. Operations are `https-refresh` or `retained-copy`.
++  A claim is `{owner: 0, state: "selected", evidence: {path, sha256}}`: this
++  bounded runner is currently assigned to existing Worker00. Other-owner claims,
++  explicit holds, unapproved sources and unsupported operations fail closed.
++  The operator must reconcile actual competing claims before selection; this
++  local check does not replace Gateway's allocation authority.
++- `bindings`: `{sourceKey, country, type, evidence: {path, sha256}}` edges. Multiple
++  countries/types share a single source entry. Duplicate representation aliases
++  are rejected; duplicate edges are rejected. All selected sources need an edge.
++- `evidence`: exact local `{path, sha256}` pins binding current source-use,
++  custody and selection contracts. Evidence and applicability are verified before
++  acquisition; content interpretation is outside this operation.
++- `schemaVersion`: the schema name above.
++
++Country inventory57's `all249-source-collection-v2.json` and its current-report
++caveats are reviewed metadata intake, **not** a runtime acquisition registry or a
++universal download grant. Copying inventory rows into a selection cannot qualify
++rights, source release, payload completeness, actual custody or competing claims.
++NZ/LK unresolved provenance and active acquisition claims remain separate holds.
++Current source-specific budget decisions must accompany the relevant selection;
++one source's approved budget does not authorize another source's transfer.
++
++`retained-copy` supplies exactly `path`, `sha256`, `bytes`, `originalAcquiredAt`,
++`headers` and `evidence`. Only the bounded nonsecret retained-header allowlist is
++accepted. Import checks exact existing original bytes and pinned custody evidence,
++streams a verified local copy and uses no-overwrite object promotion. Its receipt
++uses `result: retained-import` and `retainedOrigin`, preserving the original
++acquisition/validation timestamp. Local verification time is separately recorded;
++it never creates a new 30-day window. Existing HTTP retention restrictions still
++apply. A stale retained selection fails offline; no fallback download is inferred.
++The canonical public source URL identifies provenance, never a historical signed
++transport URL. Source receipt pins preserve the original provenance without
++copying credentials into reports.
++
++Each source checkpoints an immutable report plus `collection-report.json` before
++the next source. Failure is isolated and recorded; rerunning re-verifies cache
++bytes and resumes completed objects. Partial copies/transfers restart, never
++append. Existing serial cache locking remains; no new concurrency cap, background
++controller, claim allocator or scheduler is introduced. Evidence paths must be
++stable for a run. Whole-selection structural/pin errors fail before any request.
++
++Reports distinguish verified local originals, failures, applicability edges,
++actual network requests/body bytes and original acquisition provenance. They
++explicitly report zero parsing/normalization/gold admission and do not infer
++country completion. `retainedImportStatus` separates first local import from an
++already cached repeat. The CLI returns nonzero for a rejected selection or any
++failed source, while retaining the complete per-source report.
++
++The orchestration tests cover many-to-many deduplication, unchanged repeat,
++conditional due refresh, held/forbidden isolation, aggregate byte bounds, stale
++retained age, original/cache corruption, claim and evidence failures, and safe
++restart. Live retained-copy acceptance is recorded outside Git in the exact
++worker result packet; synthetic HTTP tests do not establish live provider access.
+diff --git a/offmenu/refresh/acquisition.py b/offmenu/refresh/acquisition.py
+index b9348bd..2b83c2c 100644
+--- a/offmenu/refresh/acquisition.py
++++ b/offmenu/refresh/acquisition.py
+@@ -270,7 +270,20 @@ class CachedAcquirer:
+             raise RefreshError('invalid-acquisition-record')
+         expected = {'schemaVersion', 'request', 'sha256', 'bytes', 'headers',
+                     'originalAcquiredAt', 'checkedAt', 'result'}
+-        if set(value) != expected or value['result'] not in ('downloaded-200', 'identical-body-200', 'not-modified-304'):
++        if 'retainedOrigin' in value:
++            expected.add('retainedOrigin')
++            origin = value['retainedOrigin']
++            if (not isinstance(origin, dict) or set(origin) != {'path', 'evidence', 'verifiedAt'}
++                    or not isinstance(origin['path'], str)
++                    or not isinstance(origin['evidence'], dict)
++                    or set(origin['evidence']) != {'path', 'sha256'}
++                    or not isinstance(origin['evidence']['sha256'], str)
++                    or not re.fullmatch(r'[0-9a-f]{64}', origin['evidence']['sha256'])
++                    or not timestamp(value['originalAcquiredAt']) <= timestamp(origin['verifiedAt']) <= now):
++                raise RefreshError('invalid-retained-origin')
++        if (set(value) != expected or value['result'] not in
++                ('downloaded-200', 'identical-body-200', 'not-modified-304', 'retained-import')
++                or (value['result'] == 'retained-import' and 'retainedOrigin' not in value)):
+             raise RefreshError('invalid-acquisition-record')
+         if not timestamp(value['originalAcquiredAt']) <= timestamp(value['checkedAt']) <= now:
+             raise RefreshError('invalid-acquisition-time')
+@@ -289,6 +302,106 @@ class CachedAcquirer:
+             raise RefreshError('cached-body-corrupt')
+         return value
+ 
++    def import_retained(self, source_key, retained, *, now=None):
++        """Copy an exact reviewed original, preserving acquisition time. No network.
++
++        `retained` is trusted operation configuration, not discovered metadata.
++        Its evidence pin binds custody/source-use; it grants no permission itself.
++        Completed objects recover normally; interrupted copies restart from zero.
++        """
++        spec = self.sources.get(source_key)
++        if spec is None or spec.source_key != source_key:
++            raise RefreshError('source-not-allowlisted')
++        spec.validate()
++        now = now or datetime.now(timezone.utc)
++        if now.tzinfo is None or now.utcoffset().total_seconds() != 0:
++            raise RefreshError('policy-clock-must-be-utc')
++        if (not isinstance(retained, dict) or set(retained) !=
++                {'path', 'sha256', 'bytes', 'originalAcquiredAt', 'headers', 'evidence'}
++                or type(retained['bytes']) is not int
++                or not 1 <= retained['bytes'] <= spec.max_bytes
++                or not isinstance(retained['sha256'], str)
++                or not re.fullmatch(r'[0-9a-f]{64}', retained['sha256'])):
++            raise RefreshError('invalid-retained-contract')
++        if spec.max_bytes > self.budget.max_transfer_bytes:
++            raise RefreshError('source-exceeds-runner-byte-budget')
++        acquired = timestamp(retained['originalAcquiredAt'])
++        if acquired > now:
++            raise RefreshError('invalid-acquisition-time')
++        pin = retained['evidence']
++        if (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
++                or digest(pin['path'], max_bytes=MAX_METADATA)['sha256'] != pin['sha256']):
++            raise RefreshError('retained-evidence-mismatch')
++        headers = _headers(retained['headers'])
++        if not set(headers) <= RETAINED_HEADERS:
++            raise RefreshError('invalid-retained-headers')
++        _retention(headers)
++        original = safe_path(retained['path'])
++        expected = {k: retained[k] for k in ('sha256', 'bytes')}
++        identity = spec.identity()
++        self.root.mkdir(parents=True, exist_ok=True)
++        with writer_lock(self.root / 'acquisition.lock'):
++            directory = safe_path(self.root / 'requests' / sha(canonical(identity)))
++            directory.mkdir(parents=True, exist_ok=True)
++            record = safe_path(directory / 'current.json')
++            pending = safe_path(directory / 'recovery.json')
++            if pending.exists():
++                self._commit(record, self._load(pending, identity, spec, now, recovery=True))
++            previous = self._load(record, identity, spec, now)
++            if previous:
++                # Never overwrite a previously acquired different representation.
++                if {k: previous[k] for k in expected} != expected:
++                    raise RefreshError('retained-cache-conflict')
++                return self._result(previous, 'retained-already-cached')
++            if digest(original, max_bytes=spec.max_bytes) != expected:
++                raise RefreshError('retained-original-mismatch')
++            target = self._body(retained['sha256'])
++            target.parent.mkdir(parents=True, exist_ok=True)
++            partial = safe_path(directory / 'body.partial')
++            deadline = time.monotonic() + self.budget.max_seconds
++            try:
++                if target.exists():
++                    if digest(target, max_bytes=spec.max_bytes) != expected:
++                        raise RefreshError('cached-body-corrupt')
++                else:
++                    if shutil.disk_usage(self.root).free < retained['bytes'] + self.budget.minimum_free_bytes:
++                        raise RefreshError('insufficient-acquisition-disk-budget')
++                    if partial.exists():
++                        partial.unlink()
++                    count, hasher = 0, hashlib.sha256()
++                    with original.open('rb') as source, partial.open('xb') as output:
++                        while True:
++                            if time.monotonic() >= deadline:
++                                raise RefreshError('acquisition-duration-limit-exceeded')
++                            block = source.read(min(1024 * 1024, retained['bytes'] - count + 1))
++                            if not block:
++                                break
++                            count += len(block)
++                            if count > retained['bytes']:
++                                raise RefreshError('retained-original-mismatch')
++                            if shutil.disk_usage(self.root).free < len(block) + self.budget.minimum_free_bytes:
++                                raise RefreshError('insufficient-acquisition-disk-budget')
++                            hasher.update(block)
++                            output.write(block)
++                        output.flush()
++                        os.fsync(output.fileno())
++                    if {'sha256': hasher.hexdigest(), 'bytes': count} != expected:
++                        raise RefreshError('retained-original-mismatch')
++                    # Hard-link promotion is no-overwrite even if another writer appears.
++                    os.link(partial, target)
++                    fsync_directory(target.parent)
++                value = {'schemaVersion': 'offmenu-acquisition/1', 'request': identity,
++                         **expected, 'headers': headers,
++                         'originalAcquiredAt': retained['originalAcquiredAt'],
++                         'checkedAt': retained['originalAcquiredAt'], 'result': 'retained-import',
++                         'retainedOrigin': {'path': str(original), 'evidence': pin,
++                                            'verifiedAt': now.isoformat()}}
++                self._commit(record, value)
++                return self._result(value, 'retained-import')
++            finally:
++                if partial.exists():
++                    partial.unlink()
++
+     def _body(self, checksum):
+         return safe_path(self.root / 'objects' / checksum)
+ 
+@@ -378,7 +491,7 @@ class CachedAcquirer:
+                         if digest(target, max_bytes=spec.max_bytes) != {'sha256': checksum, 'bytes': count}:
+                             raise RefreshError('cached-body-corrupt')
+                     else:
+-                        os.replace(partial, target)
++                        os.link(partial, target)  # Never replace an existing object.
+                         fsync_directory(target.parent)
+                     identical = previous is not None and checksum == previous['sha256']
+                     value = {'schemaVersion': 'offmenu-acquisition/1', 'request': identity,
+@@ -423,3 +536,170 @@ class CachedAcquirer:
+ 
+ class _Retryable(Exception):
+     pass
++
++
++def collect_registry(registry_path, registry_sha256, output, *, transport=None, now=None):
++    """Run a pinned reviewed acquisition selection, not the discovery registry.
++
++    Bindings are evidence-backed applicability edges, never country completion.
++    One source/release representation runs once regardless of its consumers.
++    Each source checkpoints independently; a failed source cannot hide others.
++    The caller must qualify actual host, source rights and competing claims.
++    """
++    raw_path = safe_path(registry_path)
++    if digest(raw_path, max_bytes=8 * MAX_METADATA)['sha256'] != registry_sha256:
++        raise RefreshError('collection-registry-pin-mismatch')
++    registry = strict_json(raw_path.read_bytes())
++    if (not isinstance(registry, dict) or set(registry) !=
++            {'schemaVersion', 'resources', 'sources', 'bindings', 'evidence'}
++            or registry['schemaVersion'] != 'offmenu-acquisition-selection/1'
++            or not isinstance(registry['sources'], list)
++            or not isinstance(registry['bindings'], list)):
++        raise RefreshError('invalid-collection-registry')
++
++    def verify_pin(pin):
++        if (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
++                or digest(pin['path'], max_bytes=8 * MAX_METADATA)['sha256'] != pin['sha256']):
++            raise RefreshError('collection-evidence-pin-mismatch')
++
++    if not isinstance(registry['evidence'], list) or not registry['evidence']:
++        raise RefreshError('collection-evidence-required')
++    for pin in registry['evidence']:
++        verify_pin(pin)
++    resources = registry['resources']
++    if (not isinstance(resources, dict) or set(resources) !=
++            {'storageRoot', 'maxTransferBytes', 'minimumFreeBytes', 'maxSeconds'}):
++        raise RefreshError('invalid-runner-resource-budget')
++    root = safe_path(resources['storageRoot'])
++    budget = ResourceBudget(root, resources['maxTransferBytes'],
++                            resources['minimumFreeBytes'], resources['maxSeconds'])
++    # Validate the aggregate budget before any source reads or requests.
++    CachedAcquirer(root, {}, resource_budget=budget)
++    output = safe_path(output)
++    output.mkdir(parents=True, exist_ok=True)
++    now = now or datetime.now(timezone.utc)
++    if now.tzinfo is None or now.utcoffset().total_seconds() != 0:
++        raise RefreshError('policy-clock-must-be-utc')
++    keys, representations = set(), set()
++    for entry in registry['sources']:
++        if not isinstance(entry, dict) or not isinstance(entry.get('spec'), dict):
++            raise RefreshError('invalid-collection-source')
++        spec = SourceSpec(**entry['spec'])
++        representation = (spec.url, spec.release, spec.acquisition_version, spec.cache_scope)
++        if spec.source_key in keys or representation in representations:
++            raise RefreshError('duplicate-source-release-use-bindings')
++        keys.add(spec.source_key)
++        representations.add(representation)
++    bindings, edges = {}, set()
++    for binding in registry['bindings']:
++        if (not isinstance(binding, dict) or set(binding) != {'sourceKey', 'country', 'type', 'evidence'}
++                or binding['sourceKey'] not in keys
++                or not isinstance(binding['country'], str)
++                or not re.fullmatch(r'[A-Z]{2}', binding['country'])
++                or not isinstance(binding['type'], str) or not binding['type']):
++            raise RefreshError('invalid-source-country-type-binding')
++        verify_pin(binding['evidence'])
++        edge = (binding['sourceKey'], binding['country'], binding['type'])
++        if edge in edges:
++            raise RefreshError('duplicate-source-country-type-binding')
++        edges.add(edge)
++        bindings.setdefault(binding['sourceKey'], []).append(binding)
++    if set(bindings) != keys:
++        raise RefreshError('unmapped-collection-source')
++    meter = {'requests': 0, 'bodyBytesRead': 0}
++    deadline = time.monotonic() + budget.max_seconds
++
++    class MeteredResponse:
++        def __init__(self, response):
++            self.response = response
++            self.status, self.headers = response.status, response.headers
++        def read(self, size):
++            if time.monotonic() >= deadline:
++                raise RefreshError('batch-duration-limit-exceeded')
++            remaining = budget.max_transfer_bytes - meter['bodyBytesRead']
++            if remaining <= 0:
++                # Never read one byte beyond the selected aggregate allowance.
++                # Without an EOF already observed, completeness stays unverified.
++                raise RefreshError('batch-transfer-budget-exceeded')
++            block = self.response.read(min(size, remaining))
++            meter['bodyBytesRead'] += len(block)
++            if time.monotonic() >= deadline:
++                raise RefreshError('batch-duration-limit-exceeded')
++            if meter['bodyBytesRead'] > budget.max_transfer_bytes:
++                raise RefreshError('batch-transfer-budget-exceeded')
++            return block
++        def close(self):
++            self.response.close()
++
++    def metered(spec, headers):
++        if time.monotonic() >= deadline:
++            raise RefreshError('batch-duration-limit-exceeded')
++        if meter['bodyBytesRead'] >= budget.max_transfer_bytes:
++            raise RefreshError('batch-transfer-budget-exceeded')
++        meter['requests'] += 1
++        response = (transport(spec, headers) if transport is not None else
++                    HTTPSFileTransport()(spec, headers, deadline=deadline))
++        return MeteredResponse(response)
++
++    report = {'schemaVersion': 'offmenu-raw-collection-report/1',
++              'registry': {'path': str(raw_path), 'sha256': registry_sha256},
++              'observedAt': now.isoformat(), 'resources': resources, 'sources': [],
++              'network': meter, 'scope': 'selected raw originals only',
++              'parsed': 0, 'normalized': 0, 'goldAdmitted': 0,
++              'countryComplete': False}
++
++    def checkpoint():
++        evidence = output / 'evidence' / (sha(canonical(report)) + '.json')
++        if evidence.exists():
++            if evidence.read_bytes() != canonical(report):
++                raise RefreshError('collection-report-evidence-corrupt')
++        else:
++            atomic_json(evidence, report)
++        atomic_json(output / 'collection-report.json', report)
++
++    # One owned batch at a time in this output; acquirer also locks shared cache.
++    with writer_lock(output / 'collection.lock'):
++        for entry in sorted(registry['sources'], key=lambda item: item['spec']['source_key']):
++            spec = SourceSpec(**entry['spec'])
++            row = {'sourceKey': spec.source_key, 'release': spec.release,
++                   'bindings': sorted(bindings[spec.source_key], key=lambda x: (x['country'], x['type'])),
++                   'outcome': 'failed', 'networkRequests': 0, 'networkBytesRead': 0}
++            before = dict(meter)
++            try:
++                if set(entry) != {'spec', 'operation', 'claim', 'holds', 'retained'}:
++                    raise RefreshError('invalid-collection-source-contract')
++                claim = entry['claim']
++                if (not isinstance(claim, dict) or set(claim) != {'owner', 'state', 'evidence'}
++                        or type(claim['owner']) is not int or claim['owner'] != 0
++                        or claim['state'] != 'selected'):
++                    raise RefreshError('collection-claim-not-selected')
++                verify_pin(claim['evidence'])
++                if not isinstance(entry['holds'], list) or entry['holds']:
++                    raise RefreshError('collection-source-held')
++                spec.validate()
++                if time.monotonic() >= deadline:
++                    raise RefreshError('batch-duration-limit-exceeded')
++                acquirer = CachedAcquirer(root, {spec.source_key: spec}, transport=metered,
++                                          resource_budget=budget)
++                if entry['operation'] == 'retained-copy':
++                    imported = acquirer.import_retained(spec.source_key, entry['retained'], now=now)
++                    row['retainedImportStatus'] = imported.status
++                    result = acquirer.acquire(spec.source_key, fetch_policy='reuse', now=now)
++                elif entry['operation'] == 'https-refresh' and entry['retained'] is None:
++                    result = acquirer.acquire(spec.source_key, fetch_policy='refresh', now=now)
++                else:
++                    raise RefreshError('unsupported-collection-operation')
++                row.update(outcome='verified-local-original', status=result.status,
++                           path=str(result.path), sha256=result.sha256, bytes=result.bytes,
++                           provenance=result.provenance)
++            except (RefreshError, OSError, ValueError, TypeError, KeyError) as error:
++                # Never echo an arbitrary provider error/locator/header into a report.
++                row['error'] = str(error) if isinstance(error, RefreshError) else type(error).__name__
++            row['networkRequests'] = meter['requests'] - before['requests']
++            row['networkBytesRead'] = meter['bodyBytesRead'] - before['bodyBytesRead']
++            report['sources'].append(row)
++            checkpoint()
++        report['verifiedSources'] = sum(r['outcome'] == 'verified-local-original' for r in report['sources'])
++        report['failedSources'] = len(report['sources']) - report['verifiedSources']
++        checkpoint()
++    return report
+diff --git a/scripts/collect-source-access.py b/scripts/collect-source-access.py
+index 57b486d..477b2dc 100644
+--- a/scripts/collect-source-access.py
++++ b/scripts/collect-source-access.py
+@@ -1,5 +1,9 @@
+ #!/usr/bin/env python3
+-"""Collect access evidence for every registered source; this is not dataset ingestion."""
++"""Landing access evidence, or explicitly pinned reviewed raw collection.
++
++Legacy mode is landing metadata only. Collection mode uses CachedAcquirer;
++discovery URLs never become approved download selections automatically.
++"""
+ import argparse,concurrent.futures,datetime,hashlib,json,re,urllib.request,urllib.parse
+ from pathlib import Path
+ 
+@@ -25,11 +29,26 @@ def collect(source,output):
+  saved.write_text(json.dumps(result,indent=2)+'\n');return result
+ 
+ def main():
+- p=argparse.ArgumentParser();p.add_argument('output',type=Path);a=p.parse_args();a.output.mkdir(parents=True,exist_ok=True)
++ p=argparse.ArgumentParser();p.add_argument('output',type=Path)
++ p.add_argument('--collection-registry',type=Path)
++ p.add_argument('--registry-sha256')
++ a=p.parse_args()
++ if bool(a.collection_registry)!=bool(a.registry_sha256):p.error('Collection requires exact registry path and SHA-256')
++ if a.collection_registry:
++  import sys
++  sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
++  from offmenu.refresh.acquisition import collect_registry
++  from offmenu.refresh.core import RefreshError
++  try:report=collect_registry(a.collection_registry,a.registry_sha256,a.output)
++  except (RefreshError,OSError,ValueError,TypeError,KeyError) as error:
++   print(json.dumps({'status':'collection-rejected','error':str(error) if isinstance(error,RefreshError) else type(error).__name__}));return 2
++  print(json.dumps({'status':'collection-reported','verifiedSources':report['verifiedSources'],'failedSources':report['failedSources'],'network':report['network'],'countryComplete':False}))
++  return 1 if report['failedSources'] else 0
++ a.output.mkdir(parents=True,exist_ok=True)
+  root=Path(__file__).resolve().parents[1];sources=json.loads((root/'docs/source-delivery-ledger.json').read_text())['sources'];results=[]
+  with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+   for f in concurrent.futures.as_completed([pool.submit(collect,s,a.output) for s in sources]):
+    results.append(f.result())
+    if len(results)%50==0:print(json.dumps({'sourcesChecked':len(results),'total':len(sources)}),flush=True)
+  report={'schema':'offmenu-source-access/1','checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sources':sorted(results,key=lambda x:x['sourceId']),'sourceCount':len(sources),'scope':'All registered landing-page access checks; download/rights links are candidates, not licence or data acceptance.'};(a.output/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({'status':'complete','sourcesChecked':len(results)}))
+-if __name__=='__main__':main()
++if __name__=='__main__':raise SystemExit(main())
+diff --git a/tests/test_collection_runner.py b/tests/test_collection_runner.py
+new file mode 100644
+index 0000000..2d9b5c6
+--- /dev/null
++++ b/tests/test_collection_runner.py
+@@ -0,0 +1,176 @@
++"""Acquisition orchestration tests; no live network or country acceptance."""
++from dataclasses import asdict, replace
++from datetime import timedelta
++import json
++from pathlib import Path
++import tempfile
++import unittest
++
++from offmenu.refresh.acquisition import collect_registry
++from offmenu.refresh.core import RefreshError, canonical, sha
++from test_refresh_acquisition import SPEC, NOW, Response, Transport
++
++
++class CollectionRunnerTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.root = Path(self.temp.name)
++        self.evidence = self.root / 'review.json'
++        self.evidence.write_bytes(b'{"fixtureReview":true}')
++        self.pin = {'path': str(self.evidence), 'sha256': sha(self.evidence.read_bytes())}
++        self.registry = {
++            'schemaVersion': 'offmenu-acquisition-selection/1',
++            'resources': {'storageRoot': str(self.root / 'cache'), 'maxTransferBytes': 1024,
++                          'minimumFreeBytes': 0, 'maxSeconds': 30},
++            'sources': [self.entry(SPEC)],
++            'bindings': [self.binding(SPEC.source_key, 'AU', 'foods'),
++                         self.binding(SPEC.source_key, 'BE', 'foods'),
++                         self.binding(SPEC.source_key, 'AU', 'nutrients')],
++            'evidence': [self.pin]}
++
++    def tearDown(self):
++        self.temp.cleanup()
++
++    def entry(self, spec):
++        return {'spec': asdict(spec), 'operation': 'https-refresh', 'retained': None,
++                'claim': {'owner': 0, 'state': 'selected', 'evidence': self.pin}, 'holds': []}
++
++    def binding(self, key, country, kind):
++        return {'sourceKey': key, 'country': country, 'type': kind, 'evidence': self.pin}
++
++    def run_batch(self, transport, now=NOW):
++        path = self.root / 'registry.json'
++        path.write_bytes(canonical(self.registry))
++        return collect_registry(path, sha(path.read_bytes()), self.root / 'reports',
++                                transport=transport, now=now)
++
++    def retained(self):
++        body = self.root / 'original.csv'
++        body.write_bytes(b'original untouched bytes\n')
++        self.registry['sources'][0].update(operation='retained-copy', retained={
++            'path': str(body), 'sha256': sha(body.read_bytes()), 'bytes': body.stat().st_size,
++            'originalAcquiredAt': NOW.isoformat(), 'headers': {'etag': 'validator-not-checksum'},
++            'evidence': self.pin})
++        return body
++
++    def test_many_to_many_once_then_repeat_zero_network(self):
++        t = Transport(Response())
++        first = self.run_batch(t)
++        second = self.run_batch(t, NOW + timedelta(days=29))
++        self.assertEqual(len(t.calls), 1)
++        self.assertEqual(first['network'], {'requests': 1, 'bodyBytesRead': 7})
++        self.assertEqual(second['network'], {'requests': 0, 'bodyBytesRead': 0})
++        self.assertEqual(len(second['sources'][0]['bindings']), 3)
++        self.assertFalse(second['countryComplete'])
++        self.assertEqual(second['normalized'], 0)
++
++    def test_due_conditional_refresh_preserves_original(self):
++        t = Transport(Response(headers={'etag': 'version'}), Response(304))
++        self.run_batch(t)
++        result = self.run_batch(t, NOW + timedelta(days=30))
++        self.assertEqual(t.calls[-1][1]['If-None-Match'], 'version')
++        self.assertEqual(result['sources'][0]['provenance']['originalAcquiredAt'], NOW.isoformat())
++        self.assertEqual(result['network']['bodyBytesRead'], 0)
++
++    def test_held_source_isolated_and_not_requested(self):
++        self.registry['sources'][0]['holds'] = ['source-use restriction']
++        other = replace(SPEC, source_key='z-independent', url='https://publisher.example/other')
++        self.registry['sources'].append(self.entry(other))
++        self.registry['bindings'].append(self.binding(other.source_key, 'LY', 'prices'))
++        t = Transport(Response())
++        result = self.run_batch(t)
++        self.assertEqual(result['failedSources'], 1)
++        self.assertEqual(result['verifiedSources'], 1)
++        self.assertEqual(t.calls[0][0].source_key, 'z-independent')
++
++    def test_forbidden_not_retried_and_remaining_source_runs(self):
++        other = replace(SPEC, source_key='z-independent', url='https://publisher.example/other')
++        self.registry['sources'].append(self.entry(other))
++        self.registry['bindings'].append(self.binding(other.source_key, 'LY', 'prices'))
++        t = Transport(Response(403), Response())
++        result = self.run_batch(t)
++        self.assertEqual(len(t.calls), 2)
++        self.assertEqual(result['failedSources'], 1)
++        self.assertEqual(result['verifiedSources'], 1)
++
++    def test_retained_import_repeat_preserves_original_and_evidence(self):
++        original = self.retained()
++        before = original.read_bytes(), original.stat().st_mtime_ns
++        t = Transport()
++        first = self.run_batch(t)
++        cached = Path(first['sources'][0]['path'])
++        mtime = cached.stat().st_mtime_ns
++        repeat = self.run_batch(t, NOW + timedelta(days=1))
++        self.assertEqual(t.calls, [])
++        self.assertEqual(cached.stat().st_mtime_ns, mtime)
++        self.assertEqual((original.read_bytes(), original.stat().st_mtime_ns), before)
++        provenance = repeat['sources'][0]['provenance']
++        self.assertEqual(provenance['result'], 'retained-import')
++        self.assertEqual(provenance['originalAcquiredAt'], NOW.isoformat())
++        self.assertEqual(provenance['checkedAt'], NOW.isoformat())
++        self.assertEqual(provenance['retainedOrigin']['evidence'], self.pin)
++
++    def test_corrupt_original_and_corrupt_cache_fail_closed(self):
++        original = self.retained()
++        original.write_bytes(b'changed')
++        bad = self.run_batch(Transport())
++        self.assertEqual(bad['sources'][0]['error'], 'retained-original-mismatch')
++        original.write_bytes(b'original untouched bytes\n')
++        good = self.run_batch(Transport())
++        Path(good['sources'][0]['path']).write_bytes(b'corrupt')
++        again = self.run_batch(Transport())
++        self.assertEqual(again['sources'][0]['error'], 'cached-body-corrupt')
++
++    def test_missing_or_other_owner_claim_blocks_without_network(self):
++        self.registry['sources'][0]['claim']['owner'] = 22
++        t = Transport()
++        self.assertEqual(self.run_batch(t)['sources'][0]['error'], 'collection-claim-not-selected')
++        self.assertEqual(t.calls, [])
++
++    def test_registry_and_binding_evidence_fail_before_source_request(self):
++        path = self.root / 'registry.json'
++        path.write_bytes(canonical(self.registry))
++        with self.assertRaisesRegex(RefreshError, 'registry-pin-mismatch'):
++            collect_registry(path, '0' * 64, self.root / 'reports', transport=Transport(), now=NOW)
++        self.evidence.write_bytes(b'changed review')
++        with self.assertRaisesRegex(RefreshError, 'evidence-pin-mismatch'):
++            self.run_batch(Transport())
++
++    def test_duplicate_release_must_use_bindings_not_alias_download(self):
++        self.registry['sources'].append(self.entry(replace(SPEC, source_key='alias')))
++        with self.assertRaisesRegex(RefreshError, 'duplicate-source-release'):
++            self.run_batch(Transport())
++
++    def test_stale_retained_does_not_reset_age_or_download(self):
++        self.retained()
++        t = Transport()
++        result = self.run_batch(t, NOW + timedelta(days=30))
++        self.assertEqual(result['sources'][0]['error'], 'cache-stale')
++        self.assertEqual(t.calls, [])
++
++    def test_interrupted_copy_is_restarted_not_appended(self):
++        self.retained()
++        from offmenu.refresh.acquisition import SourceSpec
++        identity = SourceSpec(**self.registry['sources'][0]['spec']).identity()
++        directory = self.root / 'cache' / 'requests' / sha(canonical(identity))
++        directory.mkdir(parents=True)
++        (directory / 'body.partial').write_bytes(b'never append this')
++        result = self.run_batch(Transport())
++        self.assertEqual(result['verifiedSources'], 1)
++        self.assertEqual(Path(result['sources'][0]['path']).read_bytes(), b'original untouched bytes\n')
++        self.assertFalse((directory / 'body.partial').exists())
++
++    def test_cumulative_batch_budget_counts_discarded_and_success_bytes(self):
++        self.registry['resources']['maxTransferBytes'] = 128
++        other = replace(SPEC, source_key='z-independent', url='https://publisher.example/other')
++        self.registry['sources'].append(self.entry(other))
++        self.registry['bindings'].append(self.binding(other.source_key, 'LY', 'prices'))
++        t = Transport(Response(body=b'a' * 100), Response(body=b'b' * 40))
++        result = self.run_batch(t)
++        self.assertEqual(result['verifiedSources'], 1)
++        self.assertEqual(result['sources'][1]['error'], 'batch-transfer-budget-exceeded')
++        self.assertEqual(result['network']['bodyBytesRead'], 128)
++
++
++if __name__ == '__main__':
++    unittest.main()

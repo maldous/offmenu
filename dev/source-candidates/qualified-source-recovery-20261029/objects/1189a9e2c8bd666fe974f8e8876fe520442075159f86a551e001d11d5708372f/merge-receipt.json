@@ -1,0 +1,34 @@
+{
+  "pr": 14,
+  "url": "https://github.com/maldous/offmenu/pull/14",
+  "head": "c7a28fc7f48a1f5464a78f641a98deebcc16bab3",
+  "tree": "cf0cb171eedb7514802eef865b3098f052f62f66",
+  "base": "e4c87278bf94f791b0dd7f30672b65edf992317e",
+  "review": "/home/user/Documents/Codex/2026-10-15/worker13-d1-c7a28fc-review/receipt.json",
+  "publication": "normal branch push and PR creation succeeded",
+  "merge": {
+    "sha": "666ed68450722536ac6941544e26d9c8edaae8a8",
+    "parents": [
+      "e4c87278bf94f791b0dd7f30672b65edf992317e",
+      "c7a28fc7f48a1f5464a78f641a98deebcc16bab3"
+    ],
+    "tree": "cf0cb171eedb7514802eef865b3098f052f62f66",
+    "providerMetadataVerified": true,
+    "remoteDevelopVerified": true,
+    "method": "normal GitHub API expected_head_sha"
+  },
+  "checks": {
+    "gitguardian": {
+      "id": 116421035206,
+      "conclusion": "success"
+    },
+    "actions": [
+      116421042273,
+      116420906292
+    ],
+    "actionsState": "success both"
+  },
+  "main": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d unchanged",
+  "productionDeployment": false,
+  "endpointSessionActivationOrSchemaMigration": false
+}

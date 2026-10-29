@@ -1,0 +1,101 @@
+{
+  "status": "conditional diagnostic source only; actual native OFF response pending; no fix/closure claimed",
+  "baseSourceSha256": "ea987c6bb5e00d7d71f6f6c27d52313bbd5aabce8a7d9a3946ba4672ff89aaac",
+  "baseBundleSha256": "1ac95b6b63ec2794e5e670658bd6c2c4ce3b66af9426469d0c80ea196efa808f",
+  "changedSourceFiles": 1,
+  "otherSourcesByteIdentical": true,
+  "factsTimeoutMsUnchanged": 120000,
+  "nativeResponseReceived": false,
+  "liveRequests": 0,
+  "realDataReads": 0,
+  "productionMutation": false,
+  "tests": {
+    "scope": "diagnostic containment only",
+    "passed": 2,
+    "failed": 0,
+    "durationMs": 75.43128,
+    "exitCode": 0
+  },
+  "files": [
+    {
+      "path": "source/protocol-pins.mjs",
+      "bytes": 890,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a"
+    },
+    {
+      "path": "source/source-barcode-facts-handler.mjs",
+      "bytes": 8591,
+      "sha256": "583ba256fb429284f1935f53e3e916fe25500de0afce27cf80bcc4b7a8741f5a"
+    },
+    {
+      "path": "source/source-barcode-handler.mjs",
+      "bytes": 16176,
+      "sha256": "56723cd22ecb72713b5dd4cc98b1a24adbb262200d25796e2d74f4a069d9d9eb"
+    },
+    {
+      "path": "source/stream-shard.mjs",
+      "bytes": 3888,
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a"
+    },
+    {
+      "path": "source/strict-json.mjs",
+      "bytes": 2044,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099"
+    },
+    {
+      "path": "source/reviewed-hydration/source-barcode-client.mjs",
+      "bytes": 16505,
+      "sha256": "273afcb617a208c9e7385026351bc3f748e133b17a2eb37f5454b230b5351197"
+    },
+    {
+      "path": "source/reviewed-hydration/source-barcode-hydrator.mjs",
+      "bytes": 11810,
+      "sha256": "a2d96a9736942982408f51233384e503df7b7795ea24533a3f9d5f94c76300d9"
+    },
+    {
+      "path": "source/reviewed-hydration/source-barcode-selection.mjs",
+      "bytes": 208,
+      "sha256": "adaddd1ea29bc47860e4ed557b477240bab677b5eb431dc255a5c5887159f71e"
+    },
+    {
+      "path": "tests/facts-diagnostic.test.mjs",
+      "bytes": 6837,
+      "sha256": "f684adedd3f154d4e761f0c8a246482ff96bd42c5732d43c57119d5362913c7c"
+    },
+    {
+      "path": "build/metafile.json",
+      "bytes": 5207,
+      "sha256": "7d49b2178abe1ccf8506f0ee3e9c743725008a4147954cd4a08a4c40aed7bda6"
+    },
+    {
+      "path": "build/source-barcode-handler.bundle.mjs",
+      "bytes": 47872,
+      "sha256": "1ada50fa19089eb80e1153ff64945ab809d0082c8d97ef68fabb3754ae929bd7"
+    },
+    {
+      "path": "build-facts.mjs",
+      "bytes": 1154,
+      "sha256": "026966b3c597166fe356d3c3910a14c11ed9a6fec1a6e38dff69da37d0439647"
+    },
+    {
+      "path": "build.log",
+      "bytes": 138,
+      "sha256": "4cec941956b9ddba45a210b76dbba68cf62cbf902f18899512befb0118b73411"
+    },
+    {
+      "path": "focused-diagnostic-tests.log",
+      "bytes": 343,
+      "sha256": "c039a644efc54d52737c1bdebb23008fb76a6674a3dc4f7fb6dd76475abe04c1"
+    },
+    {
+      "path": "facts-diagnostic-only.patch",
+      "bytes": 4496,
+      "sha256": "e09a18e82d8e8431bdbb1e914543e11319a9eb1509a3ab63f92cad7971b03e25"
+    },
+    {
+      "path": "HANDOFF.md",
+      "bytes": 4132,
+      "sha256": "58f16c65f77988bc6e5a11cbd3858f273f8f7f1ac64122cbc88dacce65ba253c"
+    }
+  ]
+}

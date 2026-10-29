@@ -1,0 +1,24 @@
+{
+  "finding": "NS196-G2",
+  "state": "synthetic-served-client-delta-accepted",
+  "owners": {
+    "soleIntegrator": "/root/prepare_production_integration",
+    "efficiencyCoordinatorThread": "01a17c1c-e8cb-709e-925f-d70a861a50fc"
+  },
+  "observed": {
+    "oldRecipeWitness": "Recipe v1, source/release/license/instructions/ingredients remain unchanged in batch and history after current recipe v2/source edits, profile v2 selection and local reload.",
+    "quantityAndNutrition": "100 g rice + 100 g peas allocated once; raw rice remains 400 g; batch 250 kcal / served portion 125 kcal unchanged. Salt zero retained; absent vitamin C not invented as known zero.",
+    "sharedProjection": "Misleading public root with nested private or unknown citation excludes cookingWitness. All-public retained evidence includes it. Served helper and exact corrected source helper agree."
+  },
+  "reuse": [
+    "delta-harness.mjs",
+    "EXECUTED-DELTA.json",
+    "cooking-witness.mjs"
+  ],
+  "next": "Coordinator can combine this focused client acceptance with the separately completed actual Worker seam review; do not infer authenticated or full North Star closure. No additional implementation assigned by this receipt.",
+  "stopConditions": [
+    "Do not claim authenticated save/reload/shared workspace acceptance from isolated local VM evidence.",
+    "Real-source rights/semantic acceptance, devices/provider/account behavior remain outside scope.",
+    "No full journey/product/corpus rerun or additional release gate requested."
+  ]
+}

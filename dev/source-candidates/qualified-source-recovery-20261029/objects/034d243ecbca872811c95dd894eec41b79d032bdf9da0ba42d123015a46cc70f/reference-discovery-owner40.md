@@ -1,0 +1,9 @@
+# Worker40 reference/discovery output freeze
+
+The existing admitted `common-reference-semantic-final-20261014` package already provides complete normalization of its admitted reference metadata: 100 guideline directory entries and 3796 recipe discovery references across nine packets files. Reuse those bytes; no new dataset, source acquisition, shared schema or competing normalizer was created. The JSON freezes exact input, admission, normalizer and per-file hashes for Worker47 independent review.
+
+All3896 source IDs, citation bindings, public scopes and required URL/record/licence metadata were checked. Guideline data has only seven reference/permission metadata fields: name, reference type/URL, directory URL, review/qualification status and content permission. It contains no issuer numeric targets and is not a collection of national guideline documents. Recipe discovery entries all retain empty ingredient/direction lists, automaticPlanningEligible false, and unreviewed curation. Numeric source ingredient counts are metadata counts, not nutrient guidance.
+
+English name-label language is not proof of each linked document language. Country associations are not verified legal jurisdictions. Unknown linked document language/jurisdiction remain unknown; original typed claims and citation provenance are retained unchanged. CC0 applies to OffMenu guideline reference metadata only; linked national documents keep their owners' rights. Wikibooks metadata keeps CC BY-SA4 attribution/rights references; no complete recipe or source entitlement is inferred.
+
+Base f6cb92aef52a5cc8193717d7e794556bd84f8b3b is the actual synchronized checkout, not a new fetch. Shared fetch/sync remains solely64. Old package-restriction and acquisition proofs remain preserved. This is an evidence-only normalization handoff: Worker47 review pending; no central wiring, publication or acceptance. Whole105/recipe STOP and mandatory auto_review remain.

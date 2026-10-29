@@ -1,0 +1,834 @@
+diff --git a/docs/portfolio21-staging-bindings.md b/docs/portfolio21-staging-bindings.md
+new file mode 100644
+index 00000000..e8f1035f
+--- /dev/null
++++ b/docs/portfolio21-staging-bindings.md
+@@ -0,0 +1,125 @@
++# Worker 21 country staging bindings
++
++M-STAGING-BIND-20261018-W21; portfolio MD, SJ, TD, UM. Base:
++`abecb99ee1125730ccbc2824b6ec49ffc5cc4302`. This package is a local metadata audit
++and an authored-fixture bridge to shared candidate qualification. It installs no
++production SourceContract, global handler, downloader, acceptance or gold admission.
++
++## Run and contract
++
++From this checkout, with an existing destination parent:
++
++```sh
++python3 -m offmenu.portfolio21 \
++  --metadata-root /home/user/src/offmenu-data \
++  --as-of 2026-10-18T00:00:00Z \
++  --output /absolute/new/portfolio21-metadata.json
++python3 -m unittest tests.test_portfolio21_staging -v
++```
++
++The explicit timestamp makes replay reproducible; use a fresh truthful UTC time
++for a new audit. An identical report returns `reused` without rewriting it. A
++different existing report is preserved and rejected. No shared pointer is changed.
++The audit opens only nine exact JSON metadata paths declared in `BINDINGS` and
++verifies their SHA-256 pins before parsing. It follows no receipt URL, redirect,
++rights link, original_path or request path. It does not read, rehash or stat any
++source body. Metadata reads share a 1 MiB cumulative budget, checked before each
++read; pin mismatch or exhausted budget stops the entire run without a report.
++Missing, malformed and stale metadata produce isolated fixed-code diagnostics.
++The Linux reader opens each directory and leaf using no-follow descriptors, with
++nonblocking opens and a regular-file check before I/O. FIFOs and directories yield
++`metadata-not-regular`; unreadable or concurrently replaced/mutated entries yield
++fixed isolated diagnostics while valid peers continue. Read bytes still count
++against the cumulative budget if a later race check fails. Existing output replay
++uses the same bounded reader and rejects nonregular or oversized destinations.
++Descriptors close on success and failure. Authored FIFO regressions run only the
++corrected successor in subprocesses with a five-second timeout; no predecessor
++hang is replayed. Symlink paths are rejected. JSON duplicate keys and nonfinite values are rejected
++through the shared strict reader. Selected JSON pointers distinguish absent from
++explicit null. Receipt assertion counts are not observed parsed record counts.
++
++Metadata verification uses the existing `StageResult` receipt interface. A
++successful metadata check is distinct from the held staging gate. Every real
++binding remains held; a synthetic no-hold metadata fixture still cannot install a
++production contract. There is no runtime plugin or config-driven permission path.
++
++## Source inputs, field origins and unknowns
++
++| Binding | Evidence and current interpretation | Missing prerequisite / next owner action |
++| --- | --- | --- |
++| MD Prices 2026-10-12 | Pinned normalized manifest claims 4 MD observations; original archive SHA is a claim only. `/completedAt` is normalization time. `/license`, `/attribution`, `/scope` are declarations. | Gateway obtain the actual raw custodian, original acquisition time, role assets/pins, retained rights/scope evidence and reviewed exact inventory. Owner59 produced a derivative; native custody remains unverified. |
++| SJ SSB | Pinned receipt `/release` null, zero retained response bytes, no original. Discontinued Svalbard CPI is not a current SJ basket. | Gateway and historical owner38 resolve exact asset/release, explicit source-use scope, actual custodian and SJ applicability. No Jan Mayen inference. |
++| TD WFP markets/prices | Two receipts claim complete CSV originals (355 / 134716 rows; 17637 / 16677432 bytes). Their `/rights_evidence` points to an unqualified package receipt; no body/schema verification in this task. | Worker21 retains ownership. Gateway/source-use reviewer resolve exact publisher release, licence text, intended operations, attribution and custody before authorizing body access. Then bind reviewed CSV selectors and exact inventory through an appropriate shared adapter. |
++| TD other leads | JS route, package metadata, advertised PDF answered with HTML, menu API metadata. | Exact permitted original corpus and finite scope still needed. No dataset count from these responses. |
++| UM DLA | Receipt reports 403, 510 response bytes, zero source records. | Gateway/historical owner45 identify an independently permitted exact UM asset, rights and applicability. Existing denial means no retry or alternate-host bypass. Native custody remains unverified. |
++
++No nutrition, recipe, current national basket or country-completeness claim follows
++from these bindings. MD's four earlier validated price observations remain a partial
++price result, with unknown package basis, unit and unitPrice. MD recipe source33's
++CC BY-NC-ND 3.0 US acquisition-only restriction remains. TD metadata-planning
++approval3588 and receipt metadata qualification do not grant source body access,
++transformation or redistribution. Source admission, custody and independent review
++remain separate prerequisites for each exact source/release and intended use.
++
++`PRICE_SELECTORS` declares prospective shared Prices adapter field coordinates,
++not measured source-cell provenance for retained MD records. It covers all scalar
++data fields in the authored fixture. Price amount and unit price retain lexical
++source amounts alongside numeric projection. Currency/date/unit pass through;
++`price_per` null stays null. No currency conversion, package-size join, serving
++basis, per-100g basis or inferred unit price is performed. Retailer fields require
++the location_id join; proof_id requires an existing proof. Availability `unknown`
++and `dated-observation` are code constants, not source facts. Missing source cells
++need explicit reviewed unknown constants; they cannot be represented as observed
++null cells. No TD, SJ or UM body column names are invented.
++
++The authored fixture invokes shared `qualify_product_candidate` with a trusted
++code-created `SourceContract(fixture=True)`. The shared engine checks rights,
++scope, exact bundle membership/pins, declared inventory and semantic qualification
++and calls the existing product adapter. The bridge rejects real contracts. Its
++candidate remains unaccepted and its private SQLite file is not public output.
++The fixture separately exercises shared `field_origin_errors` against explicit
++source/derived/constant origin declarations and a pinned policy. The generic
++product adapter does not itself emit full `fieldOrigins`; the test does not imply
++that it does. Real per-datum origin coverage and semantics remain an integration
++prerequisite; source metadata labels cannot construct a trusted contract.
++
++## Cache, replay and shared interface questions
++
++`reuse_plan` uses the shared product adapter minimum of 30 days. It separates
++original acquisition age from validation age; validation cannot reset acquisition
++age. Missing original acquisition time stays unknown. At and beyond 30 days,
++pinned cached input can still be reused locally: the plan never fetches, refreshes
++or grants refresh permission. A new publisher release, rights change or invalid
++pin needs a separate reviewed action, not an mtime heuristic. Audit verification
++time is reported separately from source validation time; source times are unknown
++for these real metadata-only bindings.
++
++No generic pure cache planner exists at this pinned base (integrator00 result5798).
++The local age calculation is metadata bookkeeping only and does not invoke or
++replace a shared acquisition engine. Its absent capability is explicit in reports.
++
++Integrator00 must resolve two shared interface gaps before real production binding:
++(1) how a shared acquisition receipt preserves `originalAcquiredAt` separately from
++`checkedAt` under revalidation (the current generic acquisition cache uses checkedAt
++for its window); (2) where the Prices stage emits full per-datum fieldOrigins and
++source-specific semantic validation. No shared core was modified here. Do not
++register these portfolio metadata helpers as production stages to work around
++those gaps. Independent review and integrator acceptance are required before merge.
++
++## Public methodology references
++
++Official pages consulted 2026-10-18, documentation only, no API/data request:
++
++- [Open Prices API field reference](https://openfoodfacts.github.io/documentation/docs/Open-prices/prices/prices_create/): optional nullable `price_per`, nullable price/currency/date; supports preserving unknowns. Current API docs do not prove a historical export schema or source permissions.
++- [Open Prices API licence guidance](https://github.com/openfoodfacts/open-prices/blob/main/API.md): ODbL source attribution/reuse obligations are documented. The software licence is not the data licence. This reference does not clear the retained exact-release/source-use hold.
++
++All existing source/ownership/denied-action holds remain. Production, CIX, UI/runtime
++and native NO/FR crash or Finland/Frida holds remain paused; no retry, new worker,
++source-body read or acquisition was performed. Morgan retains scheduling and ledger
++reconciliation. COUNTRY-QUEUE stays open.
++
++Review correction6190 addresses W11-W21-READER-01 and W11-W21-POINTER-02 only.
++The pointer helper rejects negative, leading-zero, non-ASCII or otherwise invalid
++array indices and malformed RFC6901 escapes; numeric object keys remain exact
++keys. Source declarations, cache semantics and all admission/ownership holds are
++unchanged. The frozen successor requires designated reviewer11 delta review.
+diff --git a/offmenu/portfolio21/__init__.py b/offmenu/portfolio21/__init__.py
+new file mode 100644
+index 00000000..dd25e341
+--- /dev/null
++++ b/offmenu/portfolio21/__init__.py
+@@ -0,0 +1 @@
++"""Worker 21 metadata bindings; no production source admission or acquisition."""
+diff --git a/offmenu/portfolio21/__main__.py b/offmenu/portfolio21/__main__.py
+new file mode 100644
+index 00000000..d6d28d66
+--- /dev/null
++++ b/offmenu/portfolio21/__main__.py
+@@ -0,0 +1,17 @@
++"""Explicit local metadata audit only; no network or production stage switch."""
++import argparse
++from .bindings import audit_metadata, write_report
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--metadata-root', required=True)
++    parser.add_argument('--as-of', required=True, help='UTC ISO timestamp, explicit for deterministic replay')
++    parser.add_argument('--output', required=True, help='New metadata report or exact existing replay')
++    args = parser.parse_args()
++    report = audit_metadata(args.metadata_root, as_of=args.as_of)
++    print(write_report(report, args.output))
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/offmenu/portfolio21/bindings.py b/offmenu/portfolio21/bindings.py
+new file mode 100644
+index 00000000..8c058816
+--- /dev/null
++++ b/offmenu/portfolio21/bindings.py
+@@ -0,0 +1,306 @@
++"""Pinned MD/SJ/TD/UM metadata audit using shared staging contracts.
++
++This module reads only the declared JSON metadata, never follows receipt paths,
++never imports handlers from metadata, and never grants source permissions.
++"""
++from contextlib import contextmanager
++from dataclasses import dataclass
++import os
++import re
++import stat
++from pathlib import PurePosixPath
++
++from offmenu.refresh.core import RefreshError, canonical, safe_path, sha, strict_json, timestamp
++from offmenu.refresh.global_run import StageResult
++from offmenu.refresh.product_adapters import MIN_CACHE_SECONDS
++from offmenu.refresh.product_qualification import qualify_product_candidate
++
++MAX_METADATA_BYTES = 1024 * 1024
++BASE = 'abecb99ee1125730ccbc2824b6ec49ffc5cc4302'
++TD_PREFIX = 'originals/country-followthrough-20261015/owner-21/TD/'
++
++
++@dataclass(frozen=True)
++class MetadataBinding:
++    key: str
++    country: str
++    path: str
++    pin: str
++    classification: str
++    selectors: tuple
++    holds: tuple
++    expected: tuple = ()
++
++
++# Exact JSON pointers refer to retained metadata assertions, not source cells.
++# Missing pointers remain missing: public access and a licence label grant nothing.
++BINDINGS = (
++    MetadataBinding('md-prices', 'MD', 'prices-2026-10-12/manifest.json',
++        'a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5',
++        'normalized-manifest-only',
++        ('/sourceId', '/releaseId', '/license', '/attribution', '/scope', '/countries/MD', '/completedAt', '/acquiredAt'),
++        ('original-acquisition-time-missing', 'raw-input-role-contract-missing', 'rights-scope-custody-review-required'),
++        (('/sourceId', 'prices'), ('/releaseId', '2026-10-12'))),
++    MetadataBinding('sj-ssb', 'SJ',
++        'originals/country-acquisition-20261015/source-queue/owner-38/56443662b46fabfe9315/receipt.json',
++        '745204f6e29cc1ee808897373c41c10e7368a31fa5186f83ff2f6eb4323eed5d',
++        'metadata-only-no-original',
++        ('/release', '/licence/acquisition', '/licence/redistribution', '/full_release_obtained', '/new_response_bytes'),
++        ('exact-release-and-asset-missing', 'source-use-grant-missing', 'sj-applicability-review-required')),
++    MetadataBinding('td-js-route', 'TD', TD_PREFIX + '192e6db8a8e35677d60a/receipt.json',
++        '5c2737441fae9d8c8fb061bbd186d43f21a710710c83d7ce7ccf36107f4000d5',
++        'metadata-route-only', ('/version', '/licence', '/rights', '/status'),
++        ('original-dataset-missing', 'source-use-review-required')),
++    MetadataBinding('td-package-rights', 'TD', TD_PREFIX + '30e4af2f7b78e81af9e9/receipt.json',
++        'a9bec2c84ff5cb534fc15c2065332d3e9c7d93604a9c16e194a98b102241a386',
++        'package-metadata-not-price-rows', ('/version', '/licence', '/rights', '/status'),
++        ('exact-rights-intended-use-attribution-unresolved',)),
++    MetadataBinding('td-inseed', 'TD', TD_PREFIX + '83683ca40b881efb6214/receipt.json',
++        'a80539f40e62ca0de114e660b029f9fb3cd7b9d5c20b148a31f89b6a66953cdb',
++        'html-response-not-advertised-pdf', ('/version', '/licence', '/rights', '/status'),
++        ('original-dataset-missing', 'source-use-review-required')),
++    MetadataBinding('td-markets', 'TD', TD_PREFIX + '83f3a08b8b6a45726bef/receipt.json',
++        '2c0f1d625aed36526f671ef2ad5fac3701c7b1fbd92164044827cc1849eb0f02',
++        'receipt-claims-complete-original-unparsed',
++        ('/version', '/licence', '/rights_evidence', '/extent', '/row_count_excluding_header_and_HXL',
++         '/advertised_bytes', '/source_admission', '/intended_use', '/attribution'),
++        ('rights-evidence-unqualified', 'body-read-not-authorized', 'body-schema-and-field-origins-missing'),
++        (('/version', 'WFP Chad Markets2026-09-06T21:46:46.658622'),)),
++    MetadataBinding('td-menu-api', 'TD', TD_PREFIX + '9b0c09c7e721d2a1dfd1/receipt.json',
++        '075e9b2b9aff04a6b3f1e8af747af52194ffedd86e47a516892c6a85523468ec',
++        'menu-metadata-not-corpus', ('/version', '/licence', '/rights', '/status'),
++        ('original-dataset-missing', 'source-use-review-required')),
++    MetadataBinding('td-prices', 'TD', TD_PREFIX + 'c1d68ebfeab158fe624a/receipt.json',
++        '3bef831b327ca72ef3d8d9b9dd0dc05e0fdc188103a6ee83964ec53a44b92638',
++        'receipt-claims-complete-original-unparsed',
++        ('/version', '/licence', '/rights_evidence', '/extent', '/row_count_excluding_header_and_HXL',
++         '/advertised_bytes', '/source_admission', '/intended_use', '/attribution'),
++        ('rights-evidence-unqualified', 'body-read-not-authorized', 'body-schema-and-field-origins-missing'),
++        (('/version', 'WFP Chad Food Prices2026-10-11T20:52:48.633219'),)),
++    MetadataBinding('um-dla', 'UM',
++        'originals/country-followthrough-20261015/owner-45/UM/7e2e9784cba94bbe8cc6/receipt.json',
++        'dbe5e3e6b11473fc5315284f379023fc43285a8e3cc6ec9abe5300d051e2c652',
++        'failed-response-not-dataset',
++        ('/version', '/rights', '/status', '/sourceRecordsAcquired', '/requests/0/status', '/requests/0/bytes'),
++        ('access-denied-no-retry', 'source-use-unverified', 'um-applicability-missing')),
++)
++
++# Prospective Prices selectors match the shared product adapter, not the four
++# retained MD observations' missing source cells. No package or basis inference.
++PRICE_SELECTORS = {
++    '/data/amount': ('prices', '/price', 'numeric-preserve-lexical'),
++    '/data/sourceAmount': ('prices', '/price', 'identity'),
++    '/data/currency': ('prices', '/currency', 'identity'),
++    '/data/observedAt': ('prices', '/date', 'identity'),
++    '/data/unitPrice': ('prices', '/price_per_unit', 'numeric-or-null'),
++    '/data/sourceUnitPrice': ('prices', '/price_per_unit', 'identity-or-null'),
++    '/data/unit': ('prices', '/price_per', 'identity-or-null'),
++    '/data/regularAmount': ('prices', '/price_without_discount', 'numeric-or-null'),
++    '/data/sourceRegularAmount': ('prices', '/price_without_discount', 'identity-or-null'),
++    '/data/promotion': ('prices', '/price_is_discounted', 'boolean-or-null'),
++    '/data/proofId': ('prices', '/proof_id', 'identity-or-null'),
++    '/data/duplicateOf': ('prices', '/duplicate_of', 'identity-or-null'),
++    '/data/identifiers/0/system': ('policy', 'barcode', 'constant'),
++    '/data/identifiers/0/value': ('prices', '/product_code', 'string-if-present'),
++    '/data/retailer/externalId': ('prices', '/location_id', 'string-or-empty'),
++    '/data/retailer/location': ('locations', '/osm_display_name', 'join-price-location-id'),
++    '/data/availability': ('policy', 'unknown', 'constant'),
++    '/data/priceType': ('policy', 'dated-observation', 'constant'),
++    '/data/retailer/name': ('locations', '/osm_name', 'join-price-location-id'),
++}
++
++
++def pointer(value, selector):
++    """Resolve RFC6901 coordinates; missing and explicit null stay distinct."""
++    if not isinstance(selector, str) or (selector and not selector.startswith('/')):
++        return {'present': False}
++    if selector == '':
++        return {'present': True, 'value': value}
++    try:
++        for token in selector.split('/')[1:]:
++            if re.search(r'~(?![01])', token):
++                return {'present': False}
++            token = token.replace('~1', '/').replace('~0', '~')
++            if isinstance(value, list):
++                if not re.fullmatch(r'0|[1-9][0-9]*', token):
++                    return {'present': False}
++                value = value[int(token)]
++            else:
++                value = value[token]
++        return {'present': True, 'value': value}
++    except (KeyError, IndexError, TypeError, ValueError):
++        return {'present': False}
++
++
++@contextmanager
++def _regular_fd(path, flags):
++    """Open each component without following links; reject FIFOs before I/O.
++
++    Directory descriptors pin traversal even when a path component is renamed.
++    O_NONBLOCK also prevents a FIFO substitution from hanging before fstat.
++    Every acquired descriptor is closed on every success/error path.
++    """
++    directory = os.open('/', os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC)
++    fd = None
++    try:
++        for component in path.parts[1:-1]:
++            child = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
++                            | os.O_NONBLOCK | os.O_CLOEXEC, dir_fd=directory)
++            os.close(directory)
++            directory = child
++        fd = os.open(path.name, flags | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC,
++                     0o600, dir_fd=directory)
++        if not stat.S_ISREG(os.fstat(fd).st_mode):
++            raise RefreshError('portfolio-file-not-regular')
++        yield fd, directory, path.name
++    finally:
++        if fd is not None:
++            os.close(fd)
++        os.close(directory)
++
++
++def _identity(info):
++    return (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns)
++
++
++def _read_regular(path, budget, *, limit_code):
++    with _regular_fd(path, os.O_RDONLY) as (fd, directory, name):
++        before = os.fstat(fd)
++        if before.st_size > MAX_METADATA_BYTES - budget[0]:
++            raise RefreshError(limit_code)
++        chunks, left = [], before.st_size
++        while left:
++            block = os.read(fd, min(left, 65536))
++            if not block:
++                raise RefreshError('portfolio-file-changed')
++            budget[0] += len(block)  # Count reads even when later race checks fail.
++            chunks.append(block)
++            left -= len(block)
++        after = os.fstat(fd)
++        entry = os.stat(name, dir_fd=directory, follow_symlinks=False)
++        if (not stat.S_ISREG(entry.st_mode) or _identity(before) != _identity(after)
++                or _identity(after) != _identity(entry)):
++            raise RefreshError('portfolio-file-changed')
++        return b''.join(chunks)
++
++
++def reuse_plan(acquired_at, validated_at, as_of):
++    """No fetch decision: validation never resets acquisition or authorizes refresh."""
++    now = timestamp(as_of)
++    validated = timestamp(validated_at) if validated_at is not None else None
++    acquired = timestamp(acquired_at) if acquired_at is not None else None
++    if any(value > now for value in (acquired, validated) if value is not None):
++        raise RefreshError('portfolio-clock-in-future')
++    if acquired is not None and validated is not None and validated < acquired:
++        raise RefreshError('portfolio-validation-before-acquisition')
++    age = (now - acquired).total_seconds() if acquired is not None else None
++    return {'originalAcquiredAt': acquired_at, 'validatedAt': validated_at,
++            'acquisitionAgeSeconds': age,
++            'validationAgeSeconds': (now - validated).total_seconds() if validated else None,
++            'minimumReuseSeconds': MIN_CACHE_SECONDS,
++            'withinMinimumReuseWindow': age < MIN_CACHE_SECONDS if age is not None else None,
++            'decision': 'reuse-pinned-cache-no-fetch' if age is not None else 'acquisition-time-required',
++            'refreshAuthorization': False, 'networkRequests': 0}
++
++
++def audit_metadata(root, *, as_of, bindings=BINDINGS):
++    """Isolated missing/malformed/stale/held results; pin/budget failure stops run.
++
++    bindings is a trusted-code argument for authored fixtures, never a CLI input.
++    A receipt's original_path/requests/rights links are not opened or hashed.
++    """
++    timestamp(as_of)
++    root = safe_path(root)
++    budget, rows = [0], []
++    for binding in bindings:
++        relative = PurePosixPath(binding.path)
++        if (relative.is_absolute() or '..' in relative.parts or '\\' in binding.path
++                or str(relative) != binding.path or relative.suffix != '.json'):
++            raise RefreshError('portfolio-unsafe-metadata-path')
++        path = safe_path(root / relative)
++        base = {'key': binding.key, 'country': binding.country, 'metadataPath': binding.path,
++                'metadataSha256': binding.pin, 'classification': binding.classification,
++                'countryComplete': False, 'accepted': False}
++        try:
++            raw = _read_regular(path, budget, limit_code='portfolio-metadata-budget-exhausted')
++        except (OSError, RefreshError) as error:
++            if str(error) == 'portfolio-metadata-budget-exhausted':
++                raise
++            code = ('metadata-missing' if isinstance(error, FileNotFoundError) else
++                    'metadata-not-regular' if str(error) == 'portfolio-file-not-regular' else
++                    'metadata-changed' if str(error) == 'portfolio-file-changed' else
++                    'metadata-unreadable')
++            rows.append({**base, 'metadata': StageResult('failed', code).receipt(),
++                         'staging': StageResult('held', code).receipt()})
++            continue
++        if sha(raw) != binding.pin:
++            raise RefreshError('portfolio-metadata-pin-mismatch')
++        try:
++            value = strict_json(raw)
++            if not isinstance(value, dict):
++                raise ValueError()
++        except (ValueError, UnicodeError, RecursionError):
++            rows.append({**base, 'metadata': StageResult('failed', 'metadata-malformed', (binding.pin,)).receipt(),
++                         'staging': StageResult('held', 'metadata-malformed').receipt()})
++            continue
++        stale = any(pointer(value, key) != {'present': True, 'value': expected}
++                    for key, expected in binding.expected)
++        metadata = StageResult('failed' if stale else 'succeeded',
++                               'metadata-stale-release' if stale else 'metadata-pin-verified', (binding.pin,))
++        rows.append({**base, 'metadata': metadata.receipt(),
++            'staging': StageResult('held' if binding.holds or stale else 'unsupported',
++                'metadata-stale-release' if stale else 'source-prerequisites-held' if binding.holds
++                else 'production-contract-not-installed').receipt(),
++            'selectedFields': {key: pointer(value, key) for key in binding.selectors},
++            'holds': list(binding.holds),
++            'metadataVerifiedAsOf': as_of,
++            'cache': reuse_plan(None, None, as_of)})
++    return {'schemaVersion': 'offmenu-portfolio21-metadata/1', 'baseCommit': BASE,
++            'asOf': as_of, 'metadataBytesRead': budget[0], 'metadataBudgetBytes': MAX_METADATA_BYTES,
++            'sourceBodiesRead': 0, 'networkRequests': 0, 'countryCompletions': 0,
++            'goldAdmissions': 0,
++            'sharedCapabilities': {'pureCachePlanner': 'absent-at-pinned-base',
++                'productionSourceContract': 'not-installed',
++                'pricesFieldOriginEmitter': 'not-installed'},
++            'bindings': rows}
++
++
++def stage_authored_prices(contract, bundle, roles, destination):
++    """Exercise existing shared candidate/qualification engine on fixtures only.
++
++    No real source contract is installed by this package. Trusted contracts must
++    not be built from a receipt's licence label or this metadata audit's results.
++    """
++    if not contract.fixture or contract.source_id != 'prices':
++        raise RefreshError('portfolio-authored-prices-fixture-required')
++    return qualify_product_candidate(contract, bundle, roles, destination,
++        license='authored fixture terms', attribution='Worker 21 authored fixture')
++
++
++def write_report(report, destination):
++    """Small immutable receipt: exact replay is a no-op; differences preserved."""
++    destination = safe_path(destination)
++    raw = canonical(report)
++    if len(raw) > MAX_METADATA_BYTES:
++        raise RefreshError('portfolio-report-too-large')
++    try:
++        with _regular_fd(destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL) as (fd, directory, name):
++            left = memoryview(raw)
++            while left:
++                written = os.write(fd, left)
++                if written <= 0:
++                    raise RefreshError('portfolio-report-write-failed')
++                left = left[written:]
++            current = os.fstat(fd)
++            entry = os.stat(name, dir_fd=directory, follow_symlinks=False)
++            if not stat.S_ISREG(entry.st_mode) or _identity(current) != _identity(entry):
++                raise RefreshError('portfolio-file-changed')
++    except FileExistsError:
++        try:
++            existing = _read_regular(destination, [0], limit_code='portfolio-report-too-large')
++        except OSError as error:
++            raise RefreshError('portfolio-existing-report-unreadable') from error
++        if existing != raw:
++            raise RefreshError('portfolio-existing-report-differs')
++        return 'reused'
++    return 'written'
+diff --git a/tests/test_portfolio21_staging.py b/tests/test_portfolio21_staging.py
+new file mode 100644
+index 00000000..59f36809
+--- /dev/null
++++ b/tests/test_portfolio21_staging.py
+@@ -0,0 +1,355 @@
++"""Authored fixtures only: no retained source bodies or network access."""
++from dataclasses import replace
++import gzip
++import json
++import os
++import subprocess
++import sys
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu.portfolio21.bindings import (
++    BINDINGS, MAX_METADATA_BYTES, MetadataBinding, PRICE_SELECTORS, audit_metadata,
++    pointer, reuse_plan, stage_authored_prices, write_report,
++)
++from offmenu.refresh.acceptance import Asset, SourceContract, fingerprint, ids_digest
++from offmenu.refresh.core import RefreshError, canonical, sha
++from offmenu.refresh.field_provenance import datum_pointers, field_origin_errors
++
++AS_OF = '2026-10-18T00:00:00Z'
++
++
++class MetadataBindingsTest(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name)
++
++    def binding(self, name, body, *, holds=(), expected=()):
++        raw = body if isinstance(body, bytes) else canonical(body)
++        (self.root / (name + '.json')).write_bytes(raw)
++        return MetadataBinding(name, 'MD', name + '.json', sha(raw), 'authored',
++                               ('/release', '/nested/a~1b', '/missing'), holds, expected)
++
++    def audit(self, *bindings):
++        return audit_metadata(self.root, as_of=AS_OF, bindings=bindings)
++
++    def test_valid_missing_held_malformed_stale_isolation(self):
++        valid = self.binding('valid', {'release': 'fixture', 'nested': {'a/b': None}})
++        missing = replace(valid, key='missing', path='absent.json')
++        held = self.binding('held', {'release': 'fixture'}, holds=('rights-held',))
++        malformed = self.binding('malformed', b'{"duplicate":1,"duplicate":2}')
++        stale = self.binding('stale', {'release': 'old'}, expected=(('/release', 'new'),))
++        report = self.audit(valid, missing, held, malformed, stale)
++        rows = report['bindings']
++        self.assertEqual([r['metadata']['code'] for r in rows], [
++            'metadata-pin-verified', 'metadata-missing', 'metadata-pin-verified',
++            'metadata-malformed', 'metadata-stale-release'])
++        self.assertEqual(rows[0]['selectedFields']['/nested/a~1b'], {'present': True, 'value': None})
++        self.assertEqual(rows[0]['selectedFields']['/missing'], {'present': False})
++        self.assertEqual(rows[2]['holds'], ['rights-held'])
++        self.assertTrue(all(not r['accepted'] and not r['countryComplete'] for r in rows))
++        self.assertEqual(report['sourceBodiesRead'], 0)
++        self.assertEqual(report['networkRequests'], 0)
++        self.assertEqual(report['sharedCapabilities']['pureCachePlanner'], 'absent-at-pinned-base')
++
++    def test_pin_mismatch_stops_before_later_input(self):
++        item = self.binding('changed', {})
++        (self.root / item.path).write_bytes(b'{}')
++        later = replace(item, path='../never.json')
++        with self.assertRaisesRegex(RefreshError, 'portfolio-metadata-pin-mismatch'):
++            self.audit(item, later)
++
++    def test_budget_stops_before_reading_oversize_metadata(self):
++        item = self.binding('large', b'x' * (MAX_METADATA_BYTES + 1))
++        with self.assertRaisesRegex(RefreshError, 'portfolio-metadata-budget-exhausted'):
++            self.audit(item)
++        a = self.binding('a', b'x' * (MAX_METADATA_BYTES // 2 + 1))
++        b = self.binding('b', b'x' * (MAX_METADATA_BYTES // 2 + 1))
++        with self.assertRaisesRegex(RefreshError, 'portfolio-metadata-budget-exhausted'):
++            self.audit(a, b)
++
++    def test_never_follows_body_or_rights_paths_and_replay_preserves_difference(self):
++        item = self.binding('receipt', {'release': 'fixture', 'original_path': '/never-open',
++                            'rights_evidence': '/never-open', 'requests': [{'path': '/never-open'}]})
++        first = self.audit(item)
++        target = self.root / 'report.json'
++        self.assertEqual(write_report(first, target), 'written')
++        before = target.stat().st_mtime_ns
++        self.assertEqual(write_report(self.audit(item), target), 'reused')
++        self.assertEqual(before, target.stat().st_mtime_ns)
++        with self.assertRaisesRegex(RefreshError, 'portfolio-existing-report-differs'):
++            write_report({**first, 'asOf': 'different'}, target)
++        self.assertEqual(target.read_bytes(), canonical(first))
++
++    def test_paths_and_symlinks_rejected(self):
++        item = self.binding('valid', {})
++        for path in ('../body.json', '/body.json', 'body.csv', 'a/../valid.json'):
++            with self.assertRaisesRegex(RefreshError, 'portfolio-unsafe-metadata-path'):
++                self.audit(replace(item, path=path))
++        (self.root / 'link.json').symlink_to(self.root / item.path)
++        with self.assertRaisesRegex(RefreshError, 'symlink-path-rejected'):
++            self.audit(replace(item, path='link.json'))
++
++    def bounded_probe(self, code):
++        result = subprocess.run([sys.executable, '-c', code, str(self.root)],
++                                capture_output=True, text=True, timeout=5)
++        self.assertEqual(result.returncode, 0, result.stderr)
++        return json.loads(result.stdout)
++
++    def test_fifo_metadata_is_nonblocking_and_valid_peer_progresses(self):
++        valid = self.binding('valid', {})
++        os.mkfifo(self.root / 'pipe.json')
++        report = self.bounded_probe("""
++import sys,json
++from offmenu.portfolio21.bindings import MetadataBinding,audit_metadata
++from offmenu.refresh.core import sha
++bindings=(MetadataBinding('pipe','MD','pipe.json','0'*64,'authored',(),()),
++          MetadataBinding('peer','MD','valid.json',sha(b'{}\\n'),'authored',(),()))
++print(json.dumps(audit_metadata(sys.argv[1],as_of='2026-10-18T00:00:00Z',bindings=bindings)))
++""")
++        self.assertEqual([r['metadata']['code'] for r in report['bindings']],
++                         ['metadata-not-regular', 'metadata-pin-verified'])
++        self.assertEqual(report['metadataBytesRead'], 3)
++        self.assertTrue((self.root / 'pipe.json').is_fifo())
++
++    def test_fifo_existing_report_is_nonblocking_rejected_and_preserved(self):
++        os.mkfifo(self.root / 'report.json')
++        result = self.bounded_probe("""
++import sys,json
++from pathlib import Path
++from offmenu.portfolio21.bindings import write_report
++from offmenu.refresh.core import RefreshError
++try:
++    write_report({},Path(sys.argv[1])/'report.json')
++except RefreshError as error:
++    print(json.dumps({'error':str(error)}))
++""")
++        self.assertEqual(result, {'error': 'portfolio-file-not-regular'})
++        self.assertTrue((self.root / 'report.json').is_fifo())
++
++    def test_directory_and_large_report_rejected_without_read(self):
++        valid = self.binding('valid', {})
++        (self.root / 'directory.json').mkdir()
++        report = self.audit(replace(valid, path='directory.json'), valid)
++        self.assertEqual(report['bindings'][0]['metadata']['code'], 'metadata-not-regular')
++        self.assertEqual(report['bindings'][1]['metadata']['code'], 'metadata-pin-verified')
++        with self.assertRaisesRegex(RefreshError, 'portfolio-file-not-regular'):
++            write_report({}, self.root / 'directory.json')
++        large = self.root / 'large-report.json'
++        large.write_bytes(b'x' * (MAX_METADATA_BYTES + 1))
++        with patch('offmenu.portfolio21.bindings.os.read', side_effect=AssertionError('must not read')):
++            with self.assertRaisesRegex(RefreshError, 'portfolio-report-too-large'):
++                write_report({}, large)
++        self.assertEqual(large.stat().st_size, MAX_METADATA_BYTES + 1)
++
++    def test_replacement_during_read_is_isolated_and_bytes_counted(self):
++        item = self.binding('racy', {})
++        peer = self.binding('peer', {})
++        original_read = os.read
++        swapped = False
++        def replace_after_read(fd, size):
++            nonlocal swapped
++            raw = original_read(fd, size)
++            if not swapped:
++                swapped = True
++                (self.root / item.path).unlink()
++                (self.root / item.path).write_bytes(raw)
++            return raw
++        with patch('offmenu.portfolio21.bindings.os.read', side_effect=replace_after_read):
++            report = self.audit(item, peer)
++        self.assertEqual([r['metadata']['code'] for r in report['bindings']],
++                         ['metadata-changed', 'metadata-pin-verified'])
++        self.assertEqual(report['metadataBytesRead'], 6)
++
++    def test_same_size_mutation_is_isolated(self):
++        item = self.binding('racy', {})
++        peer = self.binding('peer', {})
++        original_read = os.read
++        mutated = False
++        def mutate_after_read(fd, size):
++            nonlocal mutated
++            raw = original_read(fd, size)
++            if not mutated:
++                mutated = True
++                target = self.root / item.path
++                prior = target.stat()
++                target.write_bytes(b'[]\n')
++                os.utime(target, ns=(prior.st_atime_ns, prior.st_mtime_ns + 1000000000))
++            return raw
++        with patch('offmenu.portfolio21.bindings.os.read', side_effect=mutate_after_read):
++            report = self.audit(item, peer)
++        self.assertEqual([r['metadata']['code'] for r in report['bindings']],
++                         ['metadata-changed', 'metadata-pin-verified'])
++        self.assertEqual(report['metadataBytesRead'], 6)
++
++    def test_final_symlink_substitution_rejected_and_descriptors_closed(self):
++        item = self.binding('racy', {})
++        peer = self.binding('peer', {})
++        original_open = os.open
++        opened = []
++        def swap_before_open(name, flags, *args, **kwargs):
++            if name == 'racy.json':
++                self.assertTrue(flags & os.O_NONBLOCK)
++                self.assertTrue(flags & os.O_NOFOLLOW)
++                (self.root / item.path).unlink()
++                (self.root / item.path).symlink_to(self.root / peer.path)
++            fd = original_open(name, flags, *args, **kwargs)
++            opened.append(fd)
++            return fd
++        with patch('offmenu.portfolio21.bindings.os.open', side_effect=swap_before_open):
++            report = self.audit(item, peer)
++        self.assertEqual([r['metadata']['code'] for r in report['bindings']],
++                         ['metadata-unreadable', 'metadata-pin-verified'])
++        for fd in set(opened):
++            with self.assertRaises(OSError):
++                os.fstat(fd)
++
++    def test_parent_symlink_substitution_does_not_follow_target(self):
++        item = self.binding('valid', {})
++        nested = self.root / 'nested'
++        nested.mkdir()
++        original_open = os.open
++        def swap_before_open(name, flags, *args, **kwargs):
++            if name == 'nested':
++                nested.rmdir()
++                nested.symlink_to(self.root, target_is_directory=True)
++            return original_open(name, flags, *args, **kwargs)
++        with patch('offmenu.portfolio21.bindings.os.open', side_effect=swap_before_open):
++            report = self.audit(replace(item, path='nested/valid.json'), item)
++        self.assertEqual([r['metadata']['code'] for r in report['bindings']],
++                         ['metadata-unreadable', 'metadata-pin-verified'])
++
++    def test_pointer_rejects_noncanonical_array_tokens_and_bad_escapes(self):
++        value = {'items': ['first', 'last'], '01': 'object-key', 'a/b': {'~': None}}
++        for token in ('-1', '01', '+1', '-', '1.0', '\u0661'):
++            self.assertEqual(pointer(value, '/items/' + token), {'present': False})
++        for selector in ('items/0', '/a~2b', '/a~', None):
++            self.assertEqual(pointer(value, selector), {'present': False})
++        self.assertEqual(pointer(value, '/items/0'), {'present': True, 'value': 'first'})
++        self.assertEqual(pointer(value, '/items/1'), {'present': True, 'value': 'last'})
++        self.assertEqual(pointer(value, '/01'), {'present': True, 'value': 'object-key'})
++        self.assertEqual(pointer(value, '/a~1b/~0'), {'present': True, 'value': None})
++        self.assertEqual(pointer(value, ''), {'present': True, 'value': value})
++
++    def test_portfolio_has_all_four_countries_and_all_sources_held(self):
++        self.assertEqual({b.country for b in BINDINGS}, {'MD', 'SJ', 'TD', 'UM'})
++        self.assertEqual(len({b.path for b in BINDINGS}), len(BINDINGS))
++        self.assertTrue(all(b.holds for b in BINDINGS))
++        self.assertIn('access-denied-no-retry', next(b for b in BINDINGS if b.country == 'UM').holds)
++
++    def test_cache_age_uses_original_acquisition_not_validation(self):
++        old = reuse_plan('2026-09-01T00:00:00Z', '2026-10-17T00:00:00Z', AS_OF)
++        self.assertEqual(old['acquisitionAgeSeconds'], 47 * 86400)
++        self.assertEqual(old['validationAgeSeconds'], 86400)
++        self.assertEqual(old['decision'], 'reuse-pinned-cache-no-fetch')
++        self.assertFalse(old['refreshAuthorization'])
++        boundary = reuse_plan('2026-09-18T00:00:00Z', AS_OF, AS_OF)
++        self.assertFalse(boundary['withinMinimumReuseWindow'])
++        self.assertEqual(boundary['minimumReuseSeconds'], 30 * 86400)
++        young = reuse_plan('2026-09-18T00:00:01Z', AS_OF, AS_OF)
++        self.assertTrue(young['withinMinimumReuseWindow'])
++        unknown = reuse_plan(None, None, AS_OF)
++        self.assertIsNone(unknown['acquisitionAgeSeconds'])
++        self.assertEqual(unknown['decision'], 'acquisition-time-required')
++        with self.assertRaises(RefreshError):
++            reuse_plan('2026-10-19T00:00:00Z', None, AS_OF)
++        with self.assertRaises(RefreshError):
++            reuse_plan(AS_OF, '2026-10-17T00:00:00Z', AS_OF)
++
++
++class AuthoredPricesStagingTest(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name)
++        self.bundle = self.root / 'bundle'
++        self.bundle.mkdir()
++        self.price = {'id': 1, 'product_code': '1234', 'price': '0.00', 'currency': 'MDL',
++                      'date': '2026-10-01', 'location_id': 2, 'proof_id': 3,
++                      'price_per': None, 'price_per_unit': None, 'price_without_discount': None,
++                      'price_is_discounted': False, 'duplicate_of': None}
++        self.location = {'id': 2, 'osm_name': 'Authored store', 'osm_address_country_code': 'md',
++                         'osm_display_name': 'Authored location'}
++        for role, row in [('prices', self.price), ('locations', self.location), ('proofs', {'id': 3})]:
++            # Stable authored gzip bytes; no real retained source input is used.
++            (self.bundle / (role + '.gz')).write_bytes(gzip.compress(canonical(row), mtime=0))
++        (self.bundle / 'rights.txt').write_text('Authored fixture permit retain parse transform; no source rights')
++        (self.bundle / 'scope.txt').write_text('One authored Prices observation only')
++        self.roles = {role: role + '.gz' for role in ('prices', 'locations', 'proofs')}
++        self.assets = tuple(Asset(p.name, p.stat().st_size, sha(p.read_bytes()))
++                            for p in sorted(self.bundle.iterdir()))
++        rights = next(a for a in self.assets if a.path == 'rights.txt')
++        scope = next(a for a in self.assets if a.path == 'scope.txt')
++        schema = {'type': 'object', 'required': ['id', 'kind', 'schemaVersion', 'data', 'provenance', 'countries'],
++                  'properties': {'kind': {'const': 'priceObservation'}, 'data': {'type': 'object'}}}
++        schemas = {'priceObservation': schema}
++        def semantics(row):
++            data = row['data']
++            return [] if (data['amount'] == 0 and data['sourceAmount'] == '0.00'
++                and data['unit'] is None and data['unitPrice'] is None
++                and data['promotion'] is False and row['countries'] == ['MD']) else ['authored-values-mismatch']
++        self.contract = SourceContract('prices', 'authored-worker21', 'one-authored-row',
++            '2026-09-01T00:00:00Z', self.assets, 1, ids_digest(['prices:priceObservation:1']),
++            schemas, fingerprint(schemas), semantics, 'c' * 64, rights, scope,
++            frozenset(('retain', 'parse', 'transform')), fixture=True)
++
++    def stage(self, contract=None):
++        return stage_authored_prices(contract or self.contract, self.bundle, self.roles, self.root / 'output')
++
++    def test_shared_engine_valid_fixture_replay_null_units_and_origin_coverage(self):
++        first = self.stage()
++        self.assertTrue(first['qualification']['qualified'], first['qualification']['errors'])
++        self.assertFalse(first['manifest']['accepted'])
++        self.assertEqual(self.stage(), first)
++        row = json.loads((self.root / 'output/candidate.jsonl').read_text())[0]
++        self.assertNotIn('packageQuantity', row['data'])
++        self.assertEqual(set(datum_pointers(row['data'])), set(PRICE_SELECTORS))
++        pins = {a.path: a.sha256 for a in self.assets}
++        origins = {}
++        for target, (role, selector, transform) in PRICE_SELECTORS.items():
++            if role == 'policy':
++                origins[target] = {'kind': 'constant', 'policySha256': self.contract.policy_sha256, 'symbol': selector}
++                continue
++            origin = {'kind': 'source', 'sourceId': 'prices', 'releaseId': 'authored-worker21',
++                      'inputPath': self.roles[role], 'inputSha256': pins[self.roles[role]],
++                      'sourceRecordId': '2' if role == 'locations' else '1', 'sourceField': selector}
++            origins[target] = origin if transform.startswith('identity') else {
++                'kind': 'derived', 'policySha256': self.contract.policy_sha256,
++                'transform': transform, 'inputs': [origin]}
++        # The generic parser does not emit full fieldOrigins. Validate the explicit
++        # prospective declarations independently; this does not upgrade its output.
++        row['provenance']['fieldOrigins'] = origins
++        self.assertEqual(field_origin_errors(row, pins, policy_pins=(self.contract.policy_sha256,)), [])
++        del origins['/data/unit']
++        self.assertIn('field-origin-inventory-mismatch', field_origin_errors(
++            row, pins, policy_pins=(self.contract.policy_sha256,)))
++
++    def test_shared_engine_held_or_nonfixture_cannot_run(self):
++        with self.assertRaisesRegex(RefreshError, 'source-held'):
++            self.stage(replace(self.contract, holds=('rights-held',)))
++        self.assertFalse((self.root / 'output').exists())
++        with self.assertRaisesRegex(RefreshError, 'portfolio-authored-prices-fixture-required'):
++            self.stage(replace(self.contract, fixture=False))
++        self.assertFalse((self.root / 'output').exists())
++
++    def test_shared_engine_missing_changed_and_wrong_inventory_cannot_qualify(self):
++        missing = self.bundle / 'prices.gz'
++        original = missing.read_bytes()
++        missing.unlink()
++        with self.assertRaises(RefreshError):
++            self.stage()
++        missing.write_bytes(original + b'changed')
++        with self.assertRaisesRegex(RefreshError, 'input-pin-mismatch'):
++            self.stage()
++        missing.write_bytes(original)
++        result = self.stage(replace(self.contract, expected_records=2))
++        self.assertFalse(result['qualification']['qualified'])
++        self.assertIn('expected-record-count-mismatch', result['qualification']['errors'])
++        self.assertFalse(result['manifest']['accepted'])
++
++
++if __name__ == '__main__':
++    unittest.main()

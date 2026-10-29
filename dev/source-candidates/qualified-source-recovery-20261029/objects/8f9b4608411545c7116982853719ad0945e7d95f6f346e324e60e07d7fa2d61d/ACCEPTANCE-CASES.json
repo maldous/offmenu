@@ -1,0 +1,112 @@
+{
+  "release": {
+    "version": "8db6b5c4-2e5f-483f-90ea-de0260733526",
+    "bytes": 464652,
+    "sha256": "fce748582a1e4aa940022b00ccaab7ac00ec5d1ca5d357d5f45f4ff0756e1fdf"
+  },
+  "journey": "One connected caller journey,12checkpoints rather than12isolated regression tests.",
+  "reproduction": "Copy app.js and journey-harness.mjs into a fresh private scratch directory and run node journey-harness.mjs there; do not overwrite this frozen evidence directory. Harness uses stdlib Node only and hard-fails if bundle hash/length drift.",
+  "inputs": {
+    "lots": [
+      {
+        "ingredient": "rice",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "ingredient": "peas",
+        "quantity": 500,
+        "unit": "g"
+      }
+    ],
+    "recipe": {
+      "id": "fixture-rice-peas",
+      "servings": 2,
+      "ingredients": [
+        {
+          "ingredient": "rice",
+          "quantity": 100,
+          "unit": "g"
+        },
+        {
+          "ingredient": "peas",
+          "quantity": 100,
+          "unit": "g"
+        }
+      ]
+    },
+    "nutritionPer100g": {
+      "rice": {
+        "energy-kcal": 100,
+        "salt": 0,
+        "vitaminC": "absent/unknown"
+      },
+      "peas": {
+        "energy-kcal": 50,
+        "salt": 0,
+        "vitaminC": "absent/unknown"
+      }
+    },
+    "people": [
+      "person-a",
+      "person-b"
+    ]
+  },
+  "executedActions": [
+    {
+      "checkpoint": "01-pantry-manual-entry"
+    },
+    {
+      "checkpoint": "02-quantified-menu-planned"
+    },
+    {
+      "checkpoint": "03-plan-cooked"
+    },
+    {
+      "checkpoint": "04-A-half-eaten-saved"
+    },
+    {
+      "checkpoint": "05-B-fully-eaten"
+    },
+    {
+      "checkpoint": "06-next-day-leftover-eaten"
+    },
+    {
+      "checkpoint": "07-person-specific-history-rendered"
+    },
+    {
+      "checkpoint": "08-future-plan-shopping-checked-not-stock"
+    },
+    {
+      "checkpoint": "09-cached-synthetic-barcode-receipt-draft"
+    },
+    {
+      "checkpoint": "10-receipt-preview-not-stock"
+    },
+    {
+      "checkpoint": "11-explicit-receipt-confirmed-stock"
+    },
+    {
+      "checkpoint": "12-local-reload"
+    }
+  ],
+  "assertions": [
+    "Actual menu card shows150kcal, salt0g, vitaminCnotavailable before cooking.",
+    "Actual menu add and planned-meal cook produce1batch and100g deduction from each lot.",
+    "Serve A1portion50percent saved; B1portion100percent; A0.5portion next day. Remaining2→1.5→0.5→0; no repeated raw deduction.",
+    "Actual person historyA75kcal/B75kcal; old snapshots survive mutable product update and local reload.",
+    "New12portion future plan shows200g rice and200g peas shortfall. Checking derived shopping items changes no inventory/history.",
+    "Actual cached synthetic barcode enters existing checkout draft; preview changes no stock; final confirmation adds200g rice and leaves history unchanged.",
+    "Local reload retains durable lot and history records; transient checkout pending:false is normalized away."
+  ],
+  "followthroughCases": [
+    {
+      "owner": "01a182db-66d0-7092-bc85-fee8dd21f003 (existing recipe/menu/pantry-shopping author)",
+      "case": "Reuse the plan→cook→serve→leftover→future-gap flow against its candidate, preserving single raw/intake accounting and shopping-not-stock. No need to rerun unchanged isolated regressions."
+    },
+    {
+      "owner": "align_north_star_graph + sole prepare_production_integration",
+      "case": "NS195-G1 immutable source-profile/recipe-version witness must survive batch/history after current lookup changes; integrate with existing lot-specific source-nutrition work, not a parallel writer."
+    }
+  ]
+}

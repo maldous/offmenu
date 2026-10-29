@@ -1,0 +1,242 @@
+diff --git a/docs/operations/portfolio05-staging-bindings.md b/docs/operations/portfolio05-staging-bindings.md
+index d07a2e38..561334cc 100644
+--- a/docs/operations/portfolio05-staging-bindings.md
++++ b/docs/operations/portfolio05-staging-bindings.md
+@@ -36,7 +36,13 @@ portfolio adapter. `inspect_portfolio(now=..., previous=...)` reads only bounded
+ exactly pinned receipt files. It never follows original-artifact paths. Duplicate
+ JSON keys, receipt drift, missing fields, invalid country/clock/field types and
+ unavailable files produce fixed diagnostics isolated to each source. Missing,
+-malformed, held, stale and valid are distinct outcomes; stale means the prior
++Receipt bytes come from one bounded regular descriptor with no-follow directory
++traversal and a nonblocking final open. Those same bytes are checked for exact
++length/hash and passed to the binder; there is no verify/read_bytes/verify path
++reopen. Growth is capped at expected length+1 and rejected. A bad receipt stays
++isolated from its siblings.
++
++Malformed, held, stale and valid are distinct outcomes; stale means the prior
+ metadata candidate hash differs from current content/policy, not a cache-age
+ decision. Holds take precedence. Diagnostics contain no source
+ body, unselected receipt fields, signed URLs or exception contents.
+@@ -56,7 +62,8 @@ a dataset. This package supplies no recipe or measured nutrient/price records.
+ The configuration is an inert owned Python declaration imported with the package,
+ not a JSON file that depends on an undeclared package-data convention. The normal
+ setuptools wheel contains it without any shared packaging change. An offline
+-authored smoke test builds a wheel from source in scratch, extracts it outside
++authored smoke test builds wheel and sdist in scratch, verifies the module in
++both artifacts, and extracts the wheel outside
+ the checkout, imports with isolated Python and loads all eight held declarations
+ with receipt/resource reads prohibited. The returned configuration is a defensive
+ copy. This proves installed-artifact configuration availability; it does not
+@@ -72,7 +79,7 @@ retain uncertainty; filenames and PDF page totals do not invent editions.
+ 
+ Shared `field_provenance.field_origin_errors` checks all scalar origins. The
+ portfolio wrapper also resolves actual receipt values and compares each source
+-field. Shared `core.strict_json`, `core.verify`, canonical serialization and
++field. Shared `core.strict_json`, canonical serialization and
+ `serialization.encode_records` are reused. Tests hand the authored metadata
+ candidate to shared `acceptance.qualify` using a trusted **test-code**
+ `SourceContract(fixture=True)`. Actual-source contracts are not generated from
+diff --git a/offmenu/refresh/portfolio05.py b/offmenu/refresh/portfolio05.py
+index 1142c697..10082219 100644
+--- a/offmenu/refresh/portfolio05.py
++++ b/offmenu/refresh/portfolio05.py
+@@ -12,7 +12,7 @@ from pathlib import Path
+ import stat
+ import sys
+ 
+-from .core import RefreshError, canonical, sha, strict_json, timestamp, verify, safe_path
++from .core import RefreshError, canonical, sha, strict_json, timestamp, safe_path
+ from .field_provenance import datum_pointers, field_origin_errors
+ from .serialization import encode_records
+ from .portfolio05_sources import CONFIGURATION
+@@ -145,23 +145,22 @@ def bind(spec, payload, *, now, previous_candidate_sha256=None):
+ def inspect_portfolio(*, now, previous=None):
+     """Independent fixed diagnostics; one failing receipt cannot abort siblings.
+ 
+-    Reads exact allowlisted metadata only, bounded before/after pin verification.
++    Reads exact allowlisted metadata once through a bounded regular descriptor.
+     Original paths in receipts are never opened, stat-ed, imported or followed.
+     """
+     config = configuration()
+     rows = []
+     for spec in config['sources']:
+         try:
+-            path = safe_path(spec['receipt']['path'])
+-            if not path.exists():
++            expected = spec['receipt']
++            if type(expected['bytes']) is not int or not 0 < expected['bytes'] <= MAX_RECEIPT:
++                raise RefreshError('metadata-input-bound')
++            try:
++                payload = _read_bounded_regular(expected['path'], expected['bytes'], 'metadata-input')
++            except FileNotFoundError:
+                 payload = None
+-            else:
+-                actual = verify(path, {'bytes': spec['receipt']['bytes'],
+-                                       'sha256': spec['receipt']['sha256']})
+-                if actual['bytes'] > MAX_RECEIPT:
+-                    raise RefreshError('metadata-input-bound')
+-                payload = path.read_bytes()
+-                verify(path, actual)
++            if payload is not None and (len(payload) != expected['bytes'] or sha(payload) != expected['sha256']):
++                raise RefreshError('metadata-input-pin-mismatch')
+             rows.append(bind(spec, payload, now=now,
+                              previous_candidate_sha256=(previous or {}).get(spec['sourceId'])))
+         except (OSError, ValueError):
+@@ -174,12 +173,8 @@ def inspect_portfolio(*, now, previous=None):
+             'countryAcceptance': False, 'evidencePins': config['evidencePins']}
+ 
+ 
+-def previous_candidates(path):
+-    """Read an optional report without following links or blocking on a FIFO.
+-
+-    Owned entrypoint repair only. No raw source/cache/acceptance operations.
+-    Validate the opened descriptor, not just a path inspected before open.
+-    """
++def _read_bounded_regular(path, maximum, label):
++    """Owned metadata boundary: one fd, bounded bytes, no path reopen."""
+     directory = descriptor = None
+     try:
+         path = safe_path(path)
+@@ -192,18 +187,30 @@ def previous_candidates(path):
+         descriptor = os.open(path.name, flags | os.O_NONBLOCK, dir_fd=directory)
+         before = os.fstat(descriptor)
+         if not stat.S_ISREG(before.st_mode):
+-            raise RefreshError('previous-report-regular-file-required')
+-        if before.st_size > MAX_PREVIOUS:
+-            raise RefreshError('previous-report-bound')
++            raise RefreshError(label + '-regular-file-required')
++        if before.st_size > maximum:
++            raise RefreshError(label + '-bound')
+         with os.fdopen(descriptor, 'rb') as stream:
+             descriptor = None
+-            raw = stream.read(MAX_PREVIOUS + 1)
++            raw = stream.read(maximum + 1)
+             after = os.fstat(stream.fileno())
+         identity = lambda st: (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns)
+         if identity(before) != identity(after) or len(raw) != before.st_size:
+-            raise RefreshError('previous-report-changed-during-read')
+-        if len(raw) > MAX_PREVIOUS:
+-            raise RefreshError('previous-report-bound')
++            raise RefreshError(label + '-changed-during-read')
++        if len(raw) > maximum:
++            raise RefreshError(label + '-bound')
++        return raw
++    finally:
++        if descriptor is not None:
++            os.close(descriptor)
++        if directory is not None:
++            os.close(directory)
++
++
++def previous_candidates(path):
++    """Read an optional report using the same owned bounded fd boundary."""
++    try:
++        raw = _read_bounded_regular(path, MAX_PREVIOUS, 'previous-report')
+         report = strict_json(raw)
+         if not isinstance(report, dict) or not isinstance(report.get('sources'), list):
+             raise RefreshError('previous-report-malformed')
+@@ -224,11 +231,6 @@ def previous_candidates(path):
+         raise RefreshError('previous-report-file-unavailable') from None
+     except (ValueError, TypeError, KeyError, UnicodeError, RecursionError):
+         raise RefreshError('previous-report-malformed') from None
+-    finally:
+-        if descriptor is not None:
+-            os.close(descriptor)
+-        if directory is not None:
+-            os.close(directory)
+ 
+ 
+ def main(argv=None):
+diff --git a/tests/test_portfolio05_bindings.py b/tests/test_portfolio05_bindings.py
+index 39e12c82..63b0f45d 100644
+--- a/tests/test_portfolio05_bindings.py
++++ b/tests/test_portfolio05_bindings.py
+@@ -9,6 +9,7 @@ import shutil
+ import subprocess
+ import sys
+ import tempfile
++import tarfile
+ import unittest
+ import zipfile
+ from unittest.mock import patch
+@@ -118,6 +119,62 @@ class Portfolio05Bindings(unittest.TestCase):
+             self.assertEqual(result['sourceBodiesRead'], 0)
+             self.assertEqual(result['networkRequests'], 0)
+ 
++    def test_receipt_replacement_fifo_never_reopens_unbounded(self):
++        spec, payload = authored()
++        with tempfile.TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            target = root/'changed.json'
++            target.write_bytes(payload)
++            good = root/'good.json'
++            good.write_bytes(payload)
++            spec['receipt']['path'] = str(target)
++            sibling = copy.deepcopy(spec)
++            sibling['sourceId'] = 'sibling'
++            sibling['receipt']['path'] = str(good)
++            real_open = os.open
++            swapped = False
++            def raced_open(path, flags, *args, **kwargs):
++                nonlocal swapped
++                if path == target.name and kwargs.get('dir_fd') is not None and not swapped:
++                    self.assertTrue(flags & os.O_NONBLOCK, 'reject regression before FIFO could block')
++                    self.assertTrue(flags & os.O_NOFOLLOW)
++                    target.rename(root/'protected-original.json')
++                    os.mkfifo(target)
++                    swapped = True
++                return real_open(path, flags, *args, **kwargs)
++            with patch.object(binding, 'configuration', return_value={'sources': [spec, sibling], 'evidencePins': []}), \
++                 patch.object(binding.os, 'open', side_effect=raced_open), \
++                 patch.object(Path, 'read_bytes', side_effect=AssertionError('unbounded path reopen')):
++                result = binding.inspect_portfolio(now=NOW)
++            self.assertTrue(swapped)
++            self.assertEqual([x['status'] for x in result['sources']], ['malformed', 'valid'])
++            self.assertEqual((root/'protected-original.json').read_bytes(), payload)
++
++    def test_receipt_growth_read_is_capped_and_rejected(self):
++        spec, payload = authored()
++        with tempfile.TemporaryDirectory() as tmp:
++            target = Path(tmp)/'receipt.json'
++            target.write_bytes(payload)
++            spec['receipt']['path'] = str(target)
++            real_fdopen = os.fdopen
++            sizes = []
++            class GrowingStream:
++                def __init__(self, stream): self.stream = stream
++                def __enter__(self): self.stream.__enter__(); return self
++                def __exit__(self, *args): return self.stream.__exit__(*args)
++                def fileno(self): return self.stream.fileno()
++                def read(self, size):
++                    sizes.append(size)
++                    with target.open('ab') as stream:
++                        stream.write(b'x'*(binding.MAX_RECEIPT*2))
++                    return self.stream.read(size)
++            with patch.object(binding, 'configuration', return_value={'sources': [spec], 'evidencePins': []}), \
++                 patch.object(binding.os, 'fdopen', side_effect=lambda *args, **kw: GrowingStream(real_fdopen(*args, **kw))), \
++                 patch.object(Path, 'read_bytes', side_effect=AssertionError('unbounded path reopen')):
++                result = binding.inspect_portfolio(now=NOW)
++            self.assertEqual(sizes, [len(payload)+1])
++            self.assertEqual(result['sources'][0]['status'], 'malformed')
++
+     def test_production_configuration_keeps_every_source_held(self):
+         config = binding.configuration()
+         self.assertEqual(len(config['sources']), 8)
+@@ -273,10 +330,16 @@ raise SystemExit(status)
+             wheels = root/'wheels'
+             wheels.mkdir()
+             build = subprocess.run([sys.executable, '-I', '-B', '-c',
+-                'from setuptools.build_meta import build_wheel; build_wheel('+repr(str(wheels))+')'],
++                'from setuptools.build_meta import build_wheel, build_sdist; '
++                'build_wheel('+repr(str(wheels))+'); build_sdist('+repr(str(wheels))+')'],
+                 cwd=source, capture_output=True, text=True, timeout=60)
+             self.assertEqual(build.returncode, 0, build.stdout + build.stderr)
+             wheel, = wheels.glob('*.whl')
++            sdist, = wheels.glob('*.tar.gz')
++            with tarfile.open(sdist) as archive:
++                names = archive.getnames()
++                self.assertTrue(any(n.endswith('/offmenu/refresh/portfolio05_sources.py') for n in names))
++                self.assertFalse(any(n.endswith('/offmenu/refresh/portfolio05_sources.json') for n in names))
+             installed = root/'installed'
+             with zipfile.ZipFile(wheel) as archive:
+                 self.assertIn('offmenu/refresh/portfolio05_sources.py', archive.namelist())

@@ -1,0 +1,24 @@
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -22,4 +22,6 @@
+ [tool.setuptools.package-data]
+ offmenu = ["web.html"]
+ 
+-"offmenu.refresh" = ["portfolio37_bindings.json"]
++"offmenu.refresh" = ["portfolio37_bindings.json", "owner19_bindings.json", "owner20_bindings.json", "portfolio_w35.json", "portfolio47_sources.json", "portfolio_owner51.json", "portfolio55.json"]
++"offmenu.refresh.portfolios" = ["worker23.json"]
++"offmenu.portfolio32" = ["catalog.json"]
+--- a/MANIFEST.in
++++ b/MANIFEST.in
+@@ -2,3 +2,11 @@
+ include offmenu_ciqual/contract.json
+ include offmenu_ciqual/native-contract-v1.json
+ include offmenu/refresh/portfolio37_bindings.json
++include offmenu/refresh/owner19_bindings.json
++include offmenu/refresh/owner20_bindings.json
++include offmenu/refresh/portfolios/worker23.json
++include offmenu/portfolio32/catalog.json
++include offmenu/refresh/portfolio_w35.json
++include offmenu/refresh/portfolio47_sources.json
++include offmenu/refresh/portfolio_owner51.json
++include offmenu/refresh/portfolio55.json

@@ -1,0 +1,784 @@
+diff --git a/docs/operations/portfolio18-staging-bindings.md b/docs/operations/portfolio18-staging-bindings.md
+new file mode 100644
+index 00000000..e8b323e7
+--- /dev/null
++++ b/docs/operations/portfolio18-staging-bindings.md
+@@ -0,0 +1,114 @@
++# Worker18 retained portfolio bindings
++
++Base: `abecb99ee1125730ccbc2824b6ec49ffc5cc4302`. Selected task:
++`M-STAGING-BIND-20261018-W18`. Owner: existing local Worker18,
++`01a138f7-e2a4-72a1-ad65-580963d1d2b9`; countries BO/BQ/BR/BS.
++
++`offmenu.refresh.portfolio18_catalogue` is reviewable application configuration.
++It pins retained manifests/receipts and derived inputs, source releases, exact
++applicability, scoped counts, source-native selector declarations, units,
++unknowns and dependency owners. Absolute paths are custody pointers only. The
++diagnostic never opens them. Source hashes are historical declarations; only the
++metadata receipts/manifests were checked during implementation. No raw data is
++included in this commit.
++
++| Binding | Current retained extent | Remaining gate |
++| --- | --- | --- |
++| BO | Zenodo release metadata; zero food records | Actual custodian, dictionary, record unit and privacy-safe scope |
++| BQ | CBS2021 coordinate contract: 12 definitions,36 locators | Methodology, population/units/missingness, Fruit erratum, document exceptions |
++| BR | TACO4: 8 IDs,26 columns,208 private literal cells | Repeatable exact-extent projection, reviewed staging/writer binding |
++| BS | BNSI: 78 private CPI literals,13 categories,6 periods | Base/weight/use semantics; CPI is not item price |
++
++Every country/domain cell remains incomplete. BS cookbook and FAO profile and
++other BR sources remain separately held in the catalogue. The BR overlap is
++already reconciled: old31x11 and new8x26 share88 cells; union31 food IDs/461
++coordinates. Do not re-acquire, re-parse or add the extents as disjoint records.
++
++## Invocation and output
++
++Prepare a bounded envelope using
++`request_for(binding_id, validated_at_utc)`, serialize with shared `canonical`,
++and pipe it to:
++
++```sh
++python3 -B -m offmenu.refresh.portfolio18 --binding BR-taco4-literals --now 2026-10-18T00:00:00Z
++```
++
++The CLI reads at most65537 bytes from stdin, accepts no source-file path, URL,
++command, dynamic plugin or output-directory option, and writes one deterministic
++JSON diagnostic. Exit0 means metadata ready/unchanged; exit2 means
++missing/held/malformed/stale. `inspect` provides the same in-process interface.
++An unknown binding is rejected; callers cannot install policy, remove holds or
++change pins through the envelope. `request_for` prepares assertions, without
++checking asset bytes. All four current real bindings return held.
++
++`StageResult` is the existing shared receipt shape. This package does not register
++a GlobalRun handler or admission, manufacture a SourceContract from metadata,
++or execute a source parser/writer. `origin_diagnostics` reuses the shared
++per-datum coverage checker with the exact retained-input pins. It explicitly
++leaves selector/value semantics unsupported until a reviewed projection checks
++the underlying coordinate. The input JSON selector and upstream original
++coordinate must both survive a future projection. Hash equality does not prove
++field meaning or source permission.
++
++## Acquisition age, cache and replay
++
++Original acquisition time and metadata validation time are separate. Only the
++BO metadata acquisition time is matched to its pinned receipt request. BQ/BR
++acquisition times are unknown; BS candidate snapshot time is retained separately
++and is not promoted to a verified acquisition time. Survey/publication periods
++are never acquisition timestamps.
++
++The private portfolio diagnostic uses the shared minimum30day constant only to
++report age and block stale input in authored tests. There is no generic pure
++cache planner at this base. `core.cache_policy` is Wikibooks-specific and
++`plan_fixture` is registry-only; neither is spoofed. `CachedAcquirer` can read
++bodies/fetch and is never invoked here. This package does not implement a new
++shared cache engine, cache storage, invalidation or operational refresh.
++
++Under30days means metadata reuse intent only; at/after30days requires qualified
++revalidation, never an automatic download. Unknown age stays unknown. Holds
++remain dominant at every age. The replay digest binds the entire trusted
++catalogue entry, exact pins and original acquisition time; observational
++validation time is excluded. An unchanged fresh authored plan returns no-op.
++No-op never proves existing bytes, rights, a completed stage or country admission.
++
++## Validation and isolation
++
++```sh
++python3 -B -m unittest tests.test_refresh_portfolio18 -v
++```
++
++Small authored inputs demonstrate valid, missing, held, malformed, stale,
++30day boundary, replay/no-op, unknown acquisition time, duplicate/nonfinite JSON,
++identity/pin changes, and non-bypassable real holds. A tiny invented CSV and
++singleton-JSONL candidate exercise shared `SourceContract`, `qualify`, `accept`
++and `field_origin_errors`, including wrong selectors and held scope. The only
++accepted receipt is explicitly fixture-only; no country dataset is accepted.
++
++The CLI test uses a separate child process with5second timeout,3CPU seconds,
++256MiB address-space ceiling and zero regular-file output budget. It receives a
++bounded metadata envelope and a minimal environment. This is resource/process
++isolation, not a filesystem/network sandbox. No security settings are changed;
++there is no network code or source-file opening path in this adapter. Do not
++claim production dispatch isolation from this test.
++
++## Integration handoff and dependencies
++
++The integrator00 baseline/interface result5798 (receipt SHA256
++`f94fbf0a42b5d7906e20ace0416295ae569ee400ddfd770f90a427f803d3b7cb`)
++confirms the missing source-neutral pure-planner interface. If Morgan selects a
++shared extension, propose `policy.plan_retained_input` centrally with explicit
++source/release/bundle identity, acquisition/revalidation times, holds/unknowns
++and zero-I/O intent output. This commit adds no such public shared API.
++
++Next: independent review of this exact commit/config/tests, then integrator00
++decides integration and any shared interface extension. Source-specific body
++projection requires a separately qualified dispatch and reviewed semantic
++callback/asset inventory/rights scope. Retain correction ownership while review
++is pending; do not repeat completed tests without changes or new evidence.
++
++Morgan owns cross-worker scheduling and ledger reconciliation. Existing25
++reviews,57 NL adapter,64 continuation/sync and source custodians49/50 remain
++separate. All source-use/privacy/custody/actual denial, Finland/Frida, native
++NO/FR crash restrictions, raw-on-Foo, production/CIX and DEV7645 holds remain.
+diff --git a/offmenu/refresh/portfolio18.py b/offmenu/refresh/portfolio18.py
+new file mode 100644
+index 00000000..a1cf3edf
+--- /dev/null
++++ b/offmenu/refresh/portfolio18.py
+@@ -0,0 +1,146 @@
++"""Worker18 metadata bindings. No acquisition, parser, writer or admission path.
++
++The bundled catalogue is reviewed application configuration, never a discovery
++manifest supplied by a caller. Diagnostics verify metadata assertions only;
++input hashes below are declarations, not a claim to have verified source bytes.
++"""
++import argparse
++import sys
++
++from .acquisition import MIN_TTL
++from .core import RefreshError, canonical, sha, strict_json, timestamp
++from .global_run import StageResult
++from .national_tabular import valid_input_name
++from .field_provenance import field_origin_errors
++
++MAX_METADATA = 65536
++from .portfolio18_catalogue import BINDINGS
++FIELDS = {'schemaVersion', 'bindingId', 'sourceId', 'releaseId', 'inputs',
++          'originalAcquiredAt', 'validatedAt'}
++
++
++def catalogue():
++    """Only the installed, code-reviewed catalogue; no caller-selected policy."""
++    return strict_json(canonical(BINDINGS))
++
++
++def request_for(binding_id, validated_at):
++    """Prepare metadata assertions; validated_at never re-ages an acquisition."""
++    spec = catalogue()['bindings'][binding_id]
++    return {'schemaVersion': 'offmenu-portfolio18-metadata/1',
++            'bindingId': binding_id, 'sourceId': spec['sourceId'],
++            'releaseId': spec['releaseId'], 'inputs': spec['inputs'],
++            'originalAcquiredAt': spec['originalAcquiredAt'],
++            'validatedAt': validated_at}
++
++
++def _inspect(spec, raw, *, now, previous_plan=None):
++    """Bounded pure diagnostic; private spec parameter supports authored tests.
++
++Returns the shared StageResult receipt but never installs a GlobalRun Binding
++or SourceContract. 'ready' means metadata shape only, never dataset acceptance.
++"""
++    def result(state, code, *, plan=None, age=None, validation_age=None):
++        status = {'ready': 'succeeded', 'no-op': 'reused', 'missing': 'unsupported',
++                  'held': 'held', 'stale': 'held', 'malformed': 'failed'}[state]
++        return {'schemaVersion': 'offmenu-portfolio18-diagnostic/1',
++                'bindingId': spec['bindingId'], 'state': state,
++                'stage': StageResult(status, code, (plan,) if plan else ()).receipt(),
++                'planSha256': plan, 'holds': spec['holds'],
++                'dependencies': spec['dependencies'],
++                'inputAgeSeconds': age, 'metadataValidationAgeSeconds': validation_age,
++                'minimumReuseSeconds': MIN_TTL,
++                'sourceBytesVerified': False, 'admission': 'not-assessed',
++                'sourceProcessingDispatched': False, 'countryComplete': False}
++
++    if raw is None:
++        return result('missing', 'metadata-input-missing')
++    if not isinstance(raw, bytes) or len(raw) > MAX_METADATA:
++        return result('malformed', 'metadata-input-invalid')
++    try:
++        current = timestamp(now)
++        manifest = strict_json(raw)
++        canonical(manifest)  # Also rejects overflowing/nonfinite JSON numbers.
++        if not isinstance(manifest, dict) or set(manifest) != FIELDS:
++            raise ValueError()
++        expected = {'schemaVersion': 'offmenu-portfolio18-metadata/1',
++                    'bindingId': spec['bindingId'], 'sourceId': spec['sourceId'],
++                    'releaseId': spec['releaseId'], 'inputs': spec['inputs'],
++                    'originalAcquiredAt': spec['originalAcquiredAt']}
++        if any(manifest[key] != value for key, value in expected.items()):
++            raise ValueError()
++        if (not spec['inputs'] or any(not valid_input_name(name) for name in spec['inputs'])
++                or any(not isinstance(pin, str) or len(pin) != 64
++                       or any(c not in '0123456789abcdef' for c in pin)
++                       for pin in spec['inputs'].values())):
++            raise ValueError()
++        checked = timestamp(manifest['validatedAt'])
++        original = manifest['originalAcquiredAt']
++        acquired = timestamp(original) if original is not None else None
++        if checked > current or (acquired is not None and (acquired > checked)):
++            raise ValueError()
++        validation_age = int((current - checked).total_seconds())
++        age = int((current - acquired).total_seconds()) if acquired else None
++        # Validation time is observational and deliberately excluded from replay
++        # identity. Scope, rights/holds, field declarations and pins are included.
++        plan = sha(canonical({'contract': spec, 'input': expected}))
++        if previous_plan is not None and (not isinstance(previous_plan, str)
++                or len(previous_plan) != 64
++                or any(c not in '0123456789abcdef' for c in previous_plan)):
++            raise ValueError()
++    except (RefreshError, ValueError, TypeError, KeyError, UnicodeError, OverflowError,
++            RecursionError):
++        return result('malformed', 'metadata-contract-invalid')
++    if spec['holds']:
++        return result('held', 'portfolio-source-held', plan=plan, age=age,
++                      validation_age=validation_age)
++    if acquired is None:
++        return result('missing', 'original-acquisition-time-missing', plan=plan,
++                      validation_age=validation_age)
++    if age >= MIN_TTL:
++        return result('stale', 'input-revalidation-required', plan=plan, age=age,
++                      validation_age=validation_age)
++    if spec['dependencies']:
++        return result('missing', 'staging-dependency-missing', plan=plan, age=age,
++                      validation_age=validation_age)
++    return result('no-op' if previous_plan == plan else 'ready',
++                  'metadata-plan-unchanged' if previous_plan == plan else 'metadata-binding-valid',
++                  plan=plan, age=age, validation_age=validation_age)
++
++
++def inspect(binding_id, raw, *, now, previous_plan=None):
++    """Public route selects a fixed portfolio binding, never caller policy."""
++    spec = catalogue()['bindings'][binding_id]
++    return _inspect(spec, raw, now=now, previous_plan=previous_plan)
++
++
++def origin_diagnostics(binding_id, row):
++    """Shared structural coverage checks, never a real selector/value verdict.
++
++Future reviewed projections can consume the declared input pins/selectors. Their
++semantic callback must additionally verify the actual cells. The current task
++does not execute this against retained rows and installs no production callback.
++"""
++    spec = catalogue()['bindings'][binding_id]
++    return {'structuralErrors': field_origin_errors(row, spec['inputs']),
++            'selectorSemantics': 'unsupported-until-reviewed-projection',
++            'sourceAccepted': False, 'holds': spec['holds']}
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--binding', required=True, choices=sorted(catalogue()['bindings']))
++    parser.add_argument('--now', required=True, help='Explicit UTC diagnostic time')
++    parser.add_argument('--previous-plan')
++    args = parser.parse_args(argv)
++    # Pipe only the bounded metadata envelope on stdin. No user-selected file,
++    # source path, URL, command, dynamic plugin or output-directory capability.
++    raw = sys.stdin.buffer.read(MAX_METADATA + 1)
++    receipt = inspect(args.binding, raw or None, now=args.now,
++                      previous_plan=args.previous_plan)
++    sys.stdout.buffer.write(canonical(receipt))
++    return 0 if receipt['state'] in ('ready', 'no-op') else 2
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/offmenu/refresh/portfolio18_catalogue.py b/offmenu/refresh/portfolio18_catalogue.py
+new file mode 100644
+index 00000000..351cf132
+--- /dev/null
++++ b/offmenu/refresh/portfolio18_catalogue.py
+@@ -0,0 +1,304 @@
++"""Reviewed Worker18 declarations; historical metadata, no data admission."""
++
++BINDINGS = {'schemaVersion': 'offmenu-portfolio18-catalogue/1',
++ 'worker': 18,
++ 'baseCommit': 'abecb99ee1125730ccbc2824b6ec49ffc5cc4302',
++ 'countryComplete': False,
++ 'requiredDomains': ['ingredients',
++                     'recipes',
++                     'nutrition',
++                     'retailers/providers',
++                     'prices/baskets',
++                     'dietaryreferences'],
++ 'allCountryDomainCellsIncomplete': True,
++ 'separateHeldSources': {'BS-BahamaBites': 'Retained18pages; private download does not grant '
++                                           'recipe/image derivation; publisher/custodian50 '
++                                           'use/edition/selectors missing',
++                         'BS-FAO2002': 'Launch profile does not establish underlying '
++                                       'edition/rights/current advice',
++                         'BR-other': 'Embrapa STOP; TBCA/ANVISA restrictions and export budget '
++                                     'remain separate'},
++ 'overlap': {'BR': '31IDs461source coordinates union;88 shared cells, not39foods549cells',
++             'otherWorkers': '25 reviews,57 NL adapter,64 continuation/sync; source '
++                             'custodians49/50; no duplicate acquisition'},
++ 'bindings': {'BO-zenodo-metadata': {'bindingId': 'BO-zenodo-metadata',
++                                     'country': 'BO',
++                                     'sourceId': 'zenodo-17295428',
++                                     'releaseId': 'published-2025-10-08',
++                                     'domains': ['dietaryreferences'],
++                                     'scope': 'discovery metadata only; no Data.dta inspection',
++                                     'declaredCount': {'foodRecords': 0},
++                                     'inputs': {'record-17295428.json': 'f0ea2357fd91f78c016161ed8ca6f2a2227f9c9933094e96b31ebc994e4953db'},
++                                     'retainedManifest': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-47/BO/d06c358abec9484baa1d/receipt.json',
++                                                          'sha256': '0e521b8b516b5c57eb5f7539559540de7b55af1dfb63cba774fd459aa5294a9d',
++                                                          'verification': 'retained historical '
++                                                                          'metadata declaration; '
++                                                                          'no current body read'},
++                                     'fieldDeclarations': [],
++                                     'nativeUnitsAndBases': {},
++                                     'unknowns': ['record unit',
++                                                  'dictionary',
++                                                  'native units',
++                                                  'safe aggregate dimensions',
++                                                  'current custodian'],
++                                     'holds': [{'code': 'subject-privacy-scope',
++                                                'kind': 'source-use',
++                                                'owner': 'Morgan and actual source custodian, '
++                                                         'unestablished',
++                                                'nextAction': 'Establish safe aggregate scope '
++                                                              'without subject inspection'}],
++                                     'dependencies': [{'code': 'dictionary-missing',
++                                                       'kind': 'missing-input',
++                                                       'owner': 'Actual custodian via Morgan',
++                                                       'nextAction': 'Supply retained '
++                                                                     'codebook/Code.do and '
++                                                                     'version-matched record-unit '
++                                                                     'evidence'}],
++                                     'originalAcquiredAt': '2026-10-14T22:20:58.225202+00:00',
++                                     'acquisitionTimeEvidence': 'receipt /requests/0/requestUTC '
++                                                                'for matching metadata hash only; '
++                                                                'not Data.dta time',
++                                     'sourceCache': 'not opened or verified by this package',
++                                     'rightsGrant': 'none conferred by this binding',
++                                     'integration': 'no registered admission, parser, canonical '
++                                                    'mapping or writer',
++                                     'upstreamSourceSha256': 'f0ea2357fd91f78c016161ed8ca6f2a2227f9c9933094e96b31ebc994e4953db',
++                                     'upstreamSourceVerification': 'historical receipt declaration '
++                                                                   'only; not current source '
++                                                                   'integrity check',
++                                     'projectionContract': 'A future candidate must preserve both '
++                                                           'retained input JSON selector and '
++                                                           'upstream original coordinate; no '
++                                                           'origin inferred from hash alone'},
++              'BQ-cbs-coordinate': {'bindingId': 'BQ-cbs-coordinate',
++                                    'country': 'BQ',
++                                    'sourceId': 'cbs-bq-health',
++                                    'releaseId': 'survey-2021-publication-2022-10-03',
++                                    'domains': ['dietaryreferences'],
++                                    'scope': 'independent38 coordinate-only PASS487; numeric '
++                                             'observations not normalized',
++                                    'declaredCount': {'sheets': 4,
++                                                      'definitionExamples': 12,
++                                                      'coordinateFields': 36,
++                                                      'normalizedObservations': 0},
++                                    'inputs': {'scope-contract.json': '9eb28aa129cb1e112e22c6ff6f758b019dd0224abc550f179579f2be0e5db6a0',
++                                               'definition-examples.json': 'a9a024db19a72a075219d8b35e5058385fc1710a664ac04edc63443cfef1121a',
++                                               'explanatory-evidence.json': 'bc24baf8419576f06a1ccc29710560cb848ff3355e0922c478e24c1325f842a6',
++                                               'header-map.json': '3a3f333fae5c3db80111de4b5afcbeb89fd59bd574861d9b86d695a8d891a0f2'},
++                                    'retainedManifest': {'path': '/home/user/src/offmenu-data/country-bundle-20261016/owner-18/delta05-CBS-source-coordinate-contract/manifest.json',
++                                                         'sha256': '9460e1f2ebaeaef78b7aa08f747539747925ea885d5a80efdef10ba00b470cdb',
++                                                         'verification': 'retained historical '
++                                                                         'metadata declaration; no '
++                                                                         'current body read'},
++                                    'fieldDeclarations': [{'input': 'header-map.json',
++                                                           'selector': 'source workbook sheet plus '
++                                                                       'cell coordinate as '
++                                                                       'declared in retained '
++                                                                       'header map',
++                                                           'meaning': 'locator only; no numeric '
++                                                                      'conversion'},
++                                                          {'input': 'definition-examples.json',
++                                                           'selector': '12 retained definition '
++                                                                       'examples; each original '
++                                                                       'cell coordinate retained',
++                                                           'meaning': 'definition evidence; '
++                                                                      'population_override remains '
++                                                                      'null'}],
++                                    'nativeUnitsAndBases': {'percentage': 'only where explicitly '
++                                                                          'labelled',
++                                                            'plain schatting': None,
++                                                            'dot': '<50 observations, not zero',
++                                                            'zero': 'sample zero, not population '
++                                                                    'absence'},
++                                    'unknowns': ['topic denominators',
++                                                 'eligibility/minimum age',
++                                                 'sample weights',
++                                                 'plain schatting unit',
++                                                 'blank AT5 semantics',
++                                                 'Fruit A57/C57 label-definition conflict',
++                                                 'acquiredAt'],
++                                    'holds': [{'code': 'survey-semantics-unresolved',
++                                               'kind': 'source-use',
++                                               'owner': 'CBS publisher; Morgan routes prepared '
++                                                        'questions',
++                                               'nextAction': 'Obtain version-matched methods and '
++                                                             'Fruit erratum; no normalization'},
++                                              {'code': 'document-exception-review',
++                                               'kind': 'source-use',
++                                               'owner': 'Source-use reviewer',
++                                               'nextAction': 'Resolve applicable CC-BY '
++                                                             'attribution/document exceptions'}],
++                                    'dependencies': [{'code': 'canonical-writer-unbound',
++                                                      'kind': 'integration',
++                                                      'owner': 'Integrator00',
++                                                      'nextAction': 'Review source-native '
++                                                                    'coordinate contract before '
++                                                                    'any candidate projection'}],
++                                    'originalAcquiredAt': None,
++                                    'acquisitionTimeEvidence': 'unknown',
++                                    'sourceCache': 'not opened or verified by this package',
++                                    'rightsGrant': 'none conferred by this binding',
++                                    'integration': 'no registered admission, parser, canonical '
++                                                   'mapping or writer',
++                                    'upstreamSourceSha256': 'ede5664dafd9317ccbdf54ec215e19290b65155a1e7847e72142c4bba3bdaa68',
++                                    'upstreamSourceVerification': 'historical receipt declaration '
++                                                                  'only; not current source '
++                                                                  'integrity check',
++                                    'projectionContract': 'A future candidate must preserve both '
++                                                          'retained input JSON selector and '
++                                                          'upstream original coordinate; no origin '
++                                                          'inferred from hash alone'},
++              'BR-taco4-literals': {'bindingId': 'BR-taco4-literals',
++                                    'country': 'BR',
++                                    'sourceId': 'nepa-unicamp-taco',
++                                    'releaseId': '4-revised-2011',
++                                    'domains': ['nutrition'],
++                                    'scope': 'independent38 private literal PASS3048/bound3050; '
++                                             'exactly source IDs1..8, physical29/30 printed26/27',
++                                    'declaredCount': {'foodIds': 8,
++                                                      'literalCells': 208,
++                                                      'numericLiterals': 156,
++                                                      'NA': 16,
++                                                      'Tr': 14,
++                                                      'blank': 22},
++                                    'inputs': {'first8-source-literals.json': 'f75112a8456803e2250454c4216a7a00f2fefe79eb710f46adab1bdc8acdf2f7'},
++                                    'retainedManifest': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-18/BR-TACO4-first8-literals-v1/manifest.json',
++                                                         'sha256': 'b0e02e679071038cfddc0f926640582206e66e76f0849bb10e811ad080700ea0',
++                                                         'verification': 'retained metadata pin; '
++                                                                         'no current source-body '
++                                                                         'read'},
++                                    'fieldDeclarations': [{'input': 'first8-source-literals.json',
++                                                           'selector': 'records[*].source_record_id',
++                                                           'meaning': 'source food ID1..8, not '
++                                                                      'canonical ID'},
++                                                          {'input': 'first8-source-literals.json',
++                                                           'selector': 'records[*].cells[*].value_literal',
++                                                           'originSelector': 'records[*].cells[*].coordinate',
++                                                           'meaning': 'column_id p29:c1..11 or '
++                                                                      'p30:c1..15; original '
++                                                                      'source_words and coordinate '
++                                                                      'retained; numeric_value '
++                                                                      'null'},
++                                                          {'input': 'first8-source-literals.json',
++                                                           'selector': 'header column declarations '
++                                                                       'and caption basis',
++                                                           'meaning': 'Portuguese header units and '
++                                                                      '100g edible-portion basis; '
++                                                                      'no nutrient equivalence'}],
++                                    'nativeUnitsAndBases': {'headers': ['(%)',
++                                                                        '(kcal)',
++                                                                        '(kJ)',
++                                                                        '(g)',
++                                                                        '(mg)',
++                                                                        '(µg)'],
++                                                            'basis': '100 gramas de parte '
++                                                                     'comestível',
++                                                            'NA': 'source literal',
++                                                            'Tr': 'source literal',
++                                                            'blank': None},
++                                    'unknowns': ['acquiredAt',
++                                                 'accepted canonical nutrient mapping'],
++                                    'holds': [{'code': 'metadata-only-current-dispatch',
++                                               'kind': 'authorization',
++                                               'owner': 'Morgan',
++                                               'nextAction': 'Any source-body execution needs '
++                                                             'separately qualified dispatch'}],
++                                    'dependencies': [{'code': 'full-extent-parser-missing',
++                                                      'kind': 'missing-input',
++                                                      'owner': 'Worker18 under future dispatch',
++                                                      'nextAction': 'Implement repeatable '
++                                                                    'exact8x26 projection; '
++                                                                    'old31x11 parser does not '
++                                                                    'cover it'},
++                                                     {'code': 'independent-integration-required',
++                                                      'kind': 'integration',
++                                                      'owner': 'Integrator00 and independent '
++                                                               'reviewer',
++                                                      'nextAction': 'Review exact manifest, '
++                                                                    'source-native semantics and '
++                                                                    'writer contract'}],
++                                    'originalAcquiredAt': None,
++                                    'acquisitionTimeEvidence': 'unknown',
++                                    'sourceCache': 'not opened or verified by this package',
++                                    'rightsGrant': 'none conferred by this binding',
++                                    'integration': 'no registered admission, parser, canonical '
++                                                   'mapping or writer',
++                                    'upstreamSourceSha256': '2002aec5615b5b1395aaa8fa675635bbb7f712c33f278af5e332f1cac8f108c8',
++                                    'upstreamSourceVerification': 'historical receipt declaration '
++                                                                  'only; not current source '
++                                                                  'integrity check',
++                                    'projectionContract': 'A future candidate must preserve both '
++                                                          'retained input JSON selector and '
++                                                          'upstream original coordinate; no origin '
++                                                          'inferred from hash alone'},
++              'BS-cpi-literals': {'bindingId': 'BS-cpi-literals',
++                                  'country': 'BS',
++                                  'sourceId': 'bnsi-cpi',
++                                  'releaseId': 'retained-2026-10-14',
++                                  'domains': ['prices/baskets'],
++                                  'scope': 'independent38 private literal/custody PASS; CPI index '
++                                           'only, not item price',
++                                  'declaredCount': {'literalObservations': 78,
++                                                    'categories': 13,
++                                                    'periods': 6},
++                                  'inputs': {'cpi-observation-proposals.json': '16f309aad098f6477f840f634f7ebd722a2c0d1fb7fb9096d527860fe74aacdd'},
++                                  'retainedManifest': {'path': '/home/user/src/offmenu-data/country-bundle-20261016/owner-18/phase1-packet.json',
++                                                       'sha256': '646b798db11e1f4398b59c17786b1e65a87fdbbee4daac71b567c6911270aa04',
++                                                       'verification': 'retained historical '
++                                                                       'metadata declaration; no '
++                                                                       'current body read'},
++                                  'fieldDeclarations': [{'input': 'cpi-observation-proposals.json',
++                                                         'selector': 'records[*].value_literal',
++                                                         'originSelector': 'records[*].locator',
++                                                         'meaning': 'HTML table_index_zero_based2, '
++                                                                    'retained '
++                                                                    'row_index_including_header '
++                                                                    'and '
++                                                                    'column_index_zero_based2..7'},
++                                                        {'input': 'cpi-observation-proposals.json',
++                                                         'selector': 'records[*].period_literal',
++                                                         'meaning': 'source period '
++                                                                    'Sep2025–Feb2026, not '
++                                                                    'acquisition time'},
++                                                        {'input': 'cpi-observation-proposals.json',
++                                                         'selector': 'records[*].weight_literal',
++                                                         'meaning': 'literal only, no '
++                                                                    'renormalization'}],
++                                  'nativeUnitsAndBases': {'measure': 'CPI index',
++                                                          'index_base': None,
++                                                          'weight_basis': None,
++                                                          'source_effective_date': None},
++                                  'unknowns': ['index base',
++                                               '100.0 versus102.39 weight semantics',
++                                               'rights acceptance',
++                                               'publisher effective date',
++                                               'original acquisition time'],
++                                  'holds': [{'code': 'index-basis-and-use-unresolved',
++                                             'kind': 'source-use',
++                                             'owner': 'BNSI publisher and source-use reviewer via '
++                                                      'Morgan',
++                                             'nextAction': 'Resolve base/weight and use scope; no '
++                                                           'arithmetic or item-price admission'}],
++                                  'dependencies': [{'code': 'typed-writer-unbound',
++                                                    'kind': 'integration',
++                                                    'owner': 'Integrator00',
++                                                    'nextAction': 'Review source-native CPI '
++                                                                  'contract, not item-price '
++                                                                  'projection'}],
++                                  'originalAcquiredAt': None,
++                                  'acquisitionTimeEvidence': 'retainedSnapshotAt is a candidate '
++                                                             'declaration, not independently '
++                                                             'matched original request time',
++                                  'sourceCache': 'not opened or verified by this package',
++                                  'rightsGrant': 'none conferred by this binding',
++                                  'integration': 'no registered admission, parser, canonical '
++                                                 'mapping or writer',
++                                  'retainedSnapshotAt': '2026-10-14T22:11:41.072046+00:00',
++                                  'upstreamSourceSha256': '3b8552b39202cc3e1eedd1fb1f361187b7c3e65bae5dc734885aaa459e28c2f3',
++                                  'upstreamSourceVerification': 'historical receipt declaration '
++                                                                'only; not current source '
++                                                                'integrity check',
++                                  'projectionContract': 'A future candidate must preserve both '
++                                                        'retained input JSON selector and upstream '
++                                                        'original coordinate; no origin inferred '
++                                                        'from hash alone'}}}
+diff --git a/tests/fixtures/portfolio18/metadata.json b/tests/fixtures/portfolio18/metadata.json
+new file mode 100644
+index 00000000..66657aae
+--- /dev/null
++++ b/tests/fixtures/portfolio18/metadata.json
+@@ -0,0 +1,11 @@
++{
++  "schemaVersion": "offmenu-portfolio18-metadata/1",
++  "bindingId": "authored-only",
++  "sourceId": "authored-source",
++  "releaseId": "fixture-v1",
++  "inputs": {
++    "tiny.csv": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
++  },
++  "originalAcquiredAt": "2026-10-01T00:00:00Z",
++  "validatedAt": "2026-10-02T00:00:00Z"
++}
+diff --git a/tests/test_refresh_portfolio18.py b/tests/test_refresh_portfolio18.py
+new file mode 100644
+index 00000000..5e2ba623
+--- /dev/null
++++ b/tests/test_refresh_portfolio18.py
+@@ -0,0 +1,179 @@
++import copy
++from dataclasses import replace
++from pathlib import Path
++import resource
++import subprocess
++import sys
++import tempfile
++import unittest
++
++from offmenu.refresh import portfolio18 as p
++from offmenu.refresh.acceptance import (Asset, SourceContract, accept, canonical as packet,
++                                       fingerprint, ids_digest, qualify)
++from offmenu.refresh.core import canonical, sha, strict_json
++from offmenu.refresh.field_provenance import field_origin_errors
++
++
++class Portfolio18Tests(unittest.TestCase):
++    def setUp(self):
++        self.manifest = strict_json((Path(__file__).parent / 'fixtures/portfolio18/metadata.json').read_bytes())
++        self.spec = {'bindingId': 'authored-only', 'sourceId': 'authored-source',
++                     'releaseId': 'fixture-v1', 'inputs': {'tiny.csv': 'a' * 64},
++                     'originalAcquiredAt': '2026-10-01T00:00:00Z',
++                     'holds': [], 'dependencies': [], 'scope': 'authored-test-only'}
++        self.now = '2026-10-02T00:00:00Z'
++
++    def check(self, **kwargs):
++        return p._inspect(self.spec, canonical(self.manifest), now=self.now, **kwargs)
++
++    def test_valid_metadata_and_replay_excludes_validation_age(self):
++        first = self.check()
++        self.assertEqual(first['state'], 'ready')
++        self.now = '2026-10-03T00:00:00Z'
++        self.manifest['validatedAt'] = self.now
++        replay = self.check(previous_plan=first['planSha256'])
++        self.assertEqual(replay['state'], 'no-op')
++        self.assertEqual(replay['inputAgeSeconds'], 2 * 86400)
++        self.assertEqual(replay['metadataValidationAgeSeconds'], 0)
++        self.assertFalse(replay['sourceBytesVerified'])
++        self.assertEqual(replay['admission'], 'not-assessed')
++
++    def test_thirty_day_boundary_cannot_be_reset_by_recent_validation(self):
++        self.now = '2026-10-30T23:59:59Z'
++        self.assertEqual(self.check()['state'], 'ready')
++        self.now = '2026-10-31T00:00:00Z'
++        self.manifest['validatedAt'] = self.now
++        self.assertEqual(self.check()['state'], 'stale')
++
++    def test_unknown_acquisition_is_missing_not_fresh(self):
++        self.manifest['originalAcquiredAt'] = self.spec['originalAcquiredAt'] = None
++        self.assertEqual(self.check()['state'], 'missing')
++        self.assertIsNone(self.check()['inputAgeSeconds'])
++
++    def test_missing_and_held_are_distinct_and_noop_does_not_clear_holds(self):
++        self.assertEqual(p._inspect(self.spec, None, now=self.now)['state'], 'missing')
++        prior = self.check()['planSha256']
++        self.spec['holds'] = [{'code': 'use-held', 'owner': 'publisher'}]
++        result = self.check(previous_plan=prior)
++        self.assertEqual(result['state'], 'held')
++        self.assertNotEqual(result['planSha256'], prior)
++
++    def test_pin_release_and_extra_authority_fields_fail(self):
++        for field, value in [('inputs', {'tiny.csv': 'b' * 64}), ('releaseId', 'new'),
++                             ('rightsApproved', True), ('originalAcquiredAt', self.now)]:
++            with self.subTest(field=field):
++                original = copy.deepcopy(self.manifest)
++                self.manifest[field] = value
++                self.assertEqual(self.check()['state'], 'malformed')
++                self.manifest = original
++
++    def test_strict_bounded_json_and_times(self):
++        for raw in (b'{"x":1,"x":2}', b'{"x":NaN}', b'{"x":1e999}', b'[]',
++                    b'\xff', b'{' * 2000, b'x' * (p.MAX_METADATA + 1)):
++            with self.subTest(raw=raw[:20]):
++                self.assertEqual(p._inspect(self.spec, raw, now=self.now)['state'], 'malformed')
++        for value in ('2026-10-03T00:00:00Z', '2026-10-02', '2026-10-02T00:00:00+11:00'):
++            self.manifest['validatedAt'] = value
++            self.assertEqual(self.check()['state'], 'malformed')
++
++    def test_all_real_bindings_remain_held_and_declarations_are_exact(self):
++        for key, spec in p.catalogue()['bindings'].items():
++            raw = canonical(p.request_for(key, '2026-10-18T00:00:00Z'))
++            result = p.inspect(key, raw, now='2026-10-18T00:00:00Z')
++            self.assertEqual(result['state'], 'held', key)
++            self.assertEqual(result['holds'], spec['holds'])
++            self.assertFalse(result['countryComplete'])
++            self.assertFalse(result['sourceProcessingDispatched'])
++            self.assertEqual(len(spec['retainedManifest']['sha256']), 64)
++        with self.assertRaises(KeyError):
++            p.inspect('authored-only', b'{}', now=self.now)
++
++    def test_held_cache_and_origin_coverage_do_not_claim_semantics(self):
++        spec = p.catalogue()['bindings']['BS-cpi-literals']
++        result = p.inspect('BS-cpi-literals', canonical(p.request_for('BS-cpi-literals',
++                           '2026-12-01T00:00:00Z')), now='2026-12-01T00:00:00Z')
++        self.assertEqual(result['state'], 'held')
++        self.assertIsNone(result['inputAgeSeconds'])
++        self.assertEqual(spec['retainedSnapshotAt'], '2026-10-14T22:11:41.072046+00:00')
++        result = p.origin_diagnostics('BS-cpi-literals', {'data': {'value': None},
++                                     'provenance': {'sourceId': spec['sourceId']}})
++        self.assertIn('field-origins-required', result['structuralErrors'])
++        self.assertFalse(result['sourceAccepted'])
++
++    def test_cli_isolated_process_is_bounded_and_cannot_open_source_paths(self):
++        raw = canonical(p.request_for('BR-taco4-literals', '2026-10-18T00:00:00Z'))
++        def limits():
++            resource.setrlimit(resource.RLIMIT_AS, (256 * 1024**2,) * 2)
++            resource.setrlimit(resource.RLIMIT_CPU, (3, 3))
++            resource.setrlimit(resource.RLIMIT_FSIZE, (0, 0))
++        run = subprocess.run([sys.executable, '-B', '-m', 'offmenu.refresh.portfolio18',
++                              '--binding', 'BR-taco4-literals', '--now', '2026-10-18T00:00:00Z'],
++                             input=raw, capture_output=True, timeout=5, preexec_fn=limits,
++                             env={'PYTHONDONTWRITEBYTECODE': '1', 'LC_ALL': 'C.UTF-8'})
++        self.assertEqual(run.returncode, 2, run.stderr)
++        self.assertEqual(strict_json(run.stdout)['state'], 'held')
++        self.assertLess(len(run.stdout), p.MAX_METADATA)
++        self.assertEqual(run.stderr, b'')
++
++
++class AuthoredProjectionTests(unittest.TestCase):
++    """Actual generic qualification on tiny invented assets, never country data."""
++    def test_source_contract_field_origins_qualify_and_reject_mutation(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            bundle = root / 'bundle'
++            bundle.mkdir()
++            assets = []
++            for name, body in [('tiny.csv', b'id,value\nr1,0\n'),
++                               ('rights.txt', b'authored fixture retain parse transform'),
++                               ('scope.txt', b'only r1, invented data')]:
++                (bundle / name).write_bytes(body)
++                assets.append(Asset(name, len(body), sha(body)))
++            policy = sha(b'authored unknown marker policy')
++            row = {'id': 'r1', 'kind': 'portfolio18Literal', 'schemaVersion': '1.0',
++                   'data': {'literal': '0', 'basis': None},
++                   'provenance': {'sourceId': 'authored-source', 'releaseId': 'fixture-v1',
++                                  'fetchedAt': '2026-10-01T00:00:00Z', 'fieldOrigins': {
++                       '/data/literal': {'kind': 'source', 'sourceId': 'authored-source',
++                                        'releaseId': 'fixture-v1', 'inputPath': 'tiny.csv',
++                                        'inputSha256': assets[0].sha256, 'sourceRecordId': 'r1',
++                                        'sourceField': 'row:2/column:2'},
++                       '/data/basis': {'kind': 'constant', 'policySha256': policy,
++                                       'symbol': 'unknown-basis'}}}}
++            def semantics(item):
++                errors = field_origin_errors(item, {'tiny.csv': assets[0].sha256}, policy_pins=(policy,))
++                if item['data'] != {'literal': '0', 'basis': None}:
++                    errors.append('authored-cell-mismatch')
++                if item['provenance']['fieldOrigins'].get('/data/literal', {}).get('sourceField') != 'row:2/column:2':
++                    errors.append('authored-selector-mismatch')
++                return errors
++            schemas = {'portfolio18Literal': {'type': 'object', 'required': ['data', 'provenance']}}
++            contract = SourceContract('authored-source', 'fixture-v1', 'authored-private-only',
++                                      '2026-10-01T00:00:00Z', tuple(assets), 1, ids_digest(['r1']),
++                                      schemas, fingerprint(schemas), semantics, policy,
++                                      assets[1], assets[2], frozenset(('retain', 'parse', 'transform')),
++                                      fixture=True)
++            candidate = root / 'candidate.jsonl'
++            def write():
++                body = packet([row]) + b'\n'
++                candidate.write_bytes(body)
++                return {'sourceId': contract.source_id, 'releaseId': contract.release_id,
++                        'acquiredAt': contract.acquired_at, 'normalizedRecords': 1,
++                        'candidateSha256': sha(body), 'candidateBytes': len(body),
++                        'rightsEvidenceSha256': assets[1].sha256,
++                        'scopeEvidenceSha256': assets[2].sha256,
++                        'inputFiles': [vars(a) for a in assets]}
++            manifest = write()
++            receipt = accept(contract, bundle, candidate, manifest)
++            self.assertEqual(receipt['status'], 'accepted-fixture-scope')
++            self.assertFalse(receipt['productionAccepted'])
++            self.assertEqual(receipt, accept(contract, bundle, candidate, manifest))
++            row['provenance']['fieldOrigins']['/data/literal']['sourceField'] = 'wrong'
++            failed = qualify(contract, bundle, candidate, write())
++            self.assertIn('authored-selector-mismatch', failed['errors'])
++            held = qualify(replace(contract, holds=('source-held',)), bundle, candidate, write())
++            self.assertIn('source-held', held['errors'])
++
++
++if __name__ == '__main__':
++    unittest.main()

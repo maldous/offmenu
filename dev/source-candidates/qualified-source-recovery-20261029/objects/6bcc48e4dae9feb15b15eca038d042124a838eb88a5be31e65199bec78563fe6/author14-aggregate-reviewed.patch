@@ -1,0 +1,621 @@
+diff --git a/docs/operations/bv-lu-sh-staging-bindings.md b/docs/operations/bv-lu-sh-staging-bindings.md
+new file mode 100644
+index 00000000..c629418a
+--- /dev/null
++++ b/docs/operations/bv-lu-sh-staging-bindings.md
+@@ -0,0 +1,100 @@
++# BV/LU/SH retained metadata bindings
++
++This package is portfolio configuration and a metadata diagnostic interface on
++develop `abecb99ee1125730ccbc2824b6ec49ffc5cc4302`. It does not collect, parse or
++qualify source bodies, emit normalized country data, register an adapter, or
++admit a country/source. Pending PR42 is not a dependency or accepted baseline.
++
++Run from this checkout, with an explicit UTC diagnostic clock:
++
++```sh
++python3 -B -m offmenu.refresh.bv_lu_sh --evidence-root /home/user \
++  --as-of 2026-10-18T05:00:00Z --output /tmp/bv-lu-sh-metadata-plan.json
++python3 -B -m unittest discover -s tests -p test_bv_lu_sh_binding.py -v
++```
++
++The committed Python catalog is trusted configuration, installed with the
++package without a new package-data rule. There is deliberately no CLI plugin,
++manifest override, force-download option, downloader or body-processing hook.
++Only the catalog's finite, size-bounded metadata JSON inputs are opened; each is
++verified against the exact SHA/length, parsed with shared strict JSON handling,
++then compared at the declared selector to its exact retained literal. Release
++identity must match the source digest in the independently pinned acquisition
++receipt. Shared `field_origin_errors` verifies every emitted literal's coverage
++and source/release/input identity. It does not establish economic equivalence.
++Shared path, timestamp, canonical serialization and atomic-output helpers
++are reused. There is no copied national parser or country refresh engine.
++
++`metadataBinding` is an evidence declaration, not an accepted common/native
++candidate. Its input coordinates identify metadata selectors, not newly read
++CSV/XLSX cells. `references` retain exact existing author/manifests/response pins
++for review, and are never opened or represented as newly integrity-verified body
++assets. Metadata is read through one nonblocking, no-follow regular-file descriptor,
++with descriptor/path identity checks before/after, a pin-size-plus-one read bound,
++and exact length/SHA verification of the bytes parsed. No second path open or
++unbounded read occurs; no original/candidate dataset is read. Absolute recorded artifact paths
++stay in private metadata output; no public projection is supplied.
++
++| Country | Bound scope | Current disposition |
++| --- | --- | --- |
++| BV | Existing author receipt; all six categories explicitly missing | Missing exact source/release/custody/applicability; no fabricated asset |
++| LU | E5407 receipt plus prior14 metadata: five unit/base/measure/frequency/role literals | Held: economic denominator/reference period and classification release unresolved; use/independent admission not supplied |
++| SH | Existing workbook acquisition receipt timestamp and release digest only | Held: reuse, worksheet mapping and territorial coverage; units/base remain null |
++
++All other required ingredient/recipe/nutrition/provider/dietary-reference types
++are explicitly incomplete. LU is statistical weighting context, not retail
++prices or food quantities. BV applicability is unknown; SH evidence does not
++establish Ascension/Tristan coverage. Historical numeric holder labels remain
++leads, not verified native source custody. Source/source-role labels and v2
++publisher labels are not approved taxonomy targets. All4592 upstream target,
++equivalence, use and admission nulls remain untouched. The C196 methods route's
++explicit rights/admission hold is preserved; this task does not fetch linked
++documentation to work around it.
++
++The cache block separates original acquisition (pinned receipt `/utc`) from the
++caller-supplied diagnostic/metadata validation clock. File mtime and subsequent
++validation never reset acquisition age. The age is an observation only: this
++portfolio does not decide freshness, eligibility, reuse or conditional-refresh
++status. The shared source-neutral pure planner is absent, so every real-source
++metadata report explicitly returns `planningCapability=unsupported-shared-planner-absent`,
++`eligibility=null`, `action=unknown-no-download`, and zero automatic downloads.
++Old timestamps alone do not hold otherwise-valid metadata or suppress a candidate.
++This is not a raw cache or retention/refresh implementation. The controlling
++minimum30day requirement remains an unimplemented shared capability, not a locally
++copied threshold.
++Same input/content/config has the same `bindingFingerprint` across clock changes.
++`publish_report` returns `verified-no-op` and preserves inode/mtime for exactly
++identical diagnostic bytes. Changed clock observations may write a new report;
++the source-content fingerprint stays unchanged. No raw cache or source is mutated.
++
++Diagnostics are per-country and fixed-code: missing source/metadata, source-held,
++malformed/unsafe/pin/literal/clock contract, or metadata-ready with an unsupported
++cache-planning capability. A bad
++binding cannot stop peers. `metadata-ready` is possible for authored fixtures and
++means only metadata binding validity, with acceptedRecords=0. The real catalog
++does not release any current hold. Authored fixtures test valid/missing/held/
++malformed and timestamp observations with absent planner, release-pin mismatch,
++source pin/selector corruption,
++duplicates/nonfinite JSON, symlinks/path bounds, isolated peers, no network/body
++reads and actual output no-op. The focused correction additionally covers a
++FIFO replacement at the open boundary with sibling progress and a growing regular
++file whose read is limited to pin size plus one byte. They do not replay historical source suites or
++native NO/FR handlers.
++
++## Proposed shared interface for integrator00
++
++No shared-core edit is included. The previous local threshold/eligibility logic
++was removed in the correction for W12-W14-2192504-F2. `policy.plan_fixture` requires a registered
++authored fixture and `core.cache_policy` hardcodes Wikibooks identity. To avoid
++duplicating a future production policy, propose extracting an identity-neutral
++`plan_acquisition_evidence(source_id, release_id, input_bundle_sha256, evidence,
++*, now)` from the existing reviewed policy: preserve originalAcquiredAt, require
++monotonic same-content revalidations, minimum30day automatic zero-download,
++and return stale/revalidation-review diagnostics without a downloader/force
++bypass. Existing fixture behavior/tests must remain unchanged. This proposal is
++for00 review, not a prerequisite for using this metadata report or authorization
++to modify the core. Wiring to execution/admission remains separately selected.
++
++Independent approval and develop integration are required. The integrator must
++reconcile the current target against this immutable base. Raw data stays Foo;
++Finland/Frida/NO-FR/source/privacy/denial/production/CIX/DEV7645 holds remain.
+diff --git a/offmenu/refresh/bv_lu_sh.py b/offmenu/refresh/bv_lu_sh.py
+new file mode 100644
+index 00000000..29fd75e7
+--- /dev/null
++++ b/offmenu/refresh/bv_lu_sh.py
+@@ -0,0 +1,195 @@
++"""BV/LU/SH metadata bindings only. No collector, source-body reader or admission."""
++import argparse
++import json
++import os
++from pathlib import Path
++import re
++import stat
++
++from .core import (RefreshError, atomic_json, canonical, safe_path, sha,
++                   strict_json, timestamp)
++from .field_provenance import field_origin_errors
++from .national_tabular import valid_input_name
++from .bv_lu_sh_catalog import BINDINGS
++
++MAX_METADATA = 128 * 1024
++COUNTRIES = ('BV', 'LU', 'SH')
++
++
++def read_pinned_metadata(path, item):
++    """One nonblocking descriptor, regular-file identity and bounded pinned bytes."""
++    path = safe_path(path)
++    identity = lambda s: (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
++    before = path.stat(follow_symlinks=False)
++    if not stat.S_ISREG(before.st_mode) or before.st_size != item['bytes']:
++        raise RefreshError('binding-metadata-file-invalid')
++    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
++    try:
++        opened = os.fstat(fd)
++        if not stat.S_ISREG(opened.st_mode) or identity(opened) != identity(before):
++            raise RefreshError('binding-metadata-file-changed')
++        parts, count = [], 0
++        while count <= item['bytes']:
++            block = os.read(fd, min(65536, item['bytes'] + 1 - count))
++            if not block:
++                break
++            parts.append(block)
++            count += len(block)
++        after = os.fstat(fd)
++        current = path.stat(follow_symlinks=False)
++        raw = b''.join(parts)
++        if (identity(after) != identity(opened) or identity(current) != identity(after)
++                or len(raw) != item['bytes'] or sha(raw) != item['sha256']):
++            raise RefreshError('binding-metadata-pin-or-identity-mismatch')
++        return raw
++    finally:
++        os.close(fd)
++
++
++def pointer(value, selector):
++    if not isinstance(selector, str) or not selector.startswith('/'):
++        raise RefreshError('binding-selector-invalid')
++    for key in selector[1:].split('/'):
++        if re.search(r'~(?![01])', key):
++            raise RefreshError('binding-selector-invalid')
++        key = key.replace('~1', '/').replace('~0', '~')
++        if isinstance(value, list):
++            if not re.fullmatch('0|[1-9][0-9]*', key):
++                raise RefreshError('binding-selector-invalid')
++            value = value[int(key)]
++        else:
++            value = value[key]
++    return value
++
++
++def diagnose(country, spec, evidence_root, *, as_of):
++    """Trusted portfolio configuration, deterministic isolated metadata diagnostic.
++
++    Configuration is reviewed code/data, never a source-provided plugin. Only
++    declared metadata JSON is read. Body pins and manifests under references are
++    declarations, NOT current body-integrity or source-acceptance verification.
++    """
++    result = dict(country=country, status='malformed', errors=[],
++                  metadataBinding=None, bodyReads=0, networkRequests=0,
++                  mappings=0, acceptedRecords=0, countryComplete=False)
++    errors = set()
++    try:
++        now = timestamp(as_of)
++        if country not in COUNTRIES or not isinstance(spec, dict):
++            raise RefreshError('binding-contract-invalid')
++        if spec['country'] != country or not isinstance(spec['holds'], list):
++            raise RefreshError('binding-contract-invalid')
++        result['holds'] = spec['holds']
++        result['applicability'] = spec['applicability']
++        result['references'] = spec['references']
++        result['unknowns'] = spec['unknowns']
++        if spec['state'] == 'missing':
++            result.update(status='missing', errors=['binding-source-input-missing'])
++            return result
++        if spec['state'] != 'retained' or not spec['evidence']:
++            raise RefreshError('binding-contract-invalid')
++        docs, pins = {}, {}
++        root = safe_path(evidence_root)
++        for item in spec['evidence']:
++            name = item['name']
++            if (not valid_input_name(name) or name in docs or not name.endswith('.json')
++                    or item['role'] != 'metadata' or not valid_input_name(item['path'])
++                    or not item['path'].endswith('.json')
++                    or type(item['bytes']) is not int or not 0 < item['bytes'] <= MAX_METADATA):
++                raise RefreshError('binding-metadata-contract-invalid')
++            path = safe_path(root / item['path'])
++            if not path.is_relative_to(root):
++                raise RefreshError('binding-metadata-contract-invalid')
++            try:
++                raw = read_pinned_metadata(path, item)
++            except FileNotFoundError:
++                errors.add('binding-metadata-missing')
++                continue
++            docs[name] = strict_json(raw)
++            pins[name] = item['sha256']
++        if errors:
++            result.update(status='missing', errors=sorted(errors))
++            return result
++        release_digest = pointer(docs[spec['releasePin']['input']],
++                                 spec['releasePin']['selector'])
++        if spec['releaseId'] != 'sha256:' + release_digest:
++            raise RefreshError('binding-source-release-mismatch')
++        fields, origins = {}, {}
++        for field, declaration in spec['fields'].items():
++            if not re.fullmatch('[A-Za-z][A-Za-z0-9]*', field):
++                raise RefreshError('binding-field-invalid')
++            value = pointer(docs[declaration['input']], declaration['selector'])
++            if canonical(value) != canonical(declaration['literal']):
++                raise RefreshError('binding-field-literal-mismatch')
++            fields[field] = value
++            origins['/data/' + field] = dict(
++                kind='source', sourceId=spec['sourceId'], releaseId=spec['releaseId'],
++                inputPath=declaration['input'], inputSha256=pins[declaration['input']],
++                sourceRecordId=declaration['selector'], sourceField=declaration['selector'])
++        row = dict(data=fields, provenance=dict(
++            sourceId=spec['sourceId'], releaseId=spec['releaseId'], fieldOrigins=origins))
++        errors.update(field_origin_errors(row, pins))
++        acquired = pointer(docs[spec['acquisition']['input']], spec['acquisition']['selector'])
++        age = (now - timestamp(acquired)).total_seconds()
++        if age < 0:
++            raise RefreshError('acquisition-timestamp-in-future')
++        # Clock observations only: no shared pure source-neutral planner exists.
++        cache = dict(originalAcquiredAt=acquired, metadataValidatedAt=as_of,
++                     planningCapability='unsupported-shared-planner-absent',
++                     eligibility=None, acquisitionAgeDays=int(age // 86400),
++                     mtimeUsedForFreshness=False, validationResetsAcquisitionAge=False,
++                     automaticDownloads=0, bodyBytesVerified=False,
++                     action='unknown-no-download')
++        if spec['holds']:
++            errors.add('binding-source-held')
++        result['metadataBinding'] = row
++        result['cache'] = cache
++        # Ages/validation observations are outside the content/no-op identity.
++        result['bindingFingerprint'] = sha(canonical(dict(
++            sourceId=spec['sourceId'], releaseId=spec['releaseId'],
++            fields=fields, evidence=pins, policy=spec)))
++        result.update(status='held' if errors else 'metadata-ready', errors=sorted(errors))
++        return result
++    except (KeyError, IndexError, TypeError, ValueError, OSError, OverflowError, RecursionError):
++        # Fixed diagnostics only: never paths, source content or exception text.
++        result.update(status='malformed', errors=['binding-metadata-invalid'])
++        return result
++
++
++def diagnose_all(catalog, evidence_root, *, as_of):
++    return dict(schemaVersion='offmenu-bv-lu-sh-binding/1',
++                scope='metadata-only-not-staging-admission',
++                reports=[diagnose(c, catalog.get(c), evidence_root, as_of=as_of)
++                         for c in COUNTRIES])
++
++
++def publish_report(path, report):
++    """Metadata output replay: identical diagnostic bytes are an actual no-op.
++
++    Different as-of observations are a new report, even for identical content.
++    Source-content identity remains bindingFingerprint; no raw cache is modified.
++    """
++    path = safe_path(path)
++    raw = canonical(report)
++    if path.exists() and path.read_bytes() == raw:
++        return 'verified-no-op'
++    atomic_json(path, report)
++    return 'written'
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--evidence-root', required=True)
++    parser.add_argument('--as-of', required=True, help='Explicit UTC clock, never file mtime')
++    parser.add_argument('--output')
++    args = parser.parse_args(argv)
++    report = diagnose_all(BINDINGS, args.evidence_root, as_of=args.as_of)
++    if args.output:
++        print(publish_report(args.output, report))
++    else:
++        print(canonical(report).decode(), end='')
++    return 0
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/offmenu/refresh/bv_lu_sh_catalog.py b/offmenu/refresh/bv_lu_sh_catalog.py
+new file mode 100644
+index 00000000..cc3031d6
+--- /dev/null
++++ b/offmenu/refresh/bv_lu_sh_catalog.py
+@@ -0,0 +1,106 @@
++"""Pinned retained metadata declarations; references never authorize body access."""
++
++BINDINGS = {'BV': {'applicability': {'dietary-references': 'missing-exact-source-and-applicability',
++                          'ingredients': 'missing-exact-source-and-applicability',
++                          'nutrition': 'missing-exact-source-and-applicability',
++                          'prices-baskets': 'missing-exact-source-and-applicability',
++                          'recipes': 'missing-exact-source-and-applicability',
++                          'retailers-providers': 'missing-exact-source-and-applicability'},
++        'country': 'BV',
++        'holds': ['source-and-applicability-unbound'],
++        'references': [{'bodyReadByBinding': False,
++                        'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-14/BV/author-receipt.json',
++                        'sha256': 'd67e9e011b959467e702b7a58516c2af238a4c67f1bc36371a1b3449f888048c'}],
++        'state': 'missing',
++        'unknowns': {'actualCustodian': None, 'sourceRelease': None}},
++ 'LU': {'acquisition': {'input': 'acquisition.json', 'selector': '/utc'},
++        'applicability': {'dietary-references': 'missing',
++                          'ingredients': 'missing',
++                          'nutrition': 'missing',
++                          'prices-baskets': 'partial-statistical-weight-context',
++                          'recipes': 'missing',
++                          'retailers-providers': 'missing'},
++        'country': 'LU',
++        'evidence': [{'bytes': 20304,
++                      'name': 'source-fields.json',
++                      'path': 'Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-14/LU/source-field-evidence-after4636/source-field-evidence.json',
++                      'role': 'metadata',
++                      'sha256': 'b53b1979e18c720aecbb81a5cada4a1ca5f008afade0cd0e1287d889290b0671'},
++                     {'bytes': 2959,
++                      'name': 'acquisition.json',
++                      'path': 'src/offmenu-data/originals/country-followthrough-20261015/owner-24/LU/1d304822825fa933/receipt.json',
++                      'role': 'metadata',
++                      'sha256': 'd845cdb95b75cfce8c55e0ec5a514d16894211bde3359baa90c83e1626fabb51'}],
++        'fields': {'basePeriod': {'input': 'source-fields.json',
++                                  'literal': '_Z: Not Applicable',
++                                  'selector': '/sourceGroup/basis/sourceBasePeriod'},
++                   'frequency': {'input': 'source-fields.json',
++                                 'literal': 'A: Annual',
++                                 'selector': '/sourceGroup/contextSourceLiteralFields/FREQ: '
++                                             'Frequency'},
++                   'measure': {'input': 'source-fields.json',
++                               'literal': 'IPCN: National consumer price index (NCPI)',
++                               'selector': '/sourceGroup/basis/sourceMeasure'},
++                   'sourceRole': {'input': 'source-fields.json',
++                                  'literal': 'ECOICOP_2018-publisher-classification',
++                                  'selector': '/sourceGroup/sourceRole'},
++                   'unit': {'input': 'source-fields.json',
++                            'literal': 'WEIGHT: Weight per thousand',
++                            'selector': '/sourceGroup/basis/sourceUnit'}},
++        'holds': ['weight-denominator-reference-period-unresolved',
++                  'source-classification-release-unresolved',
++                  'operation-use-and-independent-scope-admission-held'],
++        'references': [{'bodyReadByBinding': False,
++                        'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-14/batch-result.json',
++                        'sha256': 'f2ad600e4656de992cbd22e4f923ffd72e82a584314c82ece8d97c6d5cc8fd74'},
++                       {'bodyReadByBinding': False,
++                        'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-14/LU/validated-input-pins.json',
++                        'sha256': '3193f003079761cf1fa08545c7603877d05e78b8c4044a0781eb8bc84d4a07a7'},
++                       {'bodyReadByBinding': False,
++                        'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-14/LU/B01-W14/returned-evidence-B03/response-binding.json',
++                        'sha256': 'e1179f5b70f34e94f877afed1602f5a8f2eb1d9f85db5939a49b5334b65fcbce'}],
++        'releaseId': 'sha256:b67afc81bec9077eac584495007686c492627336aff3c4ccc3ebd2113fb2577f',
++        'releasePin': {'input': 'acquisition.json', 'selector': '/sha256'},
++        'sourceId': 'STATEC-E5407',
++        'state': 'retained',
++        'unknowns': {'actualOriginalCustodian': None,
++                     'admission': None,
++                     'approvedClassificationVersion': None,
++                     'economicDenominator': None,
++                     'equivalence': None,
++                     'physicalAmount': None,
++                     'referenceExpenditurePeriod': None,
++                     'servingBasis': None,
++                     'targetId': None}},
++ 'SH': {'acquisition': {'input': 'acquisition.json', 'selector': '/utc'},
++        'applicability': {'dietary-references': 'unaccepted-or-missing',
++                          'ingredients': 'unaccepted-or-missing',
++                          'nutrition': 'unaccepted-or-missing',
++                          'prices-baskets': 'unaccepted-or-missing',
++                          'recipes': 'unaccepted-or-missing',
++                          'retailers-providers': 'unaccepted-or-missing'},
++        'country': 'SH',
++        'evidence': [{'bytes': 1402,
++                      'name': 'acquisition.json',
++                      'path': 'src/offmenu-data/originals/country-followthrough-20261015/owner-53/SH/c362a8c9d97cf173b5d3/receipt.json',
++                      'role': 'metadata',
++                      'sha256': '3724c57b7f764762737b7bc50b03a620027fc515e7046bf0060b9da739936562'}],
++        'fields': {'sourceCapture': {'input': 'acquisition.json',
++                                     'literal': '2026-10-14T22:20:39.016291+00:00',
++                                     'selector': '/utc'}},
++        'holds': ['workbook-source-reuse-held',
++                  'worksheet-field-mapping-missing',
++                  'territorial-coverage-unresolved'],
++        'references': [{'bodyReadByBinding': False,
++                        'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-14/SH/author-receipt.json',
++                        'sha256': '1d0a41617ef05fa72954b494e2e05457c7ca28819d4c1deb4a44005b0331243a'}],
++        'releaseId': 'sha256:9572c7f4c0039333fcfdbb9a11e47a44a5d48ce93434c391e0b1ae0e09239d08',
++        'releasePin': {'input': 'acquisition.json', 'selector': '/files/0/sha256'},
++        'sourceId': 'SH-Inflation-9',
++        'state': 'retained',
++        'unknowns': {'AscensionCoverage': None,
++                     'TristanCoverage': None,
++                     'actualOriginalCustodian': None,
++                     'basePeriod': None,
++                     'unit': None,
++                     'worksheetSelectors': None}}}
+diff --git a/tests/test_bv_lu_sh_binding.py b/tests/test_bv_lu_sh_binding.py
+new file mode 100644
+index 00000000..02a8a137
+--- /dev/null
++++ b/tests/test_bv_lu_sh_binding.py
+@@ -0,0 +1,196 @@
++import copy
++import json
++import os
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu.refresh.bv_lu_sh import diagnose, diagnose_all, publish_report
++from offmenu.refresh.core import canonical, sha
++
++NOW = '2026-10-18T00:00:00Z'
++
++
++class PortfolioBindingTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name)
++        self.raw = canonical({'unit': 'authored weight per thousand',
++                              'acquired': '2026-10-01T00:00:00Z', 'bodySha256': '0' * 64})
++        (self.root / 'metadata.json').write_bytes(self.raw)
++        self.spec = dict(
++            country='LU', state='retained', sourceId='fixture-lu', releaseId='sha256:' + '0' * 64,
++            holds=[], applicability={'prices-baskets': 'authored-fixture-only'},
++            unknowns={'denominator': None, 'admission': None}, references=[],
++            evidence=[dict(name='evidence.json', path='metadata.json', bytes=len(self.raw),
++                           sha256=sha(self.raw), role='metadata')],
++            acquisition=dict(input='evidence.json', selector='/acquired'),
++            releasePin=dict(input='evidence.json', selector='/bodySha256'),
++            fields={'unit': dict(input='evidence.json', selector='/unit',
++                                 literal='authored weight per thousand')})
++
++    def run_plan(self, spec=None, now=NOW):
++        return diagnose('LU', self.spec if spec is None else spec, self.root, as_of=now)
++
++    def test_valid_authored_metadata_uses_shared_origin_validator(self):
++        report = self.run_plan()
++        self.assertEqual(report['status'], 'metadata-ready')
++        self.assertEqual(report['errors'], [])
++        origin = report['metadataBinding']['provenance']['fieldOrigins']['/data/unit']
++        self.assertEqual(origin['sourceRecordId'], '/unit')
++        self.assertEqual(origin['inputSha256'], sha(self.raw))
++        self.assertEqual(report['cache']['originalAcquiredAt'], '2026-10-01T00:00:00Z')
++        self.assertEqual(report['cache']['metadataValidatedAt'], NOW)
++        self.assertIsNone(report['unknowns']['denominator'])
++        self.assertEqual((report['acceptedRecords'], report['bodyReads']), (0, 0))
++
++    def test_missing_file_does_not_become_valid(self):
++        (self.root / 'metadata.json').unlink()
++        self.assertEqual(self.run_plan()['status'], 'missing')
++
++    def test_explicit_missing_country(self):
++        s = dict(country='BV', state='missing', holds=['no-source'],
++                 applicability={}, references=[], unknowns={'release': None})
++        report = diagnose('BV', s, self.root, as_of=NOW)
++        self.assertEqual(report['errors'], ['binding-source-input-missing'])
++
++    def test_hold_not_lifted_by_valid_metadata(self):
++        self.spec['holds'] = ['source-reuse-held']
++        report = self.run_plan()
++        self.assertEqual(report['status'], 'held')
++        self.assertIn('binding-source-held', report['errors'])
++        self.assertEqual(report['metadataBinding']['data']['unit'],
++                         'authored weight per thousand')
++        self.assertEqual(report['cache']['automaticDownloads'], 0)
++
++    def test_pin_corruption_and_selector_mismatch(self):
++        (self.root / 'metadata.json').write_bytes(self.raw + b' ')
++        self.assertEqual(self.run_plan()['status'], 'malformed')
++        (self.root / 'metadata.json').write_bytes(self.raw)
++        self.spec['fields']['unit']['selector'] = '/absent'
++        self.assertEqual(self.run_plan()['status'], 'malformed')
++
++    def test_malformed_json_duplicate_key_isolated(self):
++        raw = b'{"unit":1,"unit":2}\n'
++        (self.root / 'metadata.json').write_bytes(raw)
++        self.spec['evidence'][0].update(bytes=len(raw), sha256=sha(raw))
++        report = diagnose_all({'LU': self.spec}, self.root, as_of=NOW)
++        self.assertEqual([x['country'] for x in report['reports']], ['BV', 'LU', 'SH'])
++        self.assertEqual([x['status'] for x in report['reports']],
++                         ['malformed', 'malformed', 'malformed'])
++        self.assertNotIn(str(self.root), json.dumps(report))
++
++    def test_acquisition_observations_do_not_claim_planner_eligibility(self):
++        with patch('socket.socket', side_effect=AssertionError('network prohibited')):
++            recent = self.run_plan(now='2026-10-02T00:00:00Z')
++            old = self.run_plan(now='2026-12-01T00:00:00Z')
++        for report in (recent, old):
++            self.assertEqual(report['status'], 'metadata-ready')
++            self.assertEqual(report['cache']['planningCapability'],
++                             'unsupported-shared-planner-absent')
++            self.assertIsNone(report['cache']['eligibility'])
++            self.assertEqual(report['cache']['action'], 'unknown-no-download')
++            self.assertEqual(report['cache']['automaticDownloads'], 0)
++            self.assertFalse(report['cache']['validationResetsAcquisitionAge'])
++        self.assertGreater(old['cache']['acquisitionAgeDays'], recent['cache']['acquisitionAgeDays'])
++        self.assertEqual(recent['bindingFingerprint'], old['bindingFingerprint'])
++
++    def test_fifo_replacement_before_open_rejected_and_peer_progresses(self):
++        peer = copy.deepcopy(self.spec)
++        peer['country'] = 'SH'
++        peer['evidence'][0]['path'] = 'peer.json'
++        (self.root / 'peer.json').write_bytes(self.raw)
++        original_open = os.open
++        replaced = []
++        def replace(path, flags, *args, **kwargs):
++            if Path(path) == self.root / 'metadata.json':
++                self.assertTrue(flags & os.O_NONBLOCK)
++                self.assertTrue(flags & os.O_NOFOLLOW)
++                Path(path).unlink()
++                os.mkfifo(path)
++                replaced.append(True)
++            return original_open(path, flags, *args, **kwargs)
++        with patch('offmenu.refresh.bv_lu_sh.os.open', replace):
++            report = diagnose_all({'LU': self.spec, 'SH': peer}, self.root, as_of=NOW)
++        self.assertEqual(replaced, [True])
++        self.assertEqual([x['status'] for x in report['reports']],
++                         ['malformed', 'malformed', 'metadata-ready'])
++
++    def test_growth_read_is_bounded_to_pin_plus_one(self):
++        original_read = os.read
++        requested = []
++        def grow(fd, size):
++            if not requested:
++                with (self.root / 'metadata.json').open('ab') as stream:
++                    stream.write(b'x' * (1024 * 1024))
++            requested.append(size)
++            return original_read(fd, size)
++        with patch('offmenu.refresh.bv_lu_sh.os.read', grow):
++            self.assertEqual(self.run_plan()['status'], 'malformed')
++        self.assertLessEqual(sum(requested), len(self.raw) + 1)
++
++    def test_future_naive_and_bad_clock_fail_closed(self):
++        for now in ('2026-09-01T00:00:00Z', '2026-10-18', 'invalid'):
++            with self.subTest(now=now):
++                self.assertEqual(self.run_plan(now=now)['status'], 'malformed')
++
++    def test_metadata_only_and_path_contract(self):
++        for changes in (dict(role='body'), dict(path='../raw.csv'),
++                        dict(path='/tmp/private.json'), dict(bytes=999999)):
++            spec = copy.deepcopy(self.spec)
++            spec['evidence'][0].update(changes)
++            self.assertEqual(self.run_plan(spec)['status'], 'malformed')
++        original = self.root / 'body.csv'
++        original.write_text('must never open')
++        spec = copy.deepcopy(self.spec)
++        spec['references'] = [{'path': str(original), 'sha256': '0' * 64}]
++        read_bytes = Path.read_bytes
++        touched = []
++        def guarded_read(path):
++            touched.append(path)
++            if path == original:
++                raise AssertionError('body read prohibited')
++            return read_bytes(path)
++        with patch.object(Path, 'read_bytes', guarded_read):
++            self.assertEqual(self.run_plan(spec)['status'], 'metadata-ready')
++        self.assertNotIn(original, touched)
++
++    def test_release_pin_mismatch(self):
++        self.spec['releaseId'] = 'sha256:' + '1' * 64
++        self.assertEqual(self.run_plan()['status'], 'malformed')
++
++    def test_one_malformed_binding_does_not_stop_peer(self):
++        peer = copy.deepcopy(self.spec)
++        peer['country'] = 'SH'
++        peer['evidence'][0]['path'] = 'peer.json'
++        (self.root / 'peer.json').write_bytes(self.raw)
++        self.spec['evidence'][0]['sha256'] = 'f' * 64
++        result = diagnose_all({'LU': self.spec, 'SH': peer}, self.root, as_of=NOW)
++        self.assertEqual([x['status'] for x in result['reports']],
++                         ['malformed', 'malformed', 'metadata-ready'])
++
++    def test_symlink_and_nonfinite_rejected(self):
++        (self.root / 'link.json').symlink_to(self.root / 'metadata.json')
++        self.spec['evidence'][0]['path'] = 'link.json'
++        self.assertEqual(self.run_plan()['status'], 'malformed')
++        self.spec['evidence'][0]['path'] = 'metadata.json'
++        raw = b'{"unit": NaN, "acquired":"2026-10-01T00:00:00Z"}'
++        (self.root / 'metadata.json').write_bytes(raw)
++        self.spec['evidence'][0].update(bytes=len(raw), sha256=sha(raw))
++        self.assertEqual(self.run_plan()['status'], 'malformed')
++
++    def test_actual_noop_preserves_output_inode_and_mtime(self):
++        target = self.root / 'out' / 'plan.json'
++        report = self.run_plan()
++        self.assertEqual(publish_report(target, report), 'written')
++        before = target.stat()
++        self.assertEqual(publish_report(target, report), 'verified-no-op')
++        after = target.stat()
++        self.assertEqual((before.st_ino, before.st_mtime_ns), (after.st_ino, after.st_mtime_ns))
++        self.assertEqual(target.read_bytes(), canonical(report))
++
++
++if __name__ == '__main__':
++    unittest.main()

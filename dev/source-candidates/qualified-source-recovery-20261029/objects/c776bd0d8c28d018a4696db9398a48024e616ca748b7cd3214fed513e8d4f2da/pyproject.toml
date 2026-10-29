@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "offmenu"
+version = "0.1.0"
+description = "Offline barcode inventory, recipe matching and retailer observations"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["Pillow>=10", "openpyxl==3.1.5", "mwparserfromhell==0.7.2", "jsonschema==4.26.0", "jsonschema-rs==0.58.6"]
+collection = ["duckdb==1.5.6", "pyarrow==26.0.0", "requests==2.34.2", "beautifulsoup4==4.15.0", "mwparserfromhell==0.7.2"]
+
+[project.scripts]
+offmenu = "offmenu.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["offmenu*"]
+
+[tool.setuptools.package-data]
+offmenu = ["web.html"]

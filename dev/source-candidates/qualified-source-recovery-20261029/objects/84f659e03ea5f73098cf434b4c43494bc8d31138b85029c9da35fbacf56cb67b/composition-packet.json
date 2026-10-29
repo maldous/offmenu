@@ -1,0 +1,55 @@
+{
+  "candidate": "c7a28fc7f48a1f5464a78f641a98deebcc16bab3",
+  "tree": "cf0cb171eedb7514802eef865b3098f052f62f66",
+  "base": "e4c87278bf94f791b0dd7f30672b65edf992317e",
+  "reviewedSource": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+  "compositionParent": "4dd1a589520b624c3e72635affbb1d9cc13b98aa",
+  "compositionParents": [
+    "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+    "e4c87278bf94f791b0dd7f30672b65edf992317e"
+  ],
+  "branch": "feature/native-d1-current-develop-20261015",
+  "worktree": "/tmp/offmenu-d1-integration-20261015",
+  "ownedAdditions": [
+    "cloud/session-state-d1-owner04.mjs",
+    "docs/session-state-d1-owner04.md",
+    "tests-web/session-state-d1-owner04.test.mjs"
+  ],
+  "changedPaths": [
+    "cloud/session-state-d1-owner04.mjs",
+    "docs/i18n-coverage.json",
+    "docs/session-state-d1-owner04.md",
+    "public/locales/en.json",
+    "tests-web/session-state-d1-owner04.test.mjs"
+  ],
+  "generatedInventory": "existing deterministicextractor;8addedEnglishidentitystrings;Arabicunchanged376;checkPASS",
+  "verifiedClosureSHA256": {
+    "package-lock.json": "f461a0c3fe8d81be447158514d3b5c45ef35f2866bfdd212e574b2673caf0cde",
+    "package.json": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+    "tests-web/session-state-d1-owner04.test.mjs": "4d36d9548c4b6d6a8d5ccfa4e44ba97eed4db1510b34516cbc2160114271a41c",
+    "cloud/session-state-d1-owner04.mjs": "1dc8633974f83f643d13b27cdeb44f3e4a4c3093c487583ff8719fefa574d12a",
+    "cloud/state.mjs": "801c68accc3a21fa59756e8cc8029251319ff0266ad93152563ad499f666b88b",
+    "public/model.js": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68",
+    "public/ingredients.js": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575",
+    "public/i18n.js": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+    "public/locale-negotiation.js": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+    "public/locales/ar.js": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+    "public/insights-model.js": "86a2b1b8359581df5108b08c0b9cfbeee2ec5f84dba4ff230384cb1d165cf0f9",
+    "public/menu-model.js": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70",
+    "public/checkout-model.js": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7",
+    "public/unified-data.js": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749",
+    "public/countries.js": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3",
+    "public/cooking-model.js": "f41d1f8af6c018393e58445a91d46ec934069331121390e6c48dc80651a059c7"
+  },
+  "priorReview": "/home/user/Documents/Codex/2026-10-15/worker13-d1-38a7d0b-review/receipt.json",
+  "priorReviewSHA256": "5afc88a12e6ed8d6ab4de6c0ef2a4b03c6fac5f6ddb6d7aae7b4cd8dc09c86fb",
+  "retainedTests": "prior5native+8extended; no broadreplay; same16closurepinsverified",
+  "existingPr": "openPRlist contains only9collections and11namedreference; none nativeD1",
+  "limits": [
+    "Standalone module only",
+    "No route/sessionactivation/schema migration",
+    "No main or productiondeployment",
+    "Priorreviewqualificationnotbroadened"
+  ],
+  "status": "Await SAME13 exactcomposition/closure/generatedinventoryreview beforepublication"
+}

@@ -1,0 +1,1173 @@
+diff --git a/docs/operations/worker24/README.md b/docs/operations/worker24/README.md
+new file mode 100644
+index 00000000..1793f1dd
+--- /dev/null
++++ b/docs/operations/worker24/README.md
+@@ -0,0 +1,97 @@
++# PF / SL / TF / UY retained metadata bindings
++
++M-STAGING-BIND-20261018-W24. Baseline: reviewed develop snapshot
++`abecb99ee1125730ccbc2824b6ec49ffc5cc4302` (PR41). Pending PR42 and its
++reproduced P2 are outside this baseline. No shared core edits.
++
++Run from the repository:
++
++```sh
++python3 -m offmenu.refresh.worker24_bindings --now 2026-10-18T00:00:00Z
++python3 -m unittest discover -s tests -p test_worker24_bindings.py
++```
++
++The CLI reads only committed binding metadata. Embedded absolute evidence and
++candidate paths are Foo custody pointers, never opened by the CLI. The report
++does not certify current asset availability, bytes, rights or data acceptance.
++The original immutable candidates/manifests remain unchanged. This metadata
++package installs neither a production `SourceContract` nor GLOBAL handlers.
++
++Default tests read only committed authored metadata fixtures. They resolve the
++`tables` pointers, reject the old `members` pointer and reject declaration or
++evidence-hash drift. Private Foo files are not required by test discovery.
++For an explicit check of the actual eleven PF/UY metadata evidence pointers on
++Foo, separately run:
++
++```sh
++python3 -m offmenu.refresh.worker24_metadata_diagnostic --foo-metadata
++```
++
++This diagnostic follows only pinned metadata evidence paths. It checks their
++hashes and the declared filename, digest, size, headers and release version;
++it never opens the source/candidate body paths inside those documents. Missing
++private metadata returns an unavailable diagnostic and exit2. This command is
++an opt-in custody check, not a default test or payload validation.
++Its metadata reads use nonblocking, no-follow, read-only descriptors, reject
++nonregular or oversized files and verify descriptor/path identity, size and
++timestamps across the read. An unavailable, replaced or changed file returns a
++typed diagnostic. The reader never opens an output file or changes input bytes.
++
++`bindings.json` pins existing metadata receipts, PF's ten individual member
++versions/hashes/headers (556 prior lexical records), and UY's product resource
++version/hash/headers (379 prior lexical records). It does not copy product rows,
++establishment records or raw datasets. PF retains release identity separately
++per member; its umbrella name is not a publisher release ID. UY's product
++resource version does not establish applicability of price descriptors to2025.
++Counts are historical receipt claims, not new validation results.
++
++`origin_template` maps ordered lexical cells to exact retained header selectors,
++input digest, member release and caller-supplied source record locator. The
++caller must independently verify actual source coordinates and values before
++staging execution. Authored fixture checks reuse shared
++`field_provenance.field_origin_errors`; serialization, strict JSON and UTC time
++validation reuse shared refresh core helpers. No parallel country parser exists.
++
++All native unit/basis fields remain null where per-cell units are not reviewed.
++Source titles and headers remain literal; tonnes, hectares or product labels
++do not become nutrients, serving bases, canonical identities or market joins.
++Empty lexical strings and zero strings remain distinct. Actual candidates are
++not passed through these fixture helpers in this task.
++
++The metadata planner separates original acquisition and later validation times.
++Missing original acquisition evidence blocks freshness claims; file mtime,
++release publication date and receipt-validation time cannot substitute for it.
++Below30days it proposes retained metadata reuse. At30days it requires review
++without download. There is no force option or network implementation. Content
++identity excludes these observation clocks; unchanged metadata reports a no-op
++while freshness is independently reevaluated. This is not a payload cache or a
++claim that an operational30-day source-refresh lifecycle has been accepted.
++
++Diagnostics are per-profile (`missing`, `held`, `malformed`,
++`stale-review-required`, `reuse-metadata-only`). One profile's failure preserves
++peer outcomes. `metadataNoOp` binds only configuration content. No report implies
++qualification, reviewed records, gold admission or country completion.
++
++## Remaining dependencies and integration request
++
++| Dependency | Type / current owner | Next action |
++| --- | --- | --- |
++| PF/UY original acquisition timestamps and custody evidence | Missing input; original custodians24/47, selected through Morgan | Supply exact retained acquisition metadata, not a new download or guessed date |
++| Actual cell-coordinate semantics and native staging schema | Review/contract; Morgan designated reviewer + integration00 | Review exact lexical-only scope and configure trusted `SourceContract` before any real row processing |
++| Shared fixture-independent refresh planner hook | Shared interface; integration00 | Expose trusted source/release/input-key acquisition planning with explicit clock, no force bypass under30days, isolated diagnostics; existing `plan_fixture` is fixture-registry-specific |
++| PF non-agricultural/IEOM and other country types | Source-use/applicability; Morgan + source owner | Supply operation-specific evidence; current metadata does not expand use |
++| UY price body/allocation, date/schema join, composition release/rights | Missing input/authorization/source-use;47/45 via Morgan | Select exact metadata resolution; no2GB price acquisition or joins in this task |
++| SL403 | Explicit denied route; Morgan/source owner | Preserve no retry; qualified evidence through existing owner only |
++| TF report014873-01 exact section, max2pages, attribution and policy403 | Source-use + denied route; Morgan/source owner | Supply exact permitted section/use evidence; no report read or alternate route |
++
++Proposed integrator interface is a successor request, not an installed core
++change: `plan_retained(contract, acquisition_evidence, now, previous_content_key)`
++should accept trusted reviewed bindings without admitting sources, retain input
++hash/custody checks in the existing execution/acceptance boundary, and keep
++original acquisition time independent of validation. This package deliberately
++does not clone shared cache, parser or acceptance engines to fill that gap.
++
++All six requested country types remain unaccepted in all four countries.
++No new source downloads, raw-body reads, production/CIX/DEV7645 changes,
++rights expansion, credential changes or held-route retry occurred. Independent
++approval and develop integration are required before the next request.
+diff --git a/docs/operations/worker24/bindings.json b/docs/operations/worker24/bindings.json
+new file mode 100644
+index 00000000..82d75a06
+--- /dev/null
++++ b/docs/operations/worker24/bindings.json
+@@ -0,0 +1,487 @@
++{
++  "schemaVersion": "offmenu-worker24-binding/1",
++  "baseline": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
++  "fixture": false,
++  "profiles": [
++    {
++      "country": "PF",
++      "sourceId": "ispf-agriculture-690ba547e068527bfd8ebca5",
++      "releaseId": "retained-member-versions",
++      "holds": [],
++      "scope": "private lexical metadata planning only",
++      "applicability": {
++        "ingredients": "support-reference-only",
++        "recipes": "not-established",
++        "nutrition": "not-established",
++        "retailers/providers": "not-established",
++        "prices/baskets": "not-established",
++        "dietary references": "not-established"
++      },
++      "candidate": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/agricultural-tables.lexical-candidate.jsonl",
++        "sha256": "fbb46d1f52a5fae2a958158726ff67546117b64c1d6d3439dc5b868e7932b9e7",
++        "bytes": 110841
++      },
++      "evidence": [
++        {
++          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json",
++          "sha256": "ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a"
++        },
++        {
++          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/projection-validation.json",
++          "sha256": "bfce279502a073cc5c9409817086b5274deed96b3ca6344b3ac843d594881e73"
++        }
++      ],
++      "inputs": [
++        {
++          "path": "11406.csv",
++          "sha256": "49f41413dabb84890fdf2954a2de4ab7995c39d428e15bec5fc83b4ce3af5163",
++          "bytes": 307,
++          "releaseId": "2025-11-18T20:20:17.169000+00:00",
++          "selectorEvidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json",
++            "sha256": "ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a"
++          },
++          "selector": "/tables/0",
++          "headers": [
++            "Sexe",
++            "Filière bovine",
++            "Filière caprine",
++            "Filière porcine",
++            "Filière avicole",
++            "Filière apicole",
++            "Filière vanille",
++            "Filière cucurbitacées",
++            "Filière solanacées",
++            "Filière légumes feuilles",
++            "Filière horticole"
++          ],
++          "expectedLexicalRecords": 2,
++          "nativeUnit": null,
++          "nativeBasis": null,
++          "unitBasisPolicy": "Preserve source header/title; no per-cell canonical unit/basis inferred.",
++          "title": "Répartition par sexe des responsables d’exploitations agricoles par filière en Polynésie française en 2023"
++        },
++        {
++          "path": "11405.csv",
++          "sha256": "192e23e6e29b80e2ad5e3eea207176ee32bf2df3d0d5a0d8b7192fe2b9290f37",
++          "bytes": 458,
++          "releaseId": "2025-11-18T20:20:15.147000+00:00",
++          "selectorEvidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json",
++            "sha256": "ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a"
++          },
++          "selector": "/tables/1",
++          "headers": [
++            "Végétal",
++            "Part de la surface certifiée bio"
++          ],
++          "expectedLexicalRecords": 22,
++          "nativeUnit": null,
++          "nativeBasis": null,
++          "unitBasisPolicy": "Preserve source header/title; no per-cell canonical unit/basis inferred.",
++          "title": "Part des surfaces cultivées certifiées en agriculture biologique selon les types de végétaux en Polynésie française en 2023"
++        },
++        {
++          "path": "11404.csv",
++          "sha256": "20f9efb30103be133205839232a4f2b30d462bb4bc70a1397e64160810d2a361",
++          "bytes": 2290,
++          "releaseId": "2025-11-18T20:20:13.058000+00:00",
++          "selectorEvidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json",
++            "sha256": "ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a"
++          },
++          "selector": "/tables/2",
++          "headers": [
++            "Archipel",
++            "Agrumes - Nombre exploitations",
++            "Agrumes - Surface exploitation",
++            "Avocat - Nombre exploitations",
++            "Avocat - Surface exploitation",
++            "Ananas - Nombre exploitations",
++            "Ananas - Surface exploitation",
++            "Cocotier fruitier - Nombre exploitations",
++            "Cocotier fruitier - Surface exploitation",
++            "Coprah - Nombre exploitations",
++            "Cocoteraies - Nombre exploitations",
++            "Tubercules - Nombre exploitations",
++            "Tubercules - Surface exploitation",
++            "Bananes - Nombre exploitations",
++            "Bananes - Surface exploitation",
++            "Uru - Nombre exploitations",
++            "Uru - Surface exploitation",
++            "Cucurbitacées - Nombre exploitations",
++            "Cucurbitacées - Surface exploitation",
++            "Solanacées - Nombre exploitations",
++            "Solanacées - Surface exploitation",
++            "Légumes feuilles - Nombre exploitations",
++            "Légumes feuilles - Surface exploitation",
++            "Carotte - Nombre exploitations",
++            "Carotte - Surface exploitation",
++            "Vanille - Nombre exploitations",
++            "Vanille - Surface exploitation",
++            "Canne à sucre - Nombre exploitations",
++            "Canne à sucre - Surface exploitation",
++            "Café - Nombre exploitations",
++            "Café - Surface exploitation",
++            "Cacao - Nombre exploitations",
++            "Cacao - Surface exploitation",
++            "Noni - Nombre exploitations",
++            "Noni - Surface exploitation",
++            "Autres PAM - Nombre exploitations",
++            "Mangue* - Nombre exploitations",
++            "Mangue - Surface exploitation",
++            "Litchi - Nombre exploitations",
++            "Ramboutans - Surface exploitation",
++            "Papaye - Surface exploitation",
++            "Pitaya - Surface exploitation",
++            "Corossol - Surface exploitation",
++            "Goyave - Surface exploitation"
++          ],
++          "expectedLexicalRecords": 6,
++          "nativeUnit": null,
++          "nativeBasis": null,
++          "unitBasisPolicy": "Preserve source header/title; no per-cell canonical unit/basis inferred.",
++          "title": "Exploitations végétales par archipel en Polynésie française en 2023 : nombre et surfaces cultivées"
++        },
++        {
++          "path": "12001.csv",
++          "sha256": "c57f29ffaa3e9f6b4668fbf22242803f0d225b0783999a77de27cc93c7e2c7b7",
++          "bytes": 827,
++          "releaseId": "2025-11-05T20:31:40.425000+00:00",
++          "selectorEvidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json",
++            "sha256": "ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a"
++          },
++          "selector": "/tables/3",
++          "headers": [
++            "Année",
++            "Superficie autorisée - Tuamotu (dont Marutea Sud)",
++            "Superficie autorisée - Gambier",
++            "Superficie autorisée - Îles Sous-le-Vent",
++            "Superficie autorisée totale",
++            "Nombre d'autorisations - Stations de colletage",
++            "Nombre d'autorisations - Producteurs"
++          ],
++          "expectedLexicalRecords": 17,
++          "nativeUnit": null,
++          "nativeBasis": null,
++          "unitBasisPolicy": "Preserve source header/title; no per-cell canonical unit/basis inferred.",
++          "title": "Évolution des superficies perlicoles autorisées"
++        },
++        {
++          "path": "11903.csv",
++          "sha256": "bb29882fdd7b4998b14c417efc1203e02f4ca85114bc99929bd6844842ba1d23",
++          "bytes": 513,
++          "releaseId": "2025-11-05T19:37:35.993000+00:00",
++          "selectorEvidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json",
++            "sha256": "ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a"
++          },
++          "selector": "/tables/4",
++          "headers": [
++            "Année",
++            "Thon à nageoires jaunes",
++            "Bonite",
++            "Thon germon",
++            "Thon obèse",
++            "Total thonidés",
++            "Mahi mahi",
++            "Marlins (bleu, rayé, voilier)",
++            "Thazard",
++            "Poissons du lagon",
++            "Paru",
++            "Divers pélagiques",
++            "Petits pélagiques",
++            "Mollusques / Crustacés",
++            "Marara",
++            "Total"
++          ],
++          "expectedLexicalRecords": 5,
++          "nativeUnit": null,
++          "nativeBasis": null,
++          "unitBasisPolicy": "Preserve source header/title; no per-cell canonical unit/basis inferred.",
++          "title": "Évolution des captures déclarées de la pêche côtière par espèce (poids vif en tonnes)"
++        },
++        {
++          "path": "11902.csv",
++          "sha256": "d8cf71982e34384a38e9e78b49ca6710bf7fa99598101b93bb36c6b4748052e2",
++          "bytes": 624,
++          "releaseId": "2025-11-05T19:37:33.956000+00:00",
++          "selectorEvidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json",
++            "sha256": "ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a"
++          },
++          "selector": "/tables/5",
++          "headers": [
++            "Année",
++            "Thon Germon",
++            "Thon à nageoires jaunes",
++            "Thon obèse",
++            "Marlin bleu",
++            "Thazard",
++            "Mahi mahi",
++            "Espadon",
++            "Saumon des dieux",
++            "Marlin rayé",
++            "Bonite",
++            "Papio",
++            "Marlin noir",
++            "Makaire à rostre court",
++            "Voilier d’Indo-Pacifique",
++            "Thon rouge du Pacifique",
++            "Total"
++          ],
++          "expectedLexicalRecords": 6,
++          "nativeUnit": null,
++          "nativeBasis": null,
++          "unitBasisPolicy": "Preserve source header/title; no per-cell canonical unit/basis inferred.",
++          "title": "Évolution de la production commerciale de la pêche palangrière par espèce (poids vif en tonnes)"
++        },
++        {
++          "path": "11901.csv",
++          "sha256": "4b54274723bc39ef8509f0aeeb3b4cf5da6fc401d1552614ea156d19efbc5b2a",
++          "bytes": 593,
++          "releaseId": "2025-11-05T19:37:31.758000+00:00",
++          "selectorEvidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json",
++            "sha256": "ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a"
++          },
++          "selector": "/tables/6",
++          "headers": [
++            "Année",
++            "Navires actifs",
++            "Production",
++            "Hameçons"
++          ],
++          "expectedLexicalRecords": 25,
++          "nativeUnit": null,
++          "nativeBasis": null,
++          "unitBasisPolicy": "Preserve source header/title; no per-cell canonical unit/basis inferred.",
++          "title": "Évolution de la flotte palangrière active et de l’effort de pêche"
++        },
++        {
++          "path": "11402.csv",
++          "sha256": "106d60b6ce4221b2f064f56ca3c8719d9f090e39ec8abc448d8051fa9fa325b1",
++          "bytes": 522,
++          "releaseId": "2025-11-05T19:37:48.544000+00:00",
++          "selectorEvidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json",
++            "sha256": "ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a"
++          },
++          "selector": "/tables/7",
++          "headers": [
++            "Type de culture",
++            "Surface en 2012 (ha)",
++            "Surface en 2023 (ha)"
++          ],
++          "expectedLexicalRecords": 10,
++          "nativeUnit": null,
++          "nativeBasis": null,
++          "unitBasisPolicy": "Preserve source header/title; no per-cell canonical unit/basis inferred.",
++          "title": "Surface agricole utilisée par type de culture"
++        },
++        {
++          "path": "11401.csv",
++          "sha256": "397b8d4f56592fff7b62547a76257cfbc85298255c8db464406f79ccd3be95bf",
++          "bytes": 15655,
++          "releaseId": "2025-11-05T19:37:44.915000+00:00",
++          "selectorEvidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json",
++            "sha256": "ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a"
++          },
++          "selector": "/tables/8",
++          "headers": [
++            "Mois",
++            "Coprah entré en silo Tous archipels",
++            "Coprah entré en silo aux Australes ",
++            "Coprah entré en silo aux Marquises",
++            "Coprah entré en silo aux Tuamotu-Gambier",
++            "Coprah entré en silo aux îles du vent",
++            "Coprah entré en silo aux îles sous le vent"
++          ],
++          "expectedLexicalRecords": 457,
++          "nativeUnit": null,
++          "nativeBasis": null,
++          "unitBasisPolicy": "Preserve source header/title; no per-cell canonical unit/basis inferred.",
++          "title": "Production de coprah"
++        },
++        {
++          "path": "11403.csv",
++          "sha256": "ca8eadb18d2b603aa7d7b80b47bb1ff4523a7d006f7e943308a4788a8a105c4a",
++          "bytes": 601,
++          "releaseId": "2025-11-18T20:20:10.560000+00:00",
++          "selectorEvidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/PF/table-index-and-attribution.json",
++            "sha256": "ac86f7fe9d4cb5c2b81d994dceeddc812e2e5a7f882d1a68dcef8ec00f195b3a"
++          },
++          "selector": "/tables/9",
++          "headers": [
++            "Archipel",
++            "Bovins élevages",
++            "Bovins animaux",
++            "Porcins élevages",
++            "Porcins animaux",
++            "Volailles élevages",
++            "Volailles animaux",
++            "Poules pondeuses élevages",
++            "Poules pondeuses animaux",
++            "Abeilles élevages",
++            "Abeilles ruches",
++            "Caprins élevages",
++            "Caprins animaux"
++          ],
++          "expectedLexicalRecords": 6,
++          "nativeUnit": null,
++          "nativeBasis": null,
++          "unitBasisPolicy": "Preserve source header/title; no per-cell canonical unit/basis inferred.",
++          "title": "Nombre d’élevages et d’animaux par subdivision"
++        }
++      ],
++      "acquisition": {
++        "originalAcquiredAt": null,
++        "lastValidatedAt": null
++      },
++      "remaining": [
++        "original-acquisition-evidence",
++        "reviewed-native-staging-schema",
++        "per-datum-source-coordinate-validation",
++        "SourceContract-and-independent-review",
++        "IEOM-operation-specific-corpus-use-unresolved",
++        "PNDB-handoff-is-metadata-only-not-PF-data"
++      ],
++      "permittedOperations": [],
++      "candidateUse": "Existing attributed lexical projection retained; no operation expanded by this metadata package."
++    },
++    {
++      "country": "UY",
++      "sourceId": "sipc-35d8f45e-2aa7-48b5-98dd-f973b05cf8ba",
++      "releaseId": "SIPC2025-v1.0-product-resource-2025-08-27T14:23:17.537759",
++      "holds": [],
++      "scope": "private lexical metadata planning only",
++      "applicability": {
++        "ingredients": "support-reference-only",
++        "recipes": "not-established",
++        "nutrition": "not-established",
++        "retailers/providers": "not-established",
++        "prices/baskets": "not-established",
++        "dietary references": "not-established"
++      },
++      "candidate": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/UY/products.lexical-candidate.jsonl",
++        "sha256": "3cb006c44bc78861656204638dabdea7a448e7f34758475066941b4e6cd073da",
++        "bytes": 78184
++      },
++      "evidence": [
++        {
++          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/UY/support-validation.json",
++          "sha256": "13cbb0f08cf7c0898b2279cc17412b7ceb0bf0b680ba785545a5b22ef055eb4e"
++        },
++        {
++          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/UY/support-use-and-attribution.json",
++          "sha256": "6daf34cdf081c27317be99e08c69d84bc6a77583cb5bd6ce3fdd2cbcd3fc83e3"
++        }
++      ],
++      "inputs": [
++        {
++          "path": "productos.csv",
++          "sha256": "7c87d4186eaf88a935abc82e0b25cdc5665abb788f8863c951d46f2acdbf0349",
++          "bytes": 29877,
++          "releaseId": "2025-08-27T14:23:17.537759",
++          "selectorEvidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/UY/support-validation.json",
++            "sha256": "13cbb0f08cf7c0898b2279cc17412b7ceb0bf0b680ba785545a5b22ef055eb4e"
++          },
++          "selector": "/tables/0",
++          "headers": [
++            "id.producto",
++            "producto",
++            "marca",
++            "especificacion",
++            "nombre"
++          ],
++          "expectedLexicalRecords": 379,
++          "nativeUnit": null,
++          "nativeBasis": null,
++          "unitBasisPolicy": "Preserve source header/title; no per-cell canonical unit/basis inferred.",
++          "title": null
++        }
++      ],
++      "acquisition": {
++        "originalAcquiredAt": null,
++        "lastValidatedAt": null
++      },
++      "remaining": [
++        "original-acquisition-evidence",
++        "reviewed-native-staging-schema",
++        "per-datum-source-coordinate-validation",
++        "SourceContract-and-independent-review",
++        "47-price-body-allocation-and-2024-2025-schema-applicability",
++        "45-composition-primary-edition-and-rights"
++      ],
++      "permittedOperations": [],
++      "candidateUse": "Existing attributed lexical projection retained; no operation expanded by this metadata package."
++    },
++    {
++      "country": "SL",
++      "sourceId": "SL-unbound",
++      "releaseId": null,
++      "holds": [
++        "explicit-403-no-retry-no-qualified-release"
++      ],
++      "inputs": [],
++      "evidence": [],
++      "acquisition": {
++        "originalAcquiredAt": null,
++        "lastValidatedAt": null
++      },
++      "applicability": {
++        "ingredients": "not-established",
++        "recipes": "not-established",
++        "nutrition": "not-established",
++        "retailers/providers": "not-established",
++        "prices/baskets": "not-established",
++        "dietary references": "not-established"
++      },
++      "remaining": [
++        "qualified-exact-release-and-use-evidence"
++      ],
++      "permittedOperations": []
++    },
++    {
++      "country": "TF",
++      "sourceId": "TF-unbound",
++      "releaseId": null,
++      "holds": [
++        "IGEDD-policy-403-and-exact-report-use-section-attribution-unresolved"
++      ],
++      "inputs": [],
++      "evidence": [],
++      "acquisition": {
++        "originalAcquiredAt": null,
++        "lastValidatedAt": null
++      },
++      "applicability": {
++        "ingredients": "not-established",
++        "recipes": "not-established",
++        "nutrition": "not-established",
++        "retailers/providers": "not-established",
++        "prices/baskets": "not-established",
++        "dietary references": "not-established"
++      },
++      "remaining": [
++        "qualified-exact-release-and-use-evidence"
++      ],
++      "permittedOperations": []
++    }
++  ],
++  "productionAdmission": false,
++  "countryAcceptance": false,
++  "policy": {
++    "minimumReuseDays": 30,
++    "networkEnabled": false,
++    "forceBypassAllowed": false,
++    "validationResetsAcquisitionAge": false,
++    "unknownsRemainNull": true
++  }
++}
+diff --git a/offmenu/refresh/worker24_bindings.py b/offmenu/refresh/worker24_bindings.py
+new file mode 100644
+index 00000000..d9227fca
+--- /dev/null
++++ b/offmenu/refresh/worker24_bindings.py
+@@ -0,0 +1,146 @@
++"""PF/SL/TF/UY metadata binding only; never opens source/candidate paths.
++
++Shared validators remain authoritative. No source engines, network clients,
++SourceContracts, acceptance receipts or automatic refresh jobs are installed.
++"""
++import argparse
++from copy import deepcopy
++from pathlib import Path
++import re
++
++from .core import RefreshError, canonical, sha, strict_json, timestamp
++from .field_provenance import field_origin_errors
++
++CONFIG = Path(__file__).resolve().parents[2] / 'docs/operations/worker24/bindings.json'
++COUNTRIES = {'PF', 'SL', 'TF', 'UY'}
++
++
++def origin_template(profile, input_path, record_id):
++    """Declare lexical cell origins; coordinate/value checking remains external.
++
++    Only headers already evidenced in retained metadata are selectors. Numeric
++    units, nutrient mappings, market availability and source joins are absent.
++    """
++    asset = next(x for x in profile['inputs'] if x['path'] == input_path)
++    return {
++        '/data/cells/' + str(i): {
++            'kind': 'source', 'sourceId': profile['sourceId'],
++            'releaseId': asset['releaseId'], 'inputPath': input_path,
++            'inputSha256': asset['sha256'], 'sourceRecordId': record_id,
++            'sourceField': header,
++        } for i, header in enumerate(asset['headers'])
++    }
++
++
++def authored_row_errors(profile, input_path, row):
++    """Shared structural provenance validator for authored fixtures only.
++
++    Does not validate any actual source value or establish an acceptance scope.
++    """
++    asset = next(x for x in profile['inputs'] if x['path'] == input_path)
++    errors = field_origin_errors(row, {input_path: asset['sha256']})
++    cells = row.get('data', {}).get('cells')
++    if (not isinstance(cells, list) or len(cells) != len(asset['headers'])
++            or any(not isinstance(cell, str) for cell in cells)):
++        errors.append('lexical-shape-invalid')
++    provenance = row.get('provenance', {})
++    if (provenance.get('sourceId') != profile['sourceId']
++            or provenance.get('releaseId') != asset['releaseId']):
++        errors.append('binding-release-mismatch')
++    for i, header in enumerate(asset['headers']):
++        origin = provenance.get('fieldOrigins', {}).get('/data/cells/' + str(i), {})
++        if origin.get('sourceField') != header:
++            errors.append('binding-selector-mismatch')
++    return sorted(set(errors))
++
++
++def _profile_plan(profile, now):
++    if not isinstance(profile, dict) or profile.get('country') not in COUNTRIES:
++        raise RefreshError('invalid-portfolio-country')
++    if not isinstance(profile.get('holds'), list):
++        raise RefreshError('invalid-holds')
++    # Explicit holds dominate all possible input/cache evidence.
++    if profile['holds']:
++        return 'held', sorted(profile['holds']), None
++    if not profile.get('sourceId') or not profile.get('releaseId'):
++        return 'missing', ['source-release-required'], None
++    inputs = profile.get('inputs')
++    if not isinstance(inputs, list) or not inputs:
++        return 'missing', ['retained-input-pins-required'], None
++    names = set()
++    for asset in inputs:
++        name = asset['path']
++        if (not isinstance(name, str) or '/' in name or '\\' in name
++                or name in ('', '.', '..') or name in names):
++            raise RefreshError('invalid-input-path')
++        names.add(name)
++        if (not isinstance(asset['sha256'], str)
++                or not re.fullmatch('[0-9a-f]{64}', asset['sha256'])
++                or type(asset['bytes']) is not int or asset['bytes'] < 0
++                or not isinstance(asset['releaseId'], str) or not asset['releaseId']
++                or not isinstance(asset['headers'], list) or not asset['headers']
++                or any(not isinstance(h, str) or not h for h in asset['headers'])):
++            raise RefreshError('invalid-input-metadata')
++    acquisition = profile['acquisition']
++    if acquisition.get('originalAcquiredAt') is None:
++        return 'missing', ['original-acquisition-evidence-required'], None
++    acquired = timestamp(acquisition['originalAcquiredAt'])
++    if acquired > now:
++        raise RefreshError('acquisition-in-future')
++    validated = acquisition.get('lastValidatedAt')
++    if validated is not None and not acquired <= timestamp(validated) <= now:
++        raise RefreshError('invalid-validation-time')
++    age = int((now - acquired).total_seconds() // 86400)
++    return ('reuse-metadata-only' if age < 30 else 'stale-review-required'), [], age
++
++
++def plan(document, *, now, previous_key=None):
++    """Isolate metadata diagnostics by country; deterministic and zero-download.
++
++    Content identity excludes observation clocks. Revalidation cannot reset the
++    original acquisition age. Stale metadata requests review, never a download.
++    A no-op refers solely to unchanged binding metadata, not payload validation.
++    """
++    if document.get('schemaVersion') != 'offmenu-worker24-binding/1':
++        raise RefreshError('unsupported-binding-version')
++    clock = timestamp(now)
++    content = deepcopy(document)
++    for p in content['profiles']:
++        if isinstance(p, dict):
++            p.pop('acquisition', None)
++    key = sha(canonical(content))
++    results = []
++    seen = set()
++    for index, profile in enumerate(document['profiles']):
++        country = profile.get('country') if isinstance(profile, dict) else None
++        try:
++            if country in seen:
++                raise RefreshError('duplicate-country-binding')
++            seen.add(country)
++            status, diagnostics, age = _profile_plan(profile, clock)
++        except (KeyError, TypeError, ValueError, AttributeError) as exc:
++            status, age = 'malformed', None
++            diagnostics = [str(exc) if isinstance(exc, RefreshError) else 'invalid-binding-metadata']
++        results.append({'index': index, 'country': country, 'status': status,
++                        'diagnostics': diagnostics, 'acquisitionAgeDays': age})
++    return {'schemaVersion': 'offmenu-worker24-binding-plan/1',
++            'contentKey': key, 'metadataNoOp': previous_key == key,
++            'profiles': results, 'missingCountries': sorted(COUNTRIES - seen),
++            'networkRequests': 0, 'sourceBodiesRead': 0,
++            'candidateBodiesRead': 0, 'payloadBytesVerified': False,
++            'acceptedRecords': 0, 'countryAcceptance': False,
++            'minimumReuseDays': 30, 'nextOnlineStep': 'none'}
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--now', required=True, help='Explicit UTC observation timestamp')
++    parser.add_argument('--previous-key')
++    args = parser.parse_args()
++    # Fixed committed metadata only. Paths embedded in it are never followed.
++    document = strict_json(CONFIG.read_bytes())
++    print(canonical(plan(document, now=args.now, previous_key=args.previous_key)).decode(), end='')
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/offmenu/refresh/worker24_metadata_diagnostic.py b/offmenu/refresh/worker24_metadata_diagnostic.py
+new file mode 100644
+index 00000000..2172c55e
+--- /dev/null
++++ b/offmenu/refresh/worker24_metadata_diagnostic.py
+@@ -0,0 +1,126 @@
++"""Explicit Foo-only metadata evidence check; never reads source/candidate bodies.
++
++The pure selector check is also exercised with committed authored fixtures.
++Private evidence availability is not a dependency of default test discovery.
++"""
++import argparse
++import errno
++import os
++from pathlib import Path
++import stat
++
++from .core import RefreshError, canonical, sha, strict_json
++from .worker24_bindings import CONFIG
++
++MAX_EVIDENCE_BYTES = 256 * 1024
++
++
++def read_metadata_evidence(path):
++    """Read one bounded regular descriptor without waiting for a FIFO writer.
++
++    No output is opened. The path must still name this same unchanged regular
++    file after the read; descriptor metadata and length must also stay stable.
++    Content authentication remains check_selector's pinned digest check.
++    """
++    try:
++        fd = os.open(path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW | os.O_CLOEXEC)
++    except OSError as exc:
++        code = 'metadata-evidence-not-regular' if exc.errno == errno.ELOOP else 'metadata-evidence-unavailable'
++        raise RefreshError(code) from None
++    try:
++        before = os.fstat(fd)
++        if not stat.S_ISREG(before.st_mode):
++            raise RefreshError('metadata-evidence-not-regular')
++        if before.st_size > MAX_EVIDENCE_BYTES:
++            raise RefreshError('metadata-evidence-too-large')
++        raw = bytearray()
++        while len(raw) <= MAX_EVIDENCE_BYTES:
++            chunk = os.read(fd, min(65536, MAX_EVIDENCE_BYTES + 1 - len(raw)))
++            if not chunk:
++                break
++            raw.extend(chunk)
++        if len(raw) > MAX_EVIDENCE_BYTES:
++            raise RefreshError('metadata-evidence-too-large')
++        after = os.fstat(fd)
++        try:
++            named = os.stat(path, follow_symlinks=False)
++        except OSError:
++            raise RefreshError('metadata-evidence-changed') from None
++        def identity(item):
++            return (item.st_dev, item.st_ino, item.st_mode, item.st_size,
++                    item.st_mtime_ns, item.st_ctime_ns)
++        if (identity(before) != identity(after) or identity(after) != identity(named)
++                or len(raw) != before.st_size):
++            raise RefreshError('metadata-evidence-changed')
++        return bytes(raw)
++    except OSError:
++        raise RefreshError('metadata-evidence-read-failed') from None
++    finally:
++        os.close(fd)
++
++
++def check_selector(asset, raw):
++    """Verify a metadata pin and exact declaration from supplied metadata bytes."""
++    if sha(raw) != asset['selectorEvidence']['sha256']:
++        raise RefreshError('metadata-evidence-hash-mismatch')
++    node = strict_json(raw)
++    try:
++        pointer = asset['selector']
++        if not isinstance(pointer, str) or not pointer.startswith('/'):
++            raise ValueError
++        for part in pointer.split('/')[1:]:
++            part = part.replace('~1', '/').replace('~0', '~')
++            if isinstance(node, list):
++                if not part.isdecimal() or str(int(part)) != part:
++                    raise ValueError
++                node = node[int(part)]
++            else:
++                node = node[part]
++        actual = (Path(node['source']['path']).name, node['source']['sha256'],
++                  node['source']['bytes'], node['header'],
++                  node.get('version', node.get('resourceVersion')))
++        expected = (asset['path'], asset['sha256'], asset['bytes'],
++                    asset['headers'], asset['releaseId'])
++    except (KeyError, IndexError, TypeError, ValueError):
++        raise RefreshError('metadata-selector-unresolved') from None
++    if actual != expected:
++        raise RefreshError('metadata-selector-declaration-mismatch')
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--foo-metadata', action='store_true', required=True,
++                        help='Explicitly read private pinned metadata evidence on Foo')
++    parser.parse_args(argv)
++    try:
++        document = strict_json(read_metadata_evidence(CONFIG))
++    except (RefreshError, ValueError) as exc:
++        code = str(exc) if isinstance(exc, RefreshError) else 'metadata-config-invalid'
++        print(canonical({'errorCode': code, 'sourceBodiesRead': 0,
++                         'candidateBodiesRead': 0, 'networkRequests': 0}).decode(), end='')
++        return 2
++    documents, results = {}, []
++    for profile in document['profiles']:
++        for asset in profile['inputs']:
++            try:
++                evidence = asset['selectorEvidence']
++                if evidence not in profile['evidence']:
++                    raise RefreshError('metadata-evidence-not-bound')
++                if evidence['path'] not in documents:
++                    # Only metadata evidence path; node.source.path is never opened.
++                    documents[evidence['path']] = read_metadata_evidence(evidence['path'])
++                check_selector(asset, documents[evidence['path']])
++                code = 'metadata-selector-matched'
++            except RefreshError as exc:
++                code = str(exc)
++            except ValueError:
++                code = 'metadata-selector-check-failed'
++            results.append({'country': profile['country'], 'input': asset['path'], 'code': code})
++    print(canonical({'results': results, 'sourceBodiesRead': 0,
++                     'candidateBodiesRead': 0, 'networkRequests': 0,
++                     'payloadBytesVerified': False, 'countryAcceptance': False}).decode(), end='')
++    return 0 if all(x['code'] == 'metadata-selector-matched' for x in results) else 2
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/tests/fixtures/worker24-metadata/bindings.json b/tests/fixtures/worker24-metadata/bindings.json
+new file mode 100644
+index 00000000..e97ca9fe
+--- /dev/null
++++ b/tests/fixtures/worker24-metadata/bindings.json
+@@ -0,0 +1,35 @@
++{
++  "fixture": "authored-only",
++  "inputs": [
++    {
++      "path": "table.csv",
++      "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
++      "bytes": 17,
++      "headers": [
++        "authored label",
++        "authored value"
++      ],
++      "releaseId": "authored-member-v1",
++      "selector": "/tables/0",
++      "selectorEvidence": {
++        "path": "evidence.json",
++        "sha256": "965af6bbc96692f416c88ed42b3380435a6f92d1a022486bffc118f33ca78cfd"
++      }
++    },
++    {
++      "path": "products.csv",
++      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
++      "bytes": 23,
++      "headers": [
++        "authored id",
++        "authored name"
++      ],
++      "releaseId": "authored-resource-v2",
++      "selector": "/tables/1",
++      "selectorEvidence": {
++        "path": "evidence.json",
++        "sha256": "965af6bbc96692f416c88ed42b3380435a6f92d1a022486bffc118f33ca78cfd"
++      }
++    }
++  ]
++}
+diff --git a/tests/fixtures/worker24-metadata/evidence.json b/tests/fixtures/worker24-metadata/evidence.json
+new file mode 100644
+index 00000000..e619d494
+--- /dev/null
++++ b/tests/fixtures/worker24-metadata/evidence.json
+@@ -0,0 +1,29 @@
++{
++  "fixture": "authored synthetic metadata only; no publisher rows or source bodies",
++  "tables": [
++    {
++      "source": {
++        "path": "/authored-only/table.csv",
++        "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
++        "bytes": 17
++      },
++      "header": [
++        "authored label",
++        "authored value"
++      ],
++      "version": "authored-member-v1"
++    },
++    {
++      "source": {
++        "path": "/authored-only/products.csv",
++        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
++        "bytes": 23
++      },
++      "header": [
++        "authored id",
++        "authored name"
++      ],
++      "resourceVersion": "authored-resource-v2"
++    }
++  ]
++}
+diff --git a/tests/test_worker24_bindings.py b/tests/test_worker24_bindings.py
+new file mode 100644
+index 00000000..843c756a
+--- /dev/null
++++ b/tests/test_worker24_bindings.py
+@@ -0,0 +1,211 @@
++"""Authored synthetic metadata/cells only; no retained source bodies opened."""
++from copy import deepcopy
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu.refresh import worker24_bindings as binding
++from offmenu.refresh.core import RefreshError
++from offmenu.refresh.worker24_metadata_diagnostic import check_selector
++from offmenu.refresh import worker24_metadata_diagnostic as diagnostic
++
++
++def fixture():
++    # Deliberately invented asset/selector/cells, never a publisher record.
++    profile = {'country': 'PF', 'sourceId': 'authored-PF', 'releaseId': 'fixture-1',
++               'holds': [], 'inputs': [{'path': 'authored.csv', 'sha256': 'a' * 64,
++                   'bytes': 17, 'releaseId': 'fixture-1', 'headers': ['label', 'value']}],
++               'acquisition': {'originalAcquiredAt': '2026-10-01T00:00:00Z',
++                               'lastValidatedAt': '2026-10-17T00:00:00Z'}}
++    return {'schemaVersion': 'offmenu-worker24-binding/1', 'profiles': [profile]}
++
++
++class Worker24Bindings(unittest.TestCase):
++    def test_authored_selectors_resolve_exact_metadata(self):
++        root = Path(__file__).parent / 'fixtures/worker24-metadata'
++        assets = json.loads((root / 'bindings.json').read_text())['inputs']
++        raw = (root / 'evidence.json').read_bytes()
++        self.assertEqual(len(assets), 2)
++        for asset in assets:
++            with self.subTest(asset=asset['path']):
++                check_selector(asset, raw)
++
++    def test_authored_wrong_selector_and_declaration_drift_fail(self):
++        root = Path(__file__).parent / 'fixtures/worker24-metadata'
++        asset = json.loads((root / 'bindings.json').read_text())['inputs'][0]
++        raw = (root / 'evidence.json').read_bytes()
++        wrong = deepcopy(asset)
++        wrong['selector'] = '/members/0'
++        with self.assertRaisesRegex(RefreshError, '^metadata-selector-unresolved$'):
++            check_selector(wrong, raw)
++        for key, value in [('path', 'wrong.csv'), ('sha256', 'f' * 64),
++                           ('bytes', 99), ('headers', ['wrong']), ('releaseId', 'wrong')]:
++            with self.subTest(field=key):
++                wrong = deepcopy(asset)
++                wrong[key] = value
++                with self.assertRaisesRegex(RefreshError, '^metadata-selector-declaration-mismatch$'):
++                    check_selector(wrong, raw)
++        with self.assertRaisesRegex(RefreshError, '^metadata-evidence-hash-mismatch$'):
++            check_selector(asset, raw + b' ')
++
++    def test_valid_and_stable_replay(self):
++        document = fixture()
++        first = binding.plan(document, now='2026-10-18T00:00:00Z')
++        replay = binding.plan(document, now='2026-10-18T00:00:00Z', previous_key=first['contentKey'])
++        self.assertEqual(first['profiles'][0]['status'], 'reuse-metadata-only')
++        self.assertEqual(first['profiles'][0]['acquisitionAgeDays'], 17)
++        self.assertTrue(replay['metadataNoOp'])
++        self.assertFalse(first['payloadBytesVerified'])
++        self.assertEqual(first['acceptedRecords'], 0)
++        self.assertEqual(document, fixture())
++
++    def test_stale_boundary_and_revalidation_does_not_reset(self):
++        document = fixture()
++        old_key = binding.plan(document, now='2026-10-18T00:00:00Z')['contentKey']
++        document['profiles'][0]['acquisition']['lastValidatedAt'] = '2026-10-31T00:00:00Z'
++        result = binding.plan(document, now='2026-10-31T00:00:00Z', previous_key=old_key)
++        self.assertEqual(result['profiles'][0]['status'], 'stale-review-required')
++        self.assertEqual(result['profiles'][0]['acquisitionAgeDays'], 30)
++        self.assertTrue(result['metadataNoOp'])
++        self.assertEqual(result['networkRequests'], 0)
++        self.assertEqual(result['nextOnlineStep'], 'none')
++
++    def test_missing_held_malformed_are_isolated(self):
++        document = fixture()
++        for country in ('SL', 'TF', 'UY'):
++            p = deepcopy(document['profiles'][0]); p['country'] = country
++            document['profiles'].append(p)
++        document['profiles'][1]['acquisition']['originalAcquiredAt'] = None
++        document['profiles'][2]['holds'] = ['explicit-403-no-retry']
++        document['profiles'][2]['inputs'] = None
++        document['profiles'][3]['inputs'][0]['sha256'] = 'broken'
++        result = binding.plan(document, now='2026-10-18T00:00:00Z')
++        self.assertEqual([p['status'] for p in result['profiles']],
++                         ['reuse-metadata-only', 'missing', 'held', 'malformed'])
++        self.assertEqual(result['missingCountries'], [])
++
++    def test_future_and_path_escape_fail_closed(self):
++        document = fixture()
++        document['profiles'][0]['inputs'][0]['path'] = '../raw.csv'
++        self.assertEqual(binding.plan(document, now='2026-10-18T00:00:00Z')['profiles'][0]['status'], 'malformed')
++        document = fixture()
++        document['profiles'][0]['acquisition']['originalAcquiredAt'] = '2026-10-19T00:00:00Z'
++        self.assertIn('acquisition-in-future', binding.plan(document, now='2026-10-18T00:00:00Z')['profiles'][0]['diagnostics'])
++
++    def test_shared_provenance_validator_with_lexical_null_marker_and_zero(self):
++        profile = fixture()['profiles'][0]
++        row = {'data': {'cells': ['', '0']}, 'provenance': {
++            'sourceId': profile['sourceId'], 'releaseId': 'fixture-1',
++            'fieldOrigins': binding.origin_template(profile, 'authored.csv', 'authored-record-1')}}
++        self.assertEqual(binding.authored_row_errors(profile, 'authored.csv', row), [])
++        row['provenance']['fieldOrigins']['/data/cells/1']['inputSha256'] = 'b' * 64
++        self.assertIn('field-origin-input-pin-mismatch', binding.authored_row_errors(profile, 'authored.csv', row))
++        row['provenance']['fieldOrigins']['/data/cells/1']['sourceField'] = 'guessed-nutrient'
++        self.assertIn('binding-selector-mismatch', binding.authored_row_errors(profile, 'authored.csv', row))
++
++    def test_committed_metadata_no_payload_reads_and_expected_holds(self):
++        document = json.loads(binding.CONFIG.read_text())
++        # A planner attempting to follow embedded evidence/candidate/raw paths fails.
++        with patch('pathlib.Path.open', side_effect=AssertionError('unexpected file read')):
++            result = binding.plan(document, now='2026-10-18T00:00:00Z')
++        self.assertEqual([(p['country'], p['status']) for p in result['profiles']],
++                         [('PF', 'missing'), ('UY', 'missing'), ('SL', 'held'), ('TF', 'held')])
++        self.assertEqual(result['sourceBodiesRead'], 0)
++        self.assertEqual(result['candidateBodiesRead'], 0)
++
++    def test_content_change_not_noop_and_duplicate_country_rejected(self):
++        document = fixture()
++        key = binding.plan(document, now='2026-10-18T00:00:00Z')['contentKey']
++        document['profiles'][0]['inputs'][0]['sha256'] = 'b' * 64
++        self.assertFalse(binding.plan(document, now='2026-10-18T00:00:00Z', previous_key=key)['metadataNoOp'])
++        document['profiles'].append(deepcopy(document['profiles'][0]))
++        self.assertEqual(binding.plan(document, now='2026-10-18T00:00:00Z')['profiles'][1]['diagnostics'], ['duplicate-country-binding'])
++
++
++class MetadataReaderTests(unittest.TestCase):
++    def test_regular_metadata_is_preserved_and_limits_are_typed(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            regular = root / 'metadata.json'
++            raw = b'{"authored":"metadata only"}\n'
++            regular.write_bytes(raw)
++            self.assertEqual(diagnostic.read_metadata_evidence(regular), raw)
++            self.assertEqual(regular.read_bytes(), raw)
++            with self.assertRaisesRegex(RefreshError, '^metadata-evidence-unavailable$'):
++                diagnostic.read_metadata_evidence(root / 'missing')
++            with self.assertRaisesRegex(RefreshError, '^metadata-evidence-not-regular$'):
++                diagnostic.read_metadata_evidence(root)
++            link = root / 'link'; link.symlink_to(regular)
++            with self.assertRaisesRegex(RefreshError, '^metadata-evidence-not-regular$'):
++                diagnostic.read_metadata_evidence(link)
++            regular.write_bytes(b'x' * (diagnostic.MAX_EVIDENCE_BYTES + 1))
++            with self.assertRaisesRegex(RefreshError, '^metadata-evidence-too-large$'):
++                diagnostic.read_metadata_evidence(regular)
++
++    def test_path_replacement_during_read_is_rejected(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / 'metadata.json'
++            original = b'{"authored":"original"}\n'
++            path.write_bytes(original)
++            old = path.with_name('original.json')
++            read = os.read
++            replaced = False
++            def replace_during_read(fd, count):
++                nonlocal replaced
++                if not replaced:
++                    path.rename(old)
++                    path.write_bytes(b'{"authored":"replacement"}\n')
++                    replaced = True
++                return read(fd, count)
++            with patch.object(diagnostic.os, 'read', side_effect=replace_during_read):
++                with self.assertRaisesRegex(RefreshError, '^metadata-evidence-changed$'):
++                    diagnostic.read_metadata_evidence(path)
++            self.assertEqual(old.read_bytes(), original)
++
++    def test_successor_entrypoint_rejects_fifo_without_blocking_peer(self):
++        root_fixture = Path(__file__).parent / 'fixtures/worker24-metadata'
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            regular = root / 'evidence.json'
++            raw = (root_fixture / 'evidence.json').read_bytes()
++            regular.write_bytes(raw)
++            fifo = root / 'no-writer.fifo'; os.mkfifo(fifo)
++            asset = json.loads((root_fixture / 'bindings.json').read_text())['inputs'][0]
++            inputs = []
++            for path in (fifo, regular):
++                item = deepcopy(asset)
++                item['selectorEvidence']['path'] = str(path)
++                inputs.append(item)
++            document = {'profiles': [{'country': 'PF', 'inputs': inputs,
++                                     'evidence': [x['selectorEvidence'] for x in inputs]}]}
++            config = root / 'config.json'
++            config.write_text(json.dumps(document))
++            before = config.read_bytes()
++            # Test only the successor. Timeout prevents a regression hanging CI.
++            code = ('from pathlib import Path; import sys; '
++                    'from offmenu.refresh import worker24_metadata_diagnostic as d; '
++                    'd.CONFIG=Path(sys.argv[1]); '
++                    'raise SystemExit(d.main(["--foo-metadata"]))')
++            run = subprocess.run([sys.executable, '-B', '-c', code, str(config)],
++                                 capture_output=True, timeout=3)
++            self.assertEqual(run.returncode, 2, run.stderr)
++            self.assertEqual(run.stderr, b'')
++            report = json.loads(run.stdout)
++            self.assertEqual([x['code'] for x in report['results']],
++                             ['metadata-evidence-not-regular', 'metadata-selector-matched'])
++            self.assertEqual(regular.read_bytes(), raw)
++            self.assertEqual(config.read_bytes(), before)
++            # The config reader is guarded by the same descriptor boundary.
++            run = subprocess.run([sys.executable, '-B', '-c', code, str(fifo)],
++                                 capture_output=True, timeout=3)
++            self.assertEqual(run.returncode, 2, run.stderr)
++            self.assertEqual(json.loads(run.stdout)['errorCode'], 'metadata-evidence-not-regular')
++
++
++if __name__ == '__main__':
++    unittest.main()

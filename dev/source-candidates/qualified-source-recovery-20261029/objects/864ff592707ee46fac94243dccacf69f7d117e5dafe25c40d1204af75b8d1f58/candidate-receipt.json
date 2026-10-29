@@ -1,0 +1,64 @@
+{
+  "status": "v197_candidate_source_tests_browser_build_ready_for_independent_review",
+  "source_changes": [
+    "candidate-source-root/candidate-source/app/public/integrations.js",
+    "candidate-source-root/candidate-source-manifest.json",
+    "candidate-source-root/candidate-source/app/tests-web/shopping-unresolved-demand.test.mjs"
+  ],
+  "existing_payload_paths_unchanged": 189,
+  "protected_source_groups_unchanged": [
+    "scanner",
+    "guest",
+    "server"
+  ],
+  "lot_nutrition_helpers_unchanged": true,
+  "combined_tests": {
+    "tests": 128,
+    "pass": 128,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "log_sha256": "2d8fb0a217f62adbf64e26f0476f014221ad5a7a407d612fc3ef0202945d5fec"
+  },
+  "focused_actual_cases_passed": 8,
+  "initial_sandbox_file_wrapper_log_not_counted_as_cases": true,
+  "build_invocations": 1,
+  "build_recipe_sha256": "58f213558f86e84e35b57417b7e005722e6fd552f8446e517ec0adaa8d0a6d8b",
+  "build_manifest_sha256": "66c09c724a66db491828fad7f34a6ec13e305cbb5ba55d4664cd2ecac6f735b9",
+  "generated_browser_outputs": [
+    {
+      "group": "app",
+      "output": "app.js",
+      "bytes": 468716,
+      "sha256": "8baa2f039eacbe6abcabed5df59ec7a18c1981901a789045e2ad41133e627814",
+      "externalImports": []
+    },
+    {
+      "group": "scanner",
+      "output": "shelf-scanner.js",
+      "bytes": 735236,
+      "sha256": "d25bedb3516b482dff7353230a50a7fd9b9445a6614d9269d5c60626eba0d889",
+      "externalImports": []
+    },
+    {
+      "group": "guest",
+      "output": "full-scanner.js",
+      "bytes": 730678,
+      "sha256": "5d1f71e7056ecf95d596717c93afb3554cc622514b75038f54089c80e1c2f25a",
+      "externalImports": []
+    }
+  ],
+  "full_worker_module_generated": false,
+  "reason": "Exact full production Worker input is intentionally excluded from handoff; sole integrator must splice only app.js into its reviewed v196 runtime.",
+  "source_manifest_sha256": "c660b71c71250be184dfea83b4a44f9b54763c8a89fd8d3d8cef6be81cdf87d6",
+  "author_patch_sha256": "9e3f8226e96581d9b6d2c3d3d49716d9cf33fdd67638d1e90906bb7d6b904746",
+  "source_delta_patch_sha256": "c8b77a7bd42a4e35b7f6ecfaf336a2856184bfd869d1efeb4cf989a2eff048a9",
+  "old_checkout_status": "?? scripts/windmill/\n",
+  "tools_reinstalled": false,
+  "provider_calls": 0,
+  "live_deployments": 0,
+  "remote_git_transfers": 0,
+  "successful_source_archive_transfers": 2,
+  "transfer_failure_cause_resolved": "Command sandbox network restriction; host DNS and approved helper transfer succeed outside sandbox.",
+  "credentials_or_raw_datasets_included": false
+}

@@ -1,0 +1,14 @@
+
+[collection]
+beautifulsoup4==4.15.0
+duckdb==1.5.6
+mwparserfromhell==0.7.2
+pyarrow==26.0.0
+requests==2.34.2
+
+[test]
+Pillow>=10
+jsonschema-rs==0.58.6
+jsonschema==4.26.0
+mwparserfromhell==0.7.2
+openpyxl==3.1.5

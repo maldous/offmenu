@@ -1,0 +1,2034 @@
+diff --git a/docs/operations/worker06-staging-bindings.json b/docs/operations/worker06-staging-bindings.json
+deleted file mode 100644
+index 9e2fe0c2..00000000
+--- a/docs/operations/worker06-staging-bindings.json
++++ /dev/null
+@@ -1,1216 +0,0 @@
+-{
+-  "schemaVersion": "worker06-metadata-binding/1",
+-  "portfolio": [
+-    "ME",
+-    "MF",
+-    "MG",
+-    "MH"
+-  ],
+-  "base": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+-  "scope": "retained validation metadata only; no rights contract or body processing",
+-  "bindings": [
+-    {
+-      "id": "me-0f949620d0281b9111cc",
+-      "country": "ME",
+-      "sourceId": "worker06-retained-metadata:me-0f949620d0281b9111cc",
+-      "releaseId": "MONSTAT Household Budget Survey2025 release September2026",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
+-        "logicalPath": "ME/deliverable-validation.json",
+-        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
+-        "bytes": 10777
+-      },
+-      "recordSelector": "/sources/0",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/0f949620d0281b9111cc/receipt.json",
+-        "sha256": "9fb7e3e186cc494c668538935c03c329be86e11fb8c99b4ff2013c878947375b"
+-      },
+-      "payloadAssetPinsRecordedOnly": [
+-        {
+-          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/0f949620d0281b9111cc/primary-catalogue.html",
+-          "bytes": 44788,
+-          "sha256": "57ea52f1136a1db349b7cbff1cc3c446778bbb9453f59a64e41eea22093949bc"
+-        }
+-      ],
+-      "applicability": {
+-        "country": "ME",
+-        "types": [
+-          "prices-context"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/0/url",
+-          "expected": "https://monstat.org/eng/novosti.php?id=4430"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/0/release",
+-          "expected": "MONSTAT Household Budget Survey2025 release September2026"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/0/role",
+-          "expected": "basket-and-price"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/0f949620d0281b9111cc/receipt.json",
+-            "sha256": "9fb7e3e186cc494c668538935c03c329be86e11fb8c99b4ff2013c878947375b"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        },
+-        {
+-          "code": "catalogue-not-2025-payload",
+-          "kind": "missing-input",
+-          "owner": "Morgan/source author"
+-        }
+-      ]
+-    },
+-    {
+-      "id": "me-36532fadc2078557329b",
+-      "country": "ME",
+-      "sourceId": "worker06-retained-metadata:me-36532fadc2078557329b",
+-      "releaseId": "NTO Flavours of Montenegro Deutsch complete brochure edition",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
+-        "logicalPath": "ME/deliverable-validation.json",
+-        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
+-        "bytes": 10777
+-      },
+-      "recordSelector": "/sources/1",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/36532fadc2078557329b/receipt.json",
+-        "sha256": "dd5251acaf150e31eb3dc2fbfdf48d395a00ab41d1aa45c6c1e662d3f037398f"
+-      },
+-      "payloadAssetPinsRecordedOnly": [],
+-      "applicability": {
+-        "country": "ME",
+-        "types": [
+-          "recipe-discovery"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/1/url",
+-          "expected": "https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_GER.pdf"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/1/release",
+-          "expected": "NTO Flavours of Montenegro Deutsch complete brochure edition"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/1/role",
+-          "expected": "national-recipe-source/food culture, NOT complete national corpus"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/36532fadc2078557329b/receipt.json",
+-            "sha256": "dd5251acaf150e31eb3dc2fbfdf48d395a00ab41d1aa45c6c1e662d3f037398f"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        }
+-      ]
+-    },
+-    {
+-      "id": "me-3e0b1d6c8b4b47a69ae6",
+-      "country": "ME",
+-      "sourceId": "worker06-retained-metadata:me-3e0b1d6c8b4b47a69ae6",
+-      "releaseId": "NTO Flavours of Montenegro official brochure",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
+-        "logicalPath": "ME/deliverable-validation.json",
+-        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
+-        "bytes": 10777
+-      },
+-      "recordSelector": "/sources/2",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/3e0b1d6c8b4b47a69ae6/receipt.json",
+-        "sha256": "ef47ab506db090635eda60c6fafe5baacc5e327963344c40b1c7b2dd9ce53889"
+-      },
+-      "payloadAssetPinsRecordedOnly": [
+-        {
+-          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/3e0b1d6c8b4b47a69ae6/primary-catalogue.html",
+-          "bytes": 133745,
+-          "sha256": "36ad5b752bdf6690b9bc8c07e682e89cd659d78bd9420197857b20d2cbc10036"
+-        }
+-      ],
+-      "applicability": {
+-        "country": "ME",
+-        "types": [
+-          "recipe-discovery"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/2/url",
+-          "expected": "https://www.montenegro.travel/en/plan-your-stay-in-montenegro/useful-tips-and-facts/publications/46-flavours-of-montenegro"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/2/release",
+-          "expected": "NTO Flavours of Montenegro official brochure"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/2/role",
+-          "expected": "national-recipe-source/food-culture, NOT complete national recipe corpus"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/3e0b1d6c8b4b47a69ae6/receipt.json",
+-            "sha256": "ef47ab506db090635eda60c6fafe5baacc5e327963344c40b1c7b2dd9ce53889"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        }
+-      ]
+-    },
+-    {
+-      "id": "me-4d24181b35cc6462e963",
+-      "country": "ME",
+-      "sourceId": "worker06-retained-metadata:me-4d24181b35cc6462e963",
+-      "releaseId": "MONSTAT Household Budget Survey2021 full statistical release",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
+-        "logicalPath": "ME/deliverable-validation.json",
+-        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
+-        "bytes": 10777
+-      },
+-      "recordSelector": "/sources/3",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/4d24181b35cc6462e963/receipt.json",
+-        "sha256": "4cb1e6658ea5ccc0f14361cdb9b862f73704b9fc763ed83bbe8ca1421a6c6b1a"
+-      },
+-      "payloadAssetPinsRecordedOnly": [
+-        {
+-          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/4d24181b35cc6462e963/original.pdf",
+-          "bytes": 254832,
+-          "sha256": "d485c5d166b9ad63ee041fb00ec9ea31375423b4f470e363a260e0e64389e223"
+-        }
+-      ],
+-      "applicability": {
+-        "country": "ME",
+-        "types": [
+-          "prices-context"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/3/url",
+-          "expected": "https://monstat.org/uploads/files/apd/2021/Release%20of%20Household%20Budget%20Survey_2021.pdf"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/3/release",
+-          "expected": "MONSTAT Household Budget Survey2021 full statistical release"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/3/role",
+-          "expected": "basket-and-price"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/4d24181b35cc6462e963/receipt.json",
+-            "sha256": "4cb1e6658ea5ccc0f14361cdb9b862f73704b9fc763ed83bbe8ca1421a6c6b1a"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        }
+-      ]
+-    },
+-    {
+-      "id": "me-6e9f14b8d60ea0fd13be",
+-      "country": "ME",
+-      "sourceId": "worker06-retained-metadata:me-6e9f14b8d60ea0fd13be",
+-      "releaseId": "NTO Flavours of Montenegro Polski complete brochure edition",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
+-        "logicalPath": "ME/deliverable-validation.json",
+-        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
+-        "bytes": 10777
+-      },
+-      "recordSelector": "/sources/4",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/6e9f14b8d60ea0fd13be/receipt.json",
+-        "sha256": "b3438a58b458dd50fd786316cc1dcc2efb4a0df61512617e1c4b53ad157e80e0"
+-      },
+-      "payloadAssetPinsRecordedOnly": [
+-        {
+-          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/6e9f14b8d60ea0fd13be/original.pdf",
+-          "bytes": 26616706,
+-          "sha256": "fee7e34f3145a2d8083bc7f2d68ebb6fb652ea33077181245306fb210cb281ca"
+-        }
+-      ],
+-      "applicability": {
+-        "country": "ME",
+-        "types": [
+-          "recipe-discovery"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/4/url",
+-          "expected": "https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_POL.pdf"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/4/release",
+-          "expected": "NTO Flavours of Montenegro Polski complete brochure edition"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/4/role",
+-          "expected": "national-recipe-source/food culture, NOT complete national corpus"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/6e9f14b8d60ea0fd13be/receipt.json",
+-            "sha256": "b3438a58b458dd50fd786316cc1dcc2efb4a0df61512617e1c4b53ad157e80e0"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        }
+-      ]
+-    },
+-    {
+-      "id": "me-9d721b7020c45dd76348",
+-      "country": "ME",
+-      "sourceId": "worker06-retained-metadata:me-9d721b7020c45dd76348",
+-      "releaseId": "NTO Flavours of Montenegro French complete brochure edition",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
+-        "logicalPath": "ME/deliverable-validation.json",
+-        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
+-        "bytes": 10777
+-      },
+-      "recordSelector": "/sources/5",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/9d721b7020c45dd76348/receipt.json",
+-        "sha256": "029093bb745b97fbbadc393c43731b067d5a9f4877676537747209b7373455f1"
+-      },
+-      "payloadAssetPinsRecordedOnly": [],
+-      "applicability": {
+-        "country": "ME",
+-        "types": [
+-          "recipe-discovery"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/5/url",
+-          "expected": "https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_FRA.pdf"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/5/release",
+-          "expected": "NTO Flavours of Montenegro French complete brochure edition"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/5/role",
+-          "expected": "national-recipe-source/food culture, NOT complete national corpus"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/9d721b7020c45dd76348/receipt.json",
+-            "sha256": "029093bb745b97fbbadc393c43731b067d5a9f4877676537747209b7373455f1"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        }
+-      ]
+-    },
+-    {
+-      "id": "me-abdef9ef604721edce06",
+-      "country": "ME",
+-      "sourceId": "worker06-retained-metadata:me-abdef9ef604721edce06",
+-      "releaseId": "NTO Flavours of Montenegro English complete brochure edition",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
+-        "logicalPath": "ME/deliverable-validation.json",
+-        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
+-        "bytes": 10777
+-      },
+-      "recordSelector": "/sources/6",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/abdef9ef604721edce06/receipt.json",
+-        "sha256": "ed7951f0aa3ff264f0bae75c39f509b14d5f3f98b74066cb462627e2e0a95f99"
+-      },
+-      "payloadAssetPinsRecordedOnly": [],
+-      "applicability": {
+-        "country": "ME",
+-        "types": [
+-          "recipe-discovery"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/6/url",
+-          "expected": "https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_EN.pdf"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/6/release",
+-          "expected": "NTO Flavours of Montenegro English complete brochure edition"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/6/role",
+-          "expected": "national-recipe-source/food culture, NOT complete national corpus"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/abdef9ef604721edce06/receipt.json",
+-            "sha256": "ed7951f0aa3ff264f0bae75c39f509b14d5f3f98b74066cb462627e2e0a95f99"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        }
+-      ]
+-    },
+-    {
+-      "id": "me-ecac44fa7e6840e0a28e",
+-      "country": "ME",
+-      "sourceId": "worker06-retained-metadata:me-ecac44fa7e6840e0a28e",
+-      "releaseId": "NTO Flavours of Montenegro Crnogorski complete brochure edition",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
+-        "logicalPath": "ME/deliverable-validation.json",
+-        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
+-        "bytes": 10777
+-      },
+-      "recordSelector": "/sources/7",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/ecac44fa7e6840e0a28e/receipt.json",
+-        "sha256": "d390f809abfdabaf91db3c78c91fb3cde5c1754e382df004e11bd46d79f134c9"
+-      },
+-      "payloadAssetPinsRecordedOnly": [
+-        {
+-          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/ecac44fa7e6840e0a28e/original.pdf",
+-          "bytes": 26601635,
+-          "sha256": "655368113b1ac4f87c6b2867b17b6d3369159f98df5236adbdd7d399dc2df9f0"
+-        }
+-      ],
+-      "applicability": {
+-        "country": "ME",
+-        "types": [
+-          "recipe-discovery"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/7/url",
+-          "expected": "https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_MNE.pdf"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/7/release",
+-          "expected": "NTO Flavours of Montenegro Crnogorski complete brochure edition"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/7/role",
+-          "expected": "national-recipe-source/food culture, NOT complete national corpus"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/ecac44fa7e6840e0a28e/receipt.json",
+-            "sha256": "d390f809abfdabaf91db3c78c91fb3cde5c1754e382df004e11bd46d79f134c9"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        }
+-      ]
+-    },
+-    {
+-      "id": "mf-64692db296eb5341f28e",
+-      "country": "MF",
+-      "sourceId": "worker06-retained-metadata:mf-64692db296eb5341f28e",
+-      "releaseId": "TourismOffice restaurant/2025guide source page",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MF/deliverable-validation.json",
+-        "logicalPath": "MF/deliverable-validation.json",
+-        "sha256": "6586d07f1d3c2aa53c8bdb734f3c6c683db4e56d6975569181940dcd49820e94",
+-        "bytes": 4657
+-      },
+-      "recordSelector": "/sources/0",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/64692db296eb5341f28e/receipt.json",
+-        "sha256": "c0852f9abbf4d2b7f96e516f154358172fce6d102e9899c09861ac2543ce3763"
+-      },
+-      "payloadAssetPinsRecordedOnly": [
+-        {
+-          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/64692db296eb5341f28e/source.html",
+-          "bytes": 55199,
+-          "sha256": "8d38da9c3cb72cf49493448f88d72bcf8fec788c82b9abc5d6523c2f9c31b4ba"
+-        }
+-      ],
+-      "applicability": {
+-        "country": "MF",
+-        "types": [
+-          "menu-discovery"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/0/url",
+-          "expected": "https://staycation-saint-martin.fr/fr/deal/restauration/"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/0/release",
+-          "expected": "TourismOffice restaurant/2025guide source page"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/0/role",
+-          "expected": "national-menu-source"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:21.005989+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/64692db296eb5341f28e/receipt.json",
+-            "sha256": "c0852f9abbf4d2b7f96e516f154358172fce6d102e9899c09861ac2543ce3763"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        },
+-        {
+-          "code": "mf-applicability-no-sx-or-pnns-inheritance",
+-          "kind": "applicability",
+-          "owner": "Morgan/source scope reviewer"
+-        }
+-      ]
+-    },
+-    {
+-      "id": "mf-8e31116f829b0190bae7",
+-      "country": "MF",
+-      "sourceId": "worker06-retained-metadata:mf-8e31116f829b0190bae7",
+-      "releaseId": "Saint-Martin annual economic report2024 edition2025",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MF/deliverable-validation.json",
+-        "logicalPath": "MF/deliverable-validation.json",
+-        "sha256": "6586d07f1d3c2aa53c8bdb734f3c6c683db4e56d6975569181940dcd49820e94",
+-        "bytes": 4657
+-      },
+-      "recordSelector": "/sources/1",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/8e31116f829b0190bae7/receipt.json",
+-        "sha256": "095d8c93319fd2d56100297519d30faaf27bf9f7ebef5383fa7ae64b57d01bbb"
+-      },
+-      "payloadAssetPinsRecordedOnly": [
+-        {
+-          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/8e31116f829b0190bae7/original.pdf",
+-          "bytes": 2023697,
+-          "sha256": "7cf5c7f0abb33d33d4bbe8ff047f9b3d066c93353c7b6d7fc1746937527b72fe"
+-        }
+-      ],
+-      "applicability": {
+-        "country": "MF",
+-        "types": [
+-          "prices-context"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/1/url",
+-          "expected": "https://www.iedom.fr/IMG/pdf/ra_iedom_2024_ed._2025_-_saint-martin.pdf"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/1/release",
+-          "expected": "Saint-Martin annual economic report2024 edition2025"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/1/role",
+-          "expected": "basket-and-price"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:21.005989+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/8e31116f829b0190bae7/receipt.json",
+-            "sha256": "095d8c93319fd2d56100297519d30faaf27bf9f7ebef5383fa7ae64b57d01bbb"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        },
+-        {
+-          "code": "mf-applicability-no-sx-or-pnns-inheritance",
+-          "kind": "applicability",
+-          "owner": "Morgan/source scope reviewer"
+-        }
+-      ]
+-    },
+-    {
+-      "id": "mg-42faed68bba28d89f4b7",
+-      "country": "MG",
+-      "sourceId": "worker06-retained-metadata:mg-42faed68bba28d89f4b7",
+-      "releaseId": "2024;P177968",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MG/deliverable-validation.json",
+-        "logicalPath": "MG/deliverable-validation.json",
+-        "sha256": "6defbe380ae4cd39fe95a6b6c14d9131eaf0bb219e044207feff8631b1b4cd67",
+-        "bytes": 3153
+-      },
+-      "recordSelector": "/sources/0",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/MG/42faed68bba28d89f4b7/receipt.json",
+-        "sha256": "7a66a1e43a2eda59c52058161b19c78f7e43acd36170af38b8d82cdd13efb0f7"
+-      },
+-      "payloadAssetPinsRecordedOnly": [
+-        {
+-          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/MG/42faed68bba28d89f4b7/original.pdf",
+-          "bytes": 20139326,
+-          "sha256": "aab229dd3b8280fb1fd7b6765d86c9a700f202f737bf20f377eec9ae03d4dcef"
+-        }
+-      ],
+-      "applicability": {
+-        "country": "MG",
+-        "types": [
+-          "research-context"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/0/url",
+-          "expected": "https://documents1.worldbank.org/curated/en/099021424172020915/pdf/P17796818b70320641878f166fa034723ca.pdf"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/0/release",
+-          "expected": "2024;P177968"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/0/role",
+-          "expected": "Madagascar Poverty Assessment 2024"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:21.064590+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/MG/42faed68bba28d89f4b7/receipt.json",
+-            "sha256": "7a66a1e43a2eda59c52058161b19c78f7e43acd36170af38b8d82cdd13efb0f7"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        }
+-      ]
+-    },
+-    {
+-      "id": "mh-food-away-from-home-10018",
+-      "country": "MH",
+-      "sourceId": "worker06-retained-metadata:mh-food-away-from-home-10018",
+-      "releaseId": "World Bank PolicyResearchWorkingPaper10018;2022",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MH/deliverable-validation.json",
+-        "logicalPath": "MH/deliverable-validation.json",
+-        "sha256": "990b4c1f3186702b2882a3705cc99c5da655890fe3c6c81714e0caf348eec032",
+-        "bytes": 4782
+-      },
+-      "recordSelector": "/sources/0",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/food-away-from-home-10018/receipt.json",
+-        "sha256": "10c54b7a1dc39a5f09a032768de24e50cdf3672579ecd315290e7ff030673bf7"
+-      },
+-      "payloadAssetPinsRecordedOnly": [
+-        {
+-          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/food-away-from-home-10018/original.pdf",
+-          "bytes": 385216,
+-          "sha256": "7a55add9610f115ca33783e8f38e0ecea80211b59008a808fcfd21b7dd9f2aac"
+-        }
+-      ],
+-      "applicability": {
+-        "country": "MH",
+-        "types": [
+-          "research-context"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/0/url",
+-          "expected": "https://documents.worldbank.org/curated/en/099319404262234256/pdf/IDU0de68011902ce0040430aa930282fc3c6fafd.pdf"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/0/release",
+-          "expected": "World Bank PolicyResearchWorkingPaper10018;2022"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/0/role",
+-          "expected": "Research on Marshall Islands consumption experiment; not previous HIES2019/20/SPREP report"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:21.134819+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/food-away-from-home-10018/receipt.json",
+-            "sha256": "10c54b7a1dc39a5f09a032768de24e50cdf3672579ecd315290e7ff030673bf7"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        },
+-        {
+-          "code": "wb-rights-correction-unresolved",
+-          "kind": "explicit-source-hold",
+-          "owner": "Morgan/source-rights owner"
+-        }
+-      ]
+-    },
+-    {
+-      "id": "mh-spc-guide-cooking-recipes",
+-      "country": "MH",
+-      "sourceId": "worker06-retained-metadata:mh-spc-guide-cooking-recipes",
+-      "releaseId": "SPC2019/2020 regional guide; Marshall Islands chapter",
+-      "metadataAsset": {
+-        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MH/deliverable-validation.json",
+-        "logicalPath": "MH/deliverable-validation.json",
+-        "sha256": "990b4c1f3186702b2882a3705cc99c5da655890fe3c6c81714e0caf348eec032",
+-        "bytes": 4782
+-      },
+-      "recordSelector": "/sources/1",
+-      "sourceReceipt": {
+-        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/round2/spc-guide-cooking-recipes/receipt.json",
+-        "sha256": "8edc93bffd287b8464b9fa638d13f18bf15ca9e446611649849b18854065cca1"
+-      },
+-      "payloadAssetPinsRecordedOnly": [
+-        {
+-          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/round2/spc-guide-cooking-recipes/publisher-original.pdf",
+-          "bytes": 19181123,
+-          "sha256": "91161cbc5ca01bf2f96ce67e24a6bb903d5ca5cd8a079ee4b67e163e6cc14848"
+-        }
+-      ],
+-      "applicability": {
+-        "country": "MH",
+-        "types": [
+-          "recipe-discovery"
+-        ],
+-        "scope": "context/discovery only; no country-domain completeness",
+-        "excluded": [
+-          "canonical-nutrient-composition",
+-          "gold-admission",
+-          "whole-country-acceptance"
+-        ]
+-      },
+-      "fields": {
+-        "publisherURL": {
+-          "selector": "/sources/1/url",
+-          "expected": "https://ccprojects.gsd.spc.int/wp-content/uploads/2020/10/Recipe-Book_English-18.09.pdf"
+-        },
+-        "releaseLabel": {
+-          "selector": "/sources/1/release",
+-          "expected": "SPC2019/2020 regional guide; Marshall Islands chapter"
+-        },
+-        "sourceRole": {
+-          "selector": "/sources/1/role",
+-          "expected": "national-recipe-source"
+-        },
+-        "nativeUnit": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "nativeBasis": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyTableSelector": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "bodyRecordId": {
+-          "selector": null,
+-          "expected": null
+-        },
+-        "typedObservationSchema": {
+-          "selector": null,
+-          "expected": null
+-        }
+-      },
+-      "originalAcquiredAt": null,
+-      "integrityValidatedAt": "2026-10-16T22:26:21.134819+00:00",
+-      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
+-      "permittedPayloadOperations": [],
+-      "sharedAdapter": null,
+-      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
+-      "blockers": [
+-        {
+-          "code": "operation-use-unqualified",
+-          "kind": "source-use",
+-          "owner": "Morgan/source-rights owner",
+-          "evidence": {
+-            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/round2/spc-guide-cooking-recipes/receipt.json",
+-            "sha256": "8edc93bffd287b8464b9fa638d13f18bf15ca9e446611649849b18854065cca1"
+-          }
+-        },
+-        {
+-          "code": "body-selector-and-semantics-missing",
+-          "kind": "missing-input",
+-          "owner": "Morgan/selected source author"
+-        },
+-        {
+-          "code": "mh-chapter-span-list-not-held",
+-          "kind": "missing-input",
+-          "owner": "Morgan/source scope author"
+-        }
+-      ]
+-    }
+-  ]
+-}
+diff --git a/docs/operations/worker06-staging-bindings.md b/docs/operations/worker06-staging-bindings.md
+index d488e5de..1f93d46c 100644
+--- a/docs/operations/worker06-staging-bindings.md
++++ b/docs/operations/worker06-staging-bindings.md
+@@ -12,6 +12,7 @@ From the repository, run:
+ python3 -m offmenu.refresh.worker06_bindings --now 2026-10-18T00:00:00Z > /private/foo/metadata-report.json
+ python3 -m offmenu.refresh.worker06_bindings --now 2026-10-18T00:00:00Z --previous /private/foo/metadata-report.json
+ python3 -m unittest tests.test_worker06_bindings -v
++python3 -m unittest tests.test_worker06_packaging -v
+ ```
+ 
+ Use an existing private Foo output directory. The module prints JSON and never
+@@ -38,7 +39,11 @@ independent bindings still report. The explicit UTC clock makes runs repeatable.
+ 
+ ## Bound source scope
+ 
+-The JSON configuration has13 source entries: ME8, MF2, MG1, MH2. These are
++The owned `offmenu.refresh.worker06_catalog` declaration has13 source entries:
++ME8, MF2, MG1, MH2. `load_config()` imports the packaged Python literal and returns
++a defensive deep copy; it does not look outside the installed package for a
++repository JSON resource. The entire declaration is value-identical to the
++reviewed predecessor JSON, including all source pins and holds. These are
+ metadata bindings, not13 datasets, normalized observations or accepted records.
+ Each entry pins the exact validation manifest and JSON selector, original source
+ receipt path/hash, release label, country and role. Retained payload pins are
+@@ -109,8 +114,14 @@ retained explicit denials remain in that future trusted contract. No new grant
+ is required merely because a custodian is missing; positive existing evidence
+ may qualify a narrowly reviewed operation. Missing evidence is not a denial.
+ 
+-Integrator00 can integrate these four portfolio-only files after designated
++Integrator00 can integrate these owned portfolio files after designated
+ independent review. No shared-interface mutation is proposed in this batch.
++The live PR43 catalogue finding4305926950 is addressed for Worker06 by this
++owned declaration. An authored offline test builds an sdist from the package
++source, rebuilds its wheel, and checks installed catalogue loading/defensive
++copy with resource and retained metadata reads forbidden. Shared packaging
++rules are unchanged. Author evidence does not close the PR thread or replace
++independent delta review/current-head CI.
+ If a future body format requires another generic handler, its exact interface
+ and reviewed semantic/custody contract must be selected with00; this module
+ does not silently install one. All source-domain acceptance and country
+diff --git a/offmenu/refresh/worker06_bindings.py b/offmenu/refresh/worker06_bindings.py
+index 3dc41231..d6e025bc 100644
+--- a/offmenu/refresh/worker06_bindings.py
++++ b/offmenu/refresh/worker06_bindings.py
+@@ -5,6 +5,7 @@ This portfolio module only projects pinned validation metadata. It cannot create
+ a trusted SourceContract or enable a production source from a descriptor.
+ """
+ import argparse
++from copy import deepcopy
+ import hashlib
+ import json
+ import os
+@@ -15,18 +16,18 @@ from .acceptance import fingerprint
+ from .acquisition import MIN_TTL
+ from .core import RefreshError, strict_json, timestamp
+ from .field_provenance import field_origin_errors
++from .worker06_catalog import CONFIGURATION
+ 
+ VERSION = 'worker06-metadata-binding/1'
+ POLICY = fingerprint({'version': VERSION, 'scope': 'metadata-only',
+                       'unknown': None, 'minimumReuseSecondsRequired': MIN_TTL,
+                       'cachePlanning': 'unsupported-real-source-cache-planner'})
+ MAX_METADATA = 128 * 1024
+-DEFAULT_CONFIG = Path(__file__).resolve().parents[2] / 'docs/operations/worker06-staging-bindings.json'
+ 
+ 
+-def load_config(path=DEFAULT_CONFIG):
++def load_config():
+     """Load reviewed portfolio configuration, never a SourceContract factory."""
+-    config = strict_json(Path(path).read_bytes())
++    config = deepcopy(CONFIGURATION)
+     if config.get('schemaVersion') != VERSION or not isinstance(config.get('bindings'), list):
+         raise RefreshError('binding-config-invalid')
+     ids = [b['id'] for b in config['bindings']]
+diff --git a/offmenu/refresh/worker06_catalog.py b/offmenu/refresh/worker06_catalog.py
+new file mode 100644
+index 00000000..98b2d6d1
+--- /dev/null
++++ b/offmenu/refresh/worker06_catalog.py
+@@ -0,0 +1,622 @@
++"""Fixed reviewed Worker06 metadata declarations; no I/O or source admission."""
++
++CONFIGURATION = {'schemaVersion': 'worker06-metadata-binding/1',
++ 'portfolio': ['ME', 'MF', 'MG', 'MH'],
++ 'base': 'abecb99ee1125730ccbc2824b6ec49ffc5cc4302',
++ 'scope': 'retained validation metadata only; no rights contract or body processing',
++ 'bindings': [{'id': 'me-0f949620d0281b9111cc',
++               'country': 'ME',
++               'sourceId': 'worker06-retained-metadata:me-0f949620d0281b9111cc',
++               'releaseId': 'MONSTAT Household Budget Survey2025 release September2026',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json',
++                                 'logicalPath': 'ME/deliverable-validation.json',
++                                 'sha256': '21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0',
++                                 'bytes': 10777},
++               'recordSelector': '/sources/0',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/0f949620d0281b9111cc/receipt.json',
++                                 'sha256': '9fb7e3e186cc494c668538935c03c329be86e11fb8c99b4ff2013c878947375b'},
++               'payloadAssetPinsRecordedOnly': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/0f949620d0281b9111cc/primary-catalogue.html',
++                                                 'bytes': 44788,
++                                                 'sha256': '57ea52f1136a1db349b7cbff1cc3c446778bbb9453f59a64e41eea22093949bc'}],
++               'applicability': {'country': 'ME',
++                                 'types': ['prices-context'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/0/url',
++                                           'expected': 'https://monstat.org/eng/novosti.php?id=4430'},
++                          'releaseLabel': {'selector': '/sources/0/release',
++                                           'expected': 'MONSTAT Household Budget Survey2025 release '
++                                                       'September2026'},
++                          'sourceRole': {'selector': '/sources/0/role', 'expected': 'basket-and-price'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:20.957776+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/0f949620d0281b9111cc/receipt.json',
++                                          'sha256': '9fb7e3e186cc494c668538935c03c329be86e11fb8c99b4ff2013c878947375b'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'},
++                            {'code': 'catalogue-not-2025-payload',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/source author'}]},
++              {'id': 'me-36532fadc2078557329b',
++               'country': 'ME',
++               'sourceId': 'worker06-retained-metadata:me-36532fadc2078557329b',
++               'releaseId': 'NTO Flavours of Montenegro Deutsch complete brochure edition',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json',
++                                 'logicalPath': 'ME/deliverable-validation.json',
++                                 'sha256': '21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0',
++                                 'bytes': 10777},
++               'recordSelector': '/sources/1',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/36532fadc2078557329b/receipt.json',
++                                 'sha256': 'dd5251acaf150e31eb3dc2fbfdf48d395a00ab41d1aa45c6c1e662d3f037398f'},
++               'payloadAssetPinsRecordedOnly': [],
++               'applicability': {'country': 'ME',
++                                 'types': ['recipe-discovery'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/1/url',
++                                           'expected': 'https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_GER.pdf'},
++                          'releaseLabel': {'selector': '/sources/1/release',
++                                           'expected': 'NTO Flavours of Montenegro Deutsch complete brochure '
++                                                       'edition'},
++                          'sourceRole': {'selector': '/sources/1/role',
++                                         'expected': 'national-recipe-source/food culture, NOT complete '
++                                                     'national corpus'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:20.957776+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/36532fadc2078557329b/receipt.json',
++                                          'sha256': 'dd5251acaf150e31eb3dc2fbfdf48d395a00ab41d1aa45c6c1e662d3f037398f'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'}]},
++              {'id': 'me-3e0b1d6c8b4b47a69ae6',
++               'country': 'ME',
++               'sourceId': 'worker06-retained-metadata:me-3e0b1d6c8b4b47a69ae6',
++               'releaseId': 'NTO Flavours of Montenegro official brochure',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json',
++                                 'logicalPath': 'ME/deliverable-validation.json',
++                                 'sha256': '21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0',
++                                 'bytes': 10777},
++               'recordSelector': '/sources/2',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/3e0b1d6c8b4b47a69ae6/receipt.json',
++                                 'sha256': 'ef47ab506db090635eda60c6fafe5baacc5e327963344c40b1c7b2dd9ce53889'},
++               'payloadAssetPinsRecordedOnly': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/3e0b1d6c8b4b47a69ae6/primary-catalogue.html',
++                                                 'bytes': 133745,
++                                                 'sha256': '36ad5b752bdf6690b9bc8c07e682e89cd659d78bd9420197857b20d2cbc10036'}],
++               'applicability': {'country': 'ME',
++                                 'types': ['recipe-discovery'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/2/url',
++                                           'expected': 'https://www.montenegro.travel/en/plan-your-stay-in-montenegro/useful-tips-and-facts/publications/46-flavours-of-montenegro'},
++                          'releaseLabel': {'selector': '/sources/2/release',
++                                           'expected': 'NTO Flavours of Montenegro official brochure'},
++                          'sourceRole': {'selector': '/sources/2/role',
++                                         'expected': 'national-recipe-source/food-culture, NOT complete '
++                                                     'national recipe corpus'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:20.957776+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/3e0b1d6c8b4b47a69ae6/receipt.json',
++                                          'sha256': 'ef47ab506db090635eda60c6fafe5baacc5e327963344c40b1c7b2dd9ce53889'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'}]},
++              {'id': 'me-4d24181b35cc6462e963',
++               'country': 'ME',
++               'sourceId': 'worker06-retained-metadata:me-4d24181b35cc6462e963',
++               'releaseId': 'MONSTAT Household Budget Survey2021 full statistical release',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json',
++                                 'logicalPath': 'ME/deliverable-validation.json',
++                                 'sha256': '21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0',
++                                 'bytes': 10777},
++               'recordSelector': '/sources/3',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/4d24181b35cc6462e963/receipt.json',
++                                 'sha256': '4cb1e6658ea5ccc0f14361cdb9b862f73704b9fc763ed83bbe8ca1421a6c6b1a'},
++               'payloadAssetPinsRecordedOnly': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/4d24181b35cc6462e963/original.pdf',
++                                                 'bytes': 254832,
++                                                 'sha256': 'd485c5d166b9ad63ee041fb00ec9ea31375423b4f470e363a260e0e64389e223'}],
++               'applicability': {'country': 'ME',
++                                 'types': ['prices-context'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/3/url',
++                                           'expected': 'https://monstat.org/uploads/files/apd/2021/Release%20of%20Household%20Budget%20Survey_2021.pdf'},
++                          'releaseLabel': {'selector': '/sources/3/release',
++                                           'expected': 'MONSTAT Household Budget Survey2021 full statistical '
++                                                       'release'},
++                          'sourceRole': {'selector': '/sources/3/role', 'expected': 'basket-and-price'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:20.957776+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/4d24181b35cc6462e963/receipt.json',
++                                          'sha256': '4cb1e6658ea5ccc0f14361cdb9b862f73704b9fc763ed83bbe8ca1421a6c6b1a'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'}]},
++              {'id': 'me-6e9f14b8d60ea0fd13be',
++               'country': 'ME',
++               'sourceId': 'worker06-retained-metadata:me-6e9f14b8d60ea0fd13be',
++               'releaseId': 'NTO Flavours of Montenegro Polski complete brochure edition',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json',
++                                 'logicalPath': 'ME/deliverable-validation.json',
++                                 'sha256': '21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0',
++                                 'bytes': 10777},
++               'recordSelector': '/sources/4',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/6e9f14b8d60ea0fd13be/receipt.json',
++                                 'sha256': 'b3438a58b458dd50fd786316cc1dcc2efb4a0df61512617e1c4b53ad157e80e0'},
++               'payloadAssetPinsRecordedOnly': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/6e9f14b8d60ea0fd13be/original.pdf',
++                                                 'bytes': 26616706,
++                                                 'sha256': 'fee7e34f3145a2d8083bc7f2d68ebb6fb652ea33077181245306fb210cb281ca'}],
++               'applicability': {'country': 'ME',
++                                 'types': ['recipe-discovery'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/4/url',
++                                           'expected': 'https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_POL.pdf'},
++                          'releaseLabel': {'selector': '/sources/4/release',
++                                           'expected': 'NTO Flavours of Montenegro Polski complete brochure '
++                                                       'edition'},
++                          'sourceRole': {'selector': '/sources/4/role',
++                                         'expected': 'national-recipe-source/food culture, NOT complete '
++                                                     'national corpus'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:20.957776+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/6e9f14b8d60ea0fd13be/receipt.json',
++                                          'sha256': 'b3438a58b458dd50fd786316cc1dcc2efb4a0df61512617e1c4b53ad157e80e0'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'}]},
++              {'id': 'me-9d721b7020c45dd76348',
++               'country': 'ME',
++               'sourceId': 'worker06-retained-metadata:me-9d721b7020c45dd76348',
++               'releaseId': 'NTO Flavours of Montenegro French complete brochure edition',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json',
++                                 'logicalPath': 'ME/deliverable-validation.json',
++                                 'sha256': '21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0',
++                                 'bytes': 10777},
++               'recordSelector': '/sources/5',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/9d721b7020c45dd76348/receipt.json',
++                                 'sha256': '029093bb745b97fbbadc393c43731b067d5a9f4877676537747209b7373455f1'},
++               'payloadAssetPinsRecordedOnly': [],
++               'applicability': {'country': 'ME',
++                                 'types': ['recipe-discovery'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/5/url',
++                                           'expected': 'https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_FRA.pdf'},
++                          'releaseLabel': {'selector': '/sources/5/release',
++                                           'expected': 'NTO Flavours of Montenegro French complete brochure '
++                                                       'edition'},
++                          'sourceRole': {'selector': '/sources/5/role',
++                                         'expected': 'national-recipe-source/food culture, NOT complete '
++                                                     'national corpus'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:20.957776+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/9d721b7020c45dd76348/receipt.json',
++                                          'sha256': '029093bb745b97fbbadc393c43731b067d5a9f4877676537747209b7373455f1'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'}]},
++              {'id': 'me-abdef9ef604721edce06',
++               'country': 'ME',
++               'sourceId': 'worker06-retained-metadata:me-abdef9ef604721edce06',
++               'releaseId': 'NTO Flavours of Montenegro English complete brochure edition',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json',
++                                 'logicalPath': 'ME/deliverable-validation.json',
++                                 'sha256': '21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0',
++                                 'bytes': 10777},
++               'recordSelector': '/sources/6',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/abdef9ef604721edce06/receipt.json',
++                                 'sha256': 'ed7951f0aa3ff264f0bae75c39f509b14d5f3f98b74066cb462627e2e0a95f99'},
++               'payloadAssetPinsRecordedOnly': [],
++               'applicability': {'country': 'ME',
++                                 'types': ['recipe-discovery'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/6/url',
++                                           'expected': 'https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_EN.pdf'},
++                          'releaseLabel': {'selector': '/sources/6/release',
++                                           'expected': 'NTO Flavours of Montenegro English complete brochure '
++                                                       'edition'},
++                          'sourceRole': {'selector': '/sources/6/role',
++                                         'expected': 'national-recipe-source/food culture, NOT complete '
++                                                     'national corpus'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:20.957776+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/abdef9ef604721edce06/receipt.json',
++                                          'sha256': 'ed7951f0aa3ff264f0bae75c39f509b14d5f3f98b74066cb462627e2e0a95f99'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'}]},
++              {'id': 'me-ecac44fa7e6840e0a28e',
++               'country': 'ME',
++               'sourceId': 'worker06-retained-metadata:me-ecac44fa7e6840e0a28e',
++               'releaseId': 'NTO Flavours of Montenegro Crnogorski complete brochure edition',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json',
++                                 'logicalPath': 'ME/deliverable-validation.json',
++                                 'sha256': '21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0',
++                                 'bytes': 10777},
++               'recordSelector': '/sources/7',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/ecac44fa7e6840e0a28e/receipt.json',
++                                 'sha256': 'd390f809abfdabaf91db3c78c91fb3cde5c1754e382df004e11bd46d79f134c9'},
++               'payloadAssetPinsRecordedOnly': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/ecac44fa7e6840e0a28e/original.pdf',
++                                                 'bytes': 26601635,
++                                                 'sha256': '655368113b1ac4f87c6b2867b17b6d3369159f98df5236adbdd7d399dc2df9f0'}],
++               'applicability': {'country': 'ME',
++                                 'types': ['recipe-discovery'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/7/url',
++                                           'expected': 'https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_MNE.pdf'},
++                          'releaseLabel': {'selector': '/sources/7/release',
++                                           'expected': 'NTO Flavours of Montenegro Crnogorski complete '
++                                                       'brochure edition'},
++                          'sourceRole': {'selector': '/sources/7/role',
++                                         'expected': 'national-recipe-source/food culture, NOT complete '
++                                                     'national corpus'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:20.957776+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/ecac44fa7e6840e0a28e/receipt.json',
++                                          'sha256': 'd390f809abfdabaf91db3c78c91fb3cde5c1754e382df004e11bd46d79f134c9'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'}]},
++              {'id': 'mf-64692db296eb5341f28e',
++               'country': 'MF',
++               'sourceId': 'worker06-retained-metadata:mf-64692db296eb5341f28e',
++               'releaseId': 'TourismOffice restaurant/2025guide source page',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MF/deliverable-validation.json',
++                                 'logicalPath': 'MF/deliverable-validation.json',
++                                 'sha256': '6586d07f1d3c2aa53c8bdb734f3c6c683db4e56d6975569181940dcd49820e94',
++                                 'bytes': 4657},
++               'recordSelector': '/sources/0',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/64692db296eb5341f28e/receipt.json',
++                                 'sha256': 'c0852f9abbf4d2b7f96e516f154358172fce6d102e9899c09861ac2543ce3763'},
++               'payloadAssetPinsRecordedOnly': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/64692db296eb5341f28e/source.html',
++                                                 'bytes': 55199,
++                                                 'sha256': '8d38da9c3cb72cf49493448f88d72bcf8fec788c82b9abc5d6523c2f9c31b4ba'}],
++               'applicability': {'country': 'MF',
++                                 'types': ['menu-discovery'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/0/url',
++                                           'expected': 'https://staycation-saint-martin.fr/fr/deal/restauration/'},
++                          'releaseLabel': {'selector': '/sources/0/release',
++                                           'expected': 'TourismOffice restaurant/2025guide source page'},
++                          'sourceRole': {'selector': '/sources/0/role', 'expected': 'national-menu-source'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:21.005989+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/64692db296eb5341f28e/receipt.json',
++                                          'sha256': 'c0852f9abbf4d2b7f96e516f154358172fce6d102e9899c09861ac2543ce3763'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'},
++                            {'code': 'mf-applicability-no-sx-or-pnns-inheritance',
++                             'kind': 'applicability',
++                             'owner': 'Morgan/source scope reviewer'}]},
++              {'id': 'mf-8e31116f829b0190bae7',
++               'country': 'MF',
++               'sourceId': 'worker06-retained-metadata:mf-8e31116f829b0190bae7',
++               'releaseId': 'Saint-Martin annual economic report2024 edition2025',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MF/deliverable-validation.json',
++                                 'logicalPath': 'MF/deliverable-validation.json',
++                                 'sha256': '6586d07f1d3c2aa53c8bdb734f3c6c683db4e56d6975569181940dcd49820e94',
++                                 'bytes': 4657},
++               'recordSelector': '/sources/1',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/8e31116f829b0190bae7/receipt.json',
++                                 'sha256': '095d8c93319fd2d56100297519d30faaf27bf9f7ebef5383fa7ae64b57d01bbb'},
++               'payloadAssetPinsRecordedOnly': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/8e31116f829b0190bae7/original.pdf',
++                                                 'bytes': 2023697,
++                                                 'sha256': '7cf5c7f0abb33d33d4bbe8ff047f9b3d066c93353c7b6d7fc1746937527b72fe'}],
++               'applicability': {'country': 'MF',
++                                 'types': ['prices-context'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/1/url',
++                                           'expected': 'https://www.iedom.fr/IMG/pdf/ra_iedom_2024_ed._2025_-_saint-martin.pdf'},
++                          'releaseLabel': {'selector': '/sources/1/release',
++                                           'expected': 'Saint-Martin annual economic report2024 edition2025'},
++                          'sourceRole': {'selector': '/sources/1/role', 'expected': 'basket-and-price'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:21.005989+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/8e31116f829b0190bae7/receipt.json',
++                                          'sha256': '095d8c93319fd2d56100297519d30faaf27bf9f7ebef5383fa7ae64b57d01bbb'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'},
++                            {'code': 'mf-applicability-no-sx-or-pnns-inheritance',
++                             'kind': 'applicability',
++                             'owner': 'Morgan/source scope reviewer'}]},
++              {'id': 'mg-42faed68bba28d89f4b7',
++               'country': 'MG',
++               'sourceId': 'worker06-retained-metadata:mg-42faed68bba28d89f4b7',
++               'releaseId': '2024;P177968',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MG/deliverable-validation.json',
++                                 'logicalPath': 'MG/deliverable-validation.json',
++                                 'sha256': '6defbe380ae4cd39fe95a6b6c14d9131eaf0bb219e044207feff8631b1b4cd67',
++                                 'bytes': 3153},
++               'recordSelector': '/sources/0',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/MG/42faed68bba28d89f4b7/receipt.json',
++                                 'sha256': '7a66a1e43a2eda59c52058161b19c78f7e43acd36170af38b8d82cdd13efb0f7'},
++               'payloadAssetPinsRecordedOnly': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/MG/42faed68bba28d89f4b7/original.pdf',
++                                                 'bytes': 20139326,
++                                                 'sha256': 'aab229dd3b8280fb1fd7b6765d86c9a700f202f737bf20f377eec9ae03d4dcef'}],
++               'applicability': {'country': 'MG',
++                                 'types': ['research-context'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/0/url',
++                                           'expected': 'https://documents1.worldbank.org/curated/en/099021424172020915/pdf/P17796818b70320641878f166fa034723ca.pdf'},
++                          'releaseLabel': {'selector': '/sources/0/release', 'expected': '2024;P177968'},
++                          'sourceRole': {'selector': '/sources/0/role',
++                                         'expected': 'Madagascar Poverty Assessment 2024'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:21.064590+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/MG/42faed68bba28d89f4b7/receipt.json',
++                                          'sha256': '7a66a1e43a2eda59c52058161b19c78f7e43acd36170af38b8d82cdd13efb0f7'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'}]},
++              {'id': 'mh-food-away-from-home-10018',
++               'country': 'MH',
++               'sourceId': 'worker06-retained-metadata:mh-food-away-from-home-10018',
++               'releaseId': 'World Bank PolicyResearchWorkingPaper10018;2022',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MH/deliverable-validation.json',
++                                 'logicalPath': 'MH/deliverable-validation.json',
++                                 'sha256': '990b4c1f3186702b2882a3705cc99c5da655890fe3c6c81714e0caf348eec032',
++                                 'bytes': 4782},
++               'recordSelector': '/sources/0',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/food-away-from-home-10018/receipt.json',
++                                 'sha256': '10c54b7a1dc39a5f09a032768de24e50cdf3672579ecd315290e7ff030673bf7'},
++               'payloadAssetPinsRecordedOnly': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/food-away-from-home-10018/original.pdf',
++                                                 'bytes': 385216,
++                                                 'sha256': '7a55add9610f115ca33783e8f38e0ecea80211b59008a808fcfd21b7dd9f2aac'}],
++               'applicability': {'country': 'MH',
++                                 'types': ['research-context'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/0/url',
++                                           'expected': 'https://documents.worldbank.org/curated/en/099319404262234256/pdf/IDU0de68011902ce0040430aa930282fc3c6fafd.pdf'},
++                          'releaseLabel': {'selector': '/sources/0/release',
++                                           'expected': 'World Bank PolicyResearchWorkingPaper10018;2022'},
++                          'sourceRole': {'selector': '/sources/0/role',
++                                         'expected': 'Research on Marshall Islands consumption experiment; '
++                                                     'not previous HIES2019/20/SPREP report'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:21.134819+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/food-away-from-home-10018/receipt.json',
++                                          'sha256': '10c54b7a1dc39a5f09a032768de24e50cdf3672579ecd315290e7ff030673bf7'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'},
++                            {'code': 'wb-rights-correction-unresolved',
++                             'kind': 'explicit-source-hold',
++                             'owner': 'Morgan/source-rights owner'}]},
++              {'id': 'mh-spc-guide-cooking-recipes',
++               'country': 'MH',
++               'sourceId': 'worker06-retained-metadata:mh-spc-guide-cooking-recipes',
++               'releaseId': 'SPC2019/2020 regional guide; Marshall Islands chapter',
++               'metadataAsset': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MH/deliverable-validation.json',
++                                 'logicalPath': 'MH/deliverable-validation.json',
++                                 'sha256': '990b4c1f3186702b2882a3705cc99c5da655890fe3c6c81714e0caf348eec032',
++                                 'bytes': 4782},
++               'recordSelector': '/sources/1',
++               'sourceReceipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/round2/spc-guide-cooking-recipes/receipt.json',
++                                 'sha256': '8edc93bffd287b8464b9fa638d13f18bf15ca9e446611649849b18854065cca1'},
++               'payloadAssetPinsRecordedOnly': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/round2/spc-guide-cooking-recipes/publisher-original.pdf',
++                                                 'bytes': 19181123,
++                                                 'sha256': '91161cbc5ca01bf2f96ce67e24a6bb903d5ca5cd8a079ee4b67e163e6cc14848'}],
++               'applicability': {'country': 'MH',
++                                 'types': ['recipe-discovery'],
++                                 'scope': 'context/discovery only; no country-domain completeness',
++                                 'excluded': ['canonical-nutrient-composition',
++                                              'gold-admission',
++                                              'whole-country-acceptance']},
++               'fields': {'publisherURL': {'selector': '/sources/1/url',
++                                           'expected': 'https://ccprojects.gsd.spc.int/wp-content/uploads/2020/10/Recipe-Book_English-18.09.pdf'},
++                          'releaseLabel': {'selector': '/sources/1/release',
++                                           'expected': 'SPC2019/2020 regional guide; Marshall Islands '
++                                                       'chapter'},
++                          'sourceRole': {'selector': '/sources/1/role', 'expected': 'national-recipe-source'},
++                          'nativeUnit': {'selector': None, 'expected': None},
++                          'nativeBasis': {'selector': None, 'expected': None},
++                          'bodyTableSelector': {'selector': None, 'expected': None},
++                          'bodyRecordId': {'selector': None, 'expected': None},
++                          'typedObservationSchema': {'selector': None, 'expected': None}},
++               'originalAcquiredAt': None,
++               'integrityValidatedAt': '2026-10-16T22:26:21.134819+00:00',
++               'clockEvidence': 'checkedUTC is validation time, not acquisition; no acquisition timestamp '
++                                'selected from source receipt',
++               'permittedPayloadOperations': [],
++               'sharedAdapter': None,
++               'sharedValidator': 'offmenu.refresh.field_provenance.field_origin_errors',
++               'blockers': [{'code': 'operation-use-unqualified',
++                             'kind': 'source-use',
++                             'owner': 'Morgan/source-rights owner',
++                             'evidence': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/round2/spc-guide-cooking-recipes/receipt.json',
++                                          'sha256': '8edc93bffd287b8464b9fa638d13f18bf15ca9e446611649849b18854065cca1'}},
++                            {'code': 'body-selector-and-semantics-missing',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/selected source author'},
++                            {'code': 'mh-chapter-span-list-not-held',
++                             'kind': 'missing-input',
++                             'owner': 'Morgan/source scope author'}]}]}
+diff --git a/tests/test_worker06_packaging.py b/tests/test_worker06_packaging.py
+new file mode 100644
+index 00000000..201bcf80
+--- /dev/null
++++ b/tests/test_worker06_packaging.py
+@@ -0,0 +1,103 @@
++"""Owned fixed catalogue packaging, using generated code artifacts only."""
++import ast
++from pathlib import Path
++import shutil
++import subprocess
++import sys
++import tarfile
++import tempfile
++import unittest
++from unittest.mock import patch
++import zipfile
++
++from offmenu.refresh import worker06_bindings as binding
++
++# Canonical SHA256 of the exact reviewed predecessor JSON, including every pin,
++# applicability declaration, unknown, timestamp and hold. No source payloads.
++REVIEWED_LITERAL_SHA256 = '84eafaf4197b1164bb70c5650e123cacd49ade84670a0f189616e5e9b1d922cb'
++
++
++class Worker06PackagingTests(unittest.TestCase):
++    def test_literal_equivalence_and_defensive_copy_without_resource_reads(self):
++        catalog_path = Path(binding.__file__).with_name('worker06_catalog.py')
++        tree = ast.parse(catalog_path.read_bytes())
++        self.assertEqual(len(tree.body), 2)
++        self.assertIsInstance(tree.body[1], ast.Assign)
++        self.assertEqual(tree.body[1].targets[0].id, 'CONFIGURATION')
++        literal = ast.literal_eval(tree.body[1].value)
++        self.assertEqual(binding.fingerprint(literal), REVIEWED_LITERAL_SHA256)
++        with patch.object(Path, 'read_bytes', side_effect=AssertionError('resource/metadata read forbidden')):
++            first = binding.load_config()
++            self.assertEqual(binding.fingerprint(first), REVIEWED_LITERAL_SHA256)
++            first['bindings'][0]['metadataAsset']['sha256'] = '0' * 64
++            first['bindings'][0]['blockers'].clear()
++            self.assertEqual(binding.fingerprint(binding.load_config()), REVIEWED_LITERAL_SHA256)
++
++    def test_offline_sdist_to_wheel_installed_catalog(self):
++        repository = Path(__file__).resolve().parents[1]
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary)
++            source = root / 'source'
++            source.mkdir()
++            shutil.copytree(repository / 'offmenu', source / 'offmenu',
++                            ignore=shutil.ignore_patterns('__pycache__'))
++            shutil.copy2(repository / 'pyproject.toml', source / 'pyproject.toml')
++            artifacts = root / 'artifacts'
++            artifacts.mkdir()
++            run = subprocess.run([sys.executable, '-I', '-B', '-c',
++                'from setuptools.build_meta import build_sdist; build_sdist(' + repr(str(artifacts)) + ')'],
++                cwd=source, capture_output=True, text=True, timeout=60)
++            self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
++            archive, = artifacts.glob('*.tar.gz')
++            extracted = root / 'sdist'
++            extracted.mkdir()
++            with tarfile.open(archive, 'r:gz') as tar:
++                names = tar.getnames()
++                self.assertTrue(any(n.endswith('/offmenu/refresh/worker06_catalog.py') for n in names))
++                # Extract only generated ordinary code files/directories. No
++                # publisher archive, package install or network is involved.
++                for member in tar.getmembers():
++                    parts = Path(member.name).parts
++                    self.assertFalse(Path(member.name).is_absolute())
++                    self.assertNotIn('..', parts)
++                    target = extracted / member.name
++                    if member.isdir():
++                        target.mkdir(parents=True, exist_ok=True)
++                    else:
++                        self.assertTrue(member.isfile())
++                        target.parent.mkdir(parents=True, exist_ok=True)
++                        target.write_bytes(tar.extractfile(member).read())
++            rebuilt_source, = extracted.iterdir()
++            run = subprocess.run([sys.executable, '-I', '-B', '-c',
++                'from setuptools.build_meta import build_wheel; build_wheel(' + repr(str(artifacts)) + ')'],
++                cwd=rebuilt_source, capture_output=True, text=True, timeout=60)
++            self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
++            wheel, = artifacts.glob('*.whl')
++            installed = root / 'installed'
++            with zipfile.ZipFile(wheel) as archive:
++                self.assertIn('offmenu/refresh/worker06_catalog.py', archive.namelist())
++                archive.extractall(installed)
++            script = '''import sys
++from pathlib import Path
++from unittest.mock import patch
++sys.path.insert(0, sys.argv[1])
++from offmenu.refresh import worker06_bindings as module
++assert Path(module.__file__).is_relative_to(Path(sys.argv[1]))
++with patch.object(Path, 'read_bytes', side_effect=AssertionError('no resource or metadata reads')):
++    config = module.load_config()
++    assert module.fingerprint(config) == sys.argv[2]
++    assert len(config['bindings']) == 13
++    assert all(row['blockers'] and not row['permittedPayloadOperations'] for row in config['bindings'])
++    config['bindings'].clear()
++    assert module.fingerprint(module.load_config()) == sys.argv[2]
++print('sdist-wheel-installed-catalog-pass; retained-reads=0')
++'''
++            run = subprocess.run([sys.executable, '-I', '-B', '-c', script,
++                                  str(installed), REVIEWED_LITERAL_SHA256],
++                                 cwd=root, capture_output=True, text=True, timeout=10)
++            self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
++            self.assertIn('sdist-wheel-installed-catalog-pass; retained-reads=0', run.stdout)
++
++
++if __name__ == '__main__':
++    unittest.main()

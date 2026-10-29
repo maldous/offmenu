@@ -1,0 +1,1011 @@
+diff --git a/config/refresh/portfolio-w07.json b/config/refresh/portfolio-w07.json
+new file mode 100644
+index 00000000..7ad6ab2f
+--- /dev/null
++++ b/config/refresh/portfolio-w07.json
+@@ -0,0 +1,242 @@
++{
++  "schemaVersion": "offmenu-w07-bindings/1",
++  "scope": "retained-metadata-only; no SourceContract, source body operation or source permission",
++  "requiredCountries": [
++    "AQ",
++    "AR",
++    "AS",
++    "AT"
++  ],
++  "requiredDataTypes": [
++    "ingredients",
++    "recipes",
++    "nutrition",
++    "retailers/providers",
++    "prices/baskets",
++    "dietary references"
++  ],
++  "bindings": [
++    {
++      "bindingId": "aq-ase-education",
++      "country": "AQ",
++      "dataType": "recipes",
++      "sourceId": "ase-polar-education",
++      "releaseId": "Polar-Explorer-Cookbook-publisher-original",
++      "sourceRole": "education-article",
++      "operation": "stage-retained-metadata",
++      "metadataUse": "permitted-retained-metadata",
++      "applicability": "not-applicable-to-type",
++      "manifest": {
++        "path": "metadata/aq-ase-education.json",
++        "localPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-20/AQ/receipt.json",
++        "bytes": 18798,
++        "sha256": "abeb889c1a0e531659057651f494bcbc56dc583f0dee512e38524c2505100db5"
++      },
++      "acquiredAtSelector": "/responses/0/utc",
++      "acquisitionKind": "original-response-receipt",
++      "fields": [
++        {
++          "name": "description",
++          "selector": "/data_contexts/0",
++          "unitSelector": null,
++          "basisSelector": null
++        }
++      ],
++      "holds": [
++        "education-article-is-not-cookbook",
++        "source-use-unqualified"
++      ],
++      "sourceDataOperations": []
++    },
++    {
++      "bindingId": "ar-provincial-recipe",
++      "country": "AR",
++      "dataType": "recipes",
++      "sourceId": "buenos-aires-provincial-recetario",
++      "releaseId": "May2023/January2025",
++      "sourceRole": "provincial-recipe-document",
++      "operation": "stage-retained-metadata",
++      "metadataUse": "permitted-retained-metadata",
++      "applicability": "source-context-only",
++      "manifest": {
++        "path": "metadata/ar-provincial-recipe.json",
++        "localPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/AR/0c345194eb5b0bfc330e/receipt.json",
++        "bytes": 1907,
++        "sha256": "0bf3950dbaf4547aadbffdfcc8a97e228d6af1df9e45692729d3b5cc867fe67b"
++      },
++      "acquiredAtSelector": "/requests/0/utc",
++      "acquisitionKind": "original-response-receipt",
++      "fields": [
++        {
++          "name": "extent",
++          "selector": "/extent",
++          "unitSelector": null,
++          "basisSelector": null
++        },
++        {
++          "name": "use",
++          "selector": "/licence",
++          "unitSelector": null,
++          "basisSelector": null
++        }
++      ],
++      "holds": [
++        "recipe-use-and-semantic-acceptance-unqualified"
++      ],
++      "sourceDataOperations": []
++    },
++    {
++      "bindingId": "as-agricultural-census",
++      "country": "AS",
++      "dataType": "retailers/providers",
++      "sourceId": "usda-nass-as-census",
++      "releaseId": "2023-released-2025-04-24",
++      "sourceRole": "aggregate-agriculture-statistics",
++      "operation": "stage-retained-metadata",
++      "metadataUse": "permitted-retained-metadata",
++      "applicability": "not-applicable-to-type",
++      "manifest": {
++        "path": "metadata/as-agricultural-census.json",
++        "localPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-24/AS/c135db833dfd5ef7/receipt.json",
++        "bytes": 2147,
++        "sha256": "31563b6f386762acd0ea769a6eb038c7ec05719df5decf0c63a34cdae17f891d"
++      },
++      "acquiredAtSelector": "/utc",
++      "acquisitionKind": "original-response-receipt",
++      "fields": [
++        {
++          "name": "extent",
++          "selector": "/extent",
++          "unitSelector": null,
++          "basisSelector": null
++        },
++        {
++          "name": "use",
++          "selector": "/rightsBasis",
++          "unitSelector": null,
++          "basisSelector": null
++        }
++      ],
++      "holds": [
++        "aggregate-statistics-not-provider-identities",
++        "source-admission-withheld"
++      ],
++      "sourceDataOperations": []
++    },
++    {
++      "bindingId": "as-pndb-metadata",
++      "country": "AS",
++      "dataType": "nutrition",
++      "sourceId": "SPC_REG_2020_PNDB_v01_M",
++      "releaseId": "01",
++      "sourceRole": "regional-reference-metadata",
++      "operation": "stage-retained-metadata",
++      "metadataUse": "permitted-retained-metadata",
++      "applicability": "unknown",
++      "manifest": {
++        "path": "metadata/as-pndb-metadata.json",
++        "localPath": "/home/user/src/offmenu-data/source-access-20261013/8ae1579251539fe2b3ba7a67.json",
++        "bytes": 830,
++        "sha256": "47af2c8434c72ad9b2b7b2bdf1477613bde1cc23f9a82acb0767089ba2f97217"
++      },
++      "acquiredAtSelector": "/checkedAt",
++      "acquisitionKind": "metadata-response",
++      "fields": [
++        {
++          "name": "captureScope",
++          "selector": "/scope",
++          "unitSelector": null,
++          "basisSelector": null
++        },
++        {
++          "name": "rightsDecision",
++          "selector": "/rightsDecision",
++          "unitSelector": null,
++          "basisSelector": null
++        }
++      ],
++      "holds": [
++        "AS-membership-unknown-not-excluded",
++        "dataset-specific-use-unqualified",
++        "units-basis-definitions-unqualified"
++      ],
++      "sourceDataOperations": []
++    },
++    {
++      "bindingId": "at-market-error",
++      "country": "AT",
++      "dataType": "retailers/providers",
++      "sourceId": "vienna-market-catalogue",
++      "releaseId": "snapshot-20261015",
++      "sourceRole": "http-error-nondata",
++      "operation": "stage-retained-metadata",
++      "metadataUse": "permitted-retained-metadata",
++      "applicability": "not-applicable-to-type",
++      "manifest": {
++        "path": "metadata/at-market-error.json",
++        "localPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/AT/receipt.json",
++        "bytes": 8305,
++        "sha256": "438e6b48c4475554cd5675eff2d9ff8f315c440354c1ef97278446c1ba2a81f7"
++      },
++      "acquiredAtSelector": "/responses/0/utc",
++      "acquisitionKind": "original-response-receipt",
++      "fields": [
++        {
++          "name": "httpStatus",
++          "selector": "/responses/0/status",
++          "unitSelector": null,
++          "basisSelector": null
++        },
++        {
++          "name": "extent",
++          "selector": "/extent",
++          "unitSelector": null,
++          "basisSelector": null
++        }
++      ],
++      "holds": [
++        "http404-is-not-market-data",
++        "no-retry"
++      ],
++      "sourceDataOperations": []
++    },
++    {
++      "bindingId": "at-corema-image",
++      "country": "AT",
++      "dataType": "recipes",
++      "sourceId": "corema-w1.95",
++      "releaseId": "snapshot20261015",
++      "sourceRole": "image-object-reference",
++      "operation": "stage-retained-metadata",
++      "metadataUse": "permitted-retained-metadata",
++      "applicability": "source-context-only",
++      "manifest": {
++        "path": "metadata/at-corema-image.json",
++        "localPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/AT/receipt.json",
++        "bytes": 8305,
++        "sha256": "438e6b48c4475554cd5675eff2d9ff8f315c440354c1ef97278446c1ba2a81f7"
++      },
++      "acquiredAtSelector": "/continuation/responses/0/utc",
++      "acquisitionKind": "original-response-receipt",
++      "fields": [
++        {
++          "name": "textUseStatus",
++          "selector": "/continuation/results/1/status",
++          "unitSelector": null,
++          "basisSelector": null
++        }
++      ],
++      "holds": [
++        "image-licence-not-recipe-text-use",
++        "commercial-recipe-use-unqualified"
++      ],
++      "sourceDataOperations": []
++    }
++  ],
++  "unfilledCells": "Every country/type cell still requires its own source manifest, applicable use, field origins and independent semantic/scope acceptance. This is not country coverage.",
++  "ASMembershipEvidence": {
++    "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-07/B01-W07/AS-eligibility-evidence.json",
++    "sha256": "ec48632abf5f798c004fb003b8da16babfc47a7577c32968c92616344190b0b6",
++    "scope": "Retained evidence pointer only; AS membership unknown; no country eligibility grant."
++  }
++}
+diff --git a/docs/operations/portfolio-w07-staging-bindings.md b/docs/operations/portfolio-w07-staging-bindings.md
+new file mode 100644
+index 00000000..12af1a0f
+--- /dev/null
++++ b/docs/operations/portfolio-w07-staging-bindings.md
+@@ -0,0 +1,65 @@
++# Worker 07 retained metadata staging bindings
++
++This portfolio proposal starts at develop `abecb99ee1125730ccbc2824b6ec49ffc5cc4302` for assignment `M-STAGING-BIND-20261018-W07`. It supplies six pinned metadata bindings across AQ, AR, AS and AT. It does not supply a real-source SourceContract or country acceptance. Originals remain in Foo custody outside Git. The authored fixture contains invented values only.
++
++## Run locally
++
++From the repository root, with retained Foo metadata available:
++
++```sh
++PYTHONDONTWRITEBYTECODE=1 python3 -m offmenu.refresh.portfolio_w07 \
++  --config config/refresh/portfolio-w07.json \
++  --now 2026-10-18T05:01:43Z \
++  --output /absolute/new/private-metadata-stage
++PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p test_portfolio_w07.py -v
++```
++
++Omit `--output` for a read-only plan. A nonvalid binding yields exit 2 and a structured diagnostic; the retained configuration intentionally has six held bindings. `valid` means structurally usable metadata only. Every result reports zero source-data records, zero gold admission, no country acceptance and zero network requests. Local paths are custody locators, not portable output identity or grants. A different host needs the same exact metadata bytes at an authorized local locator; missing metadata remains missing. No download, force refresh, source-body or runtime plugin option exists.
++
++The private stage contains singleton-array JSONL records of kind `sourceInputBinding` and a pinned manifest. Each field preserves its literal source value and declared native unit/basis; unavailable units/bases are explicit null constants with policy origins, never fabricated conversions. Every scalar has a logical input path, hash, source/release, record ID and exact selector, or an explicit constant policy pin. The shared field-origin validator verifies coverage. These are metadata context records, not normalized food, recipe, nutrition, provider or price rows.
++
++Original receipt acquisition and current validation time remain separate. Metadata-response captures (including PNDB's checkedAt) do not establish dataset download time. Filesystem modification time never establishes acquisition. The shared MIN_TTL constant provides a 30-day diagnostic boundary; validation cannot reset acquisition age. Stale metadata requires revalidation evidence, with no automatic network action or source-body reuse. There is no generic shared pure cache planner at this base: this bounded portfolio diagnostic wrapper does not impersonate registry fixtures, use the Wikibooks-specific cache policy, or call operational CachedAcquirer.
++
++Repeating the same metadata/config verifies the manifest and actual candidate hash and returns `verified-metadata-no-op`, without rewriting the stage. Validation time and local custody path do not alter candidate identity. Partial, conflicting, corrupted or symlinked stages fail rather than being adopted. Validation diagnostics remain in returned JSON, separately from the immutable stage. Malformed declarations/load failures are isolated per binding after the bounded, uniquely identified envelope is validated. Duplicate binding IDs or an invalid envelope reject the batch before metadata reads.
++
++## Retained portfolio applicability and holds
++
++Exact metadata paths, sizes, hashes and selectors are in `config/refresh/portfolio-w07.json`.
++
++| Binding | Meaning and unresolved dependency | Next action / owner |
++|---|---|---|
++| AQ ASE | Retained education article; not a cookbook or recipe corpus. Source use remains unqualified. | W07 retains role correction; Morgan selects an authorized cookbook/source qualification route. Existing source custodian20 supplies provenance if needed. |
++| AR provincial recipe | Retained May2023/January2025 recipe-document metadata; recipe use and semantics unqualified. | Existing source custodian21 supplies exact release/use evidence; W07 can bind a reviewed grant and field/unit/basis map once supplied. |
++| AS USDA census | Aggregate agriculture statistics, not retailer/provider identities. | W07 preserves nonapplicability; Morgan selects an actual provider source, avoiding duplicate acquisition by existing custodian24. |
++| AS PNDB | Regional metadata; American Samoa membership unknown, not excluded. Dataset-specific use, definitions and units/bases unresolved. | Existing PNDB/source-rights custodian via Morgan supplies country membership and operation-specific evidence. W07 implements a reviewed binding after that dependency. No retry/download authorized here. |
++| AT Vienna market | Retained HTTP404/error context, not market data; no-retry hold. | Morgan routes an alternate authorized source to existing custodian26; preserve the failed attempt. |
++| AT COREMA | Image-object reference; image licence does not establish recipe-text or commercial recipe-use permission. | Existing custodian26/source-rights authority supplies a source-specific text grant or alternative, routed by Morgan. |
++
++No cell of the four-country/six-type requirement is completed by this package:
++
++| Required type | AQ | AR | AS | AT |
++|---|---|---|---|---|
++| Ingredients | Missing source/input | Missing source/input | Missing source/input | Missing source/input |
++| Recipes | Education context only | Held metadata only | Missing source/input | Held image context only |
++| Nutrition | Missing source/input | Missing source/input | PNDB applicability/use held | Missing source/input |
++| Retailers/providers | Missing source/input | Missing source/input | Aggregate nonapplicable | HTTP error nondata |
++| Prices/baskets | Missing source/input | Missing source/input | Missing source/input | Missing source/input |
++| Dietary references | Missing source/input | Missing source/input | Missing applicable input | Missing source/input |
++
++Each cell still needs source/release identity, applicable evidence, exact input inventory, required operation permissions, field origins, native units/bases, scope/count/identity expectations and independent semantics/acceptance review. Missing inputs differ from source-use holds and technical HTTP failure. Actual authorization/denied-action holds remain independently binding. No additional raw bodies were opened or acquired for this implementation.
++
++## Shared-interface evidence and handoff
++
++The implementation reuses shared strict JSON, canonicalization, hashing, UTC timestamps, safe-path validation and descriptor custody checks, singleton JSONL serialization, field origins, logical input-name validation and MIN_TTL. No shared core, engine or source registry is modified. Focused tests cover valid/missing/held/malformed/stale inputs, literal values/units/bases/unknowns, original versus validation clocks, exact TTL boundary, replay/tamper/partial-stage checks and isolated failures. One trusted, fully constrained authored-fixture SourceContract passes the shared qualifier; adding an authored hold fails qualification. That fixture contract is test code, not a runtime rights constructor or real-source permission.
++
++`sourceInputBinding` currently has no reviewed real-source contract/schema factory. The metadata stage is a proposal, not an acceptance manifest consumed directly by `qualify`. A next real-source acceptance path needs an independently reviewed trusted contract, schemas and semantic callback with exact inventory/rights/scope evidence. Morgan/integrator00 owns shared-interface selection; W07 owns portfolio corrections. Submit the local commit through Gateway for independent review and integrator00, preserving the existing branch/artifacts. Do not copy another country engine, edit shared core or retry held source acquisition to fill this gap. Pending review/integration is separate from the completed local implementation.
++
++Production and CIX execution remain paused. Source/ownership/custody, denied-action, actual permission and mandatory auto_review holds remain active. This package grants no release, publication, permission change, new worker, scheduler or deployment authority.
++
++## Designated 03 review correction
++
++Successor to `dedaf6da` addresses `W03-W07-ISOLATION-01` and `W03-W07-NONREGULAR-02` from review6196. Declarations, including unknown fields, now receive iterative depth (32), node (8192) and serialized-size (262144 bytes) bounds before recursive copying or hashing. Invalid declarations contribute a bounded ID/malformed projection to the batch fingerprint, preserving valid peer rows and diagnostics. Binding IDs remain a bounded unique batch-envelope requirement.
++
++Config, selected metadata, and existing stage manifest/candidate reads use anchored directory descriptors, no-follow/nonblocking opens, regular-file/size checks before reading, and matching descriptor/path identity and metadata after bounded reads. A regular-to-FIFO replacement between stat and open is rejected before reading. Config or stage failure returns exit 2 and a fixed structured CLI diagnostic without an exception traceback. Per-binding metadata failures remain isolated. Existing stage content is not rewritten on failure. These checks detect path replacement and observed mutation; they do not grant source access or assert protection against a privileged filesystem adversary.
++
++Focused authored regressions cover mixed good/600-level malformed declarations through both pure planning and actual CLI; FIFO config with no writer, device/directory config, FIFO existing-stage manifest, regular-to-FIFO open race, oversized regular files and mutation during reading. Prior source/portfolio results remain retained evidence, without another source-data or full batch replay. The frozen successor requires delta review by the same designated03 and integration by00; author checks do not clear independent review holds.
+diff --git a/offmenu/refresh/portfolio_w07.py b/offmenu/refresh/portfolio_w07.py
+new file mode 100644
+index 00000000..322792bd
+--- /dev/null
++++ b/offmenu/refresh/portfolio_w07.py
+@@ -0,0 +1,323 @@
++"""AQ/AR/AS/AT metadata bindings only; never open or authorize source bodies.
++
++Shared SourceContract acceptance remains an independently reviewed caller boundary.
++This module supplies metadata candidates and diagnostics, not SourceContracts.
++"""
++import argparse
++import copy
++import json
++import os
++import stat
++from pathlib import Path
++
++from .acquisition import MIN_TTL
++from .core import RefreshError, canonical, safe_path, sha, strict_json, timestamp
++from .field_provenance import datum_pointers, field_origin_errors
++from .national_tabular import valid_input_name
++from .reference_adapters import candidate_bytes
++
++COUNTRIES = frozenset(('AQ', 'AR', 'AS', 'AT'))
++TYPES = frozenset(('ingredients', 'recipes', 'nutrition', 'retailers/providers',
++                   'prices/baskets', 'dietary references'))
++MAX_METADATA = 262144
++MAX_BINDINGS = 32
++
++
++def read_metadata(path, *, limit=MAX_METADATA):
++    """Bounded regular-file read through anchored, nonblocking no-follow handles."""
++    path = safe_path(path)
++    handles, ancestry = [], []
++    signature = lambda st: (st.st_dev, st.st_ino, st.st_mode, st.st_size,
++                            st.st_mtime_ns, st.st_ctime_ns)
++    try:
++        parent = os.open('/', os.O_RDONLY | os.O_DIRECTORY)
++        handles.append(parent)
++        for component in path.parts[1:-1]:
++            child = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
++                            dir_fd=parent)
++            handles.append(child)
++            ancestry.append((parent, component, os.fstat(child)))
++            parent = child
++        before = os.stat(path.name, dir_fd=parent, follow_symlinks=False)
++        if not stat.S_ISREG(before.st_mode) or not 0 <= before.st_size <= limit:
++            raise RefreshError('w07-metadata-not-regular-or-bounded')
++        fd = os.open(path.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=parent)
++        handles.append(fd)
++        if signature(os.fstat(fd)) != signature(before):
++            raise RefreshError('w07-metadata-changed-during-read')
++        body = bytearray()
++        while len(body) <= before.st_size:
++            chunk = os.read(fd, min(65536, before.st_size - len(body) + 1))
++            if not chunk:
++                break
++            body.extend(chunk)
++        if (len(body) != before.st_size or signature(os.fstat(fd)) != signature(before)
++                or signature(os.stat(path.name, dir_fd=parent, follow_symlinks=False)) != signature(before)):
++            raise RefreshError('w07-metadata-changed-during-read')
++        for ancestor, component, original in ancestry:
++            current = os.stat(component, dir_fd=ancestor, follow_symlinks=False)
++            if (current.st_dev, current.st_ino, current.st_mode) != (original.st_dev, original.st_ino, original.st_mode):
++                raise RefreshError('w07-metadata-path-changed')
++        return bytes(body)
++    except OSError:
++        raise RefreshError('w07-metadata-unavailable') from None
++    finally:
++        for fd in reversed(handles):
++            os.close(fd)
++
++
++def bounded_declaration(spec):
++    # Iterative depth/node checks run before recursive copying or serialization,
++    # including unknown fields. Cycles also hit this fixed depth bound.
++    stack, nodes = [(spec, 0)], 0
++    while stack:
++        value, depth = stack.pop()
++        nodes += 1
++        if depth > 32 or nodes > 8192:
++            raise RefreshError('w07-declaration-bounds-invalid')
++        if isinstance(value, dict):
++            if len(value) > 8192 or any(not isinstance(k, str) for k in value):
++                raise RefreshError('w07-declaration-shape-invalid')
++            stack.extend((v, depth + 1) for v in value.values())
++        elif isinstance(value, list):
++            if len(value) > 8192:
++                raise RefreshError('w07-declaration-bounds-invalid')
++            stack.extend((v, depth + 1) for v in value)
++        elif value is not None and type(value) not in (str, bool, int, float):
++            raise RefreshError('w07-declaration-shape-invalid')
++    if len(canonical(spec)) > MAX_METADATA:
++        raise RefreshError('w07-declaration-bounds-invalid')
++
++
++def pointer(document, path):
++    if not isinstance(path, str) or not path.startswith('/'):
++        raise RefreshError('w07-selector-invalid')
++    value = document
++    for token in path[1:].split('/'):
++        if '~' in token.replace('~0', '').replace('~1', ''):
++            raise RefreshError('w07-selector-invalid')
++        token = token.replace('~1', '/').replace('~0', '~')
++        if isinstance(value, dict):
++            value = value[token]
++        elif isinstance(value, list) and token.isascii() and token.isdecimal() and str(int(token)) == token:
++            value = value[int(token)]
++        else:
++            raise KeyError(path)
++    return value
++
++
++def portable(spec):
++    bounded_declaration(spec)
++    result = copy.deepcopy(spec)
++    if isinstance(result.get('manifest'), dict):
++        result['manifest'].pop('localPath', None)
++    return result
++
++
++def validate_spec(spec):
++    bounded_declaration(spec)
++    if (not isinstance(spec, dict) or spec.get('country') not in COUNTRIES
++            or spec.get('dataType') not in TYPES):
++        raise RefreshError('w07-portfolio-scope-invalid')
++    for key in ('bindingId', 'sourceId', 'releaseId', 'sourceRole'):
++        if not isinstance(spec.get(key), str) or not spec[key] or len(spec[key]) > 512:
++            raise RefreshError('w07-binding-identity-invalid')
++    manifest = spec.get('manifest')
++    if (not isinstance(manifest, dict) or not valid_input_name(manifest.get('path'))
++            or type(manifest.get('bytes')) is not int or not 0 < manifest['bytes'] <= MAX_METADATA
++            or not isinstance(manifest.get('sha256'), str)
++            or len(manifest['sha256']) != 64
++            or any(c not in '0123456789abcdef' for c in manifest['sha256'])):
++        raise RefreshError('w07-metadata-pin-invalid')
++    if spec.get('operation') != 'stage-retained-metadata' or spec.get('sourceDataOperations', []) != []:
++        raise RefreshError('w07-source-body-operation-forbidden')
++    fields = spec.get('fields')
++    if not isinstance(fields, list) or not 1 <= len(fields) <= 32:
++        raise RefreshError('w07-field-declarations-required')
++    names = [f.get('name') for f in fields if isinstance(f, dict)]
++    if (len(names) != len(fields) or len(set(names)) != len(names)
++            or any(not isinstance(n, str) or not n or len(n) > 128 for n in names)):
++        raise RefreshError('w07-field-declarations-invalid')
++    if (spec.get('acquisitionKind') not in ('metadata-response', 'original-response-receipt')
++            or spec.get('metadataUse') != 'permitted-retained-metadata'
++            or spec.get('applicability') not in ('source-context-only', 'unknown', 'not-applicable-to-type')
++            or not isinstance(spec.get('holds'), list)
++            or any(not isinstance(x, str) or not x for x in spec['holds'])):
++        raise RefreshError('w07-metadata-scope-invalid')
++    return spec
++
++
++def bind_one(spec, raw, *, now):
++    """Pure bounded evaluation; raw must be the selected metadata, never data files."""
++    result = {'bindingId': spec.get('bindingId') if isinstance(spec, dict) else None,
++              'outcome': 'malformed', 'diagnostics': [], 'candidate': None,
++              'countryDataAdmission': False, 'networkRequests': 0}
++    try:
++        validate_spec(spec)
++        at = timestamp(now)
++        pin = spec['manifest']
++        if raw is None:
++            result.update(outcome='missing', diagnostics=['w07-metadata-not-supplied'])
++            return result
++        if not isinstance(raw, bytes) or len(raw) > MAX_METADATA:
++            raise RefreshError('w07-metadata-size-or-type-invalid')
++        if len(raw) != pin['bytes'] or sha(raw) != pin['sha256']:
++            result.update(outcome='stale-input', diagnostics=['w07-metadata-pin-changed'])
++            return result
++        document = strict_json(raw)
++        if not isinstance(document, dict):
++            raise RefreshError('w07-metadata-object-required')
++        acquired_text = pointer(document, spec['acquiredAtSelector'])
++        if acquired_text is None:
++            raise KeyError('acquisition-unknown')
++        acquired = timestamp(acquired_text)
++        if acquired > at:
++            raise RefreshError('w07-acquisition-in-future')
++        policy = sha(canonical(portable(spec)))
++        data, origins = {}, {}
++        for field in spec['fields']:
++            name = field['name']
++            escaped = name.replace('~', '~0').replace('/', '~1')
++            data[name] = {}
++            for target, selector in [('value', field['selector']), ('unit', field.get('unitSelector')),
++                                     ('basis', field.get('basisSelector'))]:
++                value = pointer(document, selector) if selector is not None else None
++                data[name][target] = value
++                prefix = '/data/' + escaped + '/' + target
++                for dest in datum_pointers(value, prefix):
++                    origins[dest] = ({'kind': 'source', 'sourceId': spec['sourceId'],
++                        'releaseId': spec['releaseId'], 'inputPath': pin['path'],
++                        'inputSha256': pin['sha256'], 'sourceRecordId': spec['bindingId'],
++                        'sourceField': selector + dest[len(prefix):]} if selector is not None else
++                        {'kind': 'constant', 'policySha256': policy, 'symbol': 'explicit-unknown-' + target})
++        row = {'id': 'w07:' + spec['bindingId'], 'kind': 'sourceInputBinding', 'schemaVersion': '1.0',
++               'data': data, 'provenance': {'sourceId': spec['sourceId'], 'releaseId': spec['releaseId'],
++                   'fetchedAt': acquired_text, 'fieldOrigins': origins}}
++        errors = field_origin_errors(row, {pin['path']: pin['sha256']}, policy_pins=(policy,))
++        if errors:
++            raise RefreshError('w07-shared-field-origin-validation-failed')
++        age = (at - acquired).total_seconds()
++        holds = list(spec['holds'])
++        if spec['applicability'] != 'source-context-only':
++            holds.append('w07-country-type-applicability-unqualified')
++        result.update(candidate=row, outcome='held' if holds else 'valid', diagnostics=sorted(set(holds)),
++                      country=spec['country'], dataType=spec['dataType'], sourceRole=spec['sourceRole'],
++                      policySha256=policy, manifest={k: pin[k] for k in ('path', 'bytes', 'sha256')},
++                      cache={'originalAcquiredAt': acquired_text, 'acquisitionKind': spec['acquisitionKind'],
++                          'validatedAt': now, 'acquisitionAgeSeconds': age, 'minimumReuseSeconds': MIN_TTL,
++                          'decision': 'reuse-retained-metadata-no-download' if age < MIN_TTL else
++                                      'revalidation-evidence-required-no-download',
++                          'mtimeUsed': False, 'validationResetsAcquisitionAge': False,
++                          'sourceBodyReuseApproved': False})
++        if age >= MIN_TTL:
++            result['diagnostics'] = sorted(set(result['diagnostics'] + ['w07-metadata-validation-stale']))
++            if not holds:
++                result['outcome'] = 'stale-input'
++    except (KeyError, IndexError):
++        result.update(outcome='missing', diagnostics=['w07-declared-selector-missing'], candidate=None)
++    except (ValueError, TypeError, OverflowError, RecursionError):
++        # No exception text, file contents or arbitrary source identifiers leak.
++        result.update(outcome='malformed', diagnostics=['w07-invalid-binding-or-metadata'], candidate=None)
++    return result
++
++
++def plan(bindings, evidence, *, now):
++    if not isinstance(bindings, list) or not 1 <= len(bindings) <= MAX_BINDINGS:
++        raise RefreshError('w07-binding-count-invalid')
++    ids = [s.get('bindingId') for s in bindings if isinstance(s, dict)]
++    if (len(ids) != len(bindings) or any(not isinstance(x, str) or not 1 <= len(x) <= 512 for x in ids)
++            or len(set(ids)) != len(ids)):
++        raise RefreshError('w07-duplicate-or-invalid-binding-id')
++    results = [bind_one(s, evidence.get(s['bindingId']), now=now) for s in bindings]
++    rows = [r['candidate'] for r in results if r['candidate'] is not None]
++    content = candidate_bytes(rows)
++    projections = []
++    for spec in bindings:
++        try:
++            validate_spec(spec)
++            projections.append(portable(spec))
++        except (ValueError, TypeError, OverflowError, RecursionError):
++            projections.append({'bindingId': spec['bindingId'], 'malformed': True})
++    identity = sha(canonical({'bindings': projections, 'candidateSha256': sha(content)}))
++    return {'schemaVersion': 'offmenu-w07-metadata-staging/1', 'bindingFingerprint': identity,
++            'candidateJsonl': content.decode(), 'candidateSha256': sha(content), 'candidateBytes': len(content),
++            'metadataRecords': len(rows), 'sourceDataRecords': 0, 'goldAdmitted': 0,
++            'results': results, 'networkRequests': 0, 'countryAcceptance': False}
++
++
++def write_metadata_stage(result, directory):
++    """Immutable metadata output; replay verifies exact bytes before no-op."""
++    directory = safe_path(directory)
++    content = result['candidateJsonl'].encode()
++    manifest = {'schemaVersion': result['schemaVersion'], 'bindingFingerprint': result['bindingFingerprint'],
++                'candidateSha256': sha(content), 'candidateBytes': len(content),
++                'metadataRecords': result['metadataRecords'], 'sourceDataRecords': 0, 'goldAdmitted': 0}
++    if directory.exists():
++        if not directory.is_dir() or {p.name for p in directory.iterdir()} != {'candidate.jsonl', 'manifest.json'}:
++            raise RefreshError('w07-existing-stage-conflict')
++        old = strict_json(read_metadata(directory / 'manifest.json'))
++        if old != manifest:
++            raise RefreshError('w07-existing-stage-conflict')
++        actual = read_metadata(directory / 'candidate.jsonl', limit=len(content))
++        if len(actual) != len(content) or sha(actual) != sha(content):
++            raise RefreshError('w07-existing-stage-candidate-changed')
++        return 'verified-metadata-no-op'
++    directory.mkdir(parents=True)
++    with (directory / 'candidate.jsonl').open('xb') as f:
++        f.write(content)
++    with (directory / 'manifest.json').open('xb') as f:
++        f.write(canonical(manifest))
++    return 'metadata-stage-created'
++
++
++def _main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--config', type=Path, required=True)
++    parser.add_argument('--now', required=True, help='explicit UTC validation time')
++    parser.add_argument('--output', type=Path, help='new private metadata-only stage directory')
++    args = parser.parse_args(argv)
++    config_path = safe_path(args.config)
++    config = strict_json(read_metadata(config_path))
++    if not isinstance(config, dict) or config.get('schemaVersion') != 'offmenu-w07-bindings/1':
++        raise RefreshError('w07-config-version-invalid')
++    bindings = config['bindings']
++    # Validate the bounded envelope before any metadata I/O.
++    plan(bindings, {}, now=args.now)
++    evidence, load_errors, protected = {}, {}, [config_path]
++    for spec in bindings:
++        try:
++            validate_spec(spec)
++            path = safe_path(spec['manifest']['localPath'])
++            protected.append(path)
++            if path.suffix != '.json':
++                raise RefreshError('w07-json-metadata-only')
++            evidence[spec['bindingId']] = read_metadata(path) if path.exists() else None
++        except (KeyError, ValueError, TypeError, OSError):
++            load_errors[spec['bindingId']] = 'w07-metadata-load-invalid'
++    # Only selected bounded metadata is read; no downloader or source engine.
++    result = plan(bindings, evidence, now=args.now)
++    for item in result['results']:
++        if item['bindingId'] in load_errors:
++            item.update(outcome='malformed', diagnostics=[load_errors[item['bindingId']]])
++    if args.output:
++        out = safe_path(args.output)
++        if any(p == out or p.is_relative_to(out) for p in protected):
++            raise RefreshError('w07-input-output-overlap')
++        result['stageAction'] = write_metadata_stage(result, out)
++    print(canonical(result).decode(), end='')
++    return 2 if any(r['outcome'] != 'valid' for r in result['results']) else 0
++
++
++def main(argv=None):
++    try:
++        return _main(argv)
++    except (KeyError, ValueError, TypeError, OSError, OverflowError, RecursionError):
++        print(canonical({'schemaVersion': 'offmenu-w07-metadata-staging/1',
++                         'outcome': 'malformed', 'diagnostics': ['w07-cli-input-or-stage-invalid'],
++                         'sourceDataRecords': 0, 'goldAdmitted': 0,
++                         'countryAcceptance': False, 'networkRequests': 0}).decode(), end='')
++        return 2
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/tests/fixtures/portfolio-w07/authored-metadata.json b/tests/fixtures/portfolio-w07/authored-metadata.json
+new file mode 100644
+index 00000000..e122a496
+--- /dev/null
++++ b/tests/fixtures/portfolio-w07/authored-metadata.json
+@@ -0,0 +1,19 @@
++{
++  "captureAt": "2026-10-01T00:00:00Z",
++  "sourceId": "authored-w07",
++  "release": "fixture-1",
++  "measure": {
++    "value": "1,25",
++    "unit": "g",
++    "basis": {
++      "amount": "100",
++      "unit": "g"
++    }
++  },
++  "zero": 0,
++  "unknown": null,
++  "names": [
++    "Samoa",
++    "American Samoa"
++  ]
++}
+diff --git a/tests/test_portfolio_w07.py b/tests/test_portfolio_w07.py
+new file mode 100644
+index 00000000..4de993b5
+--- /dev/null
++++ b/tests/test_portfolio_w07.py
+@@ -0,0 +1,332 @@
++"""Small authored metadata; no retained datasets, acquisition or old suites."""
++import contextlib
++import io
++from dataclasses import replace
++import json
++import os
++import subprocess
++import sys
++from unittest import mock
++from pathlib import Path
++import tempfile
++import unittest
++
++from offmenu.refresh.core import RefreshError, canonical, sha
++from offmenu.refresh.field_provenance import field_origin_errors
++from offmenu.refresh.portfolio_w07 import bind_one, main, plan, write_metadata_stage
++
++FIXTURE = Path(__file__).parent / 'fixtures/portfolio-w07/authored-metadata.json'
++NOW = '2026-10-18T00:00:00Z'
++
++
++def spec(raw=None, binding='authored-one'):
++    raw = FIXTURE.read_bytes() if raw is None else raw
++    return {'bindingId': binding, 'country': 'AS', 'dataType': 'nutrition',
++            'sourceId': 'authored-w07', 'releaseId': 'fixture-1', 'sourceRole': 'authored-metadata',
++            'operation': 'stage-retained-metadata', 'metadataUse': 'permitted-retained-metadata',
++            'applicability': 'source-context-only', 'sourceDataOperations': [],
++            'manifest': {'path': 'metadata/authored.json', 'bytes': len(raw), 'sha256': sha(raw)},
++            'acquiredAtSelector': '/captureAt', 'acquisitionKind': 'metadata-response',
++            'fields': [{'name': 'measure', 'selector': '/measure/value', 'unitSelector': '/measure/unit',
++                        'basisSelector': '/measure/basis'},
++                       {'name': 'unknown', 'selector': '/unknown'},
++                       {'name': 'zero', 'selector': '/zero'},
++                       {'name': 'names', 'selector': '/names'}], 'holds': []}
++
++
++class PortfolioW07Tests(unittest.TestCase):
++    def setUp(self):
++        self.raw = FIXTURE.read_bytes()
++        self.s = spec()
++
++    def bind(self, s=None, raw=None, now=NOW):
++        return bind_one(self.s if s is None else s, self.raw if raw is None else raw, now=now)
++
++    def test_valid_shared_origin_contract(self):
++        r = self.bind()
++        self.assertEqual(r['outcome'], 'valid')
++        self.assertEqual(field_origin_errors(r['candidate'], {'metadata/authored.json': sha(self.raw)},
++                                           policy_pins=(r['policySha256'],)), [])
++        self.assertFalse(r['countryDataAdmission'])
++
++    def test_literal_units_basis_decimal_unknown_and_zero(self):
++        data = self.bind()['candidate']['data']
++        self.assertEqual(data['measure'], {'value': '1,25', 'unit': 'g', 'basis': {'amount': '100', 'unit': 'g'}})
++        self.assertEqual(data['zero']['value'], 0)
++        self.assertIsNone(data['unknown']['value'])
++        self.assertIsNone(data['unknown']['unit'])
++        self.assertEqual(data['names']['value'], ['Samoa', 'American Samoa'])
++
++    def test_country_applicability_never_inferred_from_names(self):
++        self.s['applicability'] = 'unknown'
++        r = self.bind()
++        self.assertEqual(r['outcome'], 'held')
++        self.assertIn('w07-country-type-applicability-unqualified', r['diagnostics'])
++
++    def test_hold_is_not_rights_grant(self):
++        self.s['holds'] = ['source-use-unqualified']
++        r = self.bind()
++        self.assertEqual(r['outcome'], 'held')
++        self.assertFalse(r['cache']['sourceBodyReuseApproved'])
++
++    def test_missing_metadata(self):
++        self.assertEqual(bind_one(self.s, None, now=NOW)['outcome'], 'missing')
++
++    def test_missing_selector(self):
++        self.s['fields'][0]['selector'] = '/missing'
++        self.assertEqual(self.bind()['outcome'], 'missing')
++
++    def test_missing_acquisition_time(self):
++        self.s['acquiredAtSelector'] = '/unknown'
++        self.assertEqual(self.bind()['outcome'], 'missing')
++
++    def test_stale_pin_does_not_parse_untrusted_replacement(self):
++        r = self.bind(raw=b'changed')
++        self.assertEqual(r['outcome'], 'stale-input')
++        self.assertIsNone(r['candidate'])
++
++    def test_wrong_declared_size(self):
++        self.s['manifest']['bytes'] += 1
++        self.assertEqual(self.bind()['outcome'], 'stale-input')
++
++    def test_duplicate_json_and_nonfinite_fail_coherently_pinned(self):
++        for raw in [b'{"captureAt":1,"captureAt":2}', b'{"v":NaN}', b'[1,2]', b'not json']:
++            with self.subTest(raw=raw):
++                self.assertEqual(self.bind(s=spec(raw), raw=raw)['outcome'], 'malformed')
++
++    def test_unsafe_logical_input_path(self):
++        for path in ['../body.pdf', '/body', 'a//b', 'a\\b']:
++            self.s['manifest']['path'] = path
++            self.assertEqual(self.bind()['outcome'], 'malformed')
++
++    def test_wrong_country_type_and_source_operation(self):
++        for key, value in [('country', 'AU'), ('dataType', 'gold'), ('operation', 'parse-source-body'),
++                           ('sourceDataOperations', ['parse'])]:
++            s = spec(); s[key] = value
++            self.assertEqual(self.bind(s=s)['outcome'], 'malformed')
++
++    def test_validation_time_does_not_reset_original_acquisition(self):
++        a = self.bind(now='2026-10-20T00:00:00Z')
++        b = self.bind(now='2026-11-01T00:00:00Z')
++        self.assertEqual(a['outcome'], 'valid')
++        self.assertEqual(b['outcome'], 'stale-input')
++        self.assertEqual(b['cache']['originalAcquiredAt'], '2026-10-01T00:00:00Z')
++        self.assertFalse(b['cache']['validationResetsAcquisitionAge'])
++        self.assertEqual(b['cache']['minimumReuseSeconds'], 30 * 86400)
++
++    def test_exact_thirty_day_boundary(self):
++        self.assertEqual(self.bind(now='2026-10-30T23:59:59Z')['outcome'], 'valid')
++        self.assertEqual(self.bind(now='2026-10-31T00:00:00Z')['outcome'], 'stale-input')
++
++    def test_clock_invalid_or_before_original(self):
++        for now in ['2026-09-01T00:00:00Z', '2026-10-18', '2026-10-18T00:00:00+11:00']:
++            self.assertEqual(self.bind(now=now)['outcome'], 'malformed')
++
++    def test_one_bad_input_does_not_poison_other_bindings(self):
++        good = spec(binding='good'); missing = spec(binding='missing'); bad = spec(b'bad', 'bad')
++        held = spec(binding='held'); held['holds'] = ['no-source-use']
++        r = plan([good, missing, bad, held], {'good': self.raw, 'bad': b'bad', 'held': self.raw}, now=NOW)
++        self.assertEqual([x['outcome'] for x in r['results']], ['valid', 'missing', 'malformed', 'held'])
++        self.assertEqual(r['sourceDataRecords'], 0)
++
++    def test_malformed_declaration_is_isolated(self):
++        broken = spec(binding='broken'); broken.pop('manifest')
++        r = plan([self.s, broken], {'authored-one': self.raw}, now=NOW)
++        self.assertEqual([x['outcome'] for x in r['results']], ['valid', 'malformed'])
++
++    def test_fingerprint_ignores_locality_and_validation_age(self):
++        a = plan([self.s], {'authored-one': self.raw}, now=NOW)
++        self.s['manifest']['localPath'] = '/different/Foo/path.json'
++        b = plan([self.s], {'authored-one': self.raw}, now='2026-10-19T00:00:00Z')
++        self.assertEqual(a['bindingFingerprint'], b['bindingFingerprint'])
++        self.assertEqual(a['candidateJsonl'], b['candidateJsonl'])
++
++    def test_noop_verifies_actual_staged_bytes_without_rewriting(self):
++        r = plan([self.s], {'authored-one': self.raw}, now=NOW)
++        with tempfile.TemporaryDirectory() as t:
++            out = Path(t) / 'stage'
++            self.assertEqual(write_metadata_stage(r, out), 'metadata-stage-created')
++            stamp = (out / 'candidate.jsonl').stat().st_mtime_ns
++            self.assertEqual(write_metadata_stage(r, out), 'verified-metadata-no-op')
++            self.assertEqual((out / 'candidate.jsonl').stat().st_mtime_ns, stamp)
++            (out / 'candidate.jsonl').write_bytes(b'tampered')
++            with self.assertRaises(RefreshError):
++                write_metadata_stage(r, out)
++
++    def test_changed_manifest_or_partial_stage_never_adopted(self):
++        r = plan([self.s], {'authored-one': self.raw}, now=NOW)
++        with tempfile.TemporaryDirectory() as t:
++            out = Path(t) / 'stage'; out.mkdir(); (out / 'candidate.jsonl').write_text('partial')
++            with self.assertRaises(RefreshError):
++                write_metadata_stage(r, out)
++
++    def test_symlink_output_rejected(self):
++        with tempfile.TemporaryDirectory() as t:
++            real = Path(t) / 'real'; real.mkdir(); link = Path(t) / 'link'; link.symlink_to(real)
++            with self.assertRaises(RefreshError):
++                write_metadata_stage(plan([self.s], {'authored-one': self.raw}, now=NOW), link)
++
++    def test_shared_serialization_singleton_envelope(self):
++        r = plan([self.s], {'authored-one': self.raw}, now=NOW)
++        packet = json.loads(r['candidateJsonl'])
++        self.assertEqual(len(packet), 1)
++        self.assertEqual(packet[0]['kind'], 'sourceInputBinding')
++        self.assertEqual(sha(r['candidateJsonl'].encode()), r['candidateSha256'])
++
++    def test_real_configuration_has_no_positive_data_grants(self):
++        config = json.loads((Path(__file__).parents[1] / 'config/refresh/portfolio-w07.json').read_text())
++        self.assertEqual(set(config['requiredCountries']), {'AQ', 'AR', 'AS', 'AT'})
++        self.assertEqual(len(config['requiredDataTypes']), 6)
++        self.assertTrue(all(s['sourceDataOperations'] == [] and s['holds'] for s in config['bindings']))
++
++    def test_cli_rejects_force(self):
++        with self.assertRaises(SystemExit):
++            main(['--config', 'unused', '--now', NOW, '--force'])
++
++    def test_cli_replay_overlap_and_bad_declaration_isolation(self):
++        with tempfile.TemporaryDirectory() as t:
++            root = Path(t); metadata = root / 'metadata.json'; metadata.write_bytes(self.raw)
++            self.s['manifest']['localPath'] = str(metadata)
++            broken = spec(binding='broken'); broken.pop('manifest')
++            config = root / 'config.json'
++            config.write_bytes(canonical({'schemaVersion': 'offmenu-w07-bindings/1', 'bindings': [self.s, broken]}))
++            args = ['--config', str(config), '--now', NOW, '--output', str(root / 'stage')]
++            for action in ['metadata-stage-created', 'verified-metadata-no-op']:
++                stream = io.StringIO()
++                with contextlib.redirect_stdout(stream):
++                    self.assertEqual(main(args), 2)
++                result = json.loads(stream.getvalue())
++                self.assertEqual(result['stageAction'], action)
++                self.assertEqual([r['outcome'] for r in result['results']], ['valid', 'malformed'])
++                self.assertEqual(result['metadataRecords'], 1)
++            stream = io.StringIO()
++            with contextlib.redirect_stdout(stream):
++                self.assertEqual(main(['--config', str(config), '--now', NOW, '--output', str(root)]), 2)
++            self.assertEqual(json.loads(stream.getvalue())['diagnostics'], ['w07-cli-input-or-stage-invalid'])
++
++    def test_authored_fixture_shared_qualification_and_hold(self):
++        from offmenu.refresh.acceptance import Asset, SourceContract, fingerprint, ids_digest, qualify
++        r = self.bind(); row = r['candidate']
++        # Fully constrained authored fixture schema, not a real-source contract factory.
++        schemas = {'sourceInputBinding': {'const': row}}
++        with tempfile.TemporaryDirectory() as t:
++            root = Path(t); bundle = root / 'bundle'; (bundle / 'metadata').mkdir(parents=True)
++            (bundle / 'metadata/authored.json').write_bytes(self.raw)
++            rights = b'Authored test fixture only; retain parse transform. No real-source grant.'
++            scope = canonical({'ids': [row['id']], 'records': 1, 'scope': 'authored-fixture-only'})
++            (bundle / 'rights.txt').write_bytes(rights); (bundle / 'scope.json').write_bytes(scope)
++            assets = tuple(Asset(name, len(raw), sha(raw)) for name, raw in
++                           [('metadata/authored.json', self.raw), ('rights.txt', rights), ('scope.json', scope)])
++            candidate = root / 'candidate.jsonl'
++            content = plan([self.s], {'authored-one': self.raw}, now=NOW)['candidateJsonl'].encode()
++            candidate.write_bytes(content)
++            contract = SourceContract(source_id='authored-w07', release_id='fixture-1',
++                scope_id='w07-authored-fixture', acquired_at='2026-10-01T00:00:00Z', inputs=assets,
++                expected_records=1, expected_ids_sha256=ids_digest([row['id']]), schemas=schemas,
++                schemas_sha256=fingerprint(schemas), policy_sha256=r['policySha256'],
++                semantic_validator=lambda item: field_origin_errors(item,
++                    {'metadata/authored.json': sha(self.raw)}, policy_pins=(r['policySha256'],)),
++                rights_evidence=assets[1], scope_evidence=assets[2],
++                permitted_operations=frozenset(('retain', 'parse', 'transform')), fixture=True)
++            manifest = {'sourceId': contract.source_id, 'releaseId': contract.release_id,
++                'acquiredAt': contract.acquired_at, 'normalizedRecords': 1,
++                'candidateBytes': len(content), 'candidateSha256': sha(content),
++                'rightsEvidenceSha256': sha(rights), 'scopeEvidenceSha256': sha(scope),
++                'inputFiles': [vars(a) for a in assets]}
++            qualified = qualify(contract, bundle, candidate, manifest)
++            self.assertTrue(qualified['qualified'], qualified['errors'])
++            held = qualify(replace(contract, holds=('authored-hold',)), bundle, candidate, manifest)
++            self.assertFalse(held['qualified']); self.assertIn('source-held', held['errors'])
++
++
++class Review03Regressions(unittest.TestCase):
++    def setUp(self):
++        self.raw = FIXTURE.read_bytes()
++        self.s = spec()
++    def cli(self, config, output=None):
++        cmd = [sys.executable, '-m', 'offmenu.refresh.portfolio_w07',
++               '--config', str(config), '--now', NOW]
++        if output is not None:
++            cmd += ['--output', str(output)]
++        run = subprocess.run(cmd, capture_output=True, text=True, timeout=3,
++                             env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1'})
++        self.assertEqual(run.returncode, 2, run.stderr)
++        self.assertNotIn('Traceback', run.stderr)
++        return json.loads(run.stdout)
++
++    def config_at(self, root, bindings=None):
++        metadata = root / 'metadata.json'; metadata.write_bytes(self.raw)
++        self.s['manifest']['localPath'] = str(metadata)
++        config = root / 'config.json'
++        config.write_bytes(canonical({'schemaVersion': 'offmenu-w07-bindings/1',
++                                      'bindings': bindings if bindings is not None else [self.s]}))
++        return config
++
++    def test_review03_deep_bad_preserves_peer_and_cli(self):
++        broken = spec(binding='deep-bad'); nested = {}
++        for _ in range(600):
++            nested = {'nested': nested}
++        broken['unknown'] = nested
++        result = plan([self.s, broken], {'authored-one': self.raw, 'deep-bad': self.raw}, now=NOW)
++        self.assertEqual([r['outcome'] for r in result['results']], ['valid', 'malformed'])
++        self.assertEqual(result['metadataRecords'], 1)
++        self.assertEqual(result['candidateJsonl'], plan([self.s], {'authored-one': self.raw}, now=NOW)['candidateJsonl'])
++        with tempfile.TemporaryDirectory() as t:
++            root = Path(t); config = self.config_at(root, [self.s, broken])
++            actual = self.cli(config)
++            self.assertEqual([r['outcome'] for r in actual['results']], ['valid', 'malformed'])
++            self.assertEqual(actual['metadataRecords'], 1)
++
++    def test_review03_fifo_config_and_device_return_typed_error(self):
++        with tempfile.TemporaryDirectory() as t:
++            config = Path(t) / 'config.json'; os.mkfifo(config)
++            for path in (config, Path('/dev/null'), Path(t)):
++                with self.subTest(path=path):
++                    result = self.cli(path)
++                    self.assertEqual(result['outcome'], 'malformed')
++                    self.assertEqual(result['diagnostics'], ['w07-cli-input-or-stage-invalid'])
++
++    def test_review03_fifo_stage_manifest_never_blocks_or_rewrites(self):
++        with tempfile.TemporaryDirectory() as t:
++            root = Path(t); config = self.config_at(root); stage = root / 'stage'
++            write_metadata_stage(plan([self.s], {'authored-one': self.raw}, now=NOW), stage)
++            candidate = (stage / 'candidate.jsonl').read_bytes()
++            manifest = stage / 'manifest.json'; manifest.unlink(); os.mkfifo(manifest)
++            result = self.cli(config, stage)
++            self.assertEqual(result['diagnostics'], ['w07-cli-input-or-stage-invalid'])
++            self.assertEqual((stage / 'candidate.jsonl').read_bytes(), candidate)
++            self.assertTrue(__import__('stat').S_ISFIFO(manifest.lstat().st_mode))
++
++    def test_review03_regular_to_fifo_open_race_rejected(self):
++        from offmenu.refresh.portfolio_w07 import read_metadata
++        with tempfile.TemporaryDirectory() as t:
++            path = Path(t) / 'config.json'; path.write_bytes(b'{}')
++            original = os.open
++            def swapped(name, flags, *args, **kwargs):
++                if name == path.name:
++                    path.unlink(); os.mkfifo(path)
++                return original(name, flags, *args, **kwargs)
++            with mock.patch('offmenu.refresh.portfolio_w07.os.open', side_effect=swapped):
++                with self.assertRaises(RefreshError):
++                    read_metadata(path)
++
++    def test_review03_bounded_regular_read_and_mutation(self):
++        from offmenu.refresh.portfolio_w07 import read_metadata
++        with tempfile.TemporaryDirectory() as t:
++            path = Path(t) / 'input.json'; path.write_bytes(self.raw)
++            self.assertEqual(read_metadata(path), self.raw)
++            with self.assertRaises(RefreshError):
++                read_metadata(path, limit=2)
++            original = os.read
++            def changed(fd, size):
++                raw = original(fd, size)
++                with path.open('ab') as f:
++                    f.write(b' ')
++                return raw
++            with mock.patch('offmenu.refresh.portfolio_w07.os.read', side_effect=changed):
++                with self.assertRaises(RefreshError):
++                    read_metadata(path)
++
++
++if __name__ == '__main__':
++    unittest.main()

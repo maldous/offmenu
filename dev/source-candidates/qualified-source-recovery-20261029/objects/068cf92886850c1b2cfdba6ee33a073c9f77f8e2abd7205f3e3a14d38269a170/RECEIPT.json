@@ -1,0 +1,51 @@
+{
+  "schema": "offmenu-independent-acceptance/1",
+  "finding": "NS196-G2",
+  "disposition": "Resolved within the independently executed synthetic served-client changed-path scope; no new concrete defect found. Authenticated persistence/sharing and real-source acceptance are not established.",
+  "release": {
+    "version": "188dac2d-ac29-4354-a757-e112a9a84258",
+    "deployment": "786625f4-e35e-4aa8-a112-359979d467fc",
+    "sha256": "19c11668db13b88a4c77ddd565dbf7853928b9c0c22cebe1da87fa3742cdb7a5",
+    "bytes": 476307
+  },
+  "versionAndDeploymentAuthority": "Exact version/deployment supplied by sole integrator through parent; served app independently downloaded and size/SHA-256 verified.",
+  "sourceHelper": {
+    "originalPath": "public/cooking-witness.js",
+    "localCopy": "cooking-witness.mjs",
+    "sha256": "8b2032742e0b3f14bae9d5f6ae314cca8f1162a2aa6aa1591bea573047afe304",
+    "scope": "Exact corrected R2 codec/shared projection, also compared against actual bundled served shared helper."
+  },
+  "execution": {
+    "changedCallerScenario": 1,
+    "stateCheckpoints": 4,
+    "nestedVisibilityCases": 3,
+    "result": "passed",
+    "assertions": {
+      "actualCallerMenuCookServeReload": true,
+      "recipeVersionSourceLicenseInstructionsAndIngredientsFrozen": true,
+      "oldBatchAndHistoryWitnessByteIdenticalAfterEdits": true,
+      "originalLotProfileAndSourceReleaseFrozen": true,
+      "oldQuantitiesAndNutrientTotalsPreserved": true,
+      "knownZeroSaltAndAbsentVitaminCPreserved": true,
+      "currentRecipeAndLotProfileUpdated": true
+    },
+    "runtimeNetworkCalls": 0,
+    "blockedRuntimeAttempts": [
+      "/api/services"
+    ],
+    "priorAcceptedJourneysRerun": false,
+    "productOrCorpusSuitesRerun": false
+  },
+  "harnessAdjustment": "Initial attempt reused a built-in fixture recipe id; fixture reload replaces bundled recipe ids. The isolated authored recipe was assigned its own id before the final successful run. No product defect or correction inferred from that harness setup assertion.",
+  "limits": [
+    "Actual hash-pinned served client evaluated in isolated VM with retained minimal DOM/storage shims. Exact production applyNutrition callback receives an explicitly confirmed synthetic profile because picker UI is fixture-disabled. Real caller menu/cook/serve handlers and local reload executed.",
+    "Shared projection exercised both served bundled helper and exact hash-bound corrected source helper; no authenticated shared workspace or real-account persistence exercised. Existing independent Worker review is separate evidence, not rerun.",
+    "No full v195/v196 journey, product/corpus tests or provider/device/browser-session access; runtime fetches blocked. Synthetic data only."
+  ],
+  "separateWorkerEvidence": {
+    "library_file_id": "libfile_1d52fe12e1748191acc1db51b7deaa10",
+    "file_id": "file_000000006c5c82309a6c1e48b1108702",
+    "archiveSha256": "07ea84e30f7182fe8fd4873358095f5fdbc797bb4bd51608932cb7c5c823ac6a",
+    "status": "Parent-supplied reference; actual Worker seam/module/build review was not repeated or claimed independently verified in this turn."
+  }
+}

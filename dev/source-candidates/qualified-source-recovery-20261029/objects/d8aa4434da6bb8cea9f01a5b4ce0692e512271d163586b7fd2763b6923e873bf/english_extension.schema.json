@@ -1,0 +1,1006 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "offmenu-english-gold-extension/proposal-2"
+    },
+    "activation": {
+      "const": "not-authorized-by-artifact"
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "releaseId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceRecordId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "originalSHA256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "parsedArtifact": {
+          "$ref": "#/$defs/pin"
+        },
+        "recordPointer": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "extractionSchema": {
+          "enum": [
+            "offmenu-source-recipe/2",
+            "offmenu-source-menu-item/1"
+          ]
+        },
+        "parserVersion": {
+          "const": "offmenu-source-faithful-recipe-parser/1.3.2"
+        },
+        "transformVersion": {
+          "enum": [
+            null,
+            "offmenu-assistant-intermediate-to-source-recipe/1.0.2"
+          ]
+        },
+        "format": {
+          "enum": [
+            "json",
+            "jsonl"
+          ]
+        },
+        "recordLine": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      },
+      "required": [
+        "sourceId",
+        "releaseId",
+        "sourceRecordId",
+        "originalSHA256",
+        "parsedArtifact",
+        "recordPointer",
+        "extractionSchema",
+        "parserVersion",
+        "transformVersion",
+        "format",
+        "recordLine"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "format": {
+                "const": "jsonl"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "recordLine": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "format": {
+                "const": "json"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "recordLine": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "policies": {
+      "type": "object",
+      "properties": {
+        "normalization": {
+          "$ref": "#/$defs/pin"
+        },
+        "translation": {
+          "$ref": "#/$defs/pin"
+        },
+        "units": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/pin"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "identity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/pin"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "variants": {
+          "$ref": "#/$defs/pin"
+        }
+      },
+      "required": [
+        "normalization",
+        "translation",
+        "units",
+        "identity",
+        "variants"
+      ],
+      "additionalProperties": false
+    },
+    "permissions": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/permission"
+      },
+      "allOf": [
+        {
+          "contains": {
+            "properties": {
+              "purpose": {
+                "const": "normalization"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "properties": {
+              "purpose": {
+                "const": "translation"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ]
+    },
+    "translations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/translation"
+      }
+    },
+    "quantityNormalizations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/quantity"
+      }
+    },
+    "ingredientIdentityAssertions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/identity"
+      }
+    },
+    "variantAssertions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/variant"
+      }
+    },
+    "productIngredientLinks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/product"
+      }
+    },
+    "usableAsAssertions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/usable"
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/conflict"
+      }
+    },
+    "statuses": {
+      "type": "object",
+      "properties": {
+        "normalization": {
+          "enum": [
+            "not-run",
+            "proposed",
+            "held",
+            "ready-for-review"
+          ]
+        },
+        "translation": {
+          "enum": [
+            "not-run",
+            "proposed",
+            "held",
+            "ready-for-review"
+          ]
+        },
+        "ingredientIdentity": {
+          "enum": [
+            "unassessed",
+            "proposed",
+            "held",
+            "reviewed-evidence"
+          ]
+        },
+        "dietary": {
+          "enum": [
+            "not-assessed",
+            "unknown",
+            "evidence-pending-review"
+          ]
+        },
+        "englishConsumer": {
+          "enum": [
+            "proposed",
+            "held",
+            "ready-for-review"
+          ]
+        },
+        "goldAdmission": {
+          "const": "not-admitted"
+        }
+      },
+      "required": [
+        "normalization",
+        "translation",
+        "ingredientIdentity",
+        "dietary",
+        "englishConsumer",
+        "goldAdmission"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "activation",
+    "input",
+    "policies",
+    "permissions",
+    "translations",
+    "quantityNormalizations",
+    "ingredientIdentityAssertions",
+    "variantAssertions",
+    "productIngredientLinks",
+    "usableAsAssertions",
+    "conflicts",
+    "statuses"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:offmenu:proposal:worker19:english-gold-extension:2",
+  "title": "Linked English-gold extension proposal with reviewed semantic callback; no production admission",
+  "$defs": {
+    "pin": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "anchor": {
+      "type": "object",
+      "properties": {
+        "fieldPointer": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "sourceSpanSHA256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "pageTextSHA256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "fieldPointer",
+        "sourceSpanSHA256",
+        "pageTextSHA256"
+      ],
+      "additionalProperties": false
+    },
+    "permission": {
+      "type": "object",
+      "properties": {
+        "operation": {
+          "const": "transform"
+        },
+        "purpose": {
+          "enum": [
+            "normalization",
+            "translation"
+          ]
+        },
+        "state": {
+          "enum": [
+            "permitted",
+            "denied",
+            "unknown",
+            "held"
+          ]
+        },
+        "reviewedContractPin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/pin"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pin"
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "operation",
+        "purpose",
+        "state",
+        "reviewedContractPin",
+        "evidence",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "permitted"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reviewedContractPin": {
+                "$ref": "#/$defs/pin"
+              },
+              "evidence": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "translation": {
+      "type": "object",
+      "properties": {
+        "assertionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "$ref": "#/$defs/anchor"
+        },
+        "englishText": {
+          "type": "string",
+          "minLength": 1
+        },
+        "origin": {
+          "enum": [
+            "publisher-translation",
+            "human-proposal",
+            "model-proposal",
+            "glossary-proposal"
+          ]
+        },
+        "methodVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state": {
+          "enum": [
+            "proposed",
+            "reviewed",
+            "unresolved",
+            "rejected"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pin"
+          }
+        },
+        "ambiguityIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "assertionId",
+        "target",
+        "englishText",
+        "origin",
+        "methodVersion",
+        "state",
+        "evidence",
+        "ambiguityIds"
+      ],
+      "additionalProperties": false
+    },
+    "quantity": {
+      "type": "object",
+      "properties": {
+        "assertionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "$ref": "#/$defs/anchor"
+        },
+        "sourceValueState": {
+          "enum": [
+            "absent",
+            "null",
+            "blank",
+            "dash",
+            "literal-zero",
+            "numeric",
+            "trace",
+            "not-detected",
+            "not-tested",
+            "less-than",
+            "unresolved"
+          ]
+        },
+        "normalizedValue": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+        },
+        "normalizedUnit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceBasis": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "normalizedBasis": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "comparison": {
+          "enum": [
+            null,
+            "lt",
+            "lte",
+            "gt",
+            "gte"
+          ]
+        },
+        "boundValue": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+        },
+        "conversionKind": {
+          "enum": [
+            "none",
+            "exact-unit",
+            "density",
+            "yield",
+            "nutrient-retention"
+          ]
+        },
+        "factorPin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/pin"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "basisPin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/pin"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state": {
+          "enum": [
+            "proposed",
+            "reviewed",
+            "unresolved",
+            "rejected"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pin"
+          }
+        }
+      },
+      "required": [
+        "assertionId",
+        "target",
+        "sourceValueState",
+        "normalizedValue",
+        "normalizedUnit",
+        "sourceBasis",
+        "normalizedBasis",
+        "comparison",
+        "boundValue",
+        "conversionKind",
+        "factorPin",
+        "basisPin",
+        "state",
+        "evidence"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "sourceValueState": {
+                "not": {
+                  "enum": [
+                    "numeric",
+                    "literal-zero"
+                  ]
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "normalizedValue": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "sourceValueState": {
+                "const": "less-than"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "comparison": {
+                "const": "lt"
+              },
+              "boundValue": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "conversionKind": {
+                "enum": [
+                  "density",
+                  "yield",
+                  "nutrient-retention"
+                ]
+              },
+              "state": {
+                "const": "reviewed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "factorPin": {
+                "$ref": "#/$defs/pin"
+              },
+              "basisPin": {
+                "$ref": "#/$defs/pin"
+              },
+              "evidence": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "identity": {
+      "type": "object",
+      "properties": {
+        "assertionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "$ref": "#/$defs/anchor"
+        },
+        "ingredientIdentityClaimId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "foodForm": {
+          "type": "object",
+          "properties": {
+            "materialState": {
+              "enum": [
+                "raw",
+                "cooked",
+                "dried",
+                "fermented",
+                "other",
+                "unknown"
+              ]
+            },
+            "part": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "preparation": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "materialState",
+            "part",
+            "preparation"
+          ],
+          "additionalProperties": false
+        },
+        "relation": {
+          "enum": [
+            "exact",
+            "broader",
+            "narrower",
+            "unresolved"
+          ]
+        },
+        "state": {
+          "enum": [
+            "proposed",
+            "reviewed",
+            "unresolved",
+            "rejected"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pin"
+          }
+        }
+      },
+      "required": [
+        "assertionId",
+        "target",
+        "ingredientIdentityClaimId",
+        "foodForm",
+        "relation",
+        "state",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "variant": {
+      "type": "object",
+      "properties": {
+        "assertionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRecordRefs": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "relation": {
+          "enum": [
+            "regional-variant",
+            "ingredient-substitution",
+            "preparation-variant",
+            "competing-identity-claim"
+          ]
+        },
+        "region": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state": {
+          "enum": [
+            "proposed",
+            "reviewed",
+            "unresolved",
+            "rejected"
+          ]
+        },
+        "mergePerformed": {
+          "const": false
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pin"
+          }
+        }
+      },
+      "required": [
+        "assertionId",
+        "sourceRecordRefs",
+        "relation",
+        "region",
+        "state",
+        "mergePerformed",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "product": {
+      "type": "object",
+      "properties": {
+        "assertionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "productIdentityClaimId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ingredientIdentityClaimId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relation": {
+          "enum": [
+            "declares-ingredient",
+            "refers-to-ingredient",
+            "unresolved"
+          ]
+        },
+        "state": {
+          "enum": [
+            "proposed",
+            "reviewed",
+            "unresolved",
+            "rejected"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pin"
+          }
+        }
+      },
+      "required": [
+        "assertionId",
+        "productIdentityClaimId",
+        "ingredientIdentityClaimId",
+        "relation",
+        "state",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "usable": {
+      "type": "object",
+      "properties": {
+        "assertionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "productIdentityClaimId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ingredientIdentityClaimId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipeRecordRef": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requiredFoodForm": {
+          "type": "string",
+          "minLength": 1
+        },
+        "useConditions": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state": {
+          "enum": [
+            "supported",
+            "unsupported",
+            "unresolved"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pin"
+          }
+        }
+      },
+      "required": [
+        "assertionId",
+        "productIdentityClaimId",
+        "ingredientIdentityClaimId",
+        "recipeRecordRef",
+        "requiredFoodForm",
+        "useConditions",
+        "state",
+        "evidence"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "supported"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "conflict": {
+      "type": "object",
+      "properties": {
+        "conflictId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "competingAssertionIds": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "state": {
+          "enum": [
+            "unresolved",
+            "resolved"
+          ]
+        },
+        "decisionPin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/pin"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "conflictId",
+        "competingAssertionIds",
+        "state",
+        "decisionPin",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "resolved"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decisionPin": {
+                "$ref": "#/$defs/pin"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

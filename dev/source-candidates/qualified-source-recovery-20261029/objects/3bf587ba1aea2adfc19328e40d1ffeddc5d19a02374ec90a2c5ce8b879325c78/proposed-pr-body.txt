@@ -1,0 +1,3 @@
+Open Food Facts product and nutrient-profile records currently omit upstream revision and modification metadata. This change requests the relevant fields on both product lookup routes and retains validated revisionId/sourceDate in both records. Invalid or absent metadata remains null.
+
+Validation: SAME16 scoped PASS on exact cba40c6d / develop3eb230d composition; 43-file closure pinned, 34 metadata cases, 9 non-OFF comparisons, 6 synthetic route cases and 6 focused dependency checks. Fresh remote base equals reviewed base; no test replay. Native workerd, real upstream, authenticated routes, UI, receipt/D1 adoption and whole ENRICH-02 acceptance remain unqualified.

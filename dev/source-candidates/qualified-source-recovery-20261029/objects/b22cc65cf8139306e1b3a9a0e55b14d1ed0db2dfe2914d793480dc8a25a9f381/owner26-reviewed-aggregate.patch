@@ -1,0 +1,1635 @@
+diff --git a/config/portfolio26-bindings.json b/config/portfolio26-bindings.json
+new file mode 100644
+index 00000000..f93c0c95
+--- /dev/null
++++ b/config/portfolio26-bindings.json
+@@ -0,0 +1,454 @@
++{
++  "schemaVersion": "portfolio26-bindings/1",
++  "countries": [
++    "CA",
++    "CY",
++    "CZ",
++    "DE"
++  ],
++  "scope": "Reviewed-for-metadata-code handoff only, pending independent approval; no production data or admissions.",
++  "bindings": [
++    {
++      "bindingId": "ca-cnf-2015",
++      "country": "CA",
++      "sourceId": "cnf",
++      "releaseId": "2015",
++      "types": [
++        "nutrition"
++      ],
++      "manifest": {
++        "path": "/home/user/src/offmenu-data/cnf-2015/manifest.json",
++        "sha256": "33e7fbd22c9447545a183396d35695f5ad86ed76e9945f0f5b690dda1d7962a1"
++      },
++      "manifestIdentity": {
++        "sourceId": "cnf",
++        "releaseId": "2015"
++      },
++      "sharedAdapter": "cnf",
++      "holds": [],
++      "origins": [
++        {
++          "field": "/data/nutrients/*/value",
++          "sourceSelector": "NUTRIENT AMOUNT.csv: (FoodID,NutrientID)->NutrientValue",
++          "evidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/CA-CNF-component-bindings.json",
++            "sha256": "25137d81e5d8ccfac0e614ff670d4a55610c72629a3650ff263c0003ce001905"
++          },
++          "meaning": "Literal numeric observation; no canonical equivalence."
++        },
++        {
++          "field": "/data/nutrients/*/unit",
++          "sourceSelector": "NUTRIENT NAME.csv: NutrientID->NutrientUnit",
++          "evidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/CA-CNF-component-bindings.json",
++            "sha256": "25137d81e5d8ccfac0e614ff670d4a55610c72629a3650ff263c0003ce001905"
++          },
++          "meaning": "NutrientID differs from NutrientCode; missing ID328 remains unresolved."
++        },
++        {
++          "field": "/data/nutrients/*/reference",
++          "sourceSelector": "NUTRIENT SOURCE.csv: NutrientSourceID->NutrientSourceCode,description",
++          "evidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/CA-CNF-component-bindings.json",
++            "sha256": "25137d81e5d8ccfac0e614ff670d4a55610c72629a3650ff263c0003ce001905"
++          },
++          "meaning": "ID102/Code51 means calculated using a recipe, not laboratory analysis."
++        },
++        {
++          "field": "/data/basis",
++          "sourceSelector": "Retained users guide physical23/24; structure physical9",
++          "evidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/CA-CNF-basis-and-use.json",
++            "sha256": "7636f4535b21fa50ef6748cb0d9dbc9d1428cca99c887e7f82189de5ee4bc84f"
++          },
++          "meaning": "100g edible portion of food as described; no inferred preparation/density."
++        }
++      ],
++      "unknowns": [
++        "Food534/NutrientID328 missing definition; Code328/ID339 not replacement.",
++        "Current primary-source custody and original acquisition timestamp unestablished.",
++        "No schema/IDs-digest/rights-operation SourceContract or admission installed."
++      ],
++      "nativeBasis": {
++        "amount": 100,
++        "unit": "g",
++        "portion": "edible portion",
++        "state": "as-described"
++      },
++      "provenanceEvidence": [
++        {
++          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/CA-CNF-component-bindings.json",
++          "sha256": "25137d81e5d8ccfac0e614ff670d4a55610c72629a3650ff263c0003ce001905"
++        },
++        {
++          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/CA-CNF-basis-and-use.json",
++          "sha256": "7636f4535b21fa50ef6748cb0d9dbc9d1428cca99c887e7f82189de5ee4bc84f"
++        }
++      ],
++      "originalAcquiredAt": null,
++      "validationObservedAt": null,
++      "acquisitionTimestampMeaning": "No publisher-acquisition time bound. Parser completedAt/fetchedAt and validation time are not substitutes.",
++      "dependencies": [
++        "reviewed-source-contract-and-acquisition-timestamp",
++        "exact-field-origin-serialization-interface",
++        "independent-scope-and-semantic-acceptance"
++      ]
++    },
++    {
++      "bindingId": "ca-statcan-18100245",
++      "country": "CA",
++      "sourceId": "statcan-18100245",
++      "releaseId": "retained-content-0d6b9bf7d19457e73d01a9757a5617a744d45bcae498cb5299a2cb562ac98734",
++      "types": [
++        "prices/baskets"
++      ],
++      "manifest": {
++        "path": "/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016/CA/price-packet.json",
++        "sha256": "0d6b9bf7d19457e73d01a9757a5617a744d45bcae498cb5299a2cb562ac98734"
++      },
++      "manifestIdentity": {
++        "country": "CA",
++        "category": "prices/baskets"
++      },
++      "sharedAdapter": null,
++      "holds": [],
++      "origins": [
++        {
++          "field": "/sourceRow",
++          "sourceSelector": "18100245.csv: VECTOR+REF_DATE; all15literal columns",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016/CA/price-packet.json",
++            "sha256": "0d6b9bf7d19457e73d01a9757a5617a744d45bcae498cb5299a2cb562ac98734"
++          },
++          "meaning": "Monthly aggregate statistical observation; not merchant offer."
++        },
++        {
++          "field": "/nativeValue",
++          "sourceSelector": "VALUE+STATUS+SYMBOL; Products+UOM+SCALAR_FACTOR+GEO",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016/CA/price-packet.json",
++            "sha256": "0d6b9bf7d19457e73d01a9757a5617a744d45bcae498cb5299a2cb562ac98734"
++          },
++          "meaning": "34missing values remain missing; Dollars is source UOM label, ISOcurrency unknown."
++        }
++      ],
++      "unknowns": [
++        "No shared retained StatCan adapter currently bound.",
++        "Canonical product/package/unit/currency/geography and food eligibility not accepted.",
++        "Four nonfood labels: deodorant85g,toothpaste100ml,shampoo400ml,laundrydetergent4.43l; separate from ingredient equivalence."
++      ],
++      "nativeBasis": {
++        "amount": null,
++        "unitLabel": "Dollars",
++        "currency": null,
++        "scope": "source product/geo/month; no inferred basket basis"
++      },
++      "provenanceEvidence": [
++        {
++          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-26/CA-source-typed-proposal-v1/CA-TYPED-R1/author-receipt.json",
++          "sha256": "99e5098fc58b95750dd0e9dcce583a848c833e3fbea855c72b8a5378445c3eb2"
++        }
++      ],
++      "originalAcquiredAt": null,
++      "validationObservedAt": null,
++      "acquisitionTimestampMeaning": "No publisher-acquisition time bound. Parser completedAt/fetchedAt and validation time are not substitutes.",
++      "dependencies": [
++        "integrator-generic-statistical-table-interface",
++        "source-specific-units-and-applicability-review"
++      ]
++    },
++    {
++      "bindingId": "de-bls-4",
++      "country": "DE",
++      "sourceId": "germany-bls",
++      "releaseId": "4.0",
++      "types": [
++        "nutrition"
++      ],
++      "manifest": {
++        "path": "/home/user/src/offmenu-data/germany-bls-4.0/manifest.json",
++        "sha256": "137056797e12aa086f48a71e037d22753cf8c2798f04bcfa31bb83ba0895a992"
++      },
++      "manifestIdentity": {
++        "sourceId": "germany-bls",
++        "releaseId": "4.0"
++      },
++      "sharedAdapter": "germany-bls",
++      "holds": [],
++      "origins": [
++        {
++          "field": "/data/nutrients/*",
++          "sourceSelector": "BLS workbook: BLS foodcode x sourceComponent with unit/method/reference",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/germany-bls-4.0/manifest.json",
++            "sha256": "137056797e12aa086f48a71e037d22753cf8c2798f04bcfa31bb83ba0895a992"
++          },
++          "meaning": "Source value/qualifier/unknown retained, not canonical equivalence."
++        },
++        {
++          "field": "/data/nutrients/bls:Hinweis",
++          "sourceSelector": "Retained profile field bls:Hinweis",
++          "evidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/DE/bls-qualifier-followup.json",
++            "sha256": "0e72da58216344e3c313e1d121d71fbc17a5f53644d8b5337a1f3c6fc2a470b3"
++          },
++          "meaning": "Metadata field; do not count as nutrient quantity or infer a unit."
++        }
++      ],
++      "unknowns": [
++        "1806trace nulls:1800Spuren,6method-; population meaning not independently accepted.",
++        "7140Hinweis metadata fields included in992460sourcefield cells;985320remaining fields not accepted nutrient quantities.",
++        "Exact original acquisition timestamp and trusted SourceContract unavailable."
++      ],
++      "nativeBasis": {
++        "amount": 100,
++        "unit": "g",
++        "portion": "source edible portion",
++        "state": "as-described"
++      },
++      "provenanceEvidence": [
++        {
++          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/DE/bls-qualifier-followup.json",
++          "sha256": "0e72da58216344e3c313e1d121d71fbc17a5f53644d8b5337a1f3c6fc2a470b3"
++        },
++        {
++          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/handover-20261017-1003/review4286-intake.json",
++          "sha256": "7115541453d12a4d85d982ea325678b2eba2e350b10ddf2e71a27d2ca357c4a4"
++        }
++      ],
++      "originalAcquiredAt": null,
++      "validationObservedAt": null,
++      "acquisitionTimestampMeaning": "No publisher-acquisition time bound. Parser completedAt/fetchedAt and validation time are not substitutes.",
++      "dependencies": [
++        "reviewed-source-contract-and-acquisition-timestamp",
++        "hint-metadata-role-and-trace-semantics",
++        "exact-field-origin-serialization-interface"
++      ]
++    },
++    {
++      "bindingId": "ca-montreal-recipe",
++      "country": "CA",
++      "sourceId": "montreal-vegetarian",
++      "releaseId": "2019",
++      "types": [
++        "recipes"
++      ],
++      "manifest": null,
++      "manifestIdentity": null,
++      "sharedAdapter": null,
++      "holds": [
++        "private-original-only-derivative-entitlement-unresolved"
++      ],
++      "origins": [],
++      "unknowns": [
++        "No recipe text/translation/publication entitlement inferred from free download."
++      ],
++      "nativeBasis": null,
++      "provenanceEvidence": [
++        {
++          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/Montreal-entitlement-unresolved.json",
++          "sha256": "45fb6cd344892a2184820b160558cb16b7bd5fab6ce20ac19b9dee6e32e4d445"
++        }
++      ],
++      "originalAcquiredAt": null,
++      "validationObservedAt": null,
++      "acquisitionTimestampMeaning": "No publisher-acquisition time bound. Parser completedAt/fetchedAt and validation time are not substitutes.",
++      "dependencies": [
++        "actual-custodian-source-use-and-finite-manifest-binding"
++      ]
++    },
++    {
++      "bindingId": "cy-traditional-dishes",
++      "country": "CY",
++      "sourceId": "cy-traditional-dishes",
++      "releaseId": "2026",
++      "types": [
++        "recipes"
++      ],
++      "manifest": null,
++      "manifestIdentity": null,
++      "sharedAdapter": null,
++      "holds": [
++        "all-rights-reserved-no-commercial-derivative-release"
++      ],
++      "origins": [],
++      "unknowns": [
++        "52page original only; excerpts with acknowledgment not whole recipe normalization permission."
++      ],
++      "nativeBasis": null,
++      "provenanceEvidence": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-28/CY/receipt.json",
++          "sha256": "761fa47bc44e31df9c0d3932de79c8c02c74e089d4823da257dee48bea0a51a2"
++        }
++      ],
++      "originalAcquiredAt": null,
++      "validationObservedAt": null,
++      "acquisitionTimestampMeaning": "No publisher-acquisition time bound. Parser completedAt/fetchedAt and validation time are not substitutes.",
++      "dependencies": [
++        "actual-custodian-source-use-and-finite-manifest-binding"
++      ]
++    },
++    {
++      "bindingId": "cy-composition",
++      "country": "CY",
++      "sourceId": "cy-composition",
++      "releaseId": "third-edition",
++      "types": [
++        "nutrition"
++      ],
++      "manifest": null,
++      "manifestIdentity": null,
++      "sharedAdapter": null,
++      "holds": [],
++      "origins": [],
++      "unknowns": [
++        "Retained composition response0bytes after migration; no normalized manifest.",
++        "403 and denied routes remain held; no network path in this package."
++      ],
++      "nativeBasis": null,
++      "provenanceEvidence": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-28/CY/continuation-804b514f54877f343817/receipt.json",
++          "sha256": "c693a1e84d787e31307b1deee0b4bbe1092b8da1ecceadd83f6f469b1bd61d72"
++        }
++      ],
++      "originalAcquiredAt": null,
++      "validationObservedAt": null,
++      "acquisitionTimestampMeaning": "No publisher-acquisition time bound. Parser completedAt/fetchedAt and validation time are not substitutes.",
++      "dependencies": [
++        "actual-custodian-source-use-and-finite-manifest-binding"
++      ]
++    },
++    {
++      "bindingId": "cz-nutridatabaze",
++      "country": "CZ",
++      "sourceId": "cz-nutridatabaze",
++      "releaseId": "11.26",
++      "types": [
++        "nutrition"
++      ],
++      "manifest": null,
++      "manifestIdentity": null,
++      "sharedAdapter": null,
++      "holds": [
++        "registered-access-and-no-alternate-extraction"
++      ],
++      "origins": [],
++      "unknowns": [
++        "No legitimately bound retained normalized manifest."
++      ],
++      "nativeBasis": null,
++      "provenanceEvidence": [
++        {
++          "path": "/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016/CZ/country-packet.json",
++          "sha256": "fdd325ec35d739038cf0210148e787e193229edf1bb05b127f1883cd803af973"
++        }
++      ],
++      "originalAcquiredAt": null,
++      "validationObservedAt": null,
++      "acquisitionTimestampMeaning": "No publisher-acquisition time bound. Parser completedAt/fetchedAt and validation time are not substitutes.",
++      "dependencies": [
++        "actual-custodian-source-use-and-finite-manifest-binding"
++      ]
++    },
++    {
++      "bindingId": "cz-organic-operators",
++      "country": "CZ",
++      "sourceId": "cz-organic-operators",
++      "releaseId": "2013",
++      "types": [
++        "retailers/providers"
++      ],
++      "manifest": null,
++      "manifestIdentity": null,
++      "sharedAdapter": null,
++      "holds": [
++        "operator-privacy-and-unqualified-reuse"
++      ],
++      "origins": [],
++      "unknowns": [
++        "Historical operator register is not current retailer/product/price data."
++      ],
++      "nativeBasis": null,
++      "provenanceEvidence": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-32/CZ/c2f552a3789d57ea35a5/receipt.json",
++          "sha256": "02cd70f1d84683074cbad9b3726540c149f7acd76898b104cc4072ea3bd61c44"
++        }
++      ],
++      "originalAcquiredAt": null,
++      "validationObservedAt": null,
++      "acquisitionTimestampMeaning": "No publisher-acquisition time bound. Parser completedAt/fetchedAt and validation time are not substitutes.",
++      "dependencies": [
++        "actual-custodian-source-use-and-finite-manifest-binding"
++      ]
++    },
++    {
++      "bindingId": "cz-szu-booklet",
++      "country": "CZ",
++      "sourceId": "cz-szu-booklet",
++      "releaseId": "2014",
++      "types": [
++        "dietary references",
++        "recipes"
++      ],
++      "manifest": null,
++      "manifestIdentity": null,
++      "sharedAdapter": null,
++      "holds": [
++        "reference-original-only-derivative-scope-unqualified"
++      ],
++      "origins": [],
++      "unknowns": [
++        "36page historical reference; no current numeric-guidance acceptance."
++      ],
++      "nativeBasis": null,
++      "provenanceEvidence": [
++        {
++          "path": "/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016-CZ-DIETARY-R2/manifest.json",
++          "sha256": "e09ae86073ed4a86c958a732b27a59f2ebcee2e3c046cf13577ac7dfb0cf7989"
++        }
++      ],
++      "originalAcquiredAt": null,
++      "validationObservedAt": null,
++      "acquisitionTimestampMeaning": "No publisher-acquisition time bound. Parser completedAt/fetchedAt and validation time are not substitutes.",
++      "dependencies": [
++        "actual-custodian-source-use-and-finite-manifest-binding"
++      ]
++    },
++    {
++      "bindingId": "de-recipes-menu",
++      "country": "DE",
++      "sourceId": "de-recipes-menu",
++      "releaseId": "retained-private-originals",
++      "types": [
++        "recipes",
++        "retailers/providers"
++      ],
++      "manifest": null,
++      "manifestIdentity": null,
++      "sharedAdapter": null,
++      "holds": [
++        "private-original-only-derivative-entitlement-unresolved"
++      ],
++      "origins": [],
++      "unknowns": [
++        "No reusable recipe/menu normalized manifest; menu prices/currency/date/outlet applicability unqualified."
++      ],
++      "nativeBasis": null,
++      "provenanceEvidence": [
++        {
++          "path": "/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016-DE-DIGEST-SCOPE-R1/DE/country-packet.json",
++          "sha256": "5231b4ea6a54ddfa6bde80afabc443bde620d7d12e3067a7a8a7d757fc43450f"
++        }
++      ],
++      "originalAcquiredAt": null,
++      "validationObservedAt": null,
++      "acquisitionTimestampMeaning": "No publisher-acquisition time bound. Parser completedAt/fetchedAt and validation time are not substitutes.",
++      "dependencies": [
++        "actual-custodian-source-use-and-finite-manifest-binding"
++      ]
++    }
++  ]
++}
+diff --git a/docs/operations/portfolio26-staging-bindings.md b/docs/operations/portfolio26-staging-bindings.md
+new file mode 100644
+index 00000000..d273f9a4
+--- /dev/null
++++ b/docs/operations/portfolio26-staging-bindings.md
+@@ -0,0 +1,144 @@
++# Worker26 portfolio metadata/staging bindings
++
++Base: verified develop `abecb99ee1125730ccbc2824b6ec49ffc5cc4302`.
++This package owns only `offmenu/refresh/portfolio26.py`, its configuration,
++authored fixtures, tests and this document. It does not change shared core,
++install a SourceContract/Admission, parse a retained payload or accept a country.
++Pending PR42 code is not imported or treated as accepted develop.
++
++## Run and consume
++
++From this repository checkout on Foo:
++
++```sh
++python3 -m offmenu.refresh.portfolio26 --now 2026-10-18T00:00:00Z
++PYRSISTENT_NO_C_EXTENSION=1 python3 -m unittest discover -s tests -p test_portfolio26_bindings.py -v
++```
++
++The repository configuration is trusted review input, never a source-supplied
++manifest or user plugin. The CLI has no URL, parser, force-download, network,
++raw-data, credential or admission options. It writes deterministic JSON to
++stdout; it neither modifies manifests nor creates a scheduler/cache database.
++The default configuration is an inert package-local Python literal returned as
++a deep copy, including in wheel and sdist layouts. The retained repository JSON
++is an equivalent review snapshot; it is not a required installed resource.
++An explicit `configuration(path)` still reads trusted review JSON. Descriptors
++use exact existing Foo metadata locators, so another host reports missing
++metadata instead of copying raw data. Loading the catalogue reads no sources.
++
++`configuration()` returns ten portfolio descriptors. `plan(config, now=...,
++previous_keys=...)` emits all 24 country/type cells and one shared `StageResult`
++receipt per descriptor. `inspect_binding(binding, now=..., previous_key=...)`
++can be used by the existing integrator's metadata planning layer. It cannot
++dispatch GLOBAL data stages: its successful stage is **metadata-bound only**.
++`acceptedRecords=null`, `countryComplete=false`, `qualificationContract=null`
++and `processingAdmission=not-installed` remain explicit.
++
++Missing manifest pointers/files return `unsupported/portfolio-manifest-missing`.
++Explicit holds return `held/source-held` **before any locator I/O**. Malformed
++JSON, duplicate keys, invalid timestamps and mismatched source/release identities
++fail closed. Changed pinned metadata, including definition/use evidence, returns
++`quarantined/portfolio-metadata-stale`. Shared bounded digest/strict JSON/path
++helpers reject oversize files and symlinks. Diagnostics are fixed codes, not raw
++exception messages. Independent source pins and code review remain necessary.
++
++## Exact retained evidence and scope
++
++`config/portfolio26-bindings.json` pins the existing CNF2015 and BLS4.0 manifests,
++CA StatCan packet and source-specific use/field-declaration evidence. Paths and
++SHA-256 values are metadata references; no original payload is included in Git.
++The inspector only reads these `.json` metadata files. It never follows a JSON
++pointer into a raw body, opens normalized gzip, reads a workbook/CSV/PDF, invokes
++an adapter or traverses a source directory.
++
++CNF binds the shared `cnf`/2015 adapter, retaining NutrientID versus NutrientCode,
++100g edible/as-described basis and source-ID/method distinction. Food534/ID328
++remains unresolved; Code328/ID339 is not a repair. Component definitions do not
++prove ingredient equivalence. Source-specific guideline conditions remain in
++the referenced evidence. Montreal recipe entitlement is separately held.
++
++BLS binds `germany-bls`/4.0. Source components, units, method/reference and trace
++qualifiers remain distinct. `Hinweis` is metadata, not a nutrient quantity.
++No full-population semantic acceptance or canonical target is installed.
++
++StatCan metadata is bound to an immutable content snapshot; the configuration's
++release string explicitly denotes that hash, not a guessed publisher release.
++Its monthly statistical prices are not merchant offers. Dollars is a source
++UOM label with unknown ISO currency. Four nonfood labels and ingredient
++equivalence proposals remain separate. No generic StatCan data adapter is
++currently selected by this package.
++
++CY recipe, CZ operator/NutriDatabaze/SZU and DE recipe/menu holds remain closed.
++The missing CY composition manifest is an explicit unsupported input. Metadata
++availability does not permit a 403 retry, private-body read, access workaround,
++current-country inference, translation, serving or redistribution. Every
++unbound required country/type remains visible; none is declared inapplicable.
++
++## Field origins and shared validators
++
++Each `origins` declaration names a destination field pattern, source selector,
++meaning and pinned retained metadata evidence. These declarations are
++**not row-verified provenance** and cannot stand in for a per-datum serializer.
++Hash-valid rights evidence is not a reviewed operation grant. Both limitations
++are explicit in the report. The wrapper reuses shared `execution.ADAPTERS`,
++`capabilities.RELEASES`, `national_semantic_errors`, `field_origin_errors`,
++`StageResult`, strict JSON/hash helpers and the acquisition `MIN_TTL` constant.
++
++`diagnose_authored_profile` and `diagnose_authored_origins` are small-fixture
++interfaces using those existing validators. Fixture unit allowlists are not a
++production semantic policy. Tests preserve a null source datum with its origin,
++reject missing/foreign origins and retain unresolved units/definitions. No
++production SourceContract is constructed from the configuration or manifests.
++
++An authored test constructs `SourceContract(fixture=True)` and calls shared
++`qualify` with a tiny authored JSON input, rights/scope placeholders and exact
++candidate origins. It proves fixture-only qualification plus held/stale failures;
++it neither calls `accept` nor installs a production contract. The documented
++test command uses a process-only pure-Python dependency fallback, without
++installation or persistent environment changes.
++
++## Acquisition age, cache and replay
++
++`originalAcquiredAt` and `validationObservedAt` are independent. Production
++descriptors currently leave both null: existing parser `completedAt` and
++normalization `fetchedAt` must not become original-acquisition proof. Acquisition
++age is never read from mtime or reset by revalidation. Authored tests observe
++the under-30-day window and exact 30-day boundary. They do not claim a generic
++cache plan or runtime reuse: `decision=unsupported-shared-cache-planner`,
++`sharedPlanner=null`, and `runtimeReuseVerified=false` are explicit at this base.
++The wrapper has no transport at any age and offers no override/force mode.
++
++`bindingKey` fingerprints the metadata descriptor, pins and scope, excluding
++acquisition/validation timestamps. It is not a payload-cache identity or an
++acceptance digest. Equal keys yield `metadata-no-op` only for the packaging
++decision. Current metadata/evidence hashes are still checked on every call;
++age and holds are still assessed. Thus a metadata no-op can coexist with a
++missing acquisition time, an old retention window or an unsupported planner;
++it never authorizes reuse of unread
++payload bytes or a download. A new source pin/evidence/scope changes the key.
++
++## Precise interface requests to integrator00
++
++No shared-core edits are included. These are proposed interfaces for the
++existing integrator's decision, not approval to implement or execute them:
++
++1. A source-neutral pure cache decision API taking reviewed source/release,
++   content identity, original acquisition timestamp and separate validation
++   events, with the automatic under-30-day zero-download rule independent of
++   explicit revalidate/force modes. This portfolio wrapper currently reports
++   that metadata decision only; it does not replace `CachedAcquirer`. Preserve
++   the PR42 P2/merge hold and test the exact reviewed shared successor.
++2. A reviewed source-coordinate serializer/factory that can consume the
++   CNF/BLS selector declarations and emit shared `fieldOrigins` for every scalar,
++   with distinct source/derived/constant markers and exact input pins. Keep
++   `Hinweis` metadata and unresolved CNF328/trace facts intact. The current
++   declarations cannot substitute for that implementation or source review.
++3. Trusted native-scope SourceContract and acquisition/scope/custody evidence
++   for unchanged retained candidate bundles. Use existing `CandidateArtifact`
++   and shared acceptance entry points; never build trusted contracts from this
++   JSON config. StatCan needs a separately selected generic tabular interface.
++
++Next ready dependency is independent review of this commit and integrator00's
++decision on these exact interfaces. Actual payload work, source admission,
++refresh execution and develop integration require their existing gates. Raw
++stays on Foo; Finland/Frida/NO/FR, production/CIX and DEV7645 boundaries persist.
+diff --git a/offmenu/refresh/portfolio26.py b/offmenu/refresh/portfolio26.py
+new file mode 100644
+index 00000000..cd5b0a26
+--- /dev/null
++++ b/offmenu/refresh/portfolio26.py
+@@ -0,0 +1,273 @@
++"""CA/CY/CZ/DE metadata bindings; never read payloads or enable admissions.
++
++Repository CLI: python -m offmenu.refresh.portfolio26 --now <UTC timestamp>.
++Shared adapters own parsing, SourceContract owns qualification, and Morgan/00
++own any future execution. This module only binds pinned JSON metadata.
++"""
++import argparse
++from copy import deepcopy
++import os
++from pathlib import Path
++import re
++import stat
++
++from .acceptance import fingerprint
++from .acquisition import MIN_TTL
++from .capabilities import RELEASES
++from .core import RefreshError, canonical, safe_path, sha, strict_json, timestamp
++from .execution import ADAPTERS
++from .global_run import StageResult
++from .field_provenance import field_origin_errors
++from .national_tabular import national_semantic_errors
++from .portfolio26_catalogue import CATALOGUE
++
++CONFIG = Path(__file__).resolve().parents[2] / 'config/portfolio26-bindings.json'
++MAX_METADATA_BYTES = 128 * 1024
++COUNTRIES = ('CA', 'CY', 'CZ', 'DE')
++TYPES = ('ingredients', 'recipes', 'nutrition', 'retailers/providers',
++         'prices/baskets', 'dietary references')
++HEX = re.compile('[0-9a-f]{64}')
++
++
++def _read_metadata(reference):
++    if (not isinstance(reference, dict) or set(reference) != {'path', 'sha256'}
++            or not isinstance(reference['path'], str)
++            or not isinstance(reference['sha256'], str)
++            or not HEX.fullmatch(reference['sha256'])
++            or Path(reference['path']).suffix != '.json'):
++        raise RefreshError('portfolio-metadata-pin-invalid')
++    path = safe_path(reference['path'])
++    # Authenticate only the bounded bytes read from this one regular descriptor.
++    # Nonblocking open also makes a concurrent FIFO replacement fail promptly.
++    before = path.lstat()
++    fields = lambda s: (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
++    fd = os.open(path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW)
++    try:
++        opened = os.fstat(fd)
++        if not stat.S_ISREG(opened.st_mode):
++            raise RefreshError('regular-file-required')
++        if fields(before) != fields(opened):
++            raise RefreshError('portfolio-metadata-stale')
++        if opened.st_size > MAX_METADATA_BYTES:
++            raise RefreshError('asset-size-limit-exceeded')
++        blocks, consumed = [], 0
++        while True:
++            block = os.read(fd, min(65536, MAX_METADATA_BYTES + 1 - consumed))
++            if not block:
++                break
++            consumed += len(block)
++            if consumed > MAX_METADATA_BYTES:
++                raise RefreshError('asset-size-limit-exceeded')
++            blocks.append(block)
++        after = os.fstat(fd)
++        try:
++            current = safe_path(path).lstat()
++        except FileNotFoundError:
++            raise RefreshError('portfolio-metadata-stale') from None
++        if fields(opened) != fields(after) or fields(after) != fields(current):
++            raise RefreshError('portfolio-metadata-stale')
++        raw = b''.join(blocks)
++    finally:
++        os.close(fd)
++    if sha(raw) != reference['sha256']:
++        raise RefreshError('portfolio-metadata-stale')
++    value = strict_json(raw)
++    if not isinstance(value, dict):
++        raise RefreshError('portfolio-metadata-malformed')
++    return value
++
++
++def configuration(path=None):
++    """Copy packaged declarations; an explicit path reads trusted review input."""
++    if path is None:
++        return deepcopy(CATALOGUE)
++    path = safe_path(path)
++    if path.stat().st_size > MAX_METADATA_BYTES:
++        raise RefreshError('portfolio-config-too-large')
++    result = strict_json(path.read_bytes())
++    if (not isinstance(result, dict) or result.get('schemaVersion') != 'portfolio26-bindings/1'
++            or result.get('countries') != list(COUNTRIES)
++            or not isinstance(result.get('bindings'), list)):
++        raise RefreshError('portfolio-config-invalid')
++    return result
++
++
++def cache_metadata(binding, *, now):
++    """Age observations only: no shared pure cache planner exists at this base.
++
++    MIN_TTL and timestamp rules come from the shared acquisition/core contract.
++    This does not recreate or invoke CachedAcquirer, including its explicit
++    revalidate/force-download modes. Production transport is never supplied.
++    """
++    observed = timestamp(now)
++    acquired = binding.get('originalAcquiredAt')
++    validated = binding.get('validationObservedAt')
++    if validated is not None and timestamp(validated) > observed:
++        raise RefreshError('portfolio-validation-in-future')
++    result = {'originalAcquiredAt': acquired, 'validationObservedAt': validated,
++              'minimumReuseSeconds': MIN_TTL, 'minimumReuseDays': 30,
++              'validationResetsAcquisitionAge': False, 'mtimeUsed': False,
++              'networkRequests': 0, 'decision': 'unsupported-shared-cache-planner',
++              'sharedPlanner': None, 'retentionWindow': 'unknown-acquisition-time',
++              'runtimeReuseVerified': False}
++    if acquired is not None:
++        age = (observed - timestamp(acquired)).total_seconds()
++        if age < 0:
++            raise RefreshError('portfolio-acquisition-in-future')
++        result.update(acquisitionAgeSeconds=int(age),
++                      retentionWindow='under-30-days' if age < MIN_TTL
++                      else '30-days-or-older')
++    return result
++
++
++def _descriptor_errors(binding):
++    if not isinstance(binding, dict):
++        return ['portfolio-binding-invalid']
++    errors = []
++    for key in ('bindingId', 'sourceId', 'releaseId'):
++        if not isinstance(binding.get(key), str) or not binding[key]:
++            errors.append('portfolio-identity-missing')
++    if binding.get('country') not in COUNTRIES:
++        errors.append('portfolio-country-invalid')
++    if (not isinstance(binding.get('types'), list) or not binding['types']
++            or any(t not in TYPES for t in binding['types'])):
++        errors.append('portfolio-type-invalid')
++    if not isinstance(binding.get('holds'), list) or any(not isinstance(x, str) or not x for x in binding['holds']):
++        errors.append('portfolio-holds-invalid')
++    if not isinstance(binding.get('origins'), list) or not isinstance(binding.get('unknowns'), list):
++        errors.append('portfolio-field-declarations-invalid')
++    elif (any(not isinstance(x, dict) or not isinstance(x.get('field'), str)
++              or not isinstance(x.get('sourceSelector'), str) for x in binding['origins'])
++          or any(not isinstance(x, str) for x in binding['unknowns'])):
++        errors.append('portfolio-field-declarations-invalid')
++    if not isinstance(binding.get('provenanceEvidence', []), list):
++        errors.append('portfolio-evidence-list-invalid')
++    return sorted(set(errors))
++
++
++def inspect_binding(binding, *, now, previous_key=None):
++    """Non-mutating metadata inspection. Held descriptors perform no file I/O.
++
++    A successful stage means metadata references bound, never data qualification,
++    source-body permission, acquired bytes, accepted rows or country completion.
++    """
++    errors = _descriptor_errors(binding)
++    if errors:
++        return {'stage': StageResult('failed', errors[0]).receipt(), 'errors': errors}
++    result = {k: binding[k] for k in ('bindingId', 'sourceId', 'releaseId', 'country', 'types', 'origins', 'unknowns')}
++    result.update(bodyOperations=[], acceptedRecords=None, countryComplete=False,
++                  metadataBytesVerified=False, payloadBytesVerified=False,
++                  fieldOriginsStatus='declared-not-row-verified',
++                  rightsOperationsReviewedByThisTool=False,
++                  qualificationContract=None, processingAdmission='not-installed')
++    if binding['holds']:
++        result.update(stage=StageResult('held', 'source-held').receipt(),
++                      holds=binding['holds'], errors=[], packageAction='held-no-read')
++        return result
++    reference = binding.get('manifest')
++    if reference is None:
++        result.update(stage=StageResult('unsupported', 'portfolio-manifest-missing').receipt(),
++                      errors=['portfolio-manifest-missing'], packageAction='missing-no-read')
++        return result
++    try:
++        cache = cache_metadata(binding, now=now)
++        manifest = _read_metadata(reference)
++        identity = binding.get('manifestIdentity')
++        if (not isinstance(identity, dict) or not identity
++                or any(manifest.get(k) != v for k, v in identity.items())):
++            raise RefreshError('portfolio-source-release-mismatch')
++        adapter = binding.get('sharedAdapter')
++        if adapter is not None:
++            release = next((r for r in RELEASES if r['sourceId'] == adapter), None)
++            if adapter not in ADAPTERS or release is None or release['releaseId'] != binding['releaseId']:
++                raise RefreshError('portfolio-shared-adapter-mismatch')
++            if (manifest.get('sourceId') != adapter or binding['sourceId'] != adapter
++                    or manifest.get('releaseId') != binding['releaseId']):
++                raise RefreshError('portfolio-source-release-mismatch')
++        references = binding.get('provenanceEvidence', []) + [
++            x['evidence'] for x in binding['origins'] if 'evidence' in x]
++        seen_evidence = set()
++        for evidence in references:
++            # Different pins for the same locator must not silently collapse.
++            identity = fingerprint(evidence)
++            if identity not in seen_evidence:
++                _read_metadata(evidence)
++                seen_evidence.add(identity)
++        # This is a descriptor identity, not an admission/cache-payload digest.
++        key = fingerprint({k: v for k, v in binding.items()
++                           if k not in ('validationObservedAt', 'originalAcquiredAt')})
++        result.update(stage=StageResult('succeeded', 'portfolio-metadata-bound',
++                                       (reference['sha256'], key)).receipt(),
++                      errors=[], cache=cache, bindingKey=key,
++                      packageAction='metadata-no-op' if previous_key == key else 'metadata-reference-bound',
++                      metadataBytesVerified=True, manifest=reference,
++                      metadataEvidencePinsVerified=len(seen_evidence),
++                      sharedAdapter=adapter,
++                      adapterStatus='available-not-admitted' if adapter else 'shared-adapter-not-bound',
++                      dependencies=binding.get('dependencies', []),
++                      provenanceEvidence=binding.get('provenanceEvidence', []))
++    except (OSError, ValueError, TypeError, OverflowError) as error:
++        code = str(error) if isinstance(error, RefreshError) else 'portfolio-metadata-malformed'
++        # Never expose filesystem paths, source values or exception strings.
++        if not re.fullmatch('[a-z][a-z0-9-]{0,95}', code):
++            code = 'portfolio-metadata-malformed'
++        status = 'quarantined' if code == 'portfolio-metadata-stale' else 'failed'
++        if isinstance(error, FileNotFoundError):
++            status, code = 'unsupported', 'portfolio-manifest-missing'
++        result.update(stage=StageResult(status, code).receipt(), errors=[code], packageAction='not-bound')
++    return result
++
++
++def plan(config, *, now, previous_keys=None):
++    previous_keys = previous_keys or {}
++    rows = []
++    for binding in config['bindings']:
++        identity = binding.get('bindingId') if isinstance(binding, dict) else None
++        previous = previous_keys.get(identity) if isinstance(identity, str) and identity else None
++        rows.append(inspect_binding(binding, now=now, previous_key=previous))
++    cells = []
++    for country in COUNTRIES:
++        for category in TYPES:
++            ids = [b['bindingId'] for b in config['bindings']
++                   if isinstance(b, dict) and isinstance(b.get('bindingId'), str)
++                   and b['bindingId'] and b.get('country') == country
++                   and isinstance(b.get('types'), list) and category in b['types']]
++            cells.append({'country': country, 'type': category, 'bindings': ids,
++                          'status': 'candidate-binding-only' if ids else 'missing-source-binding',
++                          'accepted': False})
++    return {'schemaVersion': 'portfolio26-plan/1', 'bindings': rows, 'countryTypes': cells,
++            'sourceBodyReads': 0, 'networkRequests': 0, 'acceptedCountryTypes': 0,
++            'scope': 'metadata-only; no parse, refresh, staging data or acceptance executed'}
++
++
++def diagnose_authored_profile(source, row):
++    """Opt-in test/diagnostic interface for SMALL AUTHORED fixtures only.
++
++    No file reader and no production all-record semantic callback is installed.
++    These two unit allowlists exercise shared machinery, not real-release review.
++    """
++    if source not in ('cnf', 'germany-bls'):
++        return ['portfolio-fixture-source-unsupported']
++    return national_semantic_errors(source, row, allowed_units=('g', 'mg', 'µg', 'kcal', 'kJ'),
++                                    basis_units=('g',))
++
++
++def diagnose_authored_origins(row, input_pins, *, policy_pins=()):
++    """Shared per-datum origin interface, for small authored fixture diagnostics.
++
++    Portfolio selector declarations are not expanded into fake per-record origins.
++    Real emission requires a separately reviewed source-coordinate serializer.
++    """
++    return field_origin_errors(row, input_pins, policy_pins=policy_pins)
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--now', required=True, help='Explicit UTC assessment time for deterministic output')
++    args = parser.parse_args(argv)
++    timestamp(args.now)
++    print(canonical(plan(configuration(), now=args.now)).decode(), end='')
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/offmenu/refresh/portfolio26_catalogue.py b/offmenu/refresh/portfolio26_catalogue.py
+new file mode 100644
+index 00000000..57f80bbc
+--- /dev/null
++++ b/offmenu/refresh/portfolio26_catalogue.py
+@@ -0,0 +1,296 @@
++"""Frozen Worker26 metadata declarations; no source reads or admission."""
++
++CATALOGUE = {'schemaVersion': 'portfolio26-bindings/1',
++ 'countries': ['CA', 'CY', 'CZ', 'DE'],
++ 'scope': 'Reviewed-for-metadata-code handoff only, pending independent approval; no production '
++          'data or admissions.',
++ 'bindings': [{'bindingId': 'ca-cnf-2015',
++               'country': 'CA',
++               'sourceId': 'cnf',
++               'releaseId': '2015',
++               'types': ['nutrition'],
++               'manifest': {'path': '/home/user/src/offmenu-data/cnf-2015/manifest.json',
++                            'sha256': '33e7fbd22c9447545a183396d35695f5ad86ed76e9945f0f5b690dda1d7962a1'},
++               'manifestIdentity': {'sourceId': 'cnf', 'releaseId': '2015'},
++               'sharedAdapter': 'cnf',
++               'holds': [],
++               'origins': [{'field': '/data/nutrients/*/value',
++                            'sourceSelector': 'NUTRIENT AMOUNT.csv: '
++                                              '(FoodID,NutrientID)->NutrientValue',
++                            'evidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/CA-CNF-component-bindings.json',
++                                         'sha256': '25137d81e5d8ccfac0e614ff670d4a55610c72629a3650ff263c0003ce001905'},
++                            'meaning': 'Literal numeric observation; no canonical equivalence.'},
++                           {'field': '/data/nutrients/*/unit',
++                            'sourceSelector': 'NUTRIENT NAME.csv: NutrientID->NutrientUnit',
++                            'evidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/CA-CNF-component-bindings.json',
++                                         'sha256': '25137d81e5d8ccfac0e614ff670d4a55610c72629a3650ff263c0003ce001905'},
++                            'meaning': 'NutrientID differs from NutrientCode; missing ID328 '
++                                       'remains unresolved.'},
++                           {'field': '/data/nutrients/*/reference',
++                            'sourceSelector': 'NUTRIENT SOURCE.csv: '
++                                              'NutrientSourceID->NutrientSourceCode,description',
++                            'evidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/CA-CNF-component-bindings.json',
++                                         'sha256': '25137d81e5d8ccfac0e614ff670d4a55610c72629a3650ff263c0003ce001905'},
++                            'meaning': 'ID102/Code51 means calculated using a recipe, not '
++                                       'laboratory analysis.'},
++                           {'field': '/data/basis',
++                            'sourceSelector': 'Retained users guide physical23/24; structure '
++                                              'physical9',
++                            'evidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/CA-CNF-basis-and-use.json',
++                                         'sha256': '7636f4535b21fa50ef6748cb0d9dbc9d1428cca99c887e7f82189de5ee4bc84f'},
++                            'meaning': '100g edible portion of food as described; no inferred '
++                                       'preparation/density.'}],
++               'unknowns': ['Food534/NutrientID328 missing definition; Code328/ID339 not '
++                            'replacement.',
++                            'Current primary-source custody and original acquisition timestamp '
++                            'unestablished.',
++                            'No schema/IDs-digest/rights-operation SourceContract or admission '
++                            'installed.'],
++               'nativeBasis': {'amount': 100,
++                               'unit': 'g',
++                               'portion': 'edible portion',
++                               'state': 'as-described'},
++               'provenanceEvidence': [{'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/CA-CNF-component-bindings.json',
++                                       'sha256': '25137d81e5d8ccfac0e614ff670d4a55610c72629a3650ff263c0003ce001905'},
++                                      {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/CA-CNF-basis-and-use.json',
++                                       'sha256': '7636f4535b21fa50ef6748cb0d9dbc9d1428cca99c887e7f82189de5ee4bc84f'}],
++               'originalAcquiredAt': None,
++               'validationObservedAt': None,
++               'acquisitionTimestampMeaning': 'No publisher-acquisition time bound. Parser '
++                                              'completedAt/fetchedAt and validation time are not '
++                                              'substitutes.',
++               'dependencies': ['reviewed-source-contract-and-acquisition-timestamp',
++                                'exact-field-origin-serialization-interface',
++                                'independent-scope-and-semantic-acceptance']},
++              {'bindingId': 'ca-statcan-18100245',
++               'country': 'CA',
++               'sourceId': 'statcan-18100245',
++               'releaseId': 'retained-content-0d6b9bf7d19457e73d01a9757a5617a744d45bcae498cb5299a2cb562ac98734',
++               'types': ['prices/baskets'],
++               'manifest': {'path': '/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016/CA/price-packet.json',
++                            'sha256': '0d6b9bf7d19457e73d01a9757a5617a744d45bcae498cb5299a2cb562ac98734'},
++               'manifestIdentity': {'country': 'CA', 'category': 'prices/baskets'},
++               'sharedAdapter': None,
++               'holds': [],
++               'origins': [{'field': '/sourceRow',
++                            'sourceSelector': '18100245.csv: VECTOR+REF_DATE; all15literal columns',
++                            'evidence': {'path': '/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016/CA/price-packet.json',
++                                         'sha256': '0d6b9bf7d19457e73d01a9757a5617a744d45bcae498cb5299a2cb562ac98734'},
++                            'meaning': 'Monthly aggregate statistical observation; not merchant '
++                                       'offer.'},
++                           {'field': '/nativeValue',
++                            'sourceSelector': 'VALUE+STATUS+SYMBOL; Products+UOM+SCALAR_FACTOR+GEO',
++                            'evidence': {'path': '/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016/CA/price-packet.json',
++                                         'sha256': '0d6b9bf7d19457e73d01a9757a5617a744d45bcae498cb5299a2cb562ac98734'},
++                            'meaning': '34missing values remain missing; Dollars is source UOM '
++                                       'label, ISOcurrency unknown.'}],
++               'unknowns': ['No shared retained StatCan adapter currently bound.',
++                            'Canonical product/package/unit/currency/geography and food '
++                            'eligibility not accepted.',
++                            'Four nonfood labels: '
++                            'deodorant85g,toothpaste100ml,shampoo400ml,laundrydetergent4.43l; '
++                            'separate from ingredient equivalence.'],
++               'nativeBasis': {'amount': None,
++                               'unitLabel': 'Dollars',
++                               'currency': None,
++                               'scope': 'source product/geo/month; no inferred basket basis'},
++               'provenanceEvidence': [{'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-26/CA-source-typed-proposal-v1/CA-TYPED-R1/author-receipt.json',
++                                       'sha256': '99e5098fc58b95750dd0e9dcce583a848c833e3fbea855c72b8a5378445c3eb2'}],
++               'originalAcquiredAt': None,
++               'validationObservedAt': None,
++               'acquisitionTimestampMeaning': 'No publisher-acquisition time bound. Parser '
++                                              'completedAt/fetchedAt and validation time are not '
++                                              'substitutes.',
++               'dependencies': ['integrator-generic-statistical-table-interface',
++                                'source-specific-units-and-applicability-review']},
++              {'bindingId': 'de-bls-4',
++               'country': 'DE',
++               'sourceId': 'germany-bls',
++               'releaseId': '4.0',
++               'types': ['nutrition'],
++               'manifest': {'path': '/home/user/src/offmenu-data/germany-bls-4.0/manifest.json',
++                            'sha256': '137056797e12aa086f48a71e037d22753cf8c2798f04bcfa31bb83ba0895a992'},
++               'manifestIdentity': {'sourceId': 'germany-bls', 'releaseId': '4.0'},
++               'sharedAdapter': 'germany-bls',
++               'holds': [],
++               'origins': [{'field': '/data/nutrients/*',
++                            'sourceSelector': 'BLS workbook: BLS foodcode x sourceComponent with '
++                                              'unit/method/reference',
++                            'evidence': {'path': '/home/user/src/offmenu-data/germany-bls-4.0/manifest.json',
++                                         'sha256': '137056797e12aa086f48a71e037d22753cf8c2798f04bcfa31bb83ba0895a992'},
++                            'meaning': 'Source value/qualifier/unknown retained, not canonical '
++                                       'equivalence.'},
++                           {'field': '/data/nutrients/bls:Hinweis',
++                            'sourceSelector': 'Retained profile field bls:Hinweis',
++                            'evidence': {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/DE/bls-qualifier-followup.json',
++                                         'sha256': '0e72da58216344e3c313e1d121d71fbc17a5f53644d8b5337a1f3c6fc2a470b3'},
++                            'meaning': 'Metadata field; do not count as nutrient quantity or infer '
++                                       'a unit.'}],
++               'unknowns': ['1806trace nulls:1800Spuren,6method-; population meaning not '
++                            'independently accepted.',
++                            '7140Hinweis metadata fields included in992460sourcefield '
++                            'cells;985320remaining fields not accepted nutrient quantities.',
++                            'Exact original acquisition timestamp and trusted SourceContract '
++                            'unavailable.'],
++               'nativeBasis': {'amount': 100,
++                               'unit': 'g',
++                               'portion': 'source edible portion',
++                               'state': 'as-described'},
++               'provenanceEvidence': [{'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/DE/bls-qualifier-followup.json',
++                                       'sha256': '0e72da58216344e3c313e1d121d71fbc17a5f53644d8b5337a1f3c6fc2a470b3'},
++                                      {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/handover-20261017-1003/review4286-intake.json',
++                                       'sha256': '7115541453d12a4d85d982ea325678b2eba2e350b10ddf2e71a27d2ca357c4a4'}],
++               'originalAcquiredAt': None,
++               'validationObservedAt': None,
++               'acquisitionTimestampMeaning': 'No publisher-acquisition time bound. Parser '
++                                              'completedAt/fetchedAt and validation time are not '
++                                              'substitutes.',
++               'dependencies': ['reviewed-source-contract-and-acquisition-timestamp',
++                                'hint-metadata-role-and-trace-semantics',
++                                'exact-field-origin-serialization-interface']},
++              {'bindingId': 'ca-montreal-recipe',
++               'country': 'CA',
++               'sourceId': 'montreal-vegetarian',
++               'releaseId': '2019',
++               'types': ['recipes'],
++               'manifest': None,
++               'manifestIdentity': None,
++               'sharedAdapter': None,
++               'holds': ['private-original-only-derivative-entitlement-unresolved'],
++               'origins': [],
++               'unknowns': ['No recipe text/translation/publication entitlement inferred from free '
++                            'download.'],
++               'nativeBasis': None,
++               'provenanceEvidence': [{'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/Montreal-entitlement-unresolved.json',
++                                       'sha256': '45fb6cd344892a2184820b160558cb16b7bd5fab6ce20ac19b9dee6e32e4d445'}],
++               'originalAcquiredAt': None,
++               'validationObservedAt': None,
++               'acquisitionTimestampMeaning': 'No publisher-acquisition time bound. Parser '
++                                              'completedAt/fetchedAt and validation time are not '
++                                              'substitutes.',
++               'dependencies': ['actual-custodian-source-use-and-finite-manifest-binding']},
++              {'bindingId': 'cy-traditional-dishes',
++               'country': 'CY',
++               'sourceId': 'cy-traditional-dishes',
++               'releaseId': '2026',
++               'types': ['recipes'],
++               'manifest': None,
++               'manifestIdentity': None,
++               'sharedAdapter': None,
++               'holds': ['all-rights-reserved-no-commercial-derivative-release'],
++               'origins': [],
++               'unknowns': ['52page original only; excerpts with acknowledgment not whole recipe '
++                            'normalization permission.'],
++               'nativeBasis': None,
++               'provenanceEvidence': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-28/CY/receipt.json',
++                                       'sha256': '761fa47bc44e31df9c0d3932de79c8c02c74e089d4823da257dee48bea0a51a2'}],
++               'originalAcquiredAt': None,
++               'validationObservedAt': None,
++               'acquisitionTimestampMeaning': 'No publisher-acquisition time bound. Parser '
++                                              'completedAt/fetchedAt and validation time are not '
++                                              'substitutes.',
++               'dependencies': ['actual-custodian-source-use-and-finite-manifest-binding']},
++              {'bindingId': 'cy-composition',
++               'country': 'CY',
++               'sourceId': 'cy-composition',
++               'releaseId': 'third-edition',
++               'types': ['nutrition'],
++               'manifest': None,
++               'manifestIdentity': None,
++               'sharedAdapter': None,
++               'holds': [],
++               'origins': [],
++               'unknowns': ['Retained composition response0bytes after migration; no normalized '
++                            'manifest.',
++                            '403 and denied routes remain held; no network path in this package.'],
++               'nativeBasis': None,
++               'provenanceEvidence': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-28/CY/continuation-804b514f54877f343817/receipt.json',
++                                       'sha256': 'c693a1e84d787e31307b1deee0b4bbe1092b8da1ecceadd83f6f469b1bd61d72'}],
++               'originalAcquiredAt': None,
++               'validationObservedAt': None,
++               'acquisitionTimestampMeaning': 'No publisher-acquisition time bound. Parser '
++                                              'completedAt/fetchedAt and validation time are not '
++                                              'substitutes.',
++               'dependencies': ['actual-custodian-source-use-and-finite-manifest-binding']},
++              {'bindingId': 'cz-nutridatabaze',
++               'country': 'CZ',
++               'sourceId': 'cz-nutridatabaze',
++               'releaseId': '11.26',
++               'types': ['nutrition'],
++               'manifest': None,
++               'manifestIdentity': None,
++               'sharedAdapter': None,
++               'holds': ['registered-access-and-no-alternate-extraction'],
++               'origins': [],
++               'unknowns': ['No legitimately bound retained normalized manifest.'],
++               'nativeBasis': None,
++               'provenanceEvidence': [{'path': '/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016/CZ/country-packet.json',
++                                       'sha256': 'fdd325ec35d739038cf0210148e787e193229edf1bb05b127f1883cd803af973'}],
++               'originalAcquiredAt': None,
++               'validationObservedAt': None,
++               'acquisitionTimestampMeaning': 'No publisher-acquisition time bound. Parser '
++                                              'completedAt/fetchedAt and validation time are not '
++                                              'substitutes.',
++               'dependencies': ['actual-custodian-source-use-and-finite-manifest-binding']},
++              {'bindingId': 'cz-organic-operators',
++               'country': 'CZ',
++               'sourceId': 'cz-organic-operators',
++               'releaseId': '2013',
++               'types': ['retailers/providers'],
++               'manifest': None,
++               'manifestIdentity': None,
++               'sharedAdapter': None,
++               'holds': ['operator-privacy-and-unqualified-reuse'],
++               'origins': [],
++               'unknowns': ['Historical operator register is not current retailer/product/price '
++                            'data.'],
++               'nativeBasis': None,
++               'provenanceEvidence': [{'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-32/CZ/c2f552a3789d57ea35a5/receipt.json',
++                                       'sha256': '02cd70f1d84683074cbad9b3726540c149f7acd76898b104cc4072ea3bd61c44'}],
++               'originalAcquiredAt': None,
++               'validationObservedAt': None,
++               'acquisitionTimestampMeaning': 'No publisher-acquisition time bound. Parser '
++                                              'completedAt/fetchedAt and validation time are not '
++                                              'substitutes.',
++               'dependencies': ['actual-custodian-source-use-and-finite-manifest-binding']},
++              {'bindingId': 'cz-szu-booklet',
++               'country': 'CZ',
++               'sourceId': 'cz-szu-booklet',
++               'releaseId': '2014',
++               'types': ['dietary references', 'recipes'],
++               'manifest': None,
++               'manifestIdentity': None,
++               'sharedAdapter': None,
++               'holds': ['reference-original-only-derivative-scope-unqualified'],
++               'origins': [],
++               'unknowns': ['36page historical reference; no current numeric-guidance acceptance.'],
++               'nativeBasis': None,
++               'provenanceEvidence': [{'path': '/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016-CZ-DIETARY-R2/manifest.json',
++                                       'sha256': 'e09ae86073ed4a86c958a732b27a59f2ebcee2e3c046cf13577ac7dfb0cf7989'}],
++               'originalAcquiredAt': None,
++               'validationObservedAt': None,
++               'acquisitionTimestampMeaning': 'No publisher-acquisition time bound. Parser '
++                                              'completedAt/fetchedAt and validation time are not '
++                                              'substitutes.',
++               'dependencies': ['actual-custodian-source-use-and-finite-manifest-binding']},
++              {'bindingId': 'de-recipes-menu',
++               'country': 'DE',
++               'sourceId': 'de-recipes-menu',
++               'releaseId': 'retained-private-originals',
++               'types': ['recipes', 'retailers/providers'],
++               'manifest': None,
++               'manifestIdentity': None,
++               'sharedAdapter': None,
++               'holds': ['private-original-only-derivative-entitlement-unresolved'],
++               'origins': [],
++               'unknowns': ['No reusable recipe/menu normalized manifest; menu '
++                            'prices/currency/date/outlet applicability unqualified.'],
++               'nativeBasis': None,
++               'provenanceEvidence': [{'path': '/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016-DE-DIGEST-SCOPE-R1/DE/country-packet.json',
++                                       'sha256': '5231b4ea6a54ddfa6bde80afabc443bde620d7d12e3067a7a8a7d757fc43450f'}],
++               'originalAcquiredAt': None,
++               'validationObservedAt': None,
++               'acquisitionTimestampMeaning': 'No publisher-acquisition time bound. Parser '
++                                              'completedAt/fetchedAt and validation time are not '
++                                              'substitutes.',
++               'dependencies': ['actual-custodian-source-use-and-finite-manifest-binding']}]}
+diff --git a/tests/fixtures/portfolio26/manifest.json b/tests/fixtures/portfolio26/manifest.json
+new file mode 100644
+index 00000000..e56156fe
+--- /dev/null
++++ b/tests/fixtures/portfolio26/manifest.json
+@@ -0,0 +1 @@
++{"sourceId":"cnf","releaseId":"2015","fixture":true,"normalizedRows":1}
+diff --git a/tests/fixtures/portfolio26/profile.json b/tests/fixtures/portfolio26/profile.json
+new file mode 100644
+index 00000000..c2967f43
+--- /dev/null
++++ b/tests/fixtures/portfolio26/profile.json
+@@ -0,0 +1,24 @@
++{
++  "schemaVersion": "1.0",
++  "kind": "nutrientProfile",
++  "id": "authored-cnf-1",
++  "provenance": {
++    "sourceId": "cnf",
++    "releaseId": "2015"
++  },
++  "data": {
++    "basis": {
++      "amount": 100,
++      "unit": "g"
++    },
++    "nutrients": {
++      "protein": {
++        "value": 1.25,
++        "unit": "g",
++        "qualifier": "source-reported",
++        "name": "AUTHORED PROTEIN",
++        "sourceComponent": "authored-only"
++      }
++    }
++  }
++}
+diff --git a/tests/test_portfolio26_bindings.py b/tests/test_portfolio26_bindings.py
+new file mode 100644
+index 00000000..f6315c4c
+--- /dev/null
++++ b/tests/test_portfolio26_bindings.py
+@@ -0,0 +1,401 @@
++"""Authored metadata/profile fixtures only. No real manifest or payload access."""
++import copy
++import ast
++from dataclasses import replace
++import hashlib
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu.refresh import portfolio26 as portfolio
++from offmenu.refresh import execution
++from offmenu.refresh.core import canonical
++from offmenu.refresh.acceptance import Asset, SourceContract, qualify, ids_digest, fingerprint
++from offmenu.refresh.field_provenance import datum_pointers
++
++FIXTURES = Path(__file__).parent / 'fixtures/portfolio26'
++NOW = '2026-01-15T00:00:00Z'
++
++
++def binding(path=FIXTURES / 'manifest.json'):
++    return {'bindingId': 'authored-cnf', 'country': 'CA', 'sourceId': 'cnf',
++            'releaseId': '2015', 'types': ['nutrition'], 'sharedAdapter': 'cnf',
++            'manifest': {'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()},
++            'manifestIdentity': {'sourceId': 'cnf', 'releaseId': '2015'},
++            'holds': [], 'origins': [{'field': '/authored', 'sourceSelector': 'authored-only'}],
++            'unknowns': ['fixture is not production'],
++            'originalAcquiredAt': '2026-01-01T00:00:00Z',
++            'validationObservedAt': '2026-01-14T00:00:00Z'}
++
++
++class Portfolio26Tests(unittest.TestCase):
++    def test_packaged_catalogue_is_literal_equivalent_and_default_needs_no_file(self):
++        source = Path(portfolio.__file__).with_name('portfolio26_catalogue.py').read_text()
++        tree = ast.parse(source)
++        self.assertEqual(2, len(tree.body))  # docstring and inert assignment only
++        literal = ast.literal_eval(tree.body[1].value)
++        reviewed = json.loads(portfolio.CONFIG.read_bytes())
++        self.assertEqual(reviewed, literal)
++        with patch.object(Path, 'read_bytes', side_effect=AssertionError('catalogue file read')), \
++             patch.object(Path, 'stat', side_effect=AssertionError('catalogue file stat')):
++            self.assertEqual(reviewed, portfolio.configuration())
++
++    def test_packaged_catalogue_returns_independent_nested_copies(self):
++        original = portfolio.configuration()
++        changed = portfolio.configuration()
++        changed['bindings'][0]['holds'].append('authored mutation')
++        changed['bindings'][0]['origins'][0]['sourceSelector'] = 'authored mutation'
++        changed['bindings'][0]['unknowns'].append('authored mutation')
++        self.assertEqual(original, portfolio.configuration())
++        self.assertNotEqual(changed, original)
++
++    def test_explicit_review_configuration_path_remains_supported_and_validated(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / 'review.json'
++            value = {'schemaVersion': 'portfolio26-bindings/1',
++                     'countries': list(portfolio.COUNTRIES), 'bindings': []}
++            path.write_bytes(canonical(value))
++            self.assertEqual(value, portfolio.configuration(path))
++            path.write_bytes(b'{}')
++            with self.assertRaisesRegex(ValueError, 'portfolio-config-invalid'):
++                portfolio.configuration(path)
++
++    def test_malformed_ids_fail_before_replay_lookup_and_preserve_held_peer(self):
++        for identity in (['authored-invalid-key'], {'authored': 'invalid-key'}, None, 1):
++            with self.subTest(identity=identity):
++                bad, peer = binding(), binding()
++                bad['bindingId'] = identity
++                peer.update(bindingId='authored-held-peer', holds=['authored-hold'])
++                with patch.object(portfolio, '_read_metadata', side_effect=AssertionError('no I/O')):
++                    report = portfolio.plan({'bindings': [bad, peer]}, now=NOW,
++                                            previous_keys={'authored-held-peer': 'old'})
++                self.assertEqual(['failed', 'held'], [r['stage']['status'] for r in report['bindings']])
++                self.assertEqual(['portfolio-identity-missing'], report['bindings'][0]['errors'])
++                self.assertEqual(24, len(report['countryTypes']))
++                self.assertTrue(all(not c['accepted'] for c in report['countryTypes']))
++                self.assertTrue(all(c['bindings'] in ([], ['authored-held-peer'])
++                                    for c in report['countryTypes']))
++
++    def test_pinned_reader_uses_one_open_and_never_reopens_with_read_bytes(self):
++        spec = binding()
++        with patch.object(portfolio.os, 'open', wraps=os.open) as opened, \
++             patch.object(Path, 'read_bytes', side_effect=AssertionError('unbounded reopen')):
++            result = portfolio.inspect_binding(spec, now=NOW)
++        self.assertEqual('succeeded', result['stage']['status'])
++        self.assertEqual(1, opened.call_count)
++
++    def test_reader_rejects_oversize_and_bounds_growth_during_read(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / 'metadata.json'
++            raw = (FIXTURES / 'manifest.json').read_bytes()
++            path.write_bytes(raw)
++            spec = binding(path)
++            path.write_bytes(b'x' * (portfolio.MAX_METADATA_BYTES + 1024))
++            with patch.object(portfolio.os, 'read', side_effect=AssertionError('oversize read')):
++                result = portfolio.inspect_binding(spec, now=NOW)
++            self.assertEqual('asset-size-limit-exceeded', result['stage']['code'])
++            path.write_bytes(raw)
++            limit, actual_read, consumed = len(raw) + 10, os.read, []
++            def grow_after_first_read(fd, count):
++                block = actual_read(fd, count)
++                consumed.append(len(block))
++                if len(consumed) == 1:
++                    with path.open('ab') as stream:
++                        stream.write(b'x' * (limit + 1024))
++                return block
++            with patch.object(portfolio, 'MAX_METADATA_BYTES', limit), \
++                 patch.object(portfolio.os, 'read', grow_after_first_read):
++                result = portfolio.inspect_binding(spec, now=NOW)
++            self.assertEqual('asset-size-limit-exceeded', result['stage']['code'])
++            self.assertEqual(limit + 1, sum(consumed))
++
++    def test_open_replacements_fail_promptly_and_do_not_hide_held_peer(self):
++        actual_open = os.open
++        for replacement in ('oversize', 'fifo', 'symlink'):
++            with self.subTest(replacement=replacement), tempfile.TemporaryDirectory() as directory:
++                path = Path(directory) / 'metadata.json'
++                path.write_bytes((FIXTURES / 'manifest.json').read_bytes())
++                spec, peer = binding(path), binding()
++                peer.update(bindingId='authored-held-peer', holds=['authored-hold'])
++                def substitute_before_open(target, flags):
++                    # Assert before calling the OS so a regression cannot hang this test.
++                    self.assertTrue(flags & os.O_NONBLOCK)
++                    self.assertTrue(flags & os.O_NOFOLLOW)
++                    path.unlink()
++                    if replacement == 'fifo':
++                        os.mkfifo(path)
++                    elif replacement == 'symlink':
++                        path.symlink_to(FIXTURES / 'manifest.json')
++                    else:
++                        path.write_bytes(b'x' * (portfolio.MAX_METADATA_BYTES + 1024))
++                    return actual_open(target, flags)
++                with patch.object(portfolio.os, 'open', substitute_before_open), \
++                     patch.object(portfolio.os, 'read', side_effect=AssertionError('replacement read')):
++                    report = portfolio.plan({'bindings': [spec, peer]}, now=NOW)
++                self.assertIn(report['bindings'][0]['stage']['status'], ('failed', 'quarantined'))
++                self.assertEqual('held', report['bindings'][1]['stage']['status'])
++                self.assertEqual(0, report['sourceBodyReads'])
++
++    def test_path_replacement_after_open_is_stale_and_descriptor_is_closed(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / 'metadata.json'
++            raw = (FIXTURES / 'manifest.json').read_bytes()
++            path.write_bytes(raw)
++            spec, actual_read, calls = binding(path), os.read, []
++            def replace_after_read(fd, count):
++                block = actual_read(fd, count)
++                if not calls:
++                    path.unlink()
++                    path.write_bytes(raw)
++                calls.append(fd)
++                return block
++            with patch.object(portfolio.os, 'read', replace_after_read):
++                result = portfolio.inspect_binding(spec, now=NOW)
++            self.assertEqual('portfolio-metadata-stale', result['stage']['code'])
++            with self.assertRaises(OSError):
++                os.fstat(calls[0])
++
++    def test_valid_metadata_binds_shared_adapter_without_execution_or_acceptance(self):
++        with patch.object(execution, 'execute', side_effect=AssertionError('must not parse')):
++            result = portfolio.inspect_binding(binding(), now=NOW)
++        self.assertEqual('succeeded', result['stage']['status'])
++        self.assertEqual('portfolio-metadata-bound', result['stage']['code'])
++        self.assertTrue(result['metadataBytesVerified'])
++        self.assertFalse(result['payloadBytesVerified'])
++        self.assertEqual([], result['bodyOperations'])
++        self.assertIsNone(result['acceptedRecords'])
++        self.assertIsNone(result['qualificationContract'])
++        self.assertFalse(result['countryComplete'])
++        self.assertEqual('available-not-admitted', result['adapterStatus'])
++
++    def test_missing_manifest_pointer_and_missing_file_are_typed(self):
++        spec = binding()
++        spec['manifest'] = None
++        with patch.object(portfolio, '_read_metadata', side_effect=AssertionError('no I/O')):
++            self.assertEqual('portfolio-manifest-missing', portfolio.inspect_binding(spec, now=NOW)['stage']['code'])
++        with tempfile.TemporaryDirectory() as directory:
++            spec['manifest'] = {'path': str(Path(directory) / 'absent.json'), 'sha256': '0' * 64}
++            result = portfolio.inspect_binding(spec, now=NOW)
++        self.assertEqual('unsupported', result['stage']['status'])
++        self.assertEqual('portfolio-manifest-missing', result['stage']['code'])
++
++    def test_held_descriptor_does_not_touch_even_missing_path(self):
++        spec = binding()
++        spec['holds'] = ['403-no-retry', 'private-original-only']
++        spec['manifest']['path'] = '/must-not-touch-held-body.json'
++        with patch.object(portfolio, '_read_metadata', side_effect=AssertionError('hold bypass')):
++            result = portfolio.inspect_binding(spec, now=NOW)
++        self.assertEqual('held', result['stage']['status'])
++        self.assertEqual(spec['holds'], result['holds'])
++        self.assertFalse(result['metadataBytesVerified'])
++
++    def test_malformed_and_duplicate_json_do_not_leak_data(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / 'metadata.json'
++            for raw, code in [(b'{secret:', 'portfolio-metadata-malformed'),
++                              (b'{"sourceId":"cnf","sourceId":"foreign"}', 'duplicate-json-key'),
++                              (b'{"value":NaN}', 'nonfinite-json-number')]:
++                path.write_bytes(raw)
++                result = portfolio.inspect_binding(binding(path), now=NOW)
++                self.assertEqual('failed', result['stage']['status'])
++                self.assertEqual(code, result['stage']['code'])
++                self.assertNotIn('secret', canonical(result).decode())
++
++    def test_stale_bytes_quarantined_even_with_previous_key(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / 'metadata.json'
++            path.write_bytes((FIXTURES / 'manifest.json').read_bytes())
++            spec = binding(path)
++            previous = portfolio.inspect_binding(spec, now=NOW)['bindingKey']
++            path.write_text('{"sourceId":"cnf","releaseId":"2026"}')
++            result = portfolio.inspect_binding(spec, now=NOW, previous_key=previous)
++        self.assertEqual('quarantined', result['stage']['status'])
++        self.assertEqual('portfolio-metadata-stale', result['stage']['code'])
++        self.assertEqual('not-bound', result['packageAction'])
++
++    def test_release_mismatch_is_not_discovery_alias(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / 'metadata.json'
++            path.write_text('{"sourceId":"cnf","releaseId":"2026"}')
++            result = portfolio.inspect_binding(binding(path), now=NOW)
++            self.assertEqual('portfolio-source-release-mismatch', result['stage']['code'])
++            spec = binding(path)
++            spec['manifestIdentity']['releaseId'] = '2026'
++            self.assertEqual('portfolio-source-release-mismatch', portfolio.inspect_binding(spec, now=NOW)['stage']['code'])
++        spec = binding()
++        spec['releaseId'] = '2026'
++        self.assertEqual('portfolio-shared-adapter-mismatch', portfolio.inspect_binding(spec, now=NOW)['stage']['code'])
++
++    def test_origin_evidence_is_pinned_without_verifying_payload_or_rights(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / 'evidence.json'
++            path.write_text('{"fixture":"authored definition locator only"}')
++            evidence = {'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
++            spec = binding()
++            spec['provenanceEvidence'] = [evidence]
++            spec['origins'][0]['evidence'] = evidence
++            result = portfolio.inspect_binding(spec, now=NOW)
++            self.assertEqual(1, result['metadataEvidencePinsVerified'])
++            self.assertFalse(result['rightsOperationsReviewedByThisTool'])
++            self.assertEqual('declared-not-row-verified', result['fieldOriginsStatus'])
++            path.write_text('{"fixture":"changed"}')
++            result = portfolio.inspect_binding(spec, now=NOW)
++            self.assertEqual('portfolio-metadata-stale', result['stage']['code'])
++
++    def test_payload_suffix_and_symlink_rejected(self):
++        spec = binding()
++        spec['manifest']['path'] = '/not-read/raw.csv'
++        self.assertEqual('portfolio-metadata-pin-invalid', portfolio.inspect_binding(spec, now=NOW)['stage']['code'])
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / 'metadata.json'
++            path.symlink_to(FIXTURES / 'manifest.json')
++            spec = binding()
++            spec['manifest']['path'] = str(path)
++            self.assertEqual('symlink-path-rejected', portfolio.inspect_binding(spec, now=NOW)['stage']['code'])
++
++    def test_replay_is_noop_for_metadata_only_and_validation_does_not_refresh(self):
++        spec = binding()
++        before = copy.deepcopy(spec)
++        first = portfolio.inspect_binding(spec, now=NOW)
++        second = portfolio.inspect_binding(spec, now=NOW, previous_key=first['bindingKey'])
++        self.assertEqual('metadata-no-op', second['packageAction'])
++        self.assertEqual(first['bindingKey'], second['bindingKey'])
++        spec['validationObservedAt'] = '2026-02-01T00:00:00Z'
++        later = portfolio.inspect_binding(spec, now='2026-02-01T00:00:00Z', previous_key=first['bindingKey'])
++        self.assertEqual('metadata-no-op', later['packageAction'])
++        self.assertEqual('unsupported-shared-cache-planner', later['cache']['decision'])
++        self.assertEqual('30-days-or-older', later['cache']['retentionWindow'])
++        self.assertEqual(0, later['cache']['networkRequests'])
++        self.assertEqual('2026-01-01T00:00:00Z', later['cache']['originalAcquiredAt'])
++        self.assertEqual(before['origins'], spec['origins'])
++
++    def test_thirty_day_boundary_and_unknown_acquisition_time(self):
++        spec = binding()
++        self.assertEqual('under-30-days', portfolio.cache_metadata(spec, now='2026-01-30T23:59:59Z')['retentionWindow'])
++        self.assertEqual('30-days-or-older', portfolio.cache_metadata(spec, now='2026-01-31T00:00:00Z')['retentionWindow'])
++        spec['originalAcquiredAt'] = None
++        cache = portfolio.cache_metadata(spec, now=NOW)
++        self.assertEqual('unknown-acquisition-time', cache['retentionWindow'])
++        self.assertEqual('unsupported-shared-cache-planner', cache['decision'])
++        self.assertIsNone(cache['sharedPlanner'])
++        self.assertNotIn('acquisitionAgeSeconds', cache)
++
++    def test_clocks_and_malformed_binding_fail_closed(self):
++        for key in ['originalAcquiredAt', 'validationObservedAt']:
++            spec = binding()
++            spec[key] = '2027-01-01T00:00:00Z'
++            self.assertEqual('failed', portfolio.inspect_binding(spec, now=NOW)['stage']['status'])
++        spec = binding()
++        spec['originalAcquiredAt'] = '2026-01-01T00:00:00'
++        self.assertEqual('acquisition-timestamp-must-be-utc', portfolio.inspect_binding(spec, now=NOW)['stage']['code'])
++        report = portfolio.plan({'bindings': [None]}, now=NOW)
++        self.assertEqual('failed', report['bindings'][0]['stage']['status'])
++
++    def test_authored_profiles_use_shared_semantics_preserving_unknowns(self):
++        row = json.loads((FIXTURES / 'profile.json').read_text())
++        original = copy.deepcopy(row)
++        self.assertEqual([], portfolio.diagnose_authored_profile('cnf', row))
++        row['data']['nutrients']['protein'].update(value=None, unit='unknown', name='Unresolved CNF nutrient 328', qualifier='unknown')
++        before = copy.deepcopy(row)
++        errors = portfolio.diagnose_authored_profile('cnf', row)
++        self.assertIn('national-nutrient-definition-unresolved', errors)
++        self.assertIn('national-nutrient-unit-unqualified', errors)
++        self.assertEqual(before, row)
++        original['provenance'] = {'sourceId': 'germany-bls', 'releaseId': '4.0'}
++        self.assertEqual([], portfolio.diagnose_authored_profile('germany-bls', original))
++        original['data']['nutrients']['Hinweis'] = {'value': None, 'unit': 'unknown', 'qualifier': 'source-text'}
++        self.assertIn('national-nutrient-unit-unqualified', portfolio.diagnose_authored_profile('germany-bls', original))
++
++    def test_portfolio_config_is_not_an_admission_or_country_acceptance(self):
++        config = portfolio.configuration()
++        self.assertEqual(10, len(config['bindings']))
++        # Force failure if this test accidentally touches ANY real source metadata.
++        with patch.object(portfolio, '_read_metadata', side_effect=FileNotFoundError):
++            report = portfolio.plan(config, now='2026-10-18T00:00:00Z')
++        self.assertEqual(24, len(report['countryTypes']))
++        self.assertTrue(all(not c['accepted'] for c in report['countryTypes']))
++        self.assertEqual(0, report['sourceBodyReads'])
++        self.assertEqual(0, report['acceptedCountryTypes'])
++        self.assertFalse(execution.ADMISSIONS)
++        cnf = next(b for b in config['bindings'] if b['sourceId'] == 'cnf')
++        self.assertIsNone(cnf['originalAcquiredAt'])
++        self.assertIn('Food534', ' '.join(cnf['unknowns']))
++
++    def test_shared_per_datum_origins_cover_null_without_inventing_cells(self):
++        digest = hashlib.sha256(b'authored fixture only').hexdigest()
++        row = {'data': {'value': None}, 'provenance': {'sourceId': 'cnf', 'releaseId': '2015',
++               'fieldOrigins': {'/data/value': {'kind': 'source', 'sourceId': 'cnf',
++                   'releaseId': '2015', 'inputPath': 'authored.csv', 'inputSha256': digest,
++                   'sourceRecordId': 'authored-food:authored-component', 'sourceField': 'NutrientValue'}}}}
++        before = copy.deepcopy(row)
++        self.assertEqual([], portfolio.diagnose_authored_origins(row, {'authored.csv': digest}))
++        self.assertEqual(before, row)
++        row['provenance']['fieldOrigins'].clear()
++        self.assertIn('field-origin-inventory-mismatch', portfolio.diagnose_authored_origins(row, {'authored.csv': digest}))
++        row = before
++        row['provenance']['fieldOrigins']['/data/value']['releaseId'] = '2026'
++        self.assertIn('field-origin-source-mismatch', portfolio.diagnose_authored_origins(row, {'authored.csv': digest}))
++
++    def test_shared_qualification_is_authored_fixture_scope_only(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            bundle = root / 'bundle'
++            bundle.mkdir()
++            raw = (FIXTURES / 'profile.json').read_bytes()
++            assets = []
++            for name, body in [('profile.json', raw), ('rights.json', b'{"authored":"fixture-only retain parse transform"}'),
++                               ('scope.json', b'{"authoredIds":["authored-cnf-1"]}')]:
++                (bundle / name).write_bytes(body)
++                assets.append(Asset(name, len(body), hashlib.sha256(body).hexdigest()))
++            row = json.loads(raw)
++            row['provenance']['fetchedAt'] = '2026-01-01T00:00:00Z'
++            row['provenance']['fieldOrigins'] = {
++                pointer: {'kind': 'source', 'sourceId': 'cnf', 'releaseId': '2015',
++                          'inputPath': 'profile.json', 'inputSha256': assets[0].sha256,
++                          'sourceRecordId': 'authored-cnf-1', 'sourceField': pointer}
++                for pointer in datum_pointers(row['data'])}
++            def semantics(candidate):
++                return (portfolio.diagnose_authored_profile('cnf', candidate)
++                        + portfolio.diagnose_authored_origins(candidate, {'profile.json': assets[0].sha256}))
++            schemas = {'nutrientProfile': {'type': 'object', 'required': ['id', 'kind', 'schemaVersion', 'data', 'provenance'],
++                       'properties': {'schemaVersion': {'const': '1.0'}, 'kind': {'const': 'nutrientProfile'},
++                                      'data': {'type': 'object', 'required': ['basis', 'nutrients']}}}}
++            contract = SourceContract('cnf', '2015', 'authored-portfolio26-fixture',
++                '2026-01-01T00:00:00Z', tuple(assets), 1, ids_digest([row['id']]), schemas,
++                fingerprint(schemas), semantics, fingerprint({'authored': 'portfolio26-semantics'}),
++                assets[1], assets[2], frozenset(('retain', 'parse', 'transform')), fixture=True)
++            candidate = root / 'candidate.jsonl'
++            candidate.write_bytes(canonical([row]))
++            body = candidate.read_bytes()
++            manifest = {'sourceId': 'cnf', 'releaseId': '2015', 'acquiredAt': contract.acquired_at,
++                        'normalizedRecords': 1, 'candidateSha256': hashlib.sha256(body).hexdigest(),
++                        'candidateBytes': len(body), 'inputFiles': [vars(a) for a in assets],
++                        'rightsEvidenceSha256': assets[1].sha256, 'scopeEvidenceSha256': assets[2].sha256}
++            result = qualify(contract, bundle, candidate, manifest, scratch_root=root)
++            self.assertTrue(result['qualified'], result['errors'])
++            self.assertTrue(result['fixture'])
++            self.assertNotIn('accepted', result)
++            self.assertIn('source-held', qualify(replace(contract, holds=('authored-hold',)), bundle, candidate, manifest)['errors'])
++            candidate.write_bytes(b'[]\n')
++            self.assertIn('candidate-custody-mismatch', qualify(contract, bundle, candidate, manifest)['errors'])
++
++    def test_deterministic_isolated_subprocess_uses_authored_fixture_only(self):
++        script = ('from tests.test_portfolio26_bindings import binding, NOW; '
++                  'from offmenu.refresh.portfolio26 import inspect_binding; '
++                  'from offmenu.refresh.core import canonical; '
++                  'print(canonical(inspect_binding(binding(), now=NOW)).decode(), end="")')
++        # Load fixture support by path; tests is not an installed package.
++        script = ('import sys; sys.path.insert(0,"tests"); ' + script.replace('from tests.test_portfolio26_bindings', 'from test_portfolio26_bindings'))
++        a = subprocess.check_output([sys.executable, '-c', script], cwd=Path(__file__).parents[1])
++        b = subprocess.check_output([sys.executable, '-c', script], cwd=Path(__file__).parents[1])
++        self.assertEqual(a, b)
++        self.assertEqual('portfolio-metadata-bound', json.loads(a)['stage']['code'])
++
++
++if __name__ == '__main__':
++    unittest.main()

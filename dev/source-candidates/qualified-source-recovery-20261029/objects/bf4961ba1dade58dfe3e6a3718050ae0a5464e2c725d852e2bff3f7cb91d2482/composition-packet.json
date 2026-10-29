@@ -1,0 +1,40 @@
+{
+  "candidate": "cc03409dfbdd85ddf79dc067c78544798714030d",
+  "tree": "30b67ff423c030c5fe258d394b495eaebd8dd115",
+  "base": "666ed68450722536ac6941544e26d9c8edaae8a8",
+  "parents": [
+    "8c2b26b34e52bf19ca03445bc6fe37581728ab92",
+    "666ed68450722536ac6941544e26d9c8edaae8a8"
+  ],
+  "reviewedSource": "8c2b26b34e52bf19ca03445bc6fe37581728ab92",
+  "branch": "feature/culinary-names42-current-develop-20261015",
+  "changedPaths": [
+    "docs/global-data-validation/worker-42-culinary-names.json",
+    "docs/global-data-validation/worker-42-culinary-names.md",
+    "scripts/global-data-validation/worker-42-culinary-names.py",
+    "tests/global-data-validation/test_worker42_culinary_names.py"
+  ],
+  "verifiedOwnedSHA256": {
+    "scripts/global-data-validation/worker-42-culinary-names.py": "e24070a40bea1ba8d5bdb2fca50927f2bf6110e48e180842e4fd7d6c09d135bc",
+    "tests/global-data-validation/test_worker42_culinary_names.py": "5a05a35596bb84b647dadbcdeac5040f60bf231319a99a8d1d1610fe1b075459",
+    "docs/global-data-validation/worker-42-culinary-names.json": "8976a1e4ed26682554e184f165fc1fc3ac7f08c2e39e049f48e34c3c6ab80e76",
+    "docs/global-data-validation/worker-42-culinary-names.md": "d924bf04a8e6c1fd69137799c6d1e9bd599ccba88ed74a8bc46ae85cca30405e"
+  },
+  "priorReview": "/home/user/Documents/Codex/2026-10-14/task-2/worker-52-review-names42/8c2b26b34e52bf19ca03445bc6fe37581728ab92/independent-review.json",
+  "priorReviewSHA256": "436f3b45f90aa765cbf460c0fe09bcac8af9a52d2d199f5d461e107f76edf5ac",
+  "retainedEvidence": {
+    "bodyWitnesses": 6,
+    "negativeMutationMissingnessProbes": 72,
+    "priorFinding": "504e09d closed by exact8c2 review; historicaldocsretained",
+    "unprovedRefs": 3,
+    "originalLexemeCrosswalks": "unverified"
+  },
+  "scope": "normalized original-body provenanceattachmentguards, NOTuploads",
+  "limits": [
+    "No translation/gold/admission/ingredientsemanticidentity",
+    "No newsourceacquisition/rawbodypublication",
+    "No main/deploy"
+  ],
+  "existingPrOrRemoteBranch": "none exactoldheadbranch found; lastopenPRlistonlyunrelated9/11",
+  "status": "Await SAME52 exactactualdevelopcompositionreview"
+}

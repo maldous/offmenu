@@ -1,0 +1,1296 @@
+diff --git a/docs/portfolio17/binding-contract.md b/docs/portfolio17/binding-contract.md
+new file mode 100644
+index 00000000..f8294ff4
+--- /dev/null
++++ b/docs/portfolio17/binding-contract.md
+@@ -0,0 +1,160 @@
++# Worker17 NZ/SI/SY/UG metadata binding package
++
++This package binds **permitted receipt JSON**, not publisher payloads, to the
++shared develop contracts at `abecb99ee1125730ccbc2824b6ec49ffc5cc4302`.
++It does not register an acquisition, enable an adapter, read referenced bodies,
++normalize source data, or grant rights/acceptance. PR42 is not a dependency.
++
++## Repeatable interface
++
++From this checkout, with an explicit validation clock and an output outside the
++metadata root:
++
++```sh
++python3 -B -m offmenu.refresh.portfolio17 \
++  --bindings docs/portfolio17/bindings.json \
++  --metadata-root /home/user/src/offmenu-data \
++  --now 2026-10-18T00:00:00Z \
++  --output /absolute/owned/output/portfolio17-diagnostics.json
++python3 -B -m unittest discover -s tests -p test_portfolio17.py -v
++```
++
++The trusted portfolio configuration lists nine exact receipt pins and literal
++RFC6901 selectors. Only explicitly declared relative `.json` metadata paths
++marked `metadataOnly:true` can be opened. Paths must have no links or traversal.
++The root and configuration are caller-selected trust boundaries; the flag or
++filename alone cannot make an arbitrary JSON dataset permitted metadata. Review
++any new config before use. Referenced PDF/CSV/HTML paths inside receipts remain
++literal values. No network transport or historical collector is invoked.
++
++The `--bindings` reader opens with nonblocking/no-follow flags and checks the
++opened descriptor is a regular file before reading. Reads are capped at1MiB;
++oversized, nonregular, failed and observably changing configuration reads fail
++with typed `binding-config-*` errors before evaluation or output replacement.
++Descriptor size, identity and modification/change times are checked across the
++read. This is a stability check, not an immutable concurrent-write snapshot.
++This correction qualifies the configuration-reader boundary only; the separate
++metadata/output readers and remaining00batch invariants retain their own review.
++
++The total evidence read budget is 1 MiB per evaluation (including repeated
++references), at most 32 bindings/16 evidence files per binding. Outputs contain
++metadata and manifest references, never copied payload bodies. They stay on Foo.
++Metadata values are limited to depth64 (root depth0), checked iteratively before
++recursive provenance traversal. A deeper value or recursion failure returns
++`metadata-depth-exceeded` for that binding and leaves later peers evaluable.
++
++The output must have its own inode: an existing output with multiple hard links
++is rejected before reading or writing it, including aliases of metadata or the
++binding configuration. Changed output is written to a temporary sibling and
++replaced as a directory entry, so writing never truncates the old output inode.
++An identical ordinary output remains untouched.
++
++## Shared contracts and origins
++
++- `core.strict_json`, `canonical`, `timestamp`, `safe_path`, `sha` reject ambiguous
++  JSON, provide deterministic bytes, validate UTC timestamps and scope paths.
++- `field_provenance.datum_pointers/field_origin_errors` cover every scalar datum
++  against exact metadata pins. These are **receipt-field origins**, not claims
++  that publisher table cells have been compared or accepted.
++- `adapter_mapping.retained_adapters()` resolves only exact shared source/release
++  descriptors. No country-specific parsing engine is copied. The authored valid
++  fixture resolves the existing FOODfiles2024-v01 descriptor; the selected nine
++  real evidence bindings do not thereby become FOODfiles payloads or executable.
++- `acquisition.MIN_TTL` supplies the shared minimum 30-day rule. No acquisition
++  functions or mutable shared registries are called/edited.
++
++Each entry returns a candidate metadata envelope, content hash, shared descriptor
++when exactly applicable, typed diagnostics, existing holds and named missing
++inputs. Null units/bases/record selectors are policy-origin explicit unknowns,
++never guessed from a report name. Empty original lists remain empty.
++
++`valid-metadata-binding` means this metadata interface and authored evidence
++contract are complete; it never means source-stage eligibility. Every result
++sets `sourceStageEligible:false`, `datasetAcceptance:false` and `goldAdmitted:false`.
++`held`, `missing`, `malformed` and `stale` entries remain isolated from peers.
++Malformed JSON, wrong pins, missing fields, future timestamps, unsafe paths and
++budget errors are fixed diagnostic codes, without source content/exception paths.
++Top-level malformed configuration fails without a new output. There is no repair,
++skip-and-admit or publisher-format inference.
++
++## Acquisition time, reuse and no-op
++
++`originalAcquisition` is an exact metadata selector for the original retained
++document's acquisition timestamp; validation time never replaces it. Missing
++originals keep acquisition time unknown rather than using receipt-check time.
++Each entry declares whether acquisition concerns a document, metadata or failure.
++No filesystem mtime is used. Before30days the planning decision is cached reuse
++with **zero downloads**; at/after30days it is stale-input review with **zero
++downloads**, not a network instruction. There is no force-download option.
++
++`retentionEvidence` is an evidence locator, not a parser-issued legal approval.
++All production config entries leave it unknown and preserve their source holds.
++A readable snapshot is not proof of permission for30day dataset reuse. The
++authored fixture's retention string concerns fixture metadata only.
++
++`candidateSha256` excludes validation age/time; revalidation cannot change the
++source/release content identity. The diagnostics include the caller's clock.
++Same inputs/config/clock produce byte-identical diagnostics; the CLI leaves an
++identical output untouched. A changed clock can update diagnostics while keeping
++the unchanged candidate hash. This is metadata replay, not payload refresh.
++
++## Portfolio evidence and remaining inputs
++
++| Binding | Actual selected evidence | Remaining processing boundary |
++| --- | --- | --- |
++| NZCheapEats | retainedMay2025 receipt/PDF-manifest references | Private extraction/use/retention/attribution and recipe selector held |
++| SIrecipe | English02June2021 receipt-declared book | Actual source custodian, edition and use/selector grant unresolved |
++| SIstatistics | DocSysFile14458, September2025 receipt | Issuer/edition/use/field/notes selector unresolved |
++| SYWorldBank | catalogue4507 HTML metadata only | Exact retained CSV/field map/rights and retention binding absent |
++| SYWFP | April2025 HTTP403, no original | No retry or alternative actor |
++| UGHarvestPlus | 2012 composition rights/catalogue receipt |43attests metadata custody; no permission/original/table selector |
++| UGUSAID | 2015-10 failure metadata |44attests no original/use/selector; DNS no-retry |
++| UGUBOS | July2026 failure metadata |44attests no original/use/selector; TLS no-bypass |
++| UGUNBS | cached certified-systems manifest,110declared rows | Primary licence review and company/scope field selector held |
++
++All six country types stay open: ingredients, recipes, nutrition,
++retailers/providers, prices/baskets and dietary references. Type routing identifies
++the intended metadata role, not national coverage or semantic equivalence.
++
++Prior official SY metadata evidence: catalogue
++<https://microdata.worldbank.org/catalog/4507> and dictionary
++<https://microdata.worldbank.org/metadata/export/4507/json>, file
++`SYR_2021_RTFP_MKT`, edition2025-11-24. This describes market estimates and does
++not supply local rows or an exact source-use licence in the retained receipts.
++Missing unit/basis/rights evidence remains explicit rather than inferred from
++general WorldBank terms. No missing public documentation is treated as an access
++denial; no permission is asserted from public landing access.
++
++## Integration boundary
++
++Only `portfolio17.py`, its tests and this portfolio configuration/document are
++owned here. Shared core, schemas, runtime, registries and acquisition controls are
++unchanged. Integration00 should independently review these bytes on the pinned
++develop baseline and reconcile the current develop head before integration.
++
++Interface request for00: a future generic source-input metadata-contract facade
++could expose the same pinned evidence/field-origin/clock diagnostics for source
++families absent from `retained_adapters`. No shared change is required to run this
++package, and no new payload family/admission is requested by this code. Actual
++source work needs a separately selected input/use/field-origin contract and
++independent acceptance. Finland/Frida, nativeNO/FR,403/private/custody holds,
++production/CIX and the separate DEV7645 custodian remain unchanged.
++
++### Consolidated interface receipt5798
++
++The shared baseline has **no source-neutral pure cache planner**. This is an
++`unsupported-shared-capability`, not a reason to block the metadata bindings.
++The age arithmetic above is portfolio metadata diagnostic/reuse intent only.
++It does not call the Wikibooks-specific `core.cache_policy`, registry-only
++`policy.plan_fixture`, or operational `CachedAcquirer`. It does not spoof a
++source/fixture identity to enter those paths. The FOODfiles authored test merely
++checks an exact existing descriptor; no registry, acquisition or admission is
++patched. `SourceContract/qualify` remains available for compatible authored
++payload fixtures, but receipt metadata is not presented as such a payload.
++
++The baseline/interface receipt5798 and its late-dependency addendum confirm
++`abecb99ee1125730ccbc2824b6ec49ffc5cc4302` as the selected proposal snapshot;
++local4693cbc/5f5bdb6 refs are older ancestors. Integration00 must reverify live
++provider/candidate/base at delivery gates. A later generic pure planner, if
++Morgan selects it, belongs to00/shared-core ownership. This package neither
++implements that shared extension nor makes held real inputs wait for it.
+diff --git a/docs/portfolio17/bindings.json b/docs/portfolio17/bindings.json
+new file mode 100644
+index 00000000..44ddff9f
+--- /dev/null
++++ b/docs/portfolio17/bindings.json
+@@ -0,0 +1,589 @@
++{
++  "schemaVersion": "offmenu-portfolio17-bindings/1",
++  "scope": "Metadata code only; no source-body or payload admission. Evidence pins retained from selected receipts; body paths never opened.",
++  "baseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
++  "bindings": [
++    {
++      "bindingId": "nz-cheapeats",
++      "country": "NZ",
++      "type": "recipes",
++      "sourceId": "heartfoundation-cheapeats",
++      "releaseId": "May2025-receipt-declared",
++      "adapterSourceId": null,
++      "evidence": {
++        "receipt": {
++          "path": "originals/country-followthrough-20261015/owner-17/NZ/receipt.json",
++          "sha256": "58af057d2a687211f742a1df0604a1b5ef85d8469aca2c1dda1c6c4f2b0a7ad2",
++          "metadataOnly": true
++        }
++      },
++      "fields": {
++        "releaseLiteral": {
++          "evidence": "receipt",
++          "selector": "/sources/1/release"
++        },
++        "originalManifest": {
++          "evidence": "receipt",
++          "selector": "/sources/1/originals"
++        },
++        "useEvidence": {
++          "evidence": "receipt",
++          "selector": "/sources/1/licence"
++        },
++        "nativeUnit": {
++          "unknown": true
++        },
++        "nativeBasis": {
++          "unknown": true
++        },
++        "recordSelector": {
++          "unknown": true
++        }
++      },
++      "originalAcquisition": {
++        "evidence": "receipt",
++        "selector": "/sources/1/requests/0/utc"
++      },
++      "retentionEvidence": null,
++      "acquisitionScope": "receipt-reported-original-document",
++      "holds": [
++        "private-extraction-held",
++        "source-retention-unqualified"
++      ],
++      "requiredInputs": [
++        {
++          "field": "private recipe-use/retention/attribution decision",
++          "owner": 17,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        },
++        {
++          "field": "exact recipe/page selector",
++          "owner": 17,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        }
++      ]
++    },
++    {
++      "bindingId": "si-recipe-book",
++      "country": "SI",
++      "type": "recipes",
++      "sourceId": "slovenian-presidency-recipe-book",
++      "releaseId": "English02June2021-receipt-declared",
++      "adapterSourceId": null,
++      "evidence": {
++        "receipt": {
++          "path": "originals/country-followthrough-20261015/owner-54/SI/3fe7c22fa1f2325b5d91ad39/receipt.json",
++          "sha256": "6854c47e45f324da71db5d68f857ed8433a4545cd63f6fa96403c59b776ca6f0",
++          "metadataOnly": true
++        }
++      },
++      "fields": {
++        "releaseLiteral": {
++          "evidence": "receipt",
++          "selector": "/version"
++        },
++        "originalPath": {
++          "evidence": "receipt",
++          "selector": "/path"
++        },
++        "originalSha256": {
++          "evidence": "receipt",
++          "selector": "/sha256"
++        },
++        "useEvidence": {
++          "evidence": "receipt",
++          "selector": "/redistribution_licence"
++        },
++        "nativeUnit": {
++          "unknown": true
++        },
++        "nativeBasis": {
++          "unknown": true
++        },
++        "recordSelector": {
++          "unknown": true
++        }
++      },
++      "originalAcquisition": {
++        "evidence": "receipt",
++        "selector": "/utc"
++      },
++      "retentionEvidence": null,
++      "acquisitionScope": "receipt-reported-original-document",
++      "holds": [
++        "source-use-and-native-custody-unresolved"
++      ],
++      "requiredInputs": [
++        {
++          "field": "actual native custodian",
++          "owner": 54,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        },
++        {
++          "field": "edition/recipe selector/use/retention grant",
++          "owner": 54,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        }
++      ]
++    },
++    {
++      "bindingId": "si-statistical",
++      "country": "SI",
++      "type": "prices/baskets",
++      "sourceId": "stat-si-doc14458",
++      "releaseId": "September2025-receipt-declared",
++      "adapterSourceId": null,
++      "evidence": {
++        "receipt": {
++          "path": "originals/country-followthrough-20261015/owner-54/SI/bd6927bd1123d445c44ea00b/receipt.json",
++          "sha256": "dde28e741a9461564928be7ef12475f6c5b7ced840a657e029f48896ece45bf1",
++          "metadataOnly": true
++        }
++      },
++      "fields": {
++        "releaseLiteral": {
++          "evidence": "receipt",
++          "selector": "/version"
++        },
++        "originalPath": {
++          "evidence": "receipt",
++          "selector": "/path"
++        },
++        "originalSha256": {
++          "evidence": "receipt",
++          "selector": "/sha256"
++        },
++        "useEvidence": {
++          "evidence": "receipt",
++          "selector": "/acquisition_rights"
++        },
++        "nativeUnit": {
++          "unknown": true
++        },
++        "nativeBasis": {
++          "unknown": true
++        },
++        "recordSelector": {
++          "unknown": true
++        }
++      },
++      "originalAcquisition": {
++        "evidence": "receipt",
++        "selector": "/utc"
++      },
++      "retentionEvidence": null,
++      "acquisitionScope": "receipt-reported-original-document",
++      "holds": [
++        "source-use-and-native-custody-unresolved"
++      ],
++      "requiredInputs": [
++        {
++          "field": "exact issuer/edition/attribution",
++          "owner": 54,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        },
++        {
++          "field": "source-native observation unit/basis/selector",
++          "owner": 54,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        },
++        {
++          "field": "retention/use decision",
++          "owner": 54,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        }
++      ]
++    },
++    {
++      "bindingId": "sy-worldbank",
++      "country": "SY",
++      "type": "prices/baskets",
++      "sourceId": "worldbank-catalog4507",
++      "releaseId": "2025-11-24-publisher-metadata",
++      "adapterSourceId": null,
++      "evidence": {
++        "receipt": {
++          "path": "originals/country-followthrough-20261015/owner-17/SY/receipt.json",
++          "sha256": "1c63f5cbb2e67f4956d9dd12e1b228febab1570632fee4c5f908e988e517a05c",
++          "metadataOnly": true
++        }
++      },
++      "fields": {
++        "releaseLiteral": {
++          "evidence": "receipt",
++          "selector": "/sources/1/release"
++        },
++        "originalManifest": {
++          "evidence": "receipt",
++          "selector": "/sources/1/originals"
++        },
++        "useEvidence": {
++          "evidence": "receipt",
++          "selector": "/sources/1/licence"
++        },
++        "responseKind": {
++          "evidence": "receipt",
++          "selector": "/sources/1/requests/0/content_type"
++        },
++        "nativeUnit": {
++          "unknown": true
++        },
++        "nativeBasis": {
++          "unknown": true
++        },
++        "recordSelector": {
++          "unknown": true
++        }
++      },
++      "originalAcquisition": null,
++      "retentionEvidence": null,
++      "acquisitionScope": "metadata-page-only-no-dataset-acquired",
++      "holds": [
++        "metadata-only-no-dataset",
++        "exact-source-use-and-retention-unbound"
++      ],
++      "requiredInputs": [
++        {
++          "field": "retained CSV manifest and release/hash",
++          "owner": 17,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        },
++        {
++          "field": "geo_id/year/month/currency and commodity field selectors",
++          "owner": 17,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        },
++        {
++          "field": "exact licence/attribution/retention decision",
++          "owner": 17,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        }
++      ]
++    },
++    {
++      "bindingId": "sy-wfp",
++      "country": "SY",
++      "type": "prices/baskets",
++      "sourceId": "wfp-0000166460",
++      "releaseId": "April2025-receipt-declared",
++      "adapterSourceId": null,
++      "evidence": {
++        "receipt": {
++          "path": "originals/country-followthrough-20261015/owner-17/SY/receipt.json",
++          "sha256": "1c63f5cbb2e67f4956d9dd12e1b228febab1570632fee4c5f908e988e517a05c",
++          "metadataOnly": true
++        }
++      },
++      "fields": {
++        "releaseLiteral": {
++          "evidence": "receipt",
++          "selector": "/sources/0/release"
++        },
++        "originalManifest": {
++          "evidence": "receipt",
++          "selector": "/sources/0/originals"
++        },
++        "status": {
++          "evidence": "receipt",
++          "selector": "/sources/0/requests/0/status"
++        },
++        "useEvidence": {
++          "evidence": "receipt",
++          "selector": "/sources/0/licence"
++        },
++        "nativeUnit": {
++          "unknown": true
++        },
++        "nativeBasis": {
++          "unknown": true
++        },
++        "recordSelector": {
++          "unknown": true
++        }
++      },
++      "originalAcquisition": null,
++      "retentionEvidence": null,
++      "acquisitionScope": "failed-response-only",
++      "holds": [
++        "http403-no-retry-no-alternate-actor"
++      ],
++      "requiredInputs": [
++        {
++          "field": "no dataset original; failed response cannot stage data",
++          "owner": 17,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        }
++      ]
++    },
++    {
++      "bindingId": "ug-harvestplus",
++      "country": "UG",
++      "type": "nutrition",
++      "sourceId": "harvestplus-uganda2012",
++      "releaseId": "2012-metadata-declared",
++      "adapterSourceId": null,
++      "evidence": {
++        "receipt": {
++          "path": "originals/country-acquisition-20261015/UG/composition/owner-43/acquisition-receipt.json",
++          "sha256": "a5f2baf9349231f16e10ad6c4396048fb074a156dd132ea80f29439e517b7524",
++          "metadataOnly": true
++        }
++      },
++      "fields": {
++        "releaseLiteral": {
++          "evidence": "receipt",
++          "selector": "/releaseIdentity"
++        },
++        "originalPath": {
++          "evidence": "receipt",
++          "selector": "/datasetPath"
++        },
++        "originalAcquired": {
++          "evidence": "receipt",
++          "selector": "/datasetAcquired"
++        },
++        "useEvidence": {
++          "evidence": "receipt",
++          "selector": "/rights"
++        },
++        "nativeUnit": {
++          "unknown": true
++        },
++        "nativeBasis": {
++          "unknown": true
++        },
++        "recordSelector": {
++          "unknown": true
++        }
++      },
++      "originalAcquisition": null,
++      "retentionEvidence": null,
++      "acquisitionScope": "catalogue-and-rights-metadata-only",
++      "holds": [
++        "publisher-use-held-no-original"
++      ],
++      "requiredInputs": [
++        {
++          "field": "publisher permission",
++          "owner": 43,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        },
++        {
++          "field": "retained original/table selector/unit/basis/method",
++          "owner": 43,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        },
++        {
++          "field": "retention/attribution",
++          "owner": 43,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        }
++      ]
++    },
++    {
++      "bindingId": "ug-handbook",
++      "country": "UG",
++      "type": "dietary references",
++      "sourceId": "usaid-pa00tbct",
++      "releaseId": "2015-10",
++      "adapterSourceId": null,
++      "evidence": {
++        "receipt": {
++          "path": "originals/country-followthrough-20261015/owner-44/UG/1466e2066fbe86a459dd/receipt.json",
++          "sha256": "1cce17c2444d29f5fb78c45e0135f3968666d802808c9dbd0f6148495473743a",
++          "metadataOnly": true
++        }
++      },
++      "fields": {
++        "releaseLiteral": {
++          "evidence": "receipt",
++          "selector": "/release"
++        },
++        "originalManifest": {
++          "evidence": "receipt",
++          "selector": "/original_files"
++        },
++        "useEvidence": {
++          "evidence": "receipt",
++          "selector": "/acquisition_rights"
++        },
++        "failure": {
++          "evidence": "receipt",
++          "selector": "/requests/0/error"
++        },
++        "nativeUnit": {
++          "unknown": true
++        },
++        "nativeBasis": {
++          "unknown": true
++        },
++        "recordSelector": {
++          "unknown": true
++        }
++      },
++      "originalAcquisition": null,
++      "retentionEvidence": null,
++      "acquisitionScope": "failure-metadata-only",
++      "holds": [
++        "dns-failure-no-retry"
++      ],
++      "requiredInputs": [
++        {
++          "field": "no retained original or accepted use/selector manifest",
++          "owner": 44,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        }
++      ]
++    },
++    {
++      "bindingId": "ug-ubos",
++      "country": "UG",
++      "type": "prices/baskets",
++      "sourceId": "ubos-cpi",
++      "releaseId": "2026-07",
++      "adapterSourceId": null,
++      "evidence": {
++        "receipt": {
++          "path": "originals/country-followthrough-20261015/owner-44/UG/58ce006d2e28b4180e8f/receipt.json",
++          "sha256": "fe89bef5781eec1c271af8a2ea2a91f0a045e2445212650b2e1f9da2148cfc96",
++          "metadataOnly": true
++        }
++      },
++      "fields": {
++        "releaseLiteral": {
++          "evidence": "receipt",
++          "selector": "/release"
++        },
++        "originalManifest": {
++          "evidence": "receipt",
++          "selector": "/original_files"
++        },
++        "useEvidence": {
++          "evidence": "receipt",
++          "selector": "/acquisition_rights"
++        },
++        "failure": {
++          "evidence": "receipt",
++          "selector": "/requests/0/error"
++        },
++        "nativeUnit": {
++          "unknown": true
++        },
++        "nativeBasis": {
++          "unknown": true
++        },
++        "recordSelector": {
++          "unknown": true
++        }
++      },
++      "originalAcquisition": null,
++      "retentionEvidence": null,
++      "acquisitionScope": "failure-metadata-only",
++      "holds": [
++        "tls-failure-no-bypass"
++      ],
++      "requiredInputs": [
++        {
++          "field": "no retained original or accepted use/selector manifest",
++          "owner": 44,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        }
++      ]
++    },
++    {
++      "bindingId": "ug-unbs-systems",
++      "country": "UG",
++      "type": "retailers/providers",
++      "sourceId": "unbs-certified-systems",
++      "releaseId": "2026-10-13-snapshot-receipt-declared",
++      "adapterSourceId": null,
++      "evidence": {
++        "receipt": {
++          "path": "originals/country-acquisition-20261015/source-queue/owner-17/4345c0e3ab7660712861/receipt.json",
++          "sha256": "9c8965bb8498b88c3d8ae56340269e99748728835af9313ed0f9dba9c99ec1fc",
++          "metadataOnly": true
++        }
++      },
++      "fields": {
++        "releaseLiteral": {
++          "evidence": "receipt",
++          "selector": "/release"
++        },
++        "originalManifest": {
++          "evidence": "receipt",
++          "selector": "/originals"
++        },
++        "useEvidence": {
++          "evidence": "receipt",
++          "selector": "/access/rights_decision"
++        },
++        "scope": {
++          "evidence": "receipt",
++          "selector": "/extent"
++        },
++        "nativeUnit": {
++          "unknown": true
++        },
++        "nativeBasis": {
++          "unknown": true
++        },
++        "recordSelector": {
++          "unknown": true
++        }
++      },
++      "originalAcquisition": null,
++      "retentionEvidence": null,
++      "acquisitionScope": "retained-HTML-reference-not-read",
++      "holds": [
++        "primary-licence-review-held",
++        "no-countrywide-coverage"
++      ],
++      "requiredInputs": [
++        {
++          "field": "company/scope field selector dictionary",
++          "owner": 17,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        },
++        {
++          "field": "private use/retention/attribution decision",
++          "owner": 17,
++          "state": "NOT_HELD_OR_UNQUALIFIED"
++        }
++      ]
++    }
++  ],
++  "countryRequirements": {
++    "NZ": [
++      "ingredients",
++      "recipes",
++      "nutrition",
++      "retailers/providers",
++      "prices/baskets",
++      "dietary references"
++    ],
++    "SI": [
++      "ingredients",
++      "recipes",
++      "nutrition",
++      "retailers/providers",
++      "prices/baskets",
++      "dietary references"
++    ],
++    "SY": [
++      "ingredients",
++      "recipes",
++      "nutrition",
++      "retailers/providers",
++      "prices/baskets",
++      "dietary references"
++    ],
++    "UG": [
++      "ingredients",
++      "recipes",
++      "nutrition",
++      "retailers/providers",
++      "prices/baskets",
++      "dietary references"
++    ]
++  }
++}
+diff --git a/offmenu/refresh/portfolio17.py b/offmenu/refresh/portfolio17.py
+new file mode 100644
+index 00000000..c6f6092b
+--- /dev/null
++++ b/offmenu/refresh/portfolio17.py
+@@ -0,0 +1,286 @@
++"""NZ/SI/SY/UG metadata bindings only. No source reader or admission path.
++
++The caller supplies an explicit root containing permitted JSON evidence. Body
++paths inside that JSON are values, never opened. Core field-origin validation,
++serialization, path/time checks and retained adapter descriptors are reused.
++"""
++import argparse
++import json
++import os
++import re
++import stat
++import tempfile
++from pathlib import Path
++
++from .acceptance import fingerprint
++from .acquisition import MIN_TTL
++from .adapter_mapping import retained_adapters
++from .core import RefreshError, canonical, safe_path, sha, strict_json, timestamp
++from .field_provenance import datum_pointers, field_origin_errors
++from .national_tabular import valid_input_name
++
++COUNTRIES = frozenset(('NZ', 'SI', 'SY', 'UG'))
++TYPES = frozenset(('ingredients', 'recipes', 'nutrition', 'retailers/providers',
++                   'prices/baskets', 'dietary references'))
++MAX_METADATA = 1024 * 1024
++MAX_METADATA_DEPTH = 64
++POLICY = fingerprint({'name': 'portfolio17-metadata-binding/1',
++                      'unknown': None, 'bodyOperations': False})
++
++
++def pointer(value, selector):
++    """Literal RFC6901 lookup; no query language, inference or default value."""
++    if not isinstance(selector, str) or (selector and not selector.startswith('/')):
++        raise RefreshError('selector-invalid')
++    if selector == '':
++        return value
++    for part in selector[1:].split('/'):
++        if re.search(r'~(?![01])', part):
++            raise RefreshError('selector-invalid')
++        part = part.replace('~1', '/').replace('~0', '~')
++        if isinstance(value, list):
++            if not part.isdigit() or str(int(part)) != part:
++                raise RefreshError('selector-invalid')
++            value = value[int(part)]
++        elif isinstance(value, dict):
++            value = value[part]
++        else:
++            raise RefreshError('selector-missing')
++    return value
++
++
++def _required(value, key):
++    result = value[key]
++    if not isinstance(result, str) or not result:
++        raise RefreshError('binding-text-invalid')
++    return result
++
++
++def _metadata_json(raw):
++    value = strict_json(raw)
++    # Bound nesting before recursive provenance traversal or serialization.
++    pending = [(value, 0)]
++    while pending:
++        node, depth = pending.pop()
++        if depth > MAX_METADATA_DEPTH:
++            raise RefreshError('metadata-depth-exceeded')
++        children = node.values() if isinstance(node, dict) else node if isinstance(node, list) else ()
++        pending.extend((child, depth + 1) for child in children)
++    return value
++
++
++def _entry(entry, root, now, budget):
++    for key in ('bindingId', 'sourceId', 'releaseId'):
++        _required(entry, key)
++    if entry['country'] not in COUNTRIES or entry['type'] not in TYPES:
++        raise RefreshError('portfolio-scope-invalid')
++    holds = entry['holds']
++    if not isinstance(holds, list) or any(not isinstance(x, str) or not x for x in holds):
++        raise RefreshError('holds-invalid')
++    evidence = entry['evidence']
++    if not isinstance(evidence, dict) or not 1 <= len(evidence) <= 16:
++        raise RefreshError('metadata-evidence-required')
++    values, pins = {}, {}
++    for key, asset in sorted(evidence.items()):
++        name = asset['path']
++        if (not valid_input_name(name) or not name.endswith('.json')
++                or asset.get('metadataOnly') is not True):
++            raise RefreshError('metadata-only-json-required')
++        path = safe_path(root / name)
++        if not path.is_file():
++            raise RefreshError('metadata-input-missing')
++        size = path.stat().st_size
++        if size > MAX_METADATA or size > budget[0]:
++            raise RefreshError('metadata-budget-exceeded')
++        raw = path.read_bytes()
++        budget[0] -= len(raw)
++        if len(raw) > size or len(raw) > MAX_METADATA or budget[0] < 0:
++            raise RefreshError('metadata-budget-exceeded')
++        if sha(raw) != asset['sha256']:
++            raise RefreshError('metadata-pin-mismatch')
++        values[key] = _metadata_json(raw)
++        pins[name] = asset['sha256']
++    fields = entry['fields']
++    if not isinstance(fields, dict) or not fields:
++        raise RefreshError('field-bindings-required')
++    data, origins = {}, {}
++    for target, binding in sorted(fields.items()):
++        if not isinstance(target, str) or not target or '/' in target or '~' in target:
++            raise RefreshError('target-field-invalid')
++        if binding == {'unknown': True}:
++            data[target] = None
++            origins['/data/' + target] = {
++                'kind': 'constant', 'policySha256': POLICY, 'symbol': 'explicit-unknown'}
++            continue
++        key = binding['evidence']
++        selector = binding['selector']
++        value = pointer(values[key], selector)
++        data[target] = value
++        for suffix in datum_pointers(value, ''):
++            origins['/data/' + target + suffix] = {
++                'kind': 'source', 'sourceId': entry['sourceId'],
++                'releaseId': entry['releaseId'],
++                'inputPath': evidence[key]['path'], 'inputSha256': evidence[key]['sha256'],
++                'sourceRecordId': entry['bindingId'], 'sourceField': selector + suffix or '/'}
++    row = {'kind': 'sourceMetadataBinding', 'country': entry['country'],
++           'type': entry['type'], 'data': data,
++           'provenance': {'sourceId': entry['sourceId'], 'releaseId': entry['releaseId'],
++                          'fieldOrigins': origins}}
++    errors = field_origin_errors(row, pins, policy_pins=(POLICY,))
++    if errors:
++        raise RefreshError('shared-field-origin-validation-failed')
++    diagnostics = []
++    acquired = None
++    time_ref = entry.get('originalAcquisition')
++    if time_ref is not None:
++        acquired = timestamp(pointer(values[time_ref['evidence']], time_ref['selector']))
++    cache = {'minimumReuseDays': MIN_TTL // 86400, 'originalAcquiredAt': None,
++             'acquisitionAgeDays': None, 'validationAt': now.isoformat(),
++             'validationResetsAcquisition': False, 'mtimeUsed': False,
++             'bodyBytesVerified': False, 'networkRequests': 0,
++             'decision': 'acquisition-time-missing'}
++    if acquired is None:
++        diagnostics.append('original-acquisition-time-missing')
++    else:
++        age = (now - acquired).total_seconds()
++        if age < 0:
++            raise RefreshError('acquisition-timestamp-in-future')
++        cache.update(originalAcquiredAt=acquired.isoformat(),
++                     acquisitionAgeDays=int(age // 86400),
++                     decision='reuse-retained-metadata-no-download' if age < MIN_TTL
++                     else 'stale-input-review-required-no-download')
++        if age >= MIN_TTL:
++            diagnostics.append('stale-input')
++    # This flag records an evidence gap; config is never a source-use grant.
++    if entry.get('retentionEvidence') is None:
++        diagnostics.append('source-retention-evidence-missing')
++    else:
++        ref = entry['retentionEvidence']
++        pointer(values[ref['evidence']], ref['selector'])
++    adapter = next((x for x in retained_adapters()
++                    if x['sourceId'] == entry.get('adapterSourceId')
++                    and x['sourceId'] == entry['sourceId']
++                    and x['releaseId'] == entry['releaseId']), None)
++    if adapter is None:
++        diagnostics.append('shared-payload-adapter-unbound')
++    if holds:
++        diagnostics.append('source-processing-held')
++    status = ('held' if holds else 'stale' if 'stale-input' in diagnostics
++              else 'missing' if diagnostics else 'valid-metadata-binding')
++    candidate = {'row': row, 'evidencePins': pins, 'policySha256': POLICY,
++                 'sourceProcessingAuthorized': False, 'datasetAcceptance': False}
++    return {'bindingId': entry['bindingId'], 'status': status,
++            'diagnostics': sorted(diagnostics), 'holds': holds, 'cache': cache,
++            'requiredInputs': entry.get('requiredInputs', []),
++            'acquisitionScope': entry.get('acquisitionScope', 'unknown'),
++            'candidate': candidate, 'candidateSha256': sha(canonical(candidate)),
++            'sharedAdapter': adapter, 'sourceBodyOperations': 0}
++
++
++def evaluate(config, metadata_root, *, now):
++    """Isolate each declared source; metadata only, never run a payload adapter."""
++    if config.get('schemaVersion') != 'offmenu-portfolio17-bindings/1':
++        raise RefreshError('binding-config-version-invalid')
++    entries = config.get('bindings')
++    if not isinstance(entries, list) or not 1 <= len(entries) <= 32:
++        raise RefreshError('binding-count-invalid')
++    if now.tzinfo is None:
++        raise RefreshError('binding-clock-must-be-aware')
++    ids = [x.get('bindingId') if isinstance(x, dict) else None for x in entries]
++    if any(not isinstance(x, str) or not x for x in ids) or len(set(ids)) != len(ids):
++        raise RefreshError('binding-id-inventory-invalid')
++    root = safe_path(metadata_root)
++    outcomes, budget = [], [MAX_METADATA]
++    for entry in entries:
++        try:
++            outcome = _entry(entry, root, now, budget)
++        except (RefreshError, KeyError, IndexError, TypeError, ValueError, OSError, RecursionError) as exc:
++            # Fixed diagnostics deliberately avoid paths, bodies and exception text.
++            error = _error_code(exc)
++            status = 'missing' if error in ('metadata-input-missing', 'selector-missing') else 'malformed'
++            outcome = {'bindingId': entry['bindingId'], 'status': status,
++                       'diagnostics': [error], 'sourceBodyOperations': 0}
++        outcomes.append(outcome)
++    return {'schemaVersion': 'offmenu-portfolio17-binding-diagnostics/1',
++            'bindings': outcomes, 'metadataBytesRead': MAX_METADATA - budget[0],
++            'networkRequests': 0, 'sourceBodyOperations': 0,
++            'sourceStageEligible': False, 'goldAdmitted': False}
++
++
++def _error_code(exc):
++    if isinstance(exc, RecursionError):
++        return 'metadata-depth-exceeded'
++    if isinstance(exc, RefreshError):
++        return str(exc)
++    if isinstance(exc, (KeyError, IndexError)):
++        return 'selector-missing'
++    return 'binding-malformed'
++
++
++def _read_binding_config(path):
++    """Bound reads on the opened regular inode; a FIFO replacement cannot block."""
++    descriptor = None
++    try:
++        descriptor = os.open(path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW | os.O_CLOEXEC)
++        before = os.fstat(descriptor)
++        if not stat.S_ISREG(before.st_mode):
++            raise RefreshError('binding-config-not-regular')
++        if before.st_size > MAX_METADATA:
++            raise RefreshError('binding-config-too-large')
++        chunks, remaining = [], MAX_METADATA
++        while remaining:
++            chunk = os.read(descriptor, min(65536, remaining))
++            if not chunk:
++                break
++            chunks.append(chunk)
++            remaining -= len(chunk)
++        after = os.fstat(descriptor)
++        raw = b''.join(chunks)
++        identity = lambda value: (value.st_dev, value.st_ino, value.st_size,
++                                  value.st_mtime_ns, value.st_ctime_ns)
++        if identity(before) != identity(after) or len(raw) != before.st_size:
++            raise RefreshError('binding-config-changed-during-read')
++        return raw
++    except OSError:
++        raise RefreshError('binding-config-read-failed') from None
++    finally:
++        if descriptor is not None:
++            os.close(descriptor)
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--bindings', type=Path, required=True)
++    parser.add_argument('--metadata-root', type=Path, required=True)
++    parser.add_argument('--now', required=True, help='Explicit UTC validation clock')
++    parser.add_argument('--output', type=Path, required=True)
++    args = parser.parse_args()
++    source = safe_path(args.bindings)
++    result = evaluate(strict_json(_read_binding_config(source)), args.metadata_root,
++                      now=timestamp(args.now))
++    raw = canonical(result)
++    output = safe_path(args.output)
++    if output == source or output == safe_path(args.metadata_root) or safe_path(args.metadata_root) in output.parents:
++        raise RefreshError('output-overlaps-metadata')
++    if output.exists() and output.stat().st_nlink > 1:
++        raise RefreshError('output-hardlink-not-allowed')
++    unchanged = output.is_file() and output.read_bytes() == raw
++    if not unchanged:
++        output.parent.mkdir(parents=True, exist_ok=True)
++        # Replace the output directory entry, never truncate a potentially aliased inode.
++        temporary = None
++        try:
++            with tempfile.NamedTemporaryFile(dir=output.parent, prefix='.portfolio17-',
++                                             delete=False) as stream:
++                temporary = Path(stream.name)
++                stream.write(raw)
++            os.replace(temporary, output)
++        finally:
++            if temporary is not None:
++                temporary.unlink(missing_ok=True)
++    print(json.dumps({'outputSha256': sha(raw), 'unchanged': unchanged,
++                      'sourceBodyOperations': 0, 'datasetAcceptance': False}))
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/tests/test_portfolio17.py b/tests/test_portfolio17.py
+new file mode 100644
+index 00000000..0670ccb1
+--- /dev/null
++++ b/tests/test_portfolio17.py
+@@ -0,0 +1,237 @@
++"""Authored metadata-only fixtures; no publisher data or source grants."""
++import copy
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu.refresh.core import RefreshError, canonical, sha, timestamp
++from offmenu.refresh.portfolio17 import _read_binding_config, evaluate, pointer
++
++NOW = timestamp('2026-10-18T00:00:00Z')
++
++
++def fixture(root):
++    metadata = {'release': '2024-v01', 'acquired': '2026-10-01T00:00:00Z',
++                'validation': '2026-10-18T00:00:00Z',
++                'retention': 'AUTHORED FIXTURE metadata only, not a source grant',
++                'fields': {'null': None, 'zero': '0', 'trace': '< 0.1',
++                           'unit': 'source-unit:unknown', 'basis': None,
++                           'bodyPath': '/not-opened/original.pdf'}}
++    raw = canonical(metadata)
++    (root / 'receipt.json').write_bytes(raw)
++    entry = {'bindingId': 'fixture-nz', 'country': 'NZ', 'type': 'nutrition',
++             'sourceId': 'foodfiles', 'releaseId': '2024-v01',
++             'adapterSourceId': 'foodfiles', 'holds': [],
++             'evidence': {'receipt': {'path': 'receipt.json', 'sha256': sha(raw),
++                                      'metadataOnly': True}},
++             'fields': {'release': {'evidence': 'receipt', 'selector': '/release'},
++                        'literal': {'evidence': 'receipt', 'selector': '/fields'},
++                        'unresolved': {'unknown': True}},
++             'originalAcquisition': {'evidence': 'receipt', 'selector': '/acquired'},
++             'retentionEvidence': {'evidence': 'receipt', 'selector': '/retention'}}
++    return {'schemaVersion': 'offmenu-portfolio17-bindings/1', 'bindings': [entry]}
++
++
++class Portfolio17Tests(unittest.TestCase):
++    def test_cli_bindings_reject_nonregular_and_preserve_previous_output(self):
++        for kind in ('fifo', 'directory'):
++            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as directory:
++                root = Path(directory); metadata = root / 'permitted'; metadata.mkdir()
++                source = root / 'bindings.json'
++                if kind == 'fifo':
++                    os.mkfifo(source)
++                else:
++                    source.mkdir()
++                output = root / 'result.json'; previous = b'authored prior output\n'
++                output.write_bytes(previous)
++                command = [sys.executable, '-B', '-m', 'offmenu.refresh.portfolio17',
++                           '--bindings', str(source), '--metadata-root', str(metadata),
++                           '--now', '2026-10-18T00:00:00Z', '--output', str(output)]
++                result = subprocess.run(command, capture_output=True, text=True, timeout=2)
++                self.assertNotEqual(0, result.returncode)
++                self.assertIn('binding-config-not-regular', result.stderr)
++                self.assertEqual(previous, output.read_bytes())
++
++    def test_bindings_regular_reader_bounds_open_race_and_read_mutation(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory); source = root / 'bindings.json'; raw = b'{"x":0}'
++            source.write_bytes(raw)
++            self.assertEqual(raw, _read_binding_config(source))
++            with patch('offmenu.refresh.portfolio17.MAX_METADATA', 4):
++                with self.assertRaisesRegex(RefreshError, '^binding-config-too-large$'):
++                    _read_binding_config(source)
++            real_read = os.read
++            def changed_read(descriptor, count):
++                chunk = real_read(descriptor, count)
++                if chunk:
++                    source.write_bytes(b'{"x":11}')
++                return chunk
++            with patch('offmenu.refresh.portfolio17.os.read', side_effect=changed_read):
++                with self.assertRaisesRegex(RefreshError, '^binding-config-changed-during-read$'):
++                    _read_binding_config(source)
++            source.write_bytes(raw)
++            real_open = os.open
++            def swap_before_open(path, flags):
++                self.assertTrue(flags & os.O_NONBLOCK)
++                self.assertTrue(flags & os.O_NOFOLLOW)
++                source.rename(root / 'retained.json')
++                os.mkfifo(source)
++                return real_open(path, flags)
++            with patch('offmenu.refresh.portfolio17.os.open', side_effect=swap_before_open):
++                with patch('offmenu.refresh.portfolio17.os.read', side_effect=AssertionError('nonregular read')):
++                    with self.assertRaisesRegex(RefreshError, '^binding-config-not-regular$'):
++                        _read_binding_config(source)
++            self.assertEqual(raw, (root / 'retained.json').read_bytes())
++
++    def test_nested_metadata_is_bounded_and_valid_peer_survives(self):
++        for depth in (80, sys.getrecursionlimit() + 100):
++            with self.subTest(depth=depth), tempfile.TemporaryDirectory() as directory:
++                root = Path(directory); config = fixture(root)
++                raw = b'{"x":' * depth + b'0' + b'}' * depth
++                (root / 'deep.json').write_bytes(raw)
++                nested = copy.deepcopy(config['bindings'][0])
++                nested['bindingId'] = 'deep-first'
++                nested['evidence']['receipt'] = {
++                    'path': 'deep.json', 'sha256': sha(raw), 'metadataOnly': True}
++                nested['fields'] = {'nested': {'evidence': 'receipt', 'selector': '/x'}}
++                config['bindings'].insert(0, nested)
++                result = evaluate(config, root, now=NOW)
++                self.assertEqual(['malformed', 'valid-metadata-binding'],
++                                 [x['status'] for x in result['bindings']])
++                self.assertEqual(['metadata-depth-exceeded'], result['bindings'][0]['diagnostics'])
++                self.assertNotIn('candidate', result['bindings'][0])
++                self.assertEqual(0, result['sourceBodyOperations'])
++
++    def test_cli_rejects_output_hardlinks_to_metadata_and_config(self):
++        for target in ('receipt', 'config'):
++            with self.subTest(target=target), tempfile.TemporaryDirectory() as directory:
++                root = Path(directory); metadata = root / 'permitted'; metadata.mkdir()
++                config = fixture(metadata)
++                source = root / 'bindings.json'; source.write_bytes(canonical(config))
++                receipt = metadata / 'receipt.json'
++                before = {p: p.read_bytes() for p in (source, receipt)}
++                output = root / 'result.json'
++                os.link(receipt if target == 'receipt' else source, output)
++                command = [sys.executable, '-B', '-m', 'offmenu.refresh.portfolio17',
++                           '--bindings', str(source), '--metadata-root', str(metadata),
++                           '--now', '2026-10-18T00:00:00Z', '--output', str(output)]
++                result = subprocess.run(command, capture_output=True, text=True)
++                self.assertEqual(before, {p: p.read_bytes() for p in before})
++                self.assertNotEqual(0, result.returncode)
++                self.assertIn('output-hardlink-not-allowed', result.stderr)
++
++    def test_valid_literal_lineage_shared_adapter_and_no_network(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory); config = fixture(root)
++            with patch('socket.socket', side_effect=AssertionError('network forbidden')):
++                result = evaluate(config, root, now=NOW)
++            row = result['bindings'][0]
++            self.assertEqual('valid-metadata-binding', row['status'])
++            self.assertEqual('foodfiles', row['sharedAdapter']['sourceId'])
++            self.assertEqual('reuse-retained-metadata-no-download', row['cache']['decision'])
++            self.assertEqual(17, row['cache']['acquisitionAgeDays'])
++            self.assertFalse(result['sourceStageEligible'])
++            self.assertFalse(row['candidate']['datasetAcceptance'])
++            literal = row['candidate']['row']['data']['literal']
++            self.assertEqual((None, '0', '< 0.1'), (literal['null'], literal['zero'], literal['trace']))
++            origins = row['candidate']['row']['provenance']['fieldOrigins']
++            self.assertEqual('/fields/zero', origins['/data/literal/zero']['sourceField'])
++            self.assertEqual('constant', origins['/data/unresolved']['kind'])
++            self.assertEqual(config, fixture(root))
++
++    def test_missing_held_malformed_and_peer_isolation(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory); config = fixture(root); base = config['bindings'][0]
++            missing = copy.deepcopy(base); missing['bindingId'] = 'missing'
++            missing['evidence']['receipt']['path'] = 'absent.json'
++            held = copy.deepcopy(base); held['bindingId'] = 'held'; held['holds'] = ['private-extraction-held']
++            malformed = copy.deepcopy(base); malformed['bindingId'] = 'bad'
++            malformed['evidence']['receipt']['sha256'] = '0' * 64
++            config['bindings'] += [missing, held, malformed]
++            result = evaluate(config, root, now=NOW)
++            self.assertEqual(['valid-metadata-binding', 'missing', 'held', 'malformed'],
++                             [x['status'] for x in result['bindings']])
++            self.assertEqual(['metadata-pin-mismatch'], result['bindings'][3]['diagnostics'])
++            self.assertFalse(result['bindings'][2]['candidate']['sourceProcessingAuthorized'])
++
++    def test_stale_acquisition_ignores_recent_validation_and_stable_candidate(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory); config = fixture(root)
++            first = evaluate(config, root, now=NOW)['bindings'][0]
++            later = evaluate(config, root, now=timestamp('2026-11-01T00:00:00Z'))['bindings'][0]
++            self.assertEqual('stale', later['status'])
++            self.assertEqual('stale-input-review-required-no-download', later['cache']['decision'])
++            self.assertEqual(31, later['cache']['acquisitionAgeDays'])
++            self.assertEqual(first['candidateSha256'], later['candidateSha256'])
++            self.assertFalse(later['cache']['validationResetsAcquisition'])
++
++    def test_metadata_only_paths_no_symlinks_and_literal_pointers(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory); config = fixture(root)
++            for name in ['../receipt.json', 'body.pdf', 'x/../receipt.json', '/receipt.json']:
++                bad = copy.deepcopy(config); bad['bindings'][0]['evidence']['receipt']['path'] = name
++                self.assertEqual(['metadata-only-json-required'], evaluate(bad, root, now=NOW)['bindings'][0]['diagnostics'])
++            (root / 'link.json').symlink_to(root / 'receipt.json')
++            config['bindings'][0]['evidence']['receipt']['path'] = 'link.json'
++            self.assertEqual('malformed', evaluate(config, root, now=NOW)['bindings'][0]['status'])
++        self.assertEqual(2, pointer({'a/b': {'~x': [1, 2]}}, '/a~1b/~0x/1'))
++
++    def test_bad_json_missing_selector_future_and_budget(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory); config = fixture(root)
++            config['bindings'][0]['fields']['release']['selector'] = '/absent'
++            self.assertEqual('missing', evaluate(config, root, now=NOW)['bindings'][0]['status'])
++            config = fixture(root)
++            self.assertEqual(['acquisition-timestamp-in-future'], evaluate(config, root, now=timestamp('2026-09-01T00:00:00Z'))['bindings'][0]['diagnostics'])
++            raw = b'{"x":1,"x":2}'
++            (root / 'receipt.json').write_bytes(raw)
++            config['bindings'][0]['evidence']['receipt']['sha256'] = sha(raw)
++            self.assertEqual(['duplicate-json-key'], evaluate(config, root, now=NOW)['bindings'][0]['diagnostics'])
++            with patch('offmenu.refresh.portfolio17.MAX_METADATA', 1):
++                self.assertEqual(['metadata-budget-exceeded'], evaluate(config, root, now=NOW)['bindings'][0]['diagnostics'])
++
++    def test_cli_repeat_is_noop_and_never_opens_body_values(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory); metadata = root / 'permitted'; metadata.mkdir()
++            config = fixture(metadata)
++            path = root / 'bindings.json'; path.write_text(json.dumps(config))
++            output = root / 'out/result.json'
++            command = [sys.executable, '-B', '-m', 'offmenu.refresh.portfolio17',
++                       '--bindings', str(path), '--metadata-root', str(metadata),
++                       '--now', '2026-10-18T00:00:00Z', '--output', str(output)]
++            first = json.loads(subprocess.check_output(command))
++            before = output.stat().st_mtime_ns
++            second = json.loads(subprocess.check_output(command))
++            self.assertFalse(first['unchanged']); self.assertTrue(second['unchanged'])
++            self.assertEqual(before, output.stat().st_mtime_ns)
++            self.assertEqual(first['outputSha256'], second['outputSha256'])
++
++    def test_body_values_never_dereferenced_and_bad_pointer_isolated(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory); config = fixture(root)
++            original = Path.read_bytes
++            def permitted(path):
++                if path.suffix != '.json':
++                    raise AssertionError('body opened')
++                return original(path)
++            with patch.object(Path, 'read_bytes', permitted):
++                self.assertEqual('valid-metadata-binding', evaluate(config, root, now=NOW)['bindings'][0]['status'])
++            config['bindings'][0]['fields']['release']['selector'] = '/bad~2escape'
++            self.assertEqual(['selector-invalid'], evaluate(config, root, now=NOW)['bindings'][0]['diagnostics'])
++
++    def test_named_adapter_cannot_relabel_an_unrelated_source(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory); config = fixture(root)
++            config['bindings'][0]['sourceId'] = 'unrelated-publisher'
++            result = evaluate(config, root, now=NOW)['bindings'][0]
++            self.assertIsNone(result['sharedAdapter'])
++            self.assertIn('shared-payload-adapter-unbound', result['diagnostics'])
++
++
++if __name__ == '__main__':
++    unittest.main()

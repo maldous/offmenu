@@ -1,0 +1,88 @@
+{
+  "status": "diagnostic-only; native203 failure not reproduced locally; no fix claimed",
+  "deployed": false,
+  "localR2MilkResult": {
+    "http": 200,
+    "status": "source-scoped-candidates",
+    "candidateTotal": 1,
+    "elapsedMs": 1467.366042
+  },
+  "pending": "one native static stage/code/errorType event",
+  "files": [
+    {
+      "path": "source/protocol-pins.mjs",
+      "bytes": 890,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a"
+    },
+    {
+      "path": "source/source-barcode-handler.mjs",
+      "bytes": 16155,
+      "sha256": "39903a97a586479229d0c0afabee90789de1ed1fb01001203a72a78c69a382ad"
+    },
+    {
+      "path": "source/stream-shard.mjs",
+      "bytes": 3888,
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a"
+    },
+    {
+      "path": "source/strict-json.mjs",
+      "bytes": 2044,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099"
+    },
+    {
+      "path": "build/metafile.json",
+      "bytes": 2434,
+      "sha256": "9a6831b0f2b6c6e8541d372ee655c4694dc6532daf401bde03f55d26c83c5bc9"
+    },
+    {
+      "path": "build/source-barcode-handler.bundle.mjs",
+      "bytes": 25666,
+      "sha256": "65fe09ef894860028e3098ffc8bbe3c4642e916a3651f284ffe0a9d997f81e41"
+    },
+    {
+      "path": "diagnostics/diagnostic-only.patch",
+      "bytes": 6242,
+      "sha256": "bfe1eab87c5f6f0e65dcf4582247973b8a558dd3729d0216e2fb1aa403057e46"
+    },
+    {
+      "path": "diagnostics/native-diagnostic-hook.json",
+      "bytes": 720,
+      "sha256": "123a8f00532d0d23dc52ba06779907d0860a0a359c8fa7a34486cd936ffc5840"
+    },
+    {
+      "path": "diagnostics/diagnostic.test.mjs",
+      "bytes": 1772,
+      "sha256": "beb3bc82c09771b03c8f2b7d5bca45522aa9563289d4ae4facd6158c5bea74ff"
+    },
+    {
+      "path": "diagnostics/diagnostic-tests.log",
+      "bytes": 330,
+      "sha256": "56aed82662424d7db825637f2f5ec735574d13f50116c2d260e9fd2bba0ee9fe"
+    },
+    {
+      "path": "diagnostics/before.log",
+      "bytes": 179,
+      "sha256": "aecb6e390244bc46e2233c4eeb126d0b57e230213bf8345b15284722b0f1bd98"
+    },
+    {
+      "path": "diagnostics/transfer-receipt.json",
+      "bytes": 551,
+      "sha256": "3d14163f12a2fe5b7d582dd06ea45cdaa799ec1ff49996c0e42e4802b928f8c8"
+    },
+    {
+      "path": "build-handler.mjs",
+      "bytes": 963,
+      "sha256": "d289f57badcfc47f21c39812a32e2b41d68df80b086505029256254c09551647"
+    },
+    {
+      "path": "build.log",
+      "bytes": 122,
+      "sha256": "e6ca6d9b5ec142596fae0d881189e0d21d145bb531e7a8bbbdd46cbb05e46dcd"
+    },
+    {
+      "path": "DIAGNOSTIC-HANDOFF.md",
+      "bytes": 3075,
+      "sha256": "80acc37ff94a616de78ec50ee3c2b21b314cdc2fe92245eb9013945be2c8c082"
+    }
+  ]
+}

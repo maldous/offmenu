@@ -1,0 +1,154 @@
+{
+  "authorizedBy": "Direct user message in original third-party session",
+  "repository": "maldous/offmenu",
+  "target": "develop",
+  "mainMustRemain": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+  "initialRemoteDevelop": "4693cbc3fe17cdde2e292e6eb00cd83769ee45ae",
+  "order": [
+    2,
+    10,
+    12
+  ],
+  "merges": [
+    {
+      "pr": 2,
+      "sha": "52ce08bf5bf586c4690260379a2af04809ba1db4",
+      "head": "3028130619f34cedec4834f107bc7eca1de8230b",
+      "base": "4693cbc3fe17cdde2e292e6eb00cd83769ee45ae",
+      "tree": "74844a02f7c87ee5dae8db4a62144750541742b0",
+      "method": "normal GitHub merge API, expected_head_sha",
+      "remoteDevelopVerified": true,
+      "mainVerifiedUnchanged": true
+    },
+    {
+      "pr": 10,
+      "sha": "46b989ac1ec93e3483b36f64b8a267e5a60ac528",
+      "base": "52ce08bf5bf586c4690260379a2af04809ba1db4",
+      "head": "da5ea23aea7b95c3e159fbe058fb8ae3fca1d80b",
+      "tree": "e0113612d56b9dd43d8e6bbb0a38a08852b565e1",
+      "method": "normal GitHub merge API expected_head_sha",
+      "remoteDevelopVerified": true,
+      "mainVerifiedUnchanged": true,
+      "checks": {
+        "gitguardian": 116383619487,
+        "actions": [
+          116383623331,
+          116383597437
+        ],
+        "conclusion": "success"
+      }
+    },
+    {
+      "pr": 12,
+      "sha": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+      "base": "46b989ac1ec93e3483b36f64b8a267e5a60ac528",
+      "head": "bb4a73cc61819acea8870b0824463e0e57d1d893",
+      "tree": "d05b4af7274a226adfcaef0e3edb4aa51ce54893",
+      "method": "normal GitHub merge API expected_head_sha",
+      "remoteDevelopVerified": true,
+      "mainVerifiedUnchanged": true,
+      "checks": {
+        "gitguardian": 116385858453,
+        "actions": [
+          116385811281,
+          116385791595
+        ],
+        "conclusion": "success"
+      }
+    }
+  ],
+  "PR2": {
+    "originalHead": "00270af072641823985f76a4e95fcc5f26a9c1e9",
+    "qualifiedHead": "d0279075cf05047761a2e234f17e1cf2d89c5e0f",
+    "tree": "e1cce04abb56b35629989605ddd7c9466747cb38",
+    "review": "Worker13 exact1ee tree approval + pr2_exact_head_review mechanical d027 parent/tree rebind PASS",
+    "currentHeadChecks": "pending",
+    "merge": "not attempted"
+  },
+  "PR10review": "/home/user/Documents/Codex/2026-10-15/task-2/worker41-dated-cost-json-review/review-receipt.json",
+  "PR12review": "/home/user/Documents/Codex/2026-10-15/worker13-pr12-a0e5f71-review/receipt.json",
+  "productionDeployment": "not authorized",
+  "latestPr2PublishedHead": "3028130619f34cedec4834f107bc7eca1de8230b",
+  "pr2CiPortabilityCandidate": "3028130619f34cedec4834f107bc7eca1de8230b",
+  "pr2CurrentHeadChecks": {
+    "head": "3028130619f34cedec4834f107bc7eca1de8230b",
+    "actions": "PASS both push and PR runs",
+    "jobs": [
+      116371550384,
+      116371526061
+    ],
+    "securityCheck": 116371531215,
+    "security": "FAIL unresolved historical GitGuardian38179850",
+    "optionalScans": "skipped, not claimed qualified"
+  },
+  "pr2CiPortabilityLocalChecks": {
+    "pythonProjectVenvTests": 90,
+    "result": "PASS",
+    "independentReview": "PASS exact302813; 2focused tests; missingarchive simulation syntheticPASS/real-sourceSKIP",
+    "published": true,
+    "scope": [
+      "tests/test_historical_recipe_quality.py"
+    ]
+  },
+  "mergeAttempted": true,
+  "providerAccess": "GitGuardian dashboard signed out; no authenticated provider connector; requested owner false-positive disposition via Gateway",
+  "combinedLocalPreview": {
+    "head": "4539fcd5f8bd0e839173c33c0c233e190891d981",
+    "tree": "d05b4af7274a226adfcaef0e3edb4aa51ce54893",
+    "pr10Preview": "c8d2f1f5e139f2fb5a7fe294ed11d84fc771ca53",
+    "javascriptTests": 337,
+    "catalogue": "PASS",
+    "published": false,
+    "qualification": "Pending mechanical independent check; cannot substitute for actual develop merge-parent rebind",
+    "independentMechanicalReview": "PASS exact7path union/modes/blobs; originalreviewreceiptbindingsPASS; actualdevelopparentsrequirelaterrebind"
+  },
+  "mainVerifiedUnchanged": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+  "remainingBlocker": null,
+  "providerDisposition": {
+    "incident": 38179850,
+    "status": "Ignored Not a secret(falsepositive)",
+    "method": "authenticatedGitGuardianUI",
+    "normalRerunCheck": 116382414720,
+    "conclusion": "success",
+    "head": "3028130619f34cedec4834f107bc7eca1de8230b",
+    "screenshot": "/home/user/Documents/Codex/2026-10-15/offmenu-gitguardian-38179850-owner-evidence/provider-false-positive.jpg"
+  },
+  "pr10CurrentCandidate": {
+    "head": "da5ea23aea7b95c3e159fbe058fb8ae3fca1d80b",
+    "base": "52ce08bf5bf586c4690260379a2af04809ba1db4",
+    "source": "db223293433056367b3f6d559291de4a69ad75cb",
+    "tree": "e0113612d56b9dd43d8e6bbb0a38a08852b565e1",
+    "independentMechanicalReview": "PASS exactparents/tree/3ownedblobs; nootherpaths",
+    "published": true,
+    "gitguardian": {
+      "id": 116383619487,
+      "conclusion": "success"
+    },
+    "actions": "PASS both"
+  },
+  "pr12CurrentCandidate": {
+    "head": "bb4a73cc61819acea8870b0824463e0e57d1d893",
+    "base": "46b989ac1ec93e3483b36f64b8a267e5a60ac528",
+    "source": "a0e5f71f5340e9f7654dc6ffc3c62ace5fd15192",
+    "tree": "d05b4af7274a226adfcaef0e3edb4aa51ce54893",
+    "independentMechanicalReview": "PASS exactparents/tree/4ownedblobs; nootherpaths",
+    "published": true,
+    "providerChecks": "PASS GitGuardian+bothActions"
+  },
+  "developVerifiedFinal": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+  "result": "COMPLETE authorized normal GitFlow merges2,10,12 into develop",
+  "preservation": {
+    "main": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d unchanged",
+    "sourceBranches": "all three retained and remote-verified",
+    "originalCheckout": "/home/user/src/offmenu-third-party clean; original HEAD84c4732 preserved",
+    "forcePush": false,
+    "productionDeployment": false,
+    "globalDetectorSuppression": false,
+    "providerCheckBypass": false
+  },
+  "qualificationLimits": [
+    "Optional Snyk/Sonar scans skipped, not claimed qualified",
+    "Code integration does not enable domain authority/caller/provider/publication gates held by original contracts",
+    "No actual-provider or production qualification inferred"
+  ]
+}

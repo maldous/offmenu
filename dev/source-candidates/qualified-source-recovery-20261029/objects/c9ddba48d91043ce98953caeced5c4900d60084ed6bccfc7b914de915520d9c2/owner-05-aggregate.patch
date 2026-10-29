@@ -1,0 +1,984 @@
+diff --git a/docs/operations/portfolio05-staging-bindings.md b/docs/operations/portfolio05-staging-bindings.md
+new file mode 100644
+index 00000000..d07a2e38
+--- /dev/null
++++ b/docs/operations/portfolio05-staging-bindings.md
+@@ -0,0 +1,138 @@
++# Worker05 BB/JO/PY metadata staging bindings
++
++Selected request: `M-STAGING-BIND-20261018-W05`. Base is verified develop
++`abecb99ee1125730ccbc2824b6ec49ffc5cc4302`. Pending PR42 is not this baseline.
++Only `portfolio05.py`, its owned Python source configuration, this document and portfolio
++tests belong to this package. Shared core, registry and source engines are unchanged.
++
++## Runnable interface
++
++From this checkout:
++
++```sh
++python3 -B -m offmenu.refresh.portfolio05 --now 2026-10-18T06:00:00Z
++python3 -B -m offmenu.refresh.portfolio05 --now 2026-10-18T06:00:00Z --previous /private/foo/metadata-diagnostics.json
++python3 -B -m unittest discover -s tests -p test_portfolio05_bindings.py -v
++```
++
++The first command emits canonical JSON on stdout; redirect it only to a private
++Foo report directory. The second compares per-candidate content hashes with an
++existing report. It does not persist candidates or change accepted/cache pointers.
++`unchangedContentNoOp` means no candidate-content change and no data write; checking
++metadata pins still reads the eight receipts. No automatic download/revalidation,
++force flag, external plugin or raw input path is exposed. Runtime uses the
++reviewed fixed source configuration; editing it requires source review.
++
++The optional previous-report reader rejects nonregular files before reading by
++using nonblocking/no-follow descriptor opens and directory-fd traversal. It checks
++the opened regular descriptor's size and before/after identity/change metadata,
++reads at most1MiB, then validates the prior source-ID/digest map. Invalid previous
++inputs return exit2 and a fixed stderr diagnostic before current metadata reads.
++Regular report bytes/mtime are preserved, including on replay. This owned boundary
++repair does not change the shared reader/core or source processing scope.
++
++`bind(spec, receipt_bytes, now=..., previous_candidate_sha256=...)` is a pure
++portfolio adapter. `inspect_portfolio(now=..., previous=...)` reads only bounded,
++exactly pinned receipt files. It never follows original-artifact paths. Duplicate
++JSON keys, receipt drift, missing fields, invalid country/clock/field types and
++unavailable files produce fixed diagnostics isolated to each source. Missing,
++malformed, held, stale and valid are distinct outcomes; stale means the prior
++metadata candidate hash differs from current content/policy, not a cache-age
++decision. Holds take precedence. Diagnostics contain no source
++body, unselected receipt fields, signed URLs or exception contents.
++
++## Metadata manifest and field origins
++
++`portfolio05_sources.py` pins eight receipts and associated retained metadata
++manifests/custody evidence. These are declarations of exact retained scope, not
++downloads or proof that every referenced raw body currently exists. BB newsletter,
++school guidelines and BioIsland promotion; JO book, FAO print-only catalogue and
++publisher HTML; PY UNICEF publication and failed Senatur lead remain distinct.
++All six required data types are listed for each source, alongside actual lead
++roles and empty accepted-type inventories. A promotional publication never becomes
++a register; a catalogue never becomes analytical tables; an HTTP403 error is not
++a dataset. This package supplies no recipe or measured nutrient/price records.
++
++The configuration is an inert owned Python declaration imported with the package,
++not a JSON file that depends on an undeclared package-data convention. The normal
++setuptools wheel contains it without any shared packaging change. An offline
++authored smoke test builds a wheel from source in scratch, extracts it outside
++the checkout, imports with isolated Python and loads all eight held declarations
++with receipt/resource reads prohibited. The returned configuration is a defensive
++copy. This proves installed-artifact configuration availability; it does not
++activate source paths, source parsing, rights or staging acceptance.
++
++The only proposed record kind is `document-reference-metadata`. `inputFiles`
++describes a logical bundle `metadata/receipt.json` with exact bytes/hash.
++`fieldOrigins` binds country, recorded release/role/access basis and timestamps to
++receipt JSON pointers. Null native unit/basis and the non-measurement marker are
++explicit policy constants whose hash is the exact reviewed spec. Their nulls do
++not assert that missing recipe amounts have no units. Source release literals
++retain uncertainty; filenames and PDF page totals do not invent editions.
++
++Shared `field_provenance.field_origin_errors` checks all scalar origins. The
++portfolio wrapper also resolves actual receipt values and compares each source
++field. Shared `core.strict_json`, `core.verify`, canonical serialization and
++`serialization.encode_records` are reused. Tests hand the authored metadata
++candidate to shared `acceptance.qualify` using a trusted **test-code**
++`SourceContract(fixture=True)`. Actual-source contracts are not generated from
++manifests or CLI flags. No real `accept`, registry/global Binding, source admission
++or whole-country acceptance is installed.
++
++## Acquisition clock, validation age and replay
++
++Acquisition pointers identify recorded original request starts (`/utc`,
++`/response/utc`, `/started_utc`); their meaning is explicit. They do not newly prove
++successful byte completion or an independently qualified original cache record.
++Validation/finalization pointers are kept separately. They never reset original
++acquisition age. Filesystem mtime is unused.
++
++The pinned develop has **no generic pure cache planner**. The wrapper reports
++`unsupported-real-source-cache-planner`, unknown freshness, the required30day
++minimum and observed age. It does not call the Wikibooks-specific
++`core.cache_policy`, registry-only `plan_fixture`, or operational/body-reading
++`CachedAcquirer`. It neither invents a new planner nor claims reuse eligibility at
++any age. Downloads stay disabled. Tests cover age30 with freshness still unknown,
++validation that cannot reset age, unchanged content and stale prior-candidate
++hashes after content/policy change. Holds survive all observations.
++
++## Current official documentation research
++
++Checked18October2026, HTML documentation only; no publication PDFs were opened.
++
++- [UNICEF legal information](https://www.unicef.org/legal#terms-of-use), sections
++  “Copyright” and “The UNICEF Web Site”: describes personal/educational use and
++  permission requirements for other uses or reproduction/translation beyond a
++  de minimis portion. It also notes third-party rights in some publications.
++  This general documentation does not decide the exact Paraguay recipe operation,
++  required credit, applicable exception or third-party material. Those stay held.
++- [ACOR publisher metadata](https://publications.acorjordan.org/chapters/jordanian-traditional-cuisine-arabic/)
++  offers full-text access and displays a generic access legend plus website
++  copyright. Neither supplies an edition-specific derivative licence. The
++  retained book receipt's reservation remains binding; no book body was read.
++- [Barbados National Nutrition Centre](https://nutritioncentre.health.gov.bb/)
++  publisher homepage was reachable as metadata; no source-specific derivative
++  licence was established. A follow-up web-tool line read returned Internal Error;
++  no retry or access workaround was attempted. The retained acquisition-only
++  receipt conditions remain. The Export Barbados promotion's specific reuse and
++  field scope are likewise unestablished by the retained custody reply.
++
++No publisher was contacted. Public documentation is evidence, not a synthesized
++legal decision, new entitlement or removal of an existing explicit hold.
++
++## Typed remaining blockers and integrator interface proposal
++
++| Type | Exact remaining dependency | Owner / next action |
++| --- | --- | --- |
++| Integration/review | This committed package needs independent scope/code review and accepted-develop integration | Integrator00/Morgan select reviewer, integrate through normal gates; no push by Worker05 |
++| Shared interface | No general pure cache planner; current capability explicitly unsupported, not all metadata bindings blocked | Integrator00/Morgan alone may select one shared `policy.plan_retained_input` per result5798; reviewed identity/evidence/hold binding, original age, unknown-no-download, no execution or admission. Worker05 did not edit shared core or copy a planner |
++| BB source use/scope | Exact operation-specific use/credit/exception decisions and finite source fields absent in scoped36reply | Morgan selects new lawful evidence/operation; do not repeat identical request to36 |
++| JO source use/scope | Exact primary clause/page and applicable private annotation decision/credit absent in49reply | Morgan/right-scope owner resolves; recorded copying/transmission/translation hold remains |
++| PY source use/selectors | Exact lawful-use decision, credit and recipe ID/page/ingredient/method/measure/yield selectors absent in40reply | Morgan selects qualified inputs; no repeated identical request to40 |
++| Source denial | Senatur403 | Preserve no-retry/no-body-processing; no alternate actor/route |
++| Actual staging acceptance | Reviewed real-source contract, measured expected inventory, field semantics and rights not supplied | Remains later selection; authored fixture pass and metadata proposals do not satisfy dataset acceptance |
++
++Finland/Frida, native NO/FR crash restrictions, private/credential/source holds,
++mandatory auto_review, production/CIX pause and separate DEV7645 custody survive.
++Raw stays Foo. No shared engine fork, source-body processing, acquisition,
++source-test replay, permission change or accepted pointer movement occurred.
+diff --git a/offmenu/refresh/portfolio05.py b/offmenu/refresh/portfolio05.py
+new file mode 100644
+index 00000000..1142c697
+--- /dev/null
++++ b/offmenu/refresh/portfolio05.py
+@@ -0,0 +1,254 @@
++"""BB/JO/PY receipt-metadata proposals; no raw-source parser or admission.
++
++Reviewed portfolio configuration is separate from SourceContract authority.
++Only exact receipt files are read by the CLI. No URL, original path, force flag,
++code plugin, or acquisition API is accepted. All retained sources stay held.
++"""
++import argparse
++import copy
++import json
++import os
++from pathlib import Path
++import stat
++import sys
++
++from .core import RefreshError, canonical, sha, strict_json, timestamp, verify, safe_path
++from .field_provenance import datum_pointers, field_origin_errors
++from .serialization import encode_records
++from .portfolio05_sources import CONFIGURATION
++
++MAX_RECEIPT = 65536
++MAX_PREVIOUS = 1024 * 1024
++FIELDS = ('release', 'documentRole', 'acquisitionBasis')
++
++
++def pointer(document, locator):
++    if not isinstance(locator, str) or not locator.startswith('/'):
++        raise RefreshError('metadata-selector-invalid')
++    value = document
++    for part in locator.split('/')[1:]:
++        key = part.replace('~1', '/').replace('~0', '~')
++        value = value[int(key)] if isinstance(value, list) else value[key]
++    return value
++
++
++def configuration():
++    """Owned packaged code declarations; no metadata/resource file read."""
++    return copy.deepcopy(CONFIGURATION)
++
++
++def bind(spec, payload, *, now, previous_candidate_sha256=None):
++    """Pure proposal from supplied receipt bytes. No files, clock, or network.
++
++    Production callers use only reviewed configuration() entries. Even a valid
++    metadata proposal grants no source-body operation or acceptance. Test specs
++    are authored in test code, not user inputs turned into trusted contracts.
++    """
++    result = {'sourceId': spec['sourceId'], 'country': spec['country'],
++              'status': 'missing', 'diagnostics': [], 'candidate': None,
++              'candidateSha256': None, 'unchangedContentNoOp': False,
++              'sourceBodyRead': False, 'networkRequests': 0,
++              'sourceOperationsAuthorized': [], 'acceptance': 'not-requested',
++              'applicability': spec['applicability'], 'cache': None}
++    if payload is None:
++        result['diagnostics'] = ['metadata-input-missing']
++        return result
++    try:
++        if not isinstance(payload, bytes) or len(payload) > MAX_RECEIPT:
++            raise RefreshError('metadata-input-bound')
++        if sha(payload) != spec['receipt']['sha256']:
++            raise RefreshError('metadata-pin-mismatch')
++        document = strict_json(payload)
++        if not isinstance(document, dict) or pointer(document, '/country') != spec['country']:
++            raise RefreshError('metadata-country-mismatch')
++        now_time = timestamp(now)
++        acquired = pointer(document, spec['acquisitionPointer'])
++        acquired_time = timestamp(acquired)
++        validated = pointer(document, spec['validationPointer'])
++        if not acquired_time <= timestamp(validated) <= now_time:
++            raise RefreshError('metadata-time-order-invalid')
++        values = {field: pointer(document, spec['fields'][field]) for field in FIELDS}
++        if any(not isinstance(value, str) or not value for value in values.values()):
++            raise RefreshError('metadata-field-invalid')
++        # Only timestamp observations, no copied or source-spoofed cache planner.
++        # abec has no generic pure planner. Do not call the Wikibooks/fixture
++        # planners or operational CachedAcquirer for these held sources.
++        result['cache'] = {'minimumReuseDaysRequired': 30,
++                          'acquisitionAgeDays': int((now_time - acquired_time).total_seconds() // 86400),
++                          'decision': 'unsupported-real-source-cache-planner',
++                          'freshness': 'unknown', 'mtimeUsedForFreshness': False,
++                          'assetBytesVerifiedByThisPlan': False}
++        result['cache'].update(originalAcquisitionObservedAt=acquired,
++                               acquisitionTimestampMeaning=spec['acquisitionMeaning'],
++                               validationObservedAt=validated,
++                               validationResetsAcquisitionAge=False,
++                               sourceBodyCacheVerified=False,
++                               conditionalDownloadEnabled=False)
++        release = values['release']
++        policy_sha = sha(canonical(spec))
++        path = 'metadata/receipt.json'
++        data = {**values, 'country': spec['country'],
++                'originalAcquisitionObservedAt': acquired,
++                'validationObservedAt': validated,
++                'nativeUnit': None, 'nativeBasis': None,
++                'measurementStatus': 'not-a-measurement-record'}
++        selectors = {**spec['fields'], 'country': '/country',
++                     'originalAcquisitionObservedAt': spec['acquisitionPointer'],
++                     'validationObservedAt': spec['validationPointer']}
++        origins = {}
++        for field in data:
++            if field in selectors:
++                origins['/data/' + field] = {
++                    'kind': 'source', 'sourceId': spec['sourceId'], 'releaseId': release,
++                    'inputPath': path, 'inputSha256': spec['receipt']['sha256'],
++                    'sourceRecordId': spec['sourceId'], 'sourceField': selectors[field]}
++            else:
++                origins['/data/' + field] = {'kind': 'constant', 'policySha256': policy_sha,
++                                            'symbol': 'metadata-only-' + field}
++        row = {'schemaVersion': '1.0', 'id': spec['sourceId'] + ':receipt-metadata',
++               'kind': 'document-reference-metadata', 'data': data,
++               'provenance': {'sourceId': spec['sourceId'], 'releaseId': release,
++                              'fetchedAt': acquired, 'fieldOrigins': origins,
++                              'metadataReceiptSha256': spec['receipt']['sha256'],
++                              'policySha256': policy_sha, 'authorizedOperations': []}}
++        errors = field_origin_errors(row, {path: spec['receipt']['sha256']}, policy_pins=(policy_sha,))
++        # Shared validator checks coverage/pins. Check actual source value and
++        # selector semantics here; a coordinate string alone proves neither.
++        for field, selector in selectors.items():
++            if data[field] != pointer(document, selector):
++                errors.append('metadata-field-origin-value-mismatch')
++        if set(origins) != set(datum_pointers(data)):
++            errors.append('metadata-field-origin-coverage')
++        if errors:
++            raise RefreshError(sorted(errors)[0])
++        encoded = encode_records([row])
++        result.update(candidate=row, candidateSha256=sha(encoded),
++                      unchangedContentNoOp=sha(encoded) == previous_candidate_sha256,
++                      inputFiles=[{'path': path, 'bytes': len(payload),
++                                   'sha256': spec['receipt']['sha256']}],
++                      releaseId=release, acquiredAt=acquired,
++                      policySha256=policy_sha, fieldOriginErrors=[])
++        if spec['holds']:
++            result.update(status='held', diagnostics=sorted(spec['holds']))
++        elif previous_candidate_sha256 is not None and sha(encoded) != previous_candidate_sha256:
++            result.update(status='stale', diagnostics=['previous-metadata-candidate-stale'])
++        else:
++            result['status'] = 'valid'
++    except (KeyError, IndexError):
++        result.update(status='missing', diagnostics=['metadata-selector-missing'])
++    except (ValueError, TypeError, AttributeError, OverflowError) as error:
++        code = str(error) if isinstance(error, RefreshError) else 'metadata-malformed'
++        result.update(status='malformed', diagnostics=[code], candidate=None)
++    return result
++
++
++def inspect_portfolio(*, now, previous=None):
++    """Independent fixed diagnostics; one failing receipt cannot abort siblings.
++
++    Reads exact allowlisted metadata only, bounded before/after pin verification.
++    Original paths in receipts are never opened, stat-ed, imported or followed.
++    """
++    config = configuration()
++    rows = []
++    for spec in config['sources']:
++        try:
++            path = safe_path(spec['receipt']['path'])
++            if not path.exists():
++                payload = None
++            else:
++                actual = verify(path, {'bytes': spec['receipt']['bytes'],
++                                       'sha256': spec['receipt']['sha256']})
++                if actual['bytes'] > MAX_RECEIPT:
++                    raise RefreshError('metadata-input-bound')
++                payload = path.read_bytes()
++                verify(path, actual)
++            rows.append(bind(spec, payload, now=now,
++                             previous_candidate_sha256=(previous or {}).get(spec['sourceId'])))
++        except (OSError, ValueError):
++            rows.append({'sourceId': spec['sourceId'], 'country': spec['country'],
++                         'status': 'malformed', 'diagnostics': ['metadata-file-unavailable-or-pin-mismatch'],
++                         'candidate': None, 'networkRequests': 0})
++    return {'schemaVersion': 'offmenu-portfolio05-binding/1',
++            'scope': 'receipt-metadata-proposals-only', 'sources': rows,
++            'sourceBodiesRead': 0, 'networkRequests': 0, 'goldAdmitted': 0,
++            'countryAcceptance': False, 'evidencePins': config['evidencePins']}
++
++
++def previous_candidates(path):
++    """Read an optional report without following links or blocking on a FIFO.
++
++    Owned entrypoint repair only. No raw source/cache/acceptance operations.
++    Validate the opened descriptor, not just a path inspected before open.
++    """
++    directory = descriptor = None
++    try:
++        path = safe_path(path)
++        flags = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC
++        directory = os.open(path.anchor, flags | os.O_DIRECTORY)
++        for part in path.parts[1:-1]:
++            child = os.open(part, flags | os.O_DIRECTORY, dir_fd=directory)
++            os.close(directory)
++            directory = child
++        descriptor = os.open(path.name, flags | os.O_NONBLOCK, dir_fd=directory)
++        before = os.fstat(descriptor)
++        if not stat.S_ISREG(before.st_mode):
++            raise RefreshError('previous-report-regular-file-required')
++        if before.st_size > MAX_PREVIOUS:
++            raise RefreshError('previous-report-bound')
++        with os.fdopen(descriptor, 'rb') as stream:
++            descriptor = None
++            raw = stream.read(MAX_PREVIOUS + 1)
++            after = os.fstat(stream.fileno())
++        identity = lambda st: (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns)
++        if identity(before) != identity(after) or len(raw) != before.st_size:
++            raise RefreshError('previous-report-changed-during-read')
++        if len(raw) > MAX_PREVIOUS:
++            raise RefreshError('previous-report-bound')
++        report = strict_json(raw)
++        if not isinstance(report, dict) or not isinstance(report.get('sources'), list):
++            raise RefreshError('previous-report-malformed')
++        result = {}
++        for row in report['sources']:
++            if not isinstance(row, dict) or not isinstance(row.get('sourceId'), str):
++                raise RefreshError('previous-report-malformed')
++            key, digest = row['sourceId'], row.get('candidateSha256')
++            if not key or key in result or (digest is not None and
++                    (not isinstance(digest, str) or len(digest) != 64 or
++                     any(c not in '0123456789abcdef' for c in digest))):
++                raise RefreshError('previous-report-malformed')
++            result[key] = digest
++        return result
++    except RefreshError:
++        raise
++    except OSError:
++        raise RefreshError('previous-report-file-unavailable') from None
++    except (ValueError, TypeError, KeyError, UnicodeError, RecursionError):
++        raise RefreshError('previous-report-malformed') from None
++    finally:
++        if descriptor is not None:
++            os.close(descriptor)
++        if directory is not None:
++            os.close(directory)
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--now', required=True, help='Explicit UTC evaluation time; never refreshes acquisition age')
++    parser.add_argument('--previous', type=Path, help='Prior metadata diagnostic report for content no-op comparison')
++    args = parser.parse_args(argv)
++    timestamp(args.now)
++    previous = {}
++    if args.previous:
++        try:
++            previous = previous_candidates(args.previous)
++        except RefreshError as error:
++            print(canonical({'status': 'failed', 'diagnostics': [str(error)],
++                             'sourceBodiesRead': 0, 'networkRequests': 0}).decode(),
++                  file=sys.stderr, end='')
++            return 2
++    print(canonical(inspect_portfolio(now=args.now, previous=previous)).decode(), end='')
++    return 0
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/offmenu/refresh/portfolio05_sources.py b/offmenu/refresh/portfolio05_sources.py
+new file mode 100644
+index 00000000..7e221cc0
+--- /dev/null
++++ b/offmenu/refresh/portfolio05_sources.py
+@@ -0,0 +1,261 @@
++"""Reviewed Worker05 metadata configuration; inert pins/selectors, no file I/O.
++
++Python module packaging avoids an undeclared runtime JSON resource. Changing
++these declarations still requires the same independent source/scope review.
++"""
++
++CONFIGURATION = {'schemaVersion': 'offmenu-portfolio05-source-bindings/1',
++ 'requestID': 'M-STAGING-BIND-20261018-W05',
++ 'baseline': 'abecb99ee1125730ccbc2824b6ec49ffc5cc4302',
++ 'sources': [{'sourceId': '754882f8add79c754dcb',
++              'country': 'BB',
++              'custodianLabel': 36,
++              'receipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/BB/754882f8add79c754dcb/receipt.json',
++                          'sha256': '28eb57a0adb4d60a239fb7b8480bf5756d6ef9f1323dc6041f086f2593eb7dc6',
++                          'bytes': 2735},
++              'applicability': {'evidencedLeadRoles': ['recipes:discovery-reference'],
++                                'requiredCountryTypes': ['ingredients',
++                                                         'recipes',
++                                                         'nutrition',
++                                                         'retailers/providers',
++                                                         'prices/baskets',
++                                                         'dietary references'],
++                                'acceptedCountryTypes': [],
++                                'wholeCountryComplete': False},
++              'fields': {'release': '/version',
++                         'documentRole': '/role',
++                         'acquisitionBasis': '/acquisition_rights'},
++              'acquisitionPointer': '/utc',
++              'acquisitionMeaning': 'recorded-request-start; not validation time, no independent '
++                                    'source-body cache verification',
++              'validationPointer': '/completed_utc',
++              'holds': ['source-body-operation-not-selected',
++                        'source-use-and-field-scope-unqualified'],
++              'rawBodyPinAsRecorded': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/BB/754882f8add79c754dcb/original.pdf',
++                                       'bytes': 10321698,
++                                       'sha256': '32f8b3f0a057e40bc2f40fc76a40a1e7544dec581779eabaff15117e4f370439'},
++              'rawBodyPolicy': 'recorded pin only; never read/stat/hash/copy raw body'},
++             {'sourceId': '875916b679b07b5f1d21',
++              'country': 'BB',
++              'custodianLabel': 36,
++              'receipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/BB/875916b679b07b5f1d21/receipt.json',
++                          'sha256': '913a71f1e72aec044740b39dd0ddaf760d8a8cef227e9e675c4209ca94f7af81',
++                          'bytes': 2679},
++              'applicability': {'evidencedLeadRoles': ['dietary '
++                                                       'references:school-guideline-reference'],
++                                'requiredCountryTypes': ['ingredients',
++                                                         'recipes',
++                                                         'nutrition',
++                                                         'retailers/providers',
++                                                         'prices/baskets',
++                                                         'dietary references'],
++                                'acceptedCountryTypes': [],
++                                'wholeCountryComplete': False},
++              'fields': {'release': '/version',
++                         'documentRole': '/role',
++                         'acquisitionBasis': '/acquisition_rights'},
++              'acquisitionPointer': '/utc',
++              'acquisitionMeaning': 'recorded-request-start; not validation time, no independent '
++                                    'source-body cache verification',
++              'validationPointer': '/completed_utc',
++              'holds': ['source-body-operation-not-selected',
++                        'source-use-and-field-scope-unqualified'],
++              'rawBodyPinAsRecorded': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/BB/875916b679b07b5f1d21/original.pdf',
++                                       'bytes': 641029,
++                                       'sha256': '0d06cc695629389cdca51562168b0a7debd60d4cbd6bb996808d14b5dcd96a16'},
++              'rawBodyPolicy': 'recorded pin only; never read/stat/hash/copy raw body'},
++             {'sourceId': 'be799f193e49f89ee33d',
++              'country': 'BB',
++              'custodianLabel': 36,
++              'receipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/BB/be799f193e49f89ee33d/receipt.json',
++                          'sha256': '644ff9bc0b60db6d7e496e2fe73aa728e5a048ef4b024d485b683c34691ef14e',
++                          'bytes': 2674},
++              'applicability': {'evidencedLeadRoles': ['retailers/providers:promotion-reference-not-register'],
++                                'requiredCountryTypes': ['ingredients',
++                                                         'recipes',
++                                                         'nutrition',
++                                                         'retailers/providers',
++                                                         'prices/baskets',
++                                                         'dietary references'],
++                                'acceptedCountryTypes': [],
++                                'wholeCountryComplete': False},
++              'fields': {'release': '/version',
++                         'documentRole': '/role',
++                         'acquisitionBasis': '/acquisition_rights'},
++              'acquisitionPointer': '/utc',
++              'acquisitionMeaning': 'recorded-request-start; not validation time, no independent '
++                                    'source-body cache verification',
++              'validationPointer': '/completed_utc',
++              'holds': ['source-body-operation-not-selected',
++                        'source-use-and-field-scope-unqualified'],
++              'rawBodyPinAsRecorded': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/BB/be799f193e49f89ee33d/original.pdf',
++                                       'bytes': 28973903,
++                                       'sha256': '80147bb3068d84a14efc41a4094e4ade5c0e8b2767230935694a0e5fa005feeb'},
++              'rawBodyPolicy': 'recorded pin only; never read/stat/hash/copy raw body'},
++             {'sourceId': '29584ff4d235e2b54da9',
++              'country': 'JO',
++              'custodianLabel': 49,
++              'receipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/JO/29584ff4d235e2b54da9/receipt.json',
++                          'sha256': '0e07a84e92a76f2d355d34831fcf21de4589eca9519b9ca64ef12563bbd9004e',
++                          'bytes': 2610},
++              'applicability': {'evidencedLeadRoles': ['recipes:book-reference'],
++                                'requiredCountryTypes': ['ingredients',
++                                                         'recipes',
++                                                         'nutrition',
++                                                         'retailers/providers',
++                                                         'prices/baskets',
++                                                         'dietary references'],
++                                'acceptedCountryTypes': [],
++                                'wholeCountryComplete': False},
++              'fields': {'release': '/release',
++                         'documentRole': '/category',
++                         'acquisitionBasis': '/acquisition_basis'},
++              'acquisitionPointer': '/response/utc',
++              'acquisitionMeaning': 'recorded-request-start; not validation time, no independent '
++                                    'source-body cache verification',
++              'validationPointer': '/finalized_utc',
++              'holds': ['source-body-operation-not-selected',
++                        'source-use-and-field-scope-unqualified',
++                        'recorded-copy-transmit-translate-restriction'],
++              'rawBodyPinAsRecorded': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/JO/29584ff4d235e2b54da9/jordanian-traditional-cuisine.original',
++                                       'sha256': 'e4c185df4fc9fc182baf0e3466ea04fee96e7710842c55f69d4e1b97df5fce62',
++                                       'bytes': 6076295},
++              'rawBodyPolicy': 'recorded pin only; never read/stat/hash/copy raw body'},
++             {'sourceId': '95ab012c6d728ee46b43',
++              'country': 'JO',
++              'custodianLabel': 49,
++              'receipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/JO/95ab012c6d728ee46b43/receipt.json',
++                          'sha256': '3157289eb4e4ba89b555400acbbbfcf5cdff3c0967d194f78abbbd8587889c51',
++                          'bytes': 1945},
++              'applicability': {'evidencedLeadRoles': ['nutrition:print-only-catalogue-not-tables'],
++                                'requiredCountryTypes': ['ingredients',
++                                                         'recipes',
++                                                         'nutrition',
++                                                         'retailers/providers',
++                                                         'prices/baskets',
++                                                         'dietary references'],
++                                'acceptedCountryTypes': [],
++                                'wholeCountryComplete': False},
++              'fields': {'release': '/release',
++                         'documentRole': '/category',
++                         'acquisitionBasis': '/acquisition_basis'},
++              'acquisitionPointer': '/response/utc',
++              'acquisitionMeaning': 'recorded-request-start; not validation time, no independent '
++                                    'source-body cache verification',
++              'validationPointer': '/finalized_utc',
++              'holds': ['source-body-operation-not-selected',
++                        'source-use-and-field-scope-unqualified',
++                        'print-only-no-analytical-original'],
++              'rawBodyPinAsRecorded': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/JO/95ab012c6d728ee46b43/jordan2020-primary-lead.html',
++                                       'sha256': 'abbe079c3736d005be24ec0ade12c4b1920c352f56bd7806443a695554903e22',
++                                       'bytes': 53996},
++              'rawBodyPolicy': 'recorded pin only; never read/stat/hash/copy raw body'},
++             {'sourceId': 'e2ef65a9e03206b7704d',
++              'country': 'JO',
++              'custodianLabel': 49,
++              'receipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/JO/e2ef65a9e03206b7704d/receipt.json',
++                          'sha256': '4e64812f3aec5cdcb01d24a532a17c991572821f6f6c33cb1aa22df52fbf7fc0',
++                          'bytes': 1818},
++              'applicability': {'evidencedLeadRoles': ['recipes:publisher-metadata-not-book'],
++                                'requiredCountryTypes': ['ingredients',
++                                                         'recipes',
++                                                         'nutrition',
++                                                         'retailers/providers',
++                                                         'prices/baskets',
++                                                         'dietary references'],
++                                'acceptedCountryTypes': [],
++                                'wholeCountryComplete': False},
++              'fields': {'release': '/release',
++                         'documentRole': '/category',
++                         'acquisitionBasis': '/acquisition_basis'},
++              'acquisitionPointer': '/response/utc',
++              'acquisitionMeaning': 'recorded-request-start; not validation time, no independent '
++                                    'source-body cache verification',
++              'validationPointer': '/finalized_utc',
++              'holds': ['source-body-operation-not-selected',
++                        'source-use-and-field-scope-unqualified'],
++              'rawBodyPinAsRecorded': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/JO/e2ef65a9e03206b7704d/publisher-download-page.html',
++                                       'sha256': '3c0af5a836ec6dd90a4e7760d9ff9a0e7ff360669207f9a440aa76ed5581e943',
++                                       'bytes': 78884},
++              'rawBodyPolicy': 'recorded pin only; never read/stat/hash/copy raw body'},
++             {'sourceId': '4734e400877d8eae655ecacc',
++              'country': 'PY',
++              'custodianLabel': 40,
++              'receipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-40/PY/4734e400877d8eae655ecacc/receipt.json',
++                          'sha256': '395347dcb3f0d97fda68003b46a595a3784df15cbf6886e7a73bd47a0ae30ce8',
++                          'bytes': 2331},
++              'applicability': {'evidencedLeadRoles': ['recipes:publication-reference'],
++                                'requiredCountryTypes': ['ingredients',
++                                                         'recipes',
++                                                         'nutrition',
++                                                         'retailers/providers',
++                                                         'prices/baskets',
++                                                         'dietary references'],
++                                'acceptedCountryTypes': [],
++                                'wholeCountryComplete': False},
++              'fields': {'release': '/version_identity',
++                         'documentRole': '/category',
++                         'acquisitionBasis': '/acquisition_permission'},
++              'acquisitionPointer': '/started_utc',
++              'acquisitionMeaning': 'recorded-request-start; not validation time, no independent '
++                                    'source-body cache verification',
++              'validationPointer': '/finished_validation_utc',
++              'holds': ['source-body-operation-not-selected',
++                        'source-use-and-field-scope-unqualified'],
++              'rawBodyPinAsRecorded': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-40/PY/4734e400877d8eae655ecacc/original.pdf',
++                                       'sha256': '4e7c647bff6890695816cf3583d9c2e9b5713ae3d1183d1cd888396fb31835e5',
++                                       'bytes': 6801160},
++              'rawBodyPolicy': 'recorded pin only; never read/stat/hash/copy raw body'},
++             {'sourceId': 'a3004afbe9e3f9408f6d45bd',
++              'country': 'PY',
++              'custodianLabel': 40,
++              'receipt': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-40/PY/a3004afbe9e3f9408f6d45bd/receipt.json',
++                          'sha256': 'e16b91c63da7b1bee8ecd055e486cb84e8665ac1fe43e2be479a41348a2b1e5e',
++                          'bytes': 1903},
++              'applicability': {'evidencedLeadRoles': ['retailers/providers:failed-lead-not-dataset'],
++                                'requiredCountryTypes': ['ingredients',
++                                                         'recipes',
++                                                         'nutrition',
++                                                         'retailers/providers',
++                                                         'prices/baskets',
++                                                         'dietary references'],
++                                'acceptedCountryTypes': [],
++                                'wholeCountryComplete': False},
++              'fields': {'release': '/version_identity',
++                         'documentRole': '/category',
++                         'acquisitionBasis': '/acquisition_permission'},
++              'acquisitionPointer': '/started_utc',
++              'acquisitionMeaning': 'recorded-request-start; not validation time, no independent '
++                                    'source-body cache verification',
++              'validationPointer': '/finished_validation_utc',
++              'holds': ['source-body-operation-not-selected',
++                        'source-use-and-field-scope-unqualified',
++                        'http403-no-retry-no-body-processing'],
++              'rawBodyPinAsRecorded': {'path': '/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-40/PY/a3004afbe9e3f9408f6d45bd/original.html',
++                                       'sha256': '4451dbe980e6eeaff545fa8806599b09cfc65d750e7dc94faebd1f03d534e9fb',
++                                       'bytes': 4918},
++              'rawBodyPolicy': 'recorded pin only; never read/stat/hash/copy raw body'}],
++ 'evidencePins': [{'path': '/home/user/Documents/Codex/2026-10-17/M-BATCH-CUSTODY-R1-W36/custody-response.json',
++                   'sha256': '84486765bed610fbfabdca49101f9da6e7a808a52926ee5c1f2ae07548ef7a13',
++                   'selector': '/responses/0',
++                   'scope': 'addressed custody response only; no use permission inferred'},
++                  {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/M-BATCH-CUSTODY-R1-W40/response.json',
++                   'sha256': '5231b71fd60dec920f8721cdbab88b9f15d0dc1b76c4927797251f766a20774e',
++                   'selector': '/responses/0',
++                   'scope': 'addressed custody response only; no use permission inferred'},
++                  {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-49/M-BATCH-CUSTODY-R1-W49/custody-response.json',
++                   'sha256': '11619dfd7c4019f70e31d9e96588c58c8ec19232c38330f109cf535e5a64ac05',
++                   'selector': '/responses/0',
++                   'scope': 'addressed custody response only; no use permission inferred'},
++                  {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-05/batch-result.json',
++                   'sha256': 'f1d6de5e4946b76cea7321e28f75233922ba527aee4dd4b0f0e343230f654964',
++                   'scope': 'retained metadata manifest only; existing accepted scope unchanged'},
++                  {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-05/BB/corrections/R1-20261017/document-reference-manifest.json',
++                   'sha256': '54ea19a20896c0880560494c5ebe8ec982d931b0c76a6c0c39dff8ec40b8d547',
++                   'scope': 'retained metadata manifest only; existing accepted scope unchanged'},
++                  {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-05/JO/document-reference-manifest.json',
++                   'sha256': '4a7d233cfe3e82d929f9948fd10c59260c15c5b340b18c32e942ee15b91cb55e',
++                   'scope': 'retained metadata manifest only; existing accepted scope unchanged'},
++                  {'path': '/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-05/PY/document-reference-manifest.json',
++                   'sha256': '1fa594a286899a137178f039381b7f5eb42d52a9aeb6a4aa6fe2f8ef6368025e',
++                   'scope': 'retained metadata manifest only; existing accepted scope unchanged'}]}
+diff --git a/tests/test_portfolio05_bindings.py b/tests/test_portfolio05_bindings.py
+new file mode 100644
+index 00000000..39e12c82
+--- /dev/null
++++ b/tests/test_portfolio05_bindings.py
+@@ -0,0 +1,307 @@
++"""Authored metadata only: no historical originals or network access."""
++import copy
++from contextlib import redirect_stdout, redirect_stderr
++import io
++import json
++import os
++from pathlib import Path
++import shutil
++import subprocess
++import sys
++import tempfile
++import unittest
++import zipfile
++from unittest.mock import patch
++
++from offmenu.refresh import portfolio05 as binding
++from offmenu.refresh.core import canonical, sha
++from offmenu.refresh.serialization import encode_records
++from offmenu.refresh.acceptance import Asset, SourceContract, fingerprint, ids_digest, qualify
++
++
++NOW = '2026-10-18T00:00:00Z'
++
++
++def authored():
++    payload = canonical({'country': 'BB', 'edition': 'authored-fixture/1',
++                         'role': 'authored-reference', 'access': 'authored-use-evidence',
++                         'acquired': '2026-10-10T00:00:00Z',
++                         'validated': '2026-10-17T00:00:00Z',
++                         'secretUnselectedField': 'never-serialize-this'})
++    spec = {'sourceId': 'authored05', 'country': 'BB', 'holds': [],
++            'applicability': {'acceptedCountryTypes': [], 'fixture': True},
++            'receipt': {'path': '/unused/authored.json', 'sha256': sha(payload), 'bytes': len(payload)},
++            'fields': {'release': '/edition', 'documentRole': '/role', 'acquisitionBasis': '/access'},
++            'acquisitionPointer': '/acquired', 'validationPointer': '/validated',
++            'acquisitionMeaning': 'authored original acquisition'}
++    return spec, payload
++
++
++class Portfolio05Bindings(unittest.TestCase):
++    def test_valid_deterministic_origins_and_noop(self):
++        spec, payload = authored()
++        first = binding.bind(spec, payload, now=NOW)
++        self.assertEqual(first['status'], 'valid')
++        self.assertEqual(first['fieldOriginErrors'], [])
++        self.assertEqual(first['candidate']['data']['nativeUnit'], None)
++        self.assertNotIn('never-serialize-this', json.dumps(first))
++        self.assertEqual(first['cache']['acquisitionAgeDays'], 8)
++        self.assertEqual(first['cache']['minimumReuseDaysRequired'], 30)
++        self.assertEqual(first['cache']['freshness'], 'unknown')
++        self.assertEqual(first['cache']['decision'], 'unsupported-real-source-cache-planner')
++        self.assertFalse(first['cache']['sourceBodyCacheVerified'])
++        self.assertEqual(first, binding.bind(spec, payload, now=NOW))
++        replay = binding.bind(spec, payload, now=NOW, previous_candidate_sha256=first['candidateSha256'])
++        self.assertTrue(replay['unchangedContentNoOp'])
++        changed = copy.deepcopy(spec)
++        changed['acquisitionMeaning'] += '-corrected-policy'
++        self.assertNotEqual(first['candidateSha256'], binding.bind(changed, payload, now=NOW)['candidateSha256'])
++
++    def test_missing_held_malformed_and_stale(self):
++        spec, payload = authored()
++        self.assertEqual(binding.bind(spec, None, now=NOW)['status'], 'missing')
++        held = copy.deepcopy(spec)
++        held['holds'] = ['http403-no-retry-no-body-processing']
++        result = binding.bind(held, payload, now=NOW)
++        self.assertEqual(result['status'], 'held')
++        self.assertEqual(result['sourceOperationsAuthorized'], [])
++        missing = copy.deepcopy(spec)
++        missing['fields']['release'] = '/absent'
++        self.assertEqual(binding.bind(missing, payload, now=NOW)['diagnostics'], ['metadata-selector-missing'])
++        self.assertEqual(binding.bind(spec, payload+b' ', now=NOW)['diagnostics'], ['metadata-pin-mismatch'])
++        for malformed in [b'{"country":"BB","country":"BB"}', b'{bad', b'[]']:
++            bad = copy.deepcopy(spec)
++            bad['receipt']['sha256'] = sha(malformed)
++            self.assertEqual(binding.bind(bad, malformed, now=NOW)['status'], 'malformed')
++        # Stale input means the caller's prior metadata candidate no longer
++        # matches exact current content/policy. It is not a cache-age decision.
++        stale = binding.bind(spec, payload, now=NOW, previous_candidate_sha256='0'*64)
++        self.assertEqual(stale['status'], 'stale')
++        self.assertEqual(stale['diagnostics'], ['previous-metadata-candidate-stale'])
++        old = binding.bind(spec, payload, now='2026-11-09T00:00:00Z')
++        self.assertEqual(old['cache']['acquisitionAgeDays'], 30)
++        self.assertEqual(old['cache']['freshness'], 'unknown')
++        self.assertEqual(old['cache']['decision'], 'unsupported-real-source-cache-planner')
++        self.assertFalse(old['cache']['validationResetsAcquisitionAge'])
++        self.assertFalse(old['cache']['conditionalDownloadEnabled'])
++        self.assertEqual(binding.bind(held, payload, now='2026-11-09T00:00:00Z')['status'], 'held')
++
++    def test_invalid_clock_order_and_field_type(self):
++        spec, payload = authored()
++        self.assertEqual(binding.bind(spec, payload, now='2026-10-09T00:00:00Z')['diagnostics'],
++                         ['metadata-time-order-invalid'])
++        self.assertEqual(binding.bind(spec, payload, now='2026-10-18')['status'], 'malformed')
++        document = json.loads(payload)
++        document['role'] = {'unsupported': 1}
++        raw = canonical(document)
++        spec['receipt']['sha256'] = sha(raw)
++        self.assertEqual(binding.bind(spec, raw, now=NOW)['diagnostics'], ['metadata-field-invalid'])
++
++    def test_isolated_file_diagnostics_and_no_raw_reads(self):
++        spec, payload = authored()
++        with tempfile.TemporaryDirectory() as tmp:
++            p = Path(tmp)/'receipt.json'
++            p.write_bytes(payload)
++            spec['receipt']['path'] = str(p)
++            good = copy.deepcopy(spec)
++            missing = copy.deepcopy(spec)
++            missing['sourceId'] = 'missing'
++            missing['receipt']['path'] = str(Path(tmp)/'missing.json')
++            bad = copy.deepcopy(spec)
++            bad['sourceId'] = 'bad'
++            bad['receipt']['sha256'] = '0'*64
++            # This body path must never be followed; only receipt path is opened.
++            good['rawBodyPinAsRecorded'] = {'path': '/must-not-open', 'sha256': '0'*64}
++            with patch.object(binding, 'configuration', return_value={'sources': [missing, bad, good], 'evidencePins': []}):
++                result = binding.inspect_portfolio(now=NOW)
++            self.assertEqual([x['status'] for x in result['sources']], ['missing', 'malformed', 'valid'])
++            self.assertEqual(result['sourceBodiesRead'], 0)
++            self.assertEqual(result['networkRequests'], 0)
++
++    def test_production_configuration_keeps_every_source_held(self):
++        config = binding.configuration()
++        self.assertEqual(len(config['sources']), 8)
++        self.assertEqual({s['country'] for s in config['sources']}, {'BB', 'JO', 'PY'})
++        for spec in config['sources']:
++            self.assertIn('source-body-operation-not-selected', spec['holds'])
++            self.assertEqual(spec['applicability']['acceptedCountryTypes'], [])
++            self.assertTrue(spec['receipt']['path'].endswith('/receipt.json'))
++        self.assertTrue(any('http403-no-retry-no-body-processing' in s['holds'] for s in config['sources']))
++
++    def test_no_pilot_planner_or_operational_acquirer(self):
++        spec, payload = authored()
++        with patch('offmenu.refresh.core.cache_policy', side_effect=AssertionError('pilot planner forbidden')), \
++             patch('offmenu.refresh.policy.plan_fixture', side_effect=AssertionError('fixture spoof forbidden')), \
++             patch('offmenu.refresh.acquisition.CachedAcquirer.acquire', side_effect=AssertionError('body acquisition forbidden')):
++            row = binding.bind(spec, payload, now=NOW)
++        self.assertEqual(row['status'], 'valid')
++        self.assertEqual(row['cache']['decision'], 'unsupported-real-source-cache-planner')
++
++    def test_shared_fixture_qualification_and_tampering(self):
++        spec, payload = authored()
++        result = binding.bind(spec, payload, now=NOW)
++        row = result['candidate']
++        with tempfile.TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            bundle = root/'bundle'
++            (bundle/'metadata').mkdir(parents=True)
++            (bundle/'metadata/receipt.json').write_bytes(payload)
++            # Both evidence documents are authored test-only decisions, not grants
++            # for the retained publisher works in the production config.
++            rights = canonical({'fixtureOnly': True, 'operations': ['retain', 'parse', 'transform']})
++            scope = canonical({'fixtureOnly': True, 'rows': 1, 'countryComplete': False})
++            (bundle/'rights.json').write_bytes(rights)
++            (bundle/'scope.json').write_bytes(scope)
++            assets = (Asset('metadata/receipt.json', len(payload), sha(payload)),
++                      Asset('rights.json', len(rights), sha(rights)), Asset('scope.json', len(scope), sha(scope)))
++            schema = {'type': 'object', 'required': ['id', 'kind', 'schemaVersion', 'data', 'provenance'],
++                      'properties': {'data': {'const': row['data']}, 'kind': {'const': row['kind']}}}
++            schemas = {row['kind']: schema}
++            def semantic(value):
++                errors = binding.field_origin_errors(value, {'metadata/receipt.json': sha(payload)},
++                                                     policy_pins=(result['policySha256'],))
++                if value != row:
++                    errors.append('authored-exact-metadata-mismatch')
++                return errors
++            contract = SourceContract(source_id=spec['sourceId'], release_id=result['releaseId'],
++                scope_id='authored05-metadata-only', acquired_at=result['acquiredAt'], inputs=assets,
++                expected_records=1, expected_ids_sha256=ids_digest([row['id']]), schemas=schemas,
++                schemas_sha256=fingerprint(schemas), semantic_validator=semantic,
++                policy_sha256=result['policySha256'], rights_evidence=assets[1], scope_evidence=assets[2],
++                permitted_operations=frozenset(('retain', 'parse', 'transform')), fixture=True)
++            candidate = root/'candidate.jsonl'
++            raw = encode_records([row])
++            candidate.write_bytes(raw)
++            manifest = {'sourceId': spec['sourceId'], 'releaseId': result['releaseId'],
++                'acquiredAt': result['acquiredAt'], 'normalizedRecords': 1,
++                'candidateSha256': sha(raw), 'candidateBytes': len(raw),
++                'rightsEvidenceSha256': sha(rights), 'scopeEvidenceSha256': sha(scope),
++                'inputFiles': [vars(a) for a in assets]}
++            qualified = qualify(contract, bundle, candidate, manifest)
++            self.assertTrue(qualified['qualified'], qualified)
++            self.assertTrue(qualified['fixture'])
++            (bundle/'metadata/receipt.json').write_bytes(b'changed')
++            self.assertIn('input-custody-mismatch', qualify(contract, bundle, candidate, manifest)['errors'])
++
++    def test_cli_without_explicit_time_fails_without_receipt_reads(self):
++        run = subprocess.run([sys.executable, '-B', '-m', 'offmenu.refresh.portfolio05'], capture_output=True)
++        self.assertNotEqual(run.returncode, 0)
++        self.assertIn(b'--now', run.stderr)
++
++    def test_previous_regular_report_preserved_and_replayed(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            path = Path(tmp)/'previous.json'
++            raw = canonical({'sources': [{'sourceId': 'authored05', 'candidateSha256': 'a'*64}]})
++            path.write_bytes(raw)
++            before = (path.stat().st_mtime_ns, path.read_bytes())
++            outputs = []
++            for _ in range(2):
++                output = io.StringIO()
++                with patch.object(binding, 'inspect_portfolio', return_value={'authored': True}) as inspect, \
++                     redirect_stdout(output):
++                    status = binding.main(['--now', NOW, '--previous', str(path)])
++                self.assertEqual(status, 0)
++                inspect.assert_called_once_with(now=NOW, previous={'authored05': 'a'*64})
++                outputs.append(output.getvalue())
++            self.assertEqual(outputs[0], outputs[1])
++            self.assertEqual((path.stat().st_mtime_ns, path.read_bytes()), before)
++
++    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'Foo POSIX reader regression')
++    def test_previous_fifo_rejected_before_metadata_reads(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            path = Path(tmp)/'previous.json'
++            os.mkfifo(path)
++            before = path.stat().st_mtime_ns
++            code = '''import sys
++from unittest.mock import patch
++from offmenu.refresh import portfolio05 as module
++with patch.object(module, 'inspect_portfolio', side_effect=AssertionError('receipt read forbidden')):
++    status = module.main(['--now', sys.argv[1], '--previous', sys.argv[2]])
++raise SystemExit(status)
++'''
++            run = subprocess.run([sys.executable, '-B', '-c', code, NOW, str(path)],
++                                 capture_output=True, text=True, timeout=2)
++            self.assertEqual(run.returncode, 2, run.stdout + run.stderr)
++            self.assertEqual(json.loads(run.stderr)['diagnostics'], ['previous-report-regular-file-required'])
++            self.assertEqual(path.stat().st_mtime_ns, before)
++            if Path('/proc/self/fd').exists():
++                count = len(os.listdir('/proc/self/fd'))
++                for _ in range(20):
++                    with self.assertRaisesRegex(ValueError, 'previous-report-regular-file-required'):
++                        binding.previous_candidates(path)
++                self.assertEqual(len(os.listdir('/proc/self/fd')), count)
++
++    def test_previous_raced_links_bounds_and_malformed_are_typed(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            target = root/'target.json'
++            target.write_bytes(canonical({'sources': []}))
++            link = root/'link.json'
++            link.symlink_to(target)
++            parent = root/'parent'
++            parent.symlink_to(root, target_is_directory=True)
++            for path in (link, parent/'target.json'):
++                # Simulate link replacement after the preflight safe_path check.
++                with patch.object(binding, 'safe_path', return_value=path):
++                    with self.assertRaisesRegex(ValueError, 'previous-report-file-unavailable'):
++                        binding.previous_candidates(path)
++            target.write_bytes(b' '*(binding.MAX_PREVIOUS+1))
++            with self.assertRaisesRegex(ValueError, 'previous-report-bound'):
++                binding.previous_candidates(target)
++            for raw in [b'{bad', b'{"sources":[],"sources":[]}',
++                        canonical({'sources': [{'sourceId': []}]}),
++                        canonical({'sources': [{'sourceId': 'x', 'candidateSha256': 'bad'}]})]:
++                target.write_bytes(raw)
++                error = io.StringIO()
++                with patch.object(binding, 'inspect_portfolio', side_effect=AssertionError('receipt read forbidden')), \
++                     redirect_stderr(error):
++                    code = binding.main(['--now', NOW, '--previous', str(target)])
++                self.assertEqual(code, 2)
++                self.assertEqual(len(json.loads(error.getvalue())['diagnostics']), 1)
++
++    def test_offline_installed_wheel_configuration(self):
++        # Build only source code in scratch. No pip/install/network, shared
++        # packaging edits, retained receipt reads or author-checkout build files.
++        repository = Path(__file__).resolve().parents[1]
++        with tempfile.TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            source = root/'source'
++            source.mkdir()
++            shutil.copytree(repository/'offmenu', source/'offmenu',
++                            ignore=shutil.ignore_patterns('__pycache__'))
++            shutil.copy2(repository/'pyproject.toml', source/'pyproject.toml')
++            wheels = root/'wheels'
++            wheels.mkdir()
++            build = subprocess.run([sys.executable, '-I', '-B', '-c',
++                'from setuptools.build_meta import build_wheel; build_wheel('+repr(str(wheels))+')'],
++                cwd=source, capture_output=True, text=True, timeout=60)
++            self.assertEqual(build.returncode, 0, build.stdout + build.stderr)
++            wheel, = wheels.glob('*.whl')
++            installed = root/'installed'
++            with zipfile.ZipFile(wheel) as archive:
++                self.assertIn('offmenu/refresh/portfolio05_sources.py', archive.namelist())
++                self.assertNotIn('offmenu/refresh/portfolio05_sources.json', archive.namelist())
++                archive.extractall(installed)
++            script = '''import sys
++from pathlib import Path
++from unittest.mock import patch
++sys.path.insert(0, sys.argv[1])
++from offmenu.refresh import portfolio05 as module
++assert Path(module.__file__).is_relative_to(Path(sys.argv[1]))
++with patch.object(Path, 'read_bytes', side_effect=AssertionError('no receipt/resource reads')):
++    config = module.configuration()
++assert len(config['sources']) == 8
++assert {row['country'] for row in config['sources']} == {'BB', 'JO', 'PY'}
++assert all(row['holds'] for row in config['sources'])
++config['sources'].clear()
++assert len(module.configuration()['sources']) == 8
++print('installed-config-smoke-pass; metadata-reads=0')
++'''
++            run = subprocess.run([sys.executable, '-I', '-B', '-c', script, str(installed)],
++                                 cwd=root, capture_output=True, text=True, timeout=10)
++            self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
++            self.assertIn('installed-config-smoke-pass; metadata-reads=0', run.stdout)
++
++
++if __name__ == '__main__':
++    unittest.main()

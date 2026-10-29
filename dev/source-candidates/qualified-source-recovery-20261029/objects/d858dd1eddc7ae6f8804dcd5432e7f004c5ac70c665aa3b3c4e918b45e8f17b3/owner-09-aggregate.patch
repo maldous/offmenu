@@ -1,0 +1,995 @@
+diff --git a/config/portfolio-worker09-bindings.json b/config/portfolio-worker09-bindings.json
+new file mode 100644
+index 00000000..340996e3
+--- /dev/null
++++ b/config/portfolio-worker09-bindings.json
+@@ -0,0 +1,137 @@
++{
++  "schemaVersion": "offmenu-worker09-metadata-bindings/1",
++  "baseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
++  "scope": "Portfolio-specific retained metadata descriptors; new local source/release labels are binding identities, not shared source-registry or payload admission.",
++  "countries": [
++    "BH",
++    "KI",
++    "RE"
++  ],
++  "requiredDomains": [
++    "ingredients",
++    "recipes",
++    "nutrition",
++    "retailers/providers",
++    "prices/baskets",
++    "dietary references"
++  ],
++  "sourceOperationsAuthorized": false,
++  "bindings": [
++    {
++      "id": "bh-bfm-catalogue",
++      "country": "BH",
++      "sourceId": "retained-bh-bfm-catalogue",
++      "releaseId": "2026-10-14-catalogue-observation",
++      "domain": "recipes",
++      "state": "metadata",
++      "blocker": "source-retention-duration-unknown",
++      "nativeUnit": null,
++      "nativeBasis": null,
++      "retentionDays": null,
++      "applicability": "metadata-reference-only-no-category-acceptance",
++      "profile": "bfm-catalogue",
++      "input": {
++        "path": "Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-09/BH/catalogue-link-observations.json",
++        "sha256": "60ce88751e11a9d199ea4066dfc9f8f2c2c6ee07392e9d134e1462dcdd08537b",
++        "bytes": 4747
++      },
++      "acquisitionEvidence": {
++        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-41/BH/6e463ae455d82ebc6596/receipt.json",
++        "sha256": "96cb5384ba8921976ddb0a2807c30e4ff8056b096125d529cf7482550fa0341f",
++        "bytes": 1309
++      },
++      "originalAcquiredAt": "2026-10-14T22:20:13.308001+00:00",
++      "expectedRecords": 7,
++      "sourceURL": "https://bfm.bh/recipes/",
++      "publisherBodySha256": "7ae8fec6d1b74801a0b21b36a58b7ebdd714ae8d8a25fa3f4b71060bd5a3ac06",
++      "useScope": "Existing private catalogue metadata only; no recipe/certificate body or public reuse grant.",
++      "lineageEvidence": {
++        "path": "Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-09/BH/link-lineage-validation-20261017.json",
++        "sha256": "a3cb0c7a9ec1a441bf3f313338537299c1b373ca4da45d31d15667ca33cc64c3",
++        "bytes": 2775
++      }
++    },
++    {
++      "id": "ki-nso-cpi-metadata",
++      "country": "KI",
++      "sourceId": "retained-ki-nso-cpi",
++      "releaseId": "September2025-as-recorded",
++      "domain": "prices/baskets",
++      "state": "metadata",
++      "blocker": "source-content-use-and-retention-unqualified",
++      "nativeUnit": null,
++      "nativeBasis": null,
++      "retentionDays": null,
++      "applicability": "metadata-reference-only-no-category-acceptance",
++      "profile": "ki-cpi-receipt",
++      "input": {
++        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-54/KI/40837f0959a30fc92dc6e78f/receipt.json",
++        "sha256": "cb034aae33aa38329e19f9728543aa78b6c537fcbeed7555591a1f14ab044f9c",
++        "bytes": 1374
++      },
++      "acquisitionEvidence": {
++        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-54/KI/40837f0959a30fc92dc6e78f/receipt.json",
++        "sha256": "cb034aae33aa38329e19f9728543aa78b6c537fcbeed7555591a1f14ab044f9c",
++        "bytes": 1374
++      },
++      "originalAcquiredAt": "2026-10-14T22:11:03.789255+00:00",
++      "expectedRecords": 1,
++      "sourceURL": "https://nso.gov.ki/download/30/consumer-price-index/2192/cpi-september-2025",
++      "useScope": "Receipt metadata only; no CPI table/value/body processing or item-price inference."
++    },
++    {
++      "id": "bh-bfm-recipe-body",
++      "country": "BH",
++      "sourceId": "retained-bh-bfm-cookbook",
++      "releaseId": "2022-catalogue-lead-only",
++      "domain": "recipes",
++      "state": "held",
++      "blocker": "recipe-body-scoped-not-held-and-use-grant-unknown",
++      "nativeUnit": null,
++      "nativeBasis": null,
++      "retentionDays": null,
++      "applicability": "metadata-reference-only-no-category-acceptance",
++      "evidence": {
++        "path": "Documents/Codex/2026-10-17/worker09-B01-W09-custody-resolution/BH-return-binding.json",
++        "sha256": "9e48cc50084a5d86e67cc7f413cec97acf55e32dc93ade1cc121a782b3b1eb98",
++        "bytes": 1906
++      }
++    },
++    {
++      "id": "ki-recipe-body",
++      "country": "KI",
++      "sourceId": "retained-ki-livelearn",
++      "releaseId": "2026-portal-claim-only",
++      "domain": "recipes",
++      "state": "held",
++      "blocker": "http403-no-retry-no-complete-body-or-use-grant",
++      "nativeUnit": null,
++      "nativeBasis": null,
++      "retentionDays": null,
++      "applicability": "metadata-reference-only-no-category-acceptance",
++      "evidence": {
++        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-54/KI/ac4dc814bf9864bacf0c7307/receipt.json",
++        "sha256": "7865edc4fb8600d092f083b14fb297b89da978cf6b437052452598c85e9fa8a1",
++        "bytes": 1107
++      }
++    },
++    {
++      "id": "re-insee-cpi-body",
++      "country": "RE",
++      "sourceId": "retained-re-insee",
++      "releaseId": "issue299-title-assertion-only",
++      "domain": "prices/baskets",
++      "state": "held",
++      "blocker": "zero-valid-original-bytes-altcha-no-retry",
++      "nativeUnit": null,
++      "nativeBasis": null,
++      "retentionDays": null,
++      "applicability": "metadata-reference-only-no-category-acceptance",
++      "evidence": {
++        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-42/RE/receipt.json",
++        "sha256": "d70814e546a1e0c90814c801e701adce67f16155a44ee88920e4fbf64c5da7b8",
++        "bytes": 3173
++      }
++    }
++  ]
++}
+diff --git a/docs/operations/worker09-staging-binding.md b/docs/operations/worker09-staging-binding.md
+new file mode 100644
+index 00000000..a05a5005
+--- /dev/null
++++ b/docs/operations/worker09-staging-binding.md
+@@ -0,0 +1,132 @@
++# Worker09 BH/KI/RE metadata staging bindings
++
++This portfolio package stages pinned **retained metadata references**. It does
++not parse a recipe, CPI table, nutrient release or other publisher payload, and
++does not install source admission, a GLOBAL handler, canonical mapping or gold.
++The base is accepted develop snapshot
++`abecb99ee1125730ccbc2824b6ec49ffc5cc4302`; pending PR42/handover code is not used.
++
++## Run privately on Foo
++
++```sh
++python3 -m offmenu.portfolio_worker09 \
++  --metadata-root /home/user \
++  --output /tmp/worker09-metadata-staging \
++  --now 2026-10-18T00:00:00Z
++```
++
++The output directory must be exclusive and separate from every selected input's
++directory. The root is a prefix for exact relative JSON pins in
++`config/portfolio-worker09-bindings.json`; no inventory, glob, URL access,
++archive extraction or publisher-body path inside a receipt is followed. No
++third-party packages, credentials, AI calls or network are required.
++
++Integrator00's baseline/interface receipt5798 confirms there is no generic pure
++cache planner at this base. These age fields are portfolio metadata diagnostics,
++not a new shared planner. Neither the Wikibooks-specific `core.cache_policy`,
++registry-only `plan_fixture` nor operational/body-reading `CachedAcquirer` is
++called or spoofed. A source-neutral shared planner remains an unimplemented
++proposal owned by00; it does not block this metadata binding package.
++
++`--now` is the explicit UTC evaluation time. `--validated-at` optionally records
++a distinct observation time. Neither mtime nor validation time changes
++`originalAcquiredAt`. Under30days the policy performs no download; at30days it
++returns `stale-input` and requires separate conditional review, still with no
++download implementation or force override. `retentionQualified=false` is
++preserved for the actual portfolio: the scheduling threshold does not supply
++missing source-specific retention/use entitlement or promise30day legal reuse.
++
++## Exact applicability and provenance
++
++| Binding | Input representation | Outcome extent |
++| --- | --- | --- |
++| BH BFM catalogue | Prior private seven-link candidate plus acquisition and lineage receipts | Seven discovery/reference observations; indexes, submission, certificates and cookbook link keep separate roles |
++| KI NSO September2025 CPI | Acquisition receipt metadata only | One historical release-reference observation; no CPI values, item prices, currency or basket |
++| BH recipe body | Held descriptor, scoped41 NOT_HELD response | No file opened; exact lawful body/use/selector missing |
++| KI recipe body | Held403 descriptor | No file opened; no recipe source or reuse grant inferred |
++| RE INSEE issue299 | Held ALTCHA/zero-good-bytes descriptor | No original existence asserted, read or retried |
++
++The local `retained-*` source IDs and `*-as-recorded` release labels are explicit
++portfolio binding identities, not additions to the shared discovery registry or
++proof of publisher release equivalence. All six required domains remain
++unaccepted for every country; metadata in a recipe/price discovery category is
++not category coverage. Native units and bases are explicit nulls with code-policy
++origins because these records establish no quantitative observation.
++
++Each emitted `sourceMetadataReference` uses the shared singleton-array JSONL
++serialization. `provenance.fieldOrigins` covers every scalar under `data` using
++the shared `field_origin_errors` validator. Source origins address exact input
++JSON pointers and hashes, with original record IDs retained inside `sourceRecord`.
++Unknown-unit/basis constants cite the binding-policy digest rather than invented
++source cells. BH's upstream publisher hash and anchor provenance are declared
++through the previously verified, pinned lineage receipt; this code does not
++repeat that source-body comparison. The manifest pins original acquisition
++evidence separately from the content candidate and from validation age.
++
++## Replay and diagnostics interface
++
++`build(config, metadata_root, now=..., validated_at=...)` returns a result per
++binding. Supported outcomes are `metadata-candidate`, `missing-input`,
++`held-input`, `malformed-input` and `stale-input`; fixed diagnostic codes preserve
++independent results. Source holds return before any file read. Duplicate JSON
++keys, nonfinite JSON, pin drift, unsafe paths/symlinks, unsupported profiles,
++wrong country/source/flags and acquisition mismatch fail explicitly.
++
++`publish_report` uses a portfolio-owned, nontruncating flock inode and the shared
++atomic JSON helper. Existing lock/report/partial/candidate files must be regular,
++single-link files owned by the current effective user; the output directory must
++also be owned. Guards run before output-slot mutation and again under the lock.
++The opened lock descriptor is checked against its current path/inode. Its
++contents are never written or truncated. This corrects W09-R05-P2-001 without
++changing the shared `writer_lock` implementation. The output namespace remains
++exclusive to this invocation family; this is not an OS sandbox against other
++processes running as the same user.
++Candidate filenames contain their canonical SHA256; identical bytes are a
++no-op without rewriting the candidate. Later failed/held/stale inputs do not
++delete or activate old artifacts: only candidates referenced by the **current
++successful invocation's** `report.json` are eligible for further review.
++Always bind the process exit status and current report bytes. A terminal CLI
++configuration/filesystem failure prints a fixed JSON diagnostic on stderr and
++exits2; a previous report is not evidence of that failed invocation's success.
++
++CLI exit0 means every descriptor returned metadata-candidate or an explicit
++hold; it does **not** mean all sources are usable. Missing/malformed/stale inputs
++exit2 after writing all independent binding diagnostics. Global config/output
++errors also exit2. No country/source acceptance receipt is produced.
++
++Malformed descriptor IDs remain null diagnostic identities with their stable
++`bindingIndex`; only validated string IDs enter the duplicate index. Multiple
++malformed descriptors keep one fixed failure each and cannot abort a valid
++following binding (W09-R05-P2-002).
++
++Tests use small authored JSON objects and temporary directories, including
++valid, missing, held-with-no-read, malformed/duplicate/nonfinite JSON, stale and
++exact30day boundary, acquisition/validation separation, unknown retention,
++field-origin coverage, lineage mismatch, independent-error continuation,
++immutable replay/no-op, URL/path restrictions and typed CLI failures:
++
++```sh
++python3 -m unittest discover -s tests -p test_portfolio_worker09.py -v
++```
++
++## Integration and remaining blockers
++
++Only the portfolio module/config/tests/document are owned here. Shared helpers
++are imported unchanged: `refresh.core`, `refresh.field_provenance`,
++`refresh.national_tabular.valid_input_name` and `refresh.serialization`.
++No existing generic payload adapter claims compatibility with BFM HTML or CPI
++PDF; this package does not misroute them into national/reference engines.
++
++No shared-interface change is required to run this direct metadata CLI. To use
++it in GLOBAL, integrator00 must separately select/review an explicit generic
++metadata-reference candidate schema/handler and trusted scope/rights contract;
++no source manifest or CLI flag may construct a `SourceContract` grant. That
++future shared registration is a proposed integration dependency, not edited
++core or activated execution. Independent review and develop integration of
++these four paths remain required before the next request.
++
++Actual BH/KI content extraction, recipe rights/body selectors, KI CPI reuse and
++table/unit/base selectors, all other six-domain inputs, and30day retention terms
++remain missing/held. RE keeps zero valid original bytes and ALTCHA. Preserve
++Finland/Frida/native NO-FR restrictions, original source custody, production/CIX
++pause and DEV7645's separate owner. Golden promotion is later.
+diff --git a/offmenu/portfolio_worker09.py b/offmenu/portfolio_worker09.py
+new file mode 100644
+index 00000000..00b3907c
+--- /dev/null
++++ b/offmenu/portfolio_worker09.py
+@@ -0,0 +1,380 @@
++"""BH/KI/RE retained-metadata bindings; never a source-body execution route.
++
++Uses the shared strict JSON, path, field-origin and serialization contracts.
++Inputs and output are bounded metadata, not recipe/CPI/nutrient payloads.
++"""
++import argparse
++from contextlib import contextmanager
++import fcntl
++import json
++import os
++import re
++import stat
++import sys
++from pathlib import Path
++from urllib.parse import urljoin, urlsplit
++
++from .refresh.core import (RefreshError, atomic_json, canonical, safe_path, sha,
++                           strict_json, timestamp)
++from .refresh.field_provenance import datum_pointers, field_origin_errors
++from .refresh.national_tabular import valid_input_name
++from .refresh.serialization import encode_records
++
++CONFIG = Path(__file__).resolve().parents[1] / 'config/portfolio-worker09-bindings.json'
++MAX_METADATA = 256 * 1024
++MAX_RECORDS = 32
++MIN_REUSE_SECONDS = 30 * 86400
++COUNTRIES = {'BH', 'KI', 'RE'}
++ROLES = {'recipe-index-link', 'recipe-submission-link', 'cookbook-catalogue-link',
++         'certificate-document-link'}
++KI_FIELDS = ('country', 'id', 'canonical_url', 'version', 'category',
++             'dataset_acquired', 'redistribution_rights', 'acquisition_rights',
++             'http_status', 'bytes', 'sha256', 'utc', 'scope')
++
++
++def _require(condition, code):
++    if not condition:
++        raise RefreshError(code)
++
++
++def _url(value):
++    _require(isinstance(value, str) and not any(ord(c) < 32 for c in value),
++             'metadata-url-invalid')
++    try:
++        u = urlsplit(value)
++        _require(u.scheme == 'https' and bool(u.hostname) and not u.username
++                 and not u.password, 'metadata-url-invalid')
++    except ValueError:
++        raise RefreshError('metadata-url-invalid') from None
++
++
++def _load_pin(root, item):
++    _require(isinstance(item, dict) and valid_input_name(item.get('path')),
++             'metadata-input-path-invalid')
++    _require(item['path'].endswith('.json'), 'metadata-json-only')
++    _require(type(item.get('bytes')) is int and 0 < item['bytes'] <= MAX_METADATA
++             and isinstance(item.get('sha256'), str)
++             and bool(re.fullmatch('[0-9a-f]{64}', item['sha256'])),
++             'metadata-input-pin-invalid')
++    p = safe_path(safe_path(root) / item['path'])
++    try:
++        with p.open('rb') as stream:
++            raw = stream.read(MAX_METADATA + 1)
++    except FileNotFoundError:
++        raise RefreshError('metadata-input-missing') from None
++    _require(len(raw) == item['bytes'] and sha(raw) == item['sha256'],
++             'metadata-input-pin-mismatch')
++    try:
++        return strict_json(raw)
++    except (ValueError, UnicodeError, TypeError):
++        raise RefreshError('metadata-json-malformed') from None
++
++
++def _select(binding, value):
++    _require(isinstance(value, dict), 'metadata-object-required')
++    if binding['profile'] == 'bfm-catalogue':
++        _require(value.get('country') == 'BH'
++                 and value.get('source', {}).get('sha256') == binding['publisherBodySha256']
++                 and value.get('recordCount') == binding['expectedRecords'],
++                 'metadata-catalogue-identity-mismatch')
++        rows = value.get('records')
++        _require(isinstance(rows, list), 'metadata-records-required')
++        for row in rows:
++            _require(isinstance(row, dict) and row.get('country') == 'BH'
++                     and row.get('sourceURL') == binding['sourceURL']
++                     and row.get('role') in ROLES
++                     and type(row.get('sourceLocator', {}).get('htmlAnchorOrdinal')) is int
++                     and row['sourceLocator']['htmlAnchorOrdinal'] > 0
++                     and isinstance(row.get('literalHref'), str)
++                     and all(row.get(k) is False for k in
++                             ('targetFetched', 'recipeBodyEstablished',
++                              'certificateValidityEstablished')),
++                     'metadata-catalogue-scope-invalid')
++            _url(row.get('targetURL'))
++            _require(urljoin(binding['sourceURL'], row['literalHref']) == row['targetURL'],
++                     'metadata-link-resolution-mismatch')
++        return [(r, f'/records/{i}') for i, r in enumerate(rows)]
++    if binding['profile'] == 'ki-cpi-receipt':
++        _require(value.get('country') == 'KI'
++                 and value.get('canonical_url') == binding['sourceURL']
++                 and value.get('version') == 'September2025'
++                 and value.get('http_status') == 200
++                 and value.get('dataset_acquired') is True
++                 and all(k in value for k in KI_FIELDS),
++                 'metadata-cpi-identity-mismatch')
++        return [({k: value[k] for k in KI_FIELDS}, '')]
++    raise RefreshError('metadata-profile-unsupported')
++
++
++def _project(binding, value, policy_pin):
++    selected = _select(binding, value)
++    _require(type(binding['expectedRecords']) is int
++             and 0 < len(selected) == binding['expectedRecords'] <= MAX_RECORDS,
++             'metadata-count-mismatch')
++    ids, records = set(), []
++    for raw, selector in selected:
++        identifier = raw.get('id')
++        _require(isinstance(identifier, str) and identifier.strip() and identifier not in ids,
++                 'metadata-id-duplicate-or-missing')
++        ids.add(identifier)
++        origins = {}
++        for pointer in datum_pointers(raw, '/data/sourceRecord'):
++            origins[pointer] = {
++                'kind': 'source', 'sourceId': binding['sourceId'],
++                'releaseId': binding['releaseId'], 'inputPath': binding['input']['path'],
++                'inputSha256': binding['input']['sha256'], 'sourceRecordId': identifier,
++                'sourceField': selector + pointer[len('/data/sourceRecord'):],
++            }
++        for name in ('nativeUnit', 'nativeBasis'):
++            origins['/data/' + name] = {'kind': 'constant', 'policySha256': policy_pin,
++                                        'symbol': 'metadata-does-not-establish-' + name}
++        row = {'schemaVersion': 'offmenu-worker09-metadata-candidate/1',
++               'kind': 'sourceMetadataReference',
++               'id': binding['id'] + ':' + identifier, 'countries': [binding['country']],
++               'provenance': {'sourceId': binding['sourceId'],
++                              'releaseId': binding['releaseId'],
++                              'fetchedAt': binding['originalAcquiredAt'],
++                              'fieldOrigins': origins},
++               'data': {'sourceRecord': raw, 'nativeUnit': None, 'nativeBasis': None}}
++        errors = field_origin_errors(row,
++                                     {binding['input']['path']: binding['input']['sha256']},
++                                     policy_pins=(policy_pin,))
++        _require(not errors, 'metadata-field-origin-invalid')
++        records.append(row)
++    return records
++
++
++def diagnose(binding, metadata_root, *, now, validated_at, policy_pin):
++    """One isolated diagnostic; held descriptors are returned before any file read.
++
++    This API cannot grant source operations even if a caller supplies different
++    descriptors. Only .json metadata pins and the two exact projections exist.
++    """
++    result = {'id': None, 'status': 'malformed-input', 'diagnostics': [], 'records': [],
++              'nativeUnit': None, 'nativeBasis': None, 'sourceOperationsAuthorized': False,
++              'countryComplete': False, 'goldAdmitted': False, 'networkRequests': 0,
++              'metadataRecords': 0, 'sourceContentRecords': 0}
++    try:
++        _require(isinstance(binding, dict), 'metadata-binding-invalid')
++        identifier = binding.get('id')
++        _require(isinstance(identifier, str)
++                 and bool(re.fullmatch('[a-z0-9-]{1,80}', identifier))
++                 and binding.get('country') in COUNTRIES
++                 and binding.get('state') in ('held', 'metadata'), 'metadata-binding-invalid')
++        result['id'] = identifier
++        result.update(country=binding['country'], domain=binding['domain'],
++                      sourceId=binding['sourceId'], releaseId=binding['releaseId'],
++                      scope='retained-metadata-reference-only')
++        if binding['state'] == 'held':
++            result.update(status='held-input', diagnostics=[binding['blocker']])
++            return result
++        _url(binding['sourceURL'])
++        _require(binding.get('nativeUnit') is None and binding.get('nativeBasis') is None,
++                 'metadata-quantity-inference-rejected')
++        clock, validation = timestamp(now), timestamp(validated_at)
++        acquired = timestamp(binding['originalAcquiredAt'])
++        _require(acquired <= validation <= clock, 'metadata-clock-order-invalid')
++        value = _load_pin(metadata_root, binding['input'])
++        acquisition = _load_pin(metadata_root, binding['acquisitionEvidence'])
++        _require(isinstance(acquisition, dict)
++                 and acquisition.get('utc') == binding['originalAcquiredAt'],
++                 'metadata-acquisition-evidence-mismatch')
++        lineage = None
++        if 'lineageEvidence' in binding:
++            lineage = _load_pin(metadata_root, binding['lineageEvidence'])
++            _require(isinstance(lineage, dict)
++                     and lineage.get('candidate', {}).get('sha256') == binding['input']['sha256']
++                     and lineage.get('source', {}).get('sha256') == binding['publisherBodySha256']
++                     and lineage.get('passed') == binding['expectedRecords']
++                     and lineage.get('failed') == 0, 'metadata-lineage-evidence-mismatch')
++        age = (clock - acquired).total_seconds()
++        result['cache'] = {'originalAcquiredAt': binding['originalAcquiredAt'],
++                           'sharedPlanner': 'not-available-at-abec',
++                           'scope': 'portfolio-metadata-age-diagnostic-only',
++                           'validatedAt': validated_at, 'acquisitionAgeSeconds': age,
++                           'validationAgeSeconds': (clock - validation).total_seconds(),
++                           'minimumReuseDays': 30, 'mtimeUsed': False,
++                           'revalidationResetsAcquisitionAge': False,
++                           'retentionDays': binding.get('retentionDays'),
++                           'retentionQualified': type(binding.get('retentionDays')) is int
++                           and binding['retentionDays'] >= 30,
++                           'decision': 'reuse-retained-metadata-no-download' if age < MIN_REUSE_SECONDS
++                           else 'conditional-review-required-no-download'}
++        if age >= MIN_REUSE_SECONDS:
++            result.update(status='stale-input', diagnostics=['metadata-acquisition-stale'])
++            return result
++        result['records'] = _project(binding, value, policy_pin)
++        result['metadataRecords'] = len(result['records'])
++        result['status'] = 'metadata-candidate'
++        if not result['cache']['retentionQualified']:
++            result['diagnostics'].append('source-retention-duration-unqualified')
++        result['useScope'] = binding['useScope']
++        result['inputPins'] = [binding['input'], binding['acquisitionEvidence']]
++        if lineage is not None:
++            result['inputPins'].append(binding['lineageEvidence'])
++            result['upstreamOriginEvidence'] = {
++                'sourcePin': lineage['source'],
++                'lineageReceipt': binding['lineageEvidence'],
++                'selector': '/checks',
++                'meaning': 'Prior source-anchor verification reused; original body not opened here.'}
++    except RefreshError as error:
++        code = str(error)
++        result.update(status='missing-input' if code == 'metadata-input-missing'
++                      else 'malformed-input', diagnostics=[code], records=[], metadataRecords=0)
++    except (KeyError, TypeError, ValueError, AttributeError, OverflowError):
++        result.update(status='malformed-input', diagnostics=['metadata-binding-malformed'],
++                      records=[], metadataRecords=0)
++    except OSError:
++        result.update(status='missing-input', diagnostics=['metadata-input-unreadable'],
++                      records=[], metadataRecords=0)
++    return result
++
++
++def build(config, metadata_root, *, now, validated_at):
++    """Pure metadata binding orchestration; no global registry or handlers changed."""
++    _require(isinstance(config, dict)
++             and config.get('schemaVersion') == 'offmenu-worker09-metadata-bindings/1'
++             and isinstance(config.get('bindings'), list)
++             and len(config['bindings']) <= 16, 'metadata-config-invalid')
++    policy_pin = sha(canonical(config))
++    ids, results = set(), []
++    for index, binding in enumerate(config['bindings']):
++        result = diagnose(binding, metadata_root, now=now,
++                          validated_at=validated_at, policy_pin=policy_pin)
++        result['bindingIndex'] = index
++        if result['id'] is not None:
++            if result['id'] in ids:
++                result.update(status='malformed-input', diagnostics=['metadata-binding-id-duplicate'],
++                              records=[], metadataRecords=0)
++            ids.add(result['id'])
++        raw = encode_records(result.pop('records'))
++        if result['status'] == 'metadata-candidate':
++            result.update(candidateBytes=raw, candidateSha256=sha(raw),
++                          buildKey=sha(canonical({'policySha256': policy_pin,
++                                                 'candidateSha256': sha(raw),
++                                                 'inputs': result['inputPins']})))
++        results.append(result)
++    return {'schemaVersion': 'offmenu-worker09-staging-report/1',
++            'policySha256': policy_pin, 'results': results,
++            'stage': 'unreviewed-metadata-candidate', 'sourceBodyReads': 0,
++            'networkRequests': 0, 'aiCalls': 0, 'countryCompletions': 0,
++            'goldAdmitted': False, 'countries': config.get('countries', []),
++            'requiredDomains': config.get('requiredDomains', []),
++            'categoryAcceptance': 'not-established-for-any-country-domain'}
++
++
++def _owned_regular(path):
++    """Reject aliases/special files before any output-slot mutation."""
++    path = safe_path(path)
++    try:
++        info = path.lstat()
++    except FileNotFoundError:
++        return
++    _require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1,
++             'metadata-output-file-unsafe')
++    _require(info.st_uid == os.geteuid(), 'metadata-output-not-owned')
++
++
++@contextmanager
++def _output_lock(path):
++    """Portfolio lock: validate its inode and NEVER write/truncate its contents.
++
++    The shared writer_lock writes a PID and is not safe for an aliased input.
++    Keep shared core unchanged; this boundary needs only an owned flock inode.
++    """
++    _owned_regular(path)
++    fd = os.open(path, os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW | os.O_NONBLOCK, 0o600)
++    try:
++        opened, current = os.fstat(fd), path.lstat()
++        _require(stat.S_ISREG(opened.st_mode) and opened.st_nlink == 1,
++                 'metadata-output-file-unsafe')
++        _require(opened.st_uid == os.geteuid(), 'metadata-output-not-owned')
++        _require((opened.st_dev, opened.st_ino) == (current.st_dev, current.st_ino),
++                 'metadata-output-lock-changed')
++        try:
++            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
++        except BlockingIOError:
++            raise RefreshError('metadata-output-lock-held') from None
++        yield
++    finally:
++        os.close(fd)
++
++
++def publish_report(report, output):
++    """Private candidate artifacts are immutable; identical content is a no-op.
++
++    Only candidates referenced by this report are current. Old artifacts are
++    preserved when a later diagnostic is held/stale/missing, never reactivated.
++    """
++    output = safe_path(output)
++    if output.exists():
++        _require(output.is_dir() and output.stat().st_uid == os.geteuid(),
++                 'metadata-output-not-owned')
++    output.mkdir(parents=True, exist_ok=True)
++    slots = [output / name for name in ('.worker09.lock', 'report.json', 'report.json.pending')]
++    slots += [output / (r['id'] + '-' + r['candidateSha256'] + '.jsonl')
++              for r in report['results'] if 'candidateBytes' in r]
++    for path in slots:
++        _owned_regular(path)
++    with _output_lock(output / '.worker09.lock'):
++        for path in slots:
++            _owned_regular(path)
++        for result in report['results']:
++            raw = result.pop('candidateBytes', None)
++            if raw is None:
++                continue
++            name = result['id'] + '-' + result['candidateSha256'] + '.jsonl'
++            path = safe_path(output / name)
++            if path.exists():
++                _require(path.read_bytes() == raw, 'metadata-existing-output-mismatch')
++                action = 'no-op'
++            else:
++                with path.open('xb') as stream:
++                    stream.write(raw)
++                action = 'created'
++            result.update(artifact=name, writeAction=action)
++        atomic_json(output / 'report.json', report)
++    return report
++
++
++def _main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--metadata-root', required=True)
++    parser.add_argument('--output', required=True)
++    parser.add_argument('--now', required=True, help='UTC evaluation time; never inferred from mtime')
++    parser.add_argument('--validated-at', help='UTC validation observation; does not reset acquisition')
++    args = parser.parse_args(argv)
++    root, output = safe_path(args.metadata_root), safe_path(args.output)
++    config = strict_json(CONFIG.read_bytes())
++    # A root is only an explicit prefix for pinned JSON names; no inventory or
++    # source path from inside an input document is followed.
++    for b in config['bindings']:
++        for key in ('input', 'acquisitionEvidence', 'evidence', 'lineageEvidence'):
++            if key in b:
++                p = safe_path(root / b[key]['path'])
++                _require(not (output == p or output.is_relative_to(p.parent)),
++                         'metadata-output-input-overlap')
++    report = build(config, root, now=args.now, validated_at=args.validated_at or args.now)
++    publish_report(report, output)
++    print(canonical({k: v for k, v in report.items() if k != 'results'}).decode(), end='')
++    return 0 if all(r['status'] in ('metadata-candidate', 'held-input')
++                    for r in report['results']) else 2
++
++
++def main(argv=None):
++    try:
++        return _main(argv)
++    except RefreshError as error:
++        code = str(error)
++    except (KeyError, ValueError, TypeError, UnicodeError):
++        code = 'metadata-cli-config-malformed'
++    except OSError:
++        code = 'metadata-cli-filesystem-unavailable'
++    print(canonical({'status': 'failed', 'diagnostics': [code],
++                     'sourceOperationsAuthorized': False,
++                     'countryCompletions': 0}).decode(), file=sys.stderr, end='')
++    return 2
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/tests/test_portfolio_worker09.py b/tests/test_portfolio_worker09.py
+new file mode 100644
+index 00000000..1b449302
+--- /dev/null
++++ b/tests/test_portfolio_worker09.py
+@@ -0,0 +1,322 @@
++"""Authored metadata fixtures only; no retained bodies, network or source grants."""
++from copy import deepcopy
++from contextlib import redirect_stdout
++import io
++import json
++import os
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu import portfolio_worker09 as binding
++from offmenu.refresh.core import canonical, sha
++from offmenu.refresh.field_provenance import field_origin_errors
++
++
++class PortfolioBindings(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name) / 'inputs'
++        self.root.mkdir()
++        self.output = Path(self.temp.name) / 'output'
++        self.acquired = '2026-10-01T00:00:00Z'
++        self.now = '2026-10-02T00:00:00Z'
++        self.row = {'id': 'BH:fixture:anchor-1', 'country': 'BH',
++                    'sourceURL': 'https://publisher.invalid/recipes/',
++                    'targetURL': 'https://publisher.invalid/book/', 'literalHref': '/book/',
++                    'sourceLocator': {'htmlAnchorOrdinal': 1}, 'role': 'cookbook-catalogue-link',
++                    'targetFetched': False, 'recipeBodyEstablished': False,
++                    'certificateValidityEstablished': False}
++        value = {'country': 'BH', 'source': {'sha256': 'a' * 64},
++                 'recordCount': 1, 'records': [self.row]}
++        self.entry = {'id': 'bh-fixture', 'country': 'BH', 'domain': 'recipes',
++                      'sourceId': 'authored-bh', 'releaseId': 'fixture/1',
++                      'state': 'metadata', 'profile': 'bfm-catalogue',
++                      'sourceURL': self.row['sourceURL'], 'publisherBodySha256': 'a' * 64,
++                      'expectedRecords': 1, 'nativeUnit': None, 'nativeBasis': None,
++                      'retentionDays': 30, 'useScope': 'Authored synthetic metadata only.',
++                      'originalAcquiredAt': self.acquired,
++                      'input': self.write('candidate.json', canonical(value)),
++                      'acquisitionEvidence': self.write('receipt.json', canonical({'utc': self.acquired}))}
++
++    def write(self, name, raw):
++        (self.root / name).write_bytes(raw)
++        return {'path': name, 'bytes': len(raw), 'sha256': sha(raw)}
++
++    def config(self, entries=None):
++        return {'schemaVersion': 'offmenu-worker09-metadata-bindings/1',
++                'countries': ['BH', 'KI', 'RE'], 'requiredDomains': ['recipes'],
++                'bindings': entries if entries is not None else [self.entry]}
++
++    def run_binding(self, now=None, validated=None):
++        report = binding.build(self.config(), self.root, now=now or self.now,
++                               validated_at=validated or now or self.now)
++        return report, report['results'][0]
++
++    def test_valid_metadata_has_exact_field_origins_and_unknown_units(self):
++        report, result = self.run_binding()
++        self.assertEqual(result['status'], 'metadata-candidate')
++        record = json.loads(result['candidateBytes'])[0]
++        self.assertEqual(record['data']['sourceRecord'], self.row)
++        self.assertIsNone(record['data']['nativeUnit'])
++        self.assertIsNone(record['data']['nativeBasis'])
++        self.assertEqual(field_origin_errors(record,
++                         {'candidate.json': self.entry['input']['sha256']},
++                         policy_pins=[report['policySha256']]), [])
++        origin = record['provenance']['fieldOrigins']['/data/sourceRecord/targetURL']
++        self.assertEqual(origin['sourceField'], '/records/0/targetURL')
++        self.assertFalse(report['goldAdmitted'])
++        self.assertEqual(result['cache']['sharedPlanner'], 'not-available-at-abec')
++
++    def test_missing_input_is_not_zero_records_success(self):
++        (self.root / 'candidate.json').unlink()
++        _, result = self.run_binding()
++        self.assertEqual(result['status'], 'missing-input')
++        self.assertNotIn('candidateBytes', result)
++
++    def test_held_input_performs_no_read_even_if_path_would_be_invalid(self):
++        self.entry.update(state='held', blocker='http403-no-retry',
++                          input={'path': '/never/open.pdf'})
++        with patch.object(Path, 'open', side_effect=AssertionError('held input opened')):
++            _, result = self.run_binding()
++        self.assertEqual(result['status'], 'held-input')
++        self.assertEqual(result['diagnostics'], ['http403-no-retry'])
++
++    def test_malformed_and_duplicate_key_json_are_isolated(self):
++        for raw in [b'{invalid', b'{"x":1,"x":2}', b'{"x":NaN}']:
++            with self.subTest(raw=raw):
++                self.entry['input'] = self.write('candidate.json', raw)
++                _, result = self.run_binding()
++                self.assertEqual(result['diagnostics'], ['metadata-json-malformed'])
++
++    def test_pin_drift_fails_without_parsing_changed_value(self):
++        (self.root / 'candidate.json').write_text('{}')
++        _, result = self.run_binding()
++        self.assertEqual(result['diagnostics'], ['metadata-input-pin-mismatch'])
++
++    def test_literal_link_mismatch_is_not_hidden_by_a_valid_absolute_url(self):
++        self.row['literalHref'] = '/different-book/'
++        self.entry['input'] = self.write('candidate.json', canonical({
++            'country': 'BH', 'source': {'sha256': 'a' * 64},
++            'recordCount': 1, 'records': [self.row]}))
++        _, result = self.run_binding()
++        self.assertEqual(result['diagnostics'], ['metadata-link-resolution-mismatch'])
++        self.assertEqual(result['metadataRecords'], 0)
++
++    def test_body_path_and_symlink_are_rejected(self):
++        self.entry['input']['path'] = 'source.pdf'
++        _, result = self.run_binding()
++        self.assertEqual(result['diagnostics'], ['metadata-json-only'])
++        self.entry['input']['path'] = '../candidate.json'
++        _, result = self.run_binding()
++        self.assertEqual(result['diagnostics'], ['metadata-input-path-invalid'])
++        self.entry['input']['path'] = 'link.json'
++        (self.root / 'link.json').symlink_to(self.root / 'candidate.json')
++        _, result = self.run_binding()
++        self.assertEqual(result['diagnostics'], ['symlink-path-rejected'])
++
++    def test_stale_acquisition_is_not_refreshed_by_validation_age(self):
++        _, result = self.run_binding('2026-11-01T00:00:00Z')
++        self.assertEqual(result['status'], 'stale-input')
++        self.assertEqual(result['cache']['validationAgeSeconds'], 0)
++        self.assertEqual(result['cache']['acquisitionAgeSeconds'], 31 * 86400)
++        self.assertEqual(result['cache']['decision'], 'conditional-review-required-no-download')
++        self.assertNotIn('candidateBytes', result)
++
++    def test_thirty_day_boundary_and_zero_network(self):
++        with patch('socket.socket.connect', side_effect=AssertionError('network attempted')):
++            _, under = self.run_binding('2026-10-30T23:59:59Z')
++            _, at = self.run_binding('2026-10-31T00:00:00Z')
++        self.assertEqual(under['status'], 'metadata-candidate')
++        self.assertEqual(at['status'], 'stale-input')
++        self.assertEqual(under['networkRequests'], 0)
++
++    def test_validation_time_changes_neither_candidate_nor_build_key(self):
++        _, one = self.run_binding('2026-10-15T00:00:00Z', self.acquired)
++        _, two = self.run_binding('2026-10-15T00:00:00Z')
++        self.assertEqual(one['candidateBytes'], two['candidateBytes'])
++        self.assertEqual(one['buildKey'], two['buildKey'])
++        self.assertNotEqual(one['cache']['validationAgeSeconds'], two['cache']['validationAgeSeconds'])
++
++    def test_acquisition_mismatch_and_future_clock_are_not_silently_repaired(self):
++        self.entry['acquisitionEvidence'] = self.write('receipt.json', canonical({'utc': self.now}))
++        _, result = self.run_binding()
++        self.assertEqual(result['diagnostics'], ['metadata-acquisition-evidence-mismatch'])
++        _, result = self.run_binding('2026-09-30T00:00:00Z')
++        self.assertEqual(result['diagnostics'], ['metadata-clock-order-invalid'])
++
++    def test_unknown_retention_does_not_claim_thirty_day_entitlement(self):
++        self.entry['retentionDays'] = None
++        _, result = self.run_binding()
++        self.assertEqual(result['status'], 'metadata-candidate')
++        self.assertFalse(result['cache']['retentionQualified'])
++        self.assertIn('source-retention-duration-unqualified', result['diagnostics'])
++
++    def test_metadata_never_upgrades_to_recipe_or_quantity(self):
++        self.row['recipeBodyEstablished'] = True
++        self.entry['input'] = self.write('candidate.json', canonical({
++            'country': 'BH', 'source': {'sha256': 'a' * 64},
++            'recordCount': 1, 'records': [self.row]}))
++        _, result = self.run_binding()
++        self.assertEqual(result['diagnostics'], ['metadata-catalogue-scope-invalid'])
++        self.entry['nativeUnit'] = 'g'
++        _, result = self.run_binding()
++        self.assertEqual(result['diagnostics'], ['metadata-quantity-inference-rejected'])
++
++    def test_bad_profile_does_not_hide_independent_valid_binding(self):
++        bad = deepcopy(self.entry)
++        bad.update(id='unsupported', profile='other-country-engine')
++        report = binding.build(self.config([bad, self.entry]), self.root,
++                               now=self.now, validated_at=self.now)
++        self.assertEqual([x['status'] for x in report['results']],
++                         ['malformed-input', 'metadata-candidate'])
++
++    def test_replay_is_no_op_and_held_report_does_not_activate_old_artifact(self):
++        report, _ = self.run_binding()
++        binding.publish_report(report, self.output)
++        artifact = self.output / report['results'][0]['artifact']
++        before = (artifact.stat().st_mtime_ns, artifact.read_bytes())
++        report, _ = self.run_binding()
++        binding.publish_report(report, self.output)
++        self.assertEqual(report['results'][0]['writeAction'], 'no-op')
++        self.assertEqual((artifact.stat().st_mtime_ns, artifact.read_bytes()), before)
++        self.entry.update(state='held', blocker='source-use-unknown')
++        report, _ = self.run_binding()
++        binding.publish_report(report, self.output)
++        self.assertNotIn('artifact', report['results'][0])
++        self.assertTrue(artifact.exists())
++
++    def test_ki_receipt_stages_metadata_not_cpi_values(self):
++        raw = {k: None for k in binding.KI_FIELDS}
++        raw.update(country='KI', id='authored-report', canonical_url='https://nso.invalid/cpi',
++                   version='September2025', http_status=200, dataset_acquired=True,
++                   utc=self.acquired, acquisition_rights='fixture only')
++        self.entry.update(id='ki-fixture', country='KI', profile='ki-cpi-receipt',
++                          sourceURL=raw['canonical_url'],
++                          input=self.write('ki.json', canonical(raw)))
++        _, result = self.run_binding()
++        record = json.loads(result['candidateBytes'])[0]
++        self.assertEqual(record['countries'], ['KI'])
++        self.assertNotIn('price', record['data']['sourceRecord'])
++        self.assertEqual(record['provenance']['fieldOrigins']['/data/sourceRecord/bytes']['sourceField'], '/bytes')
++
++    def test_cli_emits_all_diagnostics_and_uses_only_authored_json(self):
++        bad = deepcopy(self.entry)
++        bad.update(id='missing-fixture', input={**bad['input'], 'path': 'missing.json'})
++        config = Path(self.temp.name) / 'config.json'
++        config.write_bytes(canonical(self.config([self.entry, bad])))
++        with patch.object(binding, 'CONFIG', config), redirect_stdout(io.StringIO()):
++            status = binding.main(['--metadata-root', str(self.root), '--output', str(self.output),
++                                   '--now', self.now])
++        self.assertEqual(status, 2)
++        report = json.loads((self.output / 'report.json').read_text())
++        self.assertEqual([r['status'] for r in report['results']],
++                         ['metadata-candidate', 'missing-input'])
++
++    def test_real_portfolio_configuration_retains_all_six_category_gaps(self):
++        config = json.loads(binding.CONFIG.read_text())
++        self.assertEqual(config['countries'], ['BH', 'KI', 'RE'])
++        self.assertEqual(len(config['requiredDomains']), 6)
++        self.assertFalse(config['sourceOperationsAuthorized'])
++        self.assertEqual([r['state'] for r in config['bindings']].count('held'), 3)
++        self.assertTrue(all(r['nativeUnit'] is None and r['nativeBasis'] is None
++                            for r in config['bindings']))
++
++    def test_bad_output_and_global_config_fail_with_typed_cli_diagnostics(self):
++        config = Path(self.temp.name) / 'bad-config.json'
++        config.write_text('{invalid')
++        error = io.StringIO()
++        with patch.object(binding, 'CONFIG', config), redirect_stdout(io.StringIO()), patch('sys.stderr', error):
++            status = binding.main(['--metadata-root', str(self.root), '--output', str(self.output),
++                                   '--now', self.now])
++        self.assertEqual(status, 2)
++        self.assertEqual(json.loads(error.getvalue())['diagnostics'], ['metadata-cli-config-malformed'])
++        config.write_bytes(canonical(self.config()))
++        self.output.write_text('occupied by an unrelated file')
++        error = io.StringIO()
++        with patch.object(binding, 'CONFIG', config), redirect_stdout(io.StringIO()), patch('sys.stderr', error):
++            status = binding.main(['--metadata-root', str(self.root), '--output', str(self.output),
++                                   '--now', self.now])
++        self.assertEqual(status, 2)
++        self.assertEqual(json.loads(error.getvalue())['diagnostics'], ['metadata-output-not-owned'])
++
++    def test_lineage_pin_is_explicit_and_mismatched_candidate_is_rejected(self):
++        lineage = {'candidate': {'sha256': self.entry['input']['sha256']},
++                   'source': {'path': 'source-not-opened.html', 'sha256': 'a' * 64},
++                   'passed': 1, 'failed': 0}
++        self.entry['lineageEvidence'] = self.write('lineage.json', canonical(lineage))
++        _, result = self.run_binding()
++        self.assertEqual(result['status'], 'metadata-candidate')
++        self.assertEqual(result['upstreamOriginEvidence']['sourcePin'], lineage['source'])
++        lineage['candidate']['sha256'] = 'b' * 64
++        self.entry['lineageEvidence'] = self.write('lineage.json', canonical(lineage))
++        _, result = self.run_binding()
++        self.assertEqual(result['diagnostics'], ['metadata-lineage-evidence-mismatch'])
++
++    def test_review_lock_hardlink_preserves_input_bytes_and_mtime(self):
++        self.output.mkdir()
++        source = self.root / 'candidate.json'
++        before = (source.read_bytes(), source.stat().st_mtime_ns)
++        lock = self.output / '.worker09.lock'
++        os.link(source, lock)
++        report, _ = self.run_binding()
++        rejected = False
++        try:
++            binding.publish_report(report, self.output)
++        except binding.RefreshError:
++            rejected = True
++        self.assertEqual((source.read_bytes(), source.stat().st_mtime_ns), before)
++        self.assertTrue(rejected)
++        self.assertFalse((self.output / 'report.json').exists())
++        lock.unlink()
++        for expected in ['created', 'no-op']:
++            report, _ = self.run_binding()
++            binding.publish_report(report, self.output)
++            self.assertEqual(report['results'][0]['writeAction'], expected)
++
++    def test_review_malformed_ids_each_preserve_valid_sibling(self):
++        for malformed in [[], {}, ['x'], {'x': 1}]:
++            with self.subTest(malformed=malformed):
++                bad = deepcopy(self.entry)
++                bad['id'] = malformed
++                report = binding.build(self.config([bad, bad, self.entry]), self.root,
++                                       now=self.now, validated_at=self.now)
++                self.assertEqual(len(report['results']), 3)
++                self.assertEqual([x['status'] for x in report['results']],
++                                 ['malformed-input', 'malformed-input', 'metadata-candidate'])
++                self.assertTrue(all(x['diagnostics'] == ['metadata-binding-invalid']
++                                    for x in report['results'][:2]))
++                self.assertEqual([x['id'] for x in report['results'][:2]], [None, None])
++
++    def test_review_report_slot_hardlinks_and_special_lock_preserve_input(self):
++        self.output.mkdir()
++        source = self.root / 'candidate.json'
++        before = (source.read_bytes(), source.stat().st_mtime_ns)
++        for name in ['report.json', 'report.json.pending']:
++            alias = self.output / name
++            os.link(source, alias)
++            report, _ = self.run_binding()
++            with self.assertRaisesRegex(binding.RefreshError, 'metadata-output-file-unsafe'):
++                binding.publish_report(report, self.output)
++            self.assertEqual((source.read_bytes(), source.stat().st_mtime_ns), before)
++            self.assertFalse((self.output / '.worker09.lock').exists())
++            alias.unlink()
++        os.mkfifo(self.output / '.worker09.lock')
++        report, _ = self.run_binding()
++        with self.assertRaisesRegex(binding.RefreshError, 'metadata-output-file-unsafe'):
++            binding.publish_report(report, self.output)
++        self.assertEqual((source.read_bytes(), source.stat().st_mtime_ns), before)
++
++    def test_review_output_ownership_is_checked_before_lock_creation(self):
++        self.output.mkdir()
++        report, _ = self.run_binding()
++        with patch.object(binding.os, 'geteuid', return_value=os.geteuid() + 1):
++            with self.assertRaisesRegex(binding.RefreshError, 'metadata-output-not-owned'):
++                binding.publish_report(report, self.output)
++        self.assertEqual(list(self.output.iterdir()), [])
++
++
++if __name__ == '__main__':
++    unittest.main()

@@ -1,0 +1,1207 @@
+diff --git a/config/portfolios/bm-lc-sc.json b/config/portfolios/bm-lc-sc.json
+new file mode 100644
+index 00000000..db842201
+--- /dev/null
++++ b/config/portfolios/bm-lc-sc.json
+@@ -0,0 +1,661 @@
++{
++  "schemaVersion": "offmenu-bm-lc-sc-bindings/1",
++  "portfolio": [
++    "BM",
++    "LC",
++    "SC"
++  ],
++  "bindings": [
++    {
++      "id": "bm-recipe",
++      "country": "BM",
++      "sourceId": "0f438889a3ae627b6cb7",
++      "releaseId": "metadata-snapshot-f7fca67871a4f3bf",
++      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
++      "scope": "retained-metadata-only",
++      "metadata": {
++        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/originals/0f438889a3ae627b6cb7/receipt.json",
++        "sha256": "f7fca67871a4f3bfd1feb628078f69a3ad111b24077eb0ea20ea5631b167a12d",
++        "bytes": 1127
++      },
++      "selectors": {
++        "country": "/country",
++        "publisherLocator": "/canonicalURL",
++        "recordedUseStatement": "/rights",
++        "recordedReleaseLabel": "/version"
++      },
++      "originalAcquiredAtSelector": null,
++      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
++      "originalObservationTimeSelector": "/utc",
++      "validationEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/BM/staged-observation-validation.json",
++        "sha256": "d9f33c1179d9aa85aad1fa86dcb7abd4da41df2fdaf4ee5038be1b9da01fc827",
++        "bytes": 4562
++      },
++      "retainedBodyReferenceOnly": {
++        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/originals/0f438889a3ae627b6cb7/response-original.bin",
++        "sha256": "cbef70c9b299315199ccafe1ee44ac47d94ed583d69549d51743a5c378ddd460",
++        "bytes": 288338
++      },
++      "applicability": {
++        "country": "BM",
++        "types": [
++          "recipes",
++          "ingredients"
++        ],
++        "scope": "Source-local evidence only; no national/category completeness",
++        "accepted": false
++      },
++      "nativeSemantics": {
++        "units": null,
++        "basis": null,
++        "canonicalEquivalence": null,
++        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
++        "knownConstraints": [
++          "Yield8items is not8persons; source yieldUnit declaration in staged /yieldUnit, no conversion"
++        ]
++      },
++      "holds": [
++        "private-inspection-only; parse/transform/public redistribution not cleared"
++      ],
++      "missingForBodyStaging": [
++        "operation-specific source-use decision",
++        "exact edition/record field-origin selectors and dictionary",
++        "independent scope/semantic acceptance"
++      ],
++      "adapterBinding": {
++        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
++        "bodyAdapter": null,
++        "sourceContract": null,
++        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
++      },
++      "bodyFieldDeclarations": {
++        "sourceProjection": {
++          "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/recipe-observation.json",
++          "sha256": "5522b3e10ecd280ace878c403d8eb0b8d26e9921d8c83cab728ca48412131c68",
++          "bytes": 1654
++        },
++        "execution": "held-not-executed",
++        "fields": [
++          {
++            "datum": "yieldItemCount",
++            "selector": "/yieldItemCount",
++            "unitSelector": "/yieldUnit",
++            "basis": "source-defined item count; not persons/servings",
++            "conversion": null
++          },
++          {
++            "datum": "servings",
++            "selector": "/servings",
++            "unitSelector": null,
++            "basis": "unknown; preserve null",
++            "conversion": null
++          },
++          {
++            "datum": "nutrients",
++            "selector": "/nutrients",
++            "unitSelector": null,
++            "basis": "unknown; preserve null",
++            "conversion": null
++          }
++        ],
++        "sourceAttributionSelector": "/source",
++        "rightsSelector": "/rights"
++      }
++    },
++    {
++      "id": "bm-prices",
++      "country": "BM",
++      "sourceId": "113af8431c7b93915013",
++      "releaseId": "metadata-snapshot-ca2b535825952c4f",
++      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
++      "scope": "retained-metadata-only",
++      "metadata": {
++        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/originals/113af8431c7b93915013/receipt.json",
++        "sha256": "ca2b535825952c4fdf3c2fb99067595cba10ecb44675da3210fc28f13dace9a5",
++        "bytes": 1343
++      },
++      "selectors": {
++        "country": "/country",
++        "publisherLocator": "/canonicalURL",
++        "recordedUseStatement": "/rights",
++        "recordedReleaseLabel": "/version"
++      },
++      "originalAcquiredAtSelector": null,
++      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
++      "originalObservationTimeSelector": "/utc",
++      "validationEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/BM/staged-observation-validation.json",
++        "sha256": "d9f33c1179d9aa85aad1fa86dcb7abd4da41df2fdaf4ee5038be1b9da01fc827",
++        "bytes": 4562
++      },
++      "retainedBodyReferenceOnly": {
++        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/originals/113af8431c7b93915013/response-original.bin",
++        "sha256": "cf4bceee533696cb3093bec8d80ada7315e174300d9f470ea09270d239bfccc4",
++        "bytes": 401815
++      },
++      "applicability": {
++        "country": "BM",
++        "types": [
++          "prices/baskets"
++        ],
++        "scope": "Source-local evidence only; no national/category completeness",
++        "accepted": false
++      },
++      "nativeSemantics": {
++        "units": null,
++        "basis": null,
++        "canonicalEquivalence": null,
++        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
++        "knownConstraints": [
++          "Currency ISO unknown, dollar symbol insufficient; pack contradiction retained"
++        ]
++      },
++      "holds": [
++        "private-inspection-only; parse/transform/public redistribution not cleared"
++      ],
++      "missingForBodyStaging": [
++        "operation-specific source-use decision",
++        "exact edition/record field-origin selectors and dictionary",
++        "independent scope/semantic acceptance"
++      ],
++      "adapterBinding": {
++        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
++        "bodyAdapter": null,
++        "sourceContract": null,
++        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
++      },
++      "bodyFieldDeclarations": {
++        "sourceProjection": {
++          "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/price-observations.json",
++          "sha256": "81d58a4421fc4b2f0772eab63bda314ad6f470f6fc88357f39f454a542fd32ca",
++          "bytes": 10003
++        },
++        "execution": "held-not-executed",
++        "fields": [
++          {
++            "recordSelector": "/records/0",
++            "datum": "price.value",
++            "selector": "/records/0/price/value",
++            "unitSelector": "/records/0/price/currencyCode",
++            "basisSelector": "/records/0/price/basis",
++            "packageSelector": "/records/0/packageExpressionOriginal",
++            "citationSelector": "/records/0/citation",
++            "conversion": null,
++            "unitQualification": "ISO unknown; symbol cannot resolve it"
++          },
++          {
++            "recordSelector": "/records/1",
++            "datum": "price.value",
++            "selector": "/records/1/price/value",
++            "unitSelector": "/records/1/price/currencyCode",
++            "basisSelector": "/records/1/price/basis",
++            "packageSelector": "/records/1/packageExpressionOriginal",
++            "citationSelector": "/records/1/citation",
++            "conversion": null,
++            "unitQualification": "ISO unknown; symbol cannot resolve it"
++          },
++          {
++            "recordSelector": "/records/2",
++            "datum": "price.value",
++            "selector": "/records/2/price/value",
++            "unitSelector": "/records/2/price/currencyCode",
++            "basisSelector": "/records/2/price/basis",
++            "packageSelector": "/records/2/packageExpressionOriginal",
++            "citationSelector": "/records/2/citation",
++            "conversion": null,
++            "unitQualification": "ISO unknown; symbol cannot resolve it"
++          },
++          {
++            "recordSelector": "/records/3",
++            "datum": "price.value",
++            "selector": "/records/3/price/value",
++            "unitSelector": "/records/3/price/currencyCode",
++            "basisSelector": "/records/3/price/basis",
++            "packageSelector": "/records/3/packageExpressionOriginal",
++            "citationSelector": "/records/3/citation",
++            "conversion": null,
++            "unitQualification": "ISO unknown; symbol cannot resolve it"
++          },
++          {
++            "recordSelector": "/records/4",
++            "datum": "price.value",
++            "selector": "/records/4/price/value",
++            "unitSelector": "/records/4/price/currencyCode",
++            "basisSelector": "/records/4/price/basis",
++            "packageSelector": "/records/4/packageExpressionOriginal",
++            "citationSelector": "/records/4/citation",
++            "conversion": null,
++            "unitQualification": "ISO unknown; symbol cannot resolve it"
++          },
++          {
++            "recordSelector": "/records/5",
++            "datum": "price.value",
++            "selector": "/records/5/price/value",
++            "unitSelector": "/records/5/price/currencyCode",
++            "basisSelector": "/records/5/price/basis",
++            "packageSelector": "/records/5/packageExpressionOriginal",
++            "citationSelector": "/records/5/citation",
++            "conversion": null,
++            "unitQualification": "ISO unknown; symbol cannot resolve it"
++          },
++          {
++            "recordSelector": "/records/6",
++            "datum": "price.value",
++            "selector": "/records/6/price/value",
++            "unitSelector": "/records/6/price/currencyCode",
++            "basisSelector": "/records/6/price/basis",
++            "packageSelector": "/records/6/packageExpressionOriginal",
++            "citationSelector": "/records/6/citation",
++            "conversion": null,
++            "unitQualification": "ISO unknown; symbol cannot resolve it"
++          }
++        ]
++      }
++    },
++    {
++      "id": "bm-dietary-poster",
++      "country": "BM",
++      "sourceId": "e56a1d0c731df83ae2ae",
++      "releaseId": "metadata-snapshot-534ec3d87aa62191",
++      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
++      "scope": "retained-metadata-only",
++      "metadata": {
++        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/originals/e56a1d0c731df83ae2ae/receipt.json",
++        "sha256": "534ec3d87aa6219151de67deac61826af717bba382ffadd1e9b5fbee85e348aa",
++        "bytes": 1355
++      },
++      "selectors": {
++        "country": "/country",
++        "publisherLocator": "/canonicalURL",
++        "recordedUseStatement": "/rights",
++        "recordedReleaseLabel": "/version"
++      },
++      "originalAcquiredAtSelector": null,
++      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
++      "originalObservationTimeSelector": "/utc",
++      "validationEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/BM/staged-observation-validation.json",
++        "sha256": "d9f33c1179d9aa85aad1fa86dcb7abd4da41df2fdaf4ee5038be1b9da01fc827",
++        "bytes": 4562
++      },
++      "retainedBodyReferenceOnly": {
++        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/originals/e56a1d0c731df83ae2ae/response-original.bin",
++        "sha256": "c51de0e30979359838200cbf1c4f01bf1c6df876aa7a8fae2df78ee543cd03ad",
++        "bytes": 3452805
++      },
++      "applicability": {
++        "country": "BM",
++        "types": [
++          "dietary references"
++        ],
++        "scope": "Source-local evidence only; no national/category completeness",
++        "accepted": false
++      },
++      "nativeSemantics": {
++        "units": null,
++        "basis": null,
++        "canonicalEquivalence": null,
++        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
++        "knownConstraints": [
++          "Not analytical composition; serving unit and edition unknown"
++        ]
++      },
++      "holds": [
++        "private-inspection-only; parse/transform/public redistribution not cleared"
++      ],
++      "missingForBodyStaging": [
++        "operation-specific source-use decision",
++        "exact edition/record field-origin selectors and dictionary",
++        "independent scope/semantic acceptance"
++      ],
++      "adapterBinding": {
++        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
++        "bodyAdapter": null,
++        "sourceContract": null,
++        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
++      },
++      "bodyFieldDeclarations": {
++        "sourceProjection": {
++          "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/nutrition-dietary-reference.json",
++          "sha256": "ceb986002c587ef8d78504b9d9abdd21fa011fa235fa5112d1ca82a558bfc892",
++          "bytes": 1216
++        },
++        "execution": "held-not-executed",
++        "fields": [],
++        "reason": "Document reference only; edition/serving-unit unknown, no numeric guideline adopted"
++      }
++    },
++    {
++      "id": "bm-cpi",
++      "country": "BM",
++      "sourceId": "930de07af43b9d9e53e9",
++      "releaseId": "metadata-snapshot-aeb96e6b851185e9",
++      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
++      "scope": "retained-metadata-only",
++      "metadata": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-45/BM/930de07af43b9d9e53e9/receipt.json",
++        "sha256": "aeb96e6b851185e9a56bea6d58bc6504776e56fa92198b4131eb9a0099b1b549",
++        "bytes": 9687
++      },
++      "selectors": {
++        "country": "/country",
++        "publisherLocator": "/url",
++        "recordedUseStatement": "/rights",
++        "recordedReleaseLabel": "/version"
++      },
++      "originalAcquiredAtSelector": null,
++      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
++      "originalObservationTimeSelector": "/utc",
++      "validationEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/BM/staged-observation-validation.json",
++        "sha256": "d9f33c1179d9aa85aad1fa86dcb7abd4da41df2fdaf4ee5038be1b9da01fc827",
++        "bytes": 4562
++      },
++      "retainedBodyReferenceOnly": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-45/BM/930de07af43b9d9e53e9/publisher-response.html",
++        "sha256": "fdba5459ab5e74095ee9893e9dd693ad348a5f926767eb24c306d54c40315d4c",
++        "bytes": 180581
++      },
++      "applicability": {
++        "country": "BM",
++        "types": [
++          "prices/baskets"
++        ],
++        "scope": "Source-local evidence only; no national/category completeness",
++        "accepted": false
++      },
++      "nativeSemantics": {
++        "units": null,
++        "basis": null,
++        "canonicalEquivalence": null,
++        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
++        "knownConstraints": [
++          "Index not individual item prices or basket"
++        ]
++      },
++      "holds": [
++        "private-inspection-only; parse/transform/public redistribution not cleared"
++      ],
++      "missingForBodyStaging": [
++        "operation-specific source-use decision",
++        "exact edition/record field-origin selectors and dictionary",
++        "independent scope/semantic acceptance"
++      ],
++      "adapterBinding": {
++        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
++        "bodyAdapter": null,
++        "sourceContract": null,
++        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
++      },
++      "bodyFieldDeclarations": null
++    },
++    {
++      "id": "lc-collection",
++      "country": "LC",
++      "sourceId": "0216ce1356e651e204b8",
++      "releaseId": "metadata-snapshot-76d780b271fb9950",
++      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
++      "scope": "retained-metadata-only",
++      "metadata": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-13/LC/0216ce1356e651e204b8/receipt.json",
++        "sha256": "76d780b271fb995055b901cbda70b5e917be9fe17a5ea6a30bdb4fd4f0a6fcf9",
++        "bytes": 3388
++      },
++      "selectors": {
++        "country": "/country",
++        "publisherLocator": "/canonicalURL",
++        "recordedUseStatement": "/licence",
++        "recordedReleaseLabel": "/release"
++      },
++      "originalAcquiredAtSelector": "/requests/0/finishedUTC",
++      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
++      "originalObservationTimeSelector": "/lastUTC",
++      "validationEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/LC/source-reference-validation.json",
++        "sha256": "225da93da96e68a5f6258e9ec99534ef8d5b6fe4ff0456e90e752007de3a99d3",
++        "bytes": 5179
++      },
++      "retainedBodyReferenceOnly": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-13/LC/0216ce1356e651e204b8/recipes-books.html",
++        "sha256": "bd9f83326fddfff02e6b2815c5eec0252d028d14a8fe6d451163727f0047aff3",
++        "bytes": 213774
++      },
++      "applicability": {
++        "country": "LC",
++        "types": [
++          "recipes"
++        ],
++        "scope": "Source-local evidence only; no national/category completeness",
++        "accepted": false
++      },
++      "nativeSemantics": {
++        "units": null,
++        "basis": null,
++        "canonicalEquivalence": null,
++        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
++        "knownConstraints": [
++          "Collection HTML metadata not book recipe/method/nutrient fields"
++        ]
++      },
++      "holds": [
++        "edition-onward-use-not-established; no-body-processing"
++      ],
++      "missingForBodyStaging": [
++        "operation-specific source-use decision",
++        "exact edition/record field-origin selectors and dictionary",
++        "independent scope/semantic acceptance"
++      ],
++      "adapterBinding": {
++        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
++        "bodyAdapter": null,
++        "sourceContract": null,
++        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
++      },
++      "bodyFieldDeclarations": null
++    },
++    {
++      "id": "sc-wine",
++      "country": "SC",
++      "sourceId": "06cd1b4ecb5884585fc5",
++      "releaseId": "metadata-snapshot-a7676ea634ce1800",
++      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
++      "scope": "retained-metadata-only",
++      "metadata": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/SC/06cd1b4ecb5884585fc5/receipt.json",
++        "sha256": "a7676ea634ce18004ac27a2cee414fa89ee290150a59ccecb711dce861ea95e3",
++        "bytes": 1961
++      },
++      "selectors": {
++        "country": "/country",
++        "publisherLocator": "/canonicalURL",
++        "recordedUseStatement": "/licence",
++        "recordedReleaseLabel": "/release"
++      },
++      "originalAcquiredAtSelector": null,
++      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
++      "originalObservationTimeSelector": "/response/utc",
++      "validationEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/SC/original-integrity-validation.json",
++        "sha256": "5872ab0769567ceab3110912aa32cf5700948daba3a6de9eff9b0d57bea20554",
++        "bytes": 9180
++      },
++      "retainedBodyReferenceOnly": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/SC/06cd1b4ecb5884585fc5/windsong-wine-202510.pdf",
++        "sha256": "b6e8f503db79130c2a6aeb5bd6396834bdddf49423fdf72a40cbdbabb299047f",
++        "bytes": 661249
++      },
++      "applicability": {
++        "country": "SC",
++        "types": [
++          "menus"
++        ],
++        "scope": "Source-local evidence only; no national/category completeness",
++        "accepted": false
++      },
++      "nativeSemantics": {
++        "units": null,
++        "basis": null,
++        "canonicalEquivalence": null,
++        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
++        "knownConstraints": [
++          "Venue edition PDF not national coverage; no extracted menu field origins accepted"
++        ]
++      },
++      "holds": [
++        "no-adaptation-or-redistribution-grant; no-body-processing"
++      ],
++      "missingForBodyStaging": [
++        "operation-specific source-use decision",
++        "exact edition/record field-origin selectors and dictionary",
++        "independent scope/semantic acceptance"
++      ],
++      "adapterBinding": {
++        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
++        "bodyAdapter": null,
++        "sourceContract": null,
++        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
++      },
++      "bodyFieldDeclarations": null
++    },
++    {
++      "id": "sc-beverages",
++      "country": "SC",
++      "sourceId": "66f950a789d2da6a5736",
++      "releaseId": "metadata-snapshot-54c04d5431330b71",
++      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
++      "scope": "retained-metadata-only",
++      "metadata": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/SC/66f950a789d2da6a5736/receipt.json",
++        "sha256": "54c04d5431330b71514a81fba420f8d0a4064f1590c1906824fc4c7f34b87bf4",
++        "bytes": 1994
++      },
++      "selectors": {
++        "country": "/country",
++        "publisherLocator": "/canonicalURL",
++        "recordedUseStatement": "/licence",
++        "recordedReleaseLabel": "/release"
++      },
++      "originalAcquiredAtSelector": null,
++      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
++      "originalObservationTimeSelector": "/response/utc",
++      "validationEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/SC/original-integrity-validation.json",
++        "sha256": "5872ab0769567ceab3110912aa32cf5700948daba3a6de9eff9b0d57bea20554",
++        "bytes": 9180
++      },
++      "retainedBodyReferenceOnly": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/SC/66f950a789d2da6a5736/windsong-beverages-202603.pdf",
++        "sha256": "79d645abbac1708e8136a14457bfec8d4c2f38fb119b1f98b5f62de2fc7d4409",
++        "bytes": 7315113
++      },
++      "applicability": {
++        "country": "SC",
++        "types": [
++          "menus"
++        ],
++        "scope": "Source-local evidence only; no national/category completeness",
++        "accepted": false
++      },
++      "nativeSemantics": {
++        "units": null,
++        "basis": null,
++        "canonicalEquivalence": null,
++        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
++        "knownConstraints": [
++          "Venue edition PDF not national coverage; no extracted menu field origins accepted"
++        ]
++      },
++      "holds": [
++        "no-adaptation-or-redistribution-grant; no-body-processing"
++      ],
++      "missingForBodyStaging": [
++        "operation-specific source-use decision",
++        "exact edition/record field-origin selectors and dictionary",
++        "independent scope/semantic acceptance"
++      ],
++      "adapterBinding": {
++        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
++        "bodyAdapter": null,
++        "sourceContract": null,
++        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
++      },
++      "bodyFieldDeclarations": null
++    },
++    {
++      "id": "sc-alacarte",
++      "country": "SC",
++      "sourceId": "73b54db5b114a91e662d",
++      "releaseId": "metadata-snapshot-5ad4a391a9a56f8b",
++      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
++      "scope": "retained-metadata-only",
++      "metadata": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/SC/73b54db5b114a91e662d/receipt.json",
++        "sha256": "5ad4a391a9a56f8b00165a2c6bcea3bfc51d0d8f3175f3b983578978a63d269c",
++        "bytes": 2051
++      },
++      "selectors": {
++        "country": "/country",
++        "publisherLocator": "/canonicalURL",
++        "recordedUseStatement": "/licence",
++        "recordedReleaseLabel": "/release"
++      },
++      "originalAcquiredAtSelector": null,
++      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
++      "originalObservationTimeSelector": "/response/utc",
++      "validationEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/SC/original-integrity-validation.json",
++        "sha256": "5872ab0769567ceab3110912aa32cf5700948daba3a6de9eff9b0d57bea20554",
++        "bytes": 9180
++      },
++      "retainedBodyReferenceOnly": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/SC/73b54db5b114a91e662d/windsong-alacarte-20260904.pdf",
++        "sha256": "70d561fb30874c5c88d39721024a8c9406a15c2587f9bccfc9a1661c587806a5",
++        "bytes": 1999914
++      },
++      "applicability": {
++        "country": "SC",
++        "types": [
++          "menus"
++        ],
++        "scope": "Source-local evidence only; no national/category completeness",
++        "accepted": false
++      },
++      "nativeSemantics": {
++        "units": null,
++        "basis": null,
++        "canonicalEquivalence": null,
++        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
++        "knownConstraints": [
++          "Venue edition PDF not national coverage; no extracted menu field origins accepted"
++        ]
++      },
++      "holds": [
++        "no-adaptation-or-redistribution-grant; no-body-processing"
++      ],
++      "missingForBodyStaging": [
++        "operation-specific source-use decision",
++        "exact edition/record field-origin selectors and dictionary",
++        "independent scope/semantic acceptance"
++      ],
++      "adapterBinding": {
++        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
++        "bodyAdapter": null,
++        "sourceContract": null,
++        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
++      },
++      "bodyFieldDeclarations": null
++    }
++  ],
++  "requiredCountryTypes": [
++    "ingredients",
++    "recipes",
++    "nutrition",
++    "retailers/providers",
++    "prices/baskets",
++    "dietary references"
++  ],
++  "coverage": "Source-local metadata only; absent types remain missing, none declared inapplicable",
++  "sharedDevelop": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
++  "productionAdmission": false
++}
+diff --git a/docs/operations/bm-lc-sc-staging-binding.md b/docs/operations/bm-lc-sc-staging-binding.md
+new file mode 100644
+index 00000000..03bd202a
+--- /dev/null
++++ b/docs/operations/bm-lc-sc-staging-binding.md
+@@ -0,0 +1,125 @@
++# BM / LC / SC retained metadata binding
++
++Selected request: `M-STAGING-BIND-20261018-W11`. Base is accepted develop
++`abecb99ee1125730ccbc2824b6ec49ffc5cc4302`. This package owns only
++`offmenu/portfolio_bm_lc_sc.py`, `config/portfolios/bm-lc-sc.json`, its authored
++fixture/tests and this document. No shared refresh implementation is changed.
++
++Run from the repository on Foo, using an explicit UTC validation clock:
++
++```sh
++python3 -m offmenu.portfolio_bm_lc_sc --now 2026-10-18T06:00:00Z
++python3 -m unittest discover -s tests -p test_portfolio_bm_lc_sc.py -v
++```
++
++The CLI reads only eight exact pinned JSON metadata receipts from the reviewed
++configuration. It never follows receipt body paths, staged-projection paths,
++publisher URLs or arbitrary user paths. It emits deterministic JSON to stdout;
++exit 2 means at least one missing/held/malformed binding. Nothing is written
++to a cache or staging directory. This is a proposed source-input metadata envelope,
++not an adapter that extracts recipes or menu/price values. The existing generic
++`field_origin_errors`, strict JSON, canonical serialization, timestamp/path guards
++are reused. No country engine is copied. The metadata reader descends through no-follow directory descriptors, opens the final descriptor nonblocking, checks regular-file/type/size, and verifies stable descriptor identity/size around its bounded read. A FIFO or special file returns a fixed isolated error before the next peer. This guard is for local Foo files, not an OS sandbox or network-filesystem timeout promise.
++
++`assess(binding, raw_metadata, now=..., previous_key=...)` is the pure interface
++for reviewed callers and authored tests. `run` isolates failures by binding;
++one malformed or inaccessible receipt cannot suppress other diagnoses. Supplying
++custom bindings to that Python interface is a code-custody responsibility; the
++CLI has no config/path/URL/rights/force override. It does not create a trusted
++`SourceContract`, install a registry entry, produce accepted counts or enable any
++source operation. No claim of an OS sandbox follows from these interfaces.
++
++## Evidence and applicability
++
++The config pins source receipts and previously frozen validation manifests.
++`retainedBodyReferenceOnly` records historical custody, never a fresh body hash
++verification. Source release IDs identify exact retained metadata snapshots;
++publisher release labels remain distinct from independently qualified editions.
++BM covers recipe/ingredient references, seven dated offer references, one dietary
++poster and CPI metadata; LC covers the ministry collection-page record; SC covers
++three venue/edition menu receipts. None proves national/category completeness.
++The six required country types remain explicit; unrepresented types are missing,
++not inapplicable or accepted. SC menus do not stand in for recipes or composition.
++
++Every selected metadata scalar has an exact receipt JSON pointer, input digest,
++source/release identity and origin declaration checked by the shared validator.
++BM's existing staged projection pins additionally declare the future yield,
++price/currency/package/basis/citation coordinates. They are held declarations,
++not executed transforms. Yield items are separate from servings; unknown currency,
++nutrients, conversions and units remain unknown. LC has no book field declarations;
++SC has no parsed menu field declarations. No invented body locator or canonical
++equivalence fills those gaps.
++
++No publisher documentation lookup is needed to interpret these metadata fields.
++Existing source-specific rights restrictions are the blockers, not lack of access
++to an internal custodian. BM stays private inspection only, LC's edition-bound
++grant was explicitly not held in the declared source-record scope, and SC lacks
++an adaptation/redistribution grant. Public landing/download access and unrelated
++CC0 directory metadata do not clear those operations. Rights-holder/source scope
++acceptance remains a separate Morgan-selected step. No new legal determination
++or universal prohibition on every possible use is asserted.
++
++## Acquisition clock, replay and diagnostics
++
++LC `/requests/0/finishedUTC` evidences the original HTML response completion.
++Other recorded observation/finalization timestamps are declared separately; this
++binding leaves original completion unknown until its exact meaning is qualified.
++Validation time and filesystem mtime never fill that field or reset its age.
++
++The controlling contract still requires minimum 30-day reuse, but accepted develop
++has no generic pure cache planner. This binding therefore always reports
++`plannerCapability=unsupported`, `decision=unknown-no-download` and
++`downloadAllowed=false`, regardless of observed age. It does not classify input
++as fresh/reusable/stale or choose revalidation eligibility. It retains the original
++clock and observed acquisition age solely as evidence. Missing/held/malformed
++inputs cannot produce a metadata envelope. Old authored metadata can produce a
++metadata-only envelope or replay hint, never a cache-eligibility or source-use
++verdict. The caller must retain the explicit unsupported cache capability.
++
++The key pins the complete binding and metadata digest, but excludes the current
++validation clock. Identical valid inputs return `unchanged-no-op` when the caller
++supplies the prior key; no transform or publication occurs. This is a deterministic
++preflight/no-op **interface**, not a new persistent cache engine. Existing shared
++cache/execution adapters remain responsible for future reviewed staging. The
++current generic `policy.plan_fixture` is fixture-registry bound and
++`core.cache_policy` stamps Wikibooks identity; neither is misrepresented as a
++production BM/LC/SC lifecycle. No refresh path is installed by this package.
++
++Diagnostics are fixed codes, accumulated where independent and isolated by input.
++They never echo exception details, paths or arbitrary source values. Authored
++fixtures cover valid origins including explicit null, missing bytes/coordinates,
++closed use, bad pins/JSON/selectors/clocks, unknown cache capability across age
++boundaries, replay with changed holds, nonregular reader/peer progress, descriptor
++cleanup, failure isolation, and absence of body/network I/O. Passing those fixtures
++does not qualify any real source or country.
++
++## Integrator00 interface proposal and remaining gates
++
++No shared edit is necessary to review or run this metadata preflight. Proposed
++future shared addition, for integrator00 only: extract a source-neutral, pure
++cache-evidence planner accepting reviewed source/release/content identity,
++original acquisition UTC and later validation UTC, with the existing minimum
++30-day policy, zero-download return, no force bypass, and fixed diagnostics.
++Keep source-specific bindings as callers. This package does not implement a
++shared policy change or appoint its acceptance reviewer.
++
++Before real staging: supply exact source-operation rights, qualified original
++acquisition clocks where missing, complete retained input/scope manifests,
++source field dictionaries/native units/bases and per-datum semantic acceptance,
++then select a compatible shared parser/factory and independent review. Exact
++source locks and all no-body/denial/Finland/Frida/NO-FR crash restrictions survive.
++Golden promotion, country acceptance, production/CIX and DEV7645 are separate.
++Independent approval and integrator00's normal expected-head develop integration
++must complete before this worker's next request.
++
++## Correction to reviewed predecessor 902d7310
++
++W14-W11-P2-READER: reused the exact-applicable W06 qualified FIFO failure and
++its reviewed nonblocking/no-follow/regular-fd boundary; no predecessor FIFO hang
++was reexecuted. The owned successor adds authored FIFO/regular-peer and reader
++cleanup regressions. W14-W11-P2-POLICY: the local MIN_TTL cache-decision branch is
++removed. The policy fingerprint changes; original clocks/content replay remain,
++while cache planning is explicitly unsupported at every age. Configuration and
++fixture metadata stay byte-identical. Repository-only runtime scope remains:
++installed-resource adoption would need a separately selected packaging correction.
++Original reviewer14 must independently check this delta; no author closure claimed.
+diff --git a/offmenu/portfolio_bm_lc_sc.py b/offmenu/portfolio_bm_lc_sc.py
+new file mode 100644
+index 00000000..e7b1412e
+--- /dev/null
++++ b/offmenu/portfolio_bm_lc_sc.py
+@@ -0,0 +1,215 @@
++"""BM/LC/SC metadata preflight. No source parser, acquisition or admission.
++
++Configuration is reviewed code custody. CLI exposes only this portfolio and reads
++only its pinned JSON metadata, never a path extracted from a receipt. The shared
++field-origin validator checks declared metadata coordinates; no food semantics or
++rights are inferred. Diagnostics contain fixed codes, never source values.
++"""
++import argparse
++import os
++from pathlib import Path
++import re
++import stat
++
++from offmenu.refresh.core import canonical, sha, strict_json, timestamp, safe_path
++from offmenu.refresh.field_provenance import field_origin_errors
++
++CONFIG = Path(__file__).resolve().parents[1] / 'config/portfolios/bm-lc-sc.json'
++MAX_METADATA = 1024 * 1024
++POLICY = {'scope': 'metadata-only', 'unknown': None, 'cachePlanner': 'unsupported'}
++POLICY_PIN = sha(canonical(POLICY))
++
++
++def pointer(document, selector):
++    """Exact RFC6901 coordinate, not a fallback lookup or inferred field."""
++    if not isinstance(selector, str) or not selector.startswith('/'):
++        raise ValueError('selector-invalid')
++    value = document
++    for token in selector[1:].split('/'):
++        if re.search(r'~(?![01])', token):
++            raise ValueError('selector-invalid')
++        token = token.replace('~1', '/').replace('~0', '~')
++        if isinstance(value, list):
++            if not re.fullmatch(r'0|[1-9][0-9]*', token):
++                raise ValueError('selector-invalid')
++            value = value[int(token)]
++        elif isinstance(value, dict):
++            value = value[token]
++        else:
++            raise ValueError('selector-invalid')
++    return value
++
++
++def assess(binding, raw_metadata, *, now, previous_key=None):
++    """Pure bounded preflight; raw_metadata is already selected metadata bytes.
++
++    Returns a proposed metadata staging envelope only when valid. It never builds
++    a SourceContract or changes rights, cache files, accepted pointers or clocks.
++    The content key excludes validation time; acquisition age never does.
++    """
++    result = {'bindingId': None, 'status': 'malformed', 'errors': [],
++              'metadataCandidate': None, 'contentKey': None, 'replay': 'not-ready',
++              'cache': None, 'networkRequests': 0, 'bodyProcessing': False,
++              'acceptedRecords': 0, 'countryComplete': False}
++    errors = set()
++    try:
++        if (not isinstance(binding, dict) or binding.get('country') not in ('BM', 'LC', 'SC')
++                or not isinstance(binding.get('id'), str) or not binding['id']
++                or not isinstance(binding.get('sourceId'), str) or not binding['sourceId']
++                or not isinstance(binding.get('releaseId'), str) or not binding['releaseId']
++                or not isinstance(binding.get('holds'), list)
++                or not all(isinstance(x, str) and x for x in binding['holds'])
++                or not isinstance(binding.get('selectors'), dict)
++                or not binding['selectors']
++                or binding.get('scope') != 'retained-metadata-only'):
++            raise ValueError('binding-invalid')
++        result['bindingId'] = binding['id']
++        asset = binding['metadata']
++        if (type(asset['bytes']) is not int or not 0 < asset['bytes'] <= MAX_METADATA
++                or not isinstance(asset['sha256'], str)
++                or not re.fullmatch('[0-9a-f]{64}', asset['sha256'])):
++            raise ValueError('metadata-pin-invalid')
++        if binding['holds']:
++            errors.add('source-use-held')
++        if raw_metadata is None:
++            errors.add('metadata-missing')
++        elif (not isinstance(raw_metadata, bytes) or len(raw_metadata) != asset['bytes']
++                or sha(raw_metadata) != asset['sha256']):
++            errors.add('metadata-pin-mismatch')
++        if errors - {'source-use-held'}:
++            result['status'] = 'missing' if 'metadata-missing' in errors else 'malformed'
++            result['errors'] = sorted(errors)
++            return result
++        document = strict_json(raw_metadata)
++        if pointer(document, '/country') != binding['country']:
++            raise ValueError('country-binding-mismatch')
++        values, origins = {}, {}
++        for name, selector in sorted(binding['selectors'].items()):
++            if not re.fullmatch('[a-zA-Z][a-zA-Z0-9]*', name):
++                raise ValueError('field-name-invalid')
++            try:
++                value = pointer(document, selector)
++                if isinstance(value, (dict, list)):
++                    raise ValueError('scalar-selector-required')
++                values[name] = value
++                origins['/data/' + name] = {
++                    'kind': 'source', 'sourceId': binding['sourceId'],
++                    'releaseId': binding['releaseId'], 'inputPath': 'metadata.json',
++                    'inputSha256': asset['sha256'], 'sourceRecordId': binding['id'],
++                    'sourceField': selector}
++            except (KeyError, IndexError):
++                errors.add('declared-field-missing')
++        candidate = {'id': binding['id'], 'kind': 'SourceInputMetadata',
++                     'schemaVersion': 'offmenu-portfolio-metadata/1', 'data': values,
++                     'provenance': {'sourceId': binding['sourceId'],
++                                    'releaseId': binding['releaseId'],
++                                    'fieldOrigins': origins}}
++        errors.update(field_origin_errors(candidate, {'metadata.json': asset['sha256']}))
++        now_time = timestamp(now)
++        acquisition_selector = binding.get('originalAcquiredAtSelector')
++        acquired = None
++        if acquisition_selector is not None:
++            try:
++                acquired = timestamp(pointer(document, acquisition_selector))
++            except (KeyError, IndexError):
++                errors.add('original-acquisition-time-missing')
++        else:
++            errors.add('original-acquisition-time-missing')
++        cache = {'originalAcquiredAt': acquired.isoformat() if acquired else None,
++                 'validationObservedAt': now_time.isoformat(),
++                 'plannerCapability': 'unsupported', 'acquisitionAgeSeconds': None,
++                 'decision': 'unknown-no-download', 'downloadAllowed': False,
++                 'validationResetsAcquisitionAge': False}
++        if acquired:
++            age = (now_time - acquired).total_seconds()
++            if age < 0:
++                errors.add('acquisition-time-in-future')
++            else:
++                cache['acquisitionAgeSeconds'] = int(age)
++        result['cache'] = cache
++        # Pin the full reviewed declaration, including scope, holds and unknowns.
++        result['contentKey'] = sha(canonical({'binding': binding, 'policy': POLICY_PIN}))
++        result['status'] = ('malformed' if any(x in errors for x in
++            ('acquisition-time-in-future',)) else 'missing' if any(x in errors for x in
++            ('declared-field-missing', 'original-acquisition-time-missing')) else
++            'held' if 'source-use-held' in errors else
++            'malformed' if errors else 'ready-metadata-only')
++        if not errors:
++            result['metadataCandidate'] = candidate
++            result['replay'] = ('unchanged-no-op' if previous_key == result['contentKey']
++                                else 'metadata-binding-ready')
++    except Exception:
++        # No source text, path, exception detail or credential leaks in reports.
++        errors.add('binding-or-metadata-malformed')
++        result['status'] = 'malformed'
++    result['errors'] = sorted(errors)
++    return result
++
++
++def read_metadata(asset):
++    """Nonblocking regular metadata only, with no-follow directory descent.
++
++    Descriptor custody closes the path-check/open race; pin validation remains in
++    assess. File/size/change failures are isolated by run, before peer progress.
++    """
++    path = safe_path(asset['path'])
++    directory = os.open('/', os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC)
++    descriptor = None
++    try:
++        flags = os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW | os.O_CLOEXEC
++        for component in path.parts[1:-1]:
++            next_directory = os.open(component, flags | os.O_DIRECTORY, dir_fd=directory)
++            os.close(directory)
++            directory = next_directory
++        descriptor = os.open(path.name, flags, dir_fd=directory)
++        before = os.fstat(descriptor)
++        if not stat.S_ISREG(before.st_mode) or not 0 < before.st_size <= MAX_METADATA:
++            raise ValueError('regular-bounded-metadata-required')
++        data = bytearray()
++        while len(data) <= MAX_METADATA:
++            block = os.read(descriptor, min(65536, MAX_METADATA + 1 - len(data)))
++            if not block:
++                break
++            data.extend(block)
++        after = os.fstat(descriptor)
++        identity = lambda s: (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
++        if identity(before) != identity(after) or len(data) != before.st_size:
++            raise ValueError('metadata-changed-during-read')
++        return bytes(data)
++    finally:
++        if descriptor is not None:
++            os.close(descriptor)
++        os.close(directory)
++
++
++def run(bindings, *, now, previous=None, reader=read_metadata):
++    results = []
++    for binding in bindings:
++        try:
++            raw = reader(binding['metadata'])
++        except FileNotFoundError:
++            raw = None
++        except Exception:
++            results.append({'bindingId': binding.get('id'), 'status': 'malformed',
++                            'errors': ['metadata-read-failed'], 'metadataCandidate': None,
++                            'networkRequests': 0, 'bodyProcessing': False,
++                            'acceptedRecords': 0, 'countryComplete': False})
++            continue
++        results.append(assess(binding, raw, now=now,
++                             previous_key=(previous or {}).get(binding.get('id'))))
++    return {'schemaVersion': 'offmenu-bm-lc-sc-preflight/1', 'bindings': results,
++            'countryComplete': False, 'acceptedRecords': 0, 'networkRequests': 0}
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--now', required=True, help='Explicit UTC validation clock')
++    args = parser.parse_args(argv)
++    config = strict_json(CONFIG.read_bytes())
++    report = run(config['bindings'], now=args.now)
++    print(canonical(report).decode(), end='')
++    return 0 if all(x['status'] == 'ready-metadata-only' for x in report['bindings']) else 2
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/tests/fixtures/bm-lc-sc/metadata.json b/tests/fixtures/bm-lc-sc/metadata.json
+new file mode 100644
+index 00000000..a466677b
+--- /dev/null
++++ b/tests/fixtures/bm-lc-sc/metadata.json
+@@ -0,0 +1 @@
++{"country":"LC","release":"authored-example-v1","licence":"Authored synthetic metadata fixture; no publisher rights claim","completedAt":"2026-10-01T00:00:00Z","unknownUnit":null,"nativeBasis":"source-local-item"}
+diff --git a/tests/test_portfolio_bm_lc_sc.py b/tests/test_portfolio_bm_lc_sc.py
+new file mode 100644
+index 00000000..1f36bbf7
+--- /dev/null
++++ b/tests/test_portfolio_bm_lc_sc.py
+@@ -0,0 +1,175 @@
++"""Authored metadata fixtures only. No historical source bodies or network."""
++import copy
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu import portfolio_bm_lc_sc as portfolio
++from offmenu.refresh.core import canonical, sha
++
++FIXTURE = Path(__file__).parent / 'fixtures/bm-lc-sc/metadata.json'
++
++
++class PortfolioBindingTests(unittest.TestCase):
++    def setUp(self):
++        self.raw = FIXTURE.read_bytes()
++        self.binding = {'id': 'synthetic-lc', 'country': 'LC', 'sourceId': 'authored',
++                        'releaseId': 'fixture-v1', 'scope': 'retained-metadata-only',
++                        'holds': [], 'metadata': {'bytes': len(self.raw),
++                                                 'sha256': sha(self.raw)},
++                        'selectors': {'country': '/country', 'nativeBasis': '/nativeBasis',
++                                      'unit': '/unknownUnit'},
++                        'originalAcquiredAtSelector': '/completedAt'}
++        self.now = '2026-10-02T00:00:00Z'
++
++    def assess(self, binding=None, raw=None, **kwargs):
++        return portfolio.assess(binding or self.binding,
++                                self.raw if raw is None else raw,
++                                now=kwargs.pop('now', self.now), **kwargs)
++
++    def test_valid_deterministic_metadata_candidate_and_null_origins(self):
++        before = copy.deepcopy(self.binding)
++        result = self.assess()
++        self.assertEqual(result['status'], 'ready-metadata-only')
++        self.assertEqual(result['metadataCandidate']['data']['unit'], None)
++        origin = result['metadataCandidate']['provenance']['fieldOrigins']['/data/unit']
++        self.assertEqual(origin['sourceField'], '/unknownUnit')
++        self.assertEqual(result['acceptedRecords'], 0)
++        self.assertEqual(result['bodyProcessing'], False)
++        self.assertEqual(canonical(result), canonical(self.assess()))
++        self.assertEqual(self.binding, before)
++
++    def test_missing_input_and_field_are_typed(self):
++        result = portfolio.assess(self.binding, None, now=self.now)
++        self.assertEqual(result['status'], 'missing')
++        self.assertIn('metadata-missing', result['errors'])
++        self.binding['selectors']['absent'] = '/does-not-exist'
++        self.assertIn('declared-field-missing', self.assess()['errors'])
++        self.assertIsNone(self.assess()['metadataCandidate'])
++
++    def test_hold_retained_even_on_missing_input_and_no_candidate(self):
++        self.binding['holds'] = ['source-use-not-cleared']
++        result = self.assess()
++        self.assertEqual(result['status'], 'held')
++        self.assertIn('source-use-held', result['errors'])
++        self.assertIsNone(result['metadataCandidate'])
++        self.assertFalse(result['cache']['downloadAllowed'])
++        self.assertIn('source-use-held', portfolio.assess(
++            self.binding, None, now=self.now)['errors'])
++
++    def test_corrupt_pin_invalid_json_duplicate_keys_nonfinite_and_selector(self):
++        self.assertIn('metadata-pin-mismatch', self.assess(raw=b'bad')['errors'])
++        for raw in (b'{', b'{"a":1,"a":2}', b'{"a":NaN}'):
++            b = copy.deepcopy(self.binding)
++            b['metadata'] = {'bytes': len(raw), 'sha256': sha(raw)}
++            r = self.assess(b, raw)
++            self.assertEqual(r['status'], 'malformed')
++            self.assertEqual(r['errors'], ['binding-or-metadata-malformed'])
++        for selector in ('../secret', '/country/~2', '/country/0'):
++            self.binding['selectors']['country'] = selector
++            self.assertEqual(self.assess()['status'], 'malformed')
++
++    def test_absent_planner_unknown_at_all_ages_preserves_clock_and_replay(self):
++        results = [self.assess(now=now) for now in
++                   ('2026-10-30T23:59:59Z', '2026-10-31T00:00:00Z', '2027-01-01T00:00:00Z')]
++        for r in results:
++            self.assertEqual(r['status'], 'ready-metadata-only')
++            self.assertEqual(r['cache']['plannerCapability'], 'unsupported')
++            self.assertEqual(r['cache']['decision'], 'unknown-no-download')
++            self.assertFalse(r['cache']['downloadAllowed'])
++        self.assertEqual(len({r['contentKey'] for r in results}), 1)
++        self.assertEqual(len({r['cache']['originalAcquiredAt'] for r in results}), 1)
++        self.assertGreater(results[-1]['cache']['acquisitionAgeSeconds'],
++                           results[0]['cache']['acquisitionAgeSeconds'])
++        self.assertEqual(self.assess(now='2027-01-01T00:00:00Z',
++            previous_key=results[0]['contentKey'])['replay'], 'unchanged-no-op')
++
++    def test_nonblocking_fifo_rejection_allows_regular_metadata_peer(self):
++        with tempfile.TemporaryDirectory() as temp:
++            root = Path(temp); fifo = root / 'fifo'; os.mkfifo(fifo)
++            good = root / 'metadata.json'; good.write_bytes(self.raw)
++            b = copy.deepcopy(self.binding); b['metadata']['path'] = str(fifo)
++            peer = copy.deepcopy(self.binding); peer['metadata']['path'] = str(good)
++            program = ('import json; from offmenu.portfolio_bm_lc_sc import run; '
++                       'print(json.dumps(run(' + repr([b, peer]) +
++                       ',now="2026-10-02T00:00:00Z")))')
++            p = subprocess.run([sys.executable, '-c', program], capture_output=True,
++                               text=True, timeout=3, check=True)
++            r = json.loads(p.stdout)
++            self.assertEqual([x['status'] for x in r['bindings']],
++                             ['malformed', 'ready-metadata-only'])
++            self.assertEqual(r['bindings'][0]['errors'], ['metadata-read-failed'])
++
++    def test_regular_reader_rejects_links_directories_and_cleans_descriptors(self):
++        with tempfile.TemporaryDirectory() as temp:
++            root = Path(temp); good = root / 'metadata.json'; good.write_bytes(self.raw)
++            link = root / 'link'; link.symlink_to(good)
++            for path in (link, root):
++                with self.assertRaises((OSError, ValueError)):
++                    portfolio.read_metadata({'path': str(path)})
++            self.assertEqual(portfolio.read_metadata({'path': str(good)}), self.raw)
++            count = lambda: len(list(Path('/proc/self/fd').iterdir()))
++            before = count()
++            with patch.object(portfolio.os, 'read', side_effect=OSError('private error')):
++                with self.assertRaises(OSError):
++                    portfolio.read_metadata({'path': str(good)})
++            self.assertEqual(count(), before)
++
++    def test_future_unknown_and_invalid_clocks_fail_closed(self):
++        self.assertEqual(self.assess(now='2026-09-01T00:00:00Z')['status'], 'malformed')
++        for clock in ('2026-10-02', 'bad', None):
++            self.assertEqual(self.assess(now=clock)['status'], 'malformed')
++        self.binding['originalAcquiredAtSelector'] = None
++        self.assertIn('original-acquisition-time-missing', self.assess()['errors'])
++
++    def test_replay_key_independent_of_validation_age_but_binds_policy_changes(self):
++        a = self.assess()
++        b = self.assess(now='2026-10-03T00:00:00Z', previous_key=a['contentKey'])
++        self.assertEqual(b['replay'], 'unchanged-no-op')
++        self.assertEqual(a['metadataCandidate'], b['metadataCandidate'])
++        self.binding['holds'] = ['new-hold']
++        c = self.assess(previous_key=a['contentKey'])
++        self.assertNotEqual(c['contentKey'], a['contentKey'])
++        self.assertEqual(c['replay'], 'not-ready')
++
++    def test_isolated_failure_does_not_block_peer_or_echo_exception(self):
++        bad = copy.deepcopy(self.binding)
++        bad['id'] = 'bad'
++        def reader(asset):
++            if asset.get('path') == 'private':
++                raise PermissionError('SECRET-CREDENTIAL')
++            return self.raw
++        bad['metadata']['path'] = 'private'
++        result = portfolio.run([bad, self.binding], now=self.now, reader=reader)
++        self.assertEqual([x['status'] for x in result['bindings']],
++                         ['malformed', 'ready-metadata-only'])
++        self.assertNotIn('SECRET-CREDENTIAL', json.dumps(result))
++
++    def test_country_mismatch_cannot_borrow_another_portfolio_member(self):
++        self.binding['country'] = 'BM'
++        self.assertEqual(self.assess()['status'], 'malformed')
++
++    def test_no_body_pointer_followed_and_no_network_dependency(self):
++        with patch('socket.socket', side_effect=AssertionError('network forbidden')):
++            self.assertEqual(self.assess()['networkRequests'], 0)
++        self.binding['retainedBodyReferenceOnly'] = {'path': '/do-not-open'}
++        with patch.object(Path, 'open', side_effect=AssertionError('body forbidden')):
++            self.assertEqual(self.assess()['status'], 'ready-metadata-only')
++
++    def test_fixed_portfolio_configuration_never_enables_real_body_processing(self):
++        config = json.loads(portfolio.CONFIG.read_text())
++        self.assertEqual(len(config['bindings']), 8)
++        self.assertEqual(set(x['country'] for x in config['bindings']), {'BM', 'LC', 'SC'})
++        for b in config['bindings']:
++            self.assertTrue(b['holds'])
++            self.assertIsNone(b['adapterBinding']['sourceContract'])
++            self.assertFalse(b['applicability']['accepted'])
++
++
++if __name__ == '__main__':
++    unittest.main()

@@ -1,0 +1,24 @@
+NS196-G2 — immutable cooking-time recipe/source witness
+
+Observed on exact v196 source custody commit 92a0463b3f4ef48fa96ec2fe5adc65a3c513700a. Cooked batches/history retained recipeId but omitted the recipe version/source inputs. Allocation originals also aliased the current lot. Existing history normalization dropped a seeded witness; shared batch projection blindly copied it.
+Acceptance finding receipt: 04c1bb42504794f825571d5e287550d360c6fbe98079cdb45b1b3705da76a446.
+
+Implemented:
+- New pure, bounded, detached/frozen cooking-witness codec captures the actual recipe variant/version/authored revision, instructions, original source quantities, citation/manifest metadata, exact allocated quantities and chosen nutrient inputs at cooking time.
+- Actual selected profile reference, basis/status, source nutrient qualifiers/null/zero, provenance and mapped values are retained. Missing upstream version stays unknown; no upstream identity is manufactured.
+- cookMeal hooks capture the inputs used by existing arithmetic. serveBatch copies this witness; validateBatches, validateInsights, JSON, pantry backup and current cloud/state validation retain it. Existing nutrition totals are not recomputed.
+- Allocation original lots are detached with structuredClone, preserving their undo inputs against subsequent edits.
+- Shared batches omit the new witness when visibility is private/unknown. Public visibility requires explicit public recipe, nutrient input and retained source-reference provenance. Unknown source references cannot acquire publication rights. Other existing projections are untouched.
+- Legacy meals are never backfilled; retries keep their recorded witness.
+
+Integration:
+1. Verify preimages in MANIFEST.json; apply app-source.patch only to the actual current equivalent functions. The patch targets current v196 app paths, not a whole older source tree. New files are public/cooking-witness.js, cloud/cooking-witness-parity.mjs and tests-web/cooking-witness-ns196-g2.test.mjs.
+2. Cooking/insights changes deliberately overlap the already-correct v195 functions but are additive hooks. Retain v195 retry checks, zero/unknown intake and all v196 lot-source nutrition selection. No shopping file or frozen v197 shopping patch is changed.
+3. Server bundle: compile cloud/cooking-witness-parity.mjs using the existing supported toolchain into namespace __offmenuCookingWitness198 (or consistently rename its exact references). Apply evidence/server-history-helper.patch's single lg tail replacement to the exact retained helper only after preimage reconciliation. evidence/server-history-helper.js is a regression fixture and extracted function; it is NOT a deployable worker.
+4. The full server state validator ALSO needs finishCookingWitnessState(rawInput, existingValidatedOutput) at its successful final return, after all existing validation. The exact current source cloud/state.mjs replacement is included. Rebuild from it where supported; for retained minified worker integration reconcile its actual successful state-return seam. The lg hook covers history only and is insufficient for compiled batch handling by itself. Keep authentication, revision checks and normalization intact. No full minified worker or guessed validator function is supplied.
+5. Run node --test tests-web/cooking-witness-ns196-g2.test.mjs with current app dependencies; node evidence/legacy-server-parity.mjs. Verify worker-level authenticated roundtrip/served behavior through the sole integrator's existing procedure.
+
+Evidence: baseline 13 tests: 2 pass, 11 fail; candidate 13 pass, 0 fail. Baseline uses the new codec as test support but the five exact original production functions, exposing missing hooks, aliasing, dropped witnesses and shared projection leaks. The two passing controls cover retry preservation and the new standalone state seam primitive; this is not a claim that the old app already had the witness codec. Candidate tests execute actual current cloud/state.mjs and the extracted retained server-history helper, plus JSON and ordinary pantry backup. Seven existing legacy zero-intake/positive/rejection case families are additionally retained.
+Executed in the existing admitted Foo runner, dedicated staging root; finaltests receipt run 01a18434-e138-f734-ecb4-40c3214341a7, succeeded, child_tree_gone=true.
+
+Limits: source-only candidate, not deployed. Full compiled worker/authenticated cloud readback remains the sole integrator's responsibility. Witness immutability is detached/frozen snapshot identity, not an attestation or new source qualification. Source fields absent at cooking remain absent; historical meals are not reconstructed. Bounded payloads reject oversized/invalid new witnesses rather than silently truncate their provenance. Synthetic fixtures only; no actual profile or raw dataset exported.

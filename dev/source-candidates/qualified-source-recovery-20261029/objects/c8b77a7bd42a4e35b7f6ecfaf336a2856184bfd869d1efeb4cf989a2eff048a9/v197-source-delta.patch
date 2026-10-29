@@ -1,0 +1,65 @@
+--- a/candidate-source-root/candidate-source/app/public/integrations.js
++++ b/candidate-source-root/candidate-source/app/public/integrations.js
+@@ -1,7 +1,8 @@
+ import {SOURCES} from './sources.js';
+ import {planSummary,weekDates} from './menu-model.js';
++import {measuredIngredient} from './ingredients.js';
+ export const CONNECTORS=SOURCES.map(s=>({...s,region:s.countries.join(', ')||'Global',detail:s.notes}));
+-export function shoppingItems(profile,recipes,inventory,products,date,usePantry=true){const dates=weekDates(date),plan=(profile.plan||[]).filter(p=>dates.includes(p.date));const summary=planSummary(plan,recipes,usePantry?inventory:[],products,dates);const measured=(usePantry?summary.missing:summary.requirements).map(i=>({id:'planned:'+i.ingredient+'|'+i.unit,name:i.ingredient,amount:Number(i.quantity.toPrecision(4))+' '+i.unit,quantity:i.quantity,unit:i.unit,checked:(profile.shoppingChecked||[]).includes('planned:'+i.ingredient+'|'+i.unit)}));const unknown=[...new Set(plan.flatMap(p=>(recipes.find(r=>r.id===p.recipeId)?.ingredients||[]).filter(i=>!i.optional&&(i.quantity==null||!i.unit)).map(i=>i.raw||i.ingredient)))].map(name=>({id:'review:'+name,name,amount:'Review source quantity',checked:(profile.shoppingChecked||[]).includes('review:'+name)}));return [...measured,...unknown,...(profile.shopping||[])];}
++export function shoppingItems(profile,recipes,inventory,products,date,usePantry=true){const dates=weekDates(date),plan=(profile.plan||[]).filter(p=>dates.includes(p.date));const summary=planSummary(plan,recipes,usePantry?inventory:[],products,dates);const measured=(usePantry?summary.missing:summary.requirements).map(i=>({id:'planned:'+i.ingredient+'|'+i.unit,name:i.ingredient,amount:Number(i.quantity.toPrecision(4))+' '+i.unit,quantity:i.quantity,unit:i.unit,checked:(profile.shoppingChecked||[]).includes('planned:'+i.ingredient+'|'+i.unit)}));const unknown=[...new Set(plan.flatMap(p=>{const recipe=recipes.find(r=>r.id===p.recipeId);if(!recipe)return [];const demandKnown=!recipe.needsReview&&!recipe.servingsUnknown&&Number.isFinite(recipe.servings)&&recipe.servings>0&&Number.isFinite(p.servings)&&p.servings>0;return (recipe.ingredients||[]).filter(i=>!i.optional&&(!demandKnown||!measuredIngredient(i))).map(i=>i.raw||i.ingredient);}))].map(name=>({id:'review:'+name,name,amount:'Review source quantity',checked:(profile.shoppingChecked||[]).includes('review:'+name)}));return [...measured,...unknown,...(profile.shopping||[])];}
+ export function csv(rows){return rows.map(row=>row.map(x=>{let value=String(x??'');if(/^[=+@\-\t\r]/.test(value))value="'"+value;return '"'+value.replaceAll('"','""')+'"';}).join(',')).join('\r\n');}
+ export function recipeJSONLD(recipes){return {'@context':'https://schema.org','@graph':recipes.map(r=>({'@type':'Recipe','@id':r.id,name:r.title,recipeYield:r.servingsUnknown?'Unknown':r.servings+' portions',recipeIngredient:r.ingredients.map(i=>i.raw||[i.quantity,i.unit,i.ingredient].filter(x=>x!=null).join(' ')),recipeInstructions:r.instructions.map(text=>({'@type':'HowToStep',text})),isBasedOn:r.source,license:r.license,creditText:r.attribution||r.source}))};}
+ export function shoppingJSONLD(items){return {'@context':'https://schema.org','@type':'ItemList',name:'offmenu household shopping list',numberOfItems:items.length,itemListElement:items.map((i,index)=>({'@type':'ListItem',position:index+1,item:{'@type':'Thing',name:i.name,description:i.amount}}))};}
+--- a/candidate-source-root/candidate-source-manifest.json
++++ b/candidate-source-root/candidate-source-manifest.json
+@@ -345,9 +345,10 @@
+       "path": "public/integrations.js",
+       "originalPath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/integrations.js",
+       "beforeSha256": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9",
+-      "bytes": 2087,
+-      "sourceAvailable": true,
+-      "afterSha256": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9"
++      "bytes": 2360,
++      "sourceAvailable": true,
++      "afterSha256": "fbe3f4efc7131e2a318858671acf18cc29f48949ccf731d99c37577e1590a6ee",
++      "v197Correction": "shopping-unresolved-demand"
+     },
+     {
+       "group": "app",
+--- /dev/null
++++ b/candidate-source-root/candidate-source/app/tests-web/shopping-unresolved-demand.test.mjs
+@@ -0,0 +1,34 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {shoppingItems} from '../public/integrations.js';
++import {planSummary} from '../public/menu-model.js';
++const date='2026-10-29',recipe={id:'rice',title:'Rice',servings:1,source:'Synthetic source',license:'CC0',ingredients:[{ingredient:'rice',quantity:100,unit:'g'}],instructions:[]};
++const profile={plan:[{id:'meal',recipeId:'rice',date,slot:'Dinner',servings:2}]};
++for(const [name,change]of Object.entries({'source review':{needsReview:true},'unknown yield':{servingsUnknown:true},'invalid yield':{servings:0}})){
++ test(name+' remains visible in shopping without an invented quantity',()=>{
++  const r={...recipe,...change},summary=planSummary(profile.plan,[r],[],{},[date]);assert.ok(summary.unresolved>0);
++  const items=shoppingItems(profile,[r],[],{},date);assert.equal(items.length,1);assert.equal(items[0].id,'review:rice');assert.equal(items[0].amount,'Review source quantity');assert.equal(items[0].quantity,undefined);
++ });
++}
++test('zero required amount is unresolved rather than an empty shopping list',()=>{
++ const items=shoppingItems(profile,[{...recipe,ingredients:[{ingredient:'rice',quantity:0,unit:'g'}]}],[],{},date);
++ assert.equal(items.length,1);assert.equal(items[0].id,'review:rice');assert.equal(items[0].quantity,undefined);
++});
++test('partly measured recipe keeps only its unresolved ingredient in review',()=>{
++ const r={...recipe,ingredients:[...recipe.ingredients,{ingredient:'seasoning',quantity:null}]};
++ const items=shoppingItems(profile,[r],[],{},date);assert.deepEqual(items.map(i=>i.id),['planned:rice|g','review:seasoning']);assert.equal(items[0].quantity,200);
++});
++test('optional unresolved ingredients never become purchases or review requirements',()=>{
++ const r={...recipe,ingredients:[...recipe.ingredients,{ingredient:'seasoning',quantity:null,optional:true}]};
++ assert.deepEqual(shoppingItems(profile,[r],[],{},date).map(i=>i.id),['planned:rice|g']);
++});
++test('pantry stock cannot resolve an unknown serving basis',()=>{
++ const inventory=[{id:'lot',ingredient:'rice',quantity:1000,unit:'g'}];
++ assert.deepEqual(shoppingItems(profile,[recipe],inventory,{},date),[]);
++ const items=shoppingItems(profile,[{...recipe,servingsUnknown:true}],inventory,{},date);assert.deepEqual(items.map(i=>i.id),['review:rice']);
++});
++test('source text, checked state, custom additions and inputs are preserved',()=>{
++ const r={...recipe,needsReview:true,ingredients:[{ingredient:'rice',raw:'Two handfuls of rice',quantity:100,unit:'g'}]},custom={id:'custom',name:'Tea',amount:'1 box',checked:false};
++ const p={...profile,shoppingChecked:['review:Two handfuls of rice'],shopping:[custom]},before=JSON.stringify({p,r});
++ const items=shoppingItems(p,[r],[],{},date);assert.equal(items[0].name,'Two handfuls of rice');assert.equal(items[0].checked,true);assert.equal(items.at(-1),custom);assert.equal(JSON.stringify({p,r}),before);
++});

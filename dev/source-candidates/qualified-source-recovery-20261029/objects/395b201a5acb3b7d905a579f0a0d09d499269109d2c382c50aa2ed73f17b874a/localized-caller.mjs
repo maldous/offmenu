@@ -1,0 +1,12 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';
+import {t,setLocalizedText} from '/tmp/offmenu-lifecycle2337-localized-20261017/public/i18n.js';
+const source=fs.readFileSync('/tmp/offmenu-lifecycle2337-localized-20261017/public/app.js','utf8');
+const expression=source.match(/const amount=ingredient\.quantity==null\?[^;]+;/)[0];
+const evaluate=known=>Function('ingredient','r','servings','profile','displayAmount','t',expression+'return amount;')({quantity:100,unit:'g'},{servings:1,demandKnown:known},2,{units:'metric'},(q,u)=>q+' '+u,t);
+const unknown=evaluate(false),known=evaluate(true);assert.match(unknown,/Original source: 100 g/);assert.doesNotMatch(unknown,/200 g/);assert.equal(known,'200 g');
+const start=source.indexOf('if(r.demandKnown===false)setLocalizedText(foodInfo,');assert.ok(start>=0);const end=source.indexOf("foodInfo.style.whiteSpace=",start);const guard=source.slice(start,end);assert.ok(guard.includes('else setLocalizedText(foodInfo,'));
+let planCalls=0;const foodInfo={};const execute=Function('r','foodInfo','setLocalizedText','NUTRIENTS','data','servings',guard);
+execute({demandKnown:false},foodInfo,setLocalizedText,{map(){planCalls++;throw Error('must suppress nutrition iteration');}},null,2);
+assert.equal(planCalls,0);assert.match(foodInfo.textContent,/Nutrition estimate unavailable/);
+const knownInfo={};execute({demandKnown:true},knownInfo,setLocalizedText,[['protein','Protein','g']],{totals:{protein:{known:1,value:10,total:1}}},2);assert.match(knownInfo.textContent,/Protein: 10 g/);
+console.log(JSON.stringify({unknown,known,unknownNutrition:foodInfo.textContent,knownNutrition:knownInfo.textContent,unresolvedNutritionIterationCalls:planCalls},null,2));

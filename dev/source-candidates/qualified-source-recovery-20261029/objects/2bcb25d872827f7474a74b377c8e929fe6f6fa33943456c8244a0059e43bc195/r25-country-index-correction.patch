@@ -1,0 +1,293 @@
+diff --git a/docs/refresh-acquisition-contract.md b/docs/refresh-acquisition-contract.md
+index 95cdeff..a3311f2 100644
+--- a/docs/refresh-acquisition-contract.md
++++ b/docs/refresh-acquisition-contract.md
+@@ -258,6 +258,11 @@ other-country references point to the same original asset, never a country copy.
+ `owner` is the country binding's current delivery owner; original acquisition
+ custody remains separately recorded in the asset's `localEvidence`.
+ 
++Every declared `assetIds` edge must have its corresponding nonnull binding.
++A separate null unknown binding may coexist with held references, but cannot
++replace or hide one. This is checked for the complete row, not just supplied
++nonnull bindings.
++
+ Existence is independent of provenance, rights and coverage. Known held USDA or
+ other originals cannot be downgraded to discovery/unknown because their original
+ receipt clock, rights assessment or complete type coverage is unresolved. Missing
+@@ -272,6 +277,17 @@ licence denial or a claim that a file is absent. `coverage.applicability` defaul
+ to unknown. `not-applicable` requires explicit `notApplicableJustification` with
+ detail and an evidence pin; missing source links never create N/A.
+ 
++Receipt and N/A evidence pins require nonempty paths and exact membership in
++the reviewed `assetCatalog.evidence` metadata set. Those catalogue files are
++actually hash-verified before qualified states are returned by `describe`, the
++pinned CLI, or direct lookup. A pinned registry alone does not prove referenced
++metadata exists or matches. Arbitrary receipt/N/A pointers outside the verified
++set are rejected without opening them. Metadata verification may read/hash the
++declared metadata witnesses; it never stats/hashes an original source payload,
++resets its acquisition clock, or enables a SourceSpec. Existing v3 configurations
++must explicitly catalogue their verified receipt witnesses; preserve original
++source/custody qualifications when doing so.
++
+ ```sh
+ python3 -B scripts/collect-source-access.py LOOKUP_OUTPUT \
+   --collection-registry SAME_REGISTRY --registry-sha256 SHA --country US
+@@ -281,9 +297,9 @@ python3 -B scripts/collect-source-access.py LOOKUP_OUTPUT \
+ ```
+ 
+ The read-only `lookup_country_sources(registry, country, required_type=None)`
+-function returns recorded bindings and qualifications without fetching or
+-statting/hashing source payloads. The CLI verifies the pinned metadata registry
+-and its metadata evidence before lookup. The same input remains usable by the
++function verifies the metadata catalogue and returns recorded bindings and
++qualifications without fetching or statting/hashing source payloads. The CLI
++also verifies the pinned metadata registry. The same input remains usable by the
+ existing `collect_registry`; no second registry/controller or new source wave
+ is created. Pinned registry metadata may be at most32MiB for the all249 descriptors
+ and bindings; this does not increase any raw acquisition/response budget.
+diff --git a/offmenu/refresh/acquisition.py b/offmenu/refresh/acquisition.py
+index 995da1f..189627b 100644
+--- a/offmenu/refresh/acquisition.py
++++ b/offmenu/refresh/acquisition.py
+@@ -788,10 +788,12 @@ def describe_collection_registry(registry):
+             or not isinstance(catalog['assets'], list)
+             or not isinstance(catalog['requirements'], list)):
+         raise RefreshError('invalid-collection-catalog')
++    verified_metadata_pins = set()
+     for pin in catalog['evidence']:
+-        if (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
+-                or digest(pin['path'], max_bytes=16 * MAX_METADATA)['sha256'] != pin['sha256']):
++        key = _country_metadata_pin_key(pin)
++        if digest(pin['path'], max_bytes=16 * MAX_METADATA)['sha256'] != pin['sha256']:
+             raise RefreshError('collection-catalog-evidence-mismatch')
++        verified_metadata_pins.add(key)
+     assets, locators, origins, local, desired, unresolved = {}, set(), set(), set(), set(), []
+     for asset in catalog['assets']:
+         fields = {'assetId', 'kind', 'publisherCitation', 'request', 'release', 'datatype',
+@@ -850,7 +852,7 @@ def describe_collection_registry(registry):
+         countries.add(row['country'])
+         mapped += bool(row['assetIds'])
+         if registry['schemaVersion'] == 'offmenu-acquisition-selection/3':
+-            _validate_country_bindings(row, assets)
++            _validate_country_bindings(row, assets, verified_metadata_pins)
+     return {'catalogVersion': catalog['version'], 'assetDescriptors': len(assets),
+             'knownRecordedLocatorDescriptors': len(locators),
+             'publisherCitationDescriptors': len(origins), 'unresolvedDescriptors': len(unresolved),
+@@ -862,7 +864,16 @@ def describe_collection_registry(registry):
+             'qualification': catalog['qualification'], 'unresolved': unresolved}
+ 
+ 
+-def _validate_country_bindings(row, assets):
++def _country_metadata_pin_key(pin):
++    if (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
++            or not isinstance(pin['path'], str) or not pin['path'].strip()
++            or not isinstance(pin['sha256'], str)
++            or not re.fullmatch(r'[0-9a-f]{64}', pin['sha256'])):
++        raise RefreshError('invalid-country-metadata-evidence-pin')
++    return pin['path'], pin['sha256']
++
++
++def _validate_country_bindings(row, assets, verified_metadata_pins):
+     """Existence, provenance, rights and coverage are independent dimensions."""
+     if not isinstance(row['bindings'], list) or not row['bindings']:
+         raise RefreshError('country-binding-required-use-explicit-unknown')
+@@ -885,11 +896,8 @@ def _validate_country_bindings(row, assets):
+         if key is not None and (key not in assets or key not in row['assetIds']):
+             raise RefreshError('country-binding-asset-mismatch')
+         pin = binding['receipt']
+-        if pin is not None and (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
+-                or not isinstance(pin['path'], str) or not pin['path']
+-                or not isinstance(pin['sha256'], str)
+-                or not re.fullmatch(r'[0-9a-f]{64}', pin['sha256'])):
+-            raise RefreshError('invalid-country-binding-receipt')
++        if pin is not None and _country_metadata_pin_key(pin) not in verified_metadata_pins:
++            raise RefreshError('country-binding-receipt-not-verified-in-catalogue')
+         if binding['receiptDate'] is not None:
+             timestamp(binding['receiptDate'])
+         applicability = binding['coverage'].get('applicability', 'unknown')
+@@ -902,9 +910,12 @@ def _validate_country_bindings(row, assets):
+                     or not isinstance(reason['evidence'], dict)
+                     or set(reason['evidence']) != {'path', 'sha256'}
+                     or not isinstance(reason['evidence']['path'], str)
++                    or not reason['evidence']['path'].strip()
+                     or not isinstance(reason['evidence']['sha256'], str)
+                     or not re.fullmatch(r'[0-9a-f]{64}', reason['evidence']['sha256'])):
+                 raise RefreshError('not-applicable-requires-explicit-justification')
++            if _country_metadata_pin_key(reason['evidence']) not in verified_metadata_pins:
++                raise RefreshError('not-applicable-evidence-not-verified-in-catalogue')
+         if binding['state'] != 'unknown-notyetfound' and (key is None or pin is None):
+             raise RefreshError('country-binding-evidence-required')
+         if binding['state'] == 'held-locally-with-evidence':
+@@ -930,6 +941,10 @@ def _validate_country_bindings(row, assets):
+                 raise RefreshError('exact-country-binding-blocker-required')
+         elif binding['blockedReason'] is not None:
+             raise RefreshError('unexpected-country-binding-blocker')
++    # Validate the complete declared edge set, not only nonnull bindings that
++    # happened to be supplied. A null unknown must not hide a known-held edge.
++    if set(row['assetIds']) != seen - {None}:
++        raise RefreshError('country-binding-declared-asset-edge-missing')
+ 
+ 
+ def lookup_country_sources(registry, country, required_type=None):
+@@ -943,14 +958,16 @@ def lookup_country_sources(registry, country, required_type=None):
+             or (required_type is not None and
+                 (not isinstance(required_type, str) or not required_type))):
+         raise RefreshError('country-index-v3-and-exact-country-type-required')
++    # The metadata boundary verifies only the reviewed catalogue's declared
++    # metadata pins. Binding/NA references must be members of that verified set;
++    # never open an arbitrary receipt pointer (which could be a source payload).
++    describe_collection_registry(registry)
+     rows = [r for r in registry['assetCatalog']['requirements'] if r['country'] == country
+             and (required_type is None or r['type'] == required_type)]
+     if not rows:
+         raise RefreshError('country-type-not-indexed')
+-    assets = {a['assetId']: a for a in registry['assetCatalog']['assets']}
+     result = []
+     for row in sorted(rows, key=lambda r: r['type']):
+-        _validate_country_bindings(row, assets)
+         result.append({'country': country, 'type': row['type'], 'bindings': row['bindings'],
+                        'qualification': row['coverageQualification'], 'sourceEvidence': row['evidence']})
+     return {'schemaVersion': 'offmenu-country-source-lookup/1',
+diff --git a/tests/test_collection_runner.py b/tests/test_collection_runner.py
+index 1364591..ce2276c 100644
+--- a/tests/test_collection_runner.py
++++ b/tests/test_collection_runner.py
+@@ -5,6 +5,8 @@ import json
+ from pathlib import Path
+ import tempfile
+ import unittest
++import subprocess
++import sys
+ from unittest.mock import Mock, patch
+ 
+ from offmenu.refresh.acquisition import collect_registry
+@@ -241,7 +243,12 @@ class CollectionRunnerTests(unittest.TestCase):
+     def test_country_lookup_keeps_known_file_held_with_unknown_clock_rights_coverage(self):
+         from offmenu.refresh.acquisition import lookup_country_sources
+         self.country_index()
+-        with patch('offmenu.refresh.acquisition.digest', side_effect=AssertionError('no source hashing')):
++        import offmenu.refresh.acquisition as acquisition
++        original_digest = acquisition.digest
++        def metadata_only(path, **kwargs):
++            self.assertEqual(Path(path), self.evidence)
++            return original_digest(path, **kwargs)
++        with patch('offmenu.refresh.acquisition.digest', side_effect=metadata_only):
+             report = lookup_country_sources(self.registry, 'AU', 'foods')
+         row = report['requirements'][0]['bindings'][0]
+         self.assertEqual(row['state'], 'held-locally-with-evidence')
+@@ -276,6 +283,10 @@ class CollectionRunnerTests(unittest.TestCase):
+         row = self.registry['assetCatalog']['requirements'][1]
+         row['assetIds'] = ['known']
+         self.registry['assetCatalog']['assets'][0]['localEvidence'] = None
++        # Lookup now validates the complete metadata catalogue. Keep the other
++        # fixture row consistent when this test removes its shared local proof.
++        other = self.registry['assetCatalog']['requirements'][0]['bindings'][0]
++        other.update(state='unknown-notyetfound', localPointer=None)
+         blocked = row['bindings'][0]
+         blocked.update(assetId='known', state='found-blocked-exactreason', receipt=self.pin)
+         with self.assertRaisesRegex(RefreshError, 'exact-country-binding-blocker'):
+@@ -299,6 +310,104 @@ class CollectionRunnerTests(unittest.TestCase):
+         result = lookup_country_sources(self.registry, 'BE')
+         self.assertEqual(result['requirements'][0]['bindings'][0]['coverage']['applicability'], 'not-applicable')
+ 
++    def lookup_cli(self, label='lookup-regression'):
++        path = self.root / 'lookup-registry.json'
++        path.write_bytes(canonical(self.registry))
++        output = self.root / label
++        command = [sys.executable, '-B', str(Path(__file__).resolve().parents[1] /
++                   'scripts/collect-source-access.py'), str(output), '--collection-registry',
++                   str(path), '--registry-sha256', sha(path.read_bytes()), '--country', 'AU']
++        return subprocess.run(command, capture_output=True, text=True), output
++
++    def test_declared_held_edge_cannot_be_hidden_by_null_unknown_api(self):
++        import copy
++        from offmenu.refresh.acquisition import lookup_country_sources, describe_collection_registry
++        self.country_index()
++        row = self.registry['assetCatalog']['requirements'][0]
++        row['bindings'] = [copy.deepcopy(self.registry['assetCatalog']['requirements'][1]['bindings'][0])]
++        self.assertEqual(row['assetIds'], ['known'])
++        with self.assertRaisesRegex(RefreshError, 'declared-asset-edge'):
++            describe_collection_registry(self.registry)
++        with self.assertRaisesRegex(RefreshError, 'declared-asset-edge'):
++            lookup_country_sources(self.registry, 'AU')
++
++    def test_declared_held_edge_cannot_be_hidden_by_null_unknown_cli(self):
++        import copy
++        self.country_index()
++        self.registry['assetCatalog']['requirements'][0]['bindings'] = [copy.deepcopy(
++            self.registry['assetCatalog']['requirements'][1]['bindings'][0])]
++        result, output = self.lookup_cli()
++        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
++        self.assertIn('declared-asset-edge', result.stdout)
++        self.assertFalse((output / 'country-AU-sources.json').exists())
++
++    def test_declared_held_edge_survives_separate_unknown_binding(self):
++        import copy
++        from offmenu.refresh.acquisition import lookup_country_sources
++        self.country_index()
++        row = self.registry['assetCatalog']['requirements'][0]
++        row['bindings'].append(copy.deepcopy(self.registry['assetCatalog']['requirements'][1]['bindings'][0]))
++        result = lookup_country_sources(self.registry, 'AU')
++        held = result['requirements'][0]['bindings'][0]
++        self.assertEqual(held['assetId'], 'known')
++        self.assertEqual(held['state'], 'held-locally-with-evidence')
++        self.assertEqual(held['localPointer'], '/fixture/original.zip')
++        self.assertIsNone(held['receiptDate'])
++        self.assertEqual(result['requirements'][0]['bindings'][1]['state'], 'unknown-notyetfound')
++
++    def assert_unverified_country_pin_rejected(self, label):
++        from offmenu.refresh.acquisition import lookup_country_sources
++        with self.subTest(boundary='API'):
++            with self.assertRaises(RefreshError):
++                lookup_country_sources(self.registry, 'AU')
++        with self.subTest(boundary='pinned CLI'):
++            result, output = self.lookup_cli(label)
++            self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
++            self.assertFalse((output / 'country-AU-sources.json').exists())
++
++    def test_qualified_pin_missing_receipt_is_rejected_api_and_cli(self):
++        held = self.country_index()
++        held['receipt'] = {'path': str(self.root / 'never-existed.json'), 'sha256': '0' * 64}
++        self.assert_unverified_country_pin_rejected('missing-receipt')
++
++    def test_qualified_pin_wrong_receipt_hash_is_rejected_api_and_cli(self):
++        held = self.country_index()
++        path = self.root / 'changed-receipt.json'
++        path.write_bytes(b'{"metadata":"actual bytes differ"}')
++        held['receipt'] = {'path': str(path), 'sha256': '0' * 64}
++        self.assert_unverified_country_pin_rejected('wrong-receipt')
++
++    def test_qualified_pin_unlisted_receipt_is_not_read_as_payload(self):
++        held = self.country_index()
++        path = self.root / 'unregistered-payload.bin'
++        path.write_bytes(b'Fixture body must not be opened as country evidence')
++        held['receipt'] = {'path': str(path), 'sha256': sha(path.read_bytes())}
++        self.assert_unverified_country_pin_rejected('unlisted-receipt')
++
++    def test_qualified_pin_bad_catalogue_hash_is_rejected_api_and_cli(self):
++        held = self.country_index()
++        path = self.root / 'declared-metadata.json'
++        path.write_bytes(b'{"metadata":"changed"}')
++        held['receipt'] = {'path': str(path), 'sha256': '0' * 64}
++        self.registry['assetCatalog']['evidence'].append(held['receipt'])
++        self.assert_unverified_country_pin_rejected('bad-catalogue-hash')
++
++    def test_qualified_pin_empty_na_evidence_is_rejected_api_and_cli(self):
++        held = self.country_index()
++        held['coverage'].update(applicability='not-applicable', notApplicableJustification={
++            'detail': 'Specific scope exclusion needs real evidence',
++            'evidence': {'path': '', 'sha256': '0' * 64}})
++        self.assert_unverified_country_pin_rejected('empty-na-evidence')
++
++    def test_qualified_pin_unlisted_na_evidence_is_rejected_api_and_cli(self):
++        held = self.country_index()
++        path = self.root / 'unlisted-na-evidence.json'
++        path.write_bytes(b'{"metadata":"unreviewed scope"}')
++        held['coverage'].update(applicability='not-applicable', notApplicableJustification={
++            'detail': 'Specific scope exclusion needs registered metadata evidence',
++            'evidence': {'path': str(path), 'sha256': sha(path.read_bytes())}})
++        self.assert_unverified_country_pin_rejected('unlisted-na-evidence')
++
+     def test_registry_and_binding_evidence_fail_before_source_request(self):
+         path = self.root / 'registry.json'
+         path.write_bytes(canonical(self.registry))

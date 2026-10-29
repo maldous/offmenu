@@ -1,0 +1,136 @@
+{
+  "status": "implemented source-only; independent review/native publication/deployed facts curl pending",
+  "authorArchiveSha256": "c3300cb207ac08b029f32b858bd5a5e14180131f0ff1faf451b0d997c11d7ead",
+  "reviewedProjectorSha256": "a2d96a9736942982408f51233384e503df7b7795ea24533a3f9d5f94c76300d9",
+  "R5FourSourcesByteIdentical": true,
+  "tests": {
+    "node": "v24.16.0",
+    "exitCode": 0,
+    "passed": 11,
+    "failed": 0,
+    "durationMs": 155.835673,
+    "logSha256": "852ee5d7cd61c9910fba4adf094c5791a6d821f39e62fb493912cdd2cd00e11e"
+  },
+  "actualBundledFactsParity": {
+    "http": 200,
+    "name": "Champ iced coffee",
+    "originalFields": 9,
+    "citations": 1,
+    "unknownMarkers": 3,
+    "zeros": 0,
+    "unresolvedRelatedResources": 1,
+    "apiResponseSha256": "9ef78e296b81965ba362bb519a59afd5e800781a39d0596dbc78b1cf38509cf9",
+    "apiResponseBytes": 5975,
+    "receiptSha256": "1e9619b70b7c454939e0f4562864092925ac50d8dccb31eacaae07b8e0c52bb3",
+    "nativeAcceptance": false,
+    "oneOriginalAssetExternalFetch": true,
+    "externalIndexFetches": 0
+  },
+  "build": {
+    "esbuild": "0.25.12",
+    "sourceInputs": 8,
+    "externalImports": 0,
+    "unsupportedRedirectCalls": 0,
+    "scope": "endpoint component only"
+  },
+  "productionMutations": 0,
+  "scannerChanges": 0,
+  "dataPayloadExported": false,
+  "files": [
+    {
+      "path": "source/protocol-pins.mjs",
+      "bytes": 890,
+      "sha256": "6ee2a5d50a60fe0873f7bc1c92a117f59a1347f5e5c88a2333db32dd930a6d1a"
+    },
+    {
+      "path": "source/source-barcode-facts-handler.mjs",
+      "bytes": 7750,
+      "sha256": "ea987c6bb5e00d7d71f6f6c27d52313bbd5aabce8a7d9a3946ba4672ff89aaac"
+    },
+    {
+      "path": "source/source-barcode-handler.mjs",
+      "bytes": 16176,
+      "sha256": "56723cd22ecb72713b5dd4cc98b1a24adbb262200d25796e2d74f4a069d9d9eb"
+    },
+    {
+      "path": "source/stream-shard.mjs",
+      "bytes": 3888,
+      "sha256": "24745700c4eae82e73a304e148843e65f7fff84b26e2114d9d5c1ef54b87029a"
+    },
+    {
+      "path": "source/strict-json.mjs",
+      "bytes": 2044,
+      "sha256": "b0cc6bcbd8f3c620d1596b16a64e67279c08edf93874555d69c5ef6e84522099"
+    },
+    {
+      "path": "source/reviewed-hydration/source-barcode-client.mjs",
+      "bytes": 16505,
+      "sha256": "273afcb617a208c9e7385026351bc3f748e133b17a2eb37f5454b230b5351197"
+    },
+    {
+      "path": "source/reviewed-hydration/source-barcode-hydrator.mjs",
+      "bytes": 11810,
+      "sha256": "a2d96a9736942982408f51233384e503df7b7795ea24533a3f9d5f94c76300d9"
+    },
+    {
+      "path": "source/reviewed-hydration/source-barcode-selection.mjs",
+      "bytes": 208,
+      "sha256": "adaddd1ea29bc47860e4ed557b477240bab677b5eb431dc255a5c5887159f71e"
+    },
+    {
+      "path": "tests/facts-handler.test.mjs",
+      "bytes": 12620,
+      "sha256": "b22833cfd11e6de47b97cadc4b8550d8383bda030377a10133cd9cb92f9da7ba"
+    },
+    {
+      "path": "build/metafile.json",
+      "bytes": 4910,
+      "sha256": "e4819cd4c30c012707d9fe1eda6ce6058b19d502b55da2701277430dbc986fdf"
+    },
+    {
+      "path": "build/source-barcode-handler.bundle.mjs",
+      "bytes": 46738,
+      "sha256": "1ac95b6b63ec2794e5e670658bd6c2c4ce3b66af9426469d0c80ea196efa808f"
+    },
+    {
+      "path": "build-facts.mjs",
+      "bytes": 1154,
+      "sha256": "026966b3c597166fe356d3c3910a14c11ed9a6fec1a6e38dff69da37d0439647"
+    },
+    {
+      "path": "build.log",
+      "bytes": 138,
+      "sha256": "4cec941956b9ddba45a210b76dbba68cf62cbf902f18899512befb0118b73411"
+    },
+    {
+      "path": "focused-tests.log",
+      "bytes": 1364,
+      "sha256": "852ee5d7cd61c9910fba4adf094c5791a6d821f39e62fb493912cdd2cd00e11e"
+    },
+    {
+      "path": "actual-milk-parity.mjs",
+      "bytes": 4482,
+      "sha256": "7e848b94db556ff17d05f5d68c0c3cc34f14092610eff9f9e7594149ad68f760"
+    },
+    {
+      "path": "ACTUAL-MILK-FACTS-RECEIPT.json",
+      "bytes": 3639,
+      "sha256": "1e9619b70b7c454939e0f4562864092925ac50d8dccb31eacaae07b8e0c52bb3"
+    },
+    {
+      "path": "FACTS-CONTRACT.json",
+      "bytes": 1105,
+      "sha256": "e31994795c64f5176b5e471160b175165b3e23b5f7d6969a3690b224c8f5a0e5"
+    },
+    {
+      "path": "R5-ADDITIVE-SOURCE.patch",
+      "bytes": 36985,
+      "sha256": "302d8beecbd58172ab2b180ed0e1ccf7a709309444dc116e8600f421da40b8c0"
+    },
+    {
+      "path": "HANDOFF.md",
+      "bytes": 9958,
+      "sha256": "ec6489fed1b2e884e4badd2d222bfb41ee35515251490d069a332bb0952b0e28"
+    }
+  ]
+}

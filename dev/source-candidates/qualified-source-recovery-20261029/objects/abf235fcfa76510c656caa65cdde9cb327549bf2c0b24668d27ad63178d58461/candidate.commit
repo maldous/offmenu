@@ -1,0 +1,246 @@
+From d5147b2713abfe0c87332ab3ee692b33a80a05b1 Mon Sep 17 00:00:00 2001
+From: Freebuff Corpus Manager <freebuff-corpus-manager@offmenu.local>
+Date: Sun, 18 Oct 2026 18:02:25 +1100
+Subject: [PATCH] feat(refresh): add pure source-neutral retained-input
+ planning
+
+---
+ offmenu/refresh/retained_policy.py |  82 +++++++++++++++++
+ tests/test_retained_policy.py      | 136 +++++++++++++++++++++++++++++
+ 2 files changed, 218 insertions(+)
+ create mode 100644 offmenu/refresh/retained_policy.py
+ create mode 100644 tests/test_retained_policy.py
+
+diff --git a/offmenu/refresh/retained_policy.py b/offmenu/refresh/retained_policy.py
+new file mode 100644
+index 0000000..dc495d5
+--- /dev/null
++++ b/offmenu/refresh/retained_policy.py
+@@ -0,0 +1,82 @@
++"""Pure retained-input planning; no cache, file, network or admission actions.
++
++Callers still verify the actual input and satisfy their source contracts. Cache
++age and unchanged-content replay are separate observations: a later validation
++does not reset original acquisition, and an elapsed window does not change the
++content key. Neither observation grants permission to process a source.
++"""
++from .acquisition import MIN_TTL
++from .core import HEX, RefreshError, canonical, sha, timestamp
++
++SCHEMA = 'offmenu-retained-input-plan/1'
++
++
++def _digest(value):
++    return isinstance(value, str) and HEX.fullmatch(value) is not None
++
++
++def _clock(value):
++    try:
++        return timestamp(value)
++    except (ValueError, TypeError):
++        raise RefreshError('retained-plan-invalid-time') from None
++
++
++def plan_retained_input(*, source_id, release_id, input_pins, policy_sha256,
++                        scope_sha256, original_acquired_at, now,
++                        validated_at=None, previous_key=None,
++                        ttl_seconds=MIN_TTL, holds=()):
++    """Plan from declarations only; input pins map logical names to hash/bytes.
++
++    Identity includes source, release, exact input pins, reviewed policy/scope,
++    original acquisition, TTL and holds. Current and validation clocks are
++    observations, never identity. ``unchanged-no-op`` describes identity only;
++    it does not assert freshness, input verification, rights or acceptance.
++    """
++    if (not isinstance(source_id, str) or not source_id.strip()
++            or not isinstance(release_id, str) or not release_id.strip()
++            or not _digest(policy_sha256) or not _digest(scope_sha256)):
++        raise RefreshError('retained-plan-invalid-identity')
++    if type(ttl_seconds) is not int or ttl_seconds < MIN_TTL:
++        raise RefreshError('retained-plan-invalid-ttl')
++    if previous_key is not None and not _digest(previous_key):
++        raise RefreshError('retained-plan-invalid-previous-key')
++    if (not isinstance(holds, (list, tuple))
++            or any(not isinstance(h, str) or not h.strip() for h in holds)):
++        raise RefreshError('retained-plan-invalid-holds')
++    if (not isinstance(input_pins, dict) or not input_pins
++            or any(not isinstance(k, str) or not k.strip() for k in input_pins)):
++        raise RefreshError('retained-plan-invalid-input-pins')
++    pins = {}
++    for name, pin in input_pins.items():
++        if (not isinstance(pin, dict) or set(pin) != {'sha256', 'bytes'}
++                or not _digest(pin['sha256']) or type(pin['bytes']) is not int
++                or pin['bytes'] <= 0):
++            raise RefreshError('retained-plan-invalid-input-pins')
++        pins[name] = {'sha256': pin['sha256'], 'bytes': pin['bytes']}
++
++    current = _clock(now)
++    original = None if original_acquired_at is None else _clock(original_acquired_at)
++    validated = None if validated_at is None else _clock(validated_at)
++    if (original is not None and original > current
++            or validated is not None and validated > current
++            or original is not None and validated is not None and validated < original):
++        raise RefreshError('retained-plan-invalid-clock-order')
++    identity = {'schemaVersion': SCHEMA, 'sourceId': source_id,
++                'releaseId': release_id, 'inputPins': pins,
++                'policySha256': policy_sha256, 'scopeSha256': scope_sha256,
++                'originalAcquiredAt': original.isoformat() if original else None,
++                'ttlSeconds': ttl_seconds, 'holds': sorted(set(holds))}
++    key = sha(canonical(identity))
++    age = (current - original).total_seconds() if original else None
++    cache = ('held' if holds else 'original-acquisition-time-missing' if original is None
++             else 'reuse-retained' if age < ttl_seconds else 'revalidation-required')
++    replay = ('held' if holds else 'first-plan' if previous_key is None
++              else 'unchanged-no-op' if previous_key == key else 'changed')
++    return {'schemaVersion': SCHEMA, 'identity': identity, 'key': key,
++            'cacheDecision': cache, 'replayDecision': replay,
++            'acquisitionAgeSeconds': age,
++            'validatedAt': validated.isoformat() if validated else None,
++            'validationAgeSeconds': (current - validated).total_seconds() if validated else None,
++            'requiresInputVerification': True, 'networkAllowed': False,
++            'dataAdmissionAllowed': False}
+diff --git a/tests/test_retained_policy.py b/tests/test_retained_policy.py
+new file mode 100644
+index 0000000..9015555
+--- /dev/null
++++ b/tests/test_retained_policy.py
+@@ -0,0 +1,136 @@
++"""Authored declarations only: no source input, cache or transport operations."""
++import copy
++import unittest
++from unittest.mock import patch
++
++from offmenu.refresh.acquisition import MIN_TTL
++from offmenu.refresh.core import RefreshError
++from offmenu.refresh.retained_policy import plan_retained_input
++
++
++class RetainedInputPolicyTests(unittest.TestCase):
++    def setUp(self):
++        self.arguments = {
++            'source_id': 'et-authored-source', 'release_id': 'authored-release',
++            'input_pins': {'retained/response.json': {'sha256': 'a' * 64, 'bytes': 123}},
++            'policy_sha256': 'b' * 64, 'scope_sha256': 'c' * 64,
++            'original_acquired_at': '2026-10-14T22:19:12.836552Z',
++            'now': '2026-10-18T00:00:00Z'}
++
++    def plan(self, **changes):
++        return plan_retained_input(**{**self.arguments, **changes})
++
++    def test_actual_source_identity_and_minimum_window_are_preserved(self):
++        plan = self.plan()
++        self.assertEqual(plan['identity']['sourceId'], 'et-authored-source')
++        self.assertEqual(plan['identity']['releaseId'], 'authored-release')
++        self.assertEqual(plan['identity']['ttlSeconds'], MIN_TTL)
++        self.assertGreaterEqual(MIN_TTL, 30 * 86400)
++        self.assertEqual(plan['cacheDecision'], 'reuse-retained')
++        self.assertEqual(plan['replayDecision'], 'first-plan')
++        self.assertGreater(plan['acquisitionAgeSeconds'], 3 * 86400)
++
++    def test_later_validation_and_clock_do_not_reset_original_or_noop(self):
++        first = self.plan()
++        later = self.plan(now='2026-12-18T00:00:00Z',
++                          validated_at='2026-12-18T00:00:00Z', previous_key=first['key'])
++        self.assertEqual(first['key'], later['key'])
++        self.assertEqual(later['replayDecision'], 'unchanged-no-op')
++        self.assertEqual(later['cacheDecision'], 'revalidation-required')
++        self.assertGreater(later['acquisitionAgeSeconds'], 60 * 86400)
++        self.assertEqual(later['validationAgeSeconds'], 0)
++        self.assertEqual(later['identity']['originalAcquiredAt'],
++                         '2026-10-14T22:19:12.836552+00:00')
++
++    def test_unknown_original_is_not_filled_from_validation(self):
++        plan = self.plan(original_acquired_at=None, validated_at=self.arguments['now'])
++        self.assertIsNone(plan['identity']['originalAcquiredAt'])
++        self.assertIsNone(plan['acquisitionAgeSeconds'])
++        self.assertEqual(plan['cacheDecision'], 'original-acquisition-time-missing')
++        self.assertFalse(plan['networkAllowed'])
++
++    def test_exact_thirty_day_boundary_and_longer_ttl(self):
++        changes = {'original_acquired_at': '2026-09-18T00:00:00Z'}
++        before = self.plan(**changes, now='2026-10-17T23:59:59Z')
++        at = self.plan(**changes, previous_key=before['key'])
++        self.assertEqual(before['cacheDecision'], 'reuse-retained')
++        self.assertEqual(at['cacheDecision'], 'revalidation-required')
++        self.assertEqual(at['replayDecision'], 'unchanged-no-op')
++        self.assertEqual(self.plan(**changes, ttl_seconds=31 * 86400)['cacheDecision'],
++                         'reuse-retained')
++        for ttl in (MIN_TTL - 1, True, 30.0, None):
++            with self.subTest(ttl=ttl), self.assertRaises(RefreshError):
++                self.plan(ttl_seconds=ttl)
++
++    def test_source_release_content_and_contract_changes_invalidate_noop(self):
++        first = self.plan()
++        changes = [
++            {'source_id': 'nl-authored-source'}, {'release_id': 'other-release'},
++            {'input_pins': {'retained/response.json': {'sha256': 'd' * 64, 'bytes': 123}}},
++            {'input_pins': {'retained/response.json': {'sha256': 'a' * 64, 'bytes': 124}}},
++            {'input_pins': {'other-logical-role': {'sha256': 'a' * 64, 'bytes': 123}}},
++            {'policy_sha256': 'd' * 64}, {'scope_sha256': 'd' * 64},
++            {'original_acquired_at': '2026-10-13T00:00:00Z'},
++            {'ttl_seconds': MIN_TTL + 1}]
++        for change in changes:
++            with self.subTest(change=change):
++                plan = self.plan(**change, previous_key=first['key'])
++                self.assertNotEqual(plan['key'], first['key'])
++                self.assertEqual(plan['replayDecision'], 'changed')
++
++    def test_holds_remain_effective_even_with_matching_key(self):
++        first = self.plan(holds=['source-use-held'])
++        second = self.plan(holds=['source-use-held'], previous_key=first['key'])
++        self.assertEqual(second['cacheDecision'], 'held')
++        self.assertEqual(second['replayDecision'], 'held')
++        self.assertFalse(second['networkAllowed'])
++        self.assertFalse(second['dataAdmissionAllowed'])
++        self.assertNotEqual(first['key'], self.plan()['key'])
++
++    def test_canonical_order_and_equivalent_utc_spellings_preserve_key(self):
++        pins = {**self.arguments['input_pins'], 'other-role': {'sha256': 'd' * 64, 'bytes': 1}}
++        first = self.plan(input_pins=pins, holds=['second', 'first'])
++        second = self.plan(input_pins=dict(reversed(list(pins.items()))),
++                           holds=['first', 'second', 'first'],
++                           original_acquired_at='2026-10-14T22:19:12.836552+00:00')
++        self.assertEqual(first['key'], second['key'])
++
++    def test_bad_declarations_fail_closed(self):
++        changes = [{'source_id': ''}, {'release_id': None}, {'policy_sha256': 'bad'},
++                   {'scope_sha256': None}, {'previous_key': 'bad'}, {'holds': 'held'},
++                   {'holds': ['']}, {'input_pins': {}},
++                   {'input_pins': {'role': {'sha256': 'a' * 64, 'bytes': True}}},
++                   {'input_pins': {'role': {'sha256': 'a' * 64, 'bytes': 0}}},
++                   {'input_pins': {'role': {'sha256': 'bad', 'bytes': 1}}},
++                   {'input_pins': {'role': {'sha256': 'a' * 64, 'bytes': 1, 'extra': 1}}}]
++        for change in changes:
++            with self.subTest(change=change), self.assertRaises(RefreshError):
++                self.plan(**change)
++
++    def test_clocks_fail_closed_and_fixed_errors_do_not_echo_values(self):
++        changes = [{'now': 'bad-private-value'}, {'now': '2026-10-18'},
++                   {'now': '2026-10-18T00:00:00+01:00'},
++                   {'original_acquired_at': '2027-01-01T00:00:00Z'},
++                   {'validated_at': '2027-01-01T00:00:00Z'},
++                   {'validated_at': '2026-01-01T00:00:00Z'}]
++        for change in changes:
++            with self.subTest(change=change), self.assertRaises(RefreshError) as error:
++                self.plan(**change)
++            self.assertNotIn('bad-private-value', str(error.exception))
++
++    def test_no_io_no_admission_and_no_argument_mutation(self):
++        before = copy.deepcopy(self.arguments)
++        with patch('builtins.open', side_effect=AssertionError('file access')), \
++             patch('os.open', side_effect=AssertionError('descriptor access')), \
++             patch('socket.socket', side_effect=AssertionError('network access')):
++            plan = self.plan()
++        self.assertEqual(self.arguments, before)
++        self.assertTrue(plan['requiresInputVerification'])
++        self.assertFalse(plan['networkAllowed'])
++        self.assertFalse(plan['dataAdmissionAllowed'])
++        plan['identity']['inputPins']['retained/response.json']['bytes'] = 999
++        self.assertEqual(self.arguments, before)
++
++
++if __name__ == '__main__':
++    unittest.main()
+-- 
+2.43.0
+

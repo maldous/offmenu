@@ -1,0 +1,1902 @@
+diff --git a/docs/operations/worker06-staging-bindings.json b/docs/operations/worker06-staging-bindings.json
+new file mode 100644
+index 00000000..9e2fe0c2
+--- /dev/null
++++ b/docs/operations/worker06-staging-bindings.json
+@@ -0,0 +1,1216 @@
++{
++  "schemaVersion": "worker06-metadata-binding/1",
++  "portfolio": [
++    "ME",
++    "MF",
++    "MG",
++    "MH"
++  ],
++  "base": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
++  "scope": "retained validation metadata only; no rights contract or body processing",
++  "bindings": [
++    {
++      "id": "me-0f949620d0281b9111cc",
++      "country": "ME",
++      "sourceId": "worker06-retained-metadata:me-0f949620d0281b9111cc",
++      "releaseId": "MONSTAT Household Budget Survey2025 release September2026",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
++        "logicalPath": "ME/deliverable-validation.json",
++        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
++        "bytes": 10777
++      },
++      "recordSelector": "/sources/0",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/0f949620d0281b9111cc/receipt.json",
++        "sha256": "9fb7e3e186cc494c668538935c03c329be86e11fb8c99b4ff2013c878947375b"
++      },
++      "payloadAssetPinsRecordedOnly": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/0f949620d0281b9111cc/primary-catalogue.html",
++          "bytes": 44788,
++          "sha256": "57ea52f1136a1db349b7cbff1cc3c446778bbb9453f59a64e41eea22093949bc"
++        }
++      ],
++      "applicability": {
++        "country": "ME",
++        "types": [
++          "prices-context"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/0/url",
++          "expected": "https://monstat.org/eng/novosti.php?id=4430"
++        },
++        "releaseLabel": {
++          "selector": "/sources/0/release",
++          "expected": "MONSTAT Household Budget Survey2025 release September2026"
++        },
++        "sourceRole": {
++          "selector": "/sources/0/role",
++          "expected": "basket-and-price"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/0f949620d0281b9111cc/receipt.json",
++            "sha256": "9fb7e3e186cc494c668538935c03c329be86e11fb8c99b4ff2013c878947375b"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        },
++        {
++          "code": "catalogue-not-2025-payload",
++          "kind": "missing-input",
++          "owner": "Morgan/source author"
++        }
++      ]
++    },
++    {
++      "id": "me-36532fadc2078557329b",
++      "country": "ME",
++      "sourceId": "worker06-retained-metadata:me-36532fadc2078557329b",
++      "releaseId": "NTO Flavours of Montenegro Deutsch complete brochure edition",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
++        "logicalPath": "ME/deliverable-validation.json",
++        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
++        "bytes": 10777
++      },
++      "recordSelector": "/sources/1",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/36532fadc2078557329b/receipt.json",
++        "sha256": "dd5251acaf150e31eb3dc2fbfdf48d395a00ab41d1aa45c6c1e662d3f037398f"
++      },
++      "payloadAssetPinsRecordedOnly": [],
++      "applicability": {
++        "country": "ME",
++        "types": [
++          "recipe-discovery"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/1/url",
++          "expected": "https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_GER.pdf"
++        },
++        "releaseLabel": {
++          "selector": "/sources/1/release",
++          "expected": "NTO Flavours of Montenegro Deutsch complete brochure edition"
++        },
++        "sourceRole": {
++          "selector": "/sources/1/role",
++          "expected": "national-recipe-source/food culture, NOT complete national corpus"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/36532fadc2078557329b/receipt.json",
++            "sha256": "dd5251acaf150e31eb3dc2fbfdf48d395a00ab41d1aa45c6c1e662d3f037398f"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        }
++      ]
++    },
++    {
++      "id": "me-3e0b1d6c8b4b47a69ae6",
++      "country": "ME",
++      "sourceId": "worker06-retained-metadata:me-3e0b1d6c8b4b47a69ae6",
++      "releaseId": "NTO Flavours of Montenegro official brochure",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
++        "logicalPath": "ME/deliverable-validation.json",
++        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
++        "bytes": 10777
++      },
++      "recordSelector": "/sources/2",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/3e0b1d6c8b4b47a69ae6/receipt.json",
++        "sha256": "ef47ab506db090635eda60c6fafe5baacc5e327963344c40b1c7b2dd9ce53889"
++      },
++      "payloadAssetPinsRecordedOnly": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/3e0b1d6c8b4b47a69ae6/primary-catalogue.html",
++          "bytes": 133745,
++          "sha256": "36ad5b752bdf6690b9bc8c07e682e89cd659d78bd9420197857b20d2cbc10036"
++        }
++      ],
++      "applicability": {
++        "country": "ME",
++        "types": [
++          "recipe-discovery"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/2/url",
++          "expected": "https://www.montenegro.travel/en/plan-your-stay-in-montenegro/useful-tips-and-facts/publications/46-flavours-of-montenegro"
++        },
++        "releaseLabel": {
++          "selector": "/sources/2/release",
++          "expected": "NTO Flavours of Montenegro official brochure"
++        },
++        "sourceRole": {
++          "selector": "/sources/2/role",
++          "expected": "national-recipe-source/food-culture, NOT complete national recipe corpus"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/3e0b1d6c8b4b47a69ae6/receipt.json",
++            "sha256": "ef47ab506db090635eda60c6fafe5baacc5e327963344c40b1c7b2dd9ce53889"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        }
++      ]
++    },
++    {
++      "id": "me-4d24181b35cc6462e963",
++      "country": "ME",
++      "sourceId": "worker06-retained-metadata:me-4d24181b35cc6462e963",
++      "releaseId": "MONSTAT Household Budget Survey2021 full statistical release",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
++        "logicalPath": "ME/deliverable-validation.json",
++        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
++        "bytes": 10777
++      },
++      "recordSelector": "/sources/3",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/4d24181b35cc6462e963/receipt.json",
++        "sha256": "4cb1e6658ea5ccc0f14361cdb9b862f73704b9fc763ed83bbe8ca1421a6c6b1a"
++      },
++      "payloadAssetPinsRecordedOnly": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/4d24181b35cc6462e963/original.pdf",
++          "bytes": 254832,
++          "sha256": "d485c5d166b9ad63ee041fb00ec9ea31375423b4f470e363a260e0e64389e223"
++        }
++      ],
++      "applicability": {
++        "country": "ME",
++        "types": [
++          "prices-context"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/3/url",
++          "expected": "https://monstat.org/uploads/files/apd/2021/Release%20of%20Household%20Budget%20Survey_2021.pdf"
++        },
++        "releaseLabel": {
++          "selector": "/sources/3/release",
++          "expected": "MONSTAT Household Budget Survey2021 full statistical release"
++        },
++        "sourceRole": {
++          "selector": "/sources/3/role",
++          "expected": "basket-and-price"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/4d24181b35cc6462e963/receipt.json",
++            "sha256": "4cb1e6658ea5ccc0f14361cdb9b862f73704b9fc763ed83bbe8ca1421a6c6b1a"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        }
++      ]
++    },
++    {
++      "id": "me-6e9f14b8d60ea0fd13be",
++      "country": "ME",
++      "sourceId": "worker06-retained-metadata:me-6e9f14b8d60ea0fd13be",
++      "releaseId": "NTO Flavours of Montenegro Polski complete brochure edition",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
++        "logicalPath": "ME/deliverable-validation.json",
++        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
++        "bytes": 10777
++      },
++      "recordSelector": "/sources/4",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/6e9f14b8d60ea0fd13be/receipt.json",
++        "sha256": "b3438a58b458dd50fd786316cc1dcc2efb4a0df61512617e1c4b53ad157e80e0"
++      },
++      "payloadAssetPinsRecordedOnly": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/6e9f14b8d60ea0fd13be/original.pdf",
++          "bytes": 26616706,
++          "sha256": "fee7e34f3145a2d8083bc7f2d68ebb6fb652ea33077181245306fb210cb281ca"
++        }
++      ],
++      "applicability": {
++        "country": "ME",
++        "types": [
++          "recipe-discovery"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/4/url",
++          "expected": "https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_POL.pdf"
++        },
++        "releaseLabel": {
++          "selector": "/sources/4/release",
++          "expected": "NTO Flavours of Montenegro Polski complete brochure edition"
++        },
++        "sourceRole": {
++          "selector": "/sources/4/role",
++          "expected": "national-recipe-source/food culture, NOT complete national corpus"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/6e9f14b8d60ea0fd13be/receipt.json",
++            "sha256": "b3438a58b458dd50fd786316cc1dcc2efb4a0df61512617e1c4b53ad157e80e0"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        }
++      ]
++    },
++    {
++      "id": "me-9d721b7020c45dd76348",
++      "country": "ME",
++      "sourceId": "worker06-retained-metadata:me-9d721b7020c45dd76348",
++      "releaseId": "NTO Flavours of Montenegro French complete brochure edition",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
++        "logicalPath": "ME/deliverable-validation.json",
++        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
++        "bytes": 10777
++      },
++      "recordSelector": "/sources/5",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/9d721b7020c45dd76348/receipt.json",
++        "sha256": "029093bb745b97fbbadc393c43731b067d5a9f4877676537747209b7373455f1"
++      },
++      "payloadAssetPinsRecordedOnly": [],
++      "applicability": {
++        "country": "ME",
++        "types": [
++          "recipe-discovery"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/5/url",
++          "expected": "https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_FRA.pdf"
++        },
++        "releaseLabel": {
++          "selector": "/sources/5/release",
++          "expected": "NTO Flavours of Montenegro French complete brochure edition"
++        },
++        "sourceRole": {
++          "selector": "/sources/5/role",
++          "expected": "national-recipe-source/food culture, NOT complete national corpus"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/9d721b7020c45dd76348/receipt.json",
++            "sha256": "029093bb745b97fbbadc393c43731b067d5a9f4877676537747209b7373455f1"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        }
++      ]
++    },
++    {
++      "id": "me-abdef9ef604721edce06",
++      "country": "ME",
++      "sourceId": "worker06-retained-metadata:me-abdef9ef604721edce06",
++      "releaseId": "NTO Flavours of Montenegro English complete brochure edition",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
++        "logicalPath": "ME/deliverable-validation.json",
++        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
++        "bytes": 10777
++      },
++      "recordSelector": "/sources/6",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/abdef9ef604721edce06/receipt.json",
++        "sha256": "ed7951f0aa3ff264f0bae75c39f509b14d5f3f98b74066cb462627e2e0a95f99"
++      },
++      "payloadAssetPinsRecordedOnly": [],
++      "applicability": {
++        "country": "ME",
++        "types": [
++          "recipe-discovery"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/6/url",
++          "expected": "https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_EN.pdf"
++        },
++        "releaseLabel": {
++          "selector": "/sources/6/release",
++          "expected": "NTO Flavours of Montenegro English complete brochure edition"
++        },
++        "sourceRole": {
++          "selector": "/sources/6/role",
++          "expected": "national-recipe-source/food culture, NOT complete national corpus"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/abdef9ef604721edce06/receipt.json",
++            "sha256": "ed7951f0aa3ff264f0bae75c39f509b14d5f3f98b74066cb462627e2e0a95f99"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        }
++      ]
++    },
++    {
++      "id": "me-ecac44fa7e6840e0a28e",
++      "country": "ME",
++      "sourceId": "worker06-retained-metadata:me-ecac44fa7e6840e0a28e",
++      "releaseId": "NTO Flavours of Montenegro Crnogorski complete brochure edition",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/ME/deliverable-validation.json",
++        "logicalPath": "ME/deliverable-validation.json",
++        "sha256": "21e77da03edb5ce8cee73ed899bfb6a40f2a6089fa618d90a0d9018a9da508d0",
++        "bytes": 10777
++      },
++      "recordSelector": "/sources/7",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/ecac44fa7e6840e0a28e/receipt.json",
++        "sha256": "d390f809abfdabaf91db3c78c91fb3cde5c1754e382df004e11bd46d79f134c9"
++      },
++      "payloadAssetPinsRecordedOnly": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/ecac44fa7e6840e0a28e/original.pdf",
++          "bytes": 26601635,
++          "sha256": "655368113b1ac4f87c6b2867b17b6d3369159f98df5236adbdd7d399dc2df9f0"
++        }
++      ],
++      "applicability": {
++        "country": "ME",
++        "types": [
++          "recipe-discovery"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/7/url",
++          "expected": "https://www.montenegro.travel/uploads/brochures/Gastro/Gastro_MNE.pdf"
++        },
++        "releaseLabel": {
++          "selector": "/sources/7/release",
++          "expected": "NTO Flavours of Montenegro Crnogorski complete brochure edition"
++        },
++        "sourceRole": {
++          "selector": "/sources/7/role",
++          "expected": "national-recipe-source/food culture, NOT complete national corpus"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:20.957776+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/ME/ecac44fa7e6840e0a28e/receipt.json",
++            "sha256": "d390f809abfdabaf91db3c78c91fb3cde5c1754e382df004e11bd46d79f134c9"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        }
++      ]
++    },
++    {
++      "id": "mf-64692db296eb5341f28e",
++      "country": "MF",
++      "sourceId": "worker06-retained-metadata:mf-64692db296eb5341f28e",
++      "releaseId": "TourismOffice restaurant/2025guide source page",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MF/deliverable-validation.json",
++        "logicalPath": "MF/deliverable-validation.json",
++        "sha256": "6586d07f1d3c2aa53c8bdb734f3c6c683db4e56d6975569181940dcd49820e94",
++        "bytes": 4657
++      },
++      "recordSelector": "/sources/0",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/64692db296eb5341f28e/receipt.json",
++        "sha256": "c0852f9abbf4d2b7f96e516f154358172fce6d102e9899c09861ac2543ce3763"
++      },
++      "payloadAssetPinsRecordedOnly": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/64692db296eb5341f28e/source.html",
++          "bytes": 55199,
++          "sha256": "8d38da9c3cb72cf49493448f88d72bcf8fec788c82b9abc5d6523c2f9c31b4ba"
++        }
++      ],
++      "applicability": {
++        "country": "MF",
++        "types": [
++          "menu-discovery"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/0/url",
++          "expected": "https://staycation-saint-martin.fr/fr/deal/restauration/"
++        },
++        "releaseLabel": {
++          "selector": "/sources/0/release",
++          "expected": "TourismOffice restaurant/2025guide source page"
++        },
++        "sourceRole": {
++          "selector": "/sources/0/role",
++          "expected": "national-menu-source"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:21.005989+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/64692db296eb5341f28e/receipt.json",
++            "sha256": "c0852f9abbf4d2b7f96e516f154358172fce6d102e9899c09861ac2543ce3763"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        },
++        {
++          "code": "mf-applicability-no-sx-or-pnns-inheritance",
++          "kind": "applicability",
++          "owner": "Morgan/source scope reviewer"
++        }
++      ]
++    },
++    {
++      "id": "mf-8e31116f829b0190bae7",
++      "country": "MF",
++      "sourceId": "worker06-retained-metadata:mf-8e31116f829b0190bae7",
++      "releaseId": "Saint-Martin annual economic report2024 edition2025",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MF/deliverable-validation.json",
++        "logicalPath": "MF/deliverable-validation.json",
++        "sha256": "6586d07f1d3c2aa53c8bdb734f3c6c683db4e56d6975569181940dcd49820e94",
++        "bytes": 4657
++      },
++      "recordSelector": "/sources/1",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/8e31116f829b0190bae7/receipt.json",
++        "sha256": "095d8c93319fd2d56100297519d30faaf27bf9f7ebef5383fa7ae64b57d01bbb"
++      },
++      "payloadAssetPinsRecordedOnly": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/8e31116f829b0190bae7/original.pdf",
++          "bytes": 2023697,
++          "sha256": "7cf5c7f0abb33d33d4bbe8ff047f9b3d066c93353c7b6d7fc1746937527b72fe"
++        }
++      ],
++      "applicability": {
++        "country": "MF",
++        "types": [
++          "prices-context"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/1/url",
++          "expected": "https://www.iedom.fr/IMG/pdf/ra_iedom_2024_ed._2025_-_saint-martin.pdf"
++        },
++        "releaseLabel": {
++          "selector": "/sources/1/release",
++          "expected": "Saint-Martin annual economic report2024 edition2025"
++        },
++        "sourceRole": {
++          "selector": "/sources/1/role",
++          "expected": "basket-and-price"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:21.005989+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/MF/8e31116f829b0190bae7/receipt.json",
++            "sha256": "095d8c93319fd2d56100297519d30faaf27bf9f7ebef5383fa7ae64b57d01bbb"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        },
++        {
++          "code": "mf-applicability-no-sx-or-pnns-inheritance",
++          "kind": "applicability",
++          "owner": "Morgan/source scope reviewer"
++        }
++      ]
++    },
++    {
++      "id": "mg-42faed68bba28d89f4b7",
++      "country": "MG",
++      "sourceId": "worker06-retained-metadata:mg-42faed68bba28d89f4b7",
++      "releaseId": "2024;P177968",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MG/deliverable-validation.json",
++        "logicalPath": "MG/deliverable-validation.json",
++        "sha256": "6defbe380ae4cd39fe95a6b6c14d9131eaf0bb219e044207feff8631b1b4cd67",
++        "bytes": 3153
++      },
++      "recordSelector": "/sources/0",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/MG/42faed68bba28d89f4b7/receipt.json",
++        "sha256": "7a66a1e43a2eda59c52058161b19c78f7e43acd36170af38b8d82cdd13efb0f7"
++      },
++      "payloadAssetPinsRecordedOnly": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/MG/42faed68bba28d89f4b7/original.pdf",
++          "bytes": 20139326,
++          "sha256": "aab229dd3b8280fb1fd7b6765d86c9a700f202f737bf20f377eec9ae03d4dcef"
++        }
++      ],
++      "applicability": {
++        "country": "MG",
++        "types": [
++          "research-context"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/0/url",
++          "expected": "https://documents1.worldbank.org/curated/en/099021424172020915/pdf/P17796818b70320641878f166fa034723ca.pdf"
++        },
++        "releaseLabel": {
++          "selector": "/sources/0/release",
++          "expected": "2024;P177968"
++        },
++        "sourceRole": {
++          "selector": "/sources/0/role",
++          "expected": "Madagascar Poverty Assessment 2024"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:21.064590+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/MG/42faed68bba28d89f4b7/receipt.json",
++            "sha256": "7a66a1e43a2eda59c52058161b19c78f7e43acd36170af38b8d82cdd13efb0f7"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        }
++      ]
++    },
++    {
++      "id": "mh-food-away-from-home-10018",
++      "country": "MH",
++      "sourceId": "worker06-retained-metadata:mh-food-away-from-home-10018",
++      "releaseId": "World Bank PolicyResearchWorkingPaper10018;2022",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MH/deliverable-validation.json",
++        "logicalPath": "MH/deliverable-validation.json",
++        "sha256": "990b4c1f3186702b2882a3705cc99c5da655890fe3c6c81714e0caf348eec032",
++        "bytes": 4782
++      },
++      "recordSelector": "/sources/0",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/food-away-from-home-10018/receipt.json",
++        "sha256": "10c54b7a1dc39a5f09a032768de24e50cdf3672579ecd315290e7ff030673bf7"
++      },
++      "payloadAssetPinsRecordedOnly": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/food-away-from-home-10018/original.pdf",
++          "bytes": 385216,
++          "sha256": "7a55add9610f115ca33783e8f38e0ecea80211b59008a808fcfd21b7dd9f2aac"
++        }
++      ],
++      "applicability": {
++        "country": "MH",
++        "types": [
++          "research-context"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/0/url",
++          "expected": "https://documents.worldbank.org/curated/en/099319404262234256/pdf/IDU0de68011902ce0040430aa930282fc3c6fafd.pdf"
++        },
++        "releaseLabel": {
++          "selector": "/sources/0/release",
++          "expected": "World Bank PolicyResearchWorkingPaper10018;2022"
++        },
++        "sourceRole": {
++          "selector": "/sources/0/role",
++          "expected": "Research on Marshall Islands consumption experiment; not previous HIES2019/20/SPREP report"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:21.134819+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/food-away-from-home-10018/receipt.json",
++            "sha256": "10c54b7a1dc39a5f09a032768de24e50cdf3672579ecd315290e7ff030673bf7"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        },
++        {
++          "code": "wb-rights-correction-unresolved",
++          "kind": "explicit-source-hold",
++          "owner": "Morgan/source-rights owner"
++        }
++      ]
++    },
++    {
++      "id": "mh-spc-guide-cooking-recipes",
++      "country": "MH",
++      "sourceId": "worker06-retained-metadata:mh-spc-guide-cooking-recipes",
++      "releaseId": "SPC2019/2020 regional guide; Marshall Islands chapter",
++      "metadataAsset": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-06/MH/deliverable-validation.json",
++        "logicalPath": "MH/deliverable-validation.json",
++        "sha256": "990b4c1f3186702b2882a3705cc99c5da655890fe3c6c81714e0caf348eec032",
++        "bytes": 4782
++      },
++      "recordSelector": "/sources/1",
++      "sourceReceipt": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/round2/spc-guide-cooking-recipes/receipt.json",
++        "sha256": "8edc93bffd287b8464b9fa638d13f18bf15ca9e446611649849b18854065cca1"
++      },
++      "payloadAssetPinsRecordedOnly": [
++        {
++          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/round2/spc-guide-cooking-recipes/publisher-original.pdf",
++          "bytes": 19181123,
++          "sha256": "91161cbc5ca01bf2f96ce67e24a6bb903d5ca5cd8a079ee4b67e163e6cc14848"
++        }
++      ],
++      "applicability": {
++        "country": "MH",
++        "types": [
++          "recipe-discovery"
++        ],
++        "scope": "context/discovery only; no country-domain completeness",
++        "excluded": [
++          "canonical-nutrient-composition",
++          "gold-admission",
++          "whole-country-acceptance"
++        ]
++      },
++      "fields": {
++        "publisherURL": {
++          "selector": "/sources/1/url",
++          "expected": "https://ccprojects.gsd.spc.int/wp-content/uploads/2020/10/Recipe-Book_English-18.09.pdf"
++        },
++        "releaseLabel": {
++          "selector": "/sources/1/release",
++          "expected": "SPC2019/2020 regional guide; Marshall Islands chapter"
++        },
++        "sourceRole": {
++          "selector": "/sources/1/role",
++          "expected": "national-recipe-source"
++        },
++        "nativeUnit": {
++          "selector": null,
++          "expected": null
++        },
++        "nativeBasis": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyTableSelector": {
++          "selector": null,
++          "expected": null
++        },
++        "bodyRecordId": {
++          "selector": null,
++          "expected": null
++        },
++        "typedObservationSchema": {
++          "selector": null,
++          "expected": null
++        }
++      },
++      "originalAcquiredAt": null,
++      "integrityValidatedAt": "2026-10-16T22:26:21.134819+00:00",
++      "clockEvidence": "checkedUTC is validation time, not acquisition; no acquisition timestamp selected from source receipt",
++      "permittedPayloadOperations": [],
++      "sharedAdapter": null,
++      "sharedValidator": "offmenu.refresh.field_provenance.field_origin_errors",
++      "blockers": [
++        {
++          "code": "operation-use-unqualified",
++          "kind": "source-use",
++          "owner": "Morgan/source-rights owner",
++          "evidence": {
++            "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/MH/round2/spc-guide-cooking-recipes/receipt.json",
++            "sha256": "8edc93bffd287b8464b9fa638d13f18bf15ca9e446611649849b18854065cca1"
++          }
++        },
++        {
++          "code": "body-selector-and-semantics-missing",
++          "kind": "missing-input",
++          "owner": "Morgan/selected source author"
++        },
++        {
++          "code": "mh-chapter-span-list-not-held",
++          "kind": "missing-input",
++          "owner": "Morgan/source scope author"
++        }
++      ]
++    }
++  ]
++}
+diff --git a/docs/operations/worker06-staging-bindings.md b/docs/operations/worker06-staging-bindings.md
+new file mode 100644
+index 00000000..d488e5de
+--- /dev/null
++++ b/docs/operations/worker06-staging-bindings.md
+@@ -0,0 +1,149 @@
++# Worker06 source-input bindings
++
++Selected task M-STAGING-BIND-20261018-W06. Base develop snapshot
++`abecb99ee1125730ccbc2824b6ec49ffc5cc4302`. Own additions only; shared
++execution, acquisition, adapters, qualification and registry remain unchanged.
++
++## Run and inspect
++
++From the repository, run:
++
++```sh
++python3 -m offmenu.refresh.worker06_bindings --now 2026-10-18T00:00:00Z > /private/foo/metadata-report.json
++python3 -m offmenu.refresh.worker06_bindings --now 2026-10-18T00:00:00Z --previous /private/foo/metadata-report.json
++python3 -m unittest tests.test_worker06_bindings -v
++```
++
++Use an existing private Foo output directory. The module prints JSON and never
++writes to source/cache/accepted pointers. Its only retained-input reads are the
++four exact small `deliverable-validation.json` metadata manifests selected by
++the committed configuration. Repeated reads are per binding, at most128KiB each;
++no PDF/HTML or receipt pointer in those manifests is opened. Missing metadata is
++reported per binding; symlinks, read failures, malformed/duplicate JSON,
++selectors and hash drift fail closed. No replacement search or fetch occurs.
++The reader opens each directory component without following links, then opens
++the final component nonblocking and checks its descriptor with `fstat` before
++reading. FIFOs/nonregular files are rejected without waiting for a writer;
++before/after file identity/size/change metadata and exact input pins remain
++checked. Authored FIFO tests prove the following sibling still reports.
++The optional `--previous` report uses that same bounded regular-file reader;
++nonregular/missing/unreadable or malformed reports produce fixed
++`previous-report-unreadable-or-invalid` argument errors (exit2) before source
++iteration. Regular prior reports preserve content replay. Neither prior nor
++metadata input bytes/mtime are written. The report limit is128KiB.
++
++Exit0 means every metadata input is valid or explicitly held; it never means a
++payload is accepted. Missing/malformed/stale metadata causes exit1 while all
++independent bindings still report. The explicit UTC clock makes runs repeatable.
++
++## Bound source scope
++
++The JSON configuration has13 source entries: ME8, MF2, MG1, MH2. These are
++metadata bindings, not13 datasets, normalized observations or accepted records.
++Each entry pins the exact validation manifest and JSON selector, original source
++receipt path/hash, release label, country and role. Retained payload pins are
++copied only where the existing validation manifest actually supplies them;
++empty arrays do not mean the original is absent. No source body was rehashed.
++
++| Country | Selected context | Explicit exclusions/gaps |
++| --- | --- | --- |
++| ME | MONSTAT2021 HBS,2025 catalogue and six NTO brochure edition leads |2021 is not2025; catalogue is not release data; brochure integrity is not complete recipe scope |
++| MF | IEDOM2024 edition2025 and tourism2025 guide landing metadata | French Saint-Martin, not SX; not BQP/item-price rows or PNNS applicability; guide original still missing |
++| MG | World Bank P177968 poverty assessment2024 | Research context, not national composition; exact tables/units/bases/use unresolved |
++| MH | World Bank paper10018(2022) and SPC regional cooking guide | Research not HIES replacement; SPC MH chapter span/list unknown; WB explicit rights correction retained |
++
++`sourceId` is explicitly a **metadata** identity scoped to this binding. The
++publisher receipt and release are retained separately. It is not an invented
++registration in shared RELEASES/ADMISSIONS and does not route a publisher PDF to
++an incompatible national-tabular or reference parser.
++
++Every datum in the metadata candidate has a shared `field_origin_errors` origin:
++release/URL/role point into exact pinned validation JSON; unknown native units,
++bases, body selectors, body record identity and typed schema are null with a
++versioned policy-constant origin. These are declarations of missing evidence,
++not guessed PDF coordinates or canonical conversions. The corresponding source
++receipt is an independent custody pointer; the metadata pointer is not presented
++as a coordinate inside the original PDF/HTML.
++
++## Cache and replay interface
++
++`originalAcquiredAt` is null on all real entries: no evidence-bound acquisition
++clock has been selected. `integrityValidatedAt` is the prior validation manifest's
++checkedUTC. Validation/read/mtime does not substitute for acquisition and never
++resets source age. Shared `acquisition.MIN_TTL` expresses the30day requirement
++only. There is no generic pure cache planner at this base: `cacheDecision` is
++`unsupported-real-source-cache-planner` and `freshness` remains `unknown` at
++every age, including exactly30days. No local reuse, conditional-refresh or
++stale-by-age policy is implemented. Known acquisition/validation ages are
++separate timestamp observations; unknown acquisition age remains null. Zero
++network and no asset verification apply in every case. The Wikibooks planner,
++registry-only fixture planner and operational CachedAcquirer are never called.
++
++The metadata content fingerprint binds the entire source configuration,
++candidate and versioned unknown policy, excluding the caller's current clock.
++An unchanged fingerprint yields `unchanged-no-op` even while source holds remain.
++This is a **metadata replay** result, not proof of underlying source-content
++verification, an HTTP304, or acceptance. A changed source pin is `stale` and
++cannot be repaired by refreshing the validation timestamp.
++
++These corrections supersede predecessor `0ee0311a`'s FIFO reader and local
++30day decision/status logic, and the related cache-intent qualification in the
++external interface5798 addendum. Prior artifacts remain retained history.
++
++## Qualification handoff and remaining dependencies
++
++Shared functions reused: strict JSON and UTC timestamps in `core`,
++`acceptance.fingerprint`, `field_provenance.field_origin_errors`, and the shared
++minimum TTL. Authored tests also compose an explicitly fixture-only trusted
++`SourceContract` with shared `acceptance.accept`; the positive result is
++`accepted-fixture-scope`, never production/country acceptance. Held/rights-missing
++fixture contracts fail through the same qualifier. No country engine is copied.
++
++Real bindings remain `held`, with typed owners and blockers. Payload operation
++lists are empty and no actual SourceContract is created. Before a real source
++successor, Morgan and its existing rights/scope reviewer must bind exact
++operation-use evidence, allowed source portion, format-specific parser/adapter,
++native units/bases/definitions, independently expected counts/IDs/schema, body
++field origins and original-acquisition clock. Source-specific exceptions and
++retained explicit denials remain in that future trusted contract. No new grant
++is required merely because a custodian is missing; positive existing evidence
++may qualify a narrowly reviewed operation. Missing evidence is not a denial.
++
++Integrator00 can integrate these four portfolio-only files after designated
++independent review. No shared-interface mutation is proposed in this batch.
++If a future body format requires another generic handler, its exact interface
++and reviewed semantic/custody contract must be selected with00; this module
++does not silently install one. All source-domain acceptance and country
++completeness remain with the shared trusted qualifier and country requirements.
++
++## Official documentation evidence checked18October2026
++
++These are documentation reads, not source-data downloads or source-specific
++rights decisions. No publisher contact, account or terms acceptance was made.
++
++* [IEDOM legal notice](https://www.iedom.fr/mentions-legales?lang=fr), updated
++  3February2025, sections “Sont autorisées” and “Sont interdites sans autorisation
++  préalable”: allows narrowly described citation/analysis and personal use,
++  while other electronic reproduction/use needs prior agreement. This does not
++  qualify bulk structured extraction of the retained MF report. Keep its
++  operation-use blocker and attribution/portion question with the existing
++  rights reviewer; do not convert a landing page into a licence.
++* [World Bank terms](https://www.worldbank.org/ext/en/legal/terms-conditions),
++  notice amended25July2025: distinguishes datasets and Open Knowledge Repository
++  material from other site material, with source-specific terms and third-party
++  ownership caveats. General site terms alone do not resolve the exact MG report
++  or MH10018 correction. The linked OKR terms endpoint returned403 during this
++  documentation read. No retry/alternate copy was attempted.
++* SPC copyright-guide address returned only a one-line HTML response, not
++  usable publication terms. The official publishing-style manual URL returned
++  **403 Forbidden**. That fetch denial is retained; no alternate transport,
++  challenge bypass or re-request was attempted. Search snippets or another SPC
++  work's rights text are not assigned to the MH cooking guide.
++* Bounded MONSTAT official-document search found contextual statistics pages,
++  not a release-specific reuse/method grant for the selected HBS. No claim of
++  universal absence or publisher denial follows. NTO/tourism source-specific
++  extraction terms and all exact body-method selectors remain unqualified.
++
++Finland/Frida, NO/FR native-crash, private/credential/actual-denial restrictions,
++UI STOP/DEV7645, production and CIX holds remain. Raw datasets stay on Foo.
++Code/metadata delivery is not permission to fetch, process or publish them.
+diff --git a/offmenu/refresh/worker06_bindings.py b/offmenu/refresh/worker06_bindings.py
+new file mode 100644
+index 00000000..3dc41231
+--- /dev/null
++++ b/offmenu/refresh/worker06_bindings.py
+@@ -0,0 +1,218 @@
++"""ME/MF/MG/MH metadata bindings; no payload reader, downloader or admission.
++
++Use shared strict JSON, timestamp, fingerprints and per-datum origin validation.
++This portfolio module only projects pinned validation metadata. It cannot create
++a trusted SourceContract or enable a production source from a descriptor.
++"""
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import stat
++
++from .acceptance import fingerprint
++from .acquisition import MIN_TTL
++from .core import RefreshError, strict_json, timestamp
++from .field_provenance import field_origin_errors
++
++VERSION = 'worker06-metadata-binding/1'
++POLICY = fingerprint({'version': VERSION, 'scope': 'metadata-only',
++                      'unknown': None, 'minimumReuseSecondsRequired': MIN_TTL,
++                      'cachePlanning': 'unsupported-real-source-cache-planner'})
++MAX_METADATA = 128 * 1024
++DEFAULT_CONFIG = Path(__file__).resolve().parents[2] / 'docs/operations/worker06-staging-bindings.json'
++
++
++def load_config(path=DEFAULT_CONFIG):
++    """Load reviewed portfolio configuration, never a SourceContract factory."""
++    config = strict_json(Path(path).read_bytes())
++    if config.get('schemaVersion') != VERSION or not isinstance(config.get('bindings'), list):
++        raise RefreshError('binding-config-invalid')
++    ids = [b['id'] for b in config['bindings']]
++    if len(set(ids)) != len(ids):
++        raise RefreshError('binding-id-duplicate')
++    return config
++
++
++def _pointer(value, pointer):
++    if not isinstance(pointer, str) or not pointer.startswith('/'):
++        raise ValueError('selector-invalid')
++    for part in pointer[1:].split('/'):
++        part = part.replace('~1', '/').replace('~0', '~')
++        value = value[int(part)] if isinstance(value, list) else value[part]
++    return value
++
++
++def _clock(value):
++    # Reuse shared UTC-only timestamp contract. Clock is always caller supplied.
++    return timestamp(value)
++
++
++def assess(binding, metadata, *, now, previous_fingerprint=None):
++    """Return deterministic, isolated metadata diagnostics without any I/O.
++
++    metadata is the bytes of the exact *validation manifest*, not an original
++    PDF/HTML body. A valid result means metadata validity only. Rights and missing
++    body selectors are independent blockers and cannot be cleared by these bytes.
++    Timestamp age is observation only; no generic cache planner exists at base.
++    """
++    result = {'schemaVersion': VERSION, 'bindingId': binding['id'],
++              'country': binding['country'], 'status': 'malformed',
++              'diagnostics': [], 'blockers': list(binding['blockers']),
++              'candidate': None, 'candidateFingerprint': None,
++              'metadataReplay': 'none',
++              'cacheDecision': 'unsupported-real-source-cache-planner',
++              'freshness': 'unknown', 'minimumReuseSecondsRequired': MIN_TTL,
++              'acquisitionAgeSeconds': None, 'validationAgeSeconds': None,
++              'validationResetsAcquisitionAge': False,
++              'networkRequests': 0, 'assetBytesVerified': False,
++              'payloadProcessingAuthorized': False, 'acceptedRecords': 0,
++              'countryComplete': False}
++    errors = set()
++    try:
++        current = _clock(now)
++        acquired_text = binding['originalAcquiredAt']
++        acquired = _clock(acquired_text) if acquired_text is not None else None
++        validated = _clock(binding['integrityValidatedAt'])
++        if validated > current or (acquired is not None and (acquired > current or acquired > validated)):
++            errors.add('timestamp-order-invalid')
++        result['acquisitionAgeSeconds'] = (current - acquired).total_seconds() if acquired else None
++        result['validationAgeSeconds'] = (current - validated).total_seconds()
++        if metadata is None:
++            result.update(status='missing', diagnostics=['metadata-input-missing'])
++            return result
++        if not isinstance(metadata, bytes) or len(metadata) > MAX_METADATA:
++            raise ValueError('metadata-bound-invalid')
++        parsed = strict_json(metadata)
++        # Parse first so malformed/duplicate JSON remains distinct from drift.
++        pin = binding['metadataAsset']
++        if len(metadata) != pin['bytes'] or hashlib.sha256(metadata).hexdigest() != pin['sha256']:
++            result.update(status='stale', diagnostics=['metadata-pin-mismatch'])
++            return result
++        data, origins = {}, {}
++        for field, declaration in binding['fields'].items():
++            selector = declaration['selector']
++            if selector is None:
++                data[field] = None
++                origins['/data/' + field] = {'kind': 'constant', 'policySha256': POLICY,
++                                            'symbol': 'explicit-unknown'}
++            else:
++                value = _pointer(parsed, selector)
++                if value != declaration['expected'] or not isinstance(value, (str, int, float, bool, type(None))):
++                    errors.add('metadata-selector-value-mismatch')
++                data[field] = value
++                origins['/data/' + field] = {
++                    'kind': 'source', 'sourceId': binding['sourceId'],
++                    'releaseId': binding['releaseId'], 'inputPath': pin['logicalPath'],
++                    'inputSha256': pin['sha256'], 'sourceRecordId': binding['recordSelector'],
++                    'sourceField': selector}
++        candidate = {'id': binding['id'], 'kind': 'source-input-binding-metadata',
++                     'schemaVersion': VERSION, 'data': data,
++                     'provenance': {'sourceId': binding['sourceId'], 'releaseId': binding['releaseId'],
++                                    'fieldOrigins': origins}}
++        errors.update(field_origin_errors(candidate, {pin['logicalPath']: pin['sha256']},
++                                          policy_pins=(POLICY,)))
++        if errors:
++            result['diagnostics'] = sorted(errors)
++            return result
++        content = fingerprint({'binding': binding, 'candidate': candidate, 'policy': POLICY})
++        result.update(candidate=candidate, candidateFingerprint=content,
++                      metadataReplay='unchanged-no-op' if previous_fingerprint == content else 'new-metadata',
++                      status='held' if result['blockers'] else 'valid')
++        return result
++    except (ValueError, TypeError, KeyError, IndexError, OverflowError):
++        result['diagnostics'] = sorted(errors | {'metadata-contract-malformed'})
++        return result
++
++
++def assess_all(config, metadata_by_id, *, now, previous=None):
++    """One bad source never prevents independent portfolio results."""
++    previous = previous or {}
++    return [assess(b, metadata_by_id.get(b['id']), now=now,
++                   previous_fingerprint=previous.get(b['id'])) for b in config['bindings']]
++
++
++def read_metadata(binding):
++    """Read only the exact retained validation metadata path, bounded; no bodies.
++
++    Source/custody assets embedded in the descriptor are inert pointers. This
++    helper never dereferences them or searches for replacement files.
++    """
++    from .core import safe_path
++    path = safe_path(binding['metadataAsset']['path'])
++    directory = None
++    descriptor = None
++    try:
++        # Follow no directory or final-component symlink, even if the path is
++        # swapped after safe_path. NONBLOCK prevents a raced FIFO open hanging.
++        flags = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC
++        directory = os.open(path.anchor, flags | os.O_DIRECTORY)
++        for part in path.parts[1:-1]:
++            child = os.open(part, flags | os.O_DIRECTORY, dir_fd=directory)
++            os.close(directory)
++            directory = child
++        descriptor = os.open(path.name, flags | os.O_NONBLOCK, dir_fd=directory)
++        before = os.fstat(descriptor)
++        if not stat.S_ISREG(before.st_mode) or before.st_size > MAX_METADATA:
++            raise RefreshError('metadata-regular-file-required')
++        with os.fdopen(descriptor, 'rb') as stream:
++            descriptor = None  # stream owns this descriptor from here.
++            raw = stream.read(MAX_METADATA + 1)
++            after = os.fstat(stream.fileno())
++        if (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns, before.st_ctime_ns) != (
++                after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_ctime_ns):
++            raise RefreshError('metadata-changed-during-read')
++        if len(raw) != before.st_size or len(raw) > MAX_METADATA:
++            raise RefreshError('metadata-read-bound-invalid')
++        return raw  # assess separately enforces the exact expected byte/hash pin.
++    except FileNotFoundError:
++        return None
++    finally:
++        if descriptor is not None:
++            os.close(descriptor)
++        if directory is not None:
++            os.close(directory)
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--now', required=True, help='Explicit UTC timestamp')
++    parser.add_argument('--previous', type=Path, help='Prior JSON output, for metadata no-op comparison')
++    args = parser.parse_args(argv)
++    config = load_config()
++    previous = {}
++    if args.previous:
++        try:
++            raw = read_metadata({'metadataAsset': {'path': str(args.previous)}})
++            if raw is None:
++                raise RefreshError('previous-report-missing')
++            report = strict_json(raw)
++            if not isinstance(report, list):
++                raise RefreshError('previous-report-invalid')
++            for row in report:
++                if (not isinstance(row, dict) or not isinstance(row.get('bindingId'), str)
++                        or not row['bindingId'] or row['bindingId'] in previous
++                        or (row.get('candidateFingerprint') is not None
++                            and (not isinstance(row['candidateFingerprint'], str)
++                                 or len(row['candidateFingerprint']) != 64
++                                 or any(c not in '0123456789abcdef' for c in row['candidateFingerprint'])))):
++                    raise RefreshError('previous-report-invalid')
++                previous[row['bindingId']] = row.get('candidateFingerprint')
++        except (OSError, ValueError, TypeError, RecursionError):
++            parser.error('previous-report-unreadable-or-invalid')
++    results = []
++    for binding in config['bindings']:
++        try:
++            metadata = read_metadata(binding)
++            results.append(assess(binding, metadata, now=args.now, previous_fingerprint=previous.get(binding['id'])))
++        except (OSError, RefreshError):
++            result = assess(binding, None, now=args.now)
++            result['diagnostics'] = ['metadata-read-failed']
++            results.append(result)
++    print(json.dumps(results, sort_keys=True, ensure_ascii=False, allow_nan=False))
++    return 0 if all(r['status'] in ('valid', 'held') for r in results) else 1
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/tests/test_worker06_bindings.py b/tests/test_worker06_bindings.py
+new file mode 100644
+index 00000000..bc016ada
+--- /dev/null
++++ b/tests/test_worker06_bindings.py
+@@ -0,0 +1,295 @@
++"""Authored metadata only; no retained payloads or publisher requests."""
++import copy
++import contextlib
++import io
++from dataclasses import replace
++import hashlib
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu.refresh import worker06_bindings as w
++from offmenu.refresh.acceptance import (Asset, SourceContract, accept, canonical,
++                                       fingerprint, ids_digest)
++from offmenu.refresh.field_provenance import field_origin_errors
++
++NOW = '2026-10-18T00:00:00Z'
++
++
++def fixture():
++    raw = b'{"sources":[{"release":"authored-r1","url":"https://example.invalid/metadata","role":"authored"}]}\n'
++    b = {'id': 'authored-me-1', 'country': 'ME', 'sourceId': 'authored-fixture',
++         'releaseId': 'authored-r1', 'metadataAsset': {
++             'logicalPath': 'metadata.json', 'path': '/unused/metadata.json',
++             'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()},
++         'recordSelector': '/sources/0', 'originalAcquiredAt': '2026-10-01T00:00:00Z',
++         'integrityValidatedAt': '2026-10-17T00:00:00Z', 'blockers': [],
++         'fields': {'releaseLabel': {'selector': '/sources/0/release', 'expected': 'authored-r1'},
++                    'nativeUnit': {'selector': None, 'expected': None},
++                    'nativeBasis': {'selector': None, 'expected': None}}}
++    return b, raw
++
++
++class Worker06BindingTests(unittest.TestCase):
++    def test_valid_metadata_unknowns_and_exact_shared_origins(self):
++        b, raw = fixture()
++        before = copy.deepcopy(b)
++        with patch('socket.socket', side_effect=AssertionError('network forbidden')):
++            r = w.assess(b, raw, now=NOW)
++        self.assertEqual(r['status'], 'valid')
++        self.assertEqual(r['candidate']['data']['nativeUnit'], None)
++        self.assertEqual(field_origin_errors(r['candidate'], {'metadata.json': b['metadataAsset']['sha256']},
++                                            policy_pins=(w.POLICY,)), [])
++        self.assertFalse(r['payloadProcessingAuthorized'])
++        self.assertEqual((r['acceptedRecords'], r['networkRequests']), (0, 0))
++        self.assertEqual(b, before)
++
++    def test_missing_held_malformed_and_stale_are_distinct(self):
++        b, raw = fixture()
++        self.assertEqual(w.assess(b, None, now=NOW)['status'], 'missing')
++        held = copy.deepcopy(b)
++        held['blockers'] = [{'code': 'explicit-source-hold', 'owner': 'rights-owner'}]
++        self.assertEqual(w.assess(held, raw, now=NOW)['status'], 'held')
++        self.assertEqual(w.assess(b, b'{broken', now=NOW)['status'], 'malformed')
++        self.assertEqual(w.assess(b, raw + b' ', now=NOW)['status'], 'stale')
++        self.assertEqual(w.assess(b, b'{"a":1,"a":2}', now=NOW)['status'], 'malformed')
++        self.assertEqual(w.assess(b, b'{"a":NaN}', now=NOW)['status'], 'malformed')
++
++    def test_selector_mismatch_isolated_from_other_binding(self):
++        b, raw = fixture()
++        bad = copy.deepcopy(b)
++        bad['id'] = 'bad'
++        bad['fields']['releaseLabel']['selector'] = '/sources/99/release'
++        r = w.assess_all({'bindings': [bad, b]}, {'bad': raw, b['id']: raw}, now=NOW)
++        self.assertEqual([x['status'] for x in r], ['malformed', 'valid'])
++        bad['fields']['releaseLabel']['selector'] = '/sources/0/release'
++        bad['fields']['releaseLabel']['expected'] = 'foreign-release'
++        self.assertIn('metadata-selector-value-mismatch', w.assess(bad, raw, now=NOW)['diagnostics'])
++
++    def test_timestamp_observations_never_invent_cache_eligibility(self):
++        b, raw = fixture()
++        b['originalAcquiredAt'] = '2026-09-18T00:00:01Z'
++        before = w.assess(b, raw, now=NOW)
++        self.assertEqual(before['acquisitionAgeSeconds'], 30 * 86400 - 1)
++        b['originalAcquiredAt'] = '2026-09-18T00:00:00Z'
++        r = w.assess(b, raw, now=NOW)
++        self.assertEqual(r['acquisitionAgeSeconds'], 30 * 86400)
++        self.assertEqual(r['status'], 'valid')
++        for row in [before, r]:
++            self.assertEqual(row['cacheDecision'], 'unsupported-real-source-cache-planner')
++            self.assertEqual(row['freshness'], 'unknown')
++            self.assertEqual(row['diagnostics'], [])
++            self.assertEqual(row['minimumReuseSecondsRequired'], 30 * 86400)
++        b['integrityValidatedAt'] = NOW  # A new hash check never refreshes acquisition age.
++        validated = w.assess(b, raw, now=NOW)
++        self.assertEqual(validated['acquisitionAgeSeconds'], 30 * 86400)
++        self.assertEqual(validated['validationAgeSeconds'], 0)
++        b['originalAcquiredAt'] = None
++        unknown = w.assess(b, raw, now=NOW)
++        self.assertIsNone(unknown['acquisitionAgeSeconds'])
++        self.assertEqual(unknown['freshness'], 'unknown')
++        with patch('offmenu.refresh.core.cache_policy', side_effect=AssertionError('pilot planner')), \
++             patch('offmenu.refresh.policy.plan_fixture', side_effect=AssertionError('fixture spoof')), \
++             patch('offmenu.refresh.acquisition.CachedAcquirer.acquire', side_effect=AssertionError('acquisition')):
++            self.assertEqual(w.assess(b, raw, now=NOW)['cacheDecision'], 'unsupported-real-source-cache-planner')
++
++    def test_unknown_acquisition_and_holds_never_reset_or_disappear(self):
++        b, raw = fixture()
++        b['originalAcquiredAt'] = None
++        b['blockers'] = [{'code': 'rights-unknown'}, {'code': 'selector-missing'}]
++        r = w.assess(b, raw, now=NOW)
++        r2 = w.assess(b, raw, now='2026-10-19T00:00:00Z', previous_fingerprint=r['candidateFingerprint'])
++        self.assertEqual(r2['metadataReplay'], 'unchanged-no-op')
++        self.assertEqual(r2['status'], 'held')
++        self.assertEqual(r2['blockers'], b['blockers'])
++        self.assertFalse(r2['assetBytesVerified'])
++
++    def test_replay_tracks_content_and_binding_policy_not_current_clock(self):
++        b, raw = fixture()
++        first = w.assess(b, raw, now=NOW)
++        self.assertEqual(first, w.assess(b, raw, now=NOW))
++        replay = w.assess(b, raw, now=NOW, previous_fingerprint=first['candidateFingerprint'])
++        self.assertEqual(replay['metadataReplay'], 'unchanged-no-op')
++        b['blockers'] = [{'code': 'new-hold'}]
++        self.assertEqual(w.assess(b, raw, now=NOW, previous_fingerprint=first['candidateFingerprint'])['metadataReplay'],
++                         'new-metadata')
++
++    def test_bad_clocks_and_bounded_input_fail_closed(self):
++        b, raw = fixture()
++        for now in ['2026-10-18', 'bad', '2026-10-18T01:00:00+01:00', '2026-09-01T00:00:00Z']:
++            self.assertEqual(w.assess(b, raw, now=now)['status'], 'malformed')
++        self.assertEqual(w.assess(b, b'x' * (w.MAX_METADATA + 1), now=NOW)['status'], 'malformed')
++        b['originalAcquiredAt'] = '2026-10-18T01:00:00Z'
++        self.assertIn('timestamp-order-invalid', w.assess(b, raw, now=NOW)['diagnostics'])
++
++    def test_actual_portfolio_config_has13_bound_sources_and_no_activation(self):
++        config = w.load_config()
++        self.assertEqual({b['country'] for b in config['bindings']}, {'ME', 'MF', 'MG', 'MH'})
++        self.assertEqual(len(config['bindings']), 13)
++        for b in config['bindings']:
++            self.assertTrue(b['blockers'])
++            self.assertEqual(b['permittedPayloadOperations'], [])
++            self.assertIsNone(b['sharedAdapter'])
++            self.assertIsNone(b['originalAcquiredAt'])
++            for field in ['nativeUnit', 'nativeBasis', 'bodyTableSelector', 'bodyRecordId', 'typedObservationSchema']:
++                self.assertIsNone(b['fields'][field]['selector'])
++
++    def test_reader_only_opens_metadata_not_recorded_payload_pins(self):
++        b, raw = fixture()
++        with tempfile.TemporaryDirectory() as tmp:
++            path = Path(tmp) / 'metadata.json'
++            path.write_bytes(raw)
++            b['metadataAsset']['path'] = str(path)
++            b['payloadAssetPinsRecordedOnly'] = [{'path': '/never/read/original.pdf'}]
++            self.assertEqual(w.read_metadata(b), raw)
++            path.unlink()
++            self.assertIsNone(w.read_metadata(b))
++            path.symlink_to('/never/read/original.pdf')
++            with self.assertRaises(ValueError):
++                w.read_metadata(b)
++
++    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'FIFO regression requires POSIX')
++    def test_fifo_no_writer_rejected_and_cli_sibling_finishes(self):
++        b, raw = fixture()
++        with tempfile.TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            fifo = root / 'metadata.fifo'
++            os.mkfifo(fifo)
++            good = root / 'metadata.json'
++            good.write_bytes(raw)
++            bad_binding = copy.deepcopy(b)
++            bad_binding['id'] = 'fifo'
++            bad_binding['metadataAsset']['path'] = str(fifo)
++            b['metadataAsset']['path'] = str(good)
++            config = {'bindings': [bad_binding, b]}
++            # A timeout kills the subprocess if the old blocking-open bug returns.
++            code = ('import json; from offmenu.refresh import worker06_bindings as w; '
++                    f'w.load_config=lambda: json.loads({json.dumps(json.dumps(config))}); '
++                    f'w.main(["--now", {NOW!r}])')
++            run = subprocess.run([sys.executable, '-B', '-c', code], capture_output=True,
++                                 text=True, timeout=2)
++            self.assertEqual(run.returncode, 0, run.stderr)
++            rows = json.loads(run.stdout)
++            self.assertEqual(rows[0]['diagnostics'], ['metadata-read-failed'])
++            self.assertEqual(rows[1]['status'], 'valid')
++            self.assertEqual(rows[1]['networkRequests'], 0)
++
++    def test_reader_rejects_raced_symlinks_and_oversized_regular_files(self):
++        b, raw = fixture()
++        with tempfile.TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            original = root / 'metadata.json'
++            original.write_bytes(raw)
++            link = root / 'alias.json'
++            link.symlink_to(original)
++            b['metadataAsset']['path'] = str(link)
++            # Model a symlink appearing after the preflight safe_path check.
++            with patch('offmenu.refresh.core.safe_path', return_value=link):
++                with self.assertRaises(OSError):
++                    w.read_metadata(b)
++            parent_link = root / 'parent'
++            parent_link.symlink_to(root, target_is_directory=True)
++            b['metadataAsset']['path'] = str(parent_link / 'metadata.json')
++            with patch('offmenu.refresh.core.safe_path', return_value=parent_link / 'metadata.json'):
++                with self.assertRaises(OSError):
++                    w.read_metadata(b)
++            original.write_bytes(b'x' * (w.MAX_METADATA + 1))
++            b['metadataAsset']['path'] = str(original)
++            with self.assertRaises(ValueError):
++                w.read_metadata(b)
++
++    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'FIFO regression requires POSIX')
++    def test_previous_fifo_entrypoint_rejects_without_open_hang(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            fifo = Path(tmp) / 'prior.json'
++            os.mkfifo(fifo)
++            code = ('from offmenu.refresh import worker06_bindings as w; '
++                    'w.load_config=lambda: {"bindings": []}; '
++                    f'w.main(["--now", {NOW!r}, "--previous", {str(fifo)!r}])')
++            run = subprocess.run([sys.executable, '-B', '-c', code], capture_output=True,
++                                 text=True, timeout=2)
++            self.assertEqual(run.returncode, 2)
++            self.assertIn('previous-report-unreadable-or-invalid', run.stderr)
++            self.assertEqual(run.stdout, '')
++            self.assertNotIn(str(fifo), run.stderr)
++
++    def test_previous_regular_report_replay_preserves_both_input_files(self):
++        b, raw = fixture()
++        with tempfile.TemporaryDirectory() as tmp:
++            metadata = Path(tmp) / 'metadata.json'
++            metadata.write_bytes(raw)
++            b['metadataAsset']['path'] = str(metadata)
++            first = w.assess(b, raw, now=NOW)
++            prior = Path(tmp) / 'prior.json'
++            prior.write_text(json.dumps([first]))
++            before = {p: (p.read_bytes(), p.stat().st_mtime_ns) for p in [metadata, prior]}
++            output = io.StringIO()
++            with patch.object(w, 'load_config', return_value={'bindings': [b]}), contextlib.redirect_stdout(output):
++                self.assertEqual(w.main(['--now', NOW, '--previous', str(prior)]), 0)
++            result = json.loads(output.getvalue())
++            self.assertEqual(result[0]['metadataReplay'], 'unchanged-no-op')
++            for p, expected in before.items():
++                self.assertEqual((p.read_bytes(), p.stat().st_mtime_ns), expected)
++            invalids = [b'{}', b'[{"bindingId":"x","candidateFingerprint":"bad"}]',
++                        b'[{"bindingId":"x"},{"bindingId":"x"}]', b'{broken']
++            for invalid in invalids:
++                prior.write_bytes(invalid)
++                with patch.object(w, 'load_config', return_value={'bindings': []}), \
++                     contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as exit:
++                    w.main(['--now', NOW, '--previous', str(prior)])
++                self.assertEqual(exit.exception.code, 2)
++
++    def test_shared_qualification_fixture_and_holds(self):
++        # Hand-authored trusted contract exists only in this test; descriptors can
++        # never construct it. Candidate schema covers this exact metadata shape.
++        b, raw = fixture()
++        row = w.assess(b, raw, now=NOW)['candidate']
++        row['provenance']['fetchedAt'] = b['originalAcquiredAt']
++        with tempfile.TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            bundle = root / 'bundle'
++            bundle.mkdir()
++            assets = []
++            for name, body in [('metadata.json', raw), ('rights.json', b'authored fixture only'),
++                               ('scope.json', b'one authored metadata record')]:
++                (bundle / name).write_bytes(body)
++                assets.append(Asset(name, len(body), hashlib.sha256(body).hexdigest()))
++            schema = {'type': 'object', 'required': ['id', 'kind', 'schemaVersion', 'data', 'provenance'],
++                      'additionalProperties': False,
++                      'properties': {'id': {'const': b['id']}, 'kind': {'const': row['kind']},
++                                     'schemaVersion': {'const': w.VERSION},
++                                     'data': {'const': row['data']}, 'provenance': {'const': row['provenance']}}}
++            schemas = {row['kind']: schema}
++            c = SourceContract(b['sourceId'], b['releaseId'], 'authored-metadata-fixture',
++                               b['originalAcquiredAt'], tuple(assets), 1, ids_digest([b['id']]),
++                               schemas, fingerprint(schemas),
++                               lambda r: field_origin_errors(r, {'metadata.json': assets[0].sha256},
++                                                             policy_pins=(w.POLICY,)),
++                               w.POLICY, assets[1], assets[2], frozenset(('retain', 'parse', 'transform')),
++                               fixture=True)
++            body = canonical([row]) + b'\n'
++            candidate = root / 'candidate.jsonl'
++            candidate.write_bytes(body)
++            manifest = {'sourceId': c.source_id, 'releaseId': c.release_id, 'acquiredAt': c.acquired_at,
++                        'normalizedRecords': 1, 'candidateBytes': len(body),
++                        'candidateSha256': hashlib.sha256(body).hexdigest(),
++                        'rightsEvidenceSha256': assets[1].sha256, 'scopeEvidenceSha256': assets[2].sha256,
++                        'inputFiles': [vars(a) for a in assets]}
++            result = accept(c, bundle, candidate, manifest)
++            self.assertEqual(result['errors'], [])
++            self.assertEqual(result['status'], 'accepted-fixture-scope')
++            self.assertFalse(result['productionAccepted'])
++            self.assertFalse(result['countryCoverageComplete'])
++            held = accept(replace(c, holds=('real-source-hold',), permitted_operations=frozenset()),
++                          bundle, candidate, manifest)
++            self.assertIn('source-held', held['errors'])
++            self.assertIn('operation-rights-missing', held['errors'])
++
++
++if __name__ == '__main__':
++    unittest.main()

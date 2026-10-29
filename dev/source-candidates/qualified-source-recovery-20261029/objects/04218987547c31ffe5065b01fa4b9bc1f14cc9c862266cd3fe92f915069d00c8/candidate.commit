@@ -1,0 +1,116 @@
+From f1189b006eb24d7b0773f65b61d8b44cd3e146af Mon Sep 17 00:00:00 2001
+From: Freebuff Corpus Manager <freebuff-corpus-manager@offmenu.local>
+Date: Sun, 18 Oct 2026 16:47:39 +1100
+Subject: [PATCH] fix(refresh): reject unsafe writer lock inodes before
+ mutation
+
+---
+ offmenu/refresh/core.py           | 10 ++++-
+ tests/test_refresh_writer_lock.py | 69 +++++++++++++++++++++++++++++++
+ 2 files changed, 78 insertions(+), 1 deletion(-)
+ create mode 100644 tests/test_refresh_writer_lock.py
+
+diff --git a/offmenu/refresh/core.py b/offmenu/refresh/core.py
+index 09bcd8d..4745c6d 100644
+--- a/offmenu/refresh/core.py
++++ b/offmenu/refresh/core.py
+@@ -211,12 +211,20 @@ def atomic_json(path, value):
+ def writer_lock(path):
+     """Kernel ownership survives neither exit nor SIGKILL; keep the inode stable."""
+     path = safe_path(path)
+-    descriptor = os.open(path, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
++    descriptor = os.open(path, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW | os.O_NONBLOCK, 0o600)
+     try:
++        opened = os.fstat(descriptor)
++        if not stat.S_ISREG(opened.st_mode) or opened.st_nlink != 1:
++            raise RefreshError('unsafe-writer-lock')
+         try:
+             fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+         except BlockingIOError as error:
+             raise RefreshError('writer-lock-held') from error
++        # Recheck the opened inode before writing: a lock alias must never
++        # truncate another file, including one linked during acquisition.
++        locked = os.fstat(descriptor)
++        if not stat.S_ISREG(locked.st_mode) or locked.st_nlink != 1:
++            raise RefreshError('unsafe-writer-lock')
+         os.ftruncate(descriptor, 0)
+         os.write(descriptor, canonical({'pid': os.getpid()}))
+         os.fsync(descriptor)
+diff --git a/tests/test_refresh_writer_lock.py b/tests/test_refresh_writer_lock.py
+new file mode 100644
+index 0000000..98d1658
+--- /dev/null
++++ b/tests/test_refresh_writer_lock.py
+@@ -0,0 +1,69 @@
++"""Authored inode fixtures for the shared publication lock."""
++import os
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu.refresh import core
++
++
++class WriterLockPreservationTest(unittest.TestCase):
++    def setUp(self):
++        self.scratch = tempfile.TemporaryDirectory()
++        self.addCleanup(self.scratch.cleanup)
++        self.root = Path(self.scratch.name)
++        self.lock = self.root / 'writer.lock'
++        self.source = self.root / 'metadata.json'
++        self.source.write_bytes(b'{"authored":true}\n')
++
++    def snapshot(self):
++        value = self.source.stat()
++        return self.source.read_bytes(), value.st_mtime_ns, value.st_ino
++
++    def test_hardlinked_input_is_rejected_without_mutation(self):
++        os.link(self.source, self.lock)
++        before = self.snapshot()
++        with self.assertRaisesRegex(core.RefreshError, 'unsafe-writer-lock'):
++            with core.writer_lock(self.lock):
++                self.fail('aliased lock was admitted')
++        self.assertEqual(self.snapshot(), before)
++
++    def test_nonregular_fifo_is_rejected_and_retained(self):
++        os.mkfifo(self.lock)
++        before = self.lock.lstat()
++        with self.assertRaisesRegex(core.RefreshError, 'unsafe-writer-lock'):
++            with core.writer_lock(self.lock):
++                self.fail('nonregular lock was admitted')
++        self.assertEqual(self.lock.lstat().st_ino, before.st_ino)
++
++    def test_link_added_during_lock_acquisition_is_rejected(self):
++        self.lock.write_bytes(b'original lock bytes')
++        before = self.lock.read_bytes()
++        real_flock = core.fcntl.flock
++
++        def add_alias(descriptor, operation):
++            real_flock(descriptor, operation)
++            os.link(self.lock, self.root / 'new-alias')
++
++        with patch.object(core.fcntl, 'flock', side_effect=add_alias):
++            with self.assertRaisesRegex(core.RefreshError, 'unsafe-writer-lock'):
++                with core.writer_lock(self.lock):
++                    self.fail('newly aliased lock was admitted')
++        self.assertEqual(self.lock.read_bytes(), before)
++
++    def test_regular_lock_retains_inode_and_content_on_contention(self):
++        with core.writer_lock(self.lock):
++            inode = self.lock.stat().st_ino
++            body = self.lock.read_bytes()
++            with self.assertRaisesRegex(core.RefreshError, 'writer-lock-held'):
++                with core.writer_lock(self.lock):
++                    self.fail('concurrent writer was admitted')
++            self.assertEqual(self.lock.read_bytes(), body)
++        with core.writer_lock(self.lock):
++            self.assertEqual(self.lock.stat().st_ino, inode)
++        self.assertEqual(self.lock.stat().st_ino, inode)
++
++
++if __name__ == '__main__':
++    unittest.main()
+-- 
+2.43.0
+

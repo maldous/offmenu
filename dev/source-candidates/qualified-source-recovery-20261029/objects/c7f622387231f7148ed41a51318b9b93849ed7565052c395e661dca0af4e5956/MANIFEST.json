@@ -1,0 +1,41 @@
+{
+  "kind": "frozen-independent-v196-changed-integration-evidence",
+  "files": {
+    "COVERAGE-DELTA.json": {
+      "bytes": 2251,
+      "sha256": "c53090afcf884ac20bf0aaea7d1d10e6544bfb21fa557da68db4aa16a430d6de"
+    },
+    "EXECUTED-DELTA.json": {
+      "bytes": 55959,
+      "sha256": "04c1bb42504794f825571d5e287550d360c6fbe98079cdb45b1b3705da76a446"
+    },
+    "FINDING-NS196-G2.json": {
+      "bytes": 2106,
+      "sha256": "56b60bae2ce5f220e6baff03168adee4d35042987627248f11f71ae9c33affc8"
+    },
+    "HANDOFF.md": {
+      "bytes": 1908,
+      "sha256": "793fcd458a3f39b71317752cd51addfd8022ca3bbd1015851d28d5a126dd1f8b"
+    },
+    "OWNER-HANDOFF.json": {
+      "bytes": 1424,
+      "sha256": "b8d0325f2e386cf4ce161305db8771c920b05e59a4867b2dae72562db946079e"
+    },
+    "RECEIPT.json": {
+      "bytes": 2030,
+      "sha256": "6d0b61d90fdeb35f2c12cf660ba06ceeb15e2adb82050a57cdcc6129b8c2f5d4"
+    },
+    "app.formatted.js": {
+      "bytes": 553328,
+      "sha256": "f276be0323c3e57c3a6d173bff8b1d25344156bacb215433a70b62cec24cab61"
+    },
+    "app.js": {
+      "bytes": 468574,
+      "sha256": "e510c7a4cc6f418cbda6d984e0ff7de90f0d7b85d350640b9f624fd9b818c057"
+    },
+    "delta-harness.mjs": {
+      "bytes": 11974,
+      "sha256": "7697e6f661d72dcb5514db83cb9f4756ac9bb49ab49203887fb2daada1e73eec"
+    }
+  }
+}

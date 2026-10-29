@@ -1,0 +1,45 @@
+{
+  "status": "frozen_R2_source_correction_pending_independent_review",
+  "files": {
+    "HANDOFF.md": {
+      "bytes": 4537,
+      "sha256": "f18758ec958b436a55f9a2a3d8b1268f1bad817c9a2c098622f0261920efbd11"
+    },
+    "base/INDEPENDENT-REVIEW.json": {
+      "bytes": 7105,
+      "sha256": "6bf605911dcd5acba322136665f49af8b5005484a6a13d8c3d62bae738a19211"
+    },
+    "base/terminal_filter.py": {
+      "bytes": 12491,
+      "sha256": "f507ceb4d68c3c7232218f9b62e71d9a979a970bd6d72ecc9afddea34f0894e5"
+    },
+    "base/test_terminal_filter.py": {
+      "bytes": 8817,
+      "sha256": "952b4d39e251a8719cfec22210557f7327278bed5839c27ab1ab99a48e23b96c"
+    },
+    "focused-tests.log": {
+      "bytes": 2225,
+      "sha256": "2a15f6ce13bf59e7dd1fab0697c6dfbd1eefda5726db3529dfa156c6a92e6876"
+    },
+    "review.patch": {
+      "bytes": 6884,
+      "sha256": "7570d88408dc3c7e7ca8d77aaa812001cd4984b8011aa3f44c32ae9256a1a3c2"
+    },
+    "source.patch": {
+      "bytes": 3352,
+      "sha256": "b25f25b4057116f0628c9536c368fde4b776b738814b8a748c5514b1bb6b12a4"
+    },
+    "terminal_filter.py": {
+      "bytes": 13618,
+      "sha256": "c8792e91768176c10574d8b13dc2e9dc6f7ddeb9b54e0be81f4330a8a4e950cc"
+    },
+    "test_terminal_filter.py": {
+      "bytes": 11853,
+      "sha256": "f20fd311fb30c611b55603f2dfefb3641f0c9f0125ebf31f0aafbda4be1d5873"
+    },
+    "verification.json": {
+      "bytes": 612,
+      "sha256": "859ed4d5703015423c5c0f449a9b8e1607ffdc6e9df511b92725fa9396fc0ea7"
+    }
+  }
+}

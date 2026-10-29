@@ -1,0 +1,35 @@
+diff --git a/scripts/align-national-common.py b/scripts/align-national-common.py
+index 934cb8f2..81b817d0 100644
+--- a/scripts/align-national-common.py
++++ b/scripts/align-national-common.py
+@@ -166,6 +166,13 @@ def quantity(nutrient, lang, key, citation_id, basis):
+          'basis': basis}
+     if isinstance(nutrient, dict) and nutrient.get('qualifier'):
+         q['qualifiers'].append('native-qualifier:' + str(nutrient['qualifier']))
++    # Also guard retained legacy records that predate literal-unit preservation.
++    if isinstance(nutrient, dict) and nutrient.get('definition') in {
++            'Frida:363', 'Frida:12', 'Frida:135', 'Frida:203'}:
++        q['value'] = None
++        q.pop('basis', None)
++        q['qualifiers'].extend(['source-definition-review-required',
++                                'basis-unresolved-no-profile-inheritance'])
+     return q
+ 
+ 
+diff --git a/scripts/collect-national.py b/scripts/collect-national.py
+index ee867e7f..aa17a953 100644
+--- a/scripts/collect-national.py
++++ b/scripts/collect-national.py
+@@ -52,6 +52,12 @@ def frida(directory):
+   unit=str(meta[9]).replace('ug','µg');amount=national.numeric(r[7]);key=canonical.get(param,'frida:parameter:'+param)
+   nutrients[food_id][key]={**amount,'unit':unit,'name':meta[1],'sourceComponent':param,'definition':'Frida:'+param,'reference':str(r[12]),'method':'DTU Frida 5.5; source definition','sourceFood':r[13]}
+   if meta[10]!='W':nutrients[food_id][key]['basis']={'amount':100,'unit':'source-matrix:'+str(meta[10])}
++  # Preserve literal units; these source definitions are not generic mass nutrients.
++  if param in {'363','12','135','203'}:
++   nutrients[food_id][key].update({'unit':None if meta[2] is None else str(meta[2]),'sourceUnitCode':meta[9],
++    'sourceMatrixUnitCode':meta[10],
++    'qualificationStatus':'source-definition-review-required'})
++   nutrients[food_id][key].pop('basis',None)
+  rows=[]
+  for key,food in foods.items():rows.append(national.wrap('frida',key,'DK',{'foodName':food[1],'names':{'da':food[0],'en':food[1]},'identifiers':[{'system':'DK-Frida','value':key}],'basis':{'amount':100,'unit':'g','state':'as-described','portion':'source edible portion'},'nutrients':nutrients[key]},'https://doi.org/10.11583/DTU.29500682','CC BY 4.0','National Food Institute, Technical University of Denmark — Frida 5.5','5.5'))
+  print(json.dumps({'source':'frida','foodRows':len(foods),'parameterRows':len(parameters),'nutrientObservations':observations}),flush=True)

@@ -1,0 +1,21 @@
+{
+  "pr": 15,
+  "url": "https://github.com/maldous/offmenu/pull/15",
+  "head": "cc03409dfbdd85ddf79dc067c78544798714030d",
+  "tree": "30b67ff423c030c5fe258d394b495eaebd8dd115",
+  "base": "666ed68450722536ac6941544e26d9c8edaae8a8",
+  "review": "/home/user/Documents/Codex/2026-10-15/worker-52-reviews/names42-composition-cc03409d.json",
+  "publication": "normal branch push and PR creation succeeded",
+  "merge": "not attempted",
+  "checks": {
+    "gitguardian": {
+      "id": 116423429727,
+      "conclusion": "success"
+    },
+    "actions": [
+      116423431084,
+      116423279807
+    ],
+    "actionsState": "one pass; PR run pending"
+  }
+}

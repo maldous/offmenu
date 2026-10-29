@@ -1,0 +1,2 @@
+[console_scripts]
+offmenu = offmenu.cli:main

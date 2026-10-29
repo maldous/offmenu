@@ -1,0 +1,889 @@
+diff --git a/docs/operations/portfolio-au-ir-pn.json b/docs/operations/portfolio-au-ir-pn.json
+new file mode 100644
+index 00000000..90ecbe7a
+--- /dev/null
++++ b/docs/operations/portfolio-au-ir-pn.json
+@@ -0,0 +1,309 @@
++{
++  "schemaVersion": "offmenu-au-ir-pn-binding-catalogue/1",
++  "baseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
++  "scope": "Metadata declarations only; not SourceContracts, rights grants, production registry or payload admission",
++  "profiles": [
++    {
++      "bindingId": "au-afcd-r3",
++      "country": "AU",
++      "sourceId": "afcd",
++      "releaseId": "3",
++      "dataType": "composition",
++      "metadataEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/afcd-deliverable-check.json",
++        "sha256": "ff604fbfbcd43b54490a5a3a6813a1c36bb3f79b19003e272d7189a28a4b4a76"
++      },
++      "inputs": {
++        "normalized.jsonl.gz": "a9f139768cb6f3ae721ae384b147f4d3f2bb537d11bb2d29b20dd2bde813e2fe",
++        "Food group information.xlsx": "e2d0507394ce5c2abe1f186d36058affa6d532c0d50ea18cf98908e368e17e90",
++        "Food-Details.xlsx": "69aa096c45cb0699db60a9c544442312e9ff09af587b99c42dc78bc26f689629",
++        "Nutrient-details.xlsx": "7c455129a90e65d29840ecd188fa223cca8bdf0729b21efebc286884d69fafaa",
++        "Nutrient-profiles.xlsx": "14cb3e73dbf58987b440e6299624c0fefd7a4e61591fc1f753995d9534e0efc9",
++        "Recipes.xlsx": "81925cd790b4d914e9016fe71e273e4b5823cbcea7d6aafc277ebbc160e762ef",
++        "Reference List.xlsx": "970bd41a4a85f172ca152c61561027c7970c70ed179e757a7b3c541e02497160"
++      },
++      "fieldSelectors": {
++        "source-food-key": {
++          "status": "candidate-locator-declaration-not-production-validated",
++          "locator": "source food key; precise staged field mapping not yet selected",
++          "evidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/afcd-deliverable-check.json",
++            "sha256": "ff604fbfbcd43b54490a5a3a6813a1c36bb3f79b19003e272d7189a28a4b4a76"
++          }
++        },
++        "nutrient-cell": {
++          "status": "candidate-locator-declaration-not-production-validated",
++          "locator": "workbook/sheet/row/component from retained validation; per-datum serialized origins not accepted",
++          "evidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/afcd-deliverable-check.json",
++            "sha256": "ff604fbfbcd43b54490a5a3a6813a1c36bb3f79b19003e272d7189a28a4b4a76"
++          }
++        }
++      },
++      "nativeUnits": [
++        "per-component: unknown until reviewed dictionary allowlist"
++      ],
++      "nativeBases": [
++        "100 g",
++        "100 mL"
++      ],
++      "holds": [
++        "reviewed-unit-dictionary-missing",
++        "per-datum-selector-binding-missing",
++        "dataset-agreement-notices-required",
++        "staging-scope-not-reviewed",
++        "original-acquisition-evidence-missing"
++      ],
++      "permittedOperation": "metadata-preflight-only",
++      "productionAdmission": false,
++      "originalAcquiredAt": null,
++      "acquisitionEvidence": null
++    },
++    {
++      "bindingId": "au-abs-weights-2025",
++      "country": "AU",
++      "sourceId": "au-abs-cpi-weights",
++      "releaseId": "2025 weighting pattern",
++      "dataType": "statistical-weighting",
++      "metadataEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/abs-weighting-validation.json",
++        "sha256": "75010166ae29be3c356a34baab3172f68e70ae37c47559af8cdf0370bef180c3"
++      },
++      "inputs": {
++        "weighting.xlsx": "2bfe75f9da76d974801128418bcd36d49d9affd452f2e6f264a87ca36673c494"
++      },
++      "fieldSelectors": {
++        "workbook-cell": {
++          "status": "candidate-locator-declaration-not-production-validated",
++          "locator": "sheet + cell coordinate + source value/type/numberFormat; six retained sheets",
++          "evidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/abs-weighting-validation.json",
++            "sha256": "75010166ae29be3c356a34baab3172f68e70ae37c47559af8cdf0370bef180c3"
++          }
++        }
++      },
++      "nativeUnits": [
++        "cell-specific: percent or index contribution; never currency inferred"
++      ],
++      "nativeBases": [
++        "2025 weighting pattern; source table dependent"
++      ],
++      "holds": [
++        "cell-unit-dictionary-not-reviewed",
++        "staging-scope-not-reviewed"
++      ],
++      "permittedOperation": "metadata-preflight-only",
++      "productionAdmission": false,
++      "originalAcquiredAt": "2026-10-14T22:09:03.476113+00:00",
++      "acquisitionEvidence": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-27/AU/a1c2c773c4603acb15a9/receipt.json",
++        "sha256": "7da99c2a8ca900827c6c52da188cef093b9580428099a806afd9d456f7a52127"
++      },
++      "acquisitionSelector": "/new_requests (matching original SHA256)/utc"
++    },
++    {
++      "bindingId": "au-fsanz-notices-20261014",
++      "country": "AU",
++      "sourceId": "au-fsanz-recalls",
++      "releaseId": "snapshot-2026-10-14",
++      "dataType": "recall-notice",
++      "metadataEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/fsanz-distribution-correction-v1/completion-evidence.json",
++        "sha256": "5f28b1db84e11df9319487c0805af4d8921563d72eca4b117227af9b4e9521b5"
++      },
++      "inputs": {
++        "tweedvale-dairies-reduced-fat-milk-1l-and-2l.html": "11e725f5d2ec4e79ad351ed5b09f8e76c5b1b62dfa2287079fdb70ffffb0b965",
++        "nissin-salt-and-sesame-oil-noodles-aburasoba-82g.html": "234324744e90748f2f203ccc983be3c2eab224fb4928bcb9f5dc0c894e77c84c",
++        "astor-chocolate-wafer-stick-150g.html": "ae1c54e0555b923f32d6a9bb9a7f7e0eaccfe4db5f95a46b3344ae66bef3616e"
++      },
++      "fieldSelectors": {
++        "Distributed in": {
++          "status": "candidate-locator-declaration-not-production-validated",
++          "locator": "fieldsVerbatimWhitespaceNormalized/Distributed in; label-parent descendant field-item",
++          "evidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/fsanz-distribution-correction-v1/completion-evidence.json",
++            "sha256": "5f28b1db84e11df9319487c0805af4d8921563d72eca4b117227af9b4e9521b5"
++          }
++        },
++        "notice-text": {
++          "status": "candidate-locator-declaration-not-production-validated",
++          "locator": "selected notice publisher text only; no asset or business ownership inference",
++          "evidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/fsanz-distribution-correction-v1/completion-evidence.json",
++            "sha256": "5f28b1db84e11df9319487c0805af4d8921563d72eca4b117227af9b4e9521b5"
++          }
++        }
++      },
++      "nativeUnits": [
++        "not-applicable: verbatim notice text"
++      ],
++      "nativeBases": [
++        "three notices only; not archive completeness"
++      ],
++      "holds": [
++        "third-party-field-origin-rights-not-held",
++        "current-applicability-not-established",
++        "staging-scope-not-reviewed"
++      ],
++      "permittedOperation": "metadata-preflight-only",
++      "productionAdmission": false,
++      "originalAcquiredAt": "2026-10-14T20:48:14.587881+00:00",
++      "acquisitionEvidence": {
++        "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/AU/recalls/owner-43/acquisition-receipt.json",
++        "sha256": "3a43ff9a83d55b557f898b94775ed7b4a6f0cf0debea9a3f0d2c890989a9b0e4"
++      },
++      "acquisitionSelector": "max /artifacts/2..4/utc; selected bundle complete",
++      "rightsEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/fsanz-recall-validation.json",
++        "sha256": "4e673f0c9925a9b9e87d2b40d3a0ec04da56d67f6e236d271d2544ad7344072c"
++      }
++    },
++    {
++      "bindingId": "ir-persian-ffq-s001-v1",
++      "country": "IR",
++      "sourceId": "ir-persian-ffq-research",
++      "releaseId": "10.3389/fnut.2023.1059870.s001:v1",
++      "dataType": "research-correlation",
++      "metadataEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/IR/supplement-validation.json",
++        "sha256": "5d90163a893c11a1d6e120f3ea372f503afd455298bfcb40785cdd1eec886a0f"
++      },
++      "inputs": {
++        "supplement.pdf": "fffd38e8de95b1df83b0fe46a35b1b411479803d2d304117cfae9d9260cd87c8"
++      },
++      "fieldSelectors": {
++        "coefficient": {
++          "status": "candidate-locator-declaration-not-production-validated",
++          "locator": "PDF page/table/sourceLine/sourceColumn; source point and confidence interval unchanged",
++          "evidence": {
++            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/IR/supplement-validation.json",
++            "sha256": "5d90163a893c11a1d6e120f3ea372f503afd455298bfcb40785cdd1eec886a0f"
++          }
++        }
++      },
++      "nativeUnits": [
++        "dimensionless"
++      ],
++      "nativeBases": [
++        "study comparison/sex/adjustment; no dietary recommendation"
++      ],
++      "holds": [
++        "source-anomaly-quarantined",
++        "staging-scope-not-reviewed"
++      ],
++      "permittedOperation": "metadata-preflight-only",
++      "productionAdmission": false,
++      "originalAcquiredAt": "2026-10-14T22:12:08.911538+00:00",
++      "acquisitionEvidence": {
++        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-44/IR/55b466f9c9939211fb8f/receipt.json",
++        "sha256": "7998b12e549c336dfe028a522df46fe0453c471463b026c60d791931645a9f73"
++      },
++      "acquisitionSelector": "/requests (matching original PDF SHA256)/utc"
++    },
++    {
++      "bindingId": "pn-mpi-standard",
++      "country": "PN",
++      "sourceId": "pn-mpi-honey",
++      "releaseId": "unknown",
++      "dataType": "regulatory-context",
++      "metadataEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/PN/pn-source-role-validation.json",
++        "sha256": "ca602f025147b0ad7377b5efb95cc56b1a436a39749da141270843238e43dfe1"
++      },
++      "inputs": {},
++      "fieldSelectors": {},
++      "nativeUnits": [],
++      "nativeBases": [],
++      "holds": [
++        "complete-original-missing",
++        "no-retry-source-challenge",
++        "source-use-not-qualified",
++        "parsed-body-custodian-unestablished",
++        "original-acquisition-evidence-missing"
++      ],
++      "permittedOperation": "metadata-preflight-only",
++      "productionAdmission": false,
++      "originalAcquiredAt": null,
++      "acquisitionEvidence": null
++    },
++    {
++      "bindingId": "pn-regional-pndb",
++      "country": "PN",
++      "sourceId": "pacific-pndb",
++      "releaseId": "SPC_REG_2020_PNDB_v01_M",
++      "dataType": "regional-catalogue",
++      "metadataEvidence": {
++        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/PN/pn-source-role-validation.json",
++        "sha256": "ca602f025147b0ad7377b5efb95cc56b1a436a39749da141270843238e43dfe1"
++      },
++      "inputs": {},
++      "fieldSelectors": {},
++      "nativeUnits": [],
++      "nativeBases": [],
++      "holds": [
++        "regional-not-national-applicability",
++        "dataset-specific-licence-missing",
++        "body-unit-basis-and-parsed-export-missing",
++        "original-acquisition-evidence-missing"
++      ],
++      "permittedOperation": "metadata-preflight-only",
++      "productionAdmission": false,
++      "originalAcquiredAt": null,
++      "acquisitionEvidence": null
++    }
++  ],
++  "retainedManifestPins": [
++    {
++      "path": "/home/user/src/offmenu-data/afcd-3/manifest.json",
++      "sha256": "ff4a6ab34b8ae56e58c021af62424851063692d886502f30bc17d416fd90a80a"
++    },
++    {
++      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/batch-result.json",
++      "sha256": "22a0d9c5ef9d7ee77205c56661ee10629ead05edfa7666bba3c4cf2afeacea43"
++    },
++    {
++      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/current-delivery-overlay-v1.json",
++      "sha256": "c65a441043770f11baa6ef1e3a4ca520f3363871e479f823bdba0f8edc95fd9c"
++    },
++    {
++      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/B01-W03/resolution.json",
++      "sha256": "acd678a303daf44297c79f40059d392b24594e0b041344bf62a4f9e47d8128a9"
++    },
++    {
++      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/M-RESTORE-20261018-W03/reconciliation.json",
++      "sha256": "847dbf01671037dbb7cfe08e435467841c486efe15222dc23d8641354b5e293b"
++    }
++  ],
++  "acquisitionEvidence": "metadataEvidence references original acquisition receipts; originalAcquiredAt must be copied exactly from the selected original receipt, never validation time or file mtime",
++  "unknownReleaseRule": "unknown is an explicit blocker; not a usable release identity",
++  "preservedHolds": [
++    "Finland/Frida",
++    "native NO/FR crashes",
++    "403/412/challenge/private/credentials/denied actions",
++    "production/CIX/DEV7645"
++  ],
++  "countsMeaning": "AFCD1801/ABS4758/FSANZ3/IR572 are retained scoped counts, not independently accepted staging counts",
++  "requiredCountryTypes": [
++    "ingredients",
++    "recipes",
++    "nutrition",
++    "retailers/providers",
++    "prices/baskets",
++    "dietary references"
++  ],
++  "coverageEvidencePins": [
++    {
++      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/AU/category-coverage-and-gaps.json",
++      "sha256": "8b21be0617917ef1bfb170761e91fe3b63e5675decb3f6ed06a0e1cae6e30b5b"
++    },
++    {
++      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/IR/category-coverage-and-gaps.json",
++      "sha256": "dd9951e364dce4ee9abbd3f7619affa87659a6f7c866addac194668937e0b6be"
++    },
++    {
++      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/PN/category-coverage-and-gaps.json",
++      "sha256": "c5fdc5eb5cfbf79220ff471590cc99e34bebef6272ab3c4f1b8ae87f97c56b27"
++    }
++  ],
++  "coverageRule": "Bindings describe finite source roles only; missing category sources remain required, not not-applicable. No country completeness from six bindings."
++}
+diff --git a/docs/operations/portfolio-au-ir-pn.md b/docs/operations/portfolio-au-ir-pn.md
+new file mode 100644
+index 00000000..6b96a5be
+--- /dev/null
++++ b/docs/operations/portfolio-au-ir-pn.md
+@@ -0,0 +1,128 @@
++# AU / IR / PN retained-input bindings
++
++Selected request: M-STAGING-BIND-20261018-W03. Base develop snapshot
++`abecb99ee1125730ccbc2824b6ec49ffc5cc4302`; pending PR42 code is not imported.
++Owned paths are this document, `portfolio-au-ir-pn.json`,
++`offmenu/refresh/portfolio_au_ir_pn.py`, and its dedicated test file.
++There are no shared-core, source-reader, runner, production or admission edits.
++
++The catalogue contains six trusted portfolio declarations: AFCD Release 3,
++ABS 2025 statistical weights, three FSANZ notices, the IR PERSIAN supplement v1,
++and two explicitly missing/held PN inputs. Paths and SHA256 references identify
++retained metadata evidence on Foo; the tool never follows those paths. It does
++not copy raw bodies, third-party assets or credentials. Provenance and counts in
++the referenced manifests retain their original scope. Historical manifest
++`accepted` counts do not become STAGING acceptance.
++
++## Repeatable metadata preflight
++
++From the repository root, create a small metadata envelope from the declarations:
++
++```sh
++python3 - <<'PY'
++import json
++from offmenu.refresh.portfolio_au_ir_pn import catalogue
++rows = {}
++for spec in catalogue()['profiles']:
++    row = {k: spec[k] for k in ('sourceId', 'releaseId', 'country', 'dataType',
++                               'inputs', 'originalAcquiredAt')}
++    row['evidenceSha256'] = spec['metadataEvidence']['sha256']
++    row['validatedAt'] = '2026-10-18T00:00:00Z'
++    rows[spec['bindingId']] = row
++with open('/tmp/worker03-metadata.json', 'x') as stream:
++    json.dump(rows, stream)
++PY
++python3 -m offmenu.refresh.portfolio_au_ir_pn --metadata /tmp/worker03-metadata.json --now 2026-10-18T00:00:00Z
++```
++
++Expected exit2: real declarations remain held or missing; no production readiness
++is asserted. The explicit clock makes receipts repeatable. Input is limited to
++256KiB; duplicate keys, nonfinite values, foreign source/release/country/type,
++changed declared input pins and changed acquisition evidence fail closed. Sources
++receive separate `StageResult` receipts, so one malformed source does not suppress
++peer diagnostics. Unknown binding IDs fail the batch rather than being ignored.
++
++`inspect_metadata(spec, envelope, now=..., previous_key=...)` is the caller-facing
++pure interface. `spec` is reviewed application configuration, never a manifest
++override. The CLI loads only this package's fixed catalogue. A ready **authored
++test** declaration returns `succeeded`; the same binding key returns `reused`.
++The caller owns retained receipts; no cache writes/pointer promotion happen here.
++Validation timestamps are excluded from the key, original acquisition time is
++bound to its evidence and included. Unknown AFCD original acquisition stays null:
++its manifest `completedAt` is not substituted for a download time.
++Unknown age emits `unknown-no-download`. Every result explicitly reports
++`metadata-intent-only-generic-planner-unsupported`; this narrow portfolio intent
++does not implement a shared pure cache planner or an operational source adapter.
++
++The Foo metadata entrypoint rejects symlinks and nonregular files. It opens a
++regular descriptor with nonblocking/no-follow flags, verifies descriptor identity
++against the pre-open stat, bounds reads and rechecks identity/size/timestamps after
++reading. FIFO/device/directory inputs and swaps fail with typed errors; a read
++failure cannot modify metadata bytes or run a source operation. This is the
++owned metadata-file boundary only, not a shared reader or cache engine.
++
++Under30 days, metadata preflight requires zero downloads; at/after30 days it emits
++review-required-no-download. A later validation never restarts that clock. Rights
++and source holds apply even inside the cache window. This is a no-network
++preflight contract, not an implementation of online refresh, byte verification,
++conditional HTTP or shared cache storage. Revalidation/force-download library
++options are deliberately not exposed. Cache reuse never means current recall
++applicability. Changed content changes the key, but only independently qualified
++source bytes can justify new pins or acquisition evidence.
++
++## Shared validators, field origin and native semantics
++
++This package calls shared `core.strict_json` / `timestamp`,
++`acceptance.fingerprint`, `field_provenance.field_origin_errors` and
++`global_run.StageResult`. The synthetic fixture exercises the actual shared
++`SourceContract` / `qualify` path with `fixture=True`; it cannot supply production
++acceptance. No shared engine is copied. The `origin_errors` hook checks structural
++per-datum source/derived/constant coverage; it cannot prove a coordinate/value or
++scientific equivalence. It must accompany the existing reviewed schema and
++source-specific semantic callback before a real `CandidateArtifact` is selected.
++No SourceContract is constructed from this catalogue.
++
++Each selector declaration carries an evidence pin and explicitly unaccepted
++locator status. ABS has sheet/cell/type/format coordinates, not prices; the IR
++candidate has page/table/line/column and dimensionless correlations with one
++quarantined point/CI anomaly. FSANZ uses label/descendant-field text only and keeps
++GTIN/lot/applicability unknown. AFCD retains six workbook pins and two native
++bases,100g/100mL; component unit/definition allowlists and per-datum serialized
++origin mappings still need exact selection. Do not use generic site CC BY4 to
++replace the AFCD Data User Licence Agreement, or copying rights as ingredient
++equivalence evidence. Metadata inspections are not new legal grants.
++
++All six country-required types remain required, with exact coverage evidence
++pins in the catalogue. Research correlations, CPI weights, recall names and a
++regional catalogue do not satisfy missing national recipes, ingredient identity,
++retailer register, item prices/baskets or adopted dietary-reference requirements.
++PN MPI original remains missing under a no-retry challenge hold. Regional PNDB
++licence, actual body, units/bases and PN applicability remain unknown. No PN body
++or policy is opened, and no category is declared not applicable.
++
++## Integrator00 interface request and next dependency
++
++No shared-interface patch is included. Please review whether to extract an
++existing source-neutral30-day planning helper from `core.cache_policy` /
++`policy.plan_fixture`: their current identities are Wikibooks/fixture-specific.
++Desired callable: trusted source/release/bundle identity + evidence-bound
++original acquisition/validation timestamps + explicit UTC clock -> deterministic
++reuse/review-required receipt, always no network and never resetting acquisition.
++Retain existing callers and force-mode semantics; a future automatic adapter must
++not bypass the under30-day zero-download rule. This is a proposed interface for
++00, not worker03 permission to edit shared core.
++
++For an actual portfolio staging run, Morgan/00 must select exact reviewed source
++schemas, per-datum selector/semantic contracts, source-use conditions, independent
++scope/count/ID digests and the existing execution resource boundary. FSANZ
++field-origin licence, PN finite parsed-body custody and AFCD original acquisition
++remain typed input blockers. Only then bind generic factories to source stages;
++qualification/curation/common graph/acceptance remain distinct. Independent
++approval and develop integration of this code must precede another request.
++
++Verification: `python3 -m unittest discover -s tests -p test_portfolio_au_ir_pn.py -v`.
++Authored tests cover valid/missing/held/malformed/stale inputs, peer isolation,
++identity and cache drift, null provenance, immutable input declarations and shared
++fixture-only qualification. Source bodies and old country tests are not replayed.
++Finland/Frida/nativeNO-FR/403/private/credential/denied-action restrictions,
++production/CIX pauses and separate DEV7645 custody all remain unchanged.
+diff --git a/offmenu/refresh/portfolio_au_ir_pn.py b/offmenu/refresh/portfolio_au_ir_pn.py
+new file mode 100644
+index 00000000..f8923e92
+--- /dev/null
++++ b/offmenu/refresh/portfolio_au_ir_pn.py
+@@ -0,0 +1,190 @@
++"""AU/IR/PN metadata preflight, not a payload reader or admission registry.
++
++Trusted application code supplies a spec; manifests cannot release its holds.
++Uses shared strict JSON, timestamps, provenance diagnostics and stage receipts.
++No declared source path is opened. OS isolation remains the integrator's boundary.
++"""
++import argparse
++import json
++import os
++from pathlib import Path
++import stat
++
++from .acceptance import fingerprint
++from .core import RefreshError, safe_path, strict_json, timestamp
++from .field_provenance import field_origin_errors
++from .global_run import StageResult
++
++CATALOGUE = Path(__file__).resolve().parents[2] / 'docs/operations/portfolio-au-ir-pn.json'
++MAX_METADATA = 256 * 1024
++READ_ERRORS = frozenset(('metadata-not-regular', 'metadata-bound-exceeded',
++                         'metadata-changed-during-read'))
++
++
++def _read_metadata(path):
++    """Bounded regular descriptor read; special-file swaps cannot block open."""
++    path = safe_path(path)
++    before = path.lstat()
++    if not stat.S_ISREG(before.st_mode):
++        raise RefreshError('metadata-not-regular')
++    if before.st_size > MAX_METADATA:
++        raise RefreshError('metadata-bound-exceeded')
++    flags = os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW | os.O_CLOEXEC
++    fd = os.open(path, flags)
++    try:
++        opened = os.fstat(fd)
++        if not stat.S_ISREG(opened.st_mode):
++            raise RefreshError('metadata-not-regular')
++        def identity(info):
++            return (info.st_dev, info.st_ino, info.st_size,
++                    info.st_mtime_ns, info.st_ctime_ns)
++        if identity(before) != identity(opened):
++            raise RefreshError('metadata-changed-during-read')
++        chunks, size = [], 0
++        while True:
++            block = os.read(fd, min(65536, MAX_METADATA + 1 - size))
++            if not block:
++                break
++            chunks.append(block)
++            size += len(block)
++            if size > MAX_METADATA:
++                raise RefreshError('metadata-bound-exceeded')
++        if (identity(opened) != identity(os.fstat(fd))
++                or identity(opened) != identity(path.lstat()) or size != opened.st_size):
++            raise RefreshError('metadata-changed-during-read')
++        return b''.join(chunks)
++    finally:
++        os.close(fd)
++
++
++def catalogue():
++    return strict_json(CATALOGUE.read_bytes())
++
++
++def origin_errors(row, input_pins, *, policy_pins=()):
++    """Shared origin coverage check only; source-cell/transform fidelity separate."""
++    return field_origin_errors(row, input_pins, policy_pins=policy_pins)
++
++
++def inspect_metadata(spec, envelope, *, now, previous_key=None):
++    """Pure bounded preflight; key permits caller-owned no-op, never cache writes.
++
++    All output is metadata-only. Success does not prove any body exists or matches
++    its declared digest. originalAcquiredAt controls the 30-day boundary; later
++    validation must not reset it. At/after 30 days, require review, no download.
++    """
++    codes = set()
++    key = None
++    age = None
++    try:
++        if envelope is None:
++            return {'schemaVersion': 'offmenu-au-ir-pn-metadata-preflight/1',
++                    'bindingId': spec['bindingId'],
++                    'stage': StageResult('unsupported', 'source-input-missing').receipt(),
++                    'diagnostics': ['source-input-missing'], 'holds': list(spec.get('holds', ())),
++                    'cacheDecision': 'unknown-no-download',
++                    'plannerCapability': 'metadata-intent-only-generic-planner-unsupported',
++                    'networkRequests': 0, 'sourceBodyReads': 0,
++                    'inputBytesVerified': False, 'countryAccepted': False,
++                    'productionAdmission': False}
++        if not isinstance(envelope, dict):
++            raise ValueError
++        if len(json.dumps(envelope, allow_nan=False).encode()) > MAX_METADATA:
++            raise ValueError
++        required = {'sourceId', 'releaseId', 'country', 'dataType', 'inputs',
++                    'evidenceSha256', 'originalAcquiredAt', 'validatedAt'}
++        if set(envelope) != required:
++            raise ValueError
++        for name in ('sourceId', 'releaseId', 'country', 'dataType'):
++            if envelope[name] != spec[name]:
++                codes.add('binding-identity-mismatch')
++        inputs = envelope['inputs']
++        if not isinstance(inputs, dict):
++            raise ValueError
++        if not spec['inputs'] or not inputs:
++            codes.add('source-input-missing')
++        if inputs != spec['inputs']:
++            codes.add('input-declaration-mismatch')
++        if envelope['evidenceSha256'] != spec['metadataEvidence']['sha256']:
++            codes.add('metadata-evidence-pin-mismatch')
++        if envelope['originalAcquiredAt'] != spec['originalAcquiredAt']:
++            codes.add('acquisition-evidence-mismatch')
++        if spec['originalAcquiredAt'] is None:
++            # Unknown acquisition is a held dependency, not a fabricated clock.
++            acquired = None
++        else:
++            acquired = timestamp(envelope['originalAcquiredAt'])
++        validated = timestamp(envelope['validatedAt'])
++        if now.tzinfo is None or not validated <= now or (acquired is not None and acquired > validated):
++            codes.add('metadata-clock-invalid')
++        age = None if acquired is None else (now - acquired).total_seconds()
++        if age is not None and age < 0:
++            codes.add('metadata-clock-invalid')
++        # Validation time excluded: a fresh check is not a fresh acquisition.
++        key = fingerprint({'spec': spec, 'input': {
++            k: v for k, v in envelope.items() if k != 'validatedAt'}})
++    except (ValueError, TypeError, KeyError, AttributeError, OverflowError, RecursionError):
++        codes.add('metadata-malformed')
++
++    holds = list(spec.get('holds', ()))
++    stale = age is not None and age >= 30 * 86400
++    if codes:
++        status, code = 'failed', sorted(codes)[0]
++    elif holds:
++        status, code = 'held', 'portfolio-source-held'
++    elif stale:
++        status, code = 'held', 'stale-input-review-required'
++    else:
++        status = 'reused' if previous_key == key else 'succeeded'
++        code = 'metadata-no-op' if status == 'reused' else 'metadata-binding-ready'
++    return {
++        'schemaVersion': 'offmenu-au-ir-pn-metadata-preflight/1',
++        'bindingId': spec['bindingId'],
++        'stage': StageResult(status, code, (key,) if key else ()).receipt(),
++        'diagnostics': sorted(codes), 'holds': holds,
++        'bindingKey': key, 'minimumReuseDays': 30,
++        'acquisitionAgeDays': None if age is None else int(age // 86400),
++        'cacheDecision': ('unknown-no-download' if age is None else
++                          'review-required-no-download' if stale else 'retained-input-only'),
++        'plannerCapability': 'metadata-intent-only-generic-planner-unsupported',
++        'inputBytesVerified': False, 'mtimeUsed': False,
++        'validationResetsAcquisitionAge': False, 'networkRequests': 0,
++        'sourceBodyReads': 0, 'countryAccepted': False,
++        'productionAdmission': False,
++    }
++
++
++def inspect_batch(envelopes, *, now, previous_keys=None):
++    """Each declared portfolio source receives its own isolated diagnostic."""
++    if not isinstance(envelopes, dict):
++        raise RefreshError('metadata-batch-invalid')
++    known = {p['bindingId'] for p in catalogue()['profiles']}
++    if not set(envelopes) <= known:
++        raise RefreshError('unknown-portfolio-binding')
++    return [inspect_metadata(p, envelopes.get(p['bindingId']), now=now,
++                             previous_key=(previous_keys or {}).get(p['bindingId']))
++            for p in catalogue()['profiles']]
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description='AU/IR/PN metadata only; no source reads/network.')
++    parser.add_argument('--metadata', required=True)
++    parser.add_argument('--now', required=True, help='Explicit UTC timestamp for repeatable assessment')
++    args = parser.parse_args(argv)
++    try:
++        # Read only the explicitly supplied small metadata envelope, not its paths.
++        raw = _read_metadata(args.metadata)
++        rows = inspect_batch(strict_json(raw), now=timestamp(args.now))
++        result = {'sources': rows, 'networkRequests': 0, 'countryAccepted': False}
++        exit_code = 0 if all(r['stage']['status'] in ('succeeded', 'reused') for r in rows) else 2
++    except RefreshError as error:
++        code = str(error) if str(error) in READ_ERRORS else 'portfolio-metadata-input-invalid'
++        result, exit_code = {'errorCode': code, 'networkRequests': 0}, 2
++    except (OSError, ValueError, TypeError, RecursionError):
++        result, exit_code = {'errorCode': 'portfolio-metadata-input-invalid', 'networkRequests': 0}, 2
++    print(json.dumps(result, sort_keys=True, separators=(',', ':'), allow_nan=False))
++    return exit_code
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/tests/test_portfolio_au_ir_pn.py b/tests/test_portfolio_au_ir_pn.py
+new file mode 100644
+index 00000000..ae4e8ad8
+--- /dev/null
++++ b/tests/test_portfolio_au_ir_pn.py
+@@ -0,0 +1,238 @@
++"""Authored metadata and one synthetic record only; never read country bodies."""
++import copy
++from datetime import datetime, timezone
++import hashlib
++import contextlib
++import io
++import json
++import os
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu.refresh.acceptance import (Asset, SourceContract, canonical,
++                                       fingerprint, ids_digest, qualify)
++from offmenu.refresh.core import RefreshError, strict_json
++from offmenu.refresh.portfolio_au_ir_pn import (
++    _read_metadata, catalogue, inspect_batch, inspect_metadata, main, origin_errors)
++
++NOW = datetime(2026, 10, 18, tzinfo=timezone.utc)
++
++
++class PortfolioTests(unittest.TestCase):
++    def setUp(self):
++        # This trusted test spec is authored code, not an override loaded by CLI.
++        self.spec = {'bindingId': 'authored-au-weight', 'country': 'AU',
++                     'sourceId': 'authored-weight', 'releaseId': 'fixture-v1',
++                     'dataType': 'statistical-weighting', 'inputs': {'input.csv': 'a' * 64},
++                     'metadataEvidence': {'sha256': 'b' * 64}, 'holds': [],
++                     'originalAcquiredAt': '2026-10-01T00:00:00Z'}
++        self.env = {k: self.spec[k] for k in ('country', 'sourceId', 'releaseId', 'dataType', 'inputs')}
++        self.env.update(evidenceSha256='b' * 64,
++                        originalAcquiredAt=self.spec['originalAcquiredAt'],
++                        validatedAt='2026-10-17T00:00:00Z')
++
++    def assess(self, env=None, **kwargs):
++        return inspect_metadata(self.spec, self.env if env is None else env, now=NOW, **kwargs)
++
++    def test_valid_is_deterministic_metadata_only(self):
++        with patch('builtins.open', side_effect=AssertionError('no body IO')):
++            a = self.assess()
++            self.assertEqual(a, self.assess())
++        self.assertEqual(a['stage']['status'], 'succeeded')
++        self.assertFalse(a['inputBytesVerified'])
++        self.assertFalse(a['countryAccepted'])
++        self.assertEqual(a['networkRequests'], 0)
++
++    def test_noop_key_ignores_validation_age_not_acquisition(self):
++        a = self.assess()
++        self.env['validatedAt'] = '2026-10-18T00:00:00Z'
++        b = self.assess(previous_key=a['bindingKey'])
++        self.assertEqual(b['stage']['status'], 'reused')
++        self.assertEqual(b['acquisitionAgeDays'], 17)
++        self.env['originalAcquiredAt'] = self.env['validatedAt']
++        self.assertIn('acquisition-evidence-mismatch', self.assess()['diagnostics'])
++
++    def test_missing_is_typed(self):
++        a = inspect_metadata(self.spec, None, now=NOW)
++        self.assertEqual(a['stage']['code'], 'source-input-missing')
++        self.assertEqual(a['stage']['status'], 'unsupported')
++
++    def test_held_cannot_be_released_by_envelope(self):
++        self.spec['holds'] = ['source-rights-held']
++        a = self.assess()
++        self.assertEqual(a['stage']['status'], 'held')
++        self.env['holds'] = []
++        self.assertEqual(self.assess()['stage']['status'], 'failed')
++
++    def test_malformed_and_identity_diagnostics(self):
++        self.assertEqual(self.assess([])['stage']['code'], 'metadata-malformed')
++        self.env['sourceId'] = 'foreign'
++        self.env['inputs'] = {'changed.csv': 'c' * 64}
++        a = self.assess()
++        self.assertIn('binding-identity-mismatch', a['diagnostics'])
++        self.assertIn('input-declaration-mismatch', a['diagnostics'])
++
++    def test_exact_thirty_day_boundary_stale_never_downloads(self):
++        self.spec['originalAcquiredAt'] = '2026-09-18T00:00:00Z'
++        self.env['originalAcquiredAt'] = self.spec['originalAcquiredAt']
++        a = self.assess()
++        self.assertEqual(a['stage']['code'], 'stale-input-review-required')
++        self.assertEqual(a['cacheDecision'], 'review-required-no-download')
++        self.assertEqual(a['networkRequests'], 0)
++
++    def test_future_and_naive_clock_fail(self):
++        self.env['validatedAt'] = '2026-10-19T00:00:00Z'
++        self.assertIn('metadata-clock-invalid', self.assess()['diagnostics'])
++        a = inspect_metadata(self.spec, self.env, now=datetime(2026, 10, 18))
++        self.assertEqual(a['stage']['status'], 'failed')
++
++    def test_unknown_acquisition_never_made_fresh(self):
++        self.spec['originalAcquiredAt'] = None
++        self.spec['holds'] = ['original-acquisition-evidence-missing']
++        self.env['originalAcquiredAt'] = None
++        a = self.assess()
++        self.assertEqual(a['stage']['status'], 'held')
++        self.assertIsNone(a['acquisitionAgeDays'])
++        self.assertEqual(a['cacheDecision'], 'unknown-no-download')
++        self.assertEqual(a['plannerCapability'], 'metadata-intent-only-generic-planner-unsupported')
++
++    def test_batch_isolates_missing_malformed_and_held(self):
++        profiles = catalogue()['profiles']
++        p = profiles[1]
++        env = {k: p[k] for k in ('sourceId', 'releaseId', 'country', 'dataType', 'inputs', 'originalAcquiredAt')}
++        env.update(validatedAt='2026-10-17T00:00:00Z', evidenceSha256=p['metadataEvidence']['sha256'])
++        rows = inspect_batch({p['bindingId']: env, profiles[0]['bindingId']: []}, now=NOW)
++        self.assertEqual(len(rows), 6)
++        self.assertEqual([r['stage']['status'] for r in rows[:3]], ['failed', 'held', 'unsupported'])
++        self.assertTrue(all(r['networkRequests'] == 0 for r in rows))
++        with self.assertRaises(RefreshError):
++            inspect_batch({'unassigned-country': {}}, now=NOW)
++
++    def test_no_real_profile_admission_or_unknown_unit_inference(self):
++        for p in catalogue()['profiles']:
++            self.assertFalse(p['productionAdmission'])
++            self.assertTrue(p['holds'])
++        self.assertEqual(catalogue()['profiles'][0]['releaseId'], '3')
++
++    def test_shared_origin_validator_preserves_null_and_unknown(self):
++        row = {'data': {'value': None}, 'provenance': {'sourceId': 's', 'releaseId': 'r',
++               'fieldOrigins': {'/data/value': {'kind': 'source', 'sourceId': 's', 'releaseId': 'r',
++                'inputPath': 'input.csv', 'inputSha256': 'a'*64, 'sourceRecordId': 'authored-row',
++                'sourceField': 'value'}}}}
++        before = copy.deepcopy(row)
++        self.assertEqual(origin_errors(row, {'input.csv': 'a'*64}), [])
++        self.assertEqual(row, before)
++        row['provenance']['fieldOrigins'] = {}
++        self.assertIn('field-origin-inventory-mismatch', origin_errors(row, {'input.csv': 'a'*64}))
++
++    def test_shared_qualification_with_authored_fixture_not_production(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            bundle = root/'bundle'; bundle.mkdir()
++            assets = []
++            for name, raw in [('input.csv', b'id,value,unit\na,0,%\n'), ('rights.json', b'authored fixture rights'), ('scope.json', b'authored single row')]:
++                (bundle/name).write_bytes(raw)
++                assets.append(Asset(name, len(raw), hashlib.sha256(raw).hexdigest()))
++            row = {'id': 'authored-a', 'kind': 'authoredWeight', 'schemaVersion': '1',
++                   'data': {'value': 0, 'unit': '%'},
++                   'provenance': {'sourceId': 'authored-weight', 'releaseId': 'fixture-v1',
++                                  'fetchedAt': '2026-10-01T00:00:00Z'}}
++            row['provenance']['fieldOrigins'] = {f'/data/{key}': {
++                'kind': 'source', 'sourceId': 'authored-weight', 'releaseId': 'fixture-v1',
++                'inputPath': 'input.csv', 'inputSha256': assets[0].sha256,
++                'sourceRecordId': 'a', 'sourceField': key} for key in row['data']}
++            schemas = {'authoredWeight': {'type': 'object', 'required': ['id', 'data', 'provenance']}}
++            contract = SourceContract('authored-weight', 'fixture-v1', 'authored-only',
++                '2026-10-01T00:00:00Z', tuple(assets), 1, ids_digest(['authored-a']),
++                schemas, fingerprint(schemas), lambda r: origin_errors(r, {'input.csv': assets[0].sha256}),
++                'c'*64, assets[1], assets[2], frozenset(('retain','parse','transform')), fixture=True)
++            raw = canonical([row])+b'\n'; candidate = root/'candidate.jsonl';candidate.write_bytes(raw)
++            manifest = {'sourceId': contract.source_id, 'releaseId': contract.release_id,
++                        'acquiredAt': contract.acquired_at, 'normalizedRecords': 1,
++                        'candidateSha256': hashlib.sha256(raw).hexdigest(), 'candidateBytes': len(raw),
++                        'rightsEvidenceSha256': assets[1].sha256, 'scopeEvidenceSha256': assets[2].sha256,
++                        'inputFiles': [vars(a) for a in assets]}
++            result = qualify(contract, bundle, candidate, manifest)
++            self.assertTrue(result['qualified'], result['errors'])
++            self.assertTrue(result['fixture'])
++
++    def test_cli_rejects_duplicate_keys_and_oversized_metadata(self):
++        with self.assertRaises(RefreshError):
++            strict_json(b'{"x":1,"x":2}')
++        with tempfile.NamedTemporaryFile() as f:
++            f.write(b'x'*(256*1024+1));f.flush()
++            with patch('builtins.print'):
++                self.assertEqual(main(['--metadata', f.name, '--now', '2026-10-18T00:00:00Z']), 2)
++
++
++class MetadataEntrypointTests(unittest.TestCase):
++    def test_regular_cli_and_input_preservation(self):
++        with tempfile.TemporaryDirectory() as directory:
++            p = Path(directory)/'metadata.json'; p.write_bytes(b'{}')
++            before = p.stat(); stream = io.StringIO()
++            with contextlib.redirect_stdout(stream):
++                code = main(['--metadata', str(p), '--now', '2026-10-18T00:00:00Z'])
++            result = json.loads(stream.getvalue())
++            self.assertEqual(code, 2)  # Missing bindings, never a read failure.
++            self.assertEqual(len(result['sources']), 6)
++            self.assertEqual(p.read_bytes(), b'{}')
++            self.assertEqual((p.stat().st_ino, p.stat().st_mtime_ns),
++                             (before.st_ino, before.st_mtime_ns))
++
++    def test_special_files_rejected_before_open(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory); fifo = root/'fifo.json'; os.mkfifo(fifo)
++            p = root/'regular.json'; p.write_bytes(b'{}')
++            link = root/'link.json'; link.symlink_to(p)
++            for path in (fifo, root, link):
++                with self.subTest(path=path.name), patch(
++                        'offmenu.refresh.portfolio_au_ir_pn.os.open',
++                        side_effect=AssertionError('must not open a nonregular input')):
++                    stream = io.StringIO()
++                    with contextlib.redirect_stdout(stream):
++                        code = main(['--metadata', str(path), '--now', '2026-10-18T00:00:00Z'])
++                    self.assertEqual(code, 2)
++                    self.assertIn('errorCode', json.loads(stream.getvalue()))
++
++    def test_fifo_swap_uses_nonblocking_fd_and_never_reads(self):
++        with tempfile.TemporaryDirectory() as directory:
++            p = Path(directory)/'metadata.json'; p.write_bytes(b'{}')
++            real_open = os.open
++            def swap(path, flags):
++                self.assertTrue(flags & os.O_NONBLOCK)
++                self.assertTrue(flags & os.O_NOFOLLOW)
++                p.unlink(); os.mkfifo(p)
++                return real_open(path, flags)
++            with patch('offmenu.refresh.portfolio_au_ir_pn.os.open', side_effect=swap), patch(
++                    'offmenu.refresh.portfolio_au_ir_pn.os.read',
++                    side_effect=AssertionError('must not read the swapped FIFO')):
++                with self.assertRaisesRegex(RefreshError, '^metadata-not-regular$'):
++                    _read_metadata(p)
++
++    def test_replacement_and_mutation_detected(self):
++        with tempfile.TemporaryDirectory() as directory:
++            p = Path(directory)/'metadata.json'; p.write_bytes(b'{}')
++            real_open = os.open
++            def replace_before_open(path, flags):
++                replacement = p.with_suffix('.replacement'); replacement.write_bytes(b'{}')
++                os.replace(replacement, p)
++                return real_open(path, flags)
++            with patch('offmenu.refresh.portfolio_au_ir_pn.os.open', side_effect=replace_before_open):
++                with self.assertRaisesRegex(RefreshError, '^metadata-changed-during-read$'):
++                    _read_metadata(p)
++            real_read = os.read
++            changed = []
++            def mutate_after_read(fd, size):
++                raw = real_read(fd, size)
++                if not changed:
++                    p.write_bytes(b'changed'); changed.append(True)
++                return raw
++            with patch('offmenu.refresh.portfolio_au_ir_pn.os.read', side_effect=mutate_after_read):
++                with self.assertRaisesRegex(RefreshError, '^metadata-changed-during-read$'):
++                    _read_metadata(p)
++
++
++if __name__ == '__main__':
++    unittest.main()

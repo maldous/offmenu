@@ -1,0 +1,351 @@
+--- a/candidate-source-root/candidate-source/app/cloud/state.mjs
++++ b/candidate-source-root/candidate-source/app/cloud/state.mjs
+@@ -1,3 +1,4 @@
++import {finishCookingWitnessState} from './cooking-witness-parity.mjs';
+ import {validateBatches} from '../public/cooking-model.js';
+ import {validateRecords} from '../public/unified-data.js';
+ import {validateInsights} from '../public/insights-model.js';
+@@ -38,5 +39,5 @@
+   if(settings.waste){const ids=settings.waste.filter(r=>r.id!==undefined).map(r=>r.id);if(new Set(ids).size!==ids.length)throw Error('Duplicate waste receipt IDs.');}
+   if(profile.dataRecords){if(profile.dataRecords.length>500)throw Error('Too many local data records. Use the dedicated cloud record store.');settings.dataRecords=validateRecords(profile.dataRecords,{privateOnly:true});}
+   Object.assign(settings,validateInsights(profile));
+-  return {inventory,products,recipes:validateRecipes(value.recipes||[]),profile:settings,selections};
++  return finishCookingWitnessState(value,{inventory,products,recipes:validateRecipes(value.recipes||[]),profile:settings,selections});
+ }
+--- a/candidate-source-root/candidate-source/app/public/cooking-model.js
++++ b/candidate-source-root/candidate-source/app/public/cooking-model.js
+@@ -1,12 +1,13 @@
+ import {t} from './i18n.js';
++import {createCookingWitness,captureNutrientInput,copyCookingWitness} from './cooking-witness.js';
+ import {nutritionForLot} from './lot-nutrition.js';
+ import {normalize,validateLot} from './model.js';
+ import {quantified} from './ingredients.js';
+ import {NUTRIENTS,nutrientValue,nutrientBasisCompatible} from './menu-model.js';
+-export function allocateIngredients(recipe,inventory,servings,date){if(!quantified(recipe)||!Number.isFinite(servings)||servings<=0)throw Error(t('This recipe needs complete quantities before cooking.'));const stock=inventory.map(l=>({...l})),deductions=[],missing=[];for(const i of recipe.ingredients){if(i.optional)continue;let remaining=i.quantity*servings/recipe.servings;for(const lot of [...stock].sort((a,b)=>(a.expires||'9999').localeCompare(b.expires||'9999')||a.id.localeCompare(b.id))){if(lot.needsReview||lot.quantity<=0||lot.expires&&lot.expires<date||normalize(lot.ingredient)!==normalize(i.ingredient)||lot.unit!==i.unit)continue;const quantity=Math.min(lot.quantity,remaining);if(quantity>0){deductions.push({lotId:lot.id,barcode:lot.barcode,ingredient:i.ingredient,unit:lot.unit,quantity,original:inventory.find(x=>x.id===lot.id)});lot.quantity-=quantity;remaining-=quantity;}if(remaining<1e-7)break;}if(remaining>1e-7)missing.push({ingredient:i.ingredient,unit:i.unit,quantity:remaining});}return {inventory:stock.filter(l=>l.quantity>1e-7),deductions,missing};}
+-export function cookMeal({recipe,inventory,products,servings,date,planId='',batches=[],mutationId=crypto.randomUUID()}){const existing=batches.find(b=>!b.undone&&(b.id===mutationId||planId&&b.planId===planId));if(existing){if(existing.recipeId!==recipe?.id||existing.servings!==servings||existing.date!==date)throw Error(t('Cooking request changed. Reconcile the existing batch before retrying.'));return {inventory,batch:existing,duplicate:true};}const allocated=allocateIngredients(recipe,inventory,servings,date);if(allocated.missing.length)throw Error(t("Add or correct these ingredients first: {v0}", {v0:(allocated.missing.map(i=>i.ingredient+' '+Number(i.quantity.toFixed(3))+' '+i.unit).join(', '))}));const totals=Object.fromEntries(NUTRIENTS.map(([k])=>[k,{value:0,known:0,total:0}]));for(const d of allocated.deductions){const p=nutritionForLot(d.original,products);for(const [k]of NUTRIENTS){const n=totals[k];n.total++;const value=nutrientValue(p?.nutriments,k);if(nutrientBasisCompatible(p,d.unit)&&Number.isFinite(value)){n.value+=value*d.quantity/100;n.known++;}}}const batch={id:mutationId,planId,recipeId:recipe.id,title:recipe.title,date,createdAt:new Date().toISOString(),servings,remaining:servings,allocations:allocated.deductions,totals,events:[],undone:false};const lot=validateLot({id:'cooked-'+batch.id,barcode:'local:'+batch.id,name:recipe.title+' · cooked',ingredient:'cooked:'+batch.id,quantity:servings,unit:'count',location:{area:'Fridge',shelf:'Cooked meals'},cookBatchId:batch.id,amountBasis:'manual',needsReview:false});return {inventory:[...allocated.inventory,lot],batch,duplicate:false};}
+-export function serveBatch({batch,inventory,portions,completion=null,remainder='unspecified',memberId='',date,slot='Dinner',eventId=crypto.randomUUID()}){if(batch.undone)throw Error(t('This cooking batch was undone.'));const existing=batch.events.find(e=>e.id===eventId);if(existing){const eaten=completion==null?null:portions*completion/100;if(existing.portions!==portions||existing.eaten!==eaten||existing.remainder!==remainder||existing.memberId!==memberId||existing.date!==date||existing.slot!==slot)throw Error(t('Serving event changed. Reconcile the existing serving before retrying.'));return {batch,inventory,duplicate:true};}if(!Number.isFinite(portions)||portions<=0||portions>batch.remaining+1e-7)throw Error(t('Choose portions within the cooked amount remaining.'));if(completion!=null&&(!Number.isFinite(completion)||completion<0||completion>100))throw Error(t('Completion must be 0–100%.'));const available=inventory.filter(l=>l.cookBatchId===batch.id);if(Math.abs(available.reduce((n,l)=>n+l.quantity,0)-batch.remaining)>1e-7)throw Error(t('Cooked stock changed. Reconcile the batch before serving.'));if(!['saved','discarded','shared','unspecified'].includes(remainder))throw Error(t('Choose a valid remainder action'));const eaten=completion==null?null:portions*completion/100,left=completion==null?0:portions-eaten;const saved=remainder==='saved'?left:0,draw=portions-saved;const totals=Object.fromEntries(Object.entries(batch.totals).map(([k,n])=>[k,{...n,value:eaten==null?0:n.value*eaten/batch.servings,known:eaten==null?0:n.known}]));const event={id:eventId,portions,eaten,saved,discarded:remainder==='discarded'?left:0,shared:remainder==='shared'?left:0,unknownRemainder:completion==null?portions:remainder==='unspecified'?left:0,draw,memberId,date,slot,remainder};const remaining=Math.max(0,batch.remaining-draw),next={...batch,remaining,events:[...batch.events,event]},nextInventory=drawCookedStock(inventory,batch.id,draw);const log={id:eventId,batchId:batch.id,recipeId:batch.recipeId,title:batch.title,date,slot,memberId,servings:eaten??0,servedPortions:portions,completion,intakeKnown:completion!==null,leftovers:remainder,createdAt:new Date().toISOString(),source:'Actual cooking lots · homogeneous-dish estimate'+(completion==null?' · completion unknown':''),totals,unresolved:0,note:completion==null?'Intake quantity is unknown. Serving recorded; no zero-intake claim.':'Based on actual allocated ingredient lots; mixed plates may need manual correction.'};return {batch:next,inventory:nextInventory,log,duplicate:false};}
++export function allocateIngredients(recipe,inventory,servings,date){if(!quantified(recipe)||!Number.isFinite(servings)||servings<=0)throw Error(t('This recipe needs complete quantities before cooking.'));const stock=inventory.map(l=>({...l})),deductions=[],missing=[];for(const i of recipe.ingredients){if(i.optional)continue;let remaining=i.quantity*servings/recipe.servings;for(const lot of [...stock].sort((a,b)=>(a.expires||'9999').localeCompare(b.expires||'9999')||a.id.localeCompare(b.id))){if(lot.needsReview||lot.quantity<=0||lot.expires&&lot.expires<date||normalize(lot.ingredient)!==normalize(i.ingredient)||lot.unit!==i.unit)continue;const quantity=Math.min(lot.quantity,remaining);if(quantity>0){deductions.push({lotId:lot.id,barcode:lot.barcode,ingredient:i.ingredient,unit:lot.unit,quantity,original:structuredClone(inventory.find(x=>x.id===lot.id))});lot.quantity-=quantity;remaining-=quantity;}if(remaining<1e-7)break;}if(remaining>1e-7)missing.push({ingredient:i.ingredient,unit:i.unit,quantity:remaining});}return {inventory:stock.filter(l=>l.quantity>1e-7),deductions,missing};}
++export function cookMeal({recipe,inventory,products,servings,date,planId='',batches=[],mutationId=crypto.randomUUID()}){const existing=batches.find(b=>!b.undone&&(b.id===mutationId||planId&&b.planId===planId));if(existing){if(existing.recipeId!==recipe?.id||existing.servings!==servings||existing.date!==date)throw Error(t('Cooking request changed. Reconcile the existing batch before retrying.'));return {inventory,batch:existing,duplicate:true};}const allocated=allocateIngredients(recipe,inventory,servings,date);if(allocated.missing.length)throw Error(t("Add or correct these ingredients first: {v0}", {v0:(allocated.missing.map(i=>i.ingredient+' '+Number(i.quantity.toFixed(3))+' '+i.unit).join(', '))}));const totals=Object.fromEntries(NUTRIENTS.map(([k])=>[k,{value:0,known:0,total:0}]));const nutrientInputs=[];for(const d of allocated.deductions){const p=nutritionForLot(d.original,products);nutrientInputs.push(captureNutrientInput(d,p));for(const [k]of NUTRIENTS){const n=totals[k];n.total++;const value=nutrientValue(p?.nutriments,k);if(nutrientBasisCompatible(p,d.unit)&&Number.isFinite(value)){n.value+=value*d.quantity/100;n.known++;}}}const batch={id:mutationId,planId,recipeId:recipe.id,title:recipe.title,date,createdAt:new Date().toISOString(),servings,remaining:servings,allocations:allocated.deductions,cookingWitness:createCookingWitness(recipe,mutationId,allocated.deductions,nutrientInputs),totals,events:[],undone:false};const lot=validateLot({id:'cooked-'+batch.id,barcode:'local:'+batch.id,name:recipe.title+' · cooked',ingredient:'cooked:'+batch.id,quantity:servings,unit:'count',location:{area:'Fridge',shelf:'Cooked meals'},cookBatchId:batch.id,amountBasis:'manual',needsReview:false});return {inventory:[...allocated.inventory,lot],batch,duplicate:false};}
++export function serveBatch({batch,inventory,portions,completion=null,remainder='unspecified',memberId='',date,slot='Dinner',eventId=crypto.randomUUID()}){if(batch.undone)throw Error(t('This cooking batch was undone.'));const existing=batch.events.find(e=>e.id===eventId);if(existing){const eaten=completion==null?null:portions*completion/100;if(existing.portions!==portions||existing.eaten!==eaten||existing.remainder!==remainder||existing.memberId!==memberId||existing.date!==date||existing.slot!==slot)throw Error(t('Serving event changed. Reconcile the existing serving before retrying.'));return {batch,inventory,duplicate:true};}if(!Number.isFinite(portions)||portions<=0||portions>batch.remaining+1e-7)throw Error(t('Choose portions within the cooked amount remaining.'));if(completion!=null&&(!Number.isFinite(completion)||completion<0||completion>100))throw Error(t('Completion must be 0–100%.'));const available=inventory.filter(l=>l.cookBatchId===batch.id);if(Math.abs(available.reduce((n,l)=>n+l.quantity,0)-batch.remaining)>1e-7)throw Error(t('Cooked stock changed. Reconcile the batch before serving.'));if(!['saved','discarded','shared','unspecified'].includes(remainder))throw Error(t('Choose a valid remainder action'));const eaten=completion==null?null:portions*completion/100,left=completion==null?0:portions-eaten;const saved=remainder==='saved'?left:0,draw=portions-saved;const totals=Object.fromEntries(Object.entries(batch.totals).map(([k,n])=>[k,{...n,value:eaten==null?0:n.value*eaten/batch.servings,known:eaten==null?0:n.known}]));const event={id:eventId,portions,eaten,saved,discarded:remainder==='discarded'?left:0,shared:remainder==='shared'?left:0,unknownRemainder:completion==null?portions:remainder==='unspecified'?left:0,draw,memberId,date,slot,remainder};const remaining=Math.max(0,batch.remaining-draw),next={...batch,remaining,events:[...batch.events,event]},nextInventory=drawCookedStock(inventory,batch.id,draw);const log={id:eventId,batchId:batch.id,recipeId:batch.recipeId,...(batch.cookingWitness?{cookingWitness:copyCookingWitness(batch.cookingWitness,{batchId:batch.id,recipeId:batch.recipeId})}:{}),title:batch.title,date,slot,memberId,servings:eaten??0,servedPortions:portions,completion,intakeKnown:completion!==null,leftovers:remainder,createdAt:new Date().toISOString(),source:'Actual cooking lots · homogeneous-dish estimate'+(completion==null?' · completion unknown':''),totals,unresolved:0,note:completion==null?'Intake quantity is unknown. Serving recorded; no zero-intake claim.':'Based on actual allocated ingredient lots; mixed plates may need manual correction.'};return {batch:next,inventory:nextInventory,log,duplicate:false};}
+ function drawCookedStock(inventory,id,draw){return inventory.flatMap(l=>{if(l.cookBatchId!==id)return [l];const used=Math.min(l.quantity,draw);draw-=used;return l.quantity-used>1e-7?[{...l,quantity:l.quantity-used}]:[];});}
+ export function reconcileCookedStock(batches,inventory,{date,reason='inventory-removal'}={}){return batches.map(b=>{if(b.undone)return b;const remaining=inventory.filter(l=>l.cookBatchId===b.id).reduce((n,l)=>n+l.quantity,0);if(remaining>b.remaining+1e-7)throw Error(t('Cooked portions cannot increase without a new batch'));if(remaining>=b.remaining-1e-7)return b;return {...b,remaining,events:[...b.events,{id:crypto.randomUUID(),type:'inventory-removal',quantity:b.remaining-remaining,draw:b.remaining-remaining,reason,date}]};});}
+ export function undoCook(batch,inventory){if(batch.undone)return inventory;if(batch.events.length)throw Error(t('A served batch cannot be undone. Correct its servings instead.'));const next=inventory.filter(l=>l.cookBatchId!==batch.id).map(l=>({...l}));for(const a of batch.allocations){const lot=next.find(l=>l.id===a.lotId);if(lot)lot.quantity+=a.quantity;else next.push({...a.original,quantity:a.quantity});}return next;}
+-export function validateBatches(value){if(!Array.isArray(value)||value.length>2000)throw Error(t('Invalid cooking history.'));const result=structuredClone(value);for(const b of result){if(typeof b.id!=='string'||b.id.length>100||typeof b.title!=='string'||b.title.length>200||!Number.isFinite(b.servings)||b.servings<=0||!Number.isFinite(b.remaining)||b.remaining<0||b.remaining>b.servings||!Array.isArray(b.allocations)||b.allocations.length>1000||!Array.isArray(b.events)||b.events.length>1000||typeof b.undone!=='boolean')throw Error(t('Invalid cooking batch.'));if(new Set(b.events.map(e=>e.id)).size!==b.events.length)throw Error(t('Duplicate serving events'));for(const e of b.events){if(typeof e.id!=='string')throw Error(t('Serving event ID required'));if(e.type==='inventory-removal'){if(!Number.isFinite(e.quantity)||e.quantity<=0)throw Error(t('Invalid cooked removal'));continue;}if(!Number.isFinite(e.portions)||e.portions<=0||!Number.isFinite(e.saved)||e.saved<0||e.saved>e.portions)throw Error(t('Invalid serving event'));if(e.eaten!=null&&(!Number.isFinite(e.eaten)||e.eaten<0||e.eaten>e.portions))throw Error(t('Invalid eaten portions'));}for(const a of b.allocations){validateLot(a.original);if(!Number.isFinite(a.quantity)||a.quantity<=0||a.quantity>a.original.quantity||a.lotId!==a.original.id)throw Error(t('Invalid cooking allocation.'));}for(const n of Object.values(b.totals||{}))if(!Number.isFinite(n.value)||n.value<0||!Number.isInteger(n.total)||!Number.isInteger(n.known)||n.known<0||n.known>n.total)throw Error(t('Invalid batch nutrition.'));}if(new Set(result.map(b=>b.id)).size!==result.length)throw Error(t('Duplicate cooking batches.'));return result;}
++export function validateBatches(value){if(!Array.isArray(value)||value.length>2000)throw Error(t('Invalid cooking history.'));const result=structuredClone(value);for(const b of result){if(b.cookingWitness)b.cookingWitness=copyCookingWitness(b.cookingWitness,{batchId:b.id,recipeId:b.recipeId});if(typeof b.id!=='string'||b.id.length>100||typeof b.title!=='string'||b.title.length>200||!Number.isFinite(b.servings)||b.servings<=0||!Number.isFinite(b.remaining)||b.remaining<0||b.remaining>b.servings||!Array.isArray(b.allocations)||b.allocations.length>1000||!Array.isArray(b.events)||b.events.length>1000||typeof b.undone!=='boolean')throw Error(t('Invalid cooking batch.'));if(new Set(b.events.map(e=>e.id)).size!==b.events.length)throw Error(t('Duplicate serving events'));for(const e of b.events){if(typeof e.id!=='string')throw Error(t('Serving event ID required'));if(e.type==='inventory-removal'){if(!Number.isFinite(e.quantity)||e.quantity<=0)throw Error(t('Invalid cooked removal'));continue;}if(!Number.isFinite(e.portions)||e.portions<=0||!Number.isFinite(e.saved)||e.saved<0||e.saved>e.portions)throw Error(t('Invalid serving event'));if(e.eaten!=null&&(!Number.isFinite(e.eaten)||e.eaten<0||e.eaten>e.portions))throw Error(t('Invalid eaten portions'));}for(const a of b.allocations){validateLot(a.original);if(!Number.isFinite(a.quantity)||a.quantity<=0||a.quantity>a.original.quantity||a.lotId!==a.original.id)throw Error(t('Invalid cooking allocation.'));}for(const n of Object.values(b.totals||{}))if(!Number.isFinite(n.value)||n.value<0||!Number.isInteger(n.total)||!Number.isInteger(n.known)||n.known<0||n.known>n.total)throw Error(t('Invalid batch nutrition.'));}if(new Set(result.map(b=>b.id)).size!==result.length)throw Error(t('Duplicate cooking batches.'));return result;}
+--- a/candidate-source-root/candidate-source/app/public/insights-model.js
++++ b/candidate-source-root/candidate-source/app/public/insights-model.js
+@@ -1,4 +1,5 @@
+ import {t} from './i18n.js';
++import {historyCookingWitness} from './cooking-witness.js';
+ import {NUTRIENTS,planSummary} from './menu-model.js';
+ export function rangeDates(end,count){const base=new Date(end+'T12:00:00Z');return Array.from({length:count},(_,i)=>{const d=new Date(base);d.setUTCDate(d.getUTCDate()-count+1+i);return d.toISOString().slice(0,10);});}
+ export function mealSnapshot({recipe,date,slot,servings,memberId='',inventory,products,note=''}){const result=planSummary([{recipeId:recipe.id,date,servings}], [recipe],inventory,products,[date]);return {id:crypto.randomUUID(),recipeId:recipe.id,title:recipe.title,date,slot,servings,memberId,note,createdAt:new Date().toISOString(),source:'Mapped product estimate',totals:structuredClone(result.totals),unresolved:result.unresolved};}
+@@ -22,5 +23,5 @@
+ export function intakeSummary(history,dates,memberId='all'){const meals=history.filter(m=>dates.includes(m.date)&&(memberId==='all'||m.memberId===memberId));const totals=Object.fromEntries(NUTRIENTS.map(([k])=>[k,{value:0,known:0,total:0}]));for(const meal of meals)for(const [key]of NUTRIENTS){const n=meal.totals[key];if(n){totals[key].value+=n.value;totals[key].known+=n.known;totals[key].total+=n.total;}else totals[key].total++;}return {meals,totals,days:dates.map(date=>({date,...intakeSummaryDay(meals,date)})),loggedDays:new Set(meals.map(m=>m.date)).size,variety:new Set(meals.map(m=>m.recipeId||m.title.toLowerCase())).size};}
+ function intakeSummaryDay(meals,date){const entries=meals.filter(m=>m.date===date),totals=Object.fromEntries(NUTRIENTS.map(([k])=>[k,{value:0,known:0,total:0}]));for(const meal of entries)for(const [key]of NUTRIENTS){const n=meal.totals[key];if(n){totals[key].value+=n.value;totals[key].known+=n.known;totals[key].total+=n.total;}else totals[key].total++;}return {meals:entries.length,totals};}
+ export function milestones(profile,inventory){const history=profile.history||[],plan=profile.plan||[],dates=new Set(history.map(x=>x.date)),variety=new Set(history.map(x=>x.recipeId||x.title.toLowerCase()));return [['▤','Shelf starter','Confirm a home checkout',profile.lastReceipt?1:0,1],['♧','Kitchen keeper','Record 10 inventory items',inventory.length,10],['▦','Week architect','Plan meals on 7 different dates',new Set(plan.map(p=>p.date)).size,7],['✳','Menu explorer','Log 5 different dishes',variety.size,5],['◷','Food journal','Record meals on 7 different days',dates.size,7],['◇','Shared table','Add 2 household members',(profile.members||[]).length,2]].map(([icon,title,description,value,target])=>({icon,title,description,value,target,earned:value>=target}));}
+-export function validateInsights(profile){const settings={};if(profile.history){if(!Array.isArray(profile.history)||profile.history.length>10000)throw Error(t('Invalid food history.'));settings.history=profile.history.map(m=>{if(typeof m.id!=='string'||m.id.length>200||typeof m.title!=='string'||!m.title.trim()||m.title.length>200||!/^\d{4}-\d{2}-\d{2}$/.test(m.date)||!Number.isFinite(Date.parse(m.date))||!['Breakfast','Lunch','Dinner','Snack'].includes(m.slot)||!Number.isFinite(m.servings)||m.servings<0||m.servings>1000||typeof m.memberId!=='string'||m.memberId.length>200||typeof m.source!=='string'||m.source.length>200||typeof m.createdAt!=='string')throw Error(t('Invalid food log.'));if(m.completion!=null&&(!Number.isFinite(m.completion)||m.completion<0||m.completion>100))throw Error(t('Invalid completion.'));if(m.servedPortions!=null&&(!Number.isFinite(m.servedPortions)||m.servedPortions<=0||m.servedPortions>1000))throw Error(t('Invalid served portions.'));const totals={};for(const [key]of NUTRIENTS){const n=m.totals?.[key];if(!n)continue;if(!Number.isFinite(n.value)||n.value<0||!Number.isInteger(n.known)||!Number.isInteger(n.total)||n.known<0||n.total<0||n.known>n.total)throw Error(t('Invalid nutrient snapshot.'));totals[key]={value:n.value,known:n.known,total:n.total};}return {...(typeof m.batchId==='string'?{batchId:m.batchId.slice(0,100)}:{}),id:m.id,title:m.title.trim(),recipeId:typeof m.recipeId==='string'?m.recipeId.slice(0,200):'',date:m.date,slot:m.slot,servings:m.servings,memberId:m.memberId,source:m.source,completion:m.completion??null,...(typeof m.intakeKnown==='boolean'?{intakeKnown:m.intakeKnown}:{}),...((m.servedPortions??m.servings)>0?{servedPortions:m.servedPortions??m.servings}:{}),leftovers:['saved','discarded','shared'].includes(m.leftovers)?m.leftovers:'unspecified',createdAt:m.createdAt.slice(0,40),note:typeof m.note==='string'?m.note.slice(0,1000):'',unresolved:Number.isSafeInteger(m.unresolved)&&m.unresolved>=0?m.unresolved:0,totals};});if(new Set(settings.history.map(x=>x.id)).size!==settings.history.length)throw Error(t('Duplicate food log IDs.'));}
++export function validateInsights(profile){const settings={};if(profile.history){if(!Array.isArray(profile.history)||profile.history.length>10000)throw Error(t('Invalid food history.'));settings.history=profile.history.map(m=>{if(typeof m.id!=='string'||m.id.length>200||typeof m.title!=='string'||!m.title.trim()||m.title.length>200||!/^\d{4}-\d{2}-\d{2}$/.test(m.date)||!Number.isFinite(Date.parse(m.date))||!['Breakfast','Lunch','Dinner','Snack'].includes(m.slot)||!Number.isFinite(m.servings)||m.servings<0||m.servings>1000||typeof m.memberId!=='string'||m.memberId.length>200||typeof m.source!=='string'||m.source.length>200||typeof m.createdAt!=='string')throw Error(t('Invalid food log.'));if(m.completion!=null&&(!Number.isFinite(m.completion)||m.completion<0||m.completion>100))throw Error(t('Invalid completion.'));if(m.servedPortions!=null&&(!Number.isFinite(m.servedPortions)||m.servedPortions<=0||m.servedPortions>1000))throw Error(t('Invalid served portions.'));const totals={};for(const [key]of NUTRIENTS){const n=m.totals?.[key];if(!n)continue;if(!Number.isFinite(n.value)||n.value<0||!Number.isInteger(n.known)||!Number.isInteger(n.total)||n.known<0||n.total<0||n.known>n.total)throw Error(t('Invalid nutrient snapshot.'));totals[key]={value:n.value,known:n.known,total:n.total};}return {...(typeof m.batchId==='string'?{batchId:m.batchId.slice(0,100)}:{}),...(m.cookingWitness?{cookingWitness:historyCookingWitness(m)}:{}),id:m.id,title:m.title.trim(),recipeId:typeof m.recipeId==='string'?m.recipeId.slice(0,200):'',date:m.date,slot:m.slot,servings:m.servings,memberId:m.memberId,source:m.source,completion:m.completion??null,...(typeof m.intakeKnown==='boolean'?{intakeKnown:m.intakeKnown}:{}),...((m.servedPortions??m.servings)>0?{servedPortions:m.servedPortions??m.servings}:{}),leftovers:['saved','discarded','shared'].includes(m.leftovers)?m.leftovers:'unspecified',createdAt:m.createdAt.slice(0,40),note:typeof m.note==='string'?m.note.slice(0,1000):'',unresolved:Number.isSafeInteger(m.unresolved)&&m.unresolved>=0?m.unresolved:0,totals};});if(new Set(settings.history.map(x=>x.id)).size!==settings.history.length)throw Error(t('Duplicate food log IDs.'));}
+ if(profile.goals){if(!Array.isArray(profile.goals)||profile.goals.length>200)throw Error(t('Invalid goals.'));settings.goals=profile.goals.map(g=>{if(typeof g.memberId!=='string'||g.memberId.length>200||!NUTRIENTS.some(([key])=>key===g.key)||!['target','ceiling'].includes(g.mode)||!Number.isFinite(g.value)||g.value<=0)throw Error(t('Invalid nutrient goal.'));return {memberId:g.memberId,key:g.key,mode:g.mode,value:g.value};});}if(profile.shopping){if(!Array.isArray(profile.shopping)||profile.shopping.length>1000)throw Error(t('Invalid shopping items.'));settings.shopping=profile.shopping.map(i=>{if(typeof i.id!=='string'||typeof i.name!=='string'||!i.name.trim()||i.name.length>200||typeof i.amount!=='string'||i.amount.length>100||typeof i.checked!=='boolean')throw Error(t('Invalid shopping item.'));return {id:i.id,name:i.name.trim(),amount:i.amount,checked:i.checked};});}if(profile.shoppingChecked){if(!Array.isArray(profile.shoppingChecked)||profile.shoppingChecked.length>1000||profile.shoppingChecked.some(x=>typeof x!=='string'||x.length>300))throw Error(t('Invalid shopping checks.'));settings.shoppingChecked=profile.shoppingChecked;}return settings;}
+--- a/candidate-source-root/candidate-source/app/public/sync-model.js
++++ b/candidate-source-root/candidate-source/app/public/sync-model.js
+@@ -1,6 +1,7 @@
++import {sharedCookingBatch} from './cooking-witness.js';
+ const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+ export function recoverCheckpoint(checkpoint,current){if(!checkpoint||checkpoint.version!==1||!checkpoint.state)return {state:current,conflicts:[],recovered:false};const pending=!same(checkpoint.state,checkpoint.base);if(!pending||same(current,checkpoint.state))return {state:current,conflicts:[],recovered:false};const result=mergeStates(checkpoint.base||undefined,current,checkpoint.state);return {...result,recovered:!result.conflicts.length&&!same(current,result.state)};}
+ const empty={inventory:[],products:{},recipes:[],profile:{country:'',units:'metric',servings:2},selections:[]};
+ export function mergeStates(base=empty,local,remote){const conflicts=[];function merge(b,l,r,path){if(same(l,r))return structuredClone(l);if(same(l,b))return structuredClone(r);if(same(r,b))return structuredClone(l);if(Array.isArray(l)&&Array.isArray(r)){const all=[...(b||[]),...l,...r],key=all.every(x=>typeof x==='string')?x=>x:all.every(x=>x&&typeof x==='object'&&typeof x.id==='string')?x=>x.id:null;if(key){const bm=new Map((b||[]).map(x=>[key(x),x])),lm=new Map(l.map(x=>[key(x),x])),rm=new Map(r.map(x=>[key(x),x]));return [...new Set([...bm.keys(),...lm.keys(),...rm.keys()])].flatMap(id=>{const v=merge(bm.get(id),lm.get(id),rm.get(id),path+'/'+id);return v===undefined?[]:[v];});}}if(l&&r&&typeof l==='object'&&typeof r==='object'&&!Array.isArray(l)&&!Array.isArray(r)){const out={};for(const k of new Set([...Object.keys(b||{}),...Object.keys(l),...Object.keys(r)])){if(['__proto__','constructor','prototype'].includes(k))continue;const v=merge(b?.[k],l[k],r[k],path+'/'+k);if(v!==undefined)out[k]=v;}return out;}conflicts.push(path);return structuredClone(l);}const state=merge(base,local,remote,'');const oldIds=new Set((base?.profile?.batches||[]).map(b=>b.id));const left=(local.profile?.batches||[]).filter(b=>!oldIds.has(b.id));const right=(remote.profile?.batches||[]).filter(b=>!oldIds.has(b.id));for(const l of left)for(const r of right)if(l.id!==r.id&&l.allocations.some(a=>r.allocations.some(b=>b.lotId===a.lotId)))conflicts.push('/inventory/concurrent-cooking');for(const b of base?.profile?.batches||[]){const l=local.profile?.batches?.find(x=>x.id===b.id),r=remote.profile?.batches?.find(x=>x.id===b.id);if(l&&r&&!same(l.events,b.events)&&!same(r.events,b.events)&&!same(l.events,r.events))conflicts.push('/batches/'+b.id+'/concurrent-serving');}return {state,conflicts:[...new Set(conflicts)]};}
+-export function kitchenProjection(state){const profile=state.profile||{};return {inventory:state.inventory,products:Object.fromEntries(Object.entries(state.products||{}).map(([id,p])=>[id,Object.fromEntries(Object.entries(p).filter(([key])=>['name','brand','quantity','product_quantity','product_quantity_unit','ingredient','ingredients','allergens','nutriments','offmenu_stale','offmenu_checked_at','nutritionProvenance'].includes(key)&&(!(p.nutritionProvenance?.visibility==='private')||!['nutriments','nutritionProvenance'].includes(key))))])),recipes:state.recipes,selections:[],profile:{country:profile.country||'',units:profile.units||'metric',servings:profile.servings||2,locations:profile.locations||[],plan:(profile.plan||[]).map(p=>({...p,memberIds:[],adjustments:[]})),shopping:profile.shopping||[],shoppingChecked:profile.shoppingChecked||[],batches:(profile.batches||[]).map(b=>({...b,events:b.events.map(e=>({id:e.id,type:'inventory-removal',quantity:e.quantity??e.draw??e.portions-e.saved,draw:e.quantity??e.draw??e.portions-e.saved,date:e.date,reason:e.type==='inventory-removal'?e.reason||'inventory-removal':'serving'})).filter(e=>e.quantity>0)}))}};}
++export function kitchenProjection(state){const profile=state.profile||{};return {inventory:state.inventory,products:Object.fromEntries(Object.entries(state.products||{}).map(([id,p])=>[id,Object.fromEntries(Object.entries(p).filter(([key])=>['name','brand','quantity','product_quantity','product_quantity_unit','ingredient','ingredients','allergens','nutriments','offmenu_stale','offmenu_checked_at','nutritionProvenance'].includes(key)&&(!(p.nutritionProvenance?.visibility==='private')||!['nutriments','nutritionProvenance'].includes(key))))])),recipes:state.recipes,selections:[],profile:{country:profile.country||'',units:profile.units||'metric',servings:profile.servings||2,locations:profile.locations||[],plan:(profile.plan||[]).map(p=>({...p,memberIds:[],adjustments:[]})),shopping:profile.shopping||[],shoppingChecked:profile.shoppingChecked||[],batches:(profile.batches||[]).map(b=>({...sharedCookingBatch(b),events:b.events.map(e=>({id:e.id,type:'inventory-removal',quantity:e.quantity??e.draw??e.portions-e.saved,draw:e.quantity??e.draw??e.portions-e.saved,date:e.date,reason:e.type==='inventory-removal'?e.reason||'inventory-removal':'serving'})).filter(e=>e.quantity>0)}))}};}
+ export function applyKitchen(account,kitchen){return {...account,inventory:kitchen.inventory,products:kitchen.products,recipes:kitchen.recipes,profile:{...account.profile,locations:kitchen.profile.locations,plan:kitchen.profile.plan,shopping:kitchen.profile.shopping,shoppingChecked:kitchen.profile.shoppingChecked,batches:kitchen.profile.batches}};}
+--- a/candidate-source-root/candidate-source-manifest.json
++++ b/candidate-source-root/candidate-source-manifest.json
+@@ -224,19 +224,21 @@
+       "path": "public/cooking-model.js",
+       "originalPath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/cooking-model.js",
+       "beforeSha256": "96d160f5fd8c75f6e84148d4001ba7ec5ae991f487bf9c4b0777828cb2baed42",
+-      "bytes": 8394,
+-      "sourceAvailable": true,
+-      "afterSha256": "04363e49fffcacdb7f395938b2818e647cb826737f8988adbde53f81f0af0f16",
+-      "integrationReason": "Approved exact function-local four-fix integration; preserve production194 status strings and expiry/date correction"
++      "bytes": 8911,
++      "sourceAvailable": true,
++      "afterSha256": "a1d77f7dd8f142c36a4caa184f4ca2c52ea8107c3e8086861d28d056288d2931",
++      "integrationReason": "Approved exact function-local four-fix integration; preserve production194 status strings and expiry/date correction",
++      "v198Correction": "NS196-G2"
+     },
+     {
+       "group": "app",
+       "path": "public/sync-model.js",
+       "originalPath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sync-model.js",
+       "beforeSha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+-      "bytes": 3990,
+-      "sourceAvailable": true,
+-      "afterSha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3"
++      "bytes": 4067,
++      "sourceAvailable": true,
++      "afterSha256": "c4970231dbbb2974c600ac129e6662c1a6378757312dae43caf54822aa3be535",
++      "v198Correction": "NS196-G2"
+     },
+     {
+       "group": "app",
+@@ -335,10 +337,11 @@
+       "path": "public/insights-model.js",
+       "originalPath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/insights-model.js",
+       "beforeSha256": "f8008145063c8bbcf2c9322ece541ee10dc5a9f63678af78fb6f6167bf51f678",
+-      "bytes": 6858,
+-      "sourceAvailable": true,
+-      "afterSha256": "e872f71ea7c7938defcc8f416f04b7c6f990750c819823be1e1b07b76f01a895",
+-      "integrationReason": "Approved exact function-local four-fix integration; preserve production194 status strings and expiry/date correction"
++      "bytes": 6985,
++      "sourceAvailable": true,
++      "afterSha256": "c7491462ba3b2bc38c66de44c9fc3894d77aa963f757bd0ba973643995fa4223",
++      "integrationReason": "Approved exact function-local four-fix integration; preserve production194 status strings and expiry/date correction",
++      "v198Correction": "NS196-G2"
+     },
+     {
+       "group": "app",
+@@ -509,9 +512,10 @@
+       "path": "cloud/state.mjs",
+       "originalPath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/cloud/state.mjs",
+       "beforeSha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce",
+-      "bytes": 6798,
+-      "sourceAvailable": true,
+-      "afterSha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce"
++      "bytes": 6903,
++      "sourceAvailable": true,
++      "afterSha256": "8919a11490495d6338c7789527e879ea5258a91e10cc49fe8118daa5cad58711",
++      "v198Correction": "NS196-G2"
+     },
+     {
+       "group": "app",
+@@ -1348,6 +1352,22 @@
+       "sourceAvailable": true,
+       "afterSha256": "852801c373a679623cf8f40569cb3d84ddda2d34e221c031b913e5ed671f3a9a",
+       "bytes": 997
++    },
++    {
++      "group": "app",
++      "path": "public/cooking-witness.js",
++      "sourceAvailable": true,
++      "bytes": 8818,
++      "afterSha256": "a6b6406475482faeea52e78db007b1ff9870e05646eca8aecf9f72974637f8ea",
++      "v198Correction": "NS196-G2"
++    },
++    {
++      "group": "app",
++      "path": "cloud/cooking-witness-parity.mjs",
++      "sourceAvailable": true,
++      "bytes": 486,
++      "afterSha256": "f6cce26e7c415cb9a2bfb765caf1b4f2306eec8b7198a6c76cd997e3299a8a12",
++      "v198Correction": "NS196-G2"
+     }
+   ],
+   "literalImports": [
+--- /dev/null
++++ b/candidate-source-root/candidate-source/app/public/cooking-witness.js
+@@ -0,0 +1,87 @@
++// Detached cooking-time provenance, not an upstream identity or source-use grant.
++export const COOKING_WITNESS_SCHEMA='offmenu-cooking-witness/1';
++const recipeKeys=['id','title','servings','servingsUnknown','needsReview','source','license','attribution','version','revision','authoredRevision','sourceRecipeId','sourceVariantId','variantId','releaseId','manifestSha256','sourceDocumentSha256'];
++const ingredientKeys=['ingredient','ingredientId','quantity','unit','optional','raw','originalText','sourceQuantity','sourceUnit','scaling','sourceScaling','foodMatchStatus','sourceIngredientId'];
++const provenanceKeys=['sourceId','recordId','releaseId','version','revision','manifestSha256','sourceDocumentSha256','originalSha256','inputAssetSha256','recordSha256','url','historyUrl','licenseUrl','license','attribution','sourceDate','fetchedAt','visibility','status','citationIds'];
++const versionKeys=['version','revision','authoredRevision'];
++const hasDeclaredVersion=r=>versionKeys.some(k=>r[k]!==undefined&&r[k]!==null)||['version','revision'].some(k=>r.provenance?.[k]!==undefined&&r.provenance[k]!==null)||['version','revision'].some(k=>r.provenance?.personalReview?.[k]!==undefined&&r.provenance.personalReview[k]!==null);
++const nutrientKeys=['energy-kcal_100g','proteins_100g','carbohydrates_100g','fat_100g','sugars_100g','salt_100g','sodium_100g','saturated-fat_100g','fiber_100g','calcium_100g','iron_100g','potassium_100g','vitamin-c_100g'];
++const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
++const text=(v,max=300)=>typeof v==='string'&&v.length>0&&v.length<=max;
++function requireThat(v){if(!v)throw Error('Cooking witness does not match the recorded batch and recipe.');}
++function clone(value){
++ function check(v,depth=0){requireThat(depth<=16);if(typeof v==='number')requireThat(Number.isFinite(v));if(typeof v==='string')requireThat(v.length<=16000);if(v&&typeof v==='object')for(const[k,x]of Object.entries(v)){requireThat(!['__proto__','constructor','prototype','credentials','password','token','apiKey','secret'].includes(k));check(x,depth+1);}}
++ check(value);const encoded=JSON.stringify(value);requireThat(typeof encoded==='string'&&new TextEncoder().encode(encoded).length<=262144);return JSON.parse(encoded);
++}
++const pick=(v,keys)=>Object.fromEntries(keys.filter(k=>Object.hasOwn(v||{},k)&&v[k]!==undefined).map(k=>[k,clone(v[k])]));
++function provenance(p){
++ const out=pick(p,provenanceKeys);
++ if(object(p?.personalReview))out.personalReview=pick(p.personalReview,['reviewedAt','sourceRecipeId','revision','version']);
++ if(Array.isArray(p?.citations))out.citations=p.citations.map(c=>pick(c,['id',...provenanceKeys]));
++ return out;
++}
++function freeze(v){if(v&&typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v);}return v;}
++export function captureNutrientInput(allocation,product){
++ const p=product?.nutritionProvenance,profile=p?.nutrientProfile;
++ const selected=allocation.original?.nutritionSelection;
++ const sourceContext=p?.relationship==='user-selected-for-this-lot'&&selected?.sourceProfile?.id===profile?.id?selected.sourceProfile.nutrients:null;
++ return clone({lotId:allocation.lotId,quantity:allocation.quantity,unit:allocation.unit,
++  profileState:product?'supplied-input':'unknown',profileReference:profile?pick(profile,['id','basis','status']):null,
++  provenance:provenance(p),declaredBasisLabel:product?.nutrition_data_per??null,
++  sourceNutrientContext:sourceContext,
++  nutriments:pick(product?.nutriments,nutrientKeys),relationship:p?.relationship??null,
++  canonicalIdentityAsserted:false});
++}
++export function createCookingWitness(recipe,batchId,allocations,nutrientInputs){
++ const snapshot={...pick(recipe,recipeKeys),provenance:provenance(recipe.provenance),
++  ingredients:recipe.ingredients.map(i=>pick(i,ingredientKeys)),
++  ...(Array.isArray(recipe.instructions)?{instructions:recipe.instructions.map(x=>clone(x))}:{})};
++ const hasVersion=hasDeclaredVersion(snapshot);
++ const inputs=allocations.map(a=>({lotId:a.lotId,barcode:a.barcode,ingredient:a.ingredient,quantity:a.quantity,unit:a.unit,
++  sourceReferences:pick(a.original,['publicProductReference','sourceObservationReference','foundationSourceReference','sourceIdentityReference'])}));
++ const states=[recipe.provenance?.visibility,...nutrientInputs.map(n=>n.provenance.visibility),...inputs.flatMap(a=>Object.values(a.sourceReferences).map(r=>r?.provenance?.visibility??r?.visibility))];
++ const visibility=states.includes('private')?'private':states.every(s=>s==='public')?'public':'unknown';
++ return copyCookingWitness({schema:COOKING_WITNESS_SCHEMA,batchId,recipeId:recipe.id,recipe:snapshot,
++  sourceVersionState:hasVersion?'supplied':'unknown',allocations:inputs,nutrientInputs,visibility,canonicalIdentityAsserted:false},{batchId,recipeId:recipe.id});
++}
++export function copyCookingWitness(value,{batchId,recipeId}={}){
++ requireThat(value?.schema===COOKING_WITNESS_SCHEMA&&text(value.batchId,100)&&text(value.recipeId,200)&&value.recipe?.id===value.recipeId);
++ requireThat(batchId===undefined||value.batchId===batchId);requireThat(recipeId===undefined||value.recipeId===recipeId);
++ requireThat(['supplied','unknown'].includes(value.sourceVersionState)&&['public','private','unknown'].includes(value.visibility)&&value.canonicalIdentityAsserted===false);
++ requireThat(Array.isArray(value.recipe.ingredients)&&value.recipe.ingredients.length<=1000&&Array.isArray(value.allocations)&&value.allocations.length<=1000&&Array.isArray(value.nutrientInputs)&&value.nutrientInputs.length===value.allocations.length);
++ const recipe={...pick(value.recipe,recipeKeys),provenance:provenance(value.recipe.provenance),ingredients:value.recipe.ingredients.map(i=>pick(i,ingredientKeys)),
++  ...(Array.isArray(value.recipe.instructions)?{instructions:value.recipe.instructions.map(x=>{requireThat(typeof x==='string');return clone(x);})}:{})};
++ requireThat(value.sourceVersionState===(hasDeclaredVersion(recipe)?'supplied':'unknown'));
++ const allocations=value.allocations.map((a,index)=>{
++  const n=value.nutrientInputs[index];requireThat(text(a.lotId,300)&&text(a.barcode,512)&&text(a.ingredient,300)&&Number.isFinite(a.quantity)&&a.quantity>0&&['g','ml','count'].includes(a.unit));
++  requireThat(n.lotId===a.lotId&&n.quantity===a.quantity&&n.unit===a.unit&&['supplied-input','unknown'].includes(n.profileState)&&n.canonicalIdentityAsserted===false);
++  return {...pick(a,['lotId','barcode','ingredient','quantity','unit']),sourceReferences:pick(a.sourceReferences,['publicProductReference','sourceObservationReference','foundationSourceReference','sourceIdentityReference'])};
++ });
++ const nutrientInputs=value.nutrientInputs.map(n=>({...pick(n,['lotId','quantity','unit','profileState','declaredBasisLabel','relationship']),
++  profileReference:n.profileReference===null?null:pick(n.profileReference,['id','basis','status']),sourceNutrientContext:n.sourceNutrientContext===null?null:clone(n.sourceNutrientContext),provenance:provenance(n.provenance),nutriments:pick(n.nutriments,nutrientKeys),canonicalIdentityAsserted:false}));
++ // Public visibility must be explicit on every retained source; no default grant.
++ const states=[recipe.provenance.visibility,...nutrientInputs.map(n=>n.provenance.visibility),...allocations.flatMap(a=>Object.values(a.sourceReferences).map(r=>r?.provenance?.visibility??r?.visibility))];
++ requireThat(value.visibility!=='public'||states.every(s=>s==='public'));
++ return freeze(clone({schema:COOKING_WITNESS_SCHEMA,batchId:value.batchId,recipeId:value.recipeId,recipe,
++  sourceVersionState:value.sourceVersionState,allocations,nutrientInputs,visibility:value.visibility,canonicalIdentityAsserted:false}));
++}
++export function sharedCookingBatch(batch){
++ const {cookingWitness,...rest}=batch;
++ return cookingWitness?.visibility==='public'?{...rest,cookingWitness:copyCookingWitness(cookingWitness,{batchId:batch.id,recipeId:batch.recipeId})}:rest;
++}
++export function historyCookingWitness(row){
++ requireThat(text(row?.batchId,100)&&text(row.recipeId,200));
++ return copyCookingWitness(row.cookingWitness,{batchId:row.batchId,recipeId:row.recipeId});
++}
++// Server integration seam: call after existing state validation, using its input
++// and output. Only this additive field is copied; normalized values stay intact.
++export function preserveCookingWitnesses(input,normalized){
++ const out={...normalized};
++ for(const key of ['batches','history'])if(Array.isArray(normalized[key])){
++  const supplied=new Map((input?.[key]||[]).map(row=>[row.id,row]));
++  out[key]=normalized[key].map(row=>{const original=supplied.get(row.id);if(!original?.cookingWitness)return row;
++   const batchId=key==='batches'?row.id:row.batchId;requireThat(text(batchId,100));
++   return {...row,cookingWitness:copyCookingWitness(original.cookingWitness,{batchId,recipeId:row.recipeId})};});
++ }
++ return out;
++}
+--- /dev/null
++++ b/candidate-source-root/candidate-source/app/cloud/cooking-witness-parity.mjs
+@@ -0,0 +1,7 @@
++import {preserveCookingWitnesses} from '../public/cooking-witness.js';
++export {copyCookingWitness,preserveCookingWitnesses} from '../public/cooking-witness.js';
++// Invoke after the existing authenticated state validator, without replacing its
++// authorization, revision checks, quantities, history or unrelated normalization.
++export function finishCookingWitnessState(input,normalized){
++ return {...normalized,profile:preserveCookingWitnesses(input?.profile,normalized.profile||{})};
++}
+--- /dev/null
++++ b/candidate-source-root/candidate-source/app/tests-web/cooking-witness-ns196-g2.test.mjs
+@@ -0,0 +1,85 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {readFileSync} from 'node:fs';
++import vm from 'node:vm';
++import {cookMeal,serveBatch,validateBatches} from '../public/cooking-model.js';
++import {createCookingWitness,captureNutrientInput,copyCookingWitness,preserveCookingWitnesses} from '../public/cooking-witness.js';
++import {createLotNutritionSelection} from '../public/lot-nutrition.js';
++import {asOffNutriments} from '../public/unified-data.js';
++import {nutritionForLot} from '../public/lot-nutrition.js';
++import {validateInsights} from '../public/insights-model.js';
++import {NUTRIENTS} from '../public/menu-model.js';
++import {validateState} from '../cloud/state.mjs';
++import {createPantryBackup,restorePantryBackup} from '../public/pantry-backup.js';
++import {kitchenProjection} from '../public/sync-model.js';
++import {finishCookingWitnessState} from '../cloud/cooking-witness-parity.mjs';
++
++const date='2026-10-29';
++function fixture({visibility='public',version=true}={}){
++ const recipe={id:'rice',title:'Rice v1',servings:2,source:'https://example.invalid/recipe/v1',license:'CC0',attribution:'Synthetic source',...(version?{version:'v1'}:{}),provenance:{sourceId:'synthetic',recordId:'rice-variant',releaseId:'edition-v1',manifestSha256:'a'.repeat(64),visibility,privateNote:'UNRELATED_PRIVATE_NOTE'},ingredients:[{ingredient:'rice',quantity:100,unit:'g',raw:'100 g rice'}],instructions:['Cook v1.'],privateNotes:'UNRELATED_PRIVATE_NOTE'};
++ const profile={schemaVersion:'1.0',kind:'nutrientProfile',id:'usda-files:nutrientProfile:fixture-v1',countries:[],provenance:{sourceId:'usda-files',recordId:'fixture-v1',releaseId:'source-v1',license:'CC0',attribution:'Synthetic source',visibility},data:{status:'candidate',basis:{amount:100,unit:'g',state:'as-described'},nutrients:{fat:{value:7,unit:'g'},protein:{value:0,unit:'g'},sugars:{value:null,unit:'g',qualifier:'unknown'}}}};
++ const lot={id:'raw',barcode:'1111',name:'Rice',ingredient:'rice',quantity:200,unit:'g'};lot.nutritionSelection=createLotNutritionSelection(lot,profile,asOffNutriments(profile,'g'),{confirmed:true});
++ return {recipe,profile,lot,products:{},inventory:[lot]};
++}
++function cooked(f=fixture()){return {f,...cookMeal({recipe:f.recipe,inventory:f.inventory,products:f.products,servings:2,date,mutationId:'batch-a',planId:'plan-a'})};}
++function seedWitness(c){if(!c.batch.cookingWitness)c.batch.cookingWitness=createCookingWitness(c.f.recipe,c.batch.id,c.batch.allocations,c.batch.allocations.map(a=>captureNutrientInput(a,nutritionForLot(a.original,c.f.products))));return c;}
++function served(c){return serveBatch({batch:c.batch,inventory:c.inventory,portions:1,completion:100,date,eventId:'event-a'});}
++function state(c,s){return {inventory:s.inventory,products:c.f.products,recipes:[c.f.recipe],selections:[],profile:{country:'AU',units:'metric',servings:2,batches:[s.batch],history:[s.log]}};}
++
++test('new cook captures exact recipe version/source and actual ingredient inputs',()=>{
++ const c=cooked(),w=c.batch.cookingWitness;assert.ok(w,'cooking-time witness required');
++ assert.equal(w.recipe.version,'v1');assert.equal(w.recipe.provenance.releaseId,'edition-v1');assert.equal(w.recipe.provenance.manifestSha256,'a'.repeat(64));assert.equal(w.recipe.ingredients[0].quantity,100);assert.equal(w.allocations[0].quantity,100);
++});
++test('recipe v2 and changed current profile cannot mutate old cooking inputs',()=>{
++ const c=seedWitness(cooked());c.f.recipe.version='v2';c.f.recipe.ingredients[0].quantity=900;c.f.recipe.instructions[0]='Cook v2.';c.f.lot.nutritionSelection.sourceProfile.nutrients.protein.value=11;
++ assert.equal(c.batch.cookingWitness.recipe.version,'v1');assert.equal(c.batch.cookingWitness.recipe.ingredients[0].quantity,100);assert.equal(c.batch.cookingWitness.recipe.instructions[0],'Cook v1.');assert.equal(c.batch.allocations[0].original.nutritionSelection.sourceProfile.nutrients.protein.value,0);
++ assert.equal(c.batch.cookingWitness.nutrientInputs[0].sourceNutrientContext.protein.value,0);assert.equal(c.batch.cookingWitness.nutrientInputs[0].sourceNutrientContext.sugars.value,null);
++});
++test('serving retains the cooking witness without consulting current recipe',()=>{
++ const c=seedWitness(cooked());c.f.recipe.version='v2';const s=served(c);assert.deepEqual(s.log.cookingWitness,c.batch.cookingWitness);assert.equal(s.log.totals.fat_100g.value,3.5);
++});
++test('history normalization preserves the batch-bound witness',()=>{
++ const c=seedWitness(cooked()),s=served(c);s.log.cookingWitness=c.batch.cookingWitness;assert.deepEqual(validateInsights({history:[s.log]}).history[0].cookingWitness,c.batch.cookingWitness);
++});
++test('local JSON and current cloud validator retain v1 while recipe is now v2',()=>{
++ const c=seedWitness(cooked()),s=served(c);s.log.cookingWitness=c.batch.cookingWitness;c.f.recipe.version='v2';const input=JSON.parse(JSON.stringify(state(c,s))),out=validateState(input);
++ assert.equal(out.recipes[0].version,'v2');assert.equal(out.profile.batches[0].cookingWitness.recipe.version,'v1');assert.equal(out.profile.history[0].cookingWitness.recipe.version,'v1');assert.equal(out.profile.history[0].totals.fat_100g.value,3.5);
++});
++test('ordinary pantry backup/restore retains captured provenance and totals',()=>{
++ const c=seedWitness(cooked()),s=served(c);s.log.cookingWitness=c.batch.cookingWitness;c.f.recipe.version='v2';const out=restorePantryBackup(JSON.parse(JSON.stringify(createPantryBackup(state(c,s))))).state;
++ assert.equal(out.profile.history[0].cookingWitness.recipe.version,'v1');assert.equal(out.profile.history[0].totals.fat_100g.value,3.5);
++});
++test('absent upstream version stays unknown and legacy meals are never backfilled',()=>{
++ const c=cooked(fixture({version:false}));assert.equal(c.batch.cookingWitness?.sourceVersionState,'unknown');assert.equal(c.batch.cookingWitness.recipe.version,undefined);
++ const legacy=structuredClone(c.batch);delete legacy.cookingWitness;assert.equal(validateBatches([legacy])[0].cookingWitness,undefined);
++});
++test('retry after recipe edit returns the original batch without recomputation',()=>{
++ const c=seedWitness(cooked());c.f.recipe.version='v2';const retry=cookMeal({recipe:c.f.recipe,inventory:c.inventory,products:c.f.products,servings:2,date,mutationId:'batch-a',batches:[c.batch]});assert.equal(retry.duplicate,true);assert.equal(retry.batch,c.batch);assert.equal(retry.batch.cookingWitness.recipe.version,'v1');
++});
++test('private or unknown-public witness content is not added to shared projections',()=>{
++ for(const visibility of ['private','unknown']){const c=seedWitness(cooked(fixture({visibility}))),s=served(c);const shared=kitchenProjection(state(c,s));assert.equal(shared.profile.batches[0].cookingWitness,undefined);}
++ const c=seedWitness(cooked()),s=served(c),shared=kitchenProjection(state(c,s));assert.equal(shared.profile.batches[0].cookingWitness.recipe.version,'v1');assert.ok(!JSON.stringify(c.batch.cookingWitness).includes('UNRELATED_PRIVATE_NOTE'));
++});
++test('batch and history validators reject a witness rebound to a different meal',()=>{
++ const c=seedWitness(cooked()),s=served(c),bad=structuredClone(c.batch.cookingWitness);bad.batchId='other-batch';
++ assert.throws(()=>validateBatches([{...c.batch,cookingWitness:bad}]),/witness/i);assert.throws(()=>validateInsights({history:[{...s.log,cookingWitness:bad}]}),/witness/i);
++});
++test('exact retained server-history helper preserves the same witness and zero/unknown behavior',()=>{
++ const c=seedWitness(cooked()),s=served(c);s.log.cookingWitness=c.batch.cookingWitness;s.log.servings=0;s.log.completion=null;s.log.intakeKnown=false;delete s.log.servedPortions;
++ const helper=readFileSync(new URL('../evidence/server-history-helper.js',import.meta.url),'utf8');
++ const result=vm.runInNewContext(helper+';lg(profile)',{profile:{history:[s.log]},T:NUTRIENTS,__offmenuCookingWitness198:{preserveCookingWitnesses}});
++ const out=JSON.parse(JSON.stringify(result));assert.deepEqual(out.history[0].cookingWitness,c.batch.cookingWitness);assert.equal(out.history[0].servedPortions,undefined);assert.equal(out.history[0].intakeKnown,false);
++});
++test('final server-state seam copies only validated witness fields without recomputing values',()=>{
++ const c=seedWitness(cooked()),s=served(c);s.log.cookingWitness=c.batch.cookingWitness;const input=state(c,s),normalized=validateState(input);delete normalized.profile.history[0].cookingWitness;
++ const out=finishCookingWitnessState(input,normalized);assert.deepEqual(out.profile.history[0].cookingWitness,c.batch.cookingWitness);assert.deepEqual(out.profile.history[0].totals,normalized.profile.history[0].totals);assert.equal(out.inventory,normalized.inventory);
++ const bad=structuredClone(input);bad.profile.history[0].cookingWitness.batchId='other';assert.throws(()=>finishCookingWitnessState(bad,normalized),/witness/i);
++});
++
++test('retained source references do not acquire a public visibility grant',()=>{
++ const f=fixture(),c=seedWitness(cooked(f));const a=structuredClone(c.batch.allocations[0]);
++ a.barcode='x'.repeat(512);a.original.sourceObservationReference={schema:'offmenu-identifier-observation/1',sourceRecordId:'retained-source',privateNote:'SOURCE_REFERENCE_PRIVATE_NOTE'};
++ const w=createCookingWitness(f.recipe,c.batch.id,[a],[captureNutrientInput(a,nutritionForLot(a.original,f.products))]);
++ assert.equal(w.allocations[0].barcode.length,512);assert.equal(w.allocations[0].sourceReferences.sourceObservationReference.sourceRecordId,'retained-source');assert.equal(w.visibility,'unknown');
++ const shared=kitchenProjection({...state(c,served(c)),profile:{batches:[{...c.batch,cookingWitness:w}]}});assert.equal(shared.profile.batches[0].cookingWitness,undefined);assert.ok(!JSON.stringify(shared.profile.batches).includes('SOURCE_REFERENCE_PRIVATE_NOTE'));
++});
+--- /dev/null
++++ b/candidate-source-root/candidate-source/app/evidence/server-history-helper.js
+@@ -0,0 +1 @@
++function lg(A){let I={};if(A.history){if(!Array.isArray(A.history)||A.history.length>1e4)throw Error("Invalid food history.");if(I.history=A.history.map(g=>{if(typeof g.id!="string"||g.id.length>200||typeof g.title!="string"||!g.title.trim()||g.title.length>200||!/^\d{4}-\d{2}-\d{2}$/.test(g.date)||!Number.isFinite(Date.parse(g.date))||!["Breakfast","Lunch","Dinner","Snack"].includes(g.slot)||!Number.isFinite(g.servings)||g.servings<0||g.servings>1e3||typeof g.memberId!="string"||g.memberId.length>200||typeof g.source!="string"||g.source.length>200||typeof g.createdAt!="string")throw Error("Invalid food log.");if(g.completion!=null&&(!Number.isFinite(g.completion)||g.completion<0||g.completion>100))throw Error("Invalid completion.");if(g.servedPortions!=null&&(!Number.isFinite(g.servedPortions)||g.servedPortions<=0||g.servedPortions>1e3))throw Error("Invalid served portions.");let B={};for(let[Q]of T){let E=g.totals?.[Q];if(E){if(!Number.isFinite(E.value)||E.value<0||!Number.isInteger(E.known)||!Number.isInteger(E.total)||E.known<0||E.total<0||E.known>E.total)throw Error("Invalid nutrient snapshot.");B[Q]={value:E.value,known:E.known,total:E.total}}}return{...typeof g.batchId=="string"?{batchId:g.batchId.slice(0,100)}:{},id:g.id,title:g.title.trim(),recipeId:typeof g.recipeId=="string"?g.recipeId.slice(0,200):"",date:g.date,slot:g.slot,servings:g.servings,memberId:g.memberId,source:g.source,completion:g.completion??null,...typeof g.intakeKnown=="boolean"?{intakeKnown:g.intakeKnown}:{},...((g.servedPortions??g.servings)>0?{servedPortions:g.servedPortions??g.servings}:{}),leftovers:["saved","discarded","shared"].includes(g.leftovers)?g.leftovers:"unspecified",createdAt:g.createdAt.slice(0,40),note:typeof g.note=="string"?g.note.slice(0,1e3):"",unresolved:Number.isSafeInteger(g.unresolved)&&g.unresolved>=0?g.unresolved:0,totals:B}}),new Set(I.history.map(g=>g.id)).size!==I.history.length)throw Error("Duplicate food log IDs.")}if(A.goals){if(!Array.isArray(A.goals)||A.goals.length>200)throw Error("Invalid goals.");I.goals=A.goals.map(g=>{if(typeof g.memberId!="string"||g.memberId.length>200||!T.some(([B])=>B===g.key)||!["target","ceiling"].includes(g.mode)||!Number.isFinite(g.value)||g.value<=0)throw Error("Invalid nutrient goal.");return{memberId:g.memberId,key:g.key,mode:g.mode,value:g.value}})}if(A.shopping){if(!Array.isArray(A.shopping)||A.shopping.length>1e3)throw Error("Invalid shopping items.");I.shopping=A.shopping.map(g=>{if(typeof g.id!="string"||typeof g.name!="string"||!g.name.trim()||g.name.length>200||typeof g.amount!="string"||g.amount.length>100||typeof g.checked!="boolean")throw Error("Invalid shopping item.");return{id:g.id,name:g.name.trim(),amount:g.amount,checked:g.checked}})}if(A.shoppingChecked){if(!Array.isArray(A.shoppingChecked)||A.shoppingChecked.length>1e3||A.shoppingChecked.some(g=>typeof g!="string"||g.length>300))throw Error("Invalid shopping checks.");I.shoppingChecked=A.shoppingChecked}return __offmenuCookingWitness198.preserveCookingWitnesses(A,I)}
+--- /dev/null
++++ b/candidate-source-root/candidate-source/app/evidence/legacy-server-parity.mjs
+@@ -0,0 +1,12 @@
++import {readFileSync,writeFileSync} from 'node:fs';
++import vm from 'node:vm';import assert from 'node:assert/strict';
++import {preserveCookingWitnesses} from '../public/cooking-witness.js';
++const source=readFileSync(new URL('./server-history-helper.js',import.meta.url),'utf8');
++const f=vm.runInNewContext('('+source+')',{T:[],__offmenuCookingWitness198:{preserveCookingWitnesses}});
++const base={id:'entry-a',title:'Rice',recipeId:'rice',date:'2026-10-29',slot:'Dinner',servings:0,memberId:'',source:'Historical entry',createdAt:'2026-10-29T12:00:00Z',totals:{}};
++let checks=0;
++for(const fields of [{},{intakeKnown:false,completion:null},{intakeKnown:true,completion:0}]){const a=f({history:[{...base,...fields}]});assert.equal(a.history[0].servedPortions,undefined);assert.equal(JSON.stringify(f(a)),JSON.stringify(a));checks++;}
++for(const fields of [{servedPortions:2},{servings:2}]){const a=f({history:[{...base,...fields}]});assert.equal(a.history[0].servedPortions,2);assert.equal(JSON.stringify(f(a)),JSON.stringify(a));checks++;}
++for(const servedPortions of [0,-1]){assert.throws(()=>f({history:[{...base,servedPortions}]}),/Invalid served portions/);checks++;}
++const result={checks,pass:checks,fail:0,scope:'Existing seven legacy server-history case families reused from production195 history-server-parity.cjs; helper locator/namespace adapted, prior fix not reapplied.'};
++writeFileSync(new URL('../legacy-server-parity-summary.json',import.meta.url),JSON.stringify(result,null,2));console.log(JSON.stringify(result));

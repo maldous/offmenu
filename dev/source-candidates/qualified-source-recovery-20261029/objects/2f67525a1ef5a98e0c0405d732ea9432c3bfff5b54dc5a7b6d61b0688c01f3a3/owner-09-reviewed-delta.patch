@@ -1,0 +1,504 @@
+diff --git a/config/portfolio-worker09-bindings.json b/config/portfolio-worker09-bindings.json
+deleted file mode 100644
+index 340996e3..00000000
+--- a/config/portfolio-worker09-bindings.json
++++ /dev/null
+@@ -1,137 +0,0 @@
+-{
+-  "schemaVersion": "offmenu-worker09-metadata-bindings/1",
+-  "baseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+-  "scope": "Portfolio-specific retained metadata descriptors; new local source/release labels are binding identities, not shared source-registry or payload admission.",
+-  "countries": [
+-    "BH",
+-    "KI",
+-    "RE"
+-  ],
+-  "requiredDomains": [
+-    "ingredients",
+-    "recipes",
+-    "nutrition",
+-    "retailers/providers",
+-    "prices/baskets",
+-    "dietary references"
+-  ],
+-  "sourceOperationsAuthorized": false,
+-  "bindings": [
+-    {
+-      "id": "bh-bfm-catalogue",
+-      "country": "BH",
+-      "sourceId": "retained-bh-bfm-catalogue",
+-      "releaseId": "2026-10-14-catalogue-observation",
+-      "domain": "recipes",
+-      "state": "metadata",
+-      "blocker": "source-retention-duration-unknown",
+-      "nativeUnit": null,
+-      "nativeBasis": null,
+-      "retentionDays": null,
+-      "applicability": "metadata-reference-only-no-category-acceptance",
+-      "profile": "bfm-catalogue",
+-      "input": {
+-        "path": "Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-09/BH/catalogue-link-observations.json",
+-        "sha256": "60ce88751e11a9d199ea4066dfc9f8f2c2c6ee07392e9d134e1462dcdd08537b",
+-        "bytes": 4747
+-      },
+-      "acquisitionEvidence": {
+-        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-41/BH/6e463ae455d82ebc6596/receipt.json",
+-        "sha256": "96cb5384ba8921976ddb0a2807c30e4ff8056b096125d529cf7482550fa0341f",
+-        "bytes": 1309
+-      },
+-      "originalAcquiredAt": "2026-10-14T22:20:13.308001+00:00",
+-      "expectedRecords": 7,
+-      "sourceURL": "https://bfm.bh/recipes/",
+-      "publisherBodySha256": "7ae8fec6d1b74801a0b21b36a58b7ebdd714ae8d8a25fa3f4b71060bd5a3ac06",
+-      "useScope": "Existing private catalogue metadata only; no recipe/certificate body or public reuse grant.",
+-      "lineageEvidence": {
+-        "path": "Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-09/BH/link-lineage-validation-20261017.json",
+-        "sha256": "a3cb0c7a9ec1a441bf3f313338537299c1b373ca4da45d31d15667ca33cc64c3",
+-        "bytes": 2775
+-      }
+-    },
+-    {
+-      "id": "ki-nso-cpi-metadata",
+-      "country": "KI",
+-      "sourceId": "retained-ki-nso-cpi",
+-      "releaseId": "September2025-as-recorded",
+-      "domain": "prices/baskets",
+-      "state": "metadata",
+-      "blocker": "source-content-use-and-retention-unqualified",
+-      "nativeUnit": null,
+-      "nativeBasis": null,
+-      "retentionDays": null,
+-      "applicability": "metadata-reference-only-no-category-acceptance",
+-      "profile": "ki-cpi-receipt",
+-      "input": {
+-        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-54/KI/40837f0959a30fc92dc6e78f/receipt.json",
+-        "sha256": "cb034aae33aa38329e19f9728543aa78b6c537fcbeed7555591a1f14ab044f9c",
+-        "bytes": 1374
+-      },
+-      "acquisitionEvidence": {
+-        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-54/KI/40837f0959a30fc92dc6e78f/receipt.json",
+-        "sha256": "cb034aae33aa38329e19f9728543aa78b6c537fcbeed7555591a1f14ab044f9c",
+-        "bytes": 1374
+-      },
+-      "originalAcquiredAt": "2026-10-14T22:11:03.789255+00:00",
+-      "expectedRecords": 1,
+-      "sourceURL": "https://nso.gov.ki/download/30/consumer-price-index/2192/cpi-september-2025",
+-      "useScope": "Receipt metadata only; no CPI table/value/body processing or item-price inference."
+-    },
+-    {
+-      "id": "bh-bfm-recipe-body",
+-      "country": "BH",
+-      "sourceId": "retained-bh-bfm-cookbook",
+-      "releaseId": "2022-catalogue-lead-only",
+-      "domain": "recipes",
+-      "state": "held",
+-      "blocker": "recipe-body-scoped-not-held-and-use-grant-unknown",
+-      "nativeUnit": null,
+-      "nativeBasis": null,
+-      "retentionDays": null,
+-      "applicability": "metadata-reference-only-no-category-acceptance",
+-      "evidence": {
+-        "path": "Documents/Codex/2026-10-17/worker09-B01-W09-custody-resolution/BH-return-binding.json",
+-        "sha256": "9e48cc50084a5d86e67cc7f413cec97acf55e32dc93ade1cc121a782b3b1eb98",
+-        "bytes": 1906
+-      }
+-    },
+-    {
+-      "id": "ki-recipe-body",
+-      "country": "KI",
+-      "sourceId": "retained-ki-livelearn",
+-      "releaseId": "2026-portal-claim-only",
+-      "domain": "recipes",
+-      "state": "held",
+-      "blocker": "http403-no-retry-no-complete-body-or-use-grant",
+-      "nativeUnit": null,
+-      "nativeBasis": null,
+-      "retentionDays": null,
+-      "applicability": "metadata-reference-only-no-category-acceptance",
+-      "evidence": {
+-        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-54/KI/ac4dc814bf9864bacf0c7307/receipt.json",
+-        "sha256": "7865edc4fb8600d092f083b14fb297b89da978cf6b437052452598c85e9fa8a1",
+-        "bytes": 1107
+-      }
+-    },
+-    {
+-      "id": "re-insee-cpi-body",
+-      "country": "RE",
+-      "sourceId": "retained-re-insee",
+-      "releaseId": "issue299-title-assertion-only",
+-      "domain": "prices/baskets",
+-      "state": "held",
+-      "blocker": "zero-valid-original-bytes-altcha-no-retry",
+-      "nativeUnit": null,
+-      "nativeBasis": null,
+-      "retentionDays": null,
+-      "applicability": "metadata-reference-only-no-category-acceptance",
+-      "evidence": {
+-        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-42/RE/receipt.json",
+-        "sha256": "d70814e546a1e0c90814c801e701adce67f16155a44ee88920e4fbf64c5da7b8",
+-        "bytes": 3173
+-      }
+-    }
+-  ]
+-}
+diff --git a/docs/operations/worker09-staging-binding.md b/docs/operations/worker09-staging-binding.md
+index a05a5005..a1f47f6f 100644
+--- a/docs/operations/worker09-staging-binding.md
++++ b/docs/operations/worker09-staging-binding.md
+@@ -17,7 +17,7 @@ python3 -m offmenu.portfolio_worker09 \
+ 
+ The output directory must be exclusive and separate from every selected input's
+ directory. The root is a prefix for exact relative JSON pins in
+-`config/portfolio-worker09-bindings.json`; no inventory, glob, URL access,
++`offmenu/portfolio_worker09_sources.py`; no inventory, glob, URL access,
+ archive extraction or publisher-body path inside a receipt is followed. No
+ third-party packages, credentials, AI calls or network are required.
+ 
+@@ -109,6 +109,29 @@ immutable replay/no-op, URL/path restrictions and typed CLI failures:
+ python3 -m unittest discover -s tests -p test_portfolio_worker09.py -v
+ ```
+ 
++## PR43 catalogue and metadata-reader correction
++
++The fixed catalogue is now an inert Python declaration, included by existing
++`offmenu*` package discovery. `configuration()` returns a defensive copy; no
++checkout `config/` directory is needed at runtime. Exact JSON-to-AST literal
++comparison preserves every prior source pin, selector, clock, scope and hold,
++and the canonical policy hash remains unchanged. No shared packaging file changed.
++Offline wheel and sdist extraction checks run outside the checkout with no site
++packages or corpus. Both load the catalogue and produce two missing-input plus
++three held-input diagnostics against an empty metadata root, rather than failing
++to find the fixed catalogue (PR43 comment4305926950, owned Worker09 scope).
++
++The metadata reader rejects a nonregular path before open, then uses
++`O_NOFOLLOW | O_NONBLOCK` and checks regular type, inode identity and bounded size
++on the opened descriptor. It reads at most MAX_METADATA+1 bytes through that same
++descriptor and authenticates the exact byte count/hash before parsing. A FIFO or
++replacement file returns an isolated fixed diagnostic; a valid following binding
++still runs (PR43 comment4305926954). Authored probes cover the CLI FIFO timeout
++regression, replacement between lstat/open, directory/oversize rejection and
++normal reads. Prior output-lock and malformed-ID fixes remain intact. This is
++not a new grant to inspect source bodies or a sandbox against same-user changes
++to parent directories.
++
+ ## Integration and remaining blockers
+ 
+ Only the portfolio module/config/tests/document are owned here. Shared helpers
+@@ -123,7 +146,7 @@ metadata-reference candidate schema/handler and trusted scope/rights contract;
+ no source manifest or CLI flag may construct a `SourceContract` grant. That
+ future shared registration is a proposed integration dependency, not edited
+ core or activated execution. Independent review and develop integration of
+-these four paths remain required before the next request.
++the owned portfolio paths remain required before the next request.
+ 
+ Actual BH/KI content extraction, recipe rights/body selectors, KI CPI reuse and
+ table/unit/base selectors, all other six-domain inputs, and30day retention terms
+diff --git a/offmenu/portfolio_worker09.py b/offmenu/portfolio_worker09.py
+index 00b3907c..8c910017 100644
+--- a/offmenu/portfolio_worker09.py
++++ b/offmenu/portfolio_worker09.py
+@@ -4,6 +4,7 @@ Uses the shared strict JSON, path, field-origin and serialization contracts.
+ Inputs and output are bounded metadata, not recipe/CPI/nutrient payloads.
+ """
+ import argparse
++from copy import deepcopy
+ from contextlib import contextmanager
+ import fcntl
+ import json
+@@ -19,8 +20,8 @@ from .refresh.core import (RefreshError, atomic_json, canonical, safe_path, sha,
+ from .refresh.field_provenance import datum_pointers, field_origin_errors
+ from .refresh.national_tabular import valid_input_name
+ from .refresh.serialization import encode_records
++from .portfolio_worker09_sources import CONFIGURATION
+ 
+-CONFIG = Path(__file__).resolve().parents[1] / 'config/portfolio-worker09-bindings.json'
+ MAX_METADATA = 256 * 1024
+ MAX_RECORDS = 32
+ MIN_REUSE_SECONDS = 30 * 86400
+@@ -32,6 +33,11 @@ KI_FIELDS = ('country', 'id', 'canonical_url', 'version', 'category',
+              'http_status', 'bytes', 'sha256', 'utc', 'scope')
+ 
+ 
++def configuration():
++    """Packaged inert declarations; no checkout or runtime resource file read."""
++    return deepcopy(CONFIGURATION)
++
++
+ def _require(condition, code):
+     if not condition:
+         raise RefreshError(code)
+@@ -58,7 +64,15 @@ def _load_pin(root, item):
+              'metadata-input-pin-invalid')
+     p = safe_path(safe_path(root) / item['path'])
+     try:
+-        with p.open('rb') as stream:
++        before = p.lstat()
++        _require(stat.S_ISREG(before.st_mode), 'metadata-input-not-regular')
++        descriptor = os.open(p, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
++        with os.fdopen(descriptor, 'rb') as stream:
++            opened = os.fstat(stream.fileno())
++            _require(stat.S_ISREG(opened.st_mode), 'metadata-input-not-regular')
++            _require((before.st_dev, before.st_ino) == (opened.st_dev, opened.st_ino),
++                     'metadata-input-changed')
++            _require(opened.st_size <= MAX_METADATA, 'metadata-input-too-large')
+             raw = stream.read(MAX_METADATA + 1)
+     except FileNotFoundError:
+         raise RefreshError('metadata-input-missing') from None
+@@ -345,7 +359,7 @@ def _main(argv=None):
+     parser.add_argument('--validated-at', help='UTC validation observation; does not reset acquisition')
+     args = parser.parse_args(argv)
+     root, output = safe_path(args.metadata_root), safe_path(args.output)
+-    config = strict_json(CONFIG.read_bytes())
++    config = configuration()
+     # A root is only an explicit prefix for pinned JSON names; no inventory or
+     # source path from inside an input document is followed.
+     for b in config['bindings']:
+diff --git a/offmenu/portfolio_worker09_sources.py b/offmenu/portfolio_worker09_sources.py
+new file mode 100644
+index 00000000..9f07de16
+--- /dev/null
++++ b/offmenu/portfolio_worker09_sources.py
+@@ -0,0 +1,110 @@
++"""Worker09 fixed retained-metadata catalogue; inert declarations, no file I/O.
++
++Normal Python package discovery includes these exact source pins and holds.
++Source/body authority and independent review requirements remain unchanged.
++"""
++
++CONFIGURATION = {'schemaVersion': 'offmenu-worker09-metadata-bindings/1',
++ 'baseCommit': 'abecb99ee1125730ccbc2824b6ec49ffc5cc4302',
++ 'scope': 'Portfolio-specific retained metadata descriptors; new local source/release labels are '
++          'binding identities, not shared source-registry or payload admission.',
++ 'countries': ['BH', 'KI', 'RE'],
++ 'requiredDomains': ['ingredients',
++                     'recipes',
++                     'nutrition',
++                     'retailers/providers',
++                     'prices/baskets',
++                     'dietary references'],
++ 'sourceOperationsAuthorized': False,
++ 'bindings': [{'id': 'bh-bfm-catalogue',
++               'country': 'BH',
++               'sourceId': 'retained-bh-bfm-catalogue',
++               'releaseId': '2026-10-14-catalogue-observation',
++               'domain': 'recipes',
++               'state': 'metadata',
++               'blocker': 'source-retention-duration-unknown',
++               'nativeUnit': None,
++               'nativeBasis': None,
++               'retentionDays': None,
++               'applicability': 'metadata-reference-only-no-category-acceptance',
++               'profile': 'bfm-catalogue',
++               'input': {'path': 'Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-09/BH/catalogue-link-observations.json',
++                         'sha256': '60ce88751e11a9d199ea4066dfc9f8f2c2c6ee07392e9d134e1462dcdd08537b',
++                         'bytes': 4747},
++               'acquisitionEvidence': {'path': 'src/offmenu-data/originals/country-followthrough-20261015/owner-41/BH/6e463ae455d82ebc6596/receipt.json',
++                                       'sha256': '96cb5384ba8921976ddb0a2807c30e4ff8056b096125d529cf7482550fa0341f',
++                                       'bytes': 1309},
++               'originalAcquiredAt': '2026-10-14T22:20:13.308001+00:00',
++               'expectedRecords': 7,
++               'sourceURL': 'https://bfm.bh/recipes/',
++               'publisherBodySha256': '7ae8fec6d1b74801a0b21b36a58b7ebdd714ae8d8a25fa3f4b71060bd5a3ac06',
++               'useScope': 'Existing private catalogue metadata only; no recipe/certificate body '
++                           'or public reuse grant.',
++               'lineageEvidence': {'path': 'Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-09/BH/link-lineage-validation-20261017.json',
++                                   'sha256': 'a3cb0c7a9ec1a441bf3f313338537299c1b373ca4da45d31d15667ca33cc64c3',
++                                   'bytes': 2775}},
++              {'id': 'ki-nso-cpi-metadata',
++               'country': 'KI',
++               'sourceId': 'retained-ki-nso-cpi',
++               'releaseId': 'September2025-as-recorded',
++               'domain': 'prices/baskets',
++               'state': 'metadata',
++               'blocker': 'source-content-use-and-retention-unqualified',
++               'nativeUnit': None,
++               'nativeBasis': None,
++               'retentionDays': None,
++               'applicability': 'metadata-reference-only-no-category-acceptance',
++               'profile': 'ki-cpi-receipt',
++               'input': {'path': 'src/offmenu-data/originals/country-followthrough-20261015/owner-54/KI/40837f0959a30fc92dc6e78f/receipt.json',
++                         'sha256': 'cb034aae33aa38329e19f9728543aa78b6c537fcbeed7555591a1f14ab044f9c',
++                         'bytes': 1374},
++               'acquisitionEvidence': {'path': 'src/offmenu-data/originals/country-followthrough-20261015/owner-54/KI/40837f0959a30fc92dc6e78f/receipt.json',
++                                       'sha256': 'cb034aae33aa38329e19f9728543aa78b6c537fcbeed7555591a1f14ab044f9c',
++                                       'bytes': 1374},
++               'originalAcquiredAt': '2026-10-14T22:11:03.789255+00:00',
++               'expectedRecords': 1,
++               'sourceURL': 'https://nso.gov.ki/download/30/consumer-price-index/2192/cpi-september-2025',
++               'useScope': 'Receipt metadata only; no CPI table/value/body processing or '
++                           'item-price inference.'},
++              {'id': 'bh-bfm-recipe-body',
++               'country': 'BH',
++               'sourceId': 'retained-bh-bfm-cookbook',
++               'releaseId': '2022-catalogue-lead-only',
++               'domain': 'recipes',
++               'state': 'held',
++               'blocker': 'recipe-body-scoped-not-held-and-use-grant-unknown',
++               'nativeUnit': None,
++               'nativeBasis': None,
++               'retentionDays': None,
++               'applicability': 'metadata-reference-only-no-category-acceptance',
++               'evidence': {'path': 'Documents/Codex/2026-10-17/worker09-B01-W09-custody-resolution/BH-return-binding.json',
++                            'sha256': '9e48cc50084a5d86e67cc7f413cec97acf55e32dc93ade1cc121a782b3b1eb98',
++                            'bytes': 1906}},
++              {'id': 'ki-recipe-body',
++               'country': 'KI',
++               'sourceId': 'retained-ki-livelearn',
++               'releaseId': '2026-portal-claim-only',
++               'domain': 'recipes',
++               'state': 'held',
++               'blocker': 'http403-no-retry-no-complete-body-or-use-grant',
++               'nativeUnit': None,
++               'nativeBasis': None,
++               'retentionDays': None,
++               'applicability': 'metadata-reference-only-no-category-acceptance',
++               'evidence': {'path': 'src/offmenu-data/originals/country-followthrough-20261015/owner-54/KI/ac4dc814bf9864bacf0c7307/receipt.json',
++                            'sha256': '7865edc4fb8600d092f083b14fb297b89da978cf6b437052452598c85e9fa8a1',
++                            'bytes': 1107}},
++              {'id': 're-insee-cpi-body',
++               'country': 'RE',
++               'sourceId': 'retained-re-insee',
++               'releaseId': 'issue299-title-assertion-only',
++               'domain': 'prices/baskets',
++               'state': 'held',
++               'blocker': 'zero-valid-original-bytes-altcha-no-retry',
++               'nativeUnit': None,
++               'nativeBasis': None,
++               'retentionDays': None,
++               'applicability': 'metadata-reference-only-no-category-acceptance',
++               'evidence': {'path': 'src/offmenu-data/originals/country-followthrough-20261015/owner-42/RE/receipt.json',
++                            'sha256': 'd70814e546a1e0c90814c801e701adce67f16155a44ee88920e4fbf64c5da7b8',
++                            'bytes': 3173}}]}
+diff --git a/tests/test_portfolio_worker09.py b/tests/test_portfolio_worker09.py
+index 1b449302..82475f3f 100644
+--- a/tests/test_portfolio_worker09.py
++++ b/tests/test_portfolio_worker09.py
+@@ -4,6 +4,8 @@ from contextlib import redirect_stdout
+ import io
+ import json
+ import os
++import subprocess
++import sys
+ from pathlib import Path
+ import tempfile
+ import unittest
+@@ -55,6 +57,83 @@ class PortfolioBindings(unittest.TestCase):
+                                validated_at=validated or now or self.now)
+         return report, report['results'][0]
+ 
++    def test_packaged_configuration_is_exact_and_defensive(self):
++        config = binding.configuration()
++        self.assertEqual(sha(canonical(config)),
++                         '4950407bc0b0dd2b311bbfcef71cc0802204cfeb19ab51ff4fb231f0abd17e1b')
++        config['bindings'][0]['state'] = 'changed-by-caller'
++        self.assertEqual(binding.configuration()['bindings'][0]['state'], 'metadata')
++
++    def test_reader_uses_one_nonblocking_verified_descriptor(self):
++        original = os.open
++        flags = []
++        def observed(path, mode, *args, **kwargs):
++            flags.append(mode)
++            return original(path, mode, *args, **kwargs)
++        with patch.object(binding.os, 'open', side_effect=observed):
++            _, result = self.run_binding()
++        self.assertEqual(result['status'], 'metadata-candidate')
++        self.assertTrue(flags)
++        self.assertTrue(all(f & os.O_NOFOLLOW and f & os.O_NONBLOCK for f in flags))
++
++    def test_reader_rejects_replacement_between_lstat_and_open(self):
++        target = self.root / 'candidate.json'
++        raw = target.read_bytes()
++        original = os.open
++        for special, expected in [(True, 'metadata-input-not-regular'),
++                                  (False, 'metadata-input-changed')]:
++            with self.subTest(special=special):
++                fired = []
++                def replace_then_open(path, flags, *args, **kwargs):
++                    if Path(path) == target and not fired:
++                        fired.append(True)
++                        replacement = self.root / 'replacement.json'
++                        if special:
++                            os.mkfifo(replacement)
++                        else:
++                            replacement.write_bytes(raw)
++                        os.replace(replacement, target)
++                    return original(path, flags, *args, **kwargs)
++                with patch.object(binding.os, 'open', side_effect=replace_then_open):
++                    _, result = self.run_binding()
++                self.assertEqual(result['diagnostics'], [expected])
++                self.assertTrue(fired)
++                target.unlink()
++                target.write_bytes(raw)
++
++    def test_nonregular_and_oversize_pins_return_fixed_diagnostics(self):
++        (self.root / 'directory.json').mkdir()
++        self.entry['input']['path'] = 'directory.json'
++        _, result = self.run_binding()
++        self.assertEqual(result['diagnostics'], ['metadata-input-not-regular'])
++        self.entry['input']['path'] = 'large.json'
++        (self.root / 'large.json').write_bytes(b'x' * (binding.MAX_METADATA + 1))
++        _, result = self.run_binding()
++        self.assertEqual(result['diagnostics'], ['metadata-input-too-large'])
++
++    def test_fifo_input_cli_returns_isolated_diagnostics_and_valid_sibling(self):
++        good = deepcopy(self.entry)
++        good.update(id='valid-sibling', input=self.write('sibling.json',
++                    (self.root / 'candidate.json').read_bytes()))
++        (self.root / 'candidate.json').unlink()
++        os.mkfifo(self.root / 'candidate.json')
++        script = """import json,sys
++from offmenu import portfolio_worker09 as b
++c=json.loads(sys.stdin.read())
++b.configuration=lambda:c
++raise SystemExit(b.main(['--metadata-root',sys.argv[1],'--output',sys.argv[2],
++                        '--now','2026-10-02T00:00:00Z']))
++"""
++        r = subprocess.run([sys.executable, '-B', '-c', script,
++                            str(self.root), str(self.output)],
++                           input=json.dumps(self.config([self.entry, good])),
++                           capture_output=True, text=True, timeout=2)
++        self.assertEqual(r.returncode, 2, r.stderr)
++        report = json.loads((self.output / 'report.json').read_text())
++        self.assertEqual([r['status'] for r in report['results']],
++                         ['malformed-input', 'metadata-candidate'])
++        self.assertEqual(report['results'][0]['diagnostics'], ['metadata-input-not-regular'])
++
+     def test_valid_metadata_has_exact_field_origins_and_unknown_units(self):
+         report, result = self.run_binding()
+         self.assertEqual(result['status'], 'metadata-candidate')
+@@ -207,7 +286,7 @@ class PortfolioBindings(unittest.TestCase):
+         bad.update(id='missing-fixture', input={**bad['input'], 'path': 'missing.json'})
+         config = Path(self.temp.name) / 'config.json'
+         config.write_bytes(canonical(self.config([self.entry, bad])))
+-        with patch.object(binding, 'CONFIG', config), redirect_stdout(io.StringIO()):
++        with patch.object(binding, 'configuration', side_effect=lambda: json.loads(config.read_bytes())), redirect_stdout(io.StringIO()):
+             status = binding.main(['--metadata-root', str(self.root), '--output', str(self.output),
+                                    '--now', self.now])
+         self.assertEqual(status, 2)
+@@ -216,7 +295,7 @@ class PortfolioBindings(unittest.TestCase):
+                          ['metadata-candidate', 'missing-input'])
+ 
+     def test_real_portfolio_configuration_retains_all_six_category_gaps(self):
+-        config = json.loads(binding.CONFIG.read_text())
++        config = binding.configuration()
+         self.assertEqual(config['countries'], ['BH', 'KI', 'RE'])
+         self.assertEqual(len(config['requiredDomains']), 6)
+         self.assertFalse(config['sourceOperationsAuthorized'])
+@@ -228,7 +307,7 @@ class PortfolioBindings(unittest.TestCase):
+         config = Path(self.temp.name) / 'bad-config.json'
+         config.write_text('{invalid')
+         error = io.StringIO()
+-        with patch.object(binding, 'CONFIG', config), redirect_stdout(io.StringIO()), patch('sys.stderr', error):
++        with patch.object(binding, 'configuration', side_effect=lambda: json.loads(config.read_bytes())), redirect_stdout(io.StringIO()), patch('sys.stderr', error):
+             status = binding.main(['--metadata-root', str(self.root), '--output', str(self.output),
+                                    '--now', self.now])
+         self.assertEqual(status, 2)
+@@ -236,7 +315,7 @@ class PortfolioBindings(unittest.TestCase):
+         config.write_bytes(canonical(self.config()))
+         self.output.write_text('occupied by an unrelated file')
+         error = io.StringIO()
+-        with patch.object(binding, 'CONFIG', config), redirect_stdout(io.StringIO()), patch('sys.stderr', error):
++        with patch.object(binding, 'configuration', side_effect=lambda: json.loads(config.read_bytes())), redirect_stdout(io.StringIO()), patch('sys.stderr', error):
+             status = binding.main(['--metadata-root', str(self.root), '--output', str(self.output),
+                                    '--now', self.now])
+         self.assertEqual(status, 2)

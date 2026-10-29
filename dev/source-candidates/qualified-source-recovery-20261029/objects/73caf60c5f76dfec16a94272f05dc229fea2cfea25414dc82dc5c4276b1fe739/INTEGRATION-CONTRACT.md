@@ -1,0 +1,9 @@
+# API-first continuation, 2026-10-29
+
+User reprioritized actual API product facts/provenance over scanner or latency optimization. Current live206 remains authoritative; no scanner-timeout deployment. The later scanner timeout source packet is parked (Library libfile_dc31c1626fd4819198b0e6697b657f8c; ZIP SHA d01ec3c6f9b9f2dc99be260661d0143ddd169e84e29cfcdc1a0ae628bd2e62d4).
+
+Sole app integrator will replace only source-barcode-handler-205.mjs (current f8b9cfc68091d2505d7c689fe0e35ce97d090f1a0c5ba52a484fa74891863cbd) with the existing Foo endpoint author's independently reviewed component. Keep export createSourceBarcodeHandler({selection}) and default candidate behavior. Same route /api/corpus/source-barcode; include=facts uses a distinct facts schema, exact source tuple and existing verified original-public-packet projection. No arbitrary selection for ambiguous keys. Candidate existence is not product identity, ingredient/nutrient completeness, planning or aggregation admission.
+
+Required actual deliverable evidence is a real known milk API response containing verified original name/facts/citations plus truthful unresolved fields, and scoped unknown distinct from technical failure. Do not repeat candidate-count curls as a substitute. Preserve current fixed origin/manifest/asset/ordinal/resource/assertion/citation verification, bounded body, unknown/zero, cancellation and no redirects. Worker fetch receiver/manual handling must cover hydration subrequests as well as index requests. All212 other modules/settings/bindings and private/userdata/auth unchanged.
+
+Current version cf9d62d1-fe72-493a-8dbb-e3e6fe6d1acd, deployment b6ab9965-416f-44b1-a7be-e79ae4f0a79c; scanner SHA beea29c67e4688f624fb464e22ca96b18aaa796e9bb32c447ee627d2dddedfe0. Root/efficiency own user communication; existing endpoint author implementation; existing independent reviewer finite checks; this lane sole connector writer/readback. No Git custody write here.

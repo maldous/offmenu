@@ -1,0 +1,347 @@
+diff --git a/docs/portfolio44-staging-bindings.md b/docs/portfolio44-staging-bindings.md
+index c8046142..15a3bf9e 100644
+--- a/docs/portfolio44-staging-bindings.md
++++ b/docs/portfolio44-staging-bindings.md
+@@ -24,8 +24,8 @@ metadata, not accepted food records, a source grant or country completion.
+ `bind_receipt` is pure; `bind_many` isolates each loader/format failure. All error
+ messages are fixed codes. Inputs are bounded at 64 KiB, exact size/hash checked,
+ strict JSON decoded, with missing/null/unbound kept distinct. Output-directory
+-reuse requires identical candidate and manifest bytes; it leaves their mtimes
+-unchanged. Changed or partial/tampered output requires a new directory.
++reuse requires identical candidate bytes and a matching manifest; it leaves their
++bytes and mtimes unchanged. Changed/tampered output requires a new directory.
+ 
+ Every scalar under `/data` has shared `fieldOrigins` coverage. Receipt values
+ carry exact JSON pointers and receipt pins; missing declarations, scope labels,
+@@ -128,3 +128,25 @@ Parser or traversal RecursionError is also converted to a fixed malformed
+ diagnostic and cannot suppress later peers. Focused regressions cover both
+ reported failures and required normal/no-op/qualification controls; previous
+ unaffected source and shared-batch evidence is reused, not replayed.
++
++## PR48 comment4306286782: identical partial output recovery
++
++Each new file is completely staged and flushed in the private output directory
++before exclusive publication. A failure during manifest staging/publication may
++leave the already-complete candidate visible. An identical retry verifies that
++candidate with the existing descriptor reader, then publishes only the missing
++manifest; a matching manifest-only pair can similarly complete its candidate.
++The result reports `recovered-identical-partial`. The next run is a no-op.
++
++Mismatching, malformed, symlinked or nonregular existing members remain errors;
++they are never overwritten or deleted. Exception cleanup removes only this
++invocation's staging temporary. This is bounded identical-pair recovery, **not**
++universal two-output crash atomicity, crash-orphan cleanup or a concurrency lock.
++Source operations, admission and rights remain closed.
++
++Manifest identity uses the existing canonical JSON serialization at both the
++prepublication and readback checks. This preserves JSON scalar types, refusing
++`true` in place of `1` or `0` in place of `false`, while accepting differences in
++whitespace and object key order. A mismatching manifest-only output is preserved
++and its missing candidate is not published. Focused authored controls cover both
++boundaries and legitimate recovery followed by an unchanged no-op.
+diff --git a/offmenu/refresh/portfolio44.py b/offmenu/refresh/portfolio44.py
+index a807137a..08b88b45 100644
+--- a/offmenu/refresh/portfolio44.py
++++ b/offmenu/refresh/portfolio44.py
+@@ -10,10 +10,11 @@ import json
+ import os
+ from pathlib import Path
+ import stat
++import tempfile
+ 
+ from .acceptance import fingerprint
+ from .acquisition import MIN_TTL
+-from .core import RefreshError, safe_path, strict_json, timestamp
++from .core import RefreshError, canonical, safe_path, strict_json, timestamp
+ from .field_provenance import datum_pointers, field_origin_errors
+ from .reference_adapters import candidate_bytes
+ 
+@@ -309,6 +310,26 @@ def read_metadata(binding):
+         return None
+ 
+ 
++def _publish_new(path, content):
++    """Expose a complete single file exclusively; never replace another output.
++
++    The pair is not atomic. If only one identical member is visible after a
++    failure, main may complete the other on retry. Staging is in the same private
++    directory; only this invocation's temporary is cleaned up on exceptions.
++    """
++    path = safe_path(path)
++    fd, name = tempfile.mkstemp(prefix='.' + path.name + '-', suffix='.pending', dir=path.parent)
++    temporary = Path(name)
++    try:
++        with os.fdopen(fd, 'wb') as stream:
++            stream.write(content)
++            stream.flush()
++            os.fsync(stream.fileno())
++        os.link(temporary, path, follow_symlinks=False)  # Exclusive, no clobber.
++    finally:
++        temporary.unlink(missing_ok=True)
++
++
+ def main(argv=None):
+     from .portfolio44_catalog import BINDINGS
+     parser = argparse.ArgumentParser(description=__doc__)
+@@ -332,15 +353,21 @@ def main(argv=None):
+             output.mkdir(parents=True, exist_ok=True)
+             candidate = safe_path(output / 'candidate.jsonl')
+             manifest = safe_path(output / 'manifest.json')
+-            if candidate.exists() or manifest.exists():
++            candidate_exists, manifest_exists = candidate.exists(), manifest.exists()
++            if candidate_exists and _read_regular(candidate, len(content)) != content:
++                raise RefreshError('output-exists-use-new-directory')
++            if manifest_exists and canonical(strict_json(_read_regular(manifest, MAX_METADATA))) != canonical(result['manifest']):
++                raise RefreshError('output-exists-use-new-directory')
++            if not candidate_exists:
++                _publish_new(candidate, content)
++            if not manifest_exists:
++                _publish_new(manifest, json.dumps(result['manifest'], sort_keys=True).encode() + b'\n')
++            if not candidate_exists or not manifest_exists:
+                 if (_read_regular(candidate, len(content)) != content
+-                        or strict_json(_read_regular(manifest, MAX_METADATA)) != result['manifest']):
+-                    raise RefreshError('output-exists-use-new-directory')
+-            else:
+-                with candidate.open('xb') as stream:
+-                    stream.write(content)
+-                with manifest.open('xb') as stream:
+-                    stream.write(json.dumps(result['manifest'], sort_keys=True).encode() + b'\n')
++                        or canonical(strict_json(_read_regular(manifest, MAX_METADATA))) != canonical(result['manifest'])):
++                    raise RefreshError('published-metadata-pair-mismatch')
++            if candidate_exists != manifest_exists:
++                result['replay'] = 'recovered-identical-partial'
+         print(json.dumps(result, sort_keys=True, allow_nan=False))
+         return 0 if result['status'] == 'ready' else 2
+     except (OSError, ValueError, RecursionError):
+diff --git a/tests/test_portfolio44_manifest_types.py b/tests/test_portfolio44_manifest_types.py
+new file mode 100644
+index 00000000..5ffc4290
+--- /dev/null
++++ b/tests/test_portfolio44_manifest_types.py
+@@ -0,0 +1,86 @@
++"""Authored controls for W32-W44-7DD4-F1; no country source bodies."""
++import json
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu.refresh import portfolio44 as m
++from offmenu.refresh.portfolio44_catalog import BINDINGS
++from tests.test_portfolio44 import NOW
++from tests.test_portfolio44_publication import Portfolio44PublicationTests
++
++
++class Portfolio44ManifestTypeTests(unittest.TestCase):
++    setup_output = Portfolio44PublicationTests.setup_output
++    call = Portfolio44PublicationTests.call
++
++    def test_wrong_type_manifest_only_is_preserved_without_candidate(self):
++        for key, value in [('normalizedRecords', True), ('productionAdmission', 0)]:
++            with self.subTest(field=key), tempfile.TemporaryDirectory() as t:
++                b, raw, source, out, args = self.setup_output(Path(t))
++                report, _ = m.bind_receipt(b, raw, validated_at=NOW, now=NOW)
++                manifest_data = report['manifest'].copy()
++                manifest_data[key] = value
++                out.mkdir()
++                manifest = out / 'manifest.json'
++                manifest.write_text(json.dumps(manifest_data))
++                before = manifest.read_bytes(), manifest.stat().st_mtime_ns
++                with patch.dict(BINDINGS, authored=b):
++                    code, diagnostic = self.call(args)
++                self.assertEqual(code, 2)
++                self.assertEqual(diagnostic['errors'], ['metadata-io-or-output-invalid'])
++                self.assertEqual((manifest.read_bytes(), manifest.stat().st_mtime_ns), before)
++                self.assertFalse((out / 'candidate.jsonl').exists())
++                self.assertEqual(source.read_bytes(), raw)
++
++    def test_readback_wrong_type_is_rejected(self):
++        for key, value in [('normalizedRecords', True), ('productionAdmission', 0)]:
++            with self.subTest(field=key), tempfile.TemporaryDirectory() as t:
++                b, raw, source, out, args = self.setup_output(Path(t))
++                report, content = m.bind_receipt(b, raw, validated_at=NOW, now=NOW)
++                out.mkdir()
++                manifest = out / 'manifest.json'
++                manifest.write_text(json.dumps(report['manifest']))
++                publish = m._publish_new
++                injected = []
++                def mutate_after_candidate(path, data):
++                    publish(path, data)
++                    if path == out / 'candidate.jsonl':
++                        altered = report['manifest'].copy()
++                        altered[key] = value
++                        manifest.write_text(json.dumps(altered))
++                        injected.append((manifest.read_bytes(), manifest.stat().st_mtime_ns))
++                with patch.dict(BINDINGS, authored=b), patch.object(m, '_publish_new', mutate_after_candidate):
++                    code, diagnostic = self.call(args)
++                self.assertEqual(len(injected), 1)
++                self.assertEqual(code, 2)
++                self.assertEqual(diagnostic['errors'], ['metadata-io-or-output-invalid'])
++                self.assertEqual((manifest.read_bytes(), manifest.stat().st_mtime_ns), injected[0])
++                self.assertEqual((out / 'candidate.jsonl').read_bytes(), content)
++                self.assertEqual(source.read_bytes(), raw)
++
++    def test_reformatted_manifest_recovers_then_noops_without_rewrite(self):
++        with tempfile.TemporaryDirectory() as t:
++            b, raw, _, out, args = self.setup_output(Path(t))
++            report, content = m.bind_receipt(b, raw, validated_at=NOW, now=NOW)
++            out.mkdir()
++            manifest = out / 'manifest.json'
++            manifest.write_text(json.dumps(dict(reversed(list(report['manifest'].items()))), indent=4)+'\n')
++            before = manifest.read_bytes(), manifest.stat().st_mtime_ns
++            with patch.dict(BINDINGS, authored=b):
++                code, recovered = self.call(args)
++                self.assertEqual(code, 0)
++                self.assertEqual(recovered['replay'], 'recovered-identical-partial')
++                candidate = out / 'candidate.jsonl'
++                original_candidate = candidate.read_bytes(), candidate.stat().st_mtime_ns
++                code, noop = self.call(args)
++            self.assertEqual(code, 0)
++            self.assertEqual(noop['replay'], 'unchanged-no-op')
++            self.assertEqual((manifest.read_bytes(), manifest.stat().st_mtime_ns), before)
++            self.assertEqual((candidate.read_bytes(), candidate.stat().st_mtime_ns), original_candidate)
++            self.assertEqual(candidate.read_bytes(), content)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/tests/test_portfolio44_publication.py b/tests/test_portfolio44_publication.py
+new file mode 100644
+index 00000000..9e12f7cc
+--- /dev/null
++++ b/tests/test_portfolio44_publication.py
+@@ -0,0 +1,134 @@
++"""Authored PR48 partial-publication recovery probes, no source data."""
++from dataclasses import replace
++import io
++import json
++import os
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from offmenu.refresh import portfolio44 as m
++from offmenu.refresh.portfolio44_catalog import BINDINGS
++from tests.test_portfolio44 import fixture, NOW
++
++
++class Portfolio44PublicationTests(unittest.TestCase):
++    def setup_output(self, root):
++        b, raw = fixture()
++        source = root / 'receipt.json'
++        source.write_bytes(raw)
++        b = replace(b, metadata_path=str(source))
++        out = root / 'output'
++        args = ['--binding', 'authored', '--validated-at', NOW, '--now', NOW,
++                '--output', str(out)]
++        return b, raw, source, out, args
++
++    def call(self, args):
++        with patch('sys.stdout', new_callable=io.StringIO) as stdout:
++            code = m.main(args)
++        return code, json.loads(stdout.getvalue())
++
++    def test_manifest_publication_failure_then_identical_retry(self):
++        with tempfile.TemporaryDirectory() as t:
++            b, raw, source, out, args = self.setup_output(Path(t))
++            original_open, original_link = Path.open, os.link
++            failed = False
++            def fail_open(path, *a, **kw):
++                nonlocal failed
++                if path == out / 'manifest.json' and (a[0] if a else kw.get('mode')) == 'xb':
++                    failed = True
++                    raise OSError('authored manifest publication failure')
++                return original_open(path, *a, **kw)
++            def fail_link(src, dst, *a, **kw):
++                nonlocal failed
++                if Path(dst) == out / 'manifest.json':
++                    failed = True
++                    raise OSError('authored manifest publication failure')
++                return original_link(src, dst, *a, **kw)
++            with patch.dict(BINDINGS, authored=b):
++                with patch.object(Path, 'open', fail_open), patch.object(os, 'link', fail_link):
++                    first, diagnostic = self.call(args)
++                self.assertEqual(first, 2)
++                self.assertTrue(failed)
++                candidate = out / 'candidate.jsonl'
++                self.assertTrue(candidate.is_file())
++                self.assertFalse((out / 'manifest.json').exists())
++                original = candidate.read_bytes(), candidate.stat().st_mtime_ns
++                retry, report = self.call(args)
++                self.assertEqual(retry, 0)
++                self.assertEqual(report['replay'], 'recovered-identical-partial')
++                self.assertFalse(report['sourceAcceptance'])
++                self.assertEqual((candidate.read_bytes(), candidate.stat().st_mtime_ns), original)
++                manifest = out / 'manifest.json'
++                self.assertEqual(json.loads(manifest.read_bytes()), report['manifest'])
++                manifest_time = manifest.stat().st_mtime_ns
++                code, again = self.call(args)
++                self.assertEqual(code, 0)
++                self.assertEqual(again['replay'], 'unchanged-no-op')
++                self.assertEqual(manifest.stat().st_mtime_ns, manifest_time)
++                self.assertEqual(source.read_bytes(), raw)
++
++    def test_manifest_staging_failure_leaves_no_final_partial_manifest(self):
++        with tempfile.TemporaryDirectory() as t:
++            b, raw, _, out, args = self.setup_output(Path(t))
++            fsync, calls = os.fsync, 0
++            def fail_second(fd):
++                nonlocal calls
++                calls += 1
++                if calls == 2:
++                    raise OSError('authored manifest fsync failure')
++                return fsync(fd)
++            with patch.dict(BINDINGS, authored=b):
++                with patch.object(os, 'fsync', fail_second):
++                    code, _ = self.call(args)
++                self.assertEqual(code, 2)
++                self.assertTrue((out / 'candidate.jsonl').is_file())
++                self.assertFalse((out / 'manifest.json').exists())
++                self.assertEqual(sorted(p.name for p in out.iterdir()), ['candidate.jsonl'])
++                self.assertEqual(self.call(args)[0], 0)
++
++    def test_mismatching_partial_outputs_and_aliases_are_preserved(self):
++        for mode in ('wrong-candidate', 'wrong-manifest', 'symlink-candidate', 'hardlink-manifest'):
++            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as t:
++                b, raw, source, out, args = self.setup_output(Path(t))
++                out.mkdir()
++                if mode == 'wrong-candidate':
++                    target = out / 'candidate.jsonl'
++                    target.write_bytes(b'other output')
++                elif mode == 'wrong-manifest':
++                    target = out / 'manifest.json'
++                    target.write_bytes(b'{"foreign":true}')
++                elif mode == 'symlink-candidate':
++                    target = out / 'candidate.jsonl'
++                    target.symlink_to(source)
++                else:
++                    target = out / 'manifest.json'
++                    os.link(source, target)
++                before = target.read_bytes(), target.stat().st_mtime_ns
++                with patch.dict(BINDINGS, authored=b):
++                    code, report = self.call(args)
++                self.assertEqual(code, 2)
++                self.assertEqual(report['errors'], ['metadata-io-or-output-invalid'])
++                self.assertEqual((target.read_bytes(), target.stat().st_mtime_ns), before)
++                self.assertEqual(source.read_bytes(), raw)
++                self.assertEqual(len(list(out.iterdir())), 1)
++
++    def test_identical_manifest_only_recovers_without_rewrite(self):
++        with tempfile.TemporaryDirectory() as t:
++            b, raw, _, out, args = self.setup_output(Path(t))
++            report, content = m.bind_receipt(b, raw, validated_at=NOW, now=NOW)
++            out.mkdir()
++            manifest = out / 'manifest.json'
++            manifest.write_text(json.dumps(report['manifest']))
++            before = manifest.read_bytes(), manifest.stat().st_mtime_ns
++            with patch.dict(BINDINGS, authored=b):
++                code, recovered = self.call(args)
++            self.assertEqual(code, 0)
++            self.assertEqual(recovered['replay'], 'recovered-identical-partial')
++            self.assertEqual((manifest.read_bytes(), manifest.stat().st_mtime_ns), before)
++            self.assertEqual((out / 'candidate.jsonl').read_bytes(), content)
++
++
++if __name__ == '__main__':
++    unittest.main()
