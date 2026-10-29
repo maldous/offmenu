@@ -22,11 +22,49 @@ Any replacement needs an explicit mapping of responsibilities and evidence that
 the relevant behavior is preserved; framework availability alone is insufficient.
 
 This guidance is scoped to OffMenu. It does not authorize rewriting USF, UIF or
-CIX, importing their entire backlog, or migrating an active operation. The Linear
-owner is reconciling OffMenu's organizational placement: resolve current tracker
-bindings through that owner rather than hardcoding a new team identity. Keep
-existing issue/run/operation/job identifiers and running work stable while that
-placement is resolved.
+CIX, importing their entire backlog, or migrating an active operation. OffMenu
+remains within UIF; no team transfer is required. Resolve current tracker bindings
+through the Linear owner rather than hardcoding a new team identity. Keep existing
+issue/run/operation/job identifiers and running work stable.
+
+## Documentation homes and update responsibility
+
+| Subject | Canonical home | Who updates it and what other homes reference |
+| --- | --- | --- |
+| Active outcomes, bugs, owner, status, dependencies and acceptance | Existing [OffMenu Linear project](https://linear.app/maldous/project/offmenu-ccd080f4f6f0) and its issues, for example [UIF-106](https://linear.app/maldous/issue/UIF-106) | The issue owner records work/evidence; the Linear owner maintains project organization and reconciles duplicates. Repo handovers link the active issue and evidence, not a copied active queue. |
+| Architecture, source/interface contracts, setup and runbooks | Versioned repository, indexed by [docs/README.md](../README.md); [maintainer setup](../maintainer.md), [layout](root-layout.md), [protocols](execution-protocols.md) and [delivery workflow](../../tools/delivery/README.md) | The source-change owner updates affected maintained guides/interfaces in the same reviewed candidate. Linear links the relevant path and source revision instead of copying the full document. |
+| Decisions, rationale and supersession | [Repository ADRs](../adr/), including [ADR 0004](../adr/0004-resource-aware-parallel-capacity.md) and [ADR 0005](../adr/0005-autonomous-integration.md) | The decision owner proposes a new ADR when required; review records adoption/supersession. Preserve old rationale and mark superseded decisions with a successor reference rather than rewriting history. Standards changes still require the normal version/ADR process. |
+| Actionable agent entry rules | [AGENTS.md](../../AGENTS.md) | The repo-doc/source owner maintains concise actions and links to canonical guides. AGENTS does not duplicate architecture prose, the Linear queue or private receipts; new instructions remain subject to the existing authority boundaries. |
+| Product intent and longer-term direction | [Product README](../../README.md) and linked versioned plans | The product/source owner labels intended, implemented and verified behavior separately. Current acceptance comes from the issue and its evidence, not an aspirational feature list. |
+| Execution details, checkpoint and effect evidence | Private `.delivery/` records and existing Windmill/GitHub readback | The operation/integration owner retains exact identifiers, hashes and receipts. Linear gets suitable references and the accepted source revision; no raw private runtime data is copied into Git or project documents. |
+
+Use one subject home and short complementary summaries elsewhere. Stable links
+should identify the issue/document or repo path; evidence about a particular source
+state also names its immutable commit. Label summaries with an as-of revision/date
+and whether they are current, historical, planned, proposed or accepted. A dated
+report's old pending status does not override a newer verified issue/readback.
+Mutable branch links are useful navigation, not immutable acceptance evidence.
+
+The existing [UIF Home](https://linear.app/maldous/document/uif-home-build-first-delivery-model-96eeea3357ee)
+provides umbrella context with OffMenu first; a future generic template is planned,
+not delivered infrastructure. The [source-ID mapping](https://linear.app/maldous/document/offmenu-backlog-reconciliation-and-source-id-mapping-29-october-2026-371f5733c73e)
+preserves reconciliation coverage and unresolved provenance. These complementary
+documents link to repository rules rather than copying them. Organizational
+placement does not change existing task filters, credentials or operation bindings.
+
+At each handoff, the change owner checks affected references and reports any
+unresolved mismatch. A source/interface change updates its canonical guide and the
+entry/index links it invalidates. A status-only change belongs in Linear and need
+not create a prose commit. The Linear owner owns changes to Linear's home/docs;
+the repository writer owns repo docs and AGENTS. Cross-home changes coordinate
+those owners rather than letting either silently overwrite the other's records.
+If one side cannot be updated, record the exact pending reference correction on
+the existing issue without blocking unrelated product publication.
+
+Legacy ledgers and recoverably archived project records remain historical
+provenance, not a parallel work queue. Archive links or an explicit historical
+label should replace misleading current references. This map does not authorize
+archival/deletion, alter USF/CIX ownership or import their obligations into OffMenu.
 
 ## Select the smallest useful execution lane
 
