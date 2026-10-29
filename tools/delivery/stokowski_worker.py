@@ -75,6 +75,8 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
     """Bounded execution with unconditional cleanup; no pool release here."""
     if not 1 <= timeout <= 600:
         raise ValueError('Invalid finite timeout')
+    if (directory.parent.parent/'cancel.json').exists():
+        return {'status':'cancelled','child_tree_gone':True,'exit_code':None}
     if ctypes.CDLL(None, use_errno=True).prctl(36, 1, 0, 0, 0) != 0:
         raise RuntimeError('Subreaper unavailable')
     result = {'status': 'failed', 'child_tree_gone': False, 'exit_code': None}
@@ -149,6 +151,14 @@ def execute(runtime, issue, request):
     receipt_path = directory/'receipt.json'
     if receipt_path.exists():
         raise AdmissionError('Completed or uncertain attempt requires reconciliation; no replay')
+    intent_path = directory/'intent.json'
+    if intent_path.exists():
+        prior = json.loads(intent_path.read_text())
+        if prior.get('binding') != binding:
+            raise AdmissionError('immutable_binding_conflict')
+        raise AdmissionError('Existing resource lease or retained intent: reconcile_or_new_task_required')
+    if (runtime/'cancel.json').exists():
+        raise AdmissionError('Runtime cancellation requested before admission')
     lease = runtime_lease_ids(runtime, manifest)[issue]
     pool = Pool(policy['symphony']['pool_path'], policy)
     proof = json.loads((runtime/'provider-proof.json').read_text())

@@ -98,6 +98,25 @@ def install_adapters(runtime, manifest, key):
     workspace_module.ensure_workspace = ensure_workspace
     workspace_module.remove_workspace = retain_workspace
 
+    pending_control = set()
+    original_start = orchestration.Orchestrator.start
+    original_transition = orchestration.Orchestrator._safe_transition
+
+    async def tracked_start(owner):
+        owner._offmenu_loop = asyncio.current_task()
+        try:
+            return await original_start(owner)
+        finally:
+            owner._offmenu_loop = None
+
+    async def tracked_transition(owner, *args, **kwargs):
+        task = asyncio.current_task()
+        pending_control.add(task)
+        try:
+            return await original_transition(owner, *args, **kwargs)
+        finally:
+            pending_control.discard(task)
+
     async def safe_stop(owner):
         owner._running = False
         if hasattr(owner, '_stop_event'):
@@ -109,6 +128,19 @@ def install_adapters(runtime, manifest, key):
             task.cancel()
         if tasks:
             await asyncio.gather(*tasks, return_exceptions=True)
+        # Upstream transitions run in separate tasks after worker removal. They
+        # must settle before their HTTP client closes; otherwise a successful
+        # coding task can lose its durable tracker state during finite shutdown.
+        if pending_control:
+            await asyncio.wait_for(asyncio.gather(
+                *(asyncio.shield(t) for t in list(pending_control))), timeout=30)
+        loop_task = getattr(owner, '_offmenu_loop', None)
+        if loop_task and loop_task is not asyncio.current_task():
+            try:
+                await asyncio.wait_for(asyncio.shield(loop_task), timeout=30)
+            except asyncio.TimeoutError:
+                loop_task.cancel()
+                await asyncio.gather(loop_task, return_exceptions=True)
         if owner._linear:
             await owner._linear.close()
 
@@ -131,6 +163,9 @@ def install_adapters(runtime, manifest, key):
                                  + json.dumps(safe, sort_keys=True))
 
     orchestration.Orchestrator.stop = safe_stop
+    orchestration.Orchestrator.start = tracked_start
+    orchestration.Orchestrator._safe_transition = tracked_transition
+    orchestration._offmenu_pending_control = pending_control
     orchestration.Orchestrator._publish_run_report = safe_report
 
     async def run_turn(runner_type, claude_cfg, hooks_cfg, prompt, workspace_path,
@@ -229,9 +264,8 @@ async def run(runtime, duration, dry_run=False):
                 service.result()
                 break
             finished = all((runtime/'attempts'/i/'receipt.json').exists() for i in manifest['tasks'])
-            if finished and all(not o.running and not o._tasks for o in coordinator.orchestrators.values()):
-                # Allow the upstream transition/tracking comment to settle.
-                await asyncio.sleep(1)
+            if (finished and not orchestration._offmenu_pending_control
+                and all(not o.running and not o._tasks for o in coordinator.orchestrators.values())):
                 break
             if (runtime/'cancel.json').exists():
                 break
@@ -243,11 +277,45 @@ async def run(runtime, duration, dry_run=False):
                    accepted_delivery=False, project_id=PROJECT))
 
 
+async def reconcile_metadata(runtime):
+    """Reconcile the already-ended attempt's tracker state; never run coding."""
+    verify_install(runtime)
+    manifest = load_manifest(runtime/'manifest.json')
+    from stokowski.linear import LinearClient
+    client = LinearClient(endpoint='https://api.linear.app/graphql', api_key=credential())
+    results = []
+    try:
+        for issue, task in manifest['tasks'].items():
+            receipt = json.loads((runtime/'attempts'/issue/'receipt.json').read_text())
+            if (receipt.get('issue') != issue or receipt.get('source_head') != manifest['base_revision']
+                or receipt.get('status') != 'succeeded' or not receipt.get('child_tree_gone')):
+                raise AdmissionError('No safely ended selected coding attempt to reconcile')
+            data = await client._graphql('query($id: String!){ issue(id:$id){id project{id} state{name}}}',
+                                         {'id':task['issue_id']})
+            remote = data.get('issue') or {}
+            if remote.get('project',{}).get('id') != PROJECT:
+                raise AdmissionError('Wrong issue project during reconciliation')
+            before = remote.get('state',{}).get('name')
+            if before not in ('In Progress','In Review'):
+                raise AdmissionError('Tracker state needs a distinct accepted transition')
+            if before != 'In Review' and not await client.update_issue_state(task['issue_id'],'In Review'):
+                raise RuntimeError('Tracker transition not confirmed; read back before retry')
+            after = await client.fetch_issue_states_by_ids([task['issue_id']])
+            if after.get(task['issue_id']) != 'In Review':
+                raise RuntimeError('Tracker readback not confirmed')
+            results.append({'issue':issue,'state':'In Review','coding_replayed':False})
+        checkpoint(runtime/'metadata-reconciliation.json',{'results':results,'accepted_delivery':False})
+        print(json.dumps({'status':'reconciled','results':results,'credential_exported':False}))
+    finally:
+        await client.close()
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--runtime', required=True, type=Path)
     parser.add_argument('--duration', type=int, default=240)
     parser.add_argument('--dry-run', action='store_true')
+    parser.add_argument('--reconcile-metadata', action='store_true')
     args = parser.parse_args()
     if not 1 <= args.duration <= 900:
         raise SystemExit('Finite coordinator duration must be 1..900 seconds')
@@ -255,7 +323,10 @@ if __name__ == '__main__':
     with (runtime/'coordinator.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX|fcntl.LOCK_NB)
         try:
-            asyncio.run(run(runtime, args.duration, args.dry_run))
+            if args.reconcile_metadata:
+                asyncio.run(reconcile_metadata(runtime))
+            else:
+                asyncio.run(run(runtime, args.duration, args.dry_run))
         except (OSError, RuntimeError, ValueError, AdmissionError) as error:
             print(json.dumps({'status':'blocked','error_type':type(error).__name__,
                               'credential_exported':False}))
