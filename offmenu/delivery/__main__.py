@@ -85,7 +85,8 @@ def main():
                         'cancellation_requested': (directory / 'cancel.json').exists()}
             else:
                 with writer(root, reconciliation=args.action == 'reconcile') as state:
-                    engine = Engine(root, state, task)
+                    engine = Engine(root, state, task, failed_reconciliation=(
+                        args.action == 'reconcile' and args.outcome == 'failed'))
                     if args.action == 'reconcile':
                         if args.check_id not in {s['id'] for s in task['checks']}:
                             raise DeliveryError('Unknown check ID')
@@ -103,10 +104,11 @@ def main():
                                                    'evidence': evidence})
                         from .engine import output_state, digest
                         step = next(s for s in task['checks'] if s['id'] == args.check_id)
-                        record.update(status=args.outcome, reconciled=True,
-                                      argv_sha256=digest(step['argv']),
-                                      source_sha256=engine.source_digest(),
-                                      output_state=output_state(root, task))
+                        record.update(status=args.outcome, reconciled=True)
+                        if args.outcome == 'succeeded':
+                            record.update(argv_sha256=digest(step['argv']),
+                                          source_sha256=engine.source_digest(),
+                                          output_state=output_state(root, task))
                         atomic(receipt, record)
                         result = {'status': 'reconciled', 'check': args.check_id, 'outcome': args.outcome}
                     else:

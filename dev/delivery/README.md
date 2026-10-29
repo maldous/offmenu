@@ -87,7 +87,7 @@ private evidence JSON containing `observer`, `reason`, and
 ```
 
 A succeeded reconciliation additionally verifies all declared output hashes.
-A failed reconciliation does not grant extra attempts; only remaining attempts
+Failed reconciliation verifies the original task/owner/checkout identity without requiring source to be unchanged or even its manifest to survive. It records a stopped failure, leaves the original binding and historical check evidence untouched, and clears the unresolved-operation hold so the source can be repaired. It cannot mark changed source successful: normal execution, successful reconciliation and acceptance retain their source/branch/output checks. A failed reconciliation does not grant extra attempts; only remaining attempts
 explicitly declared safe in the original task can run. Cancellation remains
 terminal for that task and is not silently cleared. Arbitrary command effects
 are not transactional or rolled back by LangGraph.

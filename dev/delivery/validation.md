@@ -151,3 +151,23 @@ actual source-hash stdout, successful 63-test stderr summary and both stream
 hashes. No raw task inputs, credential material or private log locations are
 included. The final evidence commit changes only this receipt and documentation;
 behavioral tests ran against its recorded immutable code commit.
+
+## Failed reconciliation after interrupted source changes
+
+PR141's automated review reported a genuine recovery deadlock: Engine's source
+binding check ran before a stopped failure could be reconciled. Three real CLI
+timeout cases reproduced it (new untracked source, changed tracked source and
+removed standard manifest). All three failed before the correction and passed
+after it. The correction verifies original task/owner/checkout identity for
+failed reconciliation without reading damaged source or rewriting the binding.
+Successful reconciliation, execution and acceptance remain strictly bound.
+Wrong-owner and source-drift success attempts are rejected; the original binding
+is unchanged and a new writer can be admitted after the stopped failure is
+recorded. No source repair, retries or acceptance are inferred automatically.
+
+All66 selected tests passed through the existing Windmill bridge at immutable
+b2de61d8840ceb0d419ee7731e73f17b45c910c1. The same source's three targeted
+recovery regressions were accepted through a paused/resumed delivery graph with
+four verified files and one check start. The nested follow-up section of
+review-verification.json retains the actual safe stdout/stderr, supervisor
+receipt, source/tree identities and accepted workflow summary.
