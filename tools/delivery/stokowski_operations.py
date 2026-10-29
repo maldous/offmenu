@@ -300,7 +300,8 @@ class Journal:
                 receipt = result.get('receipt',{})
                 status = receipt.get('status')
                 expected = bridge_arguments(spec)
-                bound = (receipt.get('command_sha256') == hashlib.sha256(expected['command'].encode()).hexdigest()
+                bound = (receipt.get('job_id') == state['logical_job_id']
+                         and receipt.get('command_sha256') == hashlib.sha256(expected['command'].encode()).hexdigest()
                          and receipt.get('runner_sha256') == spec['runner_sha256']
                          and receipt.get('capacity_policy_sha256') == spec['policy_sha256'])
                 if status == 'succeeded' and (bound

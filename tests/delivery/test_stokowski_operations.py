@@ -232,7 +232,7 @@ class OperationRecoveryTests(unittest.TestCase):
         _,observer = self.stale_observer()
         self.remote.complete(observer,self.spec)
         valid = copy.deepcopy(self.remote.jobs[observer]['result'])
-        for field,value in [('command_sha256','0'*64),('runner_sha256','0'*64),
+        for field,value in [('job_id','offmenu-'+'0'*48),('command_sha256','0'*64),('runner_sha256','0'*64),
                             ('capacity_policy_sha256','0'*64),('child_tree_gone',False),
                             ('reconcile_required',True)]:
             result = copy.deepcopy(valid)
