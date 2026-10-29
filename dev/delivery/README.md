@@ -11,12 +11,14 @@ Use Python 3.12 for the delivery environment (the application retains its declar
 Python support). From the repository root:
 
 ```sh
-python3.12 -m venv .venv
-.venv/bin/python -m pip install -r dev/delivery/requirements.lock
-.venv/bin/python -m offmenu.delivery discover
-.venv/bin/python -m offmenu.delivery check
-.venv/bin/python -m unittest discover -s tests/delivery -v
+python3.12 scripts/bootstrap_delivery.py
+python3.12 scripts/bootstrap_delivery.py --check
+.venv-delivery/bin/python -m offmenu.delivery discover
+.venv-delivery/bin/python -m offmenu.delivery check
+.venv-delivery/bin/python -m unittest discover -s tests/delivery -v
 ```
+
+Bootstrap creates only the ignored project-local `.venv-delivery/`. `--check` checks all 41 locked versions without network; installation is repeatable from a clean checkout and never mutates system Python.
 
 The optional `.[delivery]` extra pins the two direct dependencies; the lock pins
 this verified Python 3.12 environment transitively. No provider, model or paid
@@ -37,9 +39,9 @@ code requiring review. Require meaningful behavior checks, not just file existen
 The standards document and ADR describe how to discover and evolve standards.
 
 ```sh
-.venv/bin/python -m offmenu.delivery run .delivery/accepted-layout.json --pause-after standards
-.venv/bin/python -m offmenu.delivery status .delivery/accepted-layout.json
-.venv/bin/python -m offmenu.delivery run .delivery/accepted-layout.json
+.venv-delivery/bin/python -m offmenu.delivery run .delivery/accepted-layout.json --pause-after standards
+.venv-delivery/bin/python -m offmenu.delivery status .delivery/accepted-layout.json
+.venv-delivery/bin/python -m offmenu.delivery run .delivery/accepted-layout.json
 ```
 
 Create the local validation task with `python -m offmenu.delivery prepare --task-id accepted-layout --owner YOUR-NAME`, then inspect its JSON before running it. The generated task verifies the delivered standard and tests; it does not generate arbitrary application changes.
@@ -68,7 +70,7 @@ same-disk receipts, not off-host backups or distributed locks. Do not share the
 SQLite file between hosts. Restrict runtime access to trusted developers.
 
 ```sh
-.venv/bin/python -m offmenu.delivery cancel .delivery/accepted-layout.json
+.venv-delivery/bin/python -m offmenu.delivery cancel .delivery/accepted-layout.json
 ```
 
 Cancellation records intent without waiting for the writer lock. The active
@@ -81,7 +83,7 @@ private evidence JSON containing `observer`, `reason`, and
 `process_tree_gone:true`, then:
 
 ```sh
-.venv/bin/python -m offmenu.delivery reconcile .delivery/accepted-layout.json --check-id CHECK --outcome failed --evidence /private/reconciliation.json
+.venv-delivery/bin/python -m offmenu.delivery reconcile .delivery/accepted-layout.json --check-id CHECK --outcome failed --evidence /private/reconciliation.json
 ```
 
 A succeeded reconciliation additionally verifies all declared output hashes.

@@ -7,16 +7,22 @@
   "linear": {
     "team_id": "53f584e7-70a1-4b1e-b982-b815210e47d4",
     "project_id": "ce60c1ab-a732-4a71-8471-14c9dc393886",
-    "project_slug": "offmenu-ccd080f4f6f0",
-    "issue_id": "4f894e1b-cc90-44fe-a450-7c6ece3c52c3",
-    "issue_identifier": "UIF-88",
-    "admitted_state_ids": [],
-    "admitted_state_names": [],
-    "required_label_ids": [],
-    "required_label_names": [
-      "offmenu-delivery-approved"
+    "project_slug": "ccd080f4f6f0",
+    "issue_id": "37f82d6a-fb4a-470e-8bde-82e4796dd656",
+    "issue_identifier": "UIF-90",
+    "admitted_state_ids": [
+      "837a9ce3-147e-4a43-8503-14e2521ae3bd"
     ],
-    "workpad_comment_id": null,
+    "admitted_state_names": [
+      "In Progress"
+    ],
+    "required_label_ids": [
+      "32ce8454-2fa9-4a64-9666-a85c2a4e605e"
+    ],
+    "required_label_names": [
+      "offmenu-uif-90"
+    ],
+    "workpad_comment_id": "7dfe44db-cf40-4447-9d7c-6609f934e555",
     "team_key": "UIF",
     "project_url": "https://linear.app/maldous/project/offmenu-ccd080f4f6f0",
     "state_catalog": {
@@ -43,13 +49,18 @@
         "id": "e09f908f-5f35-4c3e-8f75-e817bf4dfd7a",
         "purpose": "verified-delivery"
       }
-    }
+    },
+    "project_browser_slug": "offmenu-ccd080f4f6f0",
+    "native_slug_field": "slugId"
   },
   "ownership": {
-    "integration_writer": null,
-    "allowed_paths": [],
+    "integration_writer": "offmenu-integration-writer",
+    "allowed_paths": [
+      "tests/delivery/test_cli.py",
+      "offmenu/delivery/__main__.py"
+    ],
     "expected_source_head": null,
-    "standard_version": "1.0.0"
+    "standard_version": "1.1.0"
   },
   "execution": {
     "symphony_binary": "/home/user/.local/share/cix/symphony/0c01ff0975da80ded7044a5ad76a44ac87053670-d215a99ac5a44941/bin/symphony",
@@ -57,7 +68,7 @@
     "codex_command": null,
     "resolved_model": null,
     "max_concurrent_agents": 1,
-    "windmill_workspace": null,
+    "windmill_workspace": "offmenu",
     "langgraph_checkpoint_run_id": null,
     "automatic_push": false,
     "automatic_merge": false,
@@ -68,6 +79,13 @@
     "credential_environment": {
       "OFFMENU_LINEAR_API_KEY": "absent-at-discovery",
       "LINEAR_API_KEY": "absent-at-discovery"
-    }
+    },
+    "windmill_script": "u/admin/foo_jobs_20261027",
+    "credential_scope_verified": true,
+    "credential_delivery": "existing-systemd-LoadCredential-in-isolated-OffMenu-user-process",
+    "executor_account_type": "chatgpt",
+    "executor_plan": "pro",
+    "available_model": "gpt-6.1-sol",
+    "reasoning_effort": "medium"
   }
 }

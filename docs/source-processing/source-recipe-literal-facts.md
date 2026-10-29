@@ -176,7 +176,7 @@ never truncates constraints or contexts to fit.
 Run generated-only regressions:
 
 ```sh
-python3 -B -m unittest discover -s manual-action/tests -p test_source_recipe_literal_facts.py -v
+python3 -B -m unittest discover -s tools/source-processing/tests -p test_source_recipe_literal_facts.py -v
 ```
 
 The original eighteen groups use seven retained source shapes with original artifact SHA anchors.

@@ -2,7 +2,7 @@
 tracker:
   kind: linear
   provider:
-    project_slug: "offmenu-ccd080f4f6f0"
+    project_slug: "ccd080f4f6f0"
     api_key: "$OFFMENU_LINEAR_API_KEY"
   required_labels:
     - offmenu-delivery-approved

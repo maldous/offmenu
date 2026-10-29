@@ -1,6 +1,6 @@
 # Conditional arithmetic from selected product labels
 
-`gold_recipe_label_scenario.mjs` is a pure, private-local adapter around the
+`gold-recipe-label-scenario.mjs` is a pure, private-local adapter around the
 existing `public/basket-model.js` calculator (`basket/1.1`). It does not add a
 calculator, database reader, schema, endpoint or product-selection mechanism.
 The existing barcode consumer and generated-menu outputs remain unchanged.
@@ -13,7 +13,7 @@ evaluates the supplied record bindings and arithmetic; it cannot verify source
 files, independently review a label, or clear an existing hold.
 
 ```js
-import {evaluateLabelScenario} from './gold_recipe_label_scenario.mjs';
+import {evaluateLabelScenario} from './gold-recipe-label-scenario.mjs';
 const result = evaluateLabelScenario(input, ownerSelectedSnapshot);
 ```
 

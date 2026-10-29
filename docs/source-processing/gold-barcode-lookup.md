@@ -8,7 +8,7 @@ operate on separate selected-generation stores; this module does not retarget,
 repopulate or replace those interfaces.
 
 ```sh
-python3 -B manual-action/gold_barcode_lookup.py \
+python3 -B tools/source-processing/gold_barcode_lookup.py \
   --admission /absolute/path/scoped-admission-receipt.json \
   --admission-sha256 '<independently selected receipt SHA-256>' \
   --barcode '078742003986'
@@ -148,5 +148,5 @@ handling, actual/absent menus, source-reference non-transfer, row/path/byte/VM
 limits and cleanup, receipt pins, read-only CLI bytes and sidecars. Run:
 
 ```sh
-python3 -B -m unittest discover -s manual-action/tests -p test_gold_barcode_lookup.py
+python3 -B -m unittest discover -s tools/source-processing/tests -p test_gold_barcode_lookup.py
 ```

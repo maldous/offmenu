@@ -93,7 +93,7 @@ source mismatches and undeclared mention contexts still fail closed globally.
 The command-line route accepts JSON arguments without writing the database:
 
 ```sh
-python3 -B manual-action/gold_relation_lookup.py \
+python3 -B tools/source-processing/gold_relation_lookup.py \
   --database /absolute/path/to/reviewed-snapshot.sqlite \
   --source-json '<exact source scope JSON>' \
   --selections-json '<selection list JSON>'
@@ -133,5 +133,5 @@ conditions, conflicting groups/selections, held support/endpoints, SQL update
 guards, common schema validation and the real read-only CLI. Run:
 
 ```sh
-python3 -B -m unittest discover -s manual-action/tests
+python3 -B -m unittest discover -s tools/source-processing/tests
 ```

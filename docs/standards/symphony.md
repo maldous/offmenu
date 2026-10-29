@@ -62,7 +62,7 @@ avoids a root `WORKFLOW.md` that a service might discover automatically.
 Activation requires reviewing an OffMenu-specific deployment configuration,
 verifying the selected binary schema and eligible model/provider, resolving the
 contract, selecting a dedicated workspace and replacing the guards deliberately.
-No activation occurred in this workstream. An eventual start should first prove
+The tracked template itself remains disabled; a separately generated private runtime configuration can be launched explicitly. An eventual start should first prove
 that unrelated projects and unlabeled issues are excluded and that only the
 single admitted writer can change this branch. Do not attach OffMenu to CIX's
 active service, reuse its runtime/workspaces or revive its workers.
@@ -108,3 +108,142 @@ process environment; only presence was checked, and no credential files or value
 were read. Existing service credentials were not inspected or borrowed. Admission,
 owned runtime credentials, owner/workpad identity and eligible model resolution
 remain prerequisites for future separately reviewed activation.
+
+## Existing launcher and authenticated executor discovery
+
+A subsequent non-secret inspection found the installed system-unit declaration
+`/etc/systemd/system/cix-symphony-primary.service` and its
+`accepted-stable-paused.conf` drop-in. Their configured launcher is
+`/home/user/.local/share/cix/service/primary/service-start.sh`. This is a
+configuration observation, not a service-state check or authorization to start it.
+The launcher selects the `native-completion-71b0aa5377fb96f2` Symphony escript with
+the base bundle's OTP runtime, and a CIX-specific `WORKFLOW.native.md` path. The
+base bundle used for OffMenu's isolated parser check is therefore not proof of
+the exact CIX service implementation's schema or an accepted OffMenu runtime.
+
+The service declares systemd credential name `linear-api-key`, sourced from
+`/etc/cix-symphony-primary/linear-api-key`. Launcher source requires
+`CREDENTIALS_DIRECTORY` and exports that credential as `LINEAR_API_KEY`. No
+credential file was read and no launcher was executed. These are real local
+credential conventions, rather than a guessed `CIX_LINEAR_API_KEY` variable.
+This credential's OffMenu project/team scope is unestablished; its presence in a
+CIX service must not be treated as authorization to copy or reuse it for OffMenu.
+
+The retained `WORKFLOW.standard.md` selects:
+
+```text
+/usr/bin/python3 -I /home/user/.local/share/cix/service/primary/codex_compatible.py app-server
+```
+
+The retained paused workflow selects the vendor Codex executable directly. The
+compatibility shim verifies installation and protocol, then inherits its process
+environment and executes the accepted package generation's `app-server`. Its
+`--check` can fetch npm artifacts, write cache/launch receipts and spawn protocol
+probes; it is not a read-only status command and was not invoked.
+
+The installed vendor executable exists at
+`/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex`;
+its package manifest reports version `0.162.1`. Calling only that executable's
+`login status` returned exit 0 and reported a ChatGPT login, not API-key login.
+Raw output was suppressed and no inference/session was started. This establishes
+an existing authenticated local consumer Codex route. It does not establish API
+credit, permission to reuse the CIX gate, eligible no-cost inference for OffMenu,
+or a resolved model. A preferred model string is not a model-resolution receipt.
+
+Presence-only checks in this task's process environment found
+`CIX_LINEAR_API_KEY`, `LINEAR_API_KEY`, `OFFMENU_LINEAR_API_KEY`,
+`CREDENTIALS_DIRECTORY`, `CODEX_HOME`, `OPENAI_API_KEY` and `OPENAI_BASE_URL` absent.
+That does not contradict a system service's separately injected credentials or
+the vendor's stored ChatGPT login. The remaining integration gap is an approved
+OffMenu-scoped tracker credential delivery route and an accepted executor/model
+eligibility decision. Existing installation and login discovery removes the
+need to invent a new local AI installation, but does not close those gaps.
+No CIX service configuration, credential, worker or session was changed.
+
+## Own OffMenu native integration
+
+The integration now has its own launcher and hooks:
+
+- `dev/delivery/symphony_launch.py`: preflight, generate a private runtime workflow,
+  verify native parsing, then optionally execute one finite selected run.
+- `dev/delivery/symphony_workspace.py`: admit only `UIF-90`, clone the pinned local
+  source branch without a second feature branch, verify its head and cap admissions
+  at two attempts. The attempt marker sits outside the issue workspace so native
+  terminal-workspace cleanup does not erase that budget.
+- `dev/delivery/symphony_protocol.py`: initialize the vendor app-server, read account
+  metadata without refreshing credentials, list models and read quota metadata.
+  It never sends `thread/start` or `turn/start`; raw responses are not printed.
+- `dev/delivery/symphony_test.py`: offline admission regression tests.
+
+These files reuse the installed base native escript/OTP artifact and vendor Codex
+executable, not the CIX custom launch gate, policy, service, hooks or workspaces.
+A library installed below a CIX-named directory is reused as an immutable binary;
+OffMenu owns its generated configuration, state and integration behavior.
+
+Native Linear source filters `project.slugId`, which is `ccd080f4f6f0`; the human
+browser slug is `offmenu-ccd080f4f6f0`. The project UUID remains
+`ce60c1ab-a732-4a71-8471-14c9dc393886`. Before a run the launcher verifies tracker
+access, project UUID/slugId/team, exact `UIF-90` identity and state, unique
+`offmenu-uif-90` label, and that the candidate set contains only that issue. Hooks
+reject all other workspace identifiers even if a later label changes. The native
+schema supplies concurrency, turn and retry-backoff limits, but no maximum retry
+count; the OffMenu hook supplies the finite attempt budget. The parent launcher
+also imposes a 180-second default wall-time limit and terminates the owned process
+group on timeout or after the first native after-run marker. That marker records
+only that a coding attempt ended; it does not claim the tests passed.
+A process exit is never reported as accepted delivery.
+
+The run task is constrained to meaningful CLI integration tests at
+`tests/delivery/test_cli.py` and an optional minimal, test-proven
+`offmenu/delivery/__main__.py` correction. It uses the existing canonical
+`.venv-delivery/bin/python` with the clone on `PYTHONPATH`. No auto commit, push,
+merge, production deployment or Actions dispatch is enabled. The sole integration
+writer reviews the resulting diff and tests before accepting it.
+
+Native protocol preflight succeeded outside the restricted sandbox network:
+account type `chatgpt`, plan `pro`, quota response present, and default model
+`gpt-6.1-sol` supporting `medium` reasoning. The available model list also included
+`gpt-6.1-terra`. No thread, turn or inference call was made. Earlier restricted
+network account/quota requests returned internal protocol errors; they must not
+be mistaken for unavailable credentials. The read-only preflight probe uses an ephemeral private
+Codex home with a symlink to existing user authentication when file-backed, and
+a writable temporary SQLite home. It copies no credential content, makes no new
+key and removes its temporary home after process cleanup.
+
+The root integration separately verified the existing systemd-delivered tracker
+credential can access the OffMenu project, and assigned the dedicated label to
+`UIF-90`. The launcher accepts either the selected runtime environment variable
+or the service manager's injected `linear-api-key` credential; it never reads the
+`/etc` credential source directly or stores a token in a workflow/receipt. Runtime
+logs and checkpoints remain private outside the checkout. Do not print them
+wholesale without sanitization.
+
+Safe local commands before a coding run:
+
+```sh
+.venv-delivery/bin/python -m unittest discover -s tests/delivery -p test_symphony.py -v
+python3 dev/delivery/symphony_launch.py preflight
+python3 dev/delivery/symphony_launch.py preflight --probe
+```
+
+`prepare` and `run` require an explicit private runtime path and selected model.
+They refuse tracked-dirty source, a wrong branch or an altered native escript.
+A runtime configuration becomes executable only through an explicit `run` with
+already established inference authority; no background service is registered.
+A run must be followed by source/test evidence review and exact outcome
+reconciliation, not a claim of completion based on the job starting.
+
+The coding-run launcher leaves the existing default user authentication route
+unchanged and sets only `CODEX_SQLITE_HOME` to owned runtime state. It does not
+copy or symlink authentication for a coding run. The root integration confirmed
+the existing included ChatGPT Pro route for this explicitly authorized finite
+coding task; no new paid API provider or key is required. Exact launch after a
+clean source commit, from the already credential-injected process:
+
+```sh
+python3 dev/delivery/symphony_launch.py run --runtime /home/user/src/offmenu-data/runtime/symphony-uif90-20261029 --model gpt-6.1-sol --inference-authorized --duration-seconds 180
+```
+
+The launcher stops its owned process group when the first native after-run hook
+produces a completion marker. Review the resulting clone diff and focused tests;
+`accepted_delivery` remains false in the process receipt until that review.

@@ -355,7 +355,7 @@ class AlternativeLookupTests(unittest.TestCase):
 
     def test_schema_accepts_only_typed_canonical_conditions(self):
         import jsonschema
-        schema=json.loads((ROOT.parent/'corpus/common-data.schema.json').read_text())
+        schema=json.loads((ROOT.parent.parent/'corpus/common-data.schema.json').read_text())
         validator=jsonschema.Draft202012Validator({'$ref':'#/$defs/relation','$defs':schema['$defs']})
         p,q,s=alternative_fixture();edge=next(e for e in p['common']['relations'] if e['id']=='maps')
         validator.validate(edge)

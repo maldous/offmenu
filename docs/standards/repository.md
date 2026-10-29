@@ -1,4 +1,4 @@
-# Repository standard 1.0.0
+# Repository standard 1.1.0
 
 Status: adopted for the delivery-standardization feature branch; promotion to
 `develop` requires review. The machine-readable contract is
@@ -28,7 +28,8 @@ Use the following layout for new work:
 | `docs/standards/`, `docs/adr/` | Current standards and reasoned changes. |
 | `docs/` | Maintainer guides and explicitly historical evidence. |
 | `examples/` | Small authored offline examples safe to redistribute. |
-| `dev/`, `auth-source-preparation/`, `private-product-lookup/`, `manual-action/` | Existing distinct integration or source-processing seams; no new unrelated work belongs here. |
+| `dev/`, `auth-source-preparation/`, `private-product-lookup/` | Existing distinct integration seams; no new unrelated work belongs here. |
+| `tools/source-processing/`, `docs/source-processing/` | Source-processing tools and their current guides, migrated together with their consumers. |
 | `corpus/`, `research/`, `migration/` | Existing provenance and migration material; read status before reuse. |
 
 Generated `dist/`, `node_modules/`, `.venv/`, `*.egg-info/` and Python caches are
@@ -58,12 +59,12 @@ Do not reformat unrelated files. Python tests use `unittest`; JavaScript tests
 use `node:test`. Check the smallest materially affected command surface, then
 expand only for dependencies or failures. Installation alone is not validation.
 
-The explicit `legacy_paths` list records existing naming debt. It allows
+The explicit `legacy_paths` list records exact compatibility and provenance exceptions, each classified in `legacy_exception_reasons`. The 1.1 review migrated nine avoidable guide names, recognizes four legitimate private Python module names and the required Netlify `_headers` filename, and retains 71 published command paths and 52 historical/imported identities for stated reasons. See [root disposition](../development/root-layout.md). It allows
 incremental compliance without falsely asserting old material has been fixed.
 New violations cannot be added silently to that list. A migration must update
 consumers, imports, build/package/routing references and selected tests together.
 Do not rewrite dated provenance references as if the original evidence used a
-new path. A baseline exception never authorizes new copies of that name.
+new path. A baseline exception never authorizes new copies of that name. Private Python modules may have one leading underscore. Established Python command files retain their exact published paths as explicitly enumerated exceptions; new importable modules use snake case.
 
 ## Branch and merge discipline
 

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {evaluateLabelScenario, SCENARIO_VERSION} from '../../manual-action/gold_recipe_label_scenario.mjs';
+import {evaluateLabelScenario, SCENARIO_VERSION} from '../../tools/source-processing/gold-recipe-label-scenario.mjs';
 
 const selected = {databaseSha256: 'a'.repeat(64), admissionSha256: 'b'.repeat(64)};
 const support = (kind, target, scope) => [{target_kind: kind, target_id: target,

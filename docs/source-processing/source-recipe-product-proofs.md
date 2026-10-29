@@ -165,7 +165,7 @@ normalization, no fileLF. Raw artifact SHA deliberately includes its original LF
 Run the generated-only tests from the assigned worktree:
 
 ```sh
-python3 -B -m unittest discover -s manual-action/tests -p test_source_recipe_product_proofs.py -v
+python3 -B -m unittest discover -s tools/source-processing/tests -p test_source_recipe_product_proofs.py -v
 ```
 
 The27 reviewed vectors are exercised as5 positive,13 historical-negative,

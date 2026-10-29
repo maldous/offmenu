@@ -100,7 +100,7 @@ SQLite `mode=ro&immutable=1`, rejects sidecars and checks hashes after closing.
 An accepted-looking JSON document does not independently grant source authority.
 
 ```sh
-python3 -B manual-action/gold_generated_menu.py --admission /absolute/admission.json --admission-sha256 OWNER_PIN --group /absolute/generated-group.json
+python3 -B tools/source-processing/gold_generated_menu.py --admission /absolute/admission.json --admission-sha256 OWNER_PIN --group /absolute/generated-group.json
 ```
 
 Defaults cap eight members, 2,000 returned SQL rows, 1 MiB output, 8 MiB source

@@ -59,4 +59,4 @@ def check(root):
         if path.startswith(('tests-web/', 'tests-edge/', 'tests-compat/')):
             errors.append({'path': path, 'rule': 'retired-test-root'})
     return {'standard_version': policy['version'], 'status': 'passed' if not errors else 'failed',
-            'checked_paths': len(set(paths)), 'legacy_debt': len(legacy), 'errors': errors}
+            'checked_paths': len(set(paths)), 'legacy_exceptions': len(legacy), 'errors': errors}

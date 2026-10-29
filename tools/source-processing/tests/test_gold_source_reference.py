@@ -352,7 +352,7 @@ class GoldSourceReferenceTests(unittest.TestCase):
             {'kind': 'null', 'value': None},
             {'kind': 'structure', 'fields': {'amount': {'kind': 'identifier', 'value': '999'}}},
         ]
-        common = json.loads((ROOT.parent / 'corpus/common-data.schema.json').read_text())
+        common = json.loads((ROOT.parent.parent / 'corpus/common-data.schema.json').read_text())
         for value in values:
             with self.subTest(kind=value['kind']):
                 p, q = source_reference_fixture(identity_only=True)
@@ -496,7 +496,7 @@ class GoldSourceReferenceTests(unittest.TestCase):
             self.assertEqual({o['occurrence_id']: o['source_original'] for o in p['occurrences']}, originals)
 
     def test_application_binding_schema_accepts_exact_source_and_legacy_shapes_only(self):
-        app = json.loads((ROOT / 'gold-application.schema.json').read_text()); common = json.loads((ROOT.parent / 'corpus/common-data.schema.json').read_text())
+        app = json.loads((ROOT / 'gold-application.schema.json').read_text()); common = json.loads((ROOT.parent.parent / 'corpus/common-data.schema.json').read_text())
         props = app['properties']['qualifications']['properties']; p, q = source_reference_fixture()
         for key in ['source_reference_identifier_bindings', 'observation_basis_bindings']:
             schema = copy.deepcopy(props[key]); schema['$defs'] = common['$defs']

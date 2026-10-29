@@ -1,7 +1,7 @@
 """Bounded, pure comparison of caller-qualified historical compatibility evidence.
 
 There is deliberately no authority loader or runtime activation path here.
-See SOURCE-RECIPE-PRODUCT-PROOFS.md for the caller's trust obligations.
+See docs/source-processing/source-recipe-product-proofs.md for the caller's trust obligations.
 """
 from dataclasses import dataclass
 import hashlib

@@ -15,7 +15,7 @@ from source_reference_fixture_cases import (
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('source_reference_preparation_gold', ROOT / 'gold_builder.py')
 gold = importlib.util.module_from_spec(spec); spec.loader.exec_module(gold)
-COMMON = json.loads((ROOT.parent / 'corpus/common-data.schema.json').read_text())
+COMMON = json.loads((ROOT.parent.parent / 'corpus/common-data.schema.json').read_text())
 
 
 class SourceReferenceFixtureContractTests(unittest.TestCase):

@@ -24,3 +24,5 @@ netlify-return/i18n.js
 
 # Private graph checkpoints, task logs and local acceptance receipts
 .delivery/
+
+.venv-delivery/

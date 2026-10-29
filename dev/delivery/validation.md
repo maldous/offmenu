@@ -37,9 +37,9 @@ Not passed or not performed:
   dependency change was bundled with the migration.
 - Frozen scanner/UI and other application branch work remains unqualified.
   Local WASM tests do not establish scanner UI acceptance.
-- Windmill adapter is tested locally; no live installation or job was claimed.
-  The connected Windmill workspace was read as `offmenu`; the connection is
-  advertised as read-only. Existing host runtime files remain preserved.
+- The new adapter is tested locally. The existing deployed Windmill SSH bridge
+  subsequently executed the live standard check successfully (receipt below);
+  no replacement bridge installation was necessary. Existing runtime files remain preserved.
 - Symphony workflow is bound to the actual OffMenu Linear project/issue IDs
   and parses against the installed bundle, but admission remains disabled.
   The local process lacks `OFFMENU_LINEAR_API_KEY` and `LINEAR_API_KEY`.
@@ -50,3 +50,28 @@ The local graph demonstration uses a generated private task pinned to the source
 commit, pauses after standards, resumes from SQLite in another process, verifies
 checks and declared hashes, and reenters without replay. Its receipt remains
 under ignored `.delivery/`; publish only sanitized hashes/status as evidence.
+
+## Second implementation checkpoint
+
+Standard 1.1.0 removes the manual-action root by grouping 42 tools/schemas/tests
+under tools/source-processing and nine renamed guides under docs/source-processing.
+384 Python and10 JavaScript scenario tests pass. A dedicated verifier checks51
+relocated files,35 parsed Python modules, six unchanged native fixtures and two
+schema consumer references. One existing filesystem timestamp test initially
+flaked, then passed unchanged in the final full tool suite and original baseline.
+
+A fresh ignored project-local .venv-delivery was installed from41 pinned packages,
+verified for exact installed versions and pip dependency consistency, then passed
+all28 delivery tests. scripts/bootstrap_delivery.py is the supported bootstrap.
+
+Existing Windmill route: u/admin/foo_jobs_20261027 in workspace offmenu,
+logical job offmenu-standardization-20261029-v2. Windmill run
+01a18681-71f9-788b-a64d-2f56da95a645 executed the standard check through
+the approved SSH jail /offmenu: admitted=true, succeeded, exit0,
+child_tree_gone=true, reconcile_required=false. Runner SHA256
+2ae57cc8edc66d9b56f43ad26dd8871fda155d23e50563988d3b0cac89d21674.
+The preceding same-ID status established not_found before submission.
+
+An isolated transient systemd user process injected the existing tracker
+credential using LoadCredential and verified read access to the exact OffMenu
+project UUID. No credential was printed or persisted, and CIX was unchanged.

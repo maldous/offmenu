@@ -33,7 +33,7 @@
           ]
         },
         "common": {
-          "$ref": "../corpus/common-data.schema.json"
+          "$ref": "../../corpus/common-data.schema.json"
         },
         "watermark": {
           "type": "object",
@@ -193,7 +193,7 @@
                 "minLength": 1
               },
               "basis": {
-                "$ref": "../corpus/common-data.schema.json#/$defs/quantity"
+                "$ref": "../../corpus/common-data.schema.json#/$defs/quantity"
               },
               "evidence_sha256": {
                 "type": "string",

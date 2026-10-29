@@ -302,7 +302,7 @@ current-versus-historical navigation are in the [docs index](README.md).
 For the actual operation contracts, see [source acceptance](source-acceptance-contract.md),
 [refresh and acquisition](refresh-acquisition-contract.md),
 [local ingredient ingestion](ingredient-ingestion.md), and the source-only
-[barcode](../manual-action/GOLD-BARCODE-LOOKUP.md) and
-[literal-facts](../manual-action/SOURCE-RECIPE-LITERAL-FACTS.md) interfaces.
+[barcode](source-processing/gold-barcode-lookup.md) and
+[literal-facts](source-processing/source-recipe-literal-facts.md) interfaces.
 Collection, normalization, publication and deployment use their selected owner,
 input manifest, review and finite limits; they are not onboarding smoke tests.
