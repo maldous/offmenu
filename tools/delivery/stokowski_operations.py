@@ -22,6 +22,9 @@ BASE_URL = 'https://windmill.aldous.info'
 POLICY = Path(__file__).with_name('capacity-policy.json')
 PROFILES = {'delivery-suite':['.venv-delivery/bin/python','-m','unittest','discover','-s','tests/delivery','-q']}
 TERMINAL = {'succeeded','failed','cancelled','refused','quarantined'}
+# The reviewed computation timeout is 180s; allow 30s for wrapper completion.
+# This only admits a status observation, never replacement computation.
+WRAPPER_GRACE_SECONDS = 210
 
 
 class OperationError(RuntimeError):
@@ -261,12 +264,27 @@ class Journal:
                     # subprocess stopped. Keep ownership until its receipt does.
                     state['status'] = 'cancel-requested'
                     self.save(key,state,'awaiting-backend-termination')
-                    return state
+                    # Keep the same cancellation intent and backend identity.
+                    # An old running wrapper can still mask stopped Foo work.
                 if remote.get('type','').lower() != 'completedjob':
-                    state['status'] = 'running' if remote.get('running') else 'queued'
+                    state['status'] = ('cancel-requested' if state['cancel_requested'] else
+                                       ('running' if remote.get('running') else 'queued'))
+                    now = time.time()
+                    if not remote.get('running'):
+                        state.pop('wrapper_observed_at', None)
+                    since = state.setdefault('wrapper_observed_at', now) if remote.get('running') else now
                     self.save(key,state,'observed-'+state['status'])
-                    return state
-                result = remote.get('result')
+                    # Queued work has not necessarily started. A grace expiry
+                    # is not proof of failure, completion or permission to retry.
+                    if not remote.get('running') or now - since < WRAPPER_GRACE_SECONDS:
+                        return state
+                    state['wrapper_stale'] = True
+                    self.save(key,state,'stale-wrapper-backend-observation')
+                    result = await self.backend_observation(key,spec,state,transport)
+                    if result is None:
+                        return state
+                else:
+                    result = remote.get('result')
                 if (not isinstance(result,dict) or not isinstance(result.get('receipt'),dict)
                     or result['receipt'].get('status') not in ('succeeded','failed','timed_out','cancelled')):
                     # A failed Windmill wrapper may still have a fully reconciled
@@ -282,7 +300,8 @@ class Journal:
                 receipt = result.get('receipt',{})
                 status = receipt.get('status')
                 expected = bridge_arguments(spec)
-                bound = (receipt.get('command_sha256') == hashlib.sha256(expected['command'].encode()).hexdigest()
+                bound = (receipt.get('job_id') == state['logical_job_id']
+                         and receipt.get('command_sha256') == hashlib.sha256(expected['command'].encode()).hexdigest()
                          and receipt.get('runner_sha256') == spec['runner_sha256']
                          and receipt.get('capacity_policy_sha256') == spec['policy_sha256'])
                 if status == 'succeeded' and (bound
@@ -341,6 +360,8 @@ class Journal:
             # submission. Persist the next observer's identity before use.
             state['observation_sequence'] = sequence+1
             state['observation_intent'] = False
+            # Re-arm the finite grace rather than submit status work every tick.
+            state['wrapper_observed_at'] = time.time()
             self.save(key,state,'backend-still-running')
             return None
         return value

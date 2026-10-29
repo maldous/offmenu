@@ -30,6 +30,11 @@ and child commands, even if a developer's shell enables it.
 
 ## Reviewed task contract
 
+Use the [routing and tracking runbook](../../docs/development/task-routing.md)
+to select an execution lane, retain one operation owner and link its evidence.
+The [validation handoff example](../../examples/validation-handoff.json) is
+schema-valid illustrative input, not an admitted or executable production task.
+
 Create a task JSON under ignored `.delivery/` with `version:1`, a lowercase hyphenated
 `id`, `owner`, `purpose`, immutable `base_revision` (40-character HEAD SHA), an optional explicit `branch` (the generated task includes it),
 `checks:[{id,argv,timeout,attempts,retry_safe}]` and
@@ -42,8 +47,19 @@ The standards document and ADR describe how to discover and evolve standards.
 ```sh
 .venv-delivery/bin/python -m offmenu.delivery run .delivery/accepted-layout.json --pause-after standards
 .venv-delivery/bin/python -m offmenu.delivery status .delivery/accepted-layout.json
+.venv-delivery/bin/python -m offmenu.delivery inspect .delivery/accepted-layout.json
 .venv-delivery/bin/python -m offmenu.delivery run .delivery/accepted-layout.json
 ```
+
+`status` returns historical receipts. `inspect` adds a versioned, read-only JSON
+observation of the recorded acceptance, current declared output hashes, selected
+revision/branch, command states needing reconciliation, cancellation and checkpoint
+availability. It neither takes the writer lock nor opens the checkpoint database,
+retries commands or changes receipts. A zero exit means inspection completed;
+inspect `outputs_match`, `identity_matches`, `reconciliation_required` and `reasons`.
+This is not an atomic snapshot of a running writer, does not revalidate source or
+execution evidence, and does not authorize resume, merge or deployment. Use the
+existing runner/reconciliation flow for those decisions.
 
 Create the local validation task with `python -m offmenu.delivery prepare --task-id accepted-layout --owner YOUR-NAME`, then inspect its JSON before running it. The generated task verifies the delivered standard and tests; it does not generate arbitrary application changes.
 
@@ -110,6 +126,18 @@ raises failed/blocked outcomes so Windmill cannot interpret transport success as
 accepted delivery. The local writer lock supplies admission without depending on
 Windmill enterprise concurrency features. Existing platform job supervision and
 storage remain separate; this runner does not replace their capacity/backup claims.
+
+The Stokowski operation journal observes a running API wrapper for a finite 210s
+grace (180s reviewed computation timeout plus 30s wrapper completion). A stale
+wrapper permits only the existing status-only backend observation with its
+original logical job identity, never a computation resubmit. Terminal acceptance
+still requires the bound command/runner/policy and stopped child tree. A live
+backend rearms the grace; missing or refused observations retain uncertainty.
+Cancellation continues through the original backend control intent. Existing
+operations remain bound to their reviewed executor hash; do not silently migrate
+their IDs/specs to a new executor. These hooks require an admitted stage invocation;
+they do not add continuous supervision, voice intake or native approval/session
+continuation APIs. A 403 is a refusal, not evidence of a pending approval.
 
 ## Existing Windmill bridge and separate execution identity
 

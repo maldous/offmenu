@@ -8,6 +8,7 @@ import tempfile
 import subprocess
 import shlex
 import unittest
+from unittest.mock import patch
 
 TOOLS = Path(__file__).resolve().parents[2]/'tools/delivery'
 sys.path.insert(0,str(TOOLS))
@@ -186,6 +187,108 @@ class OperationRecoveryTests(unittest.TestCase):
         self.remote.complete(observer_id,self.spec,'failed')
         self.assertEqual(self.tick()['status'],'failed')
         self.assertEqual(len([a for _,a in self.remote.submissions if a['action']=='run']),1)
+
+    def stale_observer(self):
+        self.now = 1000
+        self.clock = patch.object(operations.time, 'time', side_effect=lambda:self.now)
+        self.clock.start()
+        self.addCleanup(self.clock.stop)
+        state = self.tick()
+        self.tick()  # First actual running observation starts the durable grace.
+        self.now += operations.WRAPPER_GRACE_SECONDS + 1
+        stale = self.tick()
+        self.assertTrue(stale['wrapper_stale'])
+        observer_id,args = self.remote.submissions[-1]
+        self.assertEqual(args, operations.bridge_arguments(self.spec,'status'))
+        self.assertEqual(stale['windmill_job_id'], state['windmill_job_id'])
+        return state['windmill_job_id'], observer_id
+
+    def test_stale_running_wrapper_recovers_terminal_backend_without_computation_replay(self):
+        original, observer = self.stale_observer()
+        self.remote.complete(observer,self.spec)
+        recovered = self.tick()
+        self.assertEqual(recovered['status'],'succeeded')
+        self.assertEqual(recovered['accepted_output_sha256'],self.spec['outputs'])
+        self.assertEqual(self.remote.jobs[original]['type'],'QueuedJob')
+        self.assertTrue(self.remote.jobs[original]['running'])
+        self.assertEqual(len([a for _,a in self.remote.submissions if a['action']=='run']),1)
+        self.assertEqual(len([a for _,a in self.remote.submissions if a['action']=='status']),1)
+        before = copy.deepcopy(self.remote.submissions)
+        self.assertEqual(self.tick(), recovered)
+        self.assertEqual(self.remote.submissions,before)
+
+    def test_grace_and_queue_never_authorize_early_backend_observation(self):
+        state = self.tick()
+        with patch.object(operations.time,'time',return_value=1000):
+            self.tick()
+        with patch.object(operations.time,'time',return_value=1000+operations.WRAPPER_GRACE_SECONDS-1):
+            self.assertEqual(self.tick()['status'],'running')
+        self.remote.jobs[state['windmill_job_id']]['running'] = False
+        with patch.object(operations.time,'time',return_value=10000):
+            self.assertEqual(self.tick()['status'],'queued')
+        self.assertEqual(len(self.remote.submissions),1)
+
+    def test_stale_backend_receipt_mismatch_or_incomplete_cleanup_stays_unknown(self):
+        _,observer = self.stale_observer()
+        self.remote.complete(observer,self.spec)
+        valid = copy.deepcopy(self.remote.jobs[observer]['result'])
+        for field,value in [('job_id','offmenu-'+'0'*48),('command_sha256','0'*64),('runner_sha256','0'*64),
+                            ('capacity_policy_sha256','0'*64),('child_tree_gone',False),
+                            ('reconcile_required',True)]:
+            result = copy.deepcopy(valid)
+            result['receipt'][field] = value
+            self.remote.jobs[observer]['result'] = result
+            state = self.tick()
+            self.assertEqual(state['status'],'unknown',field)
+            self.assertEqual(state['accepted_output_sha256'],{},field)
+        self.assertEqual(len([a for _,a in self.remote.submissions if a['action']=='run']),1)
+
+    def test_stale_observer_unavailable_or_missing_never_resubmits_computation(self):
+        _,observer = self.stale_observer()
+        before = copy.deepcopy(self.remote.submissions)
+        self.remote.offline = True
+        self.assertEqual(self.tick()['deferred'],'service-unavailable')
+        self.remote.offline = False
+        del self.remote.jobs[observer]
+        self.assertEqual(self.tick()['status'],'unknown')
+        self.assertEqual(self.remote.submissions,before)
+
+    def test_live_backend_observation_rearms_grace_instead_of_poll_job_flood(self):
+        _,observer = self.stale_observer()
+        self.remote.complete(observer,self.spec)
+        self.remote.jobs[observer]['result']['receipt']['status'] = 'running'
+        self.assertEqual(self.tick()['status'],'running')
+        before = copy.deepcopy(self.remote.submissions)
+        self.now += 1
+        self.tick()
+        self.assertEqual(self.remote.submissions,before)
+        self.now += operations.WRAPPER_GRACE_SECONDS
+        self.tick()
+        self.assertEqual(len(self.remote.submissions),len(before)+1)
+        self.assertEqual(self.remote.submissions[-1][1]['action'],'status')
+
+    def test_stale_cancel_keeps_original_cancel_and_accepts_only_stopped_backend(self):
+        original,observer = self.stale_observer()
+        self.journal.cancel(self.key)
+        self.remote.complete(observer,self.spec,'cancelled')
+        state = self.tick()
+        self.assertEqual(state['status'],'cancelled')
+        self.assertTrue(state['cancel_requested'])
+        self.assertEqual(state['windmill_job_id'],original)
+        self.assertEqual(len([a for _,a in self.remote.submissions if a['action']=='cancel']),1)
+        self.assertEqual(len([a for _,a in self.remote.submissions if a['action']=='run']),1)
+
+    def test_stale_status_submit_refusal_is_unknown_effect_not_approval(self):
+        state = self.tick()
+        with patch.object(operations.time,'time',return_value=1000):
+            self.tick()
+        self.remote.refused = True
+        with patch.object(operations.time,'time',return_value=1000+operations.WRAPPER_GRACE_SECONDS+1):
+            result = self.tick()
+        self.assertEqual(result['status'],'unknown')
+        self.assertNotIn('approval',result['status'])
+        self.assertEqual(result['windmill_job_id'],state['windmill_job_id'])
+        self.assertEqual(len(self.remote.submissions),1)
 
     def test_output_and_profile_schema_reject_private_paths_and_shell_commands(self):
         for outputs in ({'data/private.json':'a'*64},{'tests/../data/private.json':'a'*64}):
