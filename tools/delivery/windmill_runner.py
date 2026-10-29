@@ -87,7 +87,7 @@ def validate_resources(value, mode, scope=Path('/offmenu')):
     # A pooled writer must not modify the shared coordinator itself.
     control = scope / 'data/.offmenu-platform'
     protected = [control / name for name in ('locks', 'jobs', 'checkpoints')]
-    protected += [scope / 'scripts/windmill']
+    protected += [scope / 'scripts/windmill', scope / 'tools/delivery']
     if any(overlap(p, q) for p in value['write_roots'] for q in protected):
         raise ValueError('CapacityCoordinatorWrite')
     return value

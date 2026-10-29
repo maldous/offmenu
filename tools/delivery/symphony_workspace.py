@@ -9,10 +9,10 @@ import sys
 import time
 try:
     from .symphony_capacity import AdmissionError, BRANCH, Pool, host_snapshot, overlap
-    from .symphony_tasks import load_manifest, task_for_workspace, manifest_digest
+    from .symphony_tasks import load_manifest, task_for_workspace, manifest_digest, runtime_lease_ids
 except ImportError:
     from symphony_capacity import AdmissionError, BRANCH, Pool, host_snapshot, overlap
-    from symphony_tasks import load_manifest, task_for_workspace, manifest_digest
+    from symphony_tasks import load_manifest, task_for_workspace, manifest_digest, runtime_lease_ids
 
 ISSUE='UIF-90'  # Compatibility hook only; manifest mode has no fixed issue limit.
 
@@ -72,7 +72,8 @@ def main():
         result={'issue':workspace.name,'source_head':args.head,'attempt_ended':True,'accepted_delivery':False,'scope_violations':outside,'process_tree_gone':not processes}
         if manifest:
             pool=Pool(json.loads((runtime/'capacity-policy.json').read_text())['symphony']['pool_path'],json.loads((runtime/'capacity-policy.json').read_text()))
-            lease=json.loads(marker.read_text())['lease_id']
+            lease=runtime_lease_ids(runtime,manifest)[workspace.name]
+            if json.loads(marker.read_text())['lease_id'] != lease:raise AdmissionError('Runtime lease identity mismatch; reconcile')
             if not processes:pool.finish(lease,True,'failed' if outside else 'stopped')
             else:result['reconcile_required']=True
         checkpoint(finished,result);return
@@ -83,8 +84,8 @@ def main():
         if (runtime/'cancel.json').exists():raise SystemExit('Runtime cancellation requested')
         if manifest:
             policy=json.loads((runtime/'capacity-policy.json').read_text());provider=json.loads((runtime/'provider-proof.json').read_text());pool=Pool(policy['symphony']['pool_path'],policy)
-            lease=runtime.name+'-'+workspace.name
-            binding={'branch':BRANCH,'head':args.head,'owner':task['owner'],'write_roots':task['allowed_paths'],'resources':task['resources'],'task_sha256':manifest_digest(dict(manifest_sha256=manifest_digest(manifest),task=task))}
+            lease=runtime_lease_ids(runtime,manifest)[workspace.name]
+            binding={'branch':BRANCH,'head':args.head,'owner':task['owner'],'write_roots':task['allowed_paths'],'resources':task['resources'],'task_sha256':manifest_digest(dict(runtime=str(runtime),manifest_sha256=manifest_digest(manifest),task=task))}
             admitted=pool.admit(lease,binding,provider,host_snapshot(runtime))
             if admitted.get('reused'):raise SystemExit('Existing lease requires outcome reconciliation before another coding attempt')
             old['lease_id']=lease

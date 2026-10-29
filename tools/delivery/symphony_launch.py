@@ -13,21 +13,22 @@ import subprocess
 import sys
 import tempfile
 import time
+from time import monotonic
 import urllib.request
 
 if __package__:
     from .symphony_protocol import BINARY, probe
     from .symphony_codex import isolated_codex_environment
-    from .symphony_tasks import load_manifest, manifest_digest
+    from .symphony_tasks import load_manifest, manifest_digest, runtime_lease_ids
     from .symphony_capacity import Pool
-    from .symphony_workspace import workspace_processes
+    from .symphony_workspace import workspace_processes, checkpoint
     from .windmill_runner import cleanup as cleanup_owned_tree
 else:
     from symphony_protocol import BINARY, probe
     from symphony_codex import isolated_codex_environment
-    from symphony_tasks import load_manifest, manifest_digest
+    from symphony_tasks import load_manifest, manifest_digest, runtime_lease_ids
     from symphony_capacity import Pool
-    from symphony_workspace import workspace_processes
+    from symphony_workspace import workspace_processes, checkpoint
     from windmill_runner import cleanup as cleanup_owned_tree
 
 BUNDLE = Path('/home/user/.local/share/cix/symphony/0c01ff0975da80ded7044a5ad76a44ac87053670-d215a99ac5a44941')
@@ -188,6 +189,81 @@ def native_outcome(runtime, issue_ids=None):
     return 'unknown'
 
 
+def write_provider_proof(runtime, proof):
+    checkpoint(Path(runtime)/'provider-proof.json', proof)
+
+
+def cancel_runtime_leases(runtime, manifest, policy):
+    selected = set(runtime_lease_ids(runtime, manifest).values())
+    pool = Pool(policy['symphony']['pool_path'], policy)
+    for row in pool.status():
+        if row['id'] in selected and row['status'] in ('running', 'uncertain'):
+            pool.cancel(row['id'])
+
+
+def reconcile_runtime_leases(runtime, manifest, policy, tree_gone):
+    selected = {lease: name for name, lease in runtime_lease_ids(runtime, manifest).items()}
+    pool = Pool(policy['symphony']['pool_path'], policy)
+    unresolved = []
+    for row in pool.status():
+        if row['id'] not in selected or row['status'] in ('finished', 'failed'):
+            continue
+        name = selected[row['id']]
+        if tree_gone and not workspace_processes(runtime/'workspaces'/name):
+            pool.finish(row['id'], True, 'cancelled' if (runtime/'cancel.json').exists() else 'failed')
+        else:
+            unresolved.append(name)
+    return unresolved
+
+
+def supervise_native(process, runtime, manifest, policy, receipt, model, duration_seconds,
+                     clock=monotonic):
+    """Always reap owned children before leaving the isolated auth context."""
+    timed_out = False
+    attempt_finished = False
+    outcome = 'unknown'
+    finished = [runtime/'workspaces'/(name.lower()+'-run-finished.json')
+                for name in manifest['tasks']]
+    try:
+        deadline = clock()+duration_seconds
+        refreshed = clock()
+        while process.poll() is None and clock()<deadline:
+            if (runtime/'cancel.json').exists():
+                break
+            if clock()-refreshed > 60:
+                proof = provider_proof(model, policy['symphony']['provider_session_ceiling'])
+                write_provider_proof(runtime, proof)
+                refreshed = clock()
+            if all(p.exists() for p in finished):
+                attempt_finished = True
+                break
+            time.sleep(0.5)
+        if process.poll() is None:
+            raise subprocess.TimeoutExpired(process.args, duration_seconds)
+    except (subprocess.TimeoutExpired, KeyboardInterrupt):
+        timed_out = not attempt_finished
+    except BaseException as error:
+        receipt['supervisor_error_type'] = type(error).__name__
+        raise
+    finally:
+        # Provider RPC, filesystem, clock and other failures all pass here while
+        # the caller still owns its isolated authentication context.
+        try:
+            tree_gone = cleanup_owned_tree(process)
+        except BaseException as error:
+            tree_gone = False
+            receipt['cleanup_error_type'] = type(error).__name__
+        receipt['owned_process_tree_gone'] = tree_gone
+        receipt['unresolved_resource_leases'] = reconcile_runtime_leases(
+            runtime, manifest, policy, tree_gone)
+        outcome = native_outcome(runtime, [task['issue_id'] for task in manifest['tasks'].values()])
+        receipt.update(native_outcome=outcome, native_service_started=True,
+                       exit_code=process.poll(), finite_deadline_or_interrupt=timed_out,
+                       coding_attempt_ended=attempt_finished, accepted_delivery=False)
+        checkpoint(runtime/'process-receipt.json', receipt)
+    return outcome, timed_out
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=['preflight','prepare','run','cancel'])
@@ -211,8 +287,7 @@ def main():
         (runtime/'cancel.json').write_text(json.dumps({'requested_at': time.time()})+'\n')
         policy = json.loads((runtime/'capacity-policy.json').read_text())
         pool = Pool(policy['symphony']['pool_path'], policy)
-        for row in pool.status():
-            if row['id'].startswith(runtime.name+'-') and row['status']=='running': pool.cancel(row['id'])
+        cancel_runtime_leases(runtime, load_manifest(runtime/'tasks.json'), policy)
         print(json.dumps({'status':'cancellation_requested','runtime':str(runtime),'process_tree_gone':False}))
         return 0
     if not args.runtime or not args.model:
@@ -235,7 +310,7 @@ def main():
     receipt.update(tracker_manifest_preflight(environment, manifest))
     proof = provider_proof(args.model, policy['symphony']['provider_session_ceiling'])
     if not proof['available']: raise RuntimeError('Existing Codex session route/model unavailable')
-    (runtime/'provider-proof.json').write_text(json.dumps(proof)+'\n')
+    write_provider_proof(runtime, proof)
     environment['ERL_ROOTDIR'] = str(BUNDLE/'otp')
     environment['ERL_FLAGS'] = '+S 2:2'
     environment['OFFMENU_SYMPHONY_PROJECT_ID'] = PROJECT_ID
@@ -249,47 +324,13 @@ def main():
             if __import__('ctypes').CDLL(None,use_errno=True).prctl(36,1,0,0,0) != 0:
                 raise RuntimeError('Owned process subreaper unavailable')
             process = subprocess.Popen(command, env=environment, stdout=logs, stderr=subprocess.STDOUT, start_new_session=True)
-            timed_out = False
-            attempt_finished = False
-            try:
-                deadline = time.monotonic()+args.duration_seconds
-                refreshed = time.monotonic()
-                while process.poll() is None and time.monotonic()<deadline:
-                    if (runtime/'cancel.json').exists(): break
-                    if time.monotonic()-refreshed > 60:
-                        proof = provider_proof(args.model, policy['symphony']['provider_session_ceiling'])
-                        (runtime/'provider-proof.json').write_text(json.dumps(proof)+'\n'); refreshed = time.monotonic()
-                    if all(p.exists() for p in finished):
-                        attempt_finished = True
-                        break
-                    time.sleep(0.5)
-                if process.poll() is None:
-                    raise subprocess.TimeoutExpired(command, args.duration_seconds)
-                code = process.returncode
-            except (subprocess.TimeoutExpired, KeyboardInterrupt):
-                timed_out = not attempt_finished
-                os.killpg(process.pid, signal.SIGTERM)
-                try:
-                    code = process.wait(timeout=15)
-                except subprocess.TimeoutExpired:
-                    os.killpg(process.pid, signal.SIGKILL)
-                    code = process.wait(timeout=10)
-            tree_gone = cleanup_owned_tree(process)
-            receipt['owned_process_tree_gone'] = tree_gone
-            pool = Pool(policy['symphony']['pool_path'], policy)
-            unresolved = []
-            for row in pool.status():
-                if not row['id'].startswith(runtime.name+'-') or row['status'] in ('finished','failed'): continue
-                name = row['id'][len(runtime.name)+1:]
-                if tree_gone and not workspace_processes(runtime/'workspaces'/name):
-                    pool.finish(row['id'], True, 'cancelled' if (runtime/'cancel.json').exists() else 'failed')
-                else: unresolved.append(name)
-            receipt['unresolved_resource_leases'] = unresolved
-            outcome = native_outcome(runtime, [task['issue_id'] for task in manifest['tasks'].values()])
-            receipt.update({'native_outcome': outcome, 'native_service_started': True, 'exit_code': code, 'finite_deadline_or_interrupt': timed_out, 'coding_attempt_ended': attempt_finished, 'accepted_delivery': False})
-            (runtime/'process-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
+            outcome, timed_out = supervise_native(process, runtime, manifest, policy,
+                                                  receipt, args.model, args.duration_seconds)
             print(json.dumps(receipt))
-    return 0 if outcome == 'normal_turn_completed' and not timed_out else 2
+
+    return 0 if (outcome == 'normal_turn_completed' and not timed_out
+                 and receipt.get('owned_process_tree_gone') is True
+                 and not receipt.get('unresolved_resource_leases')) else 2
 
 
 if __name__ == '__main__':

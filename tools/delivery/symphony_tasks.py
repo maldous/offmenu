@@ -16,6 +16,14 @@ def manifest_digest(manifest):
     return hashlib.sha256(json.dumps(manifest,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 
+def runtime_lease_ids(runtime, manifest):
+    """Select only exact manifest issues in this canonical runtime directory."""
+    identity = {'runtime': str(Path(runtime).resolve()),
+                'manifest_sha256': manifest_digest(manifest)}
+    return {name: 'rt-' + manifest_digest(dict(identity, issue=name))
+            for name in manifest['tasks']}
+
+
 def load_manifest(path,expected_head=None,expected_branch=BRANCH):
     def unique(pairs):
         d={}
