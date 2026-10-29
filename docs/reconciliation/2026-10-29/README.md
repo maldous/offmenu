@@ -24,3 +24,6 @@ Publication receipts bind exact remote refs and member blobs. Workflow blobs rem
 
 
 Latest bounded consolidation checkpoint: see CONSOLIDATION-PROGRESS-BATCH2.json and CLEANUP-RESTORE-MAP-BATCH2.json. Original point-in-time maps and receipts remain historical evidence. Source-only custody worktree locations have changed; SOURCE-BRANCH-WORKTREE-LOCATORS.json records current locations. This remains a coordination/docs branch, not an integrated app release.
+
+
+Developer pickup and the documented nonsecret configuration-name contract: [ONBOARDING.md](ONBOARDING.md), with a fully commented [ONBOARDING.env.example](ONBOARDING.env.example). Neither activates settings or substitutes for the actual browser/Worker preview instructions.
