@@ -42,8 +42,19 @@ The standards document and ADR describe how to discover and evolve standards.
 ```sh
 .venv-delivery/bin/python -m offmenu.delivery run .delivery/accepted-layout.json --pause-after standards
 .venv-delivery/bin/python -m offmenu.delivery status .delivery/accepted-layout.json
+.venv-delivery/bin/python -m offmenu.delivery inspect .delivery/accepted-layout.json
 .venv-delivery/bin/python -m offmenu.delivery run .delivery/accepted-layout.json
 ```
+
+`status` returns historical receipts. `inspect` adds a versioned, read-only JSON
+observation of the recorded acceptance, current declared output hashes, selected
+revision/branch, command states needing reconciliation, cancellation and checkpoint
+availability. It neither takes the writer lock nor opens the checkpoint database,
+retries commands or changes receipts. A zero exit means inspection completed;
+inspect `outputs_match`, `identity_matches`, `reconciliation_required` and `reasons`.
+This is not an atomic snapshot of a running writer, does not revalidate source or
+execution evidence, and does not authorize resume, merge or deployment. Use the
+existing runner/reconciliation flow for those decisions.
 
 Create the local validation task with `python -m offmenu.delivery prepare --task-id accepted-layout --owner YOUR-NAME`, then inspect its JSON before running it. The generated task verifies the delivered standard and tests; it does not generate arbitrary application changes.
 

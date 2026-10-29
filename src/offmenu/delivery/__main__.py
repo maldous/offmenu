@@ -17,7 +17,7 @@ def main():
     prepare = sub.add_parser('prepare')
     prepare.add_argument('--task-id', required=True)
     prepare.add_argument('--owner', required=True)
-    for name in ('run', 'status', 'cancel', 'reconcile'):
+    for name in ('run', 'status', 'inspect', 'cancel', 'reconcile'):
         command = sub.add_parser(name)
         command.add_argument('task', type=Path)
         if name == 'run':
@@ -57,7 +57,10 @@ def main():
             result = discover(root) if args.action == 'discover' else check(root)
         else:
             task = load_task(args.task)
-            if args.action == 'cancel':
+            if args.action == 'inspect':
+                from .status import inspect_task
+                result = inspect_task(root, task)
+            elif args.action == 'cancel':
                 # Cancellation does not wait for the active writer's lock.
                 directory = root / '.delivery' / task['id']
                 if not directory.exists():
