@@ -1,6 +1,6 @@
 # ADR 0006: Reviewed extraction validation and finite refill observations
 
-- Status: proposed standard 2.3.0; not adopted by a source-author claim
+- Status: adopted in standard 2.3.0 through reviewed integration; independent source and real WFP mapping/import validation retained
 - Accepted control baseline: `7780c8602b52e9f2fc7e6a38e5d08d8ad74f09e1`, standard 2.2.0
 - Scope: existing Stokowski operation/stage/worker interfaces and private receipts
 - Predecessors retained: ADR 0004 resource admission and ADR 0005 integration authority

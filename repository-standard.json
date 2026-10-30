@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "version": "2.3.0",
-  "status": "proposed",
+  "status": "adopted",
   "roots": {
     ".agents": {
       "kind": "agent-guidance",

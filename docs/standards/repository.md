@@ -1,7 +1,7 @@
-# Repository standard 2.3.0 candidate
+# Repository standard 2.3.0
 
-Status: proposed extension to accepted standard 2.2.0; independent review and
-canonical integration remain required. Changes enter `develop`
+Status: adopted through reviewed integration after independent source review and
+real retained-extraction validation. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
 [`repository-standard.json`](../../repository-standard.json). This document
 explains decisions; historical handovers do not override it.
