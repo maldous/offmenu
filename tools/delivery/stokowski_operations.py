@@ -39,6 +39,61 @@ class RequestRefused(OperationError):
     pass
 
 
+class RPCIdentityError(OperationError):
+    pass
+
+
+class ToolResultIncompleteError(OperationError):
+    pass
+
+
+class ToolResultTruncatedError(ToolResultIncompleteError):
+    pass
+
+
+class ObservationBindingError(OperationError):
+    pass
+
+
+def safe_diagnosis(error):
+    # Exact types only: never serialize an arbitrary exception name or message.
+    stages = {RPCIdentityError:'rpc-identity',
+              ToolResultIncompleteError:'tool-result-incomplete',
+              ToolResultTruncatedError:'tool-result-truncated',
+              ObservationBindingError:'observation-binding',
+              TransportUnavailable:'transport', RequestRefused:'refusal',
+              OperationError:'protocol', TimeoutError:'transport',
+              ValueError:'protocol', TypeError:'protocol'}
+    kind = type(error)
+    return {'stage':stages.get(kind, 'unknown'),
+            'exception_class':kind.__name__ if kind in stages else 'OtherError'}
+
+
+def observation_matches(remote, job_id, expected):
+    if (not isinstance(remote, dict) or remote.get('id') != job_id or
+        remote.get('workspace_id') != 'offmenu' or remote.get('script_path') != BRIDGE):
+        return False
+    if 'inspect_version' not in remote:
+        return 'args_sha256' not in remote and remote.get('args') == expected
+    from windmill_dispatcher import INSPECT_VERSION, compact_result
+    if (remote.get('inspect_version') != INSPECT_VERSION or 'args' in remote or
+        set(remote) != {'id','workspace_id','script_path','type','running','success',
+                        'inspect_version','args_sha256','result'} or
+        remote.get('args_sha256') != digest(expected) or
+        remote.get('type') not in ('QueuedJob','CompletedJob') or
+        type(remote.get('running')) is not bool or
+        remote['type'] == 'CompletedJob' and
+            (remote['running'] or type(remote['success']) is not bool) or
+        remote['type'] == 'QueuedJob' and remote['success'] is not None):
+        return False
+    try:
+        if compact_result(remote['result']) != remote['result']:
+            return False
+    except (ValueError, TypeError):
+        return False
+    return True
+
+
 def validated(spec):
     fields = {'version','issue_id','issue','stage','head','base','owner','policy_sha256',
               'acceptance_sha256','outputs','profile','runner_sha256','executor_sha256'}
@@ -321,6 +376,11 @@ class Journal:
             db.execute('UPDATE operations SET state=? WHERE key=?',(json.dumps(state,sort_keys=True),key))
             db.execute('INSERT INTO events(key,event,at) VALUES(?,?,?)',(key,event,time.time()))
 
+    def diagnose(self,key,state,event,error):
+        state['diagnosis'] = safe_diagnosis(error)
+        diagnosis = state['diagnosis']
+        self.save(key,state,event+':'+diagnosis['stage']+':'+diagnosis['exception_class'])
+
     def cancel(self,key):
         with self.claim(key):
             _,state = self.read(key)
@@ -343,7 +403,7 @@ class Journal:
                 if remote is None:
                     if state['status'] != 'prepared':
                         state['status'] = 'unknown'
-                        self.save(key,state,'unseen-submission-requires-reconciliation')
+                        self.diagnose(key,state,'unseen-submission-requires-reconciliation',ToolResultIncompleteError())
                         return state
                     if state['cancel_requested']:
                         state['status'] = 'cancelled'
@@ -357,18 +417,16 @@ class Journal:
                     state['status'] = 'submitted'
                     self.save(key,state,'submitted')
                     return state
-                if (remote.get('id') != state['windmill_job_id'] or remote.get('workspace_id') != 'offmenu'
-                    or remote.get('script_path') != BRIDGE or remote.get('args') != bridge_arguments(spec)):
+                if not observation_matches(remote, state['windmill_job_id'], bridge_arguments(spec)):
                     state['status'] = 'quarantined'
-                    self.save(key,state,'remote-binding-conflict')
+                    self.diagnose(key,state,'remote-binding-conflict',ObservationBindingError())
                     return state
                 if state['cancel_requested'] and remote.get('type','').lower() != 'completedjob':
                     control = await transport.inspect(state['cancel_job_id'])
-                    if control is not None and (control.get('id') != state['cancel_job_id']
-                        or control.get('workspace_id') != 'offmenu' or control.get('script_path') != BRIDGE
-                        or control.get('args') != bridge_arguments(spec,'cancel')):
+                    if control is not None and not observation_matches(
+                        control, state['cancel_job_id'], bridge_arguments(spec,'cancel')):
                         state['status'] = 'quarantined'
-                        self.save(key,state,'cancel-binding-conflict')
+                        self.diagnose(key,state,'cancel-binding-conflict',ObservationBindingError())
                         return state
                     if control is None and not state.get('cancel_intent'):
                         state['cancel_intent'] = True
@@ -409,7 +467,7 @@ class Journal:
                         return state
                 if not isinstance(result,dict) or result.get('job_id') != state['logical_job_id']:
                     state['status'] = 'unknown'
-                    self.save(key,state,'wrapper-result-not-backend-proof')
+                    self.diagnose(key,state,'wrapper-result-not-backend-proof',ObservationBindingError())
                     return state
                 receipt = result.get('receipt',{})
                 status = receipt.get('status')
@@ -431,19 +489,23 @@ class Journal:
                 state['receipt_sha256'] = digest(receipt)
                 state['accepted_output_sha256'] = spec['outputs'] if state['status'] == 'succeeded' else {}
                 state['acceptance_sha256'] = spec['acceptance_sha256']
-                self.save(key,state,'observed-'+state['status'])
+                if state['status'] == 'unknown':
+                    error = ObservationBindingError() if not bound else ToolResultIncompleteError()
+                    self.diagnose(key,state,'observed-unknown',error)
+                else:
+                    self.save(key,state,'observed-'+state['status'])
                 return state
-            except TransportUnavailable:
+            except TransportUnavailable as error:
                 # An observation outage changes no operation identity or intent.
-                self.save(key,state,'service-unavailable')
+                self.diagnose(key,state,'service-unavailable',error)
                 return dict(state,deferred='service-unavailable')
-            except RequestRefused:
+            except RequestRefused as error:
                 state['status'] = 'refused' if state['status'] in ('prepared','submit-intent') else 'unknown'
-                self.save(key,state,'authorization-refused-no-protocol-fallback')
+                self.diagnose(key,state,'authorization-refused-no-protocol-fallback',error)
                 return state
-            except Exception:
+            except Exception as error:
                 state['status'] = 'unknown'
-                self.save(key,state,'network-or-protocol-outcome-unknown')
+                self.diagnose(key,state,'network-or-protocol-outcome-unknown',error)
                 return state
 
     async def backend_observation(self,key,spec,state,transport):
@@ -454,16 +516,15 @@ class Journal:
         if observed is None:
             if state.get('observation_intent'):
                 state['status'] = 'unknown'
-                self.save(key,state,'observer-outcome-unknown')
+                self.diagnose(key,state,'observer-outcome-unknown',ToolResultIncompleteError())
                 return None
             state['observation_intent'] = True
             self.save(key,state,'backend-observation-intent')
             await transport.submit(job_id,expected)
             return None
-        if (observed.get('id') != job_id or observed.get('workspace_id') != 'offmenu'
-            or observed.get('script_path') != BRIDGE or observed.get('args') != expected):
+        if not observation_matches(observed, job_id, expected):
             state['status'] = 'quarantined'
-            self.save(key,state,'observer-binding-conflict')
+            self.diagnose(key,state,'observer-binding-conflict',ObservationBindingError())
             return None
         if observed.get('type','').lower() != 'completedjob':
             return None

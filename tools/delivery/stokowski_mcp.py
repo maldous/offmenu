@@ -11,7 +11,8 @@ import re
 import subprocess
 from uuid import UUID
 
-from stokowski_operations import OperationError, RequestRefused, TransportUnavailable
+from stokowski_operations import (OperationError, RequestRefused, TransportUnavailable,
+    RPCIdentityError, ToolResultIncompleteError, ToolResultTruncatedError, ObservationBindingError)
 
 URL = 'https://windmill.aldous.info/api/mcp'
 DISPATCHER = 'u/admin/offmenu_delivery_dispatch'
@@ -43,24 +44,33 @@ def rpc_result(response,request_id):
                     candidates.append(json.loads(line[5:].strip()))
                 except ValueError:
                     pass
-        result = next((x for x in candidates if x.get('id') == request_id),None)
+        result = next((x for x in candidates if isinstance(x,dict) and x.get('id') == request_id),None)
     else:
-        result = response.json()
+        try:
+            result = response.json()
+        except ValueError:
+            raise RPCIdentityError('Invalid MCP JSON') from None
     if not isinstance(result,dict) or result.get('id') != request_id or 'error' in result:
-        raise OperationError('MCP response identity/error')
+        raise RPCIdentityError('MCP response identity/error')
     return result.get('result')
 
 
 def tool_value(result):
     if not isinstance(result,dict) or result.get('isError'):
-        raise OperationError('Typed Windmill MCP call failed')
+        raise ToolResultIncompleteError('Typed Windmill MCP call failed')
     structured = result.get('structuredContent')
     if isinstance(structured,dict) and any(k in structured for k in ('found','submitted','error')):
         return structured
-    for content in result.get('content',[]):
+    truncated = False
+    for content in result.get('content',[]) if isinstance(result.get('content',[]),list) else []:
+        if not isinstance(content,dict):
+            continue
         if content.get('type') != 'text':
             continue
         text = content.get('text','')
+        if not isinstance(text,str):
+            continue
+        truncated |= '(truncated:' in text
         # Native tools render Result (...) followed by JSON and then logs/URL.
         start = text.find('{')
         if start >= 0:
@@ -70,7 +80,8 @@ def tool_value(result):
                     return value
             except ValueError:
                 pass
-    raise OperationError('Dispatcher result not completed; reconcile job before retry')
+    error = ToolResultTruncatedError if truncated else ToolResultIncompleteError
+    raise error('Dispatcher result not completed; reconcile job before retry')
 
 
 class WindmillMCP:
@@ -92,7 +103,8 @@ class WindmillMCP:
                     raise RequestRefused('Native Windmill MCP access refused')
                 if response.status_code >= 500:
                     raise TransportUnavailable('Native Windmill MCP service unavailable')
-                response.raise_for_status()
+                if response.status_code >= 400:
+                    raise OperationError('Native Windmill MCP protocol failure')
                 return response
             init = await post({'jsonrpc':'2.0','id':1,'method':'initialize',
                 'params':{'protocolVersion':'2025-03-26','capabilities':{},
@@ -113,18 +125,28 @@ class WindmillMCP:
             raise RequestRefused('Windmill SDK request refused')
         if result.get('error') == 'unavailable':
             raise TransportUnavailable('Windmill SDK observation unavailable')
+        if result.get('error') in ('foreign-job','unexpected-job-id'):
+            raise ObservationBindingError('Windmill identity conflict')
         if result.get('error'):
             raise OperationError('Windmill operation requires reconciliation')
         return result
 
     async def inspect(self,job_id):
         value = await self.call('inspect',job_id)
-        return value.get('job') if value.get('found') else None
+        if type(value.get('found')) is not bool:
+            raise ToolResultIncompleteError('Missing inspect observation')
+        if not value['found']:
+            if 'job' in value:
+                raise ObservationBindingError('Contradictory missing observation')
+            return None
+        if not isinstance(value.get('job'),dict):
+            raise ToolResultIncompleteError('Missing inspect job')
+        return value['job']
 
     async def submit(self,job_id,args):
         value = await self.call('submit',job_id,args)
         if not value.get('submitted') or value.get('job_id') != job_id:
-            raise OperationError('Windmill submission not confirmed')
+            raise ObservationBindingError('Windmill submission not confirmed')
 
     async def close(self):
         return None
