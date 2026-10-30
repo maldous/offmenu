@@ -243,6 +243,23 @@ class CurrentDispatchTests(unittest.TestCase):
         factory = self.stack.enter_context(patch.object(stage, 'WindmillMCP', return_value=remote))
         return issue, runtime, owner, journal, key, spec, remote, factory, upstream
 
+    def test_direct_worker_refuses_typed_stage_before_any_other_input(self):
+        import stokowski_worker as worker
+        issue, runtime = self.qualify(249)
+        manifest = json.loads((runtime/'manifest.json').read_text())
+        task = manifest['tasks'][issue.identifier]
+        task.update(stage='review', input_paths=task['allowed_paths'], allowed_paths=[],
+                    stage_binding=dict(entry={}, identity='0'*64, inputs={}))
+        self.write(runtime/'manifest.json', manifest)
+        # An absent policy would otherwise fail before lease admission. The
+        # typed refusal must win without reading it or constructing a pool.
+        (runtime/'capacity-policy.json').unlink()
+        with patch.object(worker, 'Pool', side_effect=AssertionError('No lease')), \
+             patch.object(worker, 'git', side_effect=AssertionError('No computation')):
+            with self.assertRaisesRegex(AdmissionError, 'nonimplementation_worker_refused'):
+                worker.execute(runtime, issue.identifier, {})
+        self.assertEqual(list((runtime/'attempts').iterdir()), [])
+
     def test_independent_candidate_ignores_control_output_disk(self):
         issue, runtime, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture()
         self.assertNotEqual(spec['head'], self.current.config['source_head'])
@@ -476,6 +493,12 @@ class CurrentDispatchTests(unittest.TestCase):
             transport.handle({'mode':'status','context':{},'envelope':{}})
 
     def test_fixed_gateway_process_fixture(self):
+        self.fixed_gateway_process_fixture(staged=False)
+
+    def test_fixed_gateway_process_fixture_staged_native_original(self):
+        self.fixed_gateway_process_fixture(staged=True)
+
+    def fixed_gateway_process_fixture(self, *, staged):
         """Fixture custody is controlled here; this is not live authentication."""
         from offmenu.delivery.integration import Controller
         from symphony_capacity import digest
@@ -516,7 +539,7 @@ class CurrentDispatchTests(unittest.TestCase):
         source_head = commit(self.source)
         self.git.side_effect = lambda args, **kw: (
             subprocess.run(args, check=True, stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE, **kw).stdout)
+                **dict({'stderr':subprocess.PIPE}, **kw)).stdout)
         config = json.loads((self.runtime/'current.json').read_text())
         config['source_head'] = source_head
         config['source_sha256'] = {str(p.relative_to(self.source)):adapter.file_sha(p)
@@ -547,6 +570,88 @@ class CurrentDispatchTests(unittest.TestCase):
             resolved_model=None,resolution_status='unknown')
         snapshot['review']['evidence_sha256'] = digest({k:v for k,v in snapshot['review'].items()
             if k != 'evidence_sha256'})
+        if staged:
+            # Fully qualified synthetic native-v1 original, including actual Git
+            # candidate objects and an original workspace at its admitted base.
+            import stokowski_operations as operations
+            from stokowski_operations import bridge_arguments
+            candidate = self.temp/'candidate'
+            git_at(self.temp, 'clone', str(checkout), str(candidate))
+            for name in packet['integration_binding']['outputs']:
+                target = candidate/name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes((runtime/'workspaces'/issue.identifier/name).read_bytes())
+            git_at(candidate, 'add', '.')
+            git_at(candidate, '-c','user.name=Fixture','-c','user.email=fixture@example.invalid',
+                   '-c','commit.gpgsign=false','commit','-m','Synthetic native output')
+            candidate_head = git_at(candidate, 'rev-parse', 'HEAD')
+            git_at(checkout, 'fetch', str(candidate), 'feature/test-current')
+            shutil.copytree(checkout/'.git', runtime/'workspaces'/issue.identifier/'.git')
+            spec, _ = journal.read(key)
+            spec.update(head=candidate_head,
+                runner_sha256=adapter.file_sha(self.source/'tools/delivery/windmill_runner.py'),
+                executor_sha256=adapter.file_sha(operations.__file__))
+            self.stack.enter_context(patch.object(operations, 'POLICY', self.source/'tools/delivery/capacity-policy.json'))
+            key = journal.prepare(spec)
+            _, operation_state = journal.read(key)
+            receipt = packet['validation_receipt']
+            receipt.update(job_id=operation_state['logical_job_id'], runner_sha256=spec['runner_sha256'],
+                command_sha256=hashlib.sha256(bridge_arguments(spec)['command'].encode()).hexdigest())
+            operation_state.update(status='succeeded', receipt_sha256=digest(receipt),
+                accepted_output_sha256=spec['outputs'], acceptance_sha256=spec['acceptance_sha256'])
+            journal.save(key, operation_state, 'synthetic-native-stage-proof')
+            self.write(receipt_path, receipt)
+            original_receipt_sha = digest(receipt)
+            bindings = json.loads((runtime/'validation-bindings.json').read_text())
+            bindings['history'] = []
+            bindings['issues'][issue.identifier].update(operation_key=key, source_head=candidate_head,
+                derivation_reason=None)
+            self.write(runtime/'validation-bindings.json', bindings)
+            packet['integration_binding'].update(head=candidate_head, validation_operation_key=key)
+            snapshot['validation'].update(head=candidate_head, operation_key=key)
+            snapshot['review']['head'] = candidate_head
+            snapshot['review']['evidence_sha256'] = digest({k:v for k,v in snapshot['review'].items()
+                if k != 'evidence_sha256'})
+            original_entry = self.entries[0]
+            _, identity = self.current.validation_binding(issue.identifier, original_entry)
+            stage_runtime = self.root/'review-stage'
+            stage_runtime.mkdir()
+            for name in ('requests','attempts','workspaces'):
+                (stage_runtime/name).mkdir()
+            for name in ('capacity-policy.json','installation.json','provider-proof.json'):
+                shutil.copyfile(runtime/name, stage_runtime/name)
+            shutil.copyfile(runtime/'requests'/f'{issue.identifier}.json',
+                            stage_runtime/'requests'/f'{issue.identifier}.json')
+            pins = {str(runtime/name):adapter.file_sha(runtime/name) for name in (
+                'current-admission.json','manifest.json','capacity-policy.json','installation.json',
+                'provider-proof.json','requests/'+issue.identifier+'.json','validation-bindings.json',
+                *['attempts/'+issue.identifier+'/'+n for n in ('intent.json','dispatch-intent.json','receipt.json')])}
+            manifest = json.loads((runtime/'manifest.json').read_text())
+            task = manifest['tasks'][issue.identifier]
+            task.update(stage='review', input_paths=task['allowed_paths'], allowed_paths=[],
+                stage_binding=dict(entry=original_entry, identity=identity, inputs=pins))
+            # Stage admission selects a distinct actual source at the same base.
+            stage_source = self.temp/'stage-source'
+            git_at(self.temp, 'clone', str(checkout), str(stage_source))
+            self.write(stage_runtime/'manifest.json', manifest)
+            admission = json.loads((runtime/'current-admission.json').read_text())
+            admission.update(source=str(stage_source), inputs=pins,
+                manifest_sha256=adapter.file_sha(stage_runtime/'manifest.json'))
+            self.write(stage_runtime/'current-admission.json', admission)
+            self.runtime = self.root/'stage-current'
+            self.runtime.mkdir()
+            for name in ('current.json','installation.json','workflow.yaml','capacity-policy.json'):
+                shutil.copyfile(self.root/'current'/name, self.runtime/name)
+            self.write(self.catalog, dict(version=1, entries=[dict(original_entry,
+                runtime=str(stage_runtime), admission_sha256=adapter.file_sha(stage_runtime/'current-admission.json'))]))
+            self.current = adapter.CurrentWork(self.runtime)
+            self.current.state['tasks'][issue.identifier]['unit_gate'] = dict(
+                binding=self.current.gate_binding(issue), disposition='waiting', accepted_delivery=False)
+            self.current.save()
+            for name in ('validation-bindings.json','operations','original-validation-receipt.json'):
+                self.assertFalse((stage_runtime/name).exists())
+            self.assertEqual(list((stage_runtime/'attempts').iterdir()), [])
+            self.assertEqual(list((stage_runtime/'workspaces').iterdir()), [])
         b = packet['integration_binding']
         snapshot.update(observed_at=time.time(), automatic_integration_enabled=True,
             github=dict(repository=b['repository'],number=b['pr_number'],state='open',draft=False,
@@ -565,7 +670,7 @@ class CurrentDispatchTests(unittest.TestCase):
         self.assertEqual(packet['decision']['status'],'merge-intent')
         context = dict(source_head=source_head,source_sha256=config['source_sha256'],
             python_sha256=adapter.file_sha(Path(sys.executable).resolve()), actor_uid=os.getuid(),
-            runtime=str(self.runtime), runtime_root=str(self.root), workspace_roots=[str(checkout)],
+            runtime=str(self.runtime), runtime_root=str(self.root), workspace_roots=([str(stage_source),str(checkout)] if staged else [str(checkout)]),
             claim_root=str(claim),controller_directory=str(controller.directory),issue=issue.identifier,
             unit_binding=packet['unit_binding'],validation_receipt=packet['validation_receipt'],
             validation_receipt_source=dict(path=str(receipt_path),sha256=adapter.file_sha(receipt_path)))
@@ -576,6 +681,85 @@ class CurrentDispatchTests(unittest.TestCase):
         native_path = runtime/'attempts'/issue.identifier/'receipt.json'
         frozen = {p:p.read_bytes() for p in (receipt_path,native_path,runtime/'operations/operations.sqlite',
             controller.directory/'graph.sqlite',controller.directory/'state.json')}
+        def local_status(selected_context=context):
+            request = dict(version=2, mode='status',
+                payload=json.dumps(dict(context=selected_context,
+                    envelope={k:packet[k] for k in ('snapshot','decision')})),
+                evidence=json.dumps(packet))
+            return subprocess.run(['/home/user/src/offmenu/.delivery/stokowski/venv/bin/python',str(entry)],
+                input=json.dumps(request), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                timeout=10, env={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8'})
+        before = local_status()
+        self.assertEqual((before.returncode, json.loads(before.stdout).get('status')),
+                         (0, 'absent'), before.stdout+before.stderr)
+        if staged:
+            def refused(selected_context=context):
+                result = local_status(selected_context)
+                self.assertEqual(result.returncode, 1, result.stdout+result.stderr)
+                self.assertEqual(json.loads(result.stdout), {'error':'local_review_refused'})
+                self.assertEqual(result.stderr, '')
+                self.assertFalse((self.runtime/('unit-review-'+issue.identifier+'.json')).exists())
+            # The selected stage still needs its own admitted inputs and custody.
+            for target in (stage_runtime/'current-admission.json', stage_runtime/'manifest.json',
+                           stage_runtime/'requests'/f'{issue.identifier}.json',
+                           stage_runtime/'installation.json', stage_runtime/'capacity-policy.json'):
+                raw = target.read_bytes()
+                with self.subTest(stage_drift=target.name):
+                    target.write_bytes(raw+b' ')
+                    refused()
+                    target.write_bytes(raw)
+            stage_proof = stage_runtime/'provider-proof.json'
+            stage_proof.chmod(0o644)
+            refused()
+            stage_proof.chmod(0o600)
+            # Original pinned bytes and original OS custody both remain gates.
+            for target in (runtime/'requests'/f'{issue.identifier}.json', native_path, receipt_path):
+                raw = target.read_bytes()
+                with self.subTest(original_drift=target.name):
+                    target.write_bytes(raw+b' ')
+                    refused()
+                    target.write_bytes(raw)
+            receipt_path.chmod(0o644)
+            refused()
+            receipt_path.chmod(0o600)
+            misplaced = stage_runtime/'mislocated-receipt.json'
+            misplaced.write_bytes(receipt_path.read_bytes())
+            misplaced.chmod(0o600)
+            refused(dict(context, validation_receipt_source=dict(
+                path=str(misplaced), sha256=adapter.file_sha(misplaced))))
+            for permitted in ([str(checkout)], [str(stage_source)]):
+                refused(dict(context, workspace_roots=permitted))
+            output_path = runtime/'workspaces'/issue.identifier/next(iter(b['outputs']))
+            moved_output = self.temp/'mislocated-output'
+            output_path.rename(moved_output)
+            output_path.symlink_to(moved_output)
+            refused()
+            output_path.unlink()
+            moved_output.rename(output_path)
+            output_path.chmod(0o644)
+            refused()
+            output_path.chmod(0o600)
+            # Even an owner-pinned stage cannot select a foreign original entry.
+            # Rebind only synthetic admission records; do not bypass qualification.
+            records = (stage_runtime/'manifest.json', stage_runtime/'current-admission.json',
+                       self.catalog, self.current.state_path)
+            originals = {p:p.read_bytes() for p in records}
+            manifest['tasks'][issue.identifier]['stage_binding']['entry'] = dict(
+                original_entry, issue_id='00000000-0000-4000-8000-000000000999')
+            self.write(records[0], manifest)
+            admission['manifest_sha256'] = adapter.file_sha(records[0])
+            self.write(records[1], admission)
+            catalog = json.loads(self.catalog.read_text())
+            catalog['entries'][0]['admission_sha256'] = adapter.file_sha(records[1])
+            self.write(self.catalog, catalog)
+            state = json.loads(self.current.state_path.read_text())
+            state['references'][issue.identifier] = catalog['entries'][0]
+            state['bindings'][issue.identifier] = digest(catalog['entries'][0])
+            self.write(self.current.state_path, state)
+            refused()
+            for path, raw in originals.items():
+                path.write_bytes(raw)
+            self.assertEqual(json.loads(local_status().stdout)['status'], 'absent')
         payload = self.temp/'gateway-input.json'
         self.write(payload,dict(context=context,packet=packet))
         result = subprocess.run(['/usr/bin/node',str(original_source/'tests/delivery/test-integration-gateway.mjs'),
@@ -596,6 +780,13 @@ class CurrentDispatchTests(unittest.TestCase):
         self.assertEqual(self.current.state_path.read_bytes(),owner_before)
         for path,raw in frozen.items():
             self.assertEqual(path.read_bytes(),raw)
+        read_only = adapter.CurrentWork(self.runtime, read_only=True)
+        read_only._check_unit_review(retained)
+        self.assertEqual(self.current.state_path.read_bytes(), owner_before)
+        incoming_stat = incoming.stat()
+        self.assertEqual(json.loads(local_status().stdout)['status'], 'retained')
+        self.assertEqual((incoming.stat().st_ino, incoming.stat().st_mtime_ns),
+                         (incoming_stat.st_ino, incoming_stat.st_mtime_ns))
         reopened = adapter.CurrentWork(self.runtime)
         gate = reopened.state['tasks'][issue.identifier]['unit_gate']
         self.assertEqual(gate['disposition'],'approved')
@@ -680,6 +871,7 @@ class CurrentDispatchTests(unittest.TestCase):
             ('unit_binding','request_sha256','0'*64),('unit_binding','native_receipt_sha256','0'*64),
             ('unit_binding','admission_sha256','0'*64),('unit_binding','project_id','foreign'),
             ('integration_binding','issue_id','00000000-0000-4000-8000-000000000999'),
+            ('integration_binding','owner','foreign-owner'),('review','author','foreign-author'),
             ('integration_binding','outputs',{}),('integration_binding','head','0'*40),
             ('decision','status','awaiting-validation'),('decision','merge_effect','refused'),
             ('review','reviewer','existing-owner'),('review','evidence_sha256','0'*64),

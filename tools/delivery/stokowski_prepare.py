@@ -105,11 +105,12 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
             and manifest['project_id'] == packet['execution_outcome']['project_id']
             and manifest['label'] == packet['unit_id'], 'manifest_issue')
     task = manifest['tasks'][issue]
+    staged = 'stage' in task
     require(task['owner'] == owner and task['issue_id'] == packet['execution_outcome']['uuid']
-            and task['allowed_paths'] == packet['scope'] and task['acceptance'] == packet['acceptance']
+            and (task['input_paths'] if staged else task['allowed_paths']) == packet['scope'] and task['acceptance'] == packet['acceptance']
             and task['resources'] == packet['resources']
-            and packet['scope'] == ['tools/delivery/stokowski_prepare.py',
-                                    'tests/delivery/test_stokowski_prepare_publication.py'], 'task_binding')
+            and (staged or packet['scope'] == ['tools/delivery/stokowski_prepare.py',
+                                    'tests/delivery/test_stokowski_prepare_publication.py']), 'task_binding')
     require(set(request) == {'prompt', 'timeout_seconds'} and isinstance(request['prompt'], str)
             and request['prompt'].strip() and type(request['timeout_seconds']) is int
             and 1 <= request['timeout_seconds'] <= 600, 'request')
@@ -120,6 +121,19 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
             and runtime.parent == root and coordinator.parent == root and runtime != coordinator
             and catalog.is_relative_to(root) and not catalog.is_relative_to(runtime)
             and not catalog.is_relative_to(coordinator), 'private_paths')
+    if staged:
+        require(config.get('stage_binding') == task['stage_binding']
+                and packet.get('stage') == task['stage'], 'stage_owner_binding')
+        require(all(packet['inputs'].get(k) == v
+                    for k,v in task['stage_binding']['inputs'].items()), 'stage_input_coverage')
+        original = canonical(task['stage_binding']['entry']['runtime'])
+        require(original not in (runtime, coordinator), 'stage_original_runtime')
+        # The existing coordinator's owner/config/source gates and continuation
+        # qualifier are the authority. No native evidence is copied to runtime.
+        consumer = CurrentWork(coordinator, read_only=True, qualification_only=True)
+        require(consumer.config['owner'] == owner and consumer.root == root
+                and consumer.catalog == catalog, 'stage_coordinator')
+        consumer.stage_origin(issue, task)
     # This is the sole publication lock across catalogs in the selected root.
     lock = canonical(root/'publication.lock')
     fd = os.open(lock, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
@@ -161,8 +175,9 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
                                           sha256=entry['admission_sha256']))
             other_manifest = pinned(dict(path=str(other_runtime/'manifest.json'),
                                          sha256=other_admission['manifest_sha256']))
-            require(not any(overlap(a, b) for a in packet['scope']
-                            for t in other_manifest['tasks'].values() for b in t['allowed_paths']), 'scope_overlap')
+            if not staged:
+                require(not any(overlap(a, b) for a in packet['scope']
+                                for t in other_manifest['tasks'].values() for b in t['allowed_paths']), 'scope_overlap')
         policy = policy_path.read_bytes()
         installation = canonical(packet['installation']['manifest_path']).read_bytes()
         admission = dict(version=1, owner=owner, issue=issue, issue_id=task['issue_id'], source=str(source),

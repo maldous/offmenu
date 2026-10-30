@@ -157,6 +157,8 @@ def execute(runtime, issue, request):
     runtime = runtime.resolve()
     manifest = load_manifest(runtime/'manifest.json',expected_branch=None)
     task = manifest['tasks'][issue]
+    if 'stage' in task:
+        raise AdmissionError('nonimplementation_worker_refused')
     policy = json.loads((runtime/'capacity-policy.json').read_text())
     workspace = runtime/'workspaces'/issue
     if git(workspace, 'rev-parse', 'HEAD') != manifest['base_revision'] or git(
