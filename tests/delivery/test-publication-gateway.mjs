@@ -57,6 +57,10 @@ if mode in ('response-hash', 'response-binding'):
     else:
         text=text.replace("request_sha256=wire['request_sha256'],\n                                   result=result", "request_sha256='0'*64,\n                                   result=result")
     consumer.write_text(text)
+if mode in ('large-source', 'oversized-source'):
+    adapter=f.source/'tools/delivery/stokowski_adapter.py'
+    size = 128 * 1024 if mode == 'large-source' else 1024 * 1024 + 1
+    adapter.write_text(adapter.read_text() + '\n#' + 'x' * size + '\n')
 (f.source/'.gitignore').write_text('.delivery/\n__pycache__/\n')
 (f.source/'package.json').write_text('{"type":"module"}')
 def git(*args):
@@ -159,6 +163,22 @@ test('actual gateway fresh callback and fixed stdin consume accepted API with ze
   assert.equal(JSON.parse(readFileSync(f.catalog)).entries.length,1);
   await assert.rejects(action(f)); // New nonce cannot republish the handoff.
   assert.equal(readFileSync(f.marker,'utf8'),'x');
+});
+
+test('reviewed source blob above wire limit publishes without raising message limit',async t=>{
+  const f=await fixture(t,'large-source');
+  assert.ok(readFileSync(join(f.root,'tools/delivery/stokowski_adapter.py')).length>65536);
+  assert.equal((await action(f)).status,'published');
+  assert.equal(readFileSync(f.marker,'utf8'),'x');
+});
+
+test('source blob above separate bounded limit refuses before identity or effects',async t=>{
+  const f=await fixture(t,'oversized-source');
+  const {prepareOwnerPublication}=await import(pathToFileURL(join(f.root,'tools/delivery/integration-gateway.mjs')));
+  let calls=0;
+  await assert.rejects(prepareOwnerPublication({github:{getProfile:async()=>{calls++;return {id:123,login:'synthetic'};}},reviewedPublication:f.context}),{code:'ERR_CHILD_PROCESS_STDIO_MAXBUFFER'});
+  assert.equal(calls,0);
+  noProbe(f);
 });
 
 test('lost reply reconciles retained result read-only, no second prepare/provider call',async t=>{

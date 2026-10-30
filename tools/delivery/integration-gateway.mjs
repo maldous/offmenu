@@ -223,6 +223,8 @@ export async function prepareOwnerPublication({github, reviewedPublication}) {
   reviewWireBytes(reviewedPublication);
   const context = structuredClone(reviewedPublication);
   const limit = 65536;
+  // Reviewed repository blobs are separate from the bounded publication wire.
+  const sourceLimit = 1024 * 1024;
   const entry = 'tools/delivery/stokowski_publication.py';
   const required = [entry, 'tools/delivery/integration-gateway.mjs',
     ...['stokowski_prepare','symphony_launch','stokowski_adapter','stokowski_worker',
@@ -231,7 +233,7 @@ export async function prepareOwnerPublication({github, reviewedPublication}) {
   if (sha(readFileSync(realpathSync(reviewPython))) !== context.python_sha256 ||
       !/^[0-9a-f]{40}$/.test(context.source_head)) throw Error('publication_bridge_refused');
   const git = async args => (await promisify(execFile)('/usr/bin/git', ['-C',reviewSource,...args], {
-    env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8'}, timeout:2000,maxBuffer:limit,encoding:'buffer'
+    env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8'}, timeout:2000,maxBuffer:sourceLimit,encoding:'buffer'
   })).stdout;
   if ((await git(['rev-parse','HEAD'])).toString().trim()!==context.source_head ||
       (await git(['branch','--show-current'])).toString().trim()!==context.source_branch ||
