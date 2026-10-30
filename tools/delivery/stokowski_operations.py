@@ -608,7 +608,13 @@ class Journal:
                         self.save(key,state,'cancelled-before-submission')
                         return state
                     if spec['version'] == 3:
-                        qualify_reviewed_source(spec,selected['admission_path'])
+                        try:
+                            qualify_reviewed_source(spec,selected['admission_path'])
+                        except Exception as error:
+                            # No submission intent or network mutation exists.
+                            # Repairing local inputs may resume this same key.
+                            self.diagnose(key,state,'prepared-source-qualification-deferred',error)
+                            return dict(state,deferred='source-qualification')
                     # Persist before network mutation. Even a crash or lost API
                     # response leaves the exact UUID available for inspection.
                     state['status'] = 'submit-intent'

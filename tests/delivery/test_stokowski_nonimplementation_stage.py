@@ -698,6 +698,36 @@ class ReviewedSourceTests(TypedStageTests):
     def test_drifted_admission_blocks_new_submit_and_acceptance(self):
         self.drift_blocks_submission_and_acceptance('admission')
 
+    def prepared_local_qualification_recovery(self, drift):
+        import stokowski_operations as operations
+        _,runtime,_,journal,key,spec,remote,_=self.new_fixture()
+        target=(Path(spec['local_source_root'])/'tools/delivery/manual.py' if drift=='candidate'
+                else runtime.parent/'synthetic-manual-history/new-admission.json')
+        original=target.read_bytes()
+        _,initial=journal.read(key)
+        remote.inspect.return_value=None
+        target.write_bytes(original+b' ')
+        blocked=asyncio.run(journal.tick(key,remote))
+        self.assertEqual(blocked['status'],'prepared')
+        self.assertEqual(blocked['deferred'],'source-qualification')
+        remote.submit.assert_not_awaited()
+        self.assertEqual(journal.read(key)[0],spec)
+        target.write_bytes(original)
+        # Reopen the immutable operation after repairing only its local input.
+        resumed=asyncio.run(operations.Journal(runtime/'operations').tick(key,remote))
+        self.assertEqual(resumed['status'],'submitted')
+        remote.submit.assert_awaited_once_with(initial['windmill_job_id'],operations.bridge_arguments(spec))
+        for field in ('windmill_job_id','cancel_job_id','logical_job_id'):
+            self.assertEqual(resumed[field],initial[field])
+        with journal.db() as db:
+            self.assertEqual(db.execute("SELECT count(*) FROM events WHERE key=? AND event='submit-intent'",(key,)).fetchone()[0],1)
+
+    def test_prepared_candidate_drift_recovers_without_new_identity(self):
+        self.prepared_local_qualification_recovery('candidate')
+
+    def test_prepared_admission_drift_recovers_without_new_identity(self):
+        self.prepared_local_qualification_recovery('admission')
+
     def test_drift_recovery_refuses_tampered_binding_and_foreign_job(self):
         import stokowski_operations as operations
         issue,runtime,owner,journal,key,spec,remote,_=self.new_fixture()
