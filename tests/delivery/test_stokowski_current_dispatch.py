@@ -551,6 +551,111 @@ class CurrentDispatchTests(unittest.TestCase):
         owner.ledger.record_terminal.assert_not_called()
         owner._schedule_retry.assert_not_called()
 
+    def test_absent_gate_restart_rebuilds_durable_waiting_binding_once(self):
+        issue, runtime, _, _ = self.bound_gate()
+        expected = self.current.gate_binding(issue)
+        self.current.state['tasks'][issue.identifier].pop('unit_gate')
+        self.current.save()
+        self.current = adapter.CurrentWork(self.runtime)
+        native, _, _ = self.adapted()
+        owner = native.Orchestrator(self.runtime/'workflow.yaml')
+        owner._load_workflow()
+        client = self.client(issue)
+        for name in ('update_issue_state','post_comment','fetch_comments','fetch_issues_by_states'):
+            setattr(client, name, AsyncMock())
+        owner._linear = client
+        save = self.current.save
+        def durable_save():
+            # The new gate reaches disk before the pending memory registry.
+            self.assertEqual(owner._pending_gates, {})
+            save()
+        with patch.object(native, 'run_turn') as coding, \
+             patch.object(self.current, 'save', side_effect=durable_save):
+            asyncio.run(owner._rebuild_gates_from_linear())
+            coding.assert_not_called()
+        gate = {'binding':expected,'disposition':'waiting'}
+        saved = self.current.state_path.read_bytes()
+        self.assertEqual(json.loads(saved)['tasks'][issue.identifier]['unit_gate'], gate)
+        self.assertEqual(owner._pending_gates, {issue.id:'evidence-pending'})
+        self.assertEqual(owner._issue_current_state[issue.id], 'evidence-pending')
+        owner._pending_gates.clear()
+        owner._issue_current_state.clear()
+        asyncio.run(owner._rebuild_gates_from_linear())
+        self.assertEqual(self.current.state_path.read_bytes(), saved)
+        self.assertEqual(owner._pending_gates, {issue.id:'evidence-pending'})
+        reopened = adapter.CurrentWork(self.runtime)
+        self.assertEqual(reopened.state['tasks'][issue.identifier]['unit_gate'], gate)
+        self.assertFalse(reopened.state['accepted_delivery'])
+        self.assertEqual(self.select(issue), [])
+        for name in ('update_issue_state','post_comment','fetch_comments','fetch_issues_by_states'):
+            getattr(client, name).assert_not_awaited()
+
+    def test_absent_gate_rebuild_holds_unqualified_original_evidence(self):
+        issue, runtime, owner, client = self.bound_gate()
+        task = self.current.state['tasks'][issue.identifier]
+        task.pop('unit_gate')
+        self.current.save()
+        owner._pending_gates.clear()
+        owner._issue_current_state.clear()
+        directory = runtime/'attempts'/issue.identifier
+        cases = [
+            ('receipt.json', None), ('receipt.json', {}),
+            ('receipt.json', {'status':'unknown'}),
+            ('receipt.json', {'status':'running'}),
+            ('receipt.json', {'status':'cancelled'}),
+            ('receipt.json', {'child_tree_gone':False}),
+            ('receipt.json', {'accepted_delivery':True}),
+            ('receipt.json', {'binding_sha256':'0'*64}),
+            ('receipt.json', {'lease':'wrong-operation'}),
+            ('dispatch-intent.json', None),
+            ('dispatch-intent.json', {'expected_lease':'wrong-operation'}),
+            ('dispatch-intent.json', {'request_sha256':'0'*64}),
+            (runtime/'requests'/(issue.identifier+'.json'), {'prompt':'changed request'}),
+            ('intent.json', None),
+            ('intent.json', {'binding':{}}),
+        ]
+        for name, change in cases:
+            with self.subTest(name=name, change=change):
+                path = directory/name
+                original = path.read_bytes()
+                if change is None:
+                    path.unlink()
+                else:
+                    self.write(path, dict(json.loads(original), **change) if change else {})
+                asyncio.run(owner._rebuild_gates_from_linear())
+                self.assertNotIn('unit_gate', task)
+                self.assertEqual(owner._pending_gates, {})
+                self.assertEqual(owner._issue_current_state, {})
+                path.write_bytes(original)
+        for cancel in (runtime/'cancel.json', self.runtime/'cancel.json'):
+            self.write(cancel, {'reason':'synthetic cancellation'})
+            asyncio.run(owner._rebuild_gates_from_linear())
+            self.assertNotIn('unit_gate', task)
+            cancel.unlink()
+        client.update_issue_state.assert_not_awaited()
+        client.post_comment.assert_not_awaited()
+        client.fetch_comments.assert_not_awaited()
+        owner._schedule_retry.assert_not_called()
+        owner.ledger.record_terminal.assert_not_called()
+
+    def test_rebuild_never_overwrites_existing_conflicting_or_handled_gate(self):
+        issue, _, owner, client = self.bound_gate()
+        task = self.current.state['tasks'][issue.identifier]
+        original = json.loads(json.dumps(task['unit_gate']))
+        gates = [{}, dict(original, handled=True),
+                 dict(original, binding=dict(original['binding'], request_sha256='0'*64))]
+        for gate in gates:
+            with self.subTest(gate=gate):
+                task['unit_gate'] = gate
+                self.current.save()
+                owner._pending_gates.clear()
+                asyncio.run(owner._rebuild_gates_from_linear())
+                self.assertEqual(task['unit_gate'], gate)
+                self.assertEqual(json.loads(self.current.state_path.read_text())['tasks'][issue.identifier]['unit_gate'], gate)
+                self.assertEqual(owner._pending_gates, {})
+        client.update_issue_state.assert_not_awaited()
+        client.post_comment.assert_not_awaited()
+
     def test_completion_after_provider_expiry_enters_and_consumes_bound_gate(self):
         issue, runtime, owner, client = self.bound_gate()
         task = self.current.state['tasks'][issue.identifier]

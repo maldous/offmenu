@@ -664,7 +664,13 @@ def install_adapters(runtime, manifest, key, current=None):
             for identifier, entry in current.entries.items():
                 from stokowski.models import Issue
                 issue = Issue(id=entry['issue_id'], identifier=identifier, title='', state='In Review')
-                gate = current.state['tasks'].get(identifier, {}).get('unit_gate', {})
+                task = current.state['tasks'].get(identifier, {})
+                if 'unit_gate' not in task:
+                    # Receipt persistence can precede gate entry across owner loss.
+                    # Reuse exact evidence checks and save before restoring memory.
+                    await unit_enter_gate(owner, issue, 'evidence-pending')
+                    continue
+                gate = task['unit_gate']
                 if not gate or gate.get('handled'):
                     continue
                 try:
