@@ -219,6 +219,50 @@ class CurrentDispatchTests(unittest.TestCase):
         owner._schedule_retry.assert_not_called()
         owner.ledger.record_terminal.assert_not_called()
 
+    def test_evidence_hold_revokes_unhandled_output_approval_until_restored(self):
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
+        self.current.unit_review_writer(lambda envelope:packet)({k:packet[k] for k in ('snapshot','decision')})
+        self.current.refresh()
+        gate = self.current.state['tasks'][issue.identifier]['unit_gate']
+        self.assertEqual(gate['disposition'],'approved')
+        target = runtime/'workspaces'/issue.identifier/'tests/task230.py'
+        original = target.read_bytes()
+        target.write_bytes(b'changed after approval')
+        asyncio.run(owner._handle_gate_responses())
+        self.assertNotIn('handled',gate)
+        self.assertEqual(gate['disposition'],'waiting')
+        self.assertEqual(self.current.state['tasks'][issue.identifier]['defer'],'unit_review_held')
+        target.write_bytes(original)
+        asyncio.run(owner._handle_gate_responses())
+        self.assertTrue(gate['handled'])
+        self.assertNotIn('defer',self.current.state['tasks'][issue.identifier])
+        client.update_issue_state.assert_not_awaited()
+        owner._schedule_retry.assert_not_called()
+
+    def test_evidence_hold_revokes_unhandled_journal_approval(self):
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
+        self.current.unit_review_writer(lambda envelope:packet)({k:packet[k] for k in ('snapshot','decision')})
+        self.current.refresh()
+        gate = self.current.state['tasks'][issue.identifier]['unit_gate']
+        spec,state = journal.read(key)
+        journal.save(key,dict(state,status='unknown'),'controlled-post-approval-drift')
+        asyncio.run(owner._handle_gate_responses())
+        self.assertNotIn('handled',gate)
+        self.assertEqual(gate['disposition'],'waiting')
+        client.update_issue_state.assert_not_awaited()
+        owner._schedule_retry.assert_not_called()
+
+    def test_missing_incoming_evidence_cannot_consume_earlier_approval(self):
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
+        self.current.unit_review_writer(lambda envelope:packet)({k:packet[k] for k in ('snapshot','decision')})
+        self.current.refresh()
+        gate = self.current.state['tasks'][issue.identifier]['unit_gate']
+        (self.runtime/('unit-review-'+issue.identifier+'.json')).unlink()
+        asyncio.run(owner._handle_gate_responses())
+        self.assertNotIn('handled',gate)
+        self.assertEqual(gate['disposition'],'waiting')
+        client.update_issue_state.assert_not_awaited()
+
     def test_review_mismatches_hold_and_never_write_disposition(self):
         import copy
         issue,runtime,owner,client,packet,journal,key = self.review_fixture()

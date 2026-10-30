@@ -15,7 +15,13 @@ export async function advanceIntegration({controller, github, linear, observe, u
       decision.qualification_sha256 && !snapshot.cancel_requested &&
       !snapshot.unresolved_findings?.length && snapshot.review?.verdict === 'accept' &&
       !snapshot.review?.findings?.length) {
-    await unitReviewWriter(structuredClone({snapshot, decision}));
+    try {
+      await unitReviewWriter(structuredClone({snapshot, decision}));
+    } catch (error) {
+      // Publication can fail, but no GitHub mutation has been attempted.
+      await controller.outcome('merge', 'not-issued');
+      throw error;
+    }
   }
   let mergeIssued = false;
   // At most one merge and the controller's three metadata attempts. Every

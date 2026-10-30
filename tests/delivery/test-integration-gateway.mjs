@@ -45,3 +45,14 @@ test('unit writer never receives repair, unqualified, cancelled or uncertain dec
     f.unitReviewWriter=async()=>assert.fail('held writer');await advanceIntegration(f);
   }
 });
+
+test('failed unit review publication records known nonexecution before propagating',async()=>{
+  for(const error of [Error('publication failed'),Object.assign(Error('transport refused'),{knownRefused:true})]){
+    const f=fixture();Object.assign(f.decision,{merge_effect:'pending',qualification_sha256:'e'.repeat(64)});
+    f.observe=async()=>({review:{verdict:'accept',findings:[]}});
+    f.unitReviewWriter=async()=>{throw error};
+    f.github.getPullRequest=async()=>assert.fail('preflight must not run after writer failure');
+    await assert.rejects(advanceIntegration(f),value=>value===error);
+    assert.deepEqual(f.calls,[['outcome','merge','not-issued']]);
+  }
+});

@@ -459,6 +459,15 @@ class CurrentWork:
                 raise AdmissionError('unit_review_native_output_drift')
         return unit
 
+    def _hold_unit_review(self, issue):
+        task = self.state['tasks'][issue]
+        task['defer'] = 'unit_review_held'
+        gate = task.get('unit_gate', {})
+        if gate.get('review_sha256') and not gate.get('handled'):
+            # Preserve the evidence identity for revalidation, but never leave
+            # an unhandled evidence-derived approval actionable after a hold.
+            gate.update(disposition='waiting', accepted_delivery=False)
+
     def _consume_unit_reviews(self):
         # Called by the normal current boundary under the coordinator's existing
         # exclusive root lock. Only this consumer updates current-owner.json;
@@ -466,6 +475,8 @@ class CurrentWork:
         for issue in self.entries:
             path = self.runtime/('unit-review-' + issue + '.json')
             if not path.exists():
+                if self.state['tasks'][issue].get('unit_gate', {}).get('review_sha256'):
+                    self._hold_unit_review(issue)
                 continue
             try:
                 if path != path.resolve():
@@ -481,8 +492,10 @@ class CurrentWork:
                 if gate.get('handled'):
                     continue
                 gate.update(review_sha256=fingerprint, disposition='approved', accepted_delivery=False)
+                if self.state['tasks'][issue].get('defer') == 'unit_review_held':
+                    self.state['tasks'][issue].pop('defer')
             except Exception:
-                self.state['tasks'][issue]['defer'] = 'unit_review_held'
+                self._hold_unit_review(issue)
 
     async def candidates(self, client, issues):
         self.refresh()
