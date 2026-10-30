@@ -129,7 +129,8 @@ class PublicationTests(unittest.TestCase):
                               ('request', 'request.json'), ('provider_requirements', 'provider.json')]:
             self.packet[key] = self.ref(self.qualified / filename)
         paths = [self.qualified / n for n in ('config.json', 'manifest.json', 'request.json',
-                                             'provider.json', 'observation.json', 'catalog.json')]
+                                             'provider.json', 'observation.json')]
+        paths += [self.catalog]
         paths += [self.root / 'installation.json', self.source / 'tools/delivery/capacity-policy.json',
                   Path(self.config['repository_claim']['path']), Path(self.config['repository_claim']['binding_path'])]
         self.packet['inputs'] = {str(p): self.sha(p) for p in paths}
@@ -140,6 +141,64 @@ class PublicationTests(unittest.TestCase):
         self.handoff_path = self.qualified / 'handoff.json'
         self.write(self.handoff_path, self.handoff)
         self.handoff_sha = self.sha(self.handoff_path)
+
+    def bind_successor(self, current, review):
+        """Retarget only temporary fixture records to an existing terminal unit."""
+        from stokowski_adapter import file_sha
+        from symphony_capacity import digest
+        self.source = prepare.SOURCE
+        self.root = current.root
+        self.qualified = self.root/'successor-qualified'
+        self.runtime = self.root/'successor-task'
+        self.coordinator = current.runtime
+        self.catalog = current.catalog
+        self.catalog_before = self.catalog.read_bytes()
+        self.owner = current.config['owner']
+        self.base = current.config['source_head']
+        self.branch = 'feature/test-current'
+        self.issue = dict(identifier='UIF-231', uuid='00000000-0000-4000-8000-000000000231',
+                          project_id=prepare.PROJECT)
+        self.scope = ['tests/successor231.py']
+        task = self.manifest['tasks'].pop('UIF-106')
+        task.update(issue_id=self.issue['uuid'], owner=self.owner, allowed_paths=self.scope)
+        self.manifest.update(branch=self.branch, base_revision=self.base, tasks={'UIF-231':task})
+        self.write(self.qualified/'manifest.json', self.manifest)
+        self.write(self.qualified/'request.json', dict(prompt='Explicit synthetic successor',timeout_seconds=60))
+        self.write(self.qualified/'provider.json', dict(requested_model='gpt-6.1-sol',requested_effort='medium',
+            route='codex-chatgpt',session_ceiling=8,max_age_seconds=300,checked_at_max_future_skew_seconds=5))
+        self.write(self.qualified/'observation.json', dict(id='123',login='synthetic'))
+        claim_path = self.qualified/'repository-claim.json'
+        binding_path = self.qualified/'bound/selected-binding.json'
+        binding = dict(owner=self.owner,repository='synthetic/offmenu',issue_id=self.issue['uuid'])
+        self.write(binding_path,binding)
+        self.write(claim_path,dict(owner=self.owner,directory=str(binding_path.parent),binding_sha256=digest(binding)))
+        selected = dict(runtime_root=str(self.root),task_runtime=str(self.runtime),
+            coordinator_runtime=str(self.coordinator),catalog_path=str(self.catalog))
+        self.config.update(owner=self.owner,selected_current=selected,
+            caller_association=dict(self.caller,authenticated_observation=self.ref(self.qualified/'observation.json')),
+            repository_claim=dict(self.ref(claim_path),binding_path=str(binding_path),
+                binding_sha256=file_sha(binding_path),binding_identity_sha256=digest(binding)))
+        entry = current.state['references'][review['issue']]
+        self.packet.update(origin='qualified-successor-v1', expires_at=time.time()+600, owner=self.owner,scope=self.scope,
+            execution_outcome=self.issue,selected_current=selected,
+            trigger=dict(issue=review['issue'],entry=entry,unit_binding=review['unit_binding'],review_sha256=digest(review)),
+            source=dict(repository='synthetic/offmenu',source_checkout=str(self.source),base=self.base,branch=self.branch),
+            installation=dict(manifest_path=str(self.root/'installation.json'),
+                manifest_sha256=file_sha(self.root/'installation.json'),source_revision=current.config['source_head'],
+                installed_files_verified_statically=len(current.config['source_sha256'])))
+        # The real fixture's installation has its own immutable source identity.
+        installation = json.loads((self.root/'installation.json').read_text())
+        self.packet['installation'].update(source_revision=installation['source_revision'],
+            installed_files_verified_statically=len(installation['installed_source_sha256']))
+        self.handoff.update(directory=str(self.qualified),execution_outcome=self.issue,source_base=self.base)
+        self.repin()
+        config = dict(current.config,qualified_successor=self.ref(self.handoff_path))
+        self.write(self.coordinator/'current.json',config)
+        current.config = config
+        current.config_sha = file_sha(self.coordinator/'current.json')
+        current.state['config_sha256'] = current.config_sha
+        current.save()
+        current.refresh()
 
     def publish(self, **overrides):
         arguments = dict(handoff_sha256=self.handoff_sha, authenticated_caller=self.authenticated,

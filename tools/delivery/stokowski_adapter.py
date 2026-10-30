@@ -90,7 +90,7 @@ class CurrentWork:
         self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config = read_record(runtime/'current.json')
-        if set(self.config) != {'version', 'owner', 'runtime_root', 'catalog',
+        if set(self.config) - {'qualified_successor'} != {'version', 'owner', 'runtime_root', 'catalog',
                                'source_head', 'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}:
             raise AdmissionError('current_config_fields')
         self.root = Path(self.config['runtime_root'])
@@ -213,12 +213,141 @@ class CurrentWork:
             for issue in self.state.get('references', {}):
                 self.observe(issue)
             self._consume_unit_reviews()
+            self._successor_boundary()
             self.save()
         except Exception as error:
             self.fatal = type(error).__name__ + ': ' + str(error)
             self.state['fatal'] = self.fatal
             self.save()
             raise AdmissionError('current_fatal_binding') from error
+
+    def qualify_successor(self, handoff_ref, packet, owner_config):
+        """Read-only qualification; current.json is trusted out of band.
+
+        The exact handoff pin transitively allows source/config/owner/request/
+        scope/resources. Packet assertions alone never grant this origin.
+        """
+        from types import SimpleNamespace
+        self.guard()
+        if (self.config.get('qualified_successor') != handoff_ref
+            or packet.get('origin') != 'qualified-successor-v1'
+            or packet['owner'] != self.config['owner']
+            or owner_config['owner'] != self.config['owner']
+            or packet['selected_current']['coordinator_runtime'] != str(self.runtime)
+            or packet['selected_current']['catalog_path'] != str(self.catalog)
+            or packet['selected_current']['runtime_root'] != str(self.root)):
+            raise AdmissionError('successor_owner_allowlist')
+        expiry = packet.get('expires_at')
+        if type(expiry) not in (int, float) or not math.isfinite(expiry) or time.time() > expiry:
+            raise AdmissionError('successor_qualification_expired')
+        trigger = packet['trigger']
+        if set(trigger) != {'issue', 'entry', 'unit_binding', 'review_sha256'}:
+            raise AdmissionError('successor_trigger_fields')
+        issue = trigger['issue']
+        entry = self.state.get('references', {}).get(issue)
+        gate = self.state['tasks'].get(issue, {}).get('unit_gate', {})
+        if (entry != trigger['entry'] or self.entries.get(issue, entry) != entry
+            or gate.get('binding') != trigger['unit_binding']
+            or gate.get('review_sha256') != trigger['review_sha256']
+            or gate.get('disposition') != 'approved' or gate.get('handled') is not True
+            or gate.get('unit_review') != 'approved'):
+            raise AdmissionError('successor_terminal_gate')
+        catalog = read_record(self.catalog)
+        if entry not in catalog['entries'] or self.state['bindings'].get(issue) != digest(entry):
+            raise AdmissionError('successor_original_entry_drift')
+        import copy
+        view = copy.copy(self)
+        view.entries = {issue: entry}
+        review = read_record(self.runtime/('unit-review-' + issue + '.json'))
+        # This checks the actual journal status, cancellation/reconciliation,
+        # immutable operation, native output and independent review evidence.
+        if (digest(review) != trigger['review_sha256']
+            or view._check_unit_review(review) != trigger['unit_binding']
+            or view.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']),
+                                 observation=True) != trigger['unit_binding']):
+            raise AdmissionError('successor_trigger_drift')
+        outcome = packet['execution_outcome']
+        if (outcome['project_id'] != PROJECT or outcome['identifier'] == issue
+            or outcome['uuid'] == entry['issue_id']
+            or any(e['issue'] == outcome['identifier'] or e['issue_id'] == outcome['uuid']
+                   or e['runtime'] == packet['selected_current']['task_runtime']
+                   for e in self.state.get('references', {}).values())):
+            # Once exposed, qualification is reconciled from the publication
+            # journal at the boundary, never used to prepare another operation.
+            raise AdmissionError('successor_identity_collision')
+        return digest(dict(handoff=handoff_ref, owner_config=packet['owner_config'], trigger=trigger))
+
+    def _successor_boundary(self):
+        # This service has Linear credentials only. Authentication/publication
+        # remains with the existing GitHub owner; no automatic association exists.
+        ref = self.config.get('qualified_successor')
+        if ref is None:
+            return
+        pending = self.state.get('successor_request')
+        try:
+            path = self.private(ref['path'])
+            if file_sha(path) != ref['sha256']:
+                raise AdmissionError('successor_handoff_drift')
+            handoff = read_record(path)
+            def pinned(reference):
+                path = self.private(reference['path'])
+                if file_sha(path) != reference['sha256']:
+                    raise AdmissionError('successor_input_drift')
+                return read_record(path)
+            packet = pinned(handoff['task_packet'])
+            config = pinned(handoff['owner_config'])
+            if packet['owner_config'] != handoff['owner_config']:
+                raise AdmissionError('successor_config_drift')
+            identity = digest(dict(handoff=ref, owner_config=packet['owner_config'], trigger=packet['trigger']))
+            if pending is not None and pending['identity'] != identity:
+                raise AdmissionError('successor_request_rebind')
+            # Publication owns the journal. Only this coordinator writes its
+            # state, at its existing locked boundary; no gateway state callback.
+            journal = self.root/('owner-bridge-' + ref['sha256'] + '.json')
+            if pending is not None and journal.exists():
+                result = read_record(journal)
+                if (not re.fullmatch('[0-9a-f]{64}', result['nonce'])
+                    or result['nonce'][12:] != identity[12:] or result['context']['handoff'] != ref
+                    or result['context']['owner_config'] != packet['owner_config']):
+                    raise AdmissionError('successor_result_binding')
+                status = result.get('result', {}).get('status', 'uncertain')
+                if status in ('published', 'duplicate'):
+                    runtime = self.private(packet['selected_current']['task_runtime'])
+                    plan = read_record(self.root/(runtime.name + '-publication.json'))
+                    expected = dict(handoff_sha256=ref['sha256'], packet=handoff['task_packet'],
+                                    config=handoff['owner_config'])
+                    if (plan['identity'] != expected or read_record(self.catalog) != plan['catalog_after']
+                        or result['result'].get('runtime') != str(runtime)
+                        or file_sha(runtime/'current-admission.json') != plan['catalog_after']['entries'][-1]['admission_sha256']):
+                        raise AdmissionError('successor_publication_drift')
+                pending['status'] = status if status in ('published', 'duplicate', 'refused') else 'uncertain'
+                return
+            self.qualify_successor(ref, packet, config)
+            for name, sha in packet['inputs'].items():
+                path = Path(name)
+                if not path.is_absolute() or path != path.resolve() or file_sha(path) != sha:
+                    raise AdmissionError('successor_input_drift')
+            manifest = load_manifest(packet['manifest']['path'], expected_head=packet['source']['base'],
+                                     expected_branch=packet['source']['branch'])
+            task = manifest['tasks'][packet['execution_outcome']['identifier']]
+            if ('stage' in task or task['allowed_paths'] != packet['scope']
+                or task['resources'] != packet['resources'] or task['owner'] != self.config['owner']):
+                raise AdmissionError('successor_task_binding')
+            from symphony_capacity import overlap
+            for entry in self.state['references'].values():
+                other = read_record(self.private(entry['runtime'])/'manifest.json')
+                if any(overlap(a, b) for a in packet['scope']
+                       for t in other['tasks'].values() for b in t['allowed_paths']):
+                    raise AdmissionError('successor_scope_overlap')
+            if pending is None:
+                self.state['successor_request'] = dict(identity=identity, handoff=ref,
+                    owner_config=packet['owner_config'], created_at=time.time(), status='pending')
+            elif pending['status'] != 'pending':
+                raise AdmissionError('successor_request_held')
+        except Exception as error:
+            if pending is not None:
+                pending['status'] = 'held'
+            self.state['successor_hold'] = type(error).__name__ + ': ' + str(error)
 
     def observe(self, issue):
         entry = self.state['references'][issue]
@@ -1101,6 +1230,7 @@ def install_adapters(runtime, manifest, key, current=None):
                 # Persist the unit verdict before clearing transient tracking.
                 # Rework requires fresh owner admission, never a coding retry.
                 gate.update(handled=True, unit_review=gate['disposition'], accepted_delivery=False)
+                current._successor_boundary()
                 current.save()
                 owner._pending_gates.pop(issue.id, None)
                 owner._issue_current_state.pop(issue.id, None)

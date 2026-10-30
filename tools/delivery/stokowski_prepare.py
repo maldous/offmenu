@@ -77,9 +77,12 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
     require(packet['selected_current'] == config['selected_current'], 'current_binding')
     for key in ('source_issue', 'execution_outcome'):
         require(packet[key] == handoff[key], 'issue_binding')
-    require(packet['source_issue']['identifier'] == 'UIF-119'
-            and packet['execution_outcome']['identifier'] == 'UIF-106'
-            and packet['source_issue']['project_id'] != packet['execution_outcome']['project_id'], 'issue_relationship')
+    successor = packet.get('origin') == 'qualified-successor-v1'
+    require(packet.get('origin') in (None, 'qualified-successor-v1'), 'origin')
+    if not successor:
+        require(packet['source_issue']['identifier'] == 'UIF-119'
+                and packet['execution_outcome']['identifier'] == 'UIF-106'
+                and packet['source_issue']['project_id'] != packet['execution_outcome']['project_id'], 'issue_relationship')
     require(packet['source']['base'] == handoff['source_base'], 'source_binding')
     claim_ref = config['repository_claim']
     claim = pinned(claim_ref)
@@ -109,7 +112,7 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
     require(task['owner'] == owner and task['issue_id'] == packet['execution_outcome']['uuid']
             and (task['input_paths'] if staged else task['allowed_paths']) == packet['scope'] and task['acceptance'] == packet['acceptance']
             and task['resources'] == packet['resources']
-            and (staged or packet['scope'] == ['tools/delivery/stokowski_prepare.py',
+            and (staged or successor or packet['scope'] == ['tools/delivery/stokowski_prepare.py',
                                     'tests/delivery/test_stokowski_prepare_publication.py']), 'task_binding')
     require(set(request) == {'prompt', 'timeout_seconds'} and isinstance(request['prompt'], str)
             and request['prompt'].strip() and type(request['timeout_seconds']) is int
@@ -257,7 +260,42 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
         if current == after:
             _publication_sync(catalog.parent)
             return dict(status='duplicate', runtime=str(runtime), dispatches=0)
-        _publication_write(catalog, after)  # Sole actionable exposure; always last.
+        if successor:
+            from types import SimpleNamespace
+            from stokowski_operations import Journal
+            trigger = packet['trigger']
+            # Resolve the authoritative validation runtime through the existing
+            # origin contract (a stage entry may refer to another runtime).
+            view = CurrentWork(coordinator, read_only=True, qualification_only=True)
+            view.entries = {trigger['issue']: trigger['entry']}
+            original, original_manifest, _ = view.context(trigger['issue'], review=True)
+            original_task = original_manifest['tasks'][trigger['issue']]
+            if 'stage' in original_task:
+                _, original, _ = view.stage_origin(trigger['issue'], original_task)
+            original = canonical(original)
+            require(original.is_relative_to(root) and original not in (runtime, coordinator),
+                    'successor_original_runtime')
+            operation_root = canonical(original/'operations')
+            require((operation_root/'operations.sqlite').is_file(), 'successor_journal_missing')
+            review = read(coordinator/('unit-review-' + trigger['issue'] + '.json'))
+            require(digest(review) == trigger['review_sha256'], 'successor_review_drift')
+            key = review['integration_binding']['validation_operation_key']
+            # Lock order is publication -> original operation, both nonblocking.
+            # Use only Journal's existing claim contract: constructing Journal
+            # would initialize/chmod the original database. No publication write
+            # may alter its operation or history. Provider callbacks run above,
+            # before this claim, since they may themselves need the operation.
+            with Journal.claim(SimpleNamespace(root=operation_root), key):
+                consumer = CurrentWork(canonical(packet['selected_current']['coordinator_runtime']),
+                                       read_only=True, qualification_only=True)
+                identity = consumer.qualify_successor(dict(path=str(handoff_path), sha256=handoff_sha256), packet, config)
+                pending = consumer.state.get('successor_request', {})
+                require(pending.get('identity') == identity and pending.get('status') == 'pending'
+                        and pending.get('handoff') == dict(path=str(handoff_path), sha256=handoff_sha256)
+                        and pending.get('owner_config') == handoff['owner_config'], 'successor_pending')
+                _publication_write(catalog, after)
+        else:
+            _publication_write(catalog, after)
         return dict(status='published', runtime=str(runtime), dispatches=0)
     finally:
         os.close(fd)

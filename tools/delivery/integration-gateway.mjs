@@ -279,16 +279,57 @@ export async function prepareOwnerPublication({github, reviewedPublication}) {
         sha(readFileSync(`${reviewSource}/${name}`))!==hash ||
         sha(await git(['show',`${context.source_head}:${name}`]))!==hash) throw Error('publication_bridge_refused');
   }
-  // No saved principal/report is consulted to produce this observation.
-  const profile = await github.getProfile();
-  if (!profile || !['string','number'].includes(typeof profile.id) ||
-      typeof profile.login!=='string' || !profile.login ||
-      !/^[0-9]+$/.test(String(profile.id))) throw Error('publication_bridge_refused');
-  const payload = reviewWireBytes({context, nonce:randomBytes(32).toString('hex'),
-    observed_at:Date.now()/1000,
+  const pinned = ref => {
+    if (realpathSync(ref.path)!==ref.path || sha(readFileSync(ref.path))!==ref.sha256)
+      throw Error('publication_bridge_refused');
+    return JSON.parse(readFileSync(ref.path,'utf8'));
+  };
+  const handoff = pinned(context.handoff), packet = pinned(handoff.task_packet);
+  let pending, retained;
+  if (packet.origin === 'qualified-successor-v1') {
+    const config = pinned(context.owner_config);
+    const runtime = config.selected_current.coordinator_runtime;
+    const currentBytes = readFileSync(`${runtime}/current.json`);
+    const current = JSON.parse(currentBytes);
+    const state = JSON.parse(readFileSync(`${runtime}/current-owner.json`));
+    pending = state.successor_request;
+    if (state.config_sha256!==sha(currentBytes) || state.owner!==config.owner ||
+        current.owner!==config.owner || !isDeepStrictEqual(current.qualified_successor,context.handoff) ||
+        !isDeepStrictEqual(handoff.owner_config,context.owner_config) ||
+        !pending || !isDeepStrictEqual(pending.handoff,context.handoff) ||
+        !isDeepStrictEqual(pending.owner_config,context.owner_config) ||
+        !/^[0-9a-f]{64}$/.test(pending.identity) ||
+        !['pending','published','duplicate','refused','uncertain'].includes(pending.status))
+      throw Error('publication_successor_held');
+    const journal = `${config.selected_current.runtime_root}/owner-bridge-${context.handoff.sha256}.json`;
+    try {retained=JSON.parse(readFileSync(journal,'utf8'));}
+    catch (error) {if(error.code!=='ENOENT') throw error;}
+    if (retained && (!/^[0-9a-f]{64}$/.test(retained.nonce) || retained.nonce.slice(12)!==pending.identity.slice(12) || !isDeepStrictEqual(retained.context,context)))
+      throw Error('publication_successor_held');
+    if (!retained && (pending.status!=='pending' || !Number.isFinite(packet.expires_at) || Date.now()/1000>packet.expires_at))
+      throw Error('publication_successor_held');
+  }
+  // A retained exact request is status-only, including after process restart.
+  // Mapping is used only to reconstruct its hash, never to authenticate prepare.
+  let principal;
+  if (retained) {
+    const association=pinned(context.owner_config).caller_association;
+    principal={service:association.service,principal_id:association.principal_id,login:association.login};
+  } else {
+    const profile = await github.getProfile();
+    if (!profile || !['string','number'].includes(typeof profile.id) ||
+        typeof profile.login!=='string' || !profile.login ||
+        !/^[0-9]+$/.test(String(profile.id))) throw Error('publication_bridge_refused');
+    principal={service:'github',principal_id:String(profile.id),login:profile.login};
+  }
+  // The journal retains the timestamp-bearing nonce, so a restarted caller can
+  // reconstruct the exact status wire without a second ledger or owner write.
+  const observedMillis = retained ? Number.parseInt(retained.nonce.slice(0,12),16) : Date.now();
+  const nonce = pending ? (retained?.nonce ?? observedMillis.toString(16).padStart(12,'0')+pending.identity.slice(12))
+    : randomBytes(32).toString('hex');
+  const payload = reviewWireBytes({context, nonce, observed_at:observedMillis/1000,
     provenance:{service:'github',connector_tool:'mcp__codex_apps__github_get_profile',
-      flow:'same-invocation-getProfile-to-fixed-stdin'},
-    principal:{service:'github',principal_id:String(profile.id),login:profile.login}});
+      flow:'same-invocation-getProfile-to-fixed-stdin'}, principal});
   const request = sha(payload);
   if (Buffer.byteLength(payload)>limit) throw Error('publication_bridge_refused');
   async function invoke(mode) {
@@ -322,6 +363,10 @@ export async function prepareOwnerPublication({github, reviewedPublication}) {
       });
       child.stdin.end(input);
     });
+  }
+  if (retained) {
+    if(retained.request_sha256!==request) throw Error('publication_successor_held');
+    return await invoke('status');
   }
   try {return await invoke('prepare');}
   catch {
