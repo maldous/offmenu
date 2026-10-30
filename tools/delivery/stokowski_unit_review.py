@@ -21,8 +21,8 @@ to depth <64, Unicode scalar strings, finite fractions and safe integers
 (abs <= 2**53-1); negative zero and nonfinite/unsafe integers are rejected.
 Original Python int/float distinctions are restored ONLY from the typed graph
 observation and original receipt JSON. context.validation_receipt_source is an
-owner-pinned {path,sha256} to a private regular original artifact inside the task
-runtime, in addition to the unchanged validation_receipt projection. Its bytes
+owner-pinned {path,sha256} to a private regular artifact inside the qualified
+original task runtime, in addition to the unchanged validation_receipt projection. Its bytes
 must pass the original Journal receipt digest. Review/qualification/native and
 packet digests remain Python v1, never recomputed from JS-normalized values.
 legacy_evidence_sha256 reports that original packet digest; it is not the v2
@@ -217,17 +217,31 @@ def handle(request):
     for p in (SOURCE, *[SOURCE/n for n in c['source_sha256']]):
         custody(p, uid)
     entry = current.entries[c['issue']]
-    task_runtime, _, source = current.context(c['issue'], review=True)
+    task_runtime, manifest, source = current.context(c['issue'], review=True)
+    admission_files = ('current-admission.json','manifest.json','capacity-policy.json',
+                       'installation.json','provider-proof.json','requests/'+c['issue']+'.json')
     custody(task_runtime, uid, private=True)
-    for name in ('current-admission.json','manifest.json','capacity-policy.json',
-                 'installation.json','provider-proof.json','validation-bindings.json',
-                 'operations/operations.sqlite','requests/'+c['issue']+'.json',
+    for name in admission_files:
+        custody(task_runtime/name, uid, private=True)
+    # A typed stage owns its admission, not copies of the native attempt. Only
+    # stage_origin can select and requalify the owner-pinned native-v1 original.
+    evidence_runtime, evidence_source = task_runtime, source
+    task = manifest['tasks'][c['issue']]
+    if 'stage' in task:
+        original, evidence_runtime, _ = current.stage_origin(c['issue'], task)
+        qualified_runtime, _, evidence_source = original.context(c['issue'], review=True)
+        require(qualified_runtime == evidence_runtime)
+        custody(evidence_runtime, uid, private=True)
+        for name in admission_files:
+            custody(evidence_runtime/name, uid, private=True)
+    for name in ('validation-bindings.json','operations/operations.sqlite',
                  *['attempts/'+c['issue']+'/'+n for n in
                    ('intent.json','dispatch-intent.json','receipt.json')]):
-        custody(task_runtime/name, uid, private=True)
+        custody(evidence_runtime/name, uid, private=True)
     custody(current.catalog, uid, private=True)
     roots = [custody(p, uid, private=True) for p in c['workspace_roots']]
-    require(roots and any(source.is_relative_to(p) for p in roots))
+    require(roots and all(any(selected.is_relative_to(p) for p in roots)
+                          for selected in (source, evidence_source)))
     b = read_record(directory/'binding.json')
     decision = read_record(directory/'state.json')
     owner_claim = read_record(claim/'repository-claim.json')
@@ -249,7 +263,7 @@ def handle(request):
     receipt_source = c['validation_receipt_source']
     require(set(receipt_source) == {'path','sha256'})
     receipt_path = custody(receipt_source['path'], uid, private=True)
-    require(receipt_path.is_relative_to(task_runtime) and receipt_path.is_file()
+    require(receipt_path.is_relative_to(evidence_runtime) and receipt_path.is_file()
             and receipt_path.stat().st_size <= LIMIT)
     receipt_raw = receipt_path.read_bytes()
     require(len(receipt_raw) <= LIMIT
@@ -271,7 +285,7 @@ def handle(request):
             and ((review['resolution_status'] == 'unknown' and review.get('resolved_model') is None)
                  or (review['resolution_status'] == 'observed' and review.get('resolved_model'))))
     for name in b['outputs']:
-        custody(task_runtime/'workspaces'/c['issue']/name, uid, private=True)
+        custody(evidence_runtime/'workspaces'/c['issue']/name, uid, private=True)
     incoming = runtime/('unit-review-' + c['issue'] + '.json')
     raw = json.dumps(packet, sort_keys=True, separators=(',', ':')).encode()
     if incoming.exists():
