@@ -562,9 +562,34 @@ class Journal:
             spec,state = self.read(key)
             if spec['version'] == 3:
                 from stokowski_stage import qualify_reviewed_source
-                selected = json.loads((self.root.parent/'validation-bindings.json').read_text())['issues'][spec['issue']]
-                qualify_reviewed_source(spec,selected['admission_path'])
+                bindings = json.loads((self.root.parent/'validation-bindings.json').read_text())
+                if bindings != dict(version=1,issues=bindings.get('issues'),history=[]) or set(bindings['issues']) != {spec['issue']}:
+                    raise OperationError('Reviewed operation selection conflict')
+                selected = bindings['issues'][spec['issue']]
+                # The key commits to the semantic spec (owner changes cannot
+                # mint a replacement key). The original remote command also
+                # binds the owner before cancellation or receipt consumption.
+                # Mutable state is never authority for any job identity.
+                validated(spec)
+                with self.db() as db:
+                    canonical = db.execute('SELECT spec FROM operations WHERE key=?',(key,)).fetchone()[0]
+                if (canonical != json.dumps(spec,sort_keys=True) or operation_key(spec) != key
+                    or selected != dict(operation_key=key,source_head=spec['head'],origin='reviewed-source-v1',
+                        admission_path=selected['admission_path'],admission_sha256=spec['origin']['admission_sha256'],
+                        local_source_root=spec['local_source_root'],workspace=spec['workspace'])
+                    or state.get('windmill_job_id') != str(uuid5(NAMESPACE_URL,'offmenu:run:'+key))
+                    or state.get('cancel_job_id') != str(uuid5(NAMESPACE_URL,'offmenu:cancel:'+key))
+                    or state.get('logical_job_id') != bridge_arguments(spec)['job_id']
+                    or type(state.get('cancel_requested')) is not bool
+                    or hashlib.sha256(Path(__file__).with_name('windmill_runner.py').read_bytes()).hexdigest() != spec['runner_sha256']):
+                    raise OperationError('Reviewed operation binding conflict')
             if state['status'] in TERMINAL:
+                if spec['version'] == 3 and state['status'] == 'succeeded':
+                    try:
+                        qualify_reviewed_source(spec,selected['admission_path'])
+                    except OperationError:
+                        state.update(status='quarantined',accepted_output_sha256={})
+                        self.save(key,state,'accepted-source-drift')
                 return state
             if (hashlib.sha256(POLICY.read_bytes()).hexdigest() != spec['policy_sha256']
                 or hashlib.sha256(Path(__file__).read_bytes()).hexdigest() != spec['executor_sha256']):
@@ -582,6 +607,8 @@ class Journal:
                         state['status'] = 'cancelled'
                         self.save(key,state,'cancelled-before-submission')
                         return state
+                    if spec['version'] == 3:
+                        qualify_reviewed_source(spec,selected['admission_path'])
                     # Persist before network mutation. Even a crash or lost API
                     # response leaves the exact UUID available for inspection.
                     state['status'] = 'submit-intent'
@@ -655,6 +682,13 @@ class Journal:
                     and receipt.get('reconcile_required') is False
                     and receipt.get('capacity_policy_sha256') == spec['policy_sha256']):
                     state['status'] = 'cancelled' if state['cancel_requested'] else 'succeeded'
+                    if spec['version'] == 3 and state['status'] == 'succeeded':
+                        try:
+                            qualify_reviewed_source(spec,selected['admission_path'])
+                        except OperationError:
+                            # The terminal receipt reconciles stopped work, but
+                            # drift cannot become accepted candidate output.
+                            state['status'] = 'quarantined'
                 elif status in ('failed','cancelled','timed_out') and bound and receipt.get('child_tree_gone') is True:
                     state['status'] = 'failed' if status == 'timed_out' else status
                 else:

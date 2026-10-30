@@ -5,14 +5,210 @@
 No credentials, schedules, infrastructure or grant APIs. This adapter never
 executes locally and never cancels only an API wrapper in place of Foo cleanup.
 """
+import ast
 import hashlib
 import json
 import math
 import os
 import re
-from uuid import UUID
+import shlex
+from pathlib import Path, PurePosixPath
+from uuid import UUID, NAMESPACE_URL, uuid5
 
 BRIDGE = 'u/admin/foo_jobs_20261027'
+
+# Portable qualification copied from the frozen v3 producer at 5ec30129.
+# Windmill deploys this file alone: validation must not import the checkout.
+REVIEWED_PROFILE = 'current-journal-focused'
+PROFILES = {'delivery-suite'}
+
+
+def _reviewed_branch(value):
+    return (isinstance(value,str) and bool(re.fullmatch(r'(?:feature|bugfix)/[a-z0-9][a-z0-9/-]{0,159}',value))
+            and not value.endswith('/') and '//' not in value)
+
+
+def _reviewed_workspace(value):
+    if (not isinstance(value,str) or not re.fullmatch(
+        r'/offmenu/data/\.offmenu-platform/workspaces/[A-Za-z0-9][A-Za-z0-9_-]{0,79}',value)):
+        raise ValueError('Invalid exact workspace')
+
+
+def _reviewed_legacy(spec):
+    fields = {'version','issue_id','issue','stage','head','base','owner','policy_sha256',
+              'acceptance_sha256','outputs','profile','runner_sha256','executor_sha256'}
+    if not isinstance(spec,dict) or set(spec) not in (fields,fields|{'branch'}) or type(spec['version']) is not int or spec['version'] != 1:
+        raise ValueError('Invalid operation fields')
+    if not _reviewed_branch(spec.get('branch','feature/langgraph-delivery-standardization')):
+        raise ValueError('Invalid exact selected branch')
+    if str(UUID(spec['issue_id'])) != spec['issue_id'] or not re.fullmatch(r'UIF-[1-9][0-9]*',spec['issue']):
+        raise ValueError('Invalid issue identity')
+    if not re.fullmatch(r'[a-z][a-z0-9-]{0,39}',spec['stage']):
+        raise ValueError('Invalid stage')
+    if not isinstance(spec['owner'],str) or not spec['owner'].strip():
+        raise ValueError('Missing operation owner')
+    for name,width in [('head',40),('base',40),('policy_sha256',64),('acceptance_sha256',64),
+                       ('runner_sha256',64),('executor_sha256',64)]:
+        if not isinstance(spec[name],str) or not re.fullmatch('[0-9a-f]{'+str(width)+'}',spec[name]):
+            raise ValueError('Invalid '+name)
+    if spec['profile'] not in PROFILES:
+        raise ValueError('Unreviewed validation profile')
+    if not isinstance(spec['outputs'],dict) or not 1 <= len(spec['outputs']) <= 64:
+        raise ValueError('Missing accepted outputs')
+    for name,value in spec['outputs'].items():
+        path = PurePosixPath(name)
+        if (not name or path.is_absolute() or '\\' in name or str(path) != name
+            or any(p in ('','.','..') for p in name.split('/'))
+            or path.parts[0] not in ('src','apps','tests','tools','scripts','docs','contracts','config')
+            or not isinstance(value,str) or not re.fullmatch('[0-9a-f]{64}',value)):
+            raise ValueError('Invalid output binding')
+    return spec
+
+
+def _canonical_derivations(provenance):
+    """v3 review payload: sort by canonical JSON; reject duplicate entries.
+
+    Object keys use sorted compact JSON (UTF-8); list order is lexical by that
+    encoding. Every transformed reference contributes its exact derivation,
+    excluding only review_sha256 so the prior review never hashes itself.
+    """
+    encoded = []
+    for ref in provenance:
+        if ref['derivation'] is not None:
+            payload = {k:v for k,v in ref['derivation'].items() if k != 'review_sha256'}
+            encoded.append(json.dumps(payload,sort_keys=True,separators=(',',':'),ensure_ascii=False))
+    if len(encoded) != len(set(encoded)):
+        raise ValueError('Duplicate contribution derivation')
+    return [json.loads(value) for value in sorted(encoded)]
+
+
+def _qualified_reviewed_spec(spec):
+    if not isinstance(spec,dict) or type(spec.get('version')) is not int or spec['version'] != 3:
+        raise ValueError('Invalid reviewed-source version')
+    extra = {'origin','workspace','local_source_root','execution','control_sha256'}
+    legacy = {k:v for k,v in spec.items() if k not in extra}
+    if not extra.issubset(spec) or 'branch' not in legacy or spec.get('profile') != REVIEWED_PROFILE:
+        raise ValueError('Invalid reviewed-source profile')
+    _reviewed_legacy(dict(legacy, version=1, profile='delivery-suite'))
+    _reviewed_workspace(spec['workspace'])
+    root = Path(spec['local_source_root'])
+    if not root.is_absolute() or str(root) != spec['local_source_root']:
+        raise ValueError('Invalid reviewed-source mirror')
+    origin = spec['origin']
+    if (not isinstance(origin,dict) or set(origin) != {'kind','admission_sha256','review_sha256','author','authors','provenance'}
+        or origin['kind'] != 'reviewed-source-v1' or not isinstance(origin['author'],str)
+        or not origin['author'].strip() or not isinstance(origin['authors'],list)
+        or not origin['authors'] or len(set(origin['authors'])) != len(origin['authors'])
+        or origin['author'] not in origin['authors']
+        or not all(isinstance(a,str) and a.strip() for a in origin['authors'])
+        or not isinstance(origin['provenance'],list) or not origin['provenance']):
+        raise ValueError('Invalid reviewed-source origin')
+    for value in (origin['admission_sha256'],origin['review_sha256'],spec['control_sha256']):
+        if not isinstance(value,str) or not re.fullmatch('[0-9a-f]{64}',value):
+            raise ValueError('Invalid reviewed-source pin')
+    for ref in origin['provenance']:
+        if (not isinstance(ref,dict) or set(ref) != {'path','sha256','author','owner','session','source_head','outputs','contribution_head','path_mapping','derivation'}
+            or ref['author'] not in origin['authors'] or ref['author'] != ref['owner'] or not ref['owner'] or not ref['session']
+            or not isinstance(ref['source_head'],str) or not re.fullmatch('[0-9a-f]{40}',ref['source_head'])
+            or not isinstance(ref['contribution_head'],str) or not re.fullmatch('[0-9a-f]{40}',ref['contribution_head'])
+            or not re.fullmatch('[0-9a-f]{64}',ref['sha256'])
+            or not Path(ref['path']).is_absolute() or str(Path(ref['path'])) != ref['path']
+            or not isinstance(ref['outputs'],dict) or not ref['outputs']
+            or any(not isinstance(k,str) or not re.fullmatch('[0-9a-f]{64}',v) for k,v in ref['outputs'].items())):
+            raise ValueError('Invalid manual provenance reference')
+        mapping = ref['path_mapping']
+        if (not isinstance(mapping,dict) or set(mapping) != set(ref['outputs'])
+            or any(not isinstance(v,str) or v not in spec['outputs'] for v in mapping.values())
+            or len(set(mapping.values())) != len(mapping)
+            or any(not k or str(PurePosixPath(k)) != k or PurePosixPath(k).is_absolute()
+                   or '\\' in k or any(p in ('','.','..') for p in k.split('/')) for k in mapping)):
+            raise ValueError('Invalid contribution path mapping')
+        derivation = ref['derivation']
+        transformed = any(value != spec['outputs'][mapping[name]] for name,value in ref['outputs'].items())
+        if transformed:
+            if (not isinstance(derivation,dict)
+                or set(derivation) != {'owner','contribution_head','path_mapping','head','outputs','review_sha256','reason'}
+                or derivation['owner'] != ref['owner']
+                or derivation['contribution_head'] != ref['contribution_head']
+                or derivation['path_mapping'] != mapping or derivation['head'] != spec['head']
+                or derivation['outputs'] != {v:spec['outputs'][v] for v in mapping.values()}
+                or derivation['review_sha256'] != origin['review_sha256']
+                or not isinstance(derivation['reason'],str) or not derivation['reason'].strip()):
+                raise ValueError('Changed contribution needs exact reviewed derivation')
+        elif derivation is not None:
+            raise ValueError('Unexpected contribution derivation')
+    _canonical_derivations(origin['provenance'])
+    if set(a['author'] for a in origin['provenance']) != set(origin['authors']):
+        raise ValueError('Incomplete manual author lineage')
+    if (spec['execution'] != dict(task_fit='deterministic reviewed source validation',
+        requested_model=None,requested_effort=None,provider_route='none',resolved_model=None,
+        resolution_status='not-applicable') or spec['acceptance_sha256'] != origin['admission_sha256']):
+        raise ValueError('Invalid reviewed-source execution/admission')
+    return spec
+
+
+# Full immutable body templates from reviewed_check_code/reviewed_arguments.
+REVIEWED_CHECK_SHA256 = 'de61813f1a03fdb8fb84d012015c306319eae8a94be8dec4a13411ef6b076a59'
+REVIEWED_ORACLE_SHA256 = '688542af44b51ffb02ad5db5c9b0499e07ca660db6975fa25e8a9e38021449f2'
+
+
+def _unique_json(pairs):
+    result = {}
+    for key,value in pairs:
+        if key in result:
+            raise ValueError('Duplicate embedded spec key')
+        result[key] = value
+    return result
+
+
+def _body_hash(body, parameters):
+    lines = body.splitlines(keepends=True)
+    for original,placeholder in parameters:
+        line = original+'\n'
+        if lines.count(line) != 1:
+            raise ValueError('Noncanonical body parameter')
+        lines[lines.index(line)] = placeholder+'\n'
+    return hashlib.sha256(''.join(lines).encode()).hexdigest()
+
+
+def _reviewed_command(command, logical_id):
+    try:
+        tokens = shlex.split(command)
+        if len(tokens) != 19 or tokens[10] != tokens[18]:
+            raise ValueError('Invalid complete reviewed command')
+        root,check,oracle = tokens[1],tokens[10],tokens[14]
+        _reviewed_workspace(root)
+        python = '/offmenu/.venv-delivery/bin/python -c '
+        canonical = ' && '.join([
+            'cd '+shlex.quote(root),
+            'export PYTHONDONTWRITEBYTECODE=1 GIT_OPTIONAL_LOCKS=0 PYTHONPATH='+shlex.quote(
+                root+'/tools/delivery:'+root+'/src:/offmenu/.delivery/stokowski/venv/lib/python3.12/site-packages'),
+            python+shlex.quote(check),python+shlex.quote(oracle),python+shlex.quote(check)])
+        if command != canonical:
+            raise ValueError('Noncanonical reviewed shell')
+        # Parse literals only. The complete body is subsequently pinned below.
+        parsed = ast.parse(check)
+        spec_json = ast.literal_eval(parsed.body[1].value.args[0])
+        if not isinstance(spec_json,str):
+            raise ValueError('Invalid embedded spec literal')
+        spec = json.loads(spec_json,object_pairs_hook=_unique_json)
+        _qualified_reviewed_spec(spec)
+        key = hashlib.sha256(json.dumps({k:v for k,v in spec.items() if k != 'owner'},
+            sort_keys=True,separators=(',', ':')).encode()).hexdigest()
+        if spec['workspace'] != root or logical_id != 'offmenu-'+key[:48]:
+            raise ValueError('Conflicting reviewed identity')
+        check_hash = _body_hash(check,[
+            ('spec=json.loads('+repr(json.dumps(spec,sort_keys=True))+')','SPEC'),
+            ('root=pathlib.Path('+repr(root)+')','ROOT')])
+        oracle_hash = _body_hash(oracle,[
+            ('root=pathlib.Path('+repr(root)+')','ROOT'),
+            ("archive=subprocess.check_output(['git','-C',str(root),'archive',"+repr(spec['base'])+",*files])",'ARCHIVE'),
+            ("assert hashlib.sha256(archive).hexdigest()=="+repr(spec['control_sha256'])+", 'control source drift'",'CONTROL')])
+        if check_hash != REVIEWED_CHECK_SHA256 or oracle_hash != REVIEWED_ORACLE_SHA256:
+            raise ValueError('Unreviewed Python body')
+        return key
+    except (AttributeError,IndexError,KeyError,TypeError,SyntaxError,RecursionError) as error:
+        raise ValueError('Invalid reviewed command') from error
 
 
 def validate_request(value):
@@ -29,9 +225,10 @@ def validate_request(value):
     if value['mode'] != 'read' or value['timeout_seconds'] != 180:
         raise ValueError('Unreviewed mode or timeout')
     command = value['command']
-    if (not isinstance(command,str) or not command.startswith('cd /offmenu && export PYTHONPATH=/offmenu/src ')
-        or '\0' in command or len(command.encode()) > 32000):
+    if (not isinstance(command,str) or '\0' in command or len(command.encode()) > 32000):
         raise ValueError('Unreviewed command envelope')
+    if not command.startswith('cd /offmenu && export PYTHONPATH=/offmenu/src '):
+        _reviewed_command(command,value['job_id'])
     expected = {'workers':1,'overhead_processes':8,'cpu_millis':1000,
                 'memory_bytes':2147483648,'io_slots':1,'output_bytes':0,
                 'read_roots':['/offmenu'],'write_roots':[]}
@@ -167,6 +364,11 @@ def dispatch(client,action,job_id,request=None):
     if action != 'submit':
         raise ValueError('Only typed submit/inspect are supported')
     request = validate_request(request)
+    if (request['action'] == 'run'
+        and not request['command'].startswith('cd /offmenu && export PYTHONPATH=/offmenu/src ')):
+        key = _reviewed_command(request['command'],request['job_id'])
+        if job_id != str(uuid5(NAMESPACE_URL,'offmenu:run:'+key)):
+            raise ValueError('Conflicting reserved Windmill job UUID')
     response = client.post('/w/offmenu/jobs/run/p/'+BRIDGE,
                            params={'job_id':job_id},json=request,raise_for_status=False)
     if response.status_code in (200,201):

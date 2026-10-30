@@ -581,3 +581,194 @@ class ReviewedSourceTests(TypedStageTests):
         result=subprocess.run(['/bin/sh','-c',command],capture_output=True,text=True,timeout=10)
         self.assertNotEqual(result.returncode,0)
         self.assertIn("No module named 'stokowski'",result.stderr)
+
+    def drifted_job_recovery(self, drift, coordinator):
+        import hashlib
+        import stokowski_operations as operations
+        issue,runtime,owner,journal,key,spec,remote,_=self.new_fixture()
+        self.publish_stage()
+        asyncio.run(owner._tick())
+        self.assertEqual(journal.read(key)[1]['status'],'submitted')
+        original_spec,original_state=journal.read(key)
+        admission=runtime.parent/'synthetic-manual-history/new-admission.json'
+        target=(Path(spec['local_source_root'])/'tools/delivery/manual.py' if drift=='candidate' else admission)
+        target.write_bytes(target.read_bytes()+b' ')
+        journal.cancel(key)
+        self.assertEqual(journal.read(key)[1]['status'],'submitted')
+        self.assertTrue(journal.read(key)[1]['cancel_requested'])
+        remote.inspect.reset_mock();remote.submit.reset_mock()
+        def tick():
+            return asyncio.run(owner._tick() if coordinator else journal.tick(key,remote))
+        # Lost transport/state is reconciled against the original UUID, never resubmitted.
+        remote.inspect.return_value=None
+        tick()
+        self.assertGreater(remote.inspect.await_count,0)
+        self.assertEqual(journal.read(key)[1]['status'],'unknown')
+        remote.submit.assert_not_awaited()
+        self.current=adapter.CurrentWork(self.runtime)
+        asyncio.run(self.current.continue_validation())
+        self.assertEqual(journal.read(key)[1]['status'],'unknown')
+        remote.submit.assert_not_awaited()
+        remote.inspect.side_effect=operations.TransportUnavailable('synthetic outage')
+        tick()
+        self.assertEqual(journal.read(key)[1]['status'],'unknown')
+        remote.inspect.side_effect=None
+        journal.cancel(key)
+        args=operations.bridge_arguments(spec)
+        def observed(job,expected,**extra):
+            return dict(id=job,args=expected,workspace_id='offmenu',script_path=operations.BRIDGE,**extra)
+        running=observed(original_state['windmill_job_id'],args,type='QueuedJob',running=True)
+        remote.inspect.side_effect=lambda job: running if job==original_state['windmill_job_id'] else None
+        tick()
+        self.assertEqual(journal.read(key)[1]['status'],'cancel-requested')
+        remote.submit.assert_awaited_once_with(original_state['cancel_job_id'],operations.bridge_arguments(spec,'cancel'))
+        tick()
+        self.assertEqual(remote.submit.await_count,1)
+        receipt=dict(status='cancelled',child_tree_gone=False,job_id=original_state['logical_job_id'],
+            command_sha256=hashlib.sha256(args['command'].encode()).hexdigest(),
+            runner_sha256=spec['runner_sha256'],capacity_policy_sha256=spec['policy_sha256'])
+        result=dict(job_id=original_state['logical_job_id'],receipt=receipt)
+        remote.inspect.side_effect=None
+        remote.inspect.return_value=observed(original_state['windmill_job_id'],args,type='CompletedJob',result=result)
+        tick()
+        self.assertEqual(journal.read(key)[1]['status'],'unknown')
+        receipt['child_tree_gone']=True
+        tick()
+        saved_spec,state=journal.read(key)
+        self.assertEqual(state['status'],'cancelled')
+        self.assertEqual(state['accepted_output_sha256'],{})
+        self.assertEqual(saved_spec,original_spec)
+        for name in ('windmill_job_id','cancel_job_id','logical_job_id'):
+            self.assertEqual(state[name],original_state[name])
+        with self.assertRaises((AdmissionError,operations.OperationError)):
+            self.current.gate_binding(issue)
+        self.assertEqual(remote.submit.await_count,1)
+
+    def test_drifted_candidate_coordinator_recovers_original_job(self):
+        self.drifted_job_recovery('candidate',True)
+
+    def test_drifted_admission_coordinator_recovers_original_job(self):
+        self.drifted_job_recovery('admission',True)
+
+    def test_drifted_candidate_journal_recovers_original_job(self):
+        self.drifted_job_recovery('candidate',False)
+
+    def test_drifted_admission_journal_recovers_original_job(self):
+        self.drifted_job_recovery('admission',False)
+
+    def drift_blocks_submission_and_acceptance(self, drift):
+        import hashlib
+        import stokowski_operations as operations
+        issue,runtime,owner,journal,key,spec,remote,_=self.new_fixture()
+        self.publish_stage()
+        target=(Path(spec['local_source_root'])/'tools/delivery/manual.py' if drift=='candidate'
+                else runtime.parent/'synthetic-manual-history/new-admission.json')
+        raw=target.read_bytes();target.write_bytes(raw+b' ')
+        asyncio.run(owner._tick())
+        remote.submit.assert_not_awaited()
+        self.assertNotEqual(journal.read(key)[1]['status'],'succeeded')
+        # A successful original backend receipt must not accept drifted bytes.
+        _,state=journal.read(key)
+        args=operations.bridge_arguments(spec)
+        receipt=dict(status='succeeded',exit_code=0,child_tree_gone=True,reconcile_required=False,
+            job_id=state['logical_job_id'],command_sha256=hashlib.sha256(args['command'].encode()).hexdigest(),
+            runner_sha256=spec['runner_sha256'],capacity_policy_sha256=spec['policy_sha256'])
+        remote.inspect.return_value=dict(id=state['windmill_job_id'],args=args,workspace_id='offmenu',
+            script_path=operations.BRIDGE,type='CompletedJob',
+            result=dict(job_id=state['logical_job_id'],job_succeeded=True,receipt=receipt))
+        asyncio.run(owner._tick())
+        self.assertEqual(journal.read(key)[1]['status'],'quarantined')
+        self.assertEqual(journal.read(key)[1]['accepted_output_sha256'],{})
+        remote.submit.assert_not_awaited()
+        self.assertFalse(self.current.state['accepted_delivery'])
+        with self.assertRaises((AdmissionError,operations.OperationError)):
+            self.current.gate_binding(issue)
+        # Historical success also loses current acceptance when bytes drift.
+        target.write_bytes(raw)
+        state.update(status='succeeded',accepted_output_sha256=spec['outputs'])
+        journal.save(key,state,'synthetic-prior-success')
+        target.write_bytes(raw+b' ')
+        asyncio.run(journal.tick(key,remote))
+        self.assertEqual(journal.read(key)[1]['status'],'quarantined')
+        self.assertEqual(journal.read(key)[1]['accepted_output_sha256'],{})
+
+    def test_drifted_candidate_blocks_new_submit_and_acceptance(self):
+        self.drift_blocks_submission_and_acceptance('candidate')
+
+    def test_drifted_admission_blocks_new_submit_and_acceptance(self):
+        self.drift_blocks_submission_and_acceptance('admission')
+
+    def test_drift_recovery_refuses_tampered_binding_and_foreign_job(self):
+        import stokowski_operations as operations
+        issue,runtime,owner,journal,key,spec,remote,_=self.new_fixture()
+        selected=self.publish_stage()
+        asyncio.run(owner._tick())
+        target=Path(spec['local_source_root'])/'tools/delivery/manual.py'
+        target.write_bytes(target.read_bytes()+b' ')
+        _,state=journal.read(key)
+        # Mutable journal identities and canonical spec bytes are never authority.
+        for field in ('windmill_job_id','cancel_job_id','logical_job_id'):
+            remote.inspect.reset_mock()
+            journal.save(key,dict(state,**{field:'foreign'}),'synthetic-tamper')
+            with self.subTest(field=field),self.assertRaises(operations.OperationError):
+                asyncio.run(journal.tick(key,remote))
+            asyncio.run(owner._tick())
+            remote.inspect.assert_not_awaited()
+        journal.save(key,state,'synthetic-restore')
+        for field,value in (('issue_id','00000000-0000-4000-8000-000000000999'),):
+            changed=dict(spec,**{field:value})
+            with journal.db() as db:
+                db.execute('UPDATE operations SET spec=? WHERE key=?',(json.dumps(changed,sort_keys=True),key))
+            with self.subTest(field=field),self.assertRaises(operations.OperationError):
+                asyncio.run(journal.tick(key,remote))
+            asyncio.run(owner._tick())
+            remote.inspect.assert_not_awaited()
+        with journal.db() as db:
+            db.execute('UPDATE operations SET spec=? WHERE key=?',(json.dumps(spec,sort_keys=True),key))
+        for path in (selected/'manifest.json',selected/'requests/UIF-106.json',runtime/'validation-bindings.json',
+                     self.source/'tools/delivery/stokowski_worker.py'):
+            raw=path.read_bytes();path.write_bytes(raw+b' ')
+            try:
+                if path.is_relative_to(self.source):
+                    with self.assertRaises(AdmissionError):
+                        asyncio.run(owner._tick())
+                else:
+                    asyncio.run(owner._tick())
+                remote.inspect.assert_not_awaited()
+            finally:
+                path.write_bytes(raw)
+            self.current.fatal=None
+            self.current.state.pop('fatal',None)
+        # Owner is deliberately excluded from the semantic key: the original
+        # remote command and coordinator binding must refuse its replacement.
+        with journal.db() as db:
+            db.execute('UPDATE operations SET spec=? WHERE key=?',(json.dumps(dict(spec,owner='foreign'),sort_keys=True),key))
+        asyncio.run(owner._tick())
+        remote.inspect.assert_not_awaited()
+        remote.inspect.return_value=dict(id=state['windmill_job_id'],workspace_id='offmenu',
+            script_path=operations.BRIDGE,type='QueuedJob',running=True,args=operations.bridge_arguments(spec))
+        result=asyncio.run(journal.tick(key,remote))
+        self.assertEqual(result['status'],'quarantined')
+        with journal.db() as db:
+            db.execute('UPDATE operations SET spec=? WHERE key=?',(json.dumps(spec,sort_keys=True),key))
+        journal.save(key,state,'synthetic-restore-owner')
+        remote.inspect.reset_mock()
+        catalog_raw=self.catalog.read_bytes()
+        catalog=json.loads(catalog_raw)
+        catalog['entries'][0]['issue_id']='00000000-0000-4000-8000-000000000999'
+        self.write(self.catalog,catalog)
+        with self.assertRaises(AdmissionError):
+            asyncio.run(owner._tick())
+        remote.inspect.assert_not_awaited()
+        self.catalog.write_bytes(catalog_raw)
+        self.current.fatal=None
+        self.current.state.pop('fatal',None)
+        task=copy.deepcopy(self.stage_task);task['stage_binding']['identity']='0'*64
+        with self.assertRaises(AdmissionError):
+            self.current.reviewed_origin(issue.identifier,task,observation=True)
+        remote.inspect.return_value=dict(id=state['windmill_job_id'],workspace_id='offmenu',
+            script_path=operations.BRIDGE,type='QueuedJob',running=True,args=dict(action='run',job_id='foreign'))
+        remote.submit.reset_mock()
+        asyncio.run(owner._tick())
+        self.assertEqual(journal.read(key)[1]['status'],'quarantined')
+        remote.submit.assert_not_awaited()
