@@ -25,6 +25,48 @@ class TypedStageTests(unittest.TestCase):
                   'client','select','bound_gate','review_fixture','continuation_fixture','turn'):
         locals()[_name] = getattr(fixtures.CurrentDispatchTests, _name)
 
+    def prepare_current(self):
+        # Mirror every real producer input before invoking its actual CLI.
+        import shutil
+        origin = Path(__file__).resolve().parents[2]
+        for name in ('src/offmenu/delivery/integration.py',
+                     'tools/delivery/integration-gateway.mjs',
+                     'tools/delivery/stokowski_operations.py',
+                     'tools/delivery/stokowski_stage.py',
+                     'tools/delivery/stokowski_unit_review.py'):
+            target = self.source/name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(origin/name, target)
+        fixtures.CurrentDispatchTests.prepare_current(self)
+
+    def git_read(self, args, **kwargs):
+        if args[3] == 'rev-parse' and args[-1].endswith('^{tree}'):
+            import subprocess
+            return subprocess.run(args,check=True,capture_output=True,**kwargs).stdout
+        return fixtures.CurrentDispatchTests.git_read(self,args,**kwargs)
+
+    def test_actual_producer_full_review_closure(self):
+        from stokowski_unit_review import REQUIRED
+        pins = self.current.config['source_sha256']
+        self.assertEqual(len(pins), 14)
+        self.assertTrue(REQUIRED.issubset(pins))
+        for name, sha in pins.items():
+            self.assertEqual(adapter.file_sha(self.source/name), sha)
+        for name in REQUIRED:
+            target = self.source/name
+            raw = target.read_bytes()
+            target.write_bytes(raw+b'\n# SYNTHETIC source drift\n')
+            with self.subTest(source=name), self.assertRaisesRegex(AdmissionError,'current_source_drift'):
+                self.current.guard()
+            target.write_bytes(raw)
+        original_git = self.git.side_effect
+        self.git.side_effect = lambda args, **kw: (
+            b'SYNTHETIC different accepted blob' if args[3] == 'show' and
+            args[-1].endswith(':tools/delivery/stokowski_stage.py') else original_git(args,**kw))
+        with self.assertRaisesRegex(AdmissionError,'current_source_not_reviewed_revision'):
+            self.current.guard()
+        self.git.side_effect = original_git
+
     def stage_fixture(self, stage='validation'):
         issue, original, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture(106)
         entry = copy.deepcopy(self.entries[0])
@@ -310,6 +352,255 @@ def reviewed_records(case, candidate, base, head, outputs, issue_name="UIF-106",
 
 
 class ReviewedSourceTests(TypedStageTests):
+    def standalone_packet(self):
+        issue, runtime, _, journal, key, spec, _, _ = self.new_fixture('review')
+        import subprocess
+        tree = subprocess.run(['git','-C',spec['local_source_root'],'rev-parse',spec['head']+'^{tree}'],
+            check=True,capture_output=True,text=True).stdout.strip()
+        admission = json.loads(Path(runtime.parent/'synthetic-manual-history/new-admission.json').read_text())
+        prior = admission['review']
+        # SYNTHETIC independently qualified supplement, with the genuine
+        # supplement's explicit unknown metadata shape; never infer a model.
+        supplement = dict(schema='offmenu-independent-review-provenance-supplement/1',
+            retained_review=dict(path=prior['path'],sha256=prior['sha256'],unchanged=True),
+            reviewer=prior['reviewer'],independent=True,verdict='accept',findings=[],
+            head=prior['head'],base=prior['base'],outputs=prior['outputs'],tree=tree,
+            author=admission['author'],authors=admission['authors'],
+            reviewer_thread_id='SYNTHETIC-original-thread',review_turn_id='SYNTHETIC-original-turn',
+            review_completed_at_utc='2026-10-30T08:39:12Z',evidence_id='SYNTHETIC-original-message',
+            model='unknown',provider='unknown',requested_model='unknown',requested_provider='unknown',
+            resolved_model=None,resolution_status='unknown')
+        self.supplement_path = runtime.parent/'synthetic-manual-history/review-provenance.json'
+        self.write(self.supplement_path,supplement)
+        binding = self.stage_task['stage_binding']
+        binding['inputs'][str(self.supplement_path)] = adapter.file_sha(self.supplement_path)
+        selected = json.loads((runtime/'validation-bindings.json').read_text())['issues'][issue.identifier]
+        binding['identity'] = digest(dict(entry=binding['entry'],selected=selected,spec=spec,inputs=binding['inputs']))
+        self.publish_stage()
+        packet = self.independent_packet(issue, journal, key, spec)
+        review = packet['snapshot']['review']
+        for k in ('reviewer','author','evidence_id','model','provider','requested_model',
+                  'requested_provider','resolved_model','resolution_status'):
+            review[k] = supplement[k]
+        review['provenance_source'] = self.ref(self.supplement_path)
+        review['evidence_sha256'] = digest({k:v for k,v in review.items() if k != 'evidence_sha256'})
+        b = packet['integration_binding']
+        b['tree'] = tree
+        packet['snapshot']['source_tree'] = b['tree']
+        packet['decision'] = dict(version=1, kind='standalone-validation-review-v1',
+            status='standalone-validation-qualified', action=None, merge_effect='not-applicable',
+            binding_sha256=digest(b), qualification_sha256=digest(dict(
+                validation=packet['snapshot']['validation'], review=review, tree=b['tree'], policy=b['policy_sha256'])))
+        self.current.state['tasks'][issue.identifier]['unit_gate'] = dict(
+            binding=packet['unit_binding'], disposition='waiting', accepted_delivery=False)
+        self.current.save()
+        return packet
+
+    def test_standalone_original_review_without_merge_history(self):
+        packet = self.standalone_packet()
+        self.current._check_unit_review(packet)
+        self.assertEqual(self.current.unit_review_writer(lambda _:packet)(packet)['status'], 'retained')
+        self.current.refresh()
+        self.assertEqual(self.current.state['tasks']['UIF-106']['unit_gate']['disposition'], 'approved')
+        self.assertFalse(self.current.state['accepted_delivery'])
+
+    @staticmethod
+    def rehash_standalone(packet):
+        review = packet['snapshot']['review']
+        review['evidence_sha256'] = digest({k:v for k,v in review.items() if k != 'evidence_sha256'})
+        b = packet['integration_binding']
+        packet['decision']['qualification_sha256'] = digest(dict(validation=packet['snapshot']['validation'],
+            review=review,tree=b['tree'],policy=b['policy_sha256']))
+
+    def test_standalone_reviewer_substitution(self):
+        self.reject_review_substitution(dict(reviewer='SYNTHETIC-unrecorded-reviewer'))
+
+    def test_standalone_evidence_substitution(self):
+        self.reject_review_substitution(dict(evidence_id='SYNTHETIC-unrecorded-message'))
+
+    def test_standalone_reviewer_and_evidence_substitution(self):
+        self.reject_review_substitution(dict(reviewer='SYNTHETIC-unrecorded-reviewer',
+                                             evidence_id='SYNTHETIC-unrecorded-message'))
+
+    def reject_review_substitution(self, changes):
+        packet = self.standalone_packet()
+        packet['snapshot']['review'].update(changes)
+        self.rehash_standalone(packet)
+        with self.assertRaisesRegex(AdmissionError,'unit_review_prior_review_provenance'):
+            self.current._check_unit_review(packet)
+
+    def test_standalone_supplement_pin_and_content(self):
+        packet = self.standalone_packet()
+        raw = self.supplement_path.read_bytes()
+        altered = copy.deepcopy(packet)
+        altered['snapshot']['review']['provenance_source']['sha256'] = '0'*64
+        self.rehash_standalone(altered)
+        with self.assertRaises(AdmissionError): self.current._check_unit_review(altered)
+        self.supplement_path.write_bytes(raw+b' ')
+        with self.assertRaises(AdmissionError): self.current._check_unit_review(packet)
+        self.supplement_path.write_bytes(raw)
+        # A fresh caller pin to a coherent forged file is not owner qualification.
+        fake = self.supplement_path.with_name('unqualified-forged.json')
+        self.write(fake,json.loads(raw))
+        altered['snapshot']['review']['provenance_source'] = self.ref(fake)
+        self.rehash_standalone(altered)
+        with self.assertRaisesRegex(AdmissionError,'unit_review_provenance_unqualified'):
+            self.current._check_unit_review(altered)
+
+    def test_standalone_qualified_supplement_semantic_mismatch(self):
+        packet = self.standalone_packet()
+        original = json.loads(self.supplement_path.read_text())
+        runtime,manifest,_ = self.current.context('UIF-106',review=True)
+        admission = self.current.reviewed_origin('UIF-106',manifest['tasks']['UIF-106'])[4]
+        # Isolate content semantics from the independently qualified input pin.
+        # Only this labelled synthetic owner pin is requalified.
+        for field,value in [('retained_review',dict(path='foreign',sha256='0'*64,unchanged=True)),
+            ('reviewer','foreign-reviewer'),('head','0'*40),('base','0'*40),('tree','0'*40),
+            ('outputs',{}),('evidence_id','foreign-message'),('requested_model','invented-model')]:
+            supplement = dict(original,**{field:value})
+            self.write(self.supplement_path,supplement)
+            altered = copy.deepcopy(packet)
+            altered['snapshot']['review']['provenance_source'] = self.ref(self.supplement_path)
+            self.rehash_standalone(altered)
+            pins = {str(self.supplement_path):adapter.file_sha(self.supplement_path)}
+            with self.subTest(field=field), self.assertRaisesRegex(AdmissionError,'unit_review_prior_review_provenance'):
+                self.current._check_prior_review_provenance(altered['snapshot']['review'],admission,
+                    altered['integration_binding']['tree'],pins)
+        self.write(self.supplement_path,original)
+
+    def test_standalone_exact_negative_bindings(self):
+        packet = self.standalone_packet()
+        mutations = [
+            lambda p:p['integration_binding'].update(owner='foreign'),
+            lambda p:p['unit_binding'].update(request_sha256='0'*64),
+            lambda p:p['validation_receipt'].update(job_id='foreign'),
+            lambda p:p['validation_receipt'].update(exit_code=1),
+            lambda p:p['snapshot']['validation'].update(outputs={}),
+            lambda p:p['snapshot'].update(source_tree='0'*40),
+            lambda p:p['snapshot'].update(policy_sha256='0'*64),
+            lambda p:p['snapshot']['review'].update(reviewer=p['snapshot']['review']['author']),
+            lambda p:p['snapshot']['review'].update(evidence_sha256='0'*64),
+            lambda p:p['decision'].update(action=dict(kind='merge-pr')),
+            lambda p:p['decision'].update(merge_effect='pending')]
+        mutations.append(lambda p:(p['integration_binding'].update(tree='0'*40),
+                                    p['snapshot'].update(source_tree='0'*40)))
+        mutations.extend([
+            lambda p:p['integration_binding'].update(head='0'*40),
+            lambda p:p['integration_binding'].update(base='0'*40),
+            lambda p:p['integration_binding'].update(issue_id='foreign-issue'),
+            lambda p:p['snapshot']['validation'].update(operation_key='0'*64),
+            lambda p:p['snapshot']['review'].update(reviewer='manual-author-two'),
+            lambda p:p['snapshot']['review'].update(resolved_model='invented'),
+            lambda p:p['snapshot']['review'].update(resolution_status='inferred')])
+        for index, mutate in enumerate(mutations):
+            changed = copy.deepcopy(packet); mutate(changed)
+            # Rebind declared digests to prove checks reject the conflicting
+            # evidence itself, rather than only an obviously stale hash.
+            b = changed['integration_binding']
+            review = changed['snapshot']['review']
+            if index != 8:
+                review['evidence_sha256'] = digest({k:v for k,v in review.items() if k!='evidence_sha256'})
+            changed['decision'].update(binding_sha256=digest(b), qualification_sha256=digest(dict(
+                validation=changed['snapshot']['validation'], review=review, tree=b['tree'], policy=b['policy_sha256'])))
+            with self.subTest(index=index), self.assertRaises(AdmissionError):
+                self.current._check_unit_review(changed)
+
+    def test_pending_merge_fixed_transport_compatibility(self):
+        fixtures.CurrentDispatchTests.fixed_gateway_process_fixture(self, staged=False)
+
+    def test_pending_merge_reviewed_source_fixed_transport_compatibility(self):
+        fixtures.CurrentDispatchTests.fixed_gateway_process_fixture(self, staged=True, reviewed=True)
+
+    def test_standalone_fixed_gateway_and_transport(self):
+        """Actual fixed processes; all custody/owner observations are SYNTHETIC."""
+        import os
+        import shutil
+        import subprocess
+        packet = self.standalone_packet()
+        origin = Path(__file__).resolve().parents[2]
+        shutil.copytree(origin/'tools/delivery', self.source/'tools/delivery', dirs_exist_ok=True,
+                        ignore=shutil.ignore_patterns('__pycache__','capacity-policy.json'))
+        shutil.copytree(origin/'src', self.source/'src', dirs_exist_ok=True,
+                        ignore=shutil.ignore_patterns('__pycache__'))
+        env = dict(PATH='/usr/bin:/bin', LANG='C.UTF-8')
+        def git(*args):
+            return subprocess.run(['/usr/bin/git','-C',str(self.source),*args],
+                check=True,capture_output=True,text=True,env=env).stdout.strip()
+        git('init','-b','feature/test-current'); git('add','.')
+        git('-c','user.name=Synthetic','-c','user.email=synthetic@example.invalid',
+            '-c','commit.gpgsign=false','commit','-m','SYNTHETIC standalone transport')
+        head = git('rev-parse','HEAD')
+        config = self.current.config
+        config['source_head'] = head
+        config['source_sha256'] = {n:adapter.file_sha(self.source/n) for n in config['source_sha256']}
+        self.write(self.runtime/'current.json', config)
+        selected = self.root/'stage'
+        manifest = json.loads((selected/'manifest.json').read_text())
+        manifest['base_revision'] = head
+        self.write(selected/'manifest.json', manifest)
+        admission = json.loads((selected/'current-admission.json').read_text())
+        admission['manifest_sha256'] = adapter.file_sha(selected/'manifest.json')
+        self.write(selected/'current-admission.json', admission)
+        catalog = json.loads(self.catalog.read_text())
+        catalog['entries'][0]['admission_sha256'] = adapter.file_sha(selected/'current-admission.json')
+        self.write(self.catalog,catalog)
+        state = self.current.state
+        state['config_sha256'] = adapter.file_sha(self.runtime/'current.json')
+        state['references']['UIF-106'] = catalog['entries'][0]
+        state['bindings']['UIF-106'] = digest(catalog['entries'][0])
+        self.current.save()
+        self.git.side_effect = lambda args, **kw: subprocess.run(
+            args,check=True,stdout=subprocess.PIPE,**dict({'stderr':subprocess.PIPE},**kw)).stdout
+        self.current = adapter.CurrentWork(self.runtime)
+        issue = SimpleNamespace(identifier='UIF-106',id=packet['integration_binding']['issue_id'])
+        packet['unit_binding'] = self.current.gate_binding(issue)
+        self.current.state['tasks']['UIF-106']['unit_gate']['binding'] = packet['unit_binding']
+        self.current.save()
+        runtime = Path(self.stage_task['stage_binding']['entry']['runtime'])
+        receipt = runtime/'SYNTHETIC-original-receipt.json'
+        # Retain a numeric spelling that cannot be reconstructed from JS JSON.
+        packet['validation_receipt']['duration_seconds'] = 1.0
+        journal = __import__('stokowski_operations').Journal(runtime/'operations')
+        key = packet['integration_binding']['validation_operation_key']
+        _, operation_state = journal.read(key)
+        operation_state['receipt_sha256'] = digest(packet['validation_receipt'])
+        journal.save(key,operation_state,'SYNTHETIC receipt precision')
+        self.write(receipt,packet['validation_receipt'])
+        qualification = self.runtime/'SYNTHETIC-standalone-qualification.json'
+        self.write(qualification,packet)
+        claim = self.temp/'.delivery/integration'
+        directory = claim/'existing-owner-binding'
+        b = packet['integration_binding']
+        # Only the existing binding/claim schema; no Controller state/history.
+        actual_claim_binding = dict(b,head='e'*40,base='d'*40,pr_number=168)
+        self.write(directory/'binding.json', actual_claim_binding)
+        owner_claim = dict(owner=b['owner'],directory=str(directory),binding_sha256=digest(actual_claim_binding))
+        self.write(claim/'repository-claim.json',dict(owner_claim,owner='SYNTHETIC-historical-owner'))
+        self.write(claim/'active-owner.json',owner_claim)
+        self.write(directory/'repository-claim.json',owner_claim)
+        spec, _ = journal.read(key)
+        context = dict(source_head=head,source_sha256=config['source_sha256'],
+            python_sha256=adapter.file_sha(Path(sys.executable).resolve()),actor_uid=os.getuid(),
+            runtime=str(self.runtime),runtime_root=str(self.root),workspace_roots=[str(self.source),spec['local_source_root']],
+            claim_root=str(claim),controller_directory=str(directory),issue='UIF-106',
+            unit_binding=packet['unit_binding'],validation_receipt=packet['validation_receipt'],
+            validation_receipt_source=self.ref(receipt),qualification_source=self.ref(qualification))
+        payload = self.temp/'standalone-input.json'; self.write(payload,dict(context=context,packet=packet))
+        for path in self.temp.rglob('*'):
+            if not path.is_symlink(): path.chmod(0o700 if path.is_dir() else 0o600)
+        frozen = {p:p.read_bytes() for p in (self.current.state_path,receipt,runtime/'operations/operations.sqlite',
+            directory/'binding.json',claim/'repository-claim.json',claim/'active-owner.json',
+            directory/'repository-claim.json',qualification)}
+        result = subprocess.run(['/usr/bin/node',str(origin/'tests/delivery/test-integration-gateway.mjs'),
+            '--standalone-review-fixture',str(payload),str(self.source/'tools/delivery/integration-gateway.mjs')],
+            capture_output=True,text=True,env=env,timeout=30)
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        self.assertIn('standalone fixed gateway',result.stdout)
+        self.assertTrue((self.runtime/'unit-review-UIF-106.json').exists())
+        for path,raw in frozen.items(): self.assertEqual(path.read_bytes(),raw)
+        self.assertFalse((directory/'state.json').exists())
+        self.assertFalse((directory/'graph.sqlite').exists())
+
     # Inherit the native regression checks, plus exercise the new actual callers.
     def new_fixture(self, stage_name='validation', **record_options):
         import subprocess

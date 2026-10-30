@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {advanceIntegration,reviewWireBytes} from '../../tools/delivery/integration-gateway.mjs';
+import {advanceIntegration,reviewWireBytes,reviewStandaloneValidation} from '../../tools/delivery/integration-gateway.mjs';
 function fixture(kind='merge-pr') {
   const action={kind,repository:'maldous/offmenu',pr_number:145,expected_head_branch:'feature/langgraph-delivery-standardization',expected_head_sha:'a'.repeat(40),expected_base_sha:'b'.repeat(40),issue_id:'issue',merge_commit_sha:'c'.repeat(40),validation_operation_key:'d'.repeat(64)};
   const f={calls:[],decision:{status:kind==='merge-pr'?'merge-intent':'linear-intent',action}};
@@ -59,6 +59,81 @@ test('wire v2 immutable byte oracle and unsupported domain',async()=>{
   const hidden=Object.defineProperty({},'toJSON',{value:()=>null});
   for(const value of [NaN,Infinity,-Infinity,-0,2**53,1e100,undefined,1n,cycle,
       [,,],sparse,hidden,new Date(),{x:undefined},'\ud800']) assert.throws(()=>reviewWireBytes(value));
+});
+
+if (process.argv[2] !== '--local-review-fixture') test('standalone owner gateway consumes explicit qualification without controller or merge',async()=>{
+  const snapshot={review:{verdict:'accept',independent:true,findings:[]},validation:{status:'succeeded'}};
+  const decision={version:1,kind:'standalone-validation-review-v1',status:'standalone-validation-qualified',
+    action:null,merge_effect:'not-applicable',binding_sha256:'b'.repeat(64),qualification_sha256:'c'.repeat(64)};
+  let calls=0;
+  const args={observe:async()=>snapshot,qualification:{snapshot,decision},unitReviewWriter:async envelope=>{
+    calls++;assert.deepEqual(envelope,{snapshot,decision});return {status:'retained'};
+  }};
+  assert.equal((await reviewStandaloneValidation(args)).status,'retained');
+  assert.equal(calls,1);
+  for(const change of [{kind:'merge-pr'},{action:{kind:'merge-pr'}},{merge_effect:'pending'},
+    {status:'merge-intent'},{qualification_sha256:null}]){
+    await assert.rejects(reviewStandaloneValidation({...args,
+      qualification:{snapshot,decision:{...decision,...change}}}));
+  }
+  await assert.rejects(reviewStandaloneValidation({...args,observe:async()=>({...snapshot,cancel_requested:true})}));
+  assert.equal(calls,1);
+});
+
+if (process.argv[2] === '--standalone-review-fixture') test('standalone fixed gateway, exact pins and no actual merge',async()=>{
+  const {readFileSync,writeFileSync,statSync,existsSync}=await import('node:fs');
+  const {pathToFileURL}=await import('node:url');
+  const {createHash}=await import('node:crypto');
+  const hash=raw=>createHash('sha256').update(raw).digest('hex');
+  const {context,packet}=JSON.parse(readFileSync(process.argv[3]));
+  const {reviewStandaloneValidation:advance}=await import(pathToFileURL(process.argv[4]));
+  const incoming=`${context.runtime}/unit-review-${context.issue}.json`;
+  const args=()=>({reviewedCurrentUnit:structuredClone(context),observe:async()=>structuredClone(packet.snapshot)});
+  const refused=async call=>{await assert.rejects(advance(call));assert.equal(existsSync(incoming),false);};
+  for (const mutate of [
+    c=>{c.qualification_source.sha256='0'.repeat(64);},
+    c=>{c.validation_receipt_source.sha256='0'.repeat(64);},
+    c=>{c.source_sha256['tools/delivery/stokowski_stage.py']='0'.repeat(64);},
+    c=>{delete c.source_sha256['src/offmenu/delivery/integration.py'];},
+    c=>{c.unit_binding.request_sha256='0'.repeat(64);},
+    c=>{c.validation_receipt.job_id='foreign';},
+    c=>{c.workspace_roots=[context.runtime];}
+  ]) {const call=args();mutate(call.reviewedCurrentUnit);await refused(call);}
+  // Fresh raw byte pin still cannot replace the original Journal digest.
+  const receiptPath=context.validation_receipt_source.path,receipt=readFileSync(receiptPath);
+  writeFileSync(receiptPath,JSON.stringify(context.validation_receipt));
+  const normalized=args();normalized.reviewedCurrentUnit.validation_receipt_source.sha256=hash(readFileSync(receiptPath));
+  await refused(normalized);writeFileSync(receiptPath,receipt);
+  const activePath=`${context.claim_root}/active-owner.json`,active=readFileSync(activePath);
+  const immutablePath=`${context.controller_directory}/repository-claim.json`,immutable=readFileSync(immutablePath);
+  for (const claimPath of [activePath,immutablePath]) {
+    const original=readFileSync(claimPath);
+    writeFileSync(claimPath,JSON.stringify({...JSON.parse(original),owner:'foreign-owner'}));
+    await refused(args());writeFileSync(claimPath,original);
+  }
+  // A malformed active pointer must not fall back to the historical root claim.
+  writeFileSync(activePath,'null');await refused(args());writeFileSync(activePath,active);
+  assert.deepEqual(readFileSync(immutablePath),immutable);
+  const qualificationPath=context.qualification_source.path,qualification=readFileSync(qualificationPath);
+  for(const mutate of [
+    p=>{p.snapshot.review.reviewer=p.snapshot.review.author;},
+    p=>{p.snapshot.validation.operation_key='0'.repeat(64);},
+    p=>{p.snapshot.source_tree='0'.repeat(40);},
+    p=>{p.snapshot.policy_sha256='0'.repeat(64);},
+    p=>{p.snapshot.review.evidence_sha256='0'.repeat(64);},
+    p=>{p.decision.action={kind:'merge-pr'};}
+  ]) {
+    const altered=structuredClone(packet);mutate(altered);writeFileSync(qualificationPath,JSON.stringify(altered));
+    const call=args();call.reviewedCurrentUnit.qualification_source.sha256=hash(readFileSync(qualificationPath));
+    call.observe=async()=>altered.snapshot;await refused(call);
+  }
+  writeFileSync(qualificationPath,qualification);
+  await advance(args());
+  const first=readFileSync(incoming),stat=statSync(incoming);
+  await advance(args());assert.deepEqual(readFileSync(incoming),first);
+  assert.equal(statSync(incoming).ino,stat.ino);assert.equal(statSync(incoming).mtimeMs,stat.mtimeMs);
+  assert.equal(existsSync(`${context.controller_directory}/state.json`),false);
+  assert.equal(existsSync(`${context.controller_directory}/graph.sqlite`),false);
 });
 
 // Invoked by the Python private fixture with actual committed transport source.

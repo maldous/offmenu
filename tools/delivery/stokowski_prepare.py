@@ -353,11 +353,14 @@ def main():
     if args.current:
         names = ('stokowski_adapter.py','stokowski_worker.py','stokowski_prepare.py',
                  'symphony_capacity.py','symphony_tasks.py','symphony_workspace.py',
-                 'symphony_codex.py','symphony_protocol.py','windmill_runner.py')
+                 'symphony_codex.py','symphony_protocol.py','windmill_runner.py',
+                 'stokowski_operations.py','stokowski_stage.py','stokowski_unit_review.py',
+                 'integration-gateway.mjs')
+        paths = ['tools/delivery/'+name for name in names] + ['src/offmenu/delivery/integration.py']
         checkpoint(runtime/'current.json', {
             'version':1, 'owner':args.owner, 'runtime_root':str(root),
             'catalog':str(args.catalog), 'source_head':head,
-            'source_sha256':{'tools/delivery/'+name:file_sha(SOURCE/'tools/delivery'/name) for name in names},
+            'source_sha256':{name:file_sha(SOURCE/name) for name in paths},
             'workflow_sha256':file_sha(runtime/'workflow.yaml'),
             'installation_sha256':file_sha(runtime/'installation.json'),
             'policy_sha256':file_sha(runtime/'capacity-policy.json')})
