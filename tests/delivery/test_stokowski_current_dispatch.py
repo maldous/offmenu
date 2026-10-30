@@ -1842,5 +1842,409 @@ class CurrentDispatchTests(unittest.TestCase):
                 prepare.main()
 
 
+@unittest.skipUnless(importlib.util.find_spec('stokowski'), 'Use pinned Stokowski environment')
+class NativeSuccessorBindingTests(unittest.TestCase):
+    def setUp(self):
+        import stokowski_native_publication as native
+        from symphony_capacity import digest
+        from unittest.mock import Mock
+        self.native = native
+        c = self.c = CurrentDispatchTests(methodName='runTest')
+        c.successor_real = True
+        self.addCleanup(c.doCleanups)
+        c.setUp()
+        for module in native.MODULES:
+            name = 'tools/delivery/'+module+'.py'
+            shutil.copyfile(Path(adapter.__file__).parents[2]/name, c.source/name)
+            c.current.config['source_sha256'][name] = adapter.file_sha(c.source/name)
+        self.bind_config()
+        f,*self.original = c.successor_fixture()
+        self.f = f
+        # Qualify this route explicitly; the ordinary MCP fixture stays unchanged.
+        f.config['repository'] = native.ROUTE['repository']
+        f.config['caller_association'] = dict(native.CALLER, native_route=dict(native.ROUTE),
+            authenticated_observation=f.ref(f.qualified/'observation.json'))
+        f.config['native_publication'] = dict(source_base=native.BASE,
+            source_head=c.current.config['source_head'], source_branch=f.branch,
+            source_sha256={k:v for k,v in c.current.config['source_sha256'].items() if k.endswith('.py')},
+            python_sha256=adapter.file_sha(Path(sys.executable).resolve()))
+        f.packet['source']['repository'] = native.ROUTE['repository']
+        claim = f.config['repository_claim']
+        binding = dict(owner=f.owner, repository=native.ROUTE['repository'], issue_id=f.issue['uuid'])
+        f.write(Path(claim['binding_path']), binding)
+        claim.update(binding_sha256=f.sha(Path(claim['binding_path'])), binding_identity_sha256=digest(binding))
+        f.write(Path(claim['path']), dict(owner=f.owner, directory=str(Path(claim['binding_path']).parent),
+                                        binding_sha256=digest(binding)))
+        claim['sha256'] = f.sha(Path(claim['path']))
+        f.handoff.update(native_route=dict(native.ROUTE),
+            authenticated_principal=dict(id=native.CALLER['principal_id'], login=native.CALLER['login']))
+        f.repin()
+        c.current.config['qualified_successor'] = f.ref(f.handoff_path)
+        c.current.state.pop('successor_request')  # New qualification, before any native call.
+        self.bind_config()
+        self.calls = []
+        self.process_calls = []
+        self.run = Mock(side_effect=self.process)
+        self.api = Mock(wraps=prepare.prepare_publication)
+        self.adapters = native.Adapters(self.run, self.api, f.provider)
+        c.stack.enter_context(patch.object(native, 'process', self.run))
+        self.launch = c.stack.enter_context(patch.object(adapter.CurrentWork, '_native_publication_cli',
+                                                        side_effect=self.invoke))
+
+    def bind_config(self):
+        c = self.c
+        c.write(c.runtime/'current.json', c.current.config)
+        c.current.config_sha = adapter.file_sha(c.runtime/'current.json')
+        c.current.state['config_sha256'] = c.current.config_sha
+        c.current.save()
+
+    def process(self, argv, *, env, timeout):
+        n,c = self.native,self.c
+        self.assertLessEqual(timeout, 10)
+        self.assertEqual({k:v for k,v in env.items() if k != 'GIT_SSH_COMMAND'}, n.ENV)
+        self.process_calls.append(argv)
+        if argv[:3] == ('/usr/bin/git', '-C', str(c.source)):
+            args = argv[3:]
+            if args == ('rev-parse','HEAD'):
+                out = c.current.config['source_head']+'\n'
+            elif args == ('branch','--show-current'):
+                out = self.f.branch+'\n'
+            elif args == ('merge-base',n.BASE,c.current.config['source_head']):
+                out = n.BASE+'\n'
+            else:
+                self.assertEqual(args[0], 'show')
+                head,name = args[1].split(':',1)
+                self.assertEqual(head,c.current.config['source_head'])
+                return 0,(c.source/name).read_bytes(),b''
+            return 0,out.encode(),b''
+        if argv[0] == '/usr/bin/ssh':
+            self.assertEqual(argv, (*n.SSH,'-T','git@github.com'))
+            return 1,b'',b"Hi maldous! You've successfully authenticated, but GitHub does not provide shell access.\n"
+        self.assertEqual(argv,('/usr/bin/git','ls-remote','--exit-code',
+            'git@github.com:maldous/offmenu.git','refs/heads/develop'))
+        self.assertEqual(env['GIT_SSH_COMMAND'],n.shlex.join(n.SSH))
+        return 0,(n.BASE+'\trefs/heads/develop\n').encode(),b''
+
+    def invoke(self, data):
+        n,c = self.native,self.c
+        request = n.decode(data)
+        persisted = json.loads(c.current.state_path.read_bytes())['successor_request']
+        self.assertEqual(persisted['native_request'], {k:v for k,v in request.items() if k != 'mode'})
+        self.assertEqual(persisted['native_binding'], n.sha(n.encode(persisted['native_request'])))
+        self.calls.append(request)
+        return n.encode(n.invoke(request, root=c.source, adapters=self.adapters))
+
+    def test_actual_adapter_native_publication_once_reopen_and_custody(self):
+        c,f,n = self.c,self.f,self.native
+        issue,runtime,owner,client,review,journal,key = self.original
+        before = {p:p.read_bytes() for p in runtime.rglob('*') if p.is_file()}
+        c.current.refresh()
+        self.assertEqual(c.current.state['successor_request']['status'],'published',c.current.state.get('successor_hold'))
+        request = dict(c.current.state['successor_request']['native_request'])
+        c.current.refresh()
+        reopened = adapter.CurrentWork(c.runtime)
+        self.assertEqual(reopened.state['successor_request']['native_request'],request)
+        self.assertEqual([r['mode'] for r in self.calls],['prepare','status','status'])
+        self.api.assert_called_once()
+        f.provider.assert_called_once()
+        self.assertEqual(sum(a[0] == '/usr/bin/ssh' for a in self.process_calls),1)
+        self.assertEqual(len(json.loads(c.catalog.read_bytes())['entries']),2)
+        for path, data in before.items():
+            self.assertEqual(path.read_bytes(),data)
+        custody = n.decode((c.source/'.delivery/native-ssh-publication'/(f.handoff_sha+'.json')).read_bytes())
+        self.assertEqual(custody['request'],request)
+        self.assertEqual(custody['result'],dict(status='published',runtime=str(f.runtime),dispatches=0))
+
+    def lost_reply(self, failure):
+        original = self.invoke
+        def lost(data):
+            original(data)
+            if failure == 'malformed':
+                return b'{invalid'
+            raise TimeoutError('synthetic lost reply')
+        self.launch.side_effect = lost
+        self.c.current.refresh()
+        request = dict(self.c.current.state['successor_request']['native_request'])
+        self.assertNotEqual(self.c.current.state['successor_request']['status'],'published')
+        self.launch.side_effect = self.invoke
+        self.c.current.refresh()
+        self.assertEqual([r['mode'] for r in self.calls],['prepare','status'])
+        self.assertEqual(self.c.current.state['successor_request']['native_request'],request)
+        self.assertEqual(self.c.current.state['successor_request']['status'],'published')
+        self.api.assert_called_once()
+
+    def test_lost_reply_is_status_only(self):
+        self.lost_reply('timeout')
+
+    def test_malformed_reply_is_status_only(self):
+        self.lost_reply('malformed')
+
+    def test_timeout_before_custody_never_retries_prepare(self):
+        self.launch.side_effect = TimeoutError('synthetic timeout before delivery')
+        self.c.current.refresh()
+        request = dict(self.c.current.state['successor_request']['native_request'])
+        self.launch.side_effect = self.invoke
+        self.c.current.refresh()
+        self.c.current.refresh()
+        self.assertEqual([r['mode'] for r in self.calls],['status','status'])
+        self.assertEqual(self.c.current.state['successor_request']['native_request'],request)
+        self.assertNotEqual(self.c.current.state['successor_request']['status'],'published')
+        self.api.assert_not_called()
+        self.f.provider.assert_not_called()
+
+    def test_intent_directory_sync_failure_prevents_launch_and_new_prepare(self):
+        fsync = os.fsync
+        def fail_directory(fd):
+            if Path('/proc/self/fd/'+str(fd)).resolve() == self.c.runtime:
+                raise OSError('synthetic intent directory durability failure')
+            return fsync(fd)
+        with patch.object(adapter.os,'fsync',side_effect=fail_directory):
+            self.c.current.refresh()
+        self.launch.assert_not_called()
+        request = dict(self.c.current.state['successor_request']['native_request'])
+        self.c.current.refresh()
+        self.assertEqual(self.calls[0]['mode'],'status')
+        self.assertEqual(self.c.current.state['successor_request']['native_request'],request)
+        self.api.assert_not_called()
+
+    def test_partial_publication_uncertainty_stays_status_only(self):
+        write = prepare._publication_write
+        def fail_catalog(path, data):
+            if path == self.c.catalog:
+                raise OSError('synthetic partial publication')
+            return write(path,data)
+        with patch.object(prepare,'_publication_write',side_effect=fail_catalog):
+            self.c.current.refresh()
+        request = dict(self.c.current.state['successor_request']['native_request'])
+        self.c.current.refresh()
+        adapter.CurrentWork(self.c.runtime)
+        self.assertEqual([r['mode'] for r in self.calls],['prepare','status','status'])
+        self.assertEqual(self.c.current.state['successor_request']['native_request'],request)
+        self.assertEqual(self.c.current.state['successor_request']['status'],'uncertain')
+        self.api.assert_called_once()
+        self.f.provider.assert_called_once()
+        self.assertEqual(self.c.catalog.read_bytes(),self.f.catalog_before)
+
+    def test_intent_nonce_context_custody_result_catalog_and_runtime_mismatch_refuse(self):
+        import copy
+        c,n,f = self.c,self.native,self.f
+        c.current.refresh()
+        pending = copy.deepcopy(c.current.state['successor_request'])
+        custody_path = c.source/'.delivery/native-ssh-publication'/(f.handoff_sha+'.json')
+        custody_bytes = custody_path.read_bytes()
+        catalog_bytes = c.catalog.read_bytes()
+        for target in ('nonce','context','owner','source','custody','result','catalog','admission','manifest','request'):
+            with self.subTest(target=target):
+                c.current.state['successor_request'] = copy.deepcopy(pending)
+                c.current.save()
+                custody_path.write_bytes(custody_bytes)
+                c.catalog.write_bytes(catalog_bytes)
+                restore = None
+                request = c.current.state['successor_request']['native_request']
+                if target == 'nonce':
+                    request['nonce'] = '0'*64
+                elif target in ('context','owner','source'):
+                    request['context'][{'context':'source_branch','owner':'owner','source':'source_head'}[target]] = 'changed'
+                elif target in ('custody','result'):
+                    record = n.decode(custody_bytes)
+                    if target == 'custody':
+                        record['request']['nonce'] = '0'*64
+                    else:
+                        record['result']['runtime'] = str(c.root/'wrong')
+                    custody_path.write_bytes(n.encode(record))
+                elif target == 'catalog':
+                    c.write(c.catalog,dict(version=1,entries=[]))
+                else:
+                    path = {'admission':f.runtime/'current-admission.json', 'manifest':f.runtime/'manifest.json',
+                            'request':f.runtime/'requests/UIF-231.json'}[target]
+                    restore = (path,path.read_bytes())
+                    path.write_bytes(b'{}')
+                c.current._successor_boundary()
+                self.assertNotEqual(c.current.state['successor_request']['status'],'published')
+                if restore:
+                    restore[0].write_bytes(restore[1])
+        self.api.assert_called_once()
+
+    def test_cancelled_original_never_launches(self):
+        issue,runtime,owner,client,review,journal,key = self.original
+        _,state = journal.read(key)
+        journal.save(key,dict(state,cancel_requested=True),'synthetic cancel')
+        self.c.current.refresh()
+        self.launch.assert_not_called()
+        self.api.assert_not_called()
+        self.f.provider.assert_not_called()
+
+    def test_missing_native_config_does_not_launch(self):
+        self.f.config.pop('native_publication')
+        self.f.repin()
+        self.c.current.config['qualified_successor'] = self.f.ref(self.f.handoff_path)
+        self.bind_config()
+        self.c.current.refresh()
+        self.launch.assert_not_called()
+        self.api.assert_not_called()
+        self.f.provider.assert_not_called()
+
+    def test_changed_qualified_source_or_owner_config_refuses_before_launch(self):
+        c,f = self.c,self.f
+        paths = [c.source/'tools/delivery/stokowski_native_publication.py',f.qualified/'config.json']
+        for path in paths:
+            with self.subTest(path=path):
+                original = path.read_bytes()
+                try:
+                    path.write_bytes(original+b'\n')
+                    c.current._successor_boundary()
+                    self.assertNotIn('native_request',c.current.state.get('successor_request',{}))
+                finally:
+                    path.write_bytes(original)
+        self.launch.assert_not_called()
+        self.api.assert_not_called()
+
+    def test_publication_journal_identity_mismatch_cannot_be_observed(self):
+        c,f = self.c,self.f
+        c.current.refresh()
+        path = c.root/(f.runtime.name+'-publication.json')
+        plan = json.loads(path.read_bytes())
+        plan['identity']['handoff_sha256'] = '0'*64
+        c.write(path,plan)
+        c.current.refresh()
+        self.assertNotEqual(c.current.state['successor_request']['status'],'published')
+        self.assertEqual([r['mode'] for r in self.calls],['prepare','status'])
+        self.api.assert_called_once()
+
+    def test_reply_cannot_override_custody(self):
+        self.c.current.refresh()
+        original = self.invoke
+        def lie(data):
+            result = self.native.decode(original(data))
+            result['result']['runtime'] = str(self.c.root/'wrong')
+            return self.native.encode(result)
+        self.launch.side_effect = lie
+        self.c.current.refresh()
+        self.assertNotEqual(self.c.current.state['successor_request']['status'],'published')
+        self.assertIn('successor_native_result_binding',self.c.current.state['successor_hold'])
+        self.api.assert_called_once()
+
+    def worker_admission(self, uncertain=False):
+        from contextlib import nullcontext
+        from stokowski.models import Issue
+        from symphony_capacity import Pool, digest
+        import stokowski_worker as worker
+        c,f = self.c,self.f
+        c.current.refresh()
+        c.current.refresh()
+        issue = Issue(id=f.issue['uuid'],identifier='UIF-231',title='Synthetic successor',state='Todo')
+        self.assertEqual(c.select(issue),[issue])
+        workspace = f.runtime/'workspaces'/issue.identifier
+        workspace.mkdir()
+        request = json.loads((f.runtime/'requests/UIF-231.json').read_bytes())
+        manifest = json.loads((f.runtime/'manifest.json').read_bytes())
+        # Fixed Git observations only: no Git/auth/network subprocess is launched.
+        git_read = c.git.side_effect
+        def observe(argv, **kwargs):
+            if argv[2] == str(workspace):
+                if argv[3] in ('diff','ls-files'):
+                    return b''
+                return (manifest['branch'] if argv[3] == 'branch' else manifest['base_revision'])+'\n'
+            return git_read(argv,**kwargs)
+        c.git.side_effect = observe
+        pool = Pool(c.policy['symphony']['pool_path'],c.policy)
+        proof = json.loads((f.runtime/'provider-proof.json').read_bytes())
+        host = dict(cpu_millis=64000,available_memory_bytes=10**12,available_disk_bytes=10**12)
+        blocker = dict(branch=manifest['branch'],head=manifest['base_revision'],owner='fixture-blocker',
+            write_roots=['tests/unrelated.py'],resources=manifest['tasks']['UIF-231']['resources'],
+            task_sha256=digest({'synthetic':'blocker'}))
+        pool.admit('synthetic-blocker',blocker,dict(proof,session_ceiling=1),host)
+        with patch.object(worker,'host_snapshot',return_value=host), \
+             patch.object(worker,'supervise',side_effect=AssertionError('capacity must hold')):
+            c.write(f.runtime/'provider-proof.json',dict(proof,session_ceiling=1))
+            with self.assertRaisesRegex(AdmissionError,'capacity_sessions'):
+                worker.execute(f.runtime,issue.identifier,request)
+        pool.finish('synthetic-blocker',True,'stopped')
+        c.write(f.runtime/'provider-proof.json',proof)
+        def complete(command,prompt,path,environment,directory,*args):
+            self.assertEqual(prompt,request['prompt'])
+            (directory/'stdout.jsonl').write_text(json.dumps(dict(type='turn.completed'))+'\n')
+            return dict(status='uncertain' if uncertain else 'succeeded',child_tree_gone=not uncertain,exit_code=0)
+        orchestrator,_,_ = c.adapted()
+        async def spawn(*args,**kwargs):
+            worker.execute(f.runtime,issue.identifier,request)
+            return SimpleNamespace(pid=98765,returncode=0,communicate=AsyncMock())
+        with patch.object(worker,'host_snapshot',return_value=host), \
+             patch.object(worker.os,'sched_setaffinity'), \
+             patch.object(worker,'isolated_codex_environment',return_value=nullcontext({})), \
+             patch.object(worker,'supervise',side_effect=complete) as computation, \
+             patch.object(adapter.asyncio,'create_subprocess_exec',side_effect=spawn) as spawned:
+            self.assertEqual(asyncio.run(c.turn(orchestrator,issue,f.runtime)).status,
+                             'failed' if uncertain else 'succeeded')
+            reopened = adapter.CurrentWork(c.runtime)
+            self.assertEqual(asyncio.run(reopened.candidates(c.client(issue),[issue])),[])
+            with self.assertRaises(AdmissionError):
+                asyncio.run(c.turn(orchestrator,issue,f.runtime))
+            with self.assertRaisesRegex(AdmissionError,'no replay'):
+                worker.execute(f.runtime,issue.identifier,request)
+        computation.assert_called_once()
+        spawned.assert_called_once()
+        self.api.assert_called_once()
+        f.provider.assert_called_once()
+        lease = runtime_lease_ids(f.runtime,manifest)[issue.identifier]
+        with pool._transaction() as db:
+            self.assertEqual(db.execute("SELECT COUNT(*) FROM events WHERE id=? AND event='admitted'",(lease,)).fetchone()[0],1)
+        self.assertEqual({r['id']:r['status'] for r in pool.status()}[lease],
+                         'running' if uncertain else 'finished')
+
+    def test_native_published_task_normal_admission_once_and_capacity_hold(self):
+        self.worker_admission()
+
+    def test_native_published_task_uncertain_worker_lease_no_replay(self):
+        self.worker_admission(uncertain=True)
+
+
+class NativePublicationLaunchTests(unittest.TestCase):
+    def setUp(self):
+        import stokowski_native_publication as native
+        self.native = native
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.source = Path(self.temporary.name).resolve()
+        self.script = self.source/'tools/delivery/stokowski_native_publication.py'
+        self.script.parent.mkdir(parents=True)
+        self.current = object.__new__(adapter.CurrentWork)
+
+    def test_fixed_launch_sanitizes_environment_and_preserves_sibling_imports(self):
+        (self.script.parent/'synthetic_sibling.py').write_text('VALUE = "synthetic"\n')
+        self.script.write_text('import os,sys,json\nfrom synthetic_sibling import VALUE\n'
+            'request=json.load(sys.stdin)\njson.dump(dict(value=VALUE,request=request,env=dict(os.environ)),sys.stdout)\n')
+        popen = subprocess.Popen
+        def launch(argv, **kwargs):
+            self.assertEqual(argv,[sys.executable,'-E','-s',str(self.script)])
+            self.assertEqual(kwargs['env'],self.native.ENV)
+            self.assertEqual(kwargs['cwd'],self.source)
+            self.assertNotIn('shell',kwargs)
+            return popen(argv,**kwargs)
+        with patch.object(adapter,'SOURCE',self.source), \
+             patch.object(adapter.subprocess,'Popen',side_effect=launch), \
+             patch.dict(os.environ,{'SYNTHETIC_SECRET':'must-not-leak'}):
+            result = self.native.decode(self.current._native_publication_cli(b'{"synthetic":1}\n'))
+        self.assertEqual(result,dict(value='synthetic',request={'synthetic':1},env=self.native.ENV))
+
+    def test_process_output_is_bounded(self):
+        self.script.write_text('import sys\nsys.stdin.buffer.read()\nsys.stdout.buffer.write(b"x"*65537)\n')
+        with patch.object(adapter,'SOURCE',self.source), self.assertRaisesRegex(AdmissionError,'native_reply_size'):
+            self.current._native_publication_cli(b'{}\n')
+
+    def test_process_deadline_terminates_synthetic_child(self):
+        self.script.write_text('import time\ntime.sleep(60)\n')
+        monotonic = time.monotonic
+        calls = 0
+        def expired():
+            nonlocal calls
+            calls += 1
+            return monotonic() + (91 if calls > 1 else 0)
+        with patch.object(adapter,'SOURCE',self.source), \
+             patch.object(adapter.time,'monotonic',side_effect=expired), \
+             self.assertRaisesRegex(AdmissionError,'native_reply_timeout'):
+            self.current._native_publication_cli(b'{}\n')
+
+
 if __name__ == '__main__':
     unittest.main()

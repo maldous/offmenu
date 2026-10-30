@@ -13,6 +13,7 @@ import math
 import sqlite3
 import os
 import re
+import selectors
 from pathlib import Path
 import signal
 import subprocess
@@ -301,6 +302,9 @@ class CurrentWork:
             identity = digest(dict(handoff=ref, owner_config=packet['owner_config'], trigger=packet['trigger']))
             if pending is not None and pending['identity'] != identity:
                 raise AdmissionError('successor_request_rebind')
+            if 'native_publication' in config or pending and 'native_request' in pending:
+                self._native_successor(ref, handoff, packet, config, identity, pending)
+                return
             # Publication owns the journal. Only this coordinator writes its
             # state, at its existing locked boundary; no gateway state callback.
             journal = self.root/('owner-bridge-' + ref['sha256'] + '.json')
@@ -348,6 +352,159 @@ class CurrentWork:
             if pending is not None:
                 pending['status'] = 'held'
             self.state['successor_hold'] = type(error).__name__ + ': ' + str(error)
+
+    def _native_publication_cli(self, data):
+        """Fixed launch seam: no executable, environment or argv from a packet."""
+        import stokowski_native_publication as native
+        with subprocess.Popen([sys.executable, '-E', '-s',
+                               str(SOURCE/'tools/delivery/stokowski_native_publication.py')],
+                              cwd=SOURCE, env=dict(native.ENV), stdin=subprocess.PIPE,
+                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                              start_new_session=True) as child:
+            streams = selectors.DefaultSelector()
+            output = bytearray()
+            deadline = time.monotonic() + 90
+            try:
+                os.set_blocking(child.stdin.fileno(), False)
+                streams.register(child.stdin, selectors.EVENT_WRITE)
+                remaining = memoryview(data)
+                for stream in (child.stdout, child.stderr):
+                    os.set_blocking(stream.fileno(), False)
+                    streams.register(stream, selectors.EVENT_READ)
+                total = 0
+                while streams.get_map():
+                    if time.monotonic() >= deadline:
+                        raise AdmissionError('native_reply_timeout')
+                    for key, _ in streams.select(0.1):
+                        if key.fileobj is child.stdin:
+                            remaining = remaining[os.write(key.fd, remaining):]
+                            if not remaining:
+                                streams.unregister(child.stdin)
+                                child.stdin.close()
+                            continue
+                        chunk = os.read(key.fd, native.LIMIT + 1)
+                        total += len(chunk)
+                        if total > native.LIMIT:
+                            raise AdmissionError('native_reply_size')
+                        if not chunk:
+                            streams.unregister(key.fileobj)
+                        elif key.fileobj is child.stdout:
+                            output.extend(chunk)
+                if child.wait(timeout=max(0.001, deadline-time.monotonic())) != 0:
+                    raise AdmissionError('native_reply_failed')
+                return bytes(output)
+            finally:
+                streams.close()
+                if child.poll() is None:
+                    os.killpg(child.pid, signal.SIGKILL)
+                    child.wait()
+
+    def _native_successor(self, ref, handoff, packet, config, identity, pending):
+        # Opt-in executable pins live in the already owner-qualified config.
+        # The MCP owner bridge and its default packet are deliberately separate.
+        self.guard()
+        module = 'tools/delivery/stokowski_native_publication.py'
+        if self.config['source_sha256'].get(module) != file_sha(SOURCE/module):
+            raise AdmissionError('successor_native_module_pin')
+        import stokowski_native_publication as native
+        pins = config['native_publication']
+        if (set(pins) != {'source_base', 'source_head', 'source_branch', 'source_sha256', 'python_sha256'}
+            or pins['source_head'] != self.config['source_head']
+            or not isinstance(pins['source_sha256'], dict)
+            or any(self.config['source_sha256'].get(name) != sha for name, sha in pins['source_sha256'].items())
+            or pins['python_sha256'] != file_sha(Path(sys.executable).resolve())
+            or not {'tools/delivery/'+name+'.py' for name in native.MODULES} <= set(pins['source_sha256'])
+            or config['caller_association']['native_route'] != native.ROUTE
+            or handoff['native_route'] != native.ROUTE):
+            raise AdmissionError('successor_native_configuration')
+        context = dict(pins, handoff=ref, owner_config=handoff['owner_config'],
+                       task_packet=handoff['task_packet'], owner=self.config['owner'],
+                       claim={k: config['repository_claim'][k] for k in ('path', 'sha256')})
+        # Only fixed local Git observations here; authentication belongs to CLI.
+        native.validate(context, SOURCE, native.process)
+        if self.stopping or (self.runtime/'cancel.json').exists():
+            raise AdmissionError('successor_native_cancelled')
+        if pending is None or 'native_request' not in pending:
+            if pending is not None and pending['status'] != 'pending':
+                raise AdmissionError('successor_request_held')
+            self.qualify_successor(ref, packet, config)
+            manifest = load_manifest(packet['manifest']['path'], expected_head=packet['source']['base'],
+                                     expected_branch=packet['source']['branch'])
+            task = manifest['tasks'][packet['execution_outcome']['identifier']]
+            if ('stage' in task or task['allowed_paths'] != packet['scope']
+                or task['resources'] != packet['resources'] or task['owner'] != self.config['owner']):
+                raise AdmissionError('successor_task_binding')
+            from symphony_capacity import overlap
+            for entry in self.state['references'].values():
+                other = read_record(self.private(entry['runtime'])/'manifest.json')
+                if any(overlap(a, b) for a in packet['scope']
+                       for t in other['tasks'].values() for b in t['allowed_paths']):
+                    raise AdmissionError('successor_scope_overlap')
+            request = dict(version=1, nonce=os.urandom(32).hex(), operation=ref['sha256'], context=context)
+            pending = dict(identity=identity, handoff=ref, owner_config=packet['owner_config'],
+                           created_at=time.time(), status='pending', native_request=request,
+                           native_binding=native.sha(native.encode(request)))
+            self.state['successor_request'] = pending
+            self.save()  # Required before launching; publisher reads this pending intent.
+            directory = os.open(self.runtime, os.O_RDONLY | os.O_DIRECTORY)
+            try:
+                os.fsync(directory)  # Make the checkpoint rename durable before any effect.
+            finally:
+                os.close(directory)
+            mode = 'prepare'
+        else:
+            request = pending['native_request']
+            if (set(request) != {'version', 'nonce', 'operation', 'context'}
+                or request['version'] != 1 or request['operation'] != ref['sha256']
+                or request['context'] != context
+                or not re.fullmatch('[0-9a-f]{64}', request['nonce'])
+                or native.sha(native.encode(request)) != pending['native_binding']):
+                raise AdmissionError('successor_native_intent_drift')
+            mode = 'status'  # Even a missing custody file never authorizes another prepare.
+        try:
+            reply = native.decode(self._native_publication_cli(native.encode(dict(request, mode=mode))))
+            custody_path = SOURCE/'.delivery/native-ssh-publication'/(ref['sha256']+'.json')
+            custody = native.decode(native.read(native.canonical(str(custody_path))))
+            result = custody.get('result', dict(status='uncertain', dispatches=0))
+            if (custody['request'] != request or custody['binding'] != pending['native_binding']
+                or reply['binding'] != pending['native_binding'] or reply['result'] != result
+                or reply['dispatches'] != 0 or result.get('dispatches') != 0):
+                raise AdmissionError('successor_native_result_binding')
+            status = result.get('status')
+            if status in ('published', 'duplicate'):
+                runtime = self.private(packet['selected_current']['task_runtime'])
+                journal_path = self.root/(runtime.name+'-publication.json')
+                plan = read_record(journal_path)
+                issue = packet['execution_outcome']['identifier']
+                admission = dict(version=1, owner=self.config['owner'], issue=issue,
+                    issue_id=packet['execution_outcome']['uuid'], source=packet['source']['source_checkout'],
+                    manifest_sha256=packet['manifest']['sha256'], request_sha256=packet['request']['sha256'],
+                    policy_sha256=self.config['policy_sha256'], installation_sha256=self.config['installation_sha256'],
+                    inputs={k:v for k,v in packet['inputs'].items() if k != str(self.catalog)})
+                from stokowski_prepare import _publication_bytes
+                entry = dict(issue=issue, issue_id=admission['issue_id'], runtime=str(runtime),
+                             admission_sha256=native.sha(_publication_bytes(admission)))
+                if (plan['identity'] != dict(handoff_sha256=ref['sha256'], packet=handoff['task_packet'],
+                                            config=handoff['owner_config'])
+                    or native.sha(plan['catalog_before_bytes'].encode()) != packet['inputs'][str(self.catalog)]
+                    or json.loads(plan['catalog_before_bytes']) != plan['catalog_before']
+                    or plan['catalog_after'] != dict(version=1, entries=plan['catalog_before']['entries']+[entry])
+                    or read_record(self.catalog) != plan['catalog_after']
+                    or result.get('runtime') != str(runtime)
+                    or mode == 'status' and reply.get('journal_sha256') != file_sha(journal_path)
+                    or read_record(runtime/'current-admission.json') != admission
+                    or file_sha(runtime/'current-admission.json') != entry['admission_sha256']
+                    or file_sha(runtime/'manifest.json') != packet['manifest']['sha256']
+                    or file_sha(runtime/'requests'/(issue+'.json')) != packet['request']['sha256']):
+                    raise AdmissionError('successor_native_publication_drift')
+                pending['status'] = status
+            else:
+                pending['status'] = 'uncertain'
+        except Exception:
+            pending['status'] = 'uncertain'
+            raise
+        finally:
+            self.save()
 
     def observe(self, issue):
         entry = self.state['references'][issue]
