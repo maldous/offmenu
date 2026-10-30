@@ -188,6 +188,7 @@ class CurrentWork:
             self.state['catalog_sha256'] = file_sha(self.catalog)
             for issue in self.state.get('references', {}):
                 self.observe(issue)
+            self._consume_unit_reviews()
             self.save()
         except Exception as error:
             self.fatal = type(error).__name__ + ': ' + str(error)
@@ -321,6 +322,180 @@ class CurrentWork:
                     admission_sha256=entry['admission_sha256'], operation_sha256=digest(binding),
                     request_sha256=file_sha(runtime/'requests'/(issue.identifier+'.json')),
                     native_receipt_sha256=file_sha(directory/'receipt.json'))
+
+    def unit_review_writer(self, trusted_transport=None):
+        """Owner-only injected transport -> immutable local incoming observation.
+
+        trusted_transport(envelope) must authenticate the existing integration
+        owner's provenance and return its full packet (snapshot, decision,
+        integration_binding, unit_binding, issue, validation_receipt). It is a
+        deployment supplied trust boundary, NOT an authenticated:true assertion.
+        No default transport, credential route or worker CLI exists. Same-owner
+        OS/file custody is assumed; live adoption is unsupported without transport.
+        This writer never takes coordinator.lock or writes current-owner.json.
+        """
+        if not callable(trusted_transport):
+            raise AdmissionError('unit_review_trusted_transport_unsupported')
+
+        def write(envelope):
+            packet = trusted_transport(envelope)
+            if (packet['snapshot'] != envelope['snapshot'] or
+                packet['decision'] != envelope['decision']):
+                raise AdmissionError('unit_review_transport_binding')
+            self._check_unit_review(packet)
+            path = self.runtime/('unit-review-' + packet['issue'] + '.json')
+            raw = json.dumps(packet, sort_keys=True, separators=(',', ':')).encode()
+            # Atomic immutable publication: a crash before link leaves only a
+            # private temp, after link leaves the complete durable intent. A
+            # conflicting replay cannot overwrite it or any gate disposition.
+            import tempfile
+            fd, temporary = tempfile.mkstemp(prefix='.unit-review-', dir=self.runtime)
+            try:
+                os.fchmod(fd, 0o600)
+                with os.fdopen(fd, 'wb') as stream:
+                    stream.write(raw)
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                try:
+                    os.link(temporary, path)
+                except FileExistsError:
+                    if path.is_symlink() or path.read_bytes() != raw:
+                        raise AdmissionError('unit_review_conflicting_replay')
+                directory = os.open(self.runtime, os.O_RDONLY | os.O_DIRECTORY)
+                try:
+                    os.fsync(directory)
+                finally:
+                    os.close(directory)
+            finally:
+                os.unlink(temporary)
+            return {'status':'retained', 'evidence_sha256':digest(packet)}
+        return write
+
+    def _check_unit_review(self, packet):
+        from types import SimpleNamespace
+        from stokowski_operations import operation_key, bridge_arguments
+        issue = packet['issue']
+        entry = self.entries[issue]
+        unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']))
+        runtime, manifest, _ = self.context(issue, review=True)
+        b, snapshot, decision = (packet[k] for k in ('integration_binding','snapshot','decision'))
+        review, validation = snapshot['review'], snapshot['validation']
+        action = decision.get('action') or {}
+        if (unit != packet['unit_binding'] or unit['project_id'] != PROJECT or
+            b['issue_id'] != entry['issue_id'] or b['owner'] != self.config['owner'] or
+            b['head_branch'] != manifest['branch'] or snapshot.get('publisher_owner') != b['owner'] or
+            decision.get('binding_sha256') != digest(b) or
+            decision.get('status') != 'merge-intent' or decision.get('merge_effect') != 'pending' or
+            action.get('kind') != 'merge-pr' or action.get('expected_head_sha') != b['head'] or
+            action.get('expected_base_sha') != b['base'] or
+            decision.get('qualification_sha256') != digest(dict(validation=validation, review=review,
+                tree=b['tree'], policy=b['policy_sha256'])) or
+            snapshot.get('cancel_requested') or snapshot.get('unresolved_findings') or
+            snapshot.get('source_tree') != b['tree'] or snapshot.get('source_clean') is not True or
+            snapshot.get('publication_triggers_actions') is not False or
+            snapshot.get('policy_sha256') != b['policy_sha256'] or
+            snapshot.get('capacity_policy_sha256') != b['capacity_policy_sha256'] or
+            review.get('independent') is not True or review.get('verdict') != 'accept' or
+            review.get('findings') or not review.get('evidence_id') or
+            not review.get('reviewer') or not review.get('author') or
+            review['reviewer'] == review['author'] or
+            review['author'] != manifest['tasks'][issue]['owner'] or
+            not review.get('model') or not review.get('provider') or
+            review.get('head') != b['head'] or review.get('base') != b['base'] or
+            review.get('outputs') != b['outputs']):
+            raise AdmissionError('unit_review_qualification')
+        # Evidence hash covers immutable identity, reviewer/model and exact output.
+        evidence = {k:v for k,v in review.items() if k != 'evidence_sha256'}
+        if review.get('evidence_sha256') != digest(evidence):
+            raise AdmissionError('unit_review_evidence')
+        selected = read_record(runtime/'validation-bindings.json')['issues'][issue]
+        key = b['validation_operation_key']
+        database = self.private(str(runtime/'operations'/'operations.sqlite'))
+        # Journal.__init__/db create/chmod: use the original schema read-only,
+        # never prepare/save/reconcile an operation during review ingestion.
+        with sqlite3.connect(database.as_uri()+'?mode=ro', uri=True) as db:
+            row = db.execute('SELECT spec,state FROM operations WHERE key=?', (key,)).fetchone()
+        if not row:
+            raise AdmissionError('unit_review_journal_missing')
+        spec, state = map(json.loads, row)
+        native = read_record(runtime/'attempts'/issue/'receipt.json')
+        expected_acceptance = digest(dict(task=manifest['tasks'][issue],
+            native_receipt_sha256=unit['native_receipt_sha256'], profile=spec['profile']))
+        receipt = packet['validation_receipt']
+        expected = bridge_arguments(spec)
+        if (operation_key(spec) != key or spec['version'] != 1 or
+            spec['issue'] != issue or spec['issue_id'] != entry['issue_id'] or
+            spec['owner'] != b['owner'] or spec.get('branch') != b['head_branch'] or
+            any(spec[k] != b[k] for k in ('head','base','outputs')) or
+            spec['policy_sha256'] != b['capacity_policy_sha256'] or
+            spec['policy_sha256'] != self.config['policy_sha256'] or
+            spec['acceptance_sha256'] != expected_acceptance or
+            selected.get('operation_key') != key or selected.get('source_head') != b['head'] or
+            selected.get('native_receipt_sha256') != unit['native_receipt_sha256'] or
+            selected.get('native_output_sha256') != native.get('output_sha256') or
+            selected.get('derivation') or native.get('scope_violations') or
+            native.get('source_head') != manifest['base_revision'] or
+            not native.get('output_sha256') or
+            any(b['outputs'].get(k) != v for k,v in native['output_sha256'].items()) or
+            state.get('status') != 'succeeded' or state.get('cancel_requested') is not False or
+            state.get('reconcile_required') or state.get('observation_intent') or
+            state.get('accepted_output_sha256') != b['outputs'] or
+            state.get('acceptance_sha256') != expected_acceptance or
+            state.get('receipt_sha256') != digest(receipt) or
+            receipt.get('status') != 'succeeded' or receipt.get('exit_code') != 0 or
+            receipt.get('child_tree_gone') is not True or receipt.get('reconcile_required') is not False or
+            receipt.get('job_id') != state.get('logical_job_id') or
+            receipt.get('runner_sha256') != spec['runner_sha256'] or
+            receipt.get('capacity_policy_sha256') != spec['policy_sha256'] or
+            receipt.get('command_sha256') != hashlib.sha256(expected['command'].encode()).hexdigest() or
+            validation != dict(operation_key=key, status='succeeded', head=b['head'], base=b['base'],
+                capacity_policy_sha256=spec['policy_sha256'], outputs=b['outputs'],
+                child_tree_gone=True, reconcile_required=False)):
+            raise AdmissionError('unit_review_validation_binding')
+        workspace = runtime/'workspaces'/issue
+        for name, sha in native['output_sha256'].items():
+            target = (workspace/name).resolve()
+            if not target.is_relative_to(workspace) or file_sha(target) != sha:
+                raise AdmissionError('unit_review_native_output_drift')
+        return unit
+
+    def _hold_unit_review(self, issue):
+        task = self.state['tasks'][issue]
+        task['defer'] = 'unit_review_held'
+        gate = task.get('unit_gate', {})
+        if gate.get('review_sha256') and not gate.get('handled'):
+            # Preserve the evidence identity for revalidation, but never leave
+            # an unhandled evidence-derived approval actionable after a hold.
+            gate.update(disposition='waiting', accepted_delivery=False)
+
+    def _consume_unit_reviews(self):
+        # Called by the normal current boundary under the coordinator's existing
+        # exclusive root lock. Only this consumer updates current-owner.json;
+        # the independent writer publishes immutable incoming evidence above.
+        for issue in self.entries:
+            path = self.runtime/('unit-review-' + issue + '.json')
+            if not path.exists():
+                if self.state['tasks'][issue].get('unit_gate', {}).get('review_sha256'):
+                    self._hold_unit_review(issue)
+                continue
+            try:
+                if path != path.resolve():
+                    raise AdmissionError('unit_review_noncanonical_incoming')
+                packet = read_record(path)
+                unit = self._check_unit_review(packet)
+                gate = self.state['tasks'][issue].get('unit_gate', {})
+                fingerprint = digest(packet)
+                if (packet['issue'] != issue or gate.get('binding') != unit or
+                    gate.get('review_sha256') not in (None, fingerprint) or
+                    gate.get('disposition') not in ('waiting','approved')):
+                    raise AdmissionError('unit_review_gate_conflict')
+                if gate.get('handled'):
+                    continue
+                gate.update(review_sha256=fingerprint, disposition='approved', accepted_delivery=False)
+                if self.state['tasks'][issue].get('defer') == 'unit_review_held':
+                    self.state['tasks'][issue].pop('defer')
+            except Exception:
+                self._hold_unit_review(issue)
 
     async def candidates(self, client, issues):
         self.refresh()
