@@ -229,3 +229,21 @@ publisher route uses the durable cloud connector owner's context; native Foo has
 no independently configured GitHub API grant. Loss of that context pauses source
 publication with durable evidence intact. Do not describe that as an installed
 unattended local publisher or silently transfer cloud credentials into Foo.
+
+## Reviewed extraction origin (2.3.0 proposal)
+
+A source-only extraction uses a separate typed admission and fixed mapping/import
+profile, not a native coding receipt. The admission pins source/mapping/output
+identity and independent exact-head review. Select the exact service-owned
+candidate workspace, immutable base/head/branch and accepted-base control tests;
+do not validate canonical source merely because its interpreter is shared.
+Existing native origin, operation IDs, dispatcher/bridge resource envelope,
+stopped-child checks and integration policy remain in force. See
+[ADR 0006](../../docs/adr/0006-typed-extraction-validation-and-refill.md).
+
+Execution records separate requested lane/model/effort/provider/resources from
+observed resolution or explicit unknown, sampled resources and parent/lease/job
+identity. The existing phase boundary records a provisional ready-refill
+observation; final admission is still required and no work is started by that
+record. Missing/stale provider proof, overlap and unresolved effects defer work.
+This is not cloud voice/approval intake, an always-on supervisor or a new scheduler.

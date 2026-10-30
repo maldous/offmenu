@@ -42,6 +42,8 @@ class RequestRefused(OperationError):
 def validated(spec):
     fields = {'version','issue_id','issue','stage','head','base','owner','policy_sha256',
               'acceptance_sha256','outputs','profile','runner_sha256','executor_sha256'}
+    if isinstance(spec, dict) and type(spec.get('version')) is int and spec['version'] == 2:
+        return validated_v2(spec)
     if not isinstance(spec,dict) or set(spec) not in (fields,fields|{'branch'}) or type(spec['version']) is not int or spec['version'] != 1:
         raise OperationError('Invalid operation fields')
     if not valid_branch(spec.get('branch','feature/langgraph-delivery-standardization')):
@@ -68,6 +70,116 @@ def validated(spec):
             or not isinstance(value,str) or not re.fullmatch('[0-9a-f]{64}',value)):
             raise OperationError('Invalid output binding')
     return spec
+
+
+WORKSPACES = PurePosixPath('/offmenu/data/.offmenu-platform/workspaces')
+EXTRACTION_PROFILE = 'wfp-retained-mapping'
+WFP_OUTPUTS = {'src/offmenu/refresh/wfp_retained.py', 'tests/test_wfp_retained.py',
+               'tests/wfp-retained-authored-fixtures.json',
+               'docs/operations/wfp-retained-normalization.md'}
+
+
+def workspace_path(value):
+    if (not isinstance(value, str) or
+        not re.fullmatch(re.escape(str(WORKSPACES)) + r'/[A-Za-z0-9][A-Za-z0-9_-]{0,79}', value)):
+        raise OperationError('Invalid exact workspace')
+    return Path(value)
+
+
+def validated_v2(spec):
+    extra = {'origin', 'workspace', 'execution'}
+    legacy = {k:v for k,v in spec.items() if k not in extra}
+    if not extra.issubset(spec) or 'branch' not in legacy or spec.get('profile') != EXTRACTION_PROFILE:
+        raise OperationError('Invalid v2 operation fields/profile')
+    validated(dict(legacy, version=1, profile='delivery-suite'))
+    workspace_path(spec['workspace'])
+    origin = spec['origin']
+    if (not isinstance(origin, dict) or set(origin) !=
+        {'kind','admission_sha256','review_sha256','source_commit','mapping','author'} or
+        origin['kind'] != 'reviewed-extraction' or not isinstance(origin['author'], str) or
+        not origin['author'].strip()):
+        raise OperationError('Invalid reviewed extraction origin')
+    for name, width in [('admission_sha256',64),('review_sha256',64),('source_commit',40)]:
+        if not isinstance(origin[name], str) or not re.fullmatch('[0-9a-f]{'+str(width)+'}', origin[name]):
+            raise OperationError('Invalid origin pin')
+    mapping = origin['mapping']
+    if (not isinstance(mapping, dict) or set(mapping.values()) != WFP_OUTPUTS or
+        len(mapping) != len(WFP_OUTPUTS) or set(spec['outputs']) != WFP_OUTPUTS):
+        raise OperationError('Invalid retained mapping/layout')
+    for name in mapping:
+        if (not isinstance(name,str) or name.startswith('/') or '\\' in name or
+            any(part in ('','.','..') for part in name.split('/')) or
+            any(ord(char)<32 for char in name)):
+            raise OperationError('Invalid retained mapping path')
+    execution = spec['execution']
+    if (not isinstance(execution,dict) or set(execution) !=
+        {'task_fit','requested_model','requested_effort','provider_route','resolved_model','resolution_status'} or
+        not isinstance(execution['task_fit'],str) or not execution['task_fit'].strip() or
+        execution['requested_model'] != 'gpt-6.1-sol' or execution['requested_effort'] != 'medium' or
+        execution['provider_route'] != 'codex-chatgpt' or execution['resolved_model'] is not None or
+        execution['resolution_status'] != 'unobserved'):
+        raise OperationError('Invalid execution metadata')
+    if spec['acceptance_sha256'] != origin['admission_sha256']:
+        raise OperationError('Acceptance must pin extraction admission')
+    return spec
+
+
+def candidate_check_code(spec):
+    """Identical local/remote identity, layout and retained byte checks."""
+    return """import hashlib,json,pathlib,subprocess
+spec=json.loads(SPEC_JSON)
+root=pathlib.Path(spec['workspace'])
+assert root.resolve()==root and not any(p.is_symlink() for p in (root,*root.parents)), 'workspace alias'
+def git(*args): return subprocess.check_output(['git','-C',str(root),*args])
+assert git('rev-parse','--show-toplevel').decode().strip()==str(root), 'wrong checkout'
+assert git('rev-parse','HEAD').decode().strip()==spec['head'], 'head drift'
+assert git('branch','--show-current').decode().strip()==spec['branch'], 'branch drift'
+assert not git('status','--porcelain','--untracked-files=all'), 'dirty candidate'
+subprocess.run(['git','-C',str(root),'merge-base','--is-ancestor',spec['base'],spec['head']],check=True)
+changed=set(filter(None,git('diff','--no-renames','--name-only','-z',spec['base'],spec['head']).decode().split('\\0')))
+assert changed==set(spec['outputs']), 'extraction layout drift'
+for old,new in spec['origin']['mapping'].items():
+ path=root/new
+ assert not any(p.is_symlink() for p in (path,*path.parents)), 'output alias'
+ expected=spec['outputs'][new]
+ assert path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest()==expected, 'output drift'
+ assert hashlib.sha256(git('show',spec['head']+':'+new)).hexdigest()==expected, 'head output drift'
+ assert git('ls-tree',spec['origin']['source_commit'],'--',old).split()[:2] in ([b'100644',b'blob'],[b'100755',b'blob']), 'nonregular retained source'
+ assert hashlib.sha256(git('show',spec['origin']['source_commit']+':'+old)).hexdigest()==expected, 'mapping drift'
+""".replace('SPEC_JSON',repr(json.dumps(spec,sort_keys=True)))
+
+
+def extraction_arguments(spec):
+    root = spec['workspace']
+    check = '/offmenu/.venv-delivery/bin/python -c '+shlex.quote(candidate_check_code(spec))
+    # Reuse accepted-base archive handling; select candidate paths explicitly and
+    # keep the shared interpreter independent of that checkout's contents.
+    control = shlex.split(trusted_validation_command(spec))[2]
+    control = control.replace("pathlib.Path('/offmenu')", 'pathlib.Path('+repr(root)+')')
+    control = control.replace("str(root/'.venv-delivery/bin/python')", "'/offmenu/.venv-delivery/bin/python'")
+    control = control.replace("env=dict(os.environ,PYTHONPATH=str(root/'src')+':'+str(root))",
+        "env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1',PYTHONPATH=str(root/'src')+':'+str(root)+':'+str(control/'tests/delivery'))")
+    profile = ("import pathlib; import offmenu.refresh.wfp_retained as module; "
+               "assert pathlib.Path(module.__file__).resolve()==pathlib.Path("+
+               repr(root+'/src/offmenu/refresh/wfp_retained.py')+"); "
+               "assert len(module.COLUMNS)==16 and module.POLICY['accepted'] is False")
+    commands = ['cd /offmenu',
+        'export PYTHONPATH=/offmenu/src GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0=/offmenu',
+        'export PYTHONDONTWRITEBYTECODE=1 GIT_OPTIONAL_LOCKS=0',
+        'cd '+shlex.quote(root),
+        'export PYTHONPATH='+shlex.quote(root+'/src:'+root+':'+root+'/tests/delivery')+
+            ' GIT_CONFIG_VALUE_0='+shlex.quote(root),
+        check, '/offmenu/.venv-delivery/bin/python -c '+shlex.quote(profile),
+        '/offmenu/.venv-delivery/bin/python -c '+shlex.quote(control),
+        '/offmenu/.venv-delivery/bin/python -m unittest discover -s tests/delivery -q',
+        '/offmenu/.venv-delivery/bin/python -m unittest discover -s tests -p test_wfp_retained.py -q',
+        '/offmenu/.venv-delivery/bin/python -m offmenu.delivery check',
+        '/offmenu/.venv-delivery/bin/python scripts/check_final_layout.py', check]
+    return {'action':'run','job_id':'offmenu-'+operation_key(spec)[:48],
+            'command':' && '.join(commands),'mode':'read','timeout_seconds':180,
+            'resources':{'workers':1,'overhead_processes':8,'cpu_millis':1000,
+                         'memory_bytes':2147483648,'io_slots':1,'output_bytes':0,
+                         'read_roots':['/offmenu'],'write_roots':[]}}
 
 
 def operation_key(spec):
@@ -116,6 +228,8 @@ def bridge_arguments(spec, action='run'):
         if action not in ('status','cancel'):
             raise OperationError('Invalid bridge action')
         return {'action':action,'job_id':logical_id}
+    if spec['version'] == 2:
+        return extraction_arguments(spec)
     output_code = ("import hashlib,json,pathlib; expected=json.loads("+repr(json.dumps(spec['outputs'],sort_keys=True))+
         "); root=pathlib.Path('/offmenu'); "
         "assert all(not any(x.is_symlink() for x in [root/p,*(root/p).parents]) "

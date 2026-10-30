@@ -20,6 +20,12 @@ than creating issues for messages or subprocesses. Recover from durable receipts
 chat polling is not an execution or recovery mechanism. Capacity ceilings describe
 available capabilities, not utilization targets or permission to resume workers.
 
+For new origin-specific validation, retain exact source/review/workspace/output
+bindings; source-only extraction is not a coding attempt. Record requested model,
+effort and provider separately from observed or unknown resolution and resources.
+Treat a ready-refill observation as provisional; use normal admission before work.
+The proposed extension is scoped in ADR 0006 and does not relax existing gates.
+
 Classify source, generated files, historical evidence and private runtime data
 before moving anything. Preserve data/configuration holds in the reconciliation
 handoff. Keep checkpoints/logs private under ignored `.delivery/`; never add raw

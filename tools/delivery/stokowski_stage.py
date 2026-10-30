@@ -7,12 +7,14 @@ import argparse
 import asyncio
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
+import sys
 import time
 
 from stokowski_adapter import SOURCE
-from stokowski_operations import Journal, OperationError, TERMINAL, operation_key, validated, digest
+from stokowski_operations import Journal, OperationError, TERMINAL, operation_key, validated, digest, candidate_check_code, workspace_path
 from stokowski_mcp import WindmillMCP
 from symphony_tasks import load_manifest
 from symphony_workspace import checkpoint
@@ -30,6 +32,8 @@ def bind(runtime,spec,derivation_reason=None):
     runtime = runtime.resolve()
     manifest = load_manifest(runtime/'manifest.json',expected_branch=None)
     validated(spec)
+    if spec['version'] != 1:
+        raise OperationError('Reviewed extraction requires bind_extraction')
     if spec.get('branch','feature/langgraph-delivery-standardization') != manifest['branch']:
         raise OperationError('Validation branch differs from admitted coding branch')
     issue = spec['issue']
@@ -94,6 +98,82 @@ def bind(runtime,spec,derivation_reason=None):
     return key
 
 
+def bind_extraction(runtime, spec, admission_path, candidate_root=None):
+    """Consume an owner-provisioned immutable admission; never create coding proof.
+
+    admission_path is a trusted owner input, not a candidate-controlled report.
+    Its exact bytes are pinned by acceptance_sha256. Review hashes use digest().
+    """
+    validated(spec)
+    if spec['version'] != 2:
+        raise OperationError('Extraction binding requires v2')
+    runtime = Path(runtime).resolve()
+    if admission_path is None:
+        raise OperationError('Missing trusted extraction admission')
+    path = Path(admission_path)
+    if any(p.is_symlink() for p in (path,*path.parents)) or not path.is_file():
+        raise OperationError('Admission must be a regular trusted owner file')
+    raw = path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != spec['origin']['admission_sha256']:
+        raise OperationError('Extraction admission hash mismatch')
+    def unique(pairs):
+        result = {}
+        for key,value in pairs:
+            if key in result:
+                raise OperationError('Duplicate admission field')
+            result[key] = value
+        return result
+    admission = json.loads(raw, object_pairs_hook=unique)
+    fields = {'version','issue','issue_id','owner','head','base','branch','workspace',
+              'source_commit','mapping','outputs','author','review'}
+    if not isinstance(admission,dict) or set(admission) != fields or type(admission['version']) is not int or admission['version'] != 1:
+        raise OperationError('Invalid extraction admission')
+    for name in ('issue','issue_id','owner','head','base','branch','workspace','outputs'):
+        if admission[name] != spec[name]:
+            raise OperationError('Extraction admission differs: '+name)
+    for name in ('source_commit','mapping','author'):
+        if admission[name] != spec['origin'][name]:
+            raise OperationError('Extraction origin differs: '+name)
+    review = admission['review']
+    if (not isinstance(review,dict) or set(review) != {'record','reviewer','decision','head','base'} or
+        not isinstance(review['record'],str) or not review['record'].strip() or
+        not isinstance(review['reviewer'],str) or not review['reviewer'].strip() or
+        review['reviewer'] == admission['author'] or review['decision'] != 'accepted' or
+        review['head'] != spec['head'] or review['base'] != spec['base'] or
+        digest(review) != spec['origin']['review_sha256']):
+        raise OperationError('Missing, stale or rejected independent review')
+    root = workspace_path(spec['workspace'])
+    if path.resolve().is_relative_to(root):
+        raise OperationError('Admission must be provided outside candidate source')
+    if candidate_root is not None and str(candidate_root) != str(root):
+        raise OperationError('Wrong candidate workspace')
+    try:
+        subprocess.run([sys.executable,'-c',candidate_check_code(spec)],check=True,
+                       env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1'),capture_output=True)
+    except subprocess.CalledProcessError as error:
+        raise OperationError('Exact candidate identity/mapping/output check failed') from error
+    journal = Journal(runtime/'operations')
+    key = operation_key(spec)
+    path = runtime/'validation-bindings.json'
+    bindings = json.loads(path.read_text()) if path.exists() else {'version':1,'issues':{},'history':[]}
+    previous = bindings['issues'].get(spec['issue'])
+    if previous and previous['operation_key'] != key:
+        _,state = journal.read(previous['operation_key'])
+        if state['status'] not in ('succeeded','failed','cancelled'):
+            raise OperationError('Previous operation must reconcile before a new candidate')
+    key = journal.prepare(spec)
+    selected = {'operation_key':key,'source_head':spec['head'],
+                'origin':'reviewed-extraction','admission_sha256':spec['origin']['admission_sha256'],
+                'review_sha256':spec['origin']['review_sha256'],'workspace':str(root),
+                'execution':spec['execution'],'merge_accepted':False}
+    if previous != selected:
+        if previous:
+            bindings['history'].append({'issue':spec['issue'],**previous})
+        bindings['issues'][spec['issue']] = selected
+        checkpoint(path,bindings)
+    return key
+
+
 async def tick(runtime,transport=None):
     bindings = json.loads((runtime/'validation-bindings.json').read_text())
     journal = Journal(runtime/'operations')
@@ -104,9 +184,19 @@ async def tick(runtime,transport=None):
         projection = {'version':1,
             'dispatcher_mode':'explicit-draft-test' if getattr(transport,'preview',False) else 'deployed',
             'issues':{issue:{'operation_key':key,**state,
+            'origin':bindings['issues'][issue].get('origin','native-coding'),
+            'execution':bindings['issues'][issue].get('execution'),
             'stage':'validation-verified' if state['status']=='succeeded' else
                     ('repair-required' if state['status']=='failed' else 'validation-pending'),
             'merge_accepted':False} for (issue,key),state in zip(keys,results)}}
+        from stokowski_refill import observe_refill
+        boundary = digest({issue:{k:row.get(k) for k in ('operation_key','status','stage')}
+                           for issue,row in projection['issues'].items()})
+        prior_path = runtime/'validation-stage.json'
+        prior = json.loads(prior_path.read_text()) if prior_path.exists() else {}
+        projection['refill_boundary'] = boundary
+        projection['refill'] = (prior['refill'] if prior.get('refill_boundary') == boundary
+                                and 'refill' in prior else observe_refill(runtime, projection['issues']))
         checkpoint(runtime/'validation-stage.json',projection)
         return projection
     finally:
@@ -127,10 +217,12 @@ async def continue_stage(runtime,duration,preview=False):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action',choices=['bind','tick','run','cancel','status'])
+    parser.add_argument('action',choices=['bind','bind-extraction','tick','run','cancel','status'])
     parser.add_argument('--runtime',required=True,type=Path)
     parser.add_argument('--spec',type=Path)
     parser.add_argument('--derivation-reason')
+    parser.add_argument('--admission',type=Path)
+    parser.add_argument('--candidate-root',type=Path)
     parser.add_argument('--issue')
     parser.add_argument('--duration',type=int,default=120)
     parser.add_argument('--preview-dispatch',action='store_true',help='Explicit draft testing; never a deployment fallback')
@@ -138,7 +230,9 @@ def main():
     runtime = args.runtime.resolve()
     if not runtime.is_relative_to(SOURCE/'.delivery/stokowski'):
         raise OperationError('Use the existing private OffMenu runtime')
-    if args.action == 'bind':
+    if args.action == 'bind-extraction':
+        print(json.dumps({'operation_key':bind_extraction(runtime,json.loads(args.spec.read_text()),args.admission,args.candidate_root)}))
+    elif args.action == 'bind':
         print(json.dumps({'operation_key':bind(runtime,json.loads(args.spec.read_text()),args.derivation_reason)}))
     elif args.action in ('tick','run'):
         if not 1 <= args.duration <= 600:

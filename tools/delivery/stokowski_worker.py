@@ -56,12 +56,16 @@ def changed_paths(workspace, base_revision='HEAD'):
 
 
 def summarize_events(path):
-    result = {'session_id': None, 'usage': {}, 'turn_completed': False}
+    result = {'session_id': None, 'usage': {}, 'turn_completed': False,
+              'resolved_model':None,'resolution_status':'unobserved'}
     for line in path.read_text(errors='replace').splitlines():
         try:
             event = json.loads(line)
         except ValueError:
             continue
+        if (event.get('type') == 'turn.completed' and isinstance(event.get('model'),str)
+            and event['model'].strip()):
+            result.update(resolved_model=event['model'],resolution_status='observed')
         if event.get('type') == 'thread.started':
             result['session_id'] = event.get('thread_id')
         if event.get('type') == 'turn.completed':
@@ -81,6 +85,9 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
         raise RuntimeError('Subreaper unavailable')
     result = {'status': 'failed', 'child_tree_gone': False, 'exit_code': None}
     proc = None
+    observed = {'peak_processes':0,'peak_rss_bytes':0,
+                'cpu_affinity':sorted(os.sched_getaffinity(0))}
+    result['observed_resources'] = observed
     stopping = False
 
     def stop(signum, frame):
@@ -98,6 +105,8 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
             remaining_prompt = memoryview(prompt.encode())
             while proc.poll() is None:
                 usage = capacity_usage()
+                observed['peak_processes'] = max(observed['peak_processes'],usage['processes'])
+                observed['peak_rss_bytes'] = max(observed['peak_rss_bytes'],usage['rss_bytes'])
                 reason = None
                 if stopping or (directory.parent.parent/'cancel.json').exists():
                     reason = 'cancelled'
@@ -209,7 +218,14 @@ def execute(runtime, issue, request):
                       source_identity_changed=identity_changed,
                       output_sha256=outputs, accepted_delivery=False,
                       provider_route='codex-chatgpt', requested_model=MODEL,
+                      requested_effort='medium',task_fit=task['purpose'],
+                      origin='native-coding',parent_runtime=str(runtime),attempt=issue,
+                      attempt_path=str(directory),
+                      parent_binding=binding,declared_resources=task['resources'],
                       credential_exported=False)
+        result.setdefault('resolved_model',None)
+        result.setdefault('resolution_status','unobserved')
+        result.setdefault('observed_resources',None)
         if identity_changed or violations or not result.get('turn_completed'):
             result['status'] = 'failed'
     finally:
