@@ -49,7 +49,7 @@ class FaultedWindmill:
                    'capacity_policy_sha256':spec['policy_sha256'],
                    'runner_sha256':spec['runner_sha256'],
                    'command_sha256':hashlib.sha256(args['command'].encode()).hexdigest()}
-        self.jobs[job_id].update(type='CompletedJob',success=wrapper_success,
+        self.jobs[job_id].update(type='CompletedJob',running=False,success=wrapper_success,
             result={'job_id':args['job_id'],'job_succeeded':status=='succeeded','receipt':receipt})
 
 
@@ -310,6 +310,101 @@ class OperationRecoveryTests(unittest.TestCase):
             return compact_job(value)
         self.remote.inspect = compact
 
+    def failed_compact_wrapper(self):
+        self.compact_transport()
+        state = self.tick()
+        original = state['windmill_job_id']
+        remote = self.remote.jobs[original]
+        del remote['running']
+        remote.update(type='CompletedJob',success=False,
+                      result={'error':{'message':'SENSITIVE arbitrary wrapper error'}})
+        from windmill_dispatcher import compact_job
+        compact = compact_job(remote)
+        self.assertEqual(compact['result'],{'classification':'no-authoritative-receipt'})
+        self.assertTrue(operations.observation_matches(
+            compact,original,operations.bridge_arguments(self.spec)))
+        self.tick()
+        observer,args = self.remote.submissions[-1]
+        self.assertEqual(args,operations.bridge_arguments(self.spec,'status'))
+        self.assertNotEqual(observer,original)
+        return original,observer
+
+    def test_compact_failed_completed_schema_recovers_original_terminal_receipt(self):
+        original,observer = self.failed_compact_wrapper()
+        self.remote.complete(observer,self.spec)
+        del self.remote.jobs[observer]['running']
+        state = self.tick()
+        self.assertEqual(state['status'],'succeeded')
+        self.assertEqual(state['windmill_job_id'],original)
+        self.assertEqual(state.get('accepted_output_sha256',{}),self.spec['outputs'])
+        self.assertEqual([a['action'] for _,a in self.remote.submissions],['run','status'])
+        with self.journal.db() as db:
+            events = str(db.execute('SELECT event FROM events').fetchall())
+        self.assertNotIn('SENSITIVE',json.dumps(state)+events)
+
+    def test_compact_error_recovery_preserves_backend_failure(self):
+        _,observer = self.failed_compact_wrapper()
+        self.remote.complete(observer,self.spec,'failed',wrapper_success=True)
+        self.assertEqual(self.tick()['status'],'failed')
+        self.assertEqual([a['action'] for _,a in self.remote.submissions],['run','status'])
+
+    def test_compact_error_recovery_preserves_backend_cancellation(self):
+        _,observer = self.failed_compact_wrapper()
+        self.journal.cancel(self.key)
+        self.remote.complete(observer,self.spec,'cancelled')
+        state = self.tick()
+        self.assertEqual(state['status'],'cancelled')
+        self.assertTrue(state['cancel_requested'])
+        self.assertEqual(state.get('accepted_output_sha256',{}),{})
+        self.assertEqual([a['action'] for _,a in self.remote.submissions],['run','status'])
+
+    def test_compact_malformed_claimed_receipt_cannot_trigger_status_recovery(self):
+        self.compact_transport()
+        state = self.tick()
+        original = state['windmill_job_id']
+        self.remote.complete(original,self.spec)
+        valid = copy.deepcopy(self.remote.jobs[original]['result'])
+        for receipt in (None, {'status':'succeeded'},
+                        dict(valid['receipt'],job_id='offmenu-'+'0'*48),
+                        dict(valid['receipt'],command_sha256='malformed')):
+            self.remote.jobs[original]['result'] = dict(valid,receipt=receipt)
+            state = self.tick()
+            self.assertEqual(state['status'],'unknown')
+            self.assertEqual(state.get('accepted_output_sha256',{}),{})
+            self.assertEqual(len(self.remote.submissions),1)
+
+    def test_compact_error_recovery_requires_bound_receipt_and_cleanup(self):
+        _,observer = self.failed_compact_wrapper()
+        self.remote.complete(observer,self.spec)
+        valid = copy.deepcopy(self.remote.jobs[observer]['result'])
+        for field,value in [('job_id','offmenu-'+'0'*48),('command_sha256','0'*64),
+                            ('runner_sha256','0'*64),('capacity_policy_sha256','0'*64),
+                            ('child_tree_gone',False),('reconcile_required',True)]:
+            result = copy.deepcopy(valid)
+            result['receipt'][field] = value
+            self.remote.jobs[observer]['result'] = result
+            state = self.tick()
+            self.assertIn(state['status'],('unknown','quarantined'),field)
+            self.assertEqual(state.get('accepted_output_sha256',{}),{},field)
+        self.assertEqual([a['action'] for _,a in self.remote.submissions],['run','status'])
+
+    def test_compact_error_recovery_unavailable_or_refused_never_resubmits(self):
+        _,observer = self.failed_compact_wrapper()
+        before = copy.deepcopy(self.remote.submissions)
+        self.remote.offline = True
+        self.assertEqual(self.tick()['deferred'],'service-unavailable')
+        self.remote.offline = False
+        inspect = self.remote.inspect
+        async def refused(job_id):
+            if job_id == observer:
+                raise operations.RequestRefused('SENSITIVE refused')
+            return await inspect(job_id)
+        self.remote.inspect = refused
+        state = self.tick()
+        self.assertEqual(state['status'],'unknown')
+        self.assertEqual(state.get('accepted_output_sha256',{}),{})
+        self.assertEqual(self.remote.submissions,before)
+
     def test_compact_primary_observation_requires_original_persisted_args(self):
         self.compact_transport()
         state = self.tick()
@@ -398,7 +493,7 @@ class OperationRecoveryTests(unittest.TestCase):
     def test_compact_wrapper_success_without_receipt_never_accepts(self):
         self.compact_transport()
         state = self.tick()
-        self.remote.jobs[state['windmill_job_id']].update(type='CompletedJob',success=True)
+        self.remote.jobs[state['windmill_job_id']].update(type='CompletedJob',running=False,success=True)
         observed = self.tick()
         self.assertNotEqual(observed['status'],'succeeded')
         self.assertEqual(self.remote.submissions[-1][1]['action'],'status')

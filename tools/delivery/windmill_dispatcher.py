@@ -80,16 +80,26 @@ INSPECT_VERSION = 'offmenu-inspect/2'
 
 
 def compact_result(value):
+    # Bound parsing even for discarded wrapper errors. Never expose their text.
+    if len(json.dumps(value, allow_nan=False)) > 10000:
+        raise ValueError('Oversized bridge result')
+    if isinstance(value, str):
+        try:
+            value = json.loads(value)
+        except json.JSONDecodeError:
+            if value.lstrip().startswith(('{', '[')):
+                raise ValueError('Malformed bridge result') from None
     if value is None:
         return None
     if isinstance(value, str):
-        if len(value) > 10000:
-            raise ValueError('Oversized bridge result')
-        value = json.loads(value)
+        return {'classification':'no-authoritative-receipt'}
     if not isinstance(value, dict):
         raise ValueError('Invalid bridge result')
     if 'receipt' not in value:
-        raise ValueError('Missing authoritative bridge receipt')
+        if ('job_id' in value and (not isinstance(value['job_id'],str) or
+            not re.fullmatch(r'offmenu-[0-9a-f]{48}',value['job_id']))):
+            raise ValueError('Invalid bridge identity')
+        return {'classification':'no-authoritative-receipt'}
     if set(value) - {'ok','transport_ok','job_succeeded','admitted','job_id','receipt'}:
         raise ValueError('Unexpected bridge result fields')
     job_id = value.get('job_id')
@@ -109,12 +119,26 @@ def compact_job(remote):
     args = validate_request(remote.get('args'))
     selected = {k:remote.get(k) for k in
                 ('id','workspace_id','script_path','type','running','success')}
+    if selected['type'] == 'CompletedJob' and 'running' not in remote:
+        selected['running'] = False
     if (selected['type'] not in ('QueuedJob','CompletedJob') or
         type(selected['running']) is not bool or
-        selected['success'] is not None and type(selected['success']) is not bool):
+        selected['type'] == 'CompletedJob' and
+            (selected['running'] or type(selected['success']) is not bool) or
+        selected['type'] == 'QueuedJob' and selected['success'] is not None):
         raise ValueError('Invalid job state')
-    result = compact_result(remote.get('result'))
-    if result is not None and result['job_id'] != args['job_id']:
+    raw_result = remote.get('result')
+    result = compact_result(raw_result)
+    if result is None and selected['type'] == 'CompletedJob':
+        result = {'classification':'no-authoritative-receipt'}
+    # Check an optional wrapper identity even when no receipt was supplied.
+    if isinstance(raw_result,str):
+        try:
+            raw_result = json.loads(raw_result)
+        except json.JSONDecodeError:
+            pass
+    if (isinstance(raw_result,dict) and 'job_id' in raw_result and
+        raw_result['job_id'] != args['job_id']):
         raise ValueError('Conflicting backend identity')
     selected.update(inspect_version=INSPECT_VERSION,
         args_sha256=hashlib.sha256(json.dumps(args, sort_keys=True,

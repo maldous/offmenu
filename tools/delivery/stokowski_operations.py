@@ -82,10 +82,13 @@ def observation_matches(remote, job_id, expected):
         remote.get('args_sha256') != digest(expected) or
         remote.get('type') not in ('QueuedJob','CompletedJob') or
         type(remote.get('running')) is not bool or
-        remote.get('success') is not None and type(remote['success']) is not bool):
+        remote['type'] == 'CompletedJob' and
+            (remote['running'] or type(remote['success']) is not bool) or
+        remote['type'] == 'QueuedJob' and remote['success'] is not None):
         return False
     try:
-        compact_result(remote['result'])
+        if compact_result(remote['result']) != remote['result']:
+            return False
     except (ValueError, TypeError):
         return False
     return True

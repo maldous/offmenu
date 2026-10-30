@@ -138,6 +138,47 @@ class CompactObservationTests(unittest.TestCase):
         self.assertEqual(mcp.tool_value({'content':[{'type':'text','text':rendered}]}),value)
         self.assertEqual(remote,original)
 
+    def test_completed_schema_without_running_normalizes_and_binds_exact_args(self):
+        from stokowski_operations import digest, observation_matches
+        remote = self.remote()
+        del remote['running']  # Windmill 1.850.0 CompletedJob has no running field.
+        original = copy.deepcopy(remote)
+        compact = dispatcher.compact_job(remote)
+        self.assertIs(compact['running'],False)
+        self.assertEqual(compact['args_sha256'],digest(remote['args']))
+        self.assertTrue(observation_matches(compact,remote['id'],remote['args']))
+        self.assertEqual(remote,original)
+
+    def test_contradictory_or_malformed_job_states_are_rejected(self):
+        for fields in ({'running':True}, {'running':None}, {'success':None},
+                       {'type':'QueuedJob','success':True},
+                       {'type':'QueuedJob','running':None,'success':None}):
+            with self.subTest(fields=fields),self.assertRaises(ValueError):
+                dispatcher.compact_job(dict(self.remote(),**fields))
+        remote = dict(self.remote(),type='QueuedJob',success=None)
+        del remote['running']
+        with self.assertRaises(ValueError):
+            dispatcher.compact_job(remote)
+
+    def test_absent_or_error_results_emit_only_fixed_classification(self):
+        for payload in (None, {'error':{'message':'SENSITIVE wrapper failure'}},
+                        'SENSITIVE string error', json.dumps('SENSITIVE string error'),
+                        'null', {'ok':True}, {'error':'SENSITIVE'*100}):
+            remote = self.remote()
+            del remote['running']
+            remote.update(success=False,result=payload)
+            with self.subTest(payload=payload):
+                compact = dispatcher.compact_job(remote)
+                self.assertEqual(compact['result'],{'classification':'no-authoritative-receipt'})
+                self.assertEqual(dispatcher.compact_result(compact['result']),compact['result'])
+                self.assertNotIn('SENSITIVE',json.dumps(compact))
+        for payload in ({'receipt':None}, {'receipt':{'status':'succeeded'}},
+                        {'job_id':'offmenu-'+'b'*48}, 'x'*10001,
+                        {'error':'x'*10001}, '{"receipt":'):
+            remote = dict(self.remote(),result=payload)
+            with self.subTest(payload=type(payload)),self.assertRaises(ValueError):
+                dispatcher.compact_job(remote)
+
     def test_receipt_fields_are_complete_typed_and_never_truncated(self):
         original = self.remote()['result']
         for key,value in [('command_sha256','a'*63),('runner_sha256','a'*65),
