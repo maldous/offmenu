@@ -22,7 +22,8 @@ import time
 from uuid import UUID
 
 from symphony_capacity import AdmissionError, digest
-from symphony_tasks import load_manifest, runtime_lease_ids
+from symphony_tasks import (load_manifest, runtime_lease_ids, project_route,
+                            validated_project_route)
 from symphony_workspace import checkpoint
 from stokowski_worker import child_environment, MODEL
 
@@ -76,7 +77,8 @@ class CurrentWork:
 
     current.json v1: owner (existing owner ID), runtime_root and catalog
     (canonical absolute paths),
-    source_head, source_sha256 (repo-relative executable input hashes),
+    optional project_route (exact reviewed project_id/project_slug pair; absent
+    means legacy OffMenu), source_head, source_sha256 (repo-relative executable input hashes),
     workflow_sha256, policy_sha256, installation_sha256, version. catalog.json v1: version, entries;
     each entry: issue, issue_id, runtime, admission_sha256. Each task runtime's
     current-admission.json v1: version, owner, issue, issue_id, source (canonical
@@ -91,9 +93,10 @@ class CurrentWork:
         self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config = read_record(runtime/'current.json')
-        if set(self.config) - {'qualified_successor'} != {'version', 'owner', 'runtime_root', 'catalog',
+        if set(self.config) - {'qualified_successor', 'project_route'} != {'version', 'owner', 'runtime_root', 'catalog',
                                'source_head', 'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}:
             raise AdmissionError('current_config_fields')
+        validated_project_route(self.config.get('project_route', project_route(PROJECT)))
         self.root = Path(self.config['runtime_root'])
         if (self.root != self.root.resolve() or not self.root.is_dir()
             or self.root.name != 'stokowski' or self.root.parent.name != '.delivery'
@@ -137,6 +140,10 @@ class CurrentWork:
                 self.entries[issue] = entry
         else:
             self.refresh()
+
+    @property
+    def route(self):
+        return validated_project_route(self.config.get('project_route', project_route(PROJECT)))
 
     def private(self, value):
         path = Path(value)
@@ -268,7 +275,7 @@ class CurrentWork:
                                  observation=True) != trigger['unit_binding']):
             raise AdmissionError('successor_trigger_drift')
         outcome = packet['execution_outcome']
-        if (outcome['project_id'] != PROJECT or outcome['identifier'] == issue
+        if (outcome['project_id'] != self.route['project_id'] or outcome['identifier'] == issue
             or outcome['uuid'] == entry['issue_id']
             or any(e['issue'] == outcome['identifier'] or e['issue_id'] == outcome['uuid']
                    or e['runtime'] == packet['selected_current']['task_runtime']
@@ -797,7 +804,7 @@ class CurrentWork:
         task = manifest['tasks'][issue.identifier]
         if 'stage' in task and task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1':
             _, spec, selected, _, admission = self.reviewed_origin(issue.identifier,task,observation=observation)
-            return dict(project_id=PROJECT,issue_id=issue.id,origin='reviewed-source-v1',
+            return dict(project_id=manifest['project_id'],issue_id=issue.id,origin='reviewed-source-v1',
                 origin_admission_sha256=spec['origin']['admission_sha256'],
                 operation_key=selected['operation_key'],owner=spec['owner'],author=admission['author'],
                 authors=admission['authors'],head=spec['head'],base=spec['base'],outputs=spec['outputs'])
@@ -1108,7 +1115,7 @@ class CurrentWork:
             if tree != b['tree']:
                 raise AdmissionError('unit_review_source_tree')
             self._check_prior_review_provenance(review, admission, tree, task['stage_binding']['inputs'])
-        if (unit != packet['unit_binding'] or unit['project_id'] != PROJECT or
+        if (unit != packet['unit_binding'] or unit['project_id'] != manifest['project_id'] or
             b['issue_id'] != entry['issue_id'] or b['owner'] != self.config['owner'] or
             b['head_branch'] != (origin_spec['branch'] if reviewed else manifest['branch']) or snapshot.get('publisher_owner') != b['owner'] or
             decision.get('binding_sha256') != digest(b) or
@@ -1257,13 +1264,15 @@ class CurrentWork:
                 continue
             try:
                 _, selected_manifest, _ = self.context(issue.identifier)
+                if selected_manifest['project_id'] != self.route['project_id']:
+                    raise AdmissionError('current_selected_project')
                 if 'stage' in selected_manifest['tasks'][issue.identifier]:
                     self.stage_origin(issue.identifier, selected_manifest['tasks'][issue.identifier])
                     continue
                 data = await client._graphql('query($id: String!){ issue(id:$id){id identifier project{id} state{name}}}', {'id':issue.id})
                 remote = data.get('issue') or {}
                 if (remote.get('id') != issue.id or remote.get('identifier') != issue.identifier
-                    or remote.get('project', {}).get('id') != PROJECT
+                    or remote.get('project', {}).get('id') != selected_manifest['project_id']
                     or remote.get('state', {}).get('name') not in ('Todo','In Progress')):
                     raise AdmissionError('current_authoritative_identity_or_state')
                 self.state['tasks'][issue.identifier].pop('defer', None)
@@ -1290,10 +1299,11 @@ def install_adapters(runtime, manifest, key, current=None):
     config.ServiceConfig.resolved_api_key = lambda self: key
     workspace_module.run_hook = reject_hook
 
+    route = current.route if current else project_route(manifest['project_id'])
     original_fetch = linear.LinearClient.fetch_candidate_issues
 
     async def selected_candidates(client, project_slug, states):
-        if project_slug != SLUG:
+        if project_slug != route['project_slug']:
             raise AdmissionError('Wrong Linear project')
         try:
             issues = await original_fetch(client, project_slug, ['Todo','In Progress'] if current else states)
@@ -1305,8 +1315,19 @@ def install_adapters(runtime, manifest, key, current=None):
             return []
         if current:
             return await current.candidates(client, issues)
-        return [i for i in issues if i.identifier in manifest['tasks']
-                and i.id == manifest['tasks'][i.identifier]['issue_id']]
+        selected = []
+        for issue in issues:
+            if issue.identifier not in manifest['tasks'] or issue.id != manifest['tasks'][issue.identifier]['issue_id']:
+                continue
+            remote = (await client._graphql(
+                'query($id: String!){ issue(id:$id){id identifier project{id} state{name}}}',
+                {'id':issue.id})).get('issue') or {}
+            if (remote.get('id') != issue.id or remote.get('identifier') != issue.identifier
+                or remote.get('project', {}).get('id') != route['project_id']
+                or remote.get('state', {}).get('name') not in states):
+                raise AdmissionError('finite_authoritative_identity_or_state')
+            selected.append(issue)
+        return selected
 
     linear.LinearClient.fetch_candidate_issues = selected_candidates
 
@@ -1631,6 +1652,7 @@ async def _run(runtime, duration, dry_run=False, current_mode=False):
         current.save()
         return
     manifest = None if current else load_manifest(runtime/'manifest.json',expected_branch=None)
+    route = current.route if current else project_route(manifest['project_id'])
     policy = json.loads((runtime/'capacity-policy.json').read_text())
     if policy != json.loads((SOURCE/'tools/delivery/capacity-policy.json').read_text()):
         raise AdmissionError('Runtime policy differs from reviewed source')
@@ -1640,7 +1662,7 @@ async def _run(runtime, duration, dry_run=False, current_mode=False):
     definition = parse_workflow_file(runtime/'workflow.yaml')
     projects = definition.config.projects
     if (validate_config(definition.config) or len(projects) != 1
-        or projects[0].tracker.project_slug != SLUG
+        or projects[0].tracker.project_slug != route['project_slug']
         or definition.config.agent.max_concurrent_agents != policy['symphony']['max_concurrent_agents']
         or definition.config.server.port is not None
         or any(s.runner != 'codex' for s in projects[0].all_states().values() if s.type == 'agent')
@@ -1650,12 +1672,12 @@ async def _run(runtime, duration, dry_run=False, current_mode=False):
     from stokowski.linear import LinearClient
     client = LinearClient(endpoint='https://api.linear.app/graphql', api_key=key)
     try:
-        candidates = await client.fetch_candidate_issues(SLUG, projects[0].active_linear_states())
+        candidates = await client.fetch_candidate_issues(route['project_slug'], projects[0].active_linear_states())
     finally:
         await client.close()
     if not current and {i.id for i in candidates} != {t['issue_id'] for t in manifest['tasks'].values()}:
         raise AdmissionError('Selected issues are not exactly the ready candidates')
-    checkpoint(runtime/'admission.json', dict(project_id=PROJECT, selected=[i.identifier for i in candidates],
+    checkpoint(runtime/'admission.json', dict(project_id=route['project_id'], selected=[i.identifier for i in candidates],
                max_concurrent_agents=definition.config.agent.max_concurrent_agents,
                upstream_revision=PIN, dry_run=dry_run, credential_exported=False))
     if dry_run:
@@ -1706,7 +1728,7 @@ async def _run(runtime, duration, dry_run=False, current_mode=False):
             for sig in (signal.SIGTERM, signal.SIGINT):
                 loop.remove_signal_handler(sig)
         checkpoint(runtime/'coordinator-finished.json', dict(stopped=True, at=time.time(),
-                   accepted_delivery=False, project_id=PROJECT))
+                   accepted_delivery=False, project_id=route['project_id']))
 
 
 async def reconcile_metadata(runtime):
@@ -1725,7 +1747,7 @@ async def reconcile_metadata(runtime):
             data = await client._graphql('query($id: String!){ issue(id:$id){id project{id} state{name}}}',
                                          {'id':task['issue_id']})
             remote = data.get('issue') or {}
-            if remote.get('project',{}).get('id') != PROJECT:
+            if remote.get('project',{}).get('id') != manifest['project_id']:
                 raise AdmissionError('Wrong issue project during reconciliation')
             before = remote.get('state',{}).get('name')
             if before not in ('In Progress','In Review'):

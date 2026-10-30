@@ -33,6 +33,24 @@ class ManifestContracts(unittest.TestCase):
                 self.assertIn('--manifest',config['hooks']['before_run'])
                 with self.assertRaisesRegex(RuntimeError,'already prepared'):launch.prepare(root/'runtime','gpt-6.1-sol',p)
 
+    def test_actual_uif119_project_manifest_preserves_identity_and_hash(self):
+        from tools.delivery.symphony_tasks import manifest_digest
+        d = self.manifest()
+        task = d['tasks']['UIF-1']
+        task['issue_id'] = '3e6839ad-2f22-4ab1-8f6f-973c882daabd'
+        d['tasks'] = {'UIF-119': task}
+        legacy = manifest_digest(d)
+        d['project_id'] = 'ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0'
+        with tempfile.TemporaryDirectory() as directory:
+            p = Path(directory)/'manifest.json'
+            p.write_text(json.dumps(d))
+            self.assertEqual(load_manifest(p), d)
+            self.assertNotEqual(manifest_digest(d), legacy)
+            d['project_id'] = '00000000-0000-4000-8000-000000000001'
+            p.write_text(json.dumps(d))
+            with self.assertRaisesRegex(AdmissionError, 'manifest_identity'):
+                load_manifest(p)
+
     def test_source_paths_and_duplicate_keys_fail_closed(self):
         with tempfile.TemporaryDirectory() as directory:
             p=Path(directory)/'manifest.json'

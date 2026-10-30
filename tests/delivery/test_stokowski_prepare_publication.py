@@ -142,7 +142,7 @@ class PublicationTests(unittest.TestCase):
         self.write(self.handoff_path, self.handoff)
         self.handoff_sha = self.sha(self.handoff_path)
 
-    def bind_successor(self, current, review):
+    def bind_successor(self, current, review, outcome=None):
         """Retarget only temporary fixture records to an existing terminal unit."""
         from stokowski_adapter import file_sha
         from symphony_capacity import digest
@@ -158,10 +158,12 @@ class PublicationTests(unittest.TestCase):
         self.branch = 'feature/test-current'
         self.issue = dict(identifier='UIF-231', uuid='00000000-0000-4000-8000-000000000231',
                           project_id=prepare.PROJECT)
+        if outcome is not None:
+            self.issue = outcome
         self.scope = ['tests/successor231.py']
         task = self.manifest['tasks'].pop('UIF-106')
         task.update(issue_id=self.issue['uuid'], owner=self.owner, allowed_paths=self.scope)
-        self.manifest.update(branch=self.branch, base_revision=self.base, tasks={'UIF-231':task})
+        self.manifest.update(branch=self.branch, base_revision=self.base, project_id=self.issue['project_id'], tasks={self.issue['identifier']:task})
         self.write(self.qualified/'manifest.json', self.manifest)
         self.write(self.qualified/'request.json', dict(prompt='Explicit synthetic successor',timeout_seconds=60))
         self.write(self.qualified/'provider.json', dict(requested_model='gpt-6.1-sol',requested_effort='medium',
