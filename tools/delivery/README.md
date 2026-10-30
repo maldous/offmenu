@@ -229,3 +229,37 @@ publisher route uses the durable cloud connector owner's context; native Foo has
 no independently configured GitHub API grant. Loss of that context pauses source
 publication with durable evidence intact. Do not describe that as an installed
 unattended local publisher or silently transfer cloud credentials into Foo.
+
+## Reviewed extraction origin (2.3.0 proposal)
+
+A source-only extraction uses a separate typed admission and fixed mapping/import
+profile, not a native coding receipt. The admission pins source/mapping/output
+identity and independent exact-head review. Select the exact service-owned
+candidate workspace, immutable base/head/branch and accepted-base control tests;
+do not validate canonical source merely because its interpreter is shared.
+Existing native origin, operation IDs, dispatcher/bridge resource envelope,
+stopped-child checks and integration policy remain in force. See
+[ADR 0006](../../docs/adr/0006-typed-extraction-validation-and-refill.md).
+
+`bind-extraction --candidate-root` may select an explicit absolute, canonical,
+non-symlink local source mirror for preflight. Its exact Git root, clean branch,
+head, base ancestry, four-path delta and historical byte mapping must match the
+admission. The binding records `local_source_root` separately from `workspace`;
+the spec, admission and remote command retain the canonical jailed workspace.
+The trusted admission file must stay outside both candidates.
+
+The deterministic mapping profile requires task fit
+`deterministic retained byte mapping validation`, null requested model/effort and
+resolved model, provider route `none` and resolution status `not-applicable`.
+It runs the accepted-base control validators once against candidate imports,
+fixed import/layout/policy checks and before/after identity/output checks; it
+does not repeat the candidate delivery suite or historical WFP fixture tests.
+The v1 compatibility oracle remains pinned to accepted commit
+`7780c8602b52e9f2fc7e6a38e5d08d8ad74f09e1`.
+
+Execution records separate requested lane/model/effort/provider/resources from
+observed resolution or explicit unknown, sampled resources and parent/lease/job
+identity. The existing phase boundary records a provisional ready-refill
+observation; final admission is still required and no work is started by that
+record. Missing/stale provider proof, overlap and unresolved effects defer work.
+This is not cloud voice/approval intake, an always-on supervisor or a new scheduler.

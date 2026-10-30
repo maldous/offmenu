@@ -77,7 +77,7 @@ export function recipeIngredientCoverage({recipe,inventory,products={},servings,
  // Matching rounds its displayed deficits independently of allocation. A
  // zero/nonfinite reported gap cannot support a definitive extra-item choice.
  const missingQuantitiesKnown=matching.missing.every(i=>Number.isFinite(i.quantity)&&i.quantity>0);
- const unknown=!demandKnown||requirements.some(i=>i.status==='unknown')||!classificationAgreement||!missingQuantitiesKnown;
+ const unknown=!demandKnown||!matching.demandKnown||requirements.some(i=>i.status==='unknown')||!classificationAgreement||!missingQuantitiesKnown;
  const readyNow=!unknown&&matching.status==='ready'&&requirements.every(i=>i.status==='covered');
  const oneExtraItem=!unknown&&matching.status==='missing'&&matching.demandKnown&&
   matching.unknown.length===0&&matching.reviewReasons.length===0&&matching.missing.length===1;

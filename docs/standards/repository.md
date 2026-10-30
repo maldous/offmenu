@@ -1,6 +1,7 @@
-# Repository standard 2.2.0
+# Repository standard 2.3.0
 
-Status: adopted after source and implementation review. Changes enter `develop`
+Status: adopted through reviewed integration after independent source review and
+real retained-extraction validation. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
 [`repository-standard.json`](../../repository-standard.json). This document
 explains decisions; historical handovers do not override it.
@@ -122,3 +123,18 @@ Windmill validation, and verify canonical merge parents/tree and develop ancestr
 Linear metadata failure retries only metadata. Unknown external effects retain
 repository ownership until reconciled. This authority does not enable Actions,
 production deployment, main promotion or suspended historical workers.
+
+## Origin-bound validation and continuation observations
+
+The proposed 2.3.0 extension is described in
+[ADR 0006](../adr/0006-typed-extraction-validation-and-refill.md). A reviewed
+source-only extraction has its own origin/admission contract; it never acquires
+a fabricated native coding receipt. Bind its exact mapping, review, candidate
+workspace and output hashes to a fixed profile and same-base trusted validators.
+The existing Windmill/integration policy and independent review remain required.
+
+New receipts separate task-fit/model requests from actual observations and retain
+parent/lease/job identity. Phase-boundary ready-refill records are provisional
+observations, not new admission/dispatch authority. Missing provider or platform
+capability is explicit. Active operation IDs, aggregate limits, legacy pauses and
+publication permissions remain unchanged.

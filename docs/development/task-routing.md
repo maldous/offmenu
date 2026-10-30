@@ -161,6 +161,42 @@ and publish only reviewed source and suitable provenance summaries.
 This sequence connects existing owners and finite interfaces. It adds no automatic
 deployment, scheduler, manager or background supervision service.
 
+## Origin and execution observations
+
+The [standard 2.3.0 proposal](../adr/0006-typed-extraction-validation-and-refill.md)
+adds a separate origin for reviewed immutable source extractions. Retain actual
+mapping/review evidence, without inventing a coding receipt. A fixed mapping/import
+profile uses the declared service-owned candidate checkout, accepted-base
+validators and bound output hashes.
+
+Choose task-fit lane/model before admission; record requested model, effort and
+provider separately from observed or unknown resolution. The existing repository
+coding route requests `gpt-6.1-sol`/`medium` via its existing ChatGPT session.
+Reasoning slots are not provider/cloud-task availability. An unavailable route
+does not authorize paid fallback or a duplicate owner. Separate resource budgets
+from sampled process/RSS/affinity observations.
+
+At terminal/dependency phase boundaries the existing stage can persist a
+ready-refill observation from its manifest, active scopes/resources and provider
+proof. It does not start work. Recheck normal admission before consuming a
+suggestion. No-ready-work refers to that admitted scope, not all of Linear.
+Unknown effects remain owned.
+
+Sends and one inspector returned backend `UNKNOWN` while reads/Foo worked; later
+supported same-owner send succeeded after readback, cause unknown. Native placement
+format 3 was unsupported by one cloud read. Optional settings/model changes are
+not established causes or fixes. Cloud approval/session intake remains unsupported,
+not a reason to bypass a gate or silently change owners.
+
+Placement adoption is partial. UIF-105 completed fourteen synthetic refusal checks
+and eight UI checks directly in its durable session, with no coding lease or
+Windmill job; UIF-101/104 also used direct local checks. These are observed direct
+validation, not Windmill acceptance or evidence of a denied harness route. Source
+inspection is legitimate direct-session reasoning. For future useful deterministic
+suites use the existing typed stage/profile and resource-admitted Windmill path
+when supported; retain the phase/checkpoint evidence. Do not replay already
+accepted checks solely to relabel their execution placement.
+
 ## Recovery at phase boundaries
 
 The executor persists terminal receipts whether or not the coordinating owner is
