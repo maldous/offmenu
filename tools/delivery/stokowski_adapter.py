@@ -84,7 +84,8 @@ class CurrentWork:
     The approved request is requests/<issue>.json; it is never generated here.
     Only a trusted existing owner writes qualification/catalog records.
     """
-    def __init__(self, runtime):
+    def __init__(self, runtime, *, read_only=False):
+        self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config = read_record(runtime/'current.json')
         if set(self.config) != {'version', 'owner', 'runtime_root', 'catalog',
@@ -113,7 +114,22 @@ class CurrentWork:
         self.fatal = None
         self.stopping = False
         self.state['accepted_delivery'] = False
-        self.refresh()
+        if read_only:
+            # Incoming readers reuse all admission/native checks, without an
+            # owner refresh, consumption, PID update on disk or journal writes.
+            self.guard()
+            catalog = read_record(self.catalog)
+            if catalog.get('version') != 1 or not isinstance(catalog.get('entries'), list):
+                raise AdmissionError('current_catalog_fields')
+            for entry in catalog['entries']:
+                issue = entry['issue']
+                if (issue in self.entries or self.state['bindings'].get(issue) != digest(entry)
+                    or self.state.get('references', {}).get(issue) != entry):
+                    raise AdmissionError('current_identity_rebind')
+                self.private(entry['runtime'])
+                self.entries[issue] = entry
+        else:
+            self.refresh()
 
     def private(self, value):
         path = Path(value)
@@ -122,6 +138,8 @@ class CurrentWork:
         return path
 
     def save(self):
+        if self.read_only:
+            raise AdmissionError('current_read_only')
         checkpoint(self.state_path, self.state)
 
     def guard(self):
@@ -330,8 +348,9 @@ class CurrentWork:
         owner's provenance and return its full packet (snapshot, decision,
         integration_binding, unit_binding, issue, validation_receipt). It is a
         deployment supplied trust boundary, NOT an authenticated:true assertion.
-        No default transport, credential route or worker CLI exists. Same-owner
-        OS/file custody is assumed; live adoption is unsupported without transport.
+        The fixed stokowski_unit_review entrypoint supplies the local transport
+        after checking retained controller qualification and kernel/file custody.
+        Same-owner private OS/file custody is the trust boundary.
         This writer never takes coordinator.lock or writes current-owner.json.
         """
         if not callable(trusted_transport):
@@ -345,6 +364,10 @@ class CurrentWork:
             self._check_unit_review(packet)
             path = self.runtime/('unit-review-' + packet['issue'] + '.json')
             raw = json.dumps(packet, sort_keys=True, separators=(',', ':')).encode()
+            if path.exists():
+                if path.is_symlink() or path.read_bytes() != raw:
+                    raise AdmissionError('unit_review_conflicting_replay')
+                return {'status':'retained', 'evidence_sha256':digest(packet)}
             # Atomic immutable publication: a crash before link leaves only a
             # private temp, after link leaves the complete durable intent. A
             # conflicting replay cannot overwrite it or any gate disposition.

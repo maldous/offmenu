@@ -18,6 +18,7 @@ import os
 from pathlib import Path
 import shutil
 import sqlite3
+import subprocess
 import sys
 import tempfile
 import time
@@ -92,7 +93,7 @@ class CurrentDispatchTests(unittest.TestCase):
         for name in ('workspaces','requests','attempts'):
             (runtime/name).mkdir()
         manifest = {'version':1,'project_id':adapter.PROJECT,'label':f'test-{number}',
-            'branch':'feature/test-current','base_revision':'b'*40,'tasks':{issue.identifier:{
+            'branch':'feature/test-current','base_revision':getattr(self,'task_head','b'*40),'tasks':{issue.identifier:{
                 'issue_id':issue.id,'owner':'existing-owner','purpose':'test fixture',
                 'allowed_paths':[f'tests/task{number}.py'],'acceptance':['Independent output check'],
                 'resources':self.policy['symphony']['default_resources'],'attempt_limit':1}}}
@@ -102,7 +103,7 @@ class CurrentDispatchTests(unittest.TestCase):
         self.write(runtime/'installation.json',self.installation)
         self.write(runtime/'provider-proof.json', {'route':'codex-chatgpt','available':True,'checked_at':time.time(),'session_ceiling':8})
         checkout = self.temp/f'checkout-{number}'
-        checkout.mkdir()
+        checkout.mkdir(exist_ok=True)
         admission = {'version':1,'owner':'existing-owner','issue':issue.identifier,'issue_id':issue.id,
             'source':str(checkout),'inputs':inputs or {},'manifest_sha256':adapter.file_sha(runtime/'manifest.json'),
             'request_sha256':adapter.file_sha(runtime/'requests'/(issue.identifier+'.json')),
@@ -155,13 +156,13 @@ class CurrentDispatchTests(unittest.TestCase):
         target = runtime/'workspaces'/issue.identifier/'tests/task230.py'
         target.parent.mkdir(parents=True)
         target.write_bytes(output)
-        native.update(source_head='b'*40, output_sha256=outputs, scope_violations=[])
+        native.update(source_head=getattr(self,'task_head','b'*40), output_sha256=outputs, scope_violations=[])
         self.write(directory/'receipt.json', native)
         unit = self.current.gate_binding(issue)
         self.current.state['tasks'][issue.identifier]['unit_gate']['binding'] = unit
         self.current.save()
         spec = dict(version=1, issue=issue.identifier, issue_id=issue.id, stage='validate',
-            owner='existing-owner', head='c'*40, base='b'*40, branch='feature/test-current',
+            owner='existing-owner', head='c'*40, base=getattr(self,'task_head','b'*40), branch='feature/test-current',
             policy_sha256=self.current.config['policy_sha256'], outputs=outputs, profile='delivery-suite',
             runner_sha256='d'*64, executor_sha256='e'*64,
             acceptance_sha256=digest(dict(task=json.loads((runtime/'manifest.json').read_text())['tasks'][issue.identifier],
@@ -179,24 +180,172 @@ class CurrentDispatchTests(unittest.TestCase):
             operation_key=key,source_head='c'*40,native_receipt_sha256=unit['native_receipt_sha256'],
             native_output_sha256=outputs,derivation={})}))
         b = dict(version=1, repository='maldous/offmenu',pr_number=145,issue_id=issue.id,
-            owner='existing-owner', head='c'*40,base='b'*40,tree='f'*40,
+            owner='existing-owner', head='c'*40,base=getattr(self,'task_head','b'*40),tree='f'*40,
             policy_sha256='1'*64,capacity_policy_sha256=spec['policy_sha256'],
             validation_operation_key=key,outputs=outputs,head_branch='feature/test-current')
-        review = dict(head='c'*40,base='b'*40,outputs=outputs,independent=True,evidence_id='immutable-review-230',
+        review = dict(head='c'*40,base=getattr(self,'task_head','b'*40),outputs=outputs,independent=True,evidence_id='immutable-review-230',
             reviewer='independent-reviewer',author='existing-owner',model='review-model',provider='existing-route',
             findings=[],verdict='accept')
         review['evidence_sha256'] = digest(review)
-        validation = dict(operation_key=key,status='succeeded',head='c'*40,base='b'*40,
+        validation = dict(operation_key=key,status='succeeded',head='c'*40,base=getattr(self,'task_head','b'*40),
             capacity_policy_sha256=spec['policy_sha256'],outputs=outputs,child_tree_gone=True,reconcile_required=False)
         snapshot = dict(review=review,validation=validation,publisher_owner='existing-owner',source_tree='f'*40,
             source_clean=True,publication_triggers_actions=False,policy_sha256='1'*64,
             capacity_policy_sha256=spec['policy_sha256'])
         decision = dict(status='merge-intent',merge_effect='pending',binding_sha256=digest(b),
             qualification_sha256=digest(dict(validation=validation,review=review,tree='f'*40,policy='1'*64)),
-            action=dict(kind='merge-pr',expected_head_sha='c'*40,expected_base_sha='b'*40))
+            action=dict(kind='merge-pr',expected_head_sha='c'*40,expected_base_sha=getattr(self,'task_head','b'*40)))
         packet = dict(issue=issue.identifier,unit_binding=unit,integration_binding=b,
             snapshot=snapshot,decision=decision,validation_receipt=receipt)
         return issue,runtime,owner,client,packet,journal,key
+
+    def test_transport_v2_byte_oracle_and_domain(self):
+        import stokowski_unit_review as transport
+        from symphony_capacity import digest
+        raw = '{"duration_seconds":1e-7}'
+        self.assertEqual(hashlib.sha256(raw.encode()).hexdigest(),
+                         'd69596f32f2541138b93f4d3b73427f7c2345864eab139ba7bdd22da962b5084')
+        self.assertEqual(digest(transport.decode(raw)),
+                         'c11819de64a85012c9d89df355b705b1f2a1207b477d6f21d69f477073177a19')
+        self.assertTrue(transport.same_wire({'2':1.0,'10':1e-7,'𐀀':'😀','\ue000':'é'},
+                                            {'\ue000':'é','𐀀':'😀','10':1e-7,'2':1}))
+        self.assertFalse(transport.same_wire(True,1))
+        for v in (float('nan'),float('inf'),-float('inf'),-0.0,2**53,1e100):
+            with self.assertRaises(AdmissionError):
+                transport.wire_value(v)
+        with self.assertRaises(AdmissionError):
+            transport.handle({'mode':'status','context':{},'envelope':{}})
+
+    def test_fixed_gateway_process_fixture(self):
+        """Fixture custody is controlled here; this is not live authentication."""
+        from offmenu.delivery.integration import Controller
+        from symphony_capacity import digest
+        # A private controlled commit pins candidate transport bytes, without
+        # touching this workspace's HEAD or using shell interpolation.
+        original_source = Path(__file__).resolve().parents[2]
+        shutil.copytree(original_source/'tools/delivery', self.source/'tools/delivery', dirs_exist_ok=True,
+                        ignore=shutil.ignore_patterns('__pycache__'))
+        shutil.copytree(original_source/'src', self.source/'src', dirs_exist_ok=True,
+                        ignore=shutil.ignore_patterns('__pycache__'))
+        self.write(self.source/'tools/delivery/capacity-policy.json', self.policy)
+        def git_at(path, *args):
+            result = subprocess.run(['/usr/bin/git','-C',str(path),*args], check=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                env={'PATH':'/usr/bin:/bin','HOME':str(self.temp),'LANG':'C.UTF-8'})
+            return result.stdout.strip()
+        def commit(path):
+            git_at(path,'init','-b','feature/test-current')
+            git_at(path,'add','.')
+            git_at(path,'-c','user.name=Fixture','-c','user.email=fixture@example.invalid',
+                   '-c','commit.gpgsign=false','commit','-m','Controlled fixture')
+            return git_at(path,'rev-parse','HEAD')
+        checkout = self.temp/'checkout-230'
+        checkout.mkdir()
+        (checkout/'fixture.txt').write_text('immutable fixture\n')
+        self.task_head = commit(checkout)
+        # Fault only in the committed private fixture: publish succeeds, then
+        # the writer never replies before the real gateway deadline. The fixed
+        # transport must kill/reap it and reconcile via a status-only child.
+        entry = self.source/'tools/delivery/stokowski_unit_review.py'
+        code = entry.read_text().replace(
+            'result = handle(decode(raw))',
+            'request = decode(raw)\n'
+            '        result = handle(request)\n'
+            '        if request["mode"] == "write":\n'
+            '            import time; time.sleep(20)')
+        entry.write_text(code)
+        source_head = commit(self.source)
+        self.git.side_effect = lambda args, **kw: (
+            subprocess.run(args, check=True, stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE, **kw).stdout)
+        config = json.loads((self.runtime/'current.json').read_text())
+        config['source_head'] = source_head
+        config['source_sha256'] = {str(p.relative_to(self.source)):adapter.file_sha(p)
+            for base in ('tools/delivery','src/offmenu/delivery')
+            for p in (self.source/base).rglob('*') if p.is_file() and p.suffix in ('.py','.mjs','.json') and '__pycache__' not in p.parts}
+        self.write(self.runtime/'current.json',config)
+        state = json.loads(self.current.state_path.read_text())
+        state['config_sha256'] = adapter.file_sha(self.runtime/'current.json')
+        self.write(self.current.state_path,state)
+        self.current = adapter.CurrentWork(self.runtime)
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
+        snapshot = packet['snapshot']
+        # Original typed Python authorities, deliberately lossy through JS JSON.
+        numbers = {'duration_seconds':1e-7, 'integral':1.0,
+                   'large':9007199254740991, 'large_float':1e15,
+                   'fraction':1.5, 'zero':0, 'threshold':1e-6,
+                   '10':'ten', '2':'two', '\ue000':'BMP', '\U00010000':'astral',
+                   'text':'café \U0001f600'}
+        snapshot['review']['metadata'] = numbers
+        packet['validation_receipt']['metadata'] = numbers
+        _, operation_state = journal.read(key)
+        operation_state['receipt_sha256'] = digest(packet['validation_receipt'])
+        journal.save(key,operation_state,'controlled-original-numeric-receipt')
+        receipt_path = runtime/'original-validation-receipt.json'
+        self.write(receipt_path,packet['validation_receipt'])
+        original_receipt_sha = digest(packet['validation_receipt'])
+        snapshot['review'].update(requested_model='review-model',requested_provider='existing-route',
+            resolved_model=None,resolution_status='unknown')
+        snapshot['review']['evidence_sha256'] = digest({k:v for k,v in snapshot['review'].items()
+            if k != 'evidence_sha256'})
+        b = packet['integration_binding']
+        snapshot.update(observed_at=time.time(), automatic_integration_enabled=True,
+            github=dict(repository=b['repository'],number=b['pr_number'],state='open',draft=False,
+                head=b['head'],base=b['base'],head_branch=b['head_branch'],base_branch='develop',mergeable=True))
+        claim = self.temp/'.delivery/integration'
+        controller = Controller(claim/'fixture',b,claim)
+        control_input = self.temp/'control-input.json'
+        self.write(control_input,dict(binding=b,snapshot=snapshot,directory=str(controller.directory),claim=str(claim)))
+        controlled = subprocess.run(['/home/user/src/offmenu/.venv-delivery/bin/python','-c',
+            'import json,sys; from offmenu.delivery.integration import Controller; '
+            'v=json.load(open(sys.argv[1])); '
+            'print(json.dumps(Controller(v["directory"],v["binding"],v["claim"]).run(v["snapshot"])))',
+            str(control_input)],check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,
+            env={'PATH':'/usr/bin:/bin','PYTHONPATH':str(original_source/'src'),'LANG':'C.UTF-8'})
+        packet['decision'] = json.loads(controlled.stdout)
+        self.assertEqual(packet['decision']['status'],'merge-intent')
+        context = dict(source_head=source_head,source_sha256=config['source_sha256'],
+            python_sha256=adapter.file_sha(Path(sys.executable).resolve()), actor_uid=os.getuid(),
+            runtime=str(self.runtime), runtime_root=str(self.root), workspace_roots=[str(checkout)],
+            claim_root=str(claim),controller_directory=str(controller.directory),issue=issue.identifier,
+            unit_binding=packet['unit_binding'],validation_receipt=packet['validation_receipt'],
+            validation_receipt_source=dict(path=str(receipt_path),sha256=adapter.file_sha(receipt_path)))
+        for p in self.temp.rglob('*'):
+            if not p.is_symlink():
+                p.chmod(0o700 if p.is_dir() else 0o600)
+        owner_before = self.current.state_path.read_bytes()
+        native_path = runtime/'attempts'/issue.identifier/'receipt.json'
+        frozen = {p:p.read_bytes() for p in (receipt_path,native_path,runtime/'operations/operations.sqlite',
+            controller.directory/'graph.sqlite',controller.directory/'state.json')}
+        payload = self.temp/'gateway-input.json'
+        self.write(payload,dict(context=context,packet=packet))
+        result = subprocess.run(['/usr/bin/node',str(original_source/'tests/delivery/test-integration-gateway.mjs'),
+            '--local-review-fixture',str(payload),str(self.source/'tools/delivery/integration-gateway.mjs')],
+            stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=45,
+            env={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8'})
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        self.assertIn('tests 18',result.stdout)
+        incoming = self.runtime/('unit-review-'+issue.identifier+'.json')
+        self.assertTrue(incoming.exists())
+        expected = json.dumps(packet,sort_keys=True,separators=(',', ':')).encode()
+        self.assertEqual(incoming.read_bytes(),expected)
+        retained = json.loads(incoming.read_bytes())
+        self.assertIs(type(retained['snapshot']['review']['metadata']['integral']),float)
+        self.assertEqual(digest(retained['validation_receipt']),original_receipt_sha)
+        _, unchanged_state = journal.read(key)
+        self.assertEqual(unchanged_state['receipt_sha256'],original_receipt_sha)
+        self.assertEqual(self.current.state_path.read_bytes(),owner_before)
+        for path,raw in frozen.items():
+            self.assertEqual(path.read_bytes(),raw)
+        reopened = adapter.CurrentWork(self.runtime)
+        gate = reopened.state['tasks'][issue.identifier]['unit_gate']
+        self.assertEqual(gate['disposition'],'approved')
+        self.assertFalse(gate['accepted_delivery'])
+        consumed = incoming.read_bytes()
+        reopened.refresh()
+        self.assertEqual(incoming.read_bytes(),consumed)
+        client.update_issue_state.assert_not_awaited()
+        owner.ledger.record_terminal.assert_not_called()
 
     def test_owner_observation_once_reopen_and_native_consumption(self):
         issue,runtime,owner,client,packet,journal,key = self.review_fixture()
