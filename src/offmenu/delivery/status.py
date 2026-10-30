@@ -2,20 +2,36 @@
 import json
 
 from .engine import DeliveryError, digest, output_state, validate_task
+from .effect_observations import EffectContext, project_effect
 from .standards import git
 
 
 UNCERTAIN = {'running', 'uncertain', 'timed_out', 'cancelled'}
 
 
-def inspect_task(root, task):
+def inspect_task(root, task, *, effect_observation=None,
+                 effect_context: EffectContext | None = None, effect_phases=()):
     """Inspect without constructing an Engine, opening a saver or taking ownership.
 
     This observes separate files, not an atomic snapshot of an active writer.
     Source/check/log validation remains the runner's responsibility.
+    Optional external metadata requires separate owner-provided trust context,
+    bound to this task's immutable request/owner/source. It never changes local
+    receipt acceptance or supplies execution verification. No CLI trust flag.
     """
     root = root.resolve()
     validate_task(task)
+    effect = None
+    if effect_observation is not None or effect_context is not None or effect_phases:
+        if (type(effect_context) is not EffectContext
+                or effect_context.expected.request_id != task['id']
+                or effect_context.expected.owner != task['owner']
+                or effect_context.expected.source_commit != task['base_revision']):
+            raise DeliveryError('Effect context task binding mismatch')
+        try:
+            effect = project_effect(effect_observation, effect_context, effect_phases)
+        except ValueError as error:
+            raise DeliveryError(str(error)) from error
     directory = root / '.delivery' / task['id']
 
     def read(name):
@@ -47,6 +63,8 @@ def inspect_task(root, task):
         'reasons': [],
     }
     binding = read('binding.json')
+    if effect is not None:
+        result['external_effect'] = effect
     if binding is None:
         result['reasons'].append('binding_not_found')
         return result
@@ -60,6 +78,8 @@ def inspect_task(root, task):
         and branch.startswith(('feature/', 'bugfix/'))
         and task.get('branch', branch) == branch)
     if not result['identity_matches']:
+        if effect is not None:
+            raise DeliveryError('Effect context current task binding mismatch')
         result['reasons'].append('revision_or_branch_changed')
     actual = output_state(root, task)
     result['outputs'] = {name: {'expected': expected, 'actual': actual[name],
