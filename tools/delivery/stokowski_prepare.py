@@ -12,7 +12,8 @@ import shutil
 import subprocess
 
 from symphony_workspace import checkpoint
-from stokowski_adapter import SOURCE, PROJECT, SLUG, MODEL, file_sha, CurrentWork
+from stokowski_adapter import SOURCE, PROJECT, MODEL, file_sha, CurrentWork
+from symphony_tasks import project_route, PROJECT_ROUTES
 
 
 def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
@@ -335,6 +336,8 @@ def main():
     parser.add_argument('--runtime-root', type=Path, help='Existing canonical private .delivery/stokowski root')
     parser.add_argument('--catalog', type=Path, help='Existing owner-qualified v1 catalog; see CurrentWork schema')
     parser.add_argument('--owner')
+    parser.add_argument('--project-id', choices=tuple(PROJECT_ROUTES),
+                        help='Exact selected project UUID; current mode defaults to legacy OffMenu')
     parser.add_argument('--manifest', type=Path)
     parser.add_argument('--prompt', type=Path)
     args = parser.parse_args()
@@ -351,6 +354,10 @@ def main():
     from symphony_tasks import load_manifest
     head = subprocess.check_output(['git','-C',str(SOURCE),'rev-parse','HEAD'],text=True).strip()
     manifest = None if args.current else load_manifest(args.manifest, expected_head=head,expected_branch=None)
+    selected_project = (args.project_id or PROJECT) if args.current else manifest['project_id']
+    if not args.current and args.project_id and args.project_id != selected_project:
+        parser.error('--project-id must equal the immutable manifest project')
+    route = project_route(selected_project)
     runtime = args.runtime.resolve()
     root = args.runtime_root if args.current else SOURCE/'.delivery/stokowski'
     if not runtime.is_relative_to(root) or runtime == root or runtime.exists() or (args.current and args.runtime != runtime):
@@ -365,7 +372,7 @@ def main():
                     runtime/'installation.json')
     (runtime/'task.md').write_text('Qualified immutable request is supplied by the existing owner.\n' if args.current else args.prompt.read_text())
     workflow = {
-        'tracker':{'kind':'linear','project_slug':SLUG,'api_key':'$OFFMENU_LINEAR_API_KEY'},
+        'tracker':{'kind':'linear','project_slug':route['project_slug'],'api_key':'$OFFMENU_LINEAR_API_KEY'},
         'workspace':{'root':str(runtime/'workspaces')},
         'polling':{'interval_ms':5000}, 'agent':{'max_concurrent_agents':8,'max_retry_backoff_ms':10000},
         'claude':{'model':MODEL,'turn_timeout_ms':180000,'stall_timeout_ms':90000},
@@ -397,13 +404,14 @@ def main():
         paths = ['tools/delivery/'+name for name in names] + ['src/offmenu/delivery/integration.py']
         checkpoint(runtime/'current.json', {
             'version':1, 'owner':args.owner, 'runtime_root':str(root),
+            **({'project_route':route} if args.project_id else {}),
             'catalog':str(args.catalog), 'source_head':head,
             'source_sha256':{name:file_sha(SOURCE/name) for name in paths},
             'workflow_sha256':file_sha(runtime/'workflow.yaml'),
             'installation_sha256':file_sha(runtime/'installation.json'),
             'policy_sha256':file_sha(runtime/'capacity-policy.json')})
         CurrentWork(runtime)
-    print(json.dumps({'status':'prepared','source_head':head,'project_id':PROJECT,
+    print(json.dumps({'status':'prepared','source_head':head,'project_id':route['project_id'],
                       'runtime':str(runtime),'coding_ceiling':8,'model_calls':False}))
 
 

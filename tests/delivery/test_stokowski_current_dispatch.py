@@ -72,6 +72,182 @@ class CurrentDispatchTests(unittest.TestCase):
         self.current = adapter.CurrentWork(self.runtime)
         self.entries = []
 
+    UIF_ROUTE = dict(project_id='ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0',
+                     project_slug='21558318e036')
+    UIF119 = dict(identifier='UIF-119', uuid='3e6839ad-2f22-4ab1-8f6f-973c882daabd',
+                  project_id=UIF_ROUTE['project_id'])
+
+    def set_project_route(self, route):
+        self.current.config['project_route'] = route
+        self.write(self.runtime/'current.json', self.current.config)
+        self.current.config_sha = adapter.file_sha(self.runtime/'current.json')
+        self.current.state['config_sha256'] = self.current.config_sha
+        self.current.save()
+
+    def test_uif_authoritative_candidate_and_wrong_project_refusal(self):
+        from stokowski.models import Issue
+        issue, runtime = self.qualify(119)
+        manifest = json.loads((runtime/'manifest.json').read_text())
+        manifest['project_id'] = self.UIF119['project_id']
+        manifest['tasks']['UIF-119']['issue_id'] = self.UIF119['uuid']
+        self.write(runtime/'manifest.json', manifest)
+        admission = json.loads((runtime/'current-admission.json').read_text())
+        admission.update(issue_id=self.UIF119['uuid'], manifest_sha256=adapter.file_sha(runtime/'manifest.json'))
+        self.write(runtime/'current-admission.json', admission)
+        entry = self.entries.pop()
+        entry.update(issue_id=self.UIF119['uuid'], admission_sha256=adapter.file_sha(runtime/'current-admission.json'))
+        # New admission identity is prepared before catalog consumption.
+        self.current.state['bindings'].pop('UIF-119')
+        self.current.state['references'].pop('UIF-119')
+        self.current.state['tasks'].pop('UIF-119')
+        self.entries.append(entry)
+        self.set_project_route(self.UIF_ROUTE)
+        self.publish()
+        issue = Issue(id=self.UIF119['uuid'], identifier='UIF-119', title='Synthetic', state='Todo')
+        client = self.client(issue, project=self.UIF119['project_id'])
+        self.assertEqual(self.select(issue, client), [issue])
+        self.assertEqual(client._graphql.await_count, 1)
+        _, linear, fetch = self.adapted()
+        fetch.return_value = [issue]
+        self.assertEqual(asyncio.run(linear.LinearClient.fetch_candidate_issues(
+            client, self.UIF_ROUTE['project_slug'], ['Todo'])), [issue])
+        fetch.assert_awaited_once_with(client, self.UIF_ROUTE['project_slug'], ['Todo', 'In Progress'])
+        with self.assertRaisesRegex(AdmissionError, 'Wrong Linear project'):
+            asyncio.run(linear.LinearClient.fetch_candidate_issues(client, adapter.SLUG, ['Todo']))
+        self.assertEqual(self.select(issue, self.client(issue)), [])
+        substituted = Issue(id='00000000-0000-4000-8000-000000000119', identifier='UIF-119', title='Wrong UUID', state='Todo')
+        self.assertEqual(self.select(substituted, client), [])
+        self.set_project_route(dict(project_id=adapter.PROJECT, project_slug=adapter.SLUG))
+        self.assertEqual(self.select(issue, client), [])
+
+    def test_uif_successor_preserves_offmenu106_trigger(self):
+        f, issue, original, owner, client, review, journal, key = self.successor_fixture()
+        frozen = {p:p.read_bytes() for p in original.rglob('*') if p.is_file()}
+        # Neither an unselected UIF project nor the handled trigger may become
+        # a successor, even when the owner/source references otherwise match.
+        for outcome in (self.UIF119, dict(identifier=issue.identifier, uuid=issue.id, project_id=adapter.PROJECT)):
+            with self.subTest(outcome=outcome), self.assertRaisesRegex(AdmissionError, 'successor_identity_collision'):
+                self.current.qualify_successor(f.ref(f.handoff_path), dict(f.packet, execution_outcome=outcome), f.config)
+        self.set_project_route(self.UIF_ROUTE)
+        with self.assertRaisesRegex(AdmissionError, 'successor_identity_collision'):
+            self.current.qualify_successor(f.ref(f.handoff_path), f.packet, f.config)
+        self.current.state.pop('successor_request')
+        # Rebuild only synthetic successor inputs with the actual UIF identity.
+        f.manifest['tasks']['UIF-106'] = f.manifest['tasks'].pop('UIF-231')
+        f.bind_successor(self.current, review, outcome=self.UIF119)
+        self.assertEqual(self.current.state.get('successor_request', {}).get('status'), 'pending', self.current.state.get('successor_hold'))
+        self.assertEqual(f.publish()['status'], 'published')
+        self.assertEqual(f.publish()['status'], 'duplicate')
+        self.current.refresh()
+        self.assertEqual(self.current.gate_binding(issue)['project_id'], adapter.PROJECT)
+        self.assertEqual({p:p.read_bytes() for p in original.rglob('*') if p.is_file()}, frozen)
+        from stokowski.models import Issue
+        candidate = Issue(id=self.UIF119['uuid'], identifier='UIF-119', title='Synthetic', state='Todo')
+        self.assertEqual(self.select(candidate, self.client(candidate, project=self.UIF119['project_id'])), [candidate])
+        self.assertEqual(json.loads((f.runtime/'manifest.json').read_text())['project_id'], self.UIF119['project_id'])
+        f.provider.assert_called_once()
+
+    def test_finite_uif_candidates_require_exact_slug_and_fresh_project(self):
+        from stokowski.models import Issue
+        issue = Issue(id=self.UIF119['uuid'], identifier='UIF-119', title='Synthetic', state='Todo')
+        manifest = dict(project_id=self.UIF_ROUTE['project_id'], tasks={
+            'UIF-119':dict(issue_id=self.UIF119['uuid'])})
+        _, linear, fetch = self.adapted(current=False, manifest=manifest)
+        fetch.return_value = [issue]
+        client = self.client(issue, project=self.UIF_ROUTE['project_id'])
+        def select(client, slug=self.UIF_ROUTE['project_slug']):
+            return asyncio.run(linear.LinearClient.fetch_candidate_issues(client, slug, ['Todo']))
+        self.assertEqual(select(client), [issue])
+        with self.assertRaisesRegex(AdmissionError, 'finite_authoritative_identity_or_state'):
+            select(self.client(issue))
+        with self.assertRaisesRegex(AdmissionError, 'Wrong Linear project'):
+            select(client, adapter.SLUG)
+
+    def test_selected_route_pairs_fail_closed(self):
+        for route in (None, self.UIF_ROUTE['project_id'],
+                      dict(project_id=self.UIF_ROUTE['project_id'], project_slug=adapter.SLUG),
+                      dict(project_id=adapter.PROJECT, project_slug=self.UIF_ROUTE['project_slug']),
+                      dict(project_id='foreign', project_slug='foreign'),
+                      dict(self.UIF_ROUTE, owner='unqualified')):
+            with self.subTest(route=route):
+                self.set_project_route(route)
+                with self.assertRaises(AdmissionError):
+                    adapter.CurrentWork(self.runtime, read_only=True)
+
+    def test_explicit_current_preparation_consumes_exact_project_route(self):
+        runtime = self.root/'uif-current'
+        argv = ['prepare', '--current', '--runtime', str(runtime), '--runtime-root', str(self.root),
+                '--catalog', str(self.catalog), '--owner', 'existing-owner',
+                '--project-id', self.UIF_ROUTE['project_id']]
+        with patch.object(sys, 'argv', argv), redirect_stdout(io.StringIO()) as output:
+            prepare.main()
+        config = json.loads((runtime/'current.json').read_text())
+        workflow = json.loads((runtime/'workflow.yaml').read_text())
+        self.assertEqual(config['project_route'], self.UIF_ROUTE)
+        self.assertEqual(workflow['tracker']['project_slug'], self.UIF_ROUTE['project_slug'])
+        self.assertEqual(json.loads(output.getvalue())['project_id'], self.UIF_ROUTE['project_id'])
+        self.assertEqual(adapter.CurrentWork(runtime).route, self.UIF_ROUTE)
+        self.assertNotIn('project_route', json.loads((self.runtime/'current.json').read_text()))
+        self.assertEqual(self.current.route, dict(project_id=adapter.PROJECT, project_slug=adapter.SLUG))
+        argv[-1] = 'foreign'
+        with patch.object(sys, 'argv', argv), redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            prepare.main()
+
+    def test_finite_preparation_derives_uif_route_from_manifest(self):
+        issue, task_runtime = self.qualify(119)
+        manifest = json.loads((task_runtime/'manifest.json').read_text())
+        manifest.update(project_id=self.UIF_ROUTE['project_id'], base_revision='a'*40)
+        manifest['tasks']['UIF-119']['issue_id'] = self.UIF119['uuid']
+        self.write(self.temp/'manifest.json', manifest)
+        (self.temp/'prompt.md').write_text('Synthetic only')
+        runtime = self.source/'.delivery/stokowski/finite-uif'
+        runtime.parent.mkdir(parents=True, exist_ok=True)
+        self.write(runtime.parent/'installation.json', self.installation)
+        argv = ['prepare', '--runtime', str(runtime), '--manifest', str(self.temp/'manifest.json'),
+                '--prompt', str(self.temp/'prompt.md')]
+        with patch.object(sys, 'argv', argv), redirect_stdout(io.StringIO()):
+            prepare.main()
+        self.assertEqual(json.loads((runtime/'workflow.yaml').read_text())['tracker']['project_slug'], self.UIF_ROUTE['project_slug'])
+        self.assertEqual(json.loads((runtime/'manifest.json').read_text()), manifest)
+        with patch.object(sys, 'argv', argv+['--project-id', adapter.PROJECT]), redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            prepare.main()
+
+    def test_uif_source_only_qualification_has_no_native_attempt_or_job(self):
+        from test_stokowski_nonimplementation_stage import ReviewedSourceTests
+        from stokowski.models import Issue
+        c = ReviewedSourceTests(methodName='runTest')
+        c.setUp()
+        self.addCleanup(c.doCleanups)
+        _, original, _, journal, key, spec, remote, factory = c.new_fixture(
+            issue_name='UIF-119', issue_id=self.UIF119['uuid'])
+        _, runtime = c.qualify(119)
+        manifest = json.loads((runtime/'manifest.json').read_text())
+        task = dict(c.stage_task, issue_id=self.UIF119['uuid'])
+        manifest.update(project_id=self.UIF_ROUTE['project_id'], tasks={'UIF-119':task})
+        c.write(runtime/'manifest.json', manifest)
+        admission = json.loads((runtime/'current-admission.json').read_text())
+        admission.update(issue_id=self.UIF119['uuid'], inputs=task['stage_binding']['inputs'],
+                         manifest_sha256=adapter.file_sha(runtime/'manifest.json'))
+        c.write(runtime/'current-admission.json', admission)
+        entry = c.entries[-1]
+        entry.update(issue_id=self.UIF119['uuid'], admission_sha256=adapter.file_sha(runtime/'current-admission.json'))
+        c.current.state['bindings'].pop('UIF-119')
+        c.current.state['references'].pop('UIF-119')
+        c.current.state['tasks'].pop('UIF-119')
+        CurrentDispatchTests.set_project_route(c, self.UIF_ROUTE)
+        c.publish()
+        issue = Issue(id=self.UIF119['uuid'], identifier='UIF-119', title='Synthetic source', state='Todo')
+        binding = c.current.gate_binding(issue)
+        self.assertEqual(binding['project_id'], self.UIF_ROUTE['project_id'])
+        self.assertEqual(binding['issue_id'], self.UIF119['uuid'])
+        self.assertEqual(binding['origin'], 'reviewed-source-v1')
+        self.assertNotIn('native_receipt_sha256', binding)
+        self.assertFalse((original/'attempts').exists())
+        self.assertEqual(list((runtime/'attempts').iterdir()), [])
+        self.assertEqual(journal.read(key)[1]['status'], 'prepared')
+        remote.submit.assert_not_awaited()
+        factory.assert_not_called()
+
     def test_missing_successor_route_regression(self):
         # A terminal unit alone must never infer a backlog successor. The
         # explicit owner-qualified boundary must exist on the consumed adapter.
@@ -419,7 +595,7 @@ class CurrentDispatchTests(unittest.TestCase):
         self.write(self.catalog, {'version':1,'entries':self.entries})
         self.current.refresh()
 
-    def adapted(self, current=True):
+    def adapted(self, current=True, manifest=None):
         import stokowski.config as config
         import stokowski.linear as linear
         import stokowski.orchestrator as native
@@ -434,7 +610,7 @@ class CurrentDispatchTests(unittest.TestCase):
         for obj,name in targets:
             self.stack.enter_context(patch.object(obj,name,getattr(obj,name)))
         fetch = self.stack.enter_context(patch.object(linear.LinearClient,'fetch_candidate_issues',new_callable=AsyncMock))
-        native = adapter.install_adapters(self.runtime, {'tasks':{}}, 'in-memory-only', self.current if current else None)
+        native = adapter.install_adapters(self.runtime, manifest or {'project_id':adapter.PROJECT, 'tasks':{}}, 'in-memory-only', self.current if current else None)
         return native, linear, fetch
 
     def client(self, issue, project=None, state=None):

@@ -17,6 +17,25 @@ except ImportError:
     from symphony_capacity import AdmissionError, BRANCH, positive, scope, valid_branch
 
 PROJECT_ID='ce60c1ab-a732-4a71-8471-14c9dc393886'
+PROJECT_ROUTES = {
+    PROJECT_ID: 'ccd080f4f6f0',
+    'ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0': '21558318e036',
+}
+
+
+def project_route(project_id):
+    """Only the two reviewed UUID/slug pairs, never a tracker-wide allowlist."""
+    if not isinstance(project_id, str) or project_id not in PROJECT_ROUTES:
+        raise AdmissionError('project_route_identity')
+    return dict(project_id=project_id, project_slug=PROJECT_ROUTES[project_id])
+
+
+def validated_project_route(route):
+    if (not isinstance(route, dict) or set(route) != {'project_id', 'project_slug'}
+        or route != project_route(route['project_id'])):
+        raise AdmissionError('project_route_pair')
+    return dict(route)
+
 
 
 def manifest_digest(manifest):
@@ -40,7 +59,7 @@ def load_manifest(path,expected_head=None,expected_branch=BRANCH):
         return d
     d=json.loads(Path(path).read_text(),object_pairs_hook=unique)
     if not isinstance(d,dict) or set(d)!={'version','branch','base_revision','project_id','label','tasks'}:raise AdmissionError('manifest_fields')
-    if type(d['version']) is not int or d['version']!=1 or d['project_id']!=PROJECT_ID:raise AdmissionError('manifest_identity')
+    if type(d['version']) is not int or d['version']!=1 or not isinstance(d['project_id'],str) or d['project_id'] not in PROJECT_ROUTES:raise AdmissionError('manifest_identity')
     if (d['branch']!=expected_branch if expected_branch is not None else not valid_branch(d['branch'])) or not isinstance(d['base_revision'],str) or not re.fullmatch(r'[0-9a-f]{40}',d['base_revision']):raise AdmissionError('manifest_source')
     if expected_head is not None and d['base_revision']!=expected_head:raise AdmissionError('manifest_source')
     if not isinstance(d['label'],str) or not re.fullmatch(r'[a-z][a-z0-9-]{0,79}',d['label']):raise AdmissionError('manifest_label')
