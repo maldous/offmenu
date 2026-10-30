@@ -232,6 +232,43 @@ class CurrentDispatchTests(unittest.TestCase):
         owner.ledger.record_terminal.assert_not_called()
         owner._schedule_retry.assert_not_called()
 
+    def test_completion_after_provider_expiry_enters_and_consumes_bound_gate(self):
+        issue, runtime, owner, client = self.bound_gate()
+        task = self.current.state['tasks'][issue.identifier]
+        task.pop('unit_gate')
+        self.current.save()
+        owner._pending_gates.clear()
+        proof_time = json.loads((runtime/'provider-proof.json').read_text())['checked_at']
+        with patch.object(adapter.time, 'time', return_value=proof_time + 601):
+            with self.assertRaisesRegex(AdmissionError, 'provider_unavailable_or_stale'):
+                self.current.context(issue.identifier)
+            asyncio.run(owner._enter_gate(issue, 'evidence-pending'))
+            self.assertIn('unit_gate', task)
+            task['unit_gate']['disposition'] = 'approved'
+            self.current.save()
+            asyncio.run(owner._handle_gate_responses())
+        self.assertEqual(task['unit_gate']['unit_review'], 'approved')
+        self.assertFalse(task['unit_gate']['accepted_delivery'])
+        client.update_issue_state.assert_not_awaited()
+        owner._schedule_retry.assert_not_called()
+
+    def test_existing_gate_after_provider_expiry_recovers_and_reworks_without_dispatch(self):
+        issue, runtime, owner, client = self.bound_gate()
+        gate = self.current.state['tasks'][issue.identifier]['unit_gate']
+        owner._pending_gates.clear()
+        proof_time = json.loads((runtime/'provider-proof.json').read_text())['checked_at']
+        with patch.object(adapter.time, 'time', return_value=proof_time + 601):
+            asyncio.run(owner._rebuild_gates_from_linear())
+            self.assertEqual(owner._pending_gates, {issue.id:'evidence-pending'})
+            gate['disposition'] = 'rework'
+            self.current.save()
+            asyncio.run(owner._handle_gate_responses())
+        self.assertEqual(gate['unit_review'], 'rework')
+        self.assertFalse(gate['accepted_delivery'])
+        client.update_issue_state.assert_not_awaited()
+        client.fetch_comments.assert_not_awaited()
+        owner._schedule_retry.assert_not_called()
+
     def test_old_or_missing_gate_operation_bindings_never_consume(self):
         issue, runtime, owner, client = self.bound_gate()
         task = self.current.state['tasks'][issue.identifier]

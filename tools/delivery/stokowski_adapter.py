@@ -263,9 +263,12 @@ class CurrentWork:
         proof = read_record(runtime/'provider-proof.json')
         checked = proof.get('checked_at')
         policy = read_record(runtime/'capacity-policy.json')
+        # Fresh provider capacity is a dispatch condition. Exact-bound completed
+        # evidence remains reviewable after that admission proof expires.
         if (proof.get('route') != 'codex-chatgpt' or proof.get('available') is not True
             or type(checked) not in (int,float) or not math.isfinite(checked)
-            or checked > time.time()+5 or time.time()-checked > policy['symphony']['provider_proof_ttl_seconds']
+            or checked > time.time()+5
+            or (not review and time.time()-checked > policy['symphony']['provider_proof_ttl_seconds'])
             or type(proof.get('session_ceiling')) is not int or proof['session_ceiling'] < 1):
             raise AdmissionError('provider_unavailable_or_stale')
         if self.stopping or (self.runtime/'cancel.json').exists() or (runtime/'cancel.json').exists():
