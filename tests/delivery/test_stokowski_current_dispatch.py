@@ -498,7 +498,10 @@ class CurrentDispatchTests(unittest.TestCase):
     def test_fixed_gateway_process_fixture_staged_native_original(self):
         self.fixed_gateway_process_fixture(staged=True)
 
-    def fixed_gateway_process_fixture(self, *, staged):
+    def test_fixed_gateway_process_fixture_reviewed_source(self):
+        self.fixed_gateway_process_fixture(staged=True, reviewed=True)
+
+    def fixed_gateway_process_fixture(self, *, staged, reviewed=False):
         """Fixture custody is controlled here; this is not live authentication."""
         from offmenu.delivery.integration import Controller
         from symphony_capacity import digest
@@ -524,6 +527,12 @@ class CurrentDispatchTests(unittest.TestCase):
         checkout = self.temp/'checkout-230'
         checkout.mkdir()
         (checkout/'fixture.txt').write_text('immutable fixture\n')
+        if reviewed:
+            import stokowski_operations as operations
+            for name in operations.REVIEWED_TESTS:
+                target=checkout/'tests/delivery'/(name+'.py')
+                target.parent.mkdir(parents=True,exist_ok=True)
+                target.write_text('# SYNTHETIC accepted control fixture\n')
         self.task_head = commit(checkout)
         # Fault only in the committed private fixture: publish succeeds, then
         # the writer never replies before the real gateway deadline. The fixed
@@ -652,6 +661,46 @@ class CurrentDispatchTests(unittest.TestCase):
                 self.assertFalse((stage_runtime/name).exists())
             self.assertEqual(list((stage_runtime/'attempts').iterdir()), [])
             self.assertEqual(list((stage_runtime/'workspaces').iterdir()), [])
+        if reviewed:
+            from test_stokowski_nonimplementation_stage import reviewed_records
+            mirror=runtime/'workspaces'/issue.identifier
+            shutil.copytree(candidate,mirror,dirs_exist_ok=True,
+                copy_function=lambda src,dst: dst if Path(dst).exists() and '/objects/' in str(dst) else shutil.copy2(src,dst))
+            origin_runtime,spec,key,binding=reviewed_records(self,mirror,self.task_head,candidate_head,
+                packet['integration_binding']['outputs'],issue.identifier,issue.id)
+            # New validation operation, with historical manual receipt files only.
+            from stokowski_operations import Journal,bridge_arguments
+            journal=Journal(origin_runtime/'operations')
+            _,state=journal.read(key)
+            receipt=packet['validation_receipt']
+            receipt.update(job_id=state['logical_job_id'],runner_sha256=spec['runner_sha256'],
+                command_sha256=hashlib.sha256(bridge_arguments(spec)['command'].encode()).hexdigest())
+            state.update(status='succeeded',receipt_sha256=digest(receipt),accepted_output_sha256=spec['outputs'],
+                acceptance_sha256=spec['acceptance_sha256'])
+            journal.save(key,state,'SYNTHETIC-independent-completed-validation')
+            receipt_path=origin_runtime/'original-validation-receipt.json';self.write(receipt_path,receipt)
+            original_receipt_sha=digest(receipt)
+            packet['integration_binding'].update(validation_operation_key=key)
+            snapshot['validation'].update(operation_key=key)
+            snapshot['review']['author']=spec['origin']['author']
+            snapshot['review']['evidence_sha256']=digest({k:v for k,v in snapshot['review'].items() if k!='evidence_sha256'})
+            manifest['tasks'][issue.identifier]['stage_binding']=binding
+            self.write(stage_runtime/'manifest.json',manifest)
+            admission.update(inputs=binding['inputs'],manifest_sha256=adapter.file_sha(stage_runtime/'manifest.json'))
+            self.write(stage_runtime/'current-admission.json',admission)
+            catalog=json.loads(self.catalog.read_text())
+            catalog['entries'][0]['admission_sha256']=adapter.file_sha(stage_runtime/'current-admission.json')
+            self.write(self.catalog,catalog)
+            owner_state=json.loads(self.current.state_path.read_text())
+            owner_state['references'][issue.identifier]=catalog['entries'][0]
+            owner_state['bindings'][issue.identifier]=digest(catalog['entries'][0])
+            self.write(self.current.state_path,owner_state)
+            self.current=adapter.CurrentWork(self.runtime)
+            packet['unit_binding']=self.current.gate_binding(issue)
+            self.current.state['tasks'][issue.identifier]['unit_gate']=dict(binding=packet['unit_binding'],disposition='waiting',accepted_delivery=False)
+            self.current.save()
+            self.assertFalse((origin_runtime/'current-admission.json').exists())
+            self.assertFalse((origin_runtime/'attempts').exists())
         b = packet['integration_binding']
         snapshot.update(observed_at=time.time(), automatic_integration_enabled=True,
             github=dict(repository=b['repository'],number=b['pr_number'],state='open',draft=False,
@@ -670,7 +719,7 @@ class CurrentDispatchTests(unittest.TestCase):
         self.assertEqual(packet['decision']['status'],'merge-intent')
         context = dict(source_head=source_head,source_sha256=config['source_sha256'],
             python_sha256=adapter.file_sha(Path(sys.executable).resolve()), actor_uid=os.getuid(),
-            runtime=str(self.runtime), runtime_root=str(self.root), workspace_roots=([str(stage_source),str(checkout)] if staged else [str(checkout)]),
+            runtime=str(self.runtime), runtime_root=str(self.root), workspace_roots=([str(stage_source),str(mirror)] if reviewed else ([str(stage_source),str(checkout)] if staged else [str(checkout)])),
             claim_root=str(claim),controller_directory=str(controller.directory),issue=issue.identifier,
             unit_binding=packet['unit_binding'],validation_receipt=packet['validation_receipt'],
             validation_receipt_source=dict(path=str(receipt_path),sha256=adapter.file_sha(receipt_path)))
@@ -692,7 +741,7 @@ class CurrentDispatchTests(unittest.TestCase):
         before = local_status()
         self.assertEqual((before.returncode, json.loads(before.stdout).get('status')),
                          (0, 'absent'), before.stdout+before.stderr)
-        if staged:
+        if staged and not reviewed:
             def refused(selected_context=context):
                 result = local_status(selected_context)
                 self.assertEqual(result.returncode, 1, result.stdout+result.stderr)

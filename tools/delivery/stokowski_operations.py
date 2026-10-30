@@ -97,6 +97,8 @@ def observation_matches(remote, job_id, expected):
 def validated(spec):
     fields = {'version','issue_id','issue','stage','head','base','owner','policy_sha256',
               'acceptance_sha256','outputs','profile','runner_sha256','executor_sha256'}
+    if isinstance(spec, dict) and type(spec.get('version')) is int and spec['version'] == 3:
+        return validated_v3(spec)
     if isinstance(spec, dict) and type(spec.get('version')) is int and spec['version'] == 2:
         return validated_v2(spec)
     if not isinstance(spec,dict) or set(spec) not in (fields,fields|{'branch'}) or type(spec['version']) is not int or spec['version'] != 1:
@@ -177,6 +179,171 @@ def validated_v2(spec):
     if spec['acceptance_sha256'] != origin['admission_sha256']:
         raise OperationError('Acceptance must pin extraction admission')
     return spec
+
+
+REVIEWED_PROFILE = 'current-journal-focused'
+REVIEWED_TESTS = ('test_stokowski_operations', 'test_stokowski_current_dispatch')
+
+
+def canonical_derivations(provenance):
+    """v3 review payload: sort by canonical JSON; reject duplicate entries.
+
+    Object keys use sorted compact JSON (UTF-8); list order is lexical by that
+    encoding. Every transformed reference contributes its exact derivation,
+    excluding only review_sha256 so the prior review never hashes itself.
+    """
+    encoded = []
+    for ref in provenance:
+        if ref['derivation'] is not None:
+            payload = {k:v for k,v in ref['derivation'].items() if k != 'review_sha256'}
+            encoded.append(json.dumps(payload,sort_keys=True,separators=(',',':'),ensure_ascii=False))
+    if len(encoded) != len(set(encoded)):
+        raise OperationError('Duplicate contribution derivation')
+    return [json.loads(value) for value in sorted(encoded)]
+
+
+def validated_v3(spec):
+    extra = {'origin','workspace','local_source_root','execution','control_sha256'}
+    legacy = {k:v for k,v in spec.items() if k not in extra}
+    if not extra.issubset(spec) or 'branch' not in legacy or spec.get('profile') != REVIEWED_PROFILE:
+        raise OperationError('Invalid reviewed-source profile')
+    validated(dict(legacy, version=1, profile='delivery-suite'))
+    workspace_path(spec['workspace'])
+    root = Path(spec['local_source_root'])
+    if not root.is_absolute() or str(root) != spec['local_source_root']:
+        raise OperationError('Invalid reviewed-source mirror')
+    origin = spec['origin']
+    if (not isinstance(origin,dict) or set(origin) != {'kind','admission_sha256','review_sha256','author','authors','provenance'}
+        or origin['kind'] != 'reviewed-source-v1' or not isinstance(origin['author'],str)
+        or not origin['author'].strip() or not isinstance(origin['authors'],list)
+        or not origin['authors'] or len(set(origin['authors'])) != len(origin['authors'])
+        or origin['author'] not in origin['authors']
+        or not all(isinstance(a,str) and a.strip() for a in origin['authors'])
+        or not isinstance(origin['provenance'],list) or not origin['provenance']):
+        raise OperationError('Invalid reviewed-source origin')
+    for value in (origin['admission_sha256'],origin['review_sha256'],spec['control_sha256']):
+        if not isinstance(value,str) or not re.fullmatch('[0-9a-f]{64}',value):
+            raise OperationError('Invalid reviewed-source pin')
+    for ref in origin['provenance']:
+        if (not isinstance(ref,dict) or set(ref) != {'path','sha256','author','owner','session','source_head','outputs','contribution_head','path_mapping','derivation'}
+            or ref['author'] not in origin['authors'] or ref['author'] != ref['owner'] or not ref['owner'] or not ref['session']
+            or not isinstance(ref['source_head'],str) or not re.fullmatch('[0-9a-f]{40}',ref['source_head'])
+            or not isinstance(ref['contribution_head'],str) or not re.fullmatch('[0-9a-f]{40}',ref['contribution_head'])
+            or not re.fullmatch('[0-9a-f]{64}',ref['sha256'])
+            or not Path(ref['path']).is_absolute() or str(Path(ref['path'])) != ref['path']
+            or not isinstance(ref['outputs'],dict) or not ref['outputs']
+            or any(not isinstance(k,str) or not re.fullmatch('[0-9a-f]{64}',v) for k,v in ref['outputs'].items())):
+            raise OperationError('Invalid manual provenance reference')
+        mapping = ref['path_mapping']
+        if (not isinstance(mapping,dict) or set(mapping) != set(ref['outputs'])
+            or any(not isinstance(v,str) or v not in spec['outputs'] for v in mapping.values())
+            or len(set(mapping.values())) != len(mapping)
+            or any(not k or str(PurePosixPath(k)) != k or PurePosixPath(k).is_absolute()
+                   or '\\' in k or any(p in ('','.','..') for p in k.split('/')) for k in mapping)):
+            raise OperationError('Invalid contribution path mapping')
+        derivation = ref['derivation']
+        transformed = any(value != spec['outputs'][mapping[name]] for name,value in ref['outputs'].items())
+        if transformed:
+            if (not isinstance(derivation,dict)
+                or set(derivation) != {'owner','contribution_head','path_mapping','head','outputs','review_sha256','reason'}
+                or derivation['owner'] != ref['owner']
+                or derivation['contribution_head'] != ref['contribution_head']
+                or derivation['path_mapping'] != mapping or derivation['head'] != spec['head']
+                or derivation['outputs'] != {v:spec['outputs'][v] for v in mapping.values()}
+                or derivation['review_sha256'] != origin['review_sha256']
+                or not isinstance(derivation['reason'],str) or not derivation['reason'].strip()):
+                raise OperationError('Changed contribution needs exact reviewed derivation')
+        elif derivation is not None:
+            raise OperationError('Unexpected contribution derivation')
+    canonical_derivations(origin['provenance'])
+    if set(a['author'] for a in origin['provenance']) != set(origin['authors']):
+        raise OperationError('Incomplete manual author lineage')
+    if (spec['execution'] != dict(task_fit='deterministic reviewed source validation',
+        requested_model=None,requested_effort=None,provider_route='none',resolved_model=None,
+        resolution_status='not-applicable') or spec['acceptance_sha256'] != origin['admission_sha256']):
+        raise OperationError('Invalid reviewed-source execution/admission')
+    return spec
+
+
+def reviewed_check_code(spec, root):
+    return """import hashlib,json,pathlib,subprocess
+spec=json.loads(SPEC_JSON)
+root=pathlib.Path(SOURCE_ROOT)
+assert root.resolve()==root and not any(p.is_symlink() for p in (root,*root.parents)), 'workspace alias'
+def git(*args): return subprocess.check_output(['git','-C',str(root),*args])
+assert git('rev-parse','--show-toplevel').decode().strip()==str(root)
+assert git('rev-parse','HEAD').decode().strip()==spec['head'], 'head drift'
+assert git('branch','--show-current').decode().strip()==spec['branch'], 'branch drift'
+assert not git('status','--porcelain','--untracked-files=all'), 'dirty source'
+subprocess.run(['git','-C',str(root),'merge-base','--is-ancestor',spec['base'],spec['head']],check=True)
+changed=set(filter(None,git('diff','--no-renames','--name-only','-z',spec['base'],spec['head']).decode().split('\\0')))
+assert changed==set(spec['outputs']), 'reviewed source delta drift'
+def ancestor(before,after):
+ subprocess.run(['git','-C',str(root),'merge-base','--is-ancestor',before,after],check=True)
+def blob(head,name):
+ assert git('ls-tree',head,'--',name).split()[:2] in ([b'100644',b'blob'],[b'100755',b'blob']), 'nonregular contribution'
+ return git('show',head+':'+name)
+for ref in spec['origin']['provenance']:
+ source=ref['source_head']; contribution=ref['contribution_head']
+ assert source!=contribution, 'missing committed contribution'
+ ancestor(spec['base'],source); ancestor(source,contribution); ancestor(contribution,spec['head'])
+ mapping=ref['path_mapping']
+ assert set(mapping)==set(ref['outputs']) and set(mapping.values())<=set(spec['outputs']), 'irrelevant contribution'
+ transformed=any(value!=spec['outputs'][mapping[name]] for name,value in ref['outputs'].items())
+ derivation=ref['derivation']
+ if transformed:
+  assert isinstance(derivation,dict) and derivation==dict(owner=ref['owner'],contribution_head=contribution,path_mapping=mapping,head=spec['head'],outputs={v:spec['outputs'][v] for v in mapping.values()},review_sha256=spec['origin']['review_sha256'],reason=derivation.get('reason')), 'unqualified derivation'
+  assert isinstance(derivation['reason'],str) and derivation['reason'].strip(), 'missing derivation reason'
+ else: assert derivation is None, 'unexpected derivation'
+ delta=set(filter(None,git('diff','--no-renames','--name-only','-z',source,contribution).decode().split('\\0')))
+ assert delta==set(ref['outputs']), 'unrelated contribution delta'
+ for name,expected in ref['outputs'].items():
+  assert hashlib.sha256(blob(contribution,name)).hexdigest()==expected, 'contribution blob drift'
+  target=ref['path_mapping'][name]
+  assert hashlib.sha256(blob(spec['head'],target)).hexdigest()==spec['outputs'][target], 'mapped candidate drift'
+for name,expected in spec['outputs'].items():
+ path=root/name
+ assert not any(p.is_symlink() for p in (path,*path.parents)), 'output alias'
+ assert git('ls-tree',spec['head'],'--',name).split()[:2] in ([b'100644',b'blob'],[b'100755',b'blob'])
+ assert path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest()==expected, 'output drift'
+ assert hashlib.sha256(git('show',spec['head']+':'+name)).hexdigest()==expected, 'committed output drift'
+""".replace('SPEC_JSON',repr(json.dumps(spec,sort_keys=True)),1).replace('SOURCE_ROOT',repr(str(root)),1)
+
+
+def reviewed_arguments(spec):
+    root = spec['workspace']
+    # The fixed consumer has no candidate-supplied argv. Missing dependencies or
+    # skipped tests fail proof, even when unittest would otherwise exit zero.
+    code = """import hashlib,io,os,pathlib,subprocess,tarfile,tempfile,unittest,sys
+import stokowski
+root=pathlib.Path(ROOT)
+files=FILES
+archive=subprocess.check_output(['git','-C',str(root),'archive',BASE,*files])
+assert hashlib.sha256(archive).hexdigest()==CONTROL, 'control source drift'
+with tempfile.TemporaryDirectory(prefix='offmenu-reviewed-control-') as directory:
+ control=pathlib.Path(directory)
+ with tarfile.open(fileobj=io.BytesIO(archive)) as bundle:
+  for m in bundle:
+   if m.isdir(): continue
+   assert m.isfile() and m.name in files
+   target=control/m.name; target.parent.mkdir(parents=True,exist_ok=True)
+   target.write_bytes(bundle.extractfile(m).read())
+ for child in root.iterdir():
+  if child.name!='tests': (control/child.name).symlink_to(child)
+ for selected,modules in ((control/'tests/delivery',['test_stokowski_operations.OperationRecoveryTests.test_unknown_missing_remote_job_is_not_blindly_resubmitted','test_stokowski_operations.OperationRecoveryTests.test_second_owner_cannot_create_duplicate_operation','test_stokowski_operations.OperationRecoveryTests.test_cancel_before_submission_does_not_start_a_job']), (root/'tests/delivery',MODULES)):
+  script='import sys,unittest; import stokowski; sys.path[:0]='+repr([str(selected),str(root/'tools/delivery'),str(root/'src')])+'; suite=unittest.TestLoader().loadTestsFromNames('+repr(modules)+'); result=unittest.TextTestRunner().run(suite); assert result.testsRun>0 and result.wasSuccessful() and not result.skipped'
+  subprocess.run([sys.executable,'-c',script],cwd=root,check=True)
+"""
+    code = (code.replace('ROOT',repr(root)).replace('FILES',repr(['tests/delivery/'+n+'.py' for n in REVIEWED_TESTS]))
+        .replace('BASE',repr(spec['base'])).replace('CONTROL',repr(spec['control_sha256']))
+        .replace('MODULES',repr(['test_stokowski_current_dispatch.CurrentDispatchTests.'+n for n in ('test_normal_tick_rejects_invalid_validation_before_transport','test_normal_tick_continues_original_intent_and_reopen','test_qualified_prepared_submits_once_and_refusal_retains_identity','test_validation_state_identity_drift_and_cancel_flag_preserved')])))
+    check = '/offmenu/.venv-delivery/bin/python -c '+shlex.quote(reviewed_check_code(spec,root))
+    commands = ['cd '+shlex.quote(root),
+        'export PYTHONDONTWRITEBYTECODE=1 GIT_OPTIONAL_LOCKS=0 PYTHONPATH='+shlex.quote(root+'/tools/delivery:'+root+'/src:/offmenu/.delivery/stokowski/venv/lib/python3.12/site-packages'),
+        check, '/offmenu/.venv-delivery/bin/python -c '+shlex.quote(code), check]
+    return dict(action='run',job_id='offmenu-'+operation_key(spec)[:48],command=' && '.join(commands),
+        mode='read',timeout_seconds=180,resources=dict(workers=1,overhead_processes=8,cpu_millis=1000,
+        memory_bytes=2147483648,io_slots=1,output_bytes=0,read_roots=['/offmenu'],write_roots=[]))
 
 
 def candidate_check_code(spec, candidate_root=None):
@@ -283,6 +450,8 @@ def bridge_arguments(spec, action='run'):
         if action not in ('status','cancel'):
             raise OperationError('Invalid bridge action')
         return {'action':action,'job_id':logical_id}
+    if spec['version'] == 3:
+        return reviewed_arguments(spec)
     if spec['version'] == 2:
         return extraction_arguments(spec)
     output_code = ("import hashlib,json,pathlib; expected=json.loads("+repr(json.dumps(spec['outputs'],sort_keys=True))+
@@ -391,6 +560,10 @@ class Journal:
     async def tick(self,key,transport):
         with self.claim(key):
             spec,state = self.read(key)
+            if spec['version'] == 3:
+                from stokowski_stage import qualify_reviewed_source
+                selected = json.loads((self.root.parent/'validation-bindings.json').read_text())['issues'][spec['issue']]
+                qualify_reviewed_source(spec,selected['admission_path'])
             if state['status'] in TERMINAL:
                 return state
             if (hashlib.sha256(POLICY.read_bytes()).hexdigest() != spec['policy_sha256']

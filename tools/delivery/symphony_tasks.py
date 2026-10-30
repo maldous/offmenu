@@ -56,6 +56,8 @@ def load_manifest(path,expected_head=None,expected_branch=BRANCH):
             binding=t['stage_binding']
             if not isinstance(binding,dict) or set(binding)!={'entry','identity','inputs'}:raise AdmissionError('task_stage_binding')
             if not isinstance(binding['identity'],str) or not re.fullmatch('[0-9a-f]{64}',binding['identity']):raise AdmissionError('task_stage_binding')
+            origin=binding['entry'].get('origin')
+            if origin is not None and origin != 'reviewed-source-v1':raise AdmissionError('task_stage_origin')
             inputs=t['input_paths']
             if not isinstance(inputs,list) or not inputs or len(inputs)>64 or not all(isinstance(p,str) for p in inputs) or len(set(inputs))!=len(inputs):raise AdmissionError('task_stage_inputs')
             for p in inputs:scope(p)
