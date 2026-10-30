@@ -2,6 +2,7 @@
 import asyncio
 import copy
 import hashlib
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -296,6 +297,135 @@ class OperationRecoveryTests(unittest.TestCase):
                 self.journal.prepare(dict(self.spec,outputs=outputs))
         with self.assertRaises(operations.OperationError):
             self.journal.prepare(dict(self.spec,profile='unreviewed shell command'))
+
+
+    def compact_transport(self):
+        from windmill_dispatcher import compact_job
+        inspect = self.remote.inspect
+        async def compact(job_id):
+            value = await inspect(job_id)
+            if value is None:
+                return None
+            value.setdefault('success',None)
+            return compact_job(value)
+        self.remote.inspect = compact
+
+    def test_compact_primary_observation_requires_original_persisted_args(self):
+        self.compact_transport()
+        state = self.tick()
+        self.remote.complete(state['windmill_job_id'],self.spec)
+        self.assertEqual(self.tick()['status'],'succeeded')
+        self.assertEqual(len(self.remote.submissions),1)
+
+    def test_compact_cancel_and_status_preserve_original_job_and_cleanup_gates(self):
+        self.compact_transport()
+        original, observer = self.stale_observer()
+        self.journal.cancel(self.key)
+        self.tick()  # Creates the original cancellation intent.
+        self.tick()  # Binds the compact cancel observation without resubmission.
+        self.remote.complete(observer,self.spec,'cancelled')
+        self.remote.jobs[observer]['result']['receipt']['child_tree_gone'] = False
+        self.assertEqual(self.tick()['status'],'unknown')
+        self.remote.jobs[observer]['result']['receipt']['child_tree_gone'] = True
+        self.assertEqual(self.tick()['status'],'cancelled')
+        self.assertEqual(self.journal.read(self.key)[1]['windmill_job_id'],original)
+        self.assertEqual([args['action'] for _,args in self.remote.submissions],['run','status','cancel'])
+
+    def test_compact_binding_rejects_conflicts_and_missing_version_or_digest(self):
+        from windmill_dispatcher import compact_job
+        state = self.tick()
+        self.remote.complete(state['windmill_job_id'],self.spec)
+        remote = self.remote.jobs[state['windmill_job_id']]
+        good = compact_job(remote)
+        expected = operations.bridge_arguments(self.spec)
+        self.assertTrue(operations.observation_matches(good,state['windmill_job_id'],expected))
+        self.assertTrue(operations.observation_matches(remote,state['windmill_job_id'],expected))
+        variants = [dict(good,args=expected),dict(good,args_sha256='0'*64),
+            dict(good,args_sha256='a'*63),dict(good,inspect_version='offmenu-inspect/99'),
+            dict(good,id=state['cancel_job_id']),dict(good,workspace_id='foreign'),
+            dict(good,script_path='foreign'),dict(good,logs='SECRET'),
+            dict(remote,args_sha256=good['args_sha256'])]
+        for field in ('inspect_version','args_sha256'):
+            value = dict(good);del value[field];variants.append(value)
+        for value in variants:
+            self.assertFalse(operations.observation_matches(value,state['windmill_job_id'],expected))
+        async def conflict(job_id):
+            return dict(good,args_sha256='0'*64)
+        self.remote.inspect = conflict
+        state = self.tick()
+        self.assertEqual(state['status'],'quarantined')
+        self.assertEqual(state['diagnosis'],{'stage':'observation-binding',
+                                            'exception_class':'ObservationBindingError'})
+        self.assertEqual(len(self.remote.submissions),1)
+
+    def test_compact_status_and_cancel_conflicts_are_quarantined(self):
+        from windmill_dispatcher import compact_job
+        original,observer = self.stale_observer()
+        self.remote.complete(observer,self.spec)
+        inspect = self.remote.inspect
+        async def conflict(job_id):
+            value = await inspect(job_id)
+            if value is not None:
+                value.setdefault('success',None)
+                value = compact_job(value)
+                if job_id == observer:
+                    value['args_sha256'] = operations.digest(operations.bridge_arguments(self.spec))
+            return value
+        self.remote.inspect = conflict
+        self.assertEqual(self.tick()['status'],'quarantined')
+        self.assertEqual(len([a for _,a in self.remote.submissions if a['action']=='run']),1)
+
+    def test_compact_cancel_digest_conflict_does_not_replace_cancel_intent(self):
+        from windmill_dispatcher import compact_job
+        self.tick()
+        self.journal.cancel(self.key)
+        state = self.tick()
+        before = copy.deepcopy(self.remote.submissions)
+        inspect = self.remote.inspect
+        async def conflict(job_id):
+            value = await inspect(job_id)
+            if value is not None:
+                value.setdefault('success',None)
+                value = compact_job(value)
+                if job_id == state['cancel_job_id']:
+                    value['args_sha256'] = '0'*64
+            return value
+        self.remote.inspect = conflict
+        self.assertEqual(self.tick()['status'],'quarantined')
+        self.assertEqual(self.remote.submissions,before)
+        self.assertTrue(self.journal.read(self.key)[1]['cancel_intent'])
+
+    def test_compact_wrapper_success_without_receipt_never_accepts(self):
+        self.compact_transport()
+        state = self.tick()
+        self.remote.jobs[state['windmill_job_id']].update(type='CompletedJob',success=True)
+        observed = self.tick()
+        self.assertNotEqual(observed['status'],'succeeded')
+        self.assertEqual(self.remote.submissions[-1][1]['action'],'status')
+        self.assertEqual(len([a for _,a in self.remote.submissions if a['action']=='run']),1)
+
+    def test_safe_diagnostics_survive_reopen_without_exception_text_or_arbitrary_class(self):
+        class SecretError(RuntimeError):
+            pass
+        errors = [operations.RPCIdentityError,operations.ToolResultIncompleteError,
+            operations.ToolResultTruncatedError,operations.ObservationBindingError,
+            operations.TransportUnavailable,operations.RequestRefused,SecretError]
+        for kind in errors:
+            async def fail(job_id):
+                raise kind('SECRET environment response credentials')
+            self.remote.inspect = fail
+            # Keep effects unknown, including refusals; do not admit fresh submission.
+            _,state = self.journal.read(self.key)
+            state['status'] = 'unknown'
+            self.journal.save(self.key,state,'test-unknown')
+            result = self.tick()
+            saved = operations.Journal(self.root).read(self.key)[1]
+            self.assertEqual(saved['diagnosis'],operations.safe_diagnosis(kind()))
+            with self.journal.db() as db:
+                events = str(db.execute('SELECT event FROM events').fetchall())
+            self.assertNotIn('SECRET',json.dumps(saved)+events)
+            self.assertNotIn('SecretError',json.dumps(saved)+events)
+        self.assertEqual(self.remote.submissions,[])
 
 
 if __name__ == '__main__':
