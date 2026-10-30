@@ -84,7 +84,9 @@ class CurrentWork:
     The approved request is requests/<issue>.json; it is never generated here.
     Only a trusted existing owner writes qualification/catalog records.
     """
-    def __init__(self, runtime, *, read_only=False):
+    def __init__(self, runtime, *, read_only=False, qualification_only=False):
+        if qualification_only and not read_only:
+            raise AdmissionError('current_qualification_read_only_required')
         self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config = read_record(runtime/'current.json')
@@ -118,6 +120,10 @@ class CurrentWork:
             # Incoming readers reuse all admission/native checks, without an
             # owner refresh, consumption, PID update on disk or journal writes.
             self.guard()
+            if qualification_only:
+                # Publication qualifies original evidence before catalog exposure;
+                # it cannot consume reviews or mutate coordinator state.
+                return
             catalog = read_record(self.catalog)
             if catalog.get('version') != 1 or not isinstance(catalog.get('entries'), list):
                 raise AdmissionError('current_catalog_fields')
@@ -287,7 +293,7 @@ class CurrentWork:
         if (proof.get('route') != 'codex-chatgpt' or proof.get('available') is not True
             or type(checked) not in (int,float) or not math.isfinite(checked)
             or checked > time.time()+5
-            or (not review and time.time()-checked > policy['symphony']['provider_proof_ttl_seconds'])
+            or (not review and 'stage' not in manifest['tasks'][issue] and time.time()-checked > policy['symphony']['provider_proof_ttl_seconds'])
             or type(proof.get('session_ceiling')) is not int or proof['session_ceiling'] < 1):
             raise AdmissionError('provider_unavailable_or_stale')
         if self.stopping or (self.runtime/'cancel.json').exists() or (runtime/'cancel.json').exists():
@@ -303,6 +309,54 @@ class CurrentWork:
                     raise AdmissionError('current_retained_lease_requires_reconciliation')
         return runtime, manifest, source
 
+    def stage_origin(self, issue, task):
+        """Requalify the owner-pinned original; never manufacture stage receipts.
+
+        Only an existing native v1 operation is supported. The original admission
+        and its transitive immutable inputs remain authority, not a source path.
+        Journal state stays mutable under its original operation lock.
+        """
+        import copy
+        binding = task['stage_binding']
+        entry = binding['entry']
+        if (set(entry) != {'issue','issue_id','runtime','admission_sha256'}
+            or entry['issue'] != issue or entry['issue_id'] != task['issue_id']
+            or task['owner'] != self.config['owner']):
+            raise AdmissionError('stage_original_identity')
+        original = self.private(entry['runtime'])
+        pins = binding['inputs']
+        required = {str(original/name) for name in (
+            'current-admission.json','manifest.json','requests/'+issue+'.json',
+            'capacity-policy.json','installation.json','provider-proof.json',
+            'validation-bindings.json','attempts/'+issue+'/dispatch-intent.json',
+            'attempts/'+issue+'/intent.json','attempts/'+issue+'/receipt.json')}
+        if not isinstance(pins, dict) or not required.issubset(pins):
+            raise AdmissionError('stage_original_input_coverage')
+        for name, sha in pins.items():
+            path = Path(name)
+            if not path.is_absolute() or path != path.resolve() or file_sha(path) != sha:
+                raise AdmissionError('stage_original_input_drift')
+        admission = read_record(original/'current-admission.json')
+        if (pins[str(original/'current-admission.json')] != entry['admission_sha256']
+            or any(pins.get(k) != v for k,v in admission['inputs'].items())):
+            raise AdmissionError('stage_original_admission')
+        manifest = load_manifest(original/'manifest.json', expected_branch=None)
+        if 'stage' in manifest['tasks'][issue]:
+            raise AdmissionError('stage_original_origin')
+        # Reuse context, gate, continuation and review checks against the exact
+        # original entry without rebinding the coordinator's durable catalog.
+        view = copy.copy(self)
+        view.read_only = True
+        view.state = copy.deepcopy(self.state)
+        view.entries = {issue: entry}
+        view.state['references'] = {issue: entry}
+        view.state['tasks'] = {issue: {}}
+        runtime, identity = view.validation_binding(issue, entry)
+        outputs = read_record(runtime/'attempts'/issue/'receipt.json')['output_sha256']
+        if identity != binding['identity'] or set(task['input_paths']) != set(outputs):
+            raise AdmissionError('stage_original_binding')
+        return view, runtime, identity
+
     def gate_binding(self, issue):
         """Validate native evidence, never infer unit review from parent status.
 
@@ -315,6 +369,9 @@ class CurrentWork:
             raise AdmissionError('current_gate_identity')
         runtime, manifest, _ = self.context(issue.identifier, review=True)
         task = manifest['tasks'][issue.identifier]
+        if 'stage' in task:
+            view, _, _ = self.stage_origin(issue.identifier, task)
+            return view.gate_binding(issue)
         request = read_record(runtime/'requests'/(issue.identifier+'.json'))
         binding = dict(branch=manifest['branch'], head=manifest['base_revision'],
                        owner=task['owner'], write_roots=task['allowed_paths'],
@@ -354,6 +411,10 @@ class CurrentWork:
         import stokowski_stage as stage
         import stokowski_mcp as mcp
         runtime, manifest, source = self.context(issue, review=True)
+        task = manifest['tasks'][issue]
+        if 'stage' in task:
+            _, original, identity = self.stage_origin(issue, task)
+            return original, digest(dict(stage=task, original_identity=identity))
         unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']))
         for module in (operations, stage, mcp):
             name = 'tools/delivery/'+Path(module.__file__).name
@@ -468,10 +529,23 @@ class CurrentWork:
             self.save()
             task = self.state['tasks'].setdefault(issue, {})
             try:
+                _, manifest, _ = self.context(issue, review=True)
+                selected_task = manifest['tasks'][issue]
                 runtime, identity = self.validation_binding(issue, entry)
+                if 'stage' in selected_task:
+                    from types import SimpleNamespace
+                    unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']))
+                    gate = task.setdefault('unit_gate', dict(binding=unit, disposition='waiting'))
+                    if gate.get('binding') != unit:
+                        raise AdmissionError('stage_gate_rebind')
                 prior = task.get('validation', {})
                 if prior.get('identity', identity) != identity:
                     raise AdmissionError('current_validation_rebind')
+                if selected_task.get('stage') == 'review':
+                    task['validation'] = dict(identity=identity, status='awaiting-independent-review',
+                        requested_model=None, requested_effort=None, provider=None)
+                    self.save()
+                    continue
                 task['validation'] = dict(identity=identity, status='pending',
                     requested_model=None, requested_effort=None, provider=None)
                 self.save()  # Immutable selection survives owner loss before effects.
@@ -549,6 +623,10 @@ class CurrentWork:
         entry = self.entries[issue]
         unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']))
         runtime, manifest, _ = self.context(issue, review=True)
+        task = manifest['tasks'][issue]
+        if 'stage' in task:
+            view, _, _ = self.stage_origin(issue, task)
+            return view._check_unit_review(packet)
         b, snapshot, decision = (packet[k] for k in ('integration_binding','snapshot','decision'))
         review, validation = snapshot['review'], snapshot['validation']
         action = decision.get('action') or {}
@@ -676,7 +754,10 @@ class CurrentWork:
             if not entry or issue.id != entry['issue_id'] or issue.state not in ('Todo','In Progress'):
                 continue
             try:
-                self.context(issue.identifier)
+                _, selected_manifest, _ = self.context(issue.identifier)
+                if 'stage' in selected_manifest['tasks'][issue.identifier]:
+                    self.stage_origin(issue.identifier, selected_manifest['tasks'][issue.identifier])
+                    continue
                 data = await client._graphql('query($id: String!){ issue(id:$id){id identifier project{id} state{name}}}', {'id':issue.id})
                 remote = data.get('issue') or {}
                 if (remote.get('id') != issue.id or remote.get('identifier') != issue.identifier
@@ -732,6 +813,8 @@ def install_adapters(runtime, manifest, key, current=None):
                                                        else (runtime, manifest, SOURCE))
         if identifier not in selected_manifest['tasks'] or root.resolve() != runtime/'workspaces':
             raise AdmissionError('Workspace outside selected manifest')
+        if 'stage' in selected_manifest['tasks'][identifier]:
+            raise AdmissionError('nonimplementation_workspace_refused')
         path = selected_runtime/'workspaces'/identifier
         created = not path.exists()
         if created:
@@ -832,7 +915,11 @@ def install_adapters(runtime, manifest, key, current=None):
 
         async def unit_resolve(owner, issue):
             # Native comments cannot select a current unit's workflow or gate.
-            current.context(issue.identifier)
+            _, selected, _ = current.context(issue.identifier)
+            task = selected['tasks'][issue.identifier]
+            if 'stage' in task:
+                current.stage_origin(issue.identifier, task)
+                return 'evidence-pending', 1
             return 'implement', 1
 
         async def unit_transition(owner, issue, transition_name):
@@ -922,6 +1009,10 @@ def install_adapters(runtime, manifest, key, current=None):
 
     async def owned_turn(runner_type, claude_cfg, hooks_cfg, prompt, workspace_path,
                        issue, attempt, on_event=None, on_pid=None, env=None):
+        selected_runtime = (current.private(current.entries[issue.identifier]['runtime']) if current else runtime)
+        selected = load_manifest(selected_runtime/'manifest.json', expected_branch=None)['tasks'][issue.identifier]
+        if 'stage' in selected:
+            raise AdmissionError('nonimplementation_worker_refused')
         if runner_type != 'codex' or claude_cfg.model != MODEL:
             raise AdmissionError('Only the reviewed existing Codex session route is admitted')
         if any(vars(hooks_cfg).get(k) for k in ('before_run', 'after_run', 'on_stage_enter')):
@@ -931,6 +1022,9 @@ def install_adapters(runtime, manifest, key, current=None):
             task_runtime, selected_manifest, _ = current.context(issue.identifier)
             if workspace_path.resolve() != task_runtime/'workspaces'/issue.identifier:
                 raise AdmissionError('current_workspace_binding')
+        selected = (selected_manifest if current else manifest)['tasks'][issue.identifier]
+        if 'stage' in selected:
+            raise AdmissionError('nonimplementation_worker_refused')
         request = {'prompt': prompt, 'timeout_seconds': min(600, claude_cfg.turn_timeout_ms//1000)}
         request_path = runtime/'requests'/(issue.identifier+'.json')
         if current:

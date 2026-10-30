@@ -1,4 +1,11 @@
-"""Review-bound multi-issue task contracts; no network or execution."""
+"""Review-bound multi-issue task contracts; no network or execution.
+
+Legacy v1 task dictionaries are returned unchanged. Explicit validation/review
+stages add input_paths and stage_binding, and require empty allowed_paths.
+The owner-pinned binding selects the original catalog entry, continuation identity
+and transitive input hashes; CurrentWork reuses its native v1 qualifier at every
+consumption boundary. These references never grant implementation authority.
+"""
 import hashlib
 import json
 from pathlib import Path
@@ -41,7 +48,18 @@ def load_manifest(path,expected_head=None,expected_branch=BRANCH):
     ids=set()
     for name,t in d['tasks'].items():
         if not re.fullmatch(r'UIF-[1-9][0-9]*',name) or not isinstance(t,dict):raise AdmissionError('task_identity')
-        if set(t)!={'issue_id','owner','purpose','allowed_paths','acceptance','resources','attempt_limit'}:raise AdmissionError('task_fields')
+        fields={'issue_id','owner','purpose','allowed_paths','acceptance','resources','attempt_limit'}
+        staged = 'stage' in t
+        if set(t) != fields | ({'stage','input_paths','stage_binding'} if staged else set()):raise AdmissionError('task_fields')
+        if staged:
+            if t['stage'] not in ('validation','review') or t['allowed_paths'] != []:raise AdmissionError('task_stage_authority')
+            binding=t['stage_binding']
+            if not isinstance(binding,dict) or set(binding)!={'entry','identity','inputs'}:raise AdmissionError('task_stage_binding')
+            if not isinstance(binding['identity'],str) or not re.fullmatch('[0-9a-f]{64}',binding['identity']):raise AdmissionError('task_stage_binding')
+            inputs=t['input_paths']
+            if not isinstance(inputs,list) or not inputs or len(inputs)>64 or not all(isinstance(p,str) for p in inputs) or len(set(inputs))!=len(inputs):raise AdmissionError('task_stage_inputs')
+            for p in inputs:scope(p)
+
         try:uid=str(UUID(t['issue_id']))
         except (ValueError,TypeError,AttributeError):raise AdmissionError('task_issue_uuid') from None
         if uid!=t['issue_id'] or uid in ids:raise AdmissionError('task_issue_uuid')
@@ -49,7 +67,7 @@ def load_manifest(path,expected_head=None,expected_branch=BRANCH):
         for field in ('owner','purpose'):
             if not isinstance(t[field],str) or not t[field].strip():raise AdmissionError('task_'+field)
         paths=t['allowed_paths']
-        if not isinstance(paths,list) or not paths or len(paths)>64 or not all(isinstance(p,str) for p in paths) or len(set(paths))!=len(paths):raise AdmissionError('task_paths')
+        if not isinstance(paths,list) or (not paths and not staged) or len(paths)>64 or not all(isinstance(p,str) for p in paths) or len(set(paths))!=len(paths):raise AdmissionError('task_paths')
         for p in paths:scope(p)
         if not isinstance(t['acceptance'],list) or not t['acceptance'] or not all(isinstance(v,str) and v.strip() for v in t['acceptance']):raise AdmissionError('task_acceptance')
         if type(t['attempt_limit']) is not int or not 1<=t['attempt_limit']<=3:raise AdmissionError('task_attempts')

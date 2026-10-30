@@ -243,6 +243,23 @@ class CurrentDispatchTests(unittest.TestCase):
         factory = self.stack.enter_context(patch.object(stage, 'WindmillMCP', return_value=remote))
         return issue, runtime, owner, journal, key, spec, remote, factory, upstream
 
+    def test_direct_worker_refuses_typed_stage_before_any_other_input(self):
+        import stokowski_worker as worker
+        issue, runtime = self.qualify(249)
+        manifest = json.loads((runtime/'manifest.json').read_text())
+        task = manifest['tasks'][issue.identifier]
+        task.update(stage='review', input_paths=task['allowed_paths'], allowed_paths=[],
+                    stage_binding=dict(entry={}, identity='0'*64, inputs={}))
+        self.write(runtime/'manifest.json', manifest)
+        # An absent policy would otherwise fail before lease admission. The
+        # typed refusal must win without reading it or constructing a pool.
+        (runtime/'capacity-policy.json').unlink()
+        with patch.object(worker, 'Pool', side_effect=AssertionError('No lease')), \
+             patch.object(worker, 'git', side_effect=AssertionError('No computation')):
+            with self.assertRaisesRegex(AdmissionError, 'nonimplementation_worker_refused'):
+                worker.execute(runtime, issue.identifier, {})
+        self.assertEqual(list((runtime/'attempts').iterdir()), [])
+
     def test_independent_candidate_ignores_control_output_disk(self):
         issue, runtime, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture()
         self.assertNotEqual(spec['head'], self.current.config['source_head'])

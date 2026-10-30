@@ -151,6 +151,30 @@ class PublicationTests(unittest.TestCase):
         self.assertEqual(self.catalog.read_bytes(), self.catalog_before)
         self.assertEqual(self.snapshot(self.coordinator), self.original_coordinator)
 
+    def test_legacy_unrelated_scope_still_has_original_refusal(self):
+        task = self.manifest['tasks']['UIF-106']
+        task['allowed_paths'] = ['tools/delivery/stokowski_adapter.py']
+        self.packet['scope'] = task['allowed_paths']
+        self.write(self.qualified/'manifest.json', self.manifest)
+        self.repin()
+        with self.assertRaisesRegex(AdmissionError, 'publication_task_binding'):
+            self.publish()
+        self.provider.assert_not_called()
+        self.assert_unexposed()
+
+    def test_typed_scope_requires_owner_binding_before_any_publication(self):
+        task = self.manifest['tasks']['UIF-106']
+        task.update(stage='validation', allowed_paths=[], input_paths=['tools/delivery/stokowski_adapter.py'],
+                    stage_binding=dict(entry={}, identity='0'*64, inputs={}))
+        self.packet.update(stage='validation', scope=task['input_paths'])
+        self.write(self.qualified/'manifest.json', self.manifest)
+        self.repin()
+        with self.assertRaisesRegex(AdmissionError, 'publication_stage_owner_binding'):
+            self.publish()
+        self.provider.assert_not_called()
+        self.assert_unexposed()
+        self.assertFalse(self.runtime.exists())
+
     def test_publish_then_duplicate_is_immutable_and_preserves_existing_owner(self):
         self.assertEqual(self.publish()['status'], 'published')
         files = self.snapshot(self.root)
