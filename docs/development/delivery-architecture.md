@@ -1,65 +1,102 @@
 # Discovery, delivery and maintenance architecture
 
-Repository standardization is the first applied workstream. Source decisions,
-accepted outputs and recovery evidence survive a model/session change through
-versioned Git content and explicit runtime records. No model memory is the
-source of truth. The [developer workflow](../../tools/delivery/README.md) contains
-runnable commands; [verification evidence](../../tools/delivery/validation.md)
-distinguishes actual execution from configuration.
+The [repository standard](../standards/repository.md) and retained ADRs define
+source decisions; [task routing](task-routing.md) defines accountable owners.
+[ADR 0005](../adr/0005-autonomous-integration.md) adopts Stokowski for admitted
+coding and evidence-bound integration. Earlier Symphony records and the existing
+`symphony_*` implementation filenames remain historical provenance and compatible
+interfaces, not a second current orchestrator. Standard 2.3.0 adopts
+[ADR 0006](../adr/0006-typed-extraction-validation-and-refill.md), including a
+separate reviewed-extraction origin that never fabricates a coding attempt.
 
-| Component | Responsibility and implemented boundary |
-| --- | --- |
-| Git and versioned standards/ADRs | Durable reviewed source, architecture decisions, migration maps and exact base/head identities. One integration writer; reviewed integration into develop. |
-| Linear | Existing OffMenu project records selected tasks, dependencies, decisions/workpads and acceptance links. It is optional for local execution. Historical operational obligations remain in their existing records; they were not imported wholesale. |
-| Native Foo execution | Repository reads, builds, tests and coding commands run on Foo. Parallel agent owners are distinct from separate native Codex sessions; receipts state which actually ran. |
-| Symphony | OffMenu-owned native launcher admits an exact project/issue/label, source head, bounded coding turn and isolated workspace using existing credentials. It produces candidate changes; it does not establish acceptance. |
-| LangGraph | Finite discovery/standards/execute/verify graph with same-disk SQLite checkpoints. Bindings include immutable task, checkout, owner, exact branch and source/output witnesses. Recovered acceptance cannot reuse stale source or output checks. |
-| LangChain | Core integration dependency of LangGraph; no additional agent manager, model router or autonomous orchestration loop is installed. |
-| Windmill | Existing deployed Foo bridge executes bounded deterministic jobs with explicit job IDs, logs, stop/reconciliation state and runtime ownership. Worker mount paths are explicit. A successful wrapper is not accepted output. |
-| LangSmith | Optional future observability. Private telemetry remains disabled; no credentials or paid tracing were configured. |
+The [developer workflow](../../tools/delivery/README.md) contains execution and
+recovery commands; [verification evidence](../../tools/delivery/validation.md)
+separates exercised behavior from configuration. Linear owns the current phase
+and evidence links. This guide owns maintained architecture, not a duplicate queue.
 
-## Records and checkpoints complement each other
+## State and evidence ownership
 
-Linear records what was requested, why a decision was made, dependencies and
-what evidence supports acceptance. A task record cannot restore an interrupted
-subprocess. LangGraph checkpoints record execution decisions on one retained
-mount; they cannot replace a durable human-readable decision/work record.
-Windmill receipts establish the observed operational outcome. Git preserves the
-source and approved standard. Handover connects these exact identities.
+| Owner | Authoritative state and required identity | Source and boundary |
+| --- | --- | --- |
+| Linear outcome owner | Requirement, dependencies, decision and acceptance phase; link issue, source, run and evidence identities. | [Routing and tracking](task-routing.md). An assignment or Done state alone is not execution or product acceptance. |
+| Stokowski coding owner | Admitted manifest/run, native session/attempt, lease, exact branch/base/workspace/path scope, resource declarations and model request. | [Worker](../../tools/delivery/stokowski_worker.py), [task contract](../../tools/delivery/symphony_tasks.py), [capacity admission](../../tools/delivery/symphony_capacity.py). Session completion produces a candidate, not independent acceptance. |
+| LangGraph runner owner | Finite decision state and same-mount SQLite checkpoint; immutable task/schema version, source, branch, command and output witnesses. Retain exact runner/behavior and policy pins for the selected operation. | [Engine](../../src/offmenu/delivery/engine.py), [integration controller](../../src/offmenu/delivery/integration.py). A checkpoint is neither an external-effect receipt nor an off-host backup. |
+| Immutable operation owner | Origin, accepted base/head, workspace, review/output/policy/runner/executor hashes; intent, exact logical operation/backend IDs and observed receipt. | [Operation journal](../../tools/delivery/stokowski_operations.py), [stage binding](../../tools/delivery/stokowski_stage.py). Reconcile the same immutable operation after uncertainty; never rename an unknown effect into a new attempt. |
+| Windmill/backend execution owner | Exact server job and logical backend job, resource admission, execution status, receipt and verified stopped child tree. | [Typed dispatcher](../../tools/delivery/windmill_dispatcher.py), [native MCP adapter](../../tools/delivery/stokowski_mcp.py), [Foo runner](../../tools/delivery/windmill_runner.py). Wrapper success alone is not accepted output or external-effect reconciliation. |
+| GitHub and sole integration owner | Exact candidate/base/tree, independent review, bound validation, normal merge and canonical parent/tree/ancestry readback. | [Integration policy](../../tools/delivery/integration-policy.json), [controller](../../src/offmenu/delivery/integration.py), [gateway](../../tools/delivery/integration-gateway.mjs). Only the authenticated integration owner consumes typed merge actions. |
+| Sole publisher | Authorized deployment intent/result and canonical version/traffic readback; separate served hashes and functional acceptance evidence. | [Publication boundary](../../tools/delivery/README.md), [protocol handover](execution-protocols.md). Source integration, deployment, served content and functional acceptance are separate phases. |
+| Evidence custodian | Private facts, checkpoint/log custody and restricted source/data/configuration holds; publish only permitted references and sanitized hashes/status. | [Repository standard](../standards/repository.md). No raw datasets, credentials, private profiles or runtime receipts enter Git. |
 
-The normal flow is discovery of actual manifests/consumers, a versioned standard
-and ADR, bounded edits, behavior checks plus output hashes, reviewed publication,
-and verification of remote content. Maintenance repeats this flow with a new
-immutable task ID and selected source revision. Do not replay old command IDs
-after changing their task/source.
+The integration gateway runs in the authenticated connector owner's durable
+execution context. It is not an independently authenticated local publisher or
+an installed continuous supervisor. Loss of that owner pauses publication while
+retaining intent. LangChain Core supplies LangGraph integration dependencies;
+this does not install another manager. LangSmith/private telemetry remains disabled.
 
-## Implemented recovery and limits
+## Recovery and current execution limits
 
-A crash/timeout/cancel leaves an explicit hold until the process tree and effects
-are reconciled. Failed reconciliation can record a stopped failed operation even
-when source was changed or removed; it cannot bless that drift as success.
-Successful checks bind the bytes actually observed. Retry requires the original
-safe-retry declaration and remaining finite budget. No transaction rolls back
-arbitrary command effects.
+Checkpoint persistence is not exactly-once external execution. Reopen validates
+source, schema/task identity, behavior/runner/policy bindings and output evidence;
+completed effects must not be replayed merely because a caller lost its response.
+A changed contract requires a new reviewed binding, while unresolved effects keep
+their original operation identity until reconciled. SQLite and cooperative locks
+are not distributed locks or independent backups.
 
-SQLite checkpoints are local, not a distributed lock or off-host backup. The
-checkout writer lock only coordinates cooperating callers. Native coding output
-is reviewed separately from session completion; Windmill logs are checked
-separately from its wrapper status. The selected branch and accepted hashes are
-verified before publication. Existing source qualification and private-data
-holds remain independent of layout acceptance.
+Process cleanup and external effects require separate evidence. A stopped child
+can leave an uncertain upload or merge; a recorded remote effect does not prove
+the local child stopped. Environment disconnect, timeout, cancellation intent or
+absence of chat updates never proves termination. Retain ownership until the
+backend receipt, child cleanup and any external readback establish the outcome.
+Retries remain bounded by the original safe-retry declaration and remaining
+budget; command effects are not automatically rolled back.
 
-## Proven versus future use
+[Ready-refill observations](../../tools/delivery/stokowski_refill.py) are currently
+provisional and return `dispatch:false`. They neither reserve capacity nor admit
+or dispatch the next task. Existing admission must recheck scope, source, provider
+freshness and aggregate resources before work. There is no new polling manager,
+schedule or permission to resume historical workers or the paused hourly automation.
 
-Implemented and exercised: native Symphony coding output reviewed into the CLI
-and final-layout audit tests; LangGraph pause/resume, drift/collision/recovery
-regressions and accepted-output checks; Windmill execution through the existing
-Foo bridge; reproducible package/bootstrap and application build consumers.
+Native coding currently requests `gpt-6.1-sol` / `medium` through `codex-chatgpt`.
+Receipts distinguish that request from an observed resolution or explicit unknown.
+Declared resources, affinity and sampled process/RSS observations are distinct;
+they do not prove a kernel quota. Deterministic jobs have no model. The
+[8 coding / 16 service / 32 admitted jobs / 64 subprocesses ceilings](parallel-capacity.md)
+are capabilities, not utilization targets or guaranteed provider entitlement.
 
-Linear's selected project/issues and native admission are configured and used.
-Broader task intake, historic-obligation migration, cross-host recovery, automated
-release decisions and LangSmith expansion are future choices, not implied by the
-pilot. No new scheduler, recursive manager, automatic merge/deploy or resumption
-of frozen workers is introduced. Existing Codex/Antigravity allowances and
-OpenRouter free models are authorized; new API charges and paid OpenRouter models
-are outside the selected routes.
+At the UIF-119 documentation checkpoint, compact observer correction
+`0becb3a668d60910c9553118a2ff54bb0552c408` has independent candidate acceptance;
+its source integration and runtime readback remain pending. This is separate from
+PR152's adopted standard/extraction source. Finite restart/reopen evidence does
+not establish continuous autonomous recovery or continuation after cloud-owner loss.
+Current phase/readback belongs in [UIF-119](https://linear.app/maldous/issue/UIF-119),
+not an assumption that this checkpoint remains current indefinitely.
+
+One authorized native publisher route uses root systemd `LoadCredential` and
+references `cloudflare-api-token` through `CREDENTIALS_DIRECTORY`; credential
+values and private custody remain outside this guide. That route is distinct from
+ChatGPT MCP product-scope OAuth. Native credential presence or expiry is not causal
+proof of an MCP fault or repair, and this document establishes no new service,
+credential transfer, access grant or failover route.
+
+## Canonical end-state design and remaining proof
+
+The existing [editable canonical graph bundle](https://chatgpt.com/api/library/files/libfile_01d619a94b3c8191ad0b0d71a782792e/download)
+contains the 24-node / 44-relation end-state design. It is a target model, not proof
+that every depicted path is live or enforced. The existing graph owner
+`/root/resume_hld_layout` controls pending renders and canonical revisions; this
+guide neither renders nor creates another architecture model.
+
+Interpret its operation annotations with the corresponding state owners above:
+
+- `022`, Windmill to integration: target handoff, not proof of an autonomous integration consumer.
+- `035`, isolated coding to scoped tools: target capability, not proof that coding children hold those credentials.
+- `040`, checkpoint and journal: complementary state, not exactly-once effects.
+- `030`, owner-loss continuation: still requires actual supported recovery proof.
+
+Graph labels ChatGPT/Claude and Codex/Claude describe targets. They do not establish
+Claude installation, runtime entitlement or permission for paid inference. Broader
+recovery and MCP consumer/task-binding acceptance remain explicit evidence gaps.
+Preserve the existing no-Actions, no automatic deployment, no new spend/access or
+credentials, no raw-data export, no OSM and no CIX-runtime boundaries. Historical
+ADRs and accepted source evidence remain retained; new implementation increments
+need their own bounded owner, source/review/output binding and normal admission.
