@@ -112,6 +112,30 @@ class NativePublicationTests(unittest.TestCase):
         self.fixture.provider.assert_not_called()
         self.assertEqual(self.fixture.catalog.read_bytes(), self.fixture.catalog_before)
 
+    def test_fixed_identity_argv_is_shared_by_both_auth_invocations(self):
+        expected_ssh = ('/usr/bin/ssh', '-F', '/dev/null', '-o', 'BatchMode=yes',
+            '-o', 'StrictHostKeyChecking=yes', '-o', 'IdentityAgent=none',
+            '-i', '/home/user/.ssh/id_ed25519_maldous', '-o', 'IdentitiesOnly=yes',
+            '-o', 'ForwardAgent=no', '-o', 'ForwardX11=no',
+            '-o', 'ClearAllForwardings=yes', '-o', 'ProxyCommand=none',
+            '-o', 'ProxyJump=none', '-o', 'PermitLocalCommand=no',
+            '-o', 'ConnectionAttempts=1', '-o', 'ConnectTimeout=5')
+        native.authenticate(self.run, self.now, 'synthetic-binding')
+        self.assertEqual(self.run.call_count, 2)
+        identity, repository = self.run.call_args_list
+        self.assertEqual(identity.args, ((*expected_ssh, '-T', 'git@github.com'),))
+        self.assertEqual(identity.kwargs, dict(env=dict(native.ENV), timeout=10))
+        self.assertEqual(repository.args, (('/usr/bin/git', 'ls-remote', '--exit-code',
+            'git@github.com:maldous/offmenu.git', 'refs/heads/develop'),))
+        self.assertEqual(repository.kwargs, dict(env=dict(native.ENV,
+            GIT_SSH_COMMAND=native.shlex.join(expected_ssh)), timeout=10))
+        for argv in (identity.args[0][:-2],
+                     tuple(native.shlex.split(repository.kwargs['env']['GIT_SSH_COMMAND']))):
+            self.assertEqual(argv, expected_ssh)
+            self.assertEqual(argv.count('-i'), 1)
+            self.assertEqual(argv.count('/home/user/.ssh/id_ed25519_maldous'), 1)
+            self.assertEqual(argv.count('IdentitiesOnly=yes'), 1)
+
     def test_actual_prepare_callback_publishes_and_duplicate_does_not_retry(self):
         result = self.invoke()
         self.assertEqual(result['result']['status'], 'published')
@@ -156,6 +180,12 @@ class NativePublicationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'source_blob'):
             self.invoke()
         path.write_bytes(old)
+        config = self.fixture.qualified / 'config.json'
+        old_config = config.read_bytes()
+        config.write_bytes(b'{}')
+        with self.assertRaisesRegex(ValueError, 'pin'):
+            self.invoke()
+        config.write_bytes(old_config)
         (self.fixture.qualified / 'request.json').write_bytes(b'{}')
         with self.assertRaisesRegex(ValueError, 'pin'):
             self.invoke()
@@ -173,8 +203,11 @@ class NativePublicationTests(unittest.TestCase):
 
     def test_bad_process_observations_cannot_authenticate(self):
         original = self.synthetic_process
+        banner = b"Hi maldous! You've successfully authenticated, but GitHub does not provide shell access.\n"
         for response in ((0, b'', b''), (1, b'principal', b''),
-                         (1, b'', b'Hi someone!\n'), (1, b'', b'getProfile 6347545')):
+                         (1, b'', b'Hi someone!\n'), (1, b'', b'getProfile 6347545'),
+                         (0, b'', banner), (1, b'unexpected', banner),
+                         (1, b'', banner + b'\n')):
             with self.subTest(response=response):
                 self.run.side_effect = lambda argv, **kw: response if argv[0] == '/usr/bin/ssh' else original(argv, **kw)
                 with self.assertRaisesRegex(ValueError, 'ssh_identity'):

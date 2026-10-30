@@ -62,6 +62,7 @@ ENV = {'HOME': '/home/user', 'USER': 'user', 'LOGNAME': 'user',
        'GIT_TERMINAL_PROMPT': '0'}
 SSH = ('/usr/bin/ssh', '-F', '/dev/null', '-o', 'BatchMode=yes',
        '-o', 'StrictHostKeyChecking=yes', '-o', 'IdentityAgent=none',
+       '-i', '/home/user/.ssh/id_ed25519_maldous', '-o', 'IdentitiesOnly=yes',
        '-o', 'ForwardAgent=no', '-o', 'ForwardX11=no',
        '-o', 'ClearAllForwardings=yes', '-o', 'ProxyCommand=none',
        '-o', 'ProxyJump=none', '-o', 'PermitLocalCommand=no',
