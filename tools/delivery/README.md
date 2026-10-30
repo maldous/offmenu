@@ -230,6 +230,59 @@ no independently configured GitHub API grant. Loss of that context pauses source
 publication with durable evidence intact. Do not describe that as an installed
 unattended local publisher or silently transfer cloud credentials into Foo.
 
+## Completed validation and standalone unit review
+
+For an already-completed reviewed-source validation, use the existing
+`standalone-validation-review-v1` decision through the fixed v2
+[unit-review transport](stokowski_unit_review.py). This route binds the original
+unit separately from the repository claim's actual identity, including when a
+different PR already integrated its source. Preserve the existing repository
+binding and immutable claim; do not invent a pending merge intent, Controller
+history or a replacement claim to make the old source appear unmerged.
+[PR172](https://github.com/maldous/offmenu/pull/172),
+[PR173](https://github.com/maldous/offmenu/pull/173) and
+[PR174](https://github.com/maldous/offmenu/pull/174) contain the adopted contracts.
+
+The authenticated sole publisher supplies the exact owner-qualified inputs:
+
+1. Select the original operation, source head/base/tree/outputs and its retained
+   successful validation receipt. Keep the original Journal identity and receipt
+   digest; pin a regular original receipt artifact inside the selected origin
+   runtime for `validation_receipt_source`. A copied status string is not proof.
+2. Retain the exact admitted prior independent review. Its separate, dated
+   provenance supplement must already be pinned in the stage inputs and match
+   reviewer, source, outputs, authors and evidence ID. `provenance_source` names
+   that supplement; `qualification_source` alone cannot establish its authority.
+   Preserve the prior review bytes. Requested model/provider and observed
+   resolution are distinct: record genuinely unavailable fields as unknown,
+   with `resolved_model:null` and `resolution_status:"unknown"` for unknown
+   resolution. Do not infer the reviewer's model from an author's coding receipt.
+3. Retain the original typed qualification packet under the coordinator runtime
+   and pin it as `qualification_source`. Its decision is
+   `standalone-validation-qualified`, with `action:null` and
+   `merge_effect:"not-applicable"`. It is not a merge-controller decision.
+4. Use the existing fixed transport's status/write reconciliation and duplicate
+   checks. The normal coordinator consumes the retained review at its next
+   refresh. Unit approval remains `accepted_delivery:false`; it neither merges
+   source nor closes the parent issue or establishes deployment/BAU acceptance.
+
+The exact checks are in
+[`CurrentWork._check_prior_review_provenance`, `_check_unit_review` and
+`_check_reviewed_terminal`](stokowski_adapter.py). Historical executor hashes
+may be reused only for an exact completed success with matching accepted outputs
+and acceptance identity, an original owner-pinned receipt matching job, command,
+runner and policy, stopped children, and no pending cancellation/observation or
+reconciliation. Source must still qualify presently. This exception never runs
+historical executor code or authorizes replay; fresh execution remains strict.
+
+For a submitted reviewed-source operation, supported local source/admission
+drift does not create new submission authority. The existing
+[Journal recovery/cancellation path](stokowski_operations.py) observes and
+reconciles the same bound operation/job identity; new submission and acceptance
+remain separately qualified. Do not rename unknown effects, clear their holds
+or rerun completed work to repair metadata. These source contracts do not prove
+a live transport, automatic refill, native SSH route or continuous supervision.
+
 ## Reviewed extraction origin (2.3.0 proposal)
 
 A source-only extraction uses a separate typed admission and fixed mapping/import

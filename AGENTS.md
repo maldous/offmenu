@@ -29,6 +29,7 @@ bindings; source-only extraction is not a coding attempt. Record requested model
 effort and provider separately from observed or unknown resolution and resources.
 Treat a ready-refill observation as provisional; use normal admission before work.
 The proposed extension is scoped in ADR 0006 and does not relax existing gates.
+For completed validation and standalone unit review, follow the [canonical runbook](tools/delivery/README.md#completed-validation-and-standalone-unit-review).
 
 Classify source, generated files, historical evidence and private runtime data
 before moving anything. Preserve data/configuration holds in the reconciliation
