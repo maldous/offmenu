@@ -199,7 +199,7 @@ class TypedStageTests(unittest.TestCase):
         factory.assert_not_called()
         self.assertEqual(journal.read(key)[1]['status'],'submit-intent')
 
-    def independent_packet(self, issue, journal, key, spec):
+    def independent_packet(self, issue, journal, key, spec, *, retained=False):
         from stokowski_operations import bridge_arguments
         unit=self.current.gate_binding(issue)
         _,state=journal.read(key)
@@ -209,7 +209,8 @@ class TypedStageTests(unittest.TestCase):
             command_sha256=__import__('hashlib').sha256(bridge_arguments(spec)['command'].encode()).hexdigest())
         state.update(status='succeeded',receipt_sha256=digest(receipt),accepted_output_sha256=spec['outputs'],
                      acceptance_sha256=spec['acceptance_sha256'])
-        journal.save(key,state,'synthetic-independent-result')
+        if not retained:
+            journal.save(key,state,'synthetic-independent-result')
         b=dict(version=1,repository='synthetic/offmenu',pr_number=145,issue_id=issue.id,
             owner='existing-owner',head=spec['head'],base=spec['base'],tree='f'*40,
             policy_sha256='1'*64,capacity_policy_sha256=spec['policy_sha256'],
@@ -285,7 +286,7 @@ class TypedStageTests(unittest.TestCase):
         self.assertEqual((runtime/'manifest.json').read_bytes(),raw)
 
 
-def reviewed_records(case, candidate, base, head, outputs, issue_name="UIF-106", issue_id="00000000-0000-4000-8000-000000000106", prior_reviewer="independent-prior-reviewer"):
+def reviewed_records(case, candidate, base, head, outputs, issue_name="UIF-106", issue_id="00000000-0000-4000-8000-000000000106", prior_reviewer="independent-prior-reviewer", executor_sha256=None):
     """SYNTHETIC owner inputs and manual provenance; no real acceptance claim."""
     import hashlib
     import subprocess
@@ -335,7 +336,7 @@ def reviewed_records(case, candidate, base, head, outputs, issue_name="UIF-106",
         outputs=outputs,author=refs[0]['author'],authors=[r['author'] for r in refs],provenance=refs,review=review,
         control_sha256=hashlib.sha256(archive).hexdigest(),policy_sha256=case.current.config['policy_sha256'],
         runner_sha256=adapter.file_sha(case.source/'tools/delivery/windmill_runner.py'),
-        executor_sha256=adapter.file_sha(operations.__file__),execution=dict(task_fit='deterministic reviewed source validation',
+        executor_sha256=executor_sha256 or adapter.file_sha(operations.__file__),execution=dict(task_fit='deterministic reviewed source validation',
             requested_model=None,requested_effort=None,provider_route='none',resolved_model=None,resolution_status='not-applicable'))
     path=evidence/'new-admission.json';case.write(path,admission)
     spec={k:v for k,v in admission.items() if k not in ('author','authors','provenance','review')}
@@ -352,8 +353,36 @@ def reviewed_records(case, candidate, base, head, outputs, issue_name="UIF-106",
 
 
 class ReviewedSourceTests(TypedStageTests):
-    def standalone_packet(self):
-        issue, runtime, _, journal, key, spec, _, _ = self.new_fixture('review')
+    def retained_terminal(self, issue, runtime, journal, key, spec):
+        """SYNTHETIC original terminal proof, selected before owner publication."""
+        import hashlib
+        import stokowski_operations as operations
+        _, state = journal.read(key)
+        receipt = dict(status='succeeded',exit_code=0,child_tree_gone=True,reconcile_required=False,
+            job_id=state['logical_job_id'],runner_sha256=spec['runner_sha256'],
+            capacity_policy_sha256=spec['policy_sha256'],
+            command_sha256=hashlib.sha256(operations.bridge_arguments(spec)['command'].encode()).hexdigest())
+        path = runtime/'SYNTHETIC-original-receipt.json'
+        self.write(path,receipt)
+        state.update(status='succeeded',receipt_sha256=digest(receipt),
+            accepted_output_sha256=spec['outputs'],acceptance_sha256=spec['acceptance_sha256'])
+        journal.save(key,state,'SYNTHETIC original terminal result')
+        binding = self.stage_task['stage_binding']
+        binding['inputs'][str(path)] = adapter.file_sha(path)
+        self.rebind_terminal(runtime, spec)
+        return path, receipt
+
+    def rebind_terminal(self, runtime, spec):
+        binding = self.stage_task['stage_binding']
+        selected = json.loads((runtime/'validation-bindings.json').read_text())['issues']['UIF-106']
+        binding['identity'] = digest(dict(entry=binding['entry'],selected=selected,spec=spec,inputs=binding['inputs']))
+
+    def standalone_packet(self, historical_executor=False):
+        options = dict(executor_sha256='e'*64) if historical_executor else {}
+        issue, runtime, _, journal, key, spec, remote, _ = self.new_fixture('review', **options)
+        if historical_executor:
+            self.retained_terminal(issue, runtime, journal, key, spec)
+            self.terminal_remote = remote
         import subprocess
         tree = subprocess.run(['git','-C',spec['local_source_root'],'rev-parse',spec['head']+'^{tree}'],
             check=True,capture_output=True,text=True).stdout.strip()
@@ -376,8 +405,11 @@ class ReviewedSourceTests(TypedStageTests):
         binding['inputs'][str(self.supplement_path)] = adapter.file_sha(self.supplement_path)
         selected = json.loads((runtime/'validation-bindings.json').read_text())['issues'][issue.identifier]
         binding['identity'] = digest(dict(entry=binding['entry'],selected=selected,spec=spec,inputs=binding['inputs']))
+        frozen = {p:p.read_bytes() for p in runtime.rglob('*') if p.is_file()} if historical_executor else {}
         self.publish_stage()
-        packet = self.independent_packet(issue, journal, key, spec)
+        packet = self.independent_packet(issue, journal, key, spec, retained=historical_executor)
+        for path, raw in frozen.items():
+            self.assertEqual(path.read_bytes(), raw)
         review = packet['snapshot']['review']
         for k in ('reviewer','author','evidence_id','model','provider','requested_model',
                   'requested_provider','resolved_model','resolution_status'):
@@ -395,6 +427,95 @@ class ReviewedSourceTests(TypedStageTests):
             binding=packet['unit_binding'], disposition='waiting', accepted_delivery=False)
         self.current.save()
         return packet
+
+    def test_historical_executor_requires_original_terminal_proof(self):
+        import stokowski_operations as operations
+        issue, runtime, _, journal, key, spec, remote, _ = self.new_fixture(executor_sha256='e'*64)
+        receipt_path, receipt = self.retained_terminal(issue, runtime, journal, key, spec)
+        _, original_state = journal.read(key)
+        original_binding = copy.deepcopy(self.stage_task['stage_binding'])
+        original_receipt = receipt_path.read_bytes()
+        for observation in (False, True):
+            self.current.reviewed_origin(issue.identifier,self.stage_task,observation=observation)
+        # Even self-consistently rehashed receipt forgeries must match the exact
+        # command/job/runner/policy and stopped success, not merely the journal.
+        cases = [('state',k,v) for k,v in (
+            ('status','prepared'),('status','unknown'),('status','running'),('status','failed'),
+            ('cancel_requested',True),('observation_intent',True),('reconcile_required',True),
+            ('accepted_output_sha256',{}),('acceptance_sha256','0'*64),
+            ('receipt_sha256','0'*64),('logical_job_id','foreign'))]
+        cases += [('receipt',k,v) for k,v in (
+            ('status','running'),('exit_code',1),('exit_code',False),('child_tree_gone',False),
+            ('reconcile_required',True),('job_id','foreign'),('runner_sha256','0'*64),
+            ('capacity_policy_sha256','0'*64),('command_sha256','0'*64))]
+        cases += [('missing','receipt',None),('spec','executor_sha256','d'*64),
+                  ('spec','owner','foreign'),('spec','head','a'*40)]
+        for kind, field, value in cases:
+            state = copy.deepcopy(original_state)
+            changed_spec = copy.deepcopy(spec)
+            self.stage_task['stage_binding'] = copy.deepcopy(original_binding)
+            receipt_path.write_bytes(original_receipt)
+            if kind == 'state':
+                state[field] = value
+            elif kind == 'receipt':
+                changed = dict(receipt,**{field:value})
+                self.write(receipt_path,changed)
+                state['receipt_sha256'] = digest(changed)
+                self.stage_task['stage_binding']['inputs'][str(receipt_path)] = adapter.file_sha(receipt_path)
+                self.rebind_terminal(runtime,spec)
+            elif kind == 'missing':
+                del self.stage_task['stage_binding']['inputs'][str(receipt_path)]
+                self.rebind_terminal(runtime,spec)
+            else:
+                changed_spec[field] = value
+            with journal.db() as db:
+                db.execute('UPDATE operations SET spec=?,state=? WHERE key=?',
+                    (json.dumps(changed_spec,sort_keys=True),json.dumps(state,sort_keys=True),key))
+            for observation in (False, True):
+                with self.subTest(kind=kind,field=field,value=value,observation=observation), self.assertRaises((AdmissionError,operations.OperationError)):
+                    self.current.reviewed_origin(issue.identifier,self.stage_task,observation=observation)
+        with journal.db() as db:
+            db.execute('UPDATE operations SET spec=?,state=? WHERE key=?',
+                (json.dumps(spec,sort_keys=True),json.dumps(original_state,sort_keys=True),key))
+        self.stage_task['stage_binding'] = original_binding
+        receipt_path.write_bytes(original_receipt)
+        # Receipt bytes changed without a new owner pin, and unavailable original
+        # admission, cannot use the active-operation drift recovery exemption.
+        admission = Path(json.loads((runtime/'validation-bindings.json').read_text())['issues'][issue.identifier]['admission_path'])
+        output = Path(spec['local_source_root'])/next(iter(spec['outputs']))
+        for path in (receipt_path,admission,output):
+            raw = path.read_bytes()
+            path.write_bytes(raw+b' ')
+            try:
+                for observation in (False,True):
+                    with self.subTest(path=path.name,observation=observation), self.assertRaises((AdmissionError,operations.OperationError)):
+                        self.current.reviewed_origin(issue.identifier,self.stage_task,observation=observation)
+            finally:
+                path.write_bytes(raw)
+        remote.submit.assert_not_awaited()
+        remote.inspect.assert_not_awaited()
+
+    def test_historical_executor_fresh_publication_refuses(self):
+        issue, runtime, _, journal, key, spec, remote, _ = self.new_fixture(executor_sha256='e'*64)
+        before = (runtime/'operations/operations.sqlite').read_bytes()
+        with self.assertRaisesRegex(AdmissionError,'reviewed_source_terminal_required'):
+            self.publish_stage()
+        self.assertEqual((runtime/'operations/operations.sqlite').read_bytes(),before)
+        self.assertFalse((self.root/'stage').exists())
+        remote.submit.assert_not_awaited()
+        remote.inspect.assert_not_awaited()
+
+    def test_historical_executor_completed_validation_continues_without_submit(self):
+        issue, runtime, owner, journal, key, spec, remote, _ = self.new_fixture(executor_sha256='e'*64)
+        self.retained_terminal(issue,runtime,journal,key,spec)
+        frozen = {p:p.read_bytes() for p in runtime.rglob('*') if p.is_file()}
+        self.publish_stage()
+        asyncio.run(owner._tick())
+        self.assertEqual(self.current.state['tasks']['UIF-106']['validation']['status'],'succeeded')
+        for path,raw in frozen.items():
+            self.assertEqual(path.read_bytes(),raw)
+        remote.submit.assert_not_awaited()
+        remote.inspect.assert_not_awaited()
 
     def test_standalone_original_review_without_merge_history(self):
         packet = self.standalone_packet()
@@ -511,12 +632,20 @@ class ReviewedSourceTests(TypedStageTests):
     def test_pending_merge_reviewed_source_fixed_transport_compatibility(self):
         fixtures.CurrentDispatchTests.fixed_gateway_process_fixture(self, staged=True, reviewed=True)
 
+    def test_historical_executor_standalone_fixed_gateway_and_transport(self):
+        self.standalone_fixed_gateway_and_transport(historical_executor=True)
+        self.terminal_remote.submit.assert_not_awaited()
+        self.terminal_remote.inspect.assert_not_awaited()
+
     def test_standalone_fixed_gateway_and_transport(self):
+        self.standalone_fixed_gateway_and_transport()
+
+    def standalone_fixed_gateway_and_transport(self, historical_executor=False):
         """Actual fixed processes; all custody/owner observations are SYNTHETIC."""
         import os
         import shutil
         import subprocess
-        packet = self.standalone_packet()
+        packet = self.standalone_packet(historical_executor)
         origin = Path(__file__).resolve().parents[2]
         shutil.copytree(origin/'tools/delivery', self.source/'tools/delivery', dirs_exist_ok=True,
                         ignore=shutil.ignore_patterns('__pycache__','capacity-policy.json'))
@@ -559,7 +688,8 @@ class ReviewedSourceTests(TypedStageTests):
         runtime = Path(self.stage_task['stage_binding']['entry']['runtime'])
         receipt = runtime/'SYNTHETIC-original-receipt.json'
         # Retain a numeric spelling that cannot be reconstructed from JS JSON.
-        packet['validation_receipt']['duration_seconds'] = 1.0
+        if not historical_executor:
+            packet['validation_receipt']['duration_seconds'] = 1.0
         journal = __import__('stokowski_operations').Journal(runtime/'operations')
         key = packet['integration_binding']['validation_operation_key']
         _, operation_state = journal.read(key)
