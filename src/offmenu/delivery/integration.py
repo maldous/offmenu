@@ -25,6 +25,30 @@ def fingerprint(value):
     return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 
+def read_claim(path, root):
+    """Read ownership without following symlinks or accepting partial pointers."""
+    try:
+        if path.is_symlink():
+            raise ValueError('symlink claim')
+        claim = json.loads(path.read_text())
+        if set(claim) != {'binding_sha256','directory','owner'}:
+            raise ValueError('claim fields')
+        directory = Path(claim['directory'])
+        if (not directory.is_absolute() or directory == root
+            or not directory.is_relative_to(root) or directory.resolve() != directory
+            or any(p.is_symlink() for p in (directory,*directory.parents))):
+            raise ValueError('claim directory')
+        binding_path = directory/'binding.json'
+        if binding_path.is_symlink():
+            raise ValueError('symlink binding')
+        binding = json.loads(binding_path.read_text())
+        if claim != dict(binding_sha256=fingerprint(binding),directory=str(directory),owner=binding['owner']):
+            raise ValueError('claim binding')
+        return claim
+    except (OSError,ValueError,KeyError,TypeError) as exc:
+        raise DeliveryError('Invalid integration claim') from exc
+
+
 class IntegrationState(TypedDict, total=False):
     observation: dict
     result: dict
@@ -47,7 +71,7 @@ class Controller:
                 raise DeliveryError('Invalid '+key)
         self.directory = Path(directory).absolute()
         self.claim_root = Path(claim_root).absolute() if claim_root else self.directory.parent
-        if not self.directory.is_relative_to(self.claim_root):
+        if self.directory == self.claim_root or not self.directory.is_relative_to(self.claim_root):
             raise DeliveryError('Integration state outside repository claim root')
         for part in (self.directory,*self.directory.parents):
             if part.is_symlink():
@@ -67,12 +91,21 @@ class Controller:
         fd = os.open(self.claim_root/'repository-owner.lock',os.O_CREAT|os.O_RDWR|os.O_NOFOLLOW,0o600)
         try:
             fcntl.flock(fd,fcntl.LOCK_EX|fcntl.LOCK_NB)
-            path = self.claim_root/'repository-claim.json'
-            old = json.loads(path.read_text()) if path.exists() else None
-            if old and old['binding_sha256'] != self.key:
+            legacy = self.claim_root/'repository-claim.json'
+            active = self.claim_root/'active-owner.json'
+            path = active if active.exists() or active.is_symlink() else legacy
+            old = read_claim(path,self.claim_root) if path.exists() or path.is_symlink() else None
+            evidence = self.directory/'repository-claim.json'
+            claim = dict(binding_sha256=self.key,directory=str(self.directory),owner=self.binding['owner'])
+            if evidence.exists() or evidence.is_symlink():
+                if read_claim(evidence,self.claim_root) != claim:
+                    raise DeliveryError('Immutable integration claim conflict')
+            if old and (old['binding_sha256'] != self.key or old['directory'] != str(self.directory)):
                 previous = Path(old['directory'])
                 if not previous.is_relative_to(self.claim_root):
                     raise DeliveryError('Invalid previous integration claim')
+                if (previous/'state.json').is_symlink():
+                    raise DeliveryError('Symlink previous integration state')
                 state = json.loads((previous/'state.json').read_text())
                 if state.get('merge_effect') in ('pending','unknown'):
                     raise DeliveryError('Repository integration outcome must reconcile before another owner')
@@ -82,7 +115,13 @@ class Controller:
                 if not safe_repair and not metadata_only and state['status'] not in ('prepared','awaiting-independent-review','awaiting-validation',
                         'awaiting-fresh-observation','awaiting-mergeability','stale-candidate','disabled','accepted','cancelled'):
                     raise DeliveryError('Repository integration outcome must reconcile before another owner')
-            atomic(path,{'binding_sha256':self.key,'directory':str(self.directory),'owner':self.binding['owner']})
+            if not evidence.exists():
+                atomic(evidence,claim)
+            # Published legacy evidence is never rewritten. Only the active
+            # pointer moves, under the original repository-wide owner lock.
+            if not legacy.exists() and not legacy.is_symlink():
+                atomic(legacy,claim)
+            atomic(active,claim)
             yield
         finally:
             os.close(fd)

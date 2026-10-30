@@ -1,5 +1,6 @@
 """Finite integration crash/reconciliation tests with real graph checkpoints."""
 import copy
+import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -46,6 +47,111 @@ class IntegrationControllerTests(unittest.TestCase):
         value['linear'] = {'id':self.binding['issue_id'],
             'project_id':'ce60c1ab-a732-4a71-8471-14c9dc393886','state':'Done' if done else 'In Review'}
         return value
+
+    def test_legitimate_successor_preserves_published_claim_hash(self):
+        # Simulate legacy published evidence before either controller resumes.
+        legacy = self.root/'repository-claim.json'
+        legacy.write_text(json.dumps(dict(binding_sha256=self.controller.key,
+            directory=str(self.directory), owner=self.binding['owner']))+'\n')
+        self.snapshot['automatic_integration_enabled'] = False
+        self.step()
+        before = hashlib.sha256(legacy.read_bytes()).hexdigest()
+        other = Controller(self.root/'successor',dict(self.binding,head='9'*40))
+        other.run(self.snapshot)
+        self.assertEqual(hashlib.sha256(legacy.read_bytes()).hexdigest(),before)
+
+    def test_successor_preserves_controller_evidence_and_shared_bytes(self):
+        self.snapshot['automatic_integration_enabled'] = False
+        self.step()
+        paths = (self.root/'repository-claim.json',self.directory/'repository-claim.json')
+        frozen = {p:p.read_bytes() for p in paths}
+        other = Controller(self.root/'successor',dict(self.binding,head='9'*40))
+        other.run(self.snapshot)
+        evidence = other.directory/'repository-claim.json'
+        raw = evidence.read_bytes()
+        other.run(self.snapshot)
+        self.assertEqual(evidence.read_bytes(),raw)
+        self.assertEqual(json.loads((self.root/'active-owner.json').read_text()),json.loads(raw))
+        for path, original in frozen.items():
+            self.assertEqual(path.read_bytes(),original)
+
+    def test_legacy_bootstrap_retains_pending_and_unknown_predecessor_holds(self):
+        self.step()
+        active = self.root/'active-owner.json'
+        other = Controller(self.root/'successor',dict(self.binding,head='9'*40))
+        from offmenu.delivery.engine import atomic
+        for effect in ('pending','unknown'):
+            for legacy in (False,True):
+                if legacy and active.exists():
+                    active.unlink()
+                state = self.controller.status()
+                atomic(self.directory/'state.json',dict(state,merge_effect=effect))
+                with self.subTest(effect=effect,legacy=legacy), self.assertRaisesRegex(DeliveryError,'must reconcile'):
+                    other.run(self.snapshot)
+                self.assertFalse((other.directory/'repository-claim.json').exists())
+
+    def test_global_lock_excludes_second_controller(self):
+        other = Controller(self.root/'successor',dict(self.binding,head='9'*40))
+        with self.controller.ownership():
+            with self.assertRaises(BlockingIOError):
+                with other.ownership():
+                    self.fail('second repository owner acquired lock')
+        self.assertFalse((other.directory/'repository-claim.json').exists())
+
+    def assert_same_binding_successor_blocked(self,effect):
+        self.assertEqual(self.step()['status'],'merge-intent')
+        if effect == 'unknown':
+            self.controller.record_api_outcome('merge','uncertain')
+        self.assertEqual(self.controller.status()['merge_effect'],effect)
+        other = Controller(self.root/'same-binding',self.binding)
+        paths = (self.root/'active-owner.json',self.root/'repository-claim.json',
+                 self.directory/'repository-claim.json',self.directory/'state.json',
+                 self.directory/'graph.sqlite')
+        frozen = {p:p.read_bytes() for p in paths}
+        with self.assertRaisesRegex(DeliveryError,'must reconcile'):
+            result = other.run(self.snapshot)
+            self.fail('same-binding successor returned '+result['status'])
+        for path, original in frozen.items():
+            self.assertEqual(path.read_bytes(),original)
+        for name in ('repository-claim.json','state.json','graph.sqlite'):
+            self.assertFalse((other.directory/name).exists())
+        # The original directory can still recover its own immutable operation.
+        result = self.step()
+        self.assertEqual(result['status'],'reconciliation-required')
+        self.assertIsNone(result['action'])
+        self.assertEqual(result['merge_effect'],effect)
+
+    def test_same_binding_other_directory_cannot_replace_pending_owner(self):
+        self.assert_same_binding_successor_blocked('pending')
+
+    def test_same_binding_other_directory_cannot_replace_unknown_owner(self):
+        self.assert_same_binding_successor_blocked('unknown')
+
+    def test_invalid_active_pointer_and_snapshot_fail_closed(self):
+        self.snapshot['automatic_integration_enabled'] = False
+        self.step()
+        active = self.root/'active-owner.json'
+        evidence = self.directory/'repository-claim.json'
+        legacy = self.root/'repository-claim.json'
+        old = legacy.read_bytes()
+        for path in (active,evidence):
+            raw = path.read_bytes()
+            for value in (b'{}',b'null',b'{',json.dumps(dict(binding_sha256='0'*64,
+                    directory=str(self.directory),owner=self.binding['owner'])).encode()):
+                path.write_bytes(value)
+                with self.subTest(path=path.name,value=value), self.assertRaises(DeliveryError):
+                    self.step()
+                self.assertEqual(legacy.read_bytes(),old)
+            path.unlink()
+            path.symlink_to(legacy)
+            with self.assertRaises(DeliveryError):
+                self.step()
+            path.unlink()
+            path.symlink_to(self.root/'absent')
+            with self.assertRaises(DeliveryError):
+                self.step()
+            path.unlink()
+            path.write_bytes(raw)
 
     def test_ready_action_is_exact_and_intent_is_persisted_before_return(self):
         result = self.step()
