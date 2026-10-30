@@ -341,6 +341,154 @@ class CurrentWork:
                     request_sha256=file_sha(runtime/'requests'/(issue.identifier+'.json')),
                     native_receipt_sha256=file_sha(directory/'receipt.json'))
 
+    def validation_binding(self, issue, entry):
+        """Qualify existing native v1 state without constructing a writable Journal.
+
+        The owner-selected binding is authority; a coding receipt alone is not.
+        Unsupported derivations/origins remain held for separate qualification.
+        """
+        from types import SimpleNamespace
+        from contextlib import closing
+        from uuid import uuid5, NAMESPACE_URL
+        import stokowski_operations as operations
+        import stokowski_stage as stage
+        import stokowski_mcp as mcp
+        runtime, manifest, source = self.context(issue, review=True)
+        unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']))
+        for module in (operations, stage, mcp):
+            name = 'tools/delivery/'+Path(module.__file__).name
+            accepted = subprocess.check_output(['git','-C',str(SOURCE),'show',
+                                               self.config['source_head']+':'+name])
+            if hashlib.sha256(accepted).hexdigest() != file_sha(module.__file__):
+                raise AdmissionError('current_validation_executor_drift')
+        path = runtime/'validation-bindings.json'
+        database = runtime/'operations/operations.sqlite'
+        for item in (path, database):
+            if item != item.resolve() or not item.is_file():
+                raise AdmissionError('current_validation_missing')
+        bindings = read_record(path)
+        if (set(bindings) != {'version','issues','history'} or type(bindings['version']) is not int
+            or bindings['version'] != 1 or not isinstance(bindings['issues'], dict)
+            or set(bindings['issues']) != {issue} or not isinstance(bindings['history'], list)
+            or bindings['history']):
+            raise AdmissionError('current_validation_schema')
+        selected = bindings['issues'][issue]
+        if (not isinstance(selected, dict) or set(selected) != {
+            'operation_key','source_head','native_receipt_sha256','native_output_sha256',
+            'derivation','derivation_reason'} or selected['derivation'] != {}
+            or selected['derivation_reason'] is not None):
+            raise AdmissionError('current_validation_origin')
+        key = selected['operation_key']
+        if not isinstance(key, str) or not re.fullmatch('[0-9a-f]{64}', key):
+            raise AdmissionError('current_validation_key')
+        with closing(sqlite3.connect(database.as_uri()+'?mode=ro', uri=True, timeout=1)) as db:
+            row = db.execute('SELECT spec,state FROM operations WHERE key=?', (key,)).fetchone()
+        if row is None:
+            raise AdmissionError('current_validation_unbound')
+        # Use the same duplicate-key rejecting reader semantics for stored JSON.
+        def unique(pairs):
+            result = {}
+            for name, value in pairs:
+                if name in result:
+                    raise AdmissionError('current_validation_duplicate')
+                result[name] = value
+            return result
+        spec, state = (json.loads(value, object_pairs_hook=unique) for value in row)
+        operations.validated(spec)
+        receipt = read_record(runtime/'attempts'/issue/'receipt.json')
+        original = receipt.get('output_sha256')
+        task = manifest['tasks'][issue]
+        if (spec['version'] != 1 or operations.operation_key(spec) != key
+            or row[0] != json.dumps(spec, sort_keys=True)
+            or spec['issue'] != issue or spec['issue_id'] != entry['issue_id']
+            or spec['owner'] != self.config['owner'] or task['owner'] != self.config['owner']
+            or spec.get('branch','feature/langgraph-delivery-standardization') != manifest['branch']
+            or selected['source_head'] != spec['head']
+            or spec['base'] != manifest['base_revision']
+            or spec['policy_sha256'] != self.config['policy_sha256']
+            or spec['executor_sha256'] != file_sha(operations.__file__)
+            or spec['runner_sha256'] != file_sha(SOURCE/'tools/delivery/windmill_runner.py')
+            or receipt.get('scope_violations') != []
+            or receipt.get('source_head') != manifest['base_revision']
+            or not original or selected['native_output_sha256'] != original
+            or selected['native_receipt_sha256'] != unit['native_receipt_sha256']
+            or original != spec['outputs']
+            or spec['acceptance_sha256'] != digest(dict(task=task,
+                native_receipt_sha256=unit['native_receipt_sha256'], profile=spec['profile']))
+            or not isinstance(state, dict)
+            or state.get('windmill_job_id') != str(uuid5(NAMESPACE_URL, 'offmenu:run:'+key))
+            or state.get('cancel_job_id') != str(uuid5(NAMESPACE_URL, 'offmenu:cancel:'+key))
+            or state.get('logical_job_id') != operations.bridge_arguments(spec)['job_id']
+            or type(state.get('cancel_requested')) is not bool
+            or state.get('status') not in operations.TERMINAL | {
+                'prepared','submit-intent','submitted','queued','running','unknown','cancel-requested'}):
+            raise AdmissionError('current_validation_binding')
+        workspace = runtime/'workspaces'/issue
+        for args, expected in ((['rev-parse','HEAD'], manifest['base_revision']),
+                               (['branch','--show-current'], manifest['branch'])):
+            if subprocess.check_output(['git','-C',str(workspace),*args], text=True).strip() != expected:
+                raise AdmissionError('current_validation_workspace')
+        # Candidate objects belong to the task binding, independently of the
+        # immutable coordinator checkout's branch, HEAD and working tree.
+        candidate_repo = None
+        for repository in dict.fromkeys((SOURCE, source)):
+            try:
+                subprocess.check_output(['git','-C',str(repository),'merge-base','--is-ancestor',
+                                         spec['base'],spec['head']], stderr=subprocess.DEVNULL)
+            except subprocess.CalledProcessError:
+                continue
+            candidate_repo = repository
+            break
+        if candidate_repo is None:
+            raise AdmissionError('current_validation_candidate_ancestry')
+        for name, sha in original.items():
+            output = workspace/name
+            if output != output.resolve() or file_sha(output) != sha:
+                raise AdmissionError('current_validation_output')
+            committed = subprocess.check_output(['git','-C',str(candidate_repo),'show',spec['head']+':'+name])
+            if hashlib.sha256(committed).hexdigest() != sha:
+                raise AdmissionError('current_validation_candidate_output')
+        return runtime, digest(dict(unit=unit, selected=selected, spec=spec, bindings_sha256=file_sha(path)))
+
+    async def continue_validation(self):
+        """One bounded phase under the existing coordinator and operation locks."""
+        import stokowski_stage as stage
+        deadline = time.monotonic()+10
+        entries = list(self.entries.items())
+        cursor = self.state.get('validation_cursor')
+        if cursor in self.entries:
+            offset = next(i for i, (issue, _) in enumerate(entries) if issue == cursor)
+            entries = entries[offset:]+entries[:offset]
+        for index, (issue, entry) in enumerate(entries):
+            if self.stopping or time.monotonic() >= deadline:
+                return
+            # Persist the next position before any effect, including a timeout
+            # or cancellation, so a slow operation cannot monopolize reentry.
+            self.state['validation_cursor'] = entries[(index+1) % len(entries)][0]
+            self.save()
+            task = self.state['tasks'].setdefault(issue, {})
+            try:
+                runtime, identity = self.validation_binding(issue, entry)
+                prior = task.get('validation', {})
+                if prior.get('identity', identity) != identity:
+                    raise AdmissionError('current_validation_rebind')
+                task['validation'] = dict(identity=identity, status='pending',
+                    requested_model=None, requested_effort=None, provider=None)
+                self.save()  # Immutable selection survives owner loss before effects.
+                projection = await asyncio.wait_for(stage.tick(runtime),
+                                                    timeout=max(.001, deadline-time.monotonic()))
+                status = projection['issues'][issue]['status']
+                task['validation']['status'] = (status if status in {
+                    'prepared','submit-intent','submitted','queued','running','unknown',
+                    'cancel-requested','succeeded','failed','cancelled','refused','quarantined'} else 'held')
+            except asyncio.CancelledError:
+                raise
+            except Exception:
+                # No raw protocol errors, credentials or remote logs in owner state.
+                task.setdefault('validation', dict(requested_model=None,
+                    requested_effort=None, provider=None))['status'] = 'held'
+            self.save()
+
     def unit_review_writer(self, trusted_transport=None):
         """Owner-only injected transport -> immutable local incoming observation.
 
@@ -613,6 +761,7 @@ def install_adapters(runtime, manifest, key, current=None):
     if current:
         async def current_tick(owner):
             current.refresh()  # Before upstream config reload can skip candidate fetching.
+            await current.continue_validation()
             return await original_tick(owner)
         orchestration.Orchestrator._tick = current_tick
 
