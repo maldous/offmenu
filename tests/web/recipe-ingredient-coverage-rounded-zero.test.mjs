@@ -32,10 +32,13 @@ test('W06-RECIPE-COVERAGE-ROUNDED-ZERO-01: zero/nonfinite matching gaps withhold
  assert.deepEqual(supported.choices,{readyNow:false,oneExtraItem:true,unknown:false});
 
  // Each demand is finite; the existing matcher's grouped sum can overflow.
- // Retain that exact evidence and withhold eligibility instead of repairing it.
+ // The shared matcher now withholds unrepresentable arithmetic explicitly.
  const huge={...recipe,ingredients:[{ingredient:'rice',quantity:1e308,unit:'g'},{ingredient:'rice',quantity:1e308,unit:'g'}]};
  const nonfinite=recipeIngredientCoverage({recipe:huge,inventory:[],products:{},servings:1,date});
- assert.equal(nonfinite.matching.missing[0].quantity,Infinity);
+ assert.deepEqual(nonfinite.matching.missing,[]);
+ assert.equal(nonfinite.matching.status,'needs_review');
+ assert.equal(nonfinite.matching.coverage,null);
+ assert.ok(nonfinite.matching.reviewReasons.includes('arithmetic_unrepresentable'));
  assert.deepEqual(nonfinite.choices,{readyNow:false,oneExtraItem:false,unknown:true});
  assert.deepEqual(nonfinite.requirements.map(r=>r.uncoveredQuantity),[1e308,1e308]);
 });

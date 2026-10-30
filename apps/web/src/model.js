@@ -35,6 +35,41 @@ export function eligibleStock(item,today) {
 }
 export function matchMeals(inventory,recipes,servings,today) {
   if(!Number.isFinite(servings)||servings<=0)throw Error(t('Enter a positive serving count.'));
-  const stock=new Map();for(const item of inventory){if(!eligibleStock(item,today))continue;const key=normalize(item.ingredient)+'|'+item.unit;stock.set(key,(stock.get(key)||0)+item.quantity);}return recipes.map(recipe=>{const needs=new Map(),unknown=[],reviewReasons=[];const yieldKnown=!recipe.servingsUnknown&&Number.isFinite(recipe.servings)&&recipe.servings>0;if(!yieldKnown)reviewReasons.push('yield_unknown');if(recipe.needsReview)reviewReasons.push('source_review_required');const demandResolved=yieldKnown&&!recipe.needsReview;for(const item of recipe.ingredients){if(item.optional)continue;if(!demandResolved||!measuredIngredient(item)){unknown.push(item.ingredient);continue;}const key=normalize(item.ingredient)+'|'+item.unit;needs.set(key,(needs.get(key)||0)+item.quantity*servings/recipe.servings);}const missing=[];let met=0;for(const [key,required]of needs){const available=stock.get(key)||0;if(available>=required)met++;else{const [ingredient,unit]=key.split('|');missing.push({ingredient,unit,quantity:Math.round((required-available)*1000)/1000});}}return {...recipe,missing,unknown,reviewReasons,demandKnown:demandResolved&&!unknown.length,coverage:demandResolved?(needs.size?met/needs.size:0):null,status:reviewReasons.length?'needs_review':missing.length?'missing':unknown.length||!recipe.ingredients.length?'needs_review':'ready'};}).sort((a,b)=>({ready:0,needs_review:1,missing:2}[a.status]-{ready:0,needs_review:1,missing:2}[b.status])||b.coverage-a.coverage||a.missing.length-b.missing.length);
+  const stock=new Map();
+  for(const item of inventory){
+    if(!eligibleStock(item,today))continue;
+    const key=normalize(item.ingredient)+'|'+item.unit;
+    stock.set(key,(stock.get(key)??0)+item.quantity);
+  }
+  return recipes.map(recipe=>{
+    const needs=new Map(),unknown=[],reviewReasons=[];
+    const yieldKnown=!recipe.servingsUnknown&&Number.isFinite(recipe.servings)&&recipe.servings>0;
+    if(!yieldKnown)reviewReasons.push('yield_unknown');
+    if(recipe.needsReview)reviewReasons.push('source_review_required');
+    const demandResolved=yieldKnown&&!recipe.needsReview;
+    for(const item of recipe.ingredients){
+      if(item.optional)continue;
+      if(!demandResolved||!measuredIngredient(item)){unknown.push(item.ingredient);continue;}
+      const key=normalize(item.ingredient)+'|'+item.unit;
+      const scaled=item.quantity*servings/recipe.servings;
+      // Keep failed scaling on this key, even if a later duplicate is finite.
+      needs.set(key,Number.isFinite(scaled)&&scaled>0?(needs.get(key)??0)+scaled:NaN);
+    }
+    const missing=[];let met=0,arithmeticKnown=true;
+    for(const [key,required]of needs){
+      const available=stock.get(key)??0,deficit=required-available;
+      const [ingredient,unit]=key.split('|');
+      if(!Number.isFinite(required)||!Number.isFinite(available)||!Number.isFinite(deficit)){
+        arithmeticKnown=false;unknown.push(ingredient);continue;
+      }
+      if(available>=required)met++;
+      else{
+        const rounded=Math.round(deficit*1000)/1000;
+        missing.push({ingredient,unit,quantity:Number.isFinite(rounded)?rounded:deficit});
+      }
+    }
+    if(!arithmeticKnown)reviewReasons.push('arithmetic_unrepresentable');
+    return {...recipe,missing,unknown,reviewReasons,demandKnown:demandResolved&&arithmeticKnown&&!unknown.length,coverage:demandResolved&&arithmeticKnown?(needs.size?met/needs.size:0):null,status:reviewReasons.length?'needs_review':missing.length?'missing':unknown.length||!recipe.ingredients.length?'needs_review':'ready'};
+  }).sort((a,b)=>({ready:0,needs_review:1,missing:2}[a.status]-{ready:0,needs_review:1,missing:2}[b.status])||b.coverage-a.coverage||a.missing.length-b.missing.length);
 }
 export function validateRecipes(value){if(!Array.isArray(value)||value.length>10000)throw Error(t('Import a JSON array of up to 10,000 recipes.'));return value.map(r=>{if(!r.id||!r.title||!r.source||!r.license||!Number.isFinite(r.servings)||r.servings<=0||!Array.isArray(r.ingredients)||!r.ingredients.length)throw Error(t('Recipes need id, title, source, license, servings and ingredients.'));for(const i of r.ingredients){if(!i.ingredient||(i.quantity!=null&&(!Number.isFinite(i.quantity)||i.quantity<0))||(i.unit!=null&&!['g','ml','count'].includes(i.unit)))throw Error(t('Invalid recipe ingredient.'));}if(!Array.isArray(r.instructions)||r.instructions.some(x=>typeof x!=='string'))throw Error(t('Instructions must be a list of strings.'));return r;});}
