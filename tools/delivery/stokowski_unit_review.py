@@ -202,12 +202,15 @@ def handle(request):
     require(root.name == 'stokowski' and root.parent.name == '.delivery'
             and runtime.is_relative_to(root) and directory.is_relative_to(claim)
             and claim.name == 'integration' and claim.parent == root.parent)
+    # An invalid active pointer must never select the historical fallback.
+    active = claim/'active-owner.json'
+    owner_path = active if active.exists() or active.is_symlink() else claim/'repository-claim.json'
     # Only exact consumed files: no runtime traversal, refresh, chmod or repair.
     for p in (runtime/'current.json', runtime/'current-owner.json',
               runtime/'installation.json', runtime/'workflow.yaml',
               runtime/'capacity-policy.json', directory/'binding.json',
               directory/'state.json', directory/'graph.sqlite',
-              claim/'repository-claim.json'):
+              owner_path):
         custody(p, uid, private=True)
     current = CurrentWork(runtime, read_only=True)
     require(current.root == root and current.config['source_head'] == c['source_head']
@@ -251,7 +254,11 @@ def handle(request):
                           for selected in (source, evidence_source)))
     b = read_record(directory/'binding.json')
     decision = read_record(directory/'state.json')
-    owner_claim = read_record(claim/'repository-claim.json')
+    owner_claim = read_record(owner_path)
+    if owner_path == active:
+        evidence = directory/'repository-claim.json'
+        custody(evidence, uid, private=True)
+        require(read_record(evidence) == owner_claim)
     require(owner_claim == dict(binding_sha256=digest(b), directory=str(directory), owner=b['owner']))
     require(b['owner'] == current.config['owner'] and b['issue_id'] == entry['issue_id'])
     # Read the existing controller's final checkpoint through SQLite RO. Avoid

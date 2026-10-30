@@ -706,6 +706,8 @@ class CurrentDispatchTests(unittest.TestCase):
             github=dict(repository=b['repository'],number=b['pr_number'],state='open',draft=False,
                 head=b['head'],base=b['base'],head_branch=b['head_branch'],base_branch='develop',mergeable=True))
         claim = self.temp/'.delivery/integration'
+        predecessor = Controller(claim/'previous',dict(b,head='9'*40),claim)
+        predecessor.run(snapshot)  # Safe stale candidate, retained as historical shared evidence.
         controller = Controller(claim/'fixture',b,claim)
         control_input = self.temp/'control-input.json'
         self.write(control_input,dict(binding=b,snapshot=snapshot,directory=str(controller.directory),claim=str(claim)))
@@ -729,7 +731,8 @@ class CurrentDispatchTests(unittest.TestCase):
         owner_before = self.current.state_path.read_bytes()
         native_path = runtime/'attempts'/issue.identifier/'receipt.json'
         frozen = {p:p.read_bytes() for p in (receipt_path,native_path,runtime/'operations/operations.sqlite',
-            controller.directory/'graph.sqlite',controller.directory/'state.json')}
+            controller.directory/'graph.sqlite',controller.directory/'state.json',
+            controller.directory/'repository-claim.json',claim/'repository-claim.json',claim/'active-owner.json')}
         def local_status(selected_context=context):
             request = dict(version=2, mode='status',
                 payload=json.dumps(dict(context=selected_context,

@@ -64,7 +64,7 @@ test('wire v2 immutable byte oracle and unsupported domain',async()=>{
 // Invoked by the Python private fixture with actual committed transport source.
 // The owner/controller here are fixture-controlled, not production authenticated.
 if (process.argv[2] === '--local-review-fixture') test('fixed gateway process, timeout reconciliation, duplicate and refusals', async () => {
-  const {readFileSync,statSync,writeFileSync} = await import('node:fs');
+  const {readFileSync,statSync,writeFileSync,unlinkSync} = await import('node:fs');
   const {pathToFileURL} = await import('node:url');
   const {context,packet} = JSON.parse(readFileSync(process.argv[3]));
   const {advanceIntegration:advance} = await import(pathToFileURL(process.argv[4]));
@@ -127,11 +127,38 @@ if (process.argv[2] === '--local-review-fixture') test('fixed gateway process, t
   writeFileSync(statePath,JSON.stringify({...packet.decision,status:'repair-required'}));
   await assert.rejects(advance(args()));
   writeFileSync(statePath,original);
-  const claimPath=`${context.claim_root}/repository-claim.json`;
+  const claimPath=`${context.claim_root}/active-owner.json`;
   const claim=readFileSync(claimPath);
-  writeFileSync(claimPath,JSON.stringify({binding_sha256:'0'.repeat(64),directory:context.controller_directory,owner:'existing-owner'}));
+  const claimMode=statSync(claimPath).mode & 0o777;
+  const legacyPath=`${context.claim_root}/repository-claim.json`;
+  const legacy=readFileSync(legacyPath);
+  // A valid historical owner cannot authorize the current snapshot/graph.
+  writeFileSync(claimPath,legacy);
   await assert.rejects(advance(args()));
   writeFileSync(claimPath,claim);
+  // Historical shared evidence does not override the selected active owner.
+  await advance(args());
+  const evidencePath=`${context.controller_directory}/repository-claim.json`;
+  const evidence=readFileSync(evidencePath);
+  const evidenceMode=statSync(evidencePath).mode & 0o777;
+  writeFileSync(evidencePath,legacy);
+  await assert.rejects(advance(args()));
+  writeFileSync(evidencePath,evidence);
+  // A matching legacy claim is a fallback only when the new pointer is absent.
+  writeFileSync(legacyPath,claim);
+  for (const invalid of ['{}','null','{']) {
+    writeFileSync(claimPath,invalid);
+    await assert.rejects(advance(args()));
+  }
+  unlinkSync(claimPath);
+  unlinkSync(evidencePath);
+  await advance(args());
+  // Recreating deleted fixture files must preserve their private custody.
+  writeFileSync(evidencePath,evidence,{mode:evidenceMode});
+  writeFileSync(claimPath,claim,{mode:claimMode});
+  assert.equal(statSync(evidencePath).mode & 0o777,evidenceMode);
+  assert.equal(statSync(claimPath).mode & 0o777,claimMode);
+  writeFileSync(legacyPath,legacy);
   const artifact=`${context.runtime_root}/task-230/workspaces/${context.issue}/tests/task230.py`;
   const output=readFileSync(artifact);
   writeFileSync(artifact,'changed');
