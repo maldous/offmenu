@@ -149,10 +149,11 @@ test('failed unit review publication records known nonexecution before propagati
   }
 });
 
-test('actual unit review factory refusal records nonexecution before preflight',async()=>{
+test('actual unit review factory rejects non-JSON context before installation or preflight',async()=>{
   const f=fixture();Object.assign(f.decision,{merge_effect:'pending',qualification_sha256:'e'.repeat(64)});
   f.observe=async()=>({review:{verdict:'accept',findings:[]}});
-  f.reviewedCurrentUnit={python_sha256:'0'.repeat(64)};
+  // Refuse caller configuration before any host-specific interpreter lookup.
+  f.reviewedCurrentUnit={python_sha256:0n};
   f.github.getPullRequest=async()=>assert.fail('preflight must not run after factory refusal');
   await assert.rejects(advanceIntegration(f),{message:'local_review_refused'});
   assert.deepEqual(f.calls,[['outcome','merge','not-issued']]);
