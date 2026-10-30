@@ -1,4 +1,7 @@
 """Typed SDK/MCP protocol boundary tests, without network or credentials."""
+import asyncio
+import copy
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -84,6 +87,136 @@ class DispatcherBoundaryTests(unittest.TestCase):
         self.assertEqual(mcp.tool_value(result),{'found':False})
         with self.assertRaises(mcp.OperationError):
             mcp.tool_value({'content':[{'type':'text','text':'Job queued, not completed'}]})
+
+
+class CompactObservationTests(unittest.TestCase):
+    def remote(self):
+        request = {'action':'run','job_id':'offmenu-'+'a'*48,
+            'command':'cd /offmenu && export PYTHONPATH=/offmenu/src '+ 'x'*31900,
+            'mode':'read','timeout_seconds':180,
+            'resources':{'workers':1,'overhead_processes':8,'cpu_millis':1000,
+                'memory_bytes':2147483648,'io_slots':1,'output_bytes':0,
+                'read_roots':['/offmenu'],'write_roots':[]}}
+        receipt = {'job_id':request['job_id'],'status':'succeeded','exit_code':0,
+            'command_sha256':'a'*64,'request_sha256':'b'*64,
+            'runner_sha256':'c'*64,'capacity_policy_sha256':'d'*64,
+            'child_tree_gone':True,'reconcile_required':False}
+        return {'id':DispatcherBoundaryTests.job_id,'workspace_id':'offmenu',
+            'script_path':dispatcher.BRIDGE,'args':request,'type':'CompletedJob',
+            'running':False,'success':True,'logs':'PRIVATE_UNBOUNDED'*32000,
+            'result':{'job_id':request['job_id'],'job_succeeded':True,'receipt':receipt}}
+
+    def test_authored_truncated_shapes_fail_without_fabricated_success(self):
+        fixture_bytes = Path(__file__).with_name('observer-response-shapes.json').read_bytes()
+        self.assertEqual(hashlib.sha256(fixture_bytes).hexdigest(),
+                         'bc68417b7bcb26bbc13793ff85e17b1c43e550b0690f59c5d711c4ebcd2fb61f')
+        fixture = json.loads(fixture_bytes)
+        self.assertEqual(len(fixture['samples']),2)
+        self.assertEqual([s['original_total_characters'] for s in fixture['samples']], [14015,12590])
+        for sample in fixture['samples']:
+            text = sample['authored_rendering']
+            self.assertEqual(len(text),sample['original_rendered_characters'])
+            self.assertEqual(hashlib.sha256(text.encode()).hexdigest(),sample['authored_sha256'])
+            with self.assertRaises(json.JSONDecodeError):
+                json.JSONDecoder().raw_decode(text[text.index('{'):])
+            with self.assertRaises(mcp.ToolResultTruncatedError):
+                mcp.tool_value({'content':[{'type':'text','text':text}]})
+
+    def test_near_32k_command_compacts_below_native_limit_with_exact_digest(self):
+        from stokowski_operations import digest
+        remote = self.remote()
+        self.assertGreater(len(remote['args']['command']),31000)
+        original = copy.deepcopy(remote)
+        value = dispatcher.dispatch(SimpleNamespace(get=lambda *a,**k:Response(value=remote)),
+                                    'inspect',remote['id'])
+        rendered = 'Result (SUCCESS)\n\n'+json.dumps(value)
+        self.assertLess(len(rendered),12000)
+        self.assertNotIn('args',value['job'])
+        self.assertNotIn('PRIVATE_UNBOUNDED',rendered)
+        self.assertEqual(value['job']['args_sha256'],digest(remote['args']))
+        self.assertEqual(value['job']['result'],remote['result'])
+        self.assertEqual(mcp.tool_value({'content':[{'type':'text','text':rendered}]}),value)
+        self.assertEqual(remote,original)
+
+    def test_completed_schema_without_running_normalizes_and_binds_exact_args(self):
+        from stokowski_operations import digest, observation_matches
+        remote = self.remote()
+        del remote['running']  # Windmill 1.850.0 CompletedJob has no running field.
+        original = copy.deepcopy(remote)
+        compact = dispatcher.compact_job(remote)
+        self.assertIs(compact['running'],False)
+        self.assertEqual(compact['args_sha256'],digest(remote['args']))
+        self.assertTrue(observation_matches(compact,remote['id'],remote['args']))
+        self.assertEqual(remote,original)
+
+    def test_contradictory_or_malformed_job_states_are_rejected(self):
+        for fields in ({'running':True}, {'running':None}, {'success':None},
+                       {'type':'QueuedJob','success':True},
+                       {'type':'QueuedJob','running':None,'success':None}):
+            with self.subTest(fields=fields),self.assertRaises(ValueError):
+                dispatcher.compact_job(dict(self.remote(),**fields))
+        remote = dict(self.remote(),type='QueuedJob',success=None)
+        del remote['running']
+        with self.assertRaises(ValueError):
+            dispatcher.compact_job(remote)
+
+    def test_absent_or_error_results_emit_only_fixed_classification(self):
+        for payload in (None, {'error':{'message':'SENSITIVE wrapper failure'}},
+                        'SENSITIVE string error', json.dumps('SENSITIVE string error'),
+                        'null', {'ok':True}, {'error':'SENSITIVE'*100}):
+            remote = self.remote()
+            del remote['running']
+            remote.update(success=False,result=payload)
+            with self.subTest(payload=payload):
+                compact = dispatcher.compact_job(remote)
+                self.assertEqual(compact['result'],{'classification':'no-authoritative-receipt'})
+                self.assertEqual(dispatcher.compact_result(compact['result']),compact['result'])
+                self.assertNotIn('SENSITIVE',json.dumps(compact))
+        for payload in ({'receipt':None}, {'receipt':{'status':'succeeded'}},
+                        {'job_id':'offmenu-'+'b'*48}, 'x'*10001,
+                        {'error':'x'*10001}, '{"receipt":'):
+            remote = dict(self.remote(),result=payload)
+            with self.subTest(payload=type(payload)),self.assertRaises(ValueError):
+                dispatcher.compact_job(remote)
+
+    def test_receipt_fields_are_complete_typed_and_never_truncated(self):
+        original = self.remote()['result']
+        for key,value in [('command_sha256','a'*63),('runner_sha256','a'*65),
+                          ('exit_code',True),('child_tree_gone',1),
+                          ('arbitrary','SECRET'*10000),('logs','SECRET'*10000)]:
+            result = copy.deepcopy(original)
+            result['receipt'][key] = value
+            with self.subTest(key=key),self.assertRaises(ValueError):
+                dispatcher.compact_result(result)
+        for field in ('stdout','stderr','logs','extra'):
+            with self.subTest(field=field),self.assertRaises(ValueError):
+                dispatcher.compact_result(dict(original,**{field:'SECRET'*10000}))
+        self.assertEqual(dispatcher.compact_result(json.dumps(original)),original)
+
+    def test_malformed_missing_inspect_never_becomes_absent_job(self):
+        for value in ({'submitted':True},{'found':None},{'found':True},
+                      {'found':True,'job':None},{'found':False,'job':{}}):
+            client = mcp.WindmillMCP()
+            async def call(*args):
+                return value
+            client.call = call
+            with self.subTest(value=value),self.assertRaises(mcp.OperationError):
+                asyncio.run(client.inspect(DispatcherBoundaryTests.job_id))
+
+    def test_conflicting_backend_result_identity_is_rejected(self):
+        remote = self.remote()
+        remote['result']['job_id'] = 'offmenu-'+'b'*48
+        remote['result']['receipt']['job_id'] = remote['result']['job_id']
+        with self.assertRaises(ValueError):
+            dispatcher.compact_job(remote)
+
+    def test_safe_rpc_and_incomplete_error_classes(self):
+        with self.assertRaises(mcp.RPCIdentityError):
+            mcp.rpc_result(Response(text='not json'),2)
+        with self.assertRaises(mcp.RPCIdentityError):
+            mcp.rpc_result(Response(text='data: []',headers={'content-type':'text/event-stream'}),2)
+        with self.assertRaises(mcp.ToolResultIncompleteError):
+            mcp.tool_value({'content':[None,{'type':'text','text':'not completed'}]})
 
 
 if __name__ == '__main__':
