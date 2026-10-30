@@ -80,11 +80,14 @@ credential transfer, access grant or failover route.
 
 ## Canonical end-state design and remaining proof
 
-The existing [editable canonical graph bundle](https://chatgpt.com/api/library/files/libfile_01d619a94b3c8191ad0b0d71a782792e/download)
-contains the 24-node / 44-relation end-state design. It is a target model, not proof
-that every depicted path is live or enforced. The existing graph owner
-`/root/resume_hld_layout` controls pending renders and canonical revisions; this
-guide neither renders nor creates another architecture model.
+The [accepted editable graph, version 2.1](delivery-architecture/README.md)
+is preserved here with its [layout JSON](delivery-architecture/layout.json),
+[accepted SVG](delivery-architecture/accepted.svg) and exact Library
+[source custody](delivery-architecture/source-custody.json). It contains the
+24-node / 44-relation end-state design: a target model, not proof that every
+path is live or enforced. The existing graph owner `/root/resume_hld_layout`
+controls canonical revisions and renders. This repository copy preserves the
+accepted design; it creates no competing graph or runtime acceptance claim.
 
 Interpret its operation annotations with the corresponding state owners above:
 

@@ -1,0 +1,139 @@
+{
+  "schema": "offmenu-design-source-custody/1",
+  "issue": "https://linear.app/maldous/issue/UIF-119",
+  "design_version": "2.1.0",
+  "semantic_owner": "/root/resume_hld_layout",
+  "repository_base": "0bbdabb1a8a36d427b382103233b183fc0ea10aa",
+  "classification": "Accepted editable end-state design and historical design QA; not runtime acceptance, active configuration or execution receipts",
+  "counts": {
+    "nodes": 24,
+    "relations": 44,
+    "arrows": 49,
+    "protocol_labels": 43
+  },
+  "library": {
+    "bundle": {
+      "library_file_id": "libfile_e394a71f60088191975b31f95fc065d6",
+      "file_id": "file_00000000edd081f88d464706102ffc9d",
+      "file_name": "offmenu-hld-columns-v2.1-final.zip",
+      "version": 0,
+      "sha256": "b50bd1472560fa6d368cf9d1d816583ec5943de7d63bb620e11cb9264d7316bc"
+    },
+    "layout": {
+      "library_file_id": "libfile_c75c893e2510819194e42b6f04ae0989",
+      "sha256": "e5cf0dc3d643f714e2f5655a50f8c30d3e57fd7029cdcf43ffeaccb1ba16b42e"
+    },
+    "svg": {
+      "library_file_id": "libfile_6a18e5d7e98481918d0c3694b77a0cf6",
+      "sha256": "9a7e6797aed5435c1362696f8b9c57fca34b98a793aeb421b1664283a94c1f53"
+    },
+    "prior_guide_bundle": "libfile_01d619a94b3c8191ad0b0d71a782792e"
+  },
+  "archive": {
+    "path": "offmenu-hld-v2.1.zip",
+    "bytes": 66034,
+    "sha256": "b50bd1472560fa6d368cf9d1d816583ec5943de7d63bb620e11cb9264d7316bc"
+  },
+  "members": [
+    {
+      "archive_path": "accepted.svg",
+      "bytes": 78235,
+      "sha256": "9a7e6797aed5435c1362696f8b9c57fca34b98a793aeb421b1664283a94c1f53",
+      "extracted_path": "accepted.svg"
+    },
+    {
+      "archive_path": "layout.json",
+      "bytes": 489973,
+      "sha256": "e5cf0dc3d643f714e2f5655a50f8c30d3e57fd7029cdcf43ffeaccb1ba16b42e",
+      "extracted_path": "layout.json"
+    },
+    {
+      "archive_path": "render_contract.py",
+      "bytes": 3073,
+      "sha256": "9cb97c4f14f3c95ab34e9633d0d75caacc766c53b96289a8984f0cf8e484f2e3",
+      "extracted_path": "render_contract.py"
+    },
+    {
+      "archive_path": "validate_contract.py",
+      "bytes": 8371,
+      "sha256": "513e9f345a2407cb564d81f058f70aab0242ae91170726bc24dfafc38336dab5",
+      "extracted_path": "validate_contract.py"
+    },
+    {
+      "archive_path": "export_contract.py",
+      "bytes": 7677,
+      "sha256": "fd30f18267942a3ffd80ed0e8d3e95bc155fa972497cf4b5fb3fe10eec870dea",
+      "extracted_path": null
+    },
+    {
+      "archive_path": "routing_metrics.py",
+      "bytes": 3322,
+      "sha256": "483c84cadd2758ca40da3a4bb03e1408a7184ab596312970fac1fb28e93e0320",
+      "extracted_path": "routing_metrics.py"
+    },
+    {
+      "archive_path": "README.md",
+      "bytes": 4781,
+      "sha256": "bbdc86a4fa236261598a0fa541a759b249c27126101c3cf976ec56a5c6101b5f",
+      "extracted_path": null
+    },
+    {
+      "archive_path": "validation.json",
+      "bytes": 1860,
+      "sha256": "4a7b88ce94ae57897c7b2163f01f0da82ba898f86c6093872fd2a76e65ede931",
+      "extracted_path": null
+    },
+    {
+      "archive_path": "roundtrip.json",
+      "bytes": 383,
+      "sha256": "5e34cc74b5095385b169feab4b7ca11b56b42bf5a1d1479b6f75d89518b3446d",
+      "extracted_path": null
+    },
+    {
+      "archive_path": "qa-machine-review.json",
+      "bytes": 8597,
+      "sha256": "44a4e2d6516f89f313fb941c61ec65be100399d2175d19c80e584ebc1a98a5c9",
+      "extracted_path": null
+    },
+    {
+      "archive_path": "qa-machine-review.md",
+      "bytes": 1024,
+      "sha256": "3d0dd3c47a4a1ca9135bf57589dc87042b336ef545adbac9a6cb12398e6b79cc",
+      "extracted_path": null
+    },
+    {
+      "archive_path": "qa-visual-review.json",
+      "bytes": 3451,
+      "sha256": "29822a8a1fdcc93522da22a15f1b78a9c0335a79af134b47d735db35957a030a",
+      "extracted_path": null
+    },
+    {
+      "archive_path": "qa-visual-review.md",
+      "bytes": 1118,
+      "sha256": "e526ff2d24a3caee393b1ac8cde0a3995511d989441479b6b47b7499590a658a",
+      "extracted_path": null
+    },
+    {
+      "archive_path": "SHA256SUMS.json",
+      "bytes": 1181,
+      "sha256": "e7551344baa65840ff7ec0239c7c398dab5e8fcfa809938866e04fb966c52677",
+      "extracted_path": null
+    }
+  ],
+  "portable_use": {
+    "source": "layout.json",
+    "preview": "accepted.svg",
+    "renderer": "render_contract.py",
+    "validator": "validate_contract.py",
+    "validator_helper": "routing_metrics.py",
+    "exporter": "export_contract.py is retained only inside the archive; requires original workspace inputs and is not a portable entrypoint"
+  },
+  "limits": [
+    "No layout, topology, labels, geometry or source bytes changed",
+    "No rendering, exporter/validator execution, dependency installation or new runtime",
+    "Prior archive QA and roundtrip are retained evidence, not newly executed checks",
+    "Design labels and operation annotations do not establish live integration, entitlement, credentials or continuous recovery",
+    "No publication owner assigned by this candidate; sole integrator handles reviewed source adoption",
+    "No Actions, deployment, new spend/access/credentials, raw datasets, personal exports, OSM or CIX runtime"
+  ]
+}
