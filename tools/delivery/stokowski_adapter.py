@@ -368,7 +368,6 @@ class CurrentWork:
                 admission_sha256=spec['origin']['admission_sha256'],
                 local_source_root=spec['local_source_root'],workspace=spec['workspace'])
             or spec['policy_sha256'] != self.config['policy_sha256']
-            or spec['executor_sha256'] != file_sha(operations.__file__)
             or spec['runner_sha256'] != file_sha(SOURCE/'tools/delivery/windmill_runner.py')
             or set(task['input_paths']) != set(spec['outputs'])):
             raise AdmissionError('reviewed_source_operation')
@@ -406,7 +405,46 @@ class CurrentWork:
         identity = digest(dict(entry=entry,selected=selected,spec=spec,inputs=pins))
         if identity != binding['identity']:
             raise AdmissionError('reviewed_source_binding')
+        if spec['executor_sha256'] != file_sha(operations.__file__):
+            # This qualifier cannot execute the historical module. Its hash stays
+            # bound in the original spec/admission; only an authentic completed
+            # command with presently qualified source can survive executor drift.
+            # Apply in both modes: publication and fixed review also call the
+            # default mode. Journal.tick retains strict fresh-execution admission.
+            self._check_reviewed_terminal(spec, state, pins)
+            admission = stage.qualify_reviewed_source(spec,selected['admission_path'])
         return runtime,spec,selected,state,admission
+
+    def _check_reviewed_terminal(self, spec, state, pins):
+        from stokowski_operations import bridge_arguments
+        if (state.get('status') != 'succeeded' or state.get('cancel_requested') is not False
+            or state.get('observation_intent') or state.get('reconcile_required')
+            or state.get('accepted_output_sha256') != spec['outputs']
+            or state.get('acceptance_sha256') != spec['acceptance_sha256']):
+            raise AdmissionError('reviewed_source_terminal_required')
+        # Only owner-selected regular input bytes (already hash checked above)
+        # can supply the original receipt. A status string or a packet supplied
+        # by a new reviewer is insufficient authority for this exemption.
+        receipts = []
+        for name in pins:
+            try:
+                receipt = read_record(name)
+            except (ValueError,AdmissionError):
+                continue
+            if digest(receipt) == state.get('receipt_sha256'):
+                receipts.append(receipt)
+        if not receipts:
+            raise AdmissionError('reviewed_source_terminal_receipt_missing')
+        receipt = receipts[0]
+        expected = bridge_arguments(spec)
+        if (receipt.get('status') != 'succeeded' or type(receipt.get('exit_code')) is not int
+            or receipt['exit_code'] != 0 or receipt.get('child_tree_gone') is not True
+            or receipt.get('reconcile_required') is not False
+            or receipt.get('job_id') != state['logical_job_id']
+            or receipt.get('runner_sha256') != spec['runner_sha256']
+            or receipt.get('capacity_policy_sha256') != spec['policy_sha256']
+            or receipt.get('command_sha256') != hashlib.sha256(expected['command'].encode()).hexdigest()):
+            raise AdmissionError('reviewed_source_terminal_receipt_binding')
 
     def stage_origin(self, issue, task):
         """Requalify the owner-pinned original; never manufacture stage receipts.
