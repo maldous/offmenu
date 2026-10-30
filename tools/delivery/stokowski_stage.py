@@ -142,13 +142,16 @@ def bind_extraction(runtime, spec, admission_path, candidate_root=None):
         review['head'] != spec['head'] or review['base'] != spec['base'] or
         digest(review) != spec['origin']['review_sha256']):
         raise OperationError('Missing, stale or rejected independent review')
-    root = workspace_path(spec['workspace'])
-    if path.resolve().is_relative_to(root):
-        raise OperationError('Admission must be provided outside candidate source')
-    if candidate_root is not None and str(candidate_root) != str(root):
-        raise OperationError('Wrong candidate workspace')
+    remote_root = workspace_path(spec['workspace'])
+    root = Path(candidate_root) if candidate_root is not None else remote_root
+    if (not root.is_absolute() or str(root) != str(candidate_root if candidate_root is not None else remote_root) or
+        root.resolve() != root or any(p.is_symlink() for p in (root,*root.parents)) or
+        not root.is_dir()):
+        raise OperationError('Local source root must be an absolute canonical non-symlink directory')
+    if any(path.resolve().is_relative_to(candidate) for candidate in (root,remote_root)):
+        raise OperationError('Admission must be provided outside local and remote candidate source')
     try:
-        subprocess.run([sys.executable,'-c',candidate_check_code(spec)],check=True,
+        subprocess.run([sys.executable,'-c',candidate_check_code(spec,root)],check=True,
                        env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1'),capture_output=True)
     except subprocess.CalledProcessError as error:
         raise OperationError('Exact candidate identity/mapping/output check failed') from error
@@ -164,7 +167,8 @@ def bind_extraction(runtime, spec, admission_path, candidate_root=None):
     key = journal.prepare(spec)
     selected = {'operation_key':key,'source_head':spec['head'],
                 'origin':'reviewed-extraction','admission_sha256':spec['origin']['admission_sha256'],
-                'review_sha256':spec['origin']['review_sha256'],'workspace':str(root),
+                'review_sha256':spec['origin']['review_sha256'],'workspace':str(remote_root),
+                'local_source_root':str(root),
                 'execution':spec['execution'],'merge_accepted':False}
     if previous != selected:
         if previous:

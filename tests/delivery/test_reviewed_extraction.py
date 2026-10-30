@@ -67,9 +67,9 @@ class ExtractionTests(unittest.TestCase):
             policy_sha256=stage.file_hash(operations.POLICY),
             runner_sha256=stage.file_hash(TOOLS/'windmill_runner.py'),
             executor_sha256=stage.file_hash(TOOLS/'stokowski_operations.py'),
-            execution=dict(task_fit='retained byte mapping',requested_model='gpt-6.1-sol',
-                           requested_effort='medium',provider_route='codex-chatgpt',
-                           resolved_model=None,resolution_status='unobserved'))
+            execution=dict(task_fit='deterministic retained byte mapping validation',requested_model=None,
+                           requested_effort=None,provider_route='none',
+                           resolved_model=None,resolution_status='not-applicable'))
         self.pin()
 
     def git(self,*args):
@@ -210,8 +210,95 @@ class ExtractionTests(unittest.TestCase):
         self.pin()
         with self.assertRaises(operations.OperationError): self.bind()
 
+    def test_host_mirror_keeps_exact_jailed_workspace_in_remote_command(self):
+        remote = '/offmenu/data/.offmenu-platform/workspaces/reviewed-candidate'
+        self.admission['workspace'] = self.spec['workspace'] = remote
+        self.pin()
+        with patch.object(operations,'WORKSPACES',PurePosixPath('/offmenu/data/.offmenu-platform/workspaces')):
+            key = self.bind()
+            self.assertEqual(self.bind(),key)
+            selected = json.loads((self.runtime/'validation-bindings.json').read_text())['issues']['UIF-95']
+            self.assertEqual(selected['workspace'],remote)
+            self.assertEqual(selected['local_source_root'],str(self.workspace))
+            command = operations.bridge_arguments(self.spec)['command']
+            self.assertIn('cd '+remote,command)
+            self.assertIn(remote+'/src',command)
+            self.assertNotIn(str(self.workspace),command)
+            spec,_ = operations.Journal(self.runtime/'operations').read(key)
+            self.assertEqual(spec,self.spec)
+
+    def test_local_mirror_aliases_and_nested_git_root_are_rejected(self):
+        alias = self.root/'alias'
+        alias.symlink_to(self.workspace,target_is_directory=True)
+        nested = self.workspace/'retained'
+        for root in (alias, nested, 'relative/path', str(self.workspace)+'/',
+                     str(self.workspace)+'/../candidate'):
+            with self.subTest(root=str(root)), self.assertRaises(operations.OperationError):
+                stage.bind_extraction(self.runtime,self.spec,self.admission_path,root)
+
+    def test_admission_must_be_outside_both_candidates(self):
+        for root in (self.workspace,self.runtime):
+            path = root/'admission.json'
+            path.write_bytes(self.admission_path.read_bytes())
+            spec = copy.deepcopy(self.spec)
+            admission = copy.deepcopy(self.admission)
+            admission['workspace'] = spec['workspace'] = str(root)
+            path.write_text(json.dumps(admission,sort_keys=True))
+            spec['acceptance_sha256'] = spec['origin']['admission_sha256'] = stage.file_hash(path)
+            with patch.object(operations,'WORKSPACES',PurePosixPath(root.parent)):
+                with self.assertRaisesRegex(operations.OperationError,'outside local and remote'):
+                    stage.bind_extraction(self.runtime,spec,path,self.workspace)
+            path.unlink()
+
+    def test_clean_mirror_with_wrong_branch_or_untracked_source_is_rejected(self):
+        self.git('checkout','-qb','feature/wrong-branch')
+        with self.assertRaises(operations.OperationError): self.bind()
+        self.git('checkout','feature/retained-source')
+        (self.workspace/'untracked.py').write_text('unreviewed')
+        with self.assertRaises(operations.OperationError): self.bind()
+
+    def test_historical_source_object_need_not_be_candidate_ancestor(self):
+        source = self.git('commit-tree',self.git('rev-parse',self.spec['base']+'^{tree}'),
+                          '-m','separate historical source')
+        self.git('branch','feature/historical-source',source)
+        self.admission['source_commit'] = source
+        self.pin()
+        self.bind()
+
+    def test_nonancestor_base_wrong_source_bytes_and_output_symlink_rejected(self):
+        original = copy.deepcopy(self.admission)
+        unrelated = self.git('commit-tree',self.git('rev-parse',self.spec['base']+'^{tree}'),
+                             '-m','unrelated base')
+        self.admission['base'] = self.admission['review']['base'] = self.spec['base'] = unrelated
+        self.pin()
+        with self.assertRaises(operations.OperationError): self.bind()
+        self.admission = original
+        self.spec['base'] = original['base']
+        old = next(iter(self.admission['mapping']))
+        self.admission['mapping']['baseline'] = self.admission['mapping'].pop(old)
+        self.pin()
+        with self.assertRaises(operations.OperationError): self.bind()
+        self.admission['mapping'][old] = self.admission['mapping'].pop('baseline')
+        self.pin()
+        output = self.workspace/self.admission['mapping'][old]
+        output.unlink()
+        output.symlink_to(self.workspace/old)
+        with self.assertRaises(operations.OperationError): self.bind()
+
+    def test_command_runs_one_control_suite_without_wfp_fixture_replay(self):
+        tokens = shlex.split(operations.bridge_arguments(self.spec)['command'])
+        code = [tokens[index+1] for index,token in enumerate(tokens) if token == '-c']
+        controls = [value for value in code if 'ACCEPTED_CONTROL_VALIDATORS' in value]
+        self.assertEqual(len(controls),1)
+        self.assertEqual(sum(value.count("'unittest'") for value in code),1)
+        self.assertNotIn('-m unittest', ' '.join(tokens))
+        self.assertIn("str(control/'tests/delivery')",controls[0])
+        self.assertNotIn('test_wfp_retained.py', '\n'.join(code).replace(json.dumps(self.spec,sort_keys=True),''))
+        self.assertNotIn('wfp-retained-authored-fixtures.json',controls[0])
+        self.assertEqual(code[0],code[-1])
+
     def test_v1_key_command_and_executor_hash_remain_byte_identical(self):
-        accepted = subprocess.check_output(['git','show','HEAD:tools/delivery/stokowski_operations.py'])
+        accepted = subprocess.check_output(['git','show','7780c8602b52e9f2fc7e6a38e5d08d8ad74f09e1:tools/delivery/stokowski_operations.py'])
         original_path = self.root/'original_operations.py'
         original_path.write_bytes(accepted)
         module_spec = importlib.util.spec_from_file_location('original_operations',original_path)

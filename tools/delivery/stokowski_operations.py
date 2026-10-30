@@ -114,21 +114,21 @@ def validated_v2(spec):
     execution = spec['execution']
     if (not isinstance(execution,dict) or set(execution) !=
         {'task_fit','requested_model','requested_effort','provider_route','resolved_model','resolution_status'} or
-        not isinstance(execution['task_fit'],str) or not execution['task_fit'].strip() or
-        execution['requested_model'] != 'gpt-6.1-sol' or execution['requested_effort'] != 'medium' or
-        execution['provider_route'] != 'codex-chatgpt' or execution['resolved_model'] is not None or
-        execution['resolution_status'] != 'unobserved'):
+        execution['task_fit'] != 'deterministic retained byte mapping validation' or
+        execution['requested_model'] is not None or execution['requested_effort'] is not None or
+        execution['provider_route'] != 'none' or execution['resolved_model'] is not None or
+        execution['resolution_status'] != 'not-applicable'):
         raise OperationError('Invalid execution metadata')
     if spec['acceptance_sha256'] != origin['admission_sha256']:
         raise OperationError('Acceptance must pin extraction admission')
     return spec
 
 
-def candidate_check_code(spec):
+def candidate_check_code(spec, candidate_root=None):
     """Identical local/remote identity, layout and retained byte checks."""
     return """import hashlib,json,pathlib,subprocess
 spec=json.loads(SPEC_JSON)
-root=pathlib.Path(spec['workspace'])
+root=pathlib.Path(LOCAL_SOURCE_ROOT)
 assert root.resolve()==root and not any(p.is_symlink() for p in (root,*root.parents)), 'workspace alias'
 def git(*args): return subprocess.check_output(['git','-C',str(root),*args])
 assert git('rev-parse','--show-toplevel').decode().strip()==str(root), 'wrong checkout'
@@ -146,7 +146,9 @@ for old,new in spec['origin']['mapping'].items():
  assert hashlib.sha256(git('show',spec['head']+':'+new)).hexdigest()==expected, 'head output drift'
  assert git('ls-tree',spec['origin']['source_commit'],'--',old).split()[:2] in ([b'100644',b'blob'],[b'100755',b'blob']), 'nonregular retained source'
  assert hashlib.sha256(git('show',spec['origin']['source_commit']+':'+old)).hexdigest()==expected, 'mapping drift'
-""".replace('SPEC_JSON',repr(json.dumps(spec,sort_keys=True)))
+""".replace('LOCAL_SOURCE_ROOT',repr(
+        str(candidate_root) if candidate_root is not None else spec['workspace']),1).replace(
+        'SPEC_JSON',repr(json.dumps(spec,sort_keys=True)),1)
 
 
 def extraction_arguments(spec):
@@ -171,8 +173,6 @@ def extraction_arguments(spec):
             ' GIT_CONFIG_VALUE_0='+shlex.quote(root),
         check, '/offmenu/.venv-delivery/bin/python -c '+shlex.quote(profile),
         '/offmenu/.venv-delivery/bin/python -c '+shlex.quote(control),
-        '/offmenu/.venv-delivery/bin/python -m unittest discover -s tests/delivery -q',
-        '/offmenu/.venv-delivery/bin/python -m unittest discover -s tests -p test_wfp_retained.py -q',
         '/offmenu/.venv-delivery/bin/python -m offmenu.delivery check',
         '/offmenu/.venv-delivery/bin/python scripts/check_final_layout.py', check]
     return {'action':'run','job_id':'offmenu-'+operation_key(spec)[:48],

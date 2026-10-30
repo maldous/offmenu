@@ -49,6 +49,28 @@ class ExecutionMetadataTests(unittest.TestCase):
         intent = json.loads((self.directory()/'intent.json').read_text())
         self.assertEqual(result['parent_binding'],intent['binding'])
 
+    def test_deterministic_extraction_requires_no_model_or_provider(self):
+        fixture = extraction.ExtractionTests()
+        fixture.setUp()
+        self.addCleanup(fixture.doCleanups)
+        import stokowski_operations as operations
+        self.assertEqual(fixture.spec['execution'],dict(
+            task_fit='deterministic retained byte mapping validation',
+            requested_model=None,requested_effort=None,provider_route='none',
+            resolved_model=None,resolution_status='not-applicable'))
+        operations.validated(fixture.spec)
+        for field,value in (('requested_model','gpt-6.1-sol'),('requested_effort','medium'),
+                            ('provider_route','codex-chatgpt'),('provider_route','paid-api'),
+                            ('resolved_model','gpt-6.1-sol'),('resolution_status','unobserved'),
+                            ('task_fit',''),('task_fit','native coding')):
+            spec = copy.deepcopy(fixture.spec)
+            spec['execution'][field] = value
+            with self.subTest(field=field,value=value), self.assertRaises(operations.OperationError):
+                operations.validated(spec)
+        fixture.bind()
+        selected = json.loads((fixture.runtime/'validation-bindings.json').read_text())['issues']['UIF-95']
+        self.assertEqual(selected['execution'],fixture.spec['execution'])
+
     def test_only_explicit_event_model_identity_is_observed(self):
         path = self.root/'events.jsonl'
         path.write_text(json.dumps({'type':'item.completed','model':'not-a-model-observation'})+'\n'+
