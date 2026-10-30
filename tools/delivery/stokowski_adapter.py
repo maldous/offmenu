@@ -309,6 +309,71 @@ class CurrentWork:
                     raise AdmissionError('current_retained_lease_requires_reconciliation')
         return runtime, manifest, source
 
+    def reviewed_origin(self, issue, task):
+        """Read the new validation operation under its separately selected runtime."""
+        import stokowski_operations as operations
+        import stokowski_stage as stage
+        for module in (operations,stage):
+            name='tools/delivery/'+Path(module.__file__).name
+            accepted=subprocess.check_output(['git','-C',str(SOURCE),'show',self.config['source_head']+':'+name])
+            if hashlib.sha256(accepted).hexdigest() != file_sha(module.__file__):
+                raise AdmissionError('reviewed_source_executor_drift')
+        binding = task['stage_binding']
+        entry = binding['entry']
+        if (set(entry) != {'issue','issue_id','runtime','admission_sha256','origin'}
+            or entry['origin'] != 'reviewed-source-v1' or entry['issue'] != issue
+            or entry['issue_id'] != task['issue_id'] or task['owner'] != self.config['owner']):
+            raise AdmissionError('reviewed_source_identity')
+        runtime = self.private(entry['runtime'])
+        pins = binding['inputs']
+        selected_path = runtime/'validation-bindings.json'
+        if not isinstance(pins,dict) or str(selected_path) not in pins:
+            raise AdmissionError('reviewed_source_input_coverage')
+        for name, sha in pins.items():
+            path = Path(name)
+            if not path.is_absolute() or any(p.is_symlink() for p in (path,*path.parents)) or path != path.resolve() or file_sha(path) != sha:
+                raise AdmissionError('reviewed_source_input_drift')
+        bindings = read_record(selected_path)
+        if bindings != dict(version=1,issues=bindings.get('issues'),history=[]) or set(bindings['issues']) != {issue}:
+            raise AdmissionError('reviewed_source_selection')
+        selected = bindings['issues'][issue]
+        database = self.private(str(runtime/'operations/operations.sqlite'))
+        with sqlite3.connect(database.as_uri()+'?mode=ro',uri=True) as db:
+            row = db.execute('SELECT spec,state FROM operations WHERE key=?',(selected['operation_key'],)).fetchone()
+        if row is None:
+            raise AdmissionError('reviewed_source_journal_missing')
+        spec,state = map(json.loads,row)
+        operations.validated(spec)
+        if (spec['version'] != 3 or operations.operation_key(spec) != selected['operation_key']
+            or row[0] != json.dumps(spec,sort_keys=True) or spec['owner'] != self.config['owner']
+            or spec['issue'] != issue or spec['issue_id'] != task['issue_id']
+            or spec['origin']['admission_sha256'] != entry['admission_sha256']
+            or selected != dict(operation_key=operations.operation_key(spec),source_head=spec['head'],
+                origin='reviewed-source-v1',admission_path=selected['admission_path'],
+                admission_sha256=spec['origin']['admission_sha256'],
+                local_source_root=spec['local_source_root'],workspace=spec['workspace'])
+            or spec['policy_sha256'] != self.config['policy_sha256']
+            or spec['executor_sha256'] != file_sha(operations.__file__)
+            or spec['runner_sha256'] != file_sha(SOURCE/'tools/delivery/windmill_runner.py')
+            or set(task['input_paths']) != set(spec['outputs'])):
+            raise AdmissionError('reviewed_source_operation')
+        admission = stage.qualify_reviewed_source(spec,selected['admission_path'])
+        required = {selected['admission_path']:entry['admission_sha256'],
+                    admission['review']['path']:admission['review']['sha256']}
+        required.update({r['path']:r['sha256'] for r in admission['provenance']})
+        if any(pins.get(k) != v for k,v in required.items()):
+            raise AdmissionError('reviewed_source_evidence_coverage')
+        from uuid import uuid5,NAMESPACE_URL
+        if (state.get('windmill_job_id') != str(uuid5(NAMESPACE_URL,'offmenu:run:'+selected['operation_key']))
+            or state.get('cancel_job_id') != str(uuid5(NAMESPACE_URL,'offmenu:cancel:'+selected['operation_key']))
+            or state.get('logical_job_id') != operations.bridge_arguments(spec)['job_id']
+            or type(state.get('cancel_requested')) is not bool):
+            raise AdmissionError('reviewed_source_state')
+        identity = digest(dict(entry=entry,selected=selected,spec=spec,inputs=pins))
+        if identity != binding['identity']:
+            raise AdmissionError('reviewed_source_binding')
+        return runtime,spec,selected,state,admission
+
     def stage_origin(self, issue, task):
         """Requalify the owner-pinned original; never manufacture stage receipts.
 
@@ -317,6 +382,9 @@ class CurrentWork:
         Journal state stays mutable under its original operation lock.
         """
         import copy
+        if task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1':
+            runtime, _, _, _, _ = self.reviewed_origin(issue,task)
+            return self, runtime, task['stage_binding']['identity']
         binding = task['stage_binding']
         entry = binding['entry']
         if (set(entry) != {'issue','issue_id','runtime','admission_sha256'}
@@ -369,6 +437,12 @@ class CurrentWork:
             raise AdmissionError('current_gate_identity')
         runtime, manifest, _ = self.context(issue.identifier, review=True)
         task = manifest['tasks'][issue.identifier]
+        if 'stage' in task and task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1':
+            _, spec, selected, _, admission = self.reviewed_origin(issue.identifier,task)
+            return dict(project_id=PROJECT,issue_id=issue.id,origin='reviewed-source-v1',
+                origin_admission_sha256=spec['origin']['admission_sha256'],
+                operation_key=selected['operation_key'],owner=spec['owner'],author=admission['author'],
+                authors=admission['authors'],head=spec['head'],base=spec['base'],outputs=spec['outputs'])
         if 'stage' in task:
             view, _, _ = self.stage_origin(issue.identifier, task)
             return view.gate_binding(issue)
@@ -624,7 +698,10 @@ class CurrentWork:
         unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']))
         runtime, manifest, _ = self.context(issue, review=True)
         task = manifest['tasks'][issue]
-        if 'stage' in task:
+        reviewed = 'stage' in task and task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1'
+        if reviewed:
+            runtime, origin_spec, _, _, admission = self.reviewed_origin(issue,task)
+        elif 'stage' in task:
             view, _, _ = self.stage_origin(issue, task)
             return view._check_unit_review(packet)
         b, snapshot, decision = (packet[k] for k in ('integration_binding','snapshot','decision'))
@@ -632,7 +709,7 @@ class CurrentWork:
         action = decision.get('action') or {}
         if (unit != packet['unit_binding'] or unit['project_id'] != PROJECT or
             b['issue_id'] != entry['issue_id'] or b['owner'] != self.config['owner'] or
-            b['head_branch'] != manifest['branch'] or snapshot.get('publisher_owner') != b['owner'] or
+            b['head_branch'] != (origin_spec['branch'] if reviewed else manifest['branch']) or snapshot.get('publisher_owner') != b['owner'] or
             decision.get('binding_sha256') != digest(b) or
             decision.get('status') != 'merge-intent' or decision.get('merge_effect') != 'pending' or
             action.get('kind') != 'merge-pr' or action.get('expected_head_sha') != b['head'] or
@@ -648,7 +725,9 @@ class CurrentWork:
             review.get('findings') or not review.get('evidence_id') or
             not review.get('reviewer') or not review.get('author') or
             review['reviewer'] == review['author'] or
-            review['author'] != manifest['tasks'][issue]['owner'] or
+            review['author'] != (admission['author'] if reviewed else manifest['tasks'][issue]['owner']) or
+            (reviewed and (review['reviewer'] in admission['authors'] or
+                          review['reviewer'] in {ref['owner'] for ref in admission['provenance']})) or
             not review.get('model') or not review.get('provider') or
             review.get('head') != b['head'] or review.get('base') != b['base'] or
             review.get('outputs') != b['outputs']):
@@ -667,6 +746,28 @@ class CurrentWork:
         if not row:
             raise AdmissionError('unit_review_journal_missing')
         spec, state = map(json.loads, row)
+        if reviewed:
+            receipt = packet['validation_receipt']
+            expected = bridge_arguments(spec)
+            if (spec != origin_spec or operation_key(spec) != key or spec['version'] != 3
+                or any(spec[k] != b[k] for k in ('head','base','outputs','owner'))
+                or spec['branch'] != b['head_branch'] or selected['operation_key'] != key
+                or spec['policy_sha256'] != b['capacity_policy_sha256']
+                or state.get('status') != 'succeeded' or state.get('cancel_requested') is not False
+                or state.get('observation_intent') or state.get('reconcile_required')
+                or state.get('accepted_output_sha256') != spec['outputs']
+                or state.get('acceptance_sha256') != spec['acceptance_sha256']
+                or state.get('receipt_sha256') != digest(receipt)
+                or receipt.get('status') != 'succeeded' or receipt.get('exit_code') != 0
+                or receipt.get('child_tree_gone') is not True or receipt.get('reconcile_required') is not False
+                or receipt.get('job_id') != state['logical_job_id']
+                or receipt.get('runner_sha256') != spec['runner_sha256']
+                or receipt.get('capacity_policy_sha256') != spec['policy_sha256']
+                or receipt.get('command_sha256') != hashlib.sha256(expected['command'].encode()).hexdigest()
+                or validation != dict(operation_key=key,status='succeeded',head=spec['head'],base=spec['base'],
+                    capacity_policy_sha256=spec['policy_sha256'],outputs=spec['outputs'],child_tree_gone=True,reconcile_required=False)):
+                raise AdmissionError('unit_review_reviewed_source_validation')
+            return unit
         native = read_record(runtime/'attempts'/issue/'receipt.json')
         expected_acceptance = digest(dict(task=manifest['tasks'][issue],
             native_receipt_sha256=unit['native_receipt_sha256'], profile=spec['profile']))

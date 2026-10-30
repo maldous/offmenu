@@ -134,6 +134,8 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
         require(consumer.config['owner'] == owner and consumer.root == root
                 and consumer.catalog == catalog, 'stage_coordinator')
         consumer.stage_origin(issue, task)
+        if task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1':
+            require(original.is_relative_to(root) and original.is_dir(), 'reviewed_validation_runtime')
     # This is the sole publication lock across catalogs in the selected root.
     lock = canonical(root/'publication.lock')
     fd = os.open(lock, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)

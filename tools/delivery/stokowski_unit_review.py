@@ -227,7 +227,14 @@ def handle(request):
     # stage_origin can select and requalify the owner-pinned native-v1 original.
     evidence_runtime, evidence_source = task_runtime, source
     task = manifest['tasks'][c['issue']]
-    if 'stage' in task:
+    reviewed = 'stage' in task and task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1'
+    if reviewed:
+        evidence_runtime, spec, selected, _, admission = current.reviewed_origin(c['issue'],task)
+        evidence_source = Path(spec['local_source_root'])
+        custody(evidence_runtime,uid,private=True)
+        for name in task['stage_binding']['inputs']:
+            custody(name,uid,private=True)
+    elif 'stage' in task:
         original, evidence_runtime, _ = current.stage_origin(c['issue'], task)
         qualified_runtime, _, evidence_source = original.context(c['issue'], review=True)
         require(qualified_runtime == evidence_runtime)
@@ -235,8 +242,8 @@ def handle(request):
         for name in admission_files:
             custody(evidence_runtime/name, uid, private=True)
     for name in ('validation-bindings.json','operations/operations.sqlite',
-                 *['attempts/'+c['issue']+'/'+n for n in
-                   ('intent.json','dispatch-intent.json','receipt.json')]):
+                 *([] if reviewed else ['attempts/'+c['issue']+'/'+n for n in
+                   ('intent.json','dispatch-intent.json','receipt.json')])):
         custody(evidence_runtime/name, uid, private=True)
     custody(current.catalog, uid, private=True)
     roots = [custody(p, uid, private=True) for p in c['workspace_roots']]
@@ -285,7 +292,7 @@ def handle(request):
             and ((review['resolution_status'] == 'unknown' and review.get('resolved_model') is None)
                  or (review['resolution_status'] == 'observed' and review.get('resolved_model'))))
     for name in b['outputs']:
-        custody(evidence_runtime/'workspaces'/c['issue']/name, uid, private=True)
+        custody((evidence_source if reviewed else evidence_runtime/'workspaces'/c['issue'])/name, uid, private=True)
     incoming = runtime/('unit-review-' + c['issue'] + '.json')
     raw = json.dumps(packet, sort_keys=True, separators=(',', ':')).encode()
     if incoming.exists():

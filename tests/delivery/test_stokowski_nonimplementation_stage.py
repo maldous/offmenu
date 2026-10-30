@@ -241,3 +241,343 @@ class TypedStageTests(unittest.TestCase):
         self.assertEqual(load_manifest(runtime/'manifest.json',expected_branch=None),original)
         self.assertEqual(manifest_digest(original),manifest_digest(load_manifest(runtime/'manifest.json',expected_branch=None)))
         self.assertEqual((runtime/'manifest.json').read_bytes(),raw)
+
+
+def reviewed_records(case, candidate, base, head, outputs, issue_name="UIF-106", issue_id="00000000-0000-4000-8000-000000000106", prior_reviewer="independent-prior-reviewer"):
+    """SYNTHETIC owner inputs and manual provenance; no real acceptance claim."""
+    import hashlib
+    import subprocess
+    import stokowski_operations as operations
+    import stokowski_stage as stage
+    runtime = case.root/'fresh-reviewed-validation'
+    evidence = case.root/'synthetic-manual-history'
+    def git(*args):
+        return subprocess.run(['git','-C',str(candidate),*args],check=True,capture_output=True).stdout
+    refs = []
+    # Explicit SYNTHETIC receipts describe actual fixture commits, never inferred
+    # real admission. Use each committed delta, including intermediate bytes.
+    commits=git('rev-list','--reverse',base+'..'+head).decode().splitlines()
+    for index, contribution in enumerate(commits):
+        source=git('rev-parse',contribution+'^').decode().strip()
+        names=git('diff','--no-renames','--name-only',source,contribution).decode().splitlines()
+        contributed={name:hashlib.sha256(git('show',contribution+':'+name)).hexdigest() for name in names}
+        author=('manual-author-one','manual-author-two')[min(index,1)]
+        parent = dict(owner=author,branch='feature/test-current',head=source)
+        receipt = dict(issue=issue_name,status='succeeded',child_tree_gone=True,accepted_delivery=False,
+            scope_violations=[],session_id='synthetic-session-'+str(index),source_head=source,
+            parent_binding=parent,binding_sha256=digest(parent),lease='synthetic-old-lease-'+str(index),
+            output_sha256=contributed)
+        path=evidence/(str(index)+'.json'); case.write(path,receipt)
+        refs.append(dict(path=str(path),sha256=adapter.file_sha(path),author=author,owner=parent['owner'],
+            session=receipt['session_id'],source_head=source,outputs=contributed,
+            contribution_head=contribution,path_mapping={name:name for name in names},derivation=None))
+    # Build the acyclic payload before the independent review exists. The prior
+    # reviewer attests exact source and all transformations, without future hashes.
+    for ref in refs:
+        if ref['outputs'] != {name:outputs[name] for name in ref['path_mapping']}:
+            ref['derivation']=dict(owner=ref['owner'],contribution_head=ref['contribution_head'],
+                path_mapping=ref['path_mapping'],head=head,outputs={name:outputs[name] for name in ref['path_mapping']},
+                reason='SYNTHETIC reviewed second contribution transforms the first committed output.')
+    review=dict(reviewer=prior_reviewer,decision='accepted',head=head,base=base,outputs=outputs,
+        derivations=operations.canonical_derivations(refs))
+    path=evidence/'accepted-review.json'; case.write(path,review)
+    review.update(path=str(path),sha256=adapter.file_sha(path))
+    for ref in refs:
+        if ref['derivation'] is not None:
+            ref['derivation']['review_sha256']=digest(review)
+    files=['tests/delivery/'+n+'.py' for n in operations.REVIEWED_TESTS]
+    archive=subprocess.run(['git','-C',str(candidate),'archive',base,*files],check=True,capture_output=True).stdout
+    admission=dict(version=1,issue=issue_name,issue_id=issue_id,
+        owner='existing-owner',head=head,base=base,branch='feature/test-current',
+        workspace='/offmenu/data/.offmenu-platform/workspaces/synthetic-reviewed-source',local_source_root=str(candidate),
+        outputs=outputs,author=refs[0]['author'],authors=[r['author'] for r in refs],provenance=refs,review=review,
+        control_sha256=hashlib.sha256(archive).hexdigest(),policy_sha256=case.current.config['policy_sha256'],
+        runner_sha256=adapter.file_sha(case.source/'tools/delivery/windmill_runner.py'),
+        executor_sha256=adapter.file_sha(operations.__file__),execution=dict(task_fit='deterministic reviewed source validation',
+            requested_model=None,requested_effort=None,provider_route='none',resolved_model=None,resolution_status='not-applicable'))
+    path=evidence/'new-admission.json';case.write(path,admission)
+    spec={k:v for k,v in admission.items() if k not in ('author','authors','provenance','review')}
+    spec.update(version=3,stage='validate',profile=operations.REVIEWED_PROFILE,acceptance_sha256=adapter.file_sha(path),
+        origin=dict(kind='reviewed-source-v1',admission_sha256=adapter.file_sha(path),review_sha256=digest(review),
+            author=admission['author'],authors=admission['authors'],provenance=refs))
+    key=stage.bind_reviewed_source(runtime,spec,path)
+    case.assertEqual(stage.bind_reviewed_source(runtime,spec,path),key)
+    selected=json.loads((runtime/'validation-bindings.json').read_text())['issues'][issue_name]
+    entry=dict(issue=issue_name,issue_id=spec['issue_id'],runtime=str(runtime),origin='reviewed-source-v1',admission_sha256=adapter.file_sha(path))
+    pins={str(p):adapter.file_sha(p) for p in [path,Path(review['path']),runtime/'validation-bindings.json',*[Path(r['path']) for r in refs]]}
+    binding=dict(entry=entry,inputs=pins,identity=digest(dict(entry=entry,selected=selected,spec=spec,inputs=pins)))
+    return runtime,spec,key,binding
+
+
+class ReviewedSourceTests(TypedStageTests):
+    # Inherit the native regression checks, plus exercise the new actual callers.
+    def new_fixture(self, stage_name='validation', **record_options):
+        import subprocess
+        import hashlib
+        import stokowski_operations as operations
+        from stokowski_operations import Journal
+        issue,_,owner,_,_,_,remote,factory=self.stage_fixture(stage_name)
+        import shutil
+        for module in (operations,__import__('stokowski_stage')):
+            shutil.copyfile(module.__file__,self.source/'tools/delivery'/Path(module.__file__).name)
+        candidate=self.temp/'immutable-manual-candidate';candidate.mkdir()
+        def git(*args):
+            return subprocess.run(['git','-C',str(candidate),*args],check=True,capture_output=True,text=True).stdout.strip()
+        git('init','-b','feature/test-current')
+        for name in operations.REVIEWED_TESTS:
+            path=candidate/'tests/delivery'/(name+'.py');path.parent.mkdir(parents=True,exist_ok=True)
+            path.write_text('"""SYNTHETIC fixed consumer oracle."""\nimport unittest\nclass CurrentDispatchTests(unittest.TestCase):\n'+''.join(' def '+n+'(self): self.assertTrue(True)\n' for n in ('test_normal_tick_rejects_invalid_validation_before_transport','test_normal_tick_continues_original_intent_and_reopen','test_qualified_prepared_submits_once_and_refusal_retains_identity','test_validation_state_identity_drift_and_cancel_flag_preserved'))+'\nclass OperationRecoveryTests(unittest.TestCase):\n'+''.join(' def '+n+'(self): self.assertTrue(True)\n' for n in ('test_unknown_missing_remote_job_is_not_blindly_resubmitted','test_second_owner_cannot_create_duplicate_operation','test_cancel_before_submission_does_not_start_a_job')))
+        git('add','.')
+        def commit(message):
+            git('-c','user.name=Synthetic','-c','user.email=synthetic@example.invalid','-c','commit.gpgsign=false','commit','-m',message)
+            return git('rev-parse','HEAD')
+        base=commit('synthetic accepted base')
+        target=candidate/'tools/delivery/manual.py';target.parent.mkdir(parents=True);target.write_text('synthetic = False\n')
+        second=candidate/'tools/delivery/second_manual.py';second.write_text('synthetic_second = False\n')
+        git('add','.');commit('synthetic first manual contribution')
+        target.write_text('synthetic = True\n');second.write_text('synthetic_second = True\n')
+        git('add','.');head=commit('synthetic second manual contribution')
+        outputs={str(path.relative_to(candidate)):hashlib.sha256(path.read_bytes()).hexdigest() for path in (target,second)}
+        self.stack.enter_context(patch.object(operations,'POLICY',self.source/'tools/delivery/capacity-policy.json'))
+        runtime,spec,key,binding=reviewed_records(self,candidate,base,head,outputs,**record_options)
+        self.stage_task.update(stage_binding=binding,input_paths=list(outputs))
+        return issue,runtime,owner,Journal(runtime/'operations'),key,spec,remote,factory
+
+    def test_new_origin_publication_current_journal_restart_review(self):
+        import stokowski_operations as operations
+        issue,runtime,owner,journal,key,spec,remote,factory=self.new_fixture()
+        selected=self.publish_stage()
+        self.assertFalse((selected/'operations').exists())
+        self.assertFalse((runtime/'current-admission.json').exists())
+        self.assertFalse((runtime/'attempts').exists())
+        self.assertNotIn('native_receipt_sha256',self.current.gate_binding(issue))
+        # Genuine fixed local subprocess, with only the canonical service root
+        # substituted by this labelled synthetic mirror. External jobs are fake.
+        args=operations.bridge_arguments(spec)
+        command=args['command'].replace(spec['workspace'],spec['local_source_root']).replace('/offmenu/.venv-delivery/bin/python',sys.executable).replace('/offmenu/.delivery/stokowski/venv/lib/python3.12/site-packages','/home/user/src/offmenu/.delivery/stokowski/venv/lib/python3.12/site-packages')
+        import subprocess,os
+        env=dict(os.environ,PYTHONPATH='/home/user/src/offmenu/.delivery/stokowski/venv/lib/python3.12/site-packages')
+        result=subprocess.run(['/bin/sh','-c',command],capture_output=True,text=True,env=env,timeout=30)
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        # Current tick prepares no replacement and submits this new operation once.
+        remote.inspect.return_value=None
+        asyncio.run(owner._tick())
+        remote.submit.assert_awaited_once()
+        self.current=adapter.CurrentWork(self.runtime)
+        asyncio.run(self.current.continue_validation())
+        remote.submit.assert_awaited_once()
+        self.assertEqual(journal.read(key)[1]['status'],'unknown')
+        packet=self.independent_packet(issue,journal,key,spec)
+        packet['snapshot']['review']['author']=spec['origin']['author']
+        packet['snapshot']['review']['evidence_sha256']=digest({k:v for k,v in packet['snapshot']['review'].items() if k!='evidence_sha256'})
+        b=packet['integration_binding'];packet['decision']['qualification_sha256']=digest(dict(validation=packet['snapshot']['validation'],review=packet['snapshot']['review'],tree=b['tree'],policy=b['policy_sha256']))
+        self.current.unit_review_writer(lambda value:packet)(packet)
+        self.current.refresh()
+        self.assertEqual(self.current.state['tasks']['UIF-106']['unit_gate']['disposition'],'approved')
+        self.assertFalse(self.current.state['accepted_delivery'])
+        self.assertFalse((selected/'attempts/UIF-106').exists())
+
+    def test_new_origin_contribution_proof_rejects_before_prepare(self):
+        import subprocess
+        import stokowski_operations as operations
+        import stokowski_stage as stage
+        _,runtime,_,_,_,original,_,_=self.new_fixture()
+        candidate=Path(original['local_source_root'])
+        admission_path=runtime.parent/'synthetic-manual-history/new-admission.json'
+        original_admission=json.loads(admission_path.read_text())
+        # A genuine successful unrelated same-issue/claimed-native-owner receipt
+        # must fail even after all self-declared reference hashes are repinned.
+        tree=subprocess.run(['git','-C',str(candidate),'rev-parse',original['head']+'^{tree}'],check=True,capture_output=True,text=True).stdout.strip()
+        foreign=subprocess.run(['git','-C',str(candidate),'-c','user.name=Synthetic',
+            '-c','user.email=synthetic@example.invalid','commit-tree',tree],input='SYNTHETIC unrelated root\n',check=True,capture_output=True,text=True).stdout.strip()
+        receipt_path=Path(original['origin']['provenance'][0]['path'])
+        raw=receipt_path.read_bytes()
+        for label in ('unrelated-source','unrelated-contribution','wrong-blob','wrong-output-path',
+                      'wrong-contribution','fake-review','fake-derivation','missing-derivation',
+                      'no-relevant-output','unrelated-receipt','aliased-path'):
+            spec=copy.deepcopy(original)
+            ref=spec['origin']['provenance'][0]
+            if label=='unrelated-source':ref['source_head']=foreign
+            elif label=='unrelated-contribution':ref['contribution_head']=foreign
+            elif label=='wrong-blob':ref['outputs'][next(iter(ref['outputs']))]='0'*64
+            elif label=='wrong-output-path':
+                ref['outputs']={'tools/delivery/wrong.py':next(iter(ref['outputs'].values()))}
+                ref['path_mapping']={'tools/delivery/wrong.py':next(iter(original['outputs']))}
+            elif label=='wrong-contribution':ref['contribution_head']=spec['head']
+            elif label=='fake-review':ref['derivation']['review_sha256']='0'*64
+            elif label=='fake-derivation':ref['derivation']['owner']='foreign-owner'
+            elif label=='missing-derivation':ref['derivation']=None
+            elif label=='no-relevant-output':ref['path_mapping']={name:'tools/unrelated.py' for name in ref['outputs']}
+            elif label=='aliased-path':ref['path_mapping']={'tools/../manual.py':next(iter(original['outputs']))}
+            else:
+                ref.update(source_head=foreign,contribution_head=foreign,
+                    outputs={'tools/unrelated.py':'a'*64},path_mapping={'tools/unrelated.py':'tools/unrelated.py'},derivation=None)
+            # Repin derivative metadata to isolate Git proof from schema proof.
+            if ref['derivation'] and label not in ('fake-review','fake-derivation'):
+                ref['derivation'].update(contribution_head=ref['contribution_head'],path_mapping=ref['path_mapping'])
+            receipt=json.loads(raw)
+            receipt.update(source_head=ref['source_head'],output_sha256=ref['outputs'])
+            receipt['parent_binding']['head']=ref['source_head']
+            receipt['binding_sha256']=digest(receipt['parent_binding'])
+            self.write(receipt_path,receipt);ref['sha256']=adapter.file_sha(receipt_path)
+            admission=copy.deepcopy(original_admission);admission['provenance']=spec['origin']['provenance']
+            self.write(admission_path,admission)
+            spec['acceptance_sha256']=spec['origin']['admission_sha256']=adapter.file_sha(admission_path)
+            destination=self.root/('refused-'+label)
+            with self.subTest(label=label),patch.object(operations.Journal,'prepare') as prepare_operation:
+                with self.assertRaises(operations.OperationError):
+                    stage.bind_reviewed_source(destination,spec,admission_path)
+                prepare_operation.assert_not_called()
+                self.assertFalse((destination/'operations').exists())
+            receipt_path.write_bytes(raw)
+        self.write(admission_path,original_admission)
+
+    def test_new_origin_unattested_derivations_refuse_before_prepare(self):
+        import stokowski_operations as operations
+        import stokowski_stage as stage
+        _,runtime,_,_,_,original,_,_=self.new_fixture()
+        admission_path=runtime.parent/'synthetic-manual-history/new-admission.json'
+        original_admission=json.loads(admission_path.read_text())
+        review_path=Path(original_admission['review']['path'])
+        review_bytes=review_path.read_bytes()
+        for label in ('reason','mapping'):
+            spec=copy.deepcopy(original)
+            ref=spec['origin']['provenance'][0]
+            if label=='reason':
+                ref['derivation']['reason']+=' Unattested owner amendment.'
+            else:
+                # Both real committed outputs remain relevant; swap their targets.
+                # Receipt, Git delta, blobs, ancestry and final outputs stay valid.
+                names=sorted(ref['path_mapping'])
+                ref['path_mapping']={names[0]:names[1],names[1]:names[0]}
+                ref['derivation']['path_mapping']=ref['path_mapping']
+                ref['derivation']['outputs']={v:spec['outputs'][v] for v in ref['path_mapping'].values()}
+            admission=copy.deepcopy(original_admission)
+            admission['provenance']=spec['origin']['provenance']
+            self.write(admission_path,admission)
+            spec['acceptance_sha256']=spec['origin']['admission_sha256']=adapter.file_sha(admission_path)
+            # Exercise the real Git proof too: mapping mutation is independently
+            # coherent, so refusal must come from the prior attestation check.
+            import subprocess
+            proof=subprocess.run([sys.executable,'-c',operations.reviewed_check_code(spec,Path(spec['local_source_root']))],capture_output=True)
+            self.assertEqual(proof.returncode,0,proof.stderr)
+            with self.subTest(label=label),patch.object(operations.Journal,'prepare') as prepared:
+                with self.assertRaisesRegex(operations.OperationError,'Independent derivation attestation mismatch'):
+                    stage.bind_reviewed_source(self.root/('unattested-'+label),spec,admission_path)
+                prepared.assert_not_called()
+            self.assertEqual(review_path.read_bytes(),review_bytes)
+        self.write(admission_path,original_admission)
+
+    def test_new_origin_canonical_derivation_order_and_duplicates(self):
+        import stokowski_operations as operations
+        import stokowski_stage as stage
+        _,runtime,_,_,_,spec,_,_=self.new_fixture()
+        refs=spec['origin']['provenance']
+        # Canonical ordering depends on payload bytes, never receipt list order
+        # or dictionary insertion order. Distinct contributions stay distinct.
+        other=copy.deepcopy(refs[0])
+        other['derivation']['reason']='Another exact independently reviewed reason.'
+        left=operations.canonical_derivations([refs[0],other])
+        right=operations.canonical_derivations([other,refs[0]])
+        self.assertEqual(left,right)
+        self.assertEqual(len(left),2)
+        self.assertTrue(all('review_sha256' not in entry for entry in left))
+        spec=copy.deepcopy(spec)
+        spec['origin']['provenance'].append(copy.deepcopy(refs[0]))
+        admission_path=runtime.parent/'synthetic-manual-history/new-admission.json'
+        admission=json.loads(admission_path.read_text())
+        admission['provenance']=spec['origin']['provenance']
+        self.write(admission_path,admission)
+        spec['acceptance_sha256']=spec['origin']['admission_sha256']=adapter.file_sha(admission_path)
+        with patch.object(operations.Journal,'prepare') as prepared:
+            with self.assertRaisesRegex(operations.OperationError,'Duplicate contribution derivation'):
+                stage.bind_reviewed_source(self.root/'duplicate-derivation',spec,admission_path)
+            prepared.assert_not_called()
+
+    def test_new_origin_intermediate_proof_in_service_mirror(self):
+        import shutil
+        import subprocess
+        import stokowski_operations as operations
+        _,runtime,_,_,_,spec,_,_=self.new_fixture()
+        refs=spec['origin']['provenance']
+        self.assertEqual(len(refs),2)
+        self.assertNotEqual(refs[0]['outputs'],spec['outputs'])
+        self.assertEqual(refs[1]['outputs'],spec['outputs'])
+        self.assertNotEqual(refs[0]['owner'],refs[1]['owner'])
+        self.assertNotIn(spec['owner'],[r['owner'] for r in refs])
+        self.assertEqual(refs[1]['source_head'],refs[0]['contribution_head'])
+        mirror=self.temp/'jailed-synthetic-mirror'
+        shutil.copytree(spec['local_source_root'],mirror)
+        proof=operations.reviewed_check_code(spec,mirror)
+        self.assertNotIn('read_record',proof)
+        # Service proof requires no host receipt reads.
+        for ref in refs:Path(ref['path']).unlink()
+        result=subprocess.run([sys.executable,'-c',proof],capture_output=True,text=True)
+        self.assertEqual(result.returncode,0,result.stderr)
+        wrong=copy.deepcopy(spec);wrong['origin']['provenance'][0]['contribution_head']=spec['head']
+        result=subprocess.run([sys.executable,'-c',operations.reviewed_check_code(wrong,mirror)],capture_output=True)
+        self.assertNotEqual(result.returncode,0)
+        wrong=copy.deepcopy(spec)
+        wrong['origin']['provenance'][0]['derivation']['review_sha256']='0'*64
+        result=subprocess.run([sys.executable,'-c',operations.reviewed_check_code(wrong,mirror)],capture_output=True)
+        self.assertNotEqual(result.returncode,0)
+        changed=copy.deepcopy(spec)
+        changed['origin']['provenance'][0]['derivation']['reason']+=' Additional synthetic review context.'
+        self.assertNotEqual(operations.operation_key(changed),operations.operation_key(spec))
+
+    def test_new_origin_prior_review_rejects_retained_owner_before_prepare(self):
+        import stokowski_operations as operations
+        with patch.object(operations.Journal, 'prepare', autospec=True,
+                          side_effect=operations.Journal.prepare) as prepare_operation:
+            with self.assertRaisesRegex(operations.OperationError, 'Independent accepted exact-head review required'):
+                self.new_fixture(prior_reviewer='manual-author-one')
+            self.assertFalse(any(call.args[1]['version']==3 for call in prepare_operation.call_args_list))
+
+    def test_new_origin_later_review_rejects_all_retained_owners(self):
+        issue,runtime,owner,journal,key,spec,remote,factory=self.new_fixture('review')
+        self.publish_stage()
+        packet=self.independent_packet(issue,journal,key,spec)
+        for ref in spec['origin']['provenance']:
+            receipt=json.loads(Path(ref['path']).read_text())
+            reviewer=receipt['parent_binding']['owner']
+            self.assertEqual(ref['owner'],reviewer)
+            self.assertNotEqual(reviewer,'independent-prior-reviewer')
+            changed=copy.deepcopy(packet)
+            review=changed['snapshot']['review']
+            review.update(author=spec['origin']['author'],reviewer=reviewer)
+            review['evidence_sha256']=digest({k:v for k,v in review.items() if k!='evidence_sha256'})
+            b=changed['integration_binding']
+            changed['decision']['qualification_sha256']=digest(dict(validation=changed['snapshot']['validation'],review=review,tree=b['tree'],policy=b['policy_sha256']))
+            with self.subTest(reviewer=reviewer),self.assertRaisesRegex(AdmissionError,'unit_review_qualification'):
+                self.current.unit_review_writer(lambda value:changed)(changed)
+
+    def test_new_origin_exact_negatives_and_cancellation(self):
+        import stokowski_stage as stage
+        import stokowski_operations as operations
+        issue,runtime,owner,journal,key,spec,remote,factory=self.new_fixture()
+        self.publish_stage()
+        for label in ('owner','source','review','provenance','identity','origin'):
+            task=copy.deepcopy(self.stage_task)
+            if label=='owner':task['owner']='foreign'
+            elif label=='source':task['input_paths']=['tools/wrong.py']
+            elif label=='identity':task['stage_binding']['identity']='0'*64
+            elif label=='origin':task['stage_binding']['entry']['origin']='unsupported'
+            else:task['stage_binding']['inputs'].pop(next(p for p in task['stage_binding']['inputs'] if ('review.json' if label=='review' else '0.json') in p))
+            with self.subTest(label=label),self.assertRaises((AdmissionError,operations.OperationError)):
+                self.current.stage_origin(issue.identifier,task)
+        path=Path(spec['local_source_root'])/'tools/delivery/manual.py';raw=path.read_bytes();path.write_bytes(raw+b' ')
+        with self.assertRaises(operations.OperationError):stage.qualify_reviewed_source(spec,runtime.parent/'synthetic-manual-history/new-admission.json')
+        path.write_bytes(raw)
+        journal.cancel(key);asyncio.run(owner._tick())
+        self.assertEqual(journal.read(key)[1]['status'],'cancelled')
+        remote.submit.assert_not_awaited()
+
+    def test_new_origin_missing_native_dependency_fails_fixed_subprocess(self):
+        import subprocess
+        import stokowski_operations as operations
+        _,_,_,_,_,spec,_,_=self.new_fixture()
+        command=operations.bridge_arguments(spec)['command'].replace(spec['workspace'],spec['local_source_root'])
+        command=command.replace('/offmenu/.venv-delivery/bin/python',sys.executable+' -S')
+        result=subprocess.run(['/bin/sh','-c',command],capture_output=True,text=True,timeout=10)
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn("No module named 'stokowski'",result.stderr)
