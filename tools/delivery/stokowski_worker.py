@@ -19,6 +19,7 @@ from symphony_protocol import BINARY
 from symphony_tasks import load_manifest, runtime_lease_ids
 from symphony_workspace import checkpoint
 from windmill_runner import cleanup, capacity_usage
+from stokowski_performance import project_observation
 
 MODEL = 'gpt-6.1-sol'
 SAFE_ENV = {'PATH', 'HOME', 'USER', 'LOGNAME', 'LANG', 'LC_ALL', 'TMPDIR',
@@ -88,6 +89,8 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
     observed = {'peak_processes':0,'peak_rss_bytes':0,
                 'cpu_affinity':sorted(os.sched_getaffinity(0))}
     result['observed_resources'] = observed
+    # Keep legacy zero peaks; count samples separately to distinguish unknown.
+    result['resource_sample_count'] = 0
     stopping = False
 
     def stop(signum, frame):
@@ -95,8 +98,9 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
         stopping = True
 
     previous = {s: signal.signal(s, stop) for s in (signal.SIGTERM, signal.SIGINT)}
+    started = time.monotonic()
     try:
-        deadline = time.monotonic()+timeout
+        deadline = started+timeout
         with (directory/'stdout.jsonl').open('wb') as out, (directory/'stderr.log').open('wb') as err:
             proc = subprocess.Popen(command, cwd=workspace, env=environment,
                                     stdin=subprocess.PIPE, stdout=out, stderr=err,
@@ -105,6 +109,7 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
             remaining_prompt = memoryview(prompt.encode())
             while proc.poll() is None:
                 usage = capacity_usage()
+                result['resource_sample_count'] += 1
                 observed['peak_processes'] = max(observed['peak_processes'],usage['processes'])
                 observed['peak_rss_bytes'] = max(observed['peak_rss_bytes'],usage['rss_bytes'])
                 reason = None
@@ -148,6 +153,7 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
         finally:
             for s, handler in previous.items():
                 signal.signal(s, handler)
+            result['supervise_elapsed_seconds'] = time.monotonic()-started
     if not result['child_tree_gone']:
         result['status'] = 'uncertain'
     return result
@@ -191,7 +197,24 @@ def execute(runtime, issue, request):
         raise AdmissionError('Existing resource lease requires reconciliation')
     checkpoint(directory/'intent.json', dict(lease=lease, binding=binding))
     result = {'status': 'uncertain', 'child_tree_gone': False}
+    observation_context = dict(
+        issue=issue, lease=lease, attempt=issue, binding_sha256=digest(binding),
+        source_head=manifest['base_revision'], task_sha256=binding['task_sha256'],
+        requested_model=MODEL, requested_effort='medium', provider_route='codex-chatgpt',
+        declared_resources=task['resources'])
     try:
+        # Fixed source/config paths only: never provider proof, credentials or logs.
+        provenance = {}
+        for name, path in (
+                ('worker_sha256', Path(__file__)),
+                ('helper_sha256', Path(__file__).with_name('stokowski_performance.py')),
+                ('capacity_policy_sha256', runtime/'capacity-policy.json'),
+                ('manifest_sha256', runtime/'manifest.json')):
+            try:
+                provenance[name] = hashlib.sha256(path.read_bytes()).hexdigest()
+            except OSError:
+                provenance[name] = None
+        observation_context['provenance'] = provenance
         cpus = sorted(os.sched_getaffinity(0))
         first = policy['host']['cpu_reserve']
         width = (policy['symphony']['cpu_budget_millis']+999)//1000
@@ -203,6 +226,8 @@ def execute(runtime, issue, request):
                                request['prompt'], workspace, env, directory,
                                request['timeout_seconds'], task['resources'],
                                policy['windmill']['computation_subprocesses_per_job'])
+        if result.get('status') == 'cancelled':
+            observation_context['cancelled'] = True
         if (directory/'stdout.jsonl').exists():
             result.update(summarize_events(directory/'stdout.jsonl'))
         final_head = git(workspace,'rev-parse','HEAD')
@@ -230,6 +255,10 @@ def execute(runtime, issue, request):
         result.setdefault('observed_resources',None)
         if identity_changed or violations or not result.get('turn_completed'):
             result['status'] = 'failed'
+        # Only the returned, source/issue/lease-bound terminal result qualifies.
+        # Unknown process outcomes and interrupted qualification retain legacy receipts.
+        if result.get('child_tree_gone') is True and result['status'] != 'uncertain':
+            result['performance_observation'] = project_observation(result, observation_context)
     finally:
         # Retain admission whenever termination cannot be proven. A crash before
         # this block leaves intent + running lease, blocking blind replay.
