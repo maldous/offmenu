@@ -1,6 +1,6 @@
 import {spawn, execFile} from 'node:child_process';
 import {promisify, isDeepStrictEqual} from 'node:util';
-import {createHash} from 'node:crypto';
+import {createHash, randomBytes} from 'node:crypto';
 import {readFileSync, realpathSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 
@@ -210,4 +210,88 @@ export async function advanceIntegration({controller, github, linear, observe, u
     return await controller.outcome('linear', 'not-issued');
   }
   return decision;
+}
+
+
+/** One finite pre-execution publication by the authenticated connector owner.
+ * github.getProfile is the owner's existing cloud github_get_profile adapter,
+ * never a packet-supplied callback. reviewedPublication is out-of-band reviewed
+ * current configuration. Local stdin provides no isolation from malicious UID peers.
+ * This action is separate from post-review advanceIntegration and never dispatches.
+ */
+export async function prepareOwnerPublication({github, reviewedPublication}) {
+  reviewWireBytes(reviewedPublication);
+  const context = structuredClone(reviewedPublication);
+  const limit = 65536;
+  const entry = 'tools/delivery/stokowski_publication.py';
+  const required = [entry, 'tools/delivery/integration-gateway.mjs',
+    ...['stokowski_prepare','symphony_launch','stokowski_adapter','stokowski_worker',
+      'stokowski_operations','symphony_capacity','symphony_tasks','symphony_workspace',
+      'symphony_codex','symphony_protocol','windmill_runner'].map(n=>`tools/delivery/${n}.py`)];
+  if (sha(readFileSync(realpathSync(reviewPython))) !== context.python_sha256 ||
+      !/^[0-9a-f]{40}$/.test(context.source_head)) throw Error('publication_bridge_refused');
+  const git = async args => (await promisify(execFile)('/usr/bin/git', ['-C',reviewSource,...args], {
+    env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8'}, timeout:2000,maxBuffer:limit,encoding:'buffer'
+  })).stdout;
+  if ((await git(['rev-parse','HEAD'])).toString().trim()!==context.source_head ||
+      (await git(['branch','--show-current'])).toString().trim()!==context.source_branch ||
+      required.some(name=>!context.source_sha256[name]))
+    throw Error('publication_bridge_refused');
+  for (const [name,hash] of Object.entries(context.source_sha256)) {
+    if (!/^(?:tools\/delivery|src\/offmenu\/delivery)\/[a-z0-9_./-]+$/.test(name) ||
+        name.split('/').some(p=>p==='.' || p==='..') ||
+        realpathSync(`${reviewSource}/${name}`)!==`${reviewSource}/${name}` ||
+        sha(readFileSync(`${reviewSource}/${name}`))!==hash ||
+        sha(await git(['show',`${context.source_head}:${name}`]))!==hash) throw Error('publication_bridge_refused');
+  }
+  // No saved principal/report is consulted to produce this observation.
+  const profile = await github.getProfile();
+  if (!profile || !['string','number'].includes(typeof profile.id) ||
+      typeof profile.login!=='string' || !profile.login ||
+      !/^[0-9]+$/.test(String(profile.id))) throw Error('publication_bridge_refused');
+  const payload = reviewWireBytes({context, nonce:randomBytes(32).toString('hex'),
+    observed_at:Date.now()/1000,
+    provenance:{service:'github',connector_tool:'mcp__codex_apps__github_get_profile',
+      flow:'same-invocation-getProfile-to-fixed-stdin'},
+    principal:{service:'github',principal_id:String(profile.id),login:profile.login}});
+  const request = sha(payload);
+  if (Buffer.byteLength(payload)>limit) throw Error('publication_bridge_refused');
+  async function invoke(mode) {
+    const input = JSON.stringify({version:1,mode,payload,request_sha256:request});
+    if (Buffer.byteLength(input)>limit) throw Error('publication_bridge_refused');
+    return await new Promise((resolve,reject)=>{
+      const child = spawn(reviewPython, ['-B', `${reviewSource}/${entry}`], {
+        cwd:reviewSource,shell:false,detached:true,
+        env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8',PYTHONPATH:`${reviewSource}/src`},
+        stdio:['pipe','pipe','pipe']
+      });
+      let output=[], size=0, failed=false;
+      const stop=()=>{failed=true;try{process.kill(-child.pid,'SIGKILL');}catch{child.kill('SIGKILL');}};
+      const timer=setTimeout(stop,60000);
+      child.stdout.on('data',chunk=>{size+=chunk.length;if(size>limit)stop();else output.push(chunk);});
+      child.stderr.on('data',chunk=>{size+=chunk.length;if(size>limit)stop();});
+      child.stdin.on('error',()=>{failed=true;});
+      child.on('error',()=>{failed=true;});
+      child.on('close',code=>{
+        clearTimeout(timer);
+        if (failed || code!==0) return reject(Error('publication_bridge_uncertain'));
+        try {
+          const reply=JSON.parse(Buffer.concat(output).toString('utf8'));
+          if(reply.version!==1 || sha(reply.response)!==reply.response_sha256) throw Error();
+          const response=JSON.parse(reply.response);
+          if(response.request_sha256!==request || response.nonce!==JSON.parse(payload).nonce ||
+              response.result.dispatches!==0 ||
+              !['published','duplicate','refused','uncertain'].includes(response.result.status)) throw Error();
+          resolve(response.result);
+        } catch {reject(Error('publication_bridge_uncertain'));}
+      });
+      child.stdin.end(input);
+    });
+  }
+  try {return await invoke('prepare');}
+  catch {
+    // The original child is reaped. Only read the exact retained result; never
+    // re-enter prepare_publication after lost transport or an unresolved intent.
+    return await invoke('status');
+  }
 }
