@@ -72,10 +72,22 @@ class CurrentDispatchTests(unittest.TestCase):
         path.write_text(json.dumps(value))
 
     def git_read(self, args, **kwargs):
+        if args[3] == 'merge-base':
+            if args[4:] == ['--is-ancestor', 'b'*40, 'c'*40]:
+                return ''
+            raise subprocess.CalledProcessError(1, args)
         if args[3] == 'show':
-            return (self.source/args[4].split(':',1)[1]).read_bytes()
+            head, name = args[4].split(':',1)
+            if head == 'c'*40:
+                try:
+                    return self.candidate_objects[name]
+                except KeyError:
+                    raise subprocess.CalledProcessError(128, args)
+            if head != 'a'*40:
+                raise subprocess.CalledProcessError(128, args)
+            return (self.source/name).read_bytes()
         if args[-2:] == ['branch','--show-current']:
-            return 'feature/test-current\n'
+            return ('feature/test-current' if args[2] == str(self.source) else getattr(self,'task_branch','feature/test-current'))+'\n'
         return ('a'*40 if args[2] == str(self.source) else 'b'*40)+'\n'
 
     def prepare_current(self):
@@ -93,7 +105,7 @@ class CurrentDispatchTests(unittest.TestCase):
         for name in ('workspaces','requests','attempts'):
             (runtime/name).mkdir()
         manifest = {'version':1,'project_id':adapter.PROJECT,'label':f'test-{number}',
-            'branch':'feature/test-current','base_revision':getattr(self,'task_head','b'*40),'tasks':{issue.identifier:{
+            'branch':getattr(self,'task_branch','feature/test-current'),'base_revision':getattr(self,'task_head','b'*40),'tasks':{issue.identifier:{
                 'issue_id':issue.id,'owner':'existing-owner','purpose':'test fixture',
                 'allowed_paths':[f'tests/task{number}.py'],'acceptance':['Independent output check'],
                 'resources':self.policy['symphony']['default_resources'],'attempt_limit':1}}}
@@ -145,15 +157,15 @@ class CurrentDispatchTests(unittest.TestCase):
     def select(self, issue, client=None):
         return asyncio.run(self.current.candidates(client or self.client(issue), [issue]))
 
-    def review_fixture(self):
+    def review_fixture(self, number=230):
         from symphony_capacity import digest
         from stokowski_operations import Journal, operation_key, bridge_arguments
-        issue, runtime, owner, client = self.bound_gate(230)
+        issue, runtime, owner, client = self.bound_gate(number)
         directory = runtime/'attempts'/issue.identifier
         native = json.loads((directory/'receipt.json').read_text())
         output = b'independent immutable output\n'
-        outputs = {'tests/task230.py':hashlib.sha256(output).hexdigest()}
-        target = runtime/'workspaces'/issue.identifier/'tests/task230.py'
+        outputs = {f'tests/task{number}.py':hashlib.sha256(output).hexdigest()}
+        target = runtime/'workspaces'/issue.identifier/f'tests/task{number}.py'
         target.parent.mkdir(parents=True)
         target.write_bytes(output)
         native.update(source_head=getattr(self,'task_head','b'*40), output_sha256=outputs, scope_violations=[])
@@ -198,6 +210,253 @@ class CurrentDispatchTests(unittest.TestCase):
         packet = dict(issue=issue.identifier,unit_binding=unit,integration_binding=b,
             snapshot=snapshot,decision=decision,validation_receipt=receipt)
         return issue,runtime,owner,client,packet,journal,key
+
+    def continuation_fixture(self, number=230):
+        import stokowski_operations as operations
+        import stokowski_stage as stage
+        import stokowski_mcp as mcp
+        for module in (operations, stage, mcp):
+            shutil.copyfile(module.__file__, self.source/'tools/delivery'/Path(module.__file__).name)
+        self.stack.enter_context(patch.object(mcp, 'configured_headers', side_effect=AssertionError('offline')))
+        self.stack.enter_context(patch('socket.socket.connect', side_effect=AssertionError('offline')))
+        # Control only upstream scheduling; the installed wrapper, stage and Journal are real.
+        import stokowski.orchestrator as native
+        upstream = self.stack.enter_context(patch.object(native.Orchestrator, '_tick', new_callable=AsyncMock))
+        self.task_branch = 'feature/independent-candidate'
+        issue, runtime, owner, client, packet, journal, old_key = self.review_fixture(number)
+        spec, _ = journal.read(old_key)
+        spec.update(branch=self.task_branch, runner_sha256=adapter.file_sha(self.source/'tools/delivery/windmill_runner.py'),
+                    executor_sha256=adapter.file_sha(operations.__file__))
+        self.stack.enter_context(patch.object(operations, 'POLICY', self.source/'tools/delivery/capacity-policy.json'))
+        key = journal.prepare(spec)
+        _, state = journal.read(key)
+        state['status'] = 'submit-intent'
+        journal.save(key, state, 'synthetic-lost-reply')
+        bindings = json.loads((runtime/'validation-bindings.json').read_text())
+        bindings.update(history=[])
+        bindings['issues'][issue.identifier].update(operation_key=key, source_head=spec['head'], derivation_reason=None)
+        self.write(runtime/'validation-bindings.json', bindings)
+        self.candidate_objects = getattr(self, 'candidate_objects', {})
+        for name in spec['outputs']:
+            self.candidate_objects[name] = (runtime/'workspaces'/issue.identifier/name).read_bytes()
+        remote = SimpleNamespace(inspect=AsyncMock(return_value=None), submit=AsyncMock(), close=AsyncMock())
+        factory = self.stack.enter_context(patch.object(stage, 'WindmillMCP', return_value=remote))
+        return issue, runtime, owner, journal, key, spec, remote, factory, upstream
+
+    def test_independent_candidate_ignores_control_output_disk(self):
+        issue, runtime, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture()
+        self.assertNotEqual(spec['head'], self.current.config['source_head'])
+        self.assertNotEqual(spec['branch'], 'feature/test-current')
+        target = self.source/'tests/task230.py'
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(b'unrelated coordinator output')
+        asyncio.run(owner._tick())
+        remote.inspect.assert_awaited_once()
+        remote.submit.assert_not_awaited()
+
+    def test_candidate_committed_output_and_ancestry_hold_before_transport(self):
+        issue, runtime, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture()
+        name = next(iter(spec['outputs']))
+        original = self.candidate_objects[name]
+        for contents in (None, b'wrong committed bytes'):
+            if contents is None:
+                del self.candidate_objects[name]
+            else:
+                self.candidate_objects[name] = contents
+            asyncio.run(owner._tick())
+            factory.assert_not_called()
+        self.candidate_objects[name] = original
+        original_git = self.git.side_effect
+        def reject_ancestry(args, **kwargs):
+            if args[3] == 'merge-base':
+                raise subprocess.CalledProcessError(1, args)
+            return original_git(args, **kwargs)
+        self.git.side_effect = reject_ancestry
+        asyncio.run(owner._tick())
+        factory.assert_not_called()
+
+    def test_validation_phase_rotates_after_slow_effect_and_reopen(self):
+        first = self.continuation_fixture()
+        second = self.continuation_fixture(231)
+        clock = [0.0]
+        async def slow_unknown(*args, **kwargs):
+            clock[0] += 11
+            raise asyncio.TimeoutError()
+        first[6].inspect.side_effect = slow_unknown
+        second[7].side_effect = [first[6], second[6]]
+        with patch.object(adapter.time, 'monotonic', side_effect=lambda: clock[0]):
+            asyncio.run(self.current.continue_validation())
+            first[6].inspect.assert_awaited_once()
+            second[6].inspect.assert_not_awaited()
+            self.current = adapter.CurrentWork(self.runtime)
+            asyncio.run(self.current.continue_validation())
+        second[6].inspect.assert_awaited_once()
+        self.assertEqual(second[6].inspect.await_args.args[0],
+                         second[3].read(second[4])[1]['windmill_job_id'])
+        first[6].submit.assert_not_awaited()
+        second[6].submit.assert_not_awaited()
+
+    def test_normal_tick_continues_original_intent_and_reopen(self):
+        issue, runtime, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture()
+        asyncio.run(owner._tick())
+        self.assertEqual(remote.inspect.await_count, 1, 'NORMAL_CURRENT_VALIDATION_JOURNAL_NOT_CONTINUED')
+        self.assertEqual(journal.read(key)[1]['status'], 'unknown')
+        self.current = adapter.CurrentWork(self.runtime)
+        # New adapter and owner lifetime, same durable operation and original UUID.
+        import stokowski.orchestrator as native
+        native.Orchestrator._tick = upstream
+        native, _, _ = self.adapted()
+        owner = native.Orchestrator(self.runtime/'workflow.yaml')
+        asyncio.run(owner._tick())
+        self.assertEqual(remote.inspect.await_count, 2)
+        self.assertEqual(remote.inspect.await_args_list[0], remote.inspect.await_args_list[1])
+        remote.submit.assert_not_awaited()
+        self.assertEqual(upstream.await_count, 2)
+
+    def test_normal_tick_observes_queued_then_completed_without_resubmit(self):
+        from stokowski_operations import bridge_arguments, BRIDGE
+        issue, runtime, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture()
+        _, state = journal.read(key)
+        job = dict(id=state['windmill_job_id'], workspace_id='offmenu', script_path=BRIDGE,
+                   args=bridge_arguments(spec), type='QueuedJob', running=False)
+        remote.inspect.return_value = job
+        asyncio.run(owner._tick())
+        self.assertEqual(journal.read(key)[1]['status'], 'queued')
+        receipt = dict(status='succeeded', job_id=state['logical_job_id'], exit_code=0,
+            child_tree_gone=True, reconcile_required=False, runner_sha256=spec['runner_sha256'],
+            capacity_policy_sha256=spec['policy_sha256'],
+            command_sha256=hashlib.sha256(bridge_arguments(spec)['command'].encode()).hexdigest())
+        remote.inspect.return_value = dict(job, type='CompletedJob', success=True,
+            result=dict(job_id=state['logical_job_id'], job_succeeded=True, receipt=receipt))
+        asyncio.run(owner._tick())
+        self.assertEqual(journal.read(key)[1]['status'], 'succeeded')
+        self.assertEqual(json.loads((runtime/'validation-stage.json').read_text())['issues'][issue.identifier]['status'], 'succeeded')
+        asyncio.run(owner._tick())  # Terminal progress is reused, never replayed.
+        self.assertEqual(remote.inspect.await_count, 2)
+        remote.submit.assert_not_awaited()
+        self.assertEqual(self.current.state['tasks'][issue.identifier]['unit_gate']['disposition'], 'waiting')
+
+    def test_normal_tick_rejects_invalid_validation_before_transport(self):
+        issue, runtime, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture()
+        path = runtime/'validation-bindings.json'
+        bindings = json.loads(path.read_text())
+        original_receipt = (runtime/'attempts'/issue.identifier/'receipt.json').read_bytes()
+        original_output = (runtime/'workspaces'/issue.identifier/'tests/task230.py').read_bytes()
+        bad_specs = [dict(spec, **{field:value}) for field,value in (
+            ('issue_id','00000000-0000-4000-8000-000000000999'), ('owner','foreign'),
+            ('head','f'*40), ('branch','feature/wrong-candidate'), ('base','f'*40), ('policy_sha256','f'*64), ('executor_sha256','f'*64),
+            ('runner_sha256','f'*64), ('acceptance_sha256','f'*64), ('outputs',{'tests/task230.py':'f'*64}))]
+        for bad in bad_specs:
+            with self.subTest(spec=next(k for k in spec if spec[k] != bad[k])):
+                with journal.db() as db:
+                    db.execute('UPDATE operations SET spec=? WHERE key=?',(json.dumps(bad,sort_keys=True),key))
+                asyncio.run(owner._tick())
+                factory.assert_not_called()
+        with journal.db() as db:
+            db.execute('UPDATE operations SET spec=? WHERE key=?',(json.dumps(spec,sort_keys=True),key))
+        for bad in ({}, dict(bindings,version=2), dict(bindings,issues={**bindings['issues'],'UIF-999':bindings['issues'][issue.identifier]}),
+                    dict(bindings,history=[dict(issue='UIF-999')]),
+                    *(dict(bindings,issues={issue.identifier:dict(bindings['issues'][issue.identifier],**{field:value})})
+                      for field,value in (('operation_key','f'*64), ('source_head','f'*40),
+                        ('native_receipt_sha256','f'*64), ('native_output_sha256',{}),
+                        ('derivation',{'unsupported':'derivation'})))):
+            with self.subTest(binding=bad):
+                self.write(path,bad)
+                asyncio.run(owner._tick())
+                factory.assert_not_called()
+        self.write(path,bindings)
+        for target in (runtime/'requests'/(issue.identifier+'.json'),
+                       runtime/'attempts'/issue.identifier/'receipt.json', runtime/'workspaces'/issue.identifier/'tests/task230.py'):
+            original = target.read_bytes()
+            target.write_text('{}')
+            asyncio.run(owner._tick())
+            factory.assert_not_called()
+            target.write_bytes(original)
+        path.unlink()
+        asyncio.run(owner._tick())
+        factory.assert_not_called()  # Completed coding never creates validation authority.
+        self.assertEqual((runtime/'attempts'/issue.identifier/'receipt.json').read_bytes(),original_receipt)
+        self.assertEqual((runtime/'workspaces'/issue.identifier/'tests/task230.py').read_bytes(),original_output)
+
+    def test_unbound_current_tick_never_creates_journal(self):
+        import stokowski.orchestrator as native
+        import stokowski_stage as stage
+        self.stack.enter_context(patch.object(native.Orchestrator,'_tick',new_callable=AsyncMock))
+        issue, runtime, owner, client = self.bound_gate(239)
+        with patch.object(stage,'WindmillMCP',side_effect=AssertionError('unqualified')):
+            asyncio.run(owner._tick())
+        self.assertFalse((runtime/'operations').exists())
+
+    def test_validation_identity_drift_after_observation_holds(self):
+        issue, runtime, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture()
+        asyncio.run(owner._tick())
+        path = runtime/'validation-bindings.json'
+        # Semantically same JSON with changed original bytes is still drift.
+        path.write_text(json.dumps(json.loads(path.read_text()), indent=2))
+        asyncio.run(owner._tick())
+        self.assertEqual(remote.inspect.await_count,1)
+        self.assertEqual(self.current.state['tasks'][issue.identifier]['validation']['status'],'held')
+
+    def test_run_current_entrypoint_consumes_stage_and_cancels(self):
+        from stokowski.linear import LinearClient
+        from stokowski.config import ProjectConfig
+        import stokowski.orchestrator as native
+        issue, runtime, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture()
+        native.Orchestrator._tick = upstream
+        async def start():
+            actual = native.Orchestrator(self.runtime/'workflow.yaml')
+            await actual._tick()
+            self.write(self.runtime/'cancel.json',{})
+        coordinator = SimpleNamespace(orchestrators={}, start=start, stop=AsyncMock())
+        with patch.object(native,'MultiOrchestrator',return_value=coordinator), \
+             patch.object(ProjectConfig,'resolved_api_key',return_value='memory-only'), \
+             patch.object(adapter,'credential',return_value='memory-only'), \
+             patch.object(LinearClient,'fetch_candidate_issues',new=AsyncMock(return_value=[])):
+            asyncio.run(adapter.run(self.runtime,1,current_mode=True))
+        self.assertEqual(remote.inspect.await_count,1)
+        remote.submit.assert_not_awaited()
+        coordinator.stop.assert_awaited_once()
+        self.assertTrue(json.loads((self.runtime/'current-owner.json').read_text())['stopped'])
+
+    def test_qualified_prepared_submits_once_and_refusal_retains_identity(self):
+        from stokowski_operations import RequestRefused
+        issue, runtime, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture()
+        _, state = journal.read(key)
+        state['status'] = 'prepared'
+        journal.save(key,state,'synthetic-unexecuted')
+        asyncio.run(owner._tick())
+        self.assertEqual(journal.read(key)[1]['status'],'submitted')
+        asyncio.run(owner._tick())
+        self.assertEqual(journal.read(key)[1]['status'],'unknown')
+        remote.submit.assert_awaited_once()
+        remote.inspect.side_effect = RequestRefused('synthetic refusal')
+        asyncio.run(owner._tick())
+        self.assertEqual(journal.read(key)[1]['status'],'unknown')
+        self.assertEqual(journal.read(key)[1]['windmill_job_id'],state['windmill_job_id'])
+        remote.submit.assert_awaited_once()
+
+    def test_validation_state_identity_drift_and_cancel_flag_preserved(self):
+        issue, runtime, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture()
+        _, state = journal.read(key)
+        for field in ('windmill_job_id','cancel_job_id','logical_job_id'):
+            journal.save(key,dict(state,**{field:'foreign'}),'synthetic-conflict')
+            asyncio.run(owner._tick())
+            factory.assert_not_called()
+        state['cancel_requested'] = True
+        journal.save(key,state,'synthetic-cancel-request')
+        asyncio.run(owner._tick())
+        self.assertEqual(journal.read(key)[1]['status'],'unknown')
+        self.assertTrue(journal.read(key)[1]['cancel_requested'])
+        remote.submit.assert_not_awaited()
+
+    def test_validation_phase_cancellation_propagates(self):
+        issue, runtime, owner, journal, key, spec, remote, factory, upstream = self.continuation_fixture()
+        remote.inspect.side_effect = asyncio.CancelledError()
+        with self.assertRaises(asyncio.CancelledError):
+            asyncio.run(owner._tick())
+        remote.close.assert_awaited_once()
+        remote.submit.assert_not_awaited()
+        upstream.assert_not_awaited()
 
     def test_transport_v2_byte_oracle_and_domain(self):
         import stokowski_unit_review as transport
