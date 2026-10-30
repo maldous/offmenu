@@ -55,7 +55,7 @@ class CurrentDispatchTests(unittest.TestCase):
         self.policy = json.loads((self.source/'tools/delivery/capacity-policy.json').read_text())
         self.policy['symphony']['pool_path'] = str(self.temp/'pool')
         self.write(self.source/'tools/delivery/capacity-policy.json', self.policy)
-        self.root = self.temp/'.delivery/stokowski'
+        self.root = (self.source if getattr(self,'successor_real',False) else self.temp)/'.delivery/stokowski'
         self.root.mkdir(parents=True)
         self.runtime = self.root/'current'
         self.catalog = self.root/'catalog.json'
@@ -71,6 +71,264 @@ class CurrentDispatchTests(unittest.TestCase):
         self.prepare_current()
         self.current = adapter.CurrentWork(self.runtime)
         self.entries = []
+
+    def test_missing_successor_route_regression(self):
+        # A terminal unit alone must never infer a backlog successor. The
+        # explicit owner-qualified boundary must exist on the consumed adapter.
+        self.assertTrue(callable(getattr(self.current, '_successor_boundary', None)),
+                        'MISSING_QUALIFIED_SUCCESSOR_BOUNDARY')
+
+    def successor_fixture(self, real=False, fault=None):
+        from test_stokowski_prepare_publication import PublicationTests
+        from symphony_capacity import digest
+        if real:
+            original = Path(__file__).resolve().parents[2]
+            shutil.copytree(original/'tools/delivery',self.source/'tools/delivery',dirs_exist_ok=True,
+                            ignore=shutil.ignore_patterns('__pycache__'))
+            shutil.copytree(original/'src',self.source/'src',dirs_exist_ok=True,
+                            ignore=shutil.ignore_patterns('__pycache__'))
+            self.write(self.source/'tools/delivery/capacity-policy.json',self.policy)
+            # Only this temporary, committed fixture replaces the provider.
+            launch = self.source/'tools/delivery/symphony_launch.py'
+            code = launch.read_text()
+            a,b = code.index('def provider_proof('),code.index('\ndef default_manifest(')
+            code = code[:a]+"""def provider_proof(model, ceiling):
+    marker=SOURCE/'.delivery/provider-calls'
+    marker.write_text(marker.read_text()+'x' if marker.exists() else 'x')
+    return dict(route='codex-chatgpt',available=True,checked_at=time.time(),requested_model=model,session_ceiling=ceiling)
+"""+code[b:]
+            if fault == 'uncertain':
+                code = code.replace("    return dict(route='codex-chatgpt',available=True,checked_at=time.time(),requested_model=model,session_ceiling=ceiling)",
+                                    "    raise OSError('synthetic uncertainty')")
+            launch.write_text(code)
+            (self.source/'.gitignore').write_text('.delivery/\n__pycache__/\n')
+            (self.source/'package.json').write_text('{"type":"module"}')
+            def git(path,*args):
+                return subprocess.run(['/usr/bin/git','-C',str(path),*args],check=True,
+                    stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True).stdout.strip()
+            def commit(path):
+                git(path,'init','-b','feature/test-current')
+                git(path,'add','.')
+                git(path,'-c','user.name=Fixture','-c','user.email=fixture@example.invalid',
+                    '-c','commit.gpgsign=false','commit','-m','Temporary synthetic source')
+                return git(path,'rev-parse','HEAD')
+            source_head = commit(self.source)
+            checkout = self.temp/'checkout-106'
+            checkout.mkdir()
+            (checkout/'fixture.txt').write_text('synthetic original')
+            self.task_head = commit(checkout)
+            self.git.side_effect = lambda args,**kw: subprocess.run(args,check=True,
+                stdout=subprocess.PIPE,**dict({'stderr':subprocess.PIPE},**kw)).stdout
+            config = self.current.config
+            config['source_head'] = source_head
+            config['source_sha256'] = {str(p.relative_to(self.source)):adapter.file_sha(p)
+                for p in (self.source/'tools/delivery').glob('*') if p.suffix in ('.py','.mjs')}
+            self.write(self.runtime/'current.json',config)
+            self.current.config_sha = adapter.file_sha(self.runtime/'current.json')
+            self.current.state['config_sha256'] = self.current.config_sha
+            self.current.save()
+        issue,runtime,owner,client,review,journal,key = self.review_fixture(106)
+        self.current.unit_review_writer(lambda envelope:review)({k:review[k] for k in ('snapshot','decision')})
+        self.current.refresh()
+        asyncio.run(owner._handle_gate_responses())
+        f = PublicationTests()
+        f.setUp()
+        # Remove fixture-only patches before exercising actual adapter code.
+        for function,args,kwargs in reversed(f._cleanups):
+            if getattr(function,'__name__','') == '__exit__':
+                function(*args,**kwargs)
+        f._cleanups = [item for item in f._cleanups if getattr(item[0],'__name__','') != '__exit__']
+        self.addCleanup(f.doCleanups)
+        f.bind_successor(self.current,review)
+        return f,issue,runtime,owner,client,review,journal,key
+
+    def test_successor_pending_once_and_reopen(self):
+        f,*_ = self.successor_fixture()
+        pending = dict(self.current.state['successor_request'])
+        self.assertEqual(pending['status'],'pending')
+        self.current.refresh()
+        reopened = adapter.CurrentWork(self.runtime)
+        self.assertEqual(reopened.state['successor_request'],pending)
+        self.assertEqual(len(json.loads(self.catalog.read_text())['entries']),1)
+        f.provider.assert_not_called()
+
+    def test_successor_trigger_drift_cancel_uncertain_and_rework_held(self):
+        f,issue,runtime,owner,client,review,journal,key = self.successor_fixture()
+        pending = dict(self.current.state['successor_request'])
+        _,state = journal.read(key)
+        for delta in ({'cancel_requested':True},{'status':'unknown'},{'reconcile_required':True}):
+            journal.save(key,dict(state,**delta),'synthetic hold')
+            self.current.refresh()
+            self.assertEqual(self.current.state['successor_request']['status'],'held')
+            self.assertEqual(self.current.state['successor_request']['identity'],pending['identity'])
+        journal.save(key,state,'synthetic restore')
+        gate = self.current.state['tasks'][issue.identifier]['unit_gate']
+        gate['disposition']='rework'
+        self.current.refresh()
+        self.assertEqual(self.current.state['successor_request']['status'],'held')
+        f.provider.assert_not_called()
+
+    def test_successor_qualified_publication_uses_existing_producer(self):
+        f,*_ = self.successor_fixture()
+        frozen = {p:p.read_bytes() for p in (self.root/'task-106').rglob('*') if p.is_file()}
+        result = f.publish()
+        self.assertEqual(result['status'],'published')
+        f.provider.assert_called_once()
+        self.current.refresh()
+        self.assertIn('UIF-231',self.current.entries)
+        for path,raw in frozen.items():
+            self.assertEqual(path.read_bytes(),raw)
+
+    def test_successor_provider_interleaving_refuses_changed_terminal_trigger(self):
+        f,issue,runtime,owner,client,review,journal,key = self.successor_fixture()
+        _,state = journal.read(key)
+        proof = f.provider.side_effect
+        def interleave(*args):
+            # The provider can need the same lock as tick/cancel. It must be
+            # available during the callback, then authoritative at exposure.
+            with journal.claim(key):
+                journal.save(key,dict(state,cancel_requested=True),'synthetic-provider-cancel')
+            return proof(*args)
+        f.provider.side_effect = interleave
+        with self.assertRaises(AdmissionError):
+            f.publish()
+        self.assertEqual(self.catalog.read_bytes(),f.catalog_before)
+        self.assertTrue(journal.read(key)[1]['cancel_requested'])
+        f.provider.assert_called_once()
+
+    def test_successor_final_claim_contention_and_exposure_serialization(self):
+        from stokowski_operations import OperationError
+        f,issue,runtime,owner,client,review,journal,key = self.successor_fixture()
+        before = journal.path.read_bytes()
+        with journal.claim(key):
+            with self.assertRaisesRegex(OperationError,'already owned'):
+                f.publish()
+        self.assertEqual(self.catalog.read_bytes(),f.catalog_before)
+        f.provider.assert_called_once()
+        write = prepare._publication_write
+        exposures = []
+        def expose(path,content):
+            if path == self.catalog:
+                # A competing authoritative writer cannot acquire the original
+                # claim between final qualification and actionable visibility.
+                with self.assertRaisesRegex(OperationError,'already owned'):
+                    with journal.claim(key):
+                        self.fail('original claim released before exposure')
+                exposures.append(path)
+            return write(path,content)
+        with patch.object(prepare,'_publication_write',side_effect=expose):
+            self.assertEqual(f.publish()['status'],'published')
+        self.assertEqual(exposures,[self.catalog])
+        f.provider.assert_called_once()  # Recovery uses the retained plan.
+        self.assertEqual(journal.path.read_bytes(),before)
+        with journal.claim(key):
+            pass
+
+    def test_successor_published_duplicate_reconciles_after_trigger_changes(self):
+        f,issue,runtime,owner,client,review,journal,key = self.successor_fixture()
+        self.assertEqual(f.publish()['status'],'published')
+        _,state = journal.read(key)
+        with journal.claim(key):
+            journal.save(key,dict(state,reconcile_required=True),'synthetic-later-hold')
+            before = journal.path.read_bytes()
+            self.assertEqual(f.publish()['status'],'duplicate')
+        self.assertEqual(journal.path.read_bytes(),before)
+        f.provider.assert_called_once()
+
+    def test_successor_native_worker_normal_admission_once_and_capacity_hold(self):
+        self.successor_native_worker_admission()
+
+    def test_successor_native_worker_uncertain_lease_held_without_replay(self):
+        self.successor_native_worker_admission(uncertain=True)
+
+    def successor_native_worker_admission(self, uncertain=False):
+        from contextlib import nullcontext
+        from stokowski.models import Issue
+        from symphony_capacity import Pool, digest
+        import stokowski_worker as worker
+        f,_,predecessor,*_ = self.successor_fixture(real=True)
+        before = {p:p.read_bytes() for p in predecessor.rglob('*') if p.is_file()}
+        self.assertEqual(f.publish()['status'],'published')
+        self.current.refresh()
+        issue = Issue(id=f.issue['uuid'],identifier='UIF-231',title='Synthetic successor',state='Todo')
+        self.assertEqual(self.select(issue),[issue])
+        workspace = f.runtime/'workspaces'/issue.identifier
+        subprocess.run(['/usr/bin/git','clone','--local',str(self.source),str(workspace)],
+                       check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        request = json.loads((f.runtime/'requests/UIF-231.json').read_text())
+        manifest = json.loads((f.runtime/'manifest.json').read_text())
+        pool = Pool(self.policy['symphony']['pool_path'],self.policy)
+        proof = json.loads((f.runtime/'provider-proof.json').read_text())
+        blocker = dict(branch=manifest['branch'],head=manifest['base_revision'],owner='fixture-blocker',
+            write_roots=['tests/unrelated.py'],resources=manifest['tasks']['UIF-231']['resources'],
+            task_sha256=digest({'synthetic':'blocker'}))
+        host = dict(cpu_millis=64000,available_memory_bytes=10**12,available_disk_bytes=10**12)
+        pool.admit('synthetic-blocker',blocker,dict(proof,session_ceiling=1),host)
+        # Same real pool, exhausted session ceiling: no successor intent/lease.
+        with patch.object(worker,'host_snapshot',return_value=host), \
+             patch.object(worker,'supervise',side_effect=AssertionError('capacity must hold')):
+            self.write(f.runtime/'provider-proof.json',dict(proof,session_ceiling=1))
+            with self.assertRaisesRegex(AdmissionError,'capacity_sessions'):
+                worker.execute(f.runtime,issue.identifier,request)
+        self.assertEqual(len(pool.status()),1)
+        pool.finish('synthetic-blocker',True,'stopped')
+        self.write(f.runtime/'provider-proof.json',proof)
+        def complete(command,prompt,path,environment,directory,*args):
+            self.assertEqual(prompt,request['prompt'])
+            (directory/'stdout.jsonl').write_text(json.dumps(dict(type='turn.completed'))+'\n')
+            return dict(status='uncertain' if uncertain else 'succeeded',
+                        child_tree_gone=not uncertain,exit_code=0)
+        native,_,_ = self.adapted()
+        async def spawn(*args,**kwargs):
+            worker.execute(f.runtime,issue.identifier,request)
+            return SimpleNamespace(pid=98765,returncode=0,communicate=AsyncMock())
+        with patch.object(worker,'host_snapshot',return_value=host), \
+             patch.object(worker.os,'sched_setaffinity'), \
+             patch.object(worker,'isolated_codex_environment',return_value=nullcontext({})), \
+             patch.object(worker,'supervise',side_effect=complete) as computation, \
+             patch.object(adapter.asyncio,'create_subprocess_exec',side_effect=spawn) as spawned:
+            self.assertEqual(asyncio.run(self.turn(native,issue,f.runtime)).status,
+                             'failed' if uncertain else 'succeeded')
+            reopened = adapter.CurrentWork(self.runtime)
+            self.assertEqual(asyncio.run(reopened.candidates(self.client(issue),[issue])),[])
+            with self.assertRaises(AdmissionError):
+                asyncio.run(self.turn(native,issue,f.runtime))
+            with self.assertRaisesRegex(AdmissionError,'no replay'):
+                worker.execute(f.runtime,issue.identifier,request)
+        computation.assert_called_once()
+        spawned.assert_called_once()
+        lease = runtime_lease_ids(f.runtime,manifest)[issue.identifier]
+        self.assertEqual({r['id']:r['status'] for r in pool.status()}[lease],
+                         'running' if uncertain else 'finished')
+        with pool._transaction() as db:
+            self.assertEqual(db.execute("SELECT COUNT(*) FROM events WHERE id=? AND event='admitted'",(lease,)).fetchone()[0],1)
+        for path,raw in before.items():
+            self.assertEqual(path.read_bytes(),raw)
+
+    def test_successor_scope_overlap_and_exact_handoff_allowlist(self):
+        f,*_ = self.successor_fixture()
+        # Even a freshly pinned packet cannot appoint itself as the successor.
+        f.packet['scope'] = ['tests/task106.py']
+        f.manifest['tasks']['UIF-231']['allowed_paths'] = f.packet['scope']
+        f.write(f.qualified/'manifest.json', f.manifest)
+        f.repin()
+        self.current.refresh()
+        self.assertEqual(self.current.state['successor_request']['status'],'held')
+        with self.assertRaises(AdmissionError):
+            f.publish()
+        # Independently qualify the overlapping handoff out of band in fixture
+        # configuration. Scope admission still refuses it at the boundary.
+        config = dict(self.current.config,qualified_successor=f.ref(f.handoff_path))
+        self.write(self.runtime/'current.json',config)
+        self.current.config=config
+        self.current.config_sha=adapter.file_sha(self.runtime/'current.json')
+        self.current.state['config_sha256']=self.current.config_sha
+        self.current.state.pop('successor_request')
+        self.current.save()
+        self.current.refresh()
+        self.assertNotIn('successor_request',self.current.state)
+        self.assertIn('successor_scope_overlap',self.current.state['successor_hold'])
+        f.provider.assert_not_called()
 
     def test_shared_fixture_producer_full_review_closure(self):
         from stokowski_unit_review import REQUIRED

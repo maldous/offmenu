@@ -20,6 +20,28 @@ tempfile.tempdir = parent
 spec = importlib.util.spec_from_file_location('fixture', pathlib.Path(repo)/'tests/delivery/test_stokowski_prepare_publication.py')
 m = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(m)
+if mode.startswith('successor'):
+    sys.path.insert(0,str(pathlib.Path(repo)/'tests/delivery'))
+    from test_stokowski_current_dispatch import CurrentDispatchTests
+    original_temp = tempfile.TemporaryDirectory
+    def retained_temp(*args,**kwargs):
+        value=original_temp(*args,**kwargs)
+        value._finalizer.detach()
+        return value
+    tempfile.TemporaryDirectory=retained_temp
+    c=CurrentDispatchTests()
+    c.successor_real=True
+    c.setUp()
+    f,issue,runtime,owner,client,review,journal,key=c.successor_fixture(real=True, fault='uncertain' if mode=='successor-uncertain' else None)
+    if mode == 'successor-cancelled':
+        _,state=journal.read(key)
+        journal.save(key,dict(state,cancel_requested=True),'synthetic cancellation after request')
+    context=dict(source_head=c.current.config['source_head'],source_branch='feature/test-current',
+        source_sha256=c.current.config['source_sha256'],python_sha256=f.sha(pathlib.Path(sys.executable).resolve()),
+        handoff=f.ref(f.handoff_path),owner_config=f.ref(f.qualified/'config.json'))
+    print(json.dumps(dict(root=str(c.source),context=context,catalog=str(f.catalog),runtime=str(f.runtime),
+        coordinator=str(c.runtime),original_runtime=str(runtime),task_source=f.packet['source'])))
+    sys.exit(0)
 f = m.PublicationTests()
 f.setUp()
 f.temporary._finalizer.detach()
@@ -109,7 +131,7 @@ print(json.dumps(dict(root=str(f.source), context=context, catalog=str(f.catalog
 async function fixture(t, mode='good') {
   const directory=mkdtempSync(join(tmpdir(),'owner-publication-test-'));
   t.after(()=>rmSync(directory,{recursive:true,force:true}));
-  const f=JSON.parse((await promisify(execFile)(python,['-B','-c',setup,source,directory,mode],{timeout:5000,maxBuffer:65536,env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8'}})).stdout);
+  const f=JSON.parse((await promisify(execFile)(python,['-B','-c',setup,source,directory,mode],{timeout:5000,maxBuffer:65536,env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8',PYTHONPATH:`${source}/src`}})).stdout);
   f.catalogBefore=readFileSync(f.catalog);
   f.marker=join(f.root,'.delivery/provider-calls');
   f.journal=join(f.root,'.delivery/stokowski',`owner-bridge-${f.context.handoff.sha256}.json`);
@@ -296,3 +318,114 @@ for(const kind of ['checkout','head','branch','manifest']) {
     assert.throws(()=>readFileSync(join(f.runtime,'current-admission.json')),{code:'ENOENT'});
   });
 }
+
+
+test('successor: actual caller publishes once, restart reconciles and normal poller selects',async t=>{
+  const f=await fixture(t,'successor');
+  const before=readFileSync(join(f.original_runtime,'manifest.json'));
+  const stateBefore=readFileSync(join(f.coordinator,'current-owner.json'));
+  assert.equal((await action(f)).status,'published');
+  assert.equal(readFileSync(join(f.coordinator,'current-owner.json')).equals(stateBefore),true);
+  assert.equal(JSON.parse(readFileSync(f.catalog)).entries.length,2);
+  assert.equal(readFileSync(f.marker,'utf8'),'x');
+  const {prepareOwnerPublication}=await import(pathToFileURL(join(f.root,'tools/delivery/integration-gateway.mjs')));
+  for(let i=0;i<2;i++) {
+    const result=await prepareOwnerPublication({github:{getProfile:async()=>{throw Error('status only');}},reviewedPublication:f.context});
+    assert.equal(result.status,'published');
+  }
+  const script=String.raw`
+import asyncio,json,pathlib,sys
+sys.path.insert(0,str(pathlib.Path(sys.argv[1])/'tools/delivery'))
+from stokowski_adapter import CurrentWork,install_adapters,SLUG
+from stokowski.models import Issue
+from stokowski.linear import LinearClient
+from unittest.mock import AsyncMock,patch
+c=CurrentWork(pathlib.Path(sys.argv[2]))
+assert c.state['successor_request']['status']=='published',c.state
+identity=c.state['successor_request']['identity']
+for _ in range(2):
+    c=CurrentWork(pathlib.Path(sys.argv[2]))
+    assert c.state['successor_request']['identity']==identity
+issue=Issue(id='00000000-0000-4000-8000-000000000231',identifier='UIF-231',title='Synthetic',state='Todo')
+async def select():
+    with patch.object(LinearClient,'fetch_candidate_issues',new=AsyncMock(return_value=[issue])), patch.object(LinearClient,'_graphql',new=AsyncMock(return_value={'issue':{'id':issue.id,'identifier':issue.identifier,'project':{'id':'ce60c1ab-a732-4a71-8471-14c9dc393886'},'state':{'name':'Todo'}}})):
+        install_adapters(c.runtime,{'tasks':{}},'fixture-only',c)
+        client=LinearClient('https://api.linear.app/graphql','fixture-only')
+        selected=await client.fetch_candidate_issues(SLUG,['Todo'])
+        assert [i.identifier for i in selected]==['UIF-231'],c.state
+asyncio.run(select())
+print('successor selected once; no action or provider replay')
+`;
+  const result=await promisify(execFile)(python,['-B','-c',script,f.root,f.coordinator],{
+    timeout:10000,env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8',PYTHONPATH:`${f.root}/src`}});
+  assert.match(result.stdout,/successor selected once/);
+  assert.equal(readFileSync(f.marker,'utf8'),'x');
+  assert.equal(readFileSync(join(f.original_runtime,'manifest.json')).equals(before),true);
+  assert.equal(JSON.parse(readFileSync(f.catalog)).entries.length,2);
+});
+
+
+test('successor: uncertain publication is status-only across caller restart',async t=>{
+  const f=await fixture(t,'successor-uncertain');
+  assert.equal((await action(f)).status,'uncertain');
+  const {prepareOwnerPublication}=await import(pathToFileURL(join(f.root,'tools/delivery/integration-gateway.mjs')));
+  assert.equal((await prepareOwnerPublication({reviewedPublication:f.context,
+    github:{getProfile:async()=>{throw Error('no second identity/action');}}})).status,'uncertain');
+  assert.equal(readFileSync(f.marker,'utf8'),'x');
+  assert.equal(JSON.parse(readFileSync(f.catalog)).entries.length,1);
+});
+
+for(const drift of ['stale','owner','config','handoff','trigger','resources','source','unqualified']) {
+  test(`successor: ${drift} is held before authentication or provider`,async t=>{
+    const f=await fixture(t,'successor');
+    const statePath=join(f.coordinator,'current-owner.json');
+    const state=JSON.parse(readFileSync(statePath));
+    const now=Date.now;
+    if(drift==='stale') Date.now=()=>now()+700000;
+    t.after(()=>{Date.now=now;});
+    if(drift==='owner') state.owner='foreign-owner';
+    writeFileSync(statePath,JSON.stringify(state));
+    if(drift==='config') writeFileSync(f.context.owner_config.path,readFileSync(f.context.owner_config.path)+' ');
+    if(drift==='handoff') writeFileSync(f.context.handoff.path,readFileSync(f.context.handoff.path)+' ');
+    if(drift==='source') {
+      const path=join(f.root,'tools/delivery/stokowski_adapter.py');
+      writeFileSync(path,readFileSync(path)+'\n# synthetic source drift\n');
+    }
+    if(drift==='trigger' || drift==='resources') {
+      const handoff=JSON.parse(readFileSync(f.context.handoff.path));
+      const packet=JSON.parse(readFileSync(handoff.task_packet.path));
+      if(drift==='trigger') packet.trigger.review_sha256='0'.repeat(64);
+      else packet.resources.cpu_millis++;
+      writeFileSync(handoff.task_packet.path,JSON.stringify(packet));
+    }
+    if(drift==='unqualified') {
+      const path=join(f.coordinator,'current.json');
+      const config=JSON.parse(readFileSync(path));
+      delete config.qualified_successor;
+      writeFileSync(path,JSON.stringify(config));
+    }
+    const {prepareOwnerPublication}=await import(pathToFileURL(join(f.root,'tools/delivery/integration-gateway.mjs')));
+    await assert.rejects(prepareOwnerPublication({reviewedPublication:f.context,
+      github:{getProfile:async()=>{throw Error('must not authenticate');}}}));
+    assert.throws(()=>readFileSync(f.marker),{code:'ENOENT'});
+    assert.equal(JSON.parse(readFileSync(f.catalog)).entries.length,1);
+  });
+}
+
+
+test('successor: actual caller rechecks current cancelled trigger before exposure',async t=>{
+  const f=await fixture(t,'successor-cancelled');
+  assert.equal((await action(f)).status,'refused');
+  assert.equal(JSON.parse(readFileSync(f.catalog)).entries.length,1);
+  assert.throws(()=>readFileSync(f.marker),{code:'ENOENT'});
+});
+
+
+test('successor: actual caller refuses drifted exact request before provider',async t=>{
+  const f=await fixture(t,'successor');
+  const handoff=JSON.parse(readFileSync(f.context.handoff.path));
+  writeFileSync(handoff.request.path,readFileSync(handoff.request.path)+' ');
+  assert.equal((await action(f)).status,'refused');
+  assert.throws(()=>readFileSync(f.marker),{code:'ENOENT'});
+  assert.equal(JSON.parse(readFileSync(f.catalog)).entries.length,1);
+});
