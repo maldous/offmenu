@@ -43,10 +43,15 @@ class CurrentDispatchTests(unittest.TestCase):
         self.source.mkdir()
         for name in ('stokowski_adapter.py','stokowski_worker.py','stokowski_prepare.py',
                      'symphony_capacity.py','symphony_tasks.py','symphony_workspace.py',
-                     'symphony_codex.py','symphony_protocol.py','windmill_runner.py','capacity-policy.json'):
+                     'symphony_codex.py','symphony_protocol.py','windmill_runner.py',
+                     'stokowski_operations.py','stokowski_stage.py','stokowski_unit_review.py',
+                     'integration-gateway.mjs','capacity-policy.json'):
             target = self.source/'tools/delivery'/name
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(adapter.SOURCE/'tools/delivery'/name, target)
+        target = self.source/'src/offmenu/delivery/integration.py'
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(adapter.SOURCE/'src/offmenu/delivery/integration.py', target)
         self.policy = json.loads((self.source/'tools/delivery/capacity-policy.json').read_text())
         self.policy['symphony']['pool_path'] = str(self.temp/'pool')
         self.write(self.source/'tools/delivery/capacity-policy.json', self.policy)
@@ -66,6 +71,31 @@ class CurrentDispatchTests(unittest.TestCase):
         self.prepare_current()
         self.current = adapter.CurrentWork(self.runtime)
         self.entries = []
+
+    def test_shared_fixture_producer_full_review_closure(self):
+        from stokowski_unit_review import REQUIRED
+        pins = self.current.config['source_sha256']
+        self.assertEqual(len(pins), 14)
+        self.assertTrue(REQUIRED.issubset(pins))
+        self.assertIn('src/offmenu/delivery/integration.py', pins)
+        for name, sha in pins.items():
+            self.assertEqual(adapter.file_sha(self.source/name), sha)
+        self.current.guard()
+        for name in REQUIRED:
+            target = self.source/name
+            raw = target.read_bytes()
+            try:
+                target.write_bytes(raw+b'\n# SYNTHETIC source drift\n')
+                with self.subTest(source=name), self.assertRaisesRegex(AdmissionError,'current_source_drift'):
+                    self.current.guard()
+            finally:
+                target.write_bytes(raw)
+        original_git = self.git.side_effect
+        self.git.side_effect = lambda args, **kw: (
+            b'SYNTHETIC different accepted blob' if args[3] == 'show' and
+            args[-1].endswith(':tools/delivery/stokowski_stage.py') else original_git(args,**kw))
+        with self.assertRaisesRegex(AdmissionError,'current_source_not_reviewed_revision'):
+            self.current.guard()
 
     def write(self, path, value):
         path.parent.mkdir(parents=True, exist_ok=True)

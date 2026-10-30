@@ -724,6 +724,30 @@ class CurrentWork:
             return {'status':'retained', 'evidence_sha256':digest(packet)}
         return write
 
+    @staticmethod
+    def _check_prior_review_provenance(review, admission, tree, pins):
+        # Reuse only the exact admitted prior review. A packet's own hash
+        # cannot qualify new reviewer identity or historical model metadata.
+        prior = admission['review']
+        pin = review.get('provenance_source')
+        if (not isinstance(pin, dict) or set(pin) != {'path','sha256'} or
+            pins.get(pin['path']) != pin['sha256']):
+            raise AdmissionError('unit_review_provenance_unqualified')
+        supplement = read_record(pin['path'])
+        if file_sha(pin['path']) != pin['sha256']:
+            raise AdmissionError('unit_review_provenance_drift')
+        fields = ('reviewer','independent','verdict','findings','head','base','outputs',
+                  'author','evidence_id','model','provider','requested_model',
+                  'requested_provider','resolved_model','resolution_status')
+        if (prior.get('decision') != 'accepted' or
+            any(review.get(k) != prior.get(k) for k in ('reviewer','head','base','outputs')) or
+            supplement.get('schema') != 'offmenu-independent-review-provenance-supplement/1' or
+            supplement.get('retained_review') != dict(path=prior['path'],sha256=prior['sha256'],unchanged=True) or
+            supplement.get('tree') != tree or supplement.get('authors') != admission['authors'] or
+            any(k not in supplement or k not in review or supplement[k] != review[k] for k in fields) or
+            any(not supplement.get(k) for k in ('reviewer_thread_id','review_turn_id','review_completed_at_utc'))):
+            raise AdmissionError('unit_review_prior_review_provenance')
+
     def _check_unit_review(self, packet):
         from types import SimpleNamespace
         from stokowski_operations import operation_key, bridge_arguments
@@ -741,13 +765,32 @@ class CurrentWork:
         b, snapshot, decision = (packet[k] for k in ('integration_binding','snapshot','decision'))
         review, validation = snapshot['review'], snapshot['validation']
         action = decision.get('action') or {}
+        standalone = decision.get('kind') == 'standalone-validation-review-v1'
+        if standalone:
+            # Explicit completed validation qualification, never Controller
+            # history, a merge permission, or a replacement unit source identity.
+            expected = dict(version=1, kind='standalone-validation-review-v1',
+                status='standalone-validation-qualified', action=None, merge_effect='not-applicable',
+                binding_sha256=digest(b), qualification_sha256=digest(dict(
+                    validation=validation, review=review, tree=b['tree'], policy=b['policy_sha256'])))
+            if (not reviewed or type(decision.get('version')) is not int or decision != expected or
+                not review.get('requested_model') or not review.get('requested_provider') or
+                review.get('resolution_status') not in ('observed','unknown') or
+                (review['resolution_status'] == 'unknown' and review.get('resolved_model') is not None) or
+                (review['resolution_status'] == 'observed' and not review.get('resolved_model'))):
+                raise AdmissionError('unit_review_qualification')
+            tree = subprocess.check_output(['git','-C',origin_spec['local_source_root'],
+                'rev-parse',origin_spec['head']+'^{tree}'], text=True).strip()
+            if tree != b['tree']:
+                raise AdmissionError('unit_review_source_tree')
+            self._check_prior_review_provenance(review, admission, tree, task['stage_binding']['inputs'])
         if (unit != packet['unit_binding'] or unit['project_id'] != PROJECT or
             b['issue_id'] != entry['issue_id'] or b['owner'] != self.config['owner'] or
             b['head_branch'] != (origin_spec['branch'] if reviewed else manifest['branch']) or snapshot.get('publisher_owner') != b['owner'] or
             decision.get('binding_sha256') != digest(b) or
-            decision.get('status') != 'merge-intent' or decision.get('merge_effect') != 'pending' or
+            (not standalone and (decision.get('status') != 'merge-intent' or decision.get('merge_effect') != 'pending' or
             action.get('kind') != 'merge-pr' or action.get('expected_head_sha') != b['head'] or
-            action.get('expected_base_sha') != b['base'] or
+            action.get('expected_base_sha') != b['base'])) or
             decision.get('qualification_sha256') != digest(dict(validation=validation, review=review,
                 tree=b['tree'], policy=b['policy_sha256'])) or
             snapshot.get('cancel_requested') or snapshot.get('unresolved_findings') or

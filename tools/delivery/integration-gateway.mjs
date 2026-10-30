@@ -58,6 +58,7 @@ async function fixedUnitReviewWriter(context) {
   context = structuredClone(context);
   if (sha(readFileSync(realpathSync(reviewPython))) !== context.python_sha256) throw Error('local_review_refused');
   const required = [reviewEntry, 'tools/delivery/integration-gateway.mjs',
+    'src/offmenu/delivery/integration.py', 'stokowski_stage',
     'stokowski_adapter','stokowski_worker','stokowski_prepare','stokowski_operations',
     'symphony_capacity','symphony_tasks','symphony_workspace','symphony_codex',
     'symphony_protocol','windmill_runner'].map(n=>n.includes('/')?n:`tools/delivery/${n}.py`);
@@ -101,7 +102,9 @@ async function fixedUnitReviewWriter(context) {
   return async envelope => {
     const payload = reviewWireBytes({context,envelope});
     const request = sha(payload);
-    const binding = JSON.parse(readFileSync(`${context.controller_directory}/binding.json`));
+    const binding = context.qualification_source ?
+      JSON.parse(readFileSync(context.qualification_source.path)).integration_binding :
+      JSON.parse(readFileSync(`${context.controller_directory}/binding.json`));
     const evidence = reviewWireBytes({issue:context.issue,unit_binding:context.unit_binding,
       integration_binding:binding,snapshot:envelope.snapshot,decision:envelope.decision,
       validation_receipt:context.validation_receipt});
@@ -127,6 +130,36 @@ async function fixedUnitReviewWriter(context) {
       return reply;
     }
   };
+}
+
+/** Bounded standalone review, invoked only by the authenticated connector owner.
+ * qualification_source is an out-of-band pin to original typed evidence, never
+ * a coding report. No Controller step/outcome, GitHub or Linear mutation occurs.
+ * UID/stdin custody is not authentication or isolation against malicious peers.
+ */
+export async function reviewStandaloneValidation({observe, reviewedCurrentUnit, unitReviewWriter, qualification}) {
+  if (reviewedCurrentUnit) {
+    reviewWireBytes(reviewedCurrentUnit);
+    const pin = reviewedCurrentUnit.qualification_source;
+    if (!pin || typeof pin.path !== 'string') throw Error('local_review_refused');
+    const raw = readFileSync(pin.path);
+    if (raw.length > reviewLimit || sha(raw) !== pin.sha256) throw Error('local_review_refused');
+    qualification = JSON.parse(raw);
+  }
+  const snapshot = await observe();
+  const decision = qualification?.decision;
+  reviewWireBytes({snapshot, decision});
+  if (decision?.version !== 1 || decision.kind !== 'standalone-validation-review-v1' ||
+      decision.status !== 'standalone-validation-qualified' || decision.action !== null ||
+      decision.merge_effect !== 'not-applicable' || !decision.binding_sha256 ||
+      !decision.qualification_sha256 || !isDeepStrictEqual(snapshot,qualification.snapshot) ||
+      snapshot.cancel_requested || snapshot.unresolved_findings?.length ||
+      snapshot.review?.verdict !== 'accept' || snapshot.review?.independent !== true ||
+      snapshot.review?.findings?.length || snapshot.validation?.status !== 'succeeded')
+    throw Error('local_review_refused');
+  if (reviewedCurrentUnit) unitReviewWriter = await fixedUnitReviewWriter(reviewedCurrentUnit);
+  if (!unitReviewWriter) throw Error('local_review_refused');
+  return await unitReviewWriter(structuredClone({snapshot,decision}));
 }
 
 /** Finite authenticated connector-owner gateway; never a coding-child tool.

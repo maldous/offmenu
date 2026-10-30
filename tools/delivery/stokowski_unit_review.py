@@ -4,8 +4,15 @@ Adoption contract: the authenticated gateway owner supplies reviewedCurrentUnit;
 never accept it from a coding child/report. It pins source_head/source_sha256,
 python_sha256, actor_uid, runtime, runtime_root, workspace_roots, claim_root,
 controller_directory, issue, unit_binding and validation_receipt. Paths/hashes
-are admitted out of band by that owner. Existing Controller binding/state/claim
-and its final graph checkpoint must already exist. No new owner receipt schema
+are admitted out of band by that owner. The pending merge route requires existing
+Controller state/checkpoint. Standalone additionally pins qualification_source
+{path,sha256}, an original typed packet retained inside runtime, and requires
+only the existing repository binding and claim, never Controller history. That
+claim retains its actual identity; the pinned standalone packet binds the
+original unit separately, even when a different PR integrated its source.
+Prior-review provenance_source must already be in the owner-qualified stage
+inputs; qualification_source alone cannot qualify a reviewer or supplement.
+No new owner receipt schema
 or OAuth transfer is asserted. Same-UID malicious actors are outside the private
 owner boundary. Requested model/provider remain review evidence fields; unknown
 observations must be recorded as unknown by the review source, never inferred.
@@ -20,7 +27,7 @@ The complete outer input/output is bounded to 1 MiB. The JSON domain is bounded
 to depth <64, Unicode scalar strings, finite fractions and safe integers
 (abs <= 2**53-1); negative zero and nonfinite/unsafe integers are rejected.
 Original Python int/float distinctions are restored ONLY from the typed graph
-observation and original receipt JSON. context.validation_receipt_source is an
+or pinned standalone observation and original receipt JSON. context.validation_receipt_source is an
 owner-pinned {path,sha256} to a private regular artifact inside the qualified
 original task runtime, in addition to the unchanged validation_receipt projection. Its bytes
 must pass the original Journal receipt digest. Review/qualification/native and
@@ -185,12 +192,15 @@ def handle(request):
     require(set(payload) == {'context','envelope'})
     wire_value(payload)
     c, envelope = payload['context'], payload['envelope']
+    standalone = 'qualification_source' in c
     require(set(c) == {'source_head', 'source_sha256', 'python_sha256', 'actor_uid',
         'runtime', 'runtime_root', 'workspace_roots', 'claim_root', 'controller_directory',
-        'issue', 'unit_binding', 'validation_receipt', 'validation_receipt_source'})
+        'issue', 'unit_binding', 'validation_receipt', 'validation_receipt_source'} |
+        ({'qualification_source'} if standalone else set()))
     uid = c['actor_uid']
     require(type(uid) is int and os.getuid() == os.geteuid() == uid)
-    # Kernel parent identity, not a caller-provided authenticated/owner string.
+    # Custody checks only. Authentication is the trusted connector-owner call;
+    # stdin and UID do not authenticate a caller or isolate malicious UID peers.
     parent = Path('/proc')/str(os.getppid())
     require(parent.stat().st_uid == uid)
     require(file_sha(PYTHON.resolve()) == c['python_sha256'])
@@ -209,7 +219,7 @@ def handle(request):
     for p in (runtime/'current.json', runtime/'current-owner.json',
               runtime/'installation.json', runtime/'workflow.yaml',
               runtime/'capacity-policy.json', directory/'binding.json',
-              directory/'state.json', directory/'graph.sqlite',
+              *([] if standalone else [directory/'state.json', directory/'graph.sqlite']),
               owner_path):
         custody(p, uid, private=True)
     current = CurrentWork(runtime, read_only=True)
@@ -253,21 +263,35 @@ def handle(request):
     require(roots and all(any(selected.is_relative_to(p) for p in roots)
                           for selected in (source, evidence_source)))
     b = read_record(directory/'binding.json')
-    decision = read_record(directory/'state.json')
     owner_claim = read_record(owner_path)
     if owner_path == active:
         evidence = directory/'repository-claim.json'
         custody(evidence, uid, private=True)
         require(read_record(evidence) == owner_claim)
     require(owner_claim == dict(binding_sha256=digest(b), directory=str(directory), owner=b['owner']))
-    require(b['owner'] == current.config['owner'] and b['issue_id'] == entry['issue_id'])
-    # Read the existing controller's final checkpoint through SQLite RO. Avoid
-    # SqliteSaver setup (DDL/PRAGMA writes) and Controller construction entirely.
-    with sqlite3.connect((directory/'graph.sqlite').as_uri()+'?mode=ro', uri=True) as db:
-        row = db.execute("SELECT type,checkpoint FROM checkpoints WHERE thread_id=? AND checkpoint_ns='' ORDER BY checkpoint_id DESC LIMIT 1", (digest(b),)).fetchone()
-    require(row is not None)
-    require(row[0] == 'msgpack' and len(row[1]) <= LIMIT)
-    channels = checkpoint_json(row[1])['channel_values']
+    require(b['owner'] == current.config['owner'])
+    if standalone:
+        pin = c['qualification_source']
+        require(set(pin) == {'path','sha256'})
+        path = custody(pin['path'], uid, private=True)
+        require(path.is_relative_to(runtime) and path.is_file() and path.stat().st_size <= LIMIT)
+        raw = path.read_bytes()
+        require(len(raw) <= LIMIT and hashlib.sha256(raw).hexdigest() == pin['sha256'])
+        retained = decode(raw)
+        require(retained['decision'].get('kind') == 'standalone-validation-review-v1')
+        b = retained['integration_binding']
+        require(b['owner'] == current.config['owner'] and b['issue_id'] == entry['issue_id'])
+        decision = retained['decision']
+        channels = dict(result=decision, observation=retained['snapshot'])
+    else:
+        require(b['issue_id'] == entry['issue_id'])
+        decision = read_record(directory/'state.json')
+        # Existing final checkpoint, read-only without saver setup or Controller.
+        with sqlite3.connect((directory/'graph.sqlite').as_uri()+'?mode=ro', uri=True) as db:
+            row = db.execute("SELECT type,checkpoint FROM checkpoints WHERE thread_id=? AND checkpoint_ns='' ORDER BY checkpoint_id DESC LIMIT 1", (digest(b),)).fetchone()
+        require(row is not None)
+        require(row[0] == 'msgpack' and len(row[1]) <= LIMIT)
+        channels = checkpoint_json(row[1])['channel_values']
     require(same_wire(channels['result'], decision)
             and same_wire(decision, envelope['decision'])
             and same_wire(channels['observation'], envelope['snapshot']))
@@ -287,6 +311,8 @@ def handle(request):
     packet = dict(issue=c['issue'], unit_binding=c['unit_binding'], integration_binding=b,
                   snapshot=channels['observation'], decision=decision,
                   validation_receipt=receipt)
+    if standalone:
+        require(reviewed and packet == retained)
     require(same_wire(decode(request['evidence']), packet))
     current._check_unit_review(packet)
     gate = current.state['tasks'][c['issue']].get('unit_gate', {})
