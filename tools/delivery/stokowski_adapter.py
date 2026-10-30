@@ -233,7 +233,7 @@ class CurrentWork:
         self.state['tasks'].setdefault(issue, {})['defer'] = reason
         self.save()
 
-    def context(self, issue, *, review=False):
+    def context(self, issue, *, review=False, observation=False):
         self.guard()
         entry = self.entries[issue]
         runtime = self.private(entry['runtime'])
@@ -276,7 +276,17 @@ class CurrentWork:
                 raise AdmissionError('current_task_source_drift')
         if not isinstance(admission['inputs'],dict):
             raise AdmissionError('current_declared_inputs_schema')
+        recovery_admission = None
+        selected_task = manifest['tasks'][issue]
+        if (observation and selected_task.get('stage') == 'validation'
+            and selected_task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1'):
+            _, _, selected, _, _ = self.reviewed_origin(issue,selected_task,observation=True)
+            recovery_admission = selected['admission_path']
         for name, sha in admission['inputs'].items():
+            if name == recovery_admission:
+                if sha != selected['admission_sha256']:
+                    raise AdmissionError('reviewed_source_admission_pin')
+                continue
             path = Path(name)
             if not path.is_absolute() or path != path.resolve() or file_sha(path) != sha:
                 raise AdmissionError('current_declared_input_unavailable')
@@ -309,7 +319,7 @@ class CurrentWork:
                     raise AdmissionError('current_retained_lease_requires_reconciliation')
         return runtime, manifest, source
 
-    def reviewed_origin(self, issue, task):
+    def reviewed_origin(self, issue, task, *, observation=False):
         """Read the new validation operation under its separately selected runtime."""
         import stokowski_operations as operations
         import stokowski_stage as stage
@@ -329,11 +339,16 @@ class CurrentWork:
         selected_path = runtime/'validation-bindings.json'
         if not isinstance(pins,dict) or str(selected_path) not in pins:
             raise AdmissionError('reviewed_source_input_coverage')
+        bindings = read_record(selected_path)
+        selected = bindings['issues'][issue]
         for name, sha in pins.items():
             path = Path(name)
-            if not path.is_absolute() or any(p.is_symlink() for p in (path,*path.parents)) or path != path.resolve() or file_sha(path) != sha:
+            if not path.is_absolute() or any(p.is_symlink() for p in (path,*path.parents)) or path != path.resolve():
                 raise AdmissionError('reviewed_source_input_drift')
-        bindings = read_record(selected_path)
+            if observation and name == selected['admission_path']:
+                continue
+            if file_sha(path) != sha:
+                raise AdmissionError('reviewed_source_input_drift')
         if bindings != dict(version=1,issues=bindings.get('issues'),history=[]) or set(bindings['issues']) != {issue}:
             raise AdmissionError('reviewed_source_selection')
         selected = bindings['issues'][issue]
@@ -357,7 +372,26 @@ class CurrentWork:
             or spec['runner_sha256'] != file_sha(SOURCE/'tools/delivery/windmill_runner.py')
             or set(task['input_paths']) != set(spec['outputs'])):
             raise AdmissionError('reviewed_source_operation')
-        admission = stage.qualify_reviewed_source(spec,selected['admission_path'])
+        if observation:
+            # The owner-pinned binding commits to this exact spec and evidence
+            # set. Recover review identity from those immutable pins, without
+            # trusting the current admission file or inventing replacement facts.
+            admission = dict(spec['origin'])
+            reviews = []
+            for name,sha in pins.items():
+                if name in {selected['admission_path'],str(selected_path)}:
+                    continue
+                try:
+                    review = dict(read_record(name),path=name,sha256=sha)
+                except (ValueError,AdmissionError):
+                    continue  # Other pinned inputs need not be JSON reviews.
+                if digest(review) == spec['origin']['review_sha256']:
+                    reviews.append(review)
+            if len(reviews) != 1:
+                raise AdmissionError('reviewed_source_review_binding')
+            admission['review'] = reviews[0]
+        else:
+            admission = stage.qualify_reviewed_source(spec,selected['admission_path'])
         required = {selected['admission_path']:entry['admission_sha256'],
                     admission['review']['path']:admission['review']['sha256']}
         required.update({r['path']:r['sha256'] for r in admission['provenance']})
@@ -383,7 +417,7 @@ class CurrentWork:
         """
         import copy
         if task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1':
-            runtime, _, _, _, _ = self.reviewed_origin(issue,task)
+            runtime, _, _, _, _ = self.reviewed_origin(issue,task,observation=True)
             return self, runtime, task['stage_binding']['identity']
         binding = task['stage_binding']
         entry = binding['entry']
@@ -425,7 +459,7 @@ class CurrentWork:
             raise AdmissionError('stage_original_binding')
         return view, runtime, identity
 
-    def gate_binding(self, issue):
+    def gate_binding(self, issue, *, observation=False):
         """Validate native evidence, never infer unit review from parent status.
 
         unit_gate in current-owner.json is the local pending record. Its binding
@@ -435,10 +469,10 @@ class CurrentWork:
         entry = self.entries.get(issue.identifier)
         if not entry or issue.id != entry['issue_id']:
             raise AdmissionError('current_gate_identity')
-        runtime, manifest, _ = self.context(issue.identifier, review=True)
+        runtime, manifest, _ = self.context(issue.identifier, review=True, observation=observation)
         task = manifest['tasks'][issue.identifier]
         if 'stage' in task and task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1':
-            _, spec, selected, _, admission = self.reviewed_origin(issue.identifier,task)
+            _, spec, selected, _, admission = self.reviewed_origin(issue.identifier,task,observation=observation)
             return dict(project_id=PROJECT,issue_id=issue.id,origin='reviewed-source-v1',
                 origin_admission_sha256=spec['origin']['admission_sha256'],
                 operation_key=selected['operation_key'],owner=spec['owner'],author=admission['author'],
@@ -484,7 +518,7 @@ class CurrentWork:
         import stokowski_operations as operations
         import stokowski_stage as stage
         import stokowski_mcp as mcp
-        runtime, manifest, source = self.context(issue, review=True)
+        runtime, manifest, source = self.context(issue, review=True, observation=True)
         task = manifest['tasks'][issue]
         if 'stage' in task:
             _, original, identity = self.stage_origin(issue, task)
@@ -603,12 +637,12 @@ class CurrentWork:
             self.save()
             task = self.state['tasks'].setdefault(issue, {})
             try:
-                _, manifest, _ = self.context(issue, review=True)
+                _, manifest, _ = self.context(issue, review=True, observation=True)
                 selected_task = manifest['tasks'][issue]
                 runtime, identity = self.validation_binding(issue, entry)
                 if 'stage' in selected_task:
                     from types import SimpleNamespace
-                    unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']))
+                    unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']), observation=True)
                     gate = task.setdefault('unit_gate', dict(binding=unit, disposition='waiting'))
                     if gate.get('binding') != unit:
                         raise AdmissionError('stage_gate_rebind')

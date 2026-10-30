@@ -195,6 +195,41 @@ class PublicationTests(unittest.TestCase):
             {'version', 'owner', 'issue', 'issue_id', 'source', 'manifest_sha256', 'request_sha256',
              'policy_sha256', 'installation_sha256', 'inputs'})
 
+    def test_publication_pins_controller_claim_after_active_owner_changes(self):
+        from offmenu.delivery.integration import Controller
+        from offmenu.delivery.engine import atomic
+        claim_root = self.source/'.delivery/integration'
+        binding = dict(version=1,repository='maldous/offmenu',pr_number=172,
+            issue_id=self.issue['uuid'],owner=self.owner,head_branch=self.branch,
+            head='a'*40,base='b'*40,tree='c'*40,policy_sha256='d'*64,
+            capacity_policy_sha256='e'*64,validation_operation_key='f'*64,
+            outputs={'tests/fixture.py':'1'*64})
+        # Bootstrap from the preexisting legacy fixture; it remains immutable.
+        self.write(claim_root/'bound/binding.json',json.loads((claim_root/'bound/selected-binding.json').read_text()))
+        self.write(claim_root/'bound/state.json',dict(status='prepared'))
+        controller = Controller(claim_root/'published',binding,claim_root)
+        with controller.ownership():
+            atomic(controller.directory/'state.json',dict(status='prepared'))
+        evidence = controller.directory/'repository-claim.json'
+        binding_path = controller.directory/'binding.json'
+        self.config['repository'] = binding['repository']
+        self.packet['source']['repository'] = binding['repository']
+        self.config['repository_claim'] = dict(self.ref(evidence),binding_path=str(binding_path),
+            binding_sha256=self.sha(binding_path),binding_identity_sha256=digest(binding))
+        self.repin()
+        frozen = {p:p.read_bytes() for p in (evidence,binding_path,claim_root/'repository-claim.json')}
+        successor = Controller(claim_root/'successor',dict(binding,head='9'*40),claim_root)
+        with successor.ownership():
+            atomic(successor.directory/'state.json',dict(status='prepared'))
+        self.assertEqual(self.publish()['status'],'published')
+        published = self.snapshot(self.root)
+        with successor.ownership():
+            pass
+        self.assertEqual(self.publish()['status'],'duplicate')
+        self.assertEqual(self.snapshot(self.root),published)
+        for path, raw in frozen.items():
+            self.assertEqual(path.read_bytes(),raw)
+
     def test_saved_json_uid_and_owner_strings_cannot_authenticate(self):
         for value in (None, self.caller, self.owner, 1000):
             with self.subTest(value=value), self.assertRaisesRegex(AdmissionError, 'trusted_adapters_required'):
