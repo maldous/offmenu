@@ -2,8 +2,21 @@
  * Existing authenticated adapters supply observations. Persisted controller
  * intent precedes mutations; canonical readback alone certifies their effects.
  */
-export async function advanceIntegration({controller, github, linear, observe}) {
-  let decision = await controller.step(await observe());
+export async function advanceIntegration({controller, github, linear, observe, unitReviewWriter}) {
+  let snapshot = await observe();
+  let decision = await controller.step(snapshot);
+  // Optional same-owner transport, installed only by the authenticated sole
+  // integration owner. Neither this callback nor an owner/authenticated string
+  // authenticates a coding child. No transport/credential is configured here.
+  // Only the fresh controller qualification may cross this seam; repair and
+  // reconciliation decisions never become unit verdicts. Normal flow is unchanged.
+  if (unitReviewWriter && decision.status === 'merge-intent' &&
+      decision.action?.kind === 'merge-pr' && decision.merge_effect === 'pending' &&
+      decision.qualification_sha256 && !snapshot.cancel_requested &&
+      !snapshot.unresolved_findings?.length && snapshot.review?.verdict === 'accept' &&
+      !snapshot.review?.findings?.length) {
+    await unitReviewWriter(structuredClone({snapshot, decision}));
+  }
   let mergeIssued = false;
   // At most one merge and the controller's three metadata attempts. Every
   // returned metadata action is consumed here, including slow-readback retries.

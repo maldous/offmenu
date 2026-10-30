@@ -144,6 +144,132 @@ class CurrentDispatchTests(unittest.TestCase):
     def select(self, issue, client=None):
         return asyncio.run(self.current.candidates(client or self.client(issue), [issue]))
 
+    def review_fixture(self):
+        from symphony_capacity import digest
+        from stokowski_operations import Journal, operation_key, bridge_arguments
+        issue, runtime, owner, client = self.bound_gate(230)
+        directory = runtime/'attempts'/issue.identifier
+        native = json.loads((directory/'receipt.json').read_text())
+        output = b'independent immutable output\n'
+        outputs = {'tests/task230.py':hashlib.sha256(output).hexdigest()}
+        target = runtime/'workspaces'/issue.identifier/'tests/task230.py'
+        target.parent.mkdir(parents=True)
+        target.write_bytes(output)
+        native.update(source_head='b'*40, output_sha256=outputs, scope_violations=[])
+        self.write(directory/'receipt.json', native)
+        unit = self.current.gate_binding(issue)
+        self.current.state['tasks'][issue.identifier]['unit_gate']['binding'] = unit
+        self.current.save()
+        spec = dict(version=1, issue=issue.identifier, issue_id=issue.id, stage='validate',
+            owner='existing-owner', head='c'*40, base='b'*40, branch='feature/test-current',
+            policy_sha256=self.current.config['policy_sha256'], outputs=outputs, profile='delivery-suite',
+            runner_sha256='d'*64, executor_sha256='e'*64,
+            acceptance_sha256=digest(dict(task=json.loads((runtime/'manifest.json').read_text())['tasks'][issue.identifier],
+                native_receipt_sha256=unit['native_receipt_sha256'],profile='delivery-suite')))
+        journal = Journal(runtime/'operations'); key = journal.prepare(spec)
+        _, state = journal.read(key)
+        receipt = dict(status='succeeded', exit_code=0, child_tree_gone=True, reconcile_required=False,
+            job_id=state['logical_job_id'], runner_sha256=spec['runner_sha256'],
+            capacity_policy_sha256=spec['policy_sha256'],
+            command_sha256=hashlib.sha256(bridge_arguments(spec)['command'].encode()).hexdigest())
+        state.update(status='succeeded', receipt_sha256=digest(receipt),
+            accepted_output_sha256=outputs, acceptance_sha256=spec['acceptance_sha256'])
+        journal.save(key,state,'controlled-test-proof')
+        self.write(runtime/'validation-bindings.json',dict(version=1,issues={issue.identifier:dict(
+            operation_key=key,source_head='c'*40,native_receipt_sha256=unit['native_receipt_sha256'],
+            native_output_sha256=outputs,derivation={})}))
+        b = dict(version=1, repository='maldous/offmenu',pr_number=145,issue_id=issue.id,
+            owner='existing-owner', head='c'*40,base='b'*40,tree='f'*40,
+            policy_sha256='1'*64,capacity_policy_sha256=spec['policy_sha256'],
+            validation_operation_key=key,outputs=outputs,head_branch='feature/test-current')
+        review = dict(head='c'*40,base='b'*40,outputs=outputs,independent=True,evidence_id='immutable-review-230',
+            reviewer='independent-reviewer',author='existing-owner',model='review-model',provider='existing-route',
+            findings=[],verdict='accept')
+        review['evidence_sha256'] = digest(review)
+        validation = dict(operation_key=key,status='succeeded',head='c'*40,base='b'*40,
+            capacity_policy_sha256=spec['policy_sha256'],outputs=outputs,child_tree_gone=True,reconcile_required=False)
+        snapshot = dict(review=review,validation=validation,publisher_owner='existing-owner',source_tree='f'*40,
+            source_clean=True,publication_triggers_actions=False,policy_sha256='1'*64,
+            capacity_policy_sha256=spec['policy_sha256'])
+        decision = dict(status='merge-intent',merge_effect='pending',binding_sha256=digest(b),
+            qualification_sha256=digest(dict(validation=validation,review=review,tree='f'*40,policy='1'*64)),
+            action=dict(kind='merge-pr',expected_head_sha='c'*40,expected_base_sha='b'*40))
+        packet = dict(issue=issue.identifier,unit_binding=unit,integration_binding=b,
+            snapshot=snapshot,decision=decision,validation_receipt=receipt)
+        return issue,runtime,owner,client,packet,journal,key
+
+    def test_owner_observation_once_reopen_and_native_consumption(self):
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
+        writer = self.current.unit_review_writer(lambda envelope:packet)
+        envelope = {k:packet[k] for k in ('snapshot','decision')}
+        with (self.root/'coordinator.lock').open('a') as lock:
+            fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+            writer(envelope)  # No root lock reacquisition/deadlock.
+            writer(envelope)
+        self.assertEqual(self.current.state['tasks'][issue.identifier]['unit_gate']['disposition'],'waiting')
+        reopened = adapter.CurrentWork(self.runtime)
+        self.assertEqual(reopened.state['tasks'][issue.identifier]['unit_gate']['disposition'],'approved')
+        asyncio.run(owner._handle_gate_responses())
+        gate = self.current.state['tasks'][issue.identifier]['unit_gate']
+        self.assertTrue(gate['handled'])
+        asyncio.run(owner._handle_gate_responses())
+        self.assertFalse(gate['accepted_delivery'])
+        client.update_issue_state.assert_not_awaited()
+        client.post_comment.assert_not_awaited()
+        owner._schedule_retry.assert_not_called()
+        owner.ledger.record_terminal.assert_not_called()
+
+    def test_review_mismatches_hold_and_never_write_disposition(self):
+        import copy
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
+        with self.assertRaises(AdmissionError):
+            self.current.unit_review_writer()
+        mutations = [
+            ('unit_binding','request_sha256','0'*64),('unit_binding','native_receipt_sha256','0'*64),
+            ('unit_binding','admission_sha256','0'*64),('unit_binding','project_id','foreign'),
+            ('integration_binding','issue_id','00000000-0000-4000-8000-000000000999'),
+            ('integration_binding','outputs',{}),('integration_binding','head','0'*40),
+            ('decision','status','awaiting-validation'),('decision','merge_effect','refused'),
+            ('review','reviewer','existing-owner'),('review','evidence_sha256','0'*64),
+            ('review','model','changed'),('review','verdict','changes-requested')]
+        for section,name,value in mutations:
+            bad = copy.deepcopy(packet)
+            (bad['snapshot']['review'] if section=='review' else bad[section])[name] = value
+            with self.subTest(section=section,name=name), self.assertRaises((AdmissionError,KeyError)):
+                self.current.unit_review_writer(lambda envelope:bad)({k:bad[k] for k in ('snapshot','decision')})
+        spec,state = journal.read(key)
+        for change in [dict(status='unknown'),dict(cancel_requested=True),dict(accepted_output_sha256={})]:
+            journal.save(key,dict(state,**change),'controlled-drift')
+            with self.assertRaises(AdmissionError):
+                self.current._check_unit_review(packet)
+        journal.save(key,state,'restored')
+        original_database = (runtime/'operations/operations.sqlite').read_bytes()
+        with journal.db() as db:
+            changed = dict(spec, head='9'*40)
+            db.execute('UPDATE operations SET spec=? WHERE key=?',(json.dumps(changed),key))
+        with self.assertRaises(AdmissionError):
+            self.current._check_unit_review(packet)
+        (runtime/'operations/operations.sqlite').write_bytes(original_database)
+        output = runtime/'workspaces'/issue.identifier/'tests/task230.py'
+        original_output = output.read_bytes()
+        output.write_bytes(b'changed output')
+        with self.assertRaises(AdmissionError):
+            self.current._check_unit_review(packet)
+        output.write_bytes(original_output)
+        directory = runtime/'attempts'/issue.identifier
+        original = (directory/'receipt.json').read_bytes()
+        for change in [dict(status='cancelled'),dict(status='unknown'),dict(child_tree_gone=False)]:
+            self.write(directory/'receipt.json',dict(json.loads(original),**change))
+            with self.assertRaises(AdmissionError):
+                self.current._check_unit_review(packet)
+        (directory/'receipt.json').write_bytes(original)
+        writer = self.current.unit_review_writer(lambda envelope:packet)
+        writer({k:packet[k] for k in ('snapshot','decision')})
+        conflict = copy.deepcopy(packet); conflict['extra']='conflicting replay'
+        with self.assertRaises(AdmissionError):
+            self.current.unit_review_writer(lambda envelope:conflict)({k:conflict[k] for k in ('snapshot','decision')})
+        self.assertEqual(self.current.state['tasks'][issue.identifier]['unit_gate']['disposition'],'waiting')
+
     def test_partial_gate_never_closes_parent(self):
         issue, _ = self.qualify(219)
         native, _, _ = self.adapted()

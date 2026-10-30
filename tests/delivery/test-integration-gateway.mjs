@@ -21,3 +21,27 @@ test('preflight permission refusal preserves authority stop',async()=>{const f=f
 test('slow metadata readbacks consume every emitted retry without dropping an action',async()=>{const f=fixture('update-linear');let attempts=0;f.controller.step=async()=>attempts<3?f.decision:{status:'accepted',action:null};f.linear.completeIssue=async()=>{attempts++;f.calls.push(['linear']);};const result=await advanceIntegration(f);assert.equal(result.status,'accepted');assert.equal(attempts,3);assert.equal(f.calls.filter(c=>c[0]==='outcome').length,3);});
 
 test('malformed preflight response is known nonexecution',async()=>{const f=fixture();f.github.getPullRequest=async()=>null;await advanceIntegration(f);assert.deepEqual(f.calls,[['outcome','merge','not-issued']]);});
+
+test('optional trusted writer sees qualified exact snapshot once without extra effects',async()=>{
+  const f=fixture(); let written;
+  f.decision.merge_effect='pending'; f.decision.qualification_sha256='e'.repeat(64);
+  f.observe=async()=>({review:{verdict:'accept',findings:[]},validation:{operation_key:'d'}});
+  f.unitReviewWriter=async packet=>{written=packet;packet.snapshot.review.verdict='mutated';};
+  await advanceIntegration(f);
+  assert.equal(written.decision.status,'merge-intent');
+  assert.equal(f.calls.filter(c=>c[0]==='merge').length,1);
+  assert.equal(f.calls.filter(c=>c[0]==='linear').length,0);
+});
+test('unit writer never receives repair, unqualified, cancelled or uncertain decisions',async()=>{
+  for(const change of [{status:'repair-required'},{status:'awaiting-validation'},
+    {merge_effect:'uncertain'},{qualification_sha256:null}]){
+    const f=fixture();Object.assign(f.decision,{merge_effect:'pending',qualification_sha256:'e'.repeat(64)},change);
+    f.observe=async()=>({review:{verdict:'accept',findings:[]}});
+    f.unitReviewWriter=async()=>assert.fail('unqualified writer');await advanceIntegration(f);
+  }
+  for(const snapshot of [{cancel_requested:true},{unresolved_findings:['open']},{review:{verdict:'changes-requested'}}]){
+    const f=fixture();Object.assign(f.decision,{merge_effect:'pending',qualification_sha256:'e'.repeat(64)});
+    f.observe=async()=>({review:{verdict:'accept'},...snapshot});
+    f.unitReviewWriter=async()=>assert.fail('held writer');await advanceIntegration(f);
+  }
+});
