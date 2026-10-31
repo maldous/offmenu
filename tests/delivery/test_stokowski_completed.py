@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import sqlite3
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -39,14 +40,17 @@ class CompletedNativeTests(unittest.TestCase):
         with sqlite3.connect(self.pool/'state.sqlite') as db:
             db.execute('CREATE TABLE leases(id TEXT,status TEXT,binding TEXT,outcome TEXT)');db.execute('INSERT INTO leases VALUES(?,?,?,?)',(self.lease,'finished',json.dumps(self.binding),'succeeded'))
         self.manifest={'base_revision':a,'branch':'bugfix/native','tasks':{'UIF-119':{'owner':self.owner,'allowed_paths':list(self.outputs)}}};self.entry={'issue_id':'fixture-unit'}
-        policy='a'*64;runner=hashlib.sha256(b'fixture source pin; never executed').hexdigest();command='owner-reviewed fixture command; never executed';command_hash=hashlib.sha256(command.encode()).hexdigest()
+        policy='a'*64;runner=hashlib.sha256(b'fixture source pin; never executed').hexdigest()
+        engine=dict(version=1,id='fixture-engine',owner='fixture-owner',purpose='Offline fixture only',base_revision=head,branch='bugfix/integration',accepted_outputs=self.outputs,checks=[{'id':'first','argv':['python3','-c','pass'],'timeout':1},{'id':'second','argv':['python3','-c','pass'],'timeout':1}])
+        workspace='/offmenu/data/.offmenu-platform/workspaces/fixture-candidate'
+        command=completed.engine_recipe(engine,'bugfix/integration',head,self.outputs,workspace);command_hash=hashlib.sha256(command.encode()).hexdigest();job='offmenu-source-'+command_hash[:40]
         b=dict(pr_number=181,owner=self.owner,issue_id='fixture-unit',repository='maldous/offmenu',head=head,base=base,tree=tree,head_branch='bugfix/integration',outputs=self.outputs,validation_operation_key=command_hash,policy_sha256='c'*64,capacity_policy_sha256=policy)
         review=dict(verdict='accepted',findings=[],reviewed_outputs=self.outputs,integration_head=head,integration_base=base,integration_tree=tree,native_receipt_sha256=self.unit['native_receipt_sha256'],reviewer=dict(identity='independent-fixture-reviewer',role='independent source reviewer; not coding author or integration writer',requested_model=None,requested_effort=None,requested_provider=None,observed_model=None,observed_provider=None,resolution_status='unobserved'))
-        request=dict(command=command,job_id='fixture-job',mode='write',timeout_seconds=180,resources={'cpu_millis':1000})
-        receipt=dict(status='succeeded',exit_code=0,child_tree_gone=True,reconcile_required=False,job_id='fixture-job',command_sha256=command_hash,runner_sha256=runner,capacity_policy_sha256=policy)
+        request=dict(command=command,job_id=job,mode='write',timeout_seconds=180,resources={'cpu_millis':1000,'write_roots':[workspace,workspace+'-source-preparation']})
+        receipt=dict(status='succeeded',exit_code=0,child_tree_gone=True,reconcile_required=False,job_id=job,command_sha256=command_hash,runner_sha256=runner,capacity_policy_sha256=policy)
         expected=dict(command_sha256=command_hash,mode='write',timeout_seconds=180,runner_sha256=runner,capacity_policy_sha256=policy,resources=request['resources']);receipt['request_sha256']=hashlib.sha256(json.dumps(expected,sort_keys=True).encode()).hexdigest()
-        result=dict(isError=False,content=[dict(type='text',text='Result\n'+json.dumps(dict(receipt=receipt,admitted=True,job_succeeded=True,job_id='fixture-job'))+'\njob=12345678-1234-1234-1234-123456789abc tag=fixture')])
-        engine=dict(base_revision=head,branch=b['head_branch'],accepted_outputs=self.outputs,checks=[{'id':'first'},{'id':'second'}]);self.evidence={'version':1,'kind':completed.KIND,'issue':'UIF-119','unit_binding':self.unit,'repository':str(self.repo),'windmill_job_id':'12345678-1234-1234-1234-123456789abc'}
+        result=dict(isError=False,content=[dict(type='text',text='Result\n'+json.dumps(dict(receipt=receipt,admitted=True,job_succeeded=True,job_id=job))+'\njob=12345678-1234-1234-1234-123456789abc tag=fixture')])
+        self.evidence={'version':1,'kind':completed.KIND,'issue':'UIF-119','unit_binding':self.unit,'repository':str(self.repo),'windmill_job_id':'12345678-1234-1234-1234-123456789abc'}
         values={'integration_binding':b,'independent_review':review,'validation_request':request,'validation_receipt':receipt,'validation_result':result,'engine_task':engine}
         for k,v in values.items():self.evidence[k]=self.ref(k,v)
         observation=dict(publisher_owner=self.owner,github=dict(repository='maldous/offmenu',number=181,merged=True,merge_commit_sha=merge,head=head,base=base),source_tree=tree,source_clean=True,publication_triggers_actions=False,unresolved_findings=[],merge_commit=dict(sha=merge,tree=tree,parents=[base,head]),policy_sha256=b['policy_sha256'],capacity_policy_sha256=policy,develop_contains_merge=True,validation=dict(operation_key=command_hash,status='succeeded',head=head,base=base,capacity_policy_sha256=policy,outputs=self.outputs,child_tree_gone=True,reconcile_required=False),review=dict(reviewer='independent-fixture-reviewer',author='native Codex session fixture-native-session',independent=True,verdict='accept',findings=[],evidence_id='sha256:'+self.evidence['independent_review']['sha256']))
@@ -117,6 +121,19 @@ class CompletedNativeTests(unittest.TestCase):
         with sqlite3.connect(p) as db:db.execute("UPDATE checkpoints SET checkpoint=?",(ormsgpack.packb({'channel_values':{'result':{},'observation':{}}}),))
         ref['sha256']=completed.file_sha(p);self.repin()
         with self.assertRaises(AdmissionError):completed.qualify(self.current,'UIF-119')
+
+    def test_engine_recipe_requires_same_literal_task_invocation_and_acceptance(self):
+        request=json.loads(Path(self.evidence['validation_request']['path']).read_bytes())
+        task=json.loads(Path(self.evidence['engine_task']['path']).read_bytes())
+        binding=json.loads(Path(self.evidence['integration_binding']['path']).read_bytes())
+        completed.check_engine_recipe(request,task,binding)
+        different=copy.deepcopy(task);different['checks'][0]['argv']=['python3','-c','raise Exception()']
+        wrong=dict(request,command=completed.engine_recipe(different,binding['head_branch'],binding['head'],binding['outputs'],request['resources']['write_roots'][0]))
+        with self.assertRaises(AdmissionError):completed.check_engine_recipe(wrong,task,binding)
+        code=shlex.split(request['command'][len(completed.ENGINE_SHELL):])[0]
+        for old,new in [("result=Engine(candidate,checkpoints,task).run()","result=None"),("assert result['status']=='accepted',result","pass"),("os.umask(0o077)","os.umask(0o022)")]:
+            altered=dict(request,command=completed.ENGINE_SHELL+shlex.quote(code.replace(old,new)))
+            with self.assertRaises(AdmissionError):completed.check_engine_recipe(altered,task,binding)
 
     def test_normal_continuation_projects_completed_result_without_tick(self):
         from stokowski_adapter import CurrentWork

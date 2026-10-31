@@ -26,7 +26,9 @@ of changes to native output paths between bases, exact candidate delta and Git
 blobs, and canonical merge parents/tree in the current accepted source lineage.
 
 Consume original Engine task/request and terminal Windmill result/receipt,
-including command/request/runner/policy identity, stopped children and no pending
+including the recognized fixed source-selection/Engine wrapper, equality of its
+literal embedded task, the required accepted-result assertion,
+command/request/runner/policy identity, stopped children and no pending
 reconciliation. Bind independent exact-source review, completed Controller
 binding/claim/checkpoint/observation and merge readback. The owner-approved command
 is executable configuration; receipt custody does not turn an arbitrary coding

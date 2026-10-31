@@ -6,6 +6,8 @@ JSON/UID custody alone does not authenticate that owner or isolate hostile UID
 peers. No subprocess except fixed local Git observations, no writes or dispatch.
 """
 import hashlib
+import ast
+import shlex
 import json
 import os
 from pathlib import Path
@@ -58,6 +60,56 @@ def checkpoint(ref, root, binding):
         row=db.execute("SELECT type,checkpoint FROM checkpoints WHERE thread_id=? AND checkpoint_ns='' ORDER BY checkpoint_id DESC LIMIT 1",(digest(binding),)).fetchone()
     require(row is not None and row[0]=='msgpack' and len(row[1])<=LIMIT)
     return checkpoint_json(row[1])['channel_values']
+
+
+ENGINE_PREFIX = 'from pathlib import Path\nimport hashlib,json,subprocess,os,ast\nos.umask(0o077)\ndef git(*args):return subprocess.check_output([\'git\',*args],text=True).strip()\ndef ensure(dest,branch,head,outputs):\n dest=Path(dest);stage=dest.with_name(dest.name+\'-source-preparation\')\n if not dest.exists():\n  assert not stage.exists(), \'Reconcile partial preparation instead of overwriting\'\n  dest.parent.mkdir(parents=True,exist_ok=True)\n  subprocess.run([\'git\',\'clone\',\'--no-local\',"--upload-pack=git -c safe.directory=/offmenu/.git -c safe.directory=/offmenu upload-pack",\'--single-branch\',\'--branch\',branch,\'/offmenu\',str(stage)],check=True)\n  assert git(\'-C\',str(stage),\'rev-parse\',\'HEAD\')==head\n  os.rename(stage,dest)\n assert git(\'-C\',str(dest),\'rev-parse\',\'HEAD\')==head\n assert git(\'-C\',str(dest),\'branch\',\'--show-current\')==branch\n assert not git(\'-C\',str(dest),\'status\',\'--porcelain\',\'--untracked-files=all\')\n for p,s in outputs.items():assert hashlib.sha256((dest/p).read_bytes()).hexdigest()==s,p\n return dest\n'
+ENGINE_SHELL = 'cd /offmenu && export PYTHONPATH=/offmenu/src GIT_CONFIG_COUNT=2 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0=/offmenu GIT_CONFIG_KEY_1=safe.directory GIT_CONFIG_VALUE_1=/offmenu/.git && /offmenu/.venv-delivery/bin/python -c '
+ENGINE_TAIL = "candidate=ensure(None,None,None,None)\nimport sys,fcntl\nsys.path.insert(0,str(candidate/'src'))\nfrom offmenu.delivery.engine import Engine\ncheckpoints=Path('/offmenu/data/.offmenu-platform/checkpoints')\nwith (checkpoints/'product-validation.lock').open('a') as lock:\n fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)\n task=json.loads('')\n os.chdir(candidate)\n os.environ['PYTHONPATH']=str(candidate/'src')\n result=Engine(candidate,checkpoints,task).run();assert result['status']=='accepted',result\n print(json.dumps(result))\n"
+
+def engine_recipe(task, branch, head, outputs, workspace):
+    """Reconstruct this recognized recipe for tests/identity; never execute it."""
+    first='candidate=ensure('+','.join(map(repr,(workspace,branch,head,outputs)))+')'
+    tail=ENGINE_TAIL.replace('candidate=ensure(None,None,None,None)',first,1)
+    tail=tail.replace("task=json.loads('')",'task=json.loads('+repr(json.dumps(task))+')',1)
+    return ENGINE_SHELL+shlex.quote(ENGINE_PREFIX+tail)
+
+
+def check_engine_recipe(request, task, binding):
+    """Recognize the retained fixed wrapper and its literal task, no eval/run."""
+    command=request['command']
+    require(command.startswith(ENGINE_SHELL))
+    quoted=command[len(ENGINE_SHELL):]
+    words=shlex.split(quoted)
+    require(len(words)==1 and shlex.quote(words[0])==quoted)
+    code=words[0]
+    require(code.startswith(ENGINE_PREFIX))
+    tree=ast.parse(code[len(ENGINE_PREFIX):])
+    expected=ast.parse(ENGINE_TAIL)
+    first=tree.body[0]
+    require(isinstance(first,ast.Assign) and isinstance(first.value,ast.Call)
+            and len(first.value.args)==4 and not first.value.keywords)
+    args=[ast.literal_eval(a) for a in first.value.args]
+    workspace=args[0]
+    require(isinstance(workspace,str) and re.fullmatch(
+        r'/offmenu/data/\.offmenu-platform/workspaces/[a-z0-9][a-z0-9-]{0,119}',workspace)
+        and args[1:]==[binding['head_branch'],binding['head'],binding['outputs']]
+        and request['mode']=='write'
+        and request['resources']['write_roots']==[workspace,workspace+'-source-preparation'])
+    first.value.args=[ast.Constant(None) for _ in range(4)]
+    tasks=[n for n in ast.walk(tree) if isinstance(n,ast.Assign)
+           and any(isinstance(t,ast.Name) and t.id=='task' for t in n.targets)]
+    require(len(tasks)==1 and isinstance(tasks[0].value,ast.Call)
+            and len(tasks[0].value.args)==1 and not tasks[0].value.keywords
+            and isinstance(tasks[0].value.args[0],ast.Constant)
+            and isinstance(tasks[0].value.args[0].value,str))
+    require(json.loads(tasks[0].value.args[0].value)==task)
+    tasks[0].value.args[0]=ast.Constant('')
+    require(ast.dump(tree,include_attributes=False)==ast.dump(expected,include_attributes=False))
+    require(type(task['version']) is int and task['version']==1 and 1<=len(task['checks'])<=32)
+    for check in task['checks']:
+        require(isinstance(check.get('argv'),list) and check['argv']
+                and all(isinstance(a,str) for a in check['argv'])
+                and type(check.get('timeout')) is int and 1<=check['timeout']<=600)
 
 
 def qualify(current, issue):
@@ -176,7 +228,9 @@ def qualify(current, issue):
             and returned['job_succeeded'] is True and returned['job_id'] == request['job_id'])
     match = re.search(r'\njob=([0-9a-f-]{36}) ', text)
     require(match is not None and match.group(1) == evidence['windmill_job_id'])
+    check_engine_recipe(request,engine,b)
     command = hashlib.sha256(request['command'].encode()).hexdigest()
+    require(request['job_id']=='offmenu-source-'+command[:40])
     require(validation['status'] == 'succeeded' and validation['exit_code'] == 0
             and validation['child_tree_gone'] is True and validation['reconcile_required'] is False
             and validation['job_id'] == request['job_id']

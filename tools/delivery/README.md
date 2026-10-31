@@ -292,6 +292,9 @@ bases. Candidate delta/output hashes and verified merge parents/tree must match.
 It also requires the original owner-approved Engine task/request and terminal
 Windmill result/receipt, command/request/runner/policy hashes, independent review,
 and the original Controller binding, claim, terminal checkpoint and observation.
+The executed command must match the recognized source-selection/Engine wrapper;
+its literal embedded task must equal the pinned task and require an accepted
+`Engine.run()` result. Successful unrelated commands never qualify.
 Private byte-identical copies may provide receipt custody; provenance remains the
 original records. The current authenticated owner claim remains separate from
 that completed Controller's claim. Neither stdin nor a shared UID is authentication.
