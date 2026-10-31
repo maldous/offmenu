@@ -405,9 +405,9 @@ class CurrentDispatchTests(unittest.TestCase):
         if real:
             original = Path(__file__).resolve().parents[2]
             shutil.copytree(original/'tools/delivery',self.source/'tools/delivery',dirs_exist_ok=True,
-                            ignore=shutil.ignore_patterns('__pycache__'))
+                            ignore=shutil.ignore_patterns('__pycache__'), copy_function=self.copy_fixture_source)
             shutil.copytree(original/'src',self.source/'src',dirs_exist_ok=True,
-                            ignore=shutil.ignore_patterns('__pycache__'))
+                            ignore=shutil.ignore_patterns('__pycache__'), copy_function=self.copy_fixture_source)
             self.write(self.source/'tools/delivery/capacity-policy.json',self.policy)
             # Only this temporary, committed fixture replaces the provider.
             launch = self.source/'tools/delivery/symphony_launch.py'
@@ -675,6 +675,15 @@ class CurrentDispatchTests(unittest.TestCase):
             args[-1].endswith(':tools/delivery/stokowski_stage.py') else original_git(args,**kw))
         with self.assertRaisesRegex(AdmissionError,'current_source_not_reviewed_revision'):
             self.current.guard()
+
+    @staticmethod
+    def copy_fixture_source(source, destination):
+        # The service mirror deliberately has read-only files. These copies
+        # belong to a mutable synthetic fixture, including its private policy.
+        copied = shutil.copy2(source, destination)
+        path = Path(copied)
+        path.chmod(path.stat().st_mode | 0o200)
+        return copied
 
     def write(self, path, value):
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -1546,9 +1555,9 @@ class CurrentDispatchTests(unittest.TestCase):
         # touching this workspace's HEAD or using shell interpolation.
         original_source = Path(__file__).resolve().parents[2]
         shutil.copytree(original_source/'tools/delivery', self.source/'tools/delivery', dirs_exist_ok=True,
-                        ignore=shutil.ignore_patterns('__pycache__'))
+                        ignore=shutil.ignore_patterns('__pycache__'), copy_function=self.copy_fixture_source)
         shutil.copytree(original_source/'src', self.source/'src', dirs_exist_ok=True,
-                        ignore=shutil.ignore_patterns('__pycache__'))
+                        ignore=shutil.ignore_patterns('__pycache__'), copy_function=self.copy_fixture_source)
         self.write(self.source/'tools/delivery/capacity-policy.json', self.policy)
         def git_at(path, *args):
             result = subprocess.run(['/usr/bin/git','-C',str(path),*args], check=True,
@@ -2577,7 +2586,7 @@ class CurrentDispatchTests(unittest.TestCase):
         self.assertEqual(clone.call_count,1)
 
     @unittest.skipUnless(shutil.which('setfacl'), 'POSIX ACL fixture needs setfacl')
-    def test_new_workspace_with_inherited_group_write_passes_confinement_path_check(self):
+    def test_new_workspace_removes_inherited_write_and_retains_coding_uid_gate(self):
         from coding_child_launch import owned_path
         import coding_child_launch
         issue, runtime = self.qualify(218)
@@ -2601,7 +2610,14 @@ class CurrentDispatchTests(unittest.TestCase):
                 self.runtime/'workspaces', issue.identifier, SimpleNamespace()))
         # Check the real confinement path contract, without a provider or child.
         with patch.object(coding_child_launch, 'RUNTIME', runtime):
-            self.assertEqual(owned_path(workspace.path), str(workspace.path))
+            if os.getuid() == 1000:
+                self.assertEqual(owned_path(workspace.path), str(workspace.path))
+            else:
+                # Deterministic Windmill checks run as UID985. Hardening a
+                # fixture does not turn that identity into the coding UID.
+                with self.assertRaisesRegex(coding_child_launch.ConfinementError,
+                                            'confinement_runtime_owner'):
+                    owned_path(workspace.path)
         self.assertEqual(workspace.path.stat().st_mode & 0o777, 0o700)
         self.assertEqual((workspace.path/'source-directory/checked-out.py').stat().st_mode & 0o777, 0o600)
         self.assertEqual((workspace.path/'source-directory/run.sh').stat().st_mode & 0o777, 0o700)
