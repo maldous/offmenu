@@ -525,3 +525,46 @@ test('native release wire reconciles consumed unknown tags through real Python R
   hidden=false;assert.equal((await run('observe')).status,'verified');assert.equal(effects(),2);
   assert.equal(qualifications,2,'only actual ready steps run source qualification');
 });
+
+async function nativePublishedIntegration(t) {
+  const f=fixture();
+  f.config.snapshot.github_review_facts_sha256=fingerprint({head:f.config.binding.head,base:f.config.binding.base,
+    reviews:[],findings:[],qualification:'facts-only-requires-independent-owner-review-and-thread-resolution'});
+  const request=nativeAdmission(f,'step'),controller=await actualController(t,f),net=syntheticHTTP(f,controller);
+  for(let i=0;i<f.config.plan.operations.length;i++) await net.step();
+  assert.equal((await controller.state()).publication.effect,'verified');
+  return {f,request,controller,net};
+}
+
+test('native integration requalifies exact source before a ready merge and rejects drift without PUT',async t=>{
+  const {f,request,controller,net}=await nativePublishedIntegration(t);
+  let qualified=0;
+  await assert.rejects(()=>nativePublisherRequest({config:f.config,request,controller,
+    adapterFactory:repositoryFactory(net.http),qualify:async()=>{qualified++;throw Error('SYNTHETIC-SOURCE-DRIFT');}}),
+    /SYNTHETIC-SOURCE-DRIFT/);
+  assert.equal(qualified,1);assert.equal(net.calls.filter(c=>c.method==='PUT').length,0);
+  assert.equal((await controller.state()).merge_effect,undefined,'source refusal precedes merge intent');
+  const result=await nativePublisherRequest({config:f.config,request,controller,
+    adapterFactory:repositoryFactory(net.http),qualify:async()=>{qualified++;await f.qualify();}});
+  assert.equal(result.status,'verified');assert.equal(qualified,2);
+  assert.equal(net.calls.filter(c=>c.method==='PUT').length,1);
+});
+
+test('native integration reconciles a consumed unknown merge by GET even when local source now rejects',async t=>{
+  const {f,request,controller,net}=await nativePublishedIntegration(t);
+  let qualified=0;
+  net.lost=true;
+  const lostReadback=async(url,options)=>{
+    try {return await net.http(url,options);}
+    finally {if(options.method==='PUT') net.failRead=true;}
+  };
+  await assert.rejects(()=>nativePublisherRequest({config:f.config,request,controller,
+    adapterFactory:repositoryFactory(lostReadback),qualify:async()=>{qualified++;await f.qualify();}}));
+  assert.equal(qualified,1);assert.equal(net.calls.filter(c=>c.method==='PUT').length,1);
+  assert.equal((await controller.state()).merge_effect,'unknown');
+  net.failRead=false;
+  const result=await nativePublisherRequest({config:f.config,request,controller,
+    adapterFactory:repositoryFactory(net.http),qualify:async()=>{qualified++;throw Error('SYNTHETIC-SOURCE-DRIFT');}});
+  assert.equal(result.status,'verified');assert.equal(qualified,1,'GET-only recovery must not requalify or replay');
+  assert.equal(net.calls.filter(c=>c.method==='PUT').length,1);
+});

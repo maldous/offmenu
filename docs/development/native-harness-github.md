@@ -181,8 +181,11 @@ unknown publication, merge and tag operations remain GET-only even when a caller
 requests `step`.
 
 A ready `step` advances at most one existing finite publication/merge/tag phase.
-It preserves local source qualification, exact review/protection gates and the
-original durable intent/consume-before-HTTP rule. A resulting `ready` response
+It requalifies the exact local source before every ready integration merge,
+including after publication completes, and preserves exact review/protection
+gates and the original durable intent/consume-before-HTTP rule. Consumed unknown
+effects use GET-only recovery even if that local source now fails qualification.
+A resulting `ready` response
 can mean the next phase of the same transaction is eligible; it never means the
 whole source outcome has been integrated. `verified` means canonical source
 integration or complete release/tag readback, according to the derived phase.

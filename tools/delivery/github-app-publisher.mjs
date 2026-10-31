@@ -450,6 +450,7 @@ export async function nativePublisherRequest({config:c,request,controller,adapte
       await releaseStep({config:c,controller:controlled,adapterFactory:factory,advanceRelease,readOnly:reconcile});
     } else if(!release && view.state.publication?.effect==='verified' &&
         (!reconcile || view.state.merge_effect)) {
+      if(!reconcile) await qualify();
       await integrationStep({config:c,controller:controlled,adapterFactory:factory,advanceIntegration,readOnly:reconcile});
     } else if(!release && (!reconcile || ['pending','unknown'].includes(view.state.publication?.effect))) {
       await publicationStep({config:c,controller:controlled,adapterFactory:publicationFactory,
