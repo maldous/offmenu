@@ -2467,6 +2467,80 @@ class CurrentDispatchTests(unittest.TestCase):
             SimpleNamespace(), 'upstream prompt must not replace approval',runtime/'workspaces'/issue.identifier,
             issue,RunAttempt(issue.id,issue.identifier),on_pid=on_pid)
 
+    def test_native_service_delegation_keeps_project_credentials_out_of_child_environment(self):
+        import stokowski.config as config
+        original_env = config.ServiceConfig.agent_env
+        original_key = config.ServiceConfig.resolved_api_key
+        native, _, _ = self.adapted()
+        self.assertIs(config.ServiceConfig.agent_env, original_env)
+        self.assertIs(config.ServiceConfig.resolved_api_key, original_key)
+        project = config.ProjectConfig(name='selected')
+        service = config.ServiceConfig(projects=[project])
+        with patch.dict(os.environ, LINEAR_API_KEY='synthetic-secret', UNKNOWN_TOKEN='synthetic-secret'):
+            self.assertEqual(service.resolved_api_key(), 'in-memory-only')
+            self.assertEqual(service.agent_env(), project.agent_env())
+            self.assertNotIn('LINEAR_API_KEY', service.agent_env())
+            self.assertNotIn('UNKNOWN_TOKEN', service.agent_env())
+
+    def test_model_observation_and_stopped_child_control_native_projection(self):
+        native, _, _ = self.adapted()
+        for number, receipt, expected_status, expected_model in (
+            (381, {'status':'succeeded','child_tree_gone':True}, 'succeeded', None),
+            (382, {'status':'succeeded','child_tree_gone':True,
+                   'resolved_model':'observed-route','resolution_status':'observed'}, 'succeeded', 'observed-route'),
+            (383, {'status':'succeeded','child_tree_gone':True,
+                   'resolved_model':adapter.MODEL,'resolution_status':'unknown'}, 'succeeded', None),
+            (384, {'status':'succeeded','child_tree_gone':False}, 'failed', None),
+            (385, {'status':'uncertain','child_tree_gone':False}, 'failed', None),
+        ):
+            with self.subTest(receipt=receipt):
+                issue, runtime = self.qualify(number)
+                async def spawn(*args, **kwargs):
+                    self.write(runtime/'attempts'/issue.identifier/'receipt.json', receipt)
+                    return SimpleNamespace(pid=98765,returncode=0,communicate=AsyncMock())
+                with patch.object(adapter.asyncio,'create_subprocess_exec',side_effect=spawn):
+                    attempt = asyncio.run(self.turn(native,issue,runtime))
+                self.assertEqual(attempt.status, expected_status)
+                self.assertEqual(attempt.model, expected_model)
+                self.assertEqual(self.select(issue), [])
+
+    def test_native_caps_and_backoff_remain_authoritative(self):
+        import stokowski.orchestrator as native
+        methods = {name:getattr(native.Orchestrator,name) for name in (
+            '_has_slot','_claim_slot','_release_slot','_is_eligible',
+            '_dispatch','_on_worker_exit','_schedule_retry','_handle_retry')}
+        issue, _ = self.qualify(386)
+        native, _, _ = self.adapted()
+        for name, method in methods.items():
+            self.assertIs(getattr(native.Orchestrator,name), method)
+        owner = native.Orchestrator(self.runtime/'workflow.yaml')
+        self.assertEqual(owner._load_workflow(), [])
+        owner.running = {str(i):object() for i in range(owner.cfg.agent.max_concurrent_agents)}
+        self.assertFalse(owner._has_slot()[0])
+        from stokowski.models import RunAttempt
+        owner._schedule_retry = unittest.mock.Mock()
+        owner._on_worker_exit(issue, RunAttempt(issue.id,issue.identifier,attempt=10,status='failed'))
+        self.assertEqual(owner._schedule_retry.call_args.kwargs['delay_ms'],
+                         owner.cfg.agent.max_retry_backoff_ms)
+
+    def test_native_report_records_observed_model_and_preserves_request_fact(self):
+        issue, runtime = self.qualify(387)
+        native, _, _ = self.adapted()
+        receipt = dict(status='succeeded',child_tree_gone=True,requested_model=adapter.MODEL,
+                       resolved_model=None,resolution_status='unknown',accepted_delivery=False)
+        self.write(runtime/'attempts'/issue.identifier/'receipt.json', receipt)
+        client = SimpleNamespace(post_comment=AsyncMock())
+        owner = SimpleNamespace(ledger=SimpleNamespace(record_stage=unittest.mock.Mock()),
+                                _ensure_linear_client=lambda:client)
+        attempt = SimpleNamespace(status='succeeded',total_tokens=0,model=None)
+        asyncio.run(native.Orchestrator._publish_run_report(owner,issue,attempt,
+                    runtime/'workspaces'/issue.identifier,'implement'))
+        self.assertIsNone(owner.ledger.record_stage.call_args.kwargs['model'])
+        summary = json.loads(client.post_comment.call_args.args[1].split('\n\n',1)[1])
+        self.assertEqual(summary['requested_model'],adapter.MODEL)
+        self.assertIsNone(summary['resolved_model'])
+        self.assertEqual(summary['resolution_status'],'unknown')
+
     def test_prepared_request_consumed_once_same_worker_and_final_pool_stays_worker_owned(self):
         issue, runtime = self.qualify(209)
         original = (runtime/'requests/UIF-209.json').read_bytes()

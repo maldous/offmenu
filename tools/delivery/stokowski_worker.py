@@ -268,7 +268,10 @@ def execute(runtime, issue, request):
         result.setdefault('resolved_model',None)
         result.setdefault('resolution_status','unobserved')
         result.setdefault('observed_resources',None)
-        if identity_changed or violations or not result.get('turn_completed'):
+        # Qualification can reject process success, but must not disguise an
+        # unknown cleanup, cancellation, timeout or confirmed launch refusal.
+        if result['status'] == 'succeeded' and (
+                identity_changed or violations or not result.get('turn_completed')):
             result['status'] = 'failed'
         # Only the returned, source/issue/lease-bound terminal result qualifies.
         # Unknown process outcomes and interrupted qualification retain legacy receipts.

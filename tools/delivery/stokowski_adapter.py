@@ -2193,9 +2193,9 @@ def install_adapters(runtime, manifest, key, current=None):
         raise RuntimeError('Arbitrary shell hooks are disabled by OffMenu adapter')
 
     config.ProjectConfig.agent_env = lambda self: child_environment(os.environ)
-    config.ServiceConfig.agent_env = lambda self: child_environment(os.environ)
     config.ProjectConfig.resolved_api_key = lambda self: key
-    config.ServiceConfig.resolved_api_key = lambda self: key
+    # The admitted workflow has exactly one project. Pinned ServiceConfig
+    # already delegates both methods to that project; keep its native routing.
     workspace_module.run_hook = reject_hook
 
     route = current.route if current else project_route(manifest['project_id'])
@@ -2464,14 +2464,15 @@ def install_adapters(runtime, manifest, key, current=None):
             return
         result = json.loads(path.read_text())
         safe = {k: result.get(k) for k in ('status','source_head','session_id',
-                'child_tree_gone','scope_violations','output_sha256','accepted_delivery')}
+                'child_tree_gone','scope_violations','output_sha256','accepted_delivery',
+                'requested_model','resolved_model','resolution_status')}
         owner.ledger.record_stage(project='offmenu', workflow='bounded-adapter-proof',
                                   issue_id=issue.id, issue=issue.identifier,
                                   title=issue.title, state=state_name, run=1,
                                   status=attempt.status, report=None,
                                   tokens=attempt.total_tokens, cost_usd=0,
                                   tool_calls=0, tool_errors=0, artifacts=0,
-                                  model=MODEL, duration_s=None)
+                                  model=attempt.model, duration_s=None)
         client = owner._ensure_linear_client()
         await client.post_comment(issue.id, '[OffMenu Stokowski bounded attempt]\n\n'
                                  + json.dumps(safe, sort_keys=True))
@@ -2551,14 +2552,19 @@ def install_adapters(runtime, manifest, key, current=None):
             current.refresh()
         receipt_path = task_runtime/'attempts'/issue.identifier/'receipt.json'
         result = json.loads(receipt_path.read_text()) if receipt_path.exists() else {'status': 'uncertain'}
-        attempt.status = 'succeeded' if result['status'] == 'succeeded' else 'failed'
+        attempt.status = ('succeeded' if result['status'] == 'succeeded'
+                          and result.get('child_tree_gone') is True else 'failed')
         attempt.session_id = result.get('session_id')
-        attempt.model = MODEL
+        observed_model = result.get('resolved_model')
+        attempt.model = (observed_model if result.get('resolution_status') == 'observed'
+                         and isinstance(observed_model, str) and observed_model.strip() else None)
         usage = result.get('usage', {})
         attempt.input_tokens = usage.get('input_tokens', 0)
         attempt.output_tokens = usage.get('output_tokens', 0)
         attempt.total_tokens = attempt.input_tokens+attempt.output_tokens
-        attempt.error = None if attempt.status == 'succeeded' else result['status']
+        attempt.error = (None if attempt.status == 'succeeded' else
+                         ('child_termination_unverified' if result['status'] == 'succeeded'
+                          else result['status']))
         attempt.result_text = ('Coding attempt ended. Independent behavior/output '
                                'acceptance remains required; no application acceptance asserted.')
         return attempt
