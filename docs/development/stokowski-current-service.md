@@ -145,6 +145,20 @@ routine human approval gate to admitted coding or integration.
 
 ## Bounded source validation
 
+For a protected Foo owner, the root-owned catalog remains the immutable seed.
+An optional root-sealed `catalog_versions` sequence grants exact subsequent
+catalog snapshots, each with its canonical bytes' SHA-256 and full catalog.
+Each snapshot must append one entry to its predecessor. The fixed private
+`catalog` path may expose only the seed or a granted snapshot; publication must
+match the next directed edge before writing. Consumed references and bindings
+cannot disappear on refresh. This supports a finite owner-qualified backlog
+without giving the coordinator permission to edit `/etc` or admit arbitrary
+new work. Adding further grants remains an owner installation action.
+
+The installed native publication source uses its sealed binding to resolve the
+separate private runtime namespace. A task packet cannot choose that mapping;
+legacy source-relative runtimes retain their existing validation rules.
+
 Use a temporary Python ConfigParser/argv inspection to verify exact unit fields,
 markers, credential ID/reference, no Install section or forbidden sandbox knobs,
 and the worker SAFE_ENV exclusions without importing executable adapters. Run

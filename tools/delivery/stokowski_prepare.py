@@ -150,7 +150,13 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
                         config=handoff['owner_config'])
         prior = read(journal_path) if journal_path.exists() else None
         require(prior is None or prior['identity'] == identity, 'immutable_binding_conflict')
-        baseline = pinned(dict(path=str(catalog), sha256=packet['inputs'][str(catalog)])) if prior is None else prior['catalog_before']
+        publication_owner = CurrentWork(coordinator,read_only=True,qualification_only=True) if successor else None
+        if prior is None and publication_owner and publication_owner.owner_custody:
+            before_bytes = publication_owner.catalog_bytes()
+            require(hashlib.sha256(before_bytes).hexdigest()==packet['inputs'][str(catalog)],'catalog_drift')
+            baseline = json.loads(before_bytes)
+        else:
+            baseline = pinned(dict(path=str(catalog), sha256=packet['inputs'][str(catalog)])) if prior is None else prior['catalog_before']
         require(set(baseline) == {'version', 'entries'} and baseline['version'] == 1
                 and isinstance(baseline['entries'], list), 'catalog')
         # Validate every original input, except the catalog's own publication
@@ -216,8 +222,11 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
             blobs['current-admission.json'] = _publication_bytes(admission)
             # Coordinator preparation remains the existing separate finite CLI
             # operation. Never create/overwrite its state or acquire its locks.
+            captured = before_bytes.decode('utf-8') if publication_owner and publication_owner.owner_custody else catalog.read_text()
+            if publication_owner and publication_owner.owner_custody:
+                require(publication_owner.catalog_bytes()==before_bytes,'catalog_drift')
             prior = dict(identity=identity, catalog_before=baseline,
-                         catalog_before_bytes=catalog.read_text(),
+                         catalog_before_bytes=captured,
                          catalog_after=dict(version=1, entries=baseline['entries']+[entry]),
                          files={k: v.decode() for k, v in blobs.items()},
                          requested=dict(model=requirements['requested_model'], effort=requirements['requested_effort'],
@@ -243,11 +252,14 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
                 and all(hashlib.sha256(prior['files'][name].encode()).hexdigest() == sha
                         for name, sha in expected_hashes.items()), 'journal_file_binding')
         after = _publication_bytes(prior['catalog_after'])
-        current = catalog.read_bytes()
+        current = publication_owner.catalog_bytes() if publication_owner and publication_owner.owner_custody else catalog.read_bytes()
         # Original formatting is allowed only for the pinned original catalog.
         require(current == after or hashlib.sha256(current).hexdigest() == packet['inputs'][str(catalog)],
                 'catalog_drift')
         require(current != after or runtime.is_dir(), 'exposed_runtime_missing_reconcile')
+        if successor and current != after:
+            consumer = CurrentWork(coordinator,read_only=True,qualification_only=True)
+            consumer.catalog_transition(current,after)
         if not runtime.exists():
             stage = Path(tempfile.mkdtemp(prefix='.'+runtime.name+'-', dir=root))
             for name in ('requests', 'attempts', 'workspaces'):
@@ -299,6 +311,7 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
                 require(pending.get('identity') == identity and pending.get('status') == 'pending'
                         and pending.get('handoff') == dict(path=str(handoff_path), sha256=handoff_sha256)
                         and pending.get('owner_config') == handoff['owner_config'], 'successor_pending')
+                consumer.catalog_transition(current,after)
                 _publication_write(catalog, after)
         else:
             _publication_write(catalog, after)

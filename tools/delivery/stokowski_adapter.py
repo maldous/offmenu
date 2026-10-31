@@ -76,6 +76,54 @@ def protected_owner_tree(root):
             raise AdmissionError('protected_owner_parent')
 
 
+def protected_catalog_bytes(config, seed):
+    """A sealed owner may grant a finite sequence of exact catalog snapshots.
+
+    Only the private publication catalog is writable. The seed, grants and
+    their digest remain root-owned; this grants no arbitrary catalog append.
+    """
+    versions = config.get('catalog_versions')
+    if versions is None:
+        if config.get('catalog') != str(PROTECTED_OWNER/'catalog.json'):
+            raise AdmissionError('protected_owner_catalog')
+        return seed
+    root = Path(config['runtime_root'])
+    path = Path(config['catalog'])
+    coordinator = Path(json.loads(protected_owner_bytes(PROTECTED_OWNER/'binding.json'))['runtime'])
+    if (root != root.resolve() or path != path.resolve() or not path.is_relative_to(root)
+        or path.is_relative_to(coordinator) or not isinstance(versions, list)
+        or not 1 <= len(versions) <= 32):
+        raise AdmissionError('protected_owner_catalog_grants')
+    previous = json.loads(seed)
+    allowed = {hashlib.sha256(seed).hexdigest(): previous}
+    for version in versions:
+        if (not isinstance(version, dict) or set(version) != {'sha256','catalog'}
+            or not isinstance(version['sha256'], str) or not re.fullmatch('[0-9a-f]{64}',version['sha256'])
+            or version['sha256'] in allowed or not isinstance(version['catalog'], dict)
+            or set(version['catalog']) != {'version','entries'} or version['catalog']['version'] != 1
+            or not isinstance(version['catalog']['entries'],list)
+            or len(version['catalog']['entries']) != len(previous['entries'])+1
+            or version['catalog']['entries'][:-1] != previous['entries']):
+            raise AdmissionError('protected_owner_catalog_grants')
+        raw = (json.dumps(version['catalog'],sort_keys=True,indent=2)+'\n').encode()
+        if hashlib.sha256(raw).hexdigest() != version['sha256']:
+            raise AdmissionError('protected_owner_catalog_grants')
+        allowed[version['sha256']] = version['catalog']
+        previous = version['catalog']
+    fd = os.open(path, os.O_RDONLY|os.O_NOFOLLOW)
+    try:
+        info = os.fstat(fd)
+        if not stat.S_ISREG(info.st_mode) or info.st_size > 1048576:
+            raise AdmissionError('protected_owner_catalog_snapshot')
+        with os.fdopen(os.dup(fd),'rb') as stream:
+            raw = stream.read(1048577)
+    finally:
+        os.close(fd)
+    if len(raw)>1048576 or hashlib.sha256(raw).hexdigest() not in allowed:
+        raise AdmissionError('protected_owner_catalog_snapshot')
+    return raw
+
+
 def current_config(runtime):
     """Select installed sealed owner inputs; legacy fixtures remain explicit.
 
@@ -111,8 +159,7 @@ def current_config(runtime):
         or hashlib.sha256(python).hexdigest() != binding['python_sha256']):
         raise AdmissionError('protected_owner_digest')
     config = json.loads(raw)
-    if config.get('catalog') != str(PROTECTED_OWNER/'catalog.json'):
-        raise AdmissionError('protected_owner_catalog')
+    protected_catalog_bytes(config, catalog)
     closure = (str(SOURCE), sys.prefix, binding['python_sha256'])
     if closure not in _PROTECTED_CLOSURES:
         protected_owner_tree(SOURCE)
@@ -181,7 +228,7 @@ class CurrentWork:
         self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config, self.config_path, self.owner_custody = current_config(runtime)
-        if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template'} != {'version', 'owner', 'runtime_root', 'catalog',
+        if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template', 'catalog_versions'} != {'version', 'owner', 'runtime_root', 'catalog',
                                'source_head', 'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}:
             raise AdmissionError('current_config_fields')
         validated_project_route(self.config.get('project_route', project_route(PROJECT)))
@@ -208,7 +255,9 @@ class CurrentWork:
             or not isinstance(self.config['source_sha256'],dict)
             or not re.fullmatch(r'[0-9a-f]{40}',self.config['source_head'])):
             raise AdmissionError('current_private_root')
-        self.catalog = (PROTECTED_OWNER/'catalog.json' if self.owner_custody else self.private(self.config['catalog']))
+        if 'catalog_versions' in self.config and not self.owner_custody:
+            raise AdmissionError('protected_owner_catalog_grants')
+        self.catalog = Path(self.config['catalog']) if self.owner_custody else self.private(self.config['catalog'])
         self.config_sha = file_sha(self.config_path)
         self.state_path = runtime/'current-owner.json'
         self.state = read_record(self.state_path) if self.state_path.exists() else {
@@ -230,7 +279,7 @@ class CurrentWork:
                 # Publication qualifies original evidence before catalog exposure;
                 # it cannot consume reviews or mutate coordinator state.
                 return
-            catalog = read_record(self.catalog)
+            catalog = self.catalog_record()
             if catalog.get('version') != 1 or not isinstance(catalog.get('entries'), list):
                 raise AdmissionError('current_catalog_fields')
             for entry in catalog['entries']:
@@ -240,6 +289,9 @@ class CurrentWork:
                     raise AdmissionError('current_identity_rebind')
                 self.private(entry['runtime'])
                 self.entries[issue] = entry
+            if self.owner_custody and (not set(self.state.get('references', {})) <= set(self.entries)
+                or not set(self.state.get('bindings', {})) <= set(self.entries)):
+                raise AdmissionError('current_catalog_rollback')
         else:
             self.refresh()
 
@@ -257,6 +309,34 @@ class CurrentWork:
         if self.read_only:
             raise AdmissionError('current_read_only')
         checkpoint(self.state_path, self.state)
+
+    def catalog_record(self):
+        if not self.owner_custody:
+            return read_record(self.catalog)
+        raw = self.catalog_bytes()
+        self._catalog_observed_sha256 = hashlib.sha256(raw).hexdigest()
+        return json.loads(raw)
+
+    def catalog_bytes(self):
+        if not self.owner_custody:
+            return self.catalog.read_bytes()
+        return protected_catalog_bytes(self.config,protected_owner_bytes(PROTECTED_OWNER/'catalog.json'))
+
+    def catalog_transition(self, before, after):
+        """Authorize only the next root-granted edge before publication."""
+        if not self.owner_custody:
+            return
+        self.guard()
+        seed = protected_owner_bytes(PROTECTED_OWNER/'catalog.json')
+        if protected_catalog_bytes(self.config,seed) != before:
+            raise AdmissionError('protected_owner_catalog_transition')
+        previous = hashlib.sha256(seed).hexdigest()
+        selected = (hashlib.sha256(before).hexdigest(),hashlib.sha256(after).hexdigest())
+        for version in self.config.get('catalog_versions', []):
+            if selected == (previous,version['sha256']):
+                return
+            previous = version['sha256']
+        raise AdmissionError('protected_owner_catalog_transition')
 
     def guard(self):
         c = self.config
@@ -293,7 +373,7 @@ class CurrentWork:
     def refresh(self):
         try:
             self.guard()
-            catalog = read_record(self.catalog)
+            catalog = self.catalog_record()
             if set(catalog) != {'version', 'entries'} or type(catalog['version']) is not int or catalog['version'] != 1 or not isinstance(catalog['entries'], list):
                 raise AdmissionError('current_catalog_fields')
             entries, identities, runtimes = {}, set(), set()
@@ -320,8 +400,11 @@ class CurrentWork:
                 entries[issue] = entry
                 identities.add(entry['issue_id'])
                 runtimes.add(runtime)
+            if self.owner_custody and (not set(self.state.get('references', {})) <= set(entries)
+                or not set(self.state.get('bindings', {})) <= set(entries)):
+                raise AdmissionError('current_catalog_rollback')
             self.entries = entries
-            self.state['catalog_sha256'] = file_sha(self.catalog)
+            self.state['catalog_sha256'] = self._catalog_observed_sha256 if self.owner_custody else file_sha(self.catalog)
             for issue in self.state.get('references', {}):
                 self.observe(issue)
             self._consume_unit_reviews()
@@ -617,7 +700,7 @@ class CurrentWork:
             or gate.get('disposition') != 'approved' or gate.get('handled') is not True
             or gate.get('unit_review') != 'approved'):
             raise AdmissionError('successor_terminal_gate')
-        catalog = read_record(self.catalog)
+        catalog = self.catalog_record()
         if entry not in catalog['entries'] or self.state['bindings'].get(issue) != digest(entry):
             raise AdmissionError('successor_original_entry_drift')
         import copy
@@ -689,7 +772,7 @@ class CurrentWork:
                     plan = read_record(self.root/(runtime.name + '-publication.json'))
                     expected = dict(handoff_sha256=ref['sha256'], packet=handoff['task_packet'],
                                     config=handoff['owner_config'])
-                    if (plan['identity'] != expected or read_record(self.catalog) != plan['catalog_after']
+                    if (plan['identity'] != expected or self.catalog_record() != plan['catalog_after']
                         or result['result'].get('runtime') != str(runtime)
                         or file_sha(runtime/'current-admission.json') != plan['catalog_after']['entries'][-1]['admission_sha256']):
                         raise AdmissionError('successor_publication_drift')
@@ -862,7 +945,7 @@ class CurrentWork:
                     or native.sha(plan['catalog_before_bytes'].encode()) != packet['inputs'][str(self.catalog)]
                     or json.loads(plan['catalog_before_bytes']) != plan['catalog_before']
                     or plan['catalog_after'] != dict(version=1, entries=plan['catalog_before']['entries']+[entry])
-                    or read_record(self.catalog) != plan['catalog_after']
+                    or self.catalog_record() != plan['catalog_after']
                     or result.get('runtime') != str(runtime)
                     or mode == 'status' and reply.get('journal_sha256') != file_sha(journal_path)
                     or read_record(runtime/'current-admission.json') != admission

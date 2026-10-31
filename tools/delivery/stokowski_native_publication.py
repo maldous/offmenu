@@ -194,9 +194,10 @@ def validate(context, root, run):
         # Blob size is bounded by the process adapter as well as installed size.
         require(len(installed) <= PROCESS_LIMIT and sha(installed) == expected
                 and sha(git(root, run, 'show', head + ':' + name)) == expected, 'source_blob')
+    private_root, runtime_root = private_namespace(root,context)
     def private_ref(ref):
         exact(ref, ('path', 'sha256'))
-        require(canonical(ref['path']).is_relative_to(root / '.delivery'), 'private_ref')
+        require(canonical(ref['path']).is_relative_to(private_root), 'private_ref')
         return pinned(ref)
     for key in ('handoff', 'owner_config', 'task_packet', 'claim'):
         private_ref(context[key])
@@ -232,13 +233,44 @@ def validate(context, root, run):
     require(all(packet['inputs'].get(ref['path']) == ref['sha256'] for ref in covered), 'input_coverage')
     for name, expected in packet['inputs'].items():
         # The sole mutable input is reconciled by the original publication API.
-        require(canonical(name).is_relative_to(root / '.delivery')
+        require(canonical(name).is_relative_to(private_root)
                 or name == str(root / 'tools/delivery/capacity-policy.json'), 'input_path')
         if name != config['selected_current']['catalog_path']:
             require(sha(read(canonical(name))) == expected, 'input_pin')
     require(config['selected_current'] == packet['selected_current']
-            and canonical(config['selected_current']['runtime_root']) == root / '.delivery/stokowski', 'runtime')
+            and canonical(config['selected_current']['runtime_root']) == runtime_root, 'runtime')
     return config, packet
+
+
+def private_namespace(root, context):
+    if root != Path('/opt/offmenu-stokowski-current/source'):
+        return root/'.delivery', root/'.delivery/stokowski'
+    # Only installed root custody can map the source's separate runtime.
+    from stokowski_adapter import PROTECTED_OWNER, protected_owner_bytes, current_config
+    binding = decode(protected_owner_bytes(PROTECTED_OWNER/'binding.json'))
+    require(binding['source_root'] == str(root), 'protected_source')
+    sealed, _, custody = current_config(canonical(binding['runtime']))
+    require(custody is not None and sealed['owner'] == context['owner'], 'protected_owner')
+    runtime_root = canonical(sealed['runtime_root'])
+    require(runtime_root.name=='stokowski' and runtime_root.parent.name=='.delivery', 'protected_runtime')
+    require(packet_runtime_is_sealed(context,runtime_root,binding['runtime']), 'protected_runtime')
+    return runtime_root.parent,runtime_root
+
+
+def packet_runtime_is_sealed(context, runtime_root, coordinator):
+    # These refs are hash-bound to the native intent before use. The sealed
+    # owner supplies the allowed namespace and exact coordinator identity.
+    for ref in (context['owner_config'],context['task_packet']):
+        exact(ref,('path','sha256'))
+        require(type(ref['sha256']) is str and re.fullmatch('[0-9a-f]{64}',ref['sha256']), 'private_ref')
+        if not canonical(ref['path']).is_relative_to(runtime_root.parent):
+            return False
+        value = pinned(ref)
+        selected = value['selected_current']
+        if (selected['runtime_root'] != str(runtime_root)
+            or selected['coordinator_runtime'] != coordinator):
+            return False
+    return True
 
 
 def authenticate(run, now, binding):

@@ -272,6 +272,48 @@ class NativePublicationTests(unittest.TestCase):
                 self.installed_branch = self.fixture.branch
         self.assert_no_auth_or_effect()
 
+    def test_protected_runtime_mapping_uses_sealed_owner_only(self):
+        import stokowski_adapter as adapter
+        root = Path('/opt/offmenu-stokowski-current/source')
+        runtime_root = self.fixture.root
+        # The fixture root is the private .delivery/stokowski namespace.
+        selected = self.fixture.config['selected_current']
+        coordinator = selected['coordinator_runtime']
+        binding = dict(source_root=str(root), runtime=coordinator)
+        sealed = dict(owner=self.fixture.owner,runtime_root=str(runtime_root))
+        with patch.object(adapter,'protected_owner_bytes',return_value=native.encode(binding)), \
+             patch.object(adapter,'current_config',return_value=(sealed,Path('/sealed'),binding)) as select:
+            self.assertEqual(native.private_namespace(root,self.context()),(runtime_root.parent,runtime_root))
+            select.assert_called_once_with(Path(coordinator))
+            for changed in (dict(binding,source_root='/untrusted'),):
+                with patch.object(adapter,'protected_owner_bytes',return_value=native.encode(changed)), \
+                     self.assertRaisesRegex(ValueError,'protected_source'):
+                    native.private_namespace(root,self.context())
+            with patch.object(adapter,'current_config',return_value=(dict(sealed,owner='other'),Path('/sealed'),binding)), \
+                 self.assertRaisesRegex(ValueError,'protected_owner'):
+                native.private_namespace(root,self.context())
+            self.fixture.packet['selected_current']['runtime_root']=str(runtime_root/'foreign')
+            self.fixture.repin()
+            with self.assertRaisesRegex(ValueError,'protected_runtime'):
+                native.private_namespace(root,self.context())
+        self.assert_no_auth_or_effect()
+
+    def test_legacy_namespace_ignores_packet_runtime_assertions(self):
+        self.assertEqual(native.private_namespace(self.root,dict(owner='untrusted')),
+                         (self.root/'.delivery',self.root/'.delivery/stokowski'))
+        self.assert_no_auth_or_effect()
+
+    def test_protected_outside_reference_is_refused_without_open(self):
+        context=dict(self.context(),owner_config=dict(path=str(self.root/'outside.json'),sha256='1'*64))
+        runtime_root=self.fixture.root
+        with patch.object(native,'pinned') as opened:
+            self.assertFalse(native.packet_runtime_is_sealed(context,runtime_root,str(self.fixture.coordinator)))
+            opened.assert_not_called()
+        context['owner_config']=dict(path=str(runtime_root/'inside.json'),sha256='invalid')
+        with patch.object(native,'pinned') as opened,self.assertRaises(ValueError):
+            native.packet_runtime_is_sealed(context,runtime_root,str(self.fixture.coordinator))
+        opened.assert_not_called()
+
     def test_source_process_cap_covers_actual_installed_module_lengths(self):
         lengths = [(Path(native.__file__).parent / (name + '.py')).stat().st_size
                    for name in native.MODULES]
