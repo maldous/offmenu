@@ -161,9 +161,23 @@ there is no workspace-to-root execution route in this component.
 The copier rehashes the whole package, refuses unknown roles, extra entries,
 links, changed payload bytes and any metadata outside fixed role policy. It
 revalidates the full Git checkout/object graph and identical publisher
-source/dependency bytes. Every input and destination is qualified before a
-create-only `/var/lib/offmenu-publisher/native-package-<operation>.intent.json`
-fence is written. The operation ID is a fixed lowercase SHA-256 identifier.
+source/dependency bytes. Every input and destination is qualified before either fence is written.
+Admission is rechecked after full qualification and parent checks, immediately
+before each directory/file mutation, each bounded write chunk and metadata
+change, and after final readback before any completion claim. A write already
+begun may finish its current bounded system call; expiry prevents the next
+mutation from starting. Expiry leaves all original partial custody intact.
+
+The first create-only fence is
+`/var/lib/offmenu-publisher/native-package-closure-<closure-sha256>.intent.json`,
+where the closure hash is SHA-256 of canonical `protected.encoded(roles)` bytes.
+It records the exact package, original operation and confirmation identities.
+Only then is the operation-specific
+`/var/lib/offmenu-publisher/native-package-<operation>.intent.json` written.
+Thus a crash between fences, a partial copy, or changing operation ID cannot
+bypass custody of the same immutable full-role closure. Neither fence is
+removed, rewritten or automatically recovered here. The operation ID is a fixed
+lowercase SHA-256 identifier.
 
 For the four directory roles, destinations are sibling
 `.native-upgrade-<operation>-<role>.new` slots matching the upgrade helper's
@@ -191,7 +205,9 @@ rollback qualification to the upgrade route.
 The bounded tests exercise real tiny Git closures, transitive native import
 coverage, RECORD exclusion and tampering, upstream/unhashed metadata pins,
 links/collisions, exact package verification before effects, fixed-role metadata,
-file-only publisher config, no payload execution, partial-copy no-replay and
+file-only publisher config, no payload execution, expiry during qualification,
+copy chunks/metadata and final readback, changed-ID partial-copy and
+crash-between-fences no-replay, and
 rejection of JSON/foreign-owner admission. The private synthetic host mapping is
 restricted to an unprivileged disposable `/tmp` tree and cannot qualify actual
 UID/GID custody. Run with the installed delivery interpreter:

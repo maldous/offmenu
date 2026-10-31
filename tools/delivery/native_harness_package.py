@@ -456,23 +456,34 @@ class MaterializeHost:
     def uid_gid(self, uid, gid):
         return (os.getuid(), os.getgid()) if self.synthetic else (uid, gid)
 
-    def write(self, absolute, raw, mode, uid=0, gid=0):
+    def write(self, absolute, raw, mode, uid=0, gid=0, *, guard):
         target = self.path(absolute)
-        protected.write_new(target, raw, mode)
         actual_uid, actual_gid = self.uid_gid(uid, gid)
-        if not self.synthetic:
-            os.chown(target, actual_uid, actual_gid, follow_symlinks=False)
-        os.chmod(target, mode, follow_symlinks=False)
-        fd = os.open(target, os.O_RDONLY | os.O_NOFOLLOW)
+        guard()
+        fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
         try:
+            remaining = memoryview(raw)
+            while remaining:
+                guard()
+                count = os.write(fd, remaining[:1048576])
+                require(count > 0, 'write_progress')
+                remaining = remaining[count:]
+            os.fsync(fd)
+            if not self.synthetic:
+                guard()
+                os.fchown(fd, actual_uid, actual_gid)
+            guard()
+            os.fchmod(fd, mode)
             os.fsync(fd)
         finally:
             os.close(fd)
-        protected.sync_dir(target.parent)
+            protected.sync_dir(target.parent)
 
-    def mkdir(self, absolute):
+    def mkdir(self, absolute, *, guard):
         target = self.path(absolute)
+        guard()
         target.mkdir(mode=0o755)
+        guard()
         os.chmod(target, 0o755)
         protected.sync_dir(target.parent)
 
@@ -576,26 +587,45 @@ def materialize(package, *, expected_sha256, admission, _host=None):
     require(admission.owner == manifest['owner'], 'admission_owner')
     host = _host or MaterializeHost()
     require(type(host) is MaterializeHost, 'fixed_materialize_host')
+    def guard():
+        # Qualification, copying and final readback can each consume the grant.
+        # Refuse backward clock jumps as well as expiry; no new mutation starts.
+        require(now <= time.time() < admission.expires_at, 'admission_expired')
+
+    guard()  # Full package qualification may have exhausted admission already.
+    closure_sha256 = sha(protected.encoded(manifest['roles']))
     intent = '/var/lib/offmenu-publisher/native-package-' + admission.operation_id + '.intent.json'
-    # No mutation until every input, parent and destination is qualified.
+    fence = '/var/lib/offmenu-publisher/native-package-closure-' + closure_sha256 + '.intent.json'
+    # Closure custody survives changed operation IDs and a crash between fences.
+    require(not os.path.lexists(host.path(fence)), 'prior_closure_materialization_no_replay')
     require(not os.path.lexists(host.path(intent)), 'prior_materialization_no_replay')
     for destination in positions.values():
         require(not os.path.lexists(host.path(destination)), 'stage_slot_exists')
-    host.write(intent, protected.encoded({'kind': 'native-package-materialize-intent-v1',
-               'package_sha256': expected_sha256, 'operation_id': admission.operation_id,
-               'host_confirmation_sha256': admission.host_confirmation_sha256}), 0o600)
+    record = dict(package_sha256=expected_sha256, closure_sha256=closure_sha256,
+                  operation_id=admission.operation_id,
+                  host_confirmation_sha256=admission.host_confirmation_sha256)
+    guard()  # Parent/destination qualification can also exhaust admission.
+    host.write(fence, protected.encoded(dict(record, kind='native-package-closure-intent-v1')),
+               0o600, guard=guard)
+    guard()
+    host.write(intent, protected.encoded(dict(record, kind='native-package-materialize-intent-v1')),
+               0o600, guard=guard)
     for role, destination in positions.items():
-        require(time.time() < admission.expires_at, 'admission_expired')
+        guard()
         if role == 'publisher_config':
-            host.write(destination, content[role]['config.json'], 0o440, 0, 976)
+            host.write(destination, content[role]['config.json'], 0o440, 0, 976, guard=guard)
         else:
-            host.mkdir(destination)
+            host.mkdir(destination, guard=guard)
             for name in sorted(manifest['roles'][role]['directories'], key=lambda n: (n.count('/'), n)):
                 if name:
-                    host.mkdir(destination + '/' + name)
+                    guard()
+                    host.mkdir(destination + '/' + name, guard=guard)
             for name, raw in content[role].items():
                 mode, uid, gid = file_policy(role, name)
-                host.write(destination + '/' + name, raw, mode, uid, gid)
+                guard()
+                host.write(destination + '/' + name, raw, mode, uid, gid, guard=guard)
         host.verify(destination, role, manifest['roles'][role])
+    guard()  # Expiry during readback must not manufacture a completion claim.
     return {'kind': 'native-package-materialized-v1', 'package_sha256': expected_sha256,
+            'closure_sha256': closure_sha256,
             'operation_id': admission.operation_id, 'stages': positions, 'activated': False}

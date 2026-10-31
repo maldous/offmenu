@@ -230,6 +230,99 @@ class PackageTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             package.materialize(stage,expected_sha256=result['sha256'],admission=self.admission(result),_host=host)
 
+    def test_expiry_during_full_qualification_prevents_even_the_first_fence(self):
+        stage,result=self.build();host=self.host();admission=self.admission(result)
+        clock=[admission.expires_at-30]
+        original=package.read_package
+        def slow(*args):
+            value=original(*args);clock[0]=admission.expires_at+1;return value
+        with patch.object(package.time,'time',side_effect=lambda:clock[0]), \
+             patch.object(package,'read_package',side_effect=slow), \
+             patch.object(host,'write',wraps=host.write) as writes:
+            with self.assertRaisesRegex(ValueError,'admission_expired'):
+                package.materialize(stage,expected_sha256=result['sha256'],admission=admission,_host=host)
+            writes.assert_not_called()
+        self.assertFalse(list((host.root/'var/lib/offmenu-publisher').glob('*')))
+
+    def test_mid_role_expiry_starts_no_further_payload_or_directory_mutations(self):
+        stage,result=self.build();host=self.host();admission=self.admission(result)
+        clock=[admission.expires_at-30];observed=[];original=host.write
+        def expire(*args,**kwargs):
+            observed.append(clock[0]);value=original(*args,**kwargs)
+            if len(observed)==3:clock[0]=admission.expires_at+1
+            return value
+        with patch.object(package.time,'time',side_effect=lambda:clock[0]), \
+             patch.object(host,'write',side_effect=expire):
+            with self.assertRaisesRegex(ValueError,'admission_expired'):
+                package.materialize(stage,expected_sha256=result['sha256'],admission=admission,_host=host)
+        self.assertEqual(len(observed),3)  # closure fence, operation fence, first payload
+        self.assertTrue(all(at<admission.expires_at for at in observed))
+        self.assertEqual(len(list((host.root/'var/lib/offmenu-publisher').glob('*.intent.json'))),2)
+
+    def test_expiry_inside_file_write_prevents_later_write_chunks_and_metadata(self):
+        stage,result=self.build();host=self.host();admission=self.admission(result)
+        clock=[admission.expires_at-30];writes=[];original=package.os.write
+        def expire(fd,raw):
+            writes.append(clock[0]);count=original(fd,raw)
+            if len(writes)==3:clock[0]=admission.expires_at+1
+            return count
+        with patch.object(package.time,'time',side_effect=lambda:clock[0]), \
+             patch.object(package.os,'write',side_effect=expire), \
+             patch.object(package.os,'fchmod',wraps=package.os.fchmod) as modes:
+            with self.assertRaisesRegex(ValueError,'admission_expired'):
+                package.materialize(stage,expected_sha256=result['sha256'],admission=admission,_host=host)
+            self.assertEqual(modes.call_count,2)  # only the two completed fences
+        self.assertEqual(len(writes),3)
+        self.assertTrue(all(at<admission.expires_at for at in writes))
+
+    def test_expiry_during_final_readback_cannot_claim_completion(self):
+        stage,result=self.build();host=self.host();admission=self.admission(result)
+        clock=[admission.expires_at-30];original=host.verify
+        def expire(absolute,role,expected):
+            original(absolute,role,expected)
+            if role=='publisher_config':clock[0]=admission.expires_at+1
+        with patch.object(package.time,'time',side_effect=lambda:clock[0]), \
+             patch.object(host,'verify',side_effect=expire):
+            with self.assertRaisesRegex(ValueError,'admission_expired'):
+                package.materialize(stage,expected_sha256=result['sha256'],admission=admission,_host=host)
+        self.assertEqual(len(list((host.root/'var/lib/offmenu-publisher').glob('*.intent.json'))),2)
+
+    def test_changed_operation_id_cannot_escape_partial_closure_custody(self):
+        stage,result=self.build();host=self.host();original=host.write;count=[0]
+        def partial(*args,**kwargs):
+            count[0]+=1
+            if count[0]==3:raise OSError('partial payload')
+            return original(*args,**kwargs)
+        with patch.object(host,'write',side_effect=partial):
+            with self.assertRaises(OSError):
+                package.materialize(stage,expected_sha256=result['sha256'],admission=self.admission(result),_host=host)
+        receipts=host.root/'var/lib/offmenu-publisher'
+        previous={p.name:p.read_bytes() for p in receipts.glob('*.intent.json')}
+        changed=package.MaterializeAdmission('root-owner',result['sha256'],'a'*64,'e'*64,time.time()+60)
+        with self.assertRaisesRegex(ValueError,'prior_closure_materialization_no_replay'):
+            package.materialize(stage,expected_sha256=result['sha256'],admission=changed,_host=host)
+        self.assertEqual({p.name:p.read_bytes() for p in receipts.glob('*.intent.json')},previous)
+        self.assertFalse((host.root/package.slots('a'*64)['owner_source'][1:]).exists())
+
+    def test_crash_between_closure_and_operation_fences_blocks_changed_id(self):
+        stage,result=self.build();host=self.host();original=host.write;count=[0]
+        def partial(*args,**kwargs):
+            count[0]+=1
+            if count[0]==2:raise OSError('crash between fences')
+            return original(*args,**kwargs)
+        with patch.object(host,'write',side_effect=partial):
+            with self.assertRaises(OSError):
+                package.materialize(stage,expected_sha256=result['sha256'],admission=self.admission(result),_host=host)
+        receipts=list((host.root/'var/lib/offmenu-publisher').glob('*.intent.json'))
+        self.assertEqual(len(receipts),1)
+        record=protected.record(receipts[0].read_bytes())
+        self.assertEqual(record['operation_id'],'d'*64)
+        self.assertEqual(record['package_sha256'],result['sha256'])
+        changed=package.MaterializeAdmission('root-owner',result['sha256'],'a'*64,'e'*64,time.time()+60)
+        with self.assertRaisesRegex(ValueError,'prior_closure_materialization_no_replay'):
+            package.materialize(stage,expected_sha256=result['sha256'],admission=changed,_host=host)
+        self.assertEqual(len(list((host.root/'var/lib/offmenu-publisher').glob('*.intent.json'))),1)
+
     def test_json_admission_and_wrong_owner_cannot_authorize_copy(self):
         stage,result=self.build()
         with self.assertRaises(ValueError):
