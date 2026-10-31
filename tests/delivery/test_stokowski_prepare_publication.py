@@ -375,10 +375,16 @@ class PublicationTests(unittest.TestCase):
         self.assert_unexposed()
 
     def test_overlapping_catalog_scope_is_refused(self):
+        self.overlapping_catalog_scope()
+
+    def test_fake_approved_metadata_cannot_release_catalog_scope(self):
+        self.overlapping_catalog_scope(fake_approved=True)
+
+    def overlapping_catalog_scope(self, fake_approved=False):
         other = self.root / 'other'
         self.write(other / 'manifest.json', self.manifest)
         self.write(other / 'current-admission.json',
-                   dict(manifest_sha256=self.sha(other / 'manifest.json')))
+                   dict(manifest_sha256=self.sha(other / 'manifest.json'), approved=fake_approved))
         entry = dict(issue='UIF-107', issue_id='synthetic-other', runtime=str(other),
                      admission_sha256=self.sha(other / 'current-admission.json'))
         self.write(self.catalog, dict(version=1, entries=[entry]))

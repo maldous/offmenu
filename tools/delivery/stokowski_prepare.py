@@ -182,7 +182,12 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
             other_manifest = pinned(dict(path=str(other_runtime/'manifest.json'),
                                          sha256=other_admission['manifest_sha256']))
             if not staged:
-                require(not any(overlap(a, b) for a in packet['scope']
+                reusable = False
+                if successor:
+                    consumer = CurrentWork(coordinator, read_only=True, qualification_only=True)
+                    consumer.entries = {e['issue']: e for e in baseline['entries']}
+                    reusable = consumer._scope_reusable(entry['issue'])
+                require(reusable or not any(overlap(a, b) for a in packet['scope']
                                 for t in other_manifest['tasks'].values() for b in t['allowed_paths']), 'scope_overlap')
         policy = policy_path.read_bytes()
         installation = canonical(packet['installation']['manifest_path']).read_bytes()
