@@ -99,6 +99,72 @@ class CurrentDispatchTests(unittest.TestCase):
         with self.assertRaisesRegex(AdmissionError,'current_config_fields'):
             adapter.CurrentWork(self.runtime,read_only=True)
 
+    def test_protected_owner_real_constructor_ignores_mutable_config(self):
+        protected = self.temp/'protected-owner'
+        protected.mkdir()
+        cfg = json.loads((self.runtime/'current.json').read_text())
+        cfg['catalog'] = str(protected/'catalog.json')
+        self.write(protected/'catalog.json', {'version':1, 'entries':[]})
+        self.write(protected/'current.json', cfg)
+        python = b'synthetic interpreter bytes'
+        binding = dict(schema='protected-current-owner-v1', runtime=str(self.runtime),
+            config_sha256=adapter.file_sha(protected/'current.json'),
+            catalog_sha256=adapter.file_sha(protected/'catalog.json'),
+            source_root=str(self.source), python_sha256=hashlib.sha256(python).hexdigest())
+        self.write(protected/'binding.json', binding)
+        state = json.loads(json.dumps(self.current.state))
+        state['config_sha256'] = binding['config_sha256']
+        self.write(self.runtime/'current-owner.json', state)
+        self.write(self.runtime/'current.json', {'untrusted':'must not be selected'})
+        def read(path):
+            return python if Path(path) == Path(sys.executable) else Path(path).read_bytes()
+        with patch.object(adapter, 'PROTECTED_OWNER', protected), patch.object(
+                adapter, 'protected_owner_bytes', side_effect=read), patch.object(
+                adapter, 'protected_owner_tree') as closure, patch.dict(
+                os.environ, OFFMENU_PROTECTED_OWNER_REQUIRED='1'), patch.object(
+                adapter, '_PROTECTED_CLOSURES', set()):
+            actual = adapter.CurrentWork(self.runtime, read_only=True)
+            self.assertEqual(actual.config, cfg)
+            self.assertEqual(actual.config_path, protected/'current.json')
+            self.assertEqual(actual.catalog, protected/'catalog.json')
+            self.assertEqual(closure.call_count, 2)
+            original = (protected/'catalog.json').read_bytes()
+            self.write(protected/'catalog.json', {'version':1, 'entries':[{'untrusted':True}]})
+            with self.assertRaisesRegex(AdmissionError, 'protected_owner_digest'):
+                actual.guard()
+            (protected/'catalog.json').write_bytes(original)
+            changed = dict(binding, source_root=str(self.temp/'foreign'))
+            self.write(protected/'binding.json', changed)
+            with self.assertRaisesRegex(AdmissionError, 'protected_owner_binding'):
+                actual.guard()
+
+    def test_protected_owner_required_missing_or_wrong_runtime_refuses(self):
+        protected = self.temp/'protected-owner'
+        protected.mkdir()
+        with patch.object(adapter, 'PROTECTED_OWNER', protected), patch.dict(
+                os.environ, OFFMENU_PROTECTED_OWNER_REQUIRED='1'):
+            with self.assertRaisesRegex(AdmissionError, 'protected_owner_missing'):
+                adapter.current_config(self.runtime)
+            self.write(protected/'binding.json', dict(schema='protected-current-owner-v1',
+                runtime=str(self.temp/'foreign'), config_sha256='a'*64,
+                catalog_sha256='b'*64, source_root=str(self.source), python_sha256='c'*64))
+            with patch.object(adapter, 'protected_owner_bytes', side_effect=lambda path:Path(path).read_bytes()):
+                with self.assertRaisesRegex(AdmissionError, 'protected_owner_runtime'):
+                    adapter.current_config(self.runtime)
+
+    def test_protected_owner_file_and_tree_reject_mutable_custody(self):
+        # The actual test files are deliberately user-owned, never privileged.
+        path = self.temp/'untrusted.json'
+        path.write_text('{}')
+        with self.assertRaisesRegex(AdmissionError, 'protected_owner_(parent|file)'):
+            adapter.protected_owner_bytes(path)
+        with self.assertRaisesRegex(AdmissionError, 'protected_owner_closure'):
+            adapter.protected_owner_tree(self.temp)
+        link = self.temp/'symlink.json'
+        link.symlink_to(path)
+        with self.assertRaisesRegex(AdmissionError, 'protected_owner_path'):
+            adapter.protected_owner_bytes(link)
+
     UIF_ROUTE = dict(project_id='ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0',
                      project_slug='21558318e036')
     UIF119 = dict(identifier='UIF-119', uuid='3e6839ad-2f22-4ab1-8f6f-973c882daabd',

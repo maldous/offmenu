@@ -14,6 +14,7 @@ import sqlite3
 import os
 import re
 import selectors
+import stat
 from pathlib import Path
 import signal
 import subprocess
@@ -31,6 +32,93 @@ SOURCE = Path(__file__).resolve().parents[2]
 PIN = '339cbf4f3f6d9acdf808f9ba4c639d029cdd8e16'
 PROJECT = 'ce60c1ab-a732-4a71-8471-14c9dc393886'
 SLUG = 'ccd080f4f6f0'
+
+
+PROTECTED_OWNER = Path('/etc/offmenu-stokowski-current')
+_PROTECTED_CLOSURES = set()
+
+
+def protected_owner_bytes(path):
+    """Root-owned nonsecret input; no caller-selected root or secret read."""
+    path = Path(path)
+    if not path.is_absolute() or path != path.resolve():
+        raise AdmissionError('protected_owner_path')
+    for parent in path.parents:
+        info = parent.lstat()
+        if not stat.S_ISDIR(info.st_mode) or info.st_uid != 0 or info.st_mode & 0o022:
+            raise AdmissionError('protected_owner_parent')
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    try:
+        info = os.fstat(fd)
+        if (not stat.S_ISREG(info.st_mode) or info.st_uid != 0 or info.st_nlink != 1
+            or info.st_mode & 0o6022 or not 0 < info.st_size <= 8 * 1024 * 1024):
+            raise AdmissionError('protected_owner_file')
+        with os.fdopen(fd, 'rb', closefd=False) as stream:
+            raw = stream.read(8 * 1024 * 1024 + 1)
+        if len(raw) != info.st_size:
+            raise AdmissionError('protected_owner_size')
+        return raw
+    finally:
+        os.close(fd)
+
+
+def protected_owner_tree(root):
+    root = Path(root)
+    for path in (root, *root.rglob('*')):
+        info = path.lstat()
+        if (info.st_uid != 0 or info.st_mode & 0o6022
+            or not (stat.S_ISREG(info.st_mode) or stat.S_ISDIR(info.st_mode))
+            or (stat.S_ISREG(info.st_mode) and info.st_nlink != 1)):
+            raise AdmissionError('protected_owner_closure')
+    for parent in root.parents:
+        info = parent.lstat()
+        if not stat.S_ISDIR(info.st_mode) or info.st_uid != 0 or info.st_mode & 0o022:
+            raise AdmissionError('protected_owner_parent')
+
+
+def current_config(runtime):
+    """Select installed sealed owner inputs; legacy fixtures remain explicit.
+
+    The service's root-owned unit sets OFFMENU_PROTECTED_OWNER_REQUIRED=1.
+    Once the fixed binding exists, its matching runtime always uses it, including
+    transport children which do not inherit that environment variable.
+    """
+    runtime = runtime.resolve()
+    required = os.environ.get('OFFMENU_PROTECTED_OWNER_REQUIRED') == '1'
+    binding_path = PROTECTED_OWNER/'binding.json'
+    if not binding_path.exists():
+        if required:
+            raise AdmissionError('protected_owner_missing')
+        return read_record(runtime/'current.json'), runtime/'current.json', None
+    binding = json.loads(protected_owner_bytes(binding_path))
+    if set(binding) != {'schema', 'runtime', 'config_sha256', 'catalog_sha256', 'source_root', 'python_sha256'}:
+        raise AdmissionError('protected_owner_fields')
+    if binding['runtime'] != str(runtime):
+        if required:
+            raise AdmissionError('protected_owner_runtime')
+        return read_record(runtime/'current.json'), runtime/'current.json', None
+    if (binding['schema'] != 'protected-current-owner-v1'
+        or binding['source_root'] != str(SOURCE)
+        or any(not isinstance(binding[key], str) or not re.fullmatch('[0-9a-f]{64}', binding[key])
+               for key in ('config_sha256', 'catalog_sha256', 'python_sha256'))):
+        raise AdmissionError('protected_owner_binding')
+    config_path = PROTECTED_OWNER/'current.json'
+    raw = protected_owner_bytes(config_path)
+    catalog = protected_owner_bytes(PROTECTED_OWNER/'catalog.json')
+    python = protected_owner_bytes(Path(sys.executable))
+    if (hashlib.sha256(raw).hexdigest() != binding['config_sha256']
+        or hashlib.sha256(catalog).hexdigest() != binding['catalog_sha256']
+        or hashlib.sha256(python).hexdigest() != binding['python_sha256']):
+        raise AdmissionError('protected_owner_digest')
+    config = json.loads(raw)
+    if config.get('catalog') != str(PROTECTED_OWNER/'catalog.json'):
+        raise AdmissionError('protected_owner_catalog')
+    closure = (str(SOURCE), sys.prefix, binding['python_sha256'])
+    if closure not in _PROTECTED_CLOSURES:
+        protected_owner_tree(SOURCE)
+        protected_owner_tree(Path(sys.prefix))
+        _PROTECTED_CLOSURES.add(closure)
+    return config, config_path, binding
 
 
 def credential():
@@ -92,7 +180,7 @@ class CurrentWork:
             raise AdmissionError('current_qualification_read_only_required')
         self.read_only = read_only
         self.runtime = runtime.resolve()
-        self.config = read_record(runtime/'current.json')
+        self.config, self.config_path, self.owner_custody = current_config(runtime)
         if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template'} != {'version', 'owner', 'runtime_root', 'catalog',
                                'source_head', 'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}:
             raise AdmissionError('current_config_fields')
@@ -120,8 +208,8 @@ class CurrentWork:
             or not isinstance(self.config['source_sha256'],dict)
             or not re.fullmatch(r'[0-9a-f]{40}',self.config['source_head'])):
             raise AdmissionError('current_private_root')
-        self.catalog = self.private(self.config['catalog'])
-        self.config_sha = file_sha(runtime/'current.json')
+        self.catalog = (PROTECTED_OWNER/'catalog.json' if self.owner_custody else self.private(self.config['catalog']))
+        self.config_sha = file_sha(self.config_path)
         self.state_path = runtime/'current-owner.json'
         self.state = read_record(self.state_path) if self.state_path.exists() else {
             'owner': self.config['owner'], 'config_sha256': self.config_sha, 'bindings': {}, 'tasks': {}}
@@ -175,7 +263,9 @@ class CurrentWork:
         if (file_sha(self.runtime/'installation.json') != c['installation_sha256']):
             raise AdmissionError('current_installation_binding')
         verify_install(self.runtime)
-        if file_sha(self.runtime/'current.json') != self.config_sha:
+        selected, path, custody = current_config(self.runtime)
+        if (selected != self.config or path != self.config_path or custody != self.owner_custody
+            or file_sha(path) != self.config_sha):
             raise AdmissionError('current_config_drift')
         head = subprocess.check_output(['git', '-C', str(SOURCE), 'rev-parse', 'HEAD'], text=True).strip()
         required = {'tools/delivery/stokowski_adapter.py', 'tools/delivery/stokowski_worker.py',
@@ -1311,7 +1401,7 @@ class CurrentWork:
         from types import SimpleNamespace
         if self.config.get('native_review_template') is None:
             raise AdmissionError('native_review_policy_unavailable: owner template required')
-        if read_record(self.runtime/'current.json') != self.config:
+        if current_config(self.runtime)[0] != self.config:
             raise AdmissionError('native_review_config_override')
         self.guard()
         ref = self.config.get('native_review_template')
@@ -2186,7 +2276,7 @@ async def run(runtime, duration, dry_run=False, current_mode=False):
         return await _run(runtime, duration, dry_run)
     # One current coordinator for the caller's canonical private runtime root,
     # even when two callers point at different catalog/coordinator directories.
-    config = read_record(runtime/'current.json')
+    config, _, _ = current_config(runtime)
     root = Path(config['runtime_root'])
     if (not root.is_absolute() or root != root.resolve() or root.name != 'stokowski'
         or root.parent.name != '.delivery' or not runtime.resolve().is_relative_to(root)):
