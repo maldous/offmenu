@@ -1185,6 +1185,9 @@ class CurrentDispatchTests(unittest.TestCase):
     def test_normal_coding_static_template_native_review(self):
         self.fixed_gateway_process_fixture(staged='normal',native_review='template')
 
+    def test_normal_template_rework_survives_refresh_and_response(self):
+        self.fixed_gateway_process_fixture(staged='normal',native_review='template-rework')
+
     def test_normal_template_capacity_deferred_same_operation(self):
         self.fixed_gateway_process_fixture(staged='normal',native_review='capacity-defer')
 
@@ -1316,6 +1319,9 @@ class CurrentDispatchTests(unittest.TestCase):
                 self.assertEqual(completed['history'][:2],intent['history'])
             self.assertEqual(state['unit_gate']['disposition'],'rework' if verdict=='rework' else 'approved')
             self.assertFalse(state['unit_gate']['accepted_delivery'])
+            if template and verdict == 'rework':
+                self.current.refresh()
+                self.assertEqual(state['unit_gate']['disposition'],'rework')
             packet=unit_review.qualify_native_review(self.current,issue.identifier)
             self.assertNotIn('snapshot',packet)
             self.assertIsNone(packet['action'])
@@ -1332,6 +1338,61 @@ class CurrentDispatchTests(unittest.TestCase):
             path.write_bytes(original)
             incoming=self.runtime/('unit-review-'+issue.identifier+'.json')
             self.assertEqual(adapter.read_record(incoming),packet)
+            if template and verdict == 'rework':
+                native, _, _ = self.adapted()
+                owner = native.Orchestrator(self.runtime/'workflow.yaml')
+                self.assertEqual(owner._load_workflow(), [])
+                client = self.client(issue)
+                for name in ('update_issue_state','post_comment','fetch_comments'):
+                    setattr(client,name,AsyncMock())
+                owner._linear = client
+                owner._schedule_retry = unittest.mock.Mock()
+                owner._publish_run_report = AsyncMock()
+                owner.ledger.record_terminal = unittest.mock.Mock()
+                task = self.current.state['tasks'][issue.identifier]
+                receipt = runtime/'attempts'/('review-'+issue.identifier)/'receipt.json'
+                saved = receipt.read_bytes()
+                for change in ('tampered','missing'):
+                    with self.subTest(receipt=change):
+                        if change == 'tampered':receipt.write_text('{}')
+                        else:receipt.unlink()
+                        self.current.refresh()
+                        self.assertEqual(task['unit_gate']['disposition'],'waiting')
+                        self.assertEqual(task['defer'],'unit_review_held')
+                        asyncio.run(owner._handle_gate_responses())
+                        self.assertNotIn('handled',task['unit_gate'])
+                        receipt.write_bytes(saved)
+                        self.current.refresh()
+                        self.assertEqual(task['unit_gate']['disposition'],'rework')
+                capacity = adapter.read_record(runtime/'capacity-policy.json')
+                leases = Pool(capacity['symphony']['pool_path'],capacity).status()
+                with self.assertRaisesRegex(AdmissionError,'terminal_hold'):
+                    self.current.native_review_template_policy(issue.identifier,materialize=True)
+                asyncio.run(self.current.continue_native_review(issue.identifier))
+                self.assertEqual(task['native_review']['status'],'held')
+                self.assertEqual(task['native_review']['hold'],'native_review_template_terminal_hold')
+                asyncio.run(owner._handle_gate_responses())
+                gate = task['unit_gate']
+                self.assertTrue(gate['handled'])
+                self.assertEqual(gate['disposition'],'rework')
+                self.assertEqual(gate['unit_review'],'rework')
+                self.assertFalse(gate['accepted_delivery'])
+                retained_gate = dict(gate)
+                for _ in range(2):
+                    self.current.refresh()
+                    asyncio.run(owner._handle_gate_responses())
+                    asyncio.run(self.current.continue_native_review(issue.identifier))
+                self.assertEqual(task['unit_gate'],retained_gate)
+                self.assertFalse(self.current.state['accepted_delivery'])
+                self.assertEqual(Pool(capacity['symphony']['pool_path'],capacity).status(),leases)
+                self.assertEqual(spawn.await_count,1)
+                native_command.assert_called_once()
+                owner._schedule_retry.assert_not_called()
+                owner._publish_run_report.assert_not_awaited()
+                owner.ledger.record_terminal.assert_not_called()
+                client.update_issue_state.assert_not_awaited()
+                client.post_comment.assert_not_awaited()
+                client.fetch_comments.assert_not_awaited()
             # Unknown launch recovery cannot create another computation or lease.
             receipt=runtime/'attempts'/('review-'+issue.identifier)/'receipt.json'
             saved=receipt.read_bytes();receipt.unlink()
@@ -1417,7 +1478,7 @@ class CurrentDispatchTests(unittest.TestCase):
         state['config_sha256'] = adapter.file_sha(self.runtime/'current.json')
         self.write(self.current.state_path,state)
         self.current = adapter.CurrentWork(self.runtime)
-        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review in ('template','capacity-defer'))
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review in ('template','capacity-defer','template-rework'))
         snapshot = packet['snapshot']
         # Original typed Python authorities, deliberately lossy through JS JSON.
         numbers = {'duration_seconds':1e-7, 'integral':1.0,
@@ -1444,11 +1505,11 @@ class CurrentDispatchTests(unittest.TestCase):
             from symphony_capacity import Pool
             author_pool=Pool(self.policy['symphony']['pool_path'],self.policy)
             proof=adapter.read_record(runtime/'provider-proof.json')
-            if native_review not in ('template','capacity-defer'):
+            if native_review not in ('template','capacity-defer','template-rework'):
                 author_pool.admit(native['lease'],author_binding,proof,
                     dict(cpu_millis=64000,available_memory_bytes=128*1024**3,available_disk_bytes=1024**4))
                 author_pool.finish(native['lease'],True,'succeeded')
-            if native_review not in ('template','capacity-defer'):
+            if native_review not in ('template','capacity-defer','template-rework'):
                 native.update(origin='native-coding',session_id='synthetic-author-session',
                               parent_binding=author_binding)
                 self.write(native_path,native)
@@ -1551,7 +1612,7 @@ class CurrentDispatchTests(unittest.TestCase):
                     binding=self.current.gate_binding(issue),disposition='waiting',accepted_delivery=False)
                 self.current.save()
             self.native_review_phase_fixture(issue,runtime,stage_runtime,candidate,spec,
-                                             verdict='rework' if native_review=='rework' else 'accept',template=native_review in ('template','capacity-defer'),
+                                             verdict='rework' if native_review in ('rework','template-rework') else 'accept',template=native_review in ('template','capacity-defer','template-rework'),
                                              capacity_defer=native_review=='capacity-defer')
             return
         if reviewed:

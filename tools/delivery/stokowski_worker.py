@@ -19,6 +19,7 @@ import time
 from symphony_capacity import Pool, AdmissionError, host_snapshot, digest
 from symphony_codex import isolated_codex_environment
 from symphony_protocol import BINARY
+from coding_child_launch import bind_native
 from symphony_tasks import load_manifest, runtime_lease_ids
 from symphony_workspace import checkpoint
 from windmill_runner import cleanup, capacity_usage
@@ -85,6 +86,15 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
         raise ValueError('Invalid finite timeout')
     if (directory.parent.parent/'cancel.json').exists():
         return {'status':'cancelled','child_tree_gone':True,'exit_code':None}
+    if command and command[0] == BINARY:
+        try:
+            command, environment = bind_native(command, workspace, environment)
+        except Exception as error:
+            # The read-only binder has not spawned: any refusal is certain.
+            return dict(status='failed', child_tree_gone=True, child_started=False,
+                        launch_classification='confinement-prelaunch-refusal',
+                        error_type=type(error).__name__, exit_code=None,
+                        resolved_model=None, resolution_status='unknown')
     if ctypes.CDLL(None, use_errno=True).prctl(36, 1, 0, 0, 0) != 0:
         raise RuntimeError('Subreaper unavailable')
     result = {'status': 'failed', 'child_tree_gone': False, 'exit_code': None}
@@ -107,7 +117,7 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
         with (directory/'stdout.jsonl').open('wb') as out, (directory/'stderr.log').open('wb') as err:
             proc = subprocess.Popen(command, cwd=workspace, env=environment,
                                     stdin=subprocess.PIPE, stdout=out, stderr=err,
-                                    start_new_session=True, bufsize=0)
+                                    start_new_session=True, bufsize=0, close_fds=True)
             os.set_blocking(proc.stdin.fileno(), False)
             remaining_prompt = memoryview(prompt.encode())
             while proc.poll() is None:
@@ -511,6 +521,8 @@ def execute_review(runtime, issue, request):
                 result = supervise(codex_command(policy['source']['root'],directory/'final-message.txt',read_only=True),
                     prompt,Path(policy['source']['root']),environment,directory,policy['timeout_seconds'],
                     policy['resources'],capacity['windmill']['computation_subprocesses_per_job'])
+            if not result.get('child_started', True):
+                raise AdmissionError('native_review_confinement_prelaunch_refusal')
             result.update(summarize_events(directory/'stdout.jsonl'))
             raw = (directory/'final-message.txt').read_bytes()
             artifact = json.loads(raw)

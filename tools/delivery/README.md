@@ -354,3 +354,6 @@ identity. The existing phase boundary records a provisional ready-refill
 observation; final admission is still required and no work is started by that
 record. Missing/stale provider proof, overlap and unresolved effects defer work.
 This is not cloud voice/approval intake, an always-on supervisor or a new scheduler.
+
+Source-only native privilege confinement and its runtime adoption hold are in the
+[coding child confinement handoff](../../docs/development/coding-child-confinement.md).
