@@ -94,6 +94,16 @@ handoff/candidate bindings. It then invokes the original CurrentWork unit-review
 checker. Release additionally reaggregates all required profiles and exact raw
 receipt/output/evidence bytes using `validate_qualification`.
 
+After that original origin-specific reader qualifies a review, its exact head,
+base, tree, branch and output hash mapping must match the Engine/handoff source
+and outputs. A same-issue or same-unit review for different bytes is a hold.
+For a release, those facts must cover the actual frozen candidate source and
+artifacts; an earlier feature review does not implicitly cover a develop merge
+or later candidate. Changed candidates require independently qualified exact
+coverage through the original review route. No ancestry guess, synthetic coding
+attempt or callback assertion substitutes for that coverage. The existing
+publisher's independent release/candidate authority remains separately required.
+
 The result is a bounded action/effect observation, not a new task state. It
 always reports `accepted_delivery:false` and `refill_eligible:false`. The existing
 final-unit consumer remains responsible for current unit disposition and refill.

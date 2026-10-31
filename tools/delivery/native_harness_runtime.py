@@ -98,6 +98,30 @@ def engine_acceptance(engine, handoff, candidate):
     return record
 
 
+def review_coverage(review, handoff, candidate):
+    """Bind an ORIGINAL-reader-qualified review to the actual Engine candidate.
+
+    Call only after CurrentWork._check_unit_review. There is no implicit
+    feature->develop/release equivalence: changed candidates need their own
+    independently qualified exact-source coverage, through the original reader.
+    """
+    if review.get('origin') == 'native-readonly-review-v1':
+        source = review['source']
+        facts = {key: source[key] for key in ('head', 'base', 'tree', 'branch', 'outputs')}
+        require(review['verdict'] == 'accept' and not review['findings'], 'review_not_accepted')
+    else:
+        original = review['integration_binding']
+        facts = {key: original[key] for key in ('head', 'base', 'tree', 'outputs')}
+        facts['branch'] = original['head_branch']
+    selected = candidate['source'] if candidate else handoff['source']
+    outputs = candidate['artifacts'] if candidate else handoff['outputs']
+    expected = {key: selected[key] for key in ('head', 'base', 'tree', 'branch')}
+    expected['outputs'] = {item['path']: item['sha256'] for item in outputs}
+    require(fingerprint(facts) == fingerprint(expected), 'review_candidate_coverage')
+    return {'source_sha256': fingerprint(selected), 'outputs_sha256': fingerprint(outputs),
+            'review_sha256': fingerprint(review)}
+
+
 async def consume_boundary(current, issue, *, binding=None, adapters=None):
     """Call under CurrentWork's existing exclusive lock, at most ONE transaction.
 
@@ -174,6 +198,7 @@ async def consume_boundary(current, issue, *, binding=None, adapters=None):
             context['engine'] = engine_acceptance(engine, handoff, candidate)
             review = await resolved(adapters.review(current, issue, binding))
             require(current._check_unit_review(review) == unit, 'independent_review_binding')
+            context['review'] = review_coverage(review, handoff, candidate)
             if binding.phase == 'release':
                 require(candidate is not None and packet['release'] is not None, 'release_evidence_missing')
                 release = packet['release']

@@ -157,27 +157,73 @@ class RuntimeBoundaryTests(unittest.TestCase):
         self.assertEqual(self.consume()['status'],'held')
         self.step.assert_not_called()
 
-    def test_finite_publisher_boundary_consumes_real_engine_and_native_review(self):
-        issue, task_runtime, _, _, review, _, _ = self.fixture.review_fixture(222)
-        # Keep CurrentWork's synthetic Git metadata confined to its fixture.
-        # The Engine uses a separate real repository with real command receipts.
-        self.fixture.git.side_effect = lambda args, **kw: (
-            self.fixture.git_read(args, **kw)
-            if Path(args[2]).is_relative_to(self.fixture.temp)
-            else REAL_CHECK_OUTPUT(args, **kw))
+    def publisher_fixture(self):
+        import hashlib
+        from stokowski_operations import bridge_arguments
+        from symphony_capacity import digest
+        def selected_git(args, **kw):
+            if not Path(args[2]).is_relative_to(self.fixture.temp):
+                return REAL_CHECK_OUTPUT(args, **kw)
+            if (args[-2:] == ['rev-parse', 'HEAD'] and args[2] != str(self.fixture.source)):
+                return getattr(self.fixture, 'task_head', 'b'*40) + '\n'
+            return self.fixture.git_read(args, **kw)
+        self.fixture.git.side_effect = selected_git
         graph=graph_fixture.NativeGraphTests(methodName='runTest');graph.setUp()
         self.addCleanup(graph.doCleanups)
+        # Build the SAME source/output bytes for Engine and the original native
+        # unit/Journal/reviewer readers; no unrelated accepted proofs are paired.
+        graph.git('branch','-m','feature/test-current')
+        (graph.root/'result.txt').unlink()
+        target=graph.root/'tests/task222.py';target.parent.mkdir()
+        target.write_text('independent immutable output\n')
+        standard=json.loads((graph.root/'repository-standard.json').read_text())
+        del standard['roots']['result.txt'];standard['roots']['tests']={}
+        (graph.root/'repository-standard.json').write_text(json.dumps(standard))
+        graph.git('add','.');graph.git('commit','-qm','Exact reviewed candidate')
+        graph.task['base_revision']=graph.git('rev-parse','HEAD')
+        graph.task['accepted_outputs']={'tests/task222.py':hashlib.sha256(target.read_bytes()).hexdigest()}
+        self.fixture.task_head=graph.task['base_revision']
+        issue, task_runtime, _, _, review, journal, old_key=self.fixture.review_fixture(222)
         handoff=graph.task['handoff']
         handoff.update(issue_id=issue.id,project_id=self.current.route['project_id'],
-                       owner=self.current.config['owner'])
+                       owner=self.current.config['owner'],
+                       source=graph.source('feature/test-current'),outputs=graph.outputs())
         graph.task['owner']=handoff['owner']
-        self.issue=issue
-        self.packet['handoff']=handoff
+        spec,_=journal.read(old_key)
+        spec['head']=handoff['source']['head']
+        key=journal.prepare(spec);_,state=journal.read(key)
+        receipt=copy.deepcopy(review['validation_receipt'])
+        receipt.update(job_id=state['logical_job_id'],command_sha256=hashlib.sha256(
+            bridge_arguments(spec)['command'].encode()).hexdigest())
+        state.update(status='succeeded',receipt_sha256=digest(receipt),
+            accepted_output_sha256=spec['outputs'],acceptance_sha256=spec['acceptance_sha256'])
+        journal.save(key,state,'exact-candidate-fixture')
+        bindings=current_fixture.adapter.read_record(task_runtime/'validation-bindings.json')
+        bindings['issues'][issue.identifier].update(operation_key=key,source_head=spec['head'])
+        self.fixture.write(task_runtime/'validation-bindings.json',bindings)
+        b=review['integration_binding'];b.update(head=spec['head'],tree=handoff['source']['tree'],
+                                               validation_operation_key=key)
+        snapshot=review['snapshot'];snapshot['source_tree']=b['tree']
+        snapshot['review']['head']=b['head']
+        evidence={k:v for k,v in snapshot['review'].items() if k!='evidence_sha256'}
+        snapshot['review']['evidence_sha256']=digest(evidence)
+        snapshot['validation'].update(head=b['head'],operation_key=key)
+        review['validation_receipt']=receipt
+        decision=review['decision'];decision['binding_sha256']=digest(b)
+        decision['action']['expected_head_sha']=b['head']
+        decision['qualification_sha256']=digest(dict(validation=snapshot['validation'],
+            review=snapshot['review'],tree=b['tree'],policy=b['policy_sha256']))
+        # This is still the actual original reader, not a fake verdict callback.
+        self.assertEqual(self.current._check_unit_review(review),review['unit_binding'])
+        self.issue=issue;self.packet['handoff']=handoff
         self.packet['linear']['outcomes'][0].update(id=issue.id,identifier=issue.identifier)
-        change=self.packet['linear']['changes'][0]
-        change['handoff']=handoff
+        change=self.packet['linear']['changes'][0];change['handoff']=handoff
         change['pull_request'].update(head=handoff['source']['head'],tree=handoff['source']['tree'])
         self.bind('integration')
+        return graph,review
+
+    def test_finite_publisher_boundary_consumes_same_engine_and_native_review(self):
+        graph,review=self.publisher_fixture()
         with writer(graph.root) as state:
             engine=Engine(graph.root,state,graph.task)
             self.assertEqual(engine.run()['status'],'accepted')
@@ -185,8 +231,74 @@ class RuntimeBoundaryTests(unittest.TestCase):
             result=self.consume(adapters=adapters)
             self.assertEqual(result['status'],'advanced',result)
             self.assertEqual(result['action'],'integration')
-            self.assertEqual(self.step.call_args.args[1]['engine']['status'],'accepted')
+            self.assertEqual(self.step.call_args.args[1]['review']['source_sha256'],
+                             contract.fingerprint(self.packet['handoff']['source']))
             self.assertEqual((graph.root/'counter.txt').read_text(),'1')
+
+    def test_unrelated_valid_native_review_cannot_cover_engine_candidate(self):
+        graph,review=self.publisher_fixture()
+        with writer(graph.root) as state:
+            engine=Engine(graph.root,state,graph.task);engine.run()
+            _,_,_,_,unrelated,_,_=self.fixture.review_fixture(223)
+            # An accepted different unit is not this original native gate either.
+            adapters=replace(self.adapters,engine=lambda b:engine,review=lambda *args:unrelated)
+            self.assertEqual(self.consume(adapters=adapters)['status'],'held')
+            self.step.assert_not_called()
+
+    def mismatched_engine(self, change):
+        import hashlib
+        graph,review=self.publisher_fixture()
+        handoff=self.packet['handoff']
+        if change == 'head':
+            graph.git('commit','--allow-empty','-qm','Different candidate head')
+            graph.task['base_revision']=graph.git('rev-parse','HEAD')
+            handoff['source']['head']=graph.task['base_revision']
+            self.packet['linear']['changes'][0]['pull_request']['head']=graph.task['base_revision']
+        else:
+            path=graph.root/'tests/task222.py';path.write_text('different accepted output\n')
+            sha=hashlib.sha256(path.read_bytes()).hexdigest()
+            graph.task['accepted_outputs']['tests/task222.py']=sha
+            handoff['outputs'][0]['sha256']=sha
+        self.bind('integration')
+        # The old SAME-unit review still passes its real original reader.
+        self.assertEqual(self.current._check_unit_review(review),review['unit_binding'])
+        with writer(graph.root) as state:
+            engine=Engine(graph.root,state,graph.task);engine.run()
+            adapters=replace(self.adapters,engine=lambda b:engine,review=lambda *args:review)
+            result=self.consume(adapters=adapters)
+            self.assertEqual(result['reason'],'review_candidate_coverage',result)
+            self.step.assert_not_called()
+
+    def test_valid_same_unit_review_cannot_cover_different_engine_head(self):
+        self.mismatched_engine('head')
+
+    def test_valid_same_unit_review_cannot_cover_different_engine_outputs(self):
+        self.mismatched_engine('outputs')
+
+    def test_review_head_tree_outputs_and_release_transition_need_exact_coverage(self):
+        graph,review=self.publisher_fixture()
+        # Original-reader qualification precedes the new cross-component check.
+        # Prove this source/outputs comparison itself rejects every mismatch,
+        # including a release candidate that moves to a different develop head.
+        self.current._check_unit_review(review)
+        handoff=self.packet['handoff']
+        for key,value in [('head','1'*40),('base','2'*40),('tree','3'*40),
+                          ('branch','feature/other')]:
+            altered=copy.deepcopy(handoff);altered['source'][key]=value
+            with self.subTest(key=key),self.assertRaises(runtime.RuntimeHold):
+                runtime.review_coverage(review,altered,None)
+        altered=copy.deepcopy(handoff);altered['outputs'][0]['sha256']='4'*64
+        with self.assertRaises(runtime.RuntimeHold):runtime.review_coverage(review,altered,None)
+        candidate=dict(source={**handoff['source'],'branch':'develop','head':'5'*40},
+                       artifacts=handoff['outputs'])
+        with self.assertRaises(runtime.RuntimeHold):runtime.review_coverage(review,handoff,candidate)
+        with writer(graph.root) as state:
+            engine=Engine(graph.root,state,graph.task);engine.run()
+            for key,value in [('head','1'*40),('tree','2'*40),('outputs',{'other':'3'*64})]:
+                wrong=copy.deepcopy(review);wrong['integration_binding'][key]=value
+                adapters=replace(self.adapters,engine=lambda b:engine,review=lambda *args:wrong)
+                self.assertEqual(self.consume(adapters=adapters)['status'],'held')
+                self.step.assert_not_called()
 
     def test_original_unknown_validation_operation_never_becomes_new_job(self):
         self.handoff['operation']=dict(id='old-windmill-operation',backend='windmill',
