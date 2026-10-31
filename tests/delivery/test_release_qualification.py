@@ -1,5 +1,6 @@
 """Exact release source, finite execution and fail-closed aggregation behavior."""
 import copy
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -34,8 +35,13 @@ class ReleaseQualificationTests(unittest.TestCase):
         check = self.plan['checks'][index]
         job = release.bridge_request(self.plan, check['key'], self.policy, self.catalog)['job_id']
         receipt = dict(job_id=job, status=status, exit_code=0, child_tree_gone=True,
+                       mode='write', timeout_seconds=check['timeout_seconds'], reconcile_required=False,
                        command_sha256=check['command_sha256'], runner_sha256='4' * 64,
                        capacity_policy_sha256='5' * 64, resources=check['resources'])
+        # Match the original runner producer's file-byte request digest recipe.
+        spec = {key: receipt[key] for key in ('command_sha256', 'mode', 'timeout_seconds',
+                'runner_sha256', 'capacity_policy_sha256', 'resources')}
+        receipt['request_sha256'] = hashlib.sha256(json.dumps(spec, sort_keys=True).encode()).hexdigest()
         receipt.update(receipt_overrides)
         name = 'receipt-' + str(index) + '.json'
         (self.root / name).write_text(json.dumps(receipt))
@@ -68,6 +74,39 @@ class ReleaseQualificationTests(unittest.TestCase):
                 result = self.result(**values)
                 self.assertFalse(release.reusable_result(self.plan, result, self.policy,
                                                         self.catalog, self.root))
+
+    def test_original_runner_request_identity_is_required(self):
+        for changes in ({'mode': 'read'}, {'timeout_seconds': 1},
+                        {'timeout_seconds': float(self.plan['checks'][0]['timeout_seconds'])},
+                        {'timeout_seconds': True}, {'request_sha256': '0' * 64},
+                        {'mode': None}, {'request_sha256': None}):
+            with self.subTest(changes=changes):
+                with self.assertRaises(release.ContractError):
+                    self.aggregate([self.result(**changes)])
+        # Rehashing a different actual execution spec still cannot match the plan.
+        result = self.result(mode='read', timeout_seconds=1)
+        path = self.root / 'receipt-0.json'
+        receipt = release.read_json(path)
+        spec = {key: receipt[key] for key in ('command_sha256', 'mode', 'timeout_seconds',
+                'runner_sha256', 'capacity_policy_sha256', 'resources')}
+        receipt['request_sha256'] = hashlib.sha256(json.dumps(spec, sort_keys=True).encode()).hexdigest()
+        path.write_text(json.dumps(receipt))
+        result['handoff']['operation']['receipt']['sha256'] = release.file_sha(path)
+        with self.assertRaises(release.ContractError):
+            self.aggregate([result])
+
+    def test_reconciliation_must_be_explicit_typed_false(self):
+        for malformed in ('', 0, None, [], {}, 'false', True):
+            with self.subTest(malformed=malformed):
+                result = self.result(reconcile_required=malformed)
+                self.assertEqual(self.aggregate([result])['accepted'], [])
+        result = self.result()
+        path = self.root / 'receipt-0.json'
+        receipt = release.read_json(path)
+        del receipt['reconcile_required']
+        path.write_text(json.dumps(receipt))
+        result['handoff']['operation']['receipt']['sha256'] = release.file_sha(path)
+        self.assertEqual(self.aggregate([result])['accepted'], [])
 
     def test_duplicate_unknown_and_extra_results_are_rejected(self):
         result = self.result()

@@ -111,8 +111,11 @@ their existing readers; this aggregator reads only the declared runner result.
 The evidence owner stages canonical relative receipt/output/evidence references
 under one bounded local evidence root. The aggregator verifies actual bytes,
 rejects escaping/symlink references, checks the raw runner receipt's job, command,
-runner, capacity policy and resources, and requires successful exit and stopped
-children. It verifies all outputs, origin evidence and declared evidence bytes.
+runner, capacity policy, mode, timeout and resources. It recomputes the original
+runner `request_sha256` using that historical producer’s default-spaced
+`json.dumps(spec, sort_keys=True)` bytes, rather than the new canonical
+fingerprint. Success requires an explicit Boolean false `reconcile_required`,
+successful exit and stopped children. It verifies all outputs, origin evidence and declared evidence bytes.
 Coverage means the full declared command actually ran; planning output such as
 `--plan` must never be substituted for the reviewed executable command.
 This is trusted local custody, not a cryptographic attestation service or a

@@ -189,14 +189,26 @@ def aggregate(value, results, policy, catalog, evidence_root):
         operation = handoff.get('operation')
         require(isinstance(operation, dict) and operation.get('backend') == 'windmill', 'missing Windmill operation')
         check = checks[key]
-        expected_job = bridge_request(value, key, policy, catalog)['job_id']
-        require(operation['job_id'] == expected_job, 'wrong check job identity')
+        request = bridge_request(value, key, policy, catalog)
+        require(operation['job_id'] == request['job_id'], 'wrong check job identity')
         require(operation['command_sha256'] == check['command_sha256']
                 and operation['runner_sha256'] == value['runner_sha256']
                 and operation['policy_sha256'] == value['capacity_policy_sha256'], 'execution pins')
         receipt_path = verified_ref(operation['receipt'], evidence_root)
         receipt = read_json(receipt_path)
+        # Historical windmill_runner.run hashes this exact spec with default
+        # JSON spaces/ASCII escaping; this is NOT the new canonical fingerprint.
+        spec = dict(command_sha256=check['command_sha256'], mode=request['mode'],
+                    timeout_seconds=request['timeout_seconds'],
+                    runner_sha256=value['runner_sha256'],
+                    capacity_policy_sha256=value['capacity_policy_sha256'],
+                    resources=request['resources'])
+        request_sha = hashlib.sha256(json.dumps(spec, sort_keys=True).encode()).hexdigest()
         require(isinstance(receipt, dict) and receipt.get('job_id') == operation['job_id']
+                and receipt.get('mode') == request['mode']
+                and type(receipt.get('timeout_seconds')) is int
+                and receipt['timeout_seconds'] == request['timeout_seconds']
+                and receipt.get('request_sha256') == request_sha
                 and receipt.get('command_sha256') == check['command_sha256']
                 and receipt.get('runner_sha256') == value['runner_sha256']
                 and receipt.get('capacity_policy_sha256') == value['capacity_policy_sha256']
@@ -206,7 +218,7 @@ def aggregate(value, results, policy, catalog, evidence_root):
         success = (operation['status'] == 'succeeded' and receipt.get('status') == 'succeeded'
                    and receipt.get('exit_code') == 0 and type(receipt.get('exit_code')) is int
                    and receipt.get('child_tree_gone') is True
-                   and not receipt.get('reconcile_required', False)
+                   and receipt.get('reconcile_required') is False
                    and result['coverage'] == 'complete'
                    and handoff.get('effect', {}).get('status', 'verified') == 'verified')
         (accepted if success else incomplete).append(key)
