@@ -178,7 +178,7 @@ function syntheticHTTP(f,controller) {
       status=options.method==='POST'?201:200;
       if(operation.kind==='blob') data={sha:operation.expected,encoding:'base64',content:body.content};
       else if(operation.kind==='tree') data={sha:operation.expected,truncated:false,tree:body.tree};
-      else if(operation.kind==='commit') data={...body,sha:operation.expected,tree:{sha:body.tree},parents:body.parents.map(sha=>({sha}))};
+      else if(operation.kind==='commit') data={...body,message:body.message.replace(/\n$/,''),sha:operation.expected,tree:{sha:body.tree},parents:body.parents.map(sha=>({sha}))};
       else if(operation.kind==='ref') data={ref:`refs/heads/${f.config.binding.head_branch}`,object:{type:'commit',sha:body.sha}};
       else if(operation.kind==='create-pr') {pr=prValue(body);data=pr;}
       else {Object.assign(pr,{title:body.title,body:body.body});data=pr;}
@@ -279,4 +279,38 @@ test('published actual PR enters existing gateway; lost merge reply uses canonic
   await integrationStep({config:f.config,controller:ctl,adapterFactory:factory,advanceIntegration});
   assert.equal(net.calls.filter(c=>c.method==='PUT').length,1);
   assert.equal((await ctl.state()).merge_effect,'verified');
+});
+
+
+test('commit canonical readback accepts only the exact message or one omitted final LF',()=>{
+  const f=fixture(),op=f.config.plan.operations[2];
+  const exact={...clone(op.body),sha:op.expected,tree:{sha:op.body.tree},
+    parents:op.body.parents.map(sha=>({sha}))};
+  assert.equal(canonicalPublication(op,exact,f.config.binding,null),true);
+  assert.equal(canonicalPublication(op,{...exact,message:op.body.message.slice(0,-1)},f.config.binding,null),true);
+  for(const message of [op.body.message+'\n',op.body.message+'x',op.body.message.slice(0,-2),
+      op.body.message.replace('candidate','Candidate'),op.body.message.slice(0,-1)+'\r',null,42])
+    assert.equal(canonicalPublication(op,{...exact,message},f.config.binding,null),false);
+  for(const change of [r=>r.sha='0'.repeat(40),r=>r.tree.sha='0'.repeat(40),
+      r=>r.parents=[],r=>r.parents[0].sha='0'.repeat(40),
+      r=>r.author.name='Other',r=>r.author.email='other@example.invalid',
+      r=>r.author.date='2026-10-31T00:00:01Z',r=>r.committer.name='Other',
+      r=>r.committer.email='other@example.invalid',r=>r.committer.date='invalid']) {
+    const bad=clone(exact);bad.message=op.body.message.slice(0,-1);change(bad);
+    assert.equal(canonicalPublication(op,bad,f.config.binding,null),false);
+  }
+});
+
+test('consumed unknown commit reconciles projected message by GET without another POST',async t=>{
+  const f=fixture(),ctl=await actualController(t,f),net=syntheticHTTP(f,ctl);
+  await net.step();await net.step();
+  const operation=f.config.plan.operations[2];
+  await ctl('intent',{index:2,action:operation});await ctl('consume',{intent:operation});
+  assert.equal((await ctl.state()).publication.effect,'unknown');
+  const remote={...clone(operation.body),message:operation.body.message.slice(0,-1),
+    sha:operation.expected,tree:{sha:operation.body.tree},parents:operation.body.parents.map(sha=>({sha}))};
+  net.remote.set(operation.readPath,remote);
+  const result=await net.step();assert.equal(result.status,'publication-ready');
+  const state=await ctl.state();assert.equal(state.publication.next,3);assert.equal(state.publication.effect,'ready');
+  assert.equal(net.calls.filter(c=>c.method==='POST'&&c.path===operation.path).length,0);
 });

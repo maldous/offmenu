@@ -209,7 +209,10 @@ function canonicalObject(operation,result) {
   }
   // Verify exact author/committer identity and raw-object SHA returned by GitHub.
   return result.tree?.sha===operation.body.tree &&
-    same(result.parents?.map(p=>p.sha),operation.body.parents) && result.message===operation.body.message &&
+    same(result.parents?.map(p=>p.sha),operation.body.parents) &&
+    // GitHub's GitData projection omits one final LF; the raw SHA stays exact.
+    (result.message===operation.body.message ||
+      (typeof result.message==='string' && result.message+'\n'===operation.body.message)) &&
     ['author','committer'].every(role=>result[role]?.name===operation.body[role].name &&
       result[role]?.email===operation.body[role].email &&
       Date.parse(result[role]?.date)===Date.parse(operation.body[role].date));
