@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
 import {mkdtemp,readFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
@@ -204,7 +205,7 @@ test('canonical source commit/tree/parents/develop and exact-head review are fac
 });
 
 // Real pinned Python Controller, isolated synthetic state, never live owner state.
-const python='/home/user/src/offmenu/.venv-delivery/bin/python';
+const python=process.env.OFFMENU_DELIVERY_TEST_PYTHON || fileURLToPath(new URL('../../.venv-delivery/bin/python',import.meta.url));
 async function controllerCall(directory,mode,b,snapshot) {
   return await new Promise((accept,reject)=>{
     const child=spawn(python,['-B','-c',

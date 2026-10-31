@@ -5,6 +5,7 @@ import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
 import {spawn} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
 import {createRepositoryGitHubAppAdapter} from '../../tools/delivery/github-app-adapter.mjs';
 import {advanceIntegration} from '../../tools/delivery/integration-gateway.mjs';
 import {fingerprint,validateConfig,protectedRead,loadProtectedConfig,loadProtectedKey,
@@ -125,7 +126,7 @@ async function actualController(t,f) {
   await writeFile(configPath,JSON.stringify(f.config));
   const invoke=async(op,data={})=>new Promise((resolvePromise,reject)=>{
     const code=`import json,sys; from pathlib import Path; from offmenu.delivery.integration import Controller,_publisher_request; c=json.load(open(sys.argv[1])); ctl=Controller(Path(sys.argv[2])/'current',c['binding'],Path(sys.argv[2])); r=_publisher_request(ctl,c,json.load(sys.stdin)); print(json.dumps(r))`;
-    const child=spawn(process.env.OFFMENU_DELIVERY_TEST_PYTHON || '/home/user/src/offmenu/.venv-delivery/bin/python',['-B','-c',code,configPath,temp],
+    const child=spawn(process.env.OFFMENU_DELIVERY_TEST_PYTHON || fileURLToPath(new URL('../../.venv-delivery/bin/python',import.meta.url)),['-B','-c',code,configPath,temp],
       {cwd:resolve('.'),env:{PATH:'/usr/bin:/bin',PYTHONPATH:resolve('src'),LANG:'C.UTF-8',PYTHONDONTWRITEBYTECODE:'1'},
         stdio:['pipe','pipe','pipe']});
     let out='',size=0;const timer=setTimeout(()=>child.kill('SIGKILL'),10000);
