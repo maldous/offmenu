@@ -66,6 +66,30 @@ class NativeHarnessContractTests(unittest.TestCase):
                 with self.assertRaises(contract.ContractError):
                     self.validate(forged)
 
+    def test_reviewed_extraction_distinct_noncoding_origin_preserves_legacy_ref(self):
+        original = b'{"origin":"reviewed-extraction","operation_key":"original"}\n'
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'legacy-extraction.json'
+            path.write_bytes(original)
+            ref = {'path': str(path), 'sha256': hashlib.sha256(original).hexdigest()}
+            self.value['origin'] = {'kind': 'reviewed-extraction-v1', 'evidence': ref}
+            with patch.object(Path, 'open', side_effect=AssertionError('legacy evidence stays opaque')):
+                qualified = self.validate()
+            self.assertEqual(qualified['origin']['kind'], 'reviewed-extraction-v1')
+            self.assertEqual(qualified['origin']['evidence'], ref)
+            self.assertNotIn('attempt', qualified)
+            self.assertEqual(path.read_bytes(), original)
+            reviewed_source = copy.deepcopy(self.value)
+            reviewed_source['origin']['kind'] = 'reviewed-source-v1'
+            self.assertNotEqual(contract.fingerprint(qualified), contract.fingerprint(self.validate(reviewed_source)))
+            self.value['attempt'] = dict(id='fabricated', lease_id='fake', admission=self.ref)
+            with self.assertRaises(contract.ContractError):
+                self.validate()
+            self.value.pop('attempt')
+            self.value['origin']['kind'] = 'reviewed-extraction'
+            with self.assertRaises(contract.ContractError):
+                self.validate()
+
     def test_completed_native_keeps_original_attempt_and_opaque_receipt(self):
         self.value['origin']['kind'] = 'completed-native-validation-v1'
         self.value['attempt'] = dict(id='original-attempt', lease_id='original-lease', admission=self.ref)

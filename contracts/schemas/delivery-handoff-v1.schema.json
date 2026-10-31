@@ -79,6 +79,7 @@
               "kind": {
                 "enum": [
                   "reviewed-source-v1",
+                  "reviewed-extraction-v1",
                   "native-readonly-review-v1"
                 ]
               }
@@ -202,6 +203,7 @@
           "enum": [
             "native-coding-v1",
             "reviewed-source-v1",
+            "reviewed-extraction-v1",
             "completed-native-validation-v1",
             "native-readonly-review-v1"
           ]

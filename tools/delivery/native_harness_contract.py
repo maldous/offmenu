@@ -180,7 +180,9 @@ def validate_handoff(value, policy):
 
     An unknown effect remains unknown and retains the original operation ID.
     Qualification never permits retry or asserts independent acceptance. Noncoding
-    origins omit attempt; any supplied historical evidence stays an opaque ref.
+    origins (including distinct reviewed-extraction-v1) omit attempt; any supplied
+    historical evidence stays an opaque ref. Legacy reviewed-extraction receipts
+    are referenced unchanged; this new origin does not migrate their meaning.
     Operation policy_sha256 is its original executor policy pin, distinct from
     source.policy_sha256 (the canonical NEW release policy fingerprint).
     """
