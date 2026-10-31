@@ -242,10 +242,24 @@ an explicit recovery procedure for the observed partial state. Even a fully
 installed closure is not active, released source, functional BAU or legacy
 retirement acceptance.
 
+Every intent write, individual rename (including the second rename of a role),
+and installed-receipt write has a fresh admission/native/stopped-service guard
+after preceding closure verification. Expiry and witness freshness are checked
+again after service readback itself. Expiry between the two renames leaves the
+first move's original custody and permanent intent intact, refuses the second
+move and never authorizes replay. Tests advance a deterministic clock during
+verification, between renames and during service readback, and change actual
+synthetic service state after verification.
+
 After separately authorized owner-managed activation, `verify_active` checks
 installed/rollback bytes both before and after fixed service readback. It requires
-an active/running positive PID, the protected interpreter and coordinator script
-with `--current`, and unchanged service/PID binding across observations. It reads
+an active/running positive PID and exactly the maintained launch argv:
+`<protected-python> <protected-stokowski_adapter.py> --current --runtime <bound-runtime>`.
+The runtime is retained from the admitted preflight in the permanent intent.
+Script/flag tokens supplied as arguments to another script, `-c`, `-m`, extra
+flags, reordered arguments or a different runtime fail closed. This deliberately
+does not infer support for an unreviewed alternate launcher. Both observations
+require unchanged service/PID binding. It reads
 only bounded process command metadata and never returns command contents. It
 does not start the service or claim continuous liveness or functional acceptance.
 

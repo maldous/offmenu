@@ -9,7 +9,7 @@ import tempfile
 import time
 import unittest
 from dataclasses import replace
-from unittest.mock import patch
+from unittest.mock import patch, mock_open
 
 import native_harness_upgrade as upgrade
 import protected_owner_install as protected
@@ -25,7 +25,7 @@ class FixtureHost(upgrade.Host):
     def service_state(self):
         return dict(self.state)
 
-    def process_bound(self, pid):
+    def process_bound(self, pid, runtime):
         return self.bound
 
     def move(self, old, new):
@@ -235,3 +235,128 @@ class UpgradeTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.execute()
         self.assertEqual(self.host.moves,0)
+
+    def test_expiry_during_verification_blocks_first_move_and_preserves_intent(self):
+        clock = [time.time()]
+        verify = self.host.verify
+        count = [0]
+        def slow_verify(*args):
+            result = verify(*args)
+            count[0] += 1
+            if count[0] == 12:
+                clock[0] = self.admission.expires_at + 1
+            return result
+        with patch.object(upgrade.time, 'time', side_effect=lambda: clock[0]), \
+             patch.object(self.host, 'verify', side_effect=slow_verify):
+            with self.assertRaisesRegex(ValueError, 'admission_expired'):
+                self.execute()
+        self.assertEqual(self.host.moves, 0)
+        observed = upgrade.observe(self.manifest, host=self.host)
+        self.assertTrue(observed['intent_verified'])
+        self.assertFalse(observed['installed_verified'])
+        with self.assertRaisesRegex(ValueError, 'prior_upgrade_no_replay'):
+            self.execute()
+
+    def test_expiry_between_renames_prevents_second_move_retains_original_custody(self):
+        clock = [time.time()]
+        move = self.host.move
+        def expire_after_first(*args):
+            move(*args)
+            clock[0] = self.admission.expires_at + 1
+        with patch.object(upgrade.time, 'time', side_effect=lambda: clock[0]), \
+             patch.object(self.host, 'move', side_effect=expire_after_first):
+            with self.assertRaisesRegex(ValueError, 'admission_expired'):
+                self.execute()
+        self.assertEqual(self.host.moves, 1)
+        target, stage, backup = upgrade.locations('owner_source', self.operation)
+        self.assertFalse((self.root / target[1:]).exists())
+        self.host.verify(stage, self.manifest['new']['owner_source'])
+        self.host.verify(backup, self.manifest['old']['owner_source'])
+        with self.assertRaisesRegex(ValueError, 'prior_upgrade_no_replay'):
+            self.execute()
+
+    def test_witness_stales_during_verification_without_admission_expiry(self):
+        clock = [time.time()]
+        quiet = replace(self.quiet, observed_at=clock[0] - 250)
+        verify = self.host.verify
+        count = [0]
+        def slow_verify(*args):
+            result = verify(*args)
+            count[0] += 1
+            if count[0] == 12:
+                clock[0] += 60
+            return result
+        with patch.object(upgrade.time, 'time', side_effect=lambda: clock[0]), \
+             patch.object(self.host, 'verify', side_effect=slow_verify):
+            with self.assertRaisesRegex(ValueError, 'native_quiescence_required'):
+                self.execute(quiescence=quiet)
+        self.assertEqual(self.host.moves, 0)
+
+    def test_service_changes_during_verification_blocks_mutation(self):
+        verify = self.host.verify
+        count = [0]
+        def service_changes(*args):
+            result = verify(*args)
+            count[0] += 1
+            if count[0] == 12:
+                self.host.state = dict(ActiveState='active', SubState='running', MainPID='99')
+            return result
+        with patch.object(self.host, 'verify', side_effect=service_changes):
+            with self.assertRaisesRegex(ValueError, 'actual_service_not_stopped'):
+                self.execute()
+        self.assertEqual(self.host.moves, 0)
+
+    def test_service_changes_between_renames_blocks_second_mutation(self):
+        move = self.host.move
+        def start_between_moves(*args):
+            move(*args)
+            self.host.state = dict(ActiveState='active', SubState='running', MainPID='99')
+        with patch.object(self.host, 'move', side_effect=start_between_moves):
+            with self.assertRaisesRegex(ValueError, 'actual_service_not_stopped'):
+                self.execute()
+        self.assertEqual(self.host.moves, 1)
+        self.assertTrue(upgrade.observe(self.manifest, host=self.host)['intent_verified'])
+
+    def test_expiry_during_service_readback_blocks_first_intent_write(self):
+        clock = [time.time()]
+        count = [0]
+        def slow_service():
+            count[0] += 1
+            if count[0] == 2:
+                clock[0] = self.admission.expires_at + 1
+            return dict(ActiveState='inactive', SubState='dead', MainPID='0')
+        with patch.object(upgrade.time, 'time', side_effect=lambda: clock[0]), \
+             patch.object(self.host, 'service_state', side_effect=slow_service):
+            with self.assertRaisesRegex(ValueError, 'admission_expired'):
+                self.execute()
+        self.assertEqual(self.host.moves, 0)
+        self.assertFalse(upgrade.observe(self.manifest, host=self.host)['intent_verified'])
+
+
+class ProcessBindingTests(unittest.TestCase):
+    def test_real_process_reader_requires_exact_entrypoint_and_runtime_arguments(self):
+        interpreter = upgrade.TARGETS['owner_venv'] + '/bin/python'
+        script = upgrade.TARGETS['owner_source'] + '/tools/delivery/stokowski_adapter.py'
+        runtime = '/private/legacy-runtime'
+        correct = [interpreter, script, '--current', '--runtime', runtime]
+        variants = [
+            (correct, True),
+            ([interpreter, '/tmp/unrelated.py', '--data', script, '--current'], False),
+            ([interpreter, '-c', 'pass', script, '--current', '--runtime', runtime], False),
+            ([interpreter, '-m', 'unrelated', script, '--current', '--runtime', runtime], False),
+            ([interpreter, script, '--runtime', runtime, '--current'], False),
+            (correct + ['--dry-run'], False),
+            ([interpreter, '-I'] + correct[1:], False),
+            (correct[:-1] + ['/other/runtime'], False),
+        ]
+        for argv, expected in variants:
+            raw = b'\0'.join(os.fsencode(arg) for arg in argv) + b'\0'
+            with self.subTest(argv=argv), \
+                 patch.object(upgrade.os, 'readlink', return_value=interpreter), \
+                 patch('builtins.open', mock_open(read_data=raw)):
+                self.assertEqual(upgrade.Host.process_bound(object(), 123, runtime), expected)
+        for raw, executable in ((b'\0'.join(os.fsencode(arg) for arg in correct), interpreter),
+                                (b'\0'.join(os.fsencode(arg) for arg in correct) + b'\0', '/wrong/python')):
+            with patch.object(upgrade.os, 'readlink', return_value=executable), \
+                 patch('builtins.open', mock_open(read_data=raw)):
+                self.assertFalse(upgrade.Host.process_bound(object(), 123, runtime))

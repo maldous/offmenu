@@ -95,17 +95,23 @@ class Host:
         require(set(state) == {'ActiveState', 'SubState', 'MainPID'}, 'service_readback')
         return state
 
-    def process_bound(self, pid):
+    def process_bound(self, pid, runtime):
         # PID comes from the fixed service readback, never from request JSON.
         require(type(pid) is int and pid > 0, 'service_pid')
         executable = os.readlink('/proc/' + str(pid) + '/exe')
         with open('/proc/' + str(pid) + '/cmdline', 'rb') as stream:
             raw = stream.read(16385)
         require(len(raw) <= 16384, 'process_readback_bound')
-        argv = raw.split(b'\0')
-        return (executable == TARGETS['owner_venv'] + '/bin/python'
-                and os.fsencode(TARGETS['owner_source'] + '/tools/delivery/stokowski_adapter.py') in argv
-                and b'--current' in argv)
+        # Match the maintained service launch contract, not script/flag tokens
+        # appearing as data for another Python entrypoint or -c/-m invocation.
+        interpreter = TARGETS['owner_venv'] + '/bin/python'
+        script = TARGETS['owner_source'] + '/tools/delivery/stokowski_adapter.py'
+        require(type(runtime) is str and runtime.startswith('/'), 'process_runtime')
+        protected.relative(runtime[1:])
+        expected = [os.fsencode(value) for value in
+                    (interpreter, script, '--current', '--runtime', runtime)]
+        return (executable == interpreter and raw.endswith(b'\0')
+                and raw.split(b'\0') == expected + [b''])
 
     @contextmanager
     def locks(self, runtime):
@@ -286,6 +292,20 @@ def stopped(host, plan, observation, now):
             'actual_service_not_stopped')
 
 
+def mutation_guard(host, plan, observation, admission):
+    """Recheck after potentially slow verification, at each write/move boundary.
+
+    Service readback can itself take time, so expiry/freshness are checked on
+    both sides of it. Existing locks retain serialization; no host action occurs.
+    """
+    now = time.time()
+    require(now < admission.expires_at, 'admission_expired')
+    stopped(host, plan, observation, now)
+    now = time.time()
+    require(now < admission.expires_at, 'admission_expired')
+    require(fresh(observation.observed_at, now), 'native_quiescence_required')
+
+
 def execute(plan_bytes, upgrade, *, admission, quiescence, host=None):
     """One admitted attempt; never start services, retire legacy or auto-rollback.
 
@@ -317,10 +337,13 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, host=None):
         require(time.time() < admission.expires_at, 'admission_expired')
         intent = dict(kind='native-upgrade-intent-v1', upgrade=upgrade,
             plan_sha256=admission.plan_sha256, quiescence_sha256=quiescence.evidence_sha256,
-            host_confirmation_sha256=admission.host_confirmation_sha256)
+            host_confirmation_sha256=admission.host_confirmation_sha256,
+            runtime_path=plan['legacy_snapshot']['runtime_path'])
         # Old-closure fence precedes the operation fence. A crash between them
         # still suppresses a new ID/preflight attempting the same old closure.
+        mutation_guard(host, plan, quiescence, admission)
         host.create(old_fence, intent)
+        mutation_guard(host, plan, quiescence, admission)
         host.create(receipt, intent)
         for role in TARGETS:
             require(time.time() < admission.expires_at, 'admission_expired')
@@ -328,10 +351,13 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, host=None):
             target, stage, backup = locations(role, operation)
             host.verify(target, upgrade['old'][role])
             host.verify(stage, upgrade['new'][role])
+            mutation_guard(host, plan, quiescence, admission)
             host.move(target, backup)
+            mutation_guard(host, plan, quiescence, admission)
             host.move(stage, target)
         readback = observe(upgrade, host=host)
         require(readback['installed_verified'] and readback['rollback_verified'], 'installed_readback_mismatch')
+        mutation_guard(host, plan, quiescence, admission)
         host.create(result_path, dict(kind='native-upgrade-installed-v1', upgrade_sha256=upgrade_digest(upgrade),
                                      readback=readback, active_observed=False, legacy_retired=False))
         return readback
@@ -389,12 +415,16 @@ def verify_active(upgrade, *, host=None):
     host = host or Host()
     before = observe(upgrade, host=host)
     require(before['installed_verified'] and before['rollback_verified'], 'active_closure_mismatch')
+    intent = protected.record(protected.regular(host.path(
+        STATE + '/native-upgrade-' + upgrade['operation_id'] + '.intent.json'), 32*1024*1024))
+    runtime = intent.get('runtime_path')
+    require(type(runtime) is str and runtime.startswith('/'), 'active_runtime_binding')
     state = host.service_state()
     require(state.get('ActiveState') == 'active' and state.get('SubState') == 'running'
             and state.get('MainPID', '').isdigit() and int(state['MainPID']) > 0, 'service_not_active')
-    require(host.process_bound(int(state['MainPID'])), 'active_process_binding')
+    require(host.process_bound(int(state['MainPID']), runtime), 'active_process_binding')
     after = observe(upgrade, host=host)
     require(after['installed_verified'] and after['rollback_verified'], 'active_readback_drift')
-    require(host.service_state() == state and host.process_bound(int(state['MainPID'])),
+    require(host.service_state() == state and host.process_bound(int(state['MainPID']), runtime),
             'active_process_changed')
     return dict(after, active_observed=True, service=state)
