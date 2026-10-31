@@ -132,6 +132,24 @@ class Quiescence:
     unresolved_operation_ids: tuple
 
 
+@dataclass(frozen=True)
+class MutationWindow:
+    admission: OwnerAdmission
+    quiescence: Quiescence
+    locks: LockCustody
+    publisher: PublisherConfigCustody
+
+
+def pure_mutation_time(window):
+    """Final time-only gate: no filesystem/service reads or callbacks."""
+    require(type(window) is MutationWindow, 'mutation_window_required')
+    now = time.time()
+    require(now < window.admission.expires_at, 'admission_expired')
+    require(fresh(window.quiescence.observed_at, now), 'native_quiescence_required')
+    require(fresh(window.locks.observed_at, now), 'lock_custody_stale')
+    require(fresh(window.publisher.observed_at, now), 'publisher_custody_stale')
+
+
 def upgrade_digest(value):
     raw = protected.encoded(value)
     require(len(raw) <= 32 * 1024 * 1024, 'upgrade_manifest_bound')
@@ -287,6 +305,19 @@ class Host:
                     and not info.st_mode & 0o022, 'host_parent_custody')
         return path
 
+    @contextmanager
+    def mutation_window(self, window):
+        require(type(window) is MutationWindow and getattr(self, '_mutation_window', None) is None,
+                'mutation_window_required')
+        self._mutation_window = window
+        try:
+            yield
+        finally:
+            self._mutation_window = None
+
+    def check_mutation_time(self):
+        pure_mutation_time(getattr(self, '_mutation_window', None))
+
     def service_state(self):
         # Fixed read-only command; JSON cannot select a unit, command or flags.
         run = subprocess.run(['/usr/bin/systemctl', 'show', SERVICE,
@@ -436,8 +467,27 @@ class Host:
 
     def create(self, absolute, value):
         path = self.path(absolute)
-        protected.write_new(path, protected.encoded(value), 0o600)
-        protected.sync_dir(path.parent)
+        raw = protected.encoded(value)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW
+        self.check_mutation_time()  # No blocking preparation after this gate.
+        fd = os.open(path, flags, 0o600)
+        try:
+            self.check_mutation_time()
+            os.fchmod(fd, 0o600)
+            remaining = memoryview(raw)
+            while remaining:
+                self.check_mutation_time()
+                written = os.write(fd, remaining)
+                require(written > 0, 'intent_write_progress')
+                remaining = remaining[written:]
+        finally:
+            # Persist/close any already-authorized partial intent. This cleanup
+            # grants no additional content write, mode change or rename.
+            try:
+                os.fsync(fd)
+            finally:
+                os.close(fd)
+                protected.sync_dir(path.parent)
 
     def move(self, old, new):
         require(TARGETS['publisher_config'] not in (old, new), 'publisher_directory_not_swappable')
@@ -456,10 +506,12 @@ class Host:
                     'publisher_config_fixed_move')
             self.verify_publisher_custody()
             # Operate inside the retained original directory, never rename it.
-            result = rename(self._publisher_fd, os.fsencode(source.name),
-                            self._publisher_fd, os.fsencode(target.name), 1)
+            arguments = (self._publisher_fd, os.fsencode(source.name),
+                         self._publisher_fd, os.fsencode(target.name), 1)
         else:
-            result = rename(-100, os.fsencode(source), -100, os.fsencode(target), 1)
+            arguments = (-100, os.fsencode(source), -100, os.fsencode(target), 1)
+        self.check_mutation_time()  # Includes publisher move's own custody I/O.
+        result = rename(*arguments)
         if result != 0:
             raise OSError(ctypes.get_errno(), 'upgrade rename refused')
         protected.sync_dir(source.parent)
@@ -645,6 +697,7 @@ def mutation_guard(host, plan, observation, admission):
     host.verify_locks()
     require(fresh(host._publisher_custody.observed_at, now), 'publisher_custody_stale')
     host.verify_publisher_custody()
+    host.check_mutation_time()  # Final pure gate AFTER all guard I/O.
 
 
 def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
@@ -670,7 +723,8 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
     result_path = STATE + '/native-upgrade-' + operation + '.installed.json'
     old_fence = STATE + '/native-upgrade-from-' + upgrade_digest(upgrade['old']) + '.intent.json'
     host._public_ca_pins = public_ca_pins
-    with host.locks(lock_custody), host.publisher_config(publisher_config_custody):
+    window = MutationWindow(admission, quiescence, lock_custody, publisher_config_custody)
+    with host.locks(lock_custody), host.publisher_config(publisher_config_custody), host.mutation_window(window):
         require(not os.path.lexists(host.path(receipt))
                 and not os.path.lexists(host.path(result_path))
                 and not os.path.lexists(host.path(old_fence)), 'prior_upgrade_no_replay')

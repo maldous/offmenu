@@ -226,6 +226,151 @@ class UpgradeTests(unittest.TestCase):
             args['public_ca_pins']=self.public_ca_pins
         return upgrade.execute(self.plan,self.manifest,**args)
 
+    def assert_final_guard_time_hold(self, read_kind, lifetime):
+        clock=[time.time()]
+        if lifetime=='native':
+            self.quiet=replace(self.quiet,observed_at=clock[0]-250)
+        elif lifetime=='lock':
+            self.custody=replace(self.custody,observed_at=clock[0]-250)
+            self.repin_custody()
+        elif lifetime=='publisher':
+            from dataclasses import asdict
+            self.pub_custody=replace(self.pub_custody,observed_at=clock[0]-250)
+            self.admission=replace(self.admission,
+                publisher_config_custody_sha256=upgrade.upgrade_digest(asdict(self.pub_custody)))
+        created=[0];reads=[0]
+        create=self.host.create
+        read=getattr(self.host,read_kind)
+        def mark_intent(*args):
+            result=create(*args)
+            created[0]+=1
+            return result
+        def slow_final_read(*args):
+            result=read(*args)
+            if created[0]==2:
+                reads[0]+=1
+                if reads[0]==2:
+                    clock[0]=self.admission.expires_at+1 if lifetime=='admission' else clock[0]+60
+            return result
+        error={'admission':'admission_expired','native':'native_quiescence_required',
+               'lock':'lock_custody_stale','publisher':'publisher_custody_stale'}[lifetime]
+        with patch.object(upgrade.time,'time',side_effect=lambda:clock[0]), \
+             patch.object(self.host,'create',side_effect=mark_intent), \
+             patch.object(self.host,read_kind,side_effect=slow_final_read):
+            with self.assertRaisesRegex(ValueError,error):
+                self.execute()
+        self.assertEqual(created[0],2)
+        self.assertEqual(self.host.moves,0)
+        self.assertTrue(upgrade.observe(self.manifest,host=self.host,
+            publisher_config_custody=self.pub_custody)['intent_verified'])
+        with self.assertRaisesRegex(ValueError,'prior_upgrade_no_replay'):
+            self.execute()
+
+    def test_ugc1_admission_expires_after_final_key_read_before_first_rename(self):
+        self.assert_final_guard_time_hold('verify_publisher_custody','admission')
+
+    def test_ugc1_admission_expires_after_final_lock_read_before_first_rename(self):
+        self.assert_final_guard_time_hold('verify_locks','admission')
+
+    def test_ugc1_native_witness_stales_after_final_key_read(self):
+        self.assert_final_guard_time_hold('verify_publisher_custody','native')
+
+    def test_ugc1_lock_custody_stales_after_final_lock_read(self):
+        self.assert_final_guard_time_hold('verify_locks','lock')
+
+    def test_ugc1_publisher_custody_stales_after_final_key_read(self):
+        self.assert_final_guard_time_hold('verify_publisher_custody','publisher')
+
+    def test_ugc1_publisher_move_own_key_read_expiry_prevents_its_syscall(self):
+        from types import SimpleNamespace
+        clock=[time.time()]
+        read=self.host.verify_publisher_custody
+        real_rename=upgrade.ctypes.CDLL(None,use_errno=True).renameat2
+        actual_rename_times=[]
+        def own_slow_read():
+            result=read()
+            if self.host.moves==9:  # Inside first publisher file move, after 8 directory moves.
+                clock[0]=self.admission.expires_at+1
+            return result
+        def capture_rename(*args):
+            actual_rename_times.append(clock[0])
+            return real_rename(*args)
+        proxy=SimpleNamespace(renameat2=capture_rename)
+        with patch.object(upgrade.time,'time',side_effect=lambda:clock[0]), \
+             patch.object(self.host,'verify_publisher_custody',side_effect=own_slow_read), \
+             patch.object(upgrade.ctypes,'CDLL',return_value=proxy):
+            with self.assertRaisesRegex(ValueError,'admission_expired'):
+                self.execute()
+        self.assertEqual(len(actual_rename_times),8)
+        self.assertTrue(all(at<self.admission.expires_at for at in actual_rename_times))
+        target,stage,backup=upgrade.locations('publisher_config',self.operation)
+        self.assertTrue((self.root/target[1:]).is_file())
+        self.assertTrue((self.root/stage[1:]).is_file())
+        self.assertFalse((self.root/backup[1:]).exists())
+        with self.assertRaisesRegex(ValueError,'prior_upgrade_no_replay'):
+            self.execute()
+
+    def test_ugc1_create_path_preparation_expiry_prevents_exclusive_open(self):
+        clock=[time.time()];inside_create=[False];creates=[]
+        create,path,opening=self.host.create,self.host.path,os.open
+        def slow_path(*args):
+            result=path(*args)
+            if inside_create[0]:clock[0]=self.admission.expires_at+1
+            return result
+        def mark_create(*args):
+            inside_create[0]=True
+            try:return create(*args)
+            finally:inside_create[0]=False
+        def capture_open(file,flags,*args,**kwargs):
+            if flags&os.O_CREAT:creates.append(clock[0])
+            return opening(file,flags,*args,**kwargs)
+        with patch.object(upgrade.time,'time',side_effect=lambda:clock[0]), \
+             patch.object(self.host,'create',side_effect=mark_create), \
+             patch.object(self.host,'path',side_effect=slow_path), \
+             patch.object(upgrade.os,'open',side_effect=capture_open):
+            with self.assertRaisesRegex(ValueError,'admission_expired'):
+                self.execute()
+        self.assertEqual(creates,[])
+        self.assertEqual(self.host.moves,0)
+
+    def test_ugc1_expiry_after_exclusive_open_blocks_content_and_retains_empty_fence(self):
+        clock=[time.time()];opening=os.open;write=os.write;writes=[]
+        def expire_after_open(file,flags,*args,**kwargs):
+            fd=opening(file,flags,*args,**kwargs)
+            if flags&os.O_CREAT:clock[0]=self.admission.expires_at+1
+            return fd
+        def capture_write(*args):
+            writes.append(clock[0]);return write(*args)
+        with patch.object(upgrade.time,'time',side_effect=lambda:clock[0]), \
+             patch.object(upgrade.os,'open',side_effect=expire_after_open), \
+             patch.object(upgrade.os,'write',side_effect=capture_write):
+            with self.assertRaisesRegex(ValueError,'admission_expired'):
+                self.execute()
+        self.assertEqual(writes,[])
+        fence=self.root/(upgrade.STATE+'/native-upgrade-from-'+upgrade.upgrade_digest(self.manifest['old'])+'.intent.json')[1:]
+        self.assertEqual(fence.read_bytes(),b'')
+        self.assertEqual(self.host.moves,0)
+        with self.assertRaisesRegex(ValueError,'prior_upgrade_no_replay'):
+            self.execute()
+
+    def test_ugc1_partial_content_write_expiry_blocks_next_write_and_preserves_fence(self):
+        clock=[time.time()];write=os.write;writes=[]
+        def short_write(fd,raw):
+            writes.append(clock[0])
+            result=write(fd,raw[:16])
+            clock[0]=self.admission.expires_at+1
+            return result
+        with patch.object(upgrade.time,'time',side_effect=lambda:clock[0]), \
+             patch.object(upgrade.os,'write',side_effect=short_write):
+            with self.assertRaisesRegex(ValueError,'admission_expired'):
+                self.execute()
+        self.assertEqual(len(writes),1)
+        self.assertLess(writes[0],self.admission.expires_at)
+        fence=self.root/(upgrade.STATE+'/native-upgrade-from-'+upgrade.upgrade_digest(self.manifest['old'])+'.intent.json')[1:]
+        self.assertEqual(fence.stat().st_size,16)
+        with self.assertRaisesRegex(ValueError,'prior_upgrade_no_replay'):
+            self.execute()
+
     def test_real_temp_moves_exact_readback_and_permanent_nonreplay(self):
         result = self.execute()
         self.assertTrue(result['installed_verified'])
@@ -311,7 +456,8 @@ class UpgradeTests(unittest.TestCase):
         (self.root/backup[1:]).chmod(0o755)
         with self.assertRaisesRegex(ValueError,'rollback_slot_exists'):
             self.execute()
-        with self.assertRaises(OSError):
+        window=upgrade.MutationWindow(self.admission,self.quiet,self.custody,self.pub_custody)
+        with self.host.mutation_window(window),self.assertRaises(OSError):
             self.host.move(stage,target)
         self.assertTrue((self.root/stage[1:]).exists())
 

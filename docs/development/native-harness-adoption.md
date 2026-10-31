@@ -247,11 +247,26 @@ retirement acceptance.
 Every intent write, individual rename (including the second rename of a role),
 and installed-receipt write has a fresh admission/native/stopped-service guard
 after preceding closure verification. Expiry and witness freshness are checked
-again after service readback itself. Expiry between the two renames leaves the
+again after service readback itself. After **all** blocking lock/key custody
+checks, a final pure clock gate checks admission expiry and native/lock/publisher
+custody freshness. It performs no filesystem/service reads or callbacks. The
+low-level mutation methods repeat that pure gate after their own preparation,
+immediately before each actual syscall: rename arguments and publisher-file key
+checks are complete before `renameat2`; path resolution/encoding are complete
+before exclusive receipt creation. Every new-receipt mode/content write is also
+pure-gated, including each partial-write continuation. Only durability sync/close
+of already-authorized partial data may continue as cleanup after expiry; no
+further content, mode or rename is authorized. An ephemeral frozen `MutationWindow`
+binds those existing accepted observations within `execute` and is cleared on
+exit; it adds no JSON authority, manager or queue. Expiry between the two renames leaves the
 first move's original custody and permanent intent intact, refuses the second
 move and never authorizes replay. Tests advance a deterministic clock during
 verification, between renames and during service readback, and change actual
-synthetic service state after verification.
+synthetic service state after verification. UGC1 regression tests additionally
+advance time after the last successful key/lock read, after the publisher move's
+own key read, after create-path preparation/exclusive open and during a partial
+intent write. They assert no expired mutation syscall, retained original/partial
+custody and permanent no-replay behavior.
 
 After separately authorized owner-managed activation, `verify_active` checks
 installed/rollback bytes both before and after fixed service readback. It requires
