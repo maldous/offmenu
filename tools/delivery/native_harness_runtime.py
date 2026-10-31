@@ -176,8 +176,11 @@ async def consume_boundary(current, issue, *, binding=None, adapters=None):
         require(len(outcomes) == 1 and outcomes[0]['project_id'] == binding.project_id,
                 'linear_outcome_identity')
         dependency = next(v for v in metadata['dependencies'] if v['issue_id'] == issue.id)
-        require(dependency['dependencies_satisfied'], 'linear_dependencies_held')
-        require(not metadata['holds'], 'linear_effect_reconciliation_required')
+        # Metadata can create the very relation whose readback is still missing.
+        # It never grants coding/publication eligibility or refill.
+        if binding.phase != 'linear':
+            require(dependency['dependencies_satisfied'], 'linear_dependencies_held')
+            require(not metadata['holds'], 'linear_effect_reconciliation_required')
         # Observe BEFORE requesting any next transaction. Readback is authoritative.
         observed = transaction(await resolved(adapters.observe(binding)), binding)
         context = {'handoff': handoff, 'candidate': candidate, 'linear': metadata,
@@ -188,10 +191,11 @@ async def consume_boundary(current, issue, *, binding=None, adapters=None):
                                                       or not observed['child_tree_gone'])
                                    else 'existing-unit-consumer'}
         if binding.phase == 'linear':
-            actions = [v for v in metadata['actions'] if v['issue_id'] == issue.id]
+            actions = [v for v in metadata['actions'] if v['issue_id'] == issue.id
+                       and v['action_id'] == binding.operation_id]
             if not actions:
                 return {**result, 'status': 'idle'}
-            context['action'] = actions[0]  # one finite native metadata transaction
+            context['action'] = actions[0]  # one exact owner-bound metadata transaction
             require(binding.operation_id == actions[0]['action_id'], 'linear_transaction_identity')
         else:
             engine = await resolved(adapters.engine(binding))
@@ -230,3 +234,252 @@ async def consume_boundary(current, issue, *, binding=None, adapters=None):
         return {**result, 'status': 'held',
                 'reason': str(error) if isinstance(error, RuntimeHold) else type(error).__name__,
                 'next_action': 'owner-reconcile-existing-operation'}
+
+
+# Fixed normal-runtime routes. These constants are never selected by packet JSON.
+PUBLISHER_ARGV = ('/usr/bin/node', '/opt/offmenu-publisher/tools/delivery/github-app-publisher.mjs',
+                  '--native-rpc')
+PUBLISHER_CONFIG = '/etc/offmenu-publisher/config.json'
+
+
+def pinned_private(current, ref):
+    """Read one original private artifact selected by the sealed owner grant."""
+    import hashlib
+    import os
+    import stat
+    from protected_owner_install import record
+    require(type(ref) is dict and set(ref) == {'path', 'sha256'}, 'private_reference')
+    path = current.private(ref['path'])
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    try:
+        info = os.fstat(fd)
+        require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1
+                and 0 < info.st_size <= 1024 * 1024, 'private_artifact')
+        with os.fdopen(fd, 'rb', closefd=False) as stream:
+            raw = stream.read(1024 * 1024 + 1)
+        require(len(raw) == info.st_size and hashlib.sha256(raw).hexdigest() == ref['sha256'],
+                'private_artifact_drift')
+    finally:
+        os.close(fd)
+    value = record(raw)
+    fingerprint(value)
+    return value
+
+
+def publisher_request(binding, packet, mode):
+    return dict(version=1, mode=mode, operation_id=binding.operation_id,
+                issue_id=binding.issue_id, project_id=binding.project_id, owner=binding.owner,
+                unit_sha256=binding.unit_sha256, packet_sha256=binding.packet_sha256,
+                source_sha256=fingerprint(packet['handoff']['source']))
+
+
+def publisher_identity(request, phase):
+    """No privilege transfer: an ordinary coordinator user stays held here."""
+    import os
+    from pathlib import Path
+    from protected_owner_install import record
+    from stokowski_adapter import protected_owner_bytes
+    # Refuse ordinary/root users BEFORE attempting protected config access.
+    require(os.getuid() not in (0, 1000) and os.geteuid() == os.getuid(),
+            'publisher_owner_identity_required')
+    config = record(protected_owner_bytes(Path(PUBLISHER_CONFIG)))
+    require((os.getuid(), os.geteuid(), os.getgid(), os.getegid()) ==
+            (config['publisherUid'], config['publisherUid'], config['publisherGid'], config['publisherGid']),
+            'publisher_owner_identity_required')
+    association = config['snapshot']['native_runtime']
+    require(all(association[key] == request[key] for key in
+                ('issue_id', 'project_id', 'owner', 'unit_sha256', 'packet_sha256'))
+            and fingerprint(association['source']) == request['source_sha256']
+            and fingerprint(config['binding']) == request['operation_id']
+            and ('release' if config['version'] == 2 else 'integration') == phase,
+            'publisher_sealed_association')
+
+
+def publisher_response(value, request, phase):
+    fields = {'version', 'kind', 'request_sha256', 'operation_id', 'issue_id', 'project_id',
+              'owner', 'unit_sha256', 'packet_sha256', 'source_sha256', 'phase', 'status'}
+    require(type(value) is dict and set(value) == fields and type(value['version']) is int
+            and value['version'] == 1 and value['kind'] == 'native-publisher-response-v1'
+            and value['request_sha256'] == fingerprint(request) and value['phase'] == phase,
+            'publisher_response')
+    require(all(value[key] == request[key] for key in
+                ('operation_id', 'issue_id', 'project_id', 'owner', 'unit_sha256',
+                 'packet_sha256', 'source_sha256')), 'publisher_response_identity')
+    require(value['status'] in ('ready', 'pending', 'unknown', 'verified', 'denied', 'failed'),
+            'publisher_response_status')
+    return value
+
+
+def invocation_members(group):
+    import errno
+    from pathlib import Path
+    members = set()
+    for item in Path('/proc').iterdir():
+        if not item.name.isdigit():
+            continue
+        try:
+            stat = (item / 'stat').read_text()
+            if int(stat[stat.rfind(')') + 2:].split()[2]) == group:
+                members.add(int(item.name))
+        except OSError as error:
+            if error.errno not in (errno.ENOENT, errno.ESRCH):
+                raise
+    return members
+
+
+async def fixed_publisher_rpc(binding, packet, mode):
+    """Bounded fixed child; reap actual invocation, never trust child cleanup JSON."""
+    import asyncio
+    import os
+    import signal
+    from protected_owner_install import record
+    request = publisher_request(binding, packet, mode)
+    publisher_identity(request, binding.phase)
+    payload = json.dumps(request, sort_keys=True, ensure_ascii=True, allow_nan=False).encode()
+    require(len(payload) <= 16384, 'publisher_request_bound')
+    # Do not inherit Node injection, Python import paths or coordinator credentials.
+    process = await asyncio.create_subprocess_exec(
+        *PUBLISHER_ARGV, stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE, start_new_session=True,
+        env={'PATH': '/usr/bin:/bin', 'LANG': 'C.UTF-8'})
+    tasks = []
+    async def read(stream):
+        raw = bytearray()
+        while True:
+            chunk = await stream.read(4096)
+            if not chunk:
+                return bytes(raw)
+            raw.extend(chunk)
+            require(len(raw) <= 65536, 'publisher_response_bound')
+    try:
+        process.stdin.write(payload)
+        tasks = [asyncio.create_task(read(process.stdout)), asyncio.create_task(read(process.stderr)),
+                 asyncio.create_task(process.wait())]
+        await process.stdin.drain()
+        process.stdin.close()
+        stdout, _, code = await asyncio.wait_for(asyncio.gather(*tasks), timeout=25)
+        require(code == 0, 'publisher_invocation_unknown')
+        response = publisher_response(record(stdout), request, binding.phase)
+    finally:
+        # Fixed publisher/Python children retain this fresh process group. No
+        # unrelated CurrentWork children, environment or command lines are read.
+        if process.returncode is None or invocation_members(process.pid):
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+        await asyncio.wait_for(process.wait(), timeout=3)
+        for task in tasks:
+            if not task.done():
+                task.cancel()
+        if tasks:
+            await asyncio.gather(*tasks, return_exceptions=True)
+    # Even successful child JSON cannot assert descendant termination.
+    deadline = asyncio.get_running_loop().time() + 1
+    while invocation_members(process.pid) and asyncio.get_running_loop().time() < deadline:
+        await asyncio.sleep(.02)
+    require(not invocation_members(process.pid), 'publisher_invocation_cleanup_unverified')
+    return dict(operation_id=binding.operation_id, status=response['status'], child_tree_gone=True)
+
+
+def owner_adapters(current, issue, binding, selection, *, linear_client=None):
+    """Concrete normal factory; selection is DATA from the protected owner map.
+
+    Caller supplies its EXISTING admitted LinearClient. No token lookup/client
+    construction, callback name, executable selector or privilege helper exists.
+    Missing custody/identity/actual evidence raises a hold before any effect.
+    """
+    from dataclasses import asdict
+    from pathlib import Path
+    import hashlib
+    selected = json.loads(json.dumps(selection, allow_nan=False))
+    def authorize(owner, native_issue, bound):
+        require(owner is current and native_issue.id == issue.id and bound == binding,
+                'owner_factory_binding')
+        current.guard()
+        require(current.owner_custody is True and not current.read_only and not current.stopping,
+                'owner_sealed_context_required')
+        import native_harness_contract
+        import linear_delivery
+        import release_qualification
+        from offmenu.delivery import engine as engine_module, status as status_module
+        paths = {'tools/delivery/native_harness_runtime.py': __file__,
+                 'tools/delivery/native_harness_contract.py': native_harness_contract.__file__,
+                 'contracts/schemas/delivery-handoff-v1.schema.json':
+                     Path(native_harness_contract.__file__).resolve().parents[2] /
+                     'contracts/schemas/delivery-handoff-v1.schema.json',
+                 'tools/delivery/linear_delivery.py': linear_delivery.__file__,
+                 'tools/delivery/release_qualification.py': release_qualification.__file__,
+                 'src/offmenu/delivery/engine.py': engine_module.__file__,
+                 'src/offmenu/delivery/status.py': status_module.__file__}
+        require(all(current.config['source_sha256'].get(name) ==
+                    hashlib.sha256(Path(path).read_bytes()).hexdigest()
+                    for name, path in paths.items()), 'owner_factory_source_pin')
+        ref = current.config['native_harness_boundaries'][issue.identifier]
+        actual = pinned_private(current, ref)
+        require(fingerprint(actual) == fingerprint(selected)
+                and set(actual) == {'binding', 'packet', 'context'}
+                and actual['binding'] == asdict(binding), 'owner_selection_drift')
+        require(set(actual['context']) == {'engine_root', 'engine_task', 'unit_review'},
+                'owner_context_fields')
+        return True
+    def load(bound):
+        authorize(current, issue, bound)
+        packet = pinned_private(current, selected['packet'])
+        require(fingerprint(packet) == bound.packet_sha256, 'owner_packet_drift')
+        return packet
+    def engine(bound):
+        packet = load(bound)
+        context = selected['context']
+        root = current.private(context['engine_root'])
+        task = pinned_private(current, context['engine_task'])
+        # Construction may only reuse EXISTING immutable binding/acceptance.
+        # It never creates an admission, runs a graph, or takes another lease.
+        directory = root / '.delivery' / task['id']
+        for name in ('binding.json', 'accepted.json'):
+            path = current.private(str(directory / name))
+            require(path.is_file(), 'engine_original_evidence_missing')
+        require(task.get('handoff') == packet['handoff']
+                and task.get('release_candidate') == packet['candidate'], 'engine_owner_binding')
+        # Existing non-writing original-binding loader: never let a disappeared
+        # binding race turn an observation into fresh Engine admission. This
+        # does not reconcile failure; immediately restore ALL native/source gates.
+        loaded = Engine(root, root / '.delivery', task, failed_reconciliation=True)
+        loaded.native_harness = loaded.native_facts()
+        loaded.verify_source()
+        return loaded
+    def review(owner, native_issue, bound):
+        authorize(owner, native_issue, bound)
+        return pinned_private(current, selected['context']['unit_review'])
+    def linear(bound, context=None):
+        packet = load(bound)
+        actions = plan_delivery(packet['linear'], packet['policy'])['actions']
+        found = [action for action in actions if action['action_id'] == bound.operation_id]
+        if not found:
+            previous = current.state.get('native_harness_linear', {}).get(bound.operation_id)
+            if previous is not None:
+                require(previous.get('binding') == asdict(bound), 'linear_retained_binding')
+                action = previous.get('action')
+                require(type(action) is dict and action.get('action_id') == bound.operation_id
+                        and fingerprint({k: v for k, v in action.items() if k != 'action_id'}) ==
+                        bound.operation_id, 'linear_retained_action')
+                found = [action]
+        require(len(found) == 1, 'linear_selected_action_missing')
+        if context is not None:
+            require(context['action'] == found[0], 'linear_context_action')
+        import native_harness_linear
+        require(current.config['source_sha256'].get('tools/delivery/native_harness_linear.py') ==
+                hashlib.sha256(Path(native_harness_linear.__file__).read_bytes()).hexdigest(),
+                'linear_adapter_source_pin')
+        return native_harness_linear.NativeLinearAdapter(linear_client), found[0]
+    async def observe(bound):
+        if bound.phase == 'linear':
+            adapter, action = linear(bound)
+            return await adapter.observe(current, bound, action)
+        return await fixed_publisher_rpc(bound, load(bound), 'observe')
+    async def step(bound, context):
+        if bound.phase == 'linear':
+            adapter, action = linear(bound, context)
+            return await adapter.step(current, bound, action)
+        return await fixed_publisher_rpc(bound, load(bound), 'step')
+    return OwnerAdapters(authorize, load, engine, review, observe, step)

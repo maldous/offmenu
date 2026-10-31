@@ -11,9 +11,11 @@ Minimum callsite, under the existing coordinator's exclusive owner lock and
 after its normal validation/review continuation:
 
 ```python
-from native_harness_runtime import consume_boundary
+from native_harness_runtime import consume_boundary, owner_adapters
+adapters = owner_adapters(current, native_issue, owner_binding, selection,
+                         linear_client=owner._linear)
 result = await consume_boundary(current, native_issue,
-                                binding=owner_binding, adapters=owner_adapters)
+                                binding=owner_binding, adapters=adapters)
 ```
 
 `native_issue` is the original native issue object with `id` and `identifier`.
@@ -127,3 +129,52 @@ replay. These are synthetic component checks, not live publisher authentication
 or end-to-end runtime adoption. Root must qualify the actual protected adapter
 wiring, installed closure, per-transaction publisher adapter, raw receipt custody,
 recovery/readback and existing final-unit/refill behavior before activation.
+
+## Concrete normal factory
+
+`owner_adapters` reads `current.config.native_harness_boundaries[identifier]`,
+a private `{path,sha256}` selection reference admitted by the root seal.
+The selection record is exactly `{binding,packet,context}`; `binding` contains
+OwnerBinding's seven fields, `packet` is a private file-byte reference, and
+context is exactly:
+
+```json
+{
+  "engine_root": "/canonical/private/existing/workspace",
+  "engine_task": {"path": "/private/original-task.json", "sha256": "<file SHA-256>"},
+  "unit_review": {"path": "/private/original-unit-review.json", "sha256": "<file SHA-256>"}
+}
+```
+
+All paths must qualify through the existing CurrentWork private-root check.
+Selection/packet bytes and canonical packet fingerprint are checked separately;
+the actual owner map, custody and imported source pins are rechecked. Missing
+source/schema/dependency closure remains a hold. Engine construction only reuses
+an existing binding and accepted receipt, then the consumer revalidates original
+command/source/output evidence. No new task binding, graph run or lease is made.
+
+For Linear, the factory uses UIF-125's `NativeLinearAdapter` with the caller's
+already admitted `LinearClient`; it never constructs a client or reads a key.
+Observation selects the exact planner action by original operation ID, or its
+exact retained binding/action in the existing CurrentWork journal. The original
+adapter owns durable intent, native API write, paginated readback and uncertainty.
+Metadata can execute its exact action while dependencies are unresolved: creating
+a missing blocking relation is itself a metadata action. Integration and release
+retain their dependency holds. Relation readback never establishes blocker
+completion, coding eligibility or refill.
+
+For publisher phases, the factory invokes only the fixed argv
+`/usr/bin/node /opt/offmenu-publisher/tools/delivery/github-app-publisher.mjs --native-rpc`.
+Root and ordinary uid 1000 are held before protected config access. An already
+admitted publisher caller must match uid/euid/gid/egid from the fixed nonsecret
+root-owned config and its sealed native-runtime association. No sudo, identity
+switch, new token, user-selected executable or generic privileged route exists.
+The operational cross-identity launch capability is separately owned and held.
+
+The bounded RPC sends only version/mode and the exact operation/native owner,
+unit, packet and source fingerprints. Response identity, phase and request hash
+must match. The parent drains each pipe with a 64 KiB bound, uses a 25-second
+deadline and actually kills/reaps its fixed invocation group on error/cancellation.
+Current fixed publisher Python children share that group. Cleanup is checked
+from the host, never accepted from child JSON. Unknown invocation effects retain
+the original protected publisher journal; the factory never invents a retry ID.

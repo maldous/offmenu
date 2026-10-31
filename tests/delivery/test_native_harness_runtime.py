@@ -1,10 +1,12 @@
 """Real CurrentWork and finite component APIs; synthetic owner/external adapters."""
 import asyncio
 import copy
-from dataclasses import replace
+from dataclasses import asdict, replace
 import json
 from pathlib import Path
 import subprocess
+import tempfile
+import sys
 import unittest
 from unittest.mock import Mock, patch
 
@@ -148,7 +150,7 @@ class RuntimeBoundaryTests(unittest.TestCase):
     def test_dependency_and_metadata_effect_holds_are_consumed(self):
         self.packet['linear']['outcomes'][0]['blocked_by']=[dict(
             id='11111111-1111-4111-8111-111111111111',state_type='started')]
-        self.bind()
+        self.bind('integration')
         self.assertEqual(self.consume()['status'],'held')
         self.step.assert_not_called()
 
@@ -162,13 +164,17 @@ class RuntimeBoundaryTests(unittest.TestCase):
         from stokowski_operations import bridge_arguments
         from symphony_capacity import digest
         def selected_git(args, **kw):
-            if not Path(args[2]).is_relative_to(self.fixture.temp):
+            if (not Path(args[2]).is_relative_to(self.fixture.temp)
+                    or Path(args[2]).name.startswith('offmenu-delivery-test-')):
                 return REAL_CHECK_OUTPUT(args, **kw)
             if (args[-2:] == ['rev-parse', 'HEAD'] and args[2] != str(self.fixture.source)):
                 return getattr(self.fixture, 'task_head', 'b'*40) + '\n'
             return self.fixture.git_read(args, **kw)
         self.fixture.git.side_effect = selected_git
-        graph=graph_fixture.NativeGraphTests(methodName='runTest');graph.setUp()
+        graph=graph_fixture.NativeGraphTests(methodName='runTest')
+        with patch.object(tempfile, 'tempdir', str(self.current.root)
+                          if getattr(self, 'graph_private', False) else tempfile.tempdir):
+            graph.setUp()
         self.addCleanup(graph.doCleanups)
         # Build the SAME source/output bytes for Engine and the original native
         # unit/Journal/reviewer readers; no unrelated accepted proofs are paired.
@@ -310,6 +316,186 @@ class RuntimeBoundaryTests(unittest.TestCase):
         self.assertEqual(result['status'],'held')
         self.assertEqual(self.handoff['operation']['job_id'],'old-job')
         self.step.assert_not_called()
+
+    def factory_selection(self, graph=None, review=None):
+        import hashlib
+        import native_harness_contract, linear_delivery, release_qualification
+        from offmenu.delivery import engine, status
+        # Synthetic installation authority only; native admission/gate readers
+        # remain real. No protected host files or live identity are changed.
+        self.fixture.stack.enter_context(patch.object(self.current,'guard'))
+        self.current.owner_custody=True
+        sources={'tools/delivery/native_harness_runtime.py':runtime.__file__,
+                 'tools/delivery/native_harness_contract.py':native_harness_contract.__file__,
+                 'contracts/schemas/delivery-handoff-v1.schema.json':
+                     Path(native_harness_contract.__file__).resolve().parents[2]/
+                     'contracts/schemas/delivery-handoff-v1.schema.json',
+                 'tools/delivery/linear_delivery.py':linear_delivery.__file__,
+                 'tools/delivery/release_qualification.py':release_qualification.__file__,
+                 'src/offmenu/delivery/engine.py':engine.__file__,
+                 'src/offmenu/delivery/status.py':status.__file__}
+        try:
+            import native_harness_linear
+            sources['tools/delivery/native_harness_linear.py']=native_harness_linear.__file__
+        except ImportError:
+            pass  # Publisher/private-custody tests do not need a Linear route.
+        self.current.config['source_sha256'].update({name:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+                                                     for name,p in sources.items()})
+        def artifact(name,value):
+            path=self.current.runtime/name;self.fixture.write(path,value)
+            return dict(path=str(path),sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+        selection=dict(binding=asdict(self.binding),packet=artifact('native-packet.json',self.packet),
+            context=dict(engine_root=str(graph.root if graph else self.task_runtime),
+                         engine_task=artifact('native-engine-task.json',graph.task if graph else {}),
+                         unit_review=artifact('native-unit-review.json',review or {})))
+        ref=artifact('native-selection.json',selection)
+        self.current.config['native_harness_boundaries']={self.issue.identifier:ref}
+        return selection
+
+    def test_concrete_factory_reads_pinned_original_engine_and_review(self):
+        self.graph_private=True
+        graph,review=self.publisher_fixture()
+        with writer(graph.root) as state:
+            original=Engine(graph.root,state,graph.task);original.run()
+        selection=self.factory_selection(graph,review)
+        adapters=runtime.owner_adapters(self.current,self.issue,self.binding,selection)
+        self.assertIs(adapters.authorize(self.current,self.issue,self.binding),True)
+        self.assertEqual(adapters.load(self.binding),self.packet)
+        with patch('offmenu.delivery.engine.atomic',side_effect=AssertionError('fresh Engine write')):
+            loaded=adapters.engine(self.binding)
+        runtime.engine_acceptance(loaded,self.packet['handoff'],None)
+        self.assertEqual(adapters.review(self.current,self.issue,self.binding),review)
+        self.assertEqual((graph.root/'counter.txt').read_text(),'1')
+        (graph.root/'.delivery'/graph.task['id']/'accepted.json').unlink()
+        with self.assertRaises(runtime.RuntimeHold):adapters.engine(self.binding)
+
+    def test_factory_holds_missing_seal_source_or_changed_packet(self):
+        selection=self.factory_selection()
+        adapters=runtime.owner_adapters(self.current,self.issue,self.binding,selection)
+        self.current.owner_custody=False
+        with self.assertRaises(runtime.RuntimeHold):adapters.load(self.binding)
+        self.current.owner_custody=True
+        Path(selection['packet']['path']).write_text('{}')
+        with self.assertRaises(runtime.RuntimeHold):adapters.load(self.binding)
+        self.current.config['source_sha256']['tools/delivery/native_harness_runtime.py']='0'*64
+        with self.assertRaises(runtime.RuntimeHold):adapters.authorize(self.current,self.issue,self.binding)
+
+    def test_concrete_factory_linear_uses_existing_client_and_current_journal(self):
+        from stokowski.linear import LinearClient
+        from unittest.mock import AsyncMock
+        client=object.__new__(LinearClient)  # no token, HTTP client or network
+        nodes=[];mutations=[]
+        async def graphql(query,variables):
+            if query.startswith('mutation'):
+                disk=json.loads(self.current.state_path.read_text())
+                record=disk['native_harness_linear'][self.binding.operation_id]
+                self.assertEqual(record['status'],'pending')
+                mutations.append(variables)
+                nodes.append(dict(id='native-attachment',url=variables['input']['url']))
+                return dict(attachmentCreate=dict(success=True))
+            return dict(issue=dict(id=self.issue.id,project=dict(id=self.binding.project_id),
+                attachments=dict(nodes=nodes,pageInfo=dict(hasNextPage=False,endCursor=None))))
+        client._graphql=AsyncMock(side_effect=graphql)
+        selection=self.factory_selection()
+        adapters=runtime.owner_adapters(self.current,self.issue,self.binding,selection,linear_client=client)
+        self.assertEqual(self.consume(adapters=adapters)['status'],'advanced')
+        self.assertEqual(self.consume(adapters=adapters)['effect']['status'],'verified')
+        self.assertEqual(len(mutations),1)
+
+    def test_real_missing_dependency_plan_executes_metadata_but_holds_source(self):
+        from stokowski.linear import LinearClient
+        from unittest.mock import AsyncMock
+        blocker='11111111-1111-4111-8111-111111111111'
+        outcome=copy.deepcopy(self.packet['linear']['outcomes'][0])
+        outcome.update(id=blocker,identifier='UIF-999')
+        self.packet['linear']['outcomes'].append(outcome)
+        self.packet['linear']['dependencies']=[dict(issue_id=self.issue.id,blocked_by_id=blocker)]
+        planned=runtime.plan_delivery(self.packet['linear'],self.policy)
+        self.assertFalse(next(v for v in planned['dependencies'] if v['issue_id']==self.issue.id)
+                         ['dependencies_satisfied'])
+        action=next(v for v in planned['actions'] if v['kind']=='linear-ensure-dependency')
+        self.effect['operation_id']=action['action_id'];self.bind()
+        client=object.__new__(LinearClient);nodes=[];writes=[]
+        async def graphql(query,variables):
+            if query.startswith('mutation'):
+                writes.append(variables)
+                saved=json.loads(self.current.state_path.read_text())
+                self.assertEqual(saved['native_harness_linear'][action['action_id']]['status'],'pending')
+                self.assertEqual(variables['input'],dict(issueId=blocker,relatedIssueId=self.issue.id,type='blocks'))
+                nodes.append(dict(id='native-relation',type='blocks',
+                    issue=dict(id=blocker,state=dict(type='started')),relatedIssue=dict(id=self.issue.id)))
+                return dict(issueRelationCreate=dict(success=True))
+            return dict(issue=dict(id=self.issue.id,project=dict(id=self.binding.project_id),
+                inverseRelations=dict(nodes=nodes,pageInfo=dict(hasNextPage=False,endCursor=None))))
+        client._graphql=AsyncMock(side_effect=graphql)
+        selection=self.factory_selection()
+        adapters=runtime.owner_adapters(self.current,self.issue,self.binding,selection,linear_client=client)
+        first=self.consume(adapters=adapters)
+        self.assertEqual(first['effect']['status'],'verified',first)
+        self.assertFalse(first['refill_eligible'])
+        self.assertEqual(self.consume(adapters=adapters)['effect']['status'],'verified')
+        self.assertEqual(len(writes),1)
+        # Even after relation existence is verified, the blocking issue remains
+        # started. Source phases keep their dependency hold, not a refill grant.
+        self.bind('integration')
+        self.assertEqual(self.consume()['reason'],'linear_dependencies_held')
+
+
+class FixedPublisherTests(unittest.IsolatedAsyncioTestCase):
+    def setUp(self):
+        self.binding=runtime.OwnerBinding('11111111-1111-4111-8111-111111111111',
+            '22222222-2222-4222-8222-222222222222','owner','a'*64,'b'*64,'integration','c'*64)
+        self.packet={'handoff':{'source':{'head':'d'*40}}}
+
+    async def invoke(self, suffix='', limit_output=False):
+        import asyncio
+        actual=asyncio.create_subprocess_exec
+        processes=[]
+        body=('import sys,json,hashlib; r=json.load(sys.stdin); '
+              'v={k:v for k,v in r.items() if k != "mode"}; '
+              'v.update(kind="native-publisher-response-v1",phase="integration",status="ready",'
+              'request_sha256=hashlib.sha256(json.dumps(r,sort_keys=True,separators=(",",":"),ensure_ascii=True).encode()).hexdigest()); '
+              + ('print("x"*70000)' if limit_output else 'print(json.dumps(v),flush=True)') + suffix)
+        async def create(*argv,**kwargs):
+            self.assertEqual(argv,runtime.PUBLISHER_ARGV)
+            self.assertEqual(kwargs['env'],{'PATH':'/usr/bin:/bin','LANG':'C.UTF-8'})
+            self.assertTrue(kwargs['start_new_session'])
+            process=await actual(sys.executable,'-c',body,**kwargs)
+            processes.append(process)
+            return process
+        with patch.object(runtime,'publisher_identity'),patch.object(asyncio,'create_subprocess_exec',side_effect=create):
+            try:
+                return await runtime.fixed_publisher_rpc(self.binding,self.packet,'observe')
+            finally:
+                self.assertEqual(len(processes),1)
+                self.assertIsNotNone(processes[0].returncode)
+                self.assertFalse(runtime.invocation_members(processes[0].pid))
+
+    async def test_actual_fixed_child_is_reaped_and_bound_response_keeps_original_id(self):
+        result=await self.invoke()
+        self.assertEqual(result,dict(operation_id=self.binding.operation_id,status='ready',child_tree_gone=True))
+
+    async def test_bounded_output_failure_reaps_actual_child(self):
+        with self.assertRaises(runtime.RuntimeHold):await self.invoke(limit_output=True)
+
+    async def test_cancellation_reaps_actual_fixed_child(self):
+        import asyncio
+        with self.assertRaises(TimeoutError):
+            await asyncio.wait_for(self.invoke('; import time; time.sleep(10)'),.15)
+
+    async def test_wrong_scope_response_and_self_reported_cleanup_are_rejected(self):
+        request=runtime.publisher_request(self.binding,self.packet,'observe')
+        value={k:v for k,v in request.items() if k!='mode'}
+        value.update(kind='native-publisher-response-v1',phase='integration',status='ready',
+                     request_sha256=contract.fingerprint(request))
+        for changed in (dict(value,source_sha256='0'*64),dict(value,child_tree_gone=True)):
+            with self.assertRaises(runtime.RuntimeHold):runtime.publisher_response(changed,request,'integration')
+
+    async def test_ordinary_identity_holds_before_protected_config_read_or_spawn(self):
+        with patch('os.getuid',return_value=1000),patch('os.geteuid',return_value=1000), \
+             patch('stokowski_adapter.protected_owner_bytes',side_effect=AssertionError('protected retry')):
+            with self.assertRaisesRegex(runtime.RuntimeHold,'publisher_owner_identity_required'):
+                await runtime.fixed_publisher_rpc(self.binding,self.packet,'observe')
 
 
 class RuntimeEngineTests(unittest.TestCase):
