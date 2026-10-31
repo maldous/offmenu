@@ -9,6 +9,71 @@ from .standards import git
 UNCERTAIN = {'running', 'uncertain', 'timed_out', 'cancelled'}
 
 
+def project_native_handoff(handoff, policy, *, native_receipt_bytes=None):
+    """Project owner-selected v1 references, never qualify their external truth.
+
+    Requires tools/delivery on PYTHONPATH. Only an explicitly supplied original
+    native coding receipt is read; referenced files are never followed. Its exact
+    bytes must match the origin pin and original attempt/lease/source identity.
+    No imported execution, resource-pool or transport module is constructed.
+    """
+    import hashlib
+    from native_harness_contract import fingerprint, validate_handoff
+    from stokowski_performance import project_observation
+
+    value = validate_handoff(handoff, policy)
+    execution = project_observation({})
+    if native_receipt_bytes is not None:
+        if (type(native_receipt_bytes) is not bytes or len(native_receipt_bytes) > 262144
+                or value['origin']['kind'] != 'native-coding-v1'
+                or 'attempt' not in value
+                or hashlib.sha256(native_receipt_bytes).hexdigest()
+                != value['origin']['evidence']['sha256']):
+            raise DeliveryError('Native observation receipt pin mismatch')
+        try:
+            receipt = json.loads(native_receipt_bytes)
+        except (ValueError, RecursionError):
+            raise DeliveryError('Native observation receipt JSON invalid') from None
+        if (type(receipt) is not dict or receipt.get('origin') != 'native-coding'
+                or receipt.get('attempt') != value['attempt']['id']
+                or receipt.get('lease') != value['attempt']['lease_id']
+                or receipt.get('source_head') != value['source']['base']):
+            raise DeliveryError('Native observation receipt identity mismatch')
+        execution = project_observation(receipt)
+        # A requested model or completed turn alone cannot resolve the provider.
+        if receipt.get('resolution_status') != 'observed':
+            execution['observed']['model'] = None
+    operation = value.get('operation')
+    effect = value.get('effect')
+    return {
+        'schema_version': 1, 'kind': 'offmenu-native-observation',
+        'authority': 'observation_only',
+        'handoff_sha256': fingerprint(value),
+        'references_verified': False,
+        'issue_id': value['issue_id'], 'project_id': value['project_id'],
+        'owner': value['owner'], 'source': value['source'],
+        'origin': value['origin'], 'attempt': value.get('attempt'),
+        'operation': operation,
+        'source_acceptance': {
+            'recorded_review': value.get('review'),
+            'integration': 'unknown', 'release': 'unknown',
+        },
+        'effect': effect if effect is not None else {'status': 'unknown'},
+        'execution': {key: execution[key] for key in (
+            'requested', 'observed', 'declared_resources', 'sampled_resources')},
+        'cost_usd': None, 'runtime_readback': 'unknown',
+        'next_pickup': {'status': 'unknown', 'owner_record': value['origin']['evidence']},
+        'recovery': {
+            'reconciliation_required': bool(operation and (
+                operation['status'] in ('submitted', 'running', 'unknown')
+                or effect is None or effect['status'] in ('pending', 'unknown'))),
+            'operation_id': operation['id'] if operation else None,
+            'owner_record': operation['receipt'] if operation else value['origin']['evidence'],
+        },
+        'evidence': value['evidence'],
+    }
+
+
 def inspect_task(root, task, *, effect_observation=None,
                  effect_context: EffectContext | None = None, effect_phases=()):
     """Inspect without constructing an Engine, opening a saver or taking ownership.
