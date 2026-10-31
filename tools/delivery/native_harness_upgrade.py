@@ -1,4 +1,4 @@
-"""Explicit owner-only sealed-directory upgrade; no CLI, service start or retry.
+"""Explicit owner-only sealed-closure upgrade; no CLI, service start or retry.
 
 Production admission must come from the sole owner after independent review and
 mandatory host approval. Python capability objects are not JSON authority. The
@@ -12,6 +12,7 @@ import fcntl
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import stat
 import subprocess
@@ -24,6 +25,7 @@ import protected_owner_install as protected
 
 STATE = '/var/lib/offmenu-publisher'
 SERVICE = 'offmenu-stokowski-current.service'
+PUBLISHER_KEY = 'github-app-private-key.pem'
 MAX_FILES = 50000
 MAX_FILE = 64 * 1024 * 1024
 MAX_TOTAL = 1024 * 1024 * 1024
@@ -38,6 +40,19 @@ class OwnerAdmission:
     host_confirmation_sha256: str
     expires_at: float
     lock_custody_sha256: str | None = None
+    publisher_config_custody_sha256: str | None = None
+
+
+@dataclass(frozen=True)
+class PublisherConfigCustody:
+    """Fixed directory/key metadata only. Never a key payload or path selector."""
+    directory: 'NodeIdentity'
+    key: 'NodeIdentity'
+    key_size: int
+    key_mtime_ns: int
+    key_ctime_ns: int
+    qualification_sha256: str
+    observed_at: float
 
 
 @dataclass(frozen=True)
@@ -188,6 +203,27 @@ def qualify_lock_custody(custody, admission, plan, observation, host, now):
                         'caller_parent_custody')
 
 
+def qualify_publisher_custody(custody, expected_sha256, host, now, *, require_fresh=True):
+    require(type(custody) is PublisherConfigCustody, 'publisher_config_custody_required')
+    sha(expected_sha256)
+    sha(custody.qualification_sha256)
+    require(upgrade_digest(asdict(custody)) == expected_sha256
+            and type(custody.observed_at) in (int, float) and 0 <= custody.observed_at <= now
+            and (not require_fresh or fresh(custody.observed_at, now)), 'publisher_config_custody_binding')
+    uid, gid = (host.uid, os.getegid()) if host.synthetic else (0, 976)
+    for node in (custody.directory, custody.key):
+        require(type(node) is NodeIdentity and all(type(value) is int and value >= 0
+                for value in asdict(node).values()) and node.ino > 0, 'publisher_metadata')
+    require((custody.directory.uid, custody.directory.gid, custody.directory.mode)
+            == (uid, gid, 0o750) and custody.directory.nlink >= 1, 'publisher_directory_metadata')
+    require((custody.key.uid, custody.key.gid, custody.key.mode, custody.key.nlink)
+            == (uid, gid, 0o440, 1), 'publisher_key_metadata')
+    require(type(custody.key_size) is int and 0 < custody.key_size <= 65536
+            and type(custody.key_mtime_ns) is int and custody.key_mtime_ns >= 0
+            and type(custody.key_ctime_ns) is int and custody.key_ctime_ns >= 0,
+            'publisher_key_metadata')
+
+
 class Host:
     def __init__(self, *, _synthetic=None):
         self.root = Path('/') if _synthetic is None else Path(_synthetic).resolve(strict=True)
@@ -250,6 +286,77 @@ class Host:
             require(identity(linked) == expected and stat.S_IFMT(linked.st_mode)
                     == stat.S_IFMT(info.st_mode), 'lock_name_identity_drift')
 
+    def verify_publisher_custody(self):
+        custody = getattr(self, '_publisher_custody', None)
+        require(type(custody) is PublisherConfigCustody, 'publisher_config_custody_required')
+        info = os.fstat(self._publisher_fd)
+        path = self.path(TARGETS['publisher_config'] + '/config.json').parent
+        require(stat.S_ISDIR(info.st_mode) and identity(info) == custody.directory
+                and identity(path.lstat()) == custody.directory, 'publisher_directory_drift')
+        # Metadata only. In particular, never open/read/hash the key or enumerate
+        # this credential-bearing directory, even when checking installed bytes.
+        key = os.stat(PUBLISHER_KEY, dir_fd=self._publisher_fd, follow_symlinks=False)
+        require(stat.S_ISREG(key.st_mode) and identity(key) == custody.key
+                and (key.st_size, key.st_mtime_ns, key.st_ctime_ns)
+                == (custody.key_size, custody.key_mtime_ns, custody.key_ctime_ns),
+                'publisher_key_drift')
+
+    @contextmanager
+    def publisher_config(self, custody):
+        require(type(custody) is PublisherConfigCustody, 'publisher_config_custody_required')
+        if getattr(self, '_publisher_fd', None) is not None:
+            require(custody == self._publisher_custody, 'publisher_nested_custody')
+            self.verify_publisher_custody()
+            yield
+            return
+        path = self.path(TARGETS['publisher_config'] + '/config.json').parent
+        fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        self._publisher_fd, self._publisher_custody = fd, custody
+        try:
+            self.verify_publisher_custody()
+            yield
+        finally:
+            self._publisher_fd = self._publisher_custody = None
+            os.close(fd)
+
+    def verify_role(self, role, absolute, closure):
+        if role != 'publisher_config':
+            return self.verify(absolute, closure)
+        fields(closure, 'directories files')
+        require(type(closure['directories']) is dict and set(closure['directories']) == {''}
+                and type(closure['files']) is dict and set(closure['files']) == {'config.json'},
+                'publisher_config_file_only')
+        directory, item = closure['directories'][''], closure['files']['config.json']
+        fields(directory, 'mode uid gid')
+        fields(item, 'mode uid gid size sha256')
+        self.verify_publisher_custody()
+        custody = self._publisher_custody
+        expected = dict(mode=custody.directory.mode, uid=custody.directory.uid, gid=custody.directory.gid)
+        require(all(type(value) is int for value in directory.values())
+                and directory == expected, 'publisher_directory_binding')
+        uid, gid = (self.uid, os.getegid()) if self.synthetic else (0, 976)
+        require(type(item['mode']) is int and type(item['uid']) is int and type(item['gid']) is int
+                and (item['mode'], item['uid'], item['gid']) == (0o440, uid, gid)
+                and type(item['size']) is int and 0 < item['size'] <= 1048576,
+                'publisher_config_file_metadata')
+        sha(item['sha256'])
+        path = Path(absolute)
+        require(str(path.parent) == TARGETS['publisher_config'] and
+                (path.name == 'config.json' or re.fullmatch(
+                    r'\.native-upgrade-[0-9a-f]{64}-publisher_config\.(?:new|old)\.json', path.name)),
+                'publisher_config_fixed_path')
+        before = os.stat(path.name, dir_fd=self._publisher_fd, follow_symlinks=False)
+        require(stat.S_ISREG(before.st_mode) and before.st_nlink == 1
+                and (stat.S_IMODE(before.st_mode), before.st_uid, before.st_gid, before.st_size)
+                == (item['mode'], item['uid'], item['gid'], item['size']), 'publisher_config_file_readback')
+        raw = protected.regular(path.name, 1048576, dir_fd=self._publisher_fd)
+        after = os.stat(path.name, dir_fd=self._publisher_fd, follow_symlinks=False)
+        require(protected.sha(raw) == item['sha256'] and identity(before) == identity(after)
+                and (before.st_size, before.st_mtime_ns, before.st_ctime_ns)
+                == (after.st_size, after.st_mtime_ns, after.st_ctime_ns), 'publisher_config_file_drift')
+        self.verify_publisher_custody()
+        return upgrade_digest(closure)
+
     @contextmanager
     def locks(self, custody):
         """Lock-only traversal. Never return relaxed paths to mutation methods."""
@@ -291,18 +398,34 @@ class Host:
         protected.sync_dir(path.parent)
 
     def move(self, old, new):
+        require(TARGETS['publisher_config'] not in (old, new), 'publisher_directory_not_swappable')
         source, target = self.path(old), self.path(new)
         # Linux create-only rename, including directory targets; no check/rename
         # overwrite race. Unsupported platforms hold rather than use os.rename.
         libc = ctypes.CDLL(None, use_errno=True)
         rename = getattr(libc, 'renameat2', None)
         require(rename is not None, 'rename_noreplace_unavailable')
-        result = rename(-100, os.fsencode(source), -100, os.fsencode(target), 1)
+        publisher_file = (str(Path(old).parent) == str(Path(new).parent) == TARGETS['publisher_config'])
+        if publisher_file:
+            require(fresh(self._publisher_custody.observed_at, time.time()), 'publisher_custody_stale')
+            pattern = r'\.native-upgrade-[0-9a-f]{64}-publisher_config\.%s\.json'
+            require((source.name == 'config.json' and re.fullmatch(pattern % 'old', target.name))
+                    or (target.name == 'config.json' and re.fullmatch(pattern % 'new', source.name)),
+                    'publisher_config_fixed_move')
+            self.verify_publisher_custody()
+            # Operate inside the retained original directory, never rename it.
+            result = rename(self._publisher_fd, os.fsencode(source.name),
+                            self._publisher_fd, os.fsencode(target.name), 1)
+        else:
+            result = rename(-100, os.fsencode(source), -100, os.fsencode(target), 1)
         if result != 0:
             raise OSError(ctypes.get_errno(), 'upgrade rename refused')
         protected.sync_dir(source.parent)
         if target.parent != source.parent:
             protected.sync_dir(target.parent)
+        if publisher_file:
+            os.fsync(self._publisher_fd)
+            self.verify_publisher_custody()
 
     def verify(self, absolute, closure):
         """Read exact selected files/metadata; refuse links and extra entries.
@@ -388,6 +511,10 @@ class Host:
 
 
 def locations(role, operation):
+    if role == 'publisher_config':
+        parent = TARGETS[role]
+        stem = parent + '/.native-upgrade-' + operation + '-publisher_config'
+        return parent + '/config.json', stem + '.new.json', stem + '.old.json'
     target = TARGETS[role]
     parent = str(Path(target).parent)
     return target, parent + '/.native-upgrade-' + operation + '-' + role + '.new', parent + '/.native-upgrade-' + operation + '-' + role + '.old'
@@ -431,7 +558,7 @@ def qualify(plan_bytes, upgrade, admission, now):
                        ('new', target['source_head'])):
         require(upgrade[side]['owner_source']['files'].get('.git/HEAD', {}).get('sha256')
                 == protected.sha((head + '\n').encode()), 'source_head_readback')
-    # Old/new full closure manifests must be independently qualified in the
+    # Old/new directory or fixed config-file closures are independently qualified in the
     # admitted upgrade digest, not inferred from an installer's legacy manifest.
     require(type(upgrade['legacy_receipts']) is dict and set(upgrade['legacy_receipts']) == {
         str(protected.RECEIPT), STATE + '/publisher-install.jsonl'}, 'legacy_receipts')
@@ -460,18 +587,24 @@ def mutation_guard(host, plan, observation, admission):
     now = time.time()
     require(now < admission.expires_at, 'admission_expired')
     host.verify_locks()
+    require(fresh(host._publisher_custody.observed_at, now), 'publisher_custody_stale')
+    host.verify_publisher_custody()
     stopped(host, plan, observation, now)
     now = time.time()
     require(now < admission.expires_at, 'admission_expired')
     require(fresh(observation.observed_at, now), 'native_quiescence_required')
     host.verify_locks()
+    require(fresh(host._publisher_custody.observed_at, now), 'publisher_custody_stale')
+    host.verify_publisher_custody()
 
 
-def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None, host=None):
+def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
+            publisher_config_custody=None, host=None):
     """One admitted attempt; never start services, retire legacy or auto-rollback.
 
-    All staged slots already exist, sealed by the owner. Every old closure moves
-    intact to a create-only sibling custody slot before its new closure moves.
+    All staged slots already exist, sealed by the owner. Four old directory
+    closures move intact to create-only sibling custody slots. Publisher config
+    swaps only its fixed JSON file, retaining the original directory/key in place.
     A permanent intent precedes all moves. Any failure/unknown effect requires
     observe() and explicit owner reconciliation; execute() always refuses replay.
     """
@@ -480,11 +613,13 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None, ho
     plan = qualify(plan_bytes, upgrade, admission, now)
     host = host or Host()
     qualify_lock_custody(lock_custody, admission, plan, quiescence, host, now)
+    qualify_publisher_custody(publisher_config_custody,
+                              admission.publisher_config_custody_sha256, host, now)
     operation = upgrade['operation_id']
     receipt = STATE + '/native-upgrade-' + operation + '.intent.json'
     result_path = STATE + '/native-upgrade-' + operation + '.installed.json'
     old_fence = STATE + '/native-upgrade-from-' + upgrade_digest(upgrade['old']) + '.intent.json'
-    with host.locks(lock_custody):
+    with host.locks(lock_custody), host.publisher_config(publisher_config_custody):
         require(not os.path.lexists(host.path(receipt))
                 and not os.path.lexists(host.path(result_path))
                 and not os.path.lexists(host.path(old_fence)), 'prior_upgrade_no_replay')
@@ -494,13 +629,14 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None, ho
         for role in TARGETS:
             target, stage, backup = locations(role, operation)
             require(not os.path.lexists(host.path(backup)), 'rollback_slot_exists')
-            host.verify(target, upgrade['old'][role])
-            host.verify(stage, upgrade['new'][role])
+            host.verify_role(role, target, upgrade['old'][role])
+            host.verify_role(role, stage, upgrade['new'][role])
         require(time.time() < admission.expires_at, 'admission_expired')
         intent = dict(kind='native-upgrade-intent-v1', upgrade=upgrade,
             plan_sha256=admission.plan_sha256, quiescence_sha256=quiescence.evidence_sha256,
             host_confirmation_sha256=admission.host_confirmation_sha256,
             lock_custody_sha256=admission.lock_custody_sha256,
+            publisher_config_custody_sha256=admission.publisher_config_custody_sha256,
             host_scope='synthetic' if host.synthetic else 'production',
             runtime_path=plan['legacy_snapshot']['runtime_path'])
         # Old-closure fence precedes the operation fence. A crash between them
@@ -513,13 +649,13 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None, ho
             require(time.time() < admission.expires_at, 'admission_expired')
             stopped(host, plan, quiescence, time.time())
             target, stage, backup = locations(role, operation)
-            host.verify(target, upgrade['old'][role])
-            host.verify(stage, upgrade['new'][role])
+            host.verify_role(role, target, upgrade['old'][role])
+            host.verify_role(role, stage, upgrade['new'][role])
             mutation_guard(host, plan, quiescence, admission)
             host.move(target, backup)
             mutation_guard(host, plan, quiescence, admission)
             host.move(stage, target)
-        readback = observe(upgrade, host=host)
+        readback = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody)
         require(readback['installed_verified'] and readback['rollback_verified'], 'installed_readback_mismatch')
         mutation_guard(host, plan, quiescence, admission)
         host.create(result_path, dict(kind='native-upgrade-installed-v1', upgrade_sha256=upgrade_digest(upgrade),
@@ -527,7 +663,7 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None, ho
         return readback
 
 
-def observe(upgrade, *, host=None):
+def observe(upgrade, *, publisher_config_custody=None, host=None):
     """Read-only same-operation reconciliation. Never clear receipts or retry."""
     host = host or Host()
     operation = upgrade['operation_id']
@@ -543,6 +679,15 @@ def observe(upgrade, *, host=None):
     except (OSError, ValueError):
         pass
     results = {}
+    publisher_ok = False
+    try:
+        require(intent_ok, 'publisher_intent_required')
+        qualify_publisher_custody(publisher_config_custody,
+            intent.get('publisher_config_custody_sha256'), host, time.time(), require_fresh=False)
+        with host.publisher_config(publisher_config_custody):
+            publisher_ok = True
+    except (OSError, ValueError):
+        pass
     receipts_ok = True
     for path, pin in upgrade['legacy_receipts'].items():
         try:
@@ -557,28 +702,41 @@ def observe(upgrade, *, host=None):
                                     ('rollback', backup, upgrade['old'][role]),
                                     ('staged', stage, upgrade['new'][role])):
             try:
-                host.verify(path, closure)
+                if role == 'publisher_config':
+                    require(publisher_ok, 'publisher_config_custody_required')
+                    with host.publisher_config(publisher_config_custody):
+                        host.verify_role(role, path, closure)
+                else:
+                    host.verify_role(role, path, closure)
                 axes[name] = 'verified'
             except (OSError, ValueError):
                 axes[name] = 'unknown-or-mismatch'
         results[role] = axes
+    if publisher_ok:
+        try:
+            with host.publisher_config(publisher_config_custody):
+                pass
+        except (OSError, ValueError):
+            publisher_ok = False
     return dict(operation_id=operation, upgrade_sha256=upgrade_digest(upgrade), closures=results,
         host_scope='synthetic' if host.synthetic else 'production',
         intent_verified=intent_ok,
         legacy_receipts_verified=receipts_ok,
-        installed_verified=intent_ok and receipts_ok and all(row['installed'] == 'verified' for row in results.values()),
-        rollback_verified=intent_ok and all(row['rollback'] == 'verified' for row in results.values()),
+        publisher_custody_verified=publisher_ok,
+        publisher_observed_at=time.time() if publisher_ok else None,
+        installed_verified=intent_ok and receipts_ok and publisher_ok and all(row['installed'] == 'verified' for row in results.values()),
+        rollback_verified=intent_ok and publisher_ok and all(row['rollback'] == 'verified' for row in results.values()),
         active_observed=False, legacy_retired=False, replay_authorized=False)
 
 
-def verify_active(upgrade, *, host=None):
+def verify_active(upgrade, *, publisher_config_custody=None, host=None):
     """Separate actual service observation after owner-managed activation.
 
     This never starts a service or claims product/functional/legacy retirement
     acceptance. Exact installed bytes are checked both sides of service readback.
     """
     host = host or Host()
-    before = observe(upgrade, host=host)
+    before = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody)
     require(before['installed_verified'] and before['rollback_verified'], 'active_closure_mismatch')
     intent = protected.record(protected.regular(host.path(
         STATE + '/native-upgrade-' + upgrade['operation_id'] + '.intent.json'), 32*1024*1024))
@@ -588,7 +746,7 @@ def verify_active(upgrade, *, host=None):
     require(state.get('ActiveState') == 'active' and state.get('SubState') == 'running'
             and state.get('MainPID', '').isdigit() and int(state['MainPID']) > 0, 'service_not_active')
     require(host.process_bound(int(state['MainPID']), runtime), 'active_process_binding')
-    after = observe(upgrade, host=host)
+    after = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody)
     require(after['installed_verified'] and after['rollback_verified'], 'active_readback_drift')
     require(host.service_state() == state and host.process_bound(int(state['MainPID']), runtime),
             'active_process_changed')

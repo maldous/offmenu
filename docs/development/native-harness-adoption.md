@@ -216,10 +216,12 @@ branch name. Root must compose the accepted UIF-127 correction `731ce2034` and
 UIF-128 correction `a6437a416` (or independently accepted successors); the
 upgrade worker's older source checkout is not that coherent installed closure.
 
-The owner stages each complete sealed directory beside its eventual target as
+For the four directory roles, the owner stages each complete sealed directory beside its eventual target as
 `.native-upgrade-<operation_id>-<role>.new`. Rollback custody uses the corresponding
 `.old` sibling; existing custody refuses replacement. Staging/qualification is
-an explicit owner action outside this module. The procedure:
+an explicit owner action outside this module. The publisher config role uses the
+fixed-file exception below, preserving its credential directory/key in place.
+The procedure:
 
 1. Takes the existing coordinator and repository-owner locks, without creating
    replacement locks. Reads the fixed coordinator service's actual inactive,
@@ -354,3 +356,73 @@ predicates without host access. Returned observations and permanent intent recor
 `host_scope: synthetic` for that seam. Normal runtime glue must never report
 productive activation from synthetic observation. No production adapter may
 select the private seam through JSON or ordinary CLI flags.
+
+## Preserve the publisher key with a fixed config-file swap
+
+The existing publisher loads its private key at the fixed path
+`/etc/offmenu-publisher/github-app-private-key.pem`. Complete-directory verification
+would reject that key under the unchanged `.pem` payload prohibition; replacing
+the whole directory would move/remove its credential custody. Neither behavior
+is an acceptable upgrade. `TARGETS.publisher_config` and the preflight path
+contract remain `/etc/offmenu-publisher`, but this role now operates only on:
+
+- `/etc/offmenu-publisher/config.json`;
+- `/etc/offmenu-publisher/.native-upgrade-<operation_id>-publisher_config.new.json`;
+- `/etc/offmenu-publisher/.native-upgrade-<operation_id>-publisher_config.old.json`.
+
+The fixed directory is never renamed. The key is never opened, read, copied,
+hashed, staged, backed up or renamed by this procedure. Directory contents are
+never enumerated for this role. Other four roles keep complete-directory
+verification; the generic key/log exclusion remains unchanged. Even the move
+helper refuses a publisher directory rename or a key/rollback path selector.
+
+The role's old/new descriptor keeps the `directories`/`files` shape, but accepts
+exactly `directories: {"": {mode, uid, gid}}` and
+`files: {"config.json": {mode, uid, gid, size, sha256}}`. These describe only the
+existing retained directory and the old/new **nonsecret** config file. Production
+file custody is exactly root0:976/0440, positive size at most 1 MiB; parent custody
+is root0:976/0750. Root independently validates the new config's actual semantics
+through the accepted UIF-127 publisher contract before issuing upgrade admission.
+Byte association here does not replace that validation and never relaxes the old
+first-install `SOURCE_HEAD` or no-overwrite fences.
+
+`execute`, `observe` and `verify_active` take the separately qualified frozen
+`publisher_config_custody=PublisherConfigCustody(...)`. `OwnerAdmission` binds
+`publisher_config_custody_sha256 = upgrade_digest(dataclasses.asdict(custody))`.
+Custody contains `directory` and `key` `NodeIdentity` records, `key_size`,
+`key_mtime_ns`, `key_ctime_ns`, `qualification_sha256` and `observed_at`. There
+are no selected paths or credential contents. Key custody must match the existing
+publisher reader: a regular single-link root0:976/0440 file, positive size at most
+64 KiB. Unknown/denied metadata cannot be filled from assumptions or inferred by
+an unprivileged worker. Actual old config bytes and parent/key metadata still
+need authorized privileged qualification.
+
+The procedure retains the original directory FD and compares its metadata and
+current name-to-FD association. It uses no-follow metadata lookup of the fixed
+key basename to compare device/inode/UID/GID/mode/link count, size and timestamps.
+No key FD is opened. Every mutation guard checks directory/key custody before
+and after service readback; actual file renames occur descriptor-relative inside
+that original directory, with create-only semantics and per-rename freshness.
+It moves `config.json` to the fixed `.old.json` slot, then `.new.json` to
+`config.json`. Interrupted second rename leaves both old backup and staged new
+file observable and the original directory/key untouched. Permanent operation
+and old-closure intents still forbid replay, including a new operation ID.
+
+Custody observations must be fresh for mutation. Later **read-only** installed,
+rollback and active checks reuse the intent-bound immutable custody expectations
+and make new actual metadata observations, reporting `publisher_observed_at`.
+They do not refresh or issue mutation admission. Missing/wrong custody, changed
+directory/key metadata, absent config or changed bytes hold acceptance. This
+distinction permits recovery/readback after the original short-lived admission
+expires without replay or rewriting any receipt. There is no automatic rollback
+or forced file replacement.
+
+Tests retain all prior lock/expiry/no-replay checks and add a temporary fixture
+that actually contains a synthetic `.pem` key. Instrumentation fails on any key
+open/read or publisher-directory enumeration during execution/readback. Only the
+test, outside those guards, reads its synthetic sentinel to confirm unchanged
+bytes; directory/key identity and metadata are also unchanged. Focused cases cover
+unknown custody, key/directory drift, unsupported payload/mode, interrupted second
+file rename, later read-only observation and rejected key/directory move forms.
+Those fixtures remain explicitly synthetic and do not qualify actual protected
+config, credentials, installed source or activation.

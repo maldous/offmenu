@@ -64,6 +64,23 @@ class UpgradeTests(unittest.TestCase):
             operation_id=self.operation, preflight_sha256='', old={}, new={}, legacy_receipts={})
         for role in upgrade.TARGETS:
             target, stage, _ = upgrade.locations(role, self.operation)
+            if role == 'publisher_config':
+                directory = self.root/upgrade.TARGETS[role][1:]
+                directory.mkdir(parents=True)
+                directory.chmod(0o750)
+                self.publisher_dir = directory
+                self.publisher_key = directory/upgrade.PUBLISHER_KEY
+                self.key_bytes = b'SYNTHETIC ONLY private key sentinel'
+                self.publisher_key.write_bytes(self.key_bytes)
+                self.publisher_key.chmod(0o440)
+                for side, absolute in (('old',target),('new',stage)):
+                    path = self.root/absolute[1:]
+                    path.write_text(json.dumps({'synthetic_config':side}))
+                    path.chmod(0o440)
+                    info=path.stat()
+                    self.manifest[side][role]=dict(directories={'':dict(mode=0o750,uid=info.st_uid,gid=info.st_gid)},
+                        files={'config.json':dict(mode=0o440,uid=info.st_uid,gid=info.st_gid,size=info.st_size,sha256=protected.sha(path.read_bytes()))})
+                continue
             for side, absolute in (('old', target), ('new', stage)):
                 path = self.root / absolute[1:]
                 path.mkdir(parents=True)
@@ -116,11 +133,21 @@ class UpgradeTests(unittest.TestCase):
         for directory in self.root.rglob('*'):
             if directory.is_dir():
                 directory.chmod(0o755)
+        self.publisher_dir.chmod(0o750)
         self.admission = upgrade.OwnerAdmission('root-owner', protected.sha(self.plan),
             upgrade.upgrade_digest(self.manifest), '7'*64, time.time()+200)
         self.quiet = upgrade.Quiescence(source.request['legacy_snapshot']['sha256'],
             '8'*64, time.time(), 0, True, ())
         self.refresh_custody()
+        self.refresh_publisher_custody()
+
+    def refresh_publisher_custody(self):
+        from dataclasses import asdict
+        key=self.publisher_key.lstat()
+        self.pub_custody=upgrade.PublisherConfigCustody(
+            upgrade.identity(self.publisher_dir.lstat()),upgrade.identity(key),key.st_size,
+            key.st_mtime_ns,key.st_ctime_ns,'5'*64,time.time())
+        self.admission=replace(self.admission,publisher_config_custody_sha256=upgrade.upgrade_digest(asdict(self.pub_custody)))
 
     def refresh_custody(self, historical=False):
         roles = ('runtime-coordinator', 'shared-root-coordinator', 'publisher-repository')
@@ -150,7 +177,7 @@ class UpgradeTests(unittest.TestCase):
 
     def execute(self, **kwargs):
         args = dict(admission=self.admission, quiescence=self.quiet,
-                    lock_custody=self.custody, host=self.host)
+                    lock_custody=self.custody, publisher_config_custody=self.pub_custody, host=self.host)
         args.update(kwargs)
         return upgrade.execute(self.plan,self.manifest,**args)
 
@@ -164,7 +191,7 @@ class UpgradeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'prior_upgrade_no_replay'):
             self.execute()
         self.host.state = dict(ActiveState='active', SubState='running', MainPID='123')
-        active = upgrade.verify_active(self.manifest,host=self.host)
+        active = upgrade.verify_active(self.manifest,publisher_config_custody=self.pub_custody,host=self.host)
         self.assertTrue(active['active_observed'])
         self.assertEqual(active['host_scope'], 'synthetic')
         self.assertFalse(active['legacy_retired'])
@@ -176,7 +203,7 @@ class UpgradeTests(unittest.TestCase):
         _,stage,backup = upgrade.locations('owner_source',self.operation)
         self.assertTrue((self.root/backup[1:]).exists())
         self.assertTrue((self.root/stage[1:]).exists())
-        observation = upgrade.observe(self.manifest,host=self.host)
+        observation = upgrade.observe(self.manifest,publisher_config_custody=self.pub_custody,host=self.host)
         self.assertFalse(observation['installed_verified'])
         self.assertFalse(observation['replay_authorized'])
         with self.assertRaisesRegex(ValueError,'prior_upgrade_no_replay'):
@@ -221,17 +248,17 @@ class UpgradeTests(unittest.TestCase):
             self.execute()
 
     def test_no_intent_is_not_installed_and_active_process_must_match(self):
-        self.assertFalse(upgrade.observe(self.manifest,host=self.host)['installed_verified'])
+        self.assertFalse(upgrade.observe(self.manifest,publisher_config_custody=self.pub_custody,host=self.host)['installed_verified'])
         self.execute()
         self.host.state=dict(ActiveState='active',SubState='running',MainPID='123')
         self.host.bound=False
         with self.assertRaisesRegex(ValueError,'active_process_binding'):
-            upgrade.verify_active(self.manifest,host=self.host)
+            upgrade.verify_active(self.manifest,publisher_config_custody=self.pub_custody,host=self.host)
         self.host.bound=True
         path=self.root/upgrade.TARGETS['owner_source'][1:]/'module.txt'
         path.chmod(0o644);path.write_bytes(b'wrong');path.chmod(0o444)
         with self.assertRaisesRegex(ValueError,'active_closure_mismatch'):
-            upgrade.verify_active(self.manifest,host=self.host)
+            upgrade.verify_active(self.manifest,publisher_config_custody=self.pub_custody,host=self.host)
 
     def test_no_replace_rename_and_preexisting_receipt_are_permanent_fences(self):
         target,stage,backup=upgrade.locations('owner_config',self.operation)
@@ -251,7 +278,7 @@ class UpgradeTests(unittest.TestCase):
         self.execute()
         path=self.root/str(protected.RECEIPT)[1:]
         path.write_text('changed original receipt')
-        observation=upgrade.observe(self.manifest,host=self.host)
+        observation=upgrade.observe(self.manifest,publisher_config_custody=self.pub_custody,host=self.host)
         self.assertFalse(observation['legacy_receipts_verified'])
         self.assertFalse(observation['installed_verified'])
 
@@ -271,7 +298,7 @@ class UpgradeTests(unittest.TestCase):
 
     def test_expiry_during_verification_blocks_first_move_and_preserves_intent(self):
         clock = [time.time()]
-        verify = self.host.verify
+        verify = self.host.verify_role
         count = [0]
         def slow_verify(*args):
             result = verify(*args)
@@ -280,11 +307,11 @@ class UpgradeTests(unittest.TestCase):
                 clock[0] = self.admission.expires_at + 1
             return result
         with patch.object(upgrade.time, 'time', side_effect=lambda: clock[0]), \
-             patch.object(self.host, 'verify', side_effect=slow_verify):
+             patch.object(self.host, 'verify_role', side_effect=slow_verify):
             with self.assertRaisesRegex(ValueError, 'admission_expired'):
                 self.execute()
         self.assertEqual(self.host.moves, 0)
-        observed = upgrade.observe(self.manifest, host=self.host)
+        observed = upgrade.observe(self.manifest,publisher_config_custody=self.pub_custody,host=self.host)
         self.assertTrue(observed['intent_verified'])
         self.assertFalse(observed['installed_verified'])
         with self.assertRaisesRegex(ValueError, 'prior_upgrade_no_replay'):
@@ -311,7 +338,7 @@ class UpgradeTests(unittest.TestCase):
     def test_witness_stales_during_verification_without_admission_expiry(self):
         clock = [time.time()]
         quiet = replace(self.quiet, observed_at=clock[0] - 250)
-        verify = self.host.verify
+        verify = self.host.verify_role
         count = [0]
         def slow_verify(*args):
             result = verify(*args)
@@ -320,13 +347,13 @@ class UpgradeTests(unittest.TestCase):
                 clock[0] += 60
             return result
         with patch.object(upgrade.time, 'time', side_effect=lambda: clock[0]), \
-             patch.object(self.host, 'verify', side_effect=slow_verify):
+             patch.object(self.host, 'verify_role', side_effect=slow_verify):
             with self.assertRaisesRegex(ValueError, 'native_quiescence_required'):
                 self.execute(quiescence=quiet)
         self.assertEqual(self.host.moves, 0)
 
     def test_service_changes_during_verification_blocks_mutation(self):
-        verify = self.host.verify
+        verify = self.host.verify_role
         count = [0]
         def service_changes(*args):
             result = verify(*args)
@@ -334,7 +361,7 @@ class UpgradeTests(unittest.TestCase):
             if count[0] == 12:
                 self.host.state = dict(ActiveState='active', SubState='running', MainPID='99')
             return result
-        with patch.object(self.host, 'verify', side_effect=service_changes):
+        with patch.object(self.host, 'verify_role', side_effect=service_changes):
             with self.assertRaisesRegex(ValueError, 'actual_service_not_stopped'):
                 self.execute()
         self.assertEqual(self.host.moves, 0)
@@ -348,7 +375,7 @@ class UpgradeTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'actual_service_not_stopped'):
                 self.execute()
         self.assertEqual(self.host.moves, 1)
-        self.assertTrue(upgrade.observe(self.manifest, host=self.host)['intent_verified'])
+        self.assertTrue(upgrade.observe(self.manifest,publisher_config_custody=self.pub_custody,host=self.host)['intent_verified'])
 
     def test_expiry_during_service_readback_blocks_first_intent_write(self):
         clock = [time.time()]
@@ -363,7 +390,7 @@ class UpgradeTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'admission_expired'):
                 self.execute()
         self.assertEqual(self.host.moves, 0)
-        self.assertFalse(upgrade.observe(self.manifest, host=self.host)['intent_verified'])
+        self.assertFalse(upgrade.observe(self.manifest,publisher_config_custody=self.pub_custody,host=self.host)['intent_verified'])
 
     def test_all_three_existing_locks_contend_and_acquire_in_native_order(self):
         import fcntl
@@ -446,7 +473,7 @@ class UpgradeTests(unittest.TestCase):
         self.assertEqual(self.host.moves,0)
 
     def test_lock_replacement_after_verification_holds_before_rename(self):
-        verify = self.host.verify
+        verify = self.host.verify_role
         count = [0]
         def replace_lock(*args):
             result = verify(*args)
@@ -457,14 +484,14 @@ class UpgradeTests(unittest.TestCase):
                 path.write_bytes(b'')
                 path.chmod(0o600)
             return result
-        with patch.object(self.host,'verify',side_effect=replace_lock):
+        with patch.object(self.host,'verify_role',side_effect=replace_lock):
             with self.assertRaisesRegex(ValueError,'lock_name_identity_drift'):
                 self.execute()
         self.assertEqual(self.host.moves,0)
-        self.assertTrue(upgrade.observe(self.manifest,host=self.host)['intent_verified'])
+        self.assertTrue(upgrade.observe(self.manifest,publisher_config_custody=self.pub_custody,host=self.host)['intent_verified'])
 
     def test_parent_replacement_after_verification_is_detected_by_held_descriptors(self):
-        verify = self.host.verify
+        verify = self.host.verify_role
         count = [0]
         def replace_parent(*args):
             result = verify(*args)
@@ -477,7 +504,7 @@ class UpgradeTests(unittest.TestCase):
                 (path/'coordinator.lock').write_bytes(b'')
                 (path/'coordinator.lock').chmod(0o600)
             return result
-        with patch.object(self.host,'verify',side_effect=replace_parent):
+        with patch.object(self.host,'verify_role',side_effect=replace_parent):
             with self.assertRaisesRegex(ValueError,'lock_.*drift'):
                 self.execute()
         self.assertEqual(self.host.moves,0)
@@ -511,7 +538,7 @@ class UpgradeTests(unittest.TestCase):
         clock = [time.time()]
         self.custody = replace(self.custody, observed_at=clock[0]-250)
         self.repin_custody()
-        verify = self.host.verify
+        verify = self.host.verify_role
         count = [0]
         def slow_verify(*args):
             result = verify(*args)
@@ -520,7 +547,7 @@ class UpgradeTests(unittest.TestCase):
                 clock[0] += 60
             return result
         with patch.object(upgrade.time,'time',side_effect=lambda:clock[0]), \
-             patch.object(self.host,'verify',side_effect=slow_verify):
+             patch.object(self.host,'verify_role',side_effect=slow_verify):
             with self.assertRaisesRegex(ValueError,'lock_custody_stale'):
                 self.execute()
         self.assertEqual(self.host.moves,0)
@@ -554,6 +581,189 @@ class UpgradeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'lock_owner'):
             upgrade.qualify_lock_custody(self.custody,self.admission,json.loads(self.plan),
                                          self.quiet,prod,time.time())
+
+    def test_fixed_config_swap_never_reads_key_or_enumerates_existing_directory(self):
+        before_dir = upgrade.identity(self.publisher_dir.stat())
+        before_key = self.publisher_key.stat()
+        real_open, real_builtin, real_listdir = os.open, open, os.listdir
+        def no_key_open(path,*args,**kwargs):
+            if not isinstance(path,int):
+                self.assertNotIn(upgrade.PUBLISHER_KEY,os.fsdecode(path))
+            return real_open(path,*args,**kwargs)
+        def no_key_builtin(path,*args,**kwargs):
+            if not isinstance(path,int):
+                self.assertNotIn(upgrade.PUBLISHER_KEY,os.fsdecode(path))
+            return real_builtin(path,*args,**kwargs)
+        def no_publisher_enumeration(path):
+            info = os.fstat(path) if isinstance(path,int) else Path(path).stat()
+            self.assertNotEqual((info.st_dev,info.st_ino),(before_dir.dev,before_dir.ino))
+            return real_listdir(path)
+        with patch.object(upgrade.os,'open',side_effect=no_key_open), \
+             patch('builtins.open',side_effect=no_key_builtin), \
+             patch.object(upgrade.os,'listdir',side_effect=no_publisher_enumeration):
+            self.assertTrue(self.execute()['installed_verified'])
+            self.host.state=dict(ActiveState='active',SubState='running',MainPID='123')
+            active=upgrade.verify_active(self.manifest,host=self.host,publisher_config_custody=self.pub_custody)
+            self.assertTrue(active['active_observed'])
+            self.assertTrue(active['publisher_custody_verified'])
+        self.assertEqual(upgrade.identity(self.publisher_dir.stat()),before_dir)
+        after_key=self.publisher_key.stat()
+        self.assertEqual(upgrade.identity(before_key),upgrade.identity(after_key))
+        self.assertEqual((before_key.st_size,before_key.st_mtime_ns,before_key.st_ctime_ns),
+                         (after_key.st_size,after_key.st_mtime_ns,after_key.st_ctime_ns))
+        # Test-only read after all implementation read/open guards have exited.
+        self.assertEqual(self.publisher_key.read_bytes(),self.key_bytes)
+        target,stage,backup=upgrade.locations('publisher_config',self.operation)
+        self.assertTrue((self.root/target[1:]).is_file())
+        self.assertTrue((self.root/backup[1:]).is_file())
+        self.assertFalse((self.root/stage[1:]).exists())
+
+    def test_interrupted_second_config_file_rename_preserves_key_directory_and_receipts(self):
+        before_dir=upgrade.identity(self.publisher_dir.stat())
+        before_key=self.publisher_key.stat()
+        self.host.fail_move=10  # Four directory roles, then the two fixed-file moves.
+        with self.assertRaises(OSError):
+            self.execute()
+        target,stage,backup=upgrade.locations('publisher_config',self.operation)
+        self.assertFalse((self.root/target[1:]).exists())
+        self.assertTrue((self.root/stage[1:]).is_file())
+        self.assertTrue((self.root/backup[1:]).is_file())
+        self.assertEqual(upgrade.identity(self.publisher_dir.stat()),before_dir)
+        self.assertEqual(upgrade.identity(self.publisher_key.stat()),upgrade.identity(before_key))
+        observed=upgrade.observe(self.manifest,host=self.host,publisher_config_custody=self.pub_custody)
+        self.assertTrue(observed['publisher_custody_verified'])
+        self.assertTrue(observed['rollback_verified'])
+        self.assertFalse(observed['installed_verified'])
+        self.assertEqual(observed['closures']['publisher_config']['staged'],'verified')
+        for path,pin in self.manifest['legacy_receipts'].items():
+            self.assertEqual(protected.sha((self.root/path[1:]).read_bytes()),pin)
+        with self.assertRaisesRegex(ValueError,'prior_upgrade_no_replay'):
+            self.execute()
+
+    def test_missing_or_unknown_publisher_custody_is_not_inferred_from_key(self):
+        with patch.object(upgrade.os,'open',side_effect=AssertionError('no unqualified protected access')):
+            with self.assertRaisesRegex(ValueError,'publisher_config_custody_required'):
+                self.execute(publisher_config_custody=None)
+            bad=replace(self.pub_custody,key=None)
+            from dataclasses import asdict
+            admission=replace(self.admission,publisher_config_custody_sha256=upgrade.upgrade_digest(asdict(bad)))
+            with self.assertRaisesRegex(ValueError,'publisher_metadata'):
+                self.execute(publisher_config_custody=bad,admission=admission)
+
+    def test_key_metadata_drift_before_intent_holds_without_read(self):
+        self.publisher_key.chmod(0o400)
+        with patch('builtins.open',side_effect=AssertionError('no key or config plaintext open')):
+            with self.assertRaisesRegex(ValueError,'publisher_key_drift'):
+                self.execute()
+        self.assertEqual(self.host.moves,0)
+
+    def test_key_drift_after_directory_moves_blocks_file_swap_and_active_acceptance(self):
+        move=self.host.move
+        def mutate_key_between_roles(*args):
+            move(*args)
+            if self.host.moves==8:
+                self.publisher_key.chmod(0o400)
+        with patch.object(self.host,'move',side_effect=mutate_key_between_roles):
+            with self.assertRaisesRegex(ValueError,'publisher_key_drift'):
+                self.execute()
+        self.assertEqual(self.host.moves,8)
+        self.assertTrue((self.publisher_dir/'config.json').is_file())
+        observed=upgrade.observe(self.manifest,host=self.host,publisher_config_custody=self.pub_custody)
+        self.assertFalse(observed['publisher_custody_verified'])
+        self.assertFalse(observed['installed_verified'])
+        self.assertFalse(observed['rollback_verified'])
+
+    def test_publisher_directory_replacement_is_detected_before_first_move(self):
+        verify=self.host.verify_role
+        calls=[0]
+        def replace_directory(*args):
+            result=verify(*args)
+            calls[0]+=1
+            if calls[0]==12:
+                self.publisher_dir.rename(self.publisher_dir.with_name('original-publisher-config'))
+                self.publisher_dir.mkdir(mode=0o750)
+                self.publisher_dir.chmod(0o750)
+            return result
+        with patch.object(self.host,'verify_role',side_effect=replace_directory):
+            with self.assertRaisesRegex(ValueError,'publisher_directory_drift'):
+                self.execute()
+        self.assertEqual(self.host.moves,0)
+
+    def test_key_payload_or_wrong_config_mode_cannot_enter_special_role(self):
+        descriptor=self.manifest['new']['publisher_config']['files']['config.json']
+        self.manifest['new']['publisher_config']['files'][upgrade.PUBLISHER_KEY]=descriptor
+        self.admission=replace(self.admission,upgrade_sha256=upgrade.upgrade_digest(self.manifest))
+        with self.assertRaisesRegex(ValueError,'publisher_config_file_only'):
+            self.execute()
+        del self.manifest['new']['publisher_config']['files'][upgrade.PUBLISHER_KEY]
+        self.admission=replace(self.admission,upgrade_sha256=upgrade.upgrade_digest(self.manifest))
+        _,stage,_=upgrade.locations('publisher_config',self.operation)
+        (self.root/stage[1:]).chmod(0o640)
+        with self.assertRaisesRegex(ValueError,'publisher_config_file_readback'):
+            self.execute()
+        self.assertEqual(self.host.moves,0)
+
+    def test_publisher_move_api_refuses_directory_and_key_or_rollback_selectors(self):
+        with self.host.publisher_config(self.pub_custody):
+            with self.assertRaisesRegex(ValueError,'publisher_directory_not_swappable'):
+                self.host.move(upgrade.TARGETS['publisher_config'],'/etc/other')
+            with self.assertRaisesRegex(ValueError,'publisher_config_fixed_move'):
+                self.host.move(upgrade.TARGETS['publisher_config']+'/'+upgrade.PUBLISHER_KEY,
+                               upgrade.TARGETS['publisher_config']+'/config.json')
+        self.assertEqual(self.publisher_key.read_bytes(),self.key_bytes)
+
+    def test_missing_publisher_readback_context_never_accepts_installed_or_active(self):
+        self.execute()
+        observed=upgrade.observe(self.manifest,host=self.host)
+        self.assertFalse(observed['publisher_custody_verified'])
+        self.assertFalse(observed['installed_verified'])
+        with self.assertRaisesRegex(ValueError,'active_closure_mismatch'):
+            upgrade.verify_active(self.manifest,host=self.host)
+
+    def test_later_readonly_observation_keeps_original_custody_expectations_not_new_admission(self):
+        self.execute()
+        self.host.state=dict(ActiveState='active',SubState='running',MainPID='123')
+        later=self.pub_custody.observed_at+1000
+        with patch.object(upgrade.time,'time',return_value=later):
+            observed=upgrade.verify_active(self.manifest,host=self.host,publisher_config_custody=self.pub_custody)
+        self.assertTrue(observed['publisher_custody_verified'])
+        self.assertTrue(observed['active_observed'])
+        self.assertEqual(observed['publisher_observed_at'],later)
+        self.assertFalse(observed['replay_authorized'])
+
+    def test_publisher_custody_stales_during_verification_before_mutation(self):
+        from dataclasses import asdict
+        clock=[time.time()]
+        self.pub_custody=replace(self.pub_custody,observed_at=clock[0]-250)
+        self.admission=replace(self.admission,
+            publisher_config_custody_sha256=upgrade.upgrade_digest(asdict(self.pub_custody)))
+        verify=self.host.verify_role
+        calls=[0]
+        def slow_verify(*args):
+            result=verify(*args)
+            calls[0]+=1
+            if calls[0]==12:
+                clock[0]+=60
+            return result
+        with patch.object(upgrade.time,'time',side_effect=lambda:clock[0]), \
+             patch.object(self.host,'verify_role',side_effect=slow_verify):
+            with self.assertRaisesRegex(ValueError,'publisher_custody_stale'):
+                self.execute()
+        self.assertEqual(self.host.moves,0)
+
+    def test_production_publisher_metadata_requires_root_key_and_fixed_group_modes(self):
+        from dataclasses import asdict
+        from types import SimpleNamespace
+        prod=SimpleNamespace(synthetic=False,uid=0)
+        custody=replace(self.pub_custody,
+            directory=replace(self.pub_custody.directory,uid=0,gid=976,mode=0o750),
+            key=replace(self.pub_custody.key,uid=0,gid=976,mode=0o440))
+        upgrade.qualify_publisher_custody(custody,upgrade.upgrade_digest(asdict(custody)),prod,time.time())
+        for key in (replace(custody.key,uid=984),replace(custody.key,gid=1000),
+                    replace(custody.key,mode=0o600),replace(custody.key,nlink=2)):
+            bad=replace(custody,key=key)
+            with self.subTest(key=key),self.assertRaisesRegex(ValueError,'publisher_key_metadata'):
+                upgrade.qualify_publisher_custody(bad,upgrade.upgrade_digest(asdict(bad)),prod,time.time())
 
 
 class ProcessBindingTests(unittest.TestCase):
