@@ -72,6 +72,33 @@ class CurrentDispatchTests(unittest.TestCase):
         self.current = adapter.CurrentWork(self.runtime)
         self.entries = []
 
+    def test_real_constructor_completed_native_field_and_strict_schema(self):
+        config = json.loads((self.runtime/'current.json').read_text())
+        proof = self.runtime/'prepared-completed-evidence.json'
+        self.write(proof, {'fixture':'owner-selected; no consumption at construction'})
+        config['completed_native_validations'] = {'UIF-119':{
+            'path':str(proof),'sha256':adapter.file_sha(proof)}}
+        def select(value):
+            self.write(self.runtime/'current.json', value)
+            state = json.loads(json.dumps(self.current.state))
+            state['config_sha256'] = adapter.file_sha(self.runtime/'current.json')
+            self.write(self.runtime/'current-owner.json', state)
+        select(config)
+        before = (self.runtime/'current-owner.json').read_bytes()
+        observed = adapter.CurrentWork(self.runtime, read_only=True)
+        self.assertEqual(observed.config['completed_native_validations'], config['completed_native_validations'])
+        self.assertEqual((self.runtime/'current-owner.json').read_bytes(), before)
+        for malformed in ([], {'UIF-119':{'path':str(proof),'sha256':'invalid'}},
+                          {'foreign':config['completed_native_validations']['UIF-119']}):
+            select(dict(config,completed_native_validations=malformed))
+            with self.assertRaises(AdmissionError):adapter.CurrentWork(self.runtime,read_only=True)
+        select(dict(config,unrecognized_configuration=True))
+        with self.assertRaisesRegex(AdmissionError,'current_config_fields'):
+            adapter.CurrentWork(self.runtime,read_only=True)
+        missing = dict(config);missing.pop('owner');select(missing)
+        with self.assertRaisesRegex(AdmissionError,'current_config_fields'):
+            adapter.CurrentWork(self.runtime,read_only=True)
+
     UIF_ROUTE = dict(project_id='ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0',
                      project_slug='21558318e036')
     UIF119 = dict(identifier='UIF-119', uuid='3e6839ad-2f22-4ab1-8f6f-973c882daabd',
