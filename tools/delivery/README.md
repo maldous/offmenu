@@ -275,6 +275,41 @@ runner and policy, stopped children, and no pending cancellation/observation or
 reconciliation. Source must still qualify presently. This exception never runs
 historical executor code or authorizes replay; fresh execution remains strict.
 
+### Completed native coding with retained Engine validation
+
+A completed native unit may have valid Engine/Windmill acceptance and an already
+merged integration candidate, with a different integration branch/base from the
+immutable coding admission. Those are separate facts. Never manufacture a
+native-v1 Journal, change the manifest, invent a pending merge, or replay checks
+just to satisfy the historical consumer.
+
+The authenticated integration owner may select an exact private evidence ref in
+`current.json.completed_native_validations[issue]`. The typed
+`completed-native-validation-v1` consumer requires the unchanged native gate,
+finished successful lease, exact native output bytes, admitted coding identity,
+and explicit integration ancestry with no changes to those output paths between
+bases. Candidate delta/output hashes and verified merge parents/tree must match.
+It also requires the original owner-approved Engine task/request and terminal
+Windmill result/receipt, command/request/runner/policy hashes, independent review,
+and the original Controller binding, claim, terminal checkpoint and observation.
+Private byte-identical copies may provide receipt custody; provenance remains the
+original records. The current authenticated owner claim remains separate from
+that completed Controller's claim. Neither stdin nor a shared UID is authentication.
+
+The fixed v2 review transport consumes that evidence using
+`completed_native_source`, equal to the owner-selected ref. The finite
+`reviewCompletedNativeValidation` gateway writes only the exact unit review;
+it never invokes Controller steps, merge, Linear completion, Engine/Journal
+submission or coding. The normal coordinator records completed validation and
+consumes the unit review at refresh. Approval remains `accepted_delivery:false`.
+Unknown reviewer model/provider fields remain explicitly unavailable in the
+retained independent artifact, independent of the coding model request.
+
+Adopt only independently reviewed source and exact owner-qualified configuration
+through the existing service owner. Historical v1 and standalone contracts remain
+unchanged. A source merge is not live adoption or proof of unattended continuity.
+See [ADR 0007](../../docs/adr/0007-completed-native-validation-consumption.md).
+
 For a submitted reviewed-source operation, supported local source/admission
 drift does not create new submission authority. The existing
 [Journal recovery/cancellation path](stokowski_operations.py) observes and

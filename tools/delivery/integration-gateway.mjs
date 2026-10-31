@@ -102,8 +102,14 @@ async function fixedUnitReviewWriter(context) {
   return async envelope => {
     const payload = reviewWireBytes({context,envelope});
     const request = sha(payload);
-    const binding = context.qualification_source ?
-      JSON.parse(readFileSync(context.qualification_source.path)).integration_binding :
+    function pinnedJSON(ref) {
+      const raw=readFileSync(ref.path);
+      if(raw.length>reviewLimit || sha(raw)!==ref.sha256) throw Error('local_review_refused');
+      return JSON.parse(raw);
+    }
+    const binding = context.completed_native_source ?
+      pinnedJSON(pinnedJSON(context.completed_native_source).integration_binding) :
+      context.qualification_source ? pinnedJSON(context.qualification_source).integration_binding :
       JSON.parse(readFileSync(`${context.controller_directory}/binding.json`));
     const evidence = reviewWireBytes({issue:context.issue,unit_binding:context.unit_binding,
       integration_binding:binding,snapshot:envelope.snapshot,decision:envelope.decision,
@@ -160,6 +166,30 @@ export async function reviewStandaloneValidation({observe, reviewedCurrentUnit, 
   if (reviewedCurrentUnit) unitReviewWriter = await fixedUnitReviewWriter(reviewedCurrentUnit);
   if (!unitReviewWriter) throw Error('local_review_refused');
   return await unitReviewWriter(structuredClone({snapshot,decision}));
+}
+
+/** Consume completed native evidence only; no integration, submission or metadata effects. */
+export async function reviewCompletedNativeValidation({observe, reviewedCurrentUnit, unitReviewWriter}) {
+  reviewWireBytes(reviewedCurrentUnit);
+  if (!reviewedCurrentUnit?.completed_native_source || reviewedCurrentUnit.qualification_source)
+    throw Error('local_review_refused');
+  const snapshot = await observe();
+  const decision = snapshot?.decision;
+  const observation = snapshot?.snapshot;
+  reviewWireBytes({decision, observation});
+  if (decision?.version !== 1 || decision.kind !== 'completed-native-validation-v1' ||
+      decision.status !== 'completed-native-qualified' || decision.action !== null ||
+      decision.merge_effect !== 'verified' ||
+      decision.completed_evidence_sha256 !== reviewedCurrentUnit.completed_native_source.sha256 ||
+      !/^[0-9a-f]{64}$/.test(decision.binding_sha256 || '') ||
+      !/^[0-9a-f]{64}$/.test(decision.qualification_sha256 || '') ||
+      !/^[0-9a-f]{40}$/.test(decision.merge_commit_sha || '') ||
+      observation?.validation?.status !== 'succeeded' || observation.cancel_requested ||
+      observation.unresolved_findings?.length || observation.review?.verdict !== 'accept' ||
+      observation.review?.independent !== true || observation.review?.findings?.length)
+    throw Error('local_review_refused');
+  if (!unitReviewWriter) unitReviewWriter = await fixedUnitReviewWriter(reviewedCurrentUnit);
+  return await unitReviewWriter(structuredClone({snapshot:observation, decision}));
 }
 
 /** Finite authenticated connector-owner gateway; never a coding-child tool.
