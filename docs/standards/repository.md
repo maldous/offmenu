@@ -1,4 +1,4 @@
-# Repository standard 2.3.0
+# Repository standard 2.3.1
 
 Status: adopted through reviewed integration after independent source review and
 real retained-extraction validation. Changes enter `develop`
@@ -138,3 +138,10 @@ parent/lease/job identity. Phase-boundary ready-refill records are provisional
 observations, not new admission/dispatch authority. Missing provider or platform
 capability is explicit. Active operation IDs, aggregate limits, legacy pauses and
 publication permissions remain unchanged.
+
+
+Standard 2.3.1 adds the bounded completed-native evidence consumer in
+[ADR 0007](../adr/0007-completed-native-validation-consumption.md). Original
+native admission, coding receipt, Engine validation and completed integration
+retain distinct identities. This does not create a Journal, replay execution,
+close a parent outcome, or grant new publication, provider or service authority.

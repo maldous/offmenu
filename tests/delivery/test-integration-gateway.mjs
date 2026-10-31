@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {advanceIntegration,reviewWireBytes,reviewStandaloneValidation} from '../../tools/delivery/integration-gateway.mjs';
+import {advanceIntegration,reviewWireBytes,reviewStandaloneValidation,reviewCompletedNativeValidation} from '../../tools/delivery/integration-gateway.mjs';
 function fixture(kind='merge-pr') {
   const action={kind,repository:'maldous/offmenu',pr_number:145,expected_head_branch:'feature/langgraph-delivery-standardization',expected_head_sha:'a'.repeat(40),expected_base_sha:'b'.repeat(40),issue_id:'issue',merge_commit_sha:'c'.repeat(40),validation_operation_key:'d'.repeat(64)};
   const f={calls:[],decision:{status:kind==='merge-pr'?'merge-intent':'linear-intent',action}};
@@ -281,4 +281,27 @@ test('unqualified decisions never construct the actual unit review factory',asyn
     await advanceIntegration(f);
     assert.deepEqual(f.calls,[['outcome','merge','not-issued']]);
   }
+});
+
+
+if (!['--local-review-fixture','--standalone-review-fixture'].includes(process.argv[2])) test('completed native evidence ingestion has no merge or submission route',async()=>{
+  const context={completed_native_source:{path:'/owner/private/completed.json',sha256:'e'.repeat(64)}};
+  const snapshot={review:{verdict:'accept',independent:true,findings:[]},validation:{status:'succeeded'}};
+  const decision={version:1,kind:'completed-native-validation-v1',status:'completed-native-qualified',
+    action:null,merge_effect:'verified',completed_evidence_sha256:'e'.repeat(64),
+    binding_sha256:'b'.repeat(64),qualification_sha256:'c'.repeat(64),merge_commit_sha:'d'.repeat(40)};
+  let writes=0;
+  const call={reviewedCurrentUnit:context,observe:async()=>({snapshot,decision}),
+    unitReviewWriter:async envelope=>{writes++;assert.deepEqual(envelope,{snapshot,decision});return {status:'retained'};}};
+  assert.equal((await reviewCompletedNativeValidation(call)).status,'retained');
+  for(const change of [{kind:'merge-pr'},{action:{kind:'merge-pr'}},{merge_effect:'pending'},
+    {completed_evidence_sha256:'f'.repeat(64)},{merge_commit_sha:'not-a-commit'},
+    {qualification_sha256:null},{status:'merge-intent'}]){
+    await assert.rejects(reviewCompletedNativeValidation({...call,observe:async()=>({snapshot,decision:{...decision,...change}})}));
+  }
+  for(const change of [{cancel_requested:true},{unresolved_findings:['unresolved']},
+    {validation:{status:'running'}},{review:{verdict:'accept',independent:false}}]){
+    await assert.rejects(reviewCompletedNativeValidation({...call,observe:async()=>({snapshot:{...snapshot,...change},decision})}));
+  }
+  assert.equal(writes,1);
 });

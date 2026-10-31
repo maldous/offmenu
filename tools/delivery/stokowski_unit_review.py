@@ -193,10 +193,13 @@ def handle(request):
     wire_value(payload)
     c, envelope = payload['context'], payload['envelope']
     standalone = 'qualification_source' in c
+    completed = 'completed_native_source' in c
+    require(not (standalone and completed))
     require(set(c) == {'source_head', 'source_sha256', 'python_sha256', 'actor_uid',
         'runtime', 'runtime_root', 'workspace_roots', 'claim_root', 'controller_directory',
         'issue', 'unit_binding', 'validation_receipt', 'validation_receipt_source'} |
-        ({'qualification_source'} if standalone else set()))
+        ({'qualification_source'} if standalone else set()) |
+        ({'completed_native_source'} if completed else set()))
     uid = c['actor_uid']
     require(type(uid) is int and os.getuid() == os.geteuid() == uid)
     # Custody checks only. Authentication is the trusted connector-owner call;
@@ -219,7 +222,7 @@ def handle(request):
     for p in (runtime/'current.json', runtime/'current-owner.json',
               runtime/'installation.json', runtime/'workflow.yaml',
               runtime/'capacity-policy.json', directory/'binding.json',
-              *([] if standalone else [directory/'state.json', directory/'graph.sqlite']),
+              *([] if standalone or completed else [directory/'state.json', directory/'graph.sqlite']),
               owner_path):
         custody(p, uid, private=True)
     current = CurrentWork(runtime, read_only=True)
@@ -254,7 +257,7 @@ def handle(request):
         custody(evidence_runtime, uid, private=True)
         for name in admission_files:
             custody(evidence_runtime/name, uid, private=True)
-    for name in ('validation-bindings.json','operations/operations.sqlite',
+    for name in (*([] if completed else ['validation-bindings.json','operations/operations.sqlite']),
                  *([] if reviewed else ['attempts/'+c['issue']+'/'+n for n in
                    ('intent.json','dispatch-intent.json','receipt.json')])):
         custody(evidence_runtime/name, uid, private=True)
@@ -283,6 +286,9 @@ def handle(request):
         require(b['owner'] == current.config['owner'] and b['issue_id'] == entry['issue_id'])
         decision = retained['decision']
         channels = dict(result=decision, observation=retained['snapshot'])
+    elif completed:
+        decision = None
+        channels = {}
     else:
         require(b['issue_id'] == entry['issue_id'])
         decision = read_record(directory/'state.json')
@@ -292,6 +298,17 @@ def handle(request):
         require(row is not None)
         require(row[0] == 'msgpack' and len(row[1]) <= LIMIT)
         channels = checkpoint_json(row[1])['channel_values']
+    if completed:
+        from stokowski_completed import qualify, pinned
+        require(c['source_sha256'].get('tools/delivery/stokowski_completed.py') is not None
+                and c['completed_native_source'] == current.config.get('completed_native_validations', {}).get(c['issue']))
+        completed_packet = qualify(current, c['issue'])
+        source = pinned(c['completed_native_source'], current.root.parent)
+        require(c['validation_receipt_source'] == source['validation_receipt']
+                and completed_packet['integration_binding']['owner'] == b['owner'])
+        decision = completed_packet['decision']
+        b = completed_packet['integration_binding']
+        channels = dict(result=decision, observation=completed_packet['snapshot'])
     require(same_wire(channels['result'], decision)
             and same_wire(decision, envelope['decision'])
             and same_wire(channels['observation'], envelope['snapshot']))
@@ -320,10 +337,14 @@ def handle(request):
             and gate.get('disposition') in ('waiting','approved')
             and gate.get('accepted_delivery', False) is False)
     review = packet['snapshot']['review']
-    require(review.get('requested_model') and review.get('requested_provider')
-            and review.get('resolution_status') in ('observed','unknown')
-            and ((review['resolution_status'] == 'unknown' and review.get('resolved_model') is None)
-                 or (review['resolution_status'] == 'observed' and review.get('resolved_model'))))
+    if not completed:
+        require(review.get('requested_model') and review.get('requested_provider')
+                and review.get('resolution_status') in ('observed','unknown')
+                and ((review['resolution_status'] == 'unknown' and review.get('resolved_model') is None)
+                     or (review['resolution_status'] == 'observed' and review.get('resolved_model'))))
+    # Completed native evidence retains the original reviewer's explicit raw
+    # unavailable fields, requalified by the owner-pinned independent artifact.
+
     for name in b['outputs']:
         custody((evidence_source if reviewed else evidence_runtime/'workspaces'/c['issue'])/name, uid, private=True)
     incoming = runtime/('unit-review-' + c['issue'] + '.json')

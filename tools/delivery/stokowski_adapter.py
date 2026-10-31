@@ -970,6 +970,14 @@ class CurrentWork:
             try:
                 _, manifest, _ = self.context(issue, review=True, observation=True)
                 selected_task = manifest['tasks'][issue]
+                if issue in self.config.get('completed_native_validations', {}):
+                    from stokowski_completed import qualify
+                    completed = qualify(self, issue)
+                    task['validation'] = dict(status='succeeded', origin='completed-native-validation-v1',
+                        operation_key=completed['snapshot']['validation']['operation_key'],
+                        requested_model=None, requested_effort=None, provider=None)
+                    self.save()
+                    continue  # Completed evidence never invokes stage.tick or a submitter.
                 runtime, identity = self.validation_binding(issue, entry)
                 if 'stage' in selected_task:
                     from types import SimpleNamespace
@@ -1085,6 +1093,11 @@ class CurrentWork:
         issue = packet['issue']
         entry = self.entries[issue]
         unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']))
+        if packet.get('decision', {}).get('kind') == 'completed-native-validation-v1':
+            from stokowski_completed import qualify
+            if packet != qualify(self, issue):
+                raise AdmissionError('completed_native_review_packet')
+            return unit
         runtime, manifest, _ = self.context(issue, review=True)
         task = manifest['tasks'][issue]
         reviewed = 'stage' in task and task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1'
