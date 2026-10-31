@@ -163,6 +163,21 @@ class WorkerRegressions(unittest.TestCase):
         self.assertEqual((self.directory() / 'receipt.json').read_bytes(), receipt)
         self.assertEqual(self.events(), before)
 
+    def test_confinement_refusal_finishes_pool_with_no_child_and_retains_intent(self):
+        self.process.side_effect = self.real_supervise
+        with patch.object(worker, 'bind_native', side_effect=ValueError('fixture policy absent')) as bind:
+            result = worker.execute(self.runtime, self.issue, self.request)
+        bind.assert_called_once()
+        self.assertEqual(result['launch_classification'], 'confinement-prelaunch-refusal')
+        self.assertFalse(result['child_started'])
+        self.assertTrue(result['child_tree_gone'])
+        self.assertEqual(self.rows()[self.lease()]['status'], 'failed')
+        self.assertEqual(self.rows()[self.lease()]['outcome'], 'failed')
+        self.assertTrue((self.directory()/'intent.json').exists())
+        self.assertIsNone(result['resolved_model'])
+        with self.assertRaisesRegex(AdmissionError, 'no replay'):
+            worker.execute(self.runtime, self.issue, self.request)
+
     def test_uncertain_cleanup_retains_lease_and_blocks_replay(self):
         self.process.side_effect = None
         self.process.return_value = dict(status='uncertain', child_tree_gone=False)
@@ -449,6 +464,21 @@ class WorkerRegressions(unittest.TestCase):
                 self.assertFalse((directory/'receipt.json').exists())
                 if outcome in ('admitted-exception','row-present'):
                     self.assertEqual(self.rows()[lease]['status'],'running')
+
+    def test_native_review_confinement_refusal_records_no_child_and_releases_pool(self):
+        runtime, manifest, request, policy = self.review_fixture()
+        self.process.side_effect = self.real_supervise
+        with patch.object(worker, 'bind_native', side_effect=ValueError('fixture policy absent')):
+            result = worker.execute(runtime, self.issue, request)
+        self.assertEqual(result['status'], 'failed')
+        self.assertEqual(result['launch_classification'], 'confinement-prelaunch-refusal')
+        self.assertTrue(result['child_tree_gone'])
+        self.assertFalse(result['child_started'])
+        self.assertEqual(self.rows()[result['lease']]['status'], 'failed')
+        directory = runtime/'attempts'/('review-'+self.issue)
+        self.assertTrue((directory/'intent.json').exists())
+        self.assertFalse((directory/'stdout.jsonl').exists())
+        self.assertIsNone(result['resolved_model'])
 
     def test_native_review_finite_python_child_and_tamper_checks(self,capacity_defer=False):
         runtime,manifest,request,policy=self.review_fixture()

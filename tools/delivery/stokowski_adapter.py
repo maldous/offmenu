@@ -1330,7 +1330,7 @@ class CurrentWork:
         runtime, manifest, _ = self.context(issue, review=True, observation=True)
         task = manifest['tasks'][issue]
         if ((runtime/'cancel.json').exists() or (self.runtime/'cancel.json').exists()
-            or self.state['tasks'][issue].get('unit_gate',{}).get('disposition') == 'rework'):
+            or (materialize and self.state['tasks'][issue].get('unit_gate',{}).get('disposition') == 'rework')):
             raise AdmissionError('native_review_template_terminal_hold')
         if ('stage' in task or template['project_id'] != manifest['project_id']
             or template['resources'] != task['resources'] or template['acceptance'] != task['acceptance']
@@ -1393,6 +1393,9 @@ class CurrentWork:
         policy_ref = dict(path=str(path),sha256=hashlib.sha256(raw).hexdigest())
         pending = self.state['tasks'][issue].get('native_review',{})
         expected = dict(policy=policy_ref,derivation=derivation)
+        # Rework may requalify retained bytes, but cannot materialize or launch.
+        # Exact derivation checks here and native receipt qualification downstream
+        # still apply; an existing file alone is never authority.
         if path.exists() or 'derivation' in pending:
             if (not path.is_file() or path.read_bytes() != raw
                 or any(pending.get(k) != v for k,v in expected.items())):
