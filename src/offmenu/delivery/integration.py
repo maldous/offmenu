@@ -89,6 +89,9 @@ class Controller:
                 or set(publication) != {'plan_sha256', 'qualification_sha256'}
                 or any(not re.fullmatch('[0-9a-f]{64}', str(v)) for v in publication.values())):
                 raise DeliveryError('Invalid publication binding')
+        self._bind_state(directory, binding, claim_root)
+
+    def _bind_state(self, directory, binding, claim_root):
         self.directory = Path(directory).absolute()
         self.claim_root = Path(claim_root).absolute() if claim_root else self.directory.parent
         if self.directory == self.claim_root or not self.directory.is_relative_to(self.claim_root):
@@ -121,6 +124,8 @@ class Controller:
                 if read_claim(evidence,self.claim_root) != claim:
                     raise DeliveryError('Immutable integration claim conflict')
             if old and (old['binding_sha256'] != self.key or old['directory'] != str(self.directory)):
+                if evidence.exists() and self.status().get('merge_effect') != 'verified':
+                    raise DeliveryError('Superseded transaction cannot reacquire repository ownership')
                 previous = Path(old['directory'])
                 if not previous.is_relative_to(self.claim_root):
                     raise DeliveryError('Invalid previous integration claim')
@@ -128,13 +133,15 @@ class Controller:
                     raise DeliveryError('Symlink previous integration state')
                 state = json.loads((previous/'state.json').read_text())
                 if (state.get('merge_effect') in ('pending','unknown')
-                    or state.get('publication', {}).get('effect') in ('pending','unknown')):
+                    or state.get('publication', {}).get('effect') in ('pending','unknown')
+                    or state.get('release_effect') in ('pending','unknown')
+                    or state.get('tag_effect') in ('pending','unknown')):
                     raise DeliveryError('Repository integration outcome must reconcile before another owner')
                 safe_repair = state['status']=='repair-required' and (not state.get('qualification_sha256')
                     or (state.get('canonical_effect_verified') is True and state.get('merge_commit_sha')))
                 metadata_only = state.get('merge_effect')=='verified' and state.get('merge_commit_sha')
                 if not safe_repair and not metadata_only and state['status'] not in ('prepared','awaiting-independent-review','awaiting-validation',
-                        'awaiting-fresh-observation','awaiting-mergeability','stale-candidate','disabled','accepted','cancelled'):
+                        'awaiting-fresh-observation','awaiting-mergeability','stale-candidate','disabled','accepted','cancelled','release-verified'):
                     raise DeliveryError('Repository integration outcome must reconcile before another owner')
             if not evidence.exists():
                 atomic(evidence,claim)
@@ -482,6 +489,146 @@ class Controller:
             return self._publication_checkpoint(current)
 
 
+class ReleaseController(Controller):
+    """Separate owner-admitted main promotion; no coding or issue completion.
+
+    The protected binding pins the reviewed aggregator qualification. Its schema
+    remains owned by the release component; this controller binds that exact
+    accepted result rather than reimplementing the profile evidence reader.
+    """
+    def __init__(self, directory, binding, claim_root=None):
+        from native_harness_contract import validate_release_candidate, fingerprint as native_fingerprint
+        required = {'version','kind','repository','owner','candidate','policy','qualification',
+                    'authority','pr_number','main_base','tag','issue_id','project_id'}
+        if (set(binding) != required or type(binding['version']) is not int or binding['version'] != 3
+            or binding['kind'] != 'release-promotion-v1'
+            or binding['repository'] != 'maldous/offmenu'
+            or not isinstance(binding['owner'], str) or not binding['owner']
+            or type(binding['pr_number']) is not int or binding['pr_number'] <= 0
+            or not re.fullmatch('[0-9a-f]{40}', str(binding['main_base']))
+            or not re.fullmatch(r'release/[a-z0-9][a-z0-9.-]{0,79}', str(binding['tag']))):
+            raise DeliveryError('Invalid release promotion binding')
+        candidate = validate_release_candidate(binding['candidate'], binding['policy'])
+        candidate_id = native_fingerprint(candidate)
+        authority = binding['authority']
+        expected = dict(version=1, kind='release-promotion-authority-v1', owner=binding['owner'],
+                        issue_id=binding['issue_id'], project_id=binding['project_id'],
+                        candidate_sha256=candidate_id,
+                        qualification_sha256=native_fingerprint(binding['qualification']),
+                        pr_number=binding['pr_number'], main_base=binding['main_base'], tag=binding['tag'])
+        if authority != expected:
+            raise DeliveryError('Release authority is not bound to exact candidate and qualification')
+        for key in ('issue_id','project_id'):
+            if str(UUID(binding[key])) != binding[key]:
+                raise DeliveryError('Invalid release issue/project identity')
+        from release_qualification import validate_qualification
+        q = binding['qualification']
+        if not isinstance(q, dict) or set(q) != {'summary','plan','results','catalog','evidence_root'}:
+            raise DeliveryError('Release qualification inputs required')
+        if q['plan'].get('candidate') != candidate:
+            raise DeliveryError('Release qualification candidate mismatch')
+        validate_qualification(q['summary'], q['plan'], q['results'], binding['policy'],
+                               q['catalog'], q['evidence_root'])
+        self.candidate_id = candidate_id
+        self._bind_state(directory, binding, claim_root)
+
+    def run(self, observation):
+        with self.ownership():
+            current = self.status()
+            b, s = self.binding, self.binding['candidate']['source']
+            if current['status'] == 'release-verified':
+                return current
+            def save(status, action=None, **extra):
+                current.update(status=status, action=action, binding_sha256=self.key, **extra)
+                return self._publication_checkpoint(current)
+            at = observation.get('observed_at')
+            if (type(at) not in (int, float) or not math.isfinite(at)
+                or at > time.time()+5 or time.time()-at > 60):
+                return save('awaiting-fresh-observation')
+            if observation.get('publisher_owner') != b['owner']:
+                return save('quarantined', reason='publisher-owner-mismatch')
+            pr = observation.get('github', {})
+            if (pr.get('repository') != b['repository'] or pr.get('number') != b['pr_number']
+                or pr.get('head') != s['head'] or pr.get('head_branch') != 'release/candidate-'+self.candidate_id
+                or pr.get('base_branch') != 'main'):
+                return save('stale-candidate')
+            # A matching tag is only accepted after canonical promotion readback.
+            if pr.get('merged'):
+                commit = observation.get('merge_commit', {})
+                if (current.get('release_effect') not in ('pending','unknown','verified')
+                    or commit.get('sha') != pr.get('merge_commit_sha')
+                    or not re.fullmatch('[0-9a-f]{40}', str(commit.get('sha')))
+                    or observation.get('main_contains_merge') is not True):
+                    return save('release-reconciliation-required')
+                if commit.get('parents') != [b['main_base'],s['head']] or commit.get('tree') != s['tree']:
+                    return save('release-readback-mismatch', release_effect='unknown')
+                current.update(release_effect='verified', merge_commit_sha=commit['sha'])
+                tag = observation.get('tag')
+                expected = {'ref':'refs/tags/'+b['tag'], 'object':{'type':'commit','sha':commit['sha']}}
+                if tag == expected:
+                    return save('release-verified', tag_effect='verified')
+                if tag is not None:
+                    return save('immutable-tag-conflict')
+                if current.get('tag_effect') in ('pending','unknown'):
+                    return save('tag-reconciliation-required')
+                action = dict(kind='create-release-tag', repository=b['repository'], tag=b['tag'],
+                              commit_sha=commit['sha'], candidate_sha256=self.candidate_id,
+                              authority_sha256=fingerprint(b['authority']))
+                return save('release-tag-intent', action, tag_effect='pending')
+            if current.get('release_effect') in ('pending','unknown','verified'):
+                return save('release-reconciliation-required')
+            if (observation.get('cancel_requested') or pr.get('base') != b['main_base']
+                or pr.get('state') != 'open' or pr.get('draft') is not False
+                or pr.get('mergeable') is not True or observation.get('tag') is not None):
+                return save('release-held')
+            if (observation.get('qualification_sha256') != fingerprint(b['qualification'])
+                or observation.get('review', {}).get('verdict') != 'accept'
+                or observation['review'].get('independent') is not True
+                or observation['review'].get('head') != s['head']
+                or observation['review'].get('base') != b['main_base']
+                or not observation['review'].get('evidence_id')
+                or observation['review'].get('findings') != []
+                or observation.get('unresolved_findings') != []
+                or observation.get('publication_triggers_actions') is not False):
+                return save('release-held')
+            action = dict(kind='promote-release', repository=b['repository'], pr_number=b['pr_number'],
+                          expected_head_sha=s['head'], expected_base_sha=b['main_base'],
+                          expected_head_branch='release/candidate-'+self.candidate_id, candidate_sha256=self.candidate_id,
+                          authority_sha256=fingerprint(b['authority']), tag=b['tag'])
+            return save('release-intent', action, release_effect='pending')
+
+    def consume_release_intent(self, action):
+        with self.ownership():
+            current = self.status()
+            kind = action.get('kind')
+            field = {'promote-release':'release_effect','create-release-tag':'tag_effect'}.get(kind)
+            if (not field or current.get(field) != 'pending' or current.get('action') != action):
+                raise DeliveryError('No matching unconsumed release intent')
+            current.update(action=None, status='release-reconciliation-required')
+            current[field] = 'unknown'
+            self._publication_checkpoint(current)
+            return True
+
+
+def publisher_directory(root, binding):
+    """Resume the exact historical transaction; fresh admissions get fresh state."""
+    root = Path(root)
+    legacy = root/'current'
+    path = legacy/'binding.json'
+    if legacy.is_symlink() or path.is_symlink():
+        raise DeliveryError('Symlink historical publisher binding')
+    if path.exists():
+        try:
+            if not path.is_file() or path.stat().st_size > 1048576:
+                raise ValueError('Invalid legacy binding size/type')
+            previous = json.loads(path.read_text())
+            if previous == binding:
+                return legacy
+        except (OSError, ValueError) as exc:
+            raise DeliveryError('Invalid historical publisher binding') from exc
+    return root/('transaction-'+fingerprint(binding))
+
+
 def publisher_request(config, request):
     """Fixed publisher RPC implementation; config is protected owner admission.
 
@@ -491,10 +638,10 @@ def publisher_request(config, request):
     """
     binding = config['binding']
     root = Path('/var/lib/offmenu-publisher/integration')
-    directory = root/'current'
+    directory = publisher_directory(root, binding)
     # A trusted in-process test boundary can construct a Controller directly;
     # runtime directories cannot be selected in this JSON protocol.
-    controller = Controller(directory, binding, root)
+    controller = (ReleaseController if binding['version'] == 3 else Controller)(directory, binding, root)
     return _publisher_request(controller, config, request)
 
 
@@ -508,6 +655,22 @@ def _publisher_request(controller, config, request):
         'step': {'op','observation'}, 'outcome': {'op','kind','outcome'}, 'status': {'op'}}
     if operation not in shapes or set(request) != shapes[operation]:
         raise DeliveryError('Unsupported publisher request field')
+    if isinstance(controller, ReleaseController):
+        if (config.get('version') != 2 or controller.binding['owner'] != config.get('logicalOwner')
+            or fingerprint(controller.binding) != fingerprint(config['binding'])):
+            raise DeliveryError('Release admission changed')
+        if operation == 'status':
+            with controller.ownership():
+                return controller.status()
+        if operation == 'step':
+            observation = request['observation']
+            for name in ('qualification_sha256','review','unresolved_findings','publication_triggers_actions','publisher_owner'):
+                if observation.get(name) != config['snapshot'].get(name):
+                    raise DeliveryError('Release qualified observation changed')
+            return controller.run(observation)
+        if operation == 'consume':
+            return {'authorized': controller.consume_release_intent(request['intent'])}
+        raise DeliveryError('Unsupported release operation')
     binding, plan = controller.binding, config['plan']
     if (fingerprint(binding) != fingerprint(config['binding'])
         or binding['owner'] != config['logicalOwner']
@@ -597,17 +760,27 @@ def publisher_main():
             entry = part.lstat()
             if (not stat.S_ISDIR(entry.st_mode) or entry.st_uid != 0 or entry.st_mode & 0o022):
                 raise DeliveryError('Publisher state ancestry held')
-        for part in (root, root/'current'):
+        entry = root.lstat()
+        if (root.resolve() != root or not stat.S_ISDIR(entry.st_mode) or entry.st_uid != uid
+            or entry.st_gid != gid or stat.S_IMODE(entry.st_mode) != 0o700):
+            raise DeliveryError('Publisher state custody held')
+        selected = publisher_directory(root, config['binding'])
+        # Creation is publisher-only beneath the already checked custody root.
+        selected.mkdir(mode=0o700, exist_ok=True)
+        for part in (root, selected):
             entry = part.lstat()
             if (part.resolve() != part or not stat.S_ISDIR(entry.st_mode) or entry.st_uid != uid
                 or entry.st_gid != gid or stat.S_IMODE(entry.st_mode) != 0o700):
                 raise DeliveryError('Publisher state custody held')
         # State and immutable bindings may be modified only by the publisher.
         # No symlink/hardlink/special file can redirect a privileged bridge read.
-        for directory in (root, root/'current'):
+        for directory in (root, selected):
             for part in directory.iterdir():
                 entry = part.lstat()
-                if part == root/'current':
+                if directory == root and (part.name == 'current' or re.fullmatch(r'transaction-[0-9a-f]{64}', part.name)):
+                    if (not stat.S_ISDIR(entry.st_mode) or part.resolve() != part
+                        or entry.st_uid != uid or entry.st_gid != gid or stat.S_IMODE(entry.st_mode) != 0o700):
+                        raise DeliveryError('Publisher transaction custody held')
                     continue
                 if (not stat.S_ISREG(entry.st_mode) or entry.st_uid != uid or entry.st_gid != gid
                     or entry.st_nlink != 1 or stat.S_IMODE(entry.st_mode) != 0o600

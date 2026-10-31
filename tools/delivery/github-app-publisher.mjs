@@ -66,24 +66,28 @@ export function protectedRead(path,{uid=0,gid,mode=0o440,max=LIMIT,io=fs}={}) {
 export function validateConfig(c, identity) {
   check(exact(c,['version','appId','installationId','repositoryId','publisherUid','publisherGid',
     'logicalOwner','sourceHead','codePins','pythonSha256','binding','snapshot','plan','workspace']));
-  check(c.version===1 && [c.appId,c.installationId,c.publisherUid,c.publisherGid].every(positive) &&
+  check([1,2].includes(c.version) && [c.appId,c.installationId,c.publisherUid,c.publisherGid].every(positive) &&
     ![0,1000].includes(c.publisherUid) && ![0,1000].includes(c.publisherGid) &&
     c.repositoryId===1416253963 && identity.uid===c.publisherUid && identity.euid===c.publisherUid &&
     identity.gid===c.publisherGid && identity.egid===c.publisherGid &&
     typeof c.logicalOwner==='string' && c.logicalOwner.length>0 &&
     c.binding.owner===c.logicalOwner && c.binding.repository==='maldous/offmenu' &&
     hex(c.sourceHead,40) && hex(c.pythonSha256) &&
-    c.binding.version===2 && c.binding.pr_number===null &&
-    c.binding.publication.plan_sha256===fingerprint(c.plan) &&
-    c.binding.publication.qualification_sha256===fingerprint(c.snapshot));
+    (c.version===2 ? c.binding.version===3 && c.binding.kind==='release-promotion-v1' &&
+      same(c.plan,{kind:'release-promotion-v1'}) &&
+      c.snapshot.qualification_sha256===fingerprint(c.binding.qualification) :
+      c.binding.version===2 && c.binding.pr_number===null &&
+      c.binding.publication.plan_sha256===fingerprint(c.plan) &&
+      c.binding.publication.qualification_sha256===fingerprint(c.snapshot)));
   const required=['tools/delivery/github-app-publisher.mjs','tools/delivery/github-app-adapter.mjs',
     'tools/delivery/integration-gateway.mjs','src/offmenu/delivery/integration.py',
     'src/offmenu/delivery/engine.py','src/offmenu/__init__.py','src/offmenu/delivery/__init__.py'];
+  if(c.version===2) required.push('tools/delivery/native_harness_contract.py','contracts/schemas/delivery-handoff-v1.schema.json','tools/delivery/release_qualification.py');
   check(c.codePins && required.every(p=>hex(c.codePins[p])) &&
     Object.entries(c.codePins).every(([p,h])=>required.includes(p)&&hex(h)) &&
     typeof c.workspace==='string' && c.workspace.startsWith('/') && !c.workspace.includes('/../') &&
-    /^(feature|bugfix)\/[a-z0-9][a-z0-9/-]{0,159}$/.test(c.binding.head_branch) &&
-    !c.binding.head_branch.includes('//') && !c.binding.head_branch.endsWith('/'));
+    (c.version===2 || /^(feature|bugfix)\/[a-z0-9][a-z0-9/-]{0,159}$/.test(c.binding.head_branch) &&
+    !c.binding.head_branch.includes('//') && !c.binding.head_branch.endsWith('/')));
   bytesJSON(c);
   return c;
 }
@@ -209,7 +213,8 @@ function canonicalObject(operation,result) {
   }
   // Verify exact author/committer identity and raw-object SHA returned by GitHub.
   return result.tree?.sha===operation.body.tree &&
-    same(result.parents?.map(p=>p.sha),operation.body.parents) && result.message===operation.body.message &&
+    same(result.parents?.map(p=>p.sha),operation.body.parents) && typeof result.message==='string' &&
+    result.message.replace(/\n?$/, '\n')===operation.body.message.replace(/\n?$/, '\n') &&
     ['author','committer'].every(role=>result[role]?.name===operation.body[role].name &&
       result[role]?.email===operation.body[role].email &&
       Date.parse(result[role]?.date)===Date.parse(operation.body[role].date));
@@ -322,6 +327,39 @@ export async function integrationStep({config:c,controller,adapterFactory,advanc
   return {status:result.status};
 }
 
+/** Existing fixed credential invocation, separately admitted frozen release. */
+export async function releaseStep({config:c,controller,adapterFactory,advanceRelease}) {
+  check(c.version===2 && c.binding.version===3);
+  const b=c.binding,s=b.candidate.source;
+  // Python constructor validates candidate/policy and immutable authority before auth.
+  await controller('status');
+  const github=await adapterFactory({
+    config:{appId:c.appId,installationId:c.installationId,repositoryId:c.repositoryId,publisherUid:c.publisherUid},
+    binding:{repository:b.repository,prNumber:b.pr_number,headSha:s.head,baseSha:b.main_base,
+      headBranch:`release/candidate-${fingerprint(b.candidate)}`,intentSha256:fingerprint(b.authority)},
+    release:{candidateSha256:fingerprint(b.candidate),authoritySha256:fingerprint(b.authority),tag:b.tag},
+    authorizeIntent:async intent=>(await controller('consume',{intent})).authorized===true});
+  async function observe() {
+    const p=await github.getPullRequest(b.repository,b.pr_number);
+    const observation={...structuredClone(c.snapshot),observed_at:Date.now()/1000,
+      github:{repository:b.repository,number:b.pr_number,merged:p.merged,state:p.merged?'closed':'open',
+        head:p.head_sha,base:p.base_sha,head_branch:p.head,base_branch:p.base,
+        draft:p.draft,mergeable:p.mergeable},tag:await github.readReleaseTag()};
+    if(p.merged) {
+      const facts=await github.readCanonicalFacts(p.merge_commit_sha);
+      observation.github.merge_commit_sha=p.merge_commit_sha;
+      observation.merge_commit=facts.merge_commit;
+      observation.main_contains_merge=facts.main_contains_merge;
+    } else {
+      const facts=await github.readExactHeadReviewFacts();
+      check(hex(c.snapshot.github_review_facts_sha256) &&
+        fingerprint(facts)===c.snapshot.github_review_facts_sha256);
+    }
+    return observation;
+  }
+  return await advanceRelease({controller:{step:observation=>controller('step',{observation})},github,observe});
+}
+
 async function fixedGit(c,args) {
   const {stdout}=await promisify(execFile)('/usr/bin/git',[
     '--no-optional-locks','-c',`safe.directory=${c.workspace}`,'-c','core.hooksPath=/dev/null',
@@ -350,7 +388,7 @@ function installedTree(path,depth=0) {
 async function fixedController(c,op,data={}) {
   // Fixed program and isolated Python import path; no user site/cwd/environment.
   // Python's bridge independently reloads protected config and exact claim state.
-  const code=`import sys; sys.path.insert(0, '${INSTALL}/src'); from offmenu.delivery.integration import publisher_main; publisher_main()`;
+  const code=`import sys; sys.path.insert(0, '${INSTALL}/src'); sys.path.insert(0, '${INSTALL}/tools/delivery'); from offmenu.delivery.integration import publisher_main; publisher_main()`;
   return await new Promise((resolve,reject)=>{
     const child=execFile(`${INSTALL}/venv/bin/python`,['-I','-B','-c',code],{
       cwd:INSTALL,env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8',LANGSMITH_TRACING:'false',LANGCHAIN_TRACING_V2:'false'},
@@ -377,12 +415,21 @@ export async function main() {
     const s=fs.lstatSync(path);check(s.isDirectory()&&s.uid===0&&(s.mode&0o022)===0);
     if(path==='/') break;
   }
-  for(const path of [CLAIM,`${CLAIM}/current`]) {
+  for(const path of [CLAIM]) {
     check(fs.realpathSync(path)===path);const s=fs.lstatSync(path);
     check(s.isDirectory()&&s.uid===c.publisherUid&&s.gid===c.publisherGid&&(s.mode&0o7777)===0o700);
   }
   const {createRepositoryGitHubAppAdapter}=await import('./github-app-adapter.mjs');
   checkedWorkspace(c);
+  if(c.version===2) {
+    const s=c.binding.candidate.source;
+    const raw=await fixedGit(c,['cat-file','commit',s.head]);
+    check(objectHash('commit',raw)===s.head && raw.toString().startsWith(`tree ${s.tree}\n`));
+    const {advanceRelease}=await import('./integration-gateway.mjs');
+    return releaseStep({config:c,controller:(op,data)=>fixedController(c,op,data),
+      adapterFactory:options=>createRepositoryGitHubAppAdapter({...options,
+        loadPrivateKey:async()=>loadProtectedKey(c)}),advanceRelease});
+  }
   const qualify=async()=>qualifyCandidate(c,{
     branchHead:(await fixedGit(c,['rev-parse','--verify',`refs/heads/${c.binding.head_branch}`])).toString().trim(),
     readObject:(type,id)=>fixedGit(c,['cat-file',type,id]),

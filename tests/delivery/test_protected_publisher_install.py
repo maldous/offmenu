@@ -220,6 +220,37 @@ class InstallTests(unittest.TestCase):
             self.install(manifest)
         self.no_intent()
 
+    def test_release_closure_requires_pinned_shared_schema_and_aggregator(self):
+        # Only association is checked by this offline producer; no copied code
+        # executes. Real candidate/aggregation validation is the runtime gate.
+        c = self.config
+        candidate = {'source': {'head':'a'*40}}
+        qualification = {'summary': {'status':'qualified'}}
+        b = dict(version=3,kind='release-promotion-v1',repository='maldous/offmenu',
+                 owner=c['logicalOwner'],issue_id='8daac134-01ab-4a02-a4d2-c0c417d0bd32',
+                 project_id='ce60c1ab-a732-4a71-8471-14c9dc393886',candidate=candidate,
+                 policy={},qualification=qualification,pr_number=248,main_base='9'*40,tag='release/2026.11.01')
+        b['authority'] = dict(version=1,kind='release-promotion-authority-v1',owner=b['owner'],
+            issue_id=b['issue_id'],project_id=b['project_id'],candidate_sha256=p._hash(p._wire(candidate)),
+            qualification_sha256=p._hash(p._wire(qualification)),pr_number=248,main_base=b['main_base'],tag=b['tag'])
+        c.update(version=2,binding=b,plan={'kind':'release-promotion-v1'},snapshot=dict(
+            publisher_owner=b['owner'],qualification_sha256=p._hash(p._wire(qualification)),
+            publication_triggers_actions=False,unresolved_findings=[],review=dict(head='a'*40,base='9'*40,
+            independent=True,verdict='accept',evidence_id='release-review',findings=[])))
+        with self.assertRaises(p.InstallError):
+            self.prepared()
+        self.no_intent()
+        for name in set(p.RELEASE_SOURCE_FILES)-set(p.SOURCE_FILES):
+            raw = b'synthetic shared dependency never executed\n'
+            self.put(p.SOURCE+'/'+name,raw);self.source_pins[name] = p._hash(raw)
+        c['codePins'] = {name:self.source_pins[name] for name in p.RELEASE_REQUIRED}
+        manifest = json.loads(self.prepared())
+        self.assertTrue(set(p.RELEASE_REQUIRED) <= manifest['files'].keys())
+        b['authority']['tag'] = 'release/other'
+        with self.assertRaises(p.InstallError):
+            self.prepared()
+        self.no_intent()
+
     def test_config_identity_shape_pins_paths_and_association_fail_closed(self):
         original = copy.deepcopy(self.config)
         variants = [dict(appId=1), dict(installationId=1), dict(repositoryId=1),

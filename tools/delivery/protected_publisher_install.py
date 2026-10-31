@@ -34,6 +34,9 @@ REQUIRED = (
 )
 # engine imports standards at module load; it is part of the sealed code closure.
 SOURCE_FILES = REQUIRED + ('src/offmenu/delivery/standards.py',)
+RELEASE_REQUIRED = REQUIRED + ('tools/delivery/native_harness_contract.py',
+    'contracts/schemas/delivery-handoff-v1.schema.json', 'tools/delivery/release_qualification.py')
+RELEASE_SOURCE_FILES = RELEASE_REQUIRED + ('src/offmenu/delivery/standards.py',)
 MAX_JSON = 1048576
 MAX_MANIFEST = 16 * MAX_JSON
 MAX_FILE = 32 * MAX_JSON
@@ -100,13 +103,16 @@ def _config(raw, expected_hash, source_pins, dependency_pins):
         _check(set(c) == {'version', 'appId', 'installationId', 'repositoryId',
             'publisherUid', 'publisherGid', 'logicalOwner', 'sourceHead', 'codePins',
             'pythonSha256', 'binding', 'snapshot', 'plan', 'workspace'})
-        for key, value in dict(version=1, appId=5554359, installationId=177187048,
+        _check(type(c['version']) is int and c['version'] in (1, 2))
+        for key, value in dict(appId=5554359, installationId=177187048,
                                repositoryId=1416253963, publisherUid=984, publisherGid=976).items():
             _check(type(c[key]) is int and c[key] == value, 'Fixed identity mismatch')
         _check(c['sourceHead'] == SOURCE_HEAD)
-        _check(type(source_pins) is dict and set(source_pins) == set(SOURCE_FILES)
+        required = RELEASE_REQUIRED if c['version'] == 2 else REQUIRED
+        source_files = RELEASE_SOURCE_FILES if c['version'] == 2 else SOURCE_FILES
+        _check(type(source_pins) is dict and set(source_pins) == set(source_files)
                and all(_hex(h) for h in source_pins.values())
-               and c['codePins'] == {name: source_pins[name] for name in REQUIRED})
+               and c['codePins'] == {name: source_pins[name] for name in required})
         _check(type(dependency_pins) is dict and dependency_pins
                and len(dependency_pins) <= MAX_ENTRIES
                and all(_path(p) and _hex(h) for p, h in dependency_pins.items()))
@@ -115,6 +121,9 @@ def _config(raw, expected_hash, source_pins, dependency_pins):
         workspace = c['workspace']
         _check(isinstance(workspace, str) and workspace.startswith('/') and workspace != '/'
                and str(PurePosixPath(workspace)) == workspace and '..' not in workspace.split('/'))
+        if c['version'] == 2:
+            _release_config(c)
+            return c
         b, plan, snapshot = c['binding'], c['plan'], c['snapshot']
         fields = {'version', 'repository', 'pr_number', 'issue_id', 'owner', 'head', 'base', 'tree',
                   'policy_sha256', 'capacity_policy_sha256', 'validation_operation_key',
@@ -160,6 +169,37 @@ def _config(raw, expected_hash, source_pins, dependency_pins):
     except (KeyError, TypeError, AttributeError, ValueError, RecursionError) as exc:
         raise InstallError('Invalid config association') from exc
     return c
+
+
+def _release_config(c):
+    """Protected-byte association only. Runtime invokes the shared validators.
+
+    Preparation never imports copied source or reads candidate evidence bodies.
+    This does not approve a release or upgrade a historical installed closure.
+    """
+    b, snapshot = c['binding'], c['snapshot']
+    _check(set(b) == {'version','kind','repository','owner','candidate','policy','qualification',
+                      'authority','pr_number','main_base','tag','issue_id','project_id'}
+           and type(b['version']) is int and b['version'] == 3
+           and b['kind'] == 'release-promotion-v1' and b['repository'] == 'maldous/offmenu'
+           and b['owner'] == c['logicalOwner'] and isinstance(b['owner'], str) and b['owner']
+           and type(b['pr_number']) is int and b['pr_number'] > 0 and _hex(b['main_base'],40)
+           and re.fullmatch(r'release/[a-z0-9][a-z0-9.-]{0,79}',b['tag'])
+           and c['plan'] == {'kind':'release-promotion-v1'})
+    for key in ('issue_id','project_id'):
+        _check(str(UUID(b[key])) == b[key])
+    candidate_hash, qualification_hash = _hash(_wire(b['candidate'])), _hash(_wire(b['qualification']))
+    _check(b['authority'] == dict(version=1,kind='release-promotion-authority-v1',owner=b['owner'],
+        issue_id=b['issue_id'],project_id=b['project_id'],candidate_sha256=candidate_hash,
+        qualification_sha256=qualification_hash,pr_number=b['pr_number'],main_base=b['main_base'],tag=b['tag']))
+    _check(snapshot['publisher_owner'] == b['owner']
+           and snapshot['qualification_sha256'] == qualification_hash
+           and snapshot['publication_triggers_actions'] is False
+           and snapshot['unresolved_findings'] == [] and not snapshot.get('cancel_requested'))
+    review = snapshot['review']
+    _check(review['head'] == b['candidate']['source']['head'] and review['base'] == b['main_base']
+           and review['independent'] is True and review['verdict'] == 'accept'
+           and isinstance(review['evidence_id'],str) and review['evidence_id'] and review['findings'] == [])
 
 
 def _plan(operations, binding):

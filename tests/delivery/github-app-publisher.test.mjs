@@ -7,7 +7,7 @@ import {join,resolve} from 'node:path';
 import {spawn} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {createRepositoryGitHubAppAdapter} from '../../tools/delivery/github-app-adapter.mjs';
-import {advanceIntegration} from '../../tools/delivery/integration-gateway.mjs';
+import {advanceIntegration,advanceRelease} from '../../tools/delivery/integration-gateway.mjs';
 import {fingerprint,validateConfig,protectedRead,loadProtectedConfig,loadProtectedKey,
   qualifyCandidate,canonicalPublication,publicationStep,integrationStep} from '../../tools/delivery/github-app-publisher.mjs';
 
@@ -125,7 +125,7 @@ async function actualController(t,f) {
   const configPath=join(temp,'synthetic-config.json');
   await writeFile(configPath,JSON.stringify(f.config));
   const invoke=async(op,data={})=>new Promise((resolvePromise,reject)=>{
-    const code=`import json,sys; from pathlib import Path; from offmenu.delivery.integration import Controller,_publisher_request; c=json.load(open(sys.argv[1])); ctl=Controller(Path(sys.argv[2])/'current',c['binding'],Path(sys.argv[2])); r=_publisher_request(ctl,c,json.load(sys.stdin)); print(json.dumps(r))`;
+    const code=`import json,sys; from pathlib import Path; from offmenu.delivery.integration import Controller,_publisher_request,publisher_directory; c=json.load(open(sys.argv[1])); ctl=Controller(publisher_directory(Path(sys.argv[2]),c['binding']),c['binding'],Path(sys.argv[2])); r=_publisher_request(ctl,c,json.load(sys.stdin)); print(json.dumps(r))`;
     const child=spawn(process.env.OFFMENU_DELIVERY_TEST_PYTHON || fileURLToPath(new URL('../../.venv-delivery/bin/python',import.meta.url)),['-B','-c',code,configPath,temp],
       {cwd:resolve('.'),env:{PATH:'/usr/bin:/bin',PYTHONPATH:resolve('src'),LANG:'C.UTF-8',PYTHONDONTWRITEBYTECODE:'1'},
         stdio:['pipe','pipe','pipe']});
@@ -135,7 +135,7 @@ async function actualController(t,f) {
     child.on('error',reject);child.on('close',code=>{clearTimeout(timer);if(code)reject(Error('fixture-controller-held'));else {
       try{resolvePromise(JSON.parse(out));}catch(e){reject(e);}}});child.stdin.end(JSON.stringify({op,...data}));
   });
-  invoke.state=()=>readFile(join(temp,'current/state.json'),'utf8').then(JSON.parse);
+  invoke.state=()=>readFile(join(temp,'transaction-'+fingerprint(f.config.binding),'state.json'),'utf8').then(JSON.parse);
   invoke.config=async()=>writeFile(configPath,JSON.stringify(f.config));
   invoke.temp=temp;
   return invoke;
@@ -207,7 +207,7 @@ test('real Controller pending state drives synthetic blob/tree/commit/ref/PR cre
   assert.equal(f.config.binding.pr_number,null);
   assert.equal(net.calls.filter(c=>c.method==='POST'&&c.path===`${ROOT}/pulls`).length,1);
   assert.equal(net.calls.filter(c=>c.method==='PATCH').length,1);
-  assert.ok((await readFile(join(ctl.temp,'current/graph.sqlite'))).length>0);
+  assert.ok((await readFile(join(ctl.temp,'transaction-'+fingerprint(f.config.binding),'graph.sqlite'))).length>0);
   const claim=await readFile(join(ctl.temp,'repository-claim.json'),'utf8');
   await ctl('status');assert.equal(await readFile(join(ctl.temp,'repository-claim.json'),'utf8'),claim);
   assert.ok(!JSON.stringify(state).includes('DUMMY-ONLY'));
@@ -279,4 +279,38 @@ test('published actual PR enters existing gateway; lost merge reply uses canonic
   await integrationStep({config:f.config,controller:ctl,adapterFactory:factory,advanceIntegration});
   assert.equal(net.calls.filter(c=>c.method==='PUT').length,1);
   assert.equal((await ctl.state()).merge_effect,'verified');
+});
+
+test('Git Data GET fixtures normalize one terminal message newline without weakening identity',()=>{
+  const f=fixture(),op=f.config.plan.operations[2];
+  const response={...clone(op.body),sha:op.expected,message:'reviewed candidate',
+    tree:{sha:op.body.tree},parents:op.body.parents.map(sha=>({sha})),
+    url:'https://api.github.com/repos/maldous/offmenu/git/commits/'+op.expected,
+    html_url:'https://github.com/maldous/offmenu/commit/'+op.expected,
+    verification:{verified:false,reason:'unsigned',signature:null,payload:null,verified_at:null}};
+  assert.equal(canonicalPublication(op,response,f.config.binding),true);
+  for(const change of [{message:'reviewed candidate\n\n'},{message:'reviewed candidate altered'},
+    {sha:'0'.repeat(40)},{tree:{sha:'0'.repeat(40)}},{parents:[{sha:'0'.repeat(40)}]},
+    {author:{...op.body.author,name:'different'}}])
+    assert.equal(canonicalPublication(op,{...response,...change},f.config.binding),false);
+});
+
+test('finite release gateway consumes typed promotion and tag phases without repeated effects',async()=>{
+  const head='a'.repeat(40),base='b'.repeat(40),merged='c'.repeat(40);
+  const branch='release/candidate-'+'1'.repeat(64);
+  let phase=0,merges=0,tags=0;
+  const github={getPullRequest:async()=>({merged:false,head_sha:head,base_sha:base,
+    head:branch,base:'main',draft:false,mergeable:true}),
+    mergePullRequest:async args=>{assert.equal(args.expected_head_sha,head);merges++;phase=1;},
+    createReleaseTag:async sha=>{assert.equal(sha,merged);tags++;phase=2;}};
+  const controller={step:async()=>phase===0?{status:'release-intent',action:{kind:'promote-release',
+    repository:repo.full_name,pr_number:248,expected_head_sha:head,expected_base_sha:base,expected_head_branch:branch}}:
+    phase===1?{status:'release-tag-intent',action:{kind:'create-release-tag',commit_sha:merged}}:
+    {status:'release-verified',action:null}};
+  const run=()=>advanceRelease({controller,github,observe:async()=>({})});
+  assert.equal((await run()).status,'release-tag-intent');assert.equal(merges,1);assert.equal(tags,0);
+  assert.equal((await run()).status,'release-verified');assert.equal(merges,1);assert.equal(tags,1);
+  await run();assert.equal(merges,1);assert.equal(tags,1);
+  phase=0;github.getPullRequest=async()=>({head_sha:'0'.repeat(40)});
+  assert.equal((await run()).status,'release-reconciliation-required');assert.equal(merges,1);
 });
