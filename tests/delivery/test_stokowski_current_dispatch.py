@@ -911,9 +911,9 @@ class CurrentDispatchTests(unittest.TestCase):
         """Actual consumer, original native gates, synthetic sealed OS boundary."""
         import native_harness_contract as contract
         source = Path(os.environ.get('OFFMENU_TEST_NATIVE_HARNESS_RUNTIME',
-                                     str(prepare.SOURCE/'tools/delivery/native_harness_runtime.py')))
-        if not source.is_file():
-            self.skipTest('Compose the reviewed native runtime or supply its exact test source')
+                                     str(Path(__file__).resolve().parents[2]/'tools/delivery/native_harness_runtime.py')))
+        self.assertTrue(source.is_file(),
+                        'Required native runtime missing: compose it or supply its exact explicit test source')
         issue, runtime, _, _ = self.bound_gate(388)
         for name in ('tools/delivery/native_harness_runtime.py',
                      'tools/delivery/native_harness_contract.py', 'tools/delivery/linear_delivery.py',
@@ -1022,7 +1022,8 @@ class CurrentDispatchTests(unittest.TestCase):
 
     def test_native_harness_missing_factory_is_explicit_without_effect(self):
         f = self.native_harness_fixture()
-        asyncio.run(self.current.continue_native_harness())
+        with patch.object(f.module,'owner_adapters',None,create=True):
+            asyncio.run(self.current.continue_native_harness())
         state = self.current.state['tasks'][f.issue.identifier]['native_harness']
         self.assertEqual(state['status'],'held')
         self.assertEqual(state['reason'],'native_harness_adapters_unavailable')
