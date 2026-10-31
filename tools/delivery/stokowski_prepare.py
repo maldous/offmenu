@@ -205,10 +205,28 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
         require(installation_record['source_revision'] == packet['installation']['source_revision']
                 and len(installation_record['installed_source_sha256']) ==
                 packet['installation']['installed_files_verified_statically'], 'installation_binding')
-        for entry in baseline['entries']:
+        active = publication_owner._active_catalog(baseline) if successor else {
+            str(index): value for index, value in enumerate(baseline['entries'])}
+        replacing = 'replacement_of' in packet
+        previous = None
+        if replacing:
+            require(successor and publication_owner.owner_custody, 'replacement_owner_grant')
+            if prior is None:
+                previous, _, _ = publication_owner._qualified_replacement(packet)
+            else:
+                previous = active.get(issue)
+                require(previous is not None and digest(previous) == packet['replacement_of']['entry_sha256'],
+                        'replacement_previous')
+                # Recovery requalifies the original refusal and projected new
+                # unit, rather than treating the retained journal as authority.
+                publication_owner._replacement_witness(previous,
+                    publication_owner._successor_entry(packet), manifest=manifest,
+                    request_sha256=packet['request']['sha256'])
+        for entry in active.values():
+            replaced = replacing and entry == previous
             other_runtime = canonical(entry['runtime'])
             require(other_runtime.is_relative_to(root) and other_runtime not in (runtime, coordinator)
-                    and entry['issue'] != issue and entry['issue_id'] != task['issue_id'], 'catalog_conflict')
+                    and (replaced or (entry['issue'] != issue and entry['issue_id'] != task['issue_id'])), 'catalog_conflict')
             other_admission = pinned(dict(path=str(other_runtime/'current-admission.json'),
                                           sha256=entry['admission_sha256']))
             other_manifest = pinned(dict(path=str(other_runtime/'manifest.json'),
@@ -217,8 +235,13 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
                 reusable = False
                 if successor:
                     consumer = CurrentWork(coordinator, read_only=True, qualification_only=True)
-                    consumer.entries = {e['issue']: e for e in baseline['entries']}
-                    reusable = consumer._scope_reusable(entry['issue'])
+                    consumer.entries = active
+                    if replaced:
+                        consumer._replacement_witness(entry, consumer._successor_entry(packet),
+                            manifest=manifest, request_sha256=packet['request']['sha256'])
+                        reusable = True
+                    else:
+                        reusable = consumer._scope_reusable(entry['issue'])
                 require(reusable or not any(overlap(a, b) for a in packet['scope']
                                 for t in other_manifest['tasks'].values() for b in t['allowed_paths']), 'scope_overlap')
         policy = policy_path.read_bytes()
@@ -230,6 +253,9 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
                          inputs={k: v for k, v in packet['inputs'].items() if k != str(catalog)})
         entry = dict(issue=issue, issue_id=task['issue_id'], runtime=str(runtime),
                      admission_sha256=hashlib.sha256(_publication_bytes(admission)).hexdigest())
+        if 'replacement_of' in packet:
+            require(successor, 'replacement_origin')
+            entry['replacement_of'] = packet['replacement_of']
         if prior is None:
             requirements = pinned(packet['provider_requirements'])
             proof = provider_proof(requirements['requested_model'], requirements['session_ceiling'])
@@ -285,6 +311,10 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
         require(current != after or runtime.is_dir(), 'exposed_runtime_missing_reconcile')
         if successor and current != after:
             consumer = CurrentWork(coordinator,read_only=True,qualification_only=True)
+            if replacing:
+                qualified_previous, qualified_entry, _ = consumer._qualified_replacement(packet)
+                require(qualified_previous == previous and qualified_entry == entry,
+                        'replacement_recovery_binding')
             consumer.catalog_transition(current,after)
         if not runtime.exists():
             stage = Path(tempfile.mkdtemp(prefix='.'+runtime.name+'-', dir=root))

@@ -283,7 +283,7 @@ class CurrentWork:
             catalog = self.catalog_record()
             if catalog.get('version') != 1 or not isinstance(catalog.get('entries'), list):
                 raise AdmissionError('current_catalog_fields')
-            for entry in catalog['entries']:
+            for entry in self._active_catalog(catalog).values():
                 issue = entry['issue']
                 if (issue in self.entries or self.state['bindings'].get(issue) != digest(entry)
                     or self.state.get('references', {}).get(issue) != entry):
@@ -371,39 +371,108 @@ class CurrentWork:
         if hashlib.sha256(accepted_policy).hexdigest() != c['policy_sha256']:
             raise AdmissionError('current_policy_not_reviewed_revision')
 
+    def _replacement_witness(self, previous, entry, *, manifest=None, request_sha256=None):
+        """A sealed append grants one new unit, never a retry of its old lease."""
+        import stokowski_replacement as replacement
+        module = 'tools/delivery/stokowski_replacement.py'
+        if (not self.owner_custody or not self.config.get('catalog_versions')
+            or self.config['source_sha256'].get(module) != file_sha(replacement.__file__)):
+            raise AdmissionError('replacement_owner_grant_required')
+        if (entry['issue'] != previous['issue'] or entry['issue_id'] != previous['issue_id']
+            or entry['runtime'] == previous['runtime']):
+            raise AdmissionError('replacement_identity')
+        runtime = self.private(entry['runtime'])
+        policy = read_record(SOURCE/'tools/delivery/capacity-policy.json')
+        witness = replacement.refusal_witness(previous, entry['replacement_of'], root=self.root,
+            owner=self.config['owner'], policy=policy, policy_sha256=self.config['policy_sha256'])
+        if manifest is None:
+            admission = replacement.record(runtime/'current-admission.json', self.root, entry['admission_sha256'])
+            if (admission['owner'] != self.config['owner'] or admission['issue'] != entry['issue']
+                or admission['issue_id'] != entry['issue_id']
+                or admission['policy_sha256'] != self.config['policy_sha256']):
+                raise AdmissionError('replacement_new_admission')
+            manifest = replacement.record(runtime/'manifest.json', self.root, admission['manifest_sha256'])
+            request_sha256 = admission['request_sha256']
+            replacement.record(runtime/'requests'/(entry['issue']+'.json'), self.root, request_sha256)
+        if (set(manifest['tasks']) != {entry['issue']}
+            or manifest['tasks'][entry['issue']]['issue_id'] != entry['issue_id']
+            or manifest['tasks'][entry['issue']]['owner'] != self.config['owner']
+            or manifest['project_id'] != witness['project_id']
+            or manifest['project_id'] != self.route['project_id']
+            or request_sha256 == witness['request_sha256']
+            or runtime_lease_ids(runtime, manifest)[entry['issue']] == witness['lease']):
+            raise AdmissionError('replacement_new_identity')
+        return witness
+
+    def _active_catalog(self, catalog):
+        """Keep the raw append history; derive one validated active issue view."""
+        fields = {'issue','issue_id','runtime','admission_sha256'}
+        for entry in catalog['entries']:
+            if not isinstance(entry, dict) or set(entry) not in (fields, fields | {'replacement_of'}):
+                raise AdmissionError('current_entry_fields')
+            if (not isinstance(entry['issue'], str) or not re.fullmatch(r'UIF-[1-9][0-9]*',entry['issue'])
+                or str(UUID(entry['issue_id'])) != entry['issue_id']
+                or not re.fullmatch('[0-9a-f]{64}',entry['admission_sha256'])):
+                raise AdmissionError('current_entry_identity')
+            self.private(entry['runtime'])
+        if not any('replacement_of' in entry for entry in catalog['entries']):
+            entries, identities, runtimes = {}, set(), set()
+            for entry in catalog['entries']:
+                if entry['issue'] in entries or entry['issue_id'] in identities or entry['runtime'] in runtimes:
+                    raise AdmissionError('current_identity_rebind')
+                entries[entry['issue']] = entry
+                identities.add(entry['issue_id'])
+                runtimes.add(entry['runtime'])
+            return entries
+        import stokowski_replacement as replacement
+        try:
+            return replacement.active_entries(catalog, self._replacement_witness)
+        except AdmissionError as error:
+            if str(error) in ('replacement_identity_rebind','replacement_runtime_reuse','replacement_chain'):
+                raise AdmissionError('current_identity_rebind') from error
+            raise
+
+    def _generation_transition(self, issue, entry):
+        """Validate and capture a transition without mutating retained state."""
+        previous = self.state.get('references', {}).get(issue)
+        if (previous is None or 'replacement_of' not in entry
+            or entry['replacement_of']['entry_sha256'] != digest(previous)):
+            raise AdmissionError('current_identity_rebind')
+        witness = self._replacement_witness(previous, entry)
+        history = self.state.get('replacement_history', [])
+        if any(item['entry_sha256'] == digest(previous) for item in history):
+            raise AdmissionError('replacement_transition_repeated')
+        # Retain this unit only; never copy Linear descriptions or chat history.
+        return dict(issue=issue, entry=previous, entry_sha256=digest(previous),
+            binding_sha256=self.state['bindings'][issue],
+            task=json.loads(json.dumps(self.state['tasks'].get(issue, {}))),
+            refusal=witness, replacement_entry_sha256=digest(entry))
+
     def refresh(self):
         try:
             self.guard()
             catalog = self.catalog_record()
             if set(catalog) != {'version', 'entries'} or type(catalog['version']) is not int or catalog['version'] != 1 or not isinstance(catalog['entries'], list):
                 raise AdmissionError('current_catalog_fields')
-            entries, identities, runtimes = {}, set(), set()
-            for entry in catalog['entries']:
-                if set(entry) != {'issue', 'issue_id', 'runtime', 'admission_sha256'}:
-                    raise AdmissionError('current_entry_fields')
-                issue = entry['issue']
-                if (not isinstance(issue,str) or not re.fullmatch(r'UIF-[1-9][0-9]*',issue)
-                    or str(UUID(entry['issue_id'])) != entry['issue_id']
-                    or not re.fullmatch(r'[0-9a-f]{64}',entry['admission_sha256'])):
-                    raise AdmissionError('current_entry_identity')
-                runtime = str(self.private(entry['runtime']))
-                binding = digest(entry)
+            entries = self._active_catalog(catalog)
+            # Validate the whole active view before changing any state binding.
+            transitions = []
+            for issue, entry in entries.items():
                 previous = self.state['bindings'].get(issue)
-                if (issue in entries or entry['issue_id'] in identities or runtime in runtimes
-                    or previous is not None and previous != binding):
-                    raise AdmissionError('current_identity_rebind')
-                # Bind even deferred references: removing and readding cannot replace them.
-                if any(v['issue_id'] == entry['issue_id'] or v['runtime'] == runtime
+                if previous is not None and previous != digest(entry):
+                    transitions.append(self._generation_transition(issue, entry))
+                if any(v['issue_id'] == entry['issue_id'] or v['runtime'] == entry['runtime']
                        for k, v in self.state.get('references', {}).items() if k != issue):
                     raise AdmissionError('current_identity_rebind')
-                self.state['bindings'][issue] = binding
-                self.state.setdefault('references', {})[issue] = entry
-                entries[issue] = entry
-                identities.add(entry['issue_id'])
-                runtimes.add(runtime)
             if self.owner_custody and (not set(self.state.get('references', {})) <= set(entries)
                 or not set(self.state.get('bindings', {})) <= set(entries)):
                 raise AdmissionError('current_catalog_rollback')
+            for transition in transitions:
+                self.state.setdefault('replacement_history', []).append(transition)
+                self.state['tasks'][transition['issue']] = {}
+            for issue, entry in entries.items():
+                self.state['bindings'][issue] = digest(entry)
+                self.state.setdefault('references', {})[issue] = entry
             self.entries = entries
             self.state['catalog_sha256'] = self._catalog_observed_sha256 if self.owner_custody else file_sha(self.catalog)
             for issue in self.state.get('references', {}):
@@ -446,7 +515,7 @@ class CurrentWork:
     def _intake_authority(self, reference):
         policy = self._intake_policy()
         authority = self._private_pin(policy['references'][reference])
-        if (set(authority) != {'schema', 'owner', 'source_head', 'issue', 'issue_id', 'project_id',
+        if (set(authority) - {'replacement_of'} != {'schema', 'owner', 'source_head', 'issue', 'issue_id', 'project_id',
                               'accepted_scope', 'acceptance', 'dependencies', 'decision', 'handoff',
                               'qualification'}
             or authority['schema'] != 'offmenu-intake-authority/1'
@@ -457,7 +526,9 @@ class CurrentWork:
             or any(not isinstance(name, str) or not name.strip() for name in authority['accepted_scope'])
             or not isinstance(authority['acceptance'], list) or not authority['acceptance']
             or any(not isinstance(item, str) or not item.strip() for item in authority['acceptance'])
-            or authority['decision'] not in ('owner-qualified', 'qualification-only')):
+            or authority['decision'] not in ('owner-qualified', 'qualification-only')
+            or ('replacement_of' in authority and (authority['decision'] != 'owner-qualified'
+                or not isinstance(authority['replacement_of'], dict)))):
             raise AdmissionError('intake_owner_scope_or_decision')
         return policy, authority
 
@@ -474,7 +545,9 @@ class CurrentWork:
                     uuid=authority['issue_id'], project_id=authority['project_id'])
                 and packet['scope'] == authority['accepted_scope']
                 and packet['acceptance'] == authority['acceptance']
-                and packet['source']['base'] == authority['source_head']):
+                and packet['source']['base'] == authority['source_head']
+                and ('replacement_of' in packet) == ('replacement_of' in authority)
+                and packet.get('replacement_of') == authority.get('replacement_of')):
                 return True
         return False
 
@@ -524,19 +597,31 @@ class CurrentWork:
                 stable = set(authority) - {'decision', 'handoff', 'qualification'}
                 result_ref = record.get('qualification_result', {})
                 result = read_record(result_ref['path']) if result_ref else {}
-                if (previous['decision'] != 'qualification-only' or authority['decision'] != 'owner-qualified'
-                    or any(previous[k] != authority[k] for k in stable)
-                    or not result_ref or file_sha(result_ref['path']) != result_ref['sha256']
-                    or result.get('child_tree_gone') is not True or result.get('status') != 'succeeded'):
-                    raise AdmissionError('intake_authority_drift: owner reconciliation required')
-                capacity = read_record(self.runtime/'capacity-policy.json')
-                database = Path(capacity['symphony']['pool_path'])/'state.sqlite'
-                with sqlite3.connect(database.as_uri()+'?mode=ro', uri=True) as db:
-                    lease = db.execute('SELECT status,outcome FROM leases WHERE id=?', (result['lease'],)).fetchone()
-                if lease != ('finished', 'succeeded'):
-                    raise AdmissionError('intake_qualification_lease_unreconciled')
-                record.setdefault('qualification_history', []).append(dict(authority=previous,
-                    reference=record['reference'], result=result_ref, intent=record['qualification_intent']))
+                if (previous['decision'] == authority['decision'] == 'owner-qualified'
+                    and 'replacement_of' in authority):
+                    handoff = self._private_pin(authority['handoff'])
+                    packet = self._private_pin(handoff['task_packet'])
+                    if (packet.get('replacement_of') != authority['replacement_of']
+                        or packet['owner_config'] != handoff['owner_config']):
+                        raise AdmissionError('replacement_intake_binding')
+                    _, _, witness = self._qualified_replacement(packet)
+                    record.setdefault('replacement_history', []).append(dict(
+                        reference=record['reference'], authority=previous,
+                        handoff=record.get('handoff'), refusal=witness))
+                else:
+                    if (previous['decision'] != 'qualification-only' or authority['decision'] != 'owner-qualified'
+                        or any(previous[k] != authority[k] for k in stable)
+                        or not result_ref or file_sha(result_ref['path']) != result_ref['sha256']
+                        or result.get('child_tree_gone') is not True or result.get('status') != 'succeeded'):
+                        raise AdmissionError('intake_authority_drift: owner reconciliation required')
+                    capacity = read_record(self.runtime/'capacity-policy.json')
+                    database = Path(capacity['symphony']['pool_path'])/'state.sqlite'
+                    with sqlite3.connect(database.as_uri()+'?mode=ro', uri=True) as db:
+                        lease = db.execute('SELECT status,outcome FROM leases WHERE id=?', (result['lease'],)).fetchone()
+                    if lease != ('finished', 'succeeded'):
+                        raise AdmissionError('intake_qualification_lease_unreconciled')
+                    record.setdefault('qualification_history', []).append(dict(authority=previous,
+                        reference=record['reference'], result=result_ref, intent=record['qualification_intent']))
             record.update(reference=supplied['reference'], authority=authority, checked_at=time.time(),
                           authoritative=remote, required_actor=self.config['owner'])
             if authority['decision'] == 'qualification-only':
@@ -545,6 +630,8 @@ class CurrentWork:
                 handoff = self._private_pin(authority['handoff'])
                 packet = self._private_pin(handoff['task_packet'])
                 record.update(status='qualified', handoff=authority['handoff'])
+                record.pop('reason', None)
+                record.pop('required_input', None)
                 if not self._trusted_handoff(authority['handoff'], packet):
                     raise AdmissionError('intake_handoff_scope_or_source_drift')
                 self.state['intake_handoff'] = authority['handoff']
@@ -638,8 +725,9 @@ class CurrentWork:
         except Exception:
             return False
 
-    def _rearm_successor(self, pending):
-        if pending.get('status') not in ('published', 'duplicate'):
+    def _rearm_successor(self, pending, replacement_packet=None):
+        replacing = replacement_packet is not None
+        if pending.get('status') not in (('published','duplicate','held') if replacing else ('published','duplicate')):
             raise AdmissionError('successor_request_rebind')
         if 'native_request' in pending:
             import stokowski_native_publication as native
@@ -665,17 +753,70 @@ class CurrentWork:
         handoff = self._private_pin(pending['handoff'])
         packet = self._private_pin(handoff['task_packet'])
         issue = packet['execution_outcome']['identifier']
-        if not self._reconciled_unit(issue):
-            raise AdmissionError('successor_prior_unit_unreconciled')
         history = json.loads(json.dumps(pending))
-        review = self.runtime/('unit-review-' + issue + '.json')
-        history['terminal_review'] = dict(path=str(review), sha256=file_sha(review))
-        history['terminal_unit'] = self.state['tasks'][issue]['unit_gate']['binding']
+        if replacing:
+            previous, _, witness = self._qualified_replacement(replacement_packet)
+            if ('native_request' not in pending or issue != previous['issue']
+                or packet['execution_outcome']['uuid'] != previous['issue_id']
+                or packet['selected_current']['task_runtime'] != previous['runtime']):
+                raise AdmissionError('replacement_prior_publication')
+            history['terminal_refusal'] = witness
+            history['disposition'] = 'confirmed-prelaunch-refusal-retained'
+        else:
+            if not self._reconciled_unit(issue):
+                raise AdmissionError('successor_prior_unit_unreconciled')
+            review = self.runtime/('unit-review-' + issue + '.json')
+            history['terminal_review'] = dict(path=str(review), sha256=file_sha(review))
+            history['terminal_unit'] = self.state['tasks'][issue]['unit_gate']['binding']
         self.state.setdefault('successor_history', []).append(history)
         # History retains the immutable nonce/context/admission/result references.
         self.state.pop('successor_request')
         self.state.pop('successor_hold', None)
         self.save()
+
+    def _successor_entry(self, packet):
+        admission = dict(version=1, owner=self.config['owner'],
+            issue=packet['execution_outcome']['identifier'], issue_id=packet['execution_outcome']['uuid'],
+            source=packet['source']['source_checkout'], manifest_sha256=packet['manifest']['sha256'],
+            request_sha256=packet['request']['sha256'], policy_sha256=self.config['policy_sha256'],
+            installation_sha256=self.config['installation_sha256'],
+            inputs={k:v for k,v in packet['inputs'].items() if k != str(self.catalog)})
+        raw = (json.dumps(admission,sort_keys=True,indent=2)+'\n').encode()
+        entry = dict(issue=admission['issue'], issue_id=admission['issue_id'],
+            runtime=packet['selected_current']['task_runtime'], admission_sha256=hashlib.sha256(raw).hexdigest())
+        if 'replacement_of' in packet:
+            entry['replacement_of'] = packet['replacement_of']
+        return entry
+
+    def _qualified_replacement(self, packet):
+        """Bind a new task to the exact next sealed edge before publication."""
+        outcome = packet['execution_outcome']
+        previous = self.state.get('references', {}).get(outcome['identifier'])
+        if (previous is None or previous['issue_id'] != outcome['uuid']
+            or self.state['bindings'].get(outcome['identifier']) != digest(previous)
+            or self.entries.get(outcome['identifier'], previous) != previous):
+            raise AdmissionError('replacement_previous_identity')
+        entry = self._successor_entry(packet)
+        manifest = self._private_pin(packet['manifest'])
+        witness = self._replacement_witness(previous, entry, manifest=manifest,
+                                            request_sha256=packet['request']['sha256'])
+        if outcome['project_id'] != witness['project_id']:
+            raise AdmissionError('replacement_project')
+        before = self.catalog_bytes()
+        catalog = json.loads(before)
+        if self._active_catalog(catalog).get(outcome['identifier']) != previous:
+            raise AdmissionError('replacement_previous_identity')
+        after = (json.dumps(dict(version=1, entries=catalog['entries']+[entry]),
+                            sort_keys=True,indent=2)+'\n').encode()
+        self.catalog_transition(before, after)
+        return previous, entry, witness
+
+    def _successor_scope_reusable(self, entry, packet):
+        if ('replacement_of' in packet
+            and packet['replacement_of'].get('entry_sha256') == digest(entry)):
+            previous, _, _ = self._qualified_replacement(packet)
+            return previous == entry
+        return self._scope_reusable(entry['issue'])
 
     def qualify_successor(self, handoff_ref, packet, owner_config):
         """Read-only qualification; current.json is trusted out of band.
@@ -723,13 +864,15 @@ class CurrentWork:
                                  observation=True) != trigger['unit_binding']):
             raise AdmissionError('successor_trigger_drift')
         outcome = packet['execution_outcome']
+        replacement = 'replacement_of' in packet
+        previous = self._qualified_replacement(packet)[0] if replacement else None
         if (outcome['project_id'] != self.route['project_id'] or outcome['identifier'] == issue
             or outcome['uuid'] == entry['issue_id']
-            or any(e['issue'] == outcome['identifier'] or e['issue_id'] == outcome['uuid']
-                   or e['runtime'] == packet['selected_current']['task_runtime']
+            or any((e['issue'] == outcome['identifier'] or e['issue_id'] == outcome['uuid']
+                    or e['runtime'] == packet['selected_current']['task_runtime'])
+                   and not (replacement and e == previous
+                            and e['runtime'] != packet['selected_current']['task_runtime'])
                    for e in self.state.get('references', {}).values())):
-            # Once exposed, qualification is reconciled from the publication
-            # journal at the boundary, never used to prepare another operation.
             raise AdmissionError('successor_identity_collision')
         return digest(dict(handoff=handoff_ref, owner_config=packet['owner_config'], trigger=trigger))
 
@@ -759,7 +902,11 @@ class CurrentWork:
             identity = digest(dict(handoff=ref, owner_config=packet['owner_config'], trigger=packet['trigger']))
             if pending is not None and pending.get('identity') != identity:
                 rearming = True
-                self._rearm_successor(pending)
+                if 'replacement_of' in packet:
+                    self.qualify_successor(ref, packet, config)
+                    self._rearm_successor(pending, replacement_packet=packet)
+                else:
+                    self._rearm_successor(pending)
                 pending = None
                 rearming = False
             if 'native_publication' in config or pending and 'native_request' in pending:
@@ -800,7 +947,7 @@ class CurrentWork:
             from symphony_capacity import overlap
             for entry in self.state['references'].values():
                 other = read_record(self.private(entry['runtime'])/'manifest.json')
-                if self._scope_reusable(entry['issue']):
+                if self._successor_scope_reusable(entry, packet):
                     continue
                 if any(overlap(a, b) for a in packet['scope']
                        for t in other['tasks'].values() for b in t['allowed_paths']):
@@ -899,7 +1046,7 @@ class CurrentWork:
             from symphony_capacity import overlap
             for entry in self.state['references'].values():
                 other = read_record(self.private(entry['runtime'])/'manifest.json')
-                if self._scope_reusable(entry['issue']):
+                if self._successor_scope_reusable(entry, packet):
                     continue
                 if any(overlap(a, b) for a in packet['scope']
                        for t in other['tasks'].values() for b in t['allowed_paths']):
@@ -948,6 +1095,8 @@ class CurrentWork:
                 from stokowski_prepare import _publication_bytes
                 entry = dict(issue=issue, issue_id=admission['issue_id'], runtime=str(runtime),
                              admission_sha256=native.sha(_publication_bytes(admission)))
+                if 'replacement_of' in packet:
+                    entry['replacement_of'] = packet['replacement_of']
                 if (plan['identity'] != dict(handoff_sha256=ref['sha256'], packet=handoff['task_packet'],
                                             config=handoff['owner_config'])
                     or native.sha(plan['catalog_before_bytes'].encode()) != packet['inputs'][str(self.catalog)]
@@ -1996,6 +2145,23 @@ class CurrentWork:
             if issue.id != entry['issue_id'] or issue.state not in ('Todo','In Progress'):
                 continue
             try:
+                replacement_intake = False
+                if self.config.get('normal_intake'):
+                    policy = self._intake_policy()
+                    for reference in policy['references']:
+                        _, authority = self._intake_authority(reference)
+                        relation = authority.get('replacement_of')
+                        if (authority['issue'] == issue.identifier and relation
+                            and relation.get('entry_sha256') == digest(entry)):
+                            # Tracker identity is unchanged; fresh owner authority
+                            # selects a new unit rather than replaying this one.
+                            await self._intake(client, issue)
+                            replacement_intake = True
+                            break
+                if replacement_intake:
+                    # The next refresh validates and adopts the published
+                    # generation. This pass still holds the retired entry.
+                    continue
                 _, selected_manifest, _ = self.context(issue.identifier)
                 if selected_manifest['project_id'] != self.route['project_id']:
                     raise AdmissionError('current_selected_project')
