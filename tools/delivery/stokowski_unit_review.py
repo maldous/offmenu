@@ -58,6 +58,20 @@ REQUIRED = {'tools/delivery/stokowski_unit_review.py',
             'src/offmenu/delivery/integration.py'}
 
 
+def qualify_native_review(current, issue):
+    """Native provenance is a Pool/session receipt, never a connector snapshot."""
+    import stokowski_worker as worker
+    runtime, request, unit = current.native_review_context(issue)
+    result = worker.qualify_review(runtime,issue,request)
+    artifact = result['artifact']
+    return dict(version=1,origin=worker.REVIEW_ORIGIN,issue=issue,unit_binding=unit,
+        policy=request['policy'],receipt=dict(path=str(runtime/'attempts'/('review-'+issue)/'receipt.json'),
+        sha256=file_sha(runtime/'attempts'/('review-'+issue)/'receipt.json')),
+        lease=result['lease'],native_session_id=result['session_id'],
+        source=artifact['source'],verdict=artifact['verdict'],findings=artifact['findings'],
+        accepted_delivery=False,action=None,merge_effect='not-applicable')
+
+
 def require(ok):
     if not ok:
         raise AdmissionError('local_review_binding')

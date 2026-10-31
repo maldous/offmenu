@@ -787,9 +787,50 @@ class CurrentDispatchTests(unittest.TestCase):
     def select(self, issue, client=None):
         return asyncio.run(self.current.candidates(client or self.client(issue), [issue]))
 
-    def review_fixture(self, number=230, completed=None):
+    def review_fixture(self, number=230, completed=None, template_coding=False):
         from symphony_capacity import digest
         from stokowski_operations import Journal, operation_key, bridge_arguments
+        if template_coding:
+            import stokowski_worker as worker
+            from contextlib import nullcontext
+            issue,runtime=self.qualify(number)
+            manifest=adapter.read_record(runtime/'manifest.json');task=manifest['tasks'][issue.identifier]
+            static=dict(schema='native-review-template-v1',role='native-review-read-only',
+                owner='existing-owner',reviewer_owner='synthetic-native-review-owner',project_id=manifest['project_id'],
+                source_root=str(self.temp/'candidate'),validation_receipt_name='original-validation-receipt.json',
+                provider='codex-chatgpt',model=worker.MODEL,effort='medium',resources=task['resources'],
+                acceptance=task['acceptance'],timeout_seconds=5,require_stopped_child=True,
+                **{k:self.current.config[k] for k in ('source_head','source_sha256','installation_sha256')})
+            template_path=self.runtime/'native-review-template.json';self.write(template_path,static);template_path.chmod(0o600)
+            self.current.config['native_review_template']=dict(path=str(template_path),sha256=adapter.file_sha(template_path))
+            self.write(self.runtime/'current.json',self.current.config)
+            self.current.config_sha=adapter.file_sha(self.runtime/'current.json')
+            self.current.state['config_sha256']=self.current.config_sha;self.current.save()
+            workspace=runtime/'workspaces'/issue.identifier
+            subprocess.run(['/usr/bin/git','clone','--no-hardlinks',str(self.temp/'checkout-230'),str(workspace)],check=True,capture_output=True)
+            request=adapter.read_record(runtime/'requests'/(issue.identifier+'.json'))
+            self.write(runtime/'attempts'/issue.identifier/'dispatch-intent.json',dict(
+                entry_sha256=digest(self.entries[-1]),owner=self.current.config['owner'],
+                request_sha256=adapter.file_sha(runtime/'requests'/(issue.identifier+'.json')),
+                manifest_sha256=adapter.file_sha(runtime/'manifest.json'),
+                expected_lease=runtime_lease_ids(runtime,manifest)[issue.identifier]))
+            def coding_command(workspace,final_message,**kwargs):
+                script=('import json,sys; from pathlib import Path; sys.stdin.read(); '
+                    'p=Path("tests/task230.py"); p.parent.mkdir(exist_ok=True); '
+                    'p.write_text("independent immutable output\\n"); '
+                    'print(json.dumps({"type":"thread.started","thread_id":"synthetic-author-session"})); '
+                    'print(json.dumps({"type":"turn.completed"}))')
+                return [sys.executable,'-c',script]
+            host=dict(cpu_millis=64000,available_memory_bytes=128*1024**3,available_disk_bytes=1024**4)
+            with patch.object(worker,'codex_command',side_effect=coding_command), \
+                 patch.object(worker,'isolated_codex_environment',side_effect=lambda *a:nullcontext({})), \
+                 patch.object(worker,'host_snapshot',return_value=host),patch.object(worker.os,'sched_setaffinity'):
+                result=worker.execute(runtime,issue.identifier,request)
+            self.assertEqual(result['status'],'succeeded',result)
+            self.assertEqual(result['session_id'],'synthetic-author-session')
+            completed=(issue,runtime,None,None)
+            self.current.state['tasks'][issue.identifier]['unit_gate']=dict(binding=self.current.gate_binding(issue),disposition='waiting')
+            self.current.save()
         if completed is None:
             issue, runtime, owner, client = self.bound_gate(number)
             directory = runtime/'attempts'/issue.identifier
@@ -896,7 +937,7 @@ class CurrentDispatchTests(unittest.TestCase):
         (runtime/'capacity-policy.json').unlink()
         with patch.object(worker, 'Pool', side_effect=AssertionError('No lease')), \
              patch.object(worker, 'git', side_effect=AssertionError('No computation')):
-            with self.assertRaisesRegex(AdmissionError, 'nonimplementation_worker_refused'):
+            with self.assertRaisesRegex(AdmissionError, 'native_review_request'):
                 worker.execute(runtime, issue.identifier, {})
         self.assertEqual(list((runtime/'attempts').iterdir()), [])
 
@@ -1135,13 +1176,190 @@ class CurrentDispatchTests(unittest.TestCase):
     def test_fixed_gateway_process_fixture(self):
         self.fixed_gateway_process_fixture(staged=False)
 
+    def test_native_review_actual_phase_worker_qualifier_and_unit_gate(self):
+        self.fixed_gateway_process_fixture(staged=True,native_review=True)
+
+    def test_normal_coding_terminal_validation_native_review(self):
+        self.fixed_gateway_process_fixture(staged='normal',native_review=True)
+
+    def test_normal_coding_static_template_native_review(self):
+        self.fixed_gateway_process_fixture(staged='normal',native_review='template')
+
+    def test_normal_template_capacity_deferred_same_operation(self):
+        self.fixed_gateway_process_fixture(staged='normal',native_review='capacity-defer')
+
+    def test_native_review_rework_is_only_a_local_unit_verdict(self):
+        self.fixed_gateway_process_fixture(staged=True,native_review='rework')
+
+    def native_review_phase_fixture(self,issue,origin_runtime,runtime,candidate,spec,verdict='accept',template=False,capacity_defer=False):
+        from symphony_capacity import Pool
+        import stokowski_worker as worker
+        import stokowski_unit_review as unit_review
+        from contextlib import nullcontext
+        # No external reviewer profile, snapshot or connector is supplied.
+        files={name:adapter.file_sha(candidate/name)
+               for name in worker.git(candidate,'ls-files','-z').split('\0') if name}
+        source=dict(root=str(candidate),head=spec['head'],base=spec['base'],branch=spec['branch'],
+            tree=worker.git(candidate,'rev-parse','HEAD^{tree}'),outputs=spec['outputs'],files_sha256=adapter.digest(files))
+        _,identity=self.current.validation_binding(issue.identifier,self.current.entries[issue.identifier])
+        manifest=json.loads((runtime/'manifest.json').read_text())
+        task=manifest['tasks'][issue.identifier]
+        native_path=origin_runtime/'attempts'/issue.identifier/'receipt.json'
+        policy=dict(schema=worker.REVIEW_ORIGIN,owner='existing-owner',reviewer_owner='synthetic-native-review-owner',
+            project_id=manifest['project_id'],issue=issue.identifier,stage_identity=task['stage_binding']['identity'] if 'stage' in task else identity,
+            unit_binding=self.current.gate_binding(issue),validation_identity=identity,source=source,
+            author_receipts=[dict(path=str(native_path),sha256=adapter.file_sha(native_path))],
+            excluded_sessions=['synthetic-author-session'],excluded_owners=['existing-owner'],
+            provider='codex-chatgpt',model=worker.MODEL,effort='medium',resources=task['resources'],
+            acceptance=task['acceptance'],timeout_seconds=5,require_stopped_child=True)
+        if 'stage' not in task:
+            (origin_runtime/'original-validation-receipt.json').chmod(0o600)
+            policy.update(current_runtime=str(self.runtime),validation_receipt=dict(
+                path=str(origin_runtime/'original-validation-receipt.json'),
+                sha256=adapter.file_sha(origin_runtime/'original-validation-receipt.json')))
+        native_path.chmod(0o600)
+        if template:
+            static={k:policy[k] for k in ('owner','reviewer_owner','project_id','provider','model','effort',
+                'resources','acceptance','timeout_seconds','require_stopped_child')}
+            static.update(schema='native-review-template-v1',role='native-review-read-only',
+                source_root=str(candidate),validation_receipt_name='original-validation-receipt.json',
+                **{k:self.current.config[k] for k in ('source_head','source_sha256','installation_sha256')})
+            template_path=self.runtime/'native-review-template.json'
+            self.assertEqual(adapter.read_record(template_path),static)
+            self.current.config['native_review_template']=dict(path=str(template_path),sha256=adapter.file_sha(template_path))
+            self.assertNotIn('native_review_policies',self.current.config)
+            path=runtime/'native-review-derived-policy.json'
+            self.assertFalse(path.exists())
+            ref=None
+        else:
+            path=runtime/'native-review-policy.json';self.write(path,policy);path.chmod(0o600)
+            ref=dict(path=str(path),sha256=adapter.file_sha(path))
+            self.current.config['native_review_policies']={issue.identifier:ref}
+        self.write(self.runtime/'current.json',self.current.config)
+        self.current.config_sha=adapter.file_sha(self.runtime/'current.json')
+        self.current.state['config_sha256']=self.current.config_sha
+        self.current.save()
+        original_native=native_path.read_bytes()
+        if template:
+            database=origin_runtime/'operations/operations.sqlite'
+            with sqlite3.connect(database) as db:
+                key,raw=db.execute('SELECT key,state FROM operations WHERE key=?',
+                    (adapter.read_record(origin_runtime/'validation-bindings.json')['issues'][issue.identifier]['operation_key'],)).fetchone()
+                for status in ('unknown','failed','cancelled','running'):
+                    state=json.loads(raw);state['status']=status
+                    db.execute('UPDATE operations SET state=? WHERE key=?',(json.dumps(state),key));db.commit()
+                    with self.assertRaises(AdmissionError):
+                        self.current.native_review_template_policy(issue.identifier,materialize=True)
+                    self.assertFalse(path.exists())
+                db.execute('UPDATE operations SET state=? WHERE key=?',(raw,key));db.commit()
+        preserved = [origin_runtime/'attempts'/issue.identifier/name for name in ('intent.json','dispatch-intent.json')]
+        preserved += [origin_runtime/'operations/operations.sqlite',origin_runtime/'manifest.json',
+                      origin_runtime/'requests'/(issue.identifier+'.json'),self.catalog]
+        before = {p:p.read_bytes() for p in preserved}
+        self.assertEqual('stage' in task, runtime != origin_runtime)
+        def command(workspace,final_message,**kwargs):
+            self.assertTrue(kwargs['read_only'])
+            artifact=dict(schema=worker.REVIEW_ORIGIN,source=source,verdict=verdict,
+                findings=['Synthetic bounded finding'] if verdict=='rework' else [])
+            return [sys.executable,'-c',
+                'import json,sys; from pathlib import Path; sys.stdin.read(); '
+                'print(json.dumps({"type":"thread.started","thread_id":"synthetic-independent-native-session"})); '
+                'print(json.dumps({"type":"turn.completed"})); '
+                'Path(sys.argv[1]).write_text(sys.argv[2])',str(final_message),json.dumps(artifact)]
+        async def launch(*args,**kwargs):
+            # Only the external process/provider boundary is controlled; worker,
+            # Pool, policy/source qualification and gate consumption are real.
+            self.assertIn('--native-review-policy',args)
+            actual_ref=dict(path=args[args.index('--native-review-policy')+1],
+                sha256=args[args.index('--native-review-policy-sha256')+1])
+            request=dict(kind=worker.REVIEW_ORIGIN,policy=actual_ref)
+            try:
+                worker.execute(runtime,issue.identifier,request)
+            except AdmissionError as error:
+                if str(error) != 'capacity_sessions':raise
+                return SimpleNamespace(wait=AsyncMock(return_value=2),returncode=2)
+            return SimpleNamespace(wait=AsyncMock(return_value=0),returncode=0)
+        host=dict(cpu_millis=64000,available_memory_bytes=128*1024**3,available_disk_bytes=1024**4)
+        with patch.object(adapter.asyncio,'create_subprocess_exec',side_effect=launch) as spawn, \
+             patch.object(worker,'codex_command',side_effect=command) as native_command, \
+             patch.object(worker,'isolated_codex_environment',side_effect=lambda *a:nullcontext({})), \
+             patch.object(worker,'host_snapshot',return_value=host), \
+             patch.object(worker.os,'sched_setaffinity'):
+            if capacity_defer:
+                capacity=json.loads((runtime/'capacity-policy.json').read_text())
+                pool=Pool(capacity['symphony']['pool_path'],capacity)
+                # Consume the actual provider ceiling using existing Pool bindings.
+                proof_path=runtime/'provider-proof.json';proof_raw=proof_path.read_bytes()
+                proof=json.loads(proof_raw);proof['session_ceiling']=1
+                proof_path.write_text(json.dumps(proof))
+                blocker_binding=next(iter(pool.status()))['binding']
+                pool.admit('capacity-blocker',blocker_binding,json.loads(proof_raw),host)
+                asyncio.run(self.current.continue_validation())
+                state=self.current.state['tasks'][issue.identifier]
+                self.assertEqual(state['native_review']['status'],'deferred',state['native_review'])
+                self.assertNotEqual(state.get('unit_gate',{}).get('disposition'),'approved')
+                directory=runtime/'attempts'/('review-'+issue.identifier)
+                self.assertFalse((directory/'receipt.json').exists())
+                intent=adapter.read_record(directory/'intent.json')
+                self.assertFalse(any(r['id']==intent['lease'] for r in pool.status()))
+                spawn.assert_awaited_once()
+                pool.finish('capacity-blocker',True,'stopped')
+                proof_path.write_bytes(proof_raw)
+                self.current=adapter.CurrentWork(self.runtime)
+            asyncio.run(self.current.continue_validation())
+            state=self.current.state['tasks'][issue.identifier]
+            self.assertEqual(state['native_review']['status'],'qualified',state['native_review'])
+            native_command.assert_called_once()
+            if capacity_defer:
+                completed=adapter.read_record(directory/'intent.json')
+                for key in ('lease','binding','request'):self.assertEqual(completed[key],intent[key])
+                self.assertEqual(completed['history'][:2],intent['history'])
+            self.assertEqual(state['unit_gate']['disposition'],'rework' if verdict=='rework' else 'approved')
+            self.assertFalse(state['unit_gate']['accepted_delivery'])
+            packet=unit_review.qualify_native_review(self.current,issue.identifier)
+            self.assertNotIn('snapshot',packet)
+            self.assertIsNone(packet['action'])
+            self.assertEqual(native_path.read_bytes(),original_native)
+            for p, raw in before.items():self.assertEqual(p.read_bytes(),raw,str(p))
+            self.current=adapter.CurrentWork(self.runtime)
+            asyncio.run(self.current.continue_validation())
+            self.assertEqual(spawn.await_count,2 if capacity_defer else 1)
+            self.assertEqual(self.current._check_unit_review(packet),packet['unit_binding'])
+            tampered=dict(packet,native_session_id='invented-external-reviewer')
+            with self.assertRaises(AdmissionError):self.current._check_unit_review(tampered)
+            original=path.read_bytes();path.write_text('{}')
+            with self.assertRaises(AdmissionError):self.current._check_unit_review(packet)
+            path.write_bytes(original)
+            incoming=self.runtime/('unit-review-'+issue.identifier+'.json')
+            self.assertEqual(adapter.read_record(incoming),packet)
+            # Unknown launch recovery cannot create another computation or lease.
+            receipt=runtime/'attempts'/('review-'+issue.identifier)/'receipt.json'
+            saved=receipt.read_bytes();receipt.unlink()
+            asyncio.run(self.current.continue_validation())
+            self.assertEqual(self.current.state['tasks'][issue.identifier]['native_review']['status'],'held')
+            self.assertEqual(spawn.await_count,2 if capacity_defer else 1)
+            receipt.write_bytes(saved)
+            if template:
+                bound=state['native_review']['derivation']
+                self.assertEqual(bound['author_receipt']['sha256'],adapter.file_sha(native_path))
+                for target in (template_path,native_path,origin_runtime/'original-validation-receipt.json',candidate/'tests/task230.py'):
+                    raw=target.read_bytes();target.write_bytes(raw+b' ')
+                    with self.assertRaises(Exception):self.current.native_review_context(issue.identifier)
+                    target.write_bytes(raw)
+                self.current.config['native_review_template']=dict(path=str(path),sha256=adapter.file_sha(path))
+                with self.assertRaises(AdmissionError):self.current.native_review_context(issue.identifier)
+            else:
+                self.current.config.pop('native_review_policies')
+                with self.assertRaisesRegex(AdmissionError,'policy_unavailable'):
+                    self.current.native_review_context(issue.identifier)
+
     def test_fixed_gateway_process_fixture_staged_native_original(self):
         self.fixed_gateway_process_fixture(staged=True)
 
     def test_fixed_gateway_process_fixture_reviewed_source(self):
         self.fixed_gateway_process_fixture(staged=True, reviewed=True)
 
-    def fixed_gateway_process_fixture(self, *, staged, reviewed=False):
+    def fixed_gateway_process_fixture(self, *, staged, reviewed=False, native_review=False):
         """Fixture custody is controlled here; this is not live authentication."""
         from offmenu.delivery.integration import Controller
         from symphony_capacity import digest
@@ -1199,7 +1417,7 @@ class CurrentDispatchTests(unittest.TestCase):
         state['config_sha256'] = adapter.file_sha(self.runtime/'current.json')
         self.write(self.current.state_path,state)
         self.current = adapter.CurrentWork(self.runtime)
-        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review in ('template','capacity-defer'))
         snapshot = packet['snapshot']
         # Original typed Python authorities, deliberately lossy through JS JSON.
         numbers = {'duration_seconds':1e-7, 'integral':1.0,
@@ -1219,6 +1437,25 @@ class CurrentDispatchTests(unittest.TestCase):
             resolved_model=None,resolution_status='unknown')
         snapshot['review']['evidence_sha256'] = digest({k:v for k,v in snapshot['review'].items()
             if k != 'evidence_sha256'})
+        if native_review:
+            native_path=runtime/'attempts'/issue.identifier/'receipt.json'
+            native=json.loads(native_path.read_text())
+            author_binding=adapter.read_record(native_path.parent/'intent.json')['binding']
+            from symphony_capacity import Pool
+            author_pool=Pool(self.policy['symphony']['pool_path'],self.policy)
+            proof=adapter.read_record(runtime/'provider-proof.json')
+            if native_review not in ('template','capacity-defer'):
+                author_pool.admit(native['lease'],author_binding,proof,
+                    dict(cpu_millis=64000,available_memory_bytes=128*1024**3,available_disk_bytes=1024**4))
+                author_pool.finish(native['lease'],True,'succeeded')
+            if native_review not in ('template','capacity-defer'):
+                native.update(origin='native-coding',session_id='synthetic-author-session',
+                              parent_binding=author_binding)
+                self.write(native_path,native)
+            packet['unit_binding']=self.current.gate_binding(issue)
+            bindings=json.loads((runtime/'validation-bindings.json').read_text())
+            bindings['issues'][issue.identifier]['native_receipt_sha256']=adapter.file_sha(native_path)
+            self.write(runtime/'validation-bindings.json',bindings)
         if staged:
             # Fully qualified synthetic native-v1 original, including actual Git
             # candidate objects and an original workspace at its admitted base.
@@ -1235,8 +1472,12 @@ class CurrentDispatchTests(unittest.TestCase):
                    '-c','commit.gpgsign=false','commit','-m','Synthetic native output')
             candidate_head = git_at(candidate, 'rev-parse', 'HEAD')
             git_at(checkout, 'fetch', str(candidate), 'feature/test-current')
-            shutil.copytree(checkout/'.git', runtime/'workspaces'/issue.identifier/'.git')
+            shutil.copytree(checkout/'.git', runtime/'workspaces'/issue.identifier/'.git',dirs_exist_ok=True)
             spec, _ = journal.read(key)
+            if native_review:
+                original_task=json.loads((runtime/'manifest.json').read_text())['tasks'][issue.identifier]
+                spec['acceptance_sha256']=digest(dict(task=original_task,
+                    native_receipt_sha256=adapter.file_sha(native_path),profile=spec['profile']))
             spec.update(head=candidate_head,
                 runner_sha256=adapter.file_sha(self.source/'tools/delivery/windmill_runner.py'),
                 executor_sha256=adapter.file_sha(operations.__file__))
@@ -1263,44 +1504,56 @@ class CurrentDispatchTests(unittest.TestCase):
                 if k != 'evidence_sha256'})
             original_entry = self.entries[0]
             _, identity = self.current.validation_binding(issue.identifier, original_entry)
-            stage_runtime = self.root/'review-stage'
-            stage_runtime.mkdir()
-            for name in ('requests','attempts','workspaces'):
-                (stage_runtime/name).mkdir()
-            for name in ('capacity-policy.json','installation.json','provider-proof.json'):
-                shutil.copyfile(runtime/name, stage_runtime/name)
-            shutil.copyfile(runtime/'requests'/f'{issue.identifier}.json',
-                            stage_runtime/'requests'/f'{issue.identifier}.json')
-            pins = {str(runtime/name):adapter.file_sha(runtime/name) for name in (
-                'current-admission.json','manifest.json','capacity-policy.json','installation.json',
-                'provider-proof.json','requests/'+issue.identifier+'.json','validation-bindings.json',
-                *['attempts/'+issue.identifier+'/'+n for n in ('intent.json','dispatch-intent.json','receipt.json')])}
-            manifest = json.loads((runtime/'manifest.json').read_text())
-            task = manifest['tasks'][issue.identifier]
-            task.update(stage='review', input_paths=task['allowed_paths'], allowed_paths=[],
-                stage_binding=dict(entry=original_entry, identity=identity, inputs=pins))
-            # Stage admission selects a distinct actual source at the same base.
-            stage_source = self.temp/'stage-source'
-            git_at(self.temp, 'clone', str(checkout), str(stage_source))
-            self.write(stage_runtime/'manifest.json', manifest)
-            admission = json.loads((runtime/'current-admission.json').read_text())
-            admission.update(source=str(stage_source), inputs=pins,
-                manifest_sha256=adapter.file_sha(stage_runtime/'manifest.json'))
-            self.write(stage_runtime/'current-admission.json', admission)
-            self.runtime = self.root/'stage-current'
-            self.runtime.mkdir()
-            for name in ('current.json','installation.json','workflow.yaml','capacity-policy.json'):
-                shutil.copyfile(self.root/'current'/name, self.runtime/name)
-            self.write(self.catalog, dict(version=1, entries=[dict(original_entry,
-                runtime=str(stage_runtime), admission_sha256=adapter.file_sha(stage_runtime/'current-admission.json'))]))
-            self.current = adapter.CurrentWork(self.runtime)
-            self.current.state['tasks'][issue.identifier]['unit_gate'] = dict(
-                binding=self.current.gate_binding(issue), disposition='waiting', accepted_delivery=False)
-            self.current.save()
-            for name in ('validation-bindings.json','operations','original-validation-receipt.json'):
-                self.assertFalse((stage_runtime/name).exists())
-            self.assertEqual(list((stage_runtime/'attempts').iterdir()), [])
-            self.assertEqual(list((stage_runtime/'workspaces').iterdir()), [])
+            stage_runtime = runtime
+            if staged != 'normal':
+                stage_runtime = self.root/'review-stage'
+                stage_runtime.mkdir()
+                for name in ('requests','attempts','workspaces'):
+                    (stage_runtime/name).mkdir()
+                for name in ('capacity-policy.json','installation.json','provider-proof.json'):
+                    shutil.copyfile(runtime/name, stage_runtime/name)
+                shutil.copyfile(runtime/'requests'/f'{issue.identifier}.json',
+                                stage_runtime/'requests'/f'{issue.identifier}.json')
+                pins = {str(runtime/name):adapter.file_sha(runtime/name) for name in (
+                    'current-admission.json','manifest.json','capacity-policy.json','installation.json',
+                    'provider-proof.json','requests/'+issue.identifier+'.json','validation-bindings.json',
+                    *['attempts/'+issue.identifier+'/'+n for n in ('intent.json','dispatch-intent.json','receipt.json')],
+                    *(['original-validation-receipt.json'] if native_review else []))}
+                manifest = json.loads((runtime/'manifest.json').read_text())
+                task = manifest['tasks'][issue.identifier]
+                task.update(stage='review', input_paths=task['allowed_paths'], allowed_paths=[],
+                    stage_binding=dict(entry=original_entry, identity=identity, inputs=pins))
+                # Stage admission selects a distinct actual source at the same base.
+                stage_source = self.temp/'stage-source'
+                git_at(self.temp, 'clone', str(checkout), str(stage_source))
+                self.write(stage_runtime/'manifest.json', manifest)
+                admission = json.loads((runtime/'current-admission.json').read_text())
+                admission.update(source=str(stage_source), inputs=pins,
+                    manifest_sha256=adapter.file_sha(stage_runtime/'manifest.json'))
+                self.write(stage_runtime/'current-admission.json', admission)
+                self.runtime = self.root/'stage-current'
+                self.runtime.mkdir()
+                for name in ('current.json','installation.json','workflow.yaml','capacity-policy.json'):
+                    shutil.copyfile(self.root/'current'/name, self.runtime/name)
+                self.write(self.catalog, dict(version=1, entries=[dict(original_entry,
+                    runtime=str(stage_runtime), admission_sha256=adapter.file_sha(stage_runtime/'current-admission.json'))]))
+                self.current = adapter.CurrentWork(self.runtime)
+                self.current.state['tasks'][issue.identifier]['unit_gate'] = dict(
+                    binding=self.current.gate_binding(issue), disposition='waiting', accepted_delivery=False)
+                self.current.save()
+                for name in ('validation-bindings.json','operations','original-validation-receipt.json'):
+                    self.assertFalse((stage_runtime/name).exists())
+                self.assertEqual(list((stage_runtime/'attempts').iterdir()), [])
+                self.assertEqual(list((stage_runtime/'workspaces').iterdir()), [])
+        if native_review:
+            if staged == 'normal':
+                self.current.state['tasks'][issue.identifier]['unit_gate'] = dict(
+                    binding=self.current.gate_binding(issue),disposition='waiting',accepted_delivery=False)
+                self.current.save()
+            self.native_review_phase_fixture(issue,runtime,stage_runtime,candidate,spec,
+                                             verdict='rework' if native_review=='rework' else 'accept',template=native_review in ('template','capacity-defer'),
+                                             capacity_defer=native_review=='capacity-defer')
+            return
         if reviewed:
             from test_stokowski_nonimplementation_stage import reviewed_records
             mirror=runtime/'workspaces'/issue.identifier
@@ -1490,7 +1743,7 @@ class CurrentDispatchTests(unittest.TestCase):
         owner.ledger.record_terminal.assert_not_called()
 
     def test_owner_observation_once_reopen_and_native_consumption(self):
-        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review=='template')
         writer = self.current.unit_review_writer(lambda envelope:packet)
         envelope = {k:packet[k] for k in ('snapshot','decision')}
         with (self.root/'coordinator.lock').open('a') as lock:
@@ -1511,7 +1764,7 @@ class CurrentDispatchTests(unittest.TestCase):
         owner.ledger.record_terminal.assert_not_called()
 
     def test_evidence_hold_revokes_unhandled_output_approval_until_restored(self):
-        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review=='template')
         self.current.unit_review_writer(lambda envelope:packet)({k:packet[k] for k in ('snapshot','decision')})
         self.current.refresh()
         gate = self.current.state['tasks'][issue.identifier]['unit_gate']
@@ -1531,7 +1784,7 @@ class CurrentDispatchTests(unittest.TestCase):
         owner._schedule_retry.assert_not_called()
 
     def test_evidence_hold_revokes_unhandled_journal_approval(self):
-        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review=='template')
         self.current.unit_review_writer(lambda envelope:packet)({k:packet[k] for k in ('snapshot','decision')})
         self.current.refresh()
         gate = self.current.state['tasks'][issue.identifier]['unit_gate']
@@ -1544,7 +1797,7 @@ class CurrentDispatchTests(unittest.TestCase):
         owner._schedule_retry.assert_not_called()
 
     def test_missing_incoming_evidence_cannot_consume_earlier_approval(self):
-        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review=='template')
         self.current.unit_review_writer(lambda envelope:packet)({k:packet[k] for k in ('snapshot','decision')})
         self.current.refresh()
         gate = self.current.state['tasks'][issue.identifier]['unit_gate']
@@ -1556,7 +1809,7 @@ class CurrentDispatchTests(unittest.TestCase):
 
     def test_review_mismatches_hold_and_never_write_disposition(self):
         import copy
-        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review=='template')
         with self.assertRaises(AdmissionError):
             self.current.unit_review_writer()
         mutations = [

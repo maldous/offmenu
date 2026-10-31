@@ -62,5 +62,44 @@ class CapacityPolicy(unittest.TestCase):
         with self.assertRaisesRegex(AdmissionError,'cannot_succeed'):self.pool.finish('task-0',True,'succeeded')
         self.pool.finish('task-0',True,'cancelled');self.assertEqual(self.pool.status()[0]['status'],'failed')
 
+    def readonly(self, n=1):
+        return dict(self.binding(n),write_roots=[],mode='native-review-read-only',
+                    read_roots=[str(Path(self.temp.name).resolve())],source_sha256='a'*64)
+
+    def test_readonly_has_resources_without_writer_ownership(self):
+        writer = self.admit(0)
+        review = self.readonly()
+        self.pool.admit('review',review,self.provider,self.host)
+        self.assertEqual(writer['fingerprint'],digest(self.binding(0)))
+        self.assertEqual(self.pool.status()[0]['binding']['write_roots'],[])
+        bad = dict(self.binding(2),write_roots=[])
+        with self.assertRaisesRegex(AdmissionError,'invalid_write_scope'):
+            self.pool.admit('empty-writer',bad,self.provider,self.host)
+        for change in ({'mode':'coding'},{'source_sha256':'bad'},{'write_roots':['src']},
+                       {'read_roots':[]},{'read_roots':['relative']}):
+            with self.subTest(change=change),self.assertRaises(AdmissionError):
+                self.pool.admit('bad',dict(review,**change),self.provider,self.host)
+        self.pool.cancel('review')
+        with self.assertRaisesRegex(AdmissionError,'reconciliation'):
+            self.pool.finish('review',False,'cancelled')
+        self.assertEqual(next(r for r in self.pool.status() if r['id']=='review')['status'],'cancel_requested')
+        conflict = self.binding(3); conflict['write_roots'] = self.binding(0)['write_roots']
+        with self.assertRaisesRegex(AdmissionError,'ownership_conflict'):
+            self.pool.admit('conflict',conflict,self.provider,self.host)
+
+    def test_readonly_same_caps_and_provider_freshness(self):
+        for key in ('cpu_millis','memory_bytes','io_slots','output_bytes'):
+            review=self.readonly()
+            review['resources'][key]=10**15
+            with self.subTest(key=key),self.assertRaisesRegex(AdmissionError,'capacity_'+key):
+                self.pool.admit('over',review,self.provider,self.host)
+        for proof in (dict(self.provider,checked_at=time.time()-301),
+                      dict(self.provider,available=False)):
+            with self.assertRaisesRegex(AdmissionError,'provider_unavailable'):
+                self.pool.admit('stale',self.readonly(),proof,self.host)
+        self.pool.admit('one',self.readonly(),dict(self.provider,session_ceiling=1),self.host)
+        with self.assertRaisesRegex(AdmissionError,'capacity_sessions'):
+            self.pool.admit('two',self.readonly(2),dict(self.provider,session_ceiling=1),self.host)
+
 
 if __name__=='__main__':unittest.main()

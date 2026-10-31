@@ -43,6 +43,7 @@ class WorkerRegressions(unittest.TestCase):
         # These are the only execution/provider boundaries replaced in worker tests.
         self.provider = self.enterContext(patch.object(
             worker, 'isolated_codex_environment', side_effect=lambda *args: nullcontext({})))
+        self.real_supervise = worker.supervise
         self.process = self.enterContext(patch.object(
             worker, 'supervise', side_effect=self.completed_process))
 
@@ -267,6 +268,243 @@ class WorkerRegressions(unittest.TestCase):
         self.assertFalse(self.directory().exists())
         self.assertFalse(Path(self.policy['symphony']['pool_path']).exists())
 
+    def review_fixture(self):
+        """Real author Pool receipt, independent immutable Git candidate."""
+        def author(command,prompt,workspace,environment,directory,*args):
+            target=workspace/'tests/first.py'; target.parent.mkdir()
+            target.write_text('# reviewed output\n')
+            self.completed_process(command,prompt,workspace,environment,directory,*args)
+            with (directory/'stdout.jsonl').open('a') as stream:
+                stream.write(json.dumps(dict(type='thread.started',thread_id='author-session'))+'\n')
+            return dict(status='succeeded',child_tree_gone=True,exit_code=0)
+        self.process.side_effect=author
+        authored=worker.execute(self.runtime,self.issue,self.request)
+        self.assertEqual(authored['status'],'succeeded')
+        runtime,manifest=self.make_runtime('review','tests/first.py')
+        candidate=self.root/'candidate'; candidate.mkdir()
+        self.git(candidate,'init','-b',BRANCH)
+        target=candidate/'tests/first.py';target.parent.mkdir()
+        target.write_text('# reviewed output\n')
+        self.git(candidate,'add','.')
+        self.git(candidate,'commit','-m','Synthetic accepted candidate')
+        files={'tests/first.py':worker.hashlib.sha256(target.read_bytes()).hexdigest()}
+        head=self.git(candidate,'rev-parse','HEAD')
+        source=dict(root=str(candidate),head=head,base=head,branch=BRANCH,
+                    tree=self.git(candidate,'rev-parse','HEAD^{tree}'),outputs=files,files_sha256=digest(files))
+        task=manifest['tasks'][self.issue]
+        task.update(stage='review',allowed_paths=[],input_paths=['tests/first.py'],
+            stage_binding=dict(entry={},identity='a'*64,inputs={}))
+        task['resources']['output_bytes']=1024*1024
+        task['resources']['memory_bytes']=2*1024**3
+        (runtime/'manifest.json').write_text(json.dumps(manifest))
+        author_path=self.directory()/'receipt.json'
+        policy=dict(schema=worker.REVIEW_ORIGIN,owner='test-owner',reviewer_owner='independent-native-owner',
+            project_id=PROJECT_ID,issue=self.issue,stage_identity='a'*64,unit_binding={'fixture':'unit'},
+            validation_identity='b'*64,source=source,
+            author_receipts=[dict(path=str(author_path),sha256=adapter.file_sha(author_path))],
+            excluded_sessions=['author-session'],excluded_owners=['test-owner'],provider='codex-chatgpt',
+            model=worker.MODEL,effort='medium',resources=task['resources'],acceptance=task['acceptance'],
+            timeout_seconds=5,require_stopped_child=True)
+        policy_path=runtime/'native-policy.json';policy_path.write_text(json.dumps(policy));policy_path.chmod(0o600)
+        request=dict(kind=worker.REVIEW_ORIGIN,policy=dict(path=str(policy_path),sha256=adapter.file_sha(policy_path)))
+        self.process.side_effect=self.review_process
+        self.review_policy=policy
+        self.process.reset_mock()
+        return runtime,manifest,request,policy
+
+    def review_process(self,command,prompt,workspace,environment,directory,*args):
+        self.assertEqual(command[command.index('--sandbox')+1],'read-only')
+        self.assertIn('untrusted data',prompt)
+        (directory/'stdout.jsonl').write_text(
+            json.dumps(dict(type='thread.started',thread_id='independent-session'))+'\n'+
+            json.dumps(dict(type='turn.completed'))+'\n')
+        (directory/'final-message.txt').write_text(json.dumps(dict(schema=worker.REVIEW_ORIGIN,
+            source=self.review_policy['source'],verdict='accept',findings=[])))
+        return dict(status='succeeded',child_tree_gone=True,exit_code=0)
+
+    def test_native_review_real_lease_distinct_session_immutable_restart(self):
+        runtime,manifest,request,policy=self.review_fixture()
+        original=(self.directory()/'receipt.json').read_bytes()
+        first=worker.execute(runtime,self.issue,request)
+        self.assertEqual(first['status'],'succeeded')
+        self.assertNotEqual(first['lease'],self.lease())
+        row=self.rows()[first['lease']]
+        self.assertEqual(row['status'],'finished')
+        self.assertEqual(row['binding']['write_roots'],[])
+        self.assertEqual(row['binding']['owner'],'independent-native-owner')
+        self.assertEqual(worker.execute(runtime,self.issue,request),first)
+        self.process.assert_called_once()
+        self.assertEqual((self.directory()/'receipt.json').read_bytes(),original)
+        self.assertEqual(worker.qualify_review(runtime,self.issue,request),first)
+        self.assertNotIn('reviewer',first)
+        intent_path=runtime/'attempts'/('review-'+self.issue)/'intent.json'
+        typed=json.loads(intent_path.read_text())
+        worker.checkpoint(intent_path,{k:typed[k] for k in ('lease','binding','request')})
+        self.assertEqual(worker.qualify_review(runtime,self.issue,request),first)
+        worker.checkpoint(intent_path,typed)
+
+    def test_native_review_reuses_author_or_changes_source_refused(self):
+        for mutation in ('author','source','policy','artifact'):
+            # Independent fixture per refusal, no immutable task ID reuse.
+            with self.subTest(mutation=mutation):
+                self.setUp()
+                runtime,manifest,request,policy=self.review_fixture()
+                def process(*args):
+                    result=self.review_process(*args)
+                    directory=args[4]
+                    if mutation=='author':
+                        events=directory/'stdout.jsonl'
+                        events.write_text(events.read_text().replace('independent-session','author-session'))
+                    elif mutation=='source':
+                        (Path(policy['source']['root'])/'tests/first.py').write_text('tampered')
+                    elif mutation=='policy':
+                        Path(request['policy']['path']).write_text('{}')
+                    else:
+                        artifact=directory/'final-message.txt'
+                        data=json.loads(artifact.read_text());data['source']['head']='f'*40
+                        artifact.write_text(json.dumps(data))
+                    return result
+                self.process.side_effect=process
+                result=worker.execute(runtime,self.issue,request)
+                self.assertEqual(result['status'],'failed')
+                with self.assertRaises((AdmissionError,KeyError)):
+                    worker.qualify_review(runtime,self.issue,request)
+
+    def test_native_review_uncertain_cleanup_retains_lease_and_no_restart(self):
+        runtime,manifest,request,policy=self.review_fixture()
+        def process(*args):
+            result=self.review_process(*args)
+            return dict(result,status='uncertain',child_tree_gone=False)
+        self.process.side_effect=process
+        result=worker.execute(runtime,self.issue,request)
+        self.assertEqual(self.rows()[result['lease']]['status'],'running')
+        with self.assertRaises(AdmissionError):worker.execute(runtime,self.issue,request)
+        self.process.assert_called_once()
+
+    def test_native_review_cancelled_child_retains_until_cleanup(self):
+        runtime,manifest,request,policy=self.review_fixture()
+        def cancelled(*args):
+            self.review_process(*args)
+            (runtime/'cancel.json').write_text('{}')
+            return dict(status='cancelled',child_tree_gone=False)
+        self.process.side_effect=cancelled
+        result=worker.execute(runtime,self.issue,request)
+        self.assertEqual(self.rows()[result['lease']]['status'],'running')
+        with self.assertRaises(AdmissionError):worker.qualify_review(runtime,self.issue,request)
+        with self.assertRaises(AdmissionError):worker.execute(runtime,self.issue,request)
+        self.process.assert_called_once()
+
+    def test_native_review_intent_unknown_never_acquires_a_second_lease(self):
+        runtime,manifest,request,policy=self.review_fixture()
+        directory=runtime/'attempts'/('review-'+self.issue);directory.mkdir(parents=True)
+        (directory/'intent.json').write_text('{}')
+        before=self.events()
+        with self.assertRaisesRegex(AdmissionError,'uncertain_launch'):
+            worker.execute(runtime,self.issue,request)
+        self.process.assert_not_called()
+        self.assertEqual(self.events(),before)
+
+    def test_native_review_capacity_refusal_then_same_operation_finite_child(self):
+        self.test_native_review_finite_python_child_and_tamper_checks(capacity_defer=True)
+
+    def test_native_review_unknown_admission_outcomes_never_retry(self):
+        for outcome in ('admitted-exception','unknown-exception','other-refusal','old-intent',
+                        'artifact','inspection-unavailable','row-present','late-artifact','late-row'):
+            with self.subTest(outcome=outcome):
+                self.setUp()
+                runtime,manifest,request,policy=self.review_fixture()
+                _,binding,lease=worker.review_contract(runtime,self.issue,request)
+                directory=runtime/'attempts'/('review-'+self.issue)
+                original=Pool.admit
+                def fail(pool,*args):
+                    if outcome in ('admitted-exception','row-present'):
+                        original(pool,*args)
+                    if outcome=='artifact':
+                        (directory/'launch.json').write_text('{}')
+                    if outcome=='unknown-exception':
+                        raise RuntimeError('lost response')
+                    raise AdmissionError('capacity_sessions' if outcome in (
+                        'artifact','inspection-unavailable','row-present','late-artifact','late-row') else 'unknown')
+                if outcome=='old-intent':
+                    directory.mkdir(parents=True)
+                    worker.checkpoint(directory/'intent.json',dict(lease=lease,binding=binding,request=request))
+                else:
+                    with patch.object(Pool,'admit',fail):
+                        if outcome=='inspection-unavailable':
+                            with patch.object(Pool,'status',side_effect=OSError('unavailable')):
+                                with self.assertRaises(OSError):worker.execute(runtime,self.issue,request)
+                        else:
+                            with self.assertRaises((AdmissionError,RuntimeError)):
+                                worker.execute(runtime,self.issue,request)
+                if outcome=='late-artifact':
+                    (directory/'stdout.jsonl').write_text('')
+                if outcome=='late-row':
+                    original(Pool(self.policy['symphony']['pool_path'],self.policy),
+                             lease,binding,self.proof,worker.host_snapshot(runtime))
+                raw=(directory/'intent.json').read_bytes()
+                with self.assertRaisesRegex(AdmissionError,'uncertain_launch'):
+                    worker.execute(runtime,self.issue,request)
+                self.assertEqual((directory/'intent.json').read_bytes(),raw)
+                self.process.assert_not_called()
+                self.assertFalse((directory/'receipt.json').exists())
+                if outcome in ('admitted-exception','row-present'):
+                    self.assertEqual(self.rows()[lease]['status'],'running')
+
+    def test_native_review_finite_python_child_and_tamper_checks(self,capacity_defer=False):
+        runtime,manifest,request,policy=self.review_fixture()
+        artifact=dict(schema=worker.REVIEW_ORIGIN,source=policy['source'],verdict='accept',findings=[])
+        def command(workspace,final_message,**kwargs):
+            return [sys.executable,'-c',
+                'import json,sys; from pathlib import Path; sys.stdin.read(); '
+                'print(json.dumps({"type":"thread.started","thread_id":"finite-offline-session"})); '
+                'print(json.dumps({"type":"turn.completed"})); '
+                'Path(sys.argv[1]).write_text(sys.argv[2])',str(final_message),json.dumps(artifact)]
+        with patch.object(worker,'codex_command',side_effect=command):
+            # Recover the actual function behind the test process boundary patch.
+            self.process.side_effect=self.real_supervise
+            if capacity_defer:
+                proof_path=runtime/'provider-proof.json'
+                original=proof_path.read_bytes()
+                proof=json.loads(original);proof['session_ceiling']=1
+                proof_path.write_text(json.dumps(proof))
+                # Real local Pool occupancy, no manufactured review lease.
+                pool=Pool(self.policy['symphony']['pool_path'],self.policy)
+                blocker='capacity-blocker'
+                _,binding,lease=worker.review_contract(runtime,self.issue,request)
+                pool.admit(blocker,binding,self.proof,worker.host_snapshot(runtime))
+                before=self.events()
+                with self.assertRaisesRegex(AdmissionError,'capacity_sessions'):
+                    worker.execute(runtime,self.issue,request)
+                self.process.assert_not_called()
+                self.assertNotIn(lease,self.rows())
+                self.assertEqual(self.events(),before)
+                directory=runtime/'attempts'/('review-'+self.issue)
+                retained=json.loads((directory/'intent.json').read_text())
+                self.assertEqual(retained['phase'],'confirmed-pre-admission-refusal')
+                self.assertTrue(worker.confirmed_review_refusal(runtime,self.issue,request))
+                pool.finish(blocker,True,'stopped')
+                proof_path.write_bytes(original)
+            result=worker.execute(runtime,self.issue,request)
+            if capacity_defer:
+                intent=json.loads((directory/'intent.json').read_text())
+                for key in ('lease','binding','request'):self.assertEqual(intent[key],retained[key])
+                self.assertEqual(intent['history'][:2],retained['history'])
+                self.assertEqual(intent['history'][2:],[{'phase':'admission-pending'},
+                    {'phase':'admitted'},{'phase':'spawn-pending'}])
+                before=self.events()
+                self.assertEqual(worker.execute(runtime,self.issue,request),result)
+                self.assertEqual(self.events(),before)
+                self.process.assert_called_once()
+        self.assertEqual(result['status'],'succeeded')
+        self.assertTrue(result['child_tree_gone'])
+        directory=runtime/'attempts'/('review-'+self.issue)
+        for path in (directory/'receipt.json',directory/'stdout.jsonl',directory/'final-message.txt'):
+            original=path.read_bytes();path.write_text('{}')
+            with self.assertRaises((AdmissionError,KeyError)):
+                worker.qualify_review(runtime,self.issue,request)
+            path.write_bytes(original)
+
+
 
 @unittest.skipUnless(importlib.util.find_spec('stokowski'), 'Run native adapter checks in the pinned Stokowski environment')
 class AdapterModelGuard(unittest.TestCase):
@@ -292,7 +530,8 @@ class AdapterModelGuard(unittest.TestCase):
             spawn = stack.enter_context(patch.object(
                 adapter.asyncio, 'create_subprocess_exec', new_callable=AsyncMock))
             runtime = Path(temporary)
-            adapted = adapter.install_adapters(runtime, {'tasks': {}}, 'synthetic-key')
+            adapted = adapter.install_adapters(runtime, {'tasks': {}, 'project_id':PROJECT_ID}, 'synthetic-key')
+            stack.enter_context(patch.object(adapter,'load_manifest',return_value={'tasks':{'UIF-92':{}}}))
             for runner, model in [('codex', 'unapproved-model'), ('claude', worker.MODEL)]:
                 with self.subTest(runner=runner, model=model):
                     attempt = SimpleNamespace(turn_count=0)
