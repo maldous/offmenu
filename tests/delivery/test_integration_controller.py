@@ -8,7 +8,7 @@ import time
 import unittest
 from unittest.mock import patch
 
-from offmenu.delivery.integration import Controller, DeliveryError
+from offmenu.delivery.integration import Controller, DeliveryError, fingerprint
 
 
 class IntegrationControllerTests(unittest.TestCase):
@@ -21,6 +21,11 @@ class IntegrationControllerTests(unittest.TestCase):
             'head_branch':'feature/langgraph-delivery-standardization','head':'a'*40,'base':'b'*40,'tree':'c'*40,'policy_sha256':'d'*64,
             'capacity_policy_sha256':'e'*64,'validation_operation_key':'f'*64,
             'outputs':{'tests/behavior.py':'1'*64}}
+        self.acceptance = dict(version=1, issue_id=self.binding['issue_id'],
+            project_id='ce60c1ab-a732-4a71-8471-14c9dc393886', owner=self.binding['owner'],
+            decision='accepted', scope='full-issue', evidence_id='owner-full-issue-evidence')
+        self.binding.update(project_id=self.acceptance['project_id'],
+                            full_issue_acceptance_sha256=fingerprint(self.acceptance))
         self.directory = self.root/'selected'
         self.controller = Controller(self.directory,self.binding)
         self.snapshot = {'observed_at':time.time(),'publisher_owner':'cloud-github-owner',
@@ -44,9 +49,51 @@ class IntegrationControllerTests(unittest.TestCase):
         value['github'].update(merged=True,state='closed',merge_commit_sha='2'*40)
         value['merge_commit'] = {'sha':'2'*40,'parents':['b'*40,'a'*40],'tree':'c'*40}
         value['develop_contains_merge'] = True
+        value['full_issue_acceptance'] = copy.deepcopy(self.acceptance)
         value['linear'] = {'id':self.binding['issue_id'],
             'project_id':'ce60c1ab-a732-4a71-8471-14c9dc393886','state':'Done' if done else 'In Review'}
         return value
+
+    def test_partial_or_changed_acceptance_never_completes_issue(self):
+        self.step()
+        for change in ({'scope':'unit'}, {'issue_id':'00000000-0000-4000-8000-000000000123'},
+                       {'project_id':'ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0'},
+                       {'owner':'foreign-owner'}, {'decision':'pending'}, {'evidence_id':'other'}):
+            observed = self.merged()
+            observed['full_issue_acceptance'].update(change)
+            with self.subTest(change=change):
+                result = self.step(observed)
+                self.assertEqual(result['reason'],'full-issue-acceptance-unqualified')
+                self.assertIsNone(result['action'])
+        observed = self.merged()
+        observed.pop('full_issue_acceptance')
+        self.assertEqual(self.step(observed)['reason'],'full-issue-acceptance-unqualified')
+
+    def test_legacy_binding_never_infers_issue_completion(self):
+        legacy = dict(self.binding)
+        legacy.pop('project_id')
+        legacy.pop('full_issue_acceptance_sha256')
+        self.controller = Controller(self.root/'legacy',legacy)
+        self.directory = self.root/'legacy'
+        self.binding = legacy
+        self.step()
+        result = self.step(self.merged())
+        self.assertEqual(result['reason'],'full-issue-project-and-acceptance-unbound')
+        self.assertIsNone(result['action'])
+
+    def test_bound_uif_project_and_foreign_readback(self):
+        self.acceptance['project_id']='ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0'
+        self.binding.update(project_id=self.acceptance['project_id'],
+                            full_issue_acceptance_sha256=fingerprint(self.acceptance))
+        self.directory = self.root/'uif'
+        self.controller = Controller(self.directory,self.binding)
+        self.step()
+        observed=self.merged()
+        self.assertEqual(self.step(observed)['reason'],'awaiting-linear-readback')
+        observed['linear']['project_id']=self.acceptance['project_id']
+        result=self.step(observed)
+        self.assertEqual(result['status'],'linear-intent')
+        self.assertEqual(result['action']['issue_id'], self.binding['issue_id'])
 
     def test_legitimate_successor_preserves_published_claim_hash(self):
         # Simulate legacy published evidence before either controller resumes.

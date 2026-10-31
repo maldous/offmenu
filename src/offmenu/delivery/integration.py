@@ -58,7 +58,8 @@ class Controller:
     def __init__(self,directory,binding,claim_root=None):
         required = {'version','repository','pr_number','issue_id','owner','head','base','tree',
                     'policy_sha256','capacity_policy_sha256','validation_operation_key','outputs','head_branch'}
-        if set(binding) != required or type(binding['version']) is not int or binding['version'] != 1:
+        if (set(binding) not in (required, required | {'project_id', 'full_issue_acceptance_sha256'})
+            or type(binding['version']) is not int or binding['version'] != 1):
             raise DeliveryError('Invalid integration binding')
         if (binding['repository'] != 'maldous/offmenu' or type(binding['pr_number']) is not int
             or binding['pr_number'] < 1 or not binding['owner'] or not binding['outputs']):
@@ -66,6 +67,15 @@ class Controller:
         if not re.fullmatch(r'(?:feature|bugfix)/[a-z0-9][a-z0-9/-]{0,159}',str(binding['head_branch'])) or binding['head_branch'].endswith('/') or '//' in binding['head_branch']:
             raise DeliveryError('Invalid exact selected branch')
         UUID(binding['issue_id'])
+        if 'project_id' in binding:
+            try:
+                if str(UUID(binding['project_id'])) != binding['project_id']:
+                    raise ValueError('noncanonical project')
+            except (ValueError, TypeError, AttributeError) as exc:
+                raise DeliveryError('Invalid integration project') from exc
+            if (not isinstance(binding['full_issue_acceptance_sha256'], str)
+                or not re.fullmatch('[0-9a-f]{64}', binding['full_issue_acceptance_sha256'])):
+                raise DeliveryError('Invalid full issue acceptance pin')
         for key in ('head','base','tree','policy_sha256','capacity_policy_sha256','validation_operation_key'):
             if not re.fullmatch('[0-9a-f]{'+str(40 if key in ('head','base','tree') else 64)+'}',binding[key]):
                 raise DeliveryError('Invalid '+key)
@@ -166,8 +176,21 @@ class Controller:
             def merged_result(status,action=None,**extra):
                 return self.result(status,action,merge_effect='verified',merge_commit_sha=commit['sha'],**extra)
             linear = snapshot.get('linear',{})
-            if linear.get('id') != b['issue_id'] or linear.get('project_id') != 'ce60c1ab-a732-4a71-8471-14c9dc393886':
+            project = b.get('project_id')
+            if not project:
+                return merged_result('merge-verified',reason='full-issue-project-and-acceptance-unbound')
+            if linear.get('id') != b['issue_id'] or linear.get('project_id') != project:
                 return merged_result('merge-verified',reason='awaiting-linear-readback')
+            acceptance = snapshot.get('full_issue_acceptance')
+            if (not isinstance(acceptance, dict)
+                or set(acceptance) != {'version', 'issue_id', 'project_id', 'owner', 'decision', 'scope', 'evidence_id'}
+                or type(acceptance['version']) is not int or acceptance['version'] != 1
+                or acceptance['issue_id'] != b['issue_id'] or acceptance['project_id'] != project
+                or acceptance['owner'] != b['owner'] or acceptance['decision'] != 'accepted'
+                or acceptance['scope'] != 'full-issue' or not isinstance(acceptance['evidence_id'], str)
+                or not acceptance['evidence_id'].strip()
+                or fingerprint(acceptance) != b['full_issue_acceptance_sha256']):
+                return merged_result('merge-verified',reason='full-issue-acceptance-unqualified')
             if linear.get('state') == 'Done':
                 return merged_result('accepted',tree=commit['tree'])
             if snapshot.get('cancel_requested'):
