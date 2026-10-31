@@ -39,6 +39,8 @@ class CurrentDispatchTests(unittest.TestCase):
         self.stack = ExitStack()
         self.addCleanup(self.stack.close)
         self.temp = Path(self.stack.enter_context(tempfile.TemporaryDirectory())).resolve()
+        # Legacy fixtures never inspect the actual installed host binding.
+        self.stack.enter_context(patch.object(adapter,'PROTECTED_OWNER',self.temp/'no-installed-owner'))
         self.source = self.temp/'source'
         self.source.mkdir()
         for name in ('stokowski_adapter.py','stokowski_worker.py','stokowski_prepare.py',
@@ -151,6 +153,35 @@ class CurrentDispatchTests(unittest.TestCase):
             with patch.object(adapter, 'protected_owner_bytes', side_effect=lambda path:Path(path).read_bytes()):
                 with self.assertRaisesRegex(AdmissionError, 'protected_owner_runtime'):
                     adapter.current_config(self.runtime)
+
+    def test_protected_granted_catalog_real_constructor_and_rollback(self):
+        protected=self.temp/'sealed-owner';protected.mkdir()
+        seed=self.catalog.read_bytes();(protected/'catalog.json').write_bytes(seed)
+        cfg=json.loads((self.runtime/'current.json').read_bytes())
+        future=dict(version=1,entries=[dict(issue='UIF-341',issue_id='00000000-0000-4000-8000-000000000341',
+            runtime=str(self.root/'future-341'),admission_sha256='1'*64)])
+        cfg['catalog_versions']=[dict(sha256=hashlib.sha256(prepare._publication_bytes(future)).hexdigest(),catalog=future)]
+        self.write(protected/'current.json',cfg)
+        python=b'synthetic sealed interpreter'
+        binding=dict(schema='protected-current-owner-v1',runtime=str(self.runtime),source_root=str(self.source),
+            config_sha256=adapter.file_sha(protected/'current.json'),catalog_sha256=hashlib.sha256(seed).hexdigest(),
+            python_sha256=hashlib.sha256(python).hexdigest())
+        self.write(protected/'binding.json',binding)
+        self.current.state['config_sha256']=binding['config_sha256'];self.current.save()
+        def read(path):return python if Path(path)==Path(sys.executable) else Path(path).read_bytes()
+        with patch.object(adapter,'PROTECTED_OWNER',protected),patch.object(adapter,'protected_owner_bytes',side_effect=read), \
+             patch.object(adapter,'protected_owner_tree'),patch.object(adapter,'_PROTECTED_CLOSURES',set()):
+            actual=adapter.CurrentWork(self.runtime,read_only=True)
+            self.assertEqual(actual.catalog,self.catalog)
+            actual.catalog_transition(seed,prepare._publication_bytes(future))
+            state=json.loads((self.runtime/'current-owner.json').read_bytes())
+            state['bindings']['UIF-341']='2'*64
+            self.write(self.runtime/'current-owner.json',state)
+            with self.assertRaisesRegex(AdmissionError,'catalog_rollback'):
+                adapter.CurrentWork(self.runtime,read_only=True)
+            self.catalog.write_text('{"ungranted":true}')
+            with self.assertRaisesRegex(AdmissionError,'catalog_snapshot'):
+                adapter.current_config(self.runtime)
 
     def test_protected_owner_file_and_tree_reject_mutable_custody(self):
         # The actual test files are deliberately user-owned, never privileged.
@@ -374,9 +405,9 @@ class CurrentDispatchTests(unittest.TestCase):
         if real:
             original = Path(__file__).resolve().parents[2]
             shutil.copytree(original/'tools/delivery',self.source/'tools/delivery',dirs_exist_ok=True,
-                            ignore=shutil.ignore_patterns('__pycache__'))
+                            ignore=shutil.ignore_patterns('__pycache__'), copy_function=self.copy_fixture_source)
             shutil.copytree(original/'src',self.source/'src',dirs_exist_ok=True,
-                            ignore=shutil.ignore_patterns('__pycache__'))
+                            ignore=shutil.ignore_patterns('__pycache__'), copy_function=self.copy_fixture_source)
             self.write(self.source/'tools/delivery/capacity-policy.json',self.policy)
             # Only this temporary, committed fixture replaces the provider.
             launch = self.source/'tools/delivery/symphony_launch.py'
@@ -644,6 +675,15 @@ class CurrentDispatchTests(unittest.TestCase):
             args[-1].endswith(':tools/delivery/stokowski_stage.py') else original_git(args,**kw))
         with self.assertRaisesRegex(AdmissionError,'current_source_not_reviewed_revision'):
             self.current.guard()
+
+    @staticmethod
+    def copy_fixture_source(source, destination):
+        # The service mirror deliberately has read-only files. These copies
+        # belong to a mutable synthetic fixture, including its private policy.
+        copied = shutil.copy2(source, destination)
+        path = Path(copied)
+        path.chmod(path.stat().st_mode | 0o200)
+        return copied
 
     def write(self, path, value):
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -1515,9 +1555,9 @@ class CurrentDispatchTests(unittest.TestCase):
         # touching this workspace's HEAD or using shell interpolation.
         original_source = Path(__file__).resolve().parents[2]
         shutil.copytree(original_source/'tools/delivery', self.source/'tools/delivery', dirs_exist_ok=True,
-                        ignore=shutil.ignore_patterns('__pycache__'))
+                        ignore=shutil.ignore_patterns('__pycache__'), copy_function=self.copy_fixture_source)
         shutil.copytree(original_source/'src', self.source/'src', dirs_exist_ok=True,
-                        ignore=shutil.ignore_patterns('__pycache__'))
+                        ignore=shutil.ignore_patterns('__pycache__'), copy_function=self.copy_fixture_source)
         self.write(self.source/'tools/delivery/capacity-policy.json', self.policy)
         def git_at(path, *args):
             result = subprocess.run(['/usr/bin/git','-C',str(path),*args], check=True,
@@ -1891,7 +1931,7 @@ class CurrentDispatchTests(unittest.TestCase):
         owner.ledger.record_terminal.assert_not_called()
 
     def test_owner_observation_once_reopen_and_native_consumption(self):
-        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review=='template')
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
         writer = self.current.unit_review_writer(lambda envelope:packet)
         envelope = {k:packet[k] for k in ('snapshot','decision')}
         with (self.root/'coordinator.lock').open('a') as lock:
@@ -1912,7 +1952,7 @@ class CurrentDispatchTests(unittest.TestCase):
         owner.ledger.record_terminal.assert_not_called()
 
     def test_evidence_hold_revokes_unhandled_output_approval_until_restored(self):
-        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review=='template')
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
         self.current.unit_review_writer(lambda envelope:packet)({k:packet[k] for k in ('snapshot','decision')})
         self.current.refresh()
         gate = self.current.state['tasks'][issue.identifier]['unit_gate']
@@ -1932,7 +1972,7 @@ class CurrentDispatchTests(unittest.TestCase):
         owner._schedule_retry.assert_not_called()
 
     def test_evidence_hold_revokes_unhandled_journal_approval(self):
-        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review=='template')
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
         self.current.unit_review_writer(lambda envelope:packet)({k:packet[k] for k in ('snapshot','decision')})
         self.current.refresh()
         gate = self.current.state['tasks'][issue.identifier]['unit_gate']
@@ -1945,7 +1985,7 @@ class CurrentDispatchTests(unittest.TestCase):
         owner._schedule_retry.assert_not_called()
 
     def test_missing_incoming_evidence_cannot_consume_earlier_approval(self):
-        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review=='template')
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
         self.current.unit_review_writer(lambda envelope:packet)({k:packet[k] for k in ('snapshot','decision')})
         self.current.refresh()
         gate = self.current.state['tasks'][issue.identifier]['unit_gate']
@@ -1957,7 +1997,7 @@ class CurrentDispatchTests(unittest.TestCase):
 
     def test_review_mismatches_hold_and_never_write_disposition(self):
         import copy
-        issue,runtime,owner,client,packet,journal,key = self.review_fixture(template_coding=native_review=='template')
+        issue,runtime,owner,client,packet,journal,key = self.review_fixture()
         with self.assertRaises(AdmissionError):
             self.current.unit_review_writer()
         mutations = [
@@ -2530,20 +2570,109 @@ class CurrentDispatchTests(unittest.TestCase):
     def test_workspace_uses_each_task_source_branch_and_existing_identity(self):
         issue, runtime = self.qualify(218)
         native, _, _ = self.adapted()
-        clone = self.stack.enter_context(patch.object(adapter.subprocess,'run'))
+        clone = self.stack.enter_context(patch.object(adapter.subprocess,'run',
+            side_effect=lambda argv,**kwargs: Path(argv[-1]).mkdir(mode=0o775)))
         workspace = asyncio.run(native.ensure_workspace(self.runtime/'workspaces',issue.identifier,SimpleNamespace()))
         self.assertEqual(workspace.path,runtime/'workspaces'/issue.identifier)
         args = clone.call_args.args[0]
         self.assertIn('feature/test-current',args)
         self.assertEqual(args[-2],str(self.temp/'checkout-218'))
         self.assertNotEqual(args[-2],str(self.source))
-        workspace.path.mkdir()
         original_git = self.git_read
         self.git.side_effect = lambda args,**kwargs: ('wrong-head' if args[2] == str(workspace.path)
                                                     else original_git(args,**kwargs))
         with self.assertRaises(AdmissionError):
             asyncio.run(native.ensure_workspace(self.runtime/'workspaces',issue.identifier,SimpleNamespace()))
         self.assertEqual(clone.call_count,1)
+
+    @unittest.skipUnless(shutil.which('setfacl'), 'POSIX ACL fixture needs setfacl')
+    def test_new_workspace_removes_inherited_write_and_retains_coding_uid_gate(self):
+        from coding_child_launch import owned_path
+        import coding_child_launch
+        issue, runtime = self.qualify(218)
+        native, _, _ = self.adapted()
+        runtime.chmod(0o700)
+        (runtime/'workspaces').mkdir(mode=0o700, exist_ok=True)
+        (runtime/'workspaces').chmod(0o700)
+        # A clone may inherit ACL write bits despite the service's umask.
+        def inherited_clone(argv, **kwargs):
+            path = Path(argv[-1])
+            path.mkdir()
+            path.chmod(0o775)
+            subprocess.check_call(['setfacl', '-m', 'd:u::rwx,d:g::rwx,d:o::---', str(path)])
+            (path/'source-directory').mkdir()
+            (path/'source-directory/checked-out.py').write_text('source')
+            (path/'source-directory/run.sh').write_text('executable')
+            (path/'source-directory/run.sh').chmod(0o775)
+            self.assertTrue((path/'source-directory/checked-out.py').stat().st_mode & 0o020)
+        with patch.object(adapter.subprocess, 'run', side_effect=inherited_clone):
+            workspace = asyncio.run(native.ensure_workspace(
+                self.runtime/'workspaces', issue.identifier, SimpleNamespace()))
+        # Check the real confinement path contract, without a provider or child.
+        with patch.object(coding_child_launch, 'RUNTIME', runtime):
+            if os.getuid() == 1000:
+                self.assertEqual(owned_path(workspace.path), str(workspace.path))
+            else:
+                # Deterministic Windmill checks run as UID985. Hardening a
+                # fixture does not turn that identity into the coding UID.
+                with self.assertRaisesRegex(coding_child_launch.ConfinementError,
+                                            'confinement_runtime_owner'):
+                    owned_path(workspace.path)
+        self.assertEqual(workspace.path.stat().st_mode & 0o777, 0o700)
+        self.assertEqual((workspace.path/'source-directory/checked-out.py').stat().st_mode & 0o777, 0o600)
+        self.assertEqual((workspace.path/'source-directory/run.sh').stat().st_mode & 0o777, 0o700)
+        # Later writes under both the root and an already-cloned directory obey
+        # the service umask rather than the formerly inherited default ACL.
+        mask = os.umask(0o077)
+        try:
+            for parent in (workspace.path, workspace.path/'source-directory'):
+                child = parent/'later-directory'
+                child.mkdir()
+                (child/'later-file').write_text('private')
+                self.assertFalse(child.stat().st_mode & 0o077)
+                self.assertFalse((child/'later-file').stat().st_mode & 0o077)
+        finally:
+            os.umask(mask)
+
+    def test_existing_group_writable_workspace_is_held_without_changing_it(self):
+        issue, runtime = self.qualify(218)
+        path = runtime/'workspaces'/issue.identifier
+        path.mkdir(parents=True)
+        path.chmod(0o775)
+        (path/'retained-output').write_text('preserved')
+        native, _, _ = self.adapted()
+        with patch.object(adapter.subprocess, 'run') as clone:
+            with self.assertRaisesRegex(AdmissionError, 'Workspace ownership or permissions'):
+                asyncio.run(native.ensure_workspace(
+                    self.runtime/'workspaces', issue.identifier, SimpleNamespace()))
+        clone.assert_not_called()
+        self.assertEqual(path.stat().st_mode & 0o777, 0o775)
+        self.assertEqual((path/'retained-output').read_text(), 'preserved')
+
+    @unittest.skipUnless(shutil.which('setfacl'), 'POSIX ACL fixture needs setfacl')
+    def test_retained_default_acl_is_held_without_rewriting_it(self):
+        issue, runtime = self.qualify(218)
+        path = runtime/'workspaces'/issue.identifier
+        path.mkdir(parents=True)
+        subprocess.check_call(['setfacl', '-m', 'd:u::rwx,d:g::rwx,d:o::---', str(path)])
+        path.chmod(0o700)
+        before = os.getxattr(path, 'system.posix_acl_default')
+        native, _, _ = self.adapted()
+        with self.assertRaisesRegex(AdmissionError, 'Workspace inherited default ACL'):
+            asyncio.run(native.ensure_workspace(
+                self.runtime/'workspaces', issue.identifier, SimpleNamespace()))
+        self.assertEqual(os.getxattr(path, 'system.posix_acl_default'), before)
+        self.assertEqual(path.stat().st_mode & 0o777, 0o700)
+
+    def test_new_workspace_acl_removal_error_prevents_exposure(self):
+        issue, runtime = self.qualify(218)
+        native, _, _ = self.adapted()
+        with patch.object(adapter.subprocess, 'run',
+                          side_effect=lambda argv,**kwargs: Path(argv[-1]).mkdir()), \
+             patch.object(adapter.os, 'removexattr', side_effect=PermissionError('denied')):
+            with self.assertRaises(PermissionError):
+                asyncio.run(native.ensure_workspace(
+                    self.runtime/'workspaces', issue.identifier, SimpleNamespace()))
 
     def test_current_owner_lock_excludes_second_caller(self):
         with (self.root/'coordinator.lock').open('a') as lock:
@@ -2726,6 +2855,76 @@ class NativeSuccessorBindingTests(unittest.TestCase):
         self.api.assert_called_once()
         f.provider.assert_called_once()
         self.assertEqual(c.current.state['intake'][issue.identifier]['authority'],authority)
+
+    def test_protected_publication_refuses_ungranted_append_before_runtime_exposure(self):
+        c,f=self.c,self.f
+        protected=c.temp/'transition-seed';protected.mkdir()
+        before=f.catalog.read_bytes();baseline=json.loads(before)
+        (protected/'catalog.json').write_bytes(before)
+        c.write(protected/'binding.json',dict(runtime=str(c.runtime)))
+        other=dict(version=1,entries=baseline['entries']+[dict(issue='UIF-999',issue_id='unrelated',
+            runtime=str(c.root/'unrelated'),admission_sha256='f'*64)])
+        config=dict(runtime_root=str(c.root),catalog=str(f.catalog),catalog_versions=[dict(
+            sha256=hashlib.sha256(prepare._publication_bytes(other)).hexdigest(),catalog=other)])
+        transition=adapter.CurrentWork.catalog_transition
+        attempted=[]
+        def granted_edge(view,old,new):
+            attempted.append((old,new))
+            shadow=object.__new__(adapter.CurrentWork)
+            shadow.owner_custody=True;shadow.config=config;shadow.guard=lambda:None
+            with patch.object(adapter,'PROTECTED_OWNER',protected),patch.object(
+                    adapter,'protected_owner_bytes',side_effect=lambda p:Path(p).read_bytes()):
+                return transition(shadow,old,new)
+        with patch.object(adapter.CurrentWork,'catalog_transition',new=granted_edge):
+            c.current._successor_boundary()
+        self.assertEqual(f.catalog.read_bytes(),before)
+        self.assertFalse(f.runtime.exists())
+        self.assertEqual(len(attempted),1)
+        self.assertEqual(attempted[0][0],before)
+        self.assertNotEqual(c.current.state['successor_request']['status'],'published')
+
+    def test_protected_catalog_swap_after_capture_writes_no_journal_or_runtime(self):
+        c,f=self.c,self.f
+        before=f.catalog.read_bytes();changed=json.loads(before)
+        changed['entries'].append(dict(issue='UIF-998',issue_id='other',runtime=str(c.root/'other'),admission_sha256='f'*64))
+        changed=prepare._publication_bytes(changed)
+        constructor=adapter.CurrentWork
+        captures=[]
+        def capture():
+            raw=f.catalog.read_bytes();captures.append(raw)
+            if len(captures)==1:f.catalog.write_bytes(changed)
+            return raw
+        def view(*args,**kwargs):
+            actual=constructor(*args,**kwargs)
+            # Synthetic root grants are isolated to catalog capture; all
+            # publication inputs, provider checks and write ordering stay real.
+            actual.owner_custody={'synthetic':'root grant'}
+            actual.catalog_bytes=capture
+            return actual
+        with patch.object(prepare,'CurrentWork',side_effect=view):
+            c.current._successor_boundary()
+        self.assertGreaterEqual(len(captures),2)
+        self.assertEqual(captures[0],before)
+        self.assertEqual(f.catalog.read_bytes(),changed)
+        self.assertFalse((f.root/(f.runtime.name+'-publication.json')).exists())
+        self.assertFalse(f.runtime.exists())
+
+    def test_protected_existing_publication_journal_recovers_without_before_capture(self):
+        c,f=self.c,self.f
+        c.current._successor_boundary()
+        self.assertEqual(c.current.state['successor_request']['status'],'published')
+        constructor=adapter.CurrentWork
+        def view(*args,**kwargs):
+            actual=constructor(*args,**kwargs)
+            actual.owner_custody={'synthetic':'root grant'}
+            actual.catalog_bytes=lambda:f.catalog.read_bytes()
+            return actual
+        calls=f.provider.call_count
+        with patch.object(prepare,'CurrentWork',side_effect=view):
+            result=prepare.prepare_publication(f.handoff_path,handoff_sha256=f.handoff_sha,
+                authenticated_caller=lambda:dict(self.native.CALLER),provider_proof=f.provider)
+        self.assertEqual(result['status'],'duplicate')
+        self.assertEqual(f.provider.call_count,calls)
 
     def test_rearm_native_custody_exact_path_hash_and_binding_required(self):
         import copy
@@ -3284,6 +3483,78 @@ class NativePublicationLaunchTests(unittest.TestCase):
              patch.object(adapter.time,'monotonic',side_effect=expired), \
              self.assertRaisesRegex(AdmissionError,'native_reply_timeout'):
             self.current._native_publication_cli(b'{}\n')
+
+
+class ProtectedCatalogTransitionTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.base = Path(self.temp.name).resolve()
+        self.protected = self.base/'protected'
+        self.protected.mkdir()
+        self.root = self.base/'.delivery/stokowski'
+        self.root.mkdir(parents=True)
+        self.coordinator = self.root/'current'
+        self.coordinator.mkdir()
+        self.catalog = self.root/'catalog.json'
+        self.seed = dict(version=1,entries=[])
+        self.first = dict(version=1,entries=[dict(issue='UIF-341',issue_id='a',runtime='first',admission_sha256='1'*64)])
+        self.second = dict(version=1,entries=self.first['entries']+[dict(issue='UIF-342',issue_id='b',runtime='second',admission_sha256='2'*64)])
+        self.raw = prepare._publication_bytes
+        self.seed_bytes = self.raw(self.seed)
+        self.catalog.write_bytes(self.seed_bytes)
+        (self.protected/'catalog.json').write_bytes(self.seed_bytes)
+        (self.protected/'binding.json').write_text(json.dumps(dict(runtime=str(self.coordinator))))
+        self.config = dict(runtime_root=str(self.root),catalog=str(self.catalog),catalog_versions=[
+            dict(sha256=hashlib.sha256(self.raw(value)).hexdigest(),catalog=value)
+            for value in (self.first,self.second)])
+        self.patch = patch.object(adapter,'PROTECTED_OWNER',self.protected)
+        self.patch.start();self.addCleanup(self.patch.stop)
+        self.read_patch=patch.object(adapter,'protected_owner_bytes',side_effect=lambda p:Path(p).read_bytes())
+        self.read_patch.start();self.addCleanup(self.read_patch.stop)
+        self.current=object.__new__(adapter.CurrentWork)
+        self.current.owner_custody=True
+        self.current.config=self.config
+        self.current.guard=lambda:None
+
+    def test_only_exact_next_granted_snapshot_can_be_published(self):
+        self.assertEqual(adapter.protected_catalog_bytes(self.config,self.seed_bytes),self.seed_bytes)
+        self.current.catalog_transition(self.seed_bytes,self.raw(self.first))
+        with self.assertRaisesRegex(AdmissionError,'catalog_transition'):
+            self.current.catalog_transition(self.seed_bytes,self.raw(self.second))
+        self.catalog.write_bytes(self.raw(self.first))
+        self.current.catalog_transition(self.raw(self.first),self.raw(self.second))
+        with self.assertRaisesRegex(AdmissionError,'catalog_transition'):
+            self.current.catalog_transition(self.raw(self.first),self.seed_bytes)
+        with self.assertRaisesRegex(AdmissionError,'catalog_transition'):
+            self.current.catalog_transition(self.seed_bytes,self.raw(self.first))
+
+    def test_ungranted_bytes_or_changed_prior_entry_fail_closed(self):
+        self.catalog.write_bytes(self.raw(dict(version=1,entries=[dict(untrusted=True)])))
+        with self.assertRaisesRegex(AdmissionError,'catalog_snapshot'):
+            adapter.protected_catalog_bytes(self.config,self.seed_bytes)
+        self.catalog.write_bytes(self.seed_bytes)
+        self.config['catalog_versions'][1]['catalog']['entries'][0]=dict(replaced=True)
+        with self.assertRaisesRegex(AdmissionError,'catalog_grants'):
+            adapter.protected_catalog_bytes(self.config,self.seed_bytes)
+
+    def test_catalog_symlink_and_coordinator_private_substitution_refuse(self):
+        self.catalog.unlink();self.catalog.symlink_to(self.protected/'catalog.json')
+        with self.assertRaisesRegex(AdmissionError,'catalog_grants'):
+            adapter.protected_catalog_bytes(self.config,self.seed_bytes)
+
+    def test_snapshot_swap_cannot_change_captured_parse_or_digest(self):
+        self.catalog.write_bytes(self.raw(self.first))
+        captured=self.current.catalog_bytes()
+        self.catalog.write_bytes(self.raw(self.second))
+        with patch.object(self.current,'catalog_bytes',return_value=captured):
+            self.assertEqual(self.current.catalog_record(),self.first)
+            self.assertEqual(self.current._catalog_observed_sha256,hashlib.sha256(captured).hexdigest())
+        with self.assertRaisesRegex(AdmissionError,'catalog_transition'):
+            self.current.catalog_transition(captured,self.raw(self.second))
+        self.config['catalog']=str(self.coordinator/'catalog.json')
+        with self.assertRaisesRegex(AdmissionError,'catalog_grants'):
+            adapter.protected_catalog_bytes(self.config,self.seed_bytes)
 
 
 if __name__ == '__main__':

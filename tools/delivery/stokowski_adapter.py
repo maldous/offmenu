@@ -5,6 +5,7 @@ this OffMenu coordinator process. Arbitrary upstream shell hooks are disabled.
 """
 import argparse
 import asyncio
+import errno
 import fcntl
 import hashlib
 import importlib.metadata
@@ -76,6 +77,54 @@ def protected_owner_tree(root):
             raise AdmissionError('protected_owner_parent')
 
 
+def protected_catalog_bytes(config, seed):
+    """A sealed owner may grant a finite sequence of exact catalog snapshots.
+
+    Only the private publication catalog is writable. The seed, grants and
+    their digest remain root-owned; this grants no arbitrary catalog append.
+    """
+    versions = config.get('catalog_versions')
+    if versions is None:
+        if config.get('catalog') != str(PROTECTED_OWNER/'catalog.json'):
+            raise AdmissionError('protected_owner_catalog')
+        return seed
+    root = Path(config['runtime_root'])
+    path = Path(config['catalog'])
+    coordinator = Path(json.loads(protected_owner_bytes(PROTECTED_OWNER/'binding.json'))['runtime'])
+    if (root != root.resolve() or path != path.resolve() or not path.is_relative_to(root)
+        or path.is_relative_to(coordinator) or not isinstance(versions, list)
+        or not 1 <= len(versions) <= 32):
+        raise AdmissionError('protected_owner_catalog_grants')
+    previous = json.loads(seed)
+    allowed = {hashlib.sha256(seed).hexdigest(): previous}
+    for version in versions:
+        if (not isinstance(version, dict) or set(version) != {'sha256','catalog'}
+            or not isinstance(version['sha256'], str) or not re.fullmatch('[0-9a-f]{64}',version['sha256'])
+            or version['sha256'] in allowed or not isinstance(version['catalog'], dict)
+            or set(version['catalog']) != {'version','entries'} or version['catalog']['version'] != 1
+            or not isinstance(version['catalog']['entries'],list)
+            or len(version['catalog']['entries']) != len(previous['entries'])+1
+            or version['catalog']['entries'][:-1] != previous['entries']):
+            raise AdmissionError('protected_owner_catalog_grants')
+        raw = (json.dumps(version['catalog'],sort_keys=True,indent=2)+'\n').encode()
+        if hashlib.sha256(raw).hexdigest() != version['sha256']:
+            raise AdmissionError('protected_owner_catalog_grants')
+        allowed[version['sha256']] = version['catalog']
+        previous = version['catalog']
+    fd = os.open(path, os.O_RDONLY|os.O_NOFOLLOW)
+    try:
+        info = os.fstat(fd)
+        if not stat.S_ISREG(info.st_mode) or info.st_size > 1048576:
+            raise AdmissionError('protected_owner_catalog_snapshot')
+        with os.fdopen(os.dup(fd),'rb') as stream:
+            raw = stream.read(1048577)
+    finally:
+        os.close(fd)
+    if len(raw)>1048576 or hashlib.sha256(raw).hexdigest() not in allowed:
+        raise AdmissionError('protected_owner_catalog_snapshot')
+    return raw
+
+
 def current_config(runtime):
     """Select installed sealed owner inputs; legacy fixtures remain explicit.
 
@@ -111,8 +160,7 @@ def current_config(runtime):
         or hashlib.sha256(python).hexdigest() != binding['python_sha256']):
         raise AdmissionError('protected_owner_digest')
     config = json.loads(raw)
-    if config.get('catalog') != str(PROTECTED_OWNER/'catalog.json'):
-        raise AdmissionError('protected_owner_catalog')
+    protected_catalog_bytes(config, catalog)
     closure = (str(SOURCE), sys.prefix, binding['python_sha256'])
     if closure not in _PROTECTED_CLOSURES:
         protected_owner_tree(SOURCE)
@@ -181,7 +229,7 @@ class CurrentWork:
         self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config, self.config_path, self.owner_custody = current_config(runtime)
-        if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template'} != {'version', 'owner', 'runtime_root', 'catalog',
+        if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template', 'catalog_versions'} != {'version', 'owner', 'runtime_root', 'catalog',
                                'source_head', 'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}:
             raise AdmissionError('current_config_fields')
         validated_project_route(self.config.get('project_route', project_route(PROJECT)))
@@ -208,7 +256,9 @@ class CurrentWork:
             or not isinstance(self.config['source_sha256'],dict)
             or not re.fullmatch(r'[0-9a-f]{40}',self.config['source_head'])):
             raise AdmissionError('current_private_root')
-        self.catalog = (PROTECTED_OWNER/'catalog.json' if self.owner_custody else self.private(self.config['catalog']))
+        if 'catalog_versions' in self.config and not self.owner_custody:
+            raise AdmissionError('protected_owner_catalog_grants')
+        self.catalog = Path(self.config['catalog']) if self.owner_custody else self.private(self.config['catalog'])
         self.config_sha = file_sha(self.config_path)
         self.state_path = runtime/'current-owner.json'
         self.state = read_record(self.state_path) if self.state_path.exists() else {
@@ -230,16 +280,19 @@ class CurrentWork:
                 # Publication qualifies original evidence before catalog exposure;
                 # it cannot consume reviews or mutate coordinator state.
                 return
-            catalog = read_record(self.catalog)
+            catalog = self.catalog_record()
             if catalog.get('version') != 1 or not isinstance(catalog.get('entries'), list):
                 raise AdmissionError('current_catalog_fields')
-            for entry in catalog['entries']:
+            for entry in self._active_catalog(catalog).values():
                 issue = entry['issue']
                 if (issue in self.entries or self.state['bindings'].get(issue) != digest(entry)
                     or self.state.get('references', {}).get(issue) != entry):
                     raise AdmissionError('current_identity_rebind')
                 self.private(entry['runtime'])
                 self.entries[issue] = entry
+            if self.owner_custody and (not set(self.state.get('references', {})) <= set(self.entries)
+                or not set(self.state.get('bindings', {})) <= set(self.entries)):
+                raise AdmissionError('current_catalog_rollback')
         else:
             self.refresh()
 
@@ -257,6 +310,34 @@ class CurrentWork:
         if self.read_only:
             raise AdmissionError('current_read_only')
         checkpoint(self.state_path, self.state)
+
+    def catalog_record(self):
+        if not self.owner_custody:
+            return read_record(self.catalog)
+        raw = self.catalog_bytes()
+        self._catalog_observed_sha256 = hashlib.sha256(raw).hexdigest()
+        return json.loads(raw)
+
+    def catalog_bytes(self):
+        if not self.owner_custody:
+            return self.catalog.read_bytes()
+        return protected_catalog_bytes(self.config,protected_owner_bytes(PROTECTED_OWNER/'catalog.json'))
+
+    def catalog_transition(self, before, after):
+        """Authorize only the next root-granted edge before publication."""
+        if not self.owner_custody:
+            return
+        self.guard()
+        seed = protected_owner_bytes(PROTECTED_OWNER/'catalog.json')
+        if protected_catalog_bytes(self.config,seed) != before:
+            raise AdmissionError('protected_owner_catalog_transition')
+        previous = hashlib.sha256(seed).hexdigest()
+        selected = (hashlib.sha256(before).hexdigest(),hashlib.sha256(after).hexdigest())
+        for version in self.config.get('catalog_versions', []):
+            if selected == (previous,version['sha256']):
+                return
+            previous = version['sha256']
+        raise AdmissionError('protected_owner_catalog_transition')
 
     def guard(self):
         c = self.config
@@ -290,38 +371,110 @@ class CurrentWork:
         if hashlib.sha256(accepted_policy).hexdigest() != c['policy_sha256']:
             raise AdmissionError('current_policy_not_reviewed_revision')
 
+    def _replacement_witness(self, previous, entry, *, manifest=None, request_sha256=None):
+        """A sealed append grants one new unit, never a retry of its old lease."""
+        import stokowski_replacement as replacement
+        module = 'tools/delivery/stokowski_replacement.py'
+        if (not self.owner_custody or not self.config.get('catalog_versions')
+            or self.config['source_sha256'].get(module) != file_sha(replacement.__file__)):
+            raise AdmissionError('replacement_owner_grant_required')
+        if (entry['issue'] != previous['issue'] or entry['issue_id'] != previous['issue_id']
+            or entry['runtime'] == previous['runtime']):
+            raise AdmissionError('replacement_identity')
+        runtime = self.private(entry['runtime'])
+        policy = read_record(SOURCE/'tools/delivery/capacity-policy.json')
+        witness = replacement.refusal_witness(previous, entry['replacement_of'], root=self.root,
+            owner=self.config['owner'], policy=policy, policy_sha256=self.config['policy_sha256'])
+        if manifest is None:
+            admission = replacement.record(runtime/'current-admission.json', self.root, entry['admission_sha256'])
+            if (admission['owner'] != self.config['owner'] or admission['issue'] != entry['issue']
+                or admission['issue_id'] != entry['issue_id']
+                or admission['policy_sha256'] != self.config['policy_sha256']):
+                raise AdmissionError('replacement_new_admission')
+            manifest = replacement.record(runtime/'manifest.json', self.root, admission['manifest_sha256'])
+            request_sha256 = admission['request_sha256']
+            replacement.record(runtime/'requests'/(entry['issue']+'.json'), self.root, request_sha256)
+        if (set(manifest['tasks']) != {entry['issue']}
+            or manifest['tasks'][entry['issue']]['issue_id'] != entry['issue_id']
+            or manifest['tasks'][entry['issue']]['owner'] != self.config['owner']
+            or manifest['project_id'] != witness['project_id']
+            or manifest['project_id'] != self.route['project_id']
+            or request_sha256 == witness['request_sha256']
+            or runtime_lease_ids(runtime, manifest)[entry['issue']] == witness['lease']):
+            raise AdmissionError('replacement_new_identity')
+        return witness
+
+    def _active_catalog(self, catalog):
+        """Keep the raw append history; derive one validated active issue view."""
+        fields = {'issue','issue_id','runtime','admission_sha256'}
+        for entry in catalog['entries']:
+            if not isinstance(entry, dict) or set(entry) not in (fields, fields | {'replacement_of'}):
+                raise AdmissionError('current_entry_fields')
+            if (not isinstance(entry['issue'], str) or not re.fullmatch(r'UIF-[1-9][0-9]*',entry['issue'])
+                or str(UUID(entry['issue_id'])) != entry['issue_id']
+                or not re.fullmatch('[0-9a-f]{64}',entry['admission_sha256'])):
+                raise AdmissionError('current_entry_identity')
+            self.private(entry['runtime'])
+        if not any('replacement_of' in entry for entry in catalog['entries']):
+            entries, identities, runtimes = {}, set(), set()
+            for entry in catalog['entries']:
+                if entry['issue'] in entries or entry['issue_id'] in identities or entry['runtime'] in runtimes:
+                    raise AdmissionError('current_identity_rebind')
+                entries[entry['issue']] = entry
+                identities.add(entry['issue_id'])
+                runtimes.add(entry['runtime'])
+            return entries
+        import stokowski_replacement as replacement
+        try:
+            return replacement.active_entries(catalog, self._replacement_witness)
+        except AdmissionError as error:
+            if str(error) in ('replacement_identity_rebind','replacement_runtime_reuse','replacement_chain'):
+                raise AdmissionError('current_identity_rebind') from error
+            raise
+
+    def _generation_transition(self, issue, entry):
+        """Validate and capture a transition without mutating retained state."""
+        previous = self.state.get('references', {}).get(issue)
+        if (previous is None or 'replacement_of' not in entry
+            or entry['replacement_of']['entry_sha256'] != digest(previous)):
+            raise AdmissionError('current_identity_rebind')
+        witness = self._replacement_witness(previous, entry)
+        history = self.state.get('replacement_history', [])
+        if any(item['entry_sha256'] == digest(previous) for item in history):
+            raise AdmissionError('replacement_transition_repeated')
+        # Retain this unit only; never copy Linear descriptions or chat history.
+        return dict(issue=issue, entry=previous, entry_sha256=digest(previous),
+            binding_sha256=self.state['bindings'][issue],
+            task=json.loads(json.dumps(self.state['tasks'].get(issue, {}))),
+            refusal=witness, replacement_entry_sha256=digest(entry))
+
     def refresh(self):
         try:
             self.guard()
-            catalog = read_record(self.catalog)
+            catalog = self.catalog_record()
             if set(catalog) != {'version', 'entries'} or type(catalog['version']) is not int or catalog['version'] != 1 or not isinstance(catalog['entries'], list):
                 raise AdmissionError('current_catalog_fields')
-            entries, identities, runtimes = {}, set(), set()
-            for entry in catalog['entries']:
-                if set(entry) != {'issue', 'issue_id', 'runtime', 'admission_sha256'}:
-                    raise AdmissionError('current_entry_fields')
-                issue = entry['issue']
-                if (not isinstance(issue,str) or not re.fullmatch(r'UIF-[1-9][0-9]*',issue)
-                    or str(UUID(entry['issue_id'])) != entry['issue_id']
-                    or not re.fullmatch(r'[0-9a-f]{64}',entry['admission_sha256'])):
-                    raise AdmissionError('current_entry_identity')
-                runtime = str(self.private(entry['runtime']))
-                binding = digest(entry)
+            entries = self._active_catalog(catalog)
+            # Validate the whole active view before changing any state binding.
+            transitions = []
+            for issue, entry in entries.items():
                 previous = self.state['bindings'].get(issue)
-                if (issue in entries or entry['issue_id'] in identities or runtime in runtimes
-                    or previous is not None and previous != binding):
-                    raise AdmissionError('current_identity_rebind')
-                # Bind even deferred references: removing and readding cannot replace them.
-                if any(v['issue_id'] == entry['issue_id'] or v['runtime'] == runtime
+                if previous is not None and previous != digest(entry):
+                    transitions.append(self._generation_transition(issue, entry))
+                if any(v['issue_id'] == entry['issue_id'] or v['runtime'] == entry['runtime']
                        for k, v in self.state.get('references', {}).items() if k != issue):
                     raise AdmissionError('current_identity_rebind')
-                self.state['bindings'][issue] = binding
+            if self.owner_custody and (not set(self.state.get('references', {})) <= set(entries)
+                or not set(self.state.get('bindings', {})) <= set(entries)):
+                raise AdmissionError('current_catalog_rollback')
+            for transition in transitions:
+                self.state.setdefault('replacement_history', []).append(transition)
+                self.state['tasks'][transition['issue']] = {}
+            for issue, entry in entries.items():
+                self.state['bindings'][issue] = digest(entry)
                 self.state.setdefault('references', {})[issue] = entry
-                entries[issue] = entry
-                identities.add(entry['issue_id'])
-                runtimes.add(runtime)
             self.entries = entries
-            self.state['catalog_sha256'] = file_sha(self.catalog)
+            self.state['catalog_sha256'] = self._catalog_observed_sha256 if self.owner_custody else file_sha(self.catalog)
             for issue in self.state.get('references', {}):
                 self.observe(issue)
             self._consume_unit_reviews()
@@ -362,7 +515,7 @@ class CurrentWork:
     def _intake_authority(self, reference):
         policy = self._intake_policy()
         authority = self._private_pin(policy['references'][reference])
-        if (set(authority) != {'schema', 'owner', 'source_head', 'issue', 'issue_id', 'project_id',
+        if (set(authority) - {'replacement_of'} != {'schema', 'owner', 'source_head', 'issue', 'issue_id', 'project_id',
                               'accepted_scope', 'acceptance', 'dependencies', 'decision', 'handoff',
                               'qualification'}
             or authority['schema'] != 'offmenu-intake-authority/1'
@@ -373,7 +526,9 @@ class CurrentWork:
             or any(not isinstance(name, str) or not name.strip() for name in authority['accepted_scope'])
             or not isinstance(authority['acceptance'], list) or not authority['acceptance']
             or any(not isinstance(item, str) or not item.strip() for item in authority['acceptance'])
-            or authority['decision'] not in ('owner-qualified', 'qualification-only')):
+            or authority['decision'] not in ('owner-qualified', 'qualification-only')
+            or ('replacement_of' in authority and (authority['decision'] != 'owner-qualified'
+                or not isinstance(authority['replacement_of'], dict)))):
             raise AdmissionError('intake_owner_scope_or_decision')
         return policy, authority
 
@@ -390,7 +545,9 @@ class CurrentWork:
                     uuid=authority['issue_id'], project_id=authority['project_id'])
                 and packet['scope'] == authority['accepted_scope']
                 and packet['acceptance'] == authority['acceptance']
-                and packet['source']['base'] == authority['source_head']):
+                and packet['source']['base'] == authority['source_head']
+                and ('replacement_of' in packet) == ('replacement_of' in authority)
+                and packet.get('replacement_of') == authority.get('replacement_of')):
                 return True
         return False
 
@@ -440,19 +597,31 @@ class CurrentWork:
                 stable = set(authority) - {'decision', 'handoff', 'qualification'}
                 result_ref = record.get('qualification_result', {})
                 result = read_record(result_ref['path']) if result_ref else {}
-                if (previous['decision'] != 'qualification-only' or authority['decision'] != 'owner-qualified'
-                    or any(previous[k] != authority[k] for k in stable)
-                    or not result_ref or file_sha(result_ref['path']) != result_ref['sha256']
-                    or result.get('child_tree_gone') is not True or result.get('status') != 'succeeded'):
-                    raise AdmissionError('intake_authority_drift: owner reconciliation required')
-                capacity = read_record(self.runtime/'capacity-policy.json')
-                database = Path(capacity['symphony']['pool_path'])/'state.sqlite'
-                with sqlite3.connect(database.as_uri()+'?mode=ro', uri=True) as db:
-                    lease = db.execute('SELECT status,outcome FROM leases WHERE id=?', (result['lease'],)).fetchone()
-                if lease != ('finished', 'succeeded'):
-                    raise AdmissionError('intake_qualification_lease_unreconciled')
-                record.setdefault('qualification_history', []).append(dict(authority=previous,
-                    reference=record['reference'], result=result_ref, intent=record['qualification_intent']))
+                if (previous['decision'] == authority['decision'] == 'owner-qualified'
+                    and 'replacement_of' in authority):
+                    handoff = self._private_pin(authority['handoff'])
+                    packet = self._private_pin(handoff['task_packet'])
+                    if (packet.get('replacement_of') != authority['replacement_of']
+                        or packet['owner_config'] != handoff['owner_config']):
+                        raise AdmissionError('replacement_intake_binding')
+                    _, _, witness = self._qualified_replacement(packet)
+                    record.setdefault('replacement_history', []).append(dict(
+                        reference=record['reference'], authority=previous,
+                        handoff=record.get('handoff'), refusal=witness))
+                else:
+                    if (previous['decision'] != 'qualification-only' or authority['decision'] != 'owner-qualified'
+                        or any(previous[k] != authority[k] for k in stable)
+                        or not result_ref or file_sha(result_ref['path']) != result_ref['sha256']
+                        or result.get('child_tree_gone') is not True or result.get('status') != 'succeeded'):
+                        raise AdmissionError('intake_authority_drift: owner reconciliation required')
+                    capacity = read_record(self.runtime/'capacity-policy.json')
+                    database = Path(capacity['symphony']['pool_path'])/'state.sqlite'
+                    with sqlite3.connect(database.as_uri()+'?mode=ro', uri=True) as db:
+                        lease = db.execute('SELECT status,outcome FROM leases WHERE id=?', (result['lease'],)).fetchone()
+                    if lease != ('finished', 'succeeded'):
+                        raise AdmissionError('intake_qualification_lease_unreconciled')
+                    record.setdefault('qualification_history', []).append(dict(authority=previous,
+                        reference=record['reference'], result=result_ref, intent=record['qualification_intent']))
             record.update(reference=supplied['reference'], authority=authority, checked_at=time.time(),
                           authoritative=remote, required_actor=self.config['owner'])
             if authority['decision'] == 'qualification-only':
@@ -461,6 +630,8 @@ class CurrentWork:
                 handoff = self._private_pin(authority['handoff'])
                 packet = self._private_pin(handoff['task_packet'])
                 record.update(status='qualified', handoff=authority['handoff'])
+                record.pop('reason', None)
+                record.pop('required_input', None)
                 if not self._trusted_handoff(authority['handoff'], packet):
                     raise AdmissionError('intake_handoff_scope_or_source_drift')
                 self.state['intake_handoff'] = authority['handoff']
@@ -554,18 +725,26 @@ class CurrentWork:
         except Exception:
             return False
 
-    def _rearm_successor(self, pending):
-        if pending.get('status') not in ('published', 'duplicate'):
+    def _rearm_successor(self, pending, replacement_packet=None):
+        replacing = replacement_packet is not None
+        if pending.get('status') not in (('published','duplicate','held') if replacing else ('published','duplicate')):
             raise AdmissionError('successor_request_rebind')
         if 'native_request' in pending:
             import stokowski_native_publication as native
             # Native custody has its own protected root, outside the coordinator
             # runtime. Select only the exact operation path; never widen private().
-            expected = SOURCE/'.delivery/native-ssh-publication'/(pending['handoff']['sha256']+'.json')
             ref = pending['publication_result']
-            if ref['path'] != str(expected) or file_sha(native.canonical(str(expected))) != ref['sha256']:
+            legacy_seal = SOURCE/'.delivery/native-ssh-publication'/(pending['handoff']['sha256']+'.json')
+            if self.owner_custody and ref['path']==str(legacy_seal):
+                # The installed migration sealed this exact historical record.
+                raw=protected_owner_bytes(legacy_seal)
+                expected=legacy_seal
+            else:
+                expected = native.custody_directory(SOURCE,pending['native_request']['context'])/(pending['handoff']['sha256']+'.json')
+                raw=native.read(native.canonical(str(expected)))
+            if ref['path'] != str(expected) or hashlib.sha256(raw).hexdigest() != ref['sha256']:
                 raise AdmissionError('successor_prior_publication_unreconciled')
-            custody = native.decode(native.read(expected))
+            custody = native.decode(raw)
             self._private_pin(pending['publication_journal'])
             if (custody.get('request') != pending['native_request']
                 or custody.get('binding') != pending['native_binding']
@@ -574,17 +753,70 @@ class CurrentWork:
         handoff = self._private_pin(pending['handoff'])
         packet = self._private_pin(handoff['task_packet'])
         issue = packet['execution_outcome']['identifier']
-        if not self._reconciled_unit(issue):
-            raise AdmissionError('successor_prior_unit_unreconciled')
         history = json.loads(json.dumps(pending))
-        review = self.runtime/('unit-review-' + issue + '.json')
-        history['terminal_review'] = dict(path=str(review), sha256=file_sha(review))
-        history['terminal_unit'] = self.state['tasks'][issue]['unit_gate']['binding']
+        if replacing:
+            previous, _, witness = self._qualified_replacement(replacement_packet)
+            if ('native_request' not in pending or issue != previous['issue']
+                or packet['execution_outcome']['uuid'] != previous['issue_id']
+                or packet['selected_current']['task_runtime'] != previous['runtime']):
+                raise AdmissionError('replacement_prior_publication')
+            history['terminal_refusal'] = witness
+            history['disposition'] = 'confirmed-prelaunch-refusal-retained'
+        else:
+            if not self._reconciled_unit(issue):
+                raise AdmissionError('successor_prior_unit_unreconciled')
+            review = self.runtime/('unit-review-' + issue + '.json')
+            history['terminal_review'] = dict(path=str(review), sha256=file_sha(review))
+            history['terminal_unit'] = self.state['tasks'][issue]['unit_gate']['binding']
         self.state.setdefault('successor_history', []).append(history)
         # History retains the immutable nonce/context/admission/result references.
         self.state.pop('successor_request')
         self.state.pop('successor_hold', None)
         self.save()
+
+    def _successor_entry(self, packet):
+        admission = dict(version=1, owner=self.config['owner'],
+            issue=packet['execution_outcome']['identifier'], issue_id=packet['execution_outcome']['uuid'],
+            source=packet['source']['source_checkout'], manifest_sha256=packet['manifest']['sha256'],
+            request_sha256=packet['request']['sha256'], policy_sha256=self.config['policy_sha256'],
+            installation_sha256=self.config['installation_sha256'],
+            inputs={k:v for k,v in packet['inputs'].items() if k != str(self.catalog)})
+        raw = (json.dumps(admission,sort_keys=True,indent=2)+'\n').encode()
+        entry = dict(issue=admission['issue'], issue_id=admission['issue_id'],
+            runtime=packet['selected_current']['task_runtime'], admission_sha256=hashlib.sha256(raw).hexdigest())
+        if 'replacement_of' in packet:
+            entry['replacement_of'] = packet['replacement_of']
+        return entry
+
+    def _qualified_replacement(self, packet):
+        """Bind a new task to the exact next sealed edge before publication."""
+        outcome = packet['execution_outcome']
+        previous = self.state.get('references', {}).get(outcome['identifier'])
+        if (previous is None or previous['issue_id'] != outcome['uuid']
+            or self.state['bindings'].get(outcome['identifier']) != digest(previous)
+            or self.entries.get(outcome['identifier'], previous) != previous):
+            raise AdmissionError('replacement_previous_identity')
+        entry = self._successor_entry(packet)
+        manifest = self._private_pin(packet['manifest'])
+        witness = self._replacement_witness(previous, entry, manifest=manifest,
+                                            request_sha256=packet['request']['sha256'])
+        if outcome['project_id'] != witness['project_id']:
+            raise AdmissionError('replacement_project')
+        before = self.catalog_bytes()
+        catalog = json.loads(before)
+        if self._active_catalog(catalog).get(outcome['identifier']) != previous:
+            raise AdmissionError('replacement_previous_identity')
+        after = (json.dumps(dict(version=1, entries=catalog['entries']+[entry]),
+                            sort_keys=True,indent=2)+'\n').encode()
+        self.catalog_transition(before, after)
+        return previous, entry, witness
+
+    def _successor_scope_reusable(self, entry, packet):
+        if ('replacement_of' in packet
+            and packet['replacement_of'].get('entry_sha256') == digest(entry)):
+            previous, _, _ = self._qualified_replacement(packet)
+            return previous == entry
+        return self._scope_reusable(entry['issue'])
 
     def qualify_successor(self, handoff_ref, packet, owner_config):
         """Read-only qualification; current.json is trusted out of band.
@@ -617,7 +849,7 @@ class CurrentWork:
             or gate.get('disposition') != 'approved' or gate.get('handled') is not True
             or gate.get('unit_review') != 'approved'):
             raise AdmissionError('successor_terminal_gate')
-        catalog = read_record(self.catalog)
+        catalog = self.catalog_record()
         if entry not in catalog['entries'] or self.state['bindings'].get(issue) != digest(entry):
             raise AdmissionError('successor_original_entry_drift')
         import copy
@@ -632,13 +864,15 @@ class CurrentWork:
                                  observation=True) != trigger['unit_binding']):
             raise AdmissionError('successor_trigger_drift')
         outcome = packet['execution_outcome']
+        replacement = 'replacement_of' in packet
+        previous = self._qualified_replacement(packet)[0] if replacement else None
         if (outcome['project_id'] != self.route['project_id'] or outcome['identifier'] == issue
             or outcome['uuid'] == entry['issue_id']
-            or any(e['issue'] == outcome['identifier'] or e['issue_id'] == outcome['uuid']
-                   or e['runtime'] == packet['selected_current']['task_runtime']
+            or any((e['issue'] == outcome['identifier'] or e['issue_id'] == outcome['uuid']
+                    or e['runtime'] == packet['selected_current']['task_runtime'])
+                   and not (replacement and e == previous
+                            and e['runtime'] != packet['selected_current']['task_runtime'])
                    for e in self.state.get('references', {}).values())):
-            # Once exposed, qualification is reconciled from the publication
-            # journal at the boundary, never used to prepare another operation.
             raise AdmissionError('successor_identity_collision')
         return digest(dict(handoff=handoff_ref, owner_config=packet['owner_config'], trigger=trigger))
 
@@ -668,7 +902,11 @@ class CurrentWork:
             identity = digest(dict(handoff=ref, owner_config=packet['owner_config'], trigger=packet['trigger']))
             if pending is not None and pending.get('identity') != identity:
                 rearming = True
-                self._rearm_successor(pending)
+                if 'replacement_of' in packet:
+                    self.qualify_successor(ref, packet, config)
+                    self._rearm_successor(pending, replacement_packet=packet)
+                else:
+                    self._rearm_successor(pending)
                 pending = None
                 rearming = False
             if 'native_publication' in config or pending and 'native_request' in pending:
@@ -689,7 +927,7 @@ class CurrentWork:
                     plan = read_record(self.root/(runtime.name + '-publication.json'))
                     expected = dict(handoff_sha256=ref['sha256'], packet=handoff['task_packet'],
                                     config=handoff['owner_config'])
-                    if (plan['identity'] != expected or read_record(self.catalog) != plan['catalog_after']
+                    if (plan['identity'] != expected or self.catalog_record() != plan['catalog_after']
                         or result['result'].get('runtime') != str(runtime)
                         or file_sha(runtime/'current-admission.json') != plan['catalog_after']['entries'][-1]['admission_sha256']):
                         raise AdmissionError('successor_publication_drift')
@@ -709,7 +947,7 @@ class CurrentWork:
             from symphony_capacity import overlap
             for entry in self.state['references'].values():
                 other = read_record(self.private(entry['runtime'])/'manifest.json')
-                if self._scope_reusable(entry['issue']):
+                if self._successor_scope_reusable(entry, packet):
                     continue
                 if any(overlap(a, b) for a in packet['scope']
                        for t in other['tasks'].values() for b in t['allowed_paths']):
@@ -808,7 +1046,7 @@ class CurrentWork:
             from symphony_capacity import overlap
             for entry in self.state['references'].values():
                 other = read_record(self.private(entry['runtime'])/'manifest.json')
-                if self._scope_reusable(entry['issue']):
+                if self._successor_scope_reusable(entry, packet):
                     continue
                 if any(overlap(a, b) for a in packet['scope']
                        for t in other['tasks'].values() for b in t['allowed_paths']):
@@ -836,7 +1074,7 @@ class CurrentWork:
             mode = 'status'  # Even a missing custody file never authorizes another prepare.
         try:
             reply = native.decode(self._native_publication_cli(native.encode(dict(request, mode=mode))))
-            custody_path = SOURCE/'.delivery/native-ssh-publication'/(ref['sha256']+'.json')
+            custody_path = native.custody_directory(SOURCE,context)/(ref['sha256']+'.json')
             custody = native.decode(native.read(native.canonical(str(custody_path))))
             result = custody.get('result', dict(status='uncertain', dispatches=0))
             if (custody['request'] != request or custody['binding'] != pending['native_binding']
@@ -857,12 +1095,14 @@ class CurrentWork:
                 from stokowski_prepare import _publication_bytes
                 entry = dict(issue=issue, issue_id=admission['issue_id'], runtime=str(runtime),
                              admission_sha256=native.sha(_publication_bytes(admission)))
+                if 'replacement_of' in packet:
+                    entry['replacement_of'] = packet['replacement_of']
                 if (plan['identity'] != dict(handoff_sha256=ref['sha256'], packet=handoff['task_packet'],
                                             config=handoff['owner_config'])
                     or native.sha(plan['catalog_before_bytes'].encode()) != packet['inputs'][str(self.catalog)]
                     or json.loads(plan['catalog_before_bytes']) != plan['catalog_before']
                     or plan['catalog_after'] != dict(version=1, entries=plan['catalog_before']['entries']+[entry])
-                    or read_record(self.catalog) != plan['catalog_after']
+                    or self.catalog_record() != plan['catalog_after']
                     or result.get('runtime') != str(runtime)
                     or mode == 'status' and reply.get('journal_sha256') != file_sha(journal_path)
                     or read_record(runtime/'current-admission.json') != admission
@@ -1905,6 +2145,23 @@ class CurrentWork:
             if issue.id != entry['issue_id'] or issue.state not in ('Todo','In Progress'):
                 continue
             try:
+                replacement_intake = False
+                if self.config.get('normal_intake'):
+                    policy = self._intake_policy()
+                    for reference in policy['references']:
+                        _, authority = self._intake_authority(reference)
+                        relation = authority.get('replacement_of')
+                        if (authority['issue'] == issue.identifier and relation
+                            and relation.get('entry_sha256') == digest(entry)):
+                            # Tracker identity is unchanged; fresh owner authority
+                            # selects a new unit rather than replaying this one.
+                            await self._intake(client, issue)
+                            replacement_intake = True
+                            break
+                if replacement_intake:
+                    # The next refresh validates and adopts the published
+                    # generation. This pass still holds the retired entry.
+                    continue
                 _, selected_manifest, _ = self.context(issue.identifier)
                 if selected_manifest['project_id'] != self.route['project_id']:
                     raise AdmissionError('current_selected_project')
@@ -1987,6 +2244,58 @@ def install_adapters(runtime, manifest, key, current=None):
             subprocess.run(['git', 'clone', '--shared', '--single-branch', '--branch',
                             selected_manifest['branch'], str(source), str(path)], check=True,
                            capture_output=True, env=child_environment(os.environ))
+        # A default ACL can override the service umask during git clone. Close
+        # the new root before exposing it to the coding confinement binder.
+        # Retained workspaces require explicit owner reconciliation instead.
+        fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            info = os.fstat(fd)
+            if info.st_uid != os.getuid():
+                raise AdmissionError('Workspace ownership or permissions')
+            # Git may inherit defaults on source folders as well as the root.
+            # Only new clones may be changed; retained contents stay refuse-only.
+            for _, _, filenames, directory_fd in os.fwalk('.', dir_fd=fd, follow_symlinks=False):
+                if os.fstat(directory_fd).st_uid != os.getuid():
+                    raise AdmissionError('Workspace ownership or permissions')
+                if created:
+                    os.fchmod(directory_fd, 0o700)
+                    try:
+                        os.removexattr(directory_fd, 'system.posix_acl_default')
+                    except OSError as error:
+                        if error.errno != errno.ENODATA:
+                            raise
+                if os.fstat(directory_fd).st_mode & 0o022:
+                    raise AdmissionError('Workspace ownership or permissions')
+                try:
+                    os.getxattr(directory_fd, 'system.posix_acl_default')
+                except OSError as error:
+                    if error.errno != errno.ENODATA:
+                        raise
+                else:
+                    raise AdmissionError('Workspace inherited default ACL')
+                for name in filenames:
+                    info = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+                    if stat.S_ISLNK(info.st_mode):
+                        continue
+                    file_fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                                      dir_fd=directory_fd)
+                    try:
+                        info = os.fstat(file_fd)
+                        if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid()
+                            or info.st_nlink != 1):
+                            raise AdmissionError('Workspace ownership or permissions')
+                        if created:
+                            # Preserve user execute without inherited access ACLs.
+                            os.fchmod(file_fd, stat.S_IMODE(info.st_mode) & 0o700)
+                            os.fsync(file_fd)
+                        if os.fstat(file_fd).st_mode & 0o022:
+                            raise AdmissionError('Workspace ownership or permissions')
+                    finally:
+                        os.close(file_fd)
+                if created:
+                    os.fsync(directory_fd)
+        finally:
+            os.close(fd)
         head = subprocess.check_output(['git', '-C', str(path), 'rev-parse', 'HEAD'], text=True).strip()
         branch = (subprocess.check_output(['git', '-C', str(path), 'branch', '--show-current'], text=True).strip()
                   if current else selected_manifest['branch'])

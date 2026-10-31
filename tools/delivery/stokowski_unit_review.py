@@ -152,7 +152,10 @@ def control_custody(current, uid, paths):
     protected = current.owner_custody is not None
     for path in paths:
         custody(path, 0 if protected else uid)
-    custody(current.catalog, 0 if protected else uid, private=not protected)
+    granted = protected and 'catalog_versions' in getattr(current,'config',{})
+    if granted:
+        current.catalog_record()  # Capture and check the exact root-granted bytes.
+    custody(current.catalog, 0 if protected and not granted else uid, private=not protected or granted)
 
 
 def checkpoint_json(raw):
