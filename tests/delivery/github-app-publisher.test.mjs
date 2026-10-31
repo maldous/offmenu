@@ -4,12 +4,13 @@ import {createHash} from 'node:crypto';
 import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
-import {spawn} from 'node:child_process';
+import {spawn,execFile} from 'node:child_process';
+import {promisify} from 'node:util';
 import {fileURLToPath} from 'node:url';
 import {createRepositoryGitHubAppAdapter} from '../../tools/delivery/github-app-adapter.mjs';
 import {advanceIntegration,advanceRelease} from '../../tools/delivery/integration-gateway.mjs';
 import {fingerprint,validateConfig,protectedRead,loadProtectedConfig,loadProtectedKey,
-  qualifyCandidate,canonicalPublication,publicationStep,integrationStep} from '../../tools/delivery/github-app-publisher.mjs';
+  qualifyCandidate,canonicalPublication,publicationStep,integrationStep,releaseStep} from '../../tools/delivery/github-app-publisher.mjs';
 
 // Synthetic identities, credentials, objects and transport ONLY. Fixed host paths
 // below are handled by fake metadata/readers, never real /etc or home probes.
@@ -125,9 +126,9 @@ async function actualController(t,f) {
   const configPath=join(temp,'synthetic-config.json');
   await writeFile(configPath,JSON.stringify(f.config));
   const invoke=async(op,data={})=>new Promise((resolvePromise,reject)=>{
-    const code=`import json,sys; from pathlib import Path; from offmenu.delivery.integration import Controller,_publisher_request,publisher_directory; c=json.load(open(sys.argv[1])); ctl=Controller(publisher_directory(Path(sys.argv[2]),c['binding']),c['binding'],Path(sys.argv[2])); r=_publisher_request(ctl,c,json.load(sys.stdin)); print(json.dumps(r))`;
+    const code=`import json,sys; from pathlib import Path; from offmenu.delivery.integration import Controller,ReleaseController,_publisher_request,publisher_directory; c=json.load(open(sys.argv[1])); cls=ReleaseController if c['binding']['version']==3 else Controller; ctl=cls(publisher_directory(Path(sys.argv[2]),c['binding']),c['binding'],Path(sys.argv[2])); r=_publisher_request(ctl,c,json.load(sys.stdin)); print(json.dumps(r))`;
     const child=spawn(process.env.OFFMENU_DELIVERY_TEST_PYTHON || fileURLToPath(new URL('../../.venv-delivery/bin/python',import.meta.url)),['-B','-c',code,configPath,temp],
-      {cwd:resolve('.'),env:{PATH:'/usr/bin:/bin',PYTHONPATH:resolve('src'),LANG:'C.UTF-8',PYTHONDONTWRITEBYTECODE:'1'},
+      {cwd:resolve('.'),env:{PATH:'/usr/bin:/bin',PYTHONPATH:[resolve('src'),resolve('tools/delivery'),process.env.PYTHONPATH].filter(Boolean).join(':'),LANG:'C.UTF-8',PYTHONDONTWRITEBYTECODE:'1'},
         stdio:['pipe','pipe','pipe']});
     let out='',size=0;const timer=setTimeout(()=>child.kill('SIGKILL'),10000);
     child.stdout.on('data',b=>{size+=b.length;if(size>1048576)child.kill('SIGKILL');else out+=b;});
@@ -313,4 +314,102 @@ test('finite release gateway consumes typed promotion and tag phases without rep
   await run();assert.equal(merges,1);assert.equal(tags,1);
   phase=0;github.getPullRequest=async()=>({head_sha:'0'.repeat(40)});
   assert.equal((await run()).status,'release-reconciliation-required');assert.equal(merges,1);
+});
+
+async function actualReleaseFixture(t) {
+  const evidence=await mkdtemp(join(tmpdir(),'offmenu-release-evidence-'));
+  t.after(()=>rm(evidence,{recursive:true,force:true}));
+  // Reuse synthetic raw runner fixtures; production candidate/schema/aggregation
+  // and Controller validation all run normally, with no mocked success gate.
+  const code=`import importlib.util,json,shutil,sys
+from offmenu.delivery.integration import fingerprint
+spec=importlib.util.spec_from_file_location('release_fixture','tests/delivery/test_integration_controller.py')
+module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+f=module.NativeReleaseTests();f.setUp()
+try:
+ shutil.copytree(f.root,sys.argv[1],dirs_exist_ok=True)
+ b=f.binding;b['qualification']['evidence_root']=sys.argv[1]
+ q=fingerprint(b['qualification']);b['authority']['qualification_sha256']=q
+ f.snapshot['qualification_sha256']=q
+ print(json.dumps(dict(binding=b,snapshot=f.snapshot)))
+finally:f.doCleanups()`;
+  const python=process.env.OFFMENU_DELIVERY_TEST_PYTHON || fileURLToPath(new URL('../../.venv-delivery/bin/python',import.meta.url));
+  const {stdout}=await promisify(execFile)(python,['-B','-c',code,evidence],{cwd:resolve('.'),timeout:10000,
+    maxBuffer:1048576,env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8',PYTHONDONTWRITEBYTECODE:'1',
+      PYTHONPATH:[resolve('src'),resolve('tools/delivery'),process.env.PYTHONPATH].filter(Boolean).join(':')}});
+  const {binding,snapshot}=JSON.parse(stdout),f=fixture();
+  snapshot.github_review_facts_sha256=fingerprint({head:binding.candidate.source.head,base:binding.main_base,
+    reviews:[],findings:[],qualification:'facts-only-requires-independent-owner-review-and-thread-resolution'});
+  Object.assign(f.config,{version:2,binding,snapshot,logicalOwner:binding.owner,plan:{kind:'release-promotion-v1'}});
+  return f;
+}
+function actualReleaseHTTP(f,controller) {
+  const b=f.config.binding,s=b.candidate.source,merge='2'.repeat(40),calls=[];
+  const pr={number:b.pr_number,merged:false,state:'open',draft:false,mergeable:true,
+    head:{sha:s.head,ref:'release/candidate-'+fingerprint(b.candidate),repo},base:{sha:b.main_base,ref:'main',repo}};
+  let tag=null,hideTag=false,loseTag=false;
+  async function http(url,options) {
+    const path=new URL(url).pathname;calls.push({path,method:options.method});
+    let data,status=options.method==='POST'?201:200;
+    if(path==='/app') data={id:12,permissions:perms};
+    else if(path==='/app/installations/34') data={id:34,app_id:12,repository_selection:'selected',suspended_at:null,permissions:perms};
+    else if(path==='/app/installations/34/access_tokens') data={token:'DUMMY-RELEASE-token',
+      expires_at:new Date((epoch+3600)*1000).toISOString(),permissions:perms,repositories:[repo]};
+    else if(path==='/installation/repositories') data={total_count:1,repositories:[repo]};
+    else if(path===`${ROOT}/pulls/${b.pr_number}`) data=pr;
+    else if(path.endsWith('/reviews')||path.endsWith('/comments')) data=[];
+    else if(path===`${ROOT}/pulls/${b.pr_number}/merge`) {
+      assert.equal((await controller.state()).release_effect,'unknown','consumed durable promotion precedes HTTP');
+      Object.assign(pr,{merged:true,state:'closed',merge_commit_sha:merge});data={merged:true,sha:merge};
+    } else if(path===`${ROOT}/git/refs`) {
+      assert.equal((await controller.state()).tag_effect,'unknown','consumed durable tag precedes HTTP');
+      assert.equal(options.method,'POST');
+      assert.deepEqual(JSON.parse(options.body),{ref:'refs/tags/'+b.tag,sha:merge});
+      tag={ref:'refs/tags/'+b.tag,object:{type:'commit',sha:merge}};data=tag;
+      if(loseTag) throw Error('synthetic lost tag reply');
+    } else if(path===`${ROOT}/git/ref/tags/${b.tag}`) {
+      data=hideTag?null:tag;if(data===null) status=404;
+    } else if(path.startsWith(`${ROOT}/commits/`)) {
+      const id=path.split('/').at(-1);data={sha:id,commit:{tree:{sha:s.tree}},
+        parents:(id===merge?[b.main_base,s.head]:[s.base]).map(sha=>({sha}))};
+    } else if(path===`${ROOT}/compare/${merge}...main`) data={status:'identical',base_commit:{sha:merge},merge_base_commit:{sha:merge}};
+    else assert.fail('unexpected synthetic release endpoint '+path);
+    return new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json'}});
+  }
+  const adapterFactory=options=>createRepositoryGitHubAppAdapter({...options,http,getUid:()=>2345,now:()=>epoch*1000,
+    loadPrivateKey:async()=>Buffer.from('DUMMY-RELEASE-key'),sign:async()=>Buffer.from('DUMMY-RELEASE-signature')});
+  return {run:()=>releaseStep({config:f.config,controller,adapterFactory,advanceRelease}),
+    mutations:()=>calls.filter(c=>c.method==='PUT'||c.path===`${ROOT}/git/refs`&&c.method==='POST'),
+    set hideTag(v){hideTag=v;},set loseTag(v){loseTag=v;}};
+}
+
+test('actual release Controller + gateway resumes unconsumed tag and never replays uncertain writes',async t=>{
+  for(const lost of [false,true]) {
+    const f=await actualReleaseFixture(t),controller=await actualController(t,f),net=actualReleaseHTTP(f,controller);
+    const promoted=await net.run();assert.equal(promoted.status,'release-tag-intent');
+    assert.equal(net.mutations().length,1,'one promotion, tag remains unconsumed');
+    net.loseTag=lost;net.hideTag=lost;
+    const tagged=await net.run();
+    assert.equal(tagged.status,lost?'tag-reconciliation-required':'release-verified');
+    assert.equal(net.mutations().length,2,'one create-only tag follows promotion on next invocation');
+    await net.run();assert.equal(net.mutations().length,2,'unknown absence never repeats tag or merge');
+    net.hideTag=false;
+    assert.equal((await net.run()).status,'release-verified');assert.equal(net.mutations().length,2);
+  }
+});
+
+test('actual status-only release preflight persists prepared state before a fresh candidate rotates',async t=>{
+  const f=await actualReleaseFixture(t),controller=await actualController(t,f);
+  const preflight=()=>releaseStep({config:f.config,controller,advanceRelease,
+    adapterFactory:async()=>{throw Error('synthetic auth preflight stopped');}});
+  await assert.rejects(preflight,/synthetic auth preflight stopped/);
+  assert.equal((await controller.state()).status,'prepared');
+  const first=join(controller.temp,'transaction-'+fingerprint(f.config.binding),'state.json');
+  const original=await readFile(first,'utf8');
+  f.config.binding.tag='release/next';f.config.binding.authority.tag='release/next';await controller.config();
+  await assert.rejects(preflight,/synthetic auth preflight stopped/);
+  assert.equal((await controller.state()).status,'prepared');
+  assert.equal(await readFile(first,'utf8'),original,'historical prepared state remains intact');
+  const claim=JSON.parse(await readFile(join(controller.temp,'active-owner.json'),'utf8'));
+  assert.equal(claim.binding_sha256,fingerprint(f.config.binding));
 });

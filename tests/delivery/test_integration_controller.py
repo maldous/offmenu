@@ -96,7 +96,9 @@ class IntegrationControllerTests(unittest.TestCase):
         self.assertEqual(result['action']['issue_id'], self.binding['issue_id'])
 
     def test_legitimate_successor_preserves_published_claim_hash(self):
-        # Simulate legacy published evidence before either controller resumes.
+        # Valid legacy published ownership includes durable prepared state.
+        # A claim whose historical state is missing is tested as a hold below.
+        (self.directory/'state.json').write_text(json.dumps(dict(status='prepared',action=None)))
         legacy = self.root/'repository-claim.json'
         legacy.write_text(json.dumps(dict(binding_sha256=self.controller.key,
             directory=str(self.directory), owner=self.binding['owner']))+'\n')
@@ -440,6 +442,38 @@ class IntegrationControllerTests(unittest.TestCase):
         with self.assertRaisesRegex(DeliveryError,'Symlink historical'):
             publisher_directory(self.root,self.binding)
 
+    def test_status_claim_durably_prepares_before_candidate_rotation(self):
+        # Exercise the ownership/status entry used before protected adapter auth.
+        from offmenu.delivery.engine import atomic
+        state_path = self.directory/'state.json'
+        def persist(path, value):
+            if path.name in ('repository-claim.json','active-owner.json'):
+                self.assertTrue(state_path.is_file(),'prepared must precede claim publication')
+            return atomic(path,value)
+        with patch('offmenu.delivery.integration.atomic',side_effect=persist):
+            with self.controller.ownership():
+                self.assertEqual(self.controller.status()['status'],'prepared')
+        self.assertEqual(json.loads(state_path.read_text())['status'],'prepared')
+        original = state_path.read_bytes()
+        other = Controller(self.root/'after-preflight',dict(self.binding,head='8'*40),self.root)
+        with other.ownership():
+            self.assertEqual(other.status()['status'],'prepared')
+        self.assertEqual(state_path.read_bytes(),original)
+
+    def test_missing_claimed_historical_state_cannot_become_prepared(self):
+        with self.controller.ownership():
+            pass
+        state_path = self.directory/'state.json'
+        state_path.unlink(missing_ok=True)
+        other = Controller(self.root/'missing-history',dict(self.binding,head='8'*40),self.root)
+        with self.assertRaises(DeliveryError):
+            with other.ownership():
+                self.fail('missing historical state acquired')
+        with self.assertRaises(DeliveryError):
+            with self.controller.ownership():
+                self.fail('missing own claimed state silently initialized')
+        self.assertFalse(state_path.exists())
+
     def test_fresh_transaction_directory_retains_legacy_and_blocks_replay(self):
         from offmenu.delivery.integration import publisher_directory
         first_dir = publisher_directory(self.root,self.binding)
@@ -484,8 +518,13 @@ class NativeReleaseTests(unittest.TestCase):
         for index, check in enumerate(plan['checks']):
             job = release.bridge_request(plan,check['key'],policy,catalog)['job_id']
             receipt = dict(job_id=job,status='succeeded',exit_code=0,child_tree_gone=True,
+                           mode='write',timeout_seconds=check['timeout_seconds'],reconcile_required=False,
                            command_sha256=check['command_sha256'],runner_sha256='4'*64,
                            capacity_policy_sha256='5'*64,resources=check['resources'])
+            # Original runner request digest uses historical default JSON spaces.
+            spec = {key:receipt[key] for key in ('command_sha256','mode','timeout_seconds',
+                    'runner_sha256','capacity_policy_sha256','resources')}
+            receipt['request_sha256'] = hashlib.sha256(json.dumps(spec,sort_keys=True).encode()).hexdigest()
             receipt_path = self.root/('receipt-%d.json' % index)
             receipt_path.write_text(json.dumps(receipt))
             ref = dict(path=receipt_path.name,sha256=release.file_sha(receipt_path))
@@ -584,6 +623,20 @@ class NativeReleaseTests(unittest.TestCase):
         self.assertTrue(result['authorized'])
         with self.assertRaises(DeliveryError):
             _publisher_request(self.controller,config,dict(op='consume',intent=action))
+
+    def test_unconsumed_tag_intent_survives_repeated_observation_and_consumes_once(self):
+        action = self.controller.run(self.snapshot)['action']
+        self.controller.consume_release_intent(action)
+        tag = self.controller.run(self.merged())['action']
+        self.assertEqual(self.controller.run(self.merged())['action'],tag)
+        # A transient readback failure cannot erase an unconsumed durable effect.
+        stale = self.merged();stale['observed_at'] = 0
+        self.controller.run(stale)
+        self.assertEqual(self.controller.run(self.merged())['action'],tag)
+        self.controller.consume_release_intent(tag)
+        with self.assertRaises(DeliveryError):
+            self.controller.consume_release_intent(tag)
+        self.assertIsNone(self.controller.run(self.merged())['action'])
 
     def test_pending_release_blocks_another_candidate(self):
         self.controller.run(self.snapshot)

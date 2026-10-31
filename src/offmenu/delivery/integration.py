@@ -131,6 +131,8 @@ class Controller:
                     raise DeliveryError('Invalid previous integration claim')
                 if (previous/'state.json').is_symlink():
                     raise DeliveryError('Symlink previous integration state')
+                if not (previous/'state.json').is_file():
+                    raise DeliveryError('Claimed previous integration state is missing')
                 state = json.loads((previous/'state.json').read_text())
                 if (state.get('merge_effect') in ('pending','unknown')
                     or state.get('publication', {}).get('effect') in ('pending','unknown')
@@ -143,6 +145,17 @@ class Controller:
                 if not safe_repair and not metadata_only and state['status'] not in ('prepared','awaiting-independent-review','awaiting-validation',
                         'awaiting-fresh-observation','awaiting-mergeability','stale-candidate','disabled','accepted','cancelled','release-verified'):
                     raise DeliveryError('Repository integration outcome must reconcile before another owner')
+            state_path = self.directory/'state.json'
+            if state_path.is_symlink():
+                raise DeliveryError('Symlink integration state')
+            if not state_path.exists():
+                if evidence.exists() or (old and old['directory'] == str(self.directory)):
+                    # Missing historical state is uncertain, never evidence that
+                    # an already claimed transaction had no external effects.
+                    raise DeliveryError('Claimed integration state is missing')
+                # Publish durable prepared state BEFORE any fresh ownership
+                # pointer. A status-only preflight can then rotate safely.
+                atomic(state_path, self.result('prepared'))
             if not evidence.exists():
                 atomic(evidence,claim)
             # Published legacy evidence is never rewritten. Only the active
@@ -569,12 +582,19 @@ class ReleaseController(Controller):
                     return save('release-verified', tag_effect='verified')
                 if tag is not None:
                     return save('immutable-tag-conflict')
-                if current.get('tag_effect') in ('pending','unknown'):
-                    return save('tag-reconciliation-required')
                 action = dict(kind='create-release-tag', repository=b['repository'], tag=b['tag'],
                               commit_sha=commit['sha'], candidate_sha256=self.candidate_id,
                               authority_sha256=fingerprint(b['authority']))
-                return save('release-tag-intent', action, tag_effect='pending')
+                if current.get('tag_effect') == 'unknown':
+                    return save('tag-reconciliation-required')
+                if current.get('tag_effect') == 'pending':
+                    # Pending has never passed consume_release_intent. Preserve
+                    # its exact admitted identity across gateway invocations and
+                    # transient read failures; unknown remains GET-only above.
+                    retained = current.get('tag_intent', current.get('action'))
+                    if retained != action:
+                        return save('tag-reconciliation-required')
+                return save('release-tag-intent', action, tag_effect='pending', tag_intent=action)
             if current.get('release_effect') in ('pending','unknown','verified'):
                 return save('release-reconciliation-required')
             if (observation.get('cancel_requested') or pr.get('base') != b['main_base']

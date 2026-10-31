@@ -13,7 +13,9 @@ and owner-issued review/validation snapshot. The fixed Python bridge selects
 It resumes `current` only when its existing binding matches exactly; a new
 candidate gets a new transaction directory. Historical receipts and IDs remain.
 The original repository-owner lock and immutable claim evidence serialize these
-transactions. Pending or unknown publication, promotion or tag effects prevent
+transactions. A fresh claim durably initializes prepared state under that lock
+before publishing ownership, including a status-only preflight. Missing state
+for an already claimed historical transaction is held for reconciliation. Pending or unknown publication, promotion or tag effects prevent
 another candidate taking ownership. A superseded transaction cannot restart
 publication; verified legacy merge metadata remains separately recoverable.
 
@@ -78,8 +80,10 @@ It persists/consumes `promote-release` before the normal merge API. Canonical
 merge readback must match the exact expected main/source parents, frozen tree
 and main ancestry. Only then does `create-release-tag` admit a create-only
 lightweight tag pointing at that canonical merge. An existing matching tag is
-read back; any other existing object is a conflict. Unknown merge/tag replies
-retain the same action identity and reconcile through GET without replay.
+read back; any other existing object is a conflict. Unconsumed tag intents retain their exact durable action across separate gateway
+invocations and transient observations. Consumption changes pending to unknown
+before HTTP. Unknown merge/tag replies retain the same action identity and
+reconcile through GET without replay; tag absence cannot authorize another POST.
 
 The protected release closure additionally pins
 `tools/delivery/native_harness_contract.py`,
