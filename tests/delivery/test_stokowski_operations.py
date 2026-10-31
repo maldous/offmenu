@@ -1,11 +1,15 @@
 """Operation crash/restart tests with actual durable SQLite and faulted API edges."""
 import asyncio
+import ast
 import copy
+from contextlib import redirect_stderr
 import hashlib
+import io
 import json
 from pathlib import Path
 import sys
 import tempfile
+import tarfile
 import subprocess
 import shlex
 import unittest
@@ -521,6 +525,212 @@ class OperationRecoveryTests(unittest.TestCase):
             self.assertNotIn('SECRET',json.dumps(saved)+events)
             self.assertNotIn('SecretError',json.dumps(saved)+events)
         self.assertEqual(self.remote.submissions,[])
+
+
+class PublisherProfileTests(unittest.TestCase):
+    def spec(self, **changes):
+        outputs = {'tools/delivery/example.py':'a'*64}
+        spec = dict(version=3,issue='UIF-119',
+            issue_id='00000000-0000-5000-8000-000000000119',stage='validate',
+            owner='synthetic-owner',branch='feature/synthetic-reviewed',
+            head='b'*40,base='c'*40,policy_sha256='d'*64,
+            acceptance_sha256='e'*64,runner_sha256='f'*64,executor_sha256='1'*64,
+            control_sha256='2'*64,profile='protected-publisher-bootstrap',outputs=outputs,
+            workspace='/offmenu/data/.offmenu-platform/workspaces/synthetic-reviewed-source',
+            local_source_root='/synthetic/source',
+            execution=dict(task_fit='deterministic reviewed source validation',
+                requested_model=None,requested_effort=None,provider_route='none',
+                resolved_model=None,resolution_status='not-applicable'),
+            origin=dict(kind='reviewed-source-v1',admission_sha256='e'*64,
+                review_sha256='3'*64,author='synthetic-author',authors=['synthetic-author'],
+                provenance=[dict(path='/synthetic/provenance.json',sha256='4'*64,
+                    author='synthetic-author',owner='synthetic-author',session='synthetic-session',
+                    source_head='5'*40,contribution_head='6'*40,outputs=outputs,
+                    path_mapping={name:name for name in outputs},derivation=None)]))
+        return dict(spec,**changes)
+
+    def oracle(self, spec):
+        return shlex.split(operations.bridge_arguments(operations.validated(spec))['command'])[14]
+
+    def test_fixed_enum_binds_identity_and_rejects_candidate_overrides(self):
+        spec = self.spec()
+        self.assertIs(operations.validated(spec),spec)
+        current = dict(spec,profile='current-journal-focused')
+        self.assertNotEqual(operations.operation_key(spec),operations.operation_key(current))
+        self.assertNotEqual(operations.bridge_arguments(spec)['job_id'],
+                            operations.bridge_arguments(current)['job_id'])
+        for changes in ({'profile':'protected-publisher-bootstrap-other'},
+                        {'profile':'protected-publisher-bootstrap.test_one'},
+                        {'argv':['arbitrary']}, {'modules':['arbitrary']},
+                        {'test_selectors':['test_protected_owner_install']},
+                        {'environment':{'PYTHONPATH':'/tmp'}}):
+            with self.subTest(changes=changes),self.assertRaises(operations.OperationError):
+                operations.validated(dict(spec,**changes))
+
+    def test_repaired_current_oracle_requires_new_executor_pin_for_new_operation(self):
+        # Synthetic identities retain the spec-derived key, but the stricter
+        # ancestry oracle changes command bytes. Real admission must bind the
+        # updated executor hash; it may never reuse a historical operation.
+        spec = self.spec(profile='current-journal-focused')
+        self.assertEqual(operations.operation_key(spec),
+                         '9c7dadcf419fae6ef68cf47ef0f64ab93445722fa3488f7aedfe05ccc662d4c8')
+        self.assertEqual(hashlib.sha256(operations.bridge_arguments(spec)['command'].encode()).hexdigest(),
+                         '4d7f1ffe68f20efea8d0a9793053873ece7ef124c3c4aa18c37c8b38b5cca8ab')
+        changed = dict(spec,executor_sha256='9'*64)
+        self.assertNotEqual(operations.operation_key(spec),operations.operation_key(changed))
+
+    def test_control_archive_and_three_baseline_tests_are_identical(self):
+        spec = self.spec()
+        current = self.oracle(dict(spec,profile='current-journal-focused'))
+        publisher = self.oracle(spec)
+        # All archive selection, hash verification and materialization bytes
+        # precede this loop and must remain exactly the current v3 contract.
+        self.assertEqual(current.split(' for selected,modules in ')[0],
+                         publisher.split(' for selected,modules in ')[0])
+        loops = [next(node for node in ast.walk(ast.parse(body))
+                      if isinstance(node,ast.For) and isinstance(node.target,ast.Tuple))
+                 for body in (current,publisher)]
+        baseline = [ast.literal_eval(loop.iter.elts[0].elts[1]) for loop in loops]
+        expected = ['test_stokowski_operations.OperationRecoveryTests.'+name for name in (
+            'test_unknown_missing_remote_job_is_not_blindly_resubmitted',
+            'test_second_owner_cannot_create_duplicate_operation',
+            'test_cancel_before_submission_does_not_start_a_job')]
+        self.assertEqual(baseline,[expected,expected])
+        candidate = loops[1].iter.elts[1].value
+        self.assertEqual(ast.literal_eval(candidate.generators[0].iter),(
+            'test_protected_owner_install','test_github_app_capture',
+            'test_protected_publisher_install','test_stokowski_operations',
+            'test_stokowski_dispatcher'))
+
+    def test_each_candidate_suite_requires_positive_successful_unskipped_tests(self):
+        # Execute only the generated oracle with synthetic tar/suite fixtures.
+        # No candidate helper imports, actual validation job or transport runs.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = io.BytesIO()
+            with tarfile.open(fileobj=archive,mode='w') as bundle:
+                for module in operations.REVIEWED_TESTS:
+                    member = tarfile.TarInfo('tests/delivery/'+module+'.py')
+                    member.size = 0
+                    bundle.addfile(member,io.BytesIO())
+            archive = archive.getvalue()
+            body = self.oracle(self.spec(workspace='/offmenu/data/.offmenu-platform/workspaces/synthetic-reviewed-source',
+                control_sha256=hashlib.sha256(archive).hexdigest()))
+            body = body.replace("root=pathlib.Path("+repr(self.spec()['workspace'])+")",
+                                'root=pathlib.Path('+repr(str(root))+')')
+
+            def passing(): pass
+            def failing(): raise AssertionError('synthetic failure')
+            def skipped(): raise unittest.SkipTest('synthetic skip')
+
+            for bad_index,kind in [(None,'pass')]+[(index,kind) for index in range(1,6)
+                                                  for kind in ('empty','failure','skip')]:
+                loaded = []
+                def load(names):
+                    loaded.append(names)
+                    selected = kind if len(loaded)-1 == bad_index else 'pass'
+                    return unittest.TestSuite([] if selected == 'empty' else [
+                        unittest.FunctionTestCase({'pass':passing,'failure':failing,'skip':skipped}[selected])])
+                def run(argv, **kwargs):
+                    self.assertEqual(argv[:2],[sys.executable,'-c'])
+                    self.assertEqual(kwargs,dict(cwd=root,check=True))
+                    previous = sys.path[:]
+                    try:
+                        exec(compile(argv[2],'<synthetic-suite>','exec'),{})
+                    finally:
+                        sys.path[:] = previous
+                with self.subTest(bad_index=bad_index,kind=kind), \
+                     patch('subprocess.check_output',return_value=archive) as control, \
+                     patch('subprocess.run',side_effect=run), \
+                     patch.object(unittest.TestLoader,'loadTestsFromNames',side_effect=load), \
+                     redirect_stderr(io.StringIO()):
+                    if bad_index is None:
+                        exec(compile(body,'<synthetic-oracle>','exec'),{})
+                        self.assertEqual(loaded[1:],[(name,) for name in operations.PUBLISHER_TESTS])
+                    else:
+                        with self.assertRaises(AssertionError):
+                            exec(compile(body,'<synthetic-oracle>','exec'),{})
+                        self.assertEqual(len(loaded),bad_index+1)
+                    self.assertEqual(control.call_args.args[0],['git','-C',str(root),'archive',
+                        'c'*40,'tests/delivery/test_stokowski_operations.py',
+                        'tests/delivery/test_stokowski_current_dispatch.py'])
+
+
+class DetachedContributionTests(unittest.TestCase):
+    spec = PublisherProfileTests.spec
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name).resolve()
+        def git(*args):
+            return subprocess.check_output(['git','-C',str(self.root),
+                '-c','user.name=Synthetic','-c','user.email=synthetic@example.invalid',
+                *args],stderr=subprocess.PIPE).decode().strip()
+        self.git = git
+        git('init','-b','feature/synthetic-reviewed')
+        (self.root/'README').write_text('synthetic baseline\n')
+        git('add','README'); git('commit','-m','base')
+        self.base = git('rev-parse','HEAD')
+        self.name = 'tools/delivery/example.py'
+        path = self.root/self.name
+        path.parent.mkdir(parents=True)
+        path.write_text('value = 1\n')
+        git('add',self.name); git('commit','-m','native contribution')
+        self.contribution = git('rev-parse','HEAD')
+        self.output = hashlib.sha256(path.read_bytes()).hexdigest()
+        tree = git('rev-parse','HEAD^{tree}')
+        self.detached = git('commit-tree',tree,'-p',self.base,'-m','reviewed squash')
+
+    def selected(self, detached=True, transformed=False, derivation=True):
+        head = self.detached if detached else self.contribution
+        self.git('update-ref','refs/heads/feature/synthetic-reviewed',head)
+        if transformed:
+            (self.root/self.name).write_text('value = 2\n')
+            self.git('add',self.name); self.git('commit','-m','reviewed correction')
+            head = self.git('rev-parse','HEAD')
+        outputs = {self.name:hashlib.sha256((self.root/self.name).read_bytes()).hexdigest()}
+        spec = self.spec(head=head,base=self.base,outputs=outputs,local_source_root=str(self.root))
+        ref = spec['origin']['provenance'][0]
+        ref.update(source_head=self.base,contribution_head=self.contribution,
+                   outputs={self.name:self.output})
+        if derivation:
+            ref['derivation'] = dict(owner=ref['owner'],contribution_head=self.contribution,
+                path_mapping=ref['path_mapping'],head=head,outputs=outputs,
+                review_sha256=spec['origin']['review_sha256'],reason='Independently reviewed squash or correction')
+        return spec
+
+    def run_check(self, spec, success):
+        operations.validated(spec)
+        result = subprocess.run([sys.executable,'-c',operations.reviewed_check_code(spec,self.root)],
+                                capture_output=True,text=True)
+        self.assertEqual(result.returncode == 0,success,result.stderr)
+
+    def test_detached_identical_bytes_need_exact_derivation(self):
+        self.run_check(self.selected(),True)
+        self.run_check(self.selected(derivation=False),False)
+
+    def test_attached_identical_bytes_reject_unnecessary_derivation(self):
+        self.run_check(self.selected(detached=False,derivation=False),True)
+        self.run_check(self.selected(detached=False),False)
+
+    def test_attached_and_detached_changed_bytes_keep_review_requirement(self):
+        for detached in (False,True):
+            with self.subTest(detached=detached):
+                self.run_check(self.selected(detached=detached,transformed=True),True)
+
+    def test_detached_derivation_fields_are_exact(self):
+        spec = self.selected()
+        ref = spec['origin']['provenance'][0]
+        for field,value in (('owner','other'),('head','1'*40),('contribution_head','1'*40),
+                ('path_mapping',{self.name:'tools/other.py'}),('outputs',{self.name:'1'*64}),
+                ('review_sha256','1'*64),('reason','')):
+            changed = copy.deepcopy(spec)
+            changed['origin']['provenance'][0]['derivation'][field] = value
+            with self.subTest(field=field), self.assertRaises(operations.OperationError):
+                operations.validated(changed)
+        # Even structurally valid claims cannot replace historical source ancestry.
+        ref['source_head'] = self.detached
+        self.run_check(spec,False)
 
 
 if __name__ == '__main__':

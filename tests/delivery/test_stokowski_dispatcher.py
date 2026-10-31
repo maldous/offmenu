@@ -210,6 +210,8 @@ class ReviewedEnvelopeTests(unittest.TestCase):
         request = self.request()
         body = shlex.split(request['command'])[10]
         for changed in (body+'print(1)\n',
+                        body.replace('if transformed or detached:', 'if transformed:'),
+                        body.replace('ancestor(source,contribution)', 'pass'),
                         body.replace("assert root.resolve()==root", "assert True or root.resolve()==root"),
                         body.replace("assert git('rev-parse','HEAD').decode().strip()==spec['head'], 'head drift'\n",'')):
             for position in ('first','last','both'):
@@ -312,6 +314,62 @@ class ReviewedEnvelopeTests(unittest.TestCase):
             self.assertEqual(len(calls),1)
             self.assertEqual(calls[0]['params'],{'job_id':reserved})
             self.assertIs(calls[0]['json'],request)
+
+
+class PublisherEnvelopeTests(ReviewedEnvelopeTests):
+    # Exercise the same exact-envelope, transport, UUID, duplicate/reconcile and
+    # isolated standalone-import regressions for the second fixed v3 enum.
+    def request(self, **changes):
+        return super().request(**dict({'profile':operations.PUBLISHER_PROFILE},**changes))
+
+    def test_complete_oracle_profile_is_pinned(self):
+        request = self.request()
+        body = shlex.split(request['command'])[14]
+        replacements = [
+            ('result.testsRun>0','result.testsRun>=0'),
+            ('result.wasSuccessful()','True'),
+            (' and not result.skipped',''),
+            (repr('c'*40),repr('9'*40)),
+            (repr('2'*64),repr('9'*64)),
+            ("for module in (", "for module in tuple("),
+        ]
+        replacements.extend((name,name+'.SelectedTests.test_one')
+                            for name in operations.PUBLISHER_TESTS)
+        replacements.extend((name,'test_other_baseline') for name in (
+            'test_unknown_missing_remote_job_is_not_blindly_resubmitted',
+            'test_second_owner_cannot_create_duplicate_operation',
+            'test_cancel_before_submission_does_not_start_a_job'))
+        for before,after in replacements:
+            self.assertIn(before,body)
+            with self.subTest(before=before):
+                self.assert_rejected(dict(request,command=request['command'].replace(
+                    shlex.quote(body),shlex.quote(body.replace(before,after)))))
+
+    def test_profiles_cannot_exchange_oracles_or_accept_unknown_selectors(self):
+        current = super().request(profile=operations.REVIEWED_PROFILE)
+        publisher = self.request()
+        for request,other in ((current,publisher),(publisher,current)):
+            body = shlex.split(request['command'])[14]
+            replacement = shlex.split(other['command'])[14]
+            self.assert_rejected(dict(request,command=request['command'].replace(
+                shlex.quote(body),shlex.quote(replacement))))
+        body = shlex.split(publisher['command'])[10]
+        original = json.loads(ast.literal_eval(ast.parse(body).body[1].value.args[0]))
+        for changes in ({'profile':operations.PUBLISHER_PROFILE+'-other'},
+                        {'profile':operations.PUBLISHER_PROFILE+'.test_one'},
+                        {'argv':['test_protected_owner_install']},
+                        {'test_selectors':list(operations.PUBLISHER_TESTS)},
+                        {'modules':list(operations.PUBLISHER_TESTS)}):
+            spec = dict(original,**changes)
+            with self.subTest(changes=changes):
+                with self.assertRaises(operations.OperationError):
+                    operations.validated(spec)
+                with self.assertRaises(ValueError):
+                    dispatcher._qualified_reviewed_spec(spec)
+                changed = operations.reviewed_check_code(spec,original['workspace'])
+                key = operations.digest({k:v for k,v in spec.items() if k != 'owner'})
+                self.assert_rejected(dict(publisher,job_id='offmenu-'+key[:48],
+                    command=publisher['command'].replace(shlex.quote(body),shlex.quote(changed))))
 
 
 class CompactObservationTests(unittest.TestCase):

@@ -183,6 +183,10 @@ def validated_v2(spec):
 
 REVIEWED_PROFILE = 'current-journal-focused'
 REVIEWED_TESTS = ('test_stokowski_operations', 'test_stokowski_current_dispatch')
+PUBLISHER_PROFILE = 'protected-publisher-bootstrap'
+PUBLISHER_TESTS = ('test_protected_owner_install', 'test_github_app_capture',
+                   'test_protected_publisher_install', 'test_stokowski_operations',
+                   'test_stokowski_dispatcher')
 
 
 def canonical_derivations(provenance):
@@ -205,7 +209,7 @@ def canonical_derivations(provenance):
 def validated_v3(spec):
     extra = {'origin','workspace','local_source_root','execution','control_sha256'}
     legacy = {k:v for k,v in spec.items() if k not in extra}
-    if not extra.issubset(spec) or 'branch' not in legacy or spec.get('profile') != REVIEWED_PROFILE:
+    if not extra.issubset(spec) or 'branch' not in legacy or spec.get('profile') not in (REVIEWED_PROFILE, PUBLISHER_PROFILE):
         raise OperationError('Invalid reviewed-source profile')
     validated(dict(legacy, version=1, profile='delivery-suite'))
     workspace_path(spec['workspace'])
@@ -243,7 +247,9 @@ def validated_v3(spec):
             raise OperationError('Invalid contribution path mapping')
         derivation = ref['derivation']
         transformed = any(value != spec['outputs'][mapping[name]] for name,value in ref['outputs'].items())
-        if transformed:
+        # Repository ancestry is checked by the fixed executed source oracle.
+        # A same-byte detached contribution also requires reviewed derivation.
+        if transformed or derivation is not None:
             if (not isinstance(derivation,dict)
                 or set(derivation) != {'owner','contribution_head','path_mapping','head','outputs','review_sha256','reason'}
                 or derivation['owner'] != ref['owner']
@@ -286,12 +292,15 @@ def blob(head,name):
 for ref in spec['origin']['provenance']:
  source=ref['source_head']; contribution=ref['contribution_head']
  assert source!=contribution, 'missing committed contribution'
- ancestor(spec['base'],source); ancestor(source,contribution); ancestor(contribution,spec['head'])
+ ancestor(spec['base'],source); ancestor(source,contribution)
+ detached=subprocess.run(['git','-C',str(root),'merge-base','--is-ancestor',contribution,spec['head']],capture_output=True)
+ assert detached.returncode in (0,1), 'contribution ancestry unavailable'
+ detached=detached.returncode==1
  mapping=ref['path_mapping']
  assert set(mapping)==set(ref['outputs']) and set(mapping.values())<=set(spec['outputs']), 'irrelevant contribution'
  transformed=any(value!=spec['outputs'][mapping[name]] for name,value in ref['outputs'].items())
  derivation=ref['derivation']
- if transformed:
+ if transformed or detached:
   assert isinstance(derivation,dict) and derivation==dict(owner=ref['owner'],contribution_head=contribution,path_mapping=mapping,head=spec['head'],outputs={v:spec['outputs'][v] for v in mapping.values()},review_sha256=spec['origin']['review_sha256'],reason=derivation.get('reason')), 'unqualified derivation'
   assert isinstance(derivation['reason'],str) and derivation['reason'].strip(), 'missing derivation reason'
  else: assert derivation is None, 'unexpected derivation'
@@ -334,9 +343,16 @@ with tempfile.TemporaryDirectory(prefix='offmenu-reviewed-control-') as director
   script='import sys,unittest; import stokowski; sys.path[:0]='+repr([str(selected),str(root/'tools/delivery'),str(root/'src')])+'; suite=unittest.TestLoader().loadTestsFromNames('+repr(modules)+'); result=unittest.TextTestRunner().run(suite); assert result.testsRun>0 and result.wasSuccessful() and not result.skipped'
   subprocess.run([sys.executable,'-c',script],cwd=root,check=True)
 """
+    modules = ['test_stokowski_current_dispatch.CurrentDispatchTests.'+n for n in ('test_normal_tick_rejects_invalid_validation_before_transport','test_normal_tick_continues_original_intent_and_reopen','test_qualified_prepared_submits_once_and_refusal_retains_identity','test_validation_state_identity_drift_and_cancel_flag_preserved')]
+    if spec['profile'] == PUBLISHER_PROFILE:
+        # Each full candidate module must independently provide passing,
+        # nonempty, unskipped proof. The accepted-base control stays identical.
+        modules = PUBLISHER_TESTS
+        code = code.replace("(root/'tests/delivery',MODULES)",
+                            "*((root/'tests/delivery',(module,)) for module in MODULES)")
     code = (code.replace('ROOT',repr(root)).replace('FILES',repr(['tests/delivery/'+n+'.py' for n in REVIEWED_TESTS]))
         .replace('BASE',repr(spec['base'])).replace('CONTROL',repr(spec['control_sha256']))
-        .replace('MODULES',repr(['test_stokowski_current_dispatch.CurrentDispatchTests.'+n for n in ('test_normal_tick_rejects_invalid_validation_before_transport','test_normal_tick_continues_original_intent_and_reopen','test_qualified_prepared_submits_once_and_refusal_retains_identity','test_validation_state_identity_drift_and_cancel_flag_preserved')])))
+        .replace('MODULES',repr(modules)))
     check = '/offmenu/.venv-delivery/bin/python -c '+shlex.quote(reviewed_check_code(spec,root))
     commands = ['cd '+shlex.quote(root),
         'export PYTHONDONTWRITEBYTECODE=1 GIT_OPTIONAL_LOCKS=0 PYTHONPATH='+shlex.quote(root+'/tools/delivery:'+root+'/src:/offmenu/.delivery/stokowski/venv/lib/python3.12/site-packages'),
