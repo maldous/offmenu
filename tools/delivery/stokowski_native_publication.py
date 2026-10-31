@@ -59,6 +59,8 @@ MODULES = ('stokowski_native_publication', 'stokowski_prepare', 'symphony_launch
 ENV = {'HOME': '/home/user', 'USER': 'user', 'LOGNAME': 'user',
        'LANG': 'C.UTF-8', 'PATH': '/usr/bin:/bin',
        'GIT_CONFIG_NOSYSTEM': '1', 'GIT_CONFIG_GLOBAL': '/dev/null',
+       'GIT_CONFIG_COUNT': '1', 'GIT_CONFIG_KEY_0': 'safe.directory',
+       'GIT_CONFIG_VALUE_0': '/opt/offmenu-stokowski-current/source',
        'GIT_TERMINAL_PROMPT': '0'}
 SSH = ('/usr/bin/ssh', '-F', '/dev/null', '-o', 'BatchMode=yes',
        '-o', 'StrictHostKeyChecking=yes', '-o', 'IdentityAgent=none',
@@ -257,6 +259,11 @@ def private_namespace(root, context):
     return runtime_root.parent,runtime_root
 
 
+def custody_directory(root,context):
+    private_root,_=private_namespace(root,context)
+    return canonical(str(private_root/'native-ssh-publication'))
+
+
 def packet_runtime_is_sealed(context, runtime_root, coordinator):
     # These refs are hash-bound to the native intent before use. The sealed
     # owner supplies the allowed namespace and exact coordinator identity.
@@ -329,7 +336,7 @@ def invoke(request, *, adapters=None, root=ROOT):
         from stokowski_prepare import prepare_publication
         from symphony_launch import provider_proof
         adapters = Adapters(process, prepare_publication, provider_proof)
-    custody = canonical(str(root / '.delivery/native-ssh-publication'))
+    custody = custody_directory(root,request['context'])
     custody.mkdir(mode=0o700, exist_ok=True)
     operation = request['operation']
     require(re.fullmatch('[0-9a-f]{64}', operation), 'operation')
@@ -346,7 +353,7 @@ def invoke(request, *, adapters=None, root=ROOT):
             result = prior.get('result', dict(status='uncertain', dispatches=0))
             if request['mode'] == 'status':
                 runtime = canonical(config['selected_current']['task_runtime'])
-                journal = canonical(str(root / '.delivery/stokowski' / (runtime.name + '-publication.json')))
+                journal = canonical(str(Path(config['selected_current']['runtime_root']) / (runtime.name + '-publication.json')))
                 if journal.exists():
                     data = read(journal)
                     record = decode(data)

@@ -285,6 +285,7 @@ class NativePublicationTests(unittest.TestCase):
              patch.object(adapter,'current_config',return_value=(sealed,Path('/sealed'),binding)) as select:
             self.assertEqual(native.private_namespace(root,self.context()),(runtime_root.parent,runtime_root))
             select.assert_called_once_with(Path(coordinator))
+            self.assertEqual(native.custody_directory(root,self.context()),runtime_root.parent/'native-ssh-publication')
             for changed in (dict(binding,source_root='/untrusted'),):
                 with patch.object(adapter,'protected_owner_bytes',return_value=native.encode(changed)), \
                      self.assertRaisesRegex(ValueError,'protected_source'):

@@ -644,11 +644,18 @@ class CurrentWork:
             import stokowski_native_publication as native
             # Native custody has its own protected root, outside the coordinator
             # runtime. Select only the exact operation path; never widen private().
-            expected = SOURCE/'.delivery/native-ssh-publication'/(pending['handoff']['sha256']+'.json')
             ref = pending['publication_result']
-            if ref['path'] != str(expected) or file_sha(native.canonical(str(expected))) != ref['sha256']:
+            legacy_seal = SOURCE/'.delivery/native-ssh-publication'/(pending['handoff']['sha256']+'.json')
+            if self.owner_custody and ref['path']==str(legacy_seal):
+                # The installed migration sealed this exact historical record.
+                raw=protected_owner_bytes(legacy_seal)
+                expected=legacy_seal
+            else:
+                expected = native.custody_directory(SOURCE,pending['native_request']['context'])/(pending['handoff']['sha256']+'.json')
+                raw=native.read(native.canonical(str(expected)))
+            if ref['path'] != str(expected) or hashlib.sha256(raw).hexdigest() != ref['sha256']:
                 raise AdmissionError('successor_prior_publication_unreconciled')
-            custody = native.decode(native.read(expected))
+            custody = native.decode(raw)
             self._private_pin(pending['publication_journal'])
             if (custody.get('request') != pending['native_request']
                 or custody.get('binding') != pending['native_binding']
@@ -919,7 +926,7 @@ class CurrentWork:
             mode = 'status'  # Even a missing custody file never authorizes another prepare.
         try:
             reply = native.decode(self._native_publication_cli(native.encode(dict(request, mode=mode))))
-            custody_path = SOURCE/'.delivery/native-ssh-publication'/(ref['sha256']+'.json')
+            custody_path = native.custody_directory(SOURCE,context)/(ref['sha256']+'.json')
             custody = native.decode(native.read(native.canonical(str(custody_path))))
             result = custody.get('result', dict(status='uncertain', dispatches=0))
             if (custody['request'] != request or custody['binding'] != pending['native_binding']
