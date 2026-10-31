@@ -150,7 +150,7 @@ def bridge_request(value, check_key, policy, catalog):
     job_id = 'release-' + fingerprint({'plan': fingerprint(value), 'check': check_key})
     return {'action': 'run', 'job_id': job_id, 'command': check['command'],
             'mode': 'write', 'timeout_seconds': check['timeout_seconds'],
-            'resources': check['resources']}
+            'resources': check['resources'], 'receipt_projection': 'resources-v1'}
 
 
 def verified_ref(ref, evidence_root):

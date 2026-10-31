@@ -184,6 +184,19 @@ class ReleaseQualificationTests(unittest.TestCase):
             self.assertLessEqual(len(request['job_id']), 80)
             self.assertEqual(request, release.bridge_request(self.plan, check['key'], self.policy, self.catalog))
 
+    def test_resource_projection_opt_in_does_not_change_runner_request_digest(self):
+        check = self.plan['checks'][0]
+        request = release.bridge_request(self.plan, check['key'], self.policy, self.catalog)
+        self.assertEqual(request['receipt_projection'], 'resources-v1')
+        result = self.result()
+        receipt = release.read_json(self.root / 'receipt-0.json')
+        original_spec = dict(command_sha256=check['command_sha256'], mode=request['mode'],
+            timeout_seconds=request['timeout_seconds'], runner_sha256=self.plan['runner_sha256'],
+            capacity_policy_sha256=self.plan['capacity_policy_sha256'], resources=request['resources'])
+        self.assertEqual(receipt['request_sha256'],
+                         hashlib.sha256(json.dumps(original_spec, sort_keys=True).encode()).hexdigest())
+        self.assertTrue(release.reusable_result(self.plan, result, self.policy, self.catalog, self.root))
+
     def test_symlink_and_traversal_evidence_cannot_pass(self):
         result = self.result()
         (self.root / 'outside').symlink_to(self.root / 'receipt-0.json')

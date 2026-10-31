@@ -8,7 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from test_engine import DeliveryFixture
 from offmenu.delivery.engine import Engine, writer, DeliveryError
@@ -159,3 +159,141 @@ class WindmillRecoveryTests(unittest.TestCase):
                 result = runner.run(root, 'another-job', 'exit 0', 'write', 1)
             self.assertEqual(result['status'], 'blocked_reconciliation')
             self.assertEqual((receipt.read_bytes(), marker.read_bytes()), original)
+
+
+# Import the actual standalone bridge with inert SDK modules: no credentials,
+# SSH access, Windmill API or package installation is exercised by these tests.
+bridge_spec = importlib.util.spec_from_file_location('projected_windmill_bridge',
+                                                   MODULE.with_name('windmill_bridge.py'))
+bridge = importlib.util.module_from_spec(bridge_spec)
+with patch.dict(sys.modules, {'paramiko': Mock(), 'wmill': Mock()}):
+    bridge_spec.loader.exec_module(bridge)
+
+
+class WindmillResourceReceiptTests(unittest.TestCase):
+    def fixture(self):
+        import test_release_qualification
+        value = test_release_qualification.ReleaseQualificationTests(methodName='runTest')
+        value.setUp()
+        self.addCleanup(value.doCleanups)
+        return value
+
+    def test_runner_receipt_projection_qualifies_exact_release_resources_and_hash(self):
+        fixture = self.fixture()
+        results = [fixture.result(), fixture.result(1)]
+        for index, result in enumerate(results):
+            path = fixture.root / ('receipt-' + str(index) + '.json')
+            original = json.loads(path.read_text())
+            service = dict(original, raw_log='PRIVATE', unknown_error={'secret': 'PRIVATE'})
+            projected = bridge._job_result('status', original['job_id'], service, 'resources-v1')['receipt']
+            self.assertEqual(projected['resources'], original['resources'])
+            self.assertEqual(projected['request_sha256'], original['request_sha256'])
+            self.assertNotIn('PRIVATE', json.dumps(projected))
+            self.assertIsNot(projected['resources'], original['resources'])
+            path.write_text(json.dumps(projected))
+            result['handoff']['operation']['receipt'] = fixture.ref(path.name)
+        self.assertEqual(fixture.aggregate(results)['status'], 'qualified')
+
+    def test_resource_drift_is_never_repaired_from_requested_arguments(self):
+        fixture = self.fixture()
+        result = fixture.result()
+        path = fixture.root / 'receipt-0.json'
+        actual = json.loads(path.read_text())
+        actual['resources']['memory_bytes'] += 1
+        projected = bridge._safe_receipt(actual['job_id'], actual, 'resources-v1')
+        self.assertEqual(projected['resources']['memory_bytes'], actual['resources']['memory_bytes'])
+        path.write_text(json.dumps(projected))
+        result['handoff']['operation']['receipt'] = fixture.ref(path.name)
+        with self.assertRaises(ValueError): fixture.aggregate([result])
+
+    def test_missing_resource_fact_is_not_filled_from_main_request(self):
+        fixture = self.fixture()
+        result = fixture.result()
+        raw = json.loads((fixture.root / 'receipt-0.json').read_text())
+        requested = raw.pop('resources')
+        transport = Mock()
+        transport.is_authenticated.return_value = True
+        client = Mock()
+        client.get_transport.return_value = transport
+        with patch.object(bridge.paramiko, 'SSHClient', return_value=client), \
+             patch.object(bridge, '_pin'), \
+             patch.object(bridge.wmill, 'get_variable', return_value='synthetic-only'), \
+             patch.object(bridge, '_drain', return_value=dict(exit_code=0, stdout=json.dumps(raw),
+                                      truncated={'stdout': False, 'stderr': False})):
+            response = bridge.main(action='run', job_id=raw['job_id'],
+                                   command=fixture.plan['checks'][0]['command'],
+                                   mode='write', timeout_seconds=raw['timeout_seconds'], resources=requested,
+                                   receipt_projection='resources-v1')
+        self.assertNotIn('resources', response['receipt'])
+        path = fixture.root / 'receipt-0.json';path.write_text(json.dumps(response['receipt']))
+        result['handoff']['operation']['receipt'] = fixture.ref(path.name)
+        with self.assertRaises(ValueError): fixture.aggregate([result])
+
+    def test_malformed_or_control_resource_values_are_rejected(self):
+        import copy
+        fixture = self.fixture();fixture.result()
+        original = json.loads((fixture.root / 'receipt-0.json').read_text())
+        changes = [{'workers': True}, {'workers': 65}, {'overhead_processes': 9},
+                   {'cpu_millis': float('nan')}, {'memory_bytes': float('inf')},
+                   {'memory_bytes': 42 * 1024**3 + 1}, {'output_bytes': -1}, {'io_slots': 33},
+                   {'extra': 'PRIVATE'}, {'read_roots': ['/outside']},
+                   {'read_roots': ['/offmenu/../outside']}, {'read_roots': ['/offmenu//data']},
+                   {'read_roots': ['/offmenu/data/']}, {'read_roots': ['/offmenu/data\\nsecret']},
+                   {'read_roots': ['/offmenu/data'] * 2}, {'read_roots': ['/offmenu/data'] * 33},
+                   {'write_roots': []}, {'write_roots': ['/offmenu/tools/delivery/code.py']},
+                   {'write_roots': ['/offmenu/scripts/windmill']},
+                   {'write_roots': ['/offmenu/data/.offmenu-platform/jobs/job']},
+                   {'write_roots': ['/offmenu/data/.offmenu-platform/locks']},
+                   {'write_roots': ['/offmenu/data']}, {'read_roots': ['/' + 'a' * 4097]}]
+        for change in changes:
+            receipt = copy.deepcopy(original);receipt['resources'].update(change)
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                bridge._safe_receipt(receipt['job_id'], receipt, 'resources-v1')
+        receipt = copy.deepcopy(original);del receipt['resources']['io_slots']
+        with self.assertRaises(ValueError):bridge._safe_receipt(receipt['job_id'], receipt, 'resources-v1')
+        receipt = copy.deepcopy(original);receipt['mode'] = 'read'
+        with self.assertRaises(ValueError):bridge._safe_receipt(receipt['job_id'], receipt, 'resources-v1')
+
+    def test_legacy_receipts_and_other_field_validation_are_unchanged(self):
+        import windmill_dispatcher
+        job = 'offmenu-' + 'a'*48
+        legacy = dict(job_id=job, status='succeeded', exit_code=0, child_tree_gone=True)
+        self.assertEqual(bridge._safe_receipt(job, dict(legacy, raw_log='PRIVATE')), legacy)
+        # The bridge DEFAULT still strips resources, including old unsupported
+        # declarations, before the unchanged strict legacy dispatcher sees them.
+        response = bridge._job_result('status', job,
+                                     dict(legacy, resources={'old': 'private declaration'}))
+        self.assertEqual(windmill_dispatcher.compact_result(response)['receipt'], legacy)
+        with self.assertRaises(ValueError):bridge._safe_receipt(job, dict(legacy, exit_code=True))
+        with self.assertRaises(bridge.OutcomeUnknown):bridge._job_result('status', job,
+            dict(legacy, child_tree_gone=False))
+        # Legacy dispatcher is untouched and still refuses the new optional field.
+        with self.assertRaises(ValueError):windmill_dispatcher._safe_receipt(job,
+            dict(legacy, resources={'not': 'a legacy field'}))
+
+    def test_invalid_projection_fails_before_transport_or_credential_access(self):
+        for selection in ('raw', '', True, None, {}):
+            with self.subTest(selection=selection), \
+                 patch.object(bridge.paramiko, 'SSHClient') as connect, \
+                 patch.object(bridge.wmill, 'get_variable') as credential:
+                with self.assertRaises(bridge.JobValidationFailure):
+                    bridge.main(action='status', job_id='synthetic', receipt_projection=selection)
+                connect.assert_not_called()
+                credential.assert_not_called()
+
+    def test_supported_boundaries_detachment_and_projection_size_are_explicit(self):
+        resources = dict(workers=runner.WORKER_CEILING, overhead_processes=runner.OVERHEAD_CEILING,
+            cpu_millis=27000, memory_bytes=runner.MEMORY_BUDGET, output_bytes=64*runner.GIB,
+            io_slots=runner.IO_BUDGET, read_roots=['/offmenu'], write_roots=[])
+        self.assertEqual(bridge._safe_resources(resources, 'read'),
+                         runner.validate_resources(resources, 'read'))
+        projected = bridge._safe_resources(resources, 'read')
+        projected['read_roots'].append('/offmenu/data')
+        self.assertEqual(resources['read_roots'], ['/offmenu'])
+        too_large = dict(resources, read_roots=['/offmenu/' + 'a'*600 + str(n) for n in range(32)])
+        runner.validate_resources(too_large, 'read')  # Admission permits this larger declaration.
+        with self.assertRaises(ValueError): bridge._safe_resources(too_large, 'read')
+        for field, invalid in [('workers',0),('overhead_processes',0),('cpu_millis',27001),
+                               ('memory_bytes',1048575),('output_bytes',64*runner.GIB+1),('io_slots',0)]:
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                bridge._safe_resources(dict(resources, **{field:invalid}), 'read')
