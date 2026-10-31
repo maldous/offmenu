@@ -252,6 +252,26 @@ def publisher_sources(source):
     return found
 
 
+def publisher_descriptor(files, *, head, tree, node_sha256):
+    """Shared UIF122 descriptor; byte digest domain, never shared fingerprint."""
+    required = {'tools/delivery/native_publisher_invocation.py',
+                'tools/delivery/windmill_runner.py', 'tools/delivery/capacity-policy.json',
+                'tools/delivery/protected_owner_install.py', 'venv/bin/python'}
+    require(type(files) is dict and required <= set(files) and len(files) <= 50000
+            and 'native-harness-closure.json' not in files, 'publisher_descriptor_closure')
+    require(type(head) is str and re.fullmatch('[0-9a-f]{40}', head)
+            and type(tree) is str and re.fullmatch('[0-9a-f]{40}', tree), 'descriptor_source')
+    pins = {}
+    for name, raw in sorted(files.items()):
+        path_name(name)
+        pins[name] = sha(bounded(raw))
+    value = dict(version=1, kind='native-publisher-closure-v1', source_head=head,
+                 source_tree=tree, node_sha256=pin(node_sha256), files=pins)
+    raw = protected.encoded(value)
+    require(len(raw) <= 16*1024*1024, 'descriptor_bound')
+    return raw
+
+
 @dataclass(frozen=True)
 class PackageAcceptance:
     """Owner context supplied after independent source review, never worker JSON."""
@@ -299,7 +319,7 @@ def closure(role, files):
 
 def prepare_coherent_package(stage, *, git_dir, head, tree, dependencies,
                              dependency_evidence, dependency_sha256, runtime, interpreter, interpreter_sha256,
-                             interpreter_custody, pyvenv_cfg, owner_current, owner_catalog,
+                             interpreter_custody, node_sha256, node_custody, pyvenv_cfg, owner_current, owner_catalog,
                              publisher_config, config_pins, acceptance):
     """Build only actor-owned private content-addressed payload; no /opt reads."""
     require(os.getuid() != 0 and os.geteuid() != 0, 'nonroot_producer')
@@ -309,6 +329,9 @@ def prepare_coherent_package(stage, *, git_dir, head, tree, dependencies,
     path_name(acceptance.review['path']); pin(acceptance.review['sha256'])
     require(type(interpreter_custody) is dict and set(interpreter_custody) == {'path', 'sha256'}, 'custody_reference')
     path_name(interpreter_custody['path']); pin(interpreter_custody['sha256'])
+    pin(node_sha256)
+    require(type(node_custody) is dict and set(node_custody) == {'path', 'sha256'}, 'node_custody_reference')
+    path_name(node_custody['path']); pin(node_custody['sha256'])
     require(sha(bounded(interpreter)) == pin(interpreter_sha256), 'interpreter_pin')
     cfg = dict(line.split('=', 1) for line in bounded(pyvenv_cfg, 65536).decode().splitlines() if '=' in line)
     cfg = {k.strip(): v.strip() for k, v in cfg.items()}
@@ -355,12 +378,15 @@ def prepare_coherent_package(stage, *, git_dir, head, tree, dependencies,
                               'binding.json': protected.encoded(binding)},
              'publisher': dict(publisher_source, **{'venv/' + n: raw for n, raw in env.items()}),
              'publisher_config': {'config.json': publisher_config}}
+    roles['publisher']['native-harness-closure.json'] = publisher_descriptor(
+        roles['publisher'], head=head, tree=tree, node_sha256=node_sha256)
     all_files = sum(len(f) for f in roles.values())
     total = sum(len(raw) for files in roles.values() for raw in files.values())
     require(all_files <= MAX_FILES and total <= MAX_TOTAL, 'package_bounds')
     manifest = dict(version=1, kind='native-harness-package-v1', owner=acceptance.owner,
                     head=head, tree=tree, review=acceptance.review,
-                    interpreter_custody=interpreter_custody, dependency_evidence=dependency_evidence,
+                    interpreter_custody=interpreter_custody, node_custody=node_custody,
+                    dependency_evidence=dependency_evidence,
                     roles={role: closure(role, files) for role, files in roles.items()})
     raw = protected.encoded(manifest)
     require(len(raw) <= 32*1024*1024, 'package_manifest_bound')
@@ -492,7 +518,7 @@ def read_package(package, expected_sha256):
     require(sha(raw) == pin(expected_sha256), 'reviewed_package_pin')
     manifest = protected.record(raw)
     require(set(manifest) == {'version', 'kind', 'owner', 'head', 'tree', 'review',
-                            'interpreter_custody', 'dependency_evidence', 'roles'}
+                            'interpreter_custody', 'node_custody', 'dependency_evidence', 'roles'}
             and type(manifest['version']) is int and manifest['version'] == 1
             and manifest['kind'] == 'native-harness-package-v1'
             and type(manifest['owner']) is str and manifest['owner'].strip()
@@ -524,8 +550,12 @@ def read_package(package, expected_sha256):
                                    {'head': manifest['head'], 'tree': manifest['tree']})
     # Source/dependency/config bytes may not diverge across the two installed roles.
     selected = publisher_sources(content['owner_source'])
-    require(content['publisher'] == dict(selected, **{'venv/' + n: raw for n, raw in content['owner_venv'].items()}),
-            'publisher_closure_mismatch')
+    expected = dict(selected, **{'venv/' + n: raw for n, raw in content['owner_venv'].items()})
+    require('native-harness-closure.json' in content['publisher'], 'publisher_descriptor_missing')
+    descriptor = protected.record(content['publisher']['native-harness-closure.json'])
+    expected['native-harness-closure.json'] = publisher_descriptor(
+        expected, head=manifest['head'], tree=manifest['tree'], node_sha256=descriptor.get('node_sha256'))
+    require(content['publisher'] == expected, 'publisher_closure_mismatch')
     return manifest, content
 
 

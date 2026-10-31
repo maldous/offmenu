@@ -63,7 +63,7 @@ unchanged; its custody/identity checks are never bypassed with fake metadata.
 
 `prepare_coherent_package(stage, *, git_dir, head, tree, dependencies,
 dependency_evidence, dependency_sha256, runtime, interpreter,
-interpreter_sha256, interpreter_custody, pyvenv_cfg, owner_current,
+interpreter_sha256, interpreter_custody, node_sha256, node_custody, pyvenv_cfg, owner_current,
 owner_catalog, publisher_config, config_pins, acceptance)` is nonroot only.
 
 The owner supplies `PackageAcceptance(owner, head, tree, review)` as trusted
@@ -113,6 +113,21 @@ without assuming the old eleven-file release subset is sufficient. Unknown
 variable dynamic imports, missing native/relative imports and missing local JS
 modules fail closed. Deployment-specific external runtime capabilities still
 require coherent validation; static source inclusion is not runtime acceptance.
+
+The shared UIF-122 wrapper descriptor is `native-harness-closure.json`, installed
+as root-owned 0444 at `/opt/offmenu-publisher/native-harness-closure.json`.
+It is exactly `{version:1, kind:'native-publisher-closure-v1', source_head,
+source_tree, node_sha256, files}`. `files` binds every selected publisher source
+and dependency regular file, including the wrapper, runner, capacity policy,
+bounded owner readers and interpreter; it excludes the descriptor itself.
+The producer then includes the descriptor hash in the full publisher role.
+Serialization is sorted compact ASCII JSON plus one newline, and its identity
+is SHA-256 of those exact bytes. Bounds are 16 MiB and 50,000 file entries.
+`source_head` identifies installed harness code, distinct from a work candidate.
+`node_sha256` and `node_custody` must come from independent qualification of the
+fixed `/usr/bin/node`; this API does not read or select another executable.
+Neither the descriptor nor its hash grants root authority, and publisher config
+codePins retains its existing narrow allowlist.
 
 The create-only private stage contains `manifest.json` and content-addressed
 `payload/<sha256>` files. The manifest records the accepted source, review and

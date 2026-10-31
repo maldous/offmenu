@@ -98,7 +98,10 @@ class PackageTests(unittest.TestCase):
                   'src/offmenu/delivery/engine.py': b'VALUE = 1\n',
                   'tools/delivery/native_rpc.py': b'from native_lifecycle import VALUE\n',
                   'tools/delivery/native_lifecycle.py': b'from extra_dependency import VALUE\n',
-                  'src/extra_dependency.py': b'VALUE = 2\n'}
+                  'src/extra_dependency.py': b'VALUE = 2\n',
+                  'tools/delivery/native_publisher_invocation.py': b'from native_rpc import VALUE\n',
+                  'tools/delivery/windmill_runner.py': b'VALUE = 1\n',
+                  'tools/delivery/protected_owner_install.py': b'VALUE = 1\n'}
         for name in ('github-app-publisher.mjs', 'github-app-adapter.mjs', 'integration-gateway.mjs'):
             source['tools/delivery/'+name]=b'export const value = 1;\n'
         for name in ('contracts/schemas/delivery-handoff-v1.schema.json',
@@ -145,6 +148,7 @@ class PackageTests(unittest.TestCase):
                     runtime='/home/user/src/offmenu/.delivery/stokowski/selected',
                     interpreter=interpreter,interpreter_sha256=package.sha(interpreter),
                     interpreter_custody={'path':'custody.json','sha256':'c'*64},
+                    node_sha256='f'*64,node_custody={'path':'node-custody.json','sha256':'9'*64},
                     pyvenv_cfg=b'home = /usr/bin\ninclude-system-site-packages = false\nversion = 3.12.3\n',
                     owner_current=current,owner_catalog=catalog,publisher_config=publisher,
                     config_pins=dict(owner_current=package.sha(current),owner_catalog=package.sha(catalog),publisher_config=package.sha(publisher)),
@@ -185,6 +189,21 @@ class PackageTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             package.materialize(stage,expected_sha256=package.sha(manifest),admission=package.MaterializeAdmission('root-owner',package.sha(manifest),'d'*64,'e'*64,time.time()+60),_host=host)
         self.assertFalse(list((host.root/'var/lib/offmenu-publisher').glob('*')))
+
+    def test_shared_descriptor_binds_all_files_and_excludes_itself(self):
+        stage,result=self.build()
+        manifest,content=package.read_package(stage,result['sha256'])
+        raw=content['publisher']['native-harness-closure.json']
+        descriptor=protected.record(raw)
+        self.assertEqual(set(descriptor),{'version','kind','source_head','source_tree','node_sha256','files'})
+        self.assertEqual(descriptor['node_sha256'],'f'*64)
+        self.assertNotIn('native-harness-closure.json',descriptor['files'])
+        self.assertIn('tools/delivery/native_publisher_invocation.py',descriptor['files'])
+        self.assertIn('tools/delivery/windmill_runner.py',descriptor['files'])
+        self.assertEqual(descriptor['files']['venv/bin/python'],package.sha(content['owner_venv']['bin/python']))
+        self.assertEqual(raw,protected.encoded(descriptor))
+        missing=dict(content['publisher']);del missing['native-harness-closure.json'];del missing['tools/delivery/native_publisher_invocation.py']
+        with self.assertRaises(ValueError):package.publisher_descriptor(missing,head=manifest['head'],tree=manifest['tree'],node_sha256='f'*64)
 
     def test_changed_payload_bytes_fail_before_materialization_intent(self):
         stage,result=self.build();host=self.host()
