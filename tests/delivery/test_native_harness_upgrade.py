@@ -175,10 +175,55 @@ class UpgradeTests(unittest.TestCase):
         self.admission = replace(self.admission,
             lock_custody_sha256=upgrade.upgrade_digest(asdict(self.custody)))
 
+    def add_selected_public_ca(self):
+        from dataclasses import asdict
+        from native_harness_adoption import prepare
+        from native_harness_contract import fingerprint
+        pins=[]
+        for side in ('old','new'):
+            for role, relative in upgrade.PUBLIC_CA_PATHS.items():
+                target,stage,_=upgrade.locations(role,self.operation)
+                base=self.root/(target if side=='old' else stage)[1:]
+                file=base/relative
+                file.parent.mkdir(parents=True)
+                raw=('SYNTHETIC PUBLIC CA '+side+' '+role).encode()
+                file.write_bytes(raw);file.chmod(0o444)
+                selected_blob=protected.sha(raw)  # Independent fixture producer selection.
+                value=closure(base)
+                self.manifest[side][role]=value
+                pins.append(upgrade.PublicCARecordPin(role,upgrade.upgrade_digest(value),relative,
+                    selected_blob,protected.sha(('PUBLICRECORD '+side+' '+role).encode())))
+        source=self.source
+        old=source.write(protected.encoded(self.manifest['old']['owner_venv']))
+        source.snapshot['runtime_sha256']=old['sha256']
+        source.rollback['artifacts']['runtime']=old
+        source.request['legacy_snapshot']=source.write(source.snapshot)
+        source.stop['snapshot_sha256']=source.request['legacy_snapshot']['sha256']
+        source.request['stop_witness']=source.write(source.stop)
+        source.rollback['snapshot_sha256']=source.request['legacy_snapshot']['sha256']
+        source.request['rollback']=source.write(source.rollback)
+        source.request['target']['dependencies']=source.write(protected.encoded(self.manifest['new']['owner_venv']))
+        source.request['readback'].update(closure_sha256=fingerprint(source.request['target']),
+            dependencies_sha256=source.request['target']['dependencies']['sha256'])
+        self.plan=prepare(source.request,source.policy,evidence_root=source.root,accepted=source.accepted)
+        self.manifest['preflight_sha256']=protected.sha(self.plan)
+        self.public_ca_pins=tuple(pins)
+        self.admission=replace(self.admission,plan_sha256=protected.sha(self.plan),
+            upgrade_sha256=upgrade.upgrade_digest(self.manifest),
+            public_ca_pins_sha256=upgrade.upgrade_digest([asdict(pin) for pin in pins]))
+        self.quiet=replace(self.quiet,snapshot_sha256=source.request['legacy_snapshot']['sha256'])
+
+    def repin_public_ca(self):
+        from dataclasses import asdict
+        self.admission=replace(self.admission,
+            public_ca_pins_sha256=upgrade.upgrade_digest([asdict(pin) for pin in self.public_ca_pins]))
+
     def execute(self, **kwargs):
         args = dict(admission=self.admission, quiescence=self.quiet,
                     lock_custody=self.custody, publisher_config_custody=self.pub_custody, host=self.host)
         args.update(kwargs)
+        if hasattr(self,'public_ca_pins') and 'public_ca_pins' not in args:
+            args['public_ca_pins']=self.public_ca_pins
         return upgrade.execute(self.plan,self.manifest,**args)
 
     def test_real_temp_moves_exact_readback_and_permanent_nonreplay(self):
@@ -764,6 +809,93 @@ class UpgradeTests(unittest.TestCase):
             bad=replace(custody,key=key)
             with self.subTest(key=key),self.assertRaisesRegex(ValueError,'publisher_key_metadata'):
                 upgrade.qualify_publisher_custody(bad,upgrade.upgrade_digest(asdict(bad)),prod,time.time())
+
+    def test_exact_independently_selected_public_ca_allowed_in_both_dependency_roles(self):
+        self.add_selected_public_ca()
+        real_open=os.open
+        reads=[]
+        def capture(path,*args,**kwargs):
+            if not isinstance(path,int):
+                name=os.fsdecode(path)
+                self.assertNotIn(upgrade.PUBLISHER_KEY,name)
+                if name=='cacert.pem':reads.append(name)
+            return real_open(path,*args,**kwargs)
+        with patch.object(upgrade.os,'open',side_effect=capture):
+            result=self.execute()
+        self.assertTrue(result['installed_verified'])
+        self.assertTrue(result['public_ca_selection_verified'])
+        self.assertGreaterEqual(len(reads),4)
+        observed=upgrade.observe(self.manifest,host=self.host,publisher_config_custody=self.pub_custody,
+                                 public_ca_pins=self.public_ca_pins)
+        self.assertTrue(observed['installed_verified'])
+        self.assertEqual(self.publisher_key.read_bytes(),self.key_bytes)
+
+    def test_public_ca_requires_selected_blob_not_just_self_pinned_payload(self):
+        self.add_selected_public_ca()
+        with patch.object(upgrade.os,'open',side_effect=AssertionError('no unselected dependency read')):
+            with self.assertRaisesRegex(ValueError,'selected_public_ca_pins_required'):
+                self.execute(public_ca_pins=None)
+        bad=replace(self.public_ca_pins[0],blob_sha256='0'*64)
+        self.public_ca_pins=(bad,)+self.public_ca_pins[1:]
+        self.repin_public_ca()
+        with patch.object(upgrade.os,'open',side_effect=AssertionError('no wrong selected blob read')):
+            with self.assertRaisesRegex(ValueError,'public_ca_selected_blob'):
+                self.execute()
+
+    def test_public_ca_record_cannot_select_other_role_path_or_missing_public_record(self):
+        self.add_selected_public_ca()
+        originals=self.public_ca_pins
+        for bad in (replace(originals[0],role='owner_source'),
+                    replace(originals[0],path='elsewhere.pem'),
+                    replace(originals[0],path=upgrade.PUBLISHER_KEY),
+                    replace(originals[0],closure_sha256='0'*64),
+                    replace(originals[0],public_record_sha256=None)):
+            self.public_ca_pins=(bad,)+originals[1:]
+            self.repin_public_ca()
+            with self.subTest(pin=bad),self.assertRaises(ValueError):
+                self.execute()
+        self.assertEqual(self.host.moves,0)
+
+    def test_private_key_and_elsewhere_pem_stay_blocked_even_with_public_ca_authority(self):
+        self.add_selected_public_ca()
+        self.host._public_ca_pins=self.public_ca_pins
+        _,stage,_=upgrade.locations('owner_venv',self.operation)
+        base=self.root/stage[1:]
+        for name in ('elsewhere.pem',upgrade.PUBLISHER_KEY):
+            extra=base/name
+            extra.write_bytes(b'SYNTHETIC denied payload');extra.chmod(0o444)
+            value=closure(base)
+            selected=next(pin for pin in self.public_ca_pins if pin.role=='owner_venv'
+                and pin.closure_sha256==upgrade.upgrade_digest(self.manifest['new']['owner_venv']))
+            self.host._public_ca_pins=(replace(selected,closure_sha256=upgrade.upgrade_digest(value)),)
+            with self.subTest(name=name),self.assertRaisesRegex(ValueError,'secret_or_log_path'):
+                self.host.verify_role('owner_venv',stage,value)
+            extra.unlink()
+        # Correct leaf under an unrelated source role is also not an exception.
+        with self.assertRaisesRegex(ValueError,'secret_or_log_path'):
+            self.host.verify_role('owner_source',stage,self.manifest['new']['owner_venv'])
+
+    def test_public_ca_actual_blob_drift_or_missing_readback_pins_holds(self):
+        self.add_selected_public_ca()
+        _,stage,_=upgrade.locations('owner_venv',self.operation)
+        file=self.root/stage[1:]/upgrade.PUBLIC_CA_PATHS['owner_venv']
+        raw=file.read_bytes();file.chmod(0o644)
+        file.write_bytes(b'x'*len(raw));file.chmod(0o444)
+        with self.assertRaisesRegex(ValueError,'file_drift'):
+            self.execute()
+        file.chmod(0o644);file.write_bytes(raw);file.chmod(0o444)
+        self.execute()
+        observed=upgrade.observe(self.manifest,host=self.host,publisher_config_custody=self.pub_custody)
+        self.assertFalse(observed['public_ca_selection_verified'])
+        self.assertFalse(observed['installed_verified'])
+
+    def test_public_ca_selection_cannot_omit_original_dependency_closure(self):
+        self.add_selected_public_ca()
+        self.public_ca_pins=self.public_ca_pins[1:]
+        self.repin_public_ca()
+        with patch.object(upgrade.os,'open',side_effect=AssertionError('no incomplete selection reads')):
+            with self.assertRaisesRegex(ValueError,'public_ca_complete_selection'):
+                self.execute()
 
 
 class ProcessBindingTests(unittest.TestCase):

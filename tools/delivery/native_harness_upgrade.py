@@ -26,6 +26,10 @@ import protected_owner_install as protected
 STATE = '/var/lib/offmenu-publisher'
 SERVICE = 'offmenu-stokowski-current.service'
 PUBLISHER_KEY = 'github-app-private-key.pem'
+PUBLIC_CA_PATHS = {
+    'owner_venv': 'lib/python3.12/site-packages/certifi/cacert.pem',
+    'publisher': 'venv/lib/python3.12/site-packages/certifi/cacert.pem',
+}
 MAX_FILES = 50000
 MAX_FILE = 64 * 1024 * 1024
 MAX_TOTAL = 1024 * 1024 * 1024
@@ -41,6 +45,17 @@ class OwnerAdmission:
     expires_at: float
     lock_custody_sha256: str | None = None
     publisher_config_custody_sha256: str | None = None
+    public_ca_pins_sha256: str | None = None
+
+
+@dataclass(frozen=True)
+class PublicCARecordPin:
+    """Owner-selected PUBLICRECORD/blob association, never inferred from payload."""
+    role: str
+    closure_sha256: str
+    path: str
+    blob_sha256: str
+    public_record_sha256: str
 
 
 @dataclass(frozen=True)
@@ -224,6 +239,33 @@ def qualify_publisher_custody(custody, expected_sha256, host, now, *, require_fr
             'publisher_key_metadata')
 
 
+def qualify_public_ca_pins(pins, expected_sha256, upgrade):
+    expected = {}
+    for side in ('old', 'new'):
+        for role, path in PUBLIC_CA_PATHS.items():
+            closure = upgrade[side][role]
+            if path in closure['files']:
+                expected[(role, upgrade_digest(closure), path)] = closure['files'][path]['sha256']
+    if not expected:
+        require(pins is None and expected_sha256 is None, 'unused_public_ca_authority')
+        return
+    require(type(pins) is tuple and 1 <= len(pins) <= 4
+            and all(type(pin) is PublicCARecordPin for pin in pins), 'selected_public_ca_pins_required')
+    sha(expected_sha256)
+    require(upgrade_digest([asdict(pin) for pin in pins]) == expected_sha256, 'public_ca_admission')
+    selected = {}
+    for pin in pins:
+        for value in (pin.closure_sha256, pin.blob_sha256, pin.public_record_sha256):
+            sha(value)
+        require(pin.role in PUBLIC_CA_PATHS and pin.path == PUBLIC_CA_PATHS[pin.role],
+                'public_ca_fixed_role_path')
+        key = (pin.role, pin.closure_sha256, pin.path)
+        require(key not in selected and key in expected
+                and expected[key] == pin.blob_sha256, 'public_ca_selected_blob')
+        selected[key] = pin.blob_sha256
+    require(selected == expected, 'public_ca_complete_selection')
+
+
 class Host:
     def __init__(self, *, _synthetic=None):
         self.root = Path('/') if _synthetic is None else Path(_synthetic).resolve(strict=True)
@@ -321,7 +363,7 @@ class Host:
 
     def verify_role(self, role, absolute, closure):
         if role != 'publisher_config':
-            return self.verify(absolute, closure)
+            return self.verify(absolute, closure, role=role)
         fields(closure, 'directories files')
         require(type(closure['directories']) is dict and set(closure['directories']) == {''}
                 and type(closure['files']) is dict and set(closure['files']) == {'config.json'},
@@ -427,7 +469,7 @@ class Host:
             os.fsync(self._publisher_fd)
             self.verify_publisher_custody()
 
-    def verify(self, absolute, closure):
+    def verify(self, absolute, closure, *, role=None):
         """Read exact selected files/metadata; refuse links and extra entries.
 
         No commands/imports run from staged code. JSON never selects modes to
@@ -454,8 +496,15 @@ class Host:
                 if kind == 'files':
                     require(type(item['size']) is int and 0 <= item['size'] <= MAX_FILE, 'file_size')
                     sha(item['sha256'])
+                    parts = Path(name).parts
+                    public_ca = (role in PUBLIC_CA_PATHS and name == PUBLIC_CA_PATHS[role]
+                        and any(pin.role == role and pin.path == name
+                                and pin.closure_sha256 == upgrade_digest(closure)
+                                and pin.blob_sha256 == item['sha256']
+                                for pin in (getattr(self, '_public_ca_pins', None) or ())))
                     require(not any(p.startswith('.env') or p in ('credentials', 'auth.json', 'credentials.json')
-                            or p.endswith(('.key', '.pem', '.log')) for p in Path(name).parts), 'secret_or_log_path')
+                            or p.endswith(('.key', '.log')) or (p.endswith('.pem') and not public_ca)
+                            for p in parts), 'secret_or_log_path')
                 expected[name] = (kind, item)
         for name in expected:
             if name:
@@ -599,7 +648,7 @@ def mutation_guard(host, plan, observation, admission):
 
 
 def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
-            publisher_config_custody=None, host=None):
+            publisher_config_custody=None, public_ca_pins=None, host=None):
     """One admitted attempt; never start services, retire legacy or auto-rollback.
 
     All staged slots already exist, sealed by the owner. Four old directory
@@ -615,10 +664,12 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
     qualify_lock_custody(lock_custody, admission, plan, quiescence, host, now)
     qualify_publisher_custody(publisher_config_custody,
                               admission.publisher_config_custody_sha256, host, now)
+    qualify_public_ca_pins(public_ca_pins, admission.public_ca_pins_sha256, upgrade)
     operation = upgrade['operation_id']
     receipt = STATE + '/native-upgrade-' + operation + '.intent.json'
     result_path = STATE + '/native-upgrade-' + operation + '.installed.json'
     old_fence = STATE + '/native-upgrade-from-' + upgrade_digest(upgrade['old']) + '.intent.json'
+    host._public_ca_pins = public_ca_pins
     with host.locks(lock_custody), host.publisher_config(publisher_config_custody):
         require(not os.path.lexists(host.path(receipt))
                 and not os.path.lexists(host.path(result_path))
@@ -637,6 +688,7 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
             host_confirmation_sha256=admission.host_confirmation_sha256,
             lock_custody_sha256=admission.lock_custody_sha256,
             publisher_config_custody_sha256=admission.publisher_config_custody_sha256,
+            public_ca_pins_sha256=admission.public_ca_pins_sha256,
             host_scope='synthetic' if host.synthetic else 'production',
             runtime_path=plan['legacy_snapshot']['runtime_path'])
         # Old-closure fence precedes the operation fence. A crash between them
@@ -655,7 +707,8 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
             host.move(target, backup)
             mutation_guard(host, plan, quiescence, admission)
             host.move(stage, target)
-        readback = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody)
+        readback = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody,
+                           public_ca_pins=public_ca_pins)
         require(readback['installed_verified'] and readback['rollback_verified'], 'installed_readback_mismatch')
         mutation_guard(host, plan, quiescence, admission)
         host.create(result_path, dict(kind='native-upgrade-installed-v1', upgrade_sha256=upgrade_digest(upgrade),
@@ -663,7 +716,7 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
         return readback
 
 
-def observe(upgrade, *, publisher_config_custody=None, host=None):
+def observe(upgrade, *, publisher_config_custody=None, public_ca_pins=None, host=None):
     """Read-only same-operation reconciliation. Never clear receipts or retry."""
     host = host or Host()
     operation = upgrade['operation_id']
@@ -679,6 +732,14 @@ def observe(upgrade, *, publisher_config_custody=None, host=None):
     except (OSError, ValueError):
         pass
     results = {}
+    public_ca_ok = False
+    try:
+        require(intent_ok, 'public_ca_intent_required')
+        qualify_public_ca_pins(public_ca_pins, intent.get('public_ca_pins_sha256'), upgrade)
+        public_ca_ok = True
+    except (ValueError, TypeError, KeyError):
+        pass
+    host._public_ca_pins = public_ca_pins if public_ca_ok else None
     publisher_ok = False
     try:
         require(intent_ok, 'publisher_intent_required')
@@ -723,20 +784,22 @@ def observe(upgrade, *, publisher_config_custody=None, host=None):
         intent_verified=intent_ok,
         legacy_receipts_verified=receipts_ok,
         publisher_custody_verified=publisher_ok,
+        public_ca_selection_verified=public_ca_ok,
         publisher_observed_at=time.time() if publisher_ok else None,
-        installed_verified=intent_ok and receipts_ok and publisher_ok and all(row['installed'] == 'verified' for row in results.values()),
-        rollback_verified=intent_ok and publisher_ok and all(row['rollback'] == 'verified' for row in results.values()),
+        installed_verified=intent_ok and receipts_ok and publisher_ok and public_ca_ok and all(row['installed'] == 'verified' for row in results.values()),
+        rollback_verified=intent_ok and publisher_ok and public_ca_ok and all(row['rollback'] == 'verified' for row in results.values()),
         active_observed=False, legacy_retired=False, replay_authorized=False)
 
 
-def verify_active(upgrade, *, publisher_config_custody=None, host=None):
+def verify_active(upgrade, *, publisher_config_custody=None, public_ca_pins=None, host=None):
     """Separate actual service observation after owner-managed activation.
 
     This never starts a service or claims product/functional/legacy retirement
     acceptance. Exact installed bytes are checked both sides of service readback.
     """
     host = host or Host()
-    before = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody)
+    before = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody,
+                     public_ca_pins=public_ca_pins)
     require(before['installed_verified'] and before['rollback_verified'], 'active_closure_mismatch')
     intent = protected.record(protected.regular(host.path(
         STATE + '/native-upgrade-' + upgrade['operation_id'] + '.intent.json'), 32*1024*1024))
@@ -746,7 +809,8 @@ def verify_active(upgrade, *, publisher_config_custody=None, host=None):
     require(state.get('ActiveState') == 'active' and state.get('SubState') == 'running'
             and state.get('MainPID', '').isdigit() and int(state['MainPID']) > 0, 'service_not_active')
     require(host.process_bound(int(state['MainPID']), runtime), 'active_process_binding')
-    after = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody)
+    after = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody,
+                    public_ca_pins=public_ca_pins)
     require(after['installed_verified'] and after['rollback_verified'], 'active_readback_drift')
     require(host.service_state() == state and host.process_bound(int(state['MainPID']), runtime),
             'active_process_changed')

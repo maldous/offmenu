@@ -373,7 +373,8 @@ contract remain `/etc/offmenu-publisher`, but this role now operates only on:
 The fixed directory is never renamed. The key is never opened, read, copied,
 hashed, staged, backed up or renamed by this procedure. Directory contents are
 never enumerated for this role. Other four roles keep complete-directory
-verification; the generic key/log exclusion remains unchanged. Even the move
+verification; private-key/log exclusion remains unchanged, with only the selected
+public-CA dependency exception below. Even the move
 helper refuses a publisher directory rename or a key/rollback path selector.
 
 The role's old/new descriptor keeps the `directories`/`files` shape, but accepts
@@ -426,3 +427,36 @@ unknown custody, key/directory drift, unsupported payload/mode, interrupted seco
 file rename, later read-only observation and rejected key/directory move forms.
 Those fixtures remain explicitly synthetic and do not qualify actual protected
 config, credentials, installed source or activation.
+
+## Selected public certifi resource
+
+The dependency closure can legitimately contain certifi's public CA bundle.
+`PUBLIC_CA_PATHS` allows only these exact role-relative paths:
+
+- `owner_venv`: `lib/python3.12/site-packages/certifi/cacert.pem`;
+- `publisher`: `venv/lib/python3.12/site-packages/certifi/cacert.pem`.
+
+This is not a filename suffix exemption. `PublicCARecordPin` is a separately
+owner-qualified PUBLICRECORD/blob association with `role`, `closure_sha256`,
+`path`, `blob_sha256` and `public_record_sha256`. The independent selected blob
+must match the selected closure's file pin and the actual read bytes. Root
+qualifies the public record and dependency-blob provenance before admission;
+the upgrade never invents the association from a worker's self-pinned payload.
+
+When either exact resource is present, `execute`, `observe` and `verify_active`
+require `public_ca_pins`, a tuple covering every distinct old/new role/closure/path
+association (at most four). `OwnerAdmission.public_ca_pins_sha256` binds
+`upgrade_digest([dataclasses.asdict(pin) for pin in public_ca_pins])`; the permanent
+intent retains that digest. Missing, changed, unrelated or incomplete selection
+holds before dependency reads. If neither role contains the resource, both pins
+and admission digest must be absent; no unused resource authority is carried.
+
+Only the exact qualified role/path/blob may pass the `.pem` guard. Its actual
+sealed file still has the ordinary metadata, regular/single-link, no-follow,
+size, hash and drift checks. Other `.pem` paths, source/config roles, private-key
+names, `.key` files and the protected publisher key remain prohibited. The
+publisher key is still observed only through its fixed metadata custody, never
+opened as a payload. Tests use synthetic public resources under both dependency
+roles and reject wrong role/path/digest/closure, absent PUBLICRECORD pin, omitted
+original selection, changed bytes and arbitrary PEM/private-key names. No
+protected dependency file or actual key is read by these tests.
