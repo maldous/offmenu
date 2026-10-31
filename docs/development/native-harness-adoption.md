@@ -263,11 +263,94 @@ require unchanged service/PID binding. It reads
 only bounded process command metadata and never returns command contents. It
 does not start the service or claim continuous liveness or functional acceptance.
 
-Production `Host` requires real UID/EUID root, safe root-owned parent custody,
-existing owner locks and sealed target metadata. Existing publisher-owned or
-caller-owned lock/runtime custody may fail those strict checks. The owner must
-qualify the actual custody/interface seam; this source does not change ownership,
-grant permissions or silently relax checks to pass it. A private test seam works
+Production `Host` requires real UID/EUID root, safe root-owned static mutation
+parents and sealed target metadata. Existing caller/publisher lock custody uses
+the separate exact admission below; it never weakens static mutation custody.
+The owner must qualify the actual custody/interface seam; this source does not
+change ownership, grant permissions or infer unknown metadata. A private test seam works
 only under a disposable `/tmp` root for an unprivileged caller, with a fixed fake
 service observer. All executed upgrade tests use that seam; neither actual host
 services nor installed files, credentials or permissions are inspected or changed.
+
+## Exact existing lock custody
+
+The established contracts use caller-owned runtime state and publisher-owned
+integration state. `protected_owner_install` pins the original runtime's
+UID/GID/device/inode; `protected_publisher_install` creates integration state as
+984:976 mode 0700. The coordinator holds its per-runtime lock and then the shared
+`config.runtime_root` lock. Requiring every lock/ancestor to be root-owned would
+reject those contracts; omitting the shared-root lock would miss serialization.
+
+`execute(..., lock_custody=...)` now requires a frozen, root-qualified
+`LockCustody` object separately from worker/request JSON. `OwnerAdmission` must
+bind `lock_custody_sha256 = upgrade_digest(dataclasses.asdict(custody))`. A missing
+record, missing metadata or mismatched digest is a hold; the module never derives
+new permissions from whatever it finds on disk. Existing five-field admission
+callers must supply this additional context before productive execution.
+
+`LockCustody` contains `runtime`, `runtime_root`, `config_manifest_sha256`,
+`protected_binding_evidence_sha256`, `writers_quiescence_sha256`, `observed_at`
+and a tuple of exactly three `LockRecord` objects, in this order:
+
+1. `runtime-coordinator`: `<qualified runtime>/coordinator.lock`.
+2. `shared-root-coordinator`: `<qualified runtime_root>/coordinator.lock`.
+3. `publisher-repository`: `/var/lib/offmenu-publisher/integration/repository-owner.lock`.
+
+The runtime must equal the admitted old snapshot. The shared root must contain
+it and satisfy the existing `.delivery/stokowski` contract. Root independently
+qualifies both paths against the protected config/binding evidence; config
+manifest and writer-quiescence pins must match the preflight/native observation.
+Custody observation is fresh for at most 300 seconds, never future-dated.
+
+Each `LockRecord` contains `role`, exact derived `path`, the complete root-to-parent
+tuple of `ParentCustody(path, identity)`, file `identity`, `policy` and a tuple of
+`permitted_writers`. `NodeIdentity` pins `dev`, `ino`, `uid`, `gid`, numeric `mode`
+and `nlink`. Unknown shared-root/publisher observations are not valid identities.
+Every file is regular/single-link, every parent is a directory, shared parent
+pins must agree, and the three lock inodes must be distinct.
+
+Production predicates are fixed:
+
+| Policy | File custody | Explicit permitted writers |
+| --- | --- | --- |
+| `caller-private-v1` | 1000:1000, 0600 | `uid:1000` |
+| `caller-historical-0664-v1` | 1000:1000, exactly 0664 | `uid:1000`, `gid:1000` |
+| `publisher-existing-v1` | 984:976, 0600 | `uid:984` |
+
+Historical 0664 is permitted only for the two caller lock roles under an exact
+root-approved metadata/policy/writer association. Merely pinning a group-writable
+file does not select that policy. Caller-owned ancestor metadata must likewise
+match exact admitted pins: private policies allow 0700/0750/0755; the explicit
+historical policy additionally allows caller1000:1000 ancestor modes 0770/0775.
+No world-writable ancestor is accepted. Production `/` remains root-owned;
+root-owned ancestors never gain a group-write exception. Publisher integration
+itself must match 984:976/0700, with root-controlled ancestors. No generic
+arbitrary-owner or group-write exemption is provided. Different actual metadata
+requires owner reconciliation and independent source review, never auto-adoption.
+
+Lock traversal is isolated from `Host.path`, which still enforces root custody
+for every static create/move/verify operation. The lock-only path uses retained
+directory descriptors, no-follow opens and read-only existing file descriptors;
+it never creates, appends to, renames, unlinks, chmods or chowns a lock. Exclusive
+nonblocking flock uses the same original inode as the existing owner. Contention
+closes acquired descriptors without an upgrade intent. Each mutation guard
+rechecks freshness, all descriptor metadata, and each current directory entry
+against its held FD, on both sides of service observation. Replacement, alias,
+mode/ownership drift or parent substitution holds without requalifying new state.
+
+These checks do not prevent an uncooperative permitted principal from replacing
+actor-owned names between observations. Root must qualify and maintain the
+quiescence of **all** permitted writers, including group/ACL access, under the
+existing owner contracts. If that prerequisite cannot be established, the route
+remains blocked; no chmod, replacement lock, extra claim or alternate coordinator
+is a substitute. The code does not inspect group membership, credentials or
+denied state to invent that qualification.
+
+The actual worker remains EUID1000. Actual shared-root and publisher lock metadata,
+privileged immutable loader/admission and mandatory host confirmations remain
+unqualified. Tests substitute current test UID/GID only inside the explicit
+unprivileged `/tmp` seam; pure production-policy tests exercise fixed 1000/984
+predicates without host access. Returned observations and permanent intent record
+`host_scope: synthetic` for that seam. Normal runtime glue must never report
+productive activation from synthetic observation. No production adapter may
+select the private seam through JSON or ordinary CLI flags.

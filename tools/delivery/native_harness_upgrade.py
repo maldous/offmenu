@@ -7,7 +7,7 @@ receipts are neither consumed nor changed. Partial effects never auto-roll back.
 """
 from contextlib import ExitStack, contextmanager
 import ctypes
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 import fcntl
 import hashlib
 import json
@@ -37,6 +37,54 @@ class OwnerAdmission:
     upgrade_sha256: str
     host_confirmation_sha256: str
     expires_at: float
+    lock_custody_sha256: str | None = None
+
+
+@dataclass(frozen=True)
+class NodeIdentity:
+    dev: int
+    ino: int
+    uid: int
+    gid: int
+    mode: int
+    nlink: int
+
+
+@dataclass(frozen=True)
+class ParentCustody:
+    path: str
+    identity: NodeIdentity
+
+
+@dataclass(frozen=True)
+class LockRecord:
+    role: str
+    path: str
+    parents: tuple[ParentCustody, ...]
+    identity: NodeIdentity
+    policy: str
+    permitted_writers: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class LockCustody:
+    """Root-qualified metadata, not worker-issued path or permission authority.
+
+    Bindings and every permitted writer's quiescence must be qualified by the
+    existing owner. Missing/denied metadata is never synthesized by this module.
+    """
+    runtime: str
+    runtime_root: str
+    config_manifest_sha256: str
+    protected_binding_evidence_sha256: str
+    writers_quiescence_sha256: str
+    observed_at: float
+    locks: tuple[LockRecord, ...]
+
+
+def identity(info):
+    return NodeIdentity(info.st_dev, info.st_ino, info.st_uid, info.st_gid,
+                        stat.S_IMODE(info.st_mode), info.st_nlink)
 
 
 @dataclass(frozen=True)
@@ -62,6 +110,82 @@ def upgrade_digest(value):
 
 def fresh(value, now, seconds=300):
     return type(value) in (int, float) and 0 <= now - value <= seconds
+
+
+def qualify_lock_custody(custody, admission, plan, observation, host, now):
+    """Qualify only exact root-admitted existing metadata, never acquire it."""
+    require(type(custody) is LockCustody and type(custody.locks) is tuple,
+            'lock_custody_required')
+    sha(admission.lock_custody_sha256)
+    require(upgrade_digest(asdict(custody)) == admission.lock_custody_sha256,
+            'lock_custody_admission')
+    for pin in (custody.config_manifest_sha256, custody.protected_binding_evidence_sha256,
+                custody.writers_quiescence_sha256):
+        sha(pin)
+    require(custody.runtime == plan['legacy_snapshot']['runtime_path']
+            and custody.config_manifest_sha256 == plan['legacy_snapshot']['config_sha256']
+            and type(observation) is Quiescence
+            and custody.writers_quiescence_sha256 == observation.evidence_sha256
+            and fresh(custody.observed_at, now), 'lock_custody_binding')
+    for path in (custody.runtime, custody.runtime_root):
+        require(type(path) is str and path.startswith('/') and len(path) <= 1024, 'lock_runtime')
+        protected.relative(path[1:])
+    require(Path(custody.runtime_root).name == 'stokowski'
+            and Path(custody.runtime_root).parent.name == '.delivery'
+            and custody.runtime.startswith(custody.runtime_root + '/'), 'shared_runtime_root')
+    roles = ('runtime-coordinator', 'shared-root-coordinator', 'publisher-repository')
+    paths = (custody.runtime + '/coordinator.lock', custody.runtime_root + '/coordinator.lock',
+             STATE + '/integration/repository-owner.lock')
+    require(len(custody.locks) == 3, 'three_existing_locks_required')
+    file_ids, parents_seen = set(), {}
+
+    def node(value, directory=False):
+        require(type(value) is NodeIdentity and all(type(item) is int and item >= 0
+                for item in asdict(value).values()) and value.ino > 0
+                and value.mode <= 0o777 and not value.mode & 0o002
+                and (value.nlink >= 1 if directory else value.nlink == 1), 'lock_metadata')
+
+    for record, role, path in zip(custody.locks, roles, paths):
+        require(type(record) is LockRecord and record.role == role and record.path == path
+                and type(record.parents) is tuple and len(record.parents) <= 64,
+                'fixed_lock_role')
+        expected_parents = tuple(reversed([str(parent) for parent in Path(path).parents]))
+        require(tuple(parent.path for parent in record.parents
+                      if type(parent) is ParentCustody) == expected_parents, 'lock_parent_chain')
+        publisher = role == 'publisher-repository'
+        uid = host.uid if host.synthetic else (984 if publisher else 1000)
+        gid = os.getegid() if host.synthetic else (976 if publisher else 1000)
+        node(record.identity)
+        require((record.identity.uid, record.identity.gid) == (uid, gid), 'lock_owner')
+        historical = not publisher and record.policy == 'caller-historical-0664-v1'
+        policy = 'publisher-existing-v1' if publisher else 'caller-private-v1'
+        require(record.policy == policy or historical, 'lock_policy')
+        require(record.identity.mode == (0o664 if historical else 0o600), 'lock_mode')
+        writers = ('uid:' + str(uid), 'gid:' + str(gid)) if historical else ('uid:' + str(uid),)
+        require(type(record.permitted_writers) is tuple and record.permitted_writers == writers,
+                'lock_permitted_writers')
+        key = (record.identity.dev, record.identity.ino)
+        require(key not in file_ids, 'aliased_lock')
+        file_ids.add(key)
+        for parent in record.parents:
+            node(parent.identity, True)
+            previous = parents_seen.setdefault(parent.path, parent.identity)
+            require(previous == parent.identity, 'conflicting_parent_pin')
+            info = parent.identity
+            require(info.mode & 0o100, 'lock_parent_access')
+            if host.synthetic:
+                require(info.uid == host.uid and not info.mode & 0o022, 'synthetic_parent')
+            elif parent.path == '/':
+                require(info.uid == 0 and not info.mode & 0o022, 'root_parent_custody')
+            elif publisher and parent.path == STATE + '/integration':
+                require((info.uid, info.gid, info.mode) == (984, 976, 0o700), 'publisher_state_custody')
+            elif info.uid == 0:
+                require(not info.mode & 0o022, 'root_parent_custody')
+            else:
+                require(not publisher and (info.uid, info.gid) == (1000, 1000)
+                        and info.mode in ((0o700, 0o750, 0o755, 0o770, 0o775)
+                                         if historical else (0o700, 0o750, 0o755)),
+                        'caller_parent_custody')
 
 
 class Host:
@@ -113,18 +237,53 @@ class Host:
         return (executable == interpreter and raw.endswith(b'\0')
                 and raw.split(b'\0') == expected + [b''])
 
+    def verify_locks(self):
+        require(getattr(self, '_held_locks', None) is not None, 'locks_not_held')
+        require(fresh(self._lock_custody.observed_at, time.time()), 'lock_custody_stale')
+        for parent, name, fd, expected, directory in self._held_locks:
+            info = os.fstat(fd)
+            require(identity(info) == expected and
+                    (stat.S_ISDIR(info.st_mode) if directory else stat.S_ISREG(info.st_mode)),
+                    'lock_descriptor_drift')
+            linked = (self.root.lstat() if parent is None
+                      else os.stat(name, dir_fd=parent, follow_symlinks=False))
+            require(identity(linked) == expected and stat.S_IFMT(linked.st_mode)
+                    == stat.S_IFMT(info.st_mode), 'lock_name_identity_drift')
+
     @contextmanager
-    def locks(self, runtime):
+    def locks(self, custody):
+        """Lock-only traversal. Never return relaxed paths to mutation methods."""
+        require(getattr(self, '_held_locks', None) is None, 'nested_lock_custody')
         with ExitStack() as stack:
-            for name in (runtime + '/coordinator.lock', STATE + '/integration/repository-owner.lock'):
-                path = self.path(name)
-                fd = os.open(path, os.O_RDWR | os.O_NOFOLLOW | os.O_NONBLOCK)
+            held = []
+            for record in custody.locks:
+                fd = os.open(self.root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
                 stack.callback(os.close, fd)
-                info = os.fstat(fd)
-                require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1
-                        and info.st_uid == self.uid and not info.st_mode & 0o022, 'existing_lock')
-                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            yield
+                require(identity(os.fstat(fd)) == record.parents[0].identity, 'lock_parent_drift')
+                held.append((None, None, fd, record.parents[0].identity, True))
+                for parent in record.parents[1:]:
+                    name = Path(parent.path).name
+                    child = os.open(name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)
+                    stack.callback(os.close, child)
+                    require(identity(os.fstat(child)) == parent.identity, 'lock_parent_drift')
+                    held.append((fd, name, child, parent.identity, True))
+                    fd = child
+                name = Path(record.path).name
+                lock = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=fd)
+                stack.callback(os.close, lock)
+                info = os.fstat(lock)
+                require(stat.S_ISREG(info.st_mode) and identity(info) == record.identity,
+                        'existing_lock_drift')
+                held.append((fd, name, lock, record.identity, False))
+                # No create/append/write, chmod, chown or replacement. Exclusive
+                # Linux flock serializes the same existing inode as its owner.
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            self._held_locks, self._lock_custody = held, custody
+            try:
+                self.verify_locks()
+                yield
+            finally:
+                self._held_locks = self._lock_custody = None
 
     def create(self, absolute, value):
         path = self.path(absolute)
@@ -300,13 +459,15 @@ def mutation_guard(host, plan, observation, admission):
     """
     now = time.time()
     require(now < admission.expires_at, 'admission_expired')
+    host.verify_locks()
     stopped(host, plan, observation, now)
     now = time.time()
     require(now < admission.expires_at, 'admission_expired')
     require(fresh(observation.observed_at, now), 'native_quiescence_required')
+    host.verify_locks()
 
 
-def execute(plan_bytes, upgrade, *, admission, quiescence, host=None):
+def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None, host=None):
     """One admitted attempt; never start services, retire legacy or auto-rollback.
 
     All staged slots already exist, sealed by the owner. Every old closure moves
@@ -318,11 +479,12 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, host=None):
     now = time.time()
     plan = qualify(plan_bytes, upgrade, admission, now)
     host = host or Host()
+    qualify_lock_custody(lock_custody, admission, plan, quiescence, host, now)
     operation = upgrade['operation_id']
     receipt = STATE + '/native-upgrade-' + operation + '.intent.json'
     result_path = STATE + '/native-upgrade-' + operation + '.installed.json'
     old_fence = STATE + '/native-upgrade-from-' + upgrade_digest(upgrade['old']) + '.intent.json'
-    with host.locks(plan['legacy_snapshot']['runtime_path']):
+    with host.locks(lock_custody):
         require(not os.path.lexists(host.path(receipt))
                 and not os.path.lexists(host.path(result_path))
                 and not os.path.lexists(host.path(old_fence)), 'prior_upgrade_no_replay')
@@ -338,6 +500,8 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, host=None):
         intent = dict(kind='native-upgrade-intent-v1', upgrade=upgrade,
             plan_sha256=admission.plan_sha256, quiescence_sha256=quiescence.evidence_sha256,
             host_confirmation_sha256=admission.host_confirmation_sha256,
+            lock_custody_sha256=admission.lock_custody_sha256,
+            host_scope='synthetic' if host.synthetic else 'production',
             runtime_path=plan['legacy_snapshot']['runtime_path'])
         # Old-closure fence precedes the operation fence. A crash between them
         # still suppresses a new ID/preflight attempting the same old closure.
@@ -399,6 +563,7 @@ def observe(upgrade, *, host=None):
                 axes[name] = 'unknown-or-mismatch'
         results[role] = axes
     return dict(operation_id=operation, upgrade_sha256=upgrade_digest(upgrade), closures=results,
+        host_scope='synthetic' if host.synthetic else 'production',
         intent_verified=intent_ok,
         legacy_receipts_verified=receipts_ok,
         installed_verified=intent_ok and receipts_ok and all(row['installed'] == 'verified' for row in results.values()),

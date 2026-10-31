@@ -79,6 +79,7 @@ class UpgradeTests(unittest.TestCase):
                         (path/'source/fixture.py').chmod(0o444)
                 self.manifest[side][role] = closure(path)
         source = self.source
+        source.snapshot['runtime_path'] = '/private/.delivery/stokowski/current'
         for role, key in (('owner_source','source'), ('owner_venv','runtime'), ('owner_config','config')):
             ref = source.write(protected.encoded(self.manifest['old'][role]))
             source.snapshot[key+'_sha256'] = ref['sha256']
@@ -104,7 +105,10 @@ class UpgradeTests(unittest.TestCase):
             path.write_text('original permanent receipt\n')
             path.chmod(0o600)
             self.manifest['legacy_receipts'][absolute] = protected.sha(path.read_bytes())
-        for absolute in ('/private/legacy-runtime/coordinator.lock', upgrade.STATE+'/integration/repository-owner.lock'):
+        self.runtime = '/private/.delivery/stokowski/current'
+        self.runtime_root = '/private/.delivery/stokowski'
+        for absolute in (self.runtime + '/coordinator.lock', self.runtime_root + '/coordinator.lock',
+                         upgrade.STATE+'/integration/repository-owner.lock'):
             path = self.root / absolute[1:]
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(b'')
@@ -116,9 +120,37 @@ class UpgradeTests(unittest.TestCase):
             upgrade.upgrade_digest(self.manifest), '7'*64, time.time()+200)
         self.quiet = upgrade.Quiescence(source.request['legacy_snapshot']['sha256'],
             '8'*64, time.time(), 0, True, ())
+        self.refresh_custody()
+
+    def refresh_custody(self, historical=False):
+        roles = ('runtime-coordinator', 'shared-root-coordinator', 'publisher-repository')
+        paths = (self.runtime+'/coordinator.lock', self.runtime_root+'/coordinator.lock',
+                 upgrade.STATE+'/integration/repository-owner.lock')
+        records = []
+        for role, absolute in zip(roles, paths):
+            path = self.root/absolute[1:]
+            parents = tuple(upgrade.ParentCustody(str(parent),
+                upgrade.identity((self.root/str(parent)[1:]).lstat()))
+                for parent in reversed(Path(absolute).parents))
+            old = historical and role == 'runtime-coordinator'
+            policy = ('caller-historical-0664-v1' if old else
+                      'publisher-existing-v1' if role == 'publisher-repository' else 'caller-private-v1')
+            writers = ('uid:'+str(os.geteuid()), 'gid:'+str(os.getegid())) if old else ('uid:'+str(os.geteuid()),)
+            records.append(upgrade.LockRecord(role, absolute, parents, upgrade.identity(path.lstat()), policy, writers))
+        self.custody = upgrade.LockCustody(self.runtime, self.runtime_root,
+            self.source.snapshot['config_sha256'], '6'*64, self.quiet.evidence_sha256,
+            time.time(), tuple(records))
+        from dataclasses import asdict
+        self.admission = replace(self.admission, lock_custody_sha256=upgrade.upgrade_digest(asdict(self.custody)))
+
+    def repin_custody(self):
+        from dataclasses import asdict
+        self.admission = replace(self.admission,
+            lock_custody_sha256=upgrade.upgrade_digest(asdict(self.custody)))
 
     def execute(self, **kwargs):
-        args = dict(admission=self.admission, quiescence=self.quiet, host=self.host)
+        args = dict(admission=self.admission, quiescence=self.quiet,
+                    lock_custody=self.custody, host=self.host)
         args.update(kwargs)
         return upgrade.execute(self.plan,self.manifest,**args)
 
@@ -134,6 +166,7 @@ class UpgradeTests(unittest.TestCase):
         self.host.state = dict(ActiveState='active', SubState='running', MainPID='123')
         active = upgrade.verify_active(self.manifest,host=self.host)
         self.assertTrue(active['active_observed'])
+        self.assertEqual(active['host_scope'], 'synthetic')
         self.assertFalse(active['legacy_retired'])
 
     def test_partial_move_keeps_intent_old_custody_and_unknown_no_retry(self):
@@ -224,7 +257,7 @@ class UpgradeTests(unittest.TestCase):
 
     def test_permission_drift_and_contended_existing_lock_hold(self):
         import fcntl
-        lock=self.root/'private/legacy-runtime/coordinator.lock'
+        lock=self.root/self.runtime[1:]/'coordinator.lock'
         with lock.open('r+') as stream:
             fcntl.flock(stream,fcntl.LOCK_EX|fcntl.LOCK_NB)
             with self.assertRaises(BlockingIOError):
@@ -331,6 +364,196 @@ class UpgradeTests(unittest.TestCase):
                 self.execute()
         self.assertEqual(self.host.moves, 0)
         self.assertFalse(upgrade.observe(self.manifest, host=self.host)['intent_verified'])
+
+    def test_all_three_existing_locks_contend_and_acquire_in_native_order(self):
+        import fcntl
+        for record in self.custody.locks:
+            with self.subTest(role=record.role), (self.root/record.path[1:]).open('r') as stream:
+                fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                with self.assertRaises(BlockingIOError):
+                    self.execute()
+        observed = []
+        flock = fcntl.flock
+        by_inode = {(record.identity.dev, record.identity.ino):record.role for record in self.custody.locks}
+        def record_order(fd, operation):
+            info = os.fstat(fd)
+            observed.append(by_inode[(info.st_dev, info.st_ino)])
+            return flock(fd, operation)
+        with patch.object(upgrade.fcntl, 'flock', side_effect=record_order):
+            self.execute()
+        self.assertEqual(observed, ['runtime-coordinator', 'shared-root-coordinator', 'publisher-repository'])
+
+    def test_historical_0664_requires_exact_admitted_policy_and_writers(self):
+        path = self.root/self.runtime[1:]/'coordinator.lock'
+        path.chmod(0o664)
+        self.refresh_custody()  # Pinning mode alone is not a policy exemption.
+        with self.assertRaisesRegex(ValueError, 'lock_mode'):
+            self.execute()
+        self.refresh_custody(historical=True)
+        record = self.custody.locks[0]
+        self.custody = replace(self.custody, locks=(replace(record, permitted_writers=('uid:1000',)),)
+                               + self.custody.locks[1:])
+        self.repin_custody()
+        with self.assertRaisesRegex(ValueError, 'lock_permitted_writers'):
+            self.execute()
+        self.refresh_custody(historical=True)
+        original = upgrade.identity(path.stat())
+        self.assertTrue(self.execute()['installed_verified'])
+        self.assertEqual(upgrade.identity(path.stat()), original)
+
+    def test_missing_unknown_or_unadmitted_custody_never_opens_lock_path(self):
+        with patch.object(upgrade.os, 'open', side_effect=AssertionError('no unknown metadata access')):
+            with self.assertRaisesRegex(ValueError, 'lock_custody_required'):
+                self.execute(lock_custody=None)
+            with self.assertRaisesRegex(ValueError, 'lock_custody_admission'):
+                self.execute(admission=replace(self.admission,lock_custody_sha256='0'*64))
+        original = self.custody
+        for index in (1,2):  # Actual shared-root/publisher observations are unavailable.
+            records = list(original.locks)
+            records[index] = replace(records[index], identity=None)
+            self.custody = replace(original, locks=tuple(records))
+            self.repin_custody()
+            with self.subTest(role=records[index].role), \
+                 patch.object(upgrade.os, 'open', side_effect=AssertionError('no unknown metadata access')):
+                with self.assertRaisesRegex(ValueError,'lock_metadata'):
+                    self.execute()
+
+    def test_lock_identity_or_mode_drift_is_not_requalified_from_filesystem(self):
+        path = self.root/self.runtime[1:]/'coordinator.lock'
+        path.chmod(0o644)
+        with self.assertRaisesRegex(ValueError,'existing_lock_drift'):
+            self.execute()
+        path.chmod(0o600)
+        path.rename(path.with_name('old-coordinator.lock'))
+        path.write_bytes(b'')
+        path.chmod(0o600)
+        with self.assertRaisesRegex(ValueError,'existing_lock_drift'):
+            self.execute()
+        self.assertEqual(self.host.moves,0)
+
+    def test_symlink_and_hardlink_locks_are_rejected_without_replacement(self):
+        path = self.root/self.runtime[1:]/'coordinator.lock'
+        original = path.with_name('original.lock')
+        path.rename(original)
+        path.symlink_to(original)
+        with self.assertRaises(OSError):
+            self.execute()
+        path.unlink()
+        original.rename(path)
+        os.link(path,path.with_name('alias.lock'))
+        with self.assertRaisesRegex(ValueError,'existing_lock_drift'):
+            self.execute()
+        self.assertEqual(self.host.moves,0)
+
+    def test_lock_replacement_after_verification_holds_before_rename(self):
+        verify = self.host.verify
+        count = [0]
+        def replace_lock(*args):
+            result = verify(*args)
+            count[0] += 1
+            if count[0] == 12:
+                path = self.root/self.runtime[1:]/'coordinator.lock'
+                path.rename(path.with_name('original.lock'))
+                path.write_bytes(b'')
+                path.chmod(0o600)
+            return result
+        with patch.object(self.host,'verify',side_effect=replace_lock):
+            with self.assertRaisesRegex(ValueError,'lock_name_identity_drift'):
+                self.execute()
+        self.assertEqual(self.host.moves,0)
+        self.assertTrue(upgrade.observe(self.manifest,host=self.host)['intent_verified'])
+
+    def test_parent_replacement_after_verification_is_detected_by_held_descriptors(self):
+        verify = self.host.verify
+        count = [0]
+        def replace_parent(*args):
+            result = verify(*args)
+            count[0] += 1
+            if count[0] == 12:
+                path = self.root/self.runtime[1:]
+                path.rename(path.with_name('original-runtime'))
+                path.mkdir(mode=0o755)
+                path.chmod(0o755)
+                (path/'coordinator.lock').write_bytes(b'')
+                (path/'coordinator.lock').chmod(0o600)
+            return result
+        with patch.object(self.host,'verify',side_effect=replace_parent):
+            with self.assertRaisesRegex(ValueError,'lock_.*drift'):
+                self.execute()
+        self.assertEqual(self.host.moves,0)
+
+    def test_static_mutation_paths_do_not_use_relaxed_lock_custody(self):
+        parent = self.root/'opt/offmenu-stokowski-current'
+        parent.chmod(0o775)
+        with self.assertRaisesRegex(ValueError,'host_parent_custody'):
+            self.execute()
+        self.assertEqual(self.host.moves,0)
+
+    def test_stale_custody_or_wrong_binding_is_not_admission(self):
+        self.custody = replace(self.custody, observed_at=time.time()-301)
+        self.repin_custody()
+        with self.assertRaisesRegex(ValueError,'lock_custody_binding'):
+            self.execute()
+        self.refresh_custody()
+        self.custody = replace(self.custody, protected_binding_evidence_sha256=None)
+        self.repin_custody()
+        with self.assertRaises(ValueError):
+            self.execute()
+
+    def test_omitted_shared_root_lock_fails_before_any_lookup(self):
+        self.custody = replace(self.custody, locks=(self.custody.locks[0],self.custody.locks[2]))
+        self.repin_custody()
+        with patch.object(upgrade.os,'open',side_effect=AssertionError('no incomplete lock set access')):
+            with self.assertRaisesRegex(ValueError,'three_existing_locks_required'):
+                self.execute()
+
+    def test_custody_expiry_during_verification_holds_before_first_move(self):
+        clock = [time.time()]
+        self.custody = replace(self.custody, observed_at=clock[0]-250)
+        self.repin_custody()
+        verify = self.host.verify
+        count = [0]
+        def slow_verify(*args):
+            result = verify(*args)
+            count[0] += 1
+            if count[0] == 12:
+                clock[0] += 60
+            return result
+        with patch.object(upgrade.time,'time',side_effect=lambda:clock[0]), \
+             patch.object(self.host,'verify',side_effect=slow_verify):
+            with self.assertRaisesRegex(ValueError,'lock_custody_stale'):
+                self.execute()
+        self.assertEqual(self.host.moves,0)
+
+    def test_production_lock_predicates_are_fixed_not_selected_by_test_uid(self):
+        # Pure metadata qualification only: no production Host construction,
+        # actual privileged lookup, chown or synthetic execution as UID984.
+        from types import SimpleNamespace
+        prod = SimpleNamespace(synthetic=False, uid=0)
+        records = []
+        for record in self.custody.locks:
+            publisher = record.role == 'publisher-repository'
+            node = replace(record.identity, uid=984 if publisher else 1000,
+                           gid=976 if publisher else 1000)
+            parents = []
+            for parent in record.parents:
+                delegated = publisher and parent.path == upgrade.STATE+'/integration'
+                parents.append(replace(parent, identity=replace(parent.identity,
+                    uid=984 if delegated else 0, gid=976 if delegated else 0,
+                    mode=0o700 if delegated else 0o755)))
+            records.append(replace(record,identity=node,parents=tuple(parents),
+                                   permitted_writers=('uid:984',) if publisher else ('uid:1000',)))
+        self.custody = replace(self.custody, locks=tuple(records))
+        self.repin_custody()
+        upgrade.qualify_lock_custody(self.custody,self.admission,json.loads(self.plan),
+                                     self.quiet,prod,time.time())
+        publisher = records[-1]
+        self.custody = replace(self.custody,locks=tuple(records[:-1])+(
+            replace(publisher,identity=replace(publisher.identity,uid=1000)),))
+        self.repin_custody()
+        with self.assertRaisesRegex(ValueError,'lock_owner'):
+            upgrade.qualify_lock_custody(self.custody,self.admission,json.loads(self.plan),
+                                         self.quiet,prod,time.time())
 
 
 class ProcessBindingTests(unittest.TestCase):
