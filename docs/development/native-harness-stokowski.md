@@ -102,6 +102,17 @@ file-byte pins remain distinct from `packet_sha256 = fingerprint(packet)`.
 All runtime/contract/planner/release/Engine/status source and concrete factory
 dependencies must be in the reviewed installed closure and its source pins.
 
+The sealed selection's context may additionally contain `publisher_invocation`
+with exactly `version: 1`, `closure_sha256` and `host_confirmation_sha256`.
+Both hashes are lowercase SHA-256. Its bounded shared fingerprint remains part
+of the complete pinned selection identity; no command, path, UID, environment
+or callback selector is accepted. Ingress validates this metadata without
+invoking a helper or reading publisher configuration. The separately reviewed
+fixed client/helper must qualify the exact closure and actual host confirmation
+under the existing publisher owner before use. A permission listing or a
+successful read-only permission check cannot mint this authority. Absence adds
+no capability and preserves the direct UID 1000 hold; no default is enabled.
+
 The existing current-mode poll calls `continue_native_harness` after ordinary
 validation/review continuation, under its existing coordinator lock. It consumes
 one configured admitted unit per poll, rotating within that existing catalog.

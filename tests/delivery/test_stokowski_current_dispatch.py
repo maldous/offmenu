@@ -1002,6 +1002,75 @@ class CurrentDispatchTests(unittest.TestCase):
         load.assert_not_called()
         self.assertEqual(before,self.current.state_path.read_bytes())
 
+    def reseal_native_harness_selection(self, fixture, selection):
+        self.write(fixture.selected,selection)
+        config = json.loads(fixture.sealed.read_text())
+        config['native_harness_boundaries'][fixture.issue.identifier]['sha256'] = adapter.file_sha(fixture.selected)
+        self.write(fixture.sealed,config)
+        state = json.loads(self.current.state_path.read_text())
+        state['config_sha256'] = adapter.file_sha(fixture.sealed)
+        self.write(self.current.state_path,state)
+
+    def test_publisher_invocation_ingress_preserves_exact_metadata_and_selection_pin(self):
+        f = self.native_harness_fixture()
+        selection = json.loads(f.selected.read_text())
+        invocation = dict(version=1,closure_sha256='a'*64,host_confirmation_sha256='b'*64)
+        selection['context']['publisher_invocation'] = invocation
+        self.reseal_native_harness_selection(f,selection)
+        with patch.object(f.module,'fixed_publisher_rpc') as rpc:
+            current = adapter.CurrentWork(self.runtime,read_only=True)
+            current.guard()
+            actual = current._native_harness_selection(f.issue.identifier)
+        self.assertEqual(actual,selection)
+        self.assertEqual(f.module.fingerprint(actual['context']['publisher_invocation']),
+                         f.module.fingerprint(invocation))
+        rpc.assert_not_called()
+        # Editing valid metadata without the sealed selection's new byte pin
+        # cannot change the owner-admitted context, even with valid hash syntax.
+        selection['context']['publisher_invocation']['closure_sha256'] = 'c'*64
+        self.write(f.selected,selection)
+        with self.assertRaisesRegex(AdmissionError,'intake_reference_drift'):
+            adapter.CurrentWork(self.runtime,read_only=True)
+
+    def test_publisher_invocation_ingress_rejects_malformed_or_executable_selectors(self):
+        f = self.native_harness_fixture()
+        original = json.loads(f.selected.read_text())
+        valid = dict(version=1,closure_sha256='a'*64,host_confirmation_sha256='b'*64)
+        malformed = [None,False,[],{},dict(valid,version=True),dict(valid,version=1.0),
+                     dict(valid,version='1'),dict(valid,version=2),dict(valid,closure_sha256='A'*64),
+                     dict(valid,closure_sha256='a'*63),dict(valid,host_confirmation_sha256=False),
+                     {k:v for k,v in valid.items() if k != 'host_confirmation_sha256'}]
+        malformed += [dict(valid,**{key:value}) for key,value in (
+            ('command','sudo anything'),('path','/tmp/helper'),('uid',2345),
+            ('env',{}),('callback','issue-selected'),('enabled',True))]
+        for invocation in malformed:
+            with self.subTest(invocation=invocation):
+                selection = json.loads(json.dumps(original))
+                selection['context']['publisher_invocation'] = invocation
+                self.reseal_native_harness_selection(f,selection)
+                with self.assertRaisesRegex(AdmissionError,'native_harness_publisher_invocation'):
+                    adapter.CurrentWork(self.runtime,read_only=True)
+        f.factory.assert_not_called()
+        f.step.assert_not_called()
+
+    def test_publisher_invocation_ingress_requires_seal_and_absence_preserves_uid_hold(self):
+        f = self.native_harness_fixture()
+        original = self.current._native_harness_selection(f.issue.identifier)
+        self.assertNotIn('publisher_invocation',original['context'])
+        # Exercise only the existing early refusal, never protected config or a child.
+        with patch.object(adapter.os,'getuid',return_value=1000), \
+             patch.object(adapter,'protected_owner_bytes') as read:
+            with self.assertRaisesRegex(f.module.RuntimeHold,'publisher_owner_identity_required'):
+                f.module.publisher_identity({},'integration')
+        read.assert_not_called()
+        original['context']['publisher_invocation'] = dict(
+            version=1,closure_sha256='a'*64,host_confirmation_sha256='b'*64)
+        self.reseal_native_harness_selection(f,original)
+        config = json.loads(f.sealed.read_text())
+        with patch.object(adapter,'current_config',return_value=(config,f.sealed,None)):
+            with self.assertRaisesRegex(AdmissionError,'native_harness_owner_config'):
+                adapter.CurrentWork(self.runtime,read_only=True)
+
     def test_native_harness_config_rejects_unsealed_malformed_and_unpinned_inputs(self):
         f = self.native_harness_fixture()
         config = json.loads(f.sealed.read_text())
