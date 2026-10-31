@@ -91,7 +91,15 @@ class LaunchContracts(unittest.TestCase):
             env = dict(CODEX_HOME=str(home), CODEX_SQLITE_HOME=str(attempt/'codex-state'),
                        LD_PRELOAD='untrusted', APP_TOKEN='untrusted', PYTHONPATH='untrusted')
             command = worker.codex_command(workspace, attempt/'final-message.txt')
-            with patch.object(launch, 'RUNTIME', root), patch.object(launch, 'installed_policy'):
+            actual_lstat = Path.lstat
+            def fixture_lstat(path, *args, **kwargs):
+                info = actual_lstat(path, *args, **kwargs)
+                if path == root or root in path.parents:
+                    # Keep real type/mode/link metadata; only fixture owner is synthetic.
+                    return os.stat_result((*info[:4], 1000, *info[5:]))
+                return info
+            with patch.object(launch, 'RUNTIME', root), patch.object(launch, 'installed_policy'), patch.object(
+                    Path, 'lstat', autospec=True, side_effect=fixture_lstat):
                 argv, clean = launch.bind_native(command, workspace, env)
                 self.assertEqual(argv[:4], ['/usr/bin/sudo', '-n', '--', launch.DROPPER])
                 self.assertEqual(set(clean), {'PATH', 'LANG'})
