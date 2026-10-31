@@ -397,8 +397,23 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
         require(owner is current and native_issue.id == issue.id and bound == binding,
                 'owner_factory_binding')
         current.guard()
-        require(current.owner_custody is True and not current.read_only and not current.stopping,
-                'owner_sealed_context_required')
+        # current.guard above freshly requalifies the EXISTING protected binding
+        # dictionary via current_config, including config/catalog/Python bytes.
+        # A Boolean or a truthy arbitrary dictionary is never that authority.
+        from stokowski_adapter import PROTECTED_OWNER, SOURCE
+        import re
+        custody = current.owner_custody
+        require(type(custody) is dict and set(custody) == {
+                    'schema', 'runtime', 'config_sha256', 'catalog_sha256',
+                    'source_root', 'python_sha256'}
+                and custody['schema'] == 'protected-current-owner-v1'
+                and custody['runtime'] == str(current.runtime)
+                and custody['source_root'] == str(SOURCE)
+                and custody['config_sha256'] == current.config_sha
+                and current.config_path == PROTECTED_OWNER / 'current.json'
+                and all(type(custody[key]) is str and re.fullmatch('[0-9a-f]{64}', custody[key])
+                        for key in ('config_sha256', 'catalog_sha256', 'python_sha256'))
+                and not current.read_only and not current.stopping, 'owner_sealed_context_required')
         import native_harness_contract
         import linear_delivery
         import release_qualification

@@ -1,8 +1,12 @@
 """Real CurrentWork and finite component APIs; synthetic owner/external adapters."""
 import asyncio
 import copy
+import importlib.util
 from dataclasses import asdict, replace
 import json
+import os
+import shutil
+from contextlib import ExitStack
 from pathlib import Path
 import subprocess
 import tempfile
@@ -324,7 +328,11 @@ class RuntimeBoundaryTests(unittest.TestCase):
         # Synthetic installation authority only; native admission/gate readers
         # remain real. No protected host files or live identity are changed.
         self.fixture.stack.enter_context(patch.object(self.current,'guard'))
-        self.current.owner_custody=True
+        protected=current_fixture.adapter.PROTECTED_OWNER
+        self.current.config_path=protected/'current.json'
+        self.current.owner_custody=dict(schema='protected-current-owner-v1',runtime=str(self.current.runtime),
+            config_sha256=self.current.config_sha,catalog_sha256='a'*64,
+            source_root=str(current_fixture.adapter.SOURCE),python_sha256='b'*64)
         sources={'tools/delivery/native_harness_runtime.py':runtime.__file__,
                  'tools/delivery/native_harness_contract.py':native_harness_contract.__file__,
                  'contracts/schemas/delivery-handoff-v1.schema.json':
@@ -372,9 +380,10 @@ class RuntimeBoundaryTests(unittest.TestCase):
     def test_factory_holds_missing_seal_source_or_changed_packet(self):
         selection=self.factory_selection()
         adapters=runtime.owner_adapters(self.current,self.issue,self.binding,selection)
+        original_custody=copy.deepcopy(self.current.owner_custody)
         self.current.owner_custody=False
         with self.assertRaises(runtime.RuntimeHold):adapters.load(self.binding)
-        self.current.owner_custody=True
+        self.current.owner_custody=original_custody
         Path(selection['packet']['path']).write_text('{}')
         with self.assertRaises(runtime.RuntimeHold):adapters.load(self.binding)
         self.current.config['source_sha256']['tools/delivery/native_harness_runtime.py']='0'*64
@@ -523,3 +532,136 @@ class RuntimeEngineTests(unittest.TestCase):
         (f.root/'receipt-0.json').write_text('{}')
         with self.assertRaises(contract.ContractError):
             release.validate_qualification(summary,f.plan,results,f.policy,f.catalog,f.root)
+
+
+class SealedCurrentFactoryTests(unittest.TestCase):
+    def setUp(self):
+        import hashlib
+        self.stack=ExitStack();self.addCleanup(self.stack.close)
+        # The standalone component branch predates UIF124's accepted hook. A
+        # bounded explicit SOURCE dependency may be selected for composition tests;
+        # coherent checkouts use their actual adapter with no override.
+        selected=Path(os.environ.get('OFFMENU_TEST_CURRENT_ADAPTER',
+                                     str(ROOT/'tools/delivery/stokowski_adapter.py')))
+        spec=importlib.util.spec_from_file_location('stokowski_adapter',selected)
+        actual=importlib.util.module_from_spec(spec)
+        self.stack.enter_context(patch.dict(sys.modules,stokowski_adapter=actual))
+        spec.loader.exec_module(actual)
+        self.stack.enter_context(patch.object(current_fixture,'adapter',actual))
+        self.stack.enter_context(patch.object(current_fixture.prepare,'CurrentWork',actual.CurrentWork))
+        self.f=RuntimeBoundaryTests(methodName='runTest');self.f.setUp()
+        self.addCleanup(self.f.doCleanups)
+        self.native=actual
+        f=self.f;source=f.fixture.source
+        import native_harness_contract,linear_delivery,release_qualification,native_harness_linear
+        from offmenu.delivery import engine,status
+        sources={'tools/delivery/native_harness_runtime.py':runtime.__file__,
+            'tools/delivery/native_harness_contract.py':native_harness_contract.__file__,
+            'contracts/schemas/delivery-handoff-v1.schema.json':
+                Path(native_harness_contract.__file__).resolve().parents[2]/'contracts/schemas/delivery-handoff-v1.schema.json',
+            'tools/delivery/linear_delivery.py':linear_delivery.__file__,
+            'tools/delivery/release_qualification.py':release_qualification.__file__,
+            'tools/delivery/native_harness_linear.py':native_harness_linear.__file__}
+        for path in Path(engine.__file__).parent.glob('*.py'):
+            sources['src/offmenu/delivery/'+path.name]=path
+        sources['src/offmenu/__init__.py']=Path(engine.__file__).parent.parent/'__init__.py'
+        for name,path in sources.items():
+            target=source/name;target.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(path,target)
+        installed=source/'tools/delivery/native_harness_runtime.py'
+        module_spec=importlib.util.spec_from_file_location('native_harness_runtime',installed)
+        module=importlib.util.module_from_spec(module_spec)
+        self.stack.enter_context(patch.dict(sys.modules,native_harness_runtime=module))
+        module_spec.loader.exec_module(module);self.module=module
+        config=copy.deepcopy(f.current.config)
+        config['source_sha256'].update({name:actual.file_sha(source/name) for name in sources})
+        def artifact(name,value):
+            path=f.current.runtime/name;f.fixture.write(path,value)
+            return dict(path=str(path),sha256=actual.file_sha(path))
+        context=dict(engine_root=str(f.task_runtime),engine_task=artifact('original-task.json',{}),
+                     unit_review=artifact('original-review.json',{}))
+        selection=dict(binding=asdict(f.binding),packet=artifact('native-packet.json',f.packet),context=context)
+        config['native_harness_boundaries']={f.issue.identifier:artifact('native-selection.json',selection)}
+        self.protected=f.fixture.temp/'sealed-owner';self.protected.mkdir()
+        (self.protected/'catalog.json').write_bytes(f.current.catalog.read_bytes())
+        config['catalog']=str(self.protected/'catalog.json')
+        # Original guard source checks now read a REAL synthetic Git commit,
+        # rather than mocking guard or disguising missing copied dependencies.
+        def git(*args):
+            return REAL_CHECK_OUTPUT(['git','-C',str(source),*args],text=True).strip()
+        git('init','-q','-b','feature/test-current');git('add','.')
+        git('-c','user.name=Test','-c','user.email=test@example.invalid','commit','-qm','Qualified code fixture')
+        config['source_head']=git('rev-parse','HEAD')
+        f.fixture.git.side_effect=lambda args,**kw: (REAL_CHECK_OUTPUT(args,**kw)
+            if args[2]==str(source) else f.fixture.git_read(args,**kw))
+        f.fixture.write(self.protected/'current.json',config)
+        python=b'synthetic kernel-qualified interpreter bytes'
+        binding=dict(schema='protected-current-owner-v1',runtime=str(f.current.runtime),
+            source_root=str(source),config_sha256=actual.file_sha(self.protected/'current.json'),
+            catalog_sha256=actual.file_sha(self.protected/'catalog.json'),
+            python_sha256=hashlib.sha256(python).hexdigest())
+        f.fixture.write(self.protected/'binding.json',binding)
+        state=copy.deepcopy(f.current.state);state['config_sha256']=binding['config_sha256']
+        f.fixture.write(f.current.state_path,state)
+        f.fixture.write(f.current.runtime/'current.json',{'untrusted':'ignored'})
+        self.stack.enter_context(patch.object(actual,'PROTECTED_OWNER',self.protected))
+        self.stack.enter_context(patch.object(actual,'protected_owner_bytes',side_effect=lambda path:
+            python if Path(path)==Path(sys.executable) else Path(path).read_bytes()))
+        self.stack.enter_context(patch.object(actual,'protected_owner_tree'))
+        self.stack.enter_context(patch.object(actual,'_PROTECTED_CLOSURES',set()))
+        self.stack.enter_context(patch.dict(os.environ,OFFMENU_PROTECTED_OWNER_REQUIRED='1'))
+        # ACTUAL current_config and CurrentWork constructor/guard, with only
+        # sealed-file/kernel ownership and immutable interpreter custody synthetic.
+        self.current=actual.CurrentWork(f.current.runtime)
+        self.assertIs(type(self.current.owner_custody),dict)
+        self.assertEqual(self.current.owner_custody,binding)
+        self.current.guard()
+        for name in sources:self.assertEqual(config['source_sha256'][name],actual.file_sha(source/name))
+
+    def test_real_sealed_current_default_factory_and_native_http_readback(self):
+        import httpx
+        from stokowski.linear import LinearClient
+        f=self.f;nodes=[];writes=[]
+        def transport(request):
+            payload=json.loads(request.content);query=payload['query']
+            if query.startswith('mutation'):
+                state=json.loads(self.current.state_path.read_text())
+                self.assertEqual(state['native_harness_linear'][f.binding.operation_id]['status'],'pending')
+                writes.append(payload)
+                nodes.append(dict(id='actual-attachment-readback',url=payload['variables']['input']['url']))
+                data=dict(attachmentCreate=dict(success=True))
+            else:
+                data=dict(issue=dict(id=f.issue.id,project=dict(id=f.binding.project_id),
+                    attachments=dict(nodes=nodes,pageInfo=dict(hasNextPage=False,endCursor=None))))
+            return httpx.Response(200,json=dict(data=data))
+        client=LinearClient(endpoint='https://linear.invalid/graphql',api_key='synthetic-offline-only')
+        asyncio.run(client._client.aclose())
+        client._client=httpx.AsyncClient(transport=httpx.MockTransport(transport))
+        self.addCleanup(lambda:asyncio.run(client.close()))
+        asyncio.run(self.current.continue_native_harness(linear_client=client))
+        result=self.current.state['tasks'][f.issue.identifier]['native_harness']['projection']
+        self.assertEqual(result['status'],'advanced',result)
+        self.assertEqual(result['effect']['status'],'verified')
+        reopened=self.native.CurrentWork(self.current.runtime)
+        asyncio.run(reopened.continue_native_harness(linear_client=client))
+        self.assertEqual(len(writes),1)
+        self.assertFalse(reopened._native_harness_refill_allowed(f.issue.identifier))
+
+    def test_boolean_truthy_or_malformed_custody_never_substitutes_for_binding(self):
+        f=self.f
+        selection=self.current._native_harness_selection(f.issue.identifier)
+        binding=self.module.OwnerBinding(**selection['binding'])
+        adapters=self.module.owner_adapters(self.current,f.issue,binding,selection)
+        # The proper dictionary qualifies after the unmodified fresh guard.
+        self.assertIs(adapters.authorize(self.current,f.issue,binding),True)
+        for fake in (True,False,{'validated':'root'},dict(self.current.owner_custody,extra=True),
+                     dict(self.current.owner_custody,config_sha256='0'*64)):
+            self.current.owner_custody=fake
+            with self.subTest(fake=fake),self.assertRaisesRegex(current_fixture.AdmissionError,'current_config_drift'):
+                adapters.authorize(self.current,f.issue,binding)
+
+    def test_changed_protected_binding_is_rejected_by_actual_guard(self):
+        value=json.loads((self.protected/'binding.json').read_text())
+        value['source_root']=str(self.protected/'foreign')
+        self.f.fixture.write(self.protected/'binding.json',value)
+        with self.assertRaisesRegex(current_fixture.AdmissionError,'protected_owner_binding'):self.current.guard()

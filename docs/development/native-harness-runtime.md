@@ -178,3 +178,23 @@ deadline and actually kills/reaps its fixed invocation group on error/cancellati
 Current fixed publisher Python children share that group. Cleanup is checked
 from the host, never accepted from child JSON. Unknown invocation effects retain
 the original protected publisher journal; the factory never invents a retry ID.
+
+The concrete factory consumes CurrentWork's actual
+`protected-current-owner-v1` custody **dictionary**, returned by the original
+`current_config` and requalified by the original `guard`. Its schema, exact field
+set, runtime/source roots, current config path/hash and catalog/interpreter hash
+fields must match that existing contract. Boolean `True`, arbitrary truthy
+metadata and stale/malformed bindings are not custody. No CurrentWork field or
+root guard is changed to accommodate the factory.
+
+The default-factory composition regression constructs the real CurrentWork with
+sealed binding/config/catalog fixtures, copies the complete native/schema/Linear
+source closure into a real synthetic Git commit, and leaves constructor, source
+pins, guard, native gate and default factory logic intact. Only protected kernel
+file ownership/interpreter custody and external HTTP are synthetic. It uses the
+actual LinearClient with MockTransport, asserts intent in the original owner
+file before one native mutation, then reopens and reads back without replay.
+A standalone component checkout predating UIF-124's hook may explicitly supply
+`OFFMENU_TEST_CURRENT_ADAPTER=/exact/accepted/source/tools/delivery/stokowski_adapter.py`
+for this composition test; coherent checkouts use their own actual adapter.
+That test source selection is not a product callback/configuration surface.
