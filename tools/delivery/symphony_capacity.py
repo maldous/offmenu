@@ -93,11 +93,20 @@ class Pool:
 
     def admit(self,task_id,binding,provider,host):
         if not isinstance(task_id,str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,79}',task_id):raise AdmissionError('invalid_task_id')
-        if set(binding)!={'branch','head','owner','write_roots','resources','task_sha256'}:raise AdmissionError('invalid_binding_fields')
+        legacy={'branch','head','owner','write_roots','resources','task_sha256'}
+        readonly = binding.get('mode') == 'native-review-read-only'
+        if set(binding) != legacy | ({'mode','read_roots','source_sha256'} if readonly else set()):raise AdmissionError('invalid_binding_fields')
+        if readonly:
+            roots=binding['read_roots']
+            if (binding['write_roots'] != [] or not isinstance(roots,list) or not roots
+                or len(roots)>64 or len(set(roots))!=len(roots)
+                or not re.fullmatch('[0-9a-f]{64}',str(binding['source_sha256']))):raise AdmissionError('invalid_read_scope')
+            for root in roots:
+                if not isinstance(root,str) or not Path(root).is_absolute() or str(Path(root).resolve())!=root:raise AdmissionError('invalid_read_scope')
         if not valid_branch(binding['branch']) or not re.fullmatch(r'[0-9a-f]{40}',str(binding['head'])):raise AdmissionError('invalid_source_identity')
         if not isinstance(binding['owner'],str) or not binding['owner'].strip():raise AdmissionError('invalid_owner')
         paths=binding['write_roots']
-        if not isinstance(paths,list) or not paths or len(paths)>64 or len(set(paths))!=len(paths):raise AdmissionError('invalid_write_scope')
+        if not isinstance(paths,list) or (not paths and not readonly) or len(paths)>64 or len(set(paths))!=len(paths):raise AdmissionError('invalid_write_scope')
         for p in paths:scope(p)
         resources=binding['resources']
         if not isinstance(resources,dict) or set(resources)!={'cpu_millis','memory_bytes','io_slots','output_bytes'}:raise AdmissionError('invalid_resources')

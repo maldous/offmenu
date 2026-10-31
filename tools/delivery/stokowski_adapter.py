@@ -93,12 +93,16 @@ class CurrentWork:
         self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config = read_record(runtime/'current.json')
-        if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations', 'normal_intake'} != {'version', 'owner', 'runtime_root', 'catalog',
+        if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template'} != {'version', 'owner', 'runtime_root', 'catalog',
                                'source_head', 'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}:
             raise AdmissionError('current_config_fields')
         validated_project_route(self.config.get('project_route', project_route(PROJECT)))
         self.root = Path(self.config['runtime_root'])
         completed = self.config.get('completed_native_validations', {})
+        native = self.config.get('native_review_policies', {})
+        if not isinstance(native, dict):
+            raise AdmissionError('current_native_review_fields')
+        completed = dict(completed, **native) if isinstance(completed, dict) else completed
         if not isinstance(completed, dict):
             raise AdmissionError('current_completed_native_fields')
         for issue, ref in completed.items():
@@ -572,7 +576,7 @@ class CurrentWork:
             if packet['owner_config'] != handoff['owner_config']:
                 raise AdmissionError('successor_config_drift')
             identity = digest(dict(handoff=ref, owner_config=packet['owner_config'], trigger=packet['trigger']))
-            if pending is not None and pending['identity'] != identity:
+            if pending is not None and pending.get('identity') != identity:
                 rearming = True
                 self._rearm_successor(pending)
                 pending = None
@@ -1254,12 +1258,11 @@ class CurrentWork:
                     self.save()
                     continue  # Completed evidence never invokes stage.tick or a submitter.
                 runtime, identity = self.validation_binding(issue, entry)
-                if 'stage' in selected_task:
-                    from types import SimpleNamespace
-                    unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']), observation=True)
-                    gate = task.setdefault('unit_gate', dict(binding=unit, disposition='waiting'))
-                    if gate.get('binding') != unit:
-                        raise AdmissionError('stage_gate_rebind')
+                from types import SimpleNamespace
+                unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']), observation=True)
+                gate = task.setdefault('unit_gate', dict(binding=unit, disposition='waiting'))
+                if gate.get('binding') != unit:
+                    raise AdmissionError('stage_gate_rebind')
                 prior = task.get('validation', {})
                 if prior.get('identity', identity) != identity:
                     raise AdmissionError('current_validation_rebind')
@@ -1267,7 +1270,18 @@ class CurrentWork:
                     task['validation'] = dict(identity=identity, status='awaiting-independent-review',
                         requested_model=None, requested_effort=None, provider=None)
                     self.save()
+                    await self.continue_native_review(issue)
                     continue
+                if 'stage' not in selected_task:
+                    key = read_record(runtime/'validation-bindings.json')['issues'][issue]['operation_key']
+                    with sqlite3.connect((runtime/'operations/operations.sqlite').as_uri()+'?mode=ro', uri=True) as db:
+                        row = db.execute('SELECT state FROM operations WHERE key=?', (key,)).fetchone()
+                    if row and json.loads(row[0]).get('status') == 'succeeded':
+                        task['validation'] = dict(identity=identity, status='succeeded',
+                            requested_model=None, requested_effort=None, provider=None)
+                        self.save()
+                        await self.continue_native_review(issue)
+                        continue
                 task['validation'] = dict(identity=identity, status='pending',
                     requested_model=None, requested_effort=None, provider=None)
                 self.save()  # Immutable selection survives owner loss before effects.
@@ -1277,6 +1291,8 @@ class CurrentWork:
                 task['validation']['status'] = (status if status in {
                     'prepared','submit-intent','submitted','queued','running','unknown',
                     'cancel-requested','succeeded','failed','cancelled','refused','quarantined'} else 'held')
+                if status == 'succeeded' and 'stage' not in selected_task:
+                    await self.continue_native_review(issue)
             except asyncio.CancelledError:
                 raise
             except Exception:
@@ -1284,6 +1300,241 @@ class CurrentWork:
                 task.setdefault('validation', dict(requested_model=None,
                     requested_effort=None, provider=None))['status'] = 'held'
             self.save()
+
+    def native_review_template_policy(self, issue, *, materialize=False):
+        """Sole owner derives bytes; consumers only recompute from disk authority.
+
+        The template contains no task/session/output/receipt digests. Its source
+        root and receipt filename are static custody locations, never evidence.
+        """
+        import stokowski_worker as worker
+        from types import SimpleNamespace
+        if self.config.get('native_review_template') is None:
+            raise AdmissionError('native_review_policy_unavailable: owner template required')
+        if read_record(self.runtime/'current.json') != self.config:
+            raise AdmissionError('native_review_config_override')
+        self.guard()
+        ref = self.config.get('native_review_template')
+        if ref is None:
+            raise AdmissionError('native_review_policy_unavailable: owner template required')
+        self.private(ref['path'])
+        template = worker.pinned_record(ref)
+        static = {'schema','owner','reviewer_owner','project_id','source_head','source_sha256',
+                  'installation_sha256','source_root','validation_receipt_name','provider','model',
+                  'effort','resources','acceptance','timeout_seconds','require_stopped_child','role'}
+        if (set(template) != static or template['schema'] != 'native-review-template-v1'
+            or template['role'] != 'native-review-read-only'
+            or any(template[k] != self.config[k] for k in
+                   ('owner','source_head','source_sha256','installation_sha256'))):
+            raise AdmissionError('native_review_template_binding')
+        runtime, manifest, _ = self.context(issue, review=True, observation=True)
+        task = manifest['tasks'][issue]
+        if ((runtime/'cancel.json').exists() or (self.runtime/'cancel.json').exists()
+            or self.state['tasks'][issue].get('unit_gate',{}).get('disposition') == 'rework'):
+            raise AdmissionError('native_review_template_terminal_hold')
+        if ('stage' in task or template['project_id'] != manifest['project_id']
+            or template['resources'] != task['resources'] or template['acceptance'] != task['acceptance']
+            or template['reviewer_owner'] == task['owner']
+            or (template['provider'],template['model'],template['effort']) != ('codex-chatgpt',worker.MODEL,'medium')
+            or template['require_stopped_child'] is not True
+            or type(template['timeout_seconds']) is not int or not 1 <= template['timeout_seconds'] <= 600):
+            raise AdmissionError('native_review_template_scope')
+        _, identity = self.validation_binding(issue, self.entries[issue])
+        key = read_record(runtime/'validation-bindings.json')['issues'][issue]['operation_key']
+        with sqlite3.connect((runtime/'operations/operations.sqlite').as_uri()+'?mode=ro',uri=True) as db:
+            row = db.execute('SELECT spec,state FROM operations WHERE key=?',(key,)).fetchone()
+        spec, state = (json.loads(v) for v in row)
+        name = template['validation_receipt_name']
+        if not isinstance(name,str) or Path(name).name != name:
+            raise AdmissionError('native_review_template_receipt')
+        receipt_path = self.private(str(runtime/name))
+        validation = dict(path=str(receipt_path),sha256=file_sha(receipt_path))
+        worker.pinned_record(validation)
+        self._check_reviewed_terminal(spec,state,{validation['path']:validation['sha256']})
+        author_path = runtime/'attempts'/issue/'receipt.json'
+        author_ref = dict(path=str(author_path),sha256=file_sha(author_path))
+        author = worker.pinned_record(author_ref)
+        unit = self.gate_binding(SimpleNamespace(identifier=issue,id=self.entries[issue]['issue_id']))
+        if (author.get('origin') != 'native-coding' or author.get('status') != 'succeeded'
+            or author.get('child_tree_gone') is not True or not author.get('session_id')
+            or author.get('output_sha256') != spec['outputs']):
+            raise AdmissionError('native_review_template_author')
+        capacity = read_record(runtime/'capacity-policy.json')
+        database = Path(capacity['symphony']['pool_path'])/'state.sqlite'
+        with sqlite3.connect(database.as_uri()+'?mode=ro',uri=True) as db:
+            lease = db.execute('SELECT binding,fingerprint,status,outcome FROM leases WHERE id=?',
+                               (author['lease'],)).fetchone()
+        if (lease is None or lease[2:] != ('finished','succeeded')
+            or json.loads(lease[0]) != author['parent_binding']
+            or lease[1] != author['binding_sha256'] or lease[1] != unit['operation_sha256']
+            or lease[1] != digest(author['parent_binding'])
+            or author['parent_binding']['owner'] != task['owner']):
+            raise AdmissionError('native_review_template_author_lease')
+        root = Path(template['source_root'])
+        source = dict(root=str(root),head=spec['head'],base=spec['base'],branch=spec['branch'],
+            tree=worker.git(root,'rev-parse','HEAD^{tree}'),outputs=spec['outputs'],
+            files_sha256=digest({n:file_sha(root/n) for n in worker.git(root,'ls-files','-z').split('\0') if n}))
+        worker.review_source(source)
+        changed = set(worker.git(root,'diff','--name-only',spec['base'],spec['head']).splitlines())
+        if changed != set(spec['outputs']):
+            raise AdmissionError('native_review_template_paths')
+        policy = {k:template[k] for k in ('owner','reviewer_owner','project_id','provider','model','effort',
+                  'resources','acceptance','timeout_seconds','require_stopped_child')}
+        policy.update(schema=worker.REVIEW_ORIGIN,issue=issue,stage_identity=identity,
+            unit_binding=unit,validation_identity=identity,source=source,author_receipts=[author_ref],
+            excluded_sessions=[author['session_id']],excluded_owners=[author['parent_binding']['owner']],
+            current_runtime=str(self.runtime),validation_receipt=validation)
+        derivation = dict(template=ref,unit=unit,source=source,author_receipt=author_ref,
+                          author_lease=author['lease'],validation_identity=identity,
+                          validation_receipt=validation,operation_key=key)
+        path = runtime/'native-review-derived-policy.json'
+        # checkpoint's serialization is fixed; compare exact bytes as well as JSON.
+        raw = (json.dumps(policy,sort_keys=True,indent=2)+'\n').encode()
+        policy_ref = dict(path=str(path),sha256=hashlib.sha256(raw).hexdigest())
+        pending = self.state['tasks'][issue].get('native_review',{})
+        expected = dict(policy=policy_ref,derivation=derivation)
+        if path.exists() or 'derivation' in pending:
+            if (not path.is_file() or path.read_bytes() != raw
+                or any(pending.get(k) != v for k,v in expected.items())):
+                raise AdmissionError('native_review_template_derivation_drift')
+        elif materialize and not self.read_only:
+            with path.open('xb') as stream:
+                os.fchmod(stream.fileno(),0o600)
+                stream.write(raw)
+                stream.flush()
+                os.fsync(stream.fileno())
+            directory = os.open(runtime,os.O_RDONLY | os.O_DIRECTORY)
+            try:
+                os.fsync(directory)
+            finally:
+                os.close(directory)
+            self.state['tasks'][issue]['native_review'] = dict(expected,status='policy-bound')
+            self.save()  # Artifact + derivation are durable before launch intent.
+        else:
+            raise AdmissionError('native_review_template_not_materialized')
+        return policy_ref
+
+    def native_review_binding(self, issue):
+        """Owner-selected native policy; original validation must be terminal."""
+        import stokowski_worker as worker
+        ref = self.config.get('native_review_policies', {}).get(issue)
+        if ref is None:
+            ref = self.native_review_template_policy(issue)
+        self.private(ref['path'])
+        runtime, manifest, _ = self.context(issue, review=True, observation=True)
+        task = manifest['tasks'][issue]
+        staged = 'stage' in task
+        if staged:
+            if task['stage'] != 'review' or task['stage_binding']['entry'].get('origin') is not None:
+                raise AdmissionError('native_review_stage_required')
+            _, origin_runtime, _ = self.stage_origin(issue, task)
+        else:
+            origin_runtime = runtime
+        _, identity = self.validation_binding(issue, self.entries[issue])
+        key = read_record(origin_runtime/'validation-bindings.json')['issues'][issue]['operation_key']
+        # Read-only SQLite: no Journal construction, dispatch or receipt repair.
+        with sqlite3.connect((origin_runtime/'operations/operations.sqlite').as_uri()+'?mode=ro', uri=True) as db:
+            row = db.execute('SELECT spec,state FROM operations WHERE key=?',(key,)).fetchone()
+        spec, state = (json.loads(v) for v in row)
+        policy = worker.pinned_record(ref)
+        if staged:
+            pins = task['stage_binding']['inputs']
+        else:
+            receipt_ref = policy.get('validation_receipt')
+            worker.pinned_record(receipt_ref)
+            self.private(receipt_ref['path'])
+            if (policy.get('current_runtime') != str(self.runtime)
+                or policy.get('stage_identity') != identity or policy.get('owner') != task['owner']):
+                raise AdmissionError('native_review_current_binding')
+            pins = {receipt_ref['path']:receipt_ref['sha256']}
+        self._check_reviewed_terminal(spec,state,pins)
+        request = dict(kind=worker.REVIEW_ORIGIN,policy=ref)
+        from types import SimpleNamespace
+        unit = self.gate_binding(SimpleNamespace(identifier=issue,id=self.entries[issue]['issue_id']))
+        original_receipt = origin_runtime/'attempts'/issue/'receipt.json'
+        if (policy['owner'] != self.config['owner'] or policy['unit_binding'] != unit
+            or policy['validation_identity'] != identity
+            or dict(path=str(original_receipt),sha256=file_sha(original_receipt)) not in policy['author_receipts']
+            or policy['source']['outputs'] != spec['outputs']
+            or policy['source']['head'] != spec['head'] or policy['source']['base'] != spec['base']
+            or policy['source']['branch'] != spec['branch']):
+            raise AdmissionError('native_review_owner_binding')
+        return runtime, request, unit
+
+    def native_review_context(self, issue):
+        runtime, request, unit = self.native_review_binding(issue)
+        import stokowski_worker as worker
+        worker.review_contract(runtime, issue, request)
+        return runtime, request, unit
+
+    async def continue_native_review(self, issue):
+        """One owned finite child; durable same-ID recovery never resubmits."""
+        import stokowski_worker as worker
+        task = self.state['tasks'][issue]
+        try:
+            if issue not in self.config.get('native_review_policies', {}):
+                self.native_review_template_policy(issue, materialize=True)
+            runtime, request, unit = self.native_review_context(issue)
+            identity = digest(dict(runtime=str(runtime),request=request,unit=unit))
+            pending = task.get('native_review')
+            if pending is not None and pending.get('identity') not in (None,identity):
+                raise AdmissionError('native_review_intent_rebind')
+            if pending is not None and 'identity' not in pending:
+                pending = None
+            directory = runtime/'attempts'/('review-'+issue)
+            retry_refusal = (pending is not None and pending.get('status') == 'deferred'
+                             and worker.confirmed_review_refusal(runtime,issue,request))
+            if pending is None or retry_refusal:
+                task.setdefault('native_review', {}).update(identity=identity,status='launch-intent',request=request)
+                self.save()  # Before actual subprocess or Pool effect.
+                proc = None
+                try:
+                    proc = await asyncio.create_subprocess_exec(sys.executable,
+                        str(Path(__file__).with_name('stokowski_worker.py')),
+                        '--runtime',str(runtime),'--issue',issue,'--native-review-policy',request['policy']['path'],
+                        '--native-review-policy-sha256',request['policy']['sha256'],
+                        stdout=asyncio.subprocess.DEVNULL,stderr=asyncio.subprocess.DEVNULL,
+                        env=worker.child_environment(os.environ))
+                    timeout = min(600,worker.pinned_record(request['policy'])['timeout_seconds']+30)
+                    await asyncio.wait_for(proc.wait(),timeout=timeout)
+                except (asyncio.CancelledError,asyncio.TimeoutError):
+                    task['native_review']['status'] = 'uncertain'
+                    self.save()
+                    if proc is not None and proc.returncode is None:
+                        proc.terminate()
+                        try:
+                            await asyncio.wait_for(asyncio.shield(proc.wait()),timeout=5)
+                        except asyncio.TimeoutError:
+                            proc.kill()
+                            await asyncio.wait_for(asyncio.shield(proc.wait()),timeout=5)
+                    raise
+            # A retained launch without a receipt is an actionable same-owner hold.
+            if not (directory/'receipt.json').is_file():
+                if (task['native_review']['status'] != 'uncertain'
+                    and worker.confirmed_review_refusal(runtime,issue,request)):
+                    task['native_review'].update(status='deferred',
+                        hold='confirmed-pre-admission-refusal',
+                        refusal_intent_sha256=file_sha(directory/'intent.json'))
+                    self.save()
+                    return
+                raise AdmissionError('native_review_launch_unknown: reconcile retained intent; no retry')
+            from stokowski_unit_review import qualify_native_review
+            packet = qualify_native_review(self,issue)
+            path = self.runtime/('unit-review-'+issue+'.json')
+            if path.exists():
+                if read_record(path) != packet:
+                    raise AdmissionError('native_review_incoming_conflict')
+            else:
+                # Coordinator owns the existing root lock. No connector identity asserted.
+                checkpoint(path,packet)
+            task['native_review']['status'] = 'qualified'
+            self._consume_unit_reviews()
+        except asyncio.CancelledError:
+            raise
+        except Exception as error:
+            task.setdefault('native_review', {})['status'] = 'held'
+            task['native_review']['hold'] = str(error) if isinstance(error,AdmissionError) else type(error).__name__
+        self.save()
 
     def unit_review_writer(self, trusted_transport=None):
         """Owner-only injected transport -> immutable local incoming observation.
@@ -1368,6 +1619,11 @@ class CurrentWork:
         issue = packet['issue']
         entry = self.entries[issue]
         unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']))
+        if packet.get('origin') == 'native-readonly-review-v1':
+            from stokowski_unit_review import qualify_native_review
+            if packet != qualify_native_review(self,issue):
+                raise AdmissionError('native_review_packet_mismatch')
+            return unit
         if packet.get('decision', {}).get('kind') == 'completed-native-validation-v1':
             from stokowski_completed import qualify
             if packet != qualify(self, issue):
@@ -1531,13 +1787,15 @@ class CurrentWork:
                 unit = self._check_unit_review(packet)
                 gate = self.state['tasks'][issue].get('unit_gate', {})
                 fingerprint = digest(packet)
+                disposition = ('rework' if packet.get('origin') == 'native-readonly-review-v1'
+                               and packet.get('verdict') == 'rework' else 'approved')
                 if (packet['issue'] != issue or gate.get('binding') != unit or
                     gate.get('review_sha256') not in (None, fingerprint) or
-                    gate.get('disposition') not in ('waiting','approved')):
+                    gate.get('disposition') not in ('waiting',disposition)):
                     raise AdmissionError('unit_review_gate_conflict')
                 if gate.get('handled'):
                     continue
-                gate.update(review_sha256=fingerprint, disposition='approved', accepted_delivery=False)
+                gate.update(review_sha256=fingerprint, disposition=disposition, accepted_delivery=False)
                 if self.state['tasks'][issue].get('defer') == 'unit_review_held':
                     self.state['tasks'][issue].pop('defer')
             except Exception:
