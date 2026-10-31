@@ -143,6 +143,18 @@ def custody(path, uid, *, private=False):
     return path
 
 
+def control_custody(current, uid, paths):
+    """Installed owner selection already validated root config/code/interpreter.
+
+    Runtime, claims and original evidence retain their caller-owned private
+    contracts. Only the selected installed source/catalog use root custody.
+    """
+    protected = current.owner_custody is not None
+    for path in paths:
+        custody(path, 0 if protected else uid)
+    custody(current.catalog, 0 if protected else uid, private=not protected)
+
+
 def checkpoint_json(raw):
     """Decode only JSON-compatible MessagePack from the existing saver schema.
 
@@ -244,8 +256,7 @@ def handle(request):
             and current.config['source_sha256'] == c['source_sha256']
             and REQUIRED.issubset(c['source_sha256']))
     # guard() checks every source hash against exact accepted Git bytes.
-    for p in (SOURCE, *[SOURCE/n for n in c['source_sha256']]):
-        custody(p, uid)
+    control_custody(current, uid, (SOURCE, *[SOURCE/n for n in c['source_sha256']]))
     entry = current.entries[c['issue']]
     task_runtime, manifest, source = current.context(c['issue'], review=True)
     admission_files = ('current-admission.json','manifest.json','capacity-policy.json',
@@ -275,7 +286,6 @@ def handle(request):
                  *([] if reviewed else ['attempts/'+c['issue']+'/'+n for n in
                    ('intent.json','dispatch-intent.json','receipt.json')])):
         custody(evidence_runtime/name, uid, private=True)
-    custody(current.catalog, uid, private=True)
     roots = [custody(p, uid, private=True) for p in c['workspace_roots']]
     require(roots and all(any(selected.is_relative_to(p) for p in roots)
                           for selected in (source, evidence_source)))

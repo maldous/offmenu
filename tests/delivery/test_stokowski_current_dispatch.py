@@ -166,6 +166,26 @@ class CurrentDispatchTests(unittest.TestCase):
         with self.assertRaisesRegex(AdmissionError, 'protected_owner_path'):
             adapter.protected_owner_bytes(link)
 
+    def test_protected_review_transport_source_and_catalog_custody(self):
+        import stokowski_unit_review as transport
+        source = self.temp/'root-source.py'
+        catalog = self.temp/'root-catalog.json'
+        current = SimpleNamespace(owner_custody={'validated':'root'}, catalog=catalog)
+        # Exercise the real transport custody helper with explicit metadata.
+        # No chown/root operation is performed by this source-only fixture.
+        def info(path):
+            return SimpleNamespace(st_uid=0, st_mode=0o100444)
+        with patch.object(transport, 'canonical', side_effect=lambda path:Path(path)), patch.object(
+                Path, 'stat', autospec=True, side_effect=info):
+            transport.control_custody(current, 1000, [source])
+            with self.assertRaises(AdmissionError):
+                transport.control_custody(SimpleNamespace(owner_custody=None,catalog=catalog),1000,[source])
+        with patch.object(transport, 'canonical', side_effect=lambda path:Path(path)), patch.object(
+                Path, 'stat', return_value=SimpleNamespace(st_uid=1000,st_mode=0o100600)):
+            transport.control_custody(SimpleNamespace(owner_custody=None,catalog=catalog),1000,[source])
+            with self.assertRaises(AdmissionError):
+                transport.control_custody(current,1000,[source])
+
     UIF_ROUTE = dict(project_id='ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0',
                      project_slug='21558318e036')
     UIF119 = dict(identifier='UIF-119', uuid='3e6839ad-2f22-4ab1-8f6f-973c882daabd',
