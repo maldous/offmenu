@@ -65,3 +65,66 @@ caps/backoff/dependencies, restart/no replay, immutable identities, refusal,
 unknown cleanup, cancellation, model observation and source-bound reports.
 They do not establish live provider readiness or installed-runtime acceptance.
 Exact commands, results and hashes belong to the private source handoff packet.
+
+## Owner-sealed normal boundary wiring
+
+The optional `current.json` field `native_harness_boundaries` maps an admitted
+issue identifier to a private `{path, sha256}` selection reference. Its presence
+requires actual protected owner custody; mutable legacy configuration cannot opt
+into this route. The selection has exactly:
+
+```json
+{
+  "binding": {
+    "issue_id": "canonical issue UUID",
+    "project_id": "canonical project UUID",
+    "owner": "existing owner",
+    "packet_sha256": "shared packet fingerprint",
+    "operation_id": "original transaction ID",
+    "phase": "linear",
+    "unit_sha256": "shared original gate fingerprint"
+  },
+  "packet": {"path": "/private/pinned-packet.json", "sha256": "file-byte hash"},
+  "context": {
+    "engine_root": "/private/existing-engine-workspace",
+    "engine_task": {"path": "/private/original-task.json", "sha256": "file-byte hash"},
+    "unit_review": {"path": "/private/original-unit-review.json", "sha256": "file-byte hash"}
+  }
+}
+```
+
+This illustrates fields, not an admissible packet: hashes must be lowercase
+SHA-256, identities must match the existing owner/project/unit, and all paths
+must be canonical within the existing private runtime root. The phase is
+`linear`, `integration` or `release`. Context references identify the existing
+Engine task and independent review; they do not establish acceptance. Packet
+file-byte pins remain distinct from `packet_sha256 = fingerprint(packet)`.
+All runtime/contract/planner/release/Engine/status source and concrete factory
+dependencies must be in the reviewed installed closure and its source pins.
+
+The existing current-mode poll calls `continue_native_harness` after ordinary
+validation/review continuation, under its existing coordinator lock. It consumes
+one configured admitted unit per poll, rotating within that existing catalog.
+It calls the fixed installed `native_harness_runtime.owner_adapters` function and
+passes the coordinator's existing Linear client. No credential getter, callback,
+module, command or principal is selected by issue/configuration JSON. A missing
+concrete factory remains `native_harness_adapters_unavailable`; injected Python
+factories are an explicit trusted installation/test seam, not a JSON API. The
+consumer and its factory must be independently accepted before coherent adoption.
+
+Source/config/selection/packet/native-unit checks repeat at the permission
+boundary, and owner authorization must return exactly `True`. The original
+transaction journal owns pending/unknown/denied effects; the adapter's saved
+`native_harness` projection is diagnostic only. It neither grants replay nor
+releases a lease. No new operation, queue, receipt migration or controller is
+created. An interrupted boundary records a hold and reconciles that same
+transaction through the existing adapters on the next poll.
+
+Synchronous review/refresh callbacks cannot admit a successor for a bound trigger
+merely from a saved verified projection. Only an immediate verified transaction
+result with proven stopped children can lend the existing successor consumer an
+in-memory permit, bound again to the exact selection, unit and operation. The
+permit is cleared before returning, including errors/cancellation. Restart and
+ordinary synchronous callbacks require another owner-bound readback. All prior
+successor/scope/admission/independent-review gates still apply. Unbound legacy
+units retain their original path without importing or executing the new consumer.
