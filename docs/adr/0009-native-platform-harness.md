@@ -1,6 +1,6 @@
 # ADR 0009: Native-platform harness with develop/main releases
 
-- Status: proposed for independent review under UIF-121; runtime adoption is separate
+- Status: contract accepted under UIF-121; source standard 2.4.0; runtime adoption remains separate under UIF-130
 - Accepted starting source: `37f733cc29627c6f137eb7905221dfabe39a7ecb`
 - Parent outcome: UIF-120; shared evidence contract: UIF-122; coherent adoption: UIF-130
 - Retains ADRs 0004–0008 and their original operation/evidence interpretation
