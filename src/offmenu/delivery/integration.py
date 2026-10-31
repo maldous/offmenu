@@ -58,11 +58,15 @@ class Controller:
     def __init__(self,directory,binding,claim_root=None):
         required = {'version','repository','pr_number','issue_id','owner','head','base','tree',
                     'policy_sha256','capacity_policy_sha256','validation_operation_key','outputs','head_branch'}
+        version = binding.get('version')
+        if version == 2:
+            required = required | {'publication'}
         if (set(binding) not in (required, required | {'project_id', 'full_issue_acceptance_sha256'})
-            or type(binding['version']) is not int or binding['version'] != 1):
+            or type(version) is not int or version not in (1, 2)):
             raise DeliveryError('Invalid integration binding')
-        if (binding['repository'] != 'maldous/offmenu' or type(binding['pr_number']) is not int
-            or binding['pr_number'] < 1 or not binding['owner'] or not binding['outputs']):
+        valid_pr = (type(binding['pr_number']) is int and binding['pr_number'] > 0) if version == 1 else binding['pr_number'] is None
+        if (binding['repository'] != 'maldous/offmenu' or not valid_pr
+            or not binding['owner'] or not binding['outputs']):
             raise DeliveryError('Invalid integration identity')
         if not re.fullmatch(r'(?:feature|bugfix)/[a-z0-9][a-z0-9/-]{0,159}',str(binding['head_branch'])) or binding['head_branch'].endswith('/') or '//' in binding['head_branch']:
             raise DeliveryError('Invalid exact selected branch')
@@ -79,6 +83,12 @@ class Controller:
         for key in ('head','base','tree','policy_sha256','capacity_policy_sha256','validation_operation_key'):
             if not re.fullmatch('[0-9a-f]{'+str(40 if key in ('head','base','tree') else 64)+'}',binding[key]):
                 raise DeliveryError('Invalid '+key)
+        if version == 2:
+            publication = binding['publication']
+            if (not isinstance(publication, dict)
+                or set(publication) != {'plan_sha256', 'qualification_sha256'}
+                or any(not re.fullmatch('[0-9a-f]{64}', str(v)) for v in publication.values())):
+                raise DeliveryError('Invalid publication binding')
         self.directory = Path(directory).absolute()
         self.claim_root = Path(claim_root).absolute() if claim_root else self.directory.parent
         if self.directory == self.claim_root or not self.directory.is_relative_to(self.claim_root):
@@ -117,7 +127,8 @@ class Controller:
                 if (previous/'state.json').is_symlink():
                     raise DeliveryError('Symlink previous integration state')
                 state = json.loads((previous/'state.json').read_text())
-                if state.get('merge_effect') in ('pending','unknown'):
+                if (state.get('merge_effect') in ('pending','unknown')
+                    or state.get('publication', {}).get('effect') in ('pending','unknown')):
                     raise DeliveryError('Repository integration outcome must reconcile before another owner')
                 safe_repair = state['status']=='repair-required' and (not state.get('qualification_sha256')
                     or (state.get('canonical_effect_verified') is True and state.get('merge_commit_sha')))
@@ -144,7 +155,12 @@ class Controller:
         return {'status':status,'action':action,'binding_sha256':self.key,**extra}
 
     def decide(self,snapshot):
-        b = self.binding
+        b = dict(self.binding)
+        if b['version'] == 2:
+            publication = self.status().get('publication', {})
+            if publication.get('effect') != 'verified' or type(publication.get('pr_number')) is not int:
+                return self.result('publication-reconciliation-required')
+            b['pr_number'] = publication['pr_number']
         prior = self.status()
         if prior['status'] == 'accepted':
             return prior
@@ -271,7 +287,7 @@ class Controller:
             def persist(state):
                 # Durable intent exists before the API gateway receives action.
                 previous = self.status()
-                for field in ('qualification_sha256','authority_receipts','linear_retry_count','linear_requested_at','merge_effect','linear_effect','linear_exhausted','merge_commit_sha','canonical_effect_verified'):
+                for field in ('qualification_sha256','authority_receipts','linear_retry_count','linear_requested_at','merge_effect','linear_effect','linear_exhausted','merge_commit_sha','canonical_effect_verified','publication','helper_consumed'):
                     if field in previous:
                         state['result'].setdefault(field,previous[field])
                 atomic(self.directory/'state.json',state['result'])
@@ -317,6 +333,297 @@ class Controller:
                            authority_receipts=[*used,authority_receipt_sha256])
             atomic(self.directory/'state.json',current)
             return current
+
+
+    def _publication_checkpoint(self, state):
+        """Use the original graph/checkpoint and state file, never a side ledger."""
+        from langgraph.graph import StateGraph, START, END
+        from langgraph.checkpoint.sqlite import SqliteSaver
+        os.environ['LANGCHAIN_TRACING_V2'] = 'false'
+        os.environ['LANGSMITH_TRACING'] = 'false'
+        graph = StateGraph(IntegrationState)
+        def persist(_):
+            atomic(self.directory/'state.json', state)
+            return {'result': state}
+        graph.add_node('persist-publication', persist)
+        graph.add_edge(START, 'persist-publication')
+        graph.add_edge('persist-publication', END)
+        with SqliteSaver.from_conn_string(str(self.directory/'graph.sqlite')) as saver:
+            return graph.compile(checkpointer=saver).invoke({},
+                {'configurable': {'thread_id': self.key}, 'recursion_limit': 4})['result']
+
+    def prepare_publication(self, plan, snapshot):
+        """Authenticated owner admission; no fabricated PR or merge qualification.
+
+        The fixed helper pins the immutable binding and this entire owner-issued
+        source qualification in protected configuration. JSON from coding children
+        is never an authenticated invocation of this method.
+        """
+        with self.ownership():
+            b = self.binding
+            if b['version'] != 2:
+                raise DeliveryError('Publication requires version 2 binding')
+            pins = b['publication']
+            if fingerprint(plan) != pins['plan_sha256'] or fingerprint(snapshot) != pins['qualification_sha256']:
+                raise DeliveryError('Publication admission pin mismatch')
+            validation, review = snapshot.get('validation', {}), snapshot.get('review', {})
+            if (snapshot.get('publisher_owner') != b['owner'] or snapshot.get('cancel_requested')
+                or snapshot.get('policy_sha256') != b['policy_sha256']
+                or snapshot.get('capacity_policy_sha256') != b['capacity_policy_sha256']
+                or validation.get('operation_key') != b['validation_operation_key']
+                or validation.get('status') != 'succeeded' or validation.get('head') != b['head']
+                or validation.get('base') != b['base'] or validation.get('outputs') != b['outputs']
+                or validation.get('capacity_policy_sha256') != b['capacity_policy_sha256']
+                or validation.get('child_tree_gone') is not True
+                or validation.get('reconcile_required') is not False
+                or review.get('head') != b['head'] or review.get('base') != b['base']
+                or review.get('independent') is not True or not review.get('evidence_id')
+                or review.get('verdict') != 'accept' or review.get('findings') != []
+                or snapshot.get('unresolved_findings') != []
+                or snapshot.get('source_tree') != b['tree'] or snapshot.get('source_clean') is not True
+                or snapshot.get('publication_triggers_actions') is not False):
+                raise DeliveryError('Unqualified publication evidence')
+            current = self.status()
+            if current.get('publication'):
+                return current
+            if current['status'] != 'prepared' or current.get('merge_effect'):
+                raise DeliveryError('Existing integration state cannot become publication')
+            current.update(status='publication-ready', publication={
+                'plan_sha256': pins['plan_sha256'], 'qualification_sha256': pins['qualification_sha256'],
+                'next': 0, 'effect': 'ready', 'action': None, 'pr_number': None})
+            return self._publication_checkpoint(current)
+
+    def publication_intent(self, index, action):
+        """Persist exact typed request before the fixed helper can consume it."""
+        with self.ownership():
+            current = self.status()
+            pub = current.get('publication', {})
+            if (self.binding['version'] != 2 or type(index) is not int or index != pub.get('next')
+                or pub.get('effect') != 'ready' or not isinstance(action, dict)
+                or action.get('kind') not in ('blob', 'tree', 'commit', 'ref', 'create-pr', 'update-pr')):
+                raise DeliveryError('Publication intent is not ready')
+            pub.update(effect='pending', action=action, intent_sha256=fingerprint(action))
+            current.update(status='publication-intent', action=None)
+            return self._publication_checkpoint(current)
+
+    def consume_publisher_intent(self, expected_binding, intent, plan=None):
+        """Reserve once under repository-owner.lock BEFORE HTTP; crash stays held.
+
+        Protected helper admission pins expected_binding out of band. A matching
+        active claim, exact durable action, plan/evidence and fresh source checks
+        are required; UID alone is never sufficient. Normal callers cannot select
+        this method, binding or plan through argv/stdin/config callbacks.
+        """
+        with self.ownership():
+            current = self.status()
+            if expected_binding != self.key:
+                raise DeliveryError('Publisher binding mismatch')
+            active = read_claim(self.claim_root/'active-owner.json', self.claim_root)
+            if active['binding_sha256'] != self.key or current.get('binding_sha256', self.key) != self.key:
+                raise DeliveryError('Publisher active claim mismatch')
+            if intent.get('kind') == 'merge-pr':
+                action = current.get('action')
+                if (current.get('merge_effect') != 'pending' or not current.get('qualification_sha256')
+                    or not action or action.get('kind') != 'merge-pr'
+                    or intent != dict(kind='merge-pr', repository=action['repository'],
+                        pr_number=action['pr_number'], expected_head_sha=action['expected_head_sha'],
+                        expected_base_sha=action['expected_base_sha'],
+                        expected_head_branch=action['expected_head_branch'], merge_method='merge',
+                        intent_sha256=fingerprint(action))
+                    or current.get('helper_consumed') == fingerprint(action)):
+                    raise DeliveryError('No unconsumed durable merge intent')
+                current['helper_consumed'] = fingerprint(action)
+            else:
+                pub = current.get('publication', {})
+                if (self.binding['version'] != 2 or plan is None
+                    or fingerprint(plan) != self.binding['publication']['plan_sha256']
+                    or pub.get('qualification_sha256') != self.binding['publication']['qualification_sha256']
+                    or pub.get('effect') != 'pending' or intent != pub.get('action')
+                    or fingerprint(intent) != pub.get('intent_sha256')):
+                    raise DeliveryError('No unconsumed durable publication intent')
+                pub['effect'] = 'unknown'
+                current['status'] = 'publication-reconciliation-required'
+            self._publication_checkpoint(current)
+            return True
+
+    def reconcile_publication(self, index, action, canonical, final=False):
+        """Only fixed helper canonical GET readback, never a caller success flag.
+
+        Normal helper validates canonical response against exact admitted objects,
+        ref/head/base/metadata before entering this trusted seam. An absent PR or
+        ref after a lost reply does NOT grant another mutation.
+        """
+        with self.ownership():
+            current = self.status()
+            pub = current.get('publication', {})
+            if (self.binding['version'] != 2 or pub.get('effect') not in ('pending','unknown')
+                or pub.get('next') != index or pub.get('action') != action
+                or canonical != fingerprint(action)):
+                raise DeliveryError('Publication canonical readback mismatch')
+            if action['kind'] == 'create-pr':
+                # The number is set by freeze_publication_pr after canonical GET;
+                # never allocated by the candidate binding or a create reply.
+                if not pub.get('pr_number'):
+                    raise DeliveryError('Canonical PR number is not frozen')
+            pub.update(next=index+1, effect='verified' if final else 'ready', action=None)
+            current.update(status='publication-verified' if final else 'publication-ready')
+            return self._publication_checkpoint(current)
+
+    def freeze_publication_pr(self, index, action, number):
+        with self.ownership():
+            current = self.status()
+            pub = current.get('publication', {})
+            if (pub.get('effect') not in ('pending','unknown') or pub.get('next') != index
+                or pub.get('action') != action or action.get('kind') != 'create-pr'
+                or type(number) is not int or number < 1
+                or pub.get('pr_number') not in (None, number)):
+                raise DeliveryError('Canonical PR binding conflict')
+            pub['pr_number'] = number
+            return self._publication_checkpoint(current)
+
+
+def publisher_request(config, request):
+    """Fixed publisher RPC implementation; config is protected owner admission.
+
+    Test callers may inject synthetic protected configuration. The executable
+    entry below obtains it only at the fixed root-owned path, checks identity,
+    and never accepts a config/path/key/action selector on the wire.
+    """
+    binding = config['binding']
+    root = Path('/var/lib/offmenu-publisher/integration')
+    directory = root/'current'
+    # A trusted in-process test boundary can construct a Controller directly;
+    # runtime directories cannot be selected in this JSON protocol.
+    controller = Controller(directory, binding, root)
+    return _publisher_request(controller, config, request)
+
+
+def _publisher_request(controller, config, request):
+    if not isinstance(request, dict) or not isinstance(request.get('op'), str):
+        raise DeliveryError('Invalid publisher request')
+    operation = request['op']
+    shapes = {'prepare': {'op'}, 'intent': {'op','index','action'},
+        'consume': {'op','intent'}, 'freeze-pr': {'op','index','action','number'},
+        'reconcile': {'op','index','action','canonical','final'},
+        'step': {'op','observation'}, 'outcome': {'op','kind','outcome'}, 'status': {'op'}}
+    if operation not in shapes or set(request) != shapes[operation]:
+        raise DeliveryError('Unsupported publisher request field')
+    binding, plan = controller.binding, config['plan']
+    if (fingerprint(binding) != fingerprint(config['binding'])
+        or binding['owner'] != config['logicalOwner']
+        or fingerprint(plan) != binding['publication']['plan_sha256']
+        or fingerprint(config['snapshot']) != binding['publication']['qualification_sha256']):
+        raise DeliveryError('Publisher admission changed')
+    state = controller.status()
+    pub = state.get('publication', {})
+    index = pub.get('next', 0)
+    expected = None
+    if index < len(plan['operations']):
+        expected = dict(plan['operations'][index])
+        if expected['kind'] == 'update-pr':
+            number = pub.get('pr_number')
+            if type(number) is not int or number < 1:
+                raise DeliveryError('Canonical PR number unavailable')
+            expected['path'] = expected['path'].replace('{canonical}', str(number))
+            expected['readPath'] = expected['readPath'].replace('{canonical}', str(number))
+    if operation in ('intent','freeze-pr','reconcile'):
+        if request['index'] != index or request['action'] != expected:
+            raise DeliveryError('Publisher exact admitted action mismatch')
+    if operation == 'prepare':
+        return controller.prepare_publication(plan, config['snapshot'])
+    if operation == 'status':
+        with controller.ownership():
+            return controller.status()
+    if operation == 'intent':
+        return controller.publication_intent(index, expected)
+    if operation == 'consume':
+        intent = request['intent']
+        if intent.get('kind') != 'merge-pr' and intent != expected:
+            raise DeliveryError('Publisher exact consume mismatch')
+        return {'authorized': controller.consume_publisher_intent(fingerprint(binding), intent, plan)}
+    if operation == 'freeze-pr':
+        return controller.freeze_publication_pr(index, expected, request['number'])
+    if operation == 'reconcile':
+        if request['final'] is not (index == len(plan['operations'])-1):
+            raise DeliveryError('Publisher final phase mismatch')
+        return controller.reconcile_publication(index, expected, request['canonical'], request['final'])
+    if operation == 'step':
+        observation = request['observation']
+        # Remote facts may change. Static validation/review/source/policy facts
+        # must remain the exact root-admitted evidence, never arbitrary JSON true.
+        for name in ('validation','review','source_tree','source_clean','policy_sha256',
+                     'capacity_policy_sha256','publication_triggers_actions','publisher_owner'):
+            if observation.get(name) != config['snapshot'].get(name):
+                raise DeliveryError('Publisher qualified observation changed')
+        return controller.run(observation)
+    if operation == 'outcome':
+        if request['kind'] != 'merge':
+            raise DeliveryError('Publisher does not own Linear effects')
+        return controller.record_api_outcome('merge', request['outcome'])
+    raise DeliveryError('Unsupported publisher request')
+
+
+def publisher_main():
+    """Isolated Python bridge. No keys, HTTP, general runner or auth API."""
+    import stat
+    import sys
+    try:
+        os.umask(0o077)
+        uid, gid = os.getuid(), os.getgid()
+        if uid in (0, 1000) or uid != os.geteuid() or gid != os.getegid():
+            raise DeliveryError('Publisher identity held')
+        path = Path('/etc/offmenu-publisher/config.json')
+        for parent in path.parents:
+            entry = parent.lstat()
+            if not stat.S_ISDIR(entry.st_mode) or entry.st_uid != 0 or entry.st_mode & 0o022:
+                raise DeliveryError('Publisher configuration custody held')
+        fd = os.open(path, os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK)
+        try:
+            entry = os.fstat(fd)
+            if (not stat.S_ISREG(entry.st_mode) or entry.st_uid != 0 or entry.st_gid != gid
+                or stat.S_IMODE(entry.st_mode) != 0o440 or entry.st_nlink != 1
+                or not 0 < entry.st_size <= 1048576):
+                raise DeliveryError('Publisher configuration custody held')
+            with os.fdopen(fd, 'r', closefd=False) as stream:
+                config = json.loads(stream.read(1048577))
+        finally:
+            os.close(fd)
+        directory = path.parent.stat()
+        if (stat.S_IMODE(directory.st_mode) != 0o750 or directory.st_gid != gid
+            or config['publisherUid'] != uid or config['publisherGid'] != gid):
+            raise DeliveryError('Publisher configuration identity held')
+        root = Path('/var/lib/offmenu-publisher/integration')
+        for part in root.parents:
+            entry = part.lstat()
+            if (not stat.S_ISDIR(entry.st_mode) or entry.st_uid != 0 or entry.st_mode & 0o022):
+                raise DeliveryError('Publisher state ancestry held')
+        for part in (root, root/'current'):
+            entry = part.lstat()
+            if (part.resolve() != part or not stat.S_ISDIR(entry.st_mode) or entry.st_uid != uid
+                or entry.st_gid != gid or stat.S_IMODE(entry.st_mode) != 0o700):
+                raise DeliveryError('Publisher state custody held')
+        # State and immutable bindings may be modified only by the publisher.
+        # No symlink/hardlink/special file can redirect a privileged bridge read.
+        for directory in (root, root/'current'):
+            for part in directory.iterdir():
+                entry = part.lstat()
+                if part == root/'current':
+                    continue
+                if (not stat.S_ISREG(entry.st_mode) or entry.st_uid != uid or entry.st_gid != gid
+                    or entry.st_nlink != 1 or stat.S_IMODE(entry.st_mode) != 0o600
+                    or entry.st_size > (67108864 if part.name == 'graph.sqlite' else 1048576)):
+                    raise DeliveryError('Publisher state file custody held')
+        raw = sys.stdin.buffer.read(1048577)
+        if len(raw) > 1048576:
+            raise DeliveryError('Publisher request too large')
+        result = publisher_request(config, json.loads(raw))
+        output = json.dumps(result)
+        if len(output.encode()) > 1048576:
+            raise DeliveryError('Publisher result too large')
+        print(output)
+    except Exception:
+        print('publisher-held', file=sys.stderr)
+        raise SystemExit(1)
 
 
 def main():
