@@ -490,6 +490,81 @@ class IntegrationControllerTests(unittest.TestCase):
         with self.assertRaisesRegex(DeliveryError,'Superseded'):
             first.run(self.snapshot)
 
+    def test_publisher_observe_never_initializes_claim_or_transaction(self):
+        from offmenu.delivery.integration import publisher_observe,publisher_directory,_publisher_transaction_request
+        config = dict(binding=self.binding,logicalOwner=self.binding['owner'])
+        before = {str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        view = publisher_observe(config,self.root)
+        self.assertEqual(view['state']['status'],'prepared')
+        self.assertFalse(view['claim_current']);self.assertTrue(view['claim_available'])
+        self.assertFalse(publisher_directory(self.root,self.binding).exists())
+        self.assertEqual({str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()},before)
+        for request in ({'op':'observe','extra':True},{'op':'observe-consume'}):
+            with self.assertRaises(DeliveryError):
+                _publisher_transaction_request(config,request,self.root)
+        self.assertFalse(publisher_directory(self.root,self.binding).exists())
+
+    def test_publisher_observe_preserves_unknown_owner_and_missing_history_holds(self):
+        from offmenu.delivery.integration import publisher_observe,publisher_directory
+        from offmenu.delivery.engine import atomic
+        directory = publisher_directory(self.root,self.binding)
+        first = Controller(directory,self.binding,self.root)
+        first.run(self.snapshot)
+        state = first.status();state['merge_effect'] = 'unknown';atomic(directory/'state.json',state)
+        config = dict(binding=self.binding,logicalOwner=self.binding['owner'])
+        before = {str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        view = publisher_observe(config,self.root)
+        self.assertTrue(view['claim_current']);self.assertEqual(view['state']['merge_effect'],'unknown')
+        changed = dict(self.binding,head='8'*40)
+        other = publisher_observe(dict(binding=changed,logicalOwner=changed['owner']),self.root)
+        self.assertFalse(other['claim_available']);self.assertFalse(other['claim_current'])
+        self.assertEqual({str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()},before)
+        (directory/'state.json').unlink()
+        with self.assertRaises(DeliveryError):
+            publisher_observe(config,self.root)
+        self.assertFalse((directory/'state.json').exists())
+
+    def test_readonly_reconciliation_cannot_reacquire_or_write_claims(self):
+        self.snapshot['automatic_integration_enabled'] = False
+        self.step()
+        self.controller.require_current_claim = True
+        claim = self.root/'active-owner.json'
+        original = claim.read_bytes()
+        from offmenu.delivery.engine import atomic
+        def persist(path,value):
+            self.assertNotIn(path.name,('active-owner.json','repository-claim.json'))
+            return atomic(path,value)
+        with patch('offmenu.delivery.integration.atomic',side_effect=persist):
+            self.controller.run(self.snapshot)
+        self.assertEqual(claim.read_bytes(),original)
+        other = Controller(self.root/'readonly-successor',dict(self.binding,head='8'*40),self.root)
+        other.run(self.snapshot)
+        successor = claim.read_bytes()
+        with self.assertRaisesRegex(DeliveryError,'Read-only reconciliation'):
+            self.controller.run(self.snapshot)
+        self.assertEqual(claim.read_bytes(),successor)
+
+    def test_native_rpc_admission_drift_and_missing_checkpoint_never_initialize(self):
+        from offmenu.delivery.integration import _publisher_transaction_request,publisher_directory
+        config = dict(binding=self.binding,logicalOwner=self.binding['owner'],snapshot={'native_runtime':{'unit_sha256':'1'*64}})
+        for pins in ({'native_binding_sha256':'0'*64,'native_runtime_sha256':fingerprint(config['snapshot']['native_runtime'])},
+                     {'native_binding_sha256':fingerprint(self.binding),'native_runtime_sha256':'0'*64},
+                     {'native_binding_sha256':fingerprint(self.binding)}):
+            with self.assertRaisesRegex(DeliveryError,'admission changed'):
+                _publisher_transaction_request(config,dict(op='observe',**pins),self.root)
+        directory = publisher_directory(self.root,self.binding)
+        self.assertFalse(directory.exists())
+        with self.assertRaises(DeliveryError):
+            Controller(directory,self.binding,self.root,_existing_only=True)
+        self.assertFalse(directory.exists())
+        first = Controller(directory,self.binding,self.root)
+        with first.ownership():
+            pass  # Prepared claim has no graph/effect checkpoint yet.
+        before = {str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        with self.assertRaisesRegex(DeliveryError,'checkpoint'):
+            _publisher_transaction_request(config,dict(op='observe-step',observation=self.snapshot),self.root)
+        self.assertEqual({str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()},before)
+
     def test_nonfinite_observation_time_is_rejected(self):
         self.snapshot['observed_at'] = float('nan')
         self.assertEqual(self.step()['status'],'awaiting-fresh-observation')

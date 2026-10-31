@@ -1,5 +1,6 @@
 /** Fixed, finite publisher SOURCE. Installation/host isolation remain adoption holds.
- * Normal invocation: no arguments, no stdin, no selectable callbacks or key path.
+ * Legacy invocation: no arguments/stdin. Native mode accepts one fixed flag
+ * and a bounded sealed-identity request, never callbacks, commands or key paths.
  * Root owner supplies protected config + admitted plan/evidence and installs this
  * exact source under /opt/offmenu-publisher. No daemon, setup or scheduling here.
  * Host sudo ALL/NOPASSWD means UID/key custody alone is NOT full isolation.
@@ -10,6 +11,7 @@ import {execFile} from 'node:child_process';
 import {promisify,isDeepStrictEqual} from 'node:util';
 import {fileURLToPath} from 'node:url';
 import {dirname,join} from 'node:path';
+import {reviewWireBytes} from './integration-gateway.mjs';
 
 const INSTALL='/opt/offmenu-publisher';
 const CONFIG='/etc/offmenu-publisher/config.json';
@@ -238,10 +240,11 @@ export function canonicalPublication(operation,result,binding,number) {
  * only on every restart. Root can invoke again after canonical verification.
  * `controller` is the fixed Python bridge in normal use, never a JSON callback.
  */
-export async function publicationStep({config:c,controller,adapterFactory,qualify}) {
+export async function publicationStep({config:c,controller,adapterFactory,qualify,readOnly=false}) {
   await qualify();
-  let state=await controller('prepare');
+  let state=await controller(readOnly?'observe':'prepare');
   const pub=state.publication;check(pub && pub.next<c.plan.operations.length);
+  if(readOnly && pub.effect==='ready') return {status:state.status};
   let operation=structuredClone(c.plan.operations[pub.next]); const index=pub.next;
   if(operation.kind==='update-pr') {
     check(positive(pub.pr_number) && operation.path===`${ROOT}/pulls/{canonical}` &&
@@ -255,7 +258,7 @@ export async function publicationStep({config:c,controller,adapterFactory,qualif
   if(canonicalPublication(operation,result,c.binding,pub.pr_number)) {
     if(pub.effect==='ready') state=await controller('intent',{index,action:operation});
   } else {
-    if(pub.effect!=='ready') return {status:'publication-reconciliation-required'};
+    if(readOnly || pub.effect!=='ready') return {status:'publication-reconciliation-required'};
     // Immutable objects and create-ref/PR can proceed only on authoritative
     // absence. Ref updates require exactly the admitted old commit; no force.
     if(operation.kind==='ref' && operation.expected!==null) {
@@ -285,8 +288,8 @@ export async function publicationStep({config:c,controller,adapterFactory,qualif
  * The tracker writer remains separate; this helper never supplies Linear auth.
  * Root-admitted exact review facts must still match fresh canonical API facts.
  */
-export async function integrationStep({config:c,controller,adapterFactory,advanceIntegration}) {
-  const state=await controller('status');
+export async function integrationStep({config:c,controller,adapterFactory,advanceIntegration,readOnly=false}) {
+  const state=await controller(readOnly?'observe':'status');
   const number=state.publication?.pr_number;
   check(state.publication?.effect==='verified' && positive(number));
   const b=c.binding;
@@ -320,6 +323,7 @@ export async function integrationStep({config:c,controller,adapterFactory,advanc
     }
     return snapshot;
   }
+  if(readOnly) return await controller('step',{observation:await observe()});
   const result=await advanceIntegration({
     controller:{step:observation=>controller('step',{observation}),
       outcome:(kind,outcome)=>controller('outcome',{kind,outcome})},github,observe,
@@ -328,11 +332,11 @@ export async function integrationStep({config:c,controller,adapterFactory,advanc
 }
 
 /** Existing fixed credential invocation, separately admitted frozen release. */
-export async function releaseStep({config:c,controller,adapterFactory,advanceRelease}) {
+export async function releaseStep({config:c,controller,adapterFactory,advanceRelease,readOnly=false}) {
   check(c.version===2 && c.binding.version===3);
   const b=c.binding,s=b.candidate.source;
   // Python constructor validates candidate/policy and immutable authority before auth.
-  await controller('status');
+  await controller(readOnly?'observe':'status');
   const github=await adapterFactory({
     config:{appId:c.appId,installationId:c.installationId,repositoryId:c.repositoryId,publisherUid:c.publisherUid},
     binding:{repository:b.repository,prNumber:b.pr_number,headSha:s.head,baseSha:b.main_base,
@@ -357,7 +361,115 @@ export async function releaseStep({config:c,controller,adapterFactory,advanceRel
     }
     return observation;
   }
+  if(readOnly) return await controller('step',{observation:await observe()});
   return await advanceRelease({controller:{step:observation=>controller('step',{observation})},github,observe});
+}
+
+const nativeKeys=['version','mode','operation_id','issue_id','project_id','owner',
+  'unit_sha256','packet_sha256','source_sha256'];
+export function parseNativeRequest(raw) {
+  check(typeof raw==='string' && Buffer.byteLength(raw)<=16384);
+  // Requests are flat JSON scalars. Decode every lexical key before checking
+  // duplicates, including escaped spellings; no last-key-wins authority.
+  const keys=[...raw.matchAll(/("(?:[^"\\]|\\.)*")\s*:/g)].map(m=>JSON.parse(m[1]));
+  check(keys.length===nativeKeys.length && new Set(keys).size===keys.length);
+  const request=JSON.parse(raw);reviewWireBytes(request);
+  check(exact(request,nativeKeys) && request.version===1 && ['observe','step'].includes(request.mode));
+  return request;
+}
+export function qualifyNativeRequest(c,request) {
+  reviewWireBytes(request);check(exact(request,nativeKeys) && request.version===1 &&
+    ['observe','step'].includes(request.mode));
+  const n=c.snapshot.native_runtime,b=c.binding,s=n?.source;
+  check(exact(n,['issue_id','project_id','owner','unit_sha256','packet_sha256','source']) &&
+    hex(n.unit_sha256) && hex(n.packet_sha256) &&
+    n.owner===c.logicalOwner && n.owner===b.owner && n.issue_id===b.issue_id &&
+    (!b.project_id || n.project_id===b.project_id) &&
+    [n.issue_id,n.project_id].every(v=>typeof v==='string' &&
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(v)) &&
+    s && s.repository===b.repository &&
+    (c.version===2 ? same(s,b.candidate.source) && s.branch==='develop' && s.target==='main' :
+      s.branch===b.head_branch && s.base===b.base && s.head===b.head && s.tree===b.tree && s.target==='develop'));
+  const identity={operation_id:fingerprint(b),issue_id:n.issue_id,project_id:n.project_id,owner:n.owner,
+    unit_sha256:n.unit_sha256,packet_sha256:n.packet_sha256,source_sha256:fingerprint(s)};
+  check(Object.entries(identity).every(([key,value])=>request[key]===value));
+  return {...identity,phase:c.version===2?'release':'integration'};
+}
+export function nativeJournalStatus(view,release=false) {
+  check(exact(view,['state','claim_current','claim_available']) &&
+    typeof view.claim_current==='boolean' && typeof view.claim_available==='boolean');
+  const s=view.state;check(s && typeof s.status==='string');
+  if(!view.claim_available || ['authority-refused','quarantined','disabled','cancelled','stale-candidate'].includes(s.status)) return 'denied';
+  if(['repair-required','metadata-repair-required','release-readback-mismatch','immutable-tag-conflict'].includes(s.status)) return 'failed';
+  if(release) {
+    if(s.status==='release-verified' && s.release_effect==='verified' && s.tag_effect==='verified') return 'verified';
+    if(s.tag_effect==='unknown' || s.release_effect==='unknown') return 'unknown';
+    if(s.tag_effect==='pending') return s.action?.kind==='create-release-tag' &&
+      same(s.action,s.tag_intent)?'ready':'pending';
+    if(s.release_effect==='pending') return 'pending';
+  } else {
+    if(s.status==='merge-verified' && s.merge_effect==='verified') return 'verified';
+    if(s.merge_effect==='unknown' || s.publication?.effect==='unknown') return 'unknown';
+    if(s.merge_effect==='pending') return s.helper_consumed?'unknown':'pending';
+    if(s.publication?.effect==='pending') return 'pending';
+  }
+  return ['prepared','publication-ready','publication-verified','release-tag-intent'].includes(s.status)?'ready':'pending';
+}
+
+/** Fixed installed entry, no packet-selected executable/config/key/callback.
+ * Trusted injection below is only for in-process synthetic tests. Normal main
+ * supplies the fixed Python bridge, Git reader and repository App adapter.
+ */
+export async function nativePublisherRequest({config:c,request,controller,adapterFactory,qualify}) {
+  const identity=qualifyNativeRequest(c,request);
+  const release=c.version===2;
+  let view=await controller('observe');
+  let status=nativeJournalStatus(view,release);
+  const reconcile=request.mode==='observe' || status!=='ready';
+  async function controlled(op,data) {
+    if(op==='observe') return (await controller('observe')).state;
+    if(!reconcile) return controller(op,data);
+    check(view.claim_current && ['step','reconcile','freeze-pr'].includes(op));
+    return controller('observe-'+op,data);
+  }
+  const factory=async options=>{
+    const adapter=await adapterFactory({...options,...(reconcile?{authorizeIntent:async()=>false}:{})});
+    if(!reconcile) return adapter;
+    const refused=async()=>fail();
+    return {...adapter,mergePullRequest:refused,createReleaseTag:refused,mutatePublication:refused};
+  };
+  const publicationFactory=({operation,number})=>factory({
+    config:{appId:c.appId,installationId:c.installationId,repositoryId:c.repositoryId,publisherUid:c.publisherUid},
+    binding:{repository:c.binding.repository,prNumber:number,headSha:c.binding.head,baseSha:c.binding.base,
+      headBranch:c.binding.head_branch,intentSha256:fingerprint(operation)},publicationPlan:[operation],
+    authorizeIntent:async intent=>(await controlled('consume',{intent})).authorized===true});
+  if(!['denied','failed'].includes(status) && (!reconcile || view.claim_current)) {
+    const {advanceIntegration,advanceRelease}=await import('./integration-gateway.mjs');
+    if(release && (!reconcile || view.state.release_effect || view.state.tag_effect)) {
+      if(!reconcile) await qualify();
+      await releaseStep({config:c,controller:controlled,adapterFactory:factory,advanceRelease,readOnly:reconcile});
+    } else if(!release && view.state.publication?.effect==='verified' &&
+        (!reconcile || view.state.merge_effect)) {
+      await integrationStep({config:c,controller:controlled,adapterFactory:factory,advanceIntegration,readOnly:reconcile});
+    } else if(!release && (!reconcile || ['pending','unknown'].includes(view.state.publication?.effect))) {
+      await publicationStep({config:c,controller:controlled,adapterFactory:publicationFactory,
+        qualify:reconcile?async()=>{}:qualify,readOnly:reconcile});
+    }
+    view=await controller('observe');status=nativeJournalStatus(view,release);
+  }
+  // Process cleanup is intentionally absent: the caller must wait/reap the
+  // fixed child and establish that fact independently of this JSON response.
+  return {version:1,kind:'native-publisher-response-v1',request_sha256:fingerprint(request),...identity,status};
+}
+function readNativeStdin() {
+  const chunks=[];let size=0;
+  while(true) {
+    const chunk=Buffer.alloc(4096),used=fs.readSync(0,chunk,0,chunk.length,null);
+    if(!used) break;
+    size+=used;check(size<=16384);chunks.push(chunk.subarray(0,used));
+  }
+  const bytes=Buffer.concat(chunks),raw=bytes.toString('utf8');check(Buffer.from(raw).equals(bytes));
+  return parseNativeRequest(raw);
 }
 
 async function fixedGit(c,args) {
@@ -385,7 +497,7 @@ function installedTree(path,depth=0) {
   if(s.isDirectory()) for(const name of fs.readdirSync(path)) installedTree(join(path,name),depth+1);
   else check(s.isFile()&&s.nlink===1);
 }
-async function fixedController(c,op,data={}) {
+async function fixedController(c,op,data={},native=false) {
   // Fixed program and isolated Python import path; no user site/cwd/environment.
   // Python's bridge independently reloads protected config and exact claim state.
   const code=`import sys; sys.path.insert(0, '${INSTALL}/src'); sys.path.insert(0, '${INSTALL}/tools/delivery'); from offmenu.delivery.integration import publisher_main; publisher_main()`;
@@ -396,14 +508,17 @@ async function fixedController(c,op,data={}) {
       if(error) return reject(Error('publisher-held'));
       try {resolve(JSON.parse(stdout));}catch{reject(Error('publisher-held'));}
     });
-    child.stdin.on('error',()=>{});child.stdin.end(bytesJSON({op,...data}));
+    child.stdin.on('error',()=>{});child.stdin.end(bytesJSON({op,...data,...(native?{
+      native_binding_sha256:fingerprint(c.binding),native_runtime_sha256:fingerprint(c.snapshot.native_runtime)}:{})}));
   });
 }
 
 export async function main() {
-  check(process.argv.length===2 && fileURLToPath(import.meta.url)===`${INSTALL}/tools/delivery/github-app-publisher.mjs`);
+  const native=process.argv.length===3 && process.argv[2]==='--native-rpc';
+  check((process.argv.length===2 || native) && fileURLToPath(import.meta.url)===`${INSTALL}/tools/delivery/github-app-publisher.mjs`);
   check(!process.env.NODE_OPTIONS && !process.env.NODE_PATH);
   process.umask(0o077);
+  const request=native?readNativeStdin():null;
   const c=loadProtectedConfig();
   installedTree(INSTALL); // no writable code, Python packages, native extension or import path
   for(const [path,pin] of Object.entries(c.codePins))
@@ -421,6 +536,22 @@ export async function main() {
   }
   const {createRepositoryGitHubAppAdapter}=await import('./github-app-adapter.mjs');
   checkedWorkspace(c);
+  if(native) {
+    const qualify=async()=>{
+      if(c.version===2) {
+        const source=c.binding.candidate.source;
+        const raw=await fixedGit(c,['cat-file','commit',source.head]);
+        check(objectHash('commit',raw)===source.head && raw.toString().startsWith(`tree ${source.tree}\n`));
+        return;
+      }
+      return qualifyCandidate(c,{
+        branchHead:(await fixedGit(c,['rev-parse','--verify',`refs/heads/${c.binding.head_branch}`])).toString().trim(),
+        readObject:(type,id)=>fixedGit(c,['cat-file',type,id]),
+        readChangedFile:async path=>checkedChangedFile(c,path)});
+    };
+    return nativePublisherRequest({config:c,request,controller:(op,data)=>fixedController(c,op,data,true),qualify,
+      adapterFactory:options=>createRepositoryGitHubAppAdapter({...options,loadPrivateKey:async()=>loadProtectedKey(c)})});
+  }
   if(c.version===2) {
     const s=c.binding.candidate.source;
     const raw=await fixedGit(c,['cat-file','commit',s.head]);
