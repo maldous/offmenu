@@ -664,13 +664,11 @@ class Journal:
                     state['status'] = ('cancel-requested' if state['cancel_requested'] else
                                        ('running' if remote.get('running') else 'queued'))
                     now = time.time()
-                    if not remote.get('running'):
-                        state.pop('wrapper_observed_at', None)
-                    since = state.setdefault('wrapper_observed_at', now) if remote.get('running') else now
+                    since = state.setdefault('wrapper_observed_at', now)
                     self.save(key,state,'observed-'+state['status'])
                     # Queued work has not necessarily started. A grace expiry
                     # is not proof of failure, completion or permission to retry.
-                    if not remote.get('running') or now - since < WRAPPER_GRACE_SECONDS:
+                    if now - since < WRAPPER_GRACE_SECONDS:
                         return state
                     state['wrapper_stale'] = True
                     self.save(key,state,'stale-wrapper-backend-observation')

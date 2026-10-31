@@ -193,16 +193,17 @@ class OperationRecoveryTests(unittest.TestCase):
         self.assertEqual(self.tick()['status'],'failed')
         self.assertEqual(len([a for _,a in self.remote.submissions if a['action']=='run']),1)
 
-    def stale_observer(self):
+    def stale_observer(self, running=True):
         self.now = 1000
         self.clock = patch.object(operations.time, 'time', side_effect=lambda:self.now)
         self.clock.start()
         self.addCleanup(self.clock.stop)
         state = self.tick()
-        self.tick()  # First actual running observation starts the durable grace.
+        self.remote.jobs[state['windmill_job_id']]['running'] = running
+        self.tick()  # First wrapper observation starts the durable grace.
         self.now += operations.WRAPPER_GRACE_SECONDS + 1
         stale = self.tick()
-        self.assertTrue(stale['wrapper_stale'])
+        self.assertTrue(stale.get('wrapper_stale'), 'stale wrapper must reach backend observation')
         observer_id,args = self.remote.submissions[-1]
         self.assertEqual(args, operations.bridge_arguments(self.spec,'status'))
         self.assertEqual(stale['windmill_job_id'], state['windmill_job_id'])
@@ -222,6 +223,52 @@ class OperationRecoveryTests(unittest.TestCase):
         self.assertEqual(self.tick(), recovered)
         self.assertEqual(self.remote.submissions,before)
 
+    def test_stale_queued_wrapper_recovers_same_terminal_backend_without_replay(self):
+        original,observer = self.stale_observer(running=False)
+        self.remote.complete(observer,self.spec)
+        recovered = self.tick()
+        self.assertEqual(recovered['status'],'succeeded')
+        self.assertEqual(recovered['windmill_job_id'],original)
+        self.assertEqual(recovered['logical_job_id'],operations.bridge_arguments(self.spec)['job_id'])
+        self.assertEqual(recovered['accepted_output_sha256'],self.spec['outputs'])
+        self.assertEqual(recovered['receipt_sha256'],operations.digest(
+            self.remote.jobs[observer]['result']['receipt']))
+        self.assertEqual(self.remote.jobs[original]['type'],'QueuedJob')
+        self.assertFalse(self.remote.jobs[original]['running'])
+        before = copy.deepcopy(self.remote.submissions)
+        self.assertEqual([a['action'] for _,a in before],['run','status'])
+        self.assertEqual(self.tick(),recovered)
+        self.assertEqual(self.remote.submissions,before)
+
+    def test_stale_queued_wrapper_queued_backend_rearms_bounded_observation(self):
+        _,observer = self.stale_observer(running=False)
+        self.remote.complete(observer,self.spec)
+        self.remote.jobs[observer]['result']['receipt']['status'] = 'queued'
+        state = self.tick()
+        self.assertEqual(state['status'],'queued')
+        self.assertFalse(state.get('accepted_output_sha256'))
+        before = copy.deepcopy(self.remote.submissions)
+        self.now += operations.WRAPPER_GRACE_SECONDS - 1
+        self.tick()
+        self.assertEqual(self.remote.submissions,before)
+        self.now += 1
+        self.tick()
+        self.assertEqual([a['action'] for _,a in self.remote.submissions],['run','status','status'])
+        self.assertNotEqual(self.remote.submissions[-1][0],observer)
+        self.assertEqual(self.remote.submissions[-1][1],operations.bridge_arguments(self.spec,'status'))
+
+    def test_stale_queued_wrapper_unknown_backend_never_completes_or_replays(self):
+        _,observer = self.stale_observer(running=False)
+        self.remote.complete(observer,self.spec)
+        self.remote.jobs[observer]['result']['receipt']['status'] = 'unknown'
+        before = copy.deepcopy(self.remote.submissions)
+        for _ in range(2):
+            state = self.tick()
+            self.assertEqual(state['status'],'unknown')
+            self.assertEqual(state['accepted_output_sha256'],{})
+            self.now += operations.WRAPPER_GRACE_SECONDS + 1
+        self.assertEqual(self.remote.submissions,before)
+
     def test_grace_and_queue_never_authorize_early_backend_observation(self):
         state = self.tick()
         with patch.object(operations.time,'time',return_value=1000):
@@ -229,7 +276,7 @@ class OperationRecoveryTests(unittest.TestCase):
         with patch.object(operations.time,'time',return_value=1000+operations.WRAPPER_GRACE_SECONDS-1):
             self.assertEqual(self.tick()['status'],'running')
         self.remote.jobs[state['windmill_job_id']]['running'] = False
-        with patch.object(operations.time,'time',return_value=10000):
+        with patch.object(operations.time,'time',return_value=1000+operations.WRAPPER_GRACE_SECONDS-1):
             self.assertEqual(self.tick()['status'],'queued')
         self.assertEqual(len(self.remote.submissions),1)
 
