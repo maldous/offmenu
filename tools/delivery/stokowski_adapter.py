@@ -93,11 +93,21 @@ class CurrentWork:
         self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config = read_record(runtime/'current.json')
-        if set(self.config) - {'qualified_successor', 'project_route'} != {'version', 'owner', 'runtime_root', 'catalog',
+        if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations'} != {'version', 'owner', 'runtime_root', 'catalog',
                                'source_head', 'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}:
             raise AdmissionError('current_config_fields')
         validated_project_route(self.config.get('project_route', project_route(PROJECT)))
         self.root = Path(self.config['runtime_root'])
+        completed = self.config.get('completed_native_validations', {})
+        if not isinstance(completed, dict):
+            raise AdmissionError('current_completed_native_fields')
+        for issue, ref in completed.items():
+            if (not isinstance(issue, str) or not re.fullmatch(r'UIF-[1-9][0-9]*', issue)
+                or not isinstance(ref, dict) or set(ref) != {'path', 'sha256'}
+                or not isinstance(ref['path'], str) or not isinstance(ref['sha256'], str)
+                or not re.fullmatch('[0-9a-f]{64}', ref['sha256'])):
+                raise AdmissionError('current_completed_native_fields')
+            self.private(ref['path'])
         if (self.root != self.root.resolve() or not self.root.is_dir()
             or self.root.name != 'stokowski' or self.root.parent.name != '.delivery'
             or not self.runtime.is_relative_to(self.root) or not self.config['owner']
