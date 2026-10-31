@@ -168,3 +168,92 @@ custody remains intact until separately qualified retirement. Delivery BAU
 activation requires all source/review/qualification gates and actual mandatory
 host confirmations. Product deployment, CIX, Actions, new credentials/spend and
 historical-worker restart remain forbidden.
+
+## Executable upgrade procedure source
+
+`native_harness_upgrade.py` adds a separately reviewed source procedure. It is
+not installed or authorized on the actual host by these tests. It has no CLI,
+dynamic module loader, JSON-selected commands, callbacks or permission actions.
+The old protected installers remain unchanged. Their receipts are preserved,
+read back by exact byte hash, and never cleared to permit another installation.
+
+The sole owner imports `execute(plan_bytes, upgrade, admission=..., quiescence=...)`
+only after separately reviewing this executable route and receiving actual host
+mandatory confirmations. `OwnerAdmission` is a trusted Python capability binding
+the owner, exact preflight byte hash, upgrade digest, host-confirmation evidence
+hash and a short expiry. It is not authentication merely because someone can
+construct the class. No worker JSON may issue it. `Quiescence` binds the original
+snapshot, native observation evidence, observation time, integer zero inflight,
+stopped descendants and no unresolved operation IDs. The actual native owners
+must qualify that observation; the procedure cannot infer it from a successful
+coding receipt or census arbitrary remote jobs.
+
+The typed upgrade object has exactly `version: 1`,
+`kind: native-harness-upgrade-v1`, `operation_id` (64 lowercase hex),
+`preflight_sha256`, `old`, `new`, and `legacy_receipts`. `old` and `new` have
+exactly the five fixed target roles from `TARGETS`. Each closure contains
+`directories` and `files` maps. Directory keys are canonical relative paths,
+with `""` identifying the closure root; metadata is `{mode, uid, gid}`. File
+metadata adds `{size, sha256}`. Numeric modes are observed expectations, never
+permissions to apply. Parent directories must be declared, UID must match the
+admitted host owner, and group/world writable or special mode bits are refused.
+Unexpected entries, links, hardlinks, missing files, unsafe custody and byte or
+mode drift fail closed. Known credential and log paths are excluded. Source and
+configuration selected by the owner must contain reference names, never secrets.
+
+`upgrade_digest` is SHA-256 of the protected owner's canonical newline-terminated
+JSON bytes, capped at 32 MiB. It intentionally differs from the shared bounded
+JSON fingerprint used for the much smaller preflight contract. Whole source
+closures may exceed that contract's 64-field/object bound. Closure reads have
+finite 50,000-entry, 64 MiB/file and 1 GiB/closure limits, and inspect only the
+explicit selected closure. Old source/venv/config descriptor bytes must match
+the original snapshot's source/runtime/config manifest hashes. New config and
+dependency descriptors must match the preflight pins. Selected candidate
+artifact pins must appear in the new owner source, and old/new `.git/HEAD` bytes
+must match the admitted heads. Actual Git tree truth and complete source/component
+association remain independently qualified owner inputs, never inferred from a
+branch name. Root must compose the accepted UIF-127 correction `731ce2034` and
+UIF-128 correction `a6437a416` (or independently accepted successors); the
+upgrade worker's older source checkout is not that coherent installed closure.
+
+The owner stages each complete sealed directory beside its eventual target as
+`.native-upgrade-<operation_id>-<role>.new`. Rollback custody uses the corresponding
+`.old` sibling; existing custody refuses replacement. Staging/qualification is
+an explicit owner action outside this module. The procedure:
+
+1. Takes the existing coordinator and repository-owner locks, without creating
+   replacement locks. Reads the fixed coordinator service's actual inactive,
+   dead, zero-PID state and checks the separately qualified fresh native witness.
+2. Verifies all old/staged closures and original installer receipts before any
+   move. Writes and syncs a permanent old-closure fence, then operation intent.
+   A crash even between those receipts suppresses another operation ID against
+   the same old closure. It creates no queue or continuing controller.
+3. Rechecks stopped/native state and each selected closure, then uses Linux
+   create-only rename to move old target to `.old`, then staged target into place.
+   Unsupported atomic rename, cross-device moves and existing targets hold.
+4. Reads back exact installed and rollback bytes/modes, binds both permanent
+   intents, then writes a create-only installed receipt. No service is started.
+
+Any interruption retains the original intent and partial custody. `observe`
+performs read-only reconciliation of that same operation, with distinct staged,
+installed and rollback axes. It never retries, removes a receipt, changes IDs or
+automatically rolls back a multi-directory partial move. The owner must qualify
+an explicit recovery procedure for the observed partial state. Even a fully
+installed closure is not active, released source, functional BAU or legacy
+retirement acceptance.
+
+After separately authorized owner-managed activation, `verify_active` checks
+installed/rollback bytes both before and after fixed service readback. It requires
+an active/running positive PID, the protected interpreter and coordinator script
+with `--current`, and unchanged service/PID binding across observations. It reads
+only bounded process command metadata and never returns command contents. It
+does not start the service or claim continuous liveness or functional acceptance.
+
+Production `Host` requires real UID/EUID root, safe root-owned parent custody,
+existing owner locks and sealed target metadata. Existing publisher-owned or
+caller-owned lock/runtime custody may fail those strict checks. The owner must
+qualify the actual custody/interface seam; this source does not change ownership,
+grant permissions or silently relax checks to pass it. A private test seam works
+only under a disposable `/tmp` root for an unprivileged caller, with a fixed fake
+service observer. All executed upgrade tests use that seam; neither actual host
+services nor installed files, credentials or permissions are inspected or changed.
