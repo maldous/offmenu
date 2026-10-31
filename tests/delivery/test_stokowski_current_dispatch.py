@@ -2561,20 +2561,102 @@ class CurrentDispatchTests(unittest.TestCase):
     def test_workspace_uses_each_task_source_branch_and_existing_identity(self):
         issue, runtime = self.qualify(218)
         native, _, _ = self.adapted()
-        clone = self.stack.enter_context(patch.object(adapter.subprocess,'run'))
+        clone = self.stack.enter_context(patch.object(adapter.subprocess,'run',
+            side_effect=lambda argv,**kwargs: Path(argv[-1]).mkdir(mode=0o775)))
         workspace = asyncio.run(native.ensure_workspace(self.runtime/'workspaces',issue.identifier,SimpleNamespace()))
         self.assertEqual(workspace.path,runtime/'workspaces'/issue.identifier)
         args = clone.call_args.args[0]
         self.assertIn('feature/test-current',args)
         self.assertEqual(args[-2],str(self.temp/'checkout-218'))
         self.assertNotEqual(args[-2],str(self.source))
-        workspace.path.mkdir()
         original_git = self.git_read
         self.git.side_effect = lambda args,**kwargs: ('wrong-head' if args[2] == str(workspace.path)
                                                     else original_git(args,**kwargs))
         with self.assertRaises(AdmissionError):
             asyncio.run(native.ensure_workspace(self.runtime/'workspaces',issue.identifier,SimpleNamespace()))
         self.assertEqual(clone.call_count,1)
+
+    @unittest.skipUnless(shutil.which('setfacl'), 'POSIX ACL fixture needs setfacl')
+    def test_new_workspace_with_inherited_group_write_passes_confinement_path_check(self):
+        from coding_child_launch import owned_path
+        import coding_child_launch
+        issue, runtime = self.qualify(218)
+        native, _, _ = self.adapted()
+        runtime.chmod(0o700)
+        (runtime/'workspaces').mkdir(mode=0o700, exist_ok=True)
+        (runtime/'workspaces').chmod(0o700)
+        # A clone may inherit ACL write bits despite the service's umask.
+        def inherited_clone(argv, **kwargs):
+            path = Path(argv[-1])
+            path.mkdir()
+            path.chmod(0o775)
+            subprocess.check_call(['setfacl', '-m', 'd:u::rwx,d:g::rwx,d:o::---', str(path)])
+            (path/'source-directory').mkdir()
+            (path/'source-directory/checked-out.py').write_text('source')
+            (path/'source-directory/run.sh').write_text('executable')
+            (path/'source-directory/run.sh').chmod(0o775)
+            self.assertTrue((path/'source-directory/checked-out.py').stat().st_mode & 0o020)
+        with patch.object(adapter.subprocess, 'run', side_effect=inherited_clone):
+            workspace = asyncio.run(native.ensure_workspace(
+                self.runtime/'workspaces', issue.identifier, SimpleNamespace()))
+        # Check the real confinement path contract, without a provider or child.
+        with patch.object(coding_child_launch, 'RUNTIME', runtime):
+            self.assertEqual(owned_path(workspace.path), str(workspace.path))
+        self.assertEqual(workspace.path.stat().st_mode & 0o777, 0o700)
+        self.assertEqual((workspace.path/'source-directory/checked-out.py').stat().st_mode & 0o777, 0o600)
+        self.assertEqual((workspace.path/'source-directory/run.sh').stat().st_mode & 0o777, 0o700)
+        # Later writes under both the root and an already-cloned directory obey
+        # the service umask rather than the formerly inherited default ACL.
+        mask = os.umask(0o077)
+        try:
+            for parent in (workspace.path, workspace.path/'source-directory'):
+                child = parent/'later-directory'
+                child.mkdir()
+                (child/'later-file').write_text('private')
+                self.assertFalse(child.stat().st_mode & 0o077)
+                self.assertFalse((child/'later-file').stat().st_mode & 0o077)
+        finally:
+            os.umask(mask)
+
+    def test_existing_group_writable_workspace_is_held_without_changing_it(self):
+        issue, runtime = self.qualify(218)
+        path = runtime/'workspaces'/issue.identifier
+        path.mkdir(parents=True)
+        path.chmod(0o775)
+        (path/'retained-output').write_text('preserved')
+        native, _, _ = self.adapted()
+        with patch.object(adapter.subprocess, 'run') as clone:
+            with self.assertRaisesRegex(AdmissionError, 'Workspace ownership or permissions'):
+                asyncio.run(native.ensure_workspace(
+                    self.runtime/'workspaces', issue.identifier, SimpleNamespace()))
+        clone.assert_not_called()
+        self.assertEqual(path.stat().st_mode & 0o777, 0o775)
+        self.assertEqual((path/'retained-output').read_text(), 'preserved')
+
+    @unittest.skipUnless(shutil.which('setfacl'), 'POSIX ACL fixture needs setfacl')
+    def test_retained_default_acl_is_held_without_rewriting_it(self):
+        issue, runtime = self.qualify(218)
+        path = runtime/'workspaces'/issue.identifier
+        path.mkdir(parents=True)
+        subprocess.check_call(['setfacl', '-m', 'd:u::rwx,d:g::rwx,d:o::---', str(path)])
+        path.chmod(0o700)
+        before = os.getxattr(path, 'system.posix_acl_default')
+        native, _, _ = self.adapted()
+        with self.assertRaisesRegex(AdmissionError, 'Workspace inherited default ACL'):
+            asyncio.run(native.ensure_workspace(
+                self.runtime/'workspaces', issue.identifier, SimpleNamespace()))
+        self.assertEqual(os.getxattr(path, 'system.posix_acl_default'), before)
+        self.assertEqual(path.stat().st_mode & 0o777, 0o700)
+
+    def test_new_workspace_acl_removal_error_prevents_exposure(self):
+        issue, runtime = self.qualify(218)
+        native, _, _ = self.adapted()
+        with patch.object(adapter.subprocess, 'run',
+                          side_effect=lambda argv,**kwargs: Path(argv[-1]).mkdir()), \
+             patch.object(adapter.os, 'removexattr', side_effect=PermissionError('denied')):
+            with self.assertRaises(PermissionError):
+                asyncio.run(native.ensure_workspace(
+                    self.runtime/'workspaces', issue.identifier, SimpleNamespace()))
 
     def test_current_owner_lock_excludes_second_caller(self):
         with (self.root/'coordinator.lock').open('a') as lock:

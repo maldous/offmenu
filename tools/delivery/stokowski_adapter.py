@@ -5,6 +5,7 @@ this OffMenu coordinator process. Arbitrary upstream shell hooks are disabled.
 """
 import argparse
 import asyncio
+import errno
 import fcntl
 import hashlib
 import importlib.metadata
@@ -2077,6 +2078,58 @@ def install_adapters(runtime, manifest, key, current=None):
             subprocess.run(['git', 'clone', '--shared', '--single-branch', '--branch',
                             selected_manifest['branch'], str(source), str(path)], check=True,
                            capture_output=True, env=child_environment(os.environ))
+        # A default ACL can override the service umask during git clone. Close
+        # the new root before exposing it to the coding confinement binder.
+        # Retained workspaces require explicit owner reconciliation instead.
+        fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            info = os.fstat(fd)
+            if info.st_uid != os.getuid():
+                raise AdmissionError('Workspace ownership or permissions')
+            # Git may inherit defaults on source folders as well as the root.
+            # Only new clones may be changed; retained contents stay refuse-only.
+            for _, _, filenames, directory_fd in os.fwalk('.', dir_fd=fd, follow_symlinks=False):
+                if os.fstat(directory_fd).st_uid != os.getuid():
+                    raise AdmissionError('Workspace ownership or permissions')
+                if created:
+                    os.fchmod(directory_fd, 0o700)
+                    try:
+                        os.removexattr(directory_fd, 'system.posix_acl_default')
+                    except OSError as error:
+                        if error.errno != errno.ENODATA:
+                            raise
+                if os.fstat(directory_fd).st_mode & 0o022:
+                    raise AdmissionError('Workspace ownership or permissions')
+                try:
+                    os.getxattr(directory_fd, 'system.posix_acl_default')
+                except OSError as error:
+                    if error.errno != errno.ENODATA:
+                        raise
+                else:
+                    raise AdmissionError('Workspace inherited default ACL')
+                for name in filenames:
+                    info = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+                    if stat.S_ISLNK(info.st_mode):
+                        continue
+                    file_fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                                      dir_fd=directory_fd)
+                    try:
+                        info = os.fstat(file_fd)
+                        if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid()
+                            or info.st_nlink != 1):
+                            raise AdmissionError('Workspace ownership or permissions')
+                        if created:
+                            # Preserve user execute without inherited access ACLs.
+                            os.fchmod(file_fd, stat.S_IMODE(info.st_mode) & 0o700)
+                            os.fsync(file_fd)
+                        if os.fstat(file_fd).st_mode & 0o022:
+                            raise AdmissionError('Workspace ownership or permissions')
+                    finally:
+                        os.close(file_fd)
+                if created:
+                    os.fsync(directory_fd)
+        finally:
+            os.close(fd)
         head = subprocess.check_output(['git', '-C', str(path), 'rev-parse', 'HEAD'], text=True).strip()
         branch = (subprocess.check_output(['git', '-C', str(path), 'branch', '--show-current'], text=True).strip()
                   if current else selected_manifest['branch'])
