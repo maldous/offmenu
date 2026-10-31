@@ -64,7 +64,7 @@ class CompletedNativeTests(unittest.TestCase):
         database.chmod(0o600);self.evidence['controller_checkpoint']={'path':str(database),'sha256':completed.file_sha(database)}
 
         self.config={'source_head':merge,'owner':self.owner,'policy_sha256':policy,'source_sha256':{'tools/delivery/windmill_runner.py':runner,'tools/delivery/stokowski_completed.py':completed.file_sha(completed.__file__)},'completed_native_validations':{}}
-        self.current=SimpleNamespace(root=self.root,runtime=self.root/'coordinator',config=self.config,entries={'UIF-119':self.entry},guard=lambda:None,context=lambda *a,**k:(self.runtime,self.manifest,self.repo),gate_binding=lambda *a:self.unit)
+        self.current=SimpleNamespace(root=self.root,runtime=self.root/'coordinator',config=self.config,owner_custody=None,entries={'UIF-119':self.entry},guard=lambda:None,context=lambda *a,**k:(self.runtime,self.manifest,self.repo),gate_binding=lambda *a:self.unit)
         self.repin()
 
     def write(self,p,value):
@@ -77,6 +77,32 @@ class CompletedNativeTests(unittest.TestCase):
         p=Path(self.evidence[key]['path']);v=json.loads(p.read_bytes());change(v);self.write(p,v) # Do not alter owner-admitted immutable ref.
     def test_completed_packet_no_dispatch_and_truthful_distinct_bases(self):
         packet=completed.qualify(self.current,'UIF-119');self.assertEqual(packet['decision']['kind'],completed.KIND);self.assertIsNone(packet['decision']['action']);self.assertEqual(packet['unit_binding'],self.unit);self.assertNotEqual(packet['integration_binding']['base'],self.manifest['base_revision']);self.assertNotEqual(packet['integration_binding']['head_branch'],self.manifest['branch']);self.assertFalse((self.runtime/'operations').exists())
+    def test_completed_publication_origin_needs_no_operations_journal(self):
+        import stokowski_prepare as prepare
+        review = completed.qualify(self.current, 'UIF-119')
+        trigger = dict(issue='UIF-119', review_sha256=digest(review))
+        with prepare._publication_origin_claim(self.current, trigger, review, self.runtime):
+            self.assertFalse((self.runtime/'operations').exists())
+        self.assertFalse((self.runtime/'operations').exists())
+
+    def test_completed_publication_origin_rechecks_actual_pinned_proof(self):
+        import stokowski_prepare as prepare
+        review = completed.qualify(self.current, 'UIF-119')
+        trigger = dict(issue='UIF-119', review_sha256=digest(review))
+        self.mutate('validation_receipt', lambda value: value.update(child_tree_gone=False))
+        with self.assertRaises(AdmissionError):
+            prepare._publication_origin_claim(self.current, trigger, review, self.runtime)
+        self.assertFalse((self.runtime/'operations').exists())
+
+    def test_unknown_publication_origin_does_not_bypass_missing_journal(self):
+        import stokowski_prepare as prepare
+        review = completed.qualify(self.current, 'UIF-119')
+        review['decision']['kind'] = 'unqualified-completed-kind'
+        trigger = dict(issue='UIF-119', review_sha256=digest(review))
+        with self.assertRaisesRegex(AdmissionError, 'publication_successor_journal_missing'):
+            prepare._publication_origin_claim(self.current, trigger, review, self.runtime)
+        self.assertFalse((self.runtime/'operations').exists())
+
     def test_native_binding_change_refused(self):
         self.evidence['unit_binding']=dict(self.unit,admission_sha256='wrong');self.repin()
         with self.assertRaises(AdmissionError):completed.qualify(self.current,'UIF-119')

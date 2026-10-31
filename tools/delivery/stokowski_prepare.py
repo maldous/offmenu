@@ -16,6 +16,32 @@ from stokowski_adapter import SOURCE, PROJECT, MODEL, file_sha, CurrentWork
 from symphony_tasks import project_route, PROJECT_ROUTES
 
 
+def _publication_origin_claim(view, trigger, review, original):
+    """Lock a live Journal or requalify the distinct completed-native origin.
+
+    Completed Engine evidence has no operations Journal. It must retain its
+    own exact proof instead of creating an empty database as a substitute.
+    """
+    from contextlib import nullcontext
+    from types import SimpleNamespace
+    from symphony_capacity import AdmissionError, digest
+    from stokowski_completed import KIND, qualify
+    from stokowski_operations import Journal
+
+    if digest(review) != trigger['review_sha256']:
+        raise AdmissionError('publication_successor_review_drift')
+    if review.get('decision', {}).get('kind') == KIND:
+        if qualify(view, trigger['issue']) != review:
+            raise AdmissionError('publication_successor_completed_evidence_drift')
+        return nullcontext()
+    operation_root = original/'operations'
+    if (operation_root != operation_root.resolve()
+        or not (operation_root/'operations.sqlite').is_file()):
+        raise AdmissionError('publication_successor_journal_missing')
+    return Journal.claim(SimpleNamespace(root=operation_root),
+                         review['integration_binding']['validation_operation_key'])
+
+
 def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
                         provider_proof):
     """Publish only metadata through an existing trusted owner's invocation.
@@ -279,8 +305,6 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
             _publication_sync(catalog.parent)
             return dict(status='duplicate', runtime=str(runtime), dispatches=0)
         if successor:
-            from types import SimpleNamespace
-            from stokowski_operations import Journal
             trigger = packet['trigger']
             # Resolve the authoritative validation runtime through the existing
             # origin contract (a stage entry may refer to another runtime).
@@ -293,17 +317,11 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
             original = canonical(original)
             require(original.is_relative_to(root) and original not in (runtime, coordinator),
                     'successor_original_runtime')
-            operation_root = canonical(original/'operations')
-            require((operation_root/'operations.sqlite').is_file(), 'successor_journal_missing')
             review = read(coordinator/('unit-review-' + trigger['issue'] + '.json'))
-            require(digest(review) == trigger['review_sha256'], 'successor_review_drift')
-            key = review['integration_binding']['validation_operation_key']
-            # Lock order is publication -> original operation, both nonblocking.
-            # Use only Journal's existing claim contract: constructing Journal
-            # would initialize/chmod the original database. No publication write
-            # may alter its operation or history. Provider callbacks run above,
-            # before this claim, since they may themselves need the operation.
-            with Journal.claim(SimpleNamespace(root=operation_root), key):
+            # Lock order remains publication -> original Journal for that
+            # origin. Completed-native evidence is requalified without a fake
+            # Journal; qualify_successor repeats its proof at the write boundary.
+            with _publication_origin_claim(view, trigger, review, original):
                 consumer = CurrentWork(canonical(packet['selected_current']['coordinator_runtime']),
                                        read_only=True, qualification_only=True)
                 identity = consumer.qualify_successor(dict(path=str(handoff_path), sha256=handoff_sha256), packet, config)
