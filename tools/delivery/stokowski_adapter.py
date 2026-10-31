@@ -93,7 +93,7 @@ class CurrentWork:
         self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config = read_record(runtime/'current.json')
-        if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations'} != {'version', 'owner', 'runtime_root', 'catalog',
+        if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations', 'normal_intake'} != {'version', 'owner', 'runtime_root', 'catalog',
                                'source_head', 'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}:
             raise AdmissionError('current_config_fields')
         validated_project_route(self.config.get('project_route', project_route(PROJECT)))
@@ -239,6 +239,259 @@ class CurrentWork:
             self.save()
             raise AdmissionError('current_fatal_binding') from error
 
+    def _intake_policy(self):
+        ref = self.config.get('normal_intake')
+        if ref is None:
+            raise AdmissionError('intake_disabled: owner must pin normal_intake policy')
+        policy = self._private_pin(ref)
+        if (set(policy) != {'schema', 'enabled', 'owner', 'source_head', 'project_route',
+                            'expires_at', 'references', 'resources', 'timeout_seconds'}
+            or policy['schema'] != 'offmenu-normal-intake/1' or policy['enabled'] is not True
+            or policy['owner'] != self.config['owner']
+            or policy['source_head'] != self.config['source_head'] or policy['project_route'] != self.route
+            or type(policy['expires_at']) not in (int, float)
+            or not math.isfinite(policy['expires_at']) or policy['expires_at'] < time.time()
+            or type(policy['timeout_seconds']) is not int or not 1 <= policy['timeout_seconds'] <= 60
+            or not isinstance(policy['references'], dict) or not policy['references']):
+            raise AdmissionError('intake_policy_binding')
+        return policy
+
+    def _private_pin(self, ref):
+        if (not isinstance(ref, dict) or set(ref) != {'path', 'sha256'}
+            or not isinstance(ref['sha256'], str) or not re.fullmatch('[0-9a-f]{64}', ref['sha256'])):
+            raise AdmissionError('intake_reference_schema')
+        path = self.private(ref['path'])
+        if file_sha(path) != ref['sha256']:
+            raise AdmissionError('intake_reference_drift')
+        return read_record(path)
+
+    def _intake_authority(self, reference):
+        policy = self._intake_policy()
+        authority = self._private_pin(policy['references'][reference])
+        if (set(authority) != {'schema', 'owner', 'source_head', 'issue', 'issue_id', 'project_id',
+                              'accepted_scope', 'acceptance', 'dependencies', 'decision', 'handoff',
+                              'qualification'}
+            or authority['schema'] != 'offmenu-intake-authority/1'
+            or authority['owner'] != self.config['owner']
+            or authority['source_head'] != self.config['source_head']
+            or authority['project_id'] != self.route['project_id']
+            or not isinstance(authority['accepted_scope'], list) or not authority['accepted_scope']
+            or any(not isinstance(name, str) or not name.strip() for name in authority['accepted_scope'])
+            or not isinstance(authority['acceptance'], list) or not authority['acceptance']
+            or any(not isinstance(item, str) or not item.strip() for item in authority['acceptance'])
+            or authority['decision'] not in ('owner-qualified', 'qualification-only')):
+            raise AdmissionError('intake_owner_scope_or_decision')
+        return policy, authority
+
+    def _trusted_handoff(self, ref, packet):
+        if self.config.get('qualified_successor') == ref:
+            return True
+        for record in self.state.get('intake', {}).values():
+            if record.get('status') != 'qualified' or record.get('handoff') != ref:
+                continue
+            _, authority = self._intake_authority(record['reference'])
+            if (authority['decision'] == 'owner-qualified' and authority['handoff'] == ref
+                and record['authority'] == authority and time.time() - record['checked_at'] <= 120
+                and packet['execution_outcome'] == dict(identifier=authority['issue'],
+                    uuid=authority['issue_id'], project_id=authority['project_id'])
+                and packet['scope'] == authority['accepted_scope']
+                and packet['acceptance'] == authority['acceptance']
+                and packet['source']['base'] == authority['source_head']):
+                return True
+        return False
+
+    async def _intake(self, client, issue):
+        if not re.fullmatch(r'UIF-[1-9][0-9]*', issue.identifier):
+            return
+        records = self.state.setdefault('intake', {})
+        record = records.setdefault(issue.identifier, dict(issue_id=issue.id))
+        try:
+            self.guard()
+            if record['issue_id'] != issue.id:
+                raise AdmissionError('intake_identity_drift')
+            if self.stopping or (self.runtime/'cancel.json').exists():
+                raise AdmissionError('intake_cancelled')
+            self._intake_policy()
+            remote = (await client._graphql(
+                'query($id: String!){issue(id:$id){id identifier description project{id} state{name} '
+                'inverseRelations{nodes{type issue{id state{name}}}}}}', {'id': issue.id})).get('issue') or {}
+            if (remote.get('id') != issue.id or remote.get('identifier') != issue.identifier
+                or remote.get('project', {}).get('id') != self.route['project_id']
+                or remote.get('state', {}).get('name') not in ('Todo', 'In Progress')):
+                raise AdmissionError('intake_authoritative_identity_or_state')
+            matches = re.findall(r'```offmenu-intake\s*\n(.*?)\n```', remote.get('description') or '', re.S)
+            if len(matches) != 1:
+                raise AdmissionError('intake_reference_missing: qualified owner must supply offmenu-intake reference')
+            def unique(pairs):
+                value = {}
+                for key, item in pairs:
+                    if key in value:
+                        raise AdmissionError('intake_duplicate_key')
+                    value[key] = item
+                return value
+            supplied = json.loads(matches[0], object_pairs_hook=unique)
+            if (not isinstance(supplied, dict) or set(supplied) != {'schema', 'reference'}
+                or supplied['schema'] != 'offmenu-intake-reference/1'
+                or not isinstance(supplied['reference'], str)):
+                raise AdmissionError('intake_reference_schema')
+            policy, authority = self._intake_authority(supplied['reference'])
+            dependencies = sorted([dict(id=n['issue']['id'], state=n['issue']['state']['name'])
+                for n in remote['inverseRelations']['nodes'] if n['type'] == 'blocks'], key=lambda n:n['id'])
+            if (authority['issue'] != issue.identifier or authority['issue_id'] != issue.id
+                or dependencies != authority['dependencies']
+                or any(d['state'] != 'Done' for d in dependencies)):
+                raise AdmissionError('intake_identity_or_dependency_drift')
+            if record.get('authority') not in (None, authority):
+                previous = record['authority']
+                stable = set(authority) - {'decision', 'handoff', 'qualification'}
+                result_ref = record.get('qualification_result', {})
+                result = read_record(result_ref['path']) if result_ref else {}
+                if (previous['decision'] != 'qualification-only' or authority['decision'] != 'owner-qualified'
+                    or any(previous[k] != authority[k] for k in stable)
+                    or not result_ref or file_sha(result_ref['path']) != result_ref['sha256']
+                    or result.get('child_tree_gone') is not True or result.get('status') != 'succeeded'):
+                    raise AdmissionError('intake_authority_drift: owner reconciliation required')
+                capacity = read_record(self.runtime/'capacity-policy.json')
+                database = Path(capacity['symphony']['pool_path'])/'state.sqlite'
+                with sqlite3.connect(database.as_uri()+'?mode=ro', uri=True) as db:
+                    lease = db.execute('SELECT status,outcome FROM leases WHERE id=?', (result['lease'],)).fetchone()
+                if lease != ('finished', 'succeeded'):
+                    raise AdmissionError('intake_qualification_lease_unreconciled')
+                record.setdefault('qualification_history', []).append(dict(authority=previous,
+                    reference=record['reference'], result=result_ref, intent=record['qualification_intent']))
+            record.update(reference=supplied['reference'], authority=authority, checked_at=time.time(),
+                          authoritative=remote, required_actor=self.config['owner'])
+            if authority['decision'] == 'qualification-only':
+                self._qualification_boundary(record, policy, authority)
+            else:
+                handoff = self._private_pin(authority['handoff'])
+                packet = self._private_pin(handoff['task_packet'])
+                record.update(status='qualified', handoff=authority['handoff'])
+                if not self._trusted_handoff(authority['handoff'], packet):
+                    raise AdmissionError('intake_handoff_scope_or_source_drift')
+                self.state['intake_handoff'] = authority['handoff']
+                self._successor_boundary()
+                if self.state.get('successor_hold'):
+                    record['status'] = 'held'
+                    record['reason'] = self.state['successor_hold']
+        except Exception as error:
+            record.update(status='held', reason=str(error), required_actor=self.config['owner'],
+                          required_input='fresh owner-qualified private authority and exact accepted scope/handoff')
+        self.save()
+
+    def _qualification_boundary(self, record, policy, authority):
+        # One finite worker process, observed only at native poll boundaries.
+        # Persist launch intent before Popen; an unknown launch is never retried.
+        module = 'tools/delivery/symphony_launch.py'
+        if self.config['source_sha256'].get(module) != file_sha(SOURCE/module):
+            raise AdmissionError('qualification_provider_source_pin')
+        qualification = authority['qualification']
+        spec = self._private_pin(qualification)
+        if (set(spec) != {'workspace', 'branch', 'head', 'prompt', 'resources', 'output'}
+            or spec['resources'] != policy['resources'] or spec['head'] != authority['source_head']
+            or spec['output'] != 'qualification-output.json'
+            or not isinstance(spec['prompt'], str) or not spec['prompt'].strip()):
+            raise AdmissionError('intake_qualification_spec')
+        workspace = self.private(spec['workspace'])
+        directory = workspace/'qualification-runtime'
+        result_path = directory/'result.json'
+        if record.get('qualification_intent'):
+            child = getattr(self, '_qualification_children', {}).get(str(directory))
+            if child is not None and child.poll() is not None:
+                child.wait()
+            if result_path.exists():
+                result = read_record(result_path)
+                record['qualification_result'] = dict(path=str(result_path), sha256=file_sha(result_path), record=result)
+            raise AdmissionError('qualification_proposal_requires_owner_handoff; retained intent forbids replay')
+        directory.mkdir(mode=0o700, parents=False, exist_ok=False)
+        record['qualification_intent'] = dict(spec=qualification, directory=str(directory), at=time.time())
+        self.save()
+        # No credentials or JSON callbacks; child reopens pinned owner config.
+        child = subprocess.Popen([sys.executable, str(SOURCE/'tools/delivery/stokowski_adapter.py'),
+            '--runtime', str(self.runtime), '--qualification-reference', record['reference']],
+            cwd=SOURCE, env=child_environment(os.environ), stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+        if not hasattr(self, '_qualification_children'):
+            self._qualification_children = {}
+        self._qualification_children[str(directory)] = child
+        record['qualification_intent']['pid'] = child.pid
+        raise AdmissionError('qualification_proposal_pending: owner handoff required before publication')
+
+    def _scope_reusable(self, issue):
+        # Only an archived published request may release its exact prior scope.
+        for prior in self.state.get('successor_history', []):
+            handoff = self._private_pin(prior['handoff'])
+            packet = self._private_pin(handoff['task_packet'])
+            if packet['execution_outcome']['identifier'] == issue:
+                return self._reconciled_unit(issue)
+        return False
+
+    def _reconciled_unit(self, issue):
+        try:
+            from types import SimpleNamespace
+            entry = self.state['references'][issue]
+            gate = self.state['tasks'][issue]['unit_gate']
+            if (gate.get('handled') is not True or gate.get('unit_review') != 'approved'
+                or gate.get('disposition') != 'approved'):
+                return False
+            runtime, manifest, _ = self.context(issue, review=True)
+            task = manifest['tasks'][issue]
+            operations = runtime/'operations'/'operations.sqlite'
+            if operations.exists():
+                with sqlite3.connect(operations.as_uri()+'?mode=ro', uri=True) as db:
+                    effects = [json.loads(row[0]) for row in db.execute('SELECT state FROM operations')]
+                if any(effect.get('status') not in ('succeeded', 'failed')
+                       or effect.get('cancel_requested') or effect.get('reconcile_required')
+                       or effect.get('observation_intent') for effect in effects):
+                    return False
+            if 'stage' not in task:
+                lease = runtime_lease_ids(runtime, manifest)[issue]
+                policy = read_record(runtime/'capacity-policy.json')
+                database = Path(policy['symphony']['pool_path'])/'state.sqlite'
+                with sqlite3.connect(database.as_uri()+'?mode=ro', uri=True) as db:
+                    row = db.execute('SELECT status,outcome FROM leases WHERE id=?', (lease,)).fetchone()
+                if row != ('finished', 'succeeded'):
+                    return False
+            review = read_record(self.runtime/('unit-review-' + issue + '.json'))
+            return (digest(review) == gate['review_sha256']
+                and self._check_unit_review(review) == gate['binding']
+                and self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']),
+                                     observation=True) == gate['binding'])
+        except Exception:
+            return False
+
+    def _rearm_successor(self, pending):
+        if pending.get('status') not in ('published', 'duplicate'):
+            raise AdmissionError('successor_request_rebind')
+        if 'native_request' in pending:
+            import stokowski_native_publication as native
+            # Native custody has its own protected root, outside the coordinator
+            # runtime. Select only the exact operation path; never widen private().
+            expected = SOURCE/'.delivery/native-ssh-publication'/(pending['handoff']['sha256']+'.json')
+            ref = pending['publication_result']
+            if ref['path'] != str(expected) or file_sha(native.canonical(str(expected))) != ref['sha256']:
+                raise AdmissionError('successor_prior_publication_unreconciled')
+            custody = native.decode(native.read(expected))
+            self._private_pin(pending['publication_journal'])
+            if (custody.get('request') != pending['native_request']
+                or custody.get('binding') != pending['native_binding']
+                or custody.get('result', {}).get('status') not in ('published', 'duplicate')):
+                raise AdmissionError('successor_prior_publication_unreconciled')
+        handoff = self._private_pin(pending['handoff'])
+        packet = self._private_pin(handoff['task_packet'])
+        issue = packet['execution_outcome']['identifier']
+        if not self._reconciled_unit(issue):
+            raise AdmissionError('successor_prior_unit_unreconciled')
+        history = json.loads(json.dumps(pending))
+        review = self.runtime/('unit-review-' + issue + '.json')
+        history['terminal_review'] = dict(path=str(review), sha256=file_sha(review))
+        history['terminal_unit'] = self.state['tasks'][issue]['unit_gate']['binding']
+        self.state.setdefault('successor_history', []).append(history)
+        # History retains the immutable nonce/context/admission/result references.
+        self.state.pop('successor_request')
+        self.state.pop('successor_hold', None)
+        self.save()
+
     def qualify_successor(self, handoff_ref, packet, owner_config):
         """Read-only qualification; current.json is trusted out of band.
 
@@ -247,7 +500,7 @@ class CurrentWork:
         """
         from types import SimpleNamespace
         self.guard()
-        if (self.config.get('qualified_successor') != handoff_ref
+        if (not self._trusted_handoff(handoff_ref, packet)
             or packet.get('origin') != 'qualified-successor-v1'
             or packet['owner'] != self.config['owner']
             or owner_config['owner'] != self.config['owner']
@@ -298,10 +551,12 @@ class CurrentWork:
     def _successor_boundary(self):
         # This service has Linear credentials only. Authentication/publication
         # remains with the existing GitHub owner; no automatic association exists.
-        ref = self.config.get('qualified_successor')
+        ref = self.state.get('intake_handoff') or self.config.get('qualified_successor')
         if ref is None:
+            self.state['intake_no_ready_reason'] = 'owner-qualified intake/reference required'
             return
         pending = self.state.get('successor_request')
+        rearming = False
         try:
             path = self.private(ref['path'])
             if file_sha(path) != ref['sha256']:
@@ -318,7 +573,10 @@ class CurrentWork:
                 raise AdmissionError('successor_config_drift')
             identity = digest(dict(handoff=ref, owner_config=packet['owner_config'], trigger=packet['trigger']))
             if pending is not None and pending['identity'] != identity:
-                raise AdmissionError('successor_request_rebind')
+                rearming = True
+                self._rearm_successor(pending)
+                pending = None
+                rearming = False
             if 'native_publication' in config or pending and 'native_request' in pending:
                 self._native_successor(ref, handoff, packet, config, identity, pending)
                 return
@@ -357,6 +615,8 @@ class CurrentWork:
             from symphony_capacity import overlap
             for entry in self.state['references'].values():
                 other = read_record(self.private(entry['runtime'])/'manifest.json')
+                if self._scope_reusable(entry['issue']):
+                    continue
                 if any(overlap(a, b) for a in packet['scope']
                        for t in other['tasks'].values() for b in t['allowed_paths']):
                     raise AdmissionError('successor_scope_overlap')
@@ -366,7 +626,7 @@ class CurrentWork:
             elif pending['status'] != 'pending':
                 raise AdmissionError('successor_request_held')
         except Exception as error:
-            if pending is not None:
+            if pending is not None and not rearming:
                 pending['status'] = 'held'
             self.state['successor_hold'] = type(error).__name__ + ': ' + str(error)
 
@@ -454,6 +714,8 @@ class CurrentWork:
             from symphony_capacity import overlap
             for entry in self.state['references'].values():
                 other = read_record(self.private(entry['runtime'])/'manifest.json')
+                if self._scope_reusable(entry['issue']):
+                    continue
                 if any(overlap(a, b) for a in packet['scope']
                        for t in other['tasks'].values() for b in t['allowed_paths']):
                     raise AdmissionError('successor_scope_overlap')
@@ -515,6 +777,9 @@ class CurrentWork:
                     or file_sha(runtime/'requests'/(issue+'.json')) != packet['request']['sha256']):
                     raise AdmissionError('successor_native_publication_drift')
                 pending['status'] = status
+                pending['publication_result'] = dict(path=str(custody_path), sha256=file_sha(custody_path))
+                pending['publication_journal'] = dict(path=str(journal_path), sha256=file_sha(journal_path))
+                self.state.pop('successor_hold', None)
             else:
                 pending['status'] = 'uncertain'
         except Exception:
@@ -1283,7 +1548,10 @@ class CurrentWork:
         selected = []
         for issue in issues:
             entry = self.entries.get(issue.identifier)
-            if not entry or issue.id != entry['issue_id'] or issue.state not in ('Todo','In Progress'):
+            if not entry:
+                await self._intake(client, issue)
+                continue
+            if issue.id != entry['issue_id'] or issue.state not in ('Todo','In Progress'):
                 continue
             try:
                 _, selected_manifest, _ = self.context(issue.identifier)
@@ -1787,9 +2055,87 @@ async def reconcile_metadata(runtime):
         await client.close()
 
 
+def qualification_child(runtime, reference):
+    """Proposal only. Separate process keeps supervision signals off the owner loop."""
+    from symphony_capacity import Pool, host_snapshot
+    from symphony_codex import isolated_codex_environment
+    from stokowski_worker import codex_command, supervise, summarize_events, git, changed_paths
+    current = CurrentWork(runtime, read_only=True, qualification_only=True)
+    policy, authority = current._intake_authority(reference)
+    module = 'tools/delivery/symphony_launch.py'
+    if current.config['source_sha256'].get(module) != file_sha(SOURCE/module):
+        raise AdmissionError('qualification_provider_source_pin')
+    if authority['decision'] != 'qualification-only':
+        raise AdmissionError('qualification_only_required')
+    spec = current._private_pin(authority['qualification'])
+    workspace = current.private(spec['workspace'])
+    directory = workspace/'qualification-runtime'
+    if (git(workspace, 'rev-parse', 'HEAD') != spec['head']
+        or git(workspace, 'branch', '--show-current') != spec['branch']):
+        raise AdmissionError('qualification_source_drift')
+    if (set(spec) != {'workspace', 'branch', 'head', 'prompt', 'resources', 'output'}
+        or spec['output'] != 'qualification-output.json' or spec['resources'] != policy['resources']
+        or spec['head'] != authority['source_head'] or not isinstance(spec['prompt'], str)
+        or not spec['prompt'].strip() or workspace == SOURCE or SOURCE.is_relative_to(workspace)
+        or not directory.is_dir() or (workspace/spec['output']).exists()
+        or (runtime/'cancel.json').exists()):
+        raise AdmissionError('qualification_spec_or_cancellation')
+    parent_record = current.state.get('intake', {}).get(authority['issue'], {})
+    if (parent_record.get('authority') != authority
+        or parent_record.get('qualification_intent', {}).get('spec') != authority['qualification']):
+        raise AdmissionError('qualification_owner_intent')
+    before = changed_paths(workspace)
+    if any(not name.startswith('qualification-runtime/') for name in before):
+        raise AdmissionError('qualification_dirty_source')
+    capacity = read_record(runtime/'capacity-policy.json')
+    from symphony_launch import provider_proof
+    proof = provider_proof(MODEL, capacity['symphony']['provider_session_ceiling'])
+    binding = dict(branch=spec['branch'], head=spec['head'], owner=authority['owner'],
+        write_roots=[spec['output']], resources=spec['resources'], task_sha256=digest(spec))
+    lease = 'qualification-' + digest(dict(runtime=str(runtime), reference=reference))[:48]
+    pool = Pool(capacity['symphony']['pool_path'], capacity)
+    if pool.admit(lease, binding, proof, host_snapshot(workspace)).get('reused'):
+        raise AdmissionError('qualification_retained_lease')
+    result = dict(status='uncertain', child_tree_gone=False, origin='native-qualification', lease=lease,
+        requested_model=MODEL, requested_effort='medium', provider_route='codex-chatgpt',
+        resolved_model=None, resolution_status='unknown', accepted_delivery=False, authority='proposal-only')
+    checkpoint(directory/'intent.json', dict(lease=lease, binding=binding, provider=proof))
+    try:
+        command = codex_command(workspace, workspace/spec['output'])
+        command[command.index('--sandbox')+1] = 'read-only'
+        with isolated_codex_environment(child_environment(os.environ), directory) as environment:
+            result.update(supervise(command, spec['prompt'], workspace, environment, directory,
+                policy['timeout_seconds'], spec['resources'], capacity['windmill']['computation_subprocesses_per_job']))
+        if (directory/'stdout.jsonl').exists():
+            result.update(summarize_events(directory/'stdout.jsonl'))
+            if result.get('resolved_model') is None:
+                result['resolution_status'] = 'unknown'
+        output = read_record(workspace/spec['output'])
+        if (set(output) != {'schema', 'proposal', 'missing_inputs'}
+            or output['schema'] != 'offmenu-qualification-proposal/1'
+            or not isinstance(output['proposal'], str) or not isinstance(output['missing_inputs'], list)
+            or any(not isinstance(x, str) for x in output['missing_inputs'])):
+            raise AdmissionError('qualification_output_schema')
+        result['output_sha256'] = file_sha(workspace/spec['output'])
+        result['proposal'] = output
+        if (git(workspace, 'rev-parse', 'HEAD') != spec['head']
+            or git(workspace, 'branch', '--show-current') != spec['branch']
+            or any(name != spec['output'] and not name.startswith('qualification-runtime/')
+                   for name in changed_paths(workspace))):
+            raise AdmissionError('qualification_source_drift')
+    except Exception as error:
+        result.update(status='failed' if result['child_tree_gone'] else 'uncertain', reason=str(error))
+    finally:
+        checkpoint(directory/'result.json', result)
+        if result['child_tree_gone'] is True and result['status'] != 'uncertain':
+            pool.finish(lease, True, 'succeeded' if result['status'] == 'succeeded' else 'failed')
+    return result
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--runtime', required=True, type=Path)
+    parser.add_argument('--qualification-reference')
     parser.add_argument('--current', action='store_true', help='Caller-owned native polling of current.json qualified catalog; no duration limit; cancel.json or TERM/INT stops. No owner-loss recovery.')
     parser.add_argument('--duration', type=int, default=240)
     parser.add_argument('--dry-run', action='store_true')
@@ -1802,6 +2148,9 @@ if __name__ == '__main__':
     if not 1 <= args.duration <= 900:
         raise SystemExit('Finite coordinator duration must be 1..900 seconds')
     runtime = args.runtime.resolve()
+    if args.qualification_reference:
+        qualification_child(runtime, args.qualification_reference)
+        raise SystemExit(0)
     with (runtime/'coordinator.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX|fcntl.LOCK_NB)
         try:

@@ -562,6 +562,145 @@ class CurrentDispatchTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(value))
 
+    def intake_fixture(self, decision='qualification-only'):
+        from stokowski.models import Issue
+        issue = Issue(id='00000000-0000-4000-8000-000000000341', identifier='UIF-341',
+                      title='Controlled uncatalogued issue', state='Todo')
+        workspace = self.root/'qualification-341'
+        workspace.mkdir()
+        spec = dict(workspace=str(workspace), branch='feature/test-current', head='a'*40,
+            prompt='Propose acceptance gaps only. Return the declared proposal JSON.',
+            resources=self.policy['symphony']['default_resources'], output='qualification-output.json')
+        self.write(self.root/'qualification-spec.json', spec)
+        ref = lambda path:dict(path=str(path), sha256=adapter.file_sha(path))
+        authority = dict(schema='offmenu-intake-authority/1', owner=self.current.config['owner'],
+            source_head='a'*40, issue=issue.identifier, issue_id=issue.id, project_id=adapter.PROJECT,
+            accepted_scope=['tests/finite-task.py'], acceptance=['Owner accepted bounded scope'],
+            dependencies=[], decision=decision, handoff=None, qualification=ref(self.root/'qualification-spec.json'))
+        self.write(self.root/'intake-authority.json', authority)
+        policy = dict(schema='offmenu-normal-intake/1', enabled=True, owner=authority['owner'],
+            source_head='a'*40, project_route=self.current.route, expires_at=time.time()+300,
+            references={'owner/finite-341':ref(self.root/'intake-authority.json')},
+            resources=spec['resources'], timeout_seconds=5)
+        self.write(self.root/'intake-policy.json', policy)
+        module = 'tools/delivery/symphony_launch.py'
+        shutil.copyfile(Path(adapter.__file__).resolve().parents[2]/module, self.source/module)
+        self.current.config['source_sha256'][module] = adapter.file_sha(self.source/module)
+        self.current.config['normal_intake'] = ref(self.root/'intake-policy.json')
+        self.write(self.runtime/'current.json', self.current.config)
+        self.current.config_sha = adapter.file_sha(self.runtime/'current.json')
+        self.current.state['config_sha256'] = self.current.config_sha
+        self.current.save()
+        client = self.client(issue)
+        remote = client._graphql.return_value['issue']
+        remote.update(description='```offmenu-intake\n'+json.dumps(dict(
+            schema='offmenu-intake-reference/1', reference='owner/finite-341'))+'\n```',
+            inverseRelations=dict(nodes=[]))
+        return issue, client, authority, spec
+
+    def test_native_poll_uncatalogued_missing_reference_is_actionable(self):
+        issue, client, _, _ = self.intake_fixture()
+        client._graphql.return_value['issue']['description'] = 'Assignment is not authority'
+        native, linear, fetch = self.adapted()
+        owner = native.Orchestrator(self.runtime/'workflow.yaml')
+        self.assertEqual(owner._load_workflow(), [])
+        owner._linear = client
+        client.fetch_candidate_issues = lambda *args:linear.LinearClient.fetch_candidate_issues(client,*args)
+        for name in ('_reconcile','_handle_gate_responses','_evict_terminal_gates'):
+            self.stack.enter_context(patch.object(owner,name,new_callable=AsyncMock))
+        owner._dispatch = unittest.mock.Mock()
+        fetch.return_value = [issue]
+        asyncio.run(owner._tick())
+        owner._dispatch.assert_not_called()
+        held = adapter.read_record(self.current.state_path)['intake'][issue.identifier]
+        self.assertEqual(held['status'], 'held')
+        self.assertIn('intake_reference_missing', held['reason'])
+        self.assertEqual(held['required_actor'], self.current.config['owner'])
+
+    def test_intake_authority_and_fresh_dependency_drift_never_launch(self):
+        issue, client, authority, _ = self.intake_fixture()
+        remote = client._graphql.return_value['issue']
+        with patch.object(adapter.subprocess, 'Popen') as launch:
+            for field, value in (('owner', 'foreign'), ('source_head', 'd'*40),
+                                 ('issue_id', 'foreign'), ('accepted_scope', []), ('acceptance', [])):
+                changed = dict(authority, **{field:value})
+                self.write(self.root/'intake-authority.json', changed)
+                self.assertEqual(self.select(issue, client), [])
+                self.assertEqual(self.current.state['intake'][issue.identifier]['status'], 'held')
+            self.write(self.root/'intake-authority.json', authority)
+            remote['inverseRelations']['nodes'] = [dict(type='blocks', issue=dict(id='dependency',state=dict(name='Todo')))]
+            self.assertEqual(self.select(issue, client), [])
+            self.assertIn('dependency_drift', self.current.state['intake'][issue.identifier]['reason'])
+            remote['inverseRelations']['nodes'] = []
+            remote['project']['id'] = 'foreign'
+            self.assertEqual(self.select(issue, client), [])
+            launch.assert_not_called()
+
+    def test_native_qualification_intent_once_readonly_proposal_no_approval(self):
+        self.controlled_qualification()
+
+    def test_native_qualification_unknown_cleanup_retains_lease_and_blocks_retry(self):
+        self.controlled_qualification(uncertain=True)
+
+    def controlled_qualification(self, uncertain=False):
+        issue, client, authority, spec = self.intake_fixture()
+        import stokowski_worker as worker
+        with patch.object(adapter.subprocess, 'Popen') as launch:
+            launch.return_value.pid = 12345
+            self.assertEqual(self.select(issue, client), [])
+            self.assertEqual(self.select(issue, client), [])
+            launch.assert_called_once()
+        commands = []
+        def supervised(command, prompt, workspace, environment, directory, timeout, resources, ceiling):
+            commands.append(command)
+            self.write(workspace/'qualification-output.json', dict(
+                schema='offmenu-qualification-proposal/1', proposal='Owner must supply plan', missing_inputs=['plan']))
+            (directory/'stdout.jsonl').write_text(json.dumps(dict(type='thread.started',thread_id='fake-session'))+'\n')
+            return dict(status='uncertain' if uncertain else 'succeeded', child_tree_gone=not uncertain)
+        from contextlib import contextmanager
+        @contextmanager
+        def isolated(environment, directory):
+            yield environment
+        host = dict(cpu_millis=64000, available_memory_bytes=128*1024**3, available_disk_bytes=1024**4)
+        with patch.object(worker,'supervise',side_effect=supervised), \
+             patch.object(worker,'git',side_effect=lambda root,*args:'a'*40 if args[0]=='rev-parse' else spec['branch']), \
+             patch.object(worker,'changed_paths',return_value=[]), \
+             patch('symphony_codex.isolated_codex_environment',isolated), \
+             patch('symphony_capacity.host_snapshot',return_value=host), \
+             patch('symphony_launch.provider_proof',return_value=dict(route='codex-chatgpt', available=True,
+                checked_at=time.time(), session_ceiling=8)) as provider:
+            result = adapter.qualification_child(self.runtime, 'owner/finite-341')
+            self.assertEqual(result['origin'], 'native-qualification')
+            self.assertEqual(result['session_id'], 'fake-session')
+            self.assertFalse(result['accepted_delivery'])
+            from symphony_capacity import Pool
+            rows = Pool(self.policy['symphony']['pool_path'],self.policy).status()
+            self.assertEqual(next(r['status'] for r in rows if r['id']==result['lease']),
+                             'running' if uncertain else 'finished')
+            self.assertEqual(commands[0][commands[0].index('--sandbox')+1], 'read-only')
+            with self.assertRaises(AdmissionError):adapter.qualification_child(self.runtime, 'owner/finite-341')
+            provider.assert_called_once()
+        self.assertNotIn('successor_request', self.current.state)
+        reopened = adapter.CurrentWork(self.runtime)
+        self.assertEqual(asyncio.run(reopened.candidates(client,[issue])), [])
+        self.assertIn('requires_owner_handoff', reopened.state['intake'][issue.identifier]['reason'])
+
+    def test_rearm_refuses_nonterminal_request_and_preserves_original(self):
+        f, *_ = self.successor_fixture()
+        original = json.loads(json.dumps(self.current.state['successor_request']))
+        for status in ('held', 'uncertain', 'refused', 'pending', 'cancel_requested'):
+            pending = dict(original, status=status)
+            self.current.state['successor_request'] = pending
+            with self.assertRaisesRegex(AdmissionError, 'successor_request_rebind'):
+                self.current._rearm_successor(pending)
+            self.assertEqual(self.current.state['successor_request'], pending)
+            self.assertNotIn('successor_history', self.current.state)
+        pending = dict(original, status='published')
+        self.current.state['successor_request'] = pending
+        with self.assertRaisesRegex(AdmissionError, 'prior_unit_unreconciled'):
+            self.current._rearm_successor(pending)
+        self.assertEqual(self.current.state['successor_request'], pending)
+
     def git_read(self, args, **kwargs):
         if args[3] == 'merge-base':
             if args[4:] == ['--is-ancestor', 'b'*40, 'c'*40]:
@@ -648,22 +787,29 @@ class CurrentDispatchTests(unittest.TestCase):
     def select(self, issue, client=None):
         return asyncio.run(self.current.candidates(client or self.client(issue), [issue]))
 
-    def review_fixture(self, number=230):
+    def review_fixture(self, number=230, completed=None):
         from symphony_capacity import digest
         from stokowski_operations import Journal, operation_key, bridge_arguments
-        issue, runtime, owner, client = self.bound_gate(number)
-        directory = runtime/'attempts'/issue.identifier
-        native = json.loads((directory/'receipt.json').read_text())
-        output = b'independent immutable output\n'
-        outputs = {f'tests/task{number}.py':hashlib.sha256(output).hexdigest()}
-        target = runtime/'workspaces'/issue.identifier/f'tests/task{number}.py'
-        target.parent.mkdir(parents=True)
-        target.write_bytes(output)
-        native.update(source_head=getattr(self,'task_head','b'*40), output_sha256=outputs, scope_violations=[])
-        self.write(directory/'receipt.json', native)
-        unit = self.current.gate_binding(issue)
-        self.current.state['tasks'][issue.identifier]['unit_gate']['binding'] = unit
-        self.current.save()
+        if completed is None:
+            issue, runtime, owner, client = self.bound_gate(number)
+            directory = runtime/'attempts'/issue.identifier
+            native = json.loads((directory/'receipt.json').read_text())
+            output = b'independent immutable output\n'
+            outputs = {f'tests/task{number}.py':hashlib.sha256(output).hexdigest()}
+            target = runtime/'workspaces'/issue.identifier/f'tests/task{number}.py'
+            target.parent.mkdir(parents=True)
+            target.write_bytes(output)
+            native.update(source_head=getattr(self,'task_head','b'*40), output_sha256=outputs, scope_violations=[])
+            self.write(directory/'receipt.json', native)
+            unit = self.current.gate_binding(issue)
+            self.current.state['tasks'][issue.identifier]['unit_gate']['binding'] = unit
+            self.current.save()
+        else:
+            # Synthetic validation/reviewer actors consume the real worker's
+            # unchanged receipt, outputs, admission and native unit binding.
+            issue, runtime, owner, client = completed
+            unit = self.current.gate_binding(issue)
+            outputs = adapter.read_record(runtime/'attempts'/issue.identifier/'receipt.json')['output_sha256']
         spec = dict(version=1, issue=issue.identifier, issue_id=issue.id, stage='validate',
             owner='existing-owner', head='c'*40, base=getattr(self,'task_head','b'*40), branch='feature/test-current',
             policy_sha256=self.current.config['policy_sha256'], outputs=outputs, profile='delivery-suite',
@@ -689,6 +835,9 @@ class CurrentDispatchTests(unittest.TestCase):
         review = dict(head='c'*40,base=getattr(self,'task_head','b'*40),outputs=outputs,independent=True,evidence_id='immutable-review-230',
             reviewer='independent-reviewer',author='existing-owner',model='review-model',provider='existing-route',
             findings=[],verdict='accept')
+        if completed is not None:
+            review.update(requested_model='synthetic-independent-review', requested_effort=None,
+                requested_provider='synthetic-offline', resolved_model=None, resolution_status='unknown')
         review['evidence_sha256'] = digest(review)
         validation = dict(operation_key=key,status='succeeded',head='c'*40,base=getattr(self,'task_head','b'*40),
             capacity_policy_sha256=spec['policy_sha256'],outputs=outputs,child_tree_gone=True,reconcile_required=False)
@@ -2136,6 +2285,293 @@ class NativeSuccessorBindingTests(unittest.TestCase):
         self.assertEqual(persisted['native_binding'], n.sha(n.encode(persisted['native_request'])))
         self.calls.append(request)
         return n.encode(n.invoke(request, root=c.source, adapters=self.adapters))
+
+    def test_normal_intake_owner_reference_native_publication_and_restart(self):
+        from stokowski.models import Issue
+        c, f = self.c, self.f
+        authority = dict(schema='offmenu-intake-authority/1', owner=c.current.config['owner'],
+            source_head=c.current.config['source_head'], issue=f.issue['identifier'],
+            issue_id=f.issue['uuid'], project_id=f.issue['project_id'], accepted_scope=f.packet['scope'],
+            acceptance=f.packet['acceptance'], dependencies=[], decision='owner-qualified',
+            handoff=f.ref(f.handoff_path), qualification=None)
+        c.write(c.root/'normal-authority.json', authority)
+        policy = dict(schema='offmenu-normal-intake/1', enabled=True, owner=authority['owner'],
+            source_head=authority['source_head'], project_route=c.current.route, expires_at=time.time()+300,
+            references={'owner/native-fixture':f.ref(c.root/'normal-authority.json')},
+            resources=f.packet['resources'], timeout_seconds=5)
+        c.write(c.root/'normal-policy.json', policy)
+        c.current.config.pop('qualified_successor')
+        c.current.config['normal_intake'] = f.ref(c.root/'normal-policy.json')
+        self.bind_config()
+        issue = Issue(id=f.issue['uuid'],identifier=f.issue['identifier'],title='Controlled intake',state='Todo')
+        client = c.client(issue)
+        client._graphql.return_value['issue'].update(description='```offmenu-intake\n'+json.dumps(dict(
+            schema='offmenu-intake-reference/1',reference='owner/native-fixture'))+'\n```',
+            inverseRelations=dict(nodes=[]))
+        native, linear, fetch = c.adapted()
+        owner = native.Orchestrator(c.runtime/'workflow.yaml')
+        owner._load_workflow()
+        owner._linear = client
+        client.fetch_candidate_issues = lambda *args:linear.LinearClient.fetch_candidate_issues(client,*args)
+        for name in ('_reconcile','_handle_gate_responses','_evict_terminal_gates'):
+            c.stack.enter_context(patch.object(owner,name,new_callable=AsyncMock))
+        owner._dispatch = unittest.mock.Mock()
+        fetch.return_value = [issue]
+        asyncio.run(owner._tick())
+        self.assertEqual(c.current.state['successor_request']['status'], 'published', c.current.state.get('successor_hold'))
+        before = json.loads(json.dumps(c.current.state['successor_request']['native_request']))
+        adapter.CurrentWork(c.runtime)
+        self.assertEqual(c.current.state['successor_request']['native_request'], before)
+        self.api.assert_called_once()
+        f.provider.assert_called_once()
+        self.assertEqual(c.current.state['intake'][issue.identifier]['authority'],authority)
+
+    def test_rearm_native_custody_exact_path_hash_and_binding_required(self):
+        import copy
+        c, f = self.c, self.f
+        c.current.refresh()
+        prior = copy.deepcopy(c.current.state['successor_request'])
+        path = Path(prior['publication_result']['path'])
+        original = path.read_bytes()
+        # A valid coordinator-private JSON cannot replace native custody even
+        # when its bytes/hash match. Symlinks and altered pins also stay held.
+        replacement = c.root/'copied-custody.json'
+        replacement.write_bytes(original)
+        symlink = path.with_name('synthetic-link.json')
+        symlink.symlink_to(path)
+        for ref in (f.ref(replacement), dict(path=str(symlink), sha256=adapter.file_sha(path)),
+                    dict(prior['publication_result'], sha256='0'*64)):
+            changed = dict(prior, publication_result=ref)
+            with self.assertRaisesRegex(AdmissionError, 'successor_prior_publication_unreconciled'):
+                c.current._rearm_successor(changed)
+            self.assertEqual(c.current.state['successor_request'], prior)
+            self.assertNotIn('successor_history', c.current.state)
+        for field in ('request', 'binding', 'result'):
+            record = json.loads(original)
+            record[field] = {} if field != 'binding' else '0'*64
+            c.write(path, record)
+            changed = dict(prior, publication_result=f.ref(path))
+            with self.assertRaisesRegex(AdmissionError, 'successor_prior_publication_unreconciled'):
+                c.current._rearm_successor(changed)
+            self.assertEqual(c.current.state['successor_request'], prior)
+            self.assertNotIn('successor_history', c.current.state)
+        path.write_bytes(original)
+        self.assertEqual(self.api.call_count, 1)
+
+    def test_two_terminal_reviewed_handoffs_through_normal_intake(self):
+        """Synthetic external actors only; real intake, qualifier, pool and worker.
+
+        No model JSON grants authority. Each validation/review packet is built
+        independently from the retained native output as in review_fixture.
+        """
+        import copy
+        from contextlib import nullcontext
+        from stokowski.models import Issue
+        from symphony_capacity import Pool
+        import stokowski_worker as worker
+        c, first = self.c, self.f
+        original_runtime = self.original[1]
+        original_bytes = first.snapshot(original_runtime)
+        self.test_normal_intake_owner_reference_native_publication_and_restart()
+        native, _, _ = c.adapted()
+        pool = Pool(c.policy['symphony']['pool_path'], c.policy)
+        host = dict(cpu_millis=64000, available_memory_bytes=10**12, available_disk_bytes=10**12)
+        computations = []
+        receipts = []
+        reviews = []
+        frozen = {}
+        real_supervise = worker.supervise
+
+        def admit_and_review(f):
+            issue = Issue(id=f.issue['uuid'], identifier=f.issue['identifier'], title='Synthetic finite task', state='Todo')
+            self.assertEqual(c.select(issue), [issue])
+            runtime = f.runtime
+            workspace = runtime/'workspaces'/issue.identifier
+            workspace.mkdir()
+            manifest = adapter.read_record(runtime/'manifest.json')
+            request = adapter.read_record(runtime/'requests'/(issue.identifier+'.json'))
+            scope = manifest['tasks'][issue.identifier]['allowed_paths']
+            prior_git = c.git.side_effect
+            finished = [False]
+            def observe(argv, **kwargs):
+                if argv[2] == str(workspace):
+                    if argv[3] == 'diff':
+                        return ('\0'.join(scope)+'\0').encode() if finished[0] else b''
+                    if argv[3] == 'ls-files':
+                        return b''
+                    return (manifest['branch'] if argv[3] == 'branch' else manifest['base_revision'])+'\n'
+                return prior_git(argv, **kwargs)
+            c.git.side_effect = observe
+            def complete(command, prompt, path, environment, directory, *args):
+                self.assertEqual(prompt, request['prompt'])
+                computations.append(issue.identifier)
+                # The real supervisor runs a finite Python fixture process,
+                # never the constructed model command, and proves cleanup.
+                script = """import json, pathlib, sys
+scope, issue = json.loads(sys.argv[1]), sys.argv[2]
+for name in scope:
+    target = pathlib.Path(name)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text('Synthetic independently checked output '+issue+'\\n')
+print(json.dumps(dict(type='turn.completed')), flush=True)
+"""
+                result = real_supervise([sys.executable, '-c', script, json.dumps(scope), issue.identifier],
+                    prompt, path, environment, directory, *args)
+                finished[0] = True
+                return result
+            async def spawn(*args, **kwargs):
+                worker.execute(runtime, issue.identifier, request)
+                return SimpleNamespace(pid=98765, returncode=0, communicate=AsyncMock())
+            with patch.object(worker, 'host_snapshot', return_value=host), \
+                 patch.object(worker.os, 'sched_setaffinity'), \
+                 patch.object(worker, 'isolated_codex_environment', return_value=nullcontext({})), \
+                 patch.object(worker, 'supervise', side_effect=complete), \
+                 patch.object(adapter.asyncio, 'create_subprocess_exec', side_effect=spawn) as spawned:
+                self.assertEqual(asyncio.run(c.turn(native, issue, runtime)).status, 'succeeded', adapter.read_record(runtime/'attempts'/issue.identifier/'receipt.json'))
+                with self.assertRaises(AdmissionError):
+                    asyncio.run(c.turn(native, issue, runtime))
+                with self.assertRaises(AdmissionError):
+                    worker.execute(runtime, issue.identifier, request)
+            spawned.assert_called_once()
+            receipt_path = runtime/'attempts'/issue.identifier/'receipt.json'
+            receipt = adapter.read_record(receipt_path)
+            self.assertTrue(receipt['child_tree_gone'])
+            self.assertIsNone(receipt['resolved_model'])
+            self.assertEqual(receipt['resolution_status'], 'unobserved')
+            self.assertEqual(receipt['requested_model'], 'gpt-6.1-sol')
+            self.assertEqual(receipt['declared_resources'], f.packet['resources'])
+            receipts.append(receipt)
+            owner = native.Orchestrator(c.runtime/'workflow.yaml')
+            self.assertEqual(owner._load_workflow(), [])
+            client = c.client(issue)
+            for name in ('update_issue_state', 'fetch_comments', 'fetch_issues_by_states', 'post_comment'):
+                setattr(client, name, AsyncMock())
+            owner._linear = client
+            owner._schedule_retry = unittest.mock.Mock()
+            owner.ledger.record_terminal = unittest.mock.Mock()
+            asyncio.run(owner._enter_gate(issue, 'evidence-pending'))
+            c.task_head = manifest['base_revision']
+            _, _, _, _, review, journal, key = c.review_fixture(completed=(issue, runtime, owner, client))
+            # The actual unit-review consumer qualifies the synthetic independent
+            # validation operation, receipt and reviewer; no gate is fabricated.
+            c.current.unit_review_writer(lambda envelope: review)({k:review[k] for k in ('snapshot','decision')})
+            c.current.refresh()
+            asyncio.run(owner._handle_gate_responses())
+            self.assertTrue(c.current._reconciled_unit(issue.identifier))
+            self.assertFalse(c.current.state['tasks'][issue.identifier]['unit_gate']['accepted_delivery'])
+            reviews.append(review)
+            client.update_issue_state.assert_not_awaited()
+            owner.ledger.record_terminal.assert_not_called()
+            return issue, runtime, journal, key
+
+        task_a, runtime_a, journal_a, key_a = admit_and_review(first)
+        prior = copy.deepcopy(c.current.state['successor_request'])
+        # Preserve every first-task input, nonce/custody/publication journal and
+        # review byte before building a distinct owner-qualified handoff.
+        for directory in (first.qualified, runtime_a):
+            frozen.update({p:p.read_bytes() for p in directory.rglob('*') if p.is_file()})
+        for key in ('publication_result', 'publication_journal'):
+            path = Path(prior[key]['path'])
+            frozen[path] = path.read_bytes()
+        second = copy.copy(first)
+        second.qualified = c.root/'second-qualified'
+        second.runtime = c.root/'second-task'
+        def retarget(value):
+            return json.loads(json.dumps(value).replace(str(first.qualified), str(second.qualified))
+                .replace(str(first.runtime), str(second.runtime))
+                .replace(first.issue['uuid'], '00000000-0000-4000-8000-000000000232')
+                .replace('UIF-231', 'UIF-232'))
+        for name in ('config', 'packet', 'handoff', 'manifest', 'issue'):
+            setattr(second, name, retarget(getattr(first, name)))
+        second.packet['trigger'] = dict(issue=task_a.identifier,
+            entry=c.current.state['references'][task_a.identifier], unit_binding=reviews[0]['unit_binding'],
+            review_sha256=adapter.digest(reviews[0]))
+        # Exact scope reuse is intentional and must wait for fully reconciled A.
+        self.assertEqual(second.packet['scope'], first.packet['scope'])
+        for path in first.qualified.rglob('*'):
+            if path.is_file():
+                second.write(second.qualified/path.relative_to(first.qualified), retarget(json.loads(path.read_bytes())))
+        claim = second.config['repository_claim']
+        binding_path = Path(claim['binding_path'])
+        binding = adapter.read_record(binding_path)
+        claim.update(binding_sha256=second.sha(binding_path), binding_identity_sha256=adapter.digest(binding))
+        second.write(Path(claim['path']), dict(owner=second.owner, directory=str(binding_path.parent), binding_sha256=adapter.digest(binding)))
+        claim['sha256'] = second.sha(Path(claim['path']))
+        second.repin()
+        self.f = second
+        issue_b = Issue(id=second.issue['uuid'], identifier=second.issue['identifier'], title='Second synthetic intake', state='Todo')
+        authority = dict(schema='offmenu-intake-authority/1', owner=c.current.config['owner'],
+            source_head=c.current.config['source_head'], issue=issue_b.identifier, issue_id=issue_b.id,
+            project_id=second.issue['project_id'], accepted_scope=second.packet['scope'],
+            acceptance=second.packet['acceptance'], dependencies=[], decision='owner-qualified',
+            handoff=second.ref(second.handoff_path), qualification=None)
+        c.write(c.root/'second-authority.json', authority)
+        policy = adapter.read_record(c.root/'normal-policy.json')
+        policy['references']['owner/second-fixture'] = second.ref(c.root/'second-authority.json')
+        c.write(c.root/'second-policy.json', policy)
+        c.current.config['normal_intake'] = second.ref(c.root/'second-policy.json')
+        self.bind_config()
+        client_b = c.client(issue_b)
+        client_b._graphql.return_value['issue'].update(description='```offmenu-intake\n'+json.dumps(dict(
+            schema='offmenu-intake-reference/1', reference='owner/second-fixture'))+'\n```', inverseRelations=dict(nodes=[]))
+        # Negative evidence mutations are restored, never accepted/reconciled as
+        # success. Each blocks B before any publication or computation.
+        lease_a = receipts[0]['lease']
+        for status in ('running', 'unknown', 'cancelled', 'refused'):
+            with pool._transaction() as db:
+                db.execute('UPDATE leases SET status=? WHERE id=?', (status, lease_a))
+            self.assertEqual(c.select(issue_b, client_b), [])
+            self.assertEqual(self.api.call_count, 1)
+            self.assertEqual(c.current.state['successor_request'], prior)
+            self.assertIn('successor_prior_unit_unreconciled', c.current.state['successor_hold'])
+        with pool._transaction() as db:
+            db.execute("UPDATE leases SET status='finished' WHERE id=?", (lease_a,))
+        _, operation = journal_a.read(key_a)
+        for change in (dict(status='unknown'), dict(cancel_requested=True), dict(reconcile_required=True), dict(observation_intent={'synthetic':True})):
+            journal_a.save(key_a, dict(operation, **change), 'synthetic-negative-observation')
+            self.assertEqual(c.select(issue_b, client_b), [])
+            self.assertEqual(self.api.call_count, 1)
+            self.assertEqual(c.current.state['successor_request'], prior)
+            self.assertIn('successor_prior_unit_unreconciled', c.current.state['successor_hold'])
+        journal_a.save(key_a, operation, 'synthetic-restored-observation')
+        # Freeze the final reconciled operation bytes after mutation tests.
+        frozen[runtime_a/'operations/operations.sqlite'] = (runtime_a/'operations/operations.sqlite').read_bytes()
+        self.assertEqual(c.select(issue_b, client_b), [])  # Intake publishes, next poll admits.
+        self.assertEqual(c.current.state['successor_request']['status'], 'published', c.current.state.get('successor_hold'))
+        self.assertIn('successor_history', c.current.state, c.current.state['intake'][issue_b.identifier].get('reason'))
+        self.assertEqual(c.current.state['successor_history'][0]['native_request'], prior['native_request'])
+        self.assertNotEqual(c.current.state['successor_request']['native_request']['nonce'], prior['native_request']['nonce'])
+        task_b, runtime_b, _, _ = admit_and_review(second)
+        self.assertEqual(computations, [task_a.identifier, task_b.identifier])
+        for _ in range(2):
+            c.current.refresh()
+            adapter.CurrentWork(c.runtime)
+            self.assertEqual(c.select(issue_b, client_b), [])
+        self.assertEqual(self.api.call_count, 2)
+        self.assertEqual(first.provider.call_count, 2)
+        self.assertEqual(computations, [task_a.identifier, task_b.identifier])
+        for receipt in receipts:
+            with pool._transaction() as db:
+                self.assertEqual(db.execute("SELECT COUNT(*) FROM events WHERE id=? AND event='admitted'", (receipt['lease'],)).fetchone()[0], 1)
+            self.assertEqual(next(r['status'] for r in pool.status() if r['id']==receipt['lease']), 'finished')
+        for path, data in frozen.items():
+            self.assertEqual(path.read_bytes(), data, str(path))
+        self.assertEqual(first.snapshot(original_runtime), original_bytes)
+        self.assertEqual(len(c.current.state['successor_history']), 1)
+        # A runner may retain this explicitly synthetic trace after temporary
+        # runtime cleanup. It is proof data, never an admission/approval input.
+        self.synthetic_proof = dict(schema='offmenu-synthetic-succession-proof/1', synthetic_only=True,
+            publications=self.api.call_count, computations=computations, original_106_preserved=True,
+            accepted_delivery=False, history=copy.deepcopy(c.current.state['successor_history']),
+            tasks=[dict(issue=issue.identifier, owner=c.current.config['owner'],
+                request=adapter.read_record(runtime/'requests'/(issue.identifier+'.json')),
+                admission=c.current.state['references'][issue.identifier], native_receipt=receipt,
+                validation_operation=review['integration_binding']['validation_operation_key'],
+                synthetic_candidate_commit=review['integration_binding']['head'],
+                independent_review=review['snapshot']['review'],
+                terminal_gate=copy.deepcopy(c.current.state['tasks'][issue.identifier]['unit_gate']))
+                for issue, runtime, receipt, review in zip((task_a, task_b), (runtime_a, runtime_b), receipts, reviews)])
+
 
     def test_actual_adapter_native_publication_once_reopen_and_custody(self):
         c,f,n = self.c,self.f,self.native
