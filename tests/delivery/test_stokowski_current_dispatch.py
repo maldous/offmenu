@@ -156,6 +156,7 @@ class CurrentDispatchTests(unittest.TestCase):
         # The actual test files are deliberately user-owned, never privileged.
         path = self.temp/'untrusted.json'
         path.write_text('{}')
+        path.chmod(0o666)  # Refuse mutable custody regardless of the runner UID.
         with self.assertRaisesRegex(AdmissionError, 'protected_owner_(parent|file)'):
             adapter.protected_owner_bytes(path)
         with self.assertRaisesRegex(AdmissionError, 'protected_owner_closure'):
