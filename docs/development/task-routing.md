@@ -130,6 +130,35 @@ current owner and latest evidence/checkpoint. Historical ledgers provide provena
 they are not a second active queue. Keep private receipts under ignored `.delivery/`
 and publish only reviewed source and suitable provenance summaries.
 
+## Conversation-origin deliverables and checkpoint imports
+
+Every requested application, repository, functionality or other deliverable maps
+to a matching canonical Linear issue/task and accountable harness owner, with
+request, operation, artifact, review, effect, closure and refill references linked
+as applicable. Reuse the [subject homes](#documentation-homes-and-update-responsibility)
+above. The conversation owner handles communication, bounded answers and genuine
+decisions, not a private parallel delivery queue; do not create an issue per
+utterance or tool call. Current conversation-to-issue creation/update invocation
+remains with the coordinating owner and sole Linear owner; automatic conversation
+ingest is not implemented.
+
+Record the origin channel and message reference/link, hash and privacy
+classification as provenance in the canonical issue/private handoff. Keep secrets
+and household-private message bodies out of shared Git. If only a delegated
+excerpt hash is available, label its hash scope; original message/audio bytes
+remain unknown. Origin metadata grants neither admission nor approval and does
+not change the strict actual execution origin (native, reviewed source, etc.).
+
+Existing manual or uncertain work retains its real owner, operation, lease and
+status. Import metadata only at a clean, reconciled checkpoint, preserving original
+receipt, source, output, review and effect references; migration alone creates no
+fresh lease or coding replay. Running, unknown, cancellation-pending or refused
+work stays held until supported owner reconciliation. Unsupported private/platform
+routes stay explicitly held with the exact missing capability recorded; this
+guidance claims no universal manager, service or automatic transport. Sole source
+publisher and Linear mutator exclusivity and all access holds remain in force;
+use the existing [delivery runbook](../../tools/delivery/README.md) for recovery.
+
 ## One finite outcome from intake to closure
 
 1. Select or refine the existing Linear outcome, its subject project, owner,
