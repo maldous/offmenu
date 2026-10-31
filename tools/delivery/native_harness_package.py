@@ -57,7 +57,9 @@ def path_name(name):
     require(type(name) is str and len(name) <= 1024 and '\\' not in name, 'relative_path')
     protected.relative(name)
     require(not any(p.startswith('.env') or p in ('credentials', 'auth.json', 'credentials.json')
-                    or p.endswith(('.key', '.pem', '.log')) for p in name.split('/')), 'private_path')
+                    or p.endswith(('.key', '.log')) or p.endswith('.pem') and name not in
+                    ('certifi/cacert.pem', PYTHON + 'certifi/cacert.pem',
+                     'venv/' + PYTHON + 'certifi/cacert.pem') for p in name.split('/')), 'private_path')
     return name
 
 
@@ -124,6 +126,7 @@ def selected_distribution_files(site, *, lock_bytes, upstream, metadata_pins):
         installed[distribution] = (name.rsplit('/', 1)[0], meta)
     queue, selected, output, records, omitted = list(ROOT_DISTRIBUTIONS), {}, {}, {}, []
     total = 0
+    used_pins = set()
     while queue:
         name = canonicalize_name(queue.pop())
         if name in selected:
@@ -132,6 +135,7 @@ def selected_distribution_files(site, *, lock_bytes, upstream, metadata_pins):
         directory, meta = installed[name]
         require(meta['Version'] == locks[name], 'version_pin')
         selected[name] = locks[name]
+        used_pins.add(directory + '/METADATA')
         for raw in meta.get_all('Requires-Dist', []):
             requirement = Requirement(raw)
             if requirement.marker and not requirement.marker.evaluate({'extra': ''}):
@@ -144,6 +148,7 @@ def selected_distribution_files(site, *, lock_bytes, upstream, metadata_pins):
         require(record_name in metadata_pins, 'record_pin_required')
         record = nofollow(site, record_name)
         require(sha(record) == metadata_pins[record_name], 'record_drift')
+        used_pins.add(record_name)
         records[name] = {'path': record_name, 'sha256': sha(record)}
         row_names = set()
         for row in csv.reader(io.StringIO(record.decode())):
@@ -164,6 +169,7 @@ def selected_distribution_files(site, *, lock_bytes, upstream, metadata_pins):
                 require(relative.startswith(directory + '/') and relative in metadata_pins
                         and sha(raw) == metadata_pins[relative], 'unhashed_record_pin')
                 require(not size or (size.isdecimal() and int(size) == len(raw)), 'record_size')
+                used_pins.add(relative)
             # A namespace may be shared, but conflicting bytes are never overwritten.
             target = PYTHON + relative
             require(target not in output or output[target] == raw, 'distribution_file_collision')
@@ -179,7 +185,7 @@ def selected_distribution_files(site, *, lock_bytes, upstream, metadata_pins):
     actual_stokowski = {p[len(PYTHON):] for p in output if p.startswith(PYTHON + 'stokowski/')}
     require(actual_stokowski == set(upstream['files']), 'upstream_source_closure')
     return output, {'versions': dict(sorted(selected.items())), 'records': records,
-                    'omitted': omitted, 'metadata_pins': dict(metadata_pins),
+                    'omitted': omitted, 'metadata_pins': {n: metadata_pins[n] for n in sorted(used_pins)},
                     'lock_sha256': [sha(raw) for raw in lock_bytes], 'upstream': upstream}
 
 

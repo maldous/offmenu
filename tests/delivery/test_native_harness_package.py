@@ -52,6 +52,12 @@ class PackageTests(unittest.TestCase):
         return package.selected_distribution_files(self.site, lock_bytes=['\n'.join(self.locks).encode()],
                     upstream=self.upstream, metadata_pins=self.pins)
 
+    def test_only_exact_record_pinned_public_ca_resource_is_allowed(self):
+        package.path_name('certifi/cacert.pem')
+        package.closure('owner_venv',{package.PYTHON+'certifi/cacert.pem':b'public CA fixture'})
+        for name in ('secret.pem','other/cacert.pem',package.PYTHON+'certifi/private.pem'):
+            with self.assertRaises(ValueError):package.path_name(name)
+
     def test_record_projection_omits_bootstrap_scripts_and_bytecode(self):
         files, evidence = self.projection()
         self.assertEqual(len(evidence['versions']), 4)

@@ -44,7 +44,11 @@ selected from Git. Namespace file overlap is allowed only for identical bytes.
 It returns `(files, evidence)`: a map from
 `lib/python3.12/site-packages/<record path>` to bytes and a bounded provenance
 object with selected versions, original RECORD refs, metadata pins, lock hashes,
-upstream pins and excluded rows. All returned bytes require independent
+upstream pins and excluded rows. The exact public CA bundle `certifi/cacert.pem` is allowed
+only as that pinned distribution resource (and its fixed venv prefixes); every
+other `.pem` remains refused. The upgrade verifier needs the corresponding
+reviewed resource exception before these real dependency closures can be adopted.
+All returned bytes require independent
 qualification before package production. Self-observed hashes never become
 independent acceptance merely by passing them back into another helper.
 
