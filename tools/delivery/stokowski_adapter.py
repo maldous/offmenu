@@ -1690,10 +1690,20 @@ class CurrentWork:
         self._private_pin(selection['packet'])
         context = selection['context']
         if (not isinstance(context, dict)
-            or set(context) != {'engine_root', 'engine_task', 'unit_review'}
+            or set(context) - {'publisher_invocation'} != {'engine_root', 'engine_task', 'unit_review'}
             or not isinstance(context['engine_root'], str)
             or not self.private(context['engine_root']).is_dir()):
             raise AdmissionError('native_harness_context')
+        if 'publisher_invocation' in context:
+            invocation = context['publisher_invocation']
+            if (not isinstance(invocation, dict)
+                or set(invocation) != {'version', 'closure_sha256', 'host_confirmation_sha256'}
+                or type(invocation['version']) is not int or invocation['version'] != 1
+                or any(not isinstance(invocation[k], str) or not re.fullmatch('[0-9a-f]{64}', invocation[k])
+                       for k in ('closure_sha256', 'host_confirmation_sha256'))):
+                raise AdmissionError('native_harness_publisher_invocation')
+            from native_harness_contract import fingerprint
+            fingerprint(invocation)  # Included unchanged in the pinned selection identity.
         for name in ('engine_task', 'unit_review'):
             ref = context[name]
             if not isinstance(ref, dict) or set(ref) != {'path', 'sha256'} or not isinstance(ref['path'], str):
