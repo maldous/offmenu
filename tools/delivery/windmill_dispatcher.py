@@ -20,6 +20,7 @@ BRIDGE = 'u/admin/foo_jobs_20261027'
 # Portable qualification copied from the frozen v3 producer at 5ec30129.
 # Windmill deploys this file alone: validation must not import the checkout.
 REVIEWED_PROFILE = 'current-journal-focused'
+PUBLISHER_PROFILE = 'protected-publisher-bootstrap'
 PROFILES = {'delivery-suite'}
 
 
@@ -87,7 +88,7 @@ def _qualified_reviewed_spec(spec):
         raise ValueError('Invalid reviewed-source version')
     extra = {'origin','workspace','local_source_root','execution','control_sha256'}
     legacy = {k:v for k,v in spec.items() if k not in extra}
-    if not extra.issubset(spec) or 'branch' not in legacy or spec.get('profile') != REVIEWED_PROFILE:
+    if not extra.issubset(spec) or 'branch' not in legacy or spec.get('profile') not in (REVIEWED_PROFILE, PUBLISHER_PROFILE):
         raise ValueError('Invalid reviewed-source profile')
     _reviewed_legacy(dict(legacy, version=1, profile='delivery-suite'))
     _reviewed_workspace(spec['workspace'])
@@ -125,7 +126,8 @@ def _qualified_reviewed_spec(spec):
             raise ValueError('Invalid contribution path mapping')
         derivation = ref['derivation']
         transformed = any(value != spec['outputs'][mapping[name]] for name,value in ref['outputs'].items())
-        if transformed:
+        # The pinned executed oracle determines attached/detached ancestry.
+        if transformed or derivation is not None:
             if (not isinstance(derivation,dict)
                 or set(derivation) != {'owner','contribution_head','path_mapping','head','outputs','review_sha256','reason'}
                 or derivation['owner'] != ref['owner']
@@ -148,8 +150,9 @@ def _qualified_reviewed_spec(spec):
 
 
 # Full immutable body templates from reviewed_check_code/reviewed_arguments.
-REVIEWED_CHECK_SHA256 = 'de61813f1a03fdb8fb84d012015c306319eae8a94be8dec4a13411ef6b076a59'
+REVIEWED_CHECK_SHA256 = '8409648a10d0224b6e450348e91e5172fe2def9c56f9520ffe8d27d36bcabb13'
 REVIEWED_ORACLE_SHA256 = '688542af44b51ffb02ad5db5c9b0499e07ca660db6975fa25e8a9e38021449f2'
+PUBLISHER_ORACLE_SHA256 = 'f3cb99f2dc0689dc148f1583f75e088c43ac05d9592e95407ee580ff1b2afd62'
 
 
 def _unique_json(pairs):
@@ -204,7 +207,9 @@ def _reviewed_command(command, logical_id):
             ('root=pathlib.Path('+repr(root)+')','ROOT'),
             ("archive=subprocess.check_output(['git','-C',str(root),'archive',"+repr(spec['base'])+",*files])",'ARCHIVE'),
             ("assert hashlib.sha256(archive).hexdigest()=="+repr(spec['control_sha256'])+", 'control source drift'",'CONTROL')])
-        if check_hash != REVIEWED_CHECK_SHA256 or oracle_hash != REVIEWED_ORACLE_SHA256:
+        expected_oracle = (PUBLISHER_ORACLE_SHA256 if spec['profile'] == PUBLISHER_PROFILE
+                           else REVIEWED_ORACLE_SHA256)
+        if check_hash != REVIEWED_CHECK_SHA256 or oracle_hash != expected_oracle:
             raise ValueError('Unreviewed Python body')
         return key
     except (AttributeError,IndexError,KeyError,TypeError,SyntaxError,RecursionError) as error:
