@@ -142,7 +142,30 @@ def association(config, inner):
             require(s == binding['candidate']['source'] and s['branch'] == 'develop'
                     and s['target'] == 'main', 'release_source')
         else:
-            require(all(s[key] == binding[key] for key in ('base', 'head', 'tree'))
+            source_base = binding['base']
+            if 'source_projection' in binding:
+                p = binding['source_projection']
+                require(exact(p, {'version','profile','source','target','merge_tree','outputs',
+                    'unit_sha256','operation_key','receipt','review_sha256'})
+                    and binding.get('version') == 2
+                    and type(p['version']) is int and p['version'] == 1
+                    and p['profile'] == 'identity-client-focused'
+                    and exact(p['source'], {'head','base','tree','branch'})
+                    and exact(p['target'], {'base','tree'})
+                    and p['source'] == {key:s[key] for key in ('head','base','tree','branch')}
+                    and p['target']['base'] == binding['base']
+                    and all(type(v) is str and re.fullmatch('[0-9a-f]{40}', v)
+                            for v in (p['target']['base'],p['target']['tree'],p['merge_tree']))
+                    and p['outputs'] == binding['outputs']
+                    and p['unit_sha256'] == n['unit_sha256'] and hex64(p['unit_sha256'])
+                    and p['operation_key'] == binding['validation_operation_key'] and hex64(p['operation_key'])
+                    and hex64(p['review_sha256']) and exact(p['receipt'], {'path','sha256'})
+                    and type(p['receipt']['path']) is str and p['receipt']['path'].startswith('/')
+                    and hex64(p['receipt']['sha256'])
+                    and hex64(config['codePins'].get('src/offmenu/delivery/identity_source_projection.py')),
+                    'integration_projection')
+                source_base = p['source']['base']
+            require(s['base'] == source_base and all(s[key] == binding[key] for key in ('head', 'tree'))
                     and s['branch'] == binding['head_branch'] and s['target'] == 'develop', 'integration_source')
         identity = dict(operation_id=fingerprint(binding), issue_id=n['issue_id'],
                         project_id=n['project_id'], owner=n['owner'], unit_sha256=n['unit_sha256'],
