@@ -28,7 +28,7 @@ PROFILES = {'delivery-suite'}
 ENRICHMENT_PROFILE = 'enrichment-resilience-focused'
 ENRICHMENT_TEST = 'tests/web/enrichment-resilience.test.mjs'
 PROFILES.add(ENRICHMENT_PROFILE)
-ENRICHMENT_BODY_SHA256 = '2ed28f2a2b33837d12c496f5e5257eb7145101fad790978290db326d8c34ad16'
+ENRICHMENT_BODY_SHA256 = 'b0a939224a8ce163324dbdb55776a86025eae4e741fe83d9a1ea8fce906a920a'
 
 
 def _reviewed_branch(value):
@@ -229,16 +229,20 @@ def _enrichment_command(command, logical_id, tokens):
     parsed = ast.parse(body)
     spec_json = ast.literal_eval(parsed.body[1].value.args[0])
     root = ast.literal_eval(parsed.body[2].value.args[0])
-    if not isinstance(spec_json,str) or root != '/offmenu':
+    if not isinstance(spec_json,str):
         raise ValueError('Invalid enrichment literals')
     spec = json.loads(spec_json,object_pairs_hook=_unique_json)
     _reviewed_legacy(spec)
     if spec['profile'] != ENRICHMENT_PROFILE or set(spec['outputs']) != {ENRICHMENT_TEST}:
         raise ValueError('Enrichment body requires exact native profile/output')
+    _reviewed_workspace(root)
+    if root != '/offmenu/data/.offmenu-platform/workspaces/enrichment-'+spec['head']:
+        raise ValueError('Invalid derived enrichment root')
     key = hashlib.sha256(json.dumps({k:v for k,v in spec.items() if k != 'owner'},
         sort_keys=True,separators=(',', ':')).encode()).hexdigest()
     if logical_id != 'offmenu-'+key[:48] or _body_hash(body,[
-        ('spec=json.loads('+repr(json.dumps(spec,sort_keys=True))+')','SPEC')]) != ENRICHMENT_BODY_SHA256:
+        ('spec=json.loads('+repr(json.dumps(spec,sort_keys=True))+')','SPEC'),
+        ('root=pathlib.Path('+repr(root)+')','ROOT')]) != ENRICHMENT_BODY_SHA256:
         raise ValueError('Unreviewed enrichment binding/body')
     return key
 

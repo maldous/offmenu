@@ -507,8 +507,16 @@ with tempfile.TemporaryDirectory(prefix='offmenu-accepted-validation-') as direc
     return 'python3 -c '+shlex.quote(code)
 
 
-def enrichment_validation_code(spec, root='/offmenu'):
+def enrichment_workspace(spec):
+    """One private candidate root inside the existing /offmenu read boundary."""
+    if not isinstance(spec.get('head'),str) or not re.fullmatch('[0-9a-f]{40}',spec['head']):
+        raise OperationError('Invalid enrichment candidate head')
+    return str(WORKSPACES/('enrichment-'+spec['head']))
+
+
+def enrichment_validation_code(spec, root=None):
     """Fixed native-v1 consumer check; no inherited test context or credentials."""
+    root = enrichment_workspace(spec) if root is None else root
     return """import hashlib,json,os,pathlib,re,subprocess,sys,tempfile
 spec=json.loads(SPEC_JSON)
 root=pathlib.Path(ROOT)

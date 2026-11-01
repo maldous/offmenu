@@ -111,6 +111,17 @@ class EnrichmentProfileTests(unittest.TestCase):
             self.assertEqual(git(workspace,'rev-parse','HEAD'),base)
             args = operations.bridge_arguments(spec)
             self.assertEqual(dispatcher.validate_request(args),args)
+            derived = '/offmenu/data/.offmenu-platform/workspaces/enrichment-'+head
+            self.assertEqual(operations.enrichment_workspace(spec),derived)
+            body = shlex.split(args['command'])[2]
+            self.assertIn('root=pathlib.Path('+repr(derived)+')',body)
+            for wrong in ('/offmenu','/offmenu/data/.offmenu-platform/workspaces/enrichment-'+'0'*40,
+                          '/offmenu/.delivery/stokowski/native-validation/'+head):
+                changed = body.replace('root=pathlib.Path('+repr(derived)+')',
+                                       'root=pathlib.Path('+repr(wrong)+')',1)
+                with self.assertRaises(ValueError):
+                    dispatcher.validate_request(dict(args,command=
+                        '/offmenu/.venv-delivery/bin/python -c '+shlex.quote(changed)))
             self.assertNotIn('ACCEPTED_CONTROL_VALIDATORS',args['command'])
             bad = dict(args,command=args['command'].replace("'--test-concurrency=1'","'--test-concurrency=2'"))
             with self.assertRaises(ValueError):
