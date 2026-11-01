@@ -221,9 +221,8 @@ def same_path(parentfd, name, fd):
         raise Refused('source_changed')
 
 
-def check_source(info, uid, *, gid=None):
-    gid = uid if gid is None else gid
-    if (not stat.S_ISREG(info.st_mode) or info.st_uid != uid or info.st_gid != gid
+def check_source(info, uid):
+    if (not stat.S_ISREG(info.st_mode) or info.st_uid != uid
             or stat.S_IMODE(info.st_mode) != 0o600 or info.st_nlink != 1
             or not len(MAGIC) + 4 + 1 + 32 + len(TRAILER) <= info.st_size <= MAX_FRAME):
         raise Refused('source_rejected')
@@ -255,7 +254,7 @@ def send_file(basefd, environment, deadline, uid, *, gid=None):
                          0o600, dir_fd=directoryfd)
         file_id = identity(os.fstat(filefd))
         write_all(filefd, encoded, deadline)
-        check_source(os.fstat(filefd), uid, gid=gid)
+        check_source(os.fstat(filefd), uid)
         os.fsync(filefd)
         same_path(directoryfd, SOURCE_FILE, filefd)
         same_path(basefd, SOURCE_PARENT, directoryfd)
@@ -287,7 +286,7 @@ def read_source(basefd, deadline, uid, *, gid=None):
                      dir_fd=directoryfd)
         try:
             before = os.fstat(fd)
-            check_source(before, uid, gid=gid)
+            check_source(before, uid)
             same_path(directoryfd, SOURCE_FILE, fd)
             data = bytearray()
             while True:

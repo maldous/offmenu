@@ -222,6 +222,21 @@ class TransferTests(unittest.TestCase):
                     m.stage(self.fd, SYNTHETIC, self.deadline, expected_uid, gid=expected_gid)
                 self.assertEqual(list(self.root.iterdir()), [])
 
+    def test_staging_file_wrong_group_rejected_and_cleaned(self):
+        original_fstat = os.fstat
+        def wrong_file_group(fd):
+            info = original_fstat(fd)
+            if m.stat.S_ISREG(info.st_mode):
+                fields = list(info)
+                fields[5] = os.getgid() + 1
+                return os.stat_result(fields)
+            return info
+        # Inject bad file metadata; execute the real ownership guard and cleanup.
+        with patch.object(m.os, 'fstat', side_effect=wrong_file_group):
+            with self.assertRaisesRegex(m.Refused, '^file_rejected$'):
+                self.stage()
+        self.assertEqual(list(self.root.iterdir()), [])
+
     def test_actual_synthetic_subprocess_pipeline(self):
         # Execute only internal core in child, never real receive CLI/root route.
         loader = ('import importlib.util,sys,os,time; '
@@ -270,24 +285,7 @@ class FileTests(TransferTests):
             self.create_source()
         self.assertEqual(self.source.stat().st_size, m.MAX_FRAME)
 
-    def test_source_owner_pair_checks_group_and_defaults(self):
-        self.create_source()
-        info = list(self.source.stat())
-        # Pure metadata validation of the actual runner's reported distinct IDs.
-        info[4], info[5] = 985, 977
-        metadata = os.stat_result(info)
-        m.check_source(metadata, 985, gid=977)
-        for uid, gid in ((986, 977), (985, 978)):
-            with self.subTest(uid=uid, gid=gid), self.assertRaisesRegex(
-                    m.Refused, '^source_rejected$'):
-                m.check_source(metadata, uid, gid=gid)
-        with self.assertRaisesRegex(m.Refused, '^source_rejected$'):
-            m.check_source(metadata, 985)  # Omitted gid still requires uid:uid.
-        info[4], info[5] = 0, 0
-        m.check_source(os.stat_result(info), 0)
-        info[5] = 977
-        with self.assertRaisesRegex(m.Refused, '^source_rejected$'):
-            m.check_source(os.stat_result(info), 0)
+    def test_source_routes_reject_wrong_directory_group(self):
         with self.assertRaisesRegex(m.Refused, '^directory_rejected$'):
             m.read_source(self.fd, self.deadline, os.getuid(), gid=os.getgid() + 1)
         with self.assertRaisesRegex(m.Refused, '^directory_rejected$'):
@@ -305,7 +303,7 @@ class FileTests(TransferTests):
             m.read_source(self.fd, self.deadline, os.getuid() + 1, gid=os.getgid())
         # Exercise source UID independently of base-directory UID validation.
         with self.assertRaises(m.Refused):
-            m.check_source(self.source.stat(), os.getuid() + 1, gid=os.getgid())
+            m.check_source(self.source.stat(), os.getuid() + 1)
         os.link(self.source, self.directory / 'extra')
         with self.assertRaises(m.Refused):
             m.read_source(self.fd, self.deadline, os.getuid(), gid=os.getgid())
