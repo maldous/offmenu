@@ -144,12 +144,12 @@ async def consume_boundary(current, issue, *, binding=None, adapters=None):
         current.guard()
         require(await resolved(adapters.authorize(current, issue, binding)) is True,
                 'owner_authority_missing')
+        _, original_manifest, _ = current.context(issue.identifier, review=True, observation=True)
         require(issue.id == binding.issue_id
                 and current.entries[issue.identifier]['issue_id'] == issue.id
-                and current.route['project_id'] == binding.project_id
+                and original_manifest['project_id'] == binding.project_id
                 and current.config['owner'] == binding.owner, 'native_identity')
         # Preserve every existing manifest/admission/resource/provider/receipt gate.
-        current.context(issue.identifier, review=True, observation=True)
         unit = current.gate_binding(issue, observation=True)
         require(unit['issue_id'] == binding.issue_id
                 and unit['project_id'] == binding.project_id
