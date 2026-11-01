@@ -436,9 +436,11 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
         require(fingerprint(actual) == fingerprint(selected)
                 and set(actual) == {'binding', 'packet', 'context'}
                 and actual['binding'] == asdict(binding), 'owner_selection_drift')
-        require(set(actual['context']) in (
+        context = actual['context']
+        require(type(context) is dict and (set(context) in (
                     {'engine_root', 'engine_task', 'unit_review'},
-                    {'engine_root', 'engine_task', 'unit_review', 'publisher_invocation'}),
+                    {'engine_root', 'engine_task', 'unit_review', 'publisher_invocation'})
+                or (binding.phase == 'linear' and context == {})),
                 'owner_context_fields')
         if 'publisher_invocation' in actual['context']:
             require(binding.phase in ('integration', 'release'), 'publisher_invocation_phase')
@@ -451,6 +453,7 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
         return packet
     def engine(bound):
         packet = load(bound)
+        require(bound.phase in ('integration', 'release'), 'engine_owner_phase')
         context = selected['context']
         root = current.private(context['engine_root'])
         task = pinned_private(current, context['engine_task'])
@@ -471,6 +474,7 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
         return loaded
     def review(owner, native_issue, bound):
         authorize(owner, native_issue, bound)
+        require(bound.phase in ('integration', 'release'), 'review_owner_phase')
         return pinned_private(current, selected['context']['unit_review'])
     def linear(bound, context=None):
         packet = load(bound)

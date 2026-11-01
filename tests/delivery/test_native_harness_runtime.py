@@ -321,7 +321,7 @@ class RuntimeBoundaryTests(unittest.TestCase):
         self.assertEqual(self.handoff['operation']['job_id'],'old-job')
         self.step.assert_not_called()
 
-    def factory_selection(self, graph=None, review=None):
+    def factory_selection(self, graph=None, review=None, context=None):
         import hashlib
         import native_harness_contract, linear_delivery, release_qualification
         from offmenu.delivery import engine, status
@@ -353,7 +353,7 @@ class RuntimeBoundaryTests(unittest.TestCase):
             path=self.current.runtime/name;self.fixture.write(path,value)
             return dict(path=str(path),sha256=hashlib.sha256(path.read_bytes()).hexdigest())
         selection=dict(binding=asdict(self.binding),packet=artifact('native-packet.json',self.packet),
-            context=dict(engine_root=str(graph.root if graph else self.task_runtime),
+            context=context if context is not None else dict(engine_root=str(graph.root if graph else self.task_runtime),
                          engine_task=artifact('native-engine-task.json',graph.task if graph else {}),
                          unit_review=artifact('native-unit-review.json',review or {})))
         ref=artifact('native-selection.json',selection)
@@ -389,7 +389,7 @@ class RuntimeBoundaryTests(unittest.TestCase):
         self.current.config['source_sha256']['tools/delivery/native_harness_runtime.py']='0'*64
         with self.assertRaises(runtime.RuntimeHold):adapters.authorize(self.current,self.issue,self.binding)
 
-    def test_concrete_factory_linear_uses_existing_client_and_current_journal(self):
+    def check_factory_linear_client_and_journal(self, context=None):
         from stokowski.linear import LinearClient
         from unittest.mock import AsyncMock
         client=object.__new__(LinearClient)  # no token, HTTP client or network
@@ -405,11 +405,43 @@ class RuntimeBoundaryTests(unittest.TestCase):
             return dict(issue=dict(id=self.issue.id,project=dict(id=self.binding.project_id),
                 attachments=dict(nodes=nodes,pageInfo=dict(hasNextPage=False,endCursor=None))))
         client._graphql=AsyncMock(side_effect=graphql)
-        selection=self.factory_selection()
+        selection=self.factory_selection(context=context)
         adapters=runtime.owner_adapters(self.current,self.issue,self.binding,selection,linear_client=client)
+        for call in (lambda:adapters.engine(self.binding),
+                     lambda:adapters.review(self.current,self.issue,self.binding)):
+            with self.assertRaisesRegex(runtime.RuntimeHold,'owner_phase'):
+                call()
         self.assertEqual(self.consume(adapters=adapters)['status'],'advanced')
         self.assertEqual(self.consume(adapters=adapters)['effect']['status'],'verified')
         self.assertEqual(len(mutations),1)
+
+    def test_concrete_factory_linear_uses_existing_client_and_current_journal(self):
+        self.check_factory_linear_client_and_journal()
+
+    def test_concrete_factory_empty_linear_context_preserves_intent_and_readback(self):
+        self.check_factory_linear_client_and_journal(context={})
+
+    def test_empty_context_never_admits_publisher_or_malformed_linear_context(self):
+        for phase,context in (('integration',{}),('release',{}),('linear',[]),
+                              ('linear',{'unit_review':{}})):
+            with self.subTest(phase=phase,context=context):
+                self.bind(phase)
+                selection=self.factory_selection(context=context)
+                adapters=runtime.owner_adapters(self.current,self.issue,self.binding,selection)
+                result=self.consume(adapters=adapters)
+                self.assertEqual(result['status'],'held',result)
+                self.assertEqual(result['reason'],'owner_context_fields')
+                self.step.assert_not_called()
+
+    def test_empty_linear_context_still_requires_original_stopped_native_receipt(self):
+        selection=self.factory_selection(context={})
+        client=Mock()
+        adapters=runtime.owner_adapters(self.current,self.issue,self.binding,selection,linear_client=client)
+        path=self.task_runtime/'attempts'/self.issue.identifier/'receipt.json'
+        receipt=json.loads(path.read_text());receipt['child_tree_gone']=False
+        self.fixture.write(path,receipt)
+        self.assertEqual(self.consume(adapters=adapters)['status'],'held')
+        self.assertEqual(client.mock_calls,[])
 
     def test_real_missing_dependency_plan_executes_metadata_but_holds_source(self):
         from stokowski.linear import LinearClient
@@ -625,7 +657,7 @@ class SealedCurrentFactoryTests(unittest.TestCase):
         self.current.guard()
         for name in sources:self.assertEqual(config['source_sha256'][name],actual.file_sha(source/name))
 
-    def test_real_sealed_current_default_factory_and_native_http_readback(self):
+    def check_real_sealed_current_factory_and_readback(self):
         import httpx
         from stokowski.linear import LinearClient
         f=self.f;nodes=[];writes=[]
@@ -653,6 +685,26 @@ class SealedCurrentFactoryTests(unittest.TestCase):
         asyncio.run(reopened.continue_native_harness(linear_client=client))
         self.assertEqual(len(writes),1)
         self.assertFalse(reopened._native_harness_refill_allowed(f.issue.identifier))
+
+    def test_real_sealed_current_default_factory_and_native_http_readback(self):
+        self.check_real_sealed_current_factory_and_readback()
+
+    def test_real_sealed_empty_linear_context_default_factory_and_readback(self):
+        # Reseal only synthetic owner data; constructor, guard, selection reader,
+        # native receipt gate, factory and durable-intent/readback remain real.
+        self.selection['context']={}
+        self.f.fixture.write(self.selection_path,self.selection)
+        config=json.loads((self.protected/'current.json').read_text())
+        config['native_harness_boundaries'][self.f.issue.identifier]['sha256']=self.native.file_sha(self.selection_path)
+        self.f.fixture.write(self.protected/'current.json',config)
+        custody=json.loads((self.protected/'binding.json').read_text())
+        custody['config_sha256']=self.native.file_sha(self.protected/'current.json')
+        self.f.fixture.write(self.protected/'binding.json',custody)
+        state=json.loads(self.current.state_path.read_text());state['config_sha256']=custody['config_sha256']
+        self.f.fixture.write(self.current.state_path,state)
+        self.current=self.native.CurrentWork(self.current.runtime)
+        self.assertEqual(self.current._native_harness_selection(self.f.issue.identifier)['context'],{})
+        self.check_real_sealed_current_factory_and_readback()
 
     def test_boolean_truthy_or_malformed_custody_never_substitutes_for_binding(self):
         f=self.f
