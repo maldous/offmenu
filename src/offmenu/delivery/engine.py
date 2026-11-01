@@ -4,6 +4,7 @@ Task files are reviewed executable code, not untrusted prompts. This runner is
 not a sandbox. Checkpoints and logs are local private data, not backups.
 """
 from contextlib import contextmanager
+import copy
 import fcntl
 import hashlib
 import json
@@ -55,7 +56,9 @@ def validate_task(task):
         raise DeliveryError('Task owner and purpose are required')
     if not re.fullmatch(r'[0-9a-f]{40}', task.get('base_revision', '')):
         raise DeliveryError('Immutable base_revision is required')
-    if 'branch' in task and (not isinstance(task['branch'], str) or not task['branch'].startswith(('feature/', 'bugfix/'))):
+    if 'branch' in task and (not isinstance(task['branch'], str) or not (
+            task['branch'].startswith(('feature/', 'bugfix/'))
+            or (task['branch'] == 'develop' and task.get('release_candidate') is not None))):
         raise DeliveryError('Selected branch must be feature/ or bugfix/')
     if not task.get('checks') or len(task['checks']) > 32:
         raise DeliveryError('Require 1..32 checks')
@@ -144,7 +147,9 @@ class Engine:
     def __init__(self, root, directory, task, failed_reconciliation=False):
         validate_task(task)
         self.root = root
-        self.task = task
+        # Callers must not be able to enlarge a live task's retry budget by
+        # mutating their original dictionary after admission.
+        self.task = copy.deepcopy(task)
         self.directory = directory / task['id']
         binding = self.directory / 'binding.json'
         if failed_reconciliation:
@@ -159,8 +164,9 @@ class Engine:
                 raise DeliveryError('Task binding mismatch')
             self.branch = previous['branch']
             return
+        self.native_harness = self.native_facts()
         current_branch = git(root, 'branch', '--show-current')
-        if not current_branch.startswith(('feature/', 'bugfix/')):
+        if not self.allowed_branch(current_branch):
             raise DeliveryError('Delivery requires a feature/ or bugfix/ branch')
         self.branch = task.get('branch', current_branch)
         if self.branch != current_branch:
@@ -172,6 +178,63 @@ class Engine:
             raise DeliveryError('Task ID already bound to different input/owner/root')
         if not binding.exists():
             atomic(binding, value)
+
+    def native_facts(self):
+        """Consume UIF-122's shared validator; never reinterpret old receipts."""
+        handoff = self.task.get('handoff')
+        candidate = self.task.get('release_candidate')
+        if 'handoff' not in self.task and 'release_candidate' not in self.task:
+            return None
+        try:
+            from native_harness_contract import (
+                fingerprint, load_release_policy, validate_handoff,
+                validate_release_candidate,
+            )
+        except ImportError as exc:
+            raise DeliveryError('Native harness contract unavailable; no execution admitted') from exc
+        policy = load_release_policy(self.root / 'config/delivery-release-policy.json')
+        qualified = validate_handoff(handoff, policy) if 'handoff' in self.task else None
+        release = validate_release_candidate(candidate, policy) if 'release_candidate' in self.task else None
+        source = qualified['source'] if qualified else release['source']
+        if release and source != release['source']:
+            raise DeliveryError('Handoff and release candidate source differ')
+        if (source['head'] != self.task['base_revision']
+                or source['branch'] != git(self.root, 'branch', '--show-current')
+                or source['tree'] != git(self.root, 'rev-parse', 'HEAD^{tree}')):
+            raise DeliveryError('Native harness source differs from selected checkout')
+        if git(self.root, 'merge-base', source['base'], source['head']) != source['base']:
+            raise DeliveryError('Native harness base is not an ancestor of selected source')
+        held = json.loads((self.root / 'repository-standard.json').read_text()).get('runtime_hold_paths', [])
+        changed = git(self.root, 'diff', '--name-only', '-z', 'HEAD').split('\0')
+        changed += git(self.root, 'ls-files', '--others', '--exclude-standard', '-z').split('\0')
+        if set(changed) - {'', *self.task['accepted_outputs'], *held}:
+            raise DeliveryError('Native harness source tree has uncommitted input changes')
+        if qualified:
+            outputs = {item['path']: item['sha256'] for item in qualified['outputs']}
+            if outputs != self.task['accepted_outputs']:
+                raise DeliveryError('Handoff outputs differ from accepted outputs')
+            if qualified['owner'] != self.task['owner']:
+                raise DeliveryError('Handoff owner differs from task owner')
+            # Reconciliation stays with the existing external operation owner.
+            # A checkpoint never upgrades unknown effects to accepted effects.
+            effect = qualified.get('effect')
+            operation = qualified.get('operation')
+            if ((effect and effect['status'] != 'verified')
+                    or (operation and operation['status'] != 'succeeded')):
+                raise DeliveryError('blocked_reconciliation: external effect owner must reconcile')
+        if release:
+            artifacts = {item['path']: item['sha256'] for item in release['artifacts']}
+            if artifacts != self.task['accepted_outputs']:
+                raise DeliveryError('Release artifacts differ from accepted outputs')
+        return {'source': source, 'target': source['target'],
+                'handoff_sha256': fingerprint(qualified) if qualified else None,
+                'candidate_sha256': fingerprint(release) if release else None,
+                'accepted_outputs': copy.deepcopy(self.task['accepted_outputs'])}
+
+    def allowed_branch(self, branch):
+        return branch.startswith(('feature/', 'bugfix/')) or (
+            branch == 'develop' and self.native_harness is not None
+            and self.native_harness['candidate_sha256'] is not None)
 
     def source_digest(self):
         paths = tracked(self.root)
@@ -187,6 +250,10 @@ class Engine:
 
     def verify_source(self):
         binding = json.loads((self.directory / 'binding.json').read_text())
+        if binding['task_sha256'] != digest(self.task):
+            raise DeliveryError('Task binding changed: original attempt budget and identity required')
+        if self.native_facts() != self.native_harness:
+            raise DeliveryError('Native harness binding changed')
         if self.source_digest() != binding['source_sha256']:
             raise DeliveryError('Source changed: cached checks cannot be reused')
         if git(self.root, 'rev-parse', 'HEAD') != self.task['base_revision']:
@@ -194,7 +261,7 @@ class Engine:
         actual_branch = git(self.root, 'branch', '--show-current')
         if actual_branch != binding['branch']:
             raise DeliveryError('Selected branch changed: cached checks cannot be reused')
-        if not actual_branch.startswith(('feature/', 'bugfix/')):
+        if not self.allowed_branch(actual_branch):
             raise DeliveryError('Delivery requires a feature/ or bugfix/ branch')
 
     def event(self, name, detail):
@@ -213,7 +280,7 @@ class Engine:
         if actual != self.task['base_revision']:
             raise DeliveryError('Revision changed: create a reviewed new task, not a relabelled retry')
         branch = git(self.root, 'branch', '--show-current')
-        if not branch.startswith(('feature/', 'bugfix/')):
+        if not self.allowed_branch(branch):
             raise DeliveryError('Delivery requires a feature/ or bugfix/ branch')
         result = discover(self.root)
         self.event('discovered', {'revision': actual, 'tracked_files': result['tracked_files']})
@@ -380,11 +447,15 @@ class Engine:
                   'revision': self.task['base_revision'], 'branch': self.branch, 'task_sha256': digest(self.task),
                   'standard_version': state['standards']['standard_version'],
                   'outputs': outputs, 'checks': list(state['checks']), 'at': time.time()}
+        if self.native_harness is not None:
+            record['native_harness'] = self.native_harness
         atomic(self.directory / 'accepted.json', record)
         self.event('accepted', {'outputs': len(outputs)})
         return {'status': 'accepted'}
 
     def run(self, pause_after=None):
+        if pause_after not in {None, 'discovery', 'standards', 'execute', 'verify'}:
+            raise DeliveryError('Invalid graph pause boundary')
         self.verify_source()
         # LangChain integrations are available via langchain-core, but discovery
         # is deterministic and needs no paid model or telemetry.
@@ -405,13 +476,22 @@ class Engine:
                                      interrupt_after=[pause_after] if pause_after else [])
             config = {'configurable': {'thread_id': self.task['id']}, 'recursion_limit': 16}
             prior = compiled.get_state(config)
+            if prior.values and prior.values.get('task') != self.task:
+                raise DeliveryError('Checkpoint task differs from immutable task binding')
             if prior.values.get('status') == 'accepted' and not prior.next:
                 # Accepted receipts never excuse changed output bytes.
                 verify_outputs(self.root, self.task)
                 self.execution_evidence(allow_recheck=False)
                 return json.loads((self.directory / 'accepted.json').read_text())
             self.cancelled()
-            result = compiled.invoke(None if prior.values else {'task': self.task}, config)
+            # The pinned native graph supports synchronous superstep durability.
+            # Command receipts remain the recovery witness if a process exits
+            # between an effect and this graph's next checkpoint.
+            result = compiled.invoke(None if prior.values else {'task': self.task}, config,
+                                     durability='sync')
             snapshot = compiled.get_state(config)
-            return {'task_id': self.task['id'], 'status': result.get('status'),
-                    'next': list(snapshot.next), 'task_sha256': digest(self.task)}
+            outcome = {'task_id': self.task['id'], 'status': result.get('status'),
+                       'next': list(snapshot.next), 'task_sha256': digest(self.task)}
+            if self.native_harness is not None:
+                outcome['native_harness'] = self.native_harness
+            return outcome

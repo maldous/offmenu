@@ -1,4 +1,4 @@
-# Repository standard 2.3.1
+# Repository standard 2.4.0
 
 Status: adopted through reviewed integration after independent source review and
 real retained-extraction validation. Changes enter `develop`
@@ -81,7 +81,12 @@ Before acceptance, record the base/head, exact changed paths, check results,
 unrun checks and blockers. A clean checkout, pushed commit or preserved source
 is not proof that application behavior works. Confirm the remote feature ref
 and reviewed file content after pushing. Merge feature work into `develop`
-through review; promote accepted `develop` to `main` through release review.
+through review. Freeze the accepted release candidate from `develop`, and promote
+that exact candidate through `release/candidate-<candidate fingerprint>` to
+`main` with separate release review. Exhaustive release checks remain bound to
+the candidate's source, tree and artifacts while `develop` advances. A repair
+creates a new candidate; it never rewrites prior evidence. Verify the resulting
+`main` tree and immutable release tag. Keep `main` static between approved releases.
 Never merge unqualified historical work simply because its branch exists.
 
 The workflows inspected at adoption are manual, except the narrowly scoped
@@ -145,3 +150,21 @@ Standard 2.3.1 adds the bounded completed-native evidence consumer in
 native admission, coding receipt, Engine validation and completed integration
 retain distinct identities. This does not create a Journal, replay execution,
 close a parent outcome, or grant new publication, provider or service authority.
+
+## Native-platform harness and frozen releases
+
+Standard 2.4.0 adopts the source and ownership contract in
+[ADR 0009](../adr/0009-native-platform-harness.md) and
+[`delivery-release-policy.json`](../../config/delivery-release-policy.json).
+Linear retains outcomes and dependencies, Stokowski admitted coding, LangGraph
+finite workflow state, Windmill deterministic jobs, and GitHub source/review and
+release facts. Shared handoffs preserve distinct origins and original operation
+identities; an uncertain effect must be reconciled before another write.
+
+Coherent source review and meaningful validation precede installation. The
+[adoption procedure](../development/native-harness-adoption.md) retains original
+installer receipts, rollback custody and actual host confirmations. Component
+tests, source integration and a service start do not establish useful BAU or
+legacy retirement. Exact installed, active and functional evidence is required
+before retiring the obsolete lane. This source standard grants no product
+deployment, CIX execution, Actions, new credentials or spend.

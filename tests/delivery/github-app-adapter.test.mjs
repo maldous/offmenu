@@ -250,3 +250,50 @@ test('real gateway and Controller retain uncertain intent and never automaticall
     assert.equal(f.puts().length,1);
   } finally {await rm(root,{recursive:true,force:true});}
 });
+
+test('release adapter requires separately pinned authority and uses main canonical ancestry',async()=>{
+  const f=fixture();f.options.binding.headBranch='release/candidate-'+'1'.repeat(64);
+  f.options.release={candidateSha256:'1'.repeat(64),authoritySha256:'2'.repeat(64),tag:'release/2026.11.01'};
+  f.pr.head.ref=f.options.binding.headBranch;f.pr.base.ref='main';
+  f.routes[`/repos/maldous/offmenu/compare/${M}...main`]=f.routes[`/repos/maldous/offmenu/compare/${M}...develop`];
+  const adapter=await f.make();await adapter.mergePullRequest(mergeArgs);
+  assert.equal(f.puts().length,1);
+  assert.equal(f.intents[0].kind,'promote-release');
+  assert.equal(f.intents[0].candidate_sha256,'1'.repeat(64));
+  assert.equal(f.intents[0].authority_sha256,'2'.repeat(64));
+  assert.equal((await adapter.readCanonicalFacts(M)).main_contains_merge,true);
+  assert.ok(!f.calls.some(c=>c.url.endsWith('...develop')));
+  const bad=fixture();bad.options.binding.headBranch='develop';
+  await assert.rejects(bad.make);assert.equal(bad.loads,0);
+  for(const release of [{...f.options.release,tag:'../main'},
+    {...f.options.release,force:true},{...f.options.release,authoritySha256:null}]) {
+    const x=fixture();x.options.binding.headBranch='develop';x.options.release=release;
+    await assert.rejects(x.make);assert.equal(x.loads,0);
+  }
+});
+
+test('release tags are create-only, canonical promotion-bound and one consumed effect',async()=>{
+  const f=fixture();f.options.binding.headBranch='release/candidate-'+'1'.repeat(64);
+  f.options.release={candidateSha256:'1'.repeat(64),authoritySha256:'2'.repeat(64),tag:'release/2026.11.01'};
+  f.pr.head.ref=f.options.binding.headBranch;f.pr.base.ref='main';f.pr.merged=true;f.pr.merge_commit_sha=M;
+  f.routes[`/repos/maldous/offmenu/compare/${M}...main`]=f.routes[`/repos/maldous/offmenu/compare/${M}...develop`];
+  let tag=null,mutations=0;
+  const original=f.options.http;
+  f.options.http=async(url,options)=>{
+    if(url.endsWith('/git/ref/tags/release/2026.11.01'))
+      return new Response(JSON.stringify(tag),{status:tag?200:404,headers:{'content-type':'application/json'}});
+    if(url.endsWith('/git/refs')) {
+      mutations++;assert.equal(options.method,'POST');
+      assert.deepEqual(JSON.parse(options.body),{ref:'refs/tags/release/2026.11.01',sha:M});
+      tag={ref:'refs/tags/release/2026.11.01',object:{type:'commit',sha:M},url:'canonical metadata'};
+      throw Error('lost reply');
+    }
+    return original(url,options);
+  };
+  const adapter=await f.make();await adapter.createReleaseTag(M);
+  assert.equal(mutations,1);assert.equal(f.intents[0].kind,'create-release-tag');
+  assert.deepEqual(await adapter.readReleaseTag(),{ref:tag.ref,object:tag.object});
+  await assert.rejects(()=>adapter.createReleaseTag(M));assert.equal(mutations,1);
+  const restarted=await f.make();await assert.rejects(()=>restarted.createReleaseTag(M));
+  assert.equal(mutations,1,'existing tag never overwritten');
+});

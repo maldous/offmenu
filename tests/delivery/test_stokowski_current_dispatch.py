@@ -683,6 +683,25 @@ class CurrentDispatchTests(unittest.TestCase):
         copied = shutil.copy2(source, destination)
         path = Path(copied)
         path.chmod(path.stat().st_mode | 0o200)
+        if path.name == 'integration-gateway.mjs':
+            # Pin the selected fixture interpreter before committing synthetic
+            # source; the service host's fixed interpreter is absent in jails.
+            code = path.read_text()
+            original = "const reviewPython = '/home/user/src/offmenu/.delivery/stokowski/venv/bin/python';"
+            assert code.count(original) == 1
+            path.write_text(code.replace(original, f'const reviewPython = {json.dumps(sys.executable)};'))
+        elif path.name == 'stokowski_unit_review.py':
+            code = path.read_text()
+            original = "PYTHON = Path('/home/user/src/offmenu/.delivery/stokowski/venv/bin/python')"
+            assert code.count(original) == 1
+            path.write_text(code.replace(original, f'PYTHON = Path({sys.executable!r})'))
+        elif path.name == 'stokowski_adapter.py':
+            # Child processes need the same installed-owner isolation as setUp.
+            code = path.read_text()
+            original = "PROTECTED_OWNER = Path('/etc/offmenu-stokowski-current')"
+            assert code.count(original) == 1
+            path.write_text(code.replace(original,
+                "PROTECTED_OWNER = SOURCE/'.delivery/no-installed-owner'"))
         return copied
 
     def write(self, path, value):
@@ -888,7 +907,7 @@ class CurrentDispatchTests(unittest.TestCase):
         self.write(self.catalog, {'version':1,'entries':self.entries})
         self.current.refresh()
 
-    def adapted(self, current=True, manifest=None):
+    def adapted(self, current=True, manifest=None, native_harness_adapter_factory=None):
         import stokowski.config as config
         import stokowski.linear as linear
         import stokowski.orchestrator as native
@@ -903,8 +922,377 @@ class CurrentDispatchTests(unittest.TestCase):
         for obj,name in targets:
             self.stack.enter_context(patch.object(obj,name,getattr(obj,name)))
         fetch = self.stack.enter_context(patch.object(linear.LinearClient,'fetch_candidate_issues',new_callable=AsyncMock))
-        native = adapter.install_adapters(self.runtime, manifest or {'project_id':adapter.PROJECT, 'tasks':{}}, 'in-memory-only', self.current if current else None)
+        native = adapter.install_adapters(self.runtime, manifest or {'project_id':adapter.PROJECT, 'tasks':{}}, 'in-memory-only', self.current if current else None,
+            native_harness_adapter_factory=native_harness_adapter_factory)
         return native, linear, fetch
+
+    def native_harness_fixture(self):
+        """Actual consumer, original native gates, synthetic sealed OS boundary."""
+        import native_harness_contract as contract
+        source = Path(os.environ.get('OFFMENU_TEST_NATIVE_HARNESS_RUNTIME',
+                                     str(Path(__file__).resolve().parents[2]/'tools/delivery/native_harness_runtime.py')))
+        self.assertTrue(source.is_file(),
+                        'Required native runtime missing: compose it or supply its exact explicit test source')
+        issue, runtime, _, _ = self.bound_gate(388)
+        for name in ('tools/delivery/native_harness_runtime.py',
+                     'tools/delivery/native_harness_contract.py', 'tools/delivery/linear_delivery.py',
+                     'tools/delivery/release_qualification.py', 'src/offmenu/delivery/engine.py',
+                     'src/offmenu/delivery/status.py'):
+            target = self.source/name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source if name.endswith('/native_harness_runtime.py')
+                            else Path(__file__).resolve().parents[2]/name, target)
+        installed = self.source/'tools/delivery/native_harness_runtime.py'
+        spec = importlib.util.spec_from_file_location('native_harness_runtime', installed)
+        module = importlib.util.module_from_spec(spec)
+        self.stack.enter_context(patch.dict(sys.modules, native_harness_runtime=module))
+        spec.loader.exec_module(module)
+        policy = contract.load_release_policy(Path(__file__).resolve().parents[2]/'config/delivery-release-policy.json')
+        ref = dict(path='.delivery/original.json', sha256='a'*64)
+        handoff = dict(version=1,kind='delivery-handoff-v1',issue_id=issue.id,
+            project_id=self.current.route['project_id'], owner=self.current.config['owner'],
+            origin=dict(kind='reviewed-source-v1',evidence=ref),
+            source=dict(repository='maldous/offmenu',branch='feature/test-current',base='b'*40,
+                head='c'*40,tree='f'*40,target='develop',policy_sha256=contract.fingerprint(policy)),
+            outputs=[],evidence=[ref])
+        linear = dict(version=1,projects=[dict(id=handoff['project_id'],name='OffMenu',
+            team_id='53f584e7-70a1-4b1e-b982-b815210e47d4')],
+            outcomes=[dict(id=issue.id,identifier=issue.identifier,project_id=handoff['project_id'],
+                team_id='53f584e7-70a1-4b1e-b982-b815210e47d4',state_type='started',
+                blocked_by=[],pr_urls=[],milestone_ids=[])],
+            changes=[dict(handoff=handoff,pull_request=dict(url='https://github.com/maldous/offmenu/pull/388',
+                head='c'*40,tree='f'*40,base='develop',merged=False,canonical_verified=False))],
+            dependencies=[],effects=[])
+        packet = dict(policy=policy,handoff=handoff,candidate=None,linear=linear,release=None)
+        action = module.plan_delivery(linear,policy)['actions'][0]
+        binding = dict(issue_id=issue.id,project_id=handoff['project_id'],owner=handoff['owner'],
+            packet_sha256=contract.fingerprint(packet),operation_id=action['action_id'],phase='linear',
+            unit_sha256=contract.fingerprint(self.current.gate_binding(issue,observation=True)))
+        packet_path, selected = self.root/'harness-packet.json', self.root/'harness-selection.json'
+        self.write(packet_path,packet)
+        engine_root = runtime/'workspaces'/issue.identifier
+        engine_root.mkdir(parents=True,exist_ok=True)
+        task_path, review_path = self.root/'unqualified-engine-task.json',self.root/'unqualified-unit-review.json'
+        for path in (task_path,review_path):
+            self.write(path,{'fixture':'unqualified context; not source or runtime acceptance'})
+        context = dict(engine_root=str(engine_root),
+            engine_task=dict(path=str(task_path),sha256=adapter.file_sha(task_path)),
+            unit_review=dict(path=str(review_path),sha256=adapter.file_sha(review_path)))
+        self.write(selected,dict(binding=binding,packet=dict(path=str(packet_path),sha256=adapter.file_sha(packet_path)),
+                                 context=context))
+        config = json.loads(json.dumps(self.current.config))
+        config['native_harness_boundaries'] = {issue.identifier:dict(path=str(selected),sha256=adapter.file_sha(selected))}
+        for path in (self.source/'tools/delivery').glob('*.py'):
+            name = str(path.relative_to(self.source))
+            if path.name in ('native_harness_runtime.py','native_harness_contract.py','linear_delivery.py','release_qualification.py'):
+                config['source_sha256'][name] = adapter.file_sha(path)
+        for name in ('engine.py','status.py'):
+            path = self.source/'src/offmenu/delivery'/name
+            config['source_sha256'][str(path.relative_to(self.source))] = adapter.file_sha(path)
+        sealed = self.root/'sealed-current.json'
+        self.write(sealed,config)
+        state = json.loads(self.current.state_path.read_text())
+        state['config_sha256'] = adapter.file_sha(sealed)
+        self.write(self.current.state_path,state)
+        # Only the kernel/sealed-file qualification is synthetic; all config,
+        # source, native receipt, catalog and consumer checks remain real.
+        self.stack.enter_context(patch.object(adapter,'PROTECTED_OWNER',self.root))
+        self.stack.enter_context(patch.object(adapter,'protected_owner_bytes',side_effect=lambda p:Path(p).read_bytes()))
+        self.stack.enter_context(patch.object(adapter,'current_config',side_effect=lambda r:
+            (adapter.read_record(sealed),sealed,{'synthetic':'sealed owner'})))
+        self.current = adapter.CurrentWork(self.runtime)
+        effect = dict(operation_id=binding['operation_id'],status='ready',child_tree_gone=True)
+        authorize = unittest.mock.Mock(return_value=True)
+        def step(binding, context):
+            effect['status'] = 'verified'
+            return dict(effect)
+        step = unittest.mock.Mock(side_effect=step)
+        adapters = module.OwnerAdapters(authorize,lambda b:json.loads(json.dumps(packet)),
+            lambda b:None,lambda *args:None,lambda b:dict(effect),step)
+        factory = unittest.mock.Mock(return_value=adapters)
+        return SimpleNamespace(issue=issue,runtime=runtime,module=module,packet=packet,
+            binding=binding,selected=selected,sealed=sealed,effect=effect,authorize=authorize,
+            step=step,factory=factory,packet_path=packet_path)
+
+    def test_native_harness_absent_binding_neither_imports_nor_writes(self):
+        before = self.current.state_path.read_bytes()
+        with patch.object(adapter.importlib,'import_module') as load:
+            asyncio.run(self.current.continue_native_harness())
+        load.assert_not_called()
+        self.assertEqual(before,self.current.state_path.read_bytes())
+
+    def reseal_native_harness_selection(self, fixture, selection):
+        self.write(fixture.selected,selection)
+        config = json.loads(fixture.sealed.read_text())
+        config['native_harness_boundaries'][fixture.issue.identifier]['sha256'] = adapter.file_sha(fixture.selected)
+        self.write(fixture.sealed,config)
+        state = json.loads(self.current.state_path.read_text())
+        state['config_sha256'] = adapter.file_sha(fixture.sealed)
+        self.write(self.current.state_path,state)
+
+    def test_linear_empty_context_keeps_original_native_gate_without_unused_artifacts(self):
+        f = self.native_harness_fixture()
+        selection = json.loads(f.selected.read_text())
+        # Remove only disposable unqualified test artifacts; they are neither
+        # needed nor fabricated as evidence for a metadata-only transaction.
+        for name in ('engine_task','unit_review'):
+            Path(selection['context'][name]['path']).unlink()
+        selection['context'] = {}
+        self.reseal_native_harness_selection(f,selection)
+        self.current = adapter.CurrentWork(self.runtime)
+        self.assertEqual(self.current._native_harness_selection(f.issue.identifier)['context'],{})
+        asyncio.run(self.current.continue_native_harness(f.factory))
+        self.assertEqual(f.step.call_count,1)
+        self.assertEqual(self.current.state['tasks'][f.issue.identifier]['native_harness']['projection']['effect']['status'],
+                         'verified')
+        self.assertFalse(self.current.state['accepted_delivery'])
+        # Empty context is not a replacement for the original stopped native unit.
+        f.factory.reset_mock(); f.step.reset_mock()
+        self.write(f.runtime/'attempts'/f.issue.identifier/'receipt.json',{'status':'unknown'})
+        asyncio.run(self.current.continue_native_harness(f.factory))
+        f.factory.assert_not_called(); f.step.assert_not_called()
+        self.assertFalse(self.current._native_harness_refill_allowed(f.issue.identifier))
+
+    def test_linear_empty_context_rejects_wrong_phase_type_and_invocation_only(self):
+        f = self.native_harness_fixture()
+        original = json.loads(f.selected.read_text())
+        invocation = dict(version=1,closure_sha256='a'*64,host_confirmation_sha256='b'*64)
+        for phase,context in (('integration',{}),('release',{}),('linear',[]),('linear',None),
+                              ('linear',{'publisher_invocation':invocation})):
+            with self.subTest(phase=phase,context=context):
+                selection = json.loads(json.dumps(original))
+                selection['binding']['phase'], selection['context'] = phase, context
+                self.reseal_native_harness_selection(f,selection)
+                with self.assertRaisesRegex(AdmissionError,'native_harness_context'):
+                    adapter.CurrentWork(self.runtime,read_only=True)
+        f.factory.assert_not_called(); f.step.assert_not_called()
+
+    def test_linear_empty_context_preserves_nonempty_reference_checks(self):
+        f = self.native_harness_fixture()
+        original = self.current._native_harness_selection(f.issue.identifier)
+        self.assertEqual(set(original['context']),{'engine_root','engine_task','unit_review'})
+        self.assertEqual(adapter.CurrentWork(self.runtime,read_only=True)._native_harness_selection(f.issue.identifier),
+                         original)
+        # A nonempty legacy Linear context still qualifies every original ref.
+        Path(original['context']['unit_review']['path']).unlink()
+        with self.assertRaises(FileNotFoundError):
+            adapter.CurrentWork(self.runtime,read_only=True)
+
+    def test_publisher_invocation_ingress_preserves_exact_metadata_and_selection_pin(self):
+        f = self.native_harness_fixture()
+        selection = json.loads(f.selected.read_text())
+        invocation = dict(version=1,closure_sha256='a'*64,host_confirmation_sha256='b'*64)
+        selection['context']['publisher_invocation'] = invocation
+        self.reseal_native_harness_selection(f,selection)
+        with patch.object(f.module,'fixed_publisher_rpc') as rpc:
+            current = adapter.CurrentWork(self.runtime,read_only=True)
+            current.guard()
+            actual = current._native_harness_selection(f.issue.identifier)
+        self.assertEqual(actual,selection)
+        self.assertEqual(f.module.fingerprint(actual['context']['publisher_invocation']),
+                         f.module.fingerprint(invocation))
+        rpc.assert_not_called()
+        # Editing valid metadata without the sealed selection's new byte pin
+        # cannot change the owner-admitted context, even with valid hash syntax.
+        selection['context']['publisher_invocation']['closure_sha256'] = 'c'*64
+        self.write(f.selected,selection)
+        with self.assertRaisesRegex(AdmissionError,'intake_reference_drift'):
+            adapter.CurrentWork(self.runtime,read_only=True)
+
+    def test_publisher_invocation_ingress_rejects_malformed_or_executable_selectors(self):
+        f = self.native_harness_fixture()
+        original = json.loads(f.selected.read_text())
+        valid = dict(version=1,closure_sha256='a'*64,host_confirmation_sha256='b'*64)
+        malformed = [None,False,[],{},dict(valid,version=True),dict(valid,version=1.0),
+                     dict(valid,version='1'),dict(valid,version=2),dict(valid,closure_sha256='A'*64),
+                     dict(valid,closure_sha256='a'*63),dict(valid,host_confirmation_sha256=False),
+                     {k:v for k,v in valid.items() if k != 'host_confirmation_sha256'}]
+        malformed += [dict(valid,**{key:value}) for key,value in (
+            ('command','sudo anything'),('path','/tmp/helper'),('uid',2345),
+            ('env',{}),('callback','issue-selected'),('enabled',True))]
+        for invocation in malformed:
+            with self.subTest(invocation=invocation):
+                selection = json.loads(json.dumps(original))
+                selection['context']['publisher_invocation'] = invocation
+                self.reseal_native_harness_selection(f,selection)
+                with self.assertRaisesRegex(AdmissionError,'native_harness_publisher_invocation'):
+                    adapter.CurrentWork(self.runtime,read_only=True)
+        f.factory.assert_not_called()
+        f.step.assert_not_called()
+
+    def test_publisher_invocation_ingress_requires_seal_and_absence_preserves_uid_hold(self):
+        f = self.native_harness_fixture()
+        original = self.current._native_harness_selection(f.issue.identifier)
+        self.assertNotIn('publisher_invocation',original['context'])
+        # Exercise only the existing early refusal, never protected config or a child.
+        with patch.object(adapter.os,'getuid',return_value=1000), \
+             patch.object(adapter,'protected_owner_bytes') as read:
+            with self.assertRaisesRegex(f.module.RuntimeHold,'publisher_owner_identity_required'):
+                f.module.publisher_identity({},'integration')
+        read.assert_not_called()
+        original['context']['publisher_invocation'] = dict(
+            version=1,closure_sha256='a'*64,host_confirmation_sha256='b'*64)
+        self.reseal_native_harness_selection(f,original)
+        config = json.loads(f.sealed.read_text())
+        with patch.object(adapter,'current_config',return_value=(config,f.sealed,None)):
+            with self.assertRaisesRegex(AdmissionError,'native_harness_owner_config'):
+                adapter.CurrentWork(self.runtime,read_only=True)
+
+    def test_native_harness_config_rejects_unsealed_malformed_and_unpinned_inputs(self):
+        f = self.native_harness_fixture()
+        config = json.loads(f.sealed.read_text())
+        for value in ([], {}, {'foreign':config['native_harness_boundaries'][f.issue.identifier]},
+                      {f.issue.identifier:{'path':42,'sha256':'a'*64}}):
+            self.write(f.sealed,dict(config,native_harness_boundaries=value))
+            with self.assertRaises(AdmissionError):
+                adapter.CurrentWork(self.runtime,read_only=True)
+        self.write(f.sealed,config)
+        with patch.object(adapter,'current_config',return_value=(config,f.sealed,None)):
+            with self.assertRaisesRegex(AdmissionError,'native_harness_owner_config'):
+                adapter.CurrentWork(self.runtime,read_only=True)
+        missing = json.loads(json.dumps(config))
+        missing['source_sha256'].pop('tools/delivery/native_harness_runtime.py')
+        self.write(f.sealed,missing)
+        with self.assertRaisesRegex(AdmissionError,'native_harness_source_pin'):
+            adapter.CurrentWork(self.runtime,read_only=True)
+
+    def test_native_harness_missing_factory_is_explicit_without_effect(self):
+        f = self.native_harness_fixture()
+        with patch.object(f.module,'owner_adapters',None,create=True):
+            asyncio.run(self.current.continue_native_harness())
+        state = self.current.state['tasks'][f.issue.identifier]['native_harness']
+        self.assertEqual(state['status'],'held')
+        self.assertEqual(state['reason'],'native_harness_adapters_unavailable')
+        self.assertEqual(state['operation_id'],f.binding['operation_id'])
+        f.step.assert_not_called()
+        self.assertFalse(self.current._native_harness_refill_allowed(f.issue.identifier))
+
+    def test_native_harness_normal_poll_uses_fixed_installed_factory_and_existing_client(self):
+        f = self.native_harness_fixture()
+        import stokowski.orchestrator as native
+        client = self.client(f.issue)
+        with patch.object(f.module,'owner_adapters',f.factory,create=True), \
+             patch.object(native.Orchestrator,'_tick',new=AsyncMock()):
+            installed, _, _ = self.adapted()
+            with patch.object(self.current,'continue_validation',new=AsyncMock()):
+                asyncio.run(installed.Orchestrator._tick(SimpleNamespace(_linear=client)))
+        self.assertIs(f.factory.call_args.kwargs['linear_client'],client)
+        self.assertEqual(f.step.call_count,1)
+
+    def test_native_harness_context_and_binding_are_closed_owner_inputs(self):
+        f = self.native_harness_fixture()
+        selection = json.loads(f.selected.read_text())
+        for section, name, value in (('binding','owner','foreign-owner'),
+                                     ('binding','phase','execute-arbitrary'),
+                                     ('binding','unit_sha256','invalid'),
+                                     ('context','engine_root',str(self.temp)),
+                                     ('context','callback','issue-selected-function')):
+            changed = json.loads(json.dumps(selection))
+            changed[section][name] = value
+            self.write(f.selected,changed)
+            config = json.loads(f.sealed.read_text())
+            config['native_harness_boundaries'][f.issue.identifier]['sha256'] = adapter.file_sha(f.selected)
+            self.write(f.sealed,config)
+            with self.assertRaises(AdmissionError):
+                adapter.CurrentWork(self.runtime,read_only=True)
+        f.factory.assert_not_called()
+
+    def test_native_harness_different_unit_and_permission_loss_never_step(self):
+        f = self.native_harness_fixture()
+        f.authorize.side_effect = [True,False]
+        asyncio.run(self.current.continue_native_harness(f.factory))
+        f.step.assert_not_called()
+        self.assertEqual(self.current.state['tasks'][f.issue.identifier]['native_harness']['status'],'held')
+        # A same-shaped but different original unit cannot use an admitted binding.
+        f.authorize.side_effect = None
+        f.authorize.return_value = True
+        f.factory.reset_mock()
+        original_gate = self.current.gate_binding
+        def drift(*args, **kwargs):
+            return dict(original_gate(*args, **kwargs),native_receipt_sha256='0'*64)
+        with patch.object(self.current,'gate_binding',side_effect=drift):
+            asyncio.run(self.current.continue_native_harness(f.factory))
+        f.factory.assert_not_called()
+        f.step.assert_not_called()
+        self.assertFalse(self.current._native_harness_refill_allowed(f.issue.identifier))
+
+    def test_native_harness_poll_consumes_actual_runtime_once_after_validation(self):
+        f = self.native_harness_fixture()
+        import stokowski.orchestrator as native
+        order = []
+        async def tick(owner):
+            order.append('native')
+        f.factory.side_effect = lambda *args, **kwargs:(order.append('consume') or f.factory.return_value)
+        with patch.object(native.Orchestrator,'_tick',side_effect=tick):
+            installed, _, _ = self.adapted(native_harness_adapter_factory=f.factory)
+            with patch.object(self.current,'continue_validation',new=AsyncMock(side_effect=lambda:order.append('validation'))):
+                asyncio.run(installed.Orchestrator._tick(SimpleNamespace()))
+                asyncio.run(installed.Orchestrator._tick(SimpleNamespace()))
+        self.assertEqual(order,['validation','consume','native']*2)
+        self.assertEqual(f.step.call_count,1)
+        self.assertEqual(self.current.state['tasks'][f.issue.identifier]['native_harness']['projection']['effect']['status'],'verified')
+
+    def test_native_harness_source_and_selection_drift_hold_before_factory(self):
+        f = self.native_harness_fixture()
+        for path in (self.source/'tools/delivery/native_harness_runtime.py', f.selected, f.packet_path):
+            before = path.read_bytes()
+            path.write_bytes(before+b' ')
+            asyncio.run(self.current.continue_native_harness(f.factory))
+            self.assertEqual(self.current.state['tasks'][f.issue.identifier]['native_harness']['status'],'held')
+            path.write_bytes(before)
+        f.factory.assert_not_called()
+        f.step.assert_not_called()
+
+    def test_native_harness_permission_unknown_and_unstopped_results_cannot_refill(self):
+        f = self.native_harness_fixture()
+        with patch.object(self.current,'_successor_boundary') as successor:
+            for status, gone in (('unknown',True),('pending',True),('denied',True),('verified',False)):
+                f.effect.update(status=status,child_tree_gone=gone)
+                asyncio.run(self.current.continue_native_harness(f.factory))
+            f.effect.update(operation_id='0'*64,status='verified',child_tree_gone=True)
+            asyncio.run(self.current.continue_native_harness(f.factory))
+            self.assertEqual(self.current.state['tasks'][f.issue.identifier]['native_harness']['projection']['reason'],
+                             'transaction_identity')
+            f.effect['operation_id'] = f.binding['operation_id']
+            f.effect.update(status='ready',child_tree_gone=True)
+            f.authorize.return_value = 1  # Truthiness is insufficient authority.
+            asyncio.run(self.current.continue_native_harness(f.factory))
+        f.step.assert_not_called()
+        successor.assert_not_called()
+
+    def test_native_harness_verified_permit_is_ephemeral_and_unit_bound(self):
+        f = self.native_harness_fixture()
+        allowed = []
+        with patch.object(self.current,'_successor_boundary',side_effect=lambda:
+                allowed.append(self.current._native_harness_refill_allowed(f.issue.identifier))):
+            asyncio.run(self.current.continue_native_harness(f.factory))
+        self.assertEqual(allowed,[True])
+        self.assertFalse(self.current._native_harness_refill_allowed(f.issue.identifier))
+        # Even a saved verified projection on restart cannot bypass fresh consumption.
+        reopened = adapter.CurrentWork(self.runtime)
+        self.assertFalse(reopened._native_harness_refill_allowed(f.issue.identifier))
+        before = (f.runtime/'attempts'/f.issue.identifier/'receipt.json').read_bytes()
+        self.write(f.runtime/'attempts'/f.issue.identifier/'receipt.json',{'status':'unknown'})
+        with patch.object(self.current,'_successor_boundary') as successor:
+            asyncio.run(self.current.continue_native_harness(f.factory))
+        successor.assert_not_called()
+        (f.runtime/'attempts'/f.issue.identifier/'receipt.json').write_bytes(before)
+        self.assertEqual(f.step.call_count,1)
+
+    def test_native_harness_sync_successor_cannot_use_saved_verified_projection(self):
+        f = self.native_harness_fixture()
+        config, packet, handoff = self.root/'next-config.json',self.root/'next-packet.json',self.root/'next-handoff.json'
+        self.write(config,{'native_publication':{}})
+        config_ref = dict(path=str(config),sha256=adapter.file_sha(config))
+        self.write(packet,dict(owner_config=config_ref,trigger={'issue':f.issue.identifier}))
+        self.write(handoff,dict(owner_config=config_ref,task_packet=dict(path=str(packet),sha256=adapter.file_sha(packet))))
+        self.current.state['intake_handoff'] = dict(path=str(handoff),sha256=adapter.file_sha(handoff))
+        self.current.state['tasks'][f.issue.identifier]['native_harness'] = dict(status='verified',
+            operation_id=f.binding['operation_id'],unit_sha256=f.binding['unit_sha256'])
+        with patch.object(self.current,'_native_successor') as publish:
+            self.current._successor_boundary()
+        publish.assert_not_called()
+        self.assertEqual(self.current.state['successor_hold'],'AdmissionError: native_harness_refill_readback_required')
 
     def client(self, issue, project=None, state=None):
         return SimpleNamespace(_graphql=AsyncMock(return_value={'issue':{
@@ -1792,7 +2180,7 @@ class CurrentDispatchTests(unittest.TestCase):
         controller = Controller(claim/'fixture',b,claim)
         control_input = self.temp/'control-input.json'
         self.write(control_input,dict(binding=b,snapshot=snapshot,directory=str(controller.directory),claim=str(claim)))
-        controlled = subprocess.run(['/home/user/src/offmenu/.venv-delivery/bin/python','-c',
+        controlled = subprocess.run([sys.executable,'-c',
             'import json,sys; from offmenu.delivery.integration import Controller; '
             'v=json.load(open(sys.argv[1])); '
             'print(json.dumps(Controller(v["directory"],v["binding"],v["claim"]).run(v["snapshot"])))',
@@ -1819,7 +2207,7 @@ class CurrentDispatchTests(unittest.TestCase):
                 payload=json.dumps(dict(context=selected_context,
                     envelope={k:packet[k] for k in ('snapshot','decision')})),
                 evidence=json.dumps(packet))
-            return subprocess.run(['/home/user/src/offmenu/.delivery/stokowski/venv/bin/python',str(entry)],
+            return subprocess.run([sys.executable,str(entry)],
                 input=json.dumps(request), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
                 timeout=10, env={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8'})
         before = local_status()
@@ -2466,6 +2854,80 @@ class CurrentDispatchTests(unittest.TestCase):
         return native.run_turn('codex',SimpleNamespace(model=adapter.MODEL,turn_timeout_ms=10000),
             SimpleNamespace(), 'upstream prompt must not replace approval',runtime/'workspaces'/issue.identifier,
             issue,RunAttempt(issue.id,issue.identifier),on_pid=on_pid)
+
+    def test_native_service_delegation_keeps_project_credentials_out_of_child_environment(self):
+        import stokowski.config as config
+        original_env = config.ServiceConfig.agent_env
+        original_key = config.ServiceConfig.resolved_api_key
+        native, _, _ = self.adapted()
+        self.assertIs(config.ServiceConfig.agent_env, original_env)
+        self.assertIs(config.ServiceConfig.resolved_api_key, original_key)
+        project = config.ProjectConfig(name='selected')
+        service = config.ServiceConfig(projects=[project])
+        with patch.dict(os.environ, LINEAR_API_KEY='synthetic-secret', UNKNOWN_TOKEN='synthetic-secret'):
+            self.assertEqual(service.resolved_api_key(), 'in-memory-only')
+            self.assertEqual(service.agent_env(), project.agent_env())
+            self.assertNotIn('LINEAR_API_KEY', service.agent_env())
+            self.assertNotIn('UNKNOWN_TOKEN', service.agent_env())
+
+    def test_model_observation_and_stopped_child_control_native_projection(self):
+        native, _, _ = self.adapted()
+        for number, receipt, expected_status, expected_model in (
+            (381, {'status':'succeeded','child_tree_gone':True}, 'succeeded', None),
+            (382, {'status':'succeeded','child_tree_gone':True,
+                   'resolved_model':'observed-route','resolution_status':'observed'}, 'succeeded', 'observed-route'),
+            (383, {'status':'succeeded','child_tree_gone':True,
+                   'resolved_model':adapter.MODEL,'resolution_status':'unknown'}, 'succeeded', None),
+            (384, {'status':'succeeded','child_tree_gone':False}, 'failed', None),
+            (385, {'status':'uncertain','child_tree_gone':False}, 'failed', None),
+        ):
+            with self.subTest(receipt=receipt):
+                issue, runtime = self.qualify(number)
+                async def spawn(*args, **kwargs):
+                    self.write(runtime/'attempts'/issue.identifier/'receipt.json', receipt)
+                    return SimpleNamespace(pid=98765,returncode=0,communicate=AsyncMock())
+                with patch.object(adapter.asyncio,'create_subprocess_exec',side_effect=spawn):
+                    attempt = asyncio.run(self.turn(native,issue,runtime))
+                self.assertEqual(attempt.status, expected_status)
+                self.assertEqual(attempt.model, expected_model)
+                self.assertEqual(self.select(issue), [])
+
+    def test_native_caps_and_backoff_remain_authoritative(self):
+        import stokowski.orchestrator as native
+        methods = {name:getattr(native.Orchestrator,name) for name in (
+            '_has_slot','_claim_slot','_release_slot','_is_eligible',
+            '_dispatch','_on_worker_exit','_schedule_retry','_handle_retry')}
+        issue, _ = self.qualify(386)
+        native, _, _ = self.adapted()
+        for name, method in methods.items():
+            self.assertIs(getattr(native.Orchestrator,name), method)
+        owner = native.Orchestrator(self.runtime/'workflow.yaml')
+        self.assertEqual(owner._load_workflow(), [])
+        owner.running = {str(i):object() for i in range(owner.cfg.agent.max_concurrent_agents)}
+        self.assertFalse(owner._has_slot()[0])
+        from stokowski.models import RunAttempt
+        owner._schedule_retry = unittest.mock.Mock()
+        owner._on_worker_exit(issue, RunAttempt(issue.id,issue.identifier,attempt=10,status='failed'))
+        self.assertEqual(owner._schedule_retry.call_args.kwargs['delay_ms'],
+                         owner.cfg.agent.max_retry_backoff_ms)
+
+    def test_native_report_records_observed_model_and_preserves_request_fact(self):
+        issue, runtime = self.qualify(387)
+        native, _, _ = self.adapted()
+        receipt = dict(status='succeeded',child_tree_gone=True,requested_model=adapter.MODEL,
+                       resolved_model=None,resolution_status='unknown',accepted_delivery=False)
+        self.write(runtime/'attempts'/issue.identifier/'receipt.json', receipt)
+        client = SimpleNamespace(post_comment=AsyncMock())
+        owner = SimpleNamespace(ledger=SimpleNamespace(record_stage=unittest.mock.Mock()),
+                                _ensure_linear_client=lambda:client)
+        attempt = SimpleNamespace(status='succeeded',total_tokens=0,model=None)
+        asyncio.run(native.Orchestrator._publish_run_report(owner,issue,attempt,
+                    runtime/'workspaces'/issue.identifier,'implement'))
+        self.assertIsNone(owner.ledger.record_stage.call_args.kwargs['model'])
+        summary = json.loads(client.post_comment.call_args.args[1].split('\n\n',1)[1])
+        self.assertEqual(summary['requested_model'],adapter.MODEL)
+        self.assertIsNone(summary['resolved_model'])
+        self.assertEqual(summary['resolution_status'],'unknown')
 
     def test_prepared_request_consumed_once_same_worker_and_final_pool_stays_worker_owned(self):
         issue, runtime = self.qualify(209)

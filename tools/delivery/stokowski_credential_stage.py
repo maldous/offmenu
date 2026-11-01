@@ -136,21 +136,23 @@ def remove_owned(dirfd, name, owned, directory=False):
         pass  # Remnants require manual reconciliation; no recursive deletion.
 
 
-def check_directory(fd, uid, exact_mode=None):
+def check_directory(fd, uid, exact_mode=None, *, gid=None):
+    gid = uid if gid is None else gid
     info = os.fstat(fd)
     mode = stat.S_IMODE(info.st_mode)
     if (not stat.S_ISDIR(info.st_mode) or info.st_uid != uid
-            or info.st_gid != uid or mode & 0o022
+            or info.st_gid != gid or mode & 0o022
             or (exact_mode is not None and mode != exact_mode)):
         raise Refused('directory_rejected')
     return identity(info)
 
 
-def stage(parentfd, payload, deadline, uid):
-    """Trusted parent dirfd; uid is fixed to zero by real CLI, fixture UID in tests."""
+def stage(parentfd, payload, deadline, uid, *, gid=None):
+    """Internal ownership pair; omitted gid preserves the fixed CLI uid:uid policy."""
+    gid = uid if gid is None else gid
     if not payload or len(payload) > LIMIT:
         raise Refused('payload_rejected')
-    check_directory(parentfd, uid)
+    check_directory(parentfd, uid, gid=gid)
     directory_id = temporary_id = published_id = None
     directoryfd = filefd = None
     temporary = '.incomplete-' + secrets.token_hex(16)
@@ -159,13 +161,13 @@ def stage(parentfd, payload, deadline, uid):
         directory_id = identity(os.stat(PARENT, dir_fd=parentfd, follow_symlinks=False))
         directoryfd = os.open(PARENT, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
                               dir_fd=parentfd)
-        if check_directory(directoryfd, uid, 0o700) != directory_id:
+        if check_directory(directoryfd, uid, 0o700, gid=gid) != directory_id:
             raise Refused('directory_rejected')
         filefd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
                          0o600, dir_fd=directoryfd)
         info = os.fstat(filefd)
         temporary_id = identity(info)
-        if info.st_uid != uid or info.st_gid != uid or stat.S_IMODE(info.st_mode) != 0o600:
+        if info.st_uid != uid or info.st_gid != gid or stat.S_IMODE(info.st_mode) != 0o600:
             raise Refused('file_rejected')
         write_all(filefd, payload, deadline)
         os.fsync(filefd)
@@ -191,8 +193,8 @@ def stage(parentfd, payload, deadline, uid):
             os.close(directoryfd)
 
 
-def receive(fd, parentfd, deadline, uid):
-    stage(parentfd, read_frame(fd, deadline), deadline, uid)
+def receive(fd, parentfd, deadline, uid, *, gid=None):
+    stage(parentfd, read_frame(fd, deadline), deadline, uid, gid=gid)
 
 
 def send(fd, environment, deadline):
@@ -234,10 +236,11 @@ def capture(environment):
     return frame(value.encode('utf-8'))
 
 
-def send_file(basefd, environment, deadline, uid):
+def send_file(basefd, environment, deadline, uid, *, gid=None):
     """Fixed names, exclusive creation. Successful secret source stays for cleanup."""
+    gid = uid if gid is None else gid
     encoded = capture(environment)
-    check_directory(basefd, uid, 0o700)
+    check_directory(basefd, uid, 0o700, gid=gid)
     directoryfd = filefd = None
     directory_id = file_id = None
     try:
@@ -245,7 +248,7 @@ def send_file(basefd, environment, deadline, uid):
         directory_id = identity(os.stat(SOURCE_PARENT, dir_fd=basefd, follow_symlinks=False))
         directoryfd = os.open(SOURCE_PARENT, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
                               dir_fd=basefd)
-        if check_directory(directoryfd, uid, 0o700) != directory_id:
+        if check_directory(directoryfd, uid, 0o700, gid=gid) != directory_id:
             raise Refused('source_changed')
         filefd = os.open(SOURCE_FILE, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
                          0o600, dir_fd=directoryfd)
@@ -270,12 +273,13 @@ def send_file(basefd, environment, deadline, uid):
             os.close(directoryfd)
 
 
-def read_source(basefd, deadline, uid):
-    check_directory(basefd, uid, 0o700)
+def read_source(basefd, deadline, uid, *, gid=None):
+    gid = uid if gid is None else gid
+    check_directory(basefd, uid, 0o700, gid=gid)
     directoryfd = os.open(SOURCE_PARENT, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
                           dir_fd=basefd)
     try:
-        check_directory(directoryfd, uid, 0o700)
+        check_directory(directoryfd, uid, 0o700, gid=gid)
         before_dir = snapshot(os.fstat(directoryfd))
         same_path(basefd, SOURCE_PARENT, directoryfd)
         fd = os.open(SOURCE_FILE, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,

@@ -21,6 +21,7 @@ from symphony_tasks import load_manifest, manifest_digest
 @unittest.skipUnless(importlib.util.find_spec('stokowski'), 'Use pinned Stokowski environment')
 class TypedStageTests(unittest.TestCase):
     # Reuse deterministic native evidence builders, not mocked admission/routes.
+    copy_fixture_source = staticmethod(fixtures.CurrentDispatchTests.copy_fixture_source)
     for _name in ('setUp','write','git_read','prepare_current','qualify','publish','adapted',
                   'client','select','bound_gate','review_fixture','continuation_fixture','turn'):
         locals()[_name] = getattr(fixtures.CurrentDispatchTests, _name)
@@ -648,9 +649,10 @@ class ReviewedSourceTests(TypedStageTests):
         packet = self.standalone_packet(historical_executor)
         origin = Path(__file__).resolve().parents[2]
         shutil.copytree(origin/'tools/delivery', self.source/'tools/delivery', dirs_exist_ok=True,
-                        ignore=shutil.ignore_patterns('__pycache__','capacity-policy.json'))
+                        ignore=shutil.ignore_patterns('__pycache__','capacity-policy.json'),
+                        copy_function=self.copy_fixture_source)
         shutil.copytree(origin/'src', self.source/'src', dirs_exist_ok=True,
-                        ignore=shutil.ignore_patterns('__pycache__'))
+                        ignore=shutil.ignore_patterns('__pycache__'), copy_function=self.copy_fixture_source)
         env = dict(PATH='/usr/bin:/bin', LANG='C.UTF-8')
         def git(*args):
             return subprocess.run(['/usr/bin/git','-C',str(self.source),*args],

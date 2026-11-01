@@ -44,7 +44,7 @@ class TransferTests(unittest.TestCase):
                 os.close(writer)
 
     def stage(self):
-        m.stage(self.fd, SYNTHETIC, self.deadline, os.getuid())
+        m.stage(self.fd, SYNTHETIC, self.deadline, os.getuid(), gid=os.getgid())
 
     def test_intact_and_maximum_frame(self):
         self.assertEqual(self.read(m.frame(SYNTHETIC)), SYNTHETIC)
@@ -211,6 +211,32 @@ class TransferTests(unittest.TestCase):
         self.assertEqual(list(self.root.iterdir()), [])
         self.root.chmod(0o700)
 
+    def test_directory_owner_pair_rejects_each_wrong_id(self):
+        uid, gid = os.getuid(), os.getgid()
+        m.check_directory(self.fd, uid, 0o700, gid=gid)
+        for expected_uid, expected_gid in ((uid + 1, gid), (uid, gid + 1)):
+            with self.subTest(uid=expected_uid, gid=expected_gid):
+                with self.assertRaisesRegex(m.Refused, '^directory_rejected$'):
+                    m.check_directory(self.fd, expected_uid, 0o700, gid=expected_gid)
+                with self.assertRaisesRegex(m.Refused, '^directory_rejected$'):
+                    m.stage(self.fd, SYNTHETIC, self.deadline, expected_uid, gid=expected_gid)
+                self.assertEqual(list(self.root.iterdir()), [])
+
+    def test_staging_file_wrong_group_rejected_and_cleaned(self):
+        original_fstat = os.fstat
+        def wrong_file_group(fd):
+            info = original_fstat(fd)
+            if m.stat.S_ISREG(info.st_mode):
+                fields = list(info)
+                fields[5] = os.getgid() + 1
+                return os.stat_result(fields)
+            return info
+        # Inject bad file metadata; execute the real ownership guard and cleanup.
+        with patch.object(m.os, 'fstat', side_effect=wrong_file_group):
+            with self.assertRaisesRegex(m.Refused, '^file_rejected$'):
+                self.stage()
+        self.assertEqual(list(self.root.iterdir()), [])
+
     def test_actual_synthetic_subprocess_pipeline(self):
         # Execute only internal core in child, never real receive CLI/root route.
         loader = ('import importlib.util,sys,os,time; '
@@ -218,7 +244,7 @@ class TransferTests(unittest.TestCase):
                   'm=importlib.util.module_from_spec(s); s.loader.exec_module(m); ')
         sender = loader + 'm.send(1,os.environ,time.monotonic()+2)'
         receiver = loader + ('os.environ.clear(); f=os.open(sys.argv[2],os.O_RDONLY|os.O_DIRECTORY); '
-                             'm.receive(0,f,time.monotonic()+2,os.getuid()); os.close(f)')
+                             'm.receive(0,f,time.monotonic()+2,os.getuid(), gid=os.getgid()); os.close(f)')
         environment = {'PATH': '/usr/bin:/bin', 'LANG': 'C.UTF-8'}
         with subprocess.Popen([sys.executable, '-I', '-c', sender, str(SOURCE)],
                               env={**environment, 'LINEAR_API_KEY': SYNTHETIC.decode()},
@@ -228,7 +254,7 @@ class TransferTests(unittest.TestCase):
             producer.stdout.close()
             _, diagnostics = producer.communicate(timeout=4)
         self.assertEqual(producer.returncode, 0)
-        self.assertEqual(result.returncode, 0)
+        self.assertEqual(result.returncode, 0, result.stderr.decode(errors="replace"))
         self.assertEqual(diagnostics + result.stdout + result.stderr, b'')
         self.assertEqual((self.root / m.PARENT / m.FINAL).read_bytes(), SYNTHETIC)
 
@@ -245,7 +271,7 @@ class TransferTests(unittest.TestCase):
 class FileTests(TransferTests):
     def create_source(self, payload=SYNTHETIC):
         env = {'LINEAR_API_KEY': payload.decode(), 'UNRELATED': 'synthetic'}
-        result = m.send_file(self.fd, env, self.deadline, os.getuid())
+        result = m.send_file(self.fd, env, self.deadline, os.getuid(), gid=os.getgid())
         self.assertEqual(env, {})
         self.directory = self.root / m.SOURCE_PARENT
         self.source = self.directory / m.SOURCE_FILE
@@ -254,26 +280,33 @@ class FileTests(TransferTests):
     def test_file_roundtrip_bounds_and_preexistence(self):
         ids = self.create_source(b'x' * m.LIMIT)
         self.assertEqual(ids[1], m.identity(self.source.stat()))
-        self.assertEqual(m.read_source(self.fd, self.deadline, os.getuid()), b'x' * m.LIMIT)
+        self.assertEqual(m.read_source(self.fd, self.deadline, os.getuid(), gid=os.getgid()), b'x' * m.LIMIT)
         with self.assertRaises(FileExistsError):
             self.create_source()
         self.assertEqual(self.source.stat().st_size, m.MAX_FRAME)
+
+    def test_source_routes_reject_wrong_directory_group(self):
+        with self.assertRaisesRegex(m.Refused, '^directory_rejected$'):
+            m.read_source(self.fd, self.deadline, os.getuid(), gid=os.getgid() + 1)
+        with self.assertRaisesRegex(m.Refused, '^directory_rejected$'):
+            m.send_file(self.fd, {'LINEAR_API_KEY': SYNTHETIC.decode()},
+                        self.deadline, os.getuid(), gid=os.getgid() + 1)
 
     def test_file_bad_metadata(self):
         self.create_source()
         for mode in (0o644, 0o400, 0o660):
             self.source.chmod(mode)
             with self.assertRaises(m.Refused):
-                m.read_source(self.fd, self.deadline, os.getuid())
+                m.read_source(self.fd, self.deadline, os.getuid(), gid=os.getgid())
         self.source.chmod(0o600)
         with self.assertRaises(m.Refused):
-            m.read_source(self.fd, self.deadline, os.getuid() + 1)
+            m.read_source(self.fd, self.deadline, os.getuid() + 1, gid=os.getgid())
         # Exercise source UID independently of base-directory UID validation.
         with self.assertRaises(m.Refused):
             m.check_source(self.source.stat(), os.getuid() + 1)
         os.link(self.source, self.directory / 'extra')
         with self.assertRaises(m.Refused):
-            m.read_source(self.fd, self.deadline, os.getuid())
+            m.read_source(self.fd, self.deadline, os.getuid(), gid=os.getgid())
 
     def test_source_file_collision_preserved(self):
         original_mkdir = os.mkdir
@@ -294,11 +327,11 @@ class FileTests(TransferTests):
         self.source.rename(self.directory / 'retained')
         self.source.symlink_to('retained')
         with self.assertRaises(OSError):
-            m.read_source(self.fd, self.deadline, os.getuid())
+            m.read_source(self.fd, self.deadline, os.getuid(), gid=os.getgid())
         self.directory.rename(self.root / 'retained-directory')
         self.directory.symlink_to('retained-directory')
         with self.assertRaises(OSError):
-            m.read_source(self.fd, self.deadline, os.getuid())
+            m.read_source(self.fd, self.deadline, os.getuid(), gid=os.getgid())
         with self.assertRaises(FileExistsError):
             self.create_source()
         self.assertTrue(self.directory.is_symlink())
@@ -306,7 +339,7 @@ class FileTests(TransferTests):
         fd = os.open(self.root / 'retained-directory', os.O_RDONLY | os.O_DIRECTORY)
         try:
             with self.assertRaises(m.Refused):
-                m.check_directory(fd, os.getuid(), 0o700)
+                m.check_directory(fd, os.getuid(), 0o700, gid=os.getgid())
         finally:
             os.close(fd)
 
@@ -317,10 +350,10 @@ class FileTests(TransferTests):
                      good[:9] + b'X' + good[10:], good[:-len(m.TRAILER)] + b'bad'):
             self.source.write_bytes(data)
             with self.assertRaises(m.Refused):
-                m.read_source(self.fd, self.deadline, os.getuid())
+                m.read_source(self.fd, self.deadline, os.getuid(), gid=os.getgid())
         self.source.write_bytes(good)
         with self.assertRaisesRegex(m.Refused, 'transfer_timeout'):
-            m.read_source(self.fd, time.monotonic() - 1, os.getuid())
+            m.read_source(self.fd, time.monotonic() - 1, os.getuid(), gid=os.getgid())
 
     def test_change_and_path_replacement(self):
         for change in ('write', 'file', 'directory'):
@@ -330,7 +363,7 @@ class FileTests(TransferTests):
                     basefd = os.open(base, os.O_RDONLY | os.O_DIRECTORY)
                     try:
                         m.send_file(basefd, {'LINEAR_API_KEY': SYNTHETIC.decode()},
-                                    self.deadline, os.getuid())
+                                    self.deadline, os.getuid(), gid=os.getgid())
                         directory = Path(base) / m.SOURCE_PARENT
                         source = directory / m.SOURCE_FILE
                         original = os.read
@@ -352,7 +385,7 @@ class FileTests(TransferTests):
                             return data
                         with patch.object(m.os, 'read', side_effect=mutate):
                             with self.assertRaises(m.Refused):
-                                m.read_source(basefd, self.deadline, os.getuid())
+                                m.read_source(basefd, self.deadline, os.getuid(), gid=os.getgid())
                     finally:
                         os.close(basefd)
 
@@ -374,7 +407,7 @@ class FileTests(TransferTests):
                   's=importlib.util.spec_from_file_location("stage",sys.argv[1]); '
                   'm=importlib.util.module_from_spec(s); s.loader.exec_module(m); ')
         code = loader + ('f=os.open(sys.argv[2],os.O_RDONLY|os.O_DIRECTORY); '
-                         'm.send_file(f,os.environ,time.monotonic()+2,os.getuid()); '
+                         'm.send_file(f,os.environ,time.monotonic()+2,os.getuid(), gid=os.getgid()); '
                          'assert not os.environ; assert os.read(0,1)==b""; os.close(f)')
         argv = [sys.executable, '-I', '-c', code, str(SOURCE), str(self.root)]
         self.assertNotIn(SYNTHETIC.decode(), ' '.join(argv))
@@ -398,7 +431,7 @@ class FileTests(TransferTests):
                 def redirected(path, flags, *args, **kwargs):
                     return original_open(fixture if path == '/' else path, flags, *args, **kwargs)
                 def check(fd, uid, mode=None):
-                    return original_check(fd, os.getuid(), mode)
+                    return original_check(fd, os.getuid(), mode, gid=os.getgid())
                 with patch.object(m.os, 'open', side_effect=redirected), \
                         patch.object(m, 'check_directory', side_effect=check), \
                         patch.object(m, 'check_volatile') as volatile:
@@ -427,6 +460,25 @@ class FileTests(TransferTests):
             self.assertEqual(m.main(), 1)
             self.assertEqual(diagnostics.getvalue(), 'status=source_rejected\n')
         self.assertEqual(environment, {})
+
+    def test_receive_cli_rejects_wrong_user_or_group_before_route(self):
+        from io import StringIO
+        for uid, euid, egid in ((1, 0, 0), (0, 1, 0), (0, 0, 977)):
+            with self.subTest(uid=uid, euid=euid, egid=egid), \
+                    patch.object(m.os, 'environ', {}), \
+                    patch.object(m.sys, 'argv', ['helper', 'receive-file']), \
+                    patch.object(m.sys, 'flags') as flags, \
+                    patch.object(m.os, 'getuid', return_value=uid), \
+                    patch.object(m.os, 'geteuid', return_value=euid), \
+                    patch.object(m.os, 'getegid', return_value=egid), \
+                    patch.object(m.resource, 'setrlimit'), \
+                    patch.object(m.signal, 'signal'), patch.object(m.signal, 'alarm'), \
+                    patch.object(m, 'file_route') as route, \
+                    patch.object(m.sys, 'stderr', StringIO()) as diagnostics:
+                flags.isolated = True
+                self.assertEqual(m.main(), 1)
+                self.assertEqual(diagnostics.getvalue(), 'status=root_receiver_required\n')
+                route.assert_not_called()
 
     def test_mount_unknown_refused(self):
         from io import StringIO

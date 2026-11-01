@@ -49,13 +49,28 @@ def read_claim(path, root):
         raise DeliveryError('Invalid integration claim') from exc
 
 
+def claim_releasable(state):
+    """Same repository ownership rule for claim acquisition and read-only view."""
+    if (state.get('merge_effect') in ('pending','unknown')
+        or state.get('publication', {}).get('effect') in ('pending','unknown')
+        or state.get('release_effect') in ('pending','unknown')
+        or state.get('tag_effect') in ('pending','unknown')):
+        return False
+    safe_repair = state['status']=='repair-required' and (not state.get('qualification_sha256')
+        or (state.get('canonical_effect_verified') is True and state.get('merge_commit_sha')))
+    metadata_only = state.get('merge_effect')=='verified' and state.get('merge_commit_sha')
+    return bool(safe_repair or metadata_only or state['status'] in (
+        'prepared','awaiting-independent-review','awaiting-validation','awaiting-fresh-observation',
+        'awaiting-mergeability','stale-candidate','disabled','accepted','cancelled','release-verified'))
+
+
 class IntegrationState(TypedDict, total=False):
     observation: dict
     result: dict
 
 
 class Controller:
-    def __init__(self,directory,binding,claim_root=None):
+    def __init__(self,directory,binding,claim_root=None,*,_existing_only=False):
         required = {'version','repository','pr_number','issue_id','owner','head','base','tree',
                     'policy_sha256','capacity_policy_sha256','validation_operation_key','outputs','head_branch'}
         version = binding.get('version')
@@ -89,6 +104,9 @@ class Controller:
                 or set(publication) != {'plan_sha256', 'qualification_sha256'}
                 or any(not re.fullmatch('[0-9a-f]{64}', str(v)) for v in publication.values())):
                 raise DeliveryError('Invalid publication binding')
+        self._bind_state(directory, binding, claim_root, existing_only=_existing_only)
+
+    def _bind_state(self, directory, binding, claim_root, *, existing_only=False):
         self.directory = Path(directory).absolute()
         self.claim_root = Path(claim_root).absolute() if claim_root else self.directory.parent
         if self.directory == self.claim_root or not self.directory.is_relative_to(self.claim_root):
@@ -96,19 +114,30 @@ class Controller:
         for part in (self.directory,*self.directory.parents):
             if part.is_symlink():
                 raise DeliveryError('Symlink integration state')
-        self.directory.mkdir(parents=True,exist_ok=True,mode=0o700)
+        if existing_only:
+            if not self.directory.is_dir():
+                raise DeliveryError('Missing existing integration state directory')
+        else:
+            self.directory.mkdir(parents=True,exist_ok=True,mode=0o700)
         self.binding = binding
         self.key = fingerprint(binding)
         path = self.directory/'binding.json'
         if path.exists() and json.loads(path.read_text()) != binding:
             raise DeliveryError('Immutable integration binding conflict')
         if not path.exists():
+            if existing_only:
+                raise DeliveryError('Missing existing integration binding')
             atomic(path,binding)
 
     @contextmanager
     def ownership(self):
-        self.claim_root.mkdir(parents=True,exist_ok=True,mode=0o700)
-        fd = os.open(self.claim_root/'repository-owner.lock',os.O_CREAT|os.O_RDWR|os.O_NOFOLLOW,0o600)
+        readonly = getattr(self,'require_current_claim',False)
+        if readonly:
+            if not self.claim_root.is_dir():
+                raise DeliveryError('Missing existing repository claim root')
+        else:
+            self.claim_root.mkdir(parents=True,exist_ok=True,mode=0o700)
+        fd = os.open(self.claim_root/'repository-owner.lock',os.O_RDWR|os.O_NOFOLLOW|(0 if readonly else os.O_CREAT),0o600)
         try:
             fcntl.flock(fd,fcntl.LOCK_EX|fcntl.LOCK_NB)
             legacy = self.claim_root/'repository-claim.json'
@@ -120,22 +149,37 @@ class Controller:
             if evidence.exists() or evidence.is_symlink():
                 if read_claim(evidence,self.claim_root) != claim:
                     raise DeliveryError('Immutable integration claim conflict')
+            if readonly:
+                if (old != claim or not evidence.exists()
+                    or not (self.directory/'state.json').is_file()
+                    or (self.directory/'state.json').is_symlink()):
+                    raise DeliveryError('Read-only reconciliation requires exact current claim')
+                yield  # original journal reconciliation only; never publish a claim
+                return
             if old and (old['binding_sha256'] != self.key or old['directory'] != str(self.directory)):
+                if evidence.exists() and self.status().get('merge_effect') != 'verified':
+                    raise DeliveryError('Superseded transaction cannot reacquire repository ownership')
                 previous = Path(old['directory'])
                 if not previous.is_relative_to(self.claim_root):
                     raise DeliveryError('Invalid previous integration claim')
                 if (previous/'state.json').is_symlink():
                     raise DeliveryError('Symlink previous integration state')
+                if not (previous/'state.json').is_file():
+                    raise DeliveryError('Claimed previous integration state is missing')
                 state = json.loads((previous/'state.json').read_text())
-                if (state.get('merge_effect') in ('pending','unknown')
-                    or state.get('publication', {}).get('effect') in ('pending','unknown')):
+                if not claim_releasable(state):
                     raise DeliveryError('Repository integration outcome must reconcile before another owner')
-                safe_repair = state['status']=='repair-required' and (not state.get('qualification_sha256')
-                    or (state.get('canonical_effect_verified') is True and state.get('merge_commit_sha')))
-                metadata_only = state.get('merge_effect')=='verified' and state.get('merge_commit_sha')
-                if not safe_repair and not metadata_only and state['status'] not in ('prepared','awaiting-independent-review','awaiting-validation',
-                        'awaiting-fresh-observation','awaiting-mergeability','stale-candidate','disabled','accepted','cancelled'):
-                    raise DeliveryError('Repository integration outcome must reconcile before another owner')
+            state_path = self.directory/'state.json'
+            if state_path.is_symlink():
+                raise DeliveryError('Symlink integration state')
+            if not state_path.exists():
+                if evidence.exists() or (old and old['directory'] == str(self.directory)):
+                    # Missing historical state is uncertain, never evidence that
+                    # an already claimed transaction had no external effects.
+                    raise DeliveryError('Claimed integration state is missing')
+                # Publish durable prepared state BEFORE any fresh ownership
+                # pointer. A status-only preflight can then rotate safely.
+                atomic(state_path, self.result('prepared'))
             if not evidence.exists():
                 atomic(evidence,claim)
             # Published legacy evidence is never rewritten. Only the active
@@ -482,6 +526,221 @@ class Controller:
             return self._publication_checkpoint(current)
 
 
+class ReleaseController(Controller):
+    """Separate owner-admitted main promotion; no coding or issue completion.
+
+    The protected binding pins the reviewed aggregator qualification. Its schema
+    remains owned by the release component; this controller binds that exact
+    accepted result rather than reimplementing the profile evidence reader.
+    """
+    def __init__(self, directory, binding, claim_root=None, *, _existing_only=False):
+        from native_harness_contract import validate_release_candidate, fingerprint as native_fingerprint
+        required = {'version','kind','repository','owner','candidate','policy','qualification',
+                    'authority','pr_number','main_base','tag','issue_id','project_id'}
+        if (set(binding) != required or type(binding['version']) is not int or binding['version'] != 3
+            or binding['kind'] != 'release-promotion-v1'
+            or binding['repository'] != 'maldous/offmenu'
+            or not isinstance(binding['owner'], str) or not binding['owner']
+            or type(binding['pr_number']) is not int or binding['pr_number'] <= 0
+            or not re.fullmatch('[0-9a-f]{40}', str(binding['main_base']))
+            or not re.fullmatch(r'release/[a-z0-9][a-z0-9.-]{0,79}', str(binding['tag']))):
+            raise DeliveryError('Invalid release promotion binding')
+        candidate = validate_release_candidate(binding['candidate'], binding['policy'])
+        candidate_id = native_fingerprint(candidate)
+        authority = binding['authority']
+        expected = dict(version=1, kind='release-promotion-authority-v1', owner=binding['owner'],
+                        issue_id=binding['issue_id'], project_id=binding['project_id'],
+                        candidate_sha256=candidate_id,
+                        qualification_sha256=native_fingerprint(binding['qualification']),
+                        pr_number=binding['pr_number'], main_base=binding['main_base'], tag=binding['tag'])
+        if authority != expected:
+            raise DeliveryError('Release authority is not bound to exact candidate and qualification')
+        for key in ('issue_id','project_id'):
+            if str(UUID(binding[key])) != binding[key]:
+                raise DeliveryError('Invalid release issue/project identity')
+        from release_qualification import validate_qualification
+        q = binding['qualification']
+        if not isinstance(q, dict) or set(q) != {'summary','plan','results','catalog','evidence_root'}:
+            raise DeliveryError('Release qualification inputs required')
+        if q['plan'].get('candidate') != candidate:
+            raise DeliveryError('Release qualification candidate mismatch')
+        validate_qualification(q['summary'], q['plan'], q['results'], binding['policy'],
+                               q['catalog'], q['evidence_root'])
+        self.candidate_id = candidate_id
+        self._bind_state(directory, binding, claim_root, existing_only=_existing_only)
+
+    def run(self, observation):
+        with self.ownership():
+            current = self.status()
+            b, s = self.binding, self.binding['candidate']['source']
+            if current['status'] == 'release-verified':
+                return current
+            def save(status, action=None, **extra):
+                current.update(status=status, action=action, binding_sha256=self.key, **extra)
+                return self._publication_checkpoint(current)
+            at = observation.get('observed_at')
+            if (type(at) not in (int, float) or not math.isfinite(at)
+                or at > time.time()+5 or time.time()-at > 60):
+                return save('awaiting-fresh-observation')
+            if observation.get('publisher_owner') != b['owner']:
+                return save('quarantined', reason='publisher-owner-mismatch')
+            pr = observation.get('github', {})
+            if (pr.get('repository') != b['repository'] or pr.get('number') != b['pr_number']
+                or pr.get('head') != s['head'] or pr.get('head_branch') != 'release/candidate-'+self.candidate_id
+                or pr.get('base_branch') != 'main'):
+                return save('stale-candidate')
+            # A matching tag is only accepted after canonical promotion readback.
+            if pr.get('merged'):
+                commit = observation.get('merge_commit', {})
+                if (current.get('release_effect') not in ('pending','unknown','verified')
+                    or commit.get('sha') != pr.get('merge_commit_sha')
+                    or not re.fullmatch('[0-9a-f]{40}', str(commit.get('sha')))
+                    or observation.get('main_contains_merge') is not True):
+                    return save('release-reconciliation-required')
+                if commit.get('parents') != [b['main_base'],s['head']] or commit.get('tree') != s['tree']:
+                    return save('release-readback-mismatch', release_effect='unknown')
+                current.update(release_effect='verified', merge_commit_sha=commit['sha'])
+                tag = observation.get('tag')
+                expected = {'ref':'refs/tags/'+b['tag'], 'object':{'type':'commit','sha':commit['sha']}}
+                if tag == expected:
+                    return save('release-verified', tag_effect='verified')
+                if tag is not None:
+                    return save('immutable-tag-conflict')
+                action = dict(kind='create-release-tag', repository=b['repository'], tag=b['tag'],
+                              commit_sha=commit['sha'], candidate_sha256=self.candidate_id,
+                              authority_sha256=fingerprint(b['authority']))
+                if current.get('tag_effect') == 'unknown':
+                    return save('tag-reconciliation-required')
+                if current.get('tag_effect') == 'pending':
+                    # Pending has never passed consume_release_intent. Preserve
+                    # its exact admitted identity across gateway invocations and
+                    # transient read failures; unknown remains GET-only above.
+                    retained = current.get('tag_intent', current.get('action'))
+                    if retained != action:
+                        return save('tag-reconciliation-required')
+                return save('release-tag-intent', action, tag_effect='pending', tag_intent=action)
+            if current.get('release_effect') in ('pending','unknown','verified'):
+                return save('release-reconciliation-required')
+            if (observation.get('cancel_requested') or pr.get('base') != b['main_base']
+                or pr.get('state') != 'open' or pr.get('draft') is not False
+                or pr.get('mergeable') is not True or observation.get('tag') is not None):
+                return save('release-held')
+            if (observation.get('qualification_sha256') != fingerprint(b['qualification'])
+                or observation.get('review', {}).get('verdict') != 'accept'
+                or observation['review'].get('independent') is not True
+                or observation['review'].get('head') != s['head']
+                or observation['review'].get('base') != b['main_base']
+                or not observation['review'].get('evidence_id')
+                or observation['review'].get('findings') != []
+                or observation.get('unresolved_findings') != []
+                or observation.get('publication_triggers_actions') is not False):
+                return save('release-held')
+            action = dict(kind='promote-release', repository=b['repository'], pr_number=b['pr_number'],
+                          expected_head_sha=s['head'], expected_base_sha=b['main_base'],
+                          expected_head_branch='release/candidate-'+self.candidate_id, candidate_sha256=self.candidate_id,
+                          authority_sha256=fingerprint(b['authority']), tag=b['tag'])
+            return save('release-intent', action, release_effect='pending')
+
+    def consume_release_intent(self, action):
+        with self.ownership():
+            current = self.status()
+            kind = action.get('kind')
+            field = {'promote-release':'release_effect','create-release-tag':'tag_effect'}.get(kind)
+            if (not field or current.get(field) != 'pending' or current.get('action') != action):
+                raise DeliveryError('No matching unconsumed release intent')
+            current.update(action=None, status='release-reconciliation-required')
+            current[field] = 'unknown'
+            self._publication_checkpoint(current)
+            return True
+
+
+def publisher_directory(root, binding):
+    """Resume the exact historical transaction; fresh admissions get fresh state."""
+    root = Path(root)
+    legacy = root/'current'
+    path = legacy/'binding.json'
+    if legacy.is_symlink() or path.is_symlink():
+        raise DeliveryError('Symlink historical publisher binding')
+    if path.exists():
+        try:
+            if not path.is_file() or path.stat().st_size > 1048576:
+                raise ValueError('Invalid legacy binding size/type')
+            previous = json.loads(path.read_text())
+            if previous == binding:
+                return legacy
+        except (OSError, ValueError) as exc:
+            raise DeliveryError('Invalid historical publisher binding') from exc
+    return root/('transaction-'+fingerprint(binding))
+
+
+def publisher_observe(config, root):
+    """Read the selected original journal without mkdir, claim writes or init.
+
+    root is fixed by publisher_request; explicit injection is in-process tests
+    only. This does not authorize an effect or fabricate a stopped-child fact.
+    """
+    import stat
+    root = Path(root).absolute()
+    binding = config['binding']
+    if binding['owner'] != config['logicalOwner']:
+        raise DeliveryError('Publisher observation owner mismatch')
+    directory = publisher_directory(root,binding)
+    def record(path):
+        info = path.lstat()
+        if (not stat.S_ISREG(info.st_mode) or info.st_nlink != 1
+            or info.st_size > 1048576):
+            raise DeliveryError('Invalid publisher journal file')
+        return json.loads(path.read_text())
+    lock = root/'repository-owner.lock'
+    fd = None
+    try:
+        try:
+            fd = os.open(lock,os.O_RDONLY|os.O_NOFOLLOW)
+            fcntl.flock(fd,fcntl.LOCK_SH|fcntl.LOCK_NB)
+        except FileNotFoundError:
+            if any((root/name).exists() or (root/name).is_symlink()
+                   for name in ('active-owner.json','repository-claim.json')):
+                raise DeliveryError('Missing publisher ownership lock')
+        active = root/'active-owner.json'
+        legacy = root/'repository-claim.json'
+        path = active if active.exists() or active.is_symlink() else legacy
+        claim = read_claim(path,root) if path.exists() or path.is_symlink() else None
+        selected = bool(claim and claim['binding_sha256'] == fingerprint(binding)
+                        and claim['directory'] == str(directory))
+        available = not claim or selected
+        if claim and not selected:
+            available = claim_releasable(record(Path(claim['directory'])/'state.json'))
+        if directory.is_symlink() or directory.resolve() != directory:
+            raise DeliveryError('Invalid publisher journal directory')
+        binding_path = directory/'binding.json'
+        if binding_path.exists() or binding_path.is_symlink():
+            if record(binding_path) != binding:
+                raise DeliveryError('Immutable publisher observation binding mismatch')
+        elif directory.exists() and any(directory.iterdir()):
+            raise DeliveryError('Missing publisher journal binding')
+        evidence = directory/'repository-claim.json'
+        claimed = selected or evidence.exists() or evidence.is_symlink()
+        if evidence.exists() or evidence.is_symlink():
+            expected = dict(binding_sha256=fingerprint(binding),directory=str(directory),owner=binding['owner'])
+            if read_claim(evidence,root) != expected:
+                raise DeliveryError('Publisher observation claim mismatch')
+            if not selected and record(directory/'state.json').get('merge_effect') != 'verified':
+                available = False  # superseded transaction cannot reacquire
+        state_path = directory/'state.json'
+        if state_path.exists() or state_path.is_symlink():
+            state = record(state_path)
+        elif claimed:
+            raise DeliveryError('Claimed publisher observation state is missing')
+        else:
+            state = dict(status='prepared',action=None,binding_sha256=fingerprint(binding))
+        if state.get('binding_sha256',fingerprint(binding)) != fingerprint(binding):
+            raise DeliveryError('Publisher journal state binding mismatch')
+        return dict(state=state,claim_current=selected,claim_available=bool(available))
+    finally:
+        if fd is not None:
+            os.close(fd)
+
+
 def publisher_request(config, request):
     """Fixed publisher RPC implementation; config is protected owner admission.
 
@@ -489,12 +748,40 @@ def publisher_request(config, request):
     entry below obtains it only at the fixed root-owned path, checks identity,
     and never accepts a config/path/key/action selector on the wire.
     """
+    return _publisher_transaction_request(config,request,Path('/var/lib/offmenu-publisher/integration'))
+
+
+def _publisher_transaction_request(config,request,root):
+    # Trusted in-process test seam; no wire/config-selected root or executable.
+    pins = {'native_binding_sha256','native_runtime_sha256'}
+    if isinstance(request,dict) and pins.intersection(request):
+        if (not pins.issubset(request)
+            or request['native_binding_sha256'] != fingerprint(config['binding'])
+            or request['native_runtime_sha256'] != fingerprint(config['snapshot'].get('native_runtime'))):
+            raise DeliveryError('Native publisher admission changed')
+        request = {key:value for key,value in request.items() if key not in pins}
     binding = config['binding']
-    root = Path('/var/lib/offmenu-publisher/integration')
-    directory = root/'current'
+    if isinstance(request,dict) and str(request.get('op','')).startswith('observe') and request.get('op') not in (
+        'observe','observe-step','observe-freeze-pr','observe-reconcile'):
+        raise DeliveryError('Unsupported publisher observe operation')
+    readonly = isinstance(request,dict) and request.get('op') in (
+        'observe','observe-step','observe-freeze-pr','observe-reconcile')
+    if isinstance(request,dict) and request.get('op') == 'observe':
+        if request != {'op':'observe'}:
+            raise DeliveryError('Invalid publisher observe request')
+        return publisher_observe(config,root)
+    if readonly and not publisher_observe(config,root)['claim_current']:
+        raise DeliveryError('Read-only reconciliation requires exact current claim')
+    directory = publisher_directory(root, binding)
+    if readonly and ((directory/'graph.sqlite').is_symlink() or not (directory/'graph.sqlite').is_file()):
+        raise DeliveryError('Missing existing reconciliation checkpoint')
     # A trusted in-process test boundary can construct a Controller directly;
     # runtime directories cannot be selected in this JSON protocol.
-    controller = Controller(directory, binding, root)
+    controller = (ReleaseController if binding['version'] == 3 else Controller)(
+        directory,binding,root,_existing_only=readonly)
+    if readonly:
+        controller.require_current_claim = True
+        request = dict(request,op=request['op'].removeprefix('observe-'))
     return _publisher_request(controller, config, request)
 
 
@@ -508,6 +795,22 @@ def _publisher_request(controller, config, request):
         'step': {'op','observation'}, 'outcome': {'op','kind','outcome'}, 'status': {'op'}}
     if operation not in shapes or set(request) != shapes[operation]:
         raise DeliveryError('Unsupported publisher request field')
+    if isinstance(controller, ReleaseController):
+        if (config.get('version') != 2 or controller.binding['owner'] != config.get('logicalOwner')
+            or fingerprint(controller.binding) != fingerprint(config['binding'])):
+            raise DeliveryError('Release admission changed')
+        if operation == 'status':
+            with controller.ownership():
+                return controller.status()
+        if operation == 'step':
+            observation = request['observation']
+            for name in ('qualification_sha256','review','unresolved_findings','publication_triggers_actions','publisher_owner'):
+                if observation.get(name) != config['snapshot'].get(name):
+                    raise DeliveryError('Release qualified observation changed')
+            return controller.run(observation)
+        if operation == 'consume':
+            return {'authorized': controller.consume_release_intent(request['intent'])}
+        raise DeliveryError('Unsupported release operation')
     binding, plan = controller.binding, config['plan']
     if (fingerprint(binding) != fingerprint(config['binding'])
         or binding['owner'] != config['logicalOwner']
@@ -597,26 +900,40 @@ def publisher_main():
             entry = part.lstat()
             if (not stat.S_ISDIR(entry.st_mode) or entry.st_uid != 0 or entry.st_mode & 0o022):
                 raise DeliveryError('Publisher state ancestry held')
-        for part in (root, root/'current'):
+        entry = root.lstat()
+        if (root.resolve() != root or not stat.S_ISDIR(entry.st_mode) or entry.st_uid != uid
+            or entry.st_gid != gid or stat.S_IMODE(entry.st_mode) != 0o700):
+            raise DeliveryError('Publisher state custody held')
+        raw = sys.stdin.buffer.read(1048577)
+        if len(raw) > 1048576:
+            raise DeliveryError('Publisher request too large')
+        request = json.loads(raw)
+        selected = publisher_directory(root, config['binding'])
+        # Observe never creates a transaction or acquires repository ownership.
+        observing = isinstance(request,dict) and request.get('op','').startswith('observe')
+        if not observing:
+            selected.mkdir(mode=0o700, exist_ok=True)
+        directories = (root, selected) if selected.exists() else (root,)
+        for part in directories:
             entry = part.lstat()
             if (part.resolve() != part or not stat.S_ISDIR(entry.st_mode) or entry.st_uid != uid
                 or entry.st_gid != gid or stat.S_IMODE(entry.st_mode) != 0o700):
                 raise DeliveryError('Publisher state custody held')
         # State and immutable bindings may be modified only by the publisher.
         # No symlink/hardlink/special file can redirect a privileged bridge read.
-        for directory in (root, root/'current'):
+        for directory in directories:
             for part in directory.iterdir():
                 entry = part.lstat()
-                if part == root/'current':
+                if directory == root and (part.name == 'current' or re.fullmatch(r'transaction-[0-9a-f]{64}', part.name)):
+                    if (not stat.S_ISDIR(entry.st_mode) or part.resolve() != part
+                        or entry.st_uid != uid or entry.st_gid != gid or stat.S_IMODE(entry.st_mode) != 0o700):
+                        raise DeliveryError('Publisher transaction custody held')
                     continue
                 if (not stat.S_ISREG(entry.st_mode) or entry.st_uid != uid or entry.st_gid != gid
                     or entry.st_nlink != 1 or stat.S_IMODE(entry.st_mode) != 0o600
                     or entry.st_size > (67108864 if part.name == 'graph.sqlite' else 1048576)):
                     raise DeliveryError('Publisher state file custody held')
-        raw = sys.stdin.buffer.read(1048577)
-        if len(raw) > 1048576:
-            raise DeliveryError('Publisher request too large')
-        result = publisher_request(config, json.loads(raw))
+        result = publisher_request(config, request)
         output = json.dumps(result)
         if len(output.encode()) > 1048576:
             raise DeliveryError('Publisher result too large')

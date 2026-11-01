@@ -405,3 +405,22 @@ export async function prepareOwnerPublication({github, reviewedPublication}) {
     return await invoke('status');
   }
 }
+
+/** Separately typed main promotion. Authority is frozen in protected owner
+ * config; this finite gateway never turns a feature merge into a release. */
+export async function advanceRelease({controller,github,observe}) {
+  const decision=await controller.step(await observe());
+  const action=decision.action;
+  if(action?.kind==='promote-release') {
+    const p=await github.getPullRequest(action.repository,action.pr_number);
+    if(p.merged || p.head_sha!==action.expected_head_sha || p.base_sha!==action.expected_base_sha ||
+        p.head!==action.expected_head_branch || p.base!=='main' || p.draft!==false || p.mergeable!==true)
+      return {status:'release-reconciliation-required'};
+    await github.mergePullRequest({repository_full_name:action.repository,pr_number:action.pr_number,
+      expected_head_sha:action.expected_head_sha,merge_method:'merge'});
+  } else if(action?.kind==='create-release-tag') {
+    await github.createReleaseTag(action.commit_sha);
+  } else return decision;
+  // Readback may be uncertain. Never repeat either effect in this invocation.
+  return await controller.step(await observe());
+}

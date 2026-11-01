@@ -60,7 +60,7 @@ const encode = o => Buffer.from(JSON.stringify(o)).toString('base64url');
  * NOT CAS base atomically: preserve Controller parents/tree/develop checks.
  */
 export async function createRepositoryGitHubAppAdapter({config, binding, loadPrivateKey,
-  authorizeIntent, publicationPlan, sign = signRS256,
+  authorizeIntent, publicationPlan, release, sign = signRS256,
   http = globalThis.fetch, getUid = () => process.getuid(), now = () => Date.now()} = {}) {
   try {
     requireFact(exact(config,['appId','installationId','repositoryId','publisherUid']));
@@ -69,11 +69,19 @@ export async function createRepositoryGitHubAppAdapter({config, binding, loadPri
       config.repositoryId === REPOSITORY_ID && config.publisherUid !== 1000);
     requireFact(exact(binding,['repository','prNumber','headSha','baseSha','headBranch','intentSha256']));
     binding = Object.freeze({...binding});
+    if (release !== undefined) {
+      requireFact(exact(release,['candidateSha256','authoritySha256','tag']) &&
+        hash(release.candidateSha256) && hash(release.authoritySha256) &&
+        /^release\/[a-z0-9][a-z0-9.-]{0,79}$/.test(release.tag) &&
+        binding.headBranch === `release/candidate-${release.candidateSha256}` && positive(binding.prNumber) && !publicationPlan);
+      release = Object.freeze({...release});
+    }
+    const target = release ? 'main' : 'develop';
     requireFact(binding.repository === REPOSITORY && (positive(binding.prNumber) ||
       (binding.prNumber === null && Array.isArray(publicationPlan) && publicationPlan.length > 0)) &&
       sha(binding.headSha) && sha(binding.baseSha) && hash(binding.intentSha256) &&
       typeof binding.headBranch === 'string' &&
-      /^(?:feature|bugfix)\/[a-z0-9][a-z0-9/-]{0,159}$/.test(binding.headBranch) &&
+      (release || /^(?:feature|bugfix)\/[a-z0-9][a-z0-9/-]{0,159}$/.test(binding.headBranch)) &&
       !binding.headBranch.endsWith('/') && !binding.headBranch.includes('//'));
     requireFact([loadPrivateKey,authorizeIntent,sign,http,getUid,now].every(f => typeof f === 'function'));
     const uidGate = () => requireFact(getUid() === config.publisherUid);
@@ -199,7 +207,7 @@ export async function createRepositoryGitHubAppAdapter({config, binding, loadPri
         checkPR(repository,number); tokenGate();
         const p=await request('GET',`${ROOT}/pulls/${number}`,token);
         requireFact(p?.number === number && repo(p.base?.repo) && repo(p.head?.repo) &&
-          sha(p.head.sha) && sha(p.base.sha) && p.base.ref === 'develop' &&
+          sha(p.head.sha) && sha(p.base.sha) && p.base.ref === target &&
           p.head.ref === binding.headBranch && typeof p.merged === 'boolean' &&
           typeof p.draft === 'boolean' && [true,false,null].includes(p.mergeable) &&
           ['open','closed'].includes(p.state));
@@ -221,9 +229,11 @@ export async function createRepositoryGitHubAppAdapter({config, binding, loadPri
         requireFact(!p.merged && p.head_sha === binding.headSha && p.base_sha === binding.baseSha &&
           !p.draft && p.mergeable === true);
         // Exact canonical request + immutable durable intent; never UID-only authority.
-        const intent=Object.freeze({kind:'merge-pr',repository:REPOSITORY,pr_number:binding.prNumber,
+        const intent=Object.freeze({kind:release ? 'promote-release' : 'merge-pr',repository:REPOSITORY,pr_number:binding.prNumber,
           expected_head_sha:binding.headSha,expected_base_sha:binding.baseSha,
-          expected_head_branch:binding.headBranch,merge_method:'merge',intent_sha256:binding.intentSha256});
+          expected_head_branch:binding.headBranch,...(release ? {candidate_sha256:release.candidateSha256,
+            authority_sha256:release.authoritySha256,tag:release.tag} :
+            {merge_method:'merge',intent_sha256:binding.intentSha256})});
         requireFact(await authorizeIntent(intent) === true);
         tokenGate();
         attempted=true; // no mutation retries, including timeout, malformed or 5xx reply
@@ -240,7 +250,7 @@ export async function createRepositoryGitHubAppAdapter({config, binding, loadPri
         requireFact(sha(mergeSha)); tokenGate();
         // Caller supplies only a SHA; all routes remain fixed to this repository.
         paths.add(`${ROOT}/commits/${mergeSha}`);
-        paths.add(`${ROOT}/compare/${mergeSha}...develop`);
+        paths.add(`${ROOT}/compare/${mergeSha}...${target}`);
         const readCommit=async id => {
           const c=await request('GET',`${ROOT}/commits/${id}`,token);
           requireFact(c?.sha === id && sha(c.commit?.tree?.sha) && Array.isArray(c.parents) &&
@@ -248,12 +258,12 @@ export async function createRepositoryGitHubAppAdapter({config, binding, loadPri
           return {sha:c.sha,tree:c.commit.tree.sha,parents:c.parents.map(p=>p.sha)};
         };
         const source=await readCommit(binding.headSha), merge=await readCommit(mergeSha);
-        const comparison=await request('GET',`${ROOT}/compare/${mergeSha}...develop`,token);
+        const comparison=await request('GET',`${ROOT}/compare/${mergeSha}...${target}`,token);
         requireFact(comparison?.base_commit?.sha === mergeSha &&
           sha(comparison.merge_base_commit?.sha) &&
           ['ahead','behind','identical','diverged'].includes(comparison.status));
         return {source_commit:source,merge_commit:merge,
-          develop_contains_merge:comparison.merge_base_commit.sha === mergeSha &&
+          [`${target}_contains_merge`]:comparison.merge_base_commit.sha === mergeSha &&
             ['ahead','identical'].includes(comparison.status)};
       } catch(error) { throw failure(error?.knownRefused === true); }
     }
@@ -277,6 +287,33 @@ export async function createRepositoryGitHubAppAdapter({config, binding, loadPri
           qualification:'facts-only-requires-independent-owner-review-and-thread-resolution'};
       } catch(error) { throw failure(error?.knownRefused === true); }
     }
+    async function readReleaseTag() {
+      requireFact(release); tokenGate();
+      const path=`${ROOT}/git/ref/tags/${release.tag}`; paths.add(path);
+      const value=await request('GET',path,token,undefined,true);
+      if(value===null) return null;
+      requireFact(value?.ref===`refs/tags/${release.tag}` && value.object?.type==='commit' && sha(value.object.sha));
+      return {ref:value.ref,object:{type:'commit',sha:value.object.sha}};
+    }
+    let tagAttempted=false;
+    async function createReleaseTag(commitSha) {
+      requireFact(release && sha(commitSha) && !tagAttempted); tokenGate();
+      // Promotion/tree/parents are read back before authorizing the create-only tag.
+      const p=await getPullRequest(REPOSITORY,binding.prNumber);
+      requireFact(p.merged && p.merge_commit_sha===commitSha);
+      const facts=await readCanonicalFacts(commitSha);
+      requireFact(facts.main_contains_merge && facts.source_commit.tree===facts.merge_commit.tree &&
+        isDeepStrictEqual(facts.merge_commit.parents,[binding.baseSha,binding.headSha]));
+      requireFact(await readReleaseTag()===null);
+      const intent={kind:'create-release-tag',repository:REPOSITORY,tag:release.tag,commit_sha:commitSha,
+        candidate_sha256:release.candidateSha256,authority_sha256:release.authoritySha256};
+      requireFact(await authorizeIntent(intent)===true); tokenGate();
+      const path=`${ROOT}/git/refs`; paths.add(path); publicationRoutes.add(`POST ${path}`);
+      tagAttempted=true;
+      try {await request('POST',path,token,{ref:`refs/tags/${release.tag}`,sha:commitSha});}
+      catch {} // Unknown replies retain the consumed intent; GET only on restart.
+      return {status:'readback-required'};
+    }
     let publicationAttempted = false;
     async function readPublication(index) {
       try {
@@ -285,7 +322,7 @@ export async function createRepositoryGitHubAppAdapter({config, binding, loadPri
         if(operation.kind === 'create-pr' && Array.isArray(result) && result.length === 1) {
           const p=result[0];
           requireFact(positive(p?.number) && repo(p.base?.repo) && repo(p.head?.repo) &&
-            p.head.ref === binding.headBranch && p.head.sha === binding.headSha && p.base.ref === 'develop');
+            p.head.ref === binding.headBranch && p.head.sha === binding.headSha && p.base.ref === target);
           const path=`${ROOT}/pulls/${p.number}`; paths.add(path); publicationRoutes.add(`GET ${path}`);
           return [await request('GET',path,token)];
         }
@@ -305,7 +342,7 @@ export async function createRepositoryGitHubAppAdapter({config, binding, loadPri
       } catch { return {status:'readback-required'}; }
     }
     return Object.freeze({getPullRequest,mergePullRequest,readCanonicalFacts,readExactHeadReviewFacts,
-      readPublication,mutatePublication,
+      readPublication,mutatePublication,readReleaseTag,createReleaseTag,
       provenance:Object.freeze({kind:'github-app-installation',app_id:app.id,
         installation_id:installation.id,repository_id:installed.repositories[0].id,
         publisher_uid:config.publisherUid,os_isolation_verified:false})});

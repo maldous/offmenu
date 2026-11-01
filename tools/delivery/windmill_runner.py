@@ -300,8 +300,11 @@ def capacity_usage():
         try:
             stat = Path('/proc', str(pid), 'stat').read_text()
             rss += max(0, int(stat[stat.rfind(')') + 2:].split()[21])) * os.sysconf('SC_PAGE_SIZE')
-        except FileNotFoundError:
-            pass  # A child may exit between enumeration and sampling.
+        except OSError as error:
+            # procfs may report ENOENT or ESRCH when a child exits between
+            # enumeration and read. Other errors must retain the failure hold.
+            if error.errno not in (errno.ENOENT, errno.ESRCH):
+                raise
     return {'processes': len(children), 'rss_bytes': rss}
 
 

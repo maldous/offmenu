@@ -96,7 +96,9 @@ class IntegrationControllerTests(unittest.TestCase):
         self.assertEqual(result['action']['issue_id'], self.binding['issue_id'])
 
     def test_legitimate_successor_preserves_published_claim_hash(self):
-        # Simulate legacy published evidence before either controller resumes.
+        # Valid legacy published ownership includes durable prepared state.
+        # A claim whose historical state is missing is tested as a hold below.
+        (self.directory/'state.json').write_text(json.dumps(dict(status='prepared',action=None)))
         legacy = self.root/'repository-claim.json'
         legacy.write_text(json.dumps(dict(binding_sha256=self.controller.key,
             directory=str(self.directory), owner=self.binding['owner']))+'\n')
@@ -427,9 +429,298 @@ class IntegrationControllerTests(unittest.TestCase):
         result = self.step(self.merged(done=True))
         self.assertEqual(result['status'],'repair-required')
 
+    def test_historical_current_resumes_exact_binding_without_rebinding(self):
+        from offmenu.delivery.integration import publisher_directory
+        legacy = self.root/'current';legacy.mkdir()
+        path = legacy/'binding.json';path.write_text(json.dumps(self.binding))
+        original = path.read_bytes()
+        self.assertEqual(publisher_directory(self.root,self.binding),legacy)
+        successor = dict(self.binding,head='8'*40)
+        self.assertEqual(publisher_directory(self.root,successor).name,'transaction-'+fingerprint(successor))
+        self.assertEqual(path.read_bytes(),original)
+        path.unlink();path.symlink_to(self.directory/'binding.json')
+        with self.assertRaisesRegex(DeliveryError,'Symlink historical'):
+            publisher_directory(self.root,self.binding)
+
+    def test_status_claim_durably_prepares_before_candidate_rotation(self):
+        # Exercise the ownership/status entry used before protected adapter auth.
+        from offmenu.delivery.engine import atomic
+        state_path = self.directory/'state.json'
+        def persist(path, value):
+            if path.name in ('repository-claim.json','active-owner.json'):
+                self.assertTrue(state_path.is_file(),'prepared must precede claim publication')
+            return atomic(path,value)
+        with patch('offmenu.delivery.integration.atomic',side_effect=persist):
+            with self.controller.ownership():
+                self.assertEqual(self.controller.status()['status'],'prepared')
+        self.assertEqual(json.loads(state_path.read_text())['status'],'prepared')
+        original = state_path.read_bytes()
+        other = Controller(self.root/'after-preflight',dict(self.binding,head='8'*40),self.root)
+        with other.ownership():
+            self.assertEqual(other.status()['status'],'prepared')
+        self.assertEqual(state_path.read_bytes(),original)
+
+    def test_missing_claimed_historical_state_cannot_become_prepared(self):
+        with self.controller.ownership():
+            pass
+        state_path = self.directory/'state.json'
+        state_path.unlink(missing_ok=True)
+        other = Controller(self.root/'missing-history',dict(self.binding,head='8'*40),self.root)
+        with self.assertRaises(DeliveryError):
+            with other.ownership():
+                self.fail('missing historical state acquired')
+        with self.assertRaises(DeliveryError):
+            with self.controller.ownership():
+                self.fail('missing own claimed state silently initialized')
+        self.assertFalse(state_path.exists())
+
+    def test_fresh_transaction_directory_retains_legacy_and_blocks_replay(self):
+        from offmenu.delivery.integration import publisher_directory
+        first_dir = publisher_directory(self.root,self.binding)
+        self.assertEqual(first_dir.name,'transaction-'+fingerprint(self.binding))
+        self.snapshot['automatic_integration_enabled'] = False
+        first = Controller(first_dir,self.binding,self.root)
+        first.run(self.snapshot)
+        original = (first_dir/'binding.json').read_bytes()
+        next_binding = dict(self.binding, head='8'*40)
+        second_dir = publisher_directory(self.root,next_binding)
+        self.assertNotEqual(first_dir,second_dir)
+        Controller(second_dir,next_binding,self.root).run(self.snapshot)
+        self.assertEqual((first_dir/'binding.json').read_bytes(),original)
+        with self.assertRaisesRegex(DeliveryError,'Superseded'):
+            first.run(self.snapshot)
+
+    def test_publisher_observe_never_initializes_claim_or_transaction(self):
+        from offmenu.delivery.integration import publisher_observe,publisher_directory,_publisher_transaction_request
+        config = dict(binding=self.binding,logicalOwner=self.binding['owner'])
+        before = {str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        view = publisher_observe(config,self.root)
+        self.assertEqual(view['state']['status'],'prepared')
+        self.assertFalse(view['claim_current']);self.assertTrue(view['claim_available'])
+        self.assertFalse(publisher_directory(self.root,self.binding).exists())
+        self.assertEqual({str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()},before)
+        for request in ({'op':'observe','extra':True},{'op':'observe-consume'}):
+            with self.assertRaises(DeliveryError):
+                _publisher_transaction_request(config,request,self.root)
+        self.assertFalse(publisher_directory(self.root,self.binding).exists())
+
+    def test_publisher_observe_preserves_unknown_owner_and_missing_history_holds(self):
+        from offmenu.delivery.integration import publisher_observe,publisher_directory
+        from offmenu.delivery.engine import atomic
+        directory = publisher_directory(self.root,self.binding)
+        first = Controller(directory,self.binding,self.root)
+        first.run(self.snapshot)
+        state = first.status();state['merge_effect'] = 'unknown';atomic(directory/'state.json',state)
+        config = dict(binding=self.binding,logicalOwner=self.binding['owner'])
+        before = {str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        view = publisher_observe(config,self.root)
+        self.assertTrue(view['claim_current']);self.assertEqual(view['state']['merge_effect'],'unknown')
+        changed = dict(self.binding,head='8'*40)
+        other = publisher_observe(dict(binding=changed,logicalOwner=changed['owner']),self.root)
+        self.assertFalse(other['claim_available']);self.assertFalse(other['claim_current'])
+        self.assertEqual({str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()},before)
+        (directory/'state.json').unlink()
+        with self.assertRaises(DeliveryError):
+            publisher_observe(config,self.root)
+        self.assertFalse((directory/'state.json').exists())
+
+    def test_readonly_reconciliation_cannot_reacquire_or_write_claims(self):
+        self.snapshot['automatic_integration_enabled'] = False
+        self.step()
+        self.controller.require_current_claim = True
+        claim = self.root/'active-owner.json'
+        original = claim.read_bytes()
+        from offmenu.delivery.engine import atomic
+        def persist(path,value):
+            self.assertNotIn(path.name,('active-owner.json','repository-claim.json'))
+            return atomic(path,value)
+        with patch('offmenu.delivery.integration.atomic',side_effect=persist):
+            self.controller.run(self.snapshot)
+        self.assertEqual(claim.read_bytes(),original)
+        other = Controller(self.root/'readonly-successor',dict(self.binding,head='8'*40),self.root)
+        other.run(self.snapshot)
+        successor = claim.read_bytes()
+        with self.assertRaisesRegex(DeliveryError,'Read-only reconciliation'):
+            self.controller.run(self.snapshot)
+        self.assertEqual(claim.read_bytes(),successor)
+
+    def test_native_rpc_admission_drift_and_missing_checkpoint_never_initialize(self):
+        from offmenu.delivery.integration import _publisher_transaction_request,publisher_directory
+        config = dict(binding=self.binding,logicalOwner=self.binding['owner'],snapshot={'native_runtime':{'unit_sha256':'1'*64}})
+        for pins in ({'native_binding_sha256':'0'*64,'native_runtime_sha256':fingerprint(config['snapshot']['native_runtime'])},
+                     {'native_binding_sha256':fingerprint(self.binding),'native_runtime_sha256':'0'*64},
+                     {'native_binding_sha256':fingerprint(self.binding)}):
+            with self.assertRaisesRegex(DeliveryError,'admission changed'):
+                _publisher_transaction_request(config,dict(op='observe',**pins),self.root)
+        directory = publisher_directory(self.root,self.binding)
+        self.assertFalse(directory.exists())
+        with self.assertRaises(DeliveryError):
+            Controller(directory,self.binding,self.root,_existing_only=True)
+        self.assertFalse(directory.exists())
+        first = Controller(directory,self.binding,self.root)
+        with first.ownership():
+            pass  # Prepared claim has no graph/effect checkpoint yet.
+        before = {str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        with self.assertRaisesRegex(DeliveryError,'checkpoint'):
+            _publisher_transaction_request(config,dict(op='observe-step',observation=self.snapshot),self.root)
+        self.assertEqual({str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()},before)
+
     def test_nonfinite_observation_time_is_rejected(self):
         self.snapshot['observed_at'] = float('nan')
         self.assertEqual(self.step()['status'],'awaiting-fresh-observation')
+
+
+class NativeReleaseTests(unittest.TestCase):
+    def setUp(self):
+        from offmenu.delivery.integration import ReleaseController
+        from native_harness_contract import load_release_policy
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        policy = load_release_policy(Path('config/delivery-release-policy.json'))
+        self.candidate = dict(version=1, kind='release-candidate-v1', source=dict(
+            repository='maldous/offmenu',branch='develop',base='b'*40,head='a'*40,
+            tree='c'*40,target='main',policy_sha256=fingerprint(policy)),
+            required_profiles=['release-behavior'],artifacts=[dict(path='dist/result.json',sha256='1'*64)])
+        import release_qualification as release
+        catalog = release.read_json(release.ROOT/'config/release-validation-profile.json')
+        artifact = self.root/'dist/result.json'
+        artifact.parent.mkdir();artifact.write_text('release artifact\n')
+        self.candidate['artifacts'][0]['sha256'] = release.file_sha(artifact)
+        self.candidate['required_profiles'] = ['release']
+        plan = release.plan(self.candidate,policy,catalog,'4'*64,'5'*64)
+        results = []
+        for index, check in enumerate(plan['checks']):
+            job = release.bridge_request(plan,check['key'],policy,catalog)['job_id']
+            receipt = dict(job_id=job,status='succeeded',exit_code=0,child_tree_gone=True,
+                           mode='write',timeout_seconds=check['timeout_seconds'],reconcile_required=False,
+                           command_sha256=check['command_sha256'],runner_sha256='4'*64,
+                           capacity_policy_sha256='5'*64,resources=check['resources'])
+            # Original runner request digest uses historical default JSON spaces.
+            spec = {key:receipt[key] for key in ('command_sha256','mode','timeout_seconds',
+                    'runner_sha256','capacity_policy_sha256','resources')}
+            receipt['request_sha256'] = hashlib.sha256(json.dumps(spec,sort_keys=True).encode()).hexdigest()
+            receipt_path = self.root/('receipt-%d.json' % index)
+            receipt_path.write_text(json.dumps(receipt))
+            ref = dict(path=receipt_path.name,sha256=release.file_sha(receipt_path))
+            handoff = dict(version=1,kind='delivery-handoff-v1',
+                issue_id='8daac134-01ab-4a02-a4d2-c0c417d0bd32',
+                project_id='ce60c1ab-a732-4a71-8471-14c9dc393886',owner='release-owner',
+                origin=dict(kind='completed-native-validation-v1',evidence=ref),source=self.candidate['source'],
+                outputs=self.candidate['artifacts'],evidence=[ref],operation=dict(id='release-check-%d' % index,
+                backend='windmill',job_id=job,status='succeeded',command_sha256=check['command_sha256'],
+                runner_sha256='4'*64,policy_sha256='5'*64,receipt=ref))
+            results.append(dict(check=check['key'],plan_sha256=fingerprint(plan),coverage='complete',handoff=handoff))
+        qualification = dict(summary=release.aggregate(plan,results,policy,catalog,self.root),
+                             plan=plan,results=results,catalog=catalog,evidence_root=str(self.root))
+        self.binding = dict(version=3,kind='release-promotion-v1',repository='maldous/offmenu',
+            owner='release-owner',issue_id='8daac134-01ab-4a02-a4d2-c0c417d0bd32',
+            project_id='ce60c1ab-a732-4a71-8471-14c9dc393886',candidate=self.candidate,policy=policy,qualification=qualification,
+            pr_number=248,main_base='9'*40,tag='release/2026.11.01')
+        self.binding['authority'] = dict(version=1,kind='release-promotion-authority-v1',owner='release-owner',
+            issue_id=self.binding['issue_id'],project_id=self.binding['project_id'],
+            candidate_sha256=fingerprint(self.candidate),qualification_sha256=fingerprint(qualification),
+            pr_number=248,main_base='9'*40,tag='release/2026.11.01')
+        self.controller = ReleaseController(self.root/'release',self.binding,self.root)
+        self.snapshot = dict(observed_at=time.time(),publisher_owner='release-owner',
+            qualification_sha256=fingerprint(qualification),publication_triggers_actions=False,
+            unresolved_findings=[],tag=None,
+            review=dict(verdict='accept',independent=True,head='a'*40,base='9'*40,
+                        evidence_id='exact-release-review',findings=[]),
+            github=dict(repository='maldous/offmenu',number=248,head='a'*40,base='9'*40,
+                        head_branch='release/candidate-'+fingerprint(self.candidate),base_branch='main',merged=False,state='open',draft=False,mergeable=True))
+
+    def merged(self):
+        value = copy.deepcopy(self.snapshot)
+        value['github'].update(merged=True,merge_commit_sha='2'*40)
+        value.update(merge_commit=dict(sha='2'*40,tree='c'*40,parents=['9'*40,'a'*40]),main_contains_merge=True)
+        return value
+
+    def test_promotion_and_tag_unknown_reconcile_same_effect(self):
+        action = self.controller.run(self.snapshot)['action']
+        self.assertEqual(action['kind'],'promote-release')
+        self.assertTrue(self.controller.consume_release_intent(action))
+        with self.assertRaises(DeliveryError):
+            self.controller.consume_release_intent(action)
+        self.assertIsNone(self.controller.run(self.snapshot)['action'])
+        tag = self.controller.run(self.merged())['action']
+        self.assertEqual(tag['kind'],'create-release-tag')
+        self.controller.consume_release_intent(tag)
+        self.assertEqual(self.controller.run(self.merged())['status'],'tag-reconciliation-required')
+        observed = self.merged()
+        observed['tag'] = dict(ref='refs/tags/release/2026.11.01',object=dict(type='commit',sha='2'*40))
+        self.assertEqual(self.controller.run(observed)['status'],'release-verified')
+        self.assertIsNone(self.controller.run(self.snapshot)['action'])
+
+    def test_frozen_identity_review_normal_protection_and_tag_conflicts(self):
+        from offmenu.delivery.integration import ReleaseController
+        changed = copy.deepcopy(self.binding)
+        changed['candidate']['source']['head'] = '3'*40
+        with self.assertRaisesRegex(DeliveryError,'authority'):
+            ReleaseController(self.root/'changed',changed,self.root)
+        self.snapshot['github']['head'] = '3'*40
+        self.assertEqual(self.controller.run(self.snapshot)['status'],'stale-candidate')
+        self.snapshot['github']['head'] = 'a'*40
+        self.snapshot['review']['independent'] = False
+        self.assertEqual(self.controller.run(self.snapshot)['status'],'release-held')
+        self.snapshot['review']['independent'] = True
+        action = self.controller.run(self.snapshot)['action']
+        self.controller.consume_release_intent(action)
+        bad = self.merged();bad['merge_commit']['parents'].reverse()
+        self.assertEqual(self.controller.run(bad)['status'],'release-readback-mismatch')
+        bad = self.merged();bad['tag'] = dict(ref='refs/tags/release/2026.11.01',object=dict(type='commit',sha='0'*40))
+        self.assertEqual(self.controller.run(bad)['status'],'immutable-tag-conflict')
+        self.assertIsNone(self.controller.status()['action'])
+
+    def test_publisher_reaggregates_and_rejects_missing_or_changed_evidence(self):
+        from offmenu.delivery.integration import ReleaseController
+        from native_harness_contract import ContractError
+        changed = copy.deepcopy(self.binding)
+        changed['qualification']['results'].pop()
+        changed['authority']['qualification_sha256'] = fingerprint(changed['qualification'])
+        with self.assertRaises(ContractError):
+            ReleaseController(self.root/'incomplete',changed,self.root)
+        (self.root/'dist/result.json').write_text('changed output')
+        with self.assertRaises(ContractError):
+            ReleaseController(self.root/'changed-output',self.binding,self.root)
+
+    def test_fixed_release_rpc_rejects_changed_admission_and_linear_effects(self):
+        from offmenu.delivery.integration import _publisher_request
+        config = dict(version=2,binding=self.binding,logicalOwner=self.binding['owner'],snapshot=self.snapshot)
+        action = _publisher_request(self.controller,config,dict(op='step',observation=self.snapshot))['action']
+        self.assertEqual(action['kind'],'promote-release')
+        changed = copy.deepcopy(self.snapshot);changed['review']['evidence_id'] = 'other'
+        with self.assertRaisesRegex(DeliveryError,'qualified observation'):
+            _publisher_request(self.controller,config,dict(op='step',observation=changed))
+        with self.assertRaisesRegex(DeliveryError,'Unsupported release'):
+            _publisher_request(self.controller,config,dict(op='outcome',kind='linear',outcome='succeeded'))
+        result = _publisher_request(self.controller,config,dict(op='consume',intent=action))
+        self.assertTrue(result['authorized'])
+        with self.assertRaises(DeliveryError):
+            _publisher_request(self.controller,config,dict(op='consume',intent=action))
+
+    def test_unconsumed_tag_intent_survives_repeated_observation_and_consumes_once(self):
+        action = self.controller.run(self.snapshot)['action']
+        self.controller.consume_release_intent(action)
+        tag = self.controller.run(self.merged())['action']
+        self.assertEqual(self.controller.run(self.merged())['action'],tag)
+        # A transient readback failure cannot erase an unconsumed durable effect.
+        stale = self.merged();stale['observed_at'] = 0
+        self.controller.run(stale)
+        self.assertEqual(self.controller.run(self.merged())['action'],tag)
+        self.controller.consume_release_intent(tag)
+        with self.assertRaises(DeliveryError):
+            self.controller.consume_release_intent(tag)
+        self.assertIsNone(self.controller.run(self.merged())['action'])
+
+    def test_pending_release_blocks_another_candidate(self):
+        self.controller.run(self.snapshot)
+        from offmenu.delivery.integration import ReleaseController
+        changed = copy.deepcopy(self.binding)
+        changed['tag'] = 'release/next';changed['authority']['tag'] = changed['tag']
+        other = ReleaseController(self.root/'next',changed,self.root)
+        with self.assertRaisesRegex(DeliveryError,'must reconcile'):
+            other.run(self.snapshot)
 
 
 if __name__ == '__main__':

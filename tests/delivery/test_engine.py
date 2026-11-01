@@ -49,6 +49,50 @@ class DeliveryFixture(unittest.TestCase):
 
 
 class EngineTests(DeliveryFixture):
+    def test_caller_cannot_enlarge_open_engines_attempt_budget(self):
+        self.task['checks'][0]['argv'] = [sys.executable, '-c', 'raise SystemExit(7)']
+        with writer(self.root) as directory:
+            engine = Engine(self.root, directory, self.task)
+            self.task['checks'][0].update(attempts=3, retry_safe=True)
+            with self.assertRaisesRegex(DeliveryError, 'failed'):
+                engine.execute({})
+            self.assertEqual(json.loads(self.record().read_text())['attempt'], 1)
+            with self.assertRaisesRegex(DeliveryError, 'exhausted'):
+                engine.execute({})
+            engine.task['checks'][0].update(attempts=3, retry_safe=True)
+            with self.assertRaisesRegex(DeliveryError, 'Task binding changed'):
+                engine.execute({})
+
+    def test_reopen_cannot_enlarge_original_attempt_budget(self):
+        self.task['checks'][0]['argv'] = [sys.executable, '-c', 'raise SystemExit(7)']
+        with self.assertRaisesRegex(DeliveryError, 'failed'):
+            self.run_engine()
+        changed = copy.deepcopy(self.task)
+        changed['checks'][0].update(attempts=3, retry_safe=True)
+        with self.assertRaisesRegex(DeliveryError, 'already bound'):
+            self.run_engine(task=changed)
+        self.assertEqual(json.loads(self.record().read_text())['attempt'], 1)
+
+    def test_failure_after_completed_command_before_graph_checkpoint_does_not_replay(self):
+        from unittest.mock import patch
+        original = Engine.execute
+
+        def interrupted(engine, state):
+            original(engine, state)
+            raise RuntimeError('lost graph checkpoint after command receipt')
+
+        with patch.object(Engine, 'execute', interrupted):
+            with self.assertRaisesRegex(RuntimeError, 'lost graph checkpoint'):
+                self.run_engine()
+        self.assertEqual((self.root / 'counter.txt').read_text(), '1')
+        self.assertEqual(self.run_engine()['status'], 'accepted')
+        self.assertEqual((self.root / 'counter.txt').read_text(), '1')
+
+    def test_invalid_pause_boundary_does_not_execute(self):
+        with self.assertRaisesRegex(DeliveryError, 'Invalid graph pause'):
+            self.run_engine('unknown-boundary')
+        self.assertFalse((self.root / 'counter.txt').exists())
+
     def test_durable_resume_uses_new_engine_and_does_not_reexecute(self):
         paused = self.run_engine('execute')
         self.assertEqual(paused['status'], 'checked')

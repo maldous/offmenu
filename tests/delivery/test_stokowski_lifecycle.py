@@ -2,6 +2,7 @@
 import asyncio
 from contextlib import ExitStack
 import importlib.util
+import json
 import os
 from pathlib import Path
 import sys
@@ -17,7 +18,7 @@ from stokowski_worker import MODEL
 
 @unittest.skipUnless(importlib.util.find_spec('stokowski'), 'Use the pinned Stokowski environment')
 class AdaptedLifecycleTests(unittest.TestCase):
-    def adapted(self, runtime, stack, transition=None):
+    def adapted(self, runtime, stack, transition=None, manifest=None):
         import stokowski.config as config
         import stokowski.linear as linear
         import stokowski.orchestrator as orchestration
@@ -34,14 +35,15 @@ class AdaptedLifecycleTests(unittest.TestCase):
             stack.enter_context(patch.object(owner,name,getattr(owner,name)))
         if transition:
             stack.enter_context(patch.object(orchestration.Orchestrator,'_safe_transition',transition))
-        return adapter.install_adapters(runtime,{'tasks':{}},'coordinator-only-canary'),config
+        return adapter.install_adapters(runtime,manifest or {'project_id':adapter.PROJECT,'tasks':{}},'coordinator-only-canary'),config
 
     def test_both_upstream_config_paths_keep_key_out_of_child_environment(self):
         with tempfile.TemporaryDirectory() as temp, ExitStack() as stack:
             _,config = self.adapted(Path(temp),stack)
             stack.enter_context(patch.dict(os.environ,{'LINEAR_API_KEY':'tracker-canary',
                                 'CREDENTIALS_DIRECTORY':'/private/injected','OTHER_TOKEN':'secret-canary'}))
-            for selected in (config.ProjectConfig(),config.ServiceConfig()):
+            project = config.ProjectConfig()
+            for selected in (project,config.ServiceConfig(projects=[project])):
                 self.assertEqual(selected.resolved_api_key(),'coordinator-only-canary')
                 environment = selected.agent_env()
                 for key in ('LINEAR_API_KEY','CREDENTIALS_DIRECTORY','OTHER_TOKEN'):
@@ -49,14 +51,28 @@ class AdaptedLifecycleTests(unittest.TestCase):
 
     def test_failed_or_unenforced_shell_gate_is_rejected_before_spawn(self):
         with tempfile.TemporaryDirectory() as temp, ExitStack() as stack:
-            adapted,_ = self.adapted(Path(temp),stack)
+            runtime = Path(temp)
+            # The real manifest reader precedes the hook guard. Supply its
+            # admitted schema without bypassing that reader or invoking a worker.
+            manifest = dict(version=1,branch='feature/test-lifecycle',base_revision='a'*40,
+                project_id=adapter.PROJECT,label='offline-lifecycle',tasks={
+                    'UIF-92':dict(issue_id='00000000-0000-4000-8000-000000000092',
+                        owner='test-owner',purpose='Offline shell-hook refusal',
+                        allowed_paths=['README.md'],acceptance=['Reject shell hooks before spawn'],
+                        resources=dict(cpu_millis=1,memory_bytes=1024,io_slots=1,output_bytes=0),
+                        attempt_limit=1)})
+            manifest_path = runtime/'manifest.json'
+            manifest_path.write_text(json.dumps(manifest))
+            before = manifest_path.read_bytes()
+            adapted,_ = self.adapted(runtime,stack,manifest=manifest)
             spawn = stack.enter_context(patch.object(adapter.asyncio,'create_subprocess_exec',new_callable=AsyncMock))
             with self.assertRaisesRegex(Exception,'Unenforced shell validation hook'):
                 asyncio.run(adapted.run_turn('codex',SimpleNamespace(model=MODEL),
                     SimpleNamespace(after_run='exit 1'),'prompt',Path(temp),
                     SimpleNamespace(identifier='UIF-92'),SimpleNamespace()))
             spawn.assert_not_called()
-            self.assertEqual(list(Path(temp).iterdir()),[])
+            self.assertEqual(list(runtime.iterdir()),[manifest_path])
+            self.assertEqual(manifest_path.read_bytes(),before)
 
     def test_stop_waits_for_inflight_transition_before_closing_tracker_client(self):
         async def scenario(runtime,stack):

@@ -15,6 +15,14 @@ provider, resource and ownership admission. This does not resume historical
 workers, enable `automatic_start` or change `legacy_workers_resume`; all mandatory
 platform confirmations and access/security limits still apply.
 
+For releases, follow ADR 0009 and `config/delivery-release-policy.json`. Freeze
+an exact candidate from accepted `develop`; exhaustive qualification stays bound
+to its source, tree and artifacts while `develop` advances. Publish the frozen
+candidate through `release/candidate-<candidate fingerprint>` into `main` only
+after separate release review. Verify the resulting tree and immutable tag;
+keep `main` static between approved releases. Source acceptance, installed
+delivery BAU, application deployment and product acceptance are separate facts.
+
 Select work using [task routing and tracking](docs/development/task-routing.md).
 Keep immediate bounded answers and genuine decisions with the coordinating owner;
 use available independent reasoning for separable analysis, owned Foo/Stokowski

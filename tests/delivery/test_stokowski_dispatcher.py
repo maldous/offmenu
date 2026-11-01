@@ -432,6 +432,23 @@ class CompactObservationTests(unittest.TestCase):
         self.assertTrue(observation_matches(compact,remote['id'],remote['args']))
         self.assertEqual(remote,original)
 
+    def test_status_job_completion_keeps_backend_cleanup_uncertainty(self):
+        remote = self.remote()
+        remote['args'] = {'action':'status', 'job_id':remote['args']['job_id']}
+        receipt = remote['result']['receipt']
+        receipt.update(status='running', child_tree_gone=False, reconcile_required=True)
+        remote['result']['job_succeeded'] = False
+        calls = []
+        def get(*args, **kwargs):
+            calls.append(args[0])
+            return Response(value=remote)
+        # A completed successful API wrapper is only a status observation.
+        result = dispatcher.dispatch(SimpleNamespace(get=get), 'inspect', remote['id'])
+        self.assertTrue(result['job']['success'])
+        self.assertEqual(result['job']['result']['receipt'], receipt)
+        self.assertFalse(result['job']['result']['job_succeeded'])
+        self.assertEqual(calls, ['/w/offmenu/jobs_u/get/' + remote['id']])
+
     def test_contradictory_or_malformed_job_states_are_rejected(self):
         for fields in ({'running':True}, {'running':None}, {'success':None},
                        {'type':'QueuedJob','success':True},

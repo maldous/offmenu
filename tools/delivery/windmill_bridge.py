@@ -233,7 +233,61 @@ def _raise_job_failure(job_id, code, exception_type):
     raise exception_type(code + "; incident=" + state) from None
 
 
-def _safe_receipt(job_id, receipt):
+def _safe_resources(value, mode):
+    """Bound ACTUAL runner declarations; never normalize or fill from arguments.
+
+    Pure wire projection: /offmenu is the remote SSH jail, not this worker's
+    filesystem. Admission, symlinks, usage and request hashes retain their
+    original runner/consumer checks. Ranges match the maintained capacity policy.
+    """
+    from pathlib import PurePosixPath
+    fields = {'workers', 'overhead_processes', 'cpu_millis', 'memory_bytes',
+              'output_bytes', 'io_slots', 'read_roots', 'write_roots'}
+    if type(value) is not dict or set(value) != fields or mode not in ('read', 'write'):
+        raise ValueError('RECEIPT_RESOURCES_INVALID')
+    bounds = {'workers': (1, 64), 'overhead_processes': (1, 8),
+              'cpu_millis': (1, 27000), 'memory_bytes': (1024**2, 42 * 1024**3),
+              'output_bytes': (0, 64 * 1024**3), 'io_slots': (1, 32)}
+    for key, (low, high) in bounds.items():
+        if type(value[key]) is not int or not low <= value[key] <= high:
+            raise ValueError('RECEIPT_RESOURCES_INVALID')
+    safe = {key: value[key] for key in bounds}
+    scope = PurePosixPath('/offmenu')
+    for key in ('read_roots', 'write_roots'):
+        roots = value[key]
+        if type(roots) is not list or len(roots) > 32:
+            raise ValueError('RECEIPT_RESOURCES_INVALID')
+        copied = []
+        for raw in roots:
+            if (type(raw) is not str or not 1 <= len(raw) <= 4096
+                    or any(ord(c) < 32 or ord(c) == 127 for c in raw) or '\\' in raw):
+                raise ValueError('RECEIPT_RESOURCES_INVALID')
+            path = PurePosixPath(raw)
+            if (str(path) != raw or '..' in path.parts
+                    or path != scope and scope not in path.parents):
+                raise ValueError('RECEIPT_RESOURCES_INVALID')
+            copied.append(raw)
+        if len(set(copied)) != len(copied):
+            raise ValueError('RECEIPT_RESOURCES_INVALID')
+        safe[key] = copied
+    if ((mode == 'read' and safe['write_roots'])
+            or (mode == 'write' and not safe['write_roots'])):
+        raise ValueError('RECEIPT_RESOURCES_INVALID')
+    protected = [scope / 'scripts/windmill', scope / 'tools/delivery']
+    protected += [scope / 'data/.offmenu-platform' / name
+                  for name in ('locks', 'jobs', 'checkpoints')]
+    if any(p == q or p in q.parents or q in p.parents
+           for p in map(PurePosixPath, safe['write_roots']) for q in protected):
+        raise ValueError('RECEIPT_RESOURCES_INVALID')
+    # Leave room for the rest of the receipt within the existing 64 KiB pipe.
+    if len(json.dumps(safe, allow_nan=False, ensure_ascii=True).encode()) > 16384:
+        raise ValueError('RECEIPT_RESOURCES_INVALID')
+    return safe
+
+
+def _safe_receipt(job_id, receipt, receipt_projection='legacy'):
+    if type(receipt_projection) is not str or receipt_projection not in ('legacy', 'resources-v1'):
+        raise ValueError('RECEIPT_PROJECTION_INVALID')
     if not isinstance(receipt, dict) or receipt.get("job_id") != job_id:
         raise ValueError("RECEIPT_ID_INVALID")
     states = {"starting", "running", "queued", "succeeded", "failed", "timed_out", "cancelled", "supervisor_error", "unknown", "busy", "blocked_reconciliation", "id_conflict", "request_error", "not_found", "cancellation_requested"}
@@ -252,6 +306,11 @@ def _safe_receipt(job_id, receipt):
         elif key == "timeout_seconds": valid = type(value) is int and 1 <= value <= 1800
         elif key == "exit_code": valid = value is None or type(value) is int and -255 <= value <= 255
         elif key == "mode": valid = value in ("read", "write")
+        elif key == "resources":
+            if receipt_projection == 'legacy':
+                continue  # Preserve the original typed dispatcher's strict wire.
+            value = _safe_resources(value, receipt.get('mode'))
+            valid = True
         elif key == "reason": valid = value in {"long_job_active", "incompatible_job_active", "two_slots_active", "unresolved_inflight_marker", "unresolved_long_job_marker", "no_safe_slot", "capacity_admission_busy", "capacity_pool_active", "capacity_legacy_active", "capacity_slots_active", "capacity_cpu_reserved", "capacity_memory_reserved", "capacity_processes_reserved", "capacity_disk_reserved", "capacity_io_reserved", "capacity_paths_conflict"}
         elif key == "error_class": valid = isinstance(value, str) and re.fullmatch(r"[A-Za-z][A-Za-z0-9]{0,63}", value) is not None
         elif key == "unresolved_jobs":
@@ -268,9 +327,9 @@ def _safe_receipt(job_id, receipt):
     return safe
 
 
-def _job_result(action, job_id, receipt):
+def _job_result(action, job_id, receipt, receipt_projection='legacy'):
     try:
-        receipt = _safe_receipt(job_id, receipt)
+        receipt = _safe_receipt(job_id, receipt, receipt_projection)
     except Exception:
         if action == "run": _raise_job_failure(job_id, "OUTCOME_UNKNOWN", OutcomeUnknown)
         raise OutcomeUnknown("RECEIPT_INVALID") from None
@@ -311,7 +370,8 @@ def _job_result(action, job_id, receipt):
 
 
 def main(action: str = "status", job_id: str = "", command: str = "",
-         mode: str = "write", timeout_seconds: int = 45, resources: dict = None):
+         mode: str = "write", timeout_seconds: int = 45, resources: dict = None,
+         receipt_projection: str = 'legacy'):
     """Use Windmill background runs for long jobs, then read run/job-ID receipts.
     read mode is a trusted scheduling promise, not a read-only filesystem boundary.
     Do not retry an unknown outcome under a new job ID without reconciliation.
@@ -321,6 +381,8 @@ def main(action: str = "status", job_id: str = "", command: str = "",
     secret = None
     private_key = None
     try:
+        if type(receipt_projection) is not str or receipt_projection not in ('legacy', 'resources-v1'):
+            raise JobValidationFailure('INVALIDRECEIPTPROJECTION') from None
         if action not in ("run", "status", "cancel"):
             raise JobValidationFailure("INVALID_ACTION") from None
         if not isinstance(job_id, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,79}", job_id):
@@ -363,7 +425,7 @@ def main(action: str = "status", job_id: str = "", command: str = "",
             if action == "run": _raise_job_failure(job_id, "OUTCOME_UNKNOWN", OutcomeUnknown)
             raise OutcomeUnknown("REMOTE_RECEIPT_UNAVAILABLE") from None
         receipt = json.loads(result["stdout"])
-        return _job_result(action, job_id, receipt)
+        return _job_result(action, job_id, receipt, receipt_projection)
     except (BusinessJobFailure, OutcomeUnknown, BusinessCancelled, JobValidationFailure):
         raise
     except Exception:

@@ -9,6 +9,7 @@ import errno
 import fcntl
 import hashlib
 import importlib.metadata
+import inspect
 import json
 import math
 import sqlite3
@@ -229,7 +230,7 @@ class CurrentWork:
         self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config, self.config_path, self.owner_custody = current_config(runtime)
-        if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template', 'catalog_versions'} != {'version', 'owner', 'runtime_root', 'catalog',
+        if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template', 'catalog_versions', 'native_harness_boundaries'} != {'version', 'owner', 'runtime_root', 'catalog',
                                'source_head', 'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}:
             raise AdmissionError('current_config_fields')
         validated_project_route(self.config.get('project_route', project_route(PROJECT)))
@@ -256,6 +257,8 @@ class CurrentWork:
             or not isinstance(self.config['source_sha256'],dict)
             or not re.fullmatch(r'[0-9a-f]{40}',self.config['source_head'])):
             raise AdmissionError('current_private_root')
+        self._native_harness_refill = None
+        self._native_harness_config()
         if 'catalog_versions' in self.config and not self.owner_custody:
             raise AdmissionError('protected_owner_catalog_grants')
         self.catalog = Path(self.config['catalog']) if self.owner_custody else self.private(self.config['catalog'])
@@ -693,6 +696,8 @@ class CurrentWork:
 
     def _reconciled_unit(self, issue):
         try:
+            if not self._native_harness_refill_allowed(issue):
+                return False
             from types import SimpleNamespace
             entry = self.state['references'][issue]
             gate = self.state['tasks'][issue]['unit_gate']
@@ -899,6 +904,8 @@ class CurrentWork:
             config = pinned(handoff['owner_config'])
             if packet['owner_config'] != handoff['owner_config']:
                 raise AdmissionError('successor_config_drift')
+            if not self._native_harness_refill_allowed(packet['trigger']['issue']):
+                raise AdmissionError('native_harness_refill_readback_required')
             identity = digest(dict(handoff=ref, owner_config=packet['owner_config'], trigger=packet['trigger']))
             if pending is not None and pending.get('identity') != identity:
                 rearming = True
@@ -1631,6 +1638,200 @@ class CurrentWork:
                     requested_effort=None, provider=None))['status'] = 'held'
             self.save()
 
+    def _native_harness_config(self):
+        """Only the sealed owner may opt admitted units into the new boundary."""
+        if 'native_harness_boundaries' not in self.config:
+            return
+        references = self.config['native_harness_boundaries']
+        if (not self.owner_custody or not isinstance(references, dict)
+            or not 1 <= len(references) <= 128):
+            raise AdmissionError('native_harness_owner_config')
+        required = {'tools/delivery/native_harness_runtime.py',
+                    'tools/delivery/native_harness_contract.py', 'tools/delivery/linear_delivery.py',
+                    'tools/delivery/release_qualification.py', 'src/offmenu/delivery/engine.py',
+                    'src/offmenu/delivery/status.py'}
+        if not required <= set(self.config['source_sha256']):
+            raise AdmissionError('native_harness_source_pin')
+        for identifier in references:
+            if not isinstance(identifier, str) or not re.fullmatch(r'UIF-[1-9][0-9]*', identifier):
+                raise AdmissionError('native_harness_issue')
+            self._native_harness_selection(identifier)
+
+    def _native_harness_selection(self, identifier):
+        if not self.owner_custody:
+            raise AdmissionError('native_harness_owner_config')
+        reference = self.config['native_harness_boundaries'][identifier]
+        if (not isinstance(reference, dict) or set(reference) != {'path', 'sha256'}
+            or not isinstance(reference['path'], str)):
+            raise AdmissionError('native_harness_reference')
+        selection = self._private_pin(reference)
+        if set(selection) != {'binding', 'packet', 'context'} or not isinstance(selection['binding'], dict):
+            raise AdmissionError('native_harness_selection')
+        binding = selection['binding']
+        if (set(binding) != {'issue_id', 'project_id', 'owner', 'packet_sha256',
+                             'operation_id', 'phase', 'unit_sha256'}
+            or binding['owner'] != self.config['owner']
+            or binding['project_id'] != self.route['project_id']
+            or binding['phase'] not in ('linear', 'integration', 'release')
+            or any(not isinstance(binding[k], str) or not re.fullmatch('[0-9a-f]{64}', binding[k])
+                   for k in ('packet_sha256', 'operation_id', 'unit_sha256'))):
+            raise AdmissionError('native_harness_binding')
+        try:
+            if any(str(UUID(binding[k])) != binding[k] or not UUID(binding[k]).int
+                   for k in ('issue_id', 'project_id')):
+                raise ValueError()
+        except (ValueError, TypeError, AttributeError):
+            raise AdmissionError('native_harness_binding') from None
+        # File-byte pins retain their original meaning; packet identity is
+        # independently checked with the shared fingerprint at consumption.
+        if (not isinstance(selection['packet'], dict) or set(selection['packet']) != {'path', 'sha256'}
+            or not isinstance(selection['packet']['path'], str)):
+            raise AdmissionError('native_harness_reference')
+        self._private_pin(selection['packet'])
+        context = selection['context']
+        if binding['phase'] == 'linear' and type(context) is dict and context == {}:
+            # Linear still needs the original admitted native unit; it never
+            # consumes Engine or independent-review context references.
+            return selection
+        if (not isinstance(context, dict)
+            or set(context) - {'publisher_invocation'} != {'engine_root', 'engine_task', 'unit_review'}
+            or not isinstance(context['engine_root'], str)
+            or not self.private(context['engine_root']).is_dir()):
+            raise AdmissionError('native_harness_context')
+        if 'publisher_invocation' in context:
+            invocation = context['publisher_invocation']
+            if (not isinstance(invocation, dict)
+                or set(invocation) != {'version', 'closure_sha256', 'host_confirmation_sha256'}
+                or type(invocation['version']) is not int or invocation['version'] != 1
+                or any(not isinstance(invocation[k], str) or not re.fullmatch('[0-9a-f]{64}', invocation[k])
+                       for k in ('closure_sha256', 'host_confirmation_sha256'))):
+                raise AdmissionError('native_harness_publisher_invocation')
+            from native_harness_contract import fingerprint
+            fingerprint(invocation)  # Included unchanged in the pinned selection identity.
+        for name in ('engine_task', 'unit_review'):
+            ref = context[name]
+            if not isinstance(ref, dict) or set(ref) != {'path', 'sha256'} or not isinstance(ref['path'], str):
+                raise AdmissionError('native_harness_context')
+            self._private_pin(ref)
+        return selection
+
+    def _native_harness_module(self):
+        self.guard()
+        self._native_harness_config()
+        module = importlib.import_module('native_harness_runtime')
+        if Path(module.__file__).resolve() != SOURCE/'tools/delivery/native_harness_runtime.py':
+            raise AdmissionError('native_harness_module_path')
+        return module
+
+    def _native_harness_refill_allowed(self, identifier):
+        if identifier not in self.config.get('native_harness_boundaries', {}):
+            return True
+        # Saved diagnostics never authorize refill. Only the immediate async
+        # consumer can lend this permit to the existing synchronous boundary.
+        if self.read_only or self.stopping or self._native_harness_refill is None:
+            return False
+        try:
+            module = self._native_harness_module()
+            selection = self._native_harness_selection(identifier)
+            binding = selection['binding']
+            from types import SimpleNamespace
+            issue = SimpleNamespace(identifier=identifier, id=self.entries[identifier]['issue_id'])
+            return (issue.id == binding['issue_id']
+                and module.fingerprint(self.gate_binding(issue, observation=True)) == binding['unit_sha256']
+                and self._native_harness_refill == (identifier, module.fingerprint(selection),
+                                                    binding['operation_id'], binding['unit_sha256']))
+        except Exception:
+            return False
+
+    async def continue_native_harness(self, adapters_factory=None, *, linear_client=None):
+        """One finite owner-bound consumption in the existing locked poll."""
+        if not self.config.get('native_harness_boundaries') or self.read_only or self.stopping:
+            return
+        eligible = [i for i in self.entries if i in self.config['native_harness_boundaries']]
+        if not eligible:
+            return
+        cursor = self.state.get('native_harness_cursor')
+        index = eligible.index(cursor) if cursor in eligible else 0
+        identifier = eligible[index]
+        self.state['native_harness_cursor'] = eligible[(index+1) % len(eligible)]
+        task = self.state['tasks'].setdefault(identifier, {})
+        state = task.setdefault('native_harness', {})
+        self._native_harness_refill = None
+        try:
+            module = self._native_harness_module()
+            selection = self._native_harness_selection(identifier)
+            selected_sha = module.fingerprint(selection)
+            if state.get('selection_sha256', selected_sha) != selected_sha:
+                raise AdmissionError('native_harness_selection_rebind')
+            binding = module.OwnerBinding(**selection['binding'])
+            from types import SimpleNamespace
+            issue = SimpleNamespace(identifier=identifier, id=self.entries[identifier]['issue_id'])
+            if issue.id != binding.issue_id:
+                raise AdmissionError('native_harness_issue_binding')
+            self.context(identifier, review=True, observation=True)
+            if module.fingerprint(self.gate_binding(issue, observation=True)) != binding.unit_sha256:
+                raise AdmissionError('native_harness_unit_drift')
+            state.update(selection_sha256=selected_sha, operation_id=binding.operation_id,
+                         unit_sha256=binding.unit_sha256, status='pending')
+            state.pop('reason', None)
+            state.pop('projection', None)
+            self.save()  # Before factory/transaction; existing journal owns effects.
+            if adapters_factory is None:
+                # Fixed reviewed installed code, never a name selected by JSON.
+                adapters_factory = getattr(module, 'owner_adapters', None)
+            if not callable(adapters_factory):
+                raise AdmissionError('native_harness_adapters_unavailable')
+            async def consume():
+                adapters = adapters_factory(self, issue, binding, selection, linear_client=linear_client)
+                if inspect.isawaitable(adapters):
+                    adapters = await adapters
+                if type(adapters) is not module.OwnerAdapters:
+                    raise AdmissionError('native_harness_adapters_required')
+                async def authorize(current, native_issue, admitted):
+                    self.guard()
+                    if (current is not self or admitted != binding
+                        or self._native_harness_selection(identifier) != selection):
+                        raise AdmissionError('native_harness_selection_drift')
+                    self.context(identifier, review=True, observation=True)
+                    if module.fingerprint(self.gate_binding(native_issue, observation=True)) != binding.unit_sha256:
+                        raise AdmissionError('native_harness_unit_drift')
+                    value = adapters.authorize(current, native_issue, admitted)
+                    return (await value if inspect.isawaitable(value) else value) is True
+                async def load(admitted):
+                    packet = adapters.load(admitted)
+                    if inspect.isawaitable(packet):
+                        packet = await packet
+                    pinned = self._private_pin(selection['packet'])
+                    if packet != pinned or module.fingerprint(packet) != binding.packet_sha256:
+                        raise AdmissionError('native_harness_packet_drift')
+                    return packet
+                trusted = module.OwnerAdapters(authorize, load, adapters.engine, adapters.review,
+                                                adapters.observe, adapters.step)
+                result = await module.consume_boundary(self, issue, binding=binding, adapters=trusted)
+                return result, authorize
+            result, authorize = await asyncio.wait_for(consume(), timeout=10)
+            state.update(status=result['status'], projection=result)
+            effect = result.get('effect', {})
+            if (result.get('operation_id') == binding.operation_id
+                and result.get('status') in ('observed', 'advanced')
+                and result.get('next_action') == 'existing-unit-consumer'
+                and effect.get('operation_id') == binding.operation_id
+                and effect.get('status') == 'verified' and effect.get('child_tree_gone') is True):
+                if await asyncio.wait_for(authorize(self, issue, binding), timeout=10) is not True:
+                    raise AdmissionError('native_harness_owner_authority_missing')
+                self._native_harness_refill = (identifier, selected_sha,
+                                               binding.operation_id, binding.unit_sha256)
+                self._successor_boundary()
+        except asyncio.CancelledError:
+            state.update(status='unknown', reason='owner-cancelled-reconcile-existing-operation')
+            raise
+        except Exception as error:
+            state.update(status='held', reason=str(error) if isinstance(error, AdmissionError)
+                         else type(error).__name__)
+        finally:
+            self._native_harness_refill = None
+            self.save()
+
     def native_review_template_policy(self, issue, *, materialize=False):
         """Sole owner derives bytes; consumers only recompute from disk authority.
 
@@ -2183,7 +2384,7 @@ class CurrentWork:
         return selected
 
 
-def install_adapters(runtime, manifest, key, current=None):
+def install_adapters(runtime, manifest, key, current=None, *, native_harness_adapter_factory=None):
     import stokowski.config as config
     import stokowski.linear as linear
     import stokowski.orchestrator as orchestration
@@ -2193,9 +2394,9 @@ def install_adapters(runtime, manifest, key, current=None):
         raise RuntimeError('Arbitrary shell hooks are disabled by OffMenu adapter')
 
     config.ProjectConfig.agent_env = lambda self: child_environment(os.environ)
-    config.ServiceConfig.agent_env = lambda self: child_environment(os.environ)
     config.ProjectConfig.resolved_api_key = lambda self: key
-    config.ServiceConfig.resolved_api_key = lambda self: key
+    # The admitted workflow has exactly one project. Pinned ServiceConfig
+    # already delegates both methods to that project; keep its native routing.
     workspace_module.run_hook = reject_hook
 
     route = current.route if current else project_route(manifest['project_id'])
@@ -2319,6 +2520,8 @@ def install_adapters(runtime, manifest, key, current=None):
         async def current_tick(owner):
             current.refresh()  # Before upstream config reload can skip candidate fetching.
             await current.continue_validation()
+            await current.continue_native_harness(native_harness_adapter_factory,
+                                                 linear_client=getattr(owner, '_linear', None))
             return await original_tick(owner)
         orchestration.Orchestrator._tick = current_tick
 
@@ -2464,14 +2667,15 @@ def install_adapters(runtime, manifest, key, current=None):
             return
         result = json.loads(path.read_text())
         safe = {k: result.get(k) for k in ('status','source_head','session_id',
-                'child_tree_gone','scope_violations','output_sha256','accepted_delivery')}
+                'child_tree_gone','scope_violations','output_sha256','accepted_delivery',
+                'requested_model','resolved_model','resolution_status')}
         owner.ledger.record_stage(project='offmenu', workflow='bounded-adapter-proof',
                                   issue_id=issue.id, issue=issue.identifier,
                                   title=issue.title, state=state_name, run=1,
                                   status=attempt.status, report=None,
                                   tokens=attempt.total_tokens, cost_usd=0,
                                   tool_calls=0, tool_errors=0, artifacts=0,
-                                  model=MODEL, duration_s=None)
+                                  model=attempt.model, duration_s=None)
         client = owner._ensure_linear_client()
         await client.post_comment(issue.id, '[OffMenu Stokowski bounded attempt]\n\n'
                                  + json.dumps(safe, sort_keys=True))
@@ -2551,14 +2755,19 @@ def install_adapters(runtime, manifest, key, current=None):
             current.refresh()
         receipt_path = task_runtime/'attempts'/issue.identifier/'receipt.json'
         result = json.loads(receipt_path.read_text()) if receipt_path.exists() else {'status': 'uncertain'}
-        attempt.status = 'succeeded' if result['status'] == 'succeeded' else 'failed'
+        attempt.status = ('succeeded' if result['status'] == 'succeeded'
+                          and result.get('child_tree_gone') is True else 'failed')
         attempt.session_id = result.get('session_id')
-        attempt.model = MODEL
+        observed_model = result.get('resolved_model')
+        attempt.model = (observed_model if result.get('resolution_status') == 'observed'
+                         and isinstance(observed_model, str) and observed_model.strip() else None)
         usage = result.get('usage', {})
         attempt.input_tokens = usage.get('input_tokens', 0)
         attempt.output_tokens = usage.get('output_tokens', 0)
         attempt.total_tokens = attempt.input_tokens+attempt.output_tokens
-        attempt.error = None if attempt.status == 'succeeded' else result['status']
+        attempt.error = (None if attempt.status == 'succeeded' else
+                         ('child_termination_unverified' if result['status'] == 'succeeded'
+                          else result['status']))
         attempt.result_text = ('Coding attempt ended. Independent behavior/output '
                                'acceptance remains required; no application acceptance asserted.')
         return attempt

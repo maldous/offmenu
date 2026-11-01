@@ -183,12 +183,35 @@ class WorkerRegressions(unittest.TestCase):
         self.process.return_value = dict(status='uncertain', child_tree_gone=False)
         result = worker.execute(self.runtime, self.issue, self.request)
         self.assertFalse(result['child_tree_gone'])
+        self.assertEqual(result['status'], 'uncertain')
         self.assertEqual(self.rows()[self.lease()]['status'], 'running')
         self.process.reset_mock()
         with self.assertRaisesRegex(AdmissionError, 'no replay'):
             worker.execute(self.runtime, self.issue, self.request)
         self.process.assert_not_called()
         self.assertEqual(self.rows()[self.lease()]['status'], 'running')
+
+    def test_stopped_cancellation_preserves_outcome_and_cannot_replay(self):
+        self.process.side_effect = None
+        self.process.return_value = dict(status='cancelled', child_tree_gone=True)
+        result = worker.execute(self.runtime, self.issue, self.request)
+        self.assertEqual(result['status'], 'cancelled')
+        self.assertEqual(self.rows()[self.lease()]['outcome'], 'cancelled')
+        before = self.events()
+        self.process.reset_mock()
+        with self.assertRaisesRegex(AdmissionError, 'no replay'):
+            worker.execute(self.runtime, self.issue, self.request)
+        self.process.assert_not_called()
+        self.assertEqual(self.events(), before)
+
+    def test_stopped_timeout_preserves_outcome_without_claiming_completion(self):
+        self.process.side_effect = None
+        self.process.return_value = dict(status='timed_out', child_tree_gone=True)
+        result = worker.execute(self.runtime, self.issue, self.request)
+        self.assertEqual(result['status'], 'timed_out')
+        self.assertFalse(result['accepted_delivery'])
+        self.assertEqual(self.rows()[self.lease()]['status'], 'failed')
+        self.assertEqual(json.loads((self.directory()/'receipt.json').read_text())['status'], 'timed_out')
 
     def test_process_boundary_exception_persists_uncertainty_and_reservation(self):
         self.process.side_effect = OSError('synthetic process start failure')

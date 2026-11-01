@@ -4,12 +4,14 @@ import {createHash} from 'node:crypto';
 import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
-import {spawn} from 'node:child_process';
+import {spawn,execFile} from 'node:child_process';
+import {promisify} from 'node:util';
 import {fileURLToPath} from 'node:url';
 import {createRepositoryGitHubAppAdapter} from '../../tools/delivery/github-app-adapter.mjs';
-import {advanceIntegration} from '../../tools/delivery/integration-gateway.mjs';
+import {advanceIntegration,advanceRelease} from '../../tools/delivery/integration-gateway.mjs';
 import {fingerprint,validateConfig,protectedRead,loadProtectedConfig,loadProtectedKey,
-  qualifyCandidate,canonicalPublication,publicationStep,integrationStep} from '../../tools/delivery/github-app-publisher.mjs';
+  qualifyCandidate,canonicalPublication,publicationStep,integrationStep,releaseStep,
+  parseNativeRequest,qualifyNativeRequest,nativeJournalStatus,nativePublisherRequest} from '../../tools/delivery/github-app-publisher.mjs';
 
 // Synthetic identities, credentials, objects and transport ONLY. Fixed host paths
 // below are handled by fake metadata/readers, never real /etc or home probes.
@@ -125,17 +127,18 @@ async function actualController(t,f) {
   const configPath=join(temp,'synthetic-config.json');
   await writeFile(configPath,JSON.stringify(f.config));
   const invoke=async(op,data={})=>new Promise((resolvePromise,reject)=>{
-    const code=`import json,sys; from pathlib import Path; from offmenu.delivery.integration import Controller,_publisher_request; c=json.load(open(sys.argv[1])); ctl=Controller(Path(sys.argv[2])/'current',c['binding'],Path(sys.argv[2])); r=_publisher_request(ctl,c,json.load(sys.stdin)); print(json.dumps(r))`;
+    const code=`import json,sys; from pathlib import Path; from offmenu.delivery.integration import _publisher_transaction_request; c=json.load(open(sys.argv[1])); r=_publisher_transaction_request(c,json.load(sys.stdin),Path(sys.argv[2])); print(json.dumps(r))`;
     const child=spawn(process.env.OFFMENU_DELIVERY_TEST_PYTHON || fileURLToPath(new URL('../../.venv-delivery/bin/python',import.meta.url)),['-B','-c',code,configPath,temp],
-      {cwd:resolve('.'),env:{PATH:'/usr/bin:/bin',PYTHONPATH:resolve('src'),LANG:'C.UTF-8',PYTHONDONTWRITEBYTECODE:'1'},
+      {cwd:resolve('.'),env:{PATH:'/usr/bin:/bin',PYTHONPATH:[resolve('src'),resolve('tools/delivery'),process.env.PYTHONPATH].filter(Boolean).join(':'),LANG:'C.UTF-8',PYTHONDONTWRITEBYTECODE:'1'},
         stdio:['pipe','pipe','pipe']});
     let out='',size=0;const timer=setTimeout(()=>child.kill('SIGKILL'),10000);
     child.stdout.on('data',b=>{size+=b.length;if(size>1048576)child.kill('SIGKILL');else out+=b;});
     child.stderr.on('data',b=>{size+=b.length;if(size>1048576)child.kill('SIGKILL');});
     child.on('error',reject);child.on('close',code=>{clearTimeout(timer);if(code)reject(Error('fixture-controller-held'));else {
-      try{resolvePromise(JSON.parse(out));}catch(e){reject(e);}}});child.stdin.end(JSON.stringify({op,...data}));
+      try{resolvePromise(JSON.parse(out));}catch(e){reject(e);}}});child.stdin.end(JSON.stringify({op,...data,...(f.config.snapshot.native_runtime?{
+    native_binding_sha256:fingerprint(f.config.binding),native_runtime_sha256:fingerprint(f.config.snapshot.native_runtime)}:{})}));
   });
-  invoke.state=()=>readFile(join(temp,'current/state.json'),'utf8').then(JSON.parse);
+  invoke.state=()=>readFile(join(temp,'transaction-'+fingerprint(f.config.binding),'state.json'),'utf8').then(JSON.parse);
   invoke.config=async()=>writeFile(configPath,JSON.stringify(f.config));
   invoke.temp=temp;
   return invoke;
@@ -207,7 +210,7 @@ test('real Controller pending state drives synthetic blob/tree/commit/ref/PR cre
   assert.equal(f.config.binding.pr_number,null);
   assert.equal(net.calls.filter(c=>c.method==='POST'&&c.path===`${ROOT}/pulls`).length,1);
   assert.equal(net.calls.filter(c=>c.method==='PATCH').length,1);
-  assert.ok((await readFile(join(ctl.temp,'current/graph.sqlite'))).length>0);
+  assert.ok((await readFile(join(ctl.temp,'transaction-'+fingerprint(f.config.binding),'graph.sqlite'))).length>0);
   const claim=await readFile(join(ctl.temp,'repository-claim.json'),'utf8');
   await ctl('status');assert.equal(await readFile(join(ctl.temp,'repository-claim.json'),'utf8'),claim);
   assert.ok(!JSON.stringify(state).includes('DUMMY-ONLY'));
@@ -279,4 +282,289 @@ test('published actual PR enters existing gateway; lost merge reply uses canonic
   await integrationStep({config:f.config,controller:ctl,adapterFactory:factory,advanceIntegration});
   assert.equal(net.calls.filter(c=>c.method==='PUT').length,1);
   assert.equal((await ctl.state()).merge_effect,'verified');
+});
+
+test('Git Data GET fixtures normalize one terminal message newline without weakening identity',()=>{
+  const f=fixture(),op=f.config.plan.operations[2];
+  const response={...clone(op.body),sha:op.expected,message:'reviewed candidate',
+    tree:{sha:op.body.tree},parents:op.body.parents.map(sha=>({sha})),
+    url:'https://api.github.com/repos/maldous/offmenu/git/commits/'+op.expected,
+    html_url:'https://github.com/maldous/offmenu/commit/'+op.expected,
+    verification:{verified:false,reason:'unsigned',signature:null,payload:null,verified_at:null}};
+  assert.equal(canonicalPublication(op,response,f.config.binding),true);
+  for(const change of [{message:'reviewed candidate\n\n'},{message:'reviewed candidate altered'},
+    {sha:'0'.repeat(40)},{tree:{sha:'0'.repeat(40)}},{parents:[{sha:'0'.repeat(40)}]},
+    {author:{...op.body.author,name:'different'}}])
+    assert.equal(canonicalPublication(op,{...response,...change},f.config.binding),false);
+});
+
+test('finite release gateway consumes typed promotion and tag phases without repeated effects',async()=>{
+  const head='a'.repeat(40),base='b'.repeat(40),merged='c'.repeat(40);
+  const branch='release/candidate-'+'1'.repeat(64);
+  let phase=0,merges=0,tags=0;
+  const github={getPullRequest:async()=>({merged:false,head_sha:head,base_sha:base,
+    head:branch,base:'main',draft:false,mergeable:true}),
+    mergePullRequest:async args=>{assert.equal(args.expected_head_sha,head);merges++;phase=1;},
+    createReleaseTag:async sha=>{assert.equal(sha,merged);tags++;phase=2;}};
+  const controller={step:async()=>phase===0?{status:'release-intent',action:{kind:'promote-release',
+    repository:repo.full_name,pr_number:248,expected_head_sha:head,expected_base_sha:base,expected_head_branch:branch}}:
+    phase===1?{status:'release-tag-intent',action:{kind:'create-release-tag',commit_sha:merged}}:
+    {status:'release-verified',action:null}};
+  const run=()=>advanceRelease({controller,github,observe:async()=>({})});
+  assert.equal((await run()).status,'release-tag-intent');assert.equal(merges,1);assert.equal(tags,0);
+  assert.equal((await run()).status,'release-verified');assert.equal(merges,1);assert.equal(tags,1);
+  await run();assert.equal(merges,1);assert.equal(tags,1);
+  phase=0;github.getPullRequest=async()=>({head_sha:'0'.repeat(40)});
+  assert.equal((await run()).status,'release-reconciliation-required');assert.equal(merges,1);
+});
+
+async function actualReleaseFixture(t) {
+  const evidence=await mkdtemp(join(tmpdir(),'offmenu-release-evidence-'));
+  t.after(()=>rm(evidence,{recursive:true,force:true}));
+  // Reuse synthetic raw runner fixtures; production candidate/schema/aggregation
+  // and Controller validation all run normally, with no mocked success gate.
+  const code=`import importlib.util,json,shutil,sys
+from offmenu.delivery.integration import fingerprint
+spec=importlib.util.spec_from_file_location('release_fixture','tests/delivery/test_integration_controller.py')
+module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+f=module.NativeReleaseTests();f.setUp()
+try:
+ shutil.copytree(f.root,sys.argv[1],dirs_exist_ok=True)
+ b=f.binding;b['qualification']['evidence_root']=sys.argv[1]
+ q=fingerprint(b['qualification']);b['authority']['qualification_sha256']=q
+ f.snapshot['qualification_sha256']=q
+ print(json.dumps(dict(binding=b,snapshot=f.snapshot)))
+finally:f.doCleanups()`;
+  const python=process.env.OFFMENU_DELIVERY_TEST_PYTHON || fileURLToPath(new URL('../../.venv-delivery/bin/python',import.meta.url));
+  const {stdout}=await promisify(execFile)(python,['-B','-c',code,evidence],{cwd:resolve('.'),timeout:10000,
+    maxBuffer:1048576,env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8',PYTHONDONTWRITEBYTECODE:'1',
+      PYTHONPATH:[resolve('src'),resolve('tools/delivery'),process.env.PYTHONPATH].filter(Boolean).join(':')}});
+  const {binding,snapshot}=JSON.parse(stdout),f=fixture();
+  snapshot.github_review_facts_sha256=fingerprint({head:binding.candidate.source.head,base:binding.main_base,
+    reviews:[],findings:[],qualification:'facts-only-requires-independent-owner-review-and-thread-resolution'});
+  Object.assign(f.config,{version:2,binding,snapshot,logicalOwner:binding.owner,plan:{kind:'release-promotion-v1'}});
+  return f;
+}
+function actualReleaseHTTP(f,controller) {
+  const b=f.config.binding,s=b.candidate.source,merge='2'.repeat(40),calls=[];
+  const pr={number:b.pr_number,merged:false,state:'open',draft:false,mergeable:true,
+    head:{sha:s.head,ref:'release/candidate-'+fingerprint(b.candidate),repo},base:{sha:b.main_base,ref:'main',repo}};
+  let tag=null,hideTag=false,loseTag=false;
+  async function http(url,options) {
+    const path=new URL(url).pathname;calls.push({path,method:options.method});
+    let data,status=options.method==='POST'?201:200;
+    if(path==='/app') data={id:12,permissions:perms};
+    else if(path==='/app/installations/34') data={id:34,app_id:12,repository_selection:'selected',suspended_at:null,permissions:perms};
+    else if(path==='/app/installations/34/access_tokens') data={token:'DUMMY-RELEASE-token',
+      expires_at:new Date((epoch+3600)*1000).toISOString(),permissions:perms,repositories:[repo]};
+    else if(path==='/installation/repositories') data={total_count:1,repositories:[repo]};
+    else if(path===`${ROOT}/pulls/${b.pr_number}`) data=pr;
+    else if(path.endsWith('/reviews')||path.endsWith('/comments')) data=[];
+    else if(path===`${ROOT}/pulls/${b.pr_number}/merge`) {
+      assert.equal((await controller.state()).release_effect,'unknown','consumed durable promotion precedes HTTP');
+      Object.assign(pr,{merged:true,state:'closed',merge_commit_sha:merge});data={merged:true,sha:merge};
+    } else if(path===`${ROOT}/git/refs`) {
+      assert.equal((await controller.state()).tag_effect,'unknown','consumed durable tag precedes HTTP');
+      assert.equal(options.method,'POST');
+      assert.deepEqual(JSON.parse(options.body),{ref:'refs/tags/'+b.tag,sha:merge});
+      tag={ref:'refs/tags/'+b.tag,object:{type:'commit',sha:merge}};data=tag;
+      if(loseTag) throw Error('synthetic lost tag reply');
+    } else if(path===`${ROOT}/git/ref/tags/${b.tag}`) {
+      data=hideTag?null:tag;if(data===null) status=404;
+    } else if(path.startsWith(`${ROOT}/commits/`)) {
+      const id=path.split('/').at(-1);data={sha:id,commit:{tree:{sha:s.tree}},
+        parents:(id===merge?[b.main_base,s.head]:[s.base]).map(sha=>({sha}))};
+    } else if(path===`${ROOT}/compare/${merge}...main`) data={status:'identical',base_commit:{sha:merge},merge_base_commit:{sha:merge}};
+    else assert.fail('unexpected synthetic release endpoint '+path);
+    return new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json'}});
+  }
+  const adapterFactory=options=>createRepositoryGitHubAppAdapter({...options,http,getUid:()=>2345,now:()=>epoch*1000,
+    loadPrivateKey:async()=>Buffer.from('DUMMY-RELEASE-key'),sign:async()=>Buffer.from('DUMMY-RELEASE-signature')});
+  return {run:()=>releaseStep({config:f.config,controller,adapterFactory,advanceRelease}),
+    mutations:()=>calls.filter(c=>c.method==='PUT'||c.path===`${ROOT}/git/refs`&&c.method==='POST'),
+    set hideTag(v){hideTag=v;},set loseTag(v){loseTag=v;}};
+}
+
+test('actual release Controller + gateway resumes unconsumed tag and never replays uncertain writes',async t=>{
+  for(const lost of [false,true]) {
+    const f=await actualReleaseFixture(t),controller=await actualController(t,f),net=actualReleaseHTTP(f,controller);
+    const promoted=await net.run();assert.equal(promoted.status,'release-tag-intent');
+    assert.equal(net.mutations().length,1,'one promotion, tag remains unconsumed');
+    net.loseTag=lost;net.hideTag=lost;
+    const tagged=await net.run();
+    assert.equal(tagged.status,lost?'tag-reconciliation-required':'release-verified');
+    assert.equal(net.mutations().length,2,'one create-only tag follows promotion on next invocation');
+    await net.run();assert.equal(net.mutations().length,2,'unknown absence never repeats tag or merge');
+    net.hideTag=false;
+    assert.equal((await net.run()).status,'release-verified');assert.equal(net.mutations().length,2);
+  }
+});
+
+test('actual status-only release preflight persists prepared state before a fresh candidate rotates',async t=>{
+  const f=await actualReleaseFixture(t),controller=await actualController(t,f);
+  const preflight=()=>releaseStep({config:f.config,controller,advanceRelease,
+    adapterFactory:async()=>{throw Error('synthetic auth preflight stopped');}});
+  await assert.rejects(preflight,/synthetic auth preflight stopped/);
+  assert.equal((await controller.state()).status,'prepared');
+  const first=join(controller.temp,'transaction-'+fingerprint(f.config.binding),'state.json');
+  const original=await readFile(first,'utf8');
+  f.config.binding.tag='release/next';f.config.binding.authority.tag='release/next';await controller.config();
+  await assert.rejects(preflight,/synthetic auth preflight stopped/);
+  assert.equal((await controller.state()).status,'prepared');
+  assert.equal(await readFile(first,'utf8'),original,'historical prepared state remains intact');
+  const claim=JSON.parse(await readFile(join(controller.temp,'active-owner.json'),'utf8'));
+  assert.equal(claim.binding_sha256,fingerprint(f.config.binding));
+});
+
+function nativeAdmission(f,mode='observe') {
+  const c=f.config,b=c.binding;
+  const source=c.version===2?clone(b.candidate.source):{repository:b.repository,branch:b.head_branch,
+    base:b.base,head:b.head,tree:b.tree,target:'develop',policy_sha256:b.policy_sha256};
+  const n={issue_id:b.issue_id,project_id:b.project_id??'ce60c1ab-a732-4a71-8471-14c9dc393886',owner:b.owner,
+    unit_sha256:'8'.repeat(64),packet_sha256:'9'.repeat(64),source};
+  c.snapshot.native_runtime=n;
+  if(b.publication) b.publication.qualification_sha256=fingerprint(c.snapshot);
+  return {version:1,mode,operation_id:fingerprint(b),issue_id:n.issue_id,project_id:n.project_id,
+    owner:n.owner,unit_sha256:n.unit_sha256,packet_sha256:n.packet_sha256,source_sha256:fingerprint(source)};
+}
+function repositoryFactory(http) {
+  return options=>createRepositoryGitHubAppAdapter({...options,http,now:()=>epoch*1000,getUid:()=>2345,
+    loadPrivateKey:async()=>Buffer.from('DUMMY-NATIVE-key'),sign:async()=>Buffer.from('DUMMY-NATIVE-signature')});
+}
+
+test('native wire rejects duplicate/extra selectors and mismatched sealed identities before RPC or credentials',async()=>{
+  const f=fixture(),request=nativeAdmission(f);
+  assert.deepEqual(parseNativeRequest(JSON.stringify(request)),request);
+  assert.equal(qualifyNativeRequest(f.config,request).operation_id,fingerprint(f.config.binding));
+  for(const raw of [JSON.stringify({...request,command:'anything'}),
+    JSON.stringify(request).replace('"mode":"observe"','"mode":"step","mode":"observe"'),
+    JSON.stringify(request).replace('"mode":"observe"','"\\u006dode":"step","mode":"observe"'),
+    ' '.repeat(16385),'{"version":1}']) assert.throws(()=>parseNativeRequest(raw));
+  for(const change of [{operation_id:'0'.repeat(64)},{owner:'foreign'},{unit_sha256:'0'.repeat(64)},
+    {packet_sha256:'0'.repeat(64)},{source_sha256:'0'.repeat(64)},
+    {issue_id:'00000000-0000-0000-0000-000000000001'},{project_id:'00000000-0000-0000-0000-000000000001'},
+    {path:'/tmp/config'},{mode:'install'}]) {
+    let calls=0;
+    await assert.rejects(()=>nativePublisherRequest({config:f.config,request:{...request,...change},
+      controller:async()=>{calls++;},adapterFactory:async()=>{calls++;},qualify:async()=>{calls++;}}));
+    assert.equal(calls,0);
+  }
+  f.config.snapshot.native_runtime.source.head='0'.repeat(40);
+  assert.throws(()=>qualifyNativeRequest(f.config,request));
+});
+
+test('native observe uses actual Python RPC with no state initialization, claim or credential access',async t=>{
+  const f=fixture(),request=nativeAdmission(f),controller=await actualController(t,f);
+  let external=0;
+  const response=await nativePublisherRequest({config:f.config,request:parseNativeRequest(JSON.stringify(request)),controller,
+    adapterFactory:async()=>{external++;assert.fail('observe before admission must not acquire credentials');},
+    qualify:async()=>{assert.fail('readiness must not execute candidate qualification');}});
+  assert.equal(response.status,'ready');assert.equal(response.operation_id,request.operation_id);
+  assert.equal(response.request_sha256,fingerprint(request));assert.equal(external,0);
+  assert.equal('child_tree_gone' in response,false);assert.equal('invocation_children_gone' in response,false);
+  await assert.rejects(()=>readFile(join(controller.temp,'active-owner.json')),{code:'ENOENT'});
+  await assert.rejects(controller.state,{code:'ENOENT'});
+  await assert.rejects(()=>readFile(join(controller.temp,'transaction-'+request.operation_id,'binding.json')),{code:'ENOENT'});
+});
+
+test('native fixed transaction step consumes once and observe GET-reconciles unknown publication without claim writes',async t=>{
+  const f=fixture(),request=nativeAdmission(f,'step'),controller=await actualController(t,f),net=syntheticHTTP(f,controller);
+  const run=mode=>nativePublisherRequest({config:f.config,request:{...request,mode},controller,
+    adapterFactory:repositoryFactory(net.http),qualify:f.qualify});
+  assert.equal((await run('step')).status,'ready');
+  assert.equal((await controller.state()).publication.next,1);
+  const action=f.config.plan.operations[1];await controller('intent',{index:1,action});
+  await controller('consume',{intent:action});
+  const claim=await readFile(join(controller.temp,'active-owner.json'),'utf8');
+  const before=net.calls.filter(c=>['POST','PATCH','PUT'].includes(c.method)&&!c.path.endsWith('/access_tokens')).length;
+  assert.equal((await run('observe')).status,'unknown');
+  assert.equal((await run('step')).status,'unknown','a caller step cannot replay a consumed unknown effect');
+  assert.equal(net.calls.filter(c=>['POST','PATCH','PUT'].includes(c.method)&&!c.path.endsWith('/access_tokens')).length,before);
+  net.remote.set(action.readPath,{sha:action.expected,truncated:false,tree:action.body.tree});
+  assert.equal((await run('observe')).status,'ready');
+  assert.equal((await controller.state()).publication.next,2);
+  assert.equal(await readFile(join(controller.temp,'active-owner.json'),'utf8'),claim);
+  assert.equal(net.calls.filter(c=>['POST','PATCH','PUT'].includes(c.method)&&!c.path.endsWith('/access_tokens')).length,before);
+});
+
+test('native release wire reconciles consumed unknown tags through real Python RPC and preserves one mutation per step',async t=>{
+  const f=await actualReleaseFixture(t),request=nativeAdmission(f,'step'),controller=await actualController(t,f);
+  const b=f.config.binding,s=b.candidate.source,merge='2'.repeat(40),calls=[];
+  let merged=false,tag=null,hidden=false;
+  async function http(url,options) {
+    const path=new URL(url).pathname;calls.push({path,method:options.method});
+    let status=options.method==='POST'?201:200,data;
+    if(path==='/app') data={id:12,permissions:perms};
+    else if(path==='/app/installations/34') data={id:34,app_id:12,repository_selection:'selected',suspended_at:null,permissions:perms};
+    else if(path==='/app/installations/34/access_tokens') data={token:'DUMMY-NATIVE-token',expires_at:new Date((epoch+3600)*1000).toISOString(),permissions:perms,repositories:[repo]};
+    else if(path==='/installation/repositories') data={total_count:1,repositories:[repo]};
+    else if(path===`${ROOT}/pulls/${b.pr_number}`) data={number:b.pr_number,merged,state:merged?'closed':'open',draft:false,mergeable:true,merge_commit_sha:merged?merge:null,
+      head:{sha:s.head,ref:'release/candidate-'+fingerprint(b.candidate),repo},base:{sha:b.main_base,ref:'main',repo}};
+    else if(path.endsWith('/reviews')||path.endsWith('/comments')) data=[];
+    else if(path.endsWith('/merge')) {
+      assert.equal((await controller.state()).release_effect,'unknown');merged=true;data={merged:true,sha:merge};
+    } else if(path===`${ROOT}/git/refs`) {
+      assert.equal((await controller.state()).tag_effect,'unknown');tag={ref:'refs/tags/'+b.tag,object:{type:'commit',sha:merge}};
+      throw Error('synthetic lost native tag reply');
+    } else if(path===`${ROOT}/git/ref/tags/${b.tag}`) {data=hidden?null:tag;if(data===null)status=404;}
+    else if(path.startsWith(`${ROOT}/commits/`)) {const id=path.split('/').at(-1);data={sha:id,commit:{tree:{sha:s.tree}},parents:(id===merge?[b.main_base,s.head]:[s.base]).map(sha=>({sha}))};}
+    else if(path===`${ROOT}/compare/${merge}...main`) data={status:'identical',base_commit:{sha:merge},merge_base_commit:{sha:merge}};
+    else assert.fail('unexpected native release route '+path);
+    return new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json'}});
+  }
+  let qualifications=0;
+  const run=mode=>nativePublisherRequest({config:f.config,request:{...request,mode},controller,
+    adapterFactory:repositoryFactory(http),qualify:async()=>{qualifications++;}});
+  assert.equal((await run('observe')).status,'ready');assert.equal(qualifications,0);
+  assert.equal((await run('step')).status,'ready','promotion returns the still-unconsumed durable tag phase');
+  assert.equal(calls.filter(c=>c.method==='PUT').length,1);
+  hidden=true;assert.equal((await run('step')).status,'unknown');
+  const effects=()=>calls.filter(c=>c.method==='PUT'||c.path===`${ROOT}/git/refs`&&c.method==='POST').length;
+  assert.equal(effects(),2);assert.equal((await run('observe')).status,'unknown');
+  assert.equal((await run('step')).status,'unknown');assert.equal(effects(),2);
+  hidden=false;assert.equal((await run('observe')).status,'verified');assert.equal(effects(),2);
+  assert.equal(qualifications,2,'only actual ready steps run source qualification');
+});
+
+async function nativePublishedIntegration(t) {
+  const f=fixture();
+  f.config.snapshot.github_review_facts_sha256=fingerprint({head:f.config.binding.head,base:f.config.binding.base,
+    reviews:[],findings:[],qualification:'facts-only-requires-independent-owner-review-and-thread-resolution'});
+  const request=nativeAdmission(f,'step'),controller=await actualController(t,f),net=syntheticHTTP(f,controller);
+  for(let i=0;i<f.config.plan.operations.length;i++) await net.step();
+  assert.equal((await controller.state()).publication.effect,'verified');
+  return {f,request,controller,net};
+}
+
+test('native integration requalifies exact source before a ready merge and rejects drift without PUT',async t=>{
+  const {f,request,controller,net}=await nativePublishedIntegration(t);
+  let qualified=0;
+  await assert.rejects(()=>nativePublisherRequest({config:f.config,request,controller,
+    adapterFactory:repositoryFactory(net.http),qualify:async()=>{qualified++;throw Error('SYNTHETIC-SOURCE-DRIFT');}}),
+    /SYNTHETIC-SOURCE-DRIFT/);
+  assert.equal(qualified,1);assert.equal(net.calls.filter(c=>c.method==='PUT').length,0);
+  assert.equal((await controller.state()).merge_effect,undefined,'source refusal precedes merge intent');
+  const result=await nativePublisherRequest({config:f.config,request,controller,
+    adapterFactory:repositoryFactory(net.http),qualify:async()=>{qualified++;await f.qualify();}});
+  assert.equal(result.status,'verified');assert.equal(qualified,2);
+  assert.equal(net.calls.filter(c=>c.method==='PUT').length,1);
+});
+
+test('native integration reconciles a consumed unknown merge by GET even when local source now rejects',async t=>{
+  const {f,request,controller,net}=await nativePublishedIntegration(t);
+  let qualified=0;
+  net.lost=true;
+  const lostReadback=async(url,options)=>{
+    try {return await net.http(url,options);}
+    finally {if(options.method==='PUT') net.failRead=true;}
+  };
+  await assert.rejects(()=>nativePublisherRequest({config:f.config,request,controller,
+    adapterFactory:repositoryFactory(lostReadback),qualify:async()=>{qualified++;await f.qualify();}}));
+  assert.equal(qualified,1);assert.equal(net.calls.filter(c=>c.method==='PUT').length,1);
+  assert.equal((await controller.state()).merge_effect,'unknown');
+  net.failRead=false;
+  const result=await nativePublisherRequest({config:f.config,request,controller,
+    adapterFactory:repositoryFactory(net.http),qualify:async()=>{qualified++;throw Error('SYNTHETIC-SOURCE-DRIFT');}});
+  assert.equal(result.status,'verified');assert.equal(qualified,1,'GET-only recovery must not requalify or replay');
+  assert.equal(net.calls.filter(c=>c.method==='PUT').length,1);
 });
