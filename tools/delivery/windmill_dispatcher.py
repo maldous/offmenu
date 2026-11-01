@@ -28,7 +28,7 @@ PROFILES = {'delivery-suite'}
 ENRICHMENT_PROFILE = 'enrichment-resilience-focused'
 ENRICHMENT_TEST = 'tests/web/enrichment-resilience.test.mjs'
 PROFILES.add(ENRICHMENT_PROFILE)
-ENRICHMENT_BODY_SHA256 = 'b0a939224a8ce163324dbdb55776a86025eae4e741fe83d9a1ea8fce906a920a'
+ENRICHMENT_BODY_SHA256 = '489ce815134040311e8779d289bbfee59128cd85937b04b8a1340f446b9771cd'
 
 
 def _reviewed_branch(value):
