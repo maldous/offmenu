@@ -102,6 +102,14 @@ file-byte pins remain distinct from `packet_sha256 = fingerprint(packet)`.
 All runtime/contract/planner/release/Engine/status source and concrete factory
 dependencies must be in the reviewed installed closure and its source pins.
 
+A `linear` phase may use exactly `context: {}` because metadata planning does
+not consume Engine or unit-review artifacts. It still requires the original
+CurrentWork admission/native gate, owner/source/dependency checks, durable intent
+and native effect readback. Existing nonempty contexts retain every prior
+reference check. Integration and release require the genuine three references;
+an empty context or a publisher-invocation-only context cannot bypass them.
+This adds no Done, lease-release or refill authority.
+
 The sealed selection's context may additionally contain `publisher_invocation`
 with exactly `version: 1`, `closure_sha256` and `host_confirmation_sha256`.
 Both hashes are lowercase SHA-256. Its bounded shared fingerprint remains part
