@@ -266,14 +266,18 @@ A prior-format uncertain operation remains unknown; do not reinterpret it or
 issue a new ID to bypass a fence. No automatic restore, cleanup or retry follows.
 
 Legacy directories may contain old links, logs, public CA variants or Git
-formats. They stay intact without examination. Root/128 separately qualifies
-any metadata that the actual current consumer needs in the NEW package. In
-particular, the single sealed state reference
+formats. They stay intact without examination. The terminal history reference
 `.delivery/native-ssh-publication/4d589c0f73405f3fa8324bc88ec41eb59425bfb5c67fdc544a3cf5a85d6c70d2.json`
-may need explicit bounded preservation at the same source-relative path when
-current-state references require it. The upgrade never reads or migrates that
-old child; whole-directory retention preserves it intact in the old slot. This
-is required state continuity, not a full history copy or legacy audit.
+stays inside the retained old source, located through the adoption receipt's
+old-directory identity/backup mapping. It is not copied into the new payload,
+read, migrated or given a rewritten historical path by the upgrade. The current
+published successor already uses the unchanged user-private namespace; existing
+protected-source mapping continues to the same runtime-root parent. No current
+unit flags, restore project or history copy is needed for this state continuity.
+An actual startup failure, rather than a speculative compatibility audit, is the
+trigger for a separately bounded existing-owner fix. Existing verified GitHub
+merge/commit facts remain distinct from unknown Linear metadata; this upgrade
+adds no claim handover or legacy-control migration.
 
 The real read-only owner snapshot's active service and unknown native work are
 not a stop/quiescence witness. Actual stopped service, three locks, all permitted
