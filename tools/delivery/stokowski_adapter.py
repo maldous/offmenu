@@ -1717,7 +1717,7 @@ class CurrentWork:
                 raise AdmissionError('native_contribution_output')
         return root
 
-    def _native_review_branch(self, issue, entry, runtime, manifest):
+    def _native_review_branch(self, issue, entry, runtime, manifest, review_binding=None):
         selected = read_record(runtime/'validation-bindings.json')['issues'][issue]
         if 'candidate_root' not in selected:
             return manifest['branch']
@@ -1727,7 +1727,14 @@ class CurrentWork:
         from contextlib import closing
         with closing(sqlite3.connect((runtime/'operations/operations.sqlite').as_uri()+'?mode=ro',uri=True)) as db:
             row = db.execute('SELECT spec FROM operations WHERE key=?',(selected['operation_key'],)).fetchone()
-        return json.loads(row[0])['branch']
+        spec = json.loads(row[0])
+        if review_binding is not None:
+            tree = subprocess.check_output(['git','-C',selected['candidate_root'],'rev-parse',
+                                             spec['head']+'^{tree}'],text=True).strip()
+            if (review_binding.get('tree') != tree or
+                any(review_binding.get(k) != spec[k] for k in ('head','base','outputs'))):
+                raise AdmissionError('native_contribution_review_source')
+        return spec['branch']
 
     def validation_binding(self, issue, entry):
         """Qualify existing native v1 state without constructing a writable Journal.
@@ -2494,7 +2501,7 @@ class CurrentWork:
             view, _, _ = self.stage_origin(issue, task)
             return view._check_unit_review(packet)
         expected_branch = (origin_spec['branch'] if reviewed else
-            self._native_review_branch(issue,entry,runtime,manifest))
+            self._native_review_branch(issue,entry,runtime,manifest,packet['integration_binding']))
         b, snapshot, decision = (packet[k] for k in ('integration_binding','snapshot','decision'))
         review, validation = snapshot['review'], snapshot['validation']
         action = decision.get('action') or {}

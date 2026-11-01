@@ -118,6 +118,11 @@ class CompletedNativeTransitionTests(unittest.TestCase):
             runtime,identity=self.current.validation_binding('UIF-102',self.entry)
             self.assertEqual(runtime,self.runtime);self.assertEqual(len(identity),64)
             self.assertEqual(self.current._native_review_branch('UIF-102',self.entry,self.runtime,self.manifest),'bugfix/contribution')
+            bound={k:spec[k] for k in ('head','base','outputs')}
+            bound['tree']=self.git(self.candidate,'rev-parse',self.head+'^{tree}')
+            self.current._native_review_branch('UIF-102',self.entry,self.runtime,self.manifest,bound)
+            with self.assertRaisesRegex(AdmissionError,'native_contribution_review_source'):
+                self.current._native_review_branch('UIF-102',self.entry,self.runtime,self.manifest,dict(bound,tree='0'*40))
         for p,raw in before.items():self.assertEqual(p.read_bytes(),raw)
 
     def test_unfinished_forged_or_drifted_native_proof_refuses_control_advance(self):
