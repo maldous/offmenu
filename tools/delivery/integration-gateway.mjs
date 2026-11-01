@@ -72,8 +72,10 @@ async function fixedUnitReviewWriter(context) {
     env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8'},timeout:2000,maxBuffer:reviewLimit,encoding:'buffer'
   })).stdout;
   if ((await git(['rev-parse','HEAD'])).toString().trim()!==context.source_head) throw Error('local_review_refused');
+  const policyFiles = ['config/delivery-release-policy.json',
+    'contracts/schemas/delivery-handoff-v1.schema.json','repository-standard.json'];
   for (const [name,hash] of Object.entries(context.source_sha256)) {
-    if (!/^(?:tools\/delivery|src\/offmenu\/delivery)\/[a-z0-9_./-]+$/.test(name) ||
+    if (!(/^(?:tools\/delivery|src\/offmenu\/delivery)\/[a-z0-9_./-]+$/.test(name) || policyFiles.includes(name)) ||
         name.split('/').some(p=>p==='.' || p==='..') ||
         realpathSync(`${reviewSource}/${name}`)!==`${reviewSource}/${name}` ||
         sha(readFileSync(`${reviewSource}/${name}`))!==hash ||

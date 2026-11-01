@@ -27,6 +27,8 @@ test('fixed review transport scopes protected Python and Git trust to the instal
         'symphony_capacity.py','symphony_tasks.py','symphony_workspace.py','symphony_codex.py',
         'symphony_protocol.py','windmill_runner.py'].map(n=>'tools/delivery/'+n);
       names.push('src/offmenu/delivery/integration.py');
+      names.push('config/delivery-release-policy.json',
+        'contracts/schemas/delivery-handoff-v1.schema.json','repository-standard.json');
       const context={python_sha256:sha(bytes),source_head:'a'.repeat(40),
         source_sha256:Object.fromEntries(names.map(n=>[n,sha(bytes)])),
         controller_directory:'/private/controller',issue:'UIF-117',unit_binding:{original:'unit'},
@@ -52,6 +54,7 @@ test('fixed review transport scopes protected Python and Git trust to the instal
         const child=new EventEmitter();child.stdout=new EventEmitter();child.stderr=new EventEmitter();
         child.stdin=new EventEmitter();child.stdin.end=input=>queueMicrotask(()=>{
           const wire=JSON.parse(input);assert.equal(wire.version,2);assert.equal(wire.mode,'status');
+          assert.deepEqual(JSON.parse(wire.payload).context.source_sha256,context.source_sha256);
           const reply={version:2,status:'retained',request_sha256:sha(wire.payload),issue:context.issue,
             source_head:context.source_head,unit_binding:context.unit_binding,operation_key:'original-operation',
             evidence_sha256:sha(wire.evidence)};
@@ -72,6 +75,13 @@ test('fixed review transport scopes protected Python and Git trust to the instal
       const writer=await module.namespace.fixedUnitReviewWriter(context);
       assert.equal((await writer({snapshot:{validation:{operation_key:'original-operation'}},decision:{}})).status,'retained');
       assert.equal(gitCalls,names.length+1);assert.equal(spawns,1);
+      for(const name of ['arbitrary.json','config/other.json','contracts/schemas/other.json',
+          '../repository-standard.json','config/../repository-standard.json',
+          'tools/delivery/../../repository-standard.json']) {
+        const invalid=structuredClone(context);invalid.source_sha256[name]=sha(bytes);
+        await assert.rejects(module.namespace.fixedUnitReviewWriter(invalid),/local_review_refused/);
+        assert.equal(spawns,1);
+      }
     }
   `;
   const environment={...process.env};delete environment.NODE_TEST_CONTEXT;
