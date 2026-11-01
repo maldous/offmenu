@@ -4,6 +4,7 @@ import copy
 import json
 from pathlib import Path
 import sys
+import subprocess
 import unittest
 from unittest.mock import patch
 
@@ -25,6 +26,53 @@ class RetainedReviewTests(unittest.TestCase):
                   'client','select','bound_gate','review_fixture','continuation_fixture','turn',
                   'stage_fixture','publish_stage','new_fixture','retained_terminal','rebind_terminal'):
         locals()[_name] = getattr(fixtures.ReviewedSourceTests, _name)
+
+    def test_protected_stage_control_can_advance_only_with_exact_origin(self):
+        issue, _, _, _, _, _, _, _ = self.new_fixture()
+        control = self.root/'synthetic-protected-control'
+        control.mkdir()
+        def git(*args):
+            return subprocess.run(['git','-C',str(control),*args],check=True,capture_output=True,text=True).stdout.strip()
+        git('init','-b','feature/test-current')
+        (control/'source').write_text('old control\n');git('add','.')
+        def commit():
+            git('-c','user.name=Synthetic','-c','user.email=synthetic@example.invalid',
+                '-c','commit.gpgsign=false','commit','-m','synthetic control')
+            return git('rev-parse','HEAD')
+        old = commit()
+        (control/'source').write_text('new control\n');git('add','.')
+        head = commit()
+        manifest = copy.deepcopy(self.stage_manifest);manifest['base_revision']=old
+        self.current.config['source_head']=head
+        self.current.owner_custody={'source_root':str(control)}
+        # Real ancestry and branch inspection; origin qualification remains the
+        # actual previously built source/admission/provenance reader.
+        with patch.object(adapter,'SOURCE',control), patch.object(adapter.subprocess,'check_output',
+                side_effect=lambda *a,**kw: subprocess.run(*a,check=True,stdout=subprocess.PIPE,**kw).stdout), \
+                patch.object(self.current,'reviewed_origin',wraps=self.current.reviewed_origin) as origin:
+            # reviewed_origin checks the accepted module blobs; this test is
+            # about control identity and uses the existing pinned fixture source
+            # for that distinct origin check.
+            def original_origin(*a,**kw):
+                with patch.object(adapter,'SOURCE',self.source), patch.object(adapter.subprocess,'check_output',side_effect=self.git_read), patch.dict(self.current.config,source_head='a'*40):
+                    return type(self.current).reviewed_origin(self.current,*a,**kw)
+            origin.side_effect=original_origin
+            self.current._check_task_control_source(issue.identifier,manifest,control)
+            origin.assert_called_once()
+            for change in ('coding','unprotected','foreign_path','unaccepted_head','branch','nonancestor','origin_drift'):
+                selected=copy.deepcopy(manifest)
+                self.current.owner_custody={'source_root':str(control)}
+                self.current.config['source_head']=head
+                path=control
+                if change=='coding': selected['tasks'][issue.identifier].pop('stage')
+                if change=='unprotected': self.current.owner_custody=None
+                if change=='foreign_path': path=self.source
+                if change=='unaccepted_head': self.current.config['source_head']=old
+                if change=='branch': selected['branch']='feature/foreign'
+                if change=='nonancestor': selected['base_revision']='f'*40
+                if change=='origin_drift': origin.side_effect=AdmissionError('SYNTHETIC origin drift')
+                with self.subTest(change=change), self.assertRaises((AdmissionError,subprocess.CalledProcessError)):
+                    self.current._check_task_control_source(issue.identifier,selected,path)
 
     def terminal_fixture(self):
         values = self.new_fixture(executor_sha256='e'*64)

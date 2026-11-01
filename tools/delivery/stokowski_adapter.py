@@ -1239,6 +1239,35 @@ class CurrentWork:
         self.state['tasks'].setdefault(issue, {})['defer'] = reason
         self.save()
 
+    def _check_task_control_source(self, issue, manifest, source, *, observation=False):
+        """A frozen stage wrapper may precede its guarded protected controller.
+
+        This never substitutes the controller's head for the original candidate
+        identity, nor permits historical coding against a changed checkout.
+        context() has already run the sealed current-source guard.
+        """
+        head = subprocess.check_output(['git','-C',str(source),'rev-parse','HEAD'],text=True).strip()
+        branch = subprocess.check_output(['git','-C',str(source),'branch','--show-current'],text=True).strip()
+        if branch != manifest['branch']:
+            raise AdmissionError('current_task_source_drift')
+        if head == manifest['base_revision']:
+            return
+        task = manifest['tasks'][issue]
+        if ('stage' not in task or not self.owner_custody or source != SOURCE or
+            self.owner_custody.get('source_root') != str(source) or head != self.config['source_head']):
+            raise AdmissionError('current_task_source_drift')
+        try:
+            subprocess.check_output(['git','-C',str(source),'merge-base','--is-ancestor',
+                manifest['base_revision'],head],stderr=subprocess.DEVNULL)
+        except subprocess.CalledProcessError as error:
+            raise AdmissionError('current_stage_control_ancestry') from error
+        # Requalify the actual original origin, with the existing limited
+        # observation mode retained for source-drift recovery/cancellation.
+        if task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1':
+            self.reviewed_origin(issue,task,observation=observation)
+        else:
+            self.stage_origin(issue,task)
+
     def context(self, issue, *, review=False, observation=False):
         self.guard()
         entry = self.entries[issue]
@@ -1276,10 +1305,7 @@ class CurrentWork:
         source = Path(admission['source'])
         if not source.is_absolute() or source != source.resolve():
             raise AdmissionError('current_source_path')
-        for args, expected in ((['rev-parse','HEAD'], manifest['base_revision']),
-                               (['branch','--show-current'], manifest['branch'])):
-            if subprocess.check_output(['git','-C',str(source),*args], text=True).strip() != expected:
-                raise AdmissionError('current_task_source_drift')
+        self._check_task_control_source(issue,manifest,source,observation=observation)
         if not isinstance(admission['inputs'],dict):
             raise AdmissionError('current_declared_inputs_schema')
         recovery_admission = None

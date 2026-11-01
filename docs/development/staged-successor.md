@@ -29,6 +29,16 @@ only the existing required `MODULES` Python subset, each equal to the full seale
 source map. The control source head and the reviewed candidate contribution head
 remain distinct identities. Source acceptance does not activate either route.
 
+A frozen stage wrapper can retain an older control base when the same protected
+control checkout advances. `context()` first verifies the current sealed source
+and custody. The stage-only compatibility check then requires the identical
+protected source path, unchanged wrapper branch, the currently guarded head and
+the wrapper base as its ancestor, and requalifies the original stage origin.
+Reviewed-source recovery keeps its existing limited observation mode; normal
+review requires full original admission, provenance and candidate qualification.
+The frozen wrapper, source path and inputs remain unchanged. Ordinary coding
+still requires its exact wrapper head and branch.
+
 The normal validation tick can qualify an already-admitted independent typed
 review for a `validation` stage with `reviewed-source-v1` origin. It rechecks the
 original admission, every frozen input, contribution provenance, candidate
