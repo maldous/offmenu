@@ -4,7 +4,7 @@
 `tests/web/enrichment-resilience.test.mjs`. Its only Node argv is:
 
 ```text
-/bin/node --test --test-concurrency=1 tests/web/enrichment-resilience.test.mjs
+/bin/node --test --test-concurrency=1 --test-reporter=tap tests/web/enrichment-resilience.test.mjs
 ```
 
 The fixed Python wrapper runs in the exact candidate at
@@ -15,8 +15,12 @@ the sole committed output hash before and after execution. Scratch HOME/TMPDIR
 and XDG locations are outside the candidate; the fixed environment carries no
 inherited credentials, NODE_OPTIONS or NODE_TEST_CONTEXT. The actual TAP result
 must contain four executed/passing cases, zero suites/failures/cancellations/
-skips/todos and exit zero. One passing file is not four observed cases. This
-does not retag the historical reviewer command: its direct Node observation
+skips/todos and exit zero. One passing file is not four observed cases. The
+reporter is explicit rather than relying on Node's default output format.
+The first actual operation's four cases passed, but its wrapper failed while
+parsing SPEC as TAP; that stopped failed operation remains failed. A reviewed
+reporter correction requires a new normal operation, never retagging or replay.
+This does not retag the historical reviewer command: its direct Node observation
 reported four named cases, while its focused test-runner result reported one
 passing file. Only the new actual deterministic job can provide its own counts.
 

@@ -110,6 +110,8 @@ class EnrichmentProfileTests(unittest.TestCase):
             self.assertTrue(all(p.read_bytes()==raw for p,raw in native_before.items()))
             self.assertEqual(git(workspace,'rev-parse','HEAD'),base)
             args = operations.bridge_arguments(spec)
+            self.assertEqual(operations.ENRICHMENT_COMMAND,
+                ('/bin/node','--test','--test-concurrency=1','--test-reporter=tap',output))
             self.assertEqual(dispatcher.validate_request(args),args)
             derived = '/offmenu/data/.offmenu-platform/workspaces/enrichment-'+head
             self.assertEqual(operations.enrichment_workspace(spec),derived)

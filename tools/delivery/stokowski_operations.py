@@ -23,7 +23,7 @@ POLICY = Path(__file__).with_name('capacity-policy.json')
 PROFILES = {'delivery-suite':['.venv-delivery/bin/python','-m','unittest','discover','-s','tests/delivery','-q']}
 ENRICHMENT_PROFILE = 'enrichment-resilience-focused'
 ENRICHMENT_TEST = 'tests/web/enrichment-resilience.test.mjs'
-ENRICHMENT_COMMAND = ('/bin/node', '--test', '--test-concurrency=1', ENRICHMENT_TEST)
+ENRICHMENT_COMMAND = ('/bin/node', '--test', '--test-concurrency=1', '--test-reporter=tap', ENRICHMENT_TEST)
 PROFILES[ENRICHMENT_PROFILE] = list(ENRICHMENT_COMMAND)
 TERMINAL = {'succeeded','failed','cancelled','refused','quarantined'}
 # The reviewed computation timeout is 180s; allow 30s for wrapper completion.
