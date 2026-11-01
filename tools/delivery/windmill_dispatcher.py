@@ -21,6 +21,9 @@ BRIDGE = 'u/admin/foo_jobs_20261027'
 # Windmill deploys this file alone: validation must not import the checkout.
 REVIEWED_PROFILE = 'current-journal-focused'
 PUBLISHER_PROFILE = 'protected-publisher-bootstrap'
+IDENTITY_PROFILE = 'identity-client-focused'
+IDENTITY_TESTS = ('tests/web/offmenu-identity-client.test.mjs',
+                  'tests/edge/handler-auth-dispatch.test.mjs')
 PROFILES = {'delivery-suite'}
 
 
@@ -88,7 +91,7 @@ def _qualified_reviewed_spec(spec):
         raise ValueError('Invalid reviewed-source version')
     extra = {'origin','workspace','local_source_root','execution','control_sha256'}
     legacy = {k:v for k,v in spec.items() if k not in extra}
-    if not extra.issubset(spec) or 'branch' not in legacy or spec.get('profile') not in (REVIEWED_PROFILE, PUBLISHER_PROFILE):
+    if not extra.issubset(spec) or 'branch' not in legacy or spec.get('profile') not in (REVIEWED_PROFILE, PUBLISHER_PROFILE, IDENTITY_PROFILE):
         raise ValueError('Invalid reviewed-source profile')
     _reviewed_legacy(dict(legacy, version=1, profile='delivery-suite'))
     _reviewed_workspace(spec['workspace'])
@@ -153,6 +156,8 @@ def _qualified_reviewed_spec(spec):
 REVIEWED_CHECK_SHA256 = '8409648a10d0224b6e450348e91e5172fe2def9c56f9520ffe8d27d36bcabb13'
 REVIEWED_ORACLE_SHA256 = '688542af44b51ffb02ad5db5c9b0499e07ca660db6975fa25e8a9e38021449f2'
 PUBLISHER_ORACLE_SHA256 = 'f3cb99f2dc0689dc148f1583f75e088c43ac05d9592e95407ee580ff1b2afd62'
+# Frozen identity producer body from operations.py 01f50d80; literal parameters only.
+IDENTITY_BODY_SHA256 = 'b6d15ead2c781c667769928815c50aefa2f16fb1a723552752783843b4378597'
 
 
 def _unique_json(pairs):
@@ -174,9 +179,48 @@ def _body_hash(body, parameters):
     return hashlib.sha256(''.join(lines).encode()).hexdigest()
 
 
+def _identity_command(command, logical_id, tokens):
+    """Qualify the frozen single-body producer without importing or executing it."""
+    body = tokens[2]
+    canonical = '/offmenu/.venv-delivery/bin/python -c '+shlex.quote(body)
+    if tokens[:2] != ['/offmenu/.venv-delivery/bin/python','-c'] or command != canonical:
+        raise ValueError('Noncanonical identity shell')
+    parsed = ast.parse(body)
+    root = ast.literal_eval(parsed.body[1].value.args[0])
+    oracle = ast.literal_eval(parsed.body[2].value)
+    if not isinstance(root,str) or not isinstance(oracle,str):
+        raise ValueError('Invalid identity literals')
+    _reviewed_workspace(root)
+    parsed_oracle = ast.parse(oracle)
+    spec_json = ast.literal_eval(parsed_oracle.body[1].value.args[0])
+    if not isinstance(spec_json,str):
+        raise ValueError('Invalid embedded identity spec')
+    spec = json.loads(spec_json,object_pairs_hook=_unique_json)
+    _qualified_reviewed_spec(spec)
+    if spec['profile'] != IDENTITY_PROFILE:
+        raise ValueError('Identity body requires exact profile')
+    key = hashlib.sha256(json.dumps({k:v for k,v in spec.items() if k != 'owner'},
+        sort_keys=True,separators=(',', ':')).encode()).hexdigest()
+    if spec['workspace'] != root or logical_id != 'offmenu-'+key[:48]:
+        raise ValueError('Conflicting identity binding')
+    check_hash = _body_hash(oracle,[
+        ('spec=json.loads('+repr(json.dumps(spec,sort_keys=True))+')','SPEC'),
+        ('root=pathlib.Path('+repr(root)+')','ROOT')])
+    body_hash = _body_hash(body,[
+        ('root=pathlib.Path('+repr(root)+')','ROOT'),
+        ('oracle='+repr(oracle),'ORACLE'),
+        ("archive=subprocess.check_output(['git','-C',str(root),'archive',"+repr(spec['base'])+",*"+repr(IDENTITY_TESTS)+"])",'ARCHIVE'),
+        ("assert hashlib.sha256(archive).hexdigest()=="+repr(spec['control_sha256'])+", 'control source drift'",'CONTROL')])
+    if check_hash != REVIEWED_CHECK_SHA256 or body_hash != IDENTITY_BODY_SHA256:
+        raise ValueError('Unreviewed identity Python body')
+    return key
+
+
 def _reviewed_command(command, logical_id):
     try:
         tokens = shlex.split(command)
+        if len(tokens) == 3:
+            return _identity_command(command,logical_id,tokens)
         if len(tokens) != 19 or tokens[10] != tokens[18]:
             raise ValueError('Invalid complete reviewed command')
         root,check,oracle = tokens[1],tokens[10],tokens[14]
@@ -196,6 +240,8 @@ def _reviewed_command(command, logical_id):
             raise ValueError('Invalid embedded spec literal')
         spec = json.loads(spec_json,object_pairs_hook=_unique_json)
         _qualified_reviewed_spec(spec)
+        if spec['profile'] not in (REVIEWED_PROFILE,PUBLISHER_PROFILE):
+            raise ValueError('Legacy body requires original profile')
         key = hashlib.sha256(json.dumps({k:v for k,v in spec.items() if k != 'owner'},
             sort_keys=True,separators=(',', ':')).encode()).hexdigest()
         if spec['workspace'] != root or logical_id != 'offmenu-'+key[:48]:

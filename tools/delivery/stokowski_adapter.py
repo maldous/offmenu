@@ -686,8 +686,11 @@ class CurrentWork:
                 self.state['intake_handoff'] = authority['handoff']
                 self._successor_boundary()
                 if self.state.get('successor_hold'):
-                    record['status'] = 'held'
                     record['reason'] = self.state['successor_hold']
+                    # Waiting for the native consumer does not revoke the exact
+                    # fresh owner authority it must recheck under that permit.
+                    if record['reason'] != 'AdmissionError: native_harness_refill_readback_required':
+                        record['status'] = 'held'
         except Exception as error:
             record.update(status='held', reason=str(error), required_actor=self.config['owner'],
                           required_input='fresh owner-qualified private authority and exact accepted scope/handoff')
@@ -776,31 +779,34 @@ class CurrentWork:
         except Exception:
             return False
 
+    def _check_published_native_request(self, pending):
+        import stokowski_native_publication as native
+        # Native custody has its own protected root, outside the coordinator
+        # runtime. Select only the exact operation path; never widen private().
+        ref = pending['publication_result']
+        legacy_seal = SOURCE/'.delivery/native-ssh-publication'/(pending['handoff']['sha256']+'.json')
+        if self.owner_custody and ref['path']==str(legacy_seal):
+            # The installed migration sealed this exact historical record.
+            raw=protected_owner_bytes(legacy_seal)
+            expected=legacy_seal
+        else:
+            expected = native.custody_directory(SOURCE,pending['native_request']['context'])/(pending['handoff']['sha256']+'.json')
+            raw=native.read(native.canonical(str(expected)))
+        if ref['path'] != str(expected) or hashlib.sha256(raw).hexdigest() != ref['sha256']:
+            raise AdmissionError('successor_prior_publication_unreconciled')
+        custody = native.decode(raw)
+        self._private_pin(pending['publication_journal'])
+        if (custody.get('request') != pending['native_request']
+            or custody.get('binding') != pending['native_binding']
+            or custody.get('result', {}).get('status') not in ('published', 'duplicate')):
+            raise AdmissionError('successor_prior_publication_unreconciled')
+
     def _rearm_successor(self, pending, replacement_packet=None):
         replacing = replacement_packet is not None
         if pending.get('status') not in (('published','duplicate','held') if replacing else ('published','duplicate')):
             raise AdmissionError('successor_request_rebind')
         if 'native_request' in pending:
-            import stokowski_native_publication as native
-            # Native custody has its own protected root, outside the coordinator
-            # runtime. Select only the exact operation path; never widen private().
-            ref = pending['publication_result']
-            legacy_seal = SOURCE/'.delivery/native-ssh-publication'/(pending['handoff']['sha256']+'.json')
-            if self.owner_custody and ref['path']==str(legacy_seal):
-                # The installed migration sealed this exact historical record.
-                raw=protected_owner_bytes(legacy_seal)
-                expected=legacy_seal
-            else:
-                expected = native.custody_directory(SOURCE,pending['native_request']['context'])/(pending['handoff']['sha256']+'.json')
-                raw=native.read(native.canonical(str(expected)))
-            if ref['path'] != str(expected) or hashlib.sha256(raw).hexdigest() != ref['sha256']:
-                raise AdmissionError('successor_prior_publication_unreconciled')
-            custody = native.decode(raw)
-            self._private_pin(pending['publication_journal'])
-            if (custody.get('request') != pending['native_request']
-                or custody.get('binding') != pending['native_binding']
-                or custody.get('result', {}).get('status') not in ('published', 'duplicate')):
-                raise AdmissionError('successor_prior_publication_unreconciled')
+            self._check_published_native_request(pending)
         handoff = self._private_pin(pending['handoff'])
         packet = self._private_pin(handoff['task_packet'])
         issue = packet['execution_outcome']['identifier']
@@ -928,6 +934,32 @@ class CurrentWork:
             raise AdmissionError('successor_identity_collision')
         return digest(dict(handoff=handoff_ref, owner_config=packet['owner_config'], trigger=trigger))
 
+    def _successor_task(self, packet, config):
+        """Reuse the producer's staged owner/origin checks before any rearm."""
+        pinned = self._private_pin(packet['manifest'])
+        manifest = load_manifest(packet['manifest']['path'], expected_head=packet['source']['base'],
+                                 expected_branch=packet['source']['branch'])
+        issue = packet['execution_outcome']['identifier']
+        if (manifest != pinned or set(manifest['tasks']) != {issue}
+            or manifest['project_id'] != packet['execution_outcome']['project_id']):
+            raise AdmissionError('successor_task_binding')
+        task = manifest['tasks'][issue]
+        staged = 'stage' in task
+        if not staged and ('stage' in packet or 'stage_binding' in config):
+            raise AdmissionError('successor_stage_binding')
+        if (task['issue_id'] != packet['execution_outcome']['uuid']
+            or (task['input_paths'] if staged else task['allowed_paths']) != packet['scope']
+            or task['resources'] != packet['resources'] or task['owner'] != self.config['owner']
+            or task['acceptance'] != packet['acceptance']):
+            raise AdmissionError('successor_task_binding')
+        if staged:
+            if (task['allowed_paths'] != [] or config.get('stage_binding') != task['stage_binding']
+                or packet.get('stage') != task['stage']
+                or any(packet['inputs'].get(k) != v for k,v in task['stage_binding']['inputs'].items())):
+                raise AdmissionError('successor_stage_binding')
+            self.stage_origin(issue, task)
+        return manifest, task
+
     def _successor_boundary(self):
         # This service has Linear credentials only. Authentication/publication
         # remains with the existing GitHub owner; no automatic association exists.
@@ -954,8 +986,25 @@ class CurrentWork:
             if not self._native_harness_refill_allowed(packet['trigger']['issue']):
                 raise AdmissionError('native_harness_refill_readback_required')
             identity = digest(dict(handoff=ref, owner_config=packet['owner_config'], trigger=packet['trigger']))
-            if pending is not None and pending.get('identity') != identity:
-                rearming = True
+            rearming = pending is not None and pending.get('identity') != identity
+            if rearming or pending is None:
+                _, task = self._successor_task(packet, config)
+                if 'stage' in task:
+                    # Qualify the incoming unit before the old published request
+                    # can be archived. Nothing here creates a coding admission.
+                    self.qualify_successor(ref, packet, config)
+                    for name, sha in packet['inputs'].items():
+                        path = Path(name)
+                        if not path.is_absolute() or path != path.resolve() or file_sha(path) != sha:
+                            raise AdmissionError('successor_input_drift')
+                    if 'native_publication' in config:
+                        self._native_publication_context(ref, handoff, packet, config)
+                    from stokowski_prepare import _publication_bytes
+                    before = self.catalog_bytes()
+                    catalog = read_record(self.catalog) if not self.owner_custody else json.loads(before)
+                    after = dict(version=1, entries=catalog['entries']+[self._successor_entry(packet)])
+                    self.catalog_transition(before, _publication_bytes(after))
+            if rearming:
                 if 'replacement_of' in packet:
                     self.qualify_successor(ref, packet, config)
                     self._rearm_successor(pending, replacement_packet=packet)
@@ -992,12 +1041,7 @@ class CurrentWork:
                 path = Path(name)
                 if not path.is_absolute() or path != path.resolve() or file_sha(path) != sha:
                     raise AdmissionError('successor_input_drift')
-            manifest = load_manifest(packet['manifest']['path'], expected_head=packet['source']['base'],
-                                     expected_branch=packet['source']['branch'])
-            task = manifest['tasks'][packet['execution_outcome']['identifier']]
-            if ('stage' in task or task['allowed_paths'] != packet['scope']
-                or task['resources'] != packet['resources'] or task['owner'] != self.config['owner']):
-                raise AdmissionError('successor_task_binding')
+            manifest, task = self._successor_task(packet, config)
             from symphony_capacity import overlap
             for entry in self.state['references'].values():
                 other = read_record(self.private(entry['runtime'])/'manifest.json')
@@ -1012,7 +1056,13 @@ class CurrentWork:
             elif pending['status'] != 'pending':
                 raise AdmissionError('successor_request_held')
         except Exception as error:
-            if pending is not None and not rearming:
+            terminal = pending is not None and pending.get('status') in ('published', 'duplicate')
+            if terminal and 'native_request' in pending:
+                try:
+                    self._check_published_native_request(pending)
+                except Exception:
+                    terminal = False  # Tampered/unknown custody is never preserved as success.
+            if pending is not None and not rearming and not terminal:
                 pending['status'] = 'held'
             self.state['successor_hold'] = type(error).__name__ + ': ' + str(error)
 
@@ -1062,7 +1112,7 @@ class CurrentWork:
                     os.killpg(child.pid, signal.SIGKILL)
                     child.wait()
 
-    def _native_successor(self, ref, handoff, packet, config, identity, pending):
+    def _native_publication_context(self, ref, handoff, packet, config):
         # Opt-in executable pins live in the already owner-qualified config.
         # The MCP owner bridge and its default packet are deliberately separate.
         self.guard()
@@ -1085,18 +1135,18 @@ class CurrentWork:
                        claim={k: config['repository_claim'][k] for k in ('path', 'sha256')})
         # Only fixed local Git observations here; authentication belongs to CLI.
         native.validate(context, SOURCE, native.process)
+        return context
+
+    def _native_successor(self, ref, handoff, packet, config, identity, pending):
+        import stokowski_native_publication as native
+        context = self._native_publication_context(ref, handoff, packet, config)
         if self.stopping or (self.runtime/'cancel.json').exists():
             raise AdmissionError('successor_native_cancelled')
         if pending is None or 'native_request' not in pending:
             if pending is not None and pending['status'] != 'pending':
                 raise AdmissionError('successor_request_held')
             self.qualify_successor(ref, packet, config)
-            manifest = load_manifest(packet['manifest']['path'], expected_head=packet['source']['base'],
-                                     expected_branch=packet['source']['branch'])
-            task = manifest['tasks'][packet['execution_outcome']['identifier']]
-            if ('stage' in task or task['allowed_paths'] != packet['scope']
-                or task['resources'] != packet['resources'] or task['owner'] != self.config['owner']):
-                raise AdmissionError('successor_task_binding')
+            manifest, task = self._successor_task(packet, config)
             from symphony_capacity import overlap
             for entry in self.state['references'].values():
                 other = read_record(self.private(entry['runtime'])/'manifest.json')
