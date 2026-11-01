@@ -50,8 +50,8 @@ def sha(value):
     require(type(value) is str and re.fullmatch('[0-9a-f]{64}', value), 'sha256')
 
 
-def refs(value):
-    require(type(value) is list and 1 <= len(value) <= 64, 'reference_count')
+def refs(value, *, maximum=64):
+    require(type(value) is list and 1 <= len(value) <= maximum, 'reference_count')
     for ref in value:
         fields(ref, 'path sha256')
         require(type(ref['path']) is str and len(ref['path']) <= 1024, 'reference_path')
@@ -186,7 +186,7 @@ def prepare(request, policy, *, evidence_root, accepted=None, now=None):
             == (source['head'], source['tree'], source['policy_sha256']), 'target_source')
     require(target['paths'] == TARGETS, 'fixed_targets')
     require(target['files'] == candidate['artifacts'], 'target_artifacts')
-    refs(target['files'])
+    refs(target['files'], maximum=128)
     for ref in target['files']:
         evidence.raw(ref)
     for key in ('dependencies', 'config'):

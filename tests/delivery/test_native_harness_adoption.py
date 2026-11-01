@@ -119,6 +119,52 @@ class AdoptionTests(unittest.TestCase):
         with self.assertRaises(adoption.Refused):
             self.prepare()
 
+    def test_all_selected_artifacts_above_64_are_verified_end_to_end(self):
+        for count in (65, 66):
+            with self.subTest(count=count):
+                artifacts = [self.write(f'selected artifact {index}'.encode(),
+                                        f'source/selected-{index}.py')
+                             for index in range(count)]
+                candidate = json.loads((self.root / self.request['candidate']['path']).read_bytes())
+                candidate['artifacts'] = artifacts
+                self.request['candidate'] = self.write(candidate)
+                self.validation['outputs'] = artifacts
+                self.validation['review']['outputs_sha256'] = fingerprint(artifacts)
+                self.request['coherent_validation'] = self.write(self.validation)
+                self.accepted['coherent_validation'] = copy.deepcopy(self.request['coherent_validation'])
+                self.request['target']['files'] = artifacts
+                self.request['readback']['closure_sha256'] = fingerprint(self.request['target'])
+                before = self.disk()
+                result = self.prepare()
+                self.assertTrue(result['milestones']['source_ready'])
+                self.assertTrue(result['milestones']['coherent_validation_accepted'])
+                self.assertFalse(result['host_mutation_authorized'])
+                self.assertEqual(result['request']['target']['files'], artifacts)
+                self.assertTrue({(ref['path'], ref['sha256']) for ref in artifacts}.issubset(
+                    {(ref['path'], ref['sha256']) for ref in result['evidence_pins']}))
+                self.assertEqual(before, self.disk())
+                # The last selected artifact must be read, never truncated away.
+                (self.root / artifacts[-1]['path']).write_bytes(b'changed selected artifact')
+                with self.assertRaisesRegex(adoption.Refused, 'evidence_pin'):
+                    self.prepare()
+
+    def test_receipt_operation_and_effect_limits_remain_64(self):
+        baseline = copy.deepcopy(self.request)
+        for kind, error in (('receipts', 'reference_count'), ('operations', 'operations'),
+                            ('effects', 'effect_count')):
+            self.request = copy.deepcopy(baseline)
+            if kind == 'receipts':
+                snapshot = copy.deepcopy(self.snapshot)
+                snapshot['install_receipts'] = [self.write({'receipt': index}) for index in range(65)]
+                self.request['legacy_snapshot'] = self.write(snapshot)
+            elif kind == 'operations':
+                witness = {**self.stop, 'operation_ids': [f'operation-{index}' for index in range(65)]}
+                self.request['stop_witness'] = self.write(witness)
+            else:
+                self.request['effects'] = [self.request['coherent_validation']] * 65
+            with self.subTest(kind=kind), self.assertRaisesRegex(adoption.Refused, error):
+                self.prepare()
+
     def test_latest_component_and_validation_pins_are_required(self):
         for role in ('source', 'tests', 'review'):
             value = copy.deepcopy(self.request)
