@@ -66,8 +66,9 @@ export function protectedRead(path,{uid=0,gid,mode=0o440,max=LIMIT,io=fs}={}) {
   } finally {io.closeSync(fd);}
 }
 export function validateConfig(c, identity) {
+  const optional=['integration_admission','nativeContinuation'].filter(k=>Object.hasOwn(c,k));
   check(exact(c,['version','appId','installationId','repositoryId','publisherUid','publisherGid',
-    'logicalOwner','sourceHead','codePins','pythonSha256','binding','snapshot','plan','workspace']));
+    'logicalOwner','sourceHead','codePins','pythonSha256','binding','snapshot','plan','workspace',...optional]));
   check([1,2].includes(c.version) && [c.appId,c.installationId,c.publisherUid,c.publisherGid].every(positive) &&
     ![0,1000].includes(c.publisherUid) && ![0,1000].includes(c.publisherGid) &&
     c.repositoryId===1416253963 && identity.uid===c.publisherUid && identity.euid===c.publisherUid &&
@@ -93,7 +94,54 @@ export function validateConfig(c, identity) {
     !c.binding.head_branch.includes('//') && !c.binding.head_branch.endsWith('/')));
   bytesJSON(c);
   qualifySourceProjection(c);
+  qualifyIntegrationAdmission(c);
+  qualifyNativeContinuation(c);
   return c;
+}
+
+/** Root-sealed permission and original review association, not future API facts. */
+export function qualifyIntegrationAdmission(c) {
+  if(!Object.hasOwn(c,'integration_admission')) return null;
+  const a=c.integration_admission,p=qualifySourceProjection(c),n=c.snapshot.native_runtime;
+  check(p && exact(a,['version','kind','binding_sha256','unit_sha256','review_sha256',
+    'permission_sha256','automatic_integration_enabled']) && a.version===1 &&
+    a.kind==='native-reviewed-integration-v1' && a.binding_sha256===fingerprint(c.binding) &&
+    a.unit_sha256===n.unit_sha256 && a.unit_sha256===p.unit_sha256 &&
+    a.review_sha256===p.review_sha256 && a.review_sha256===c.snapshot.review.evidence_source?.sha256 &&
+    hex(a.review_sha256) && hex(a.permission_sha256) &&
+    a.automatic_integration_enabled===true && c.snapshot.review.independent===true &&
+    c.snapshot.review.verdict==='accept' && same(c.snapshot.review.findings,[]) &&
+    typeof c.snapshot.review.evidence_id==='string' && c.snapshot.review.evidence_id.length>0);
+  return a;
+}
+
+export function qualifyNativeContinuation(c) {
+  if(!Object.hasOwn(c,'nativeContinuation')) return null;
+  const a=c.nativeContinuation,n=c.snapshot.native_runtime;
+  check(qualifySourceProjection(c) && exact(a,['version','operation_id','unit_sha256','packet_sha256',
+    'claim_sha256','previous_selection_sha256','previous_capability','previous_record_sha256','receipts']) &&
+    a.version===1 && a.operation_id===fingerprint(c.binding) && a.unit_sha256===n.unit_sha256 &&
+    a.packet_sha256===n.packet_sha256 && hex(a.packet_sha256) &&
+    [a.claim_sha256,a.previous_selection_sha256,a.previous_record_sha256].every(v=>hex(v)) &&
+    exact(a.previous_capability,['version','closure_sha256','host_confirmation_sha256']) &&
+    a.previous_capability.version===1 && hex(a.previous_capability.closure_sha256) &&
+    hex(a.previous_capability.host_confirmation_sha256) && Array.isArray(a.receipts) &&
+    a.receipts.length>0 && a.receipts.length<=128 &&
+    a.receipts.every(r=>exact(r,['invocation_id','closure_sha256','receipt_sha256']) &&
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(r.invocation_id) &&
+      hex(r.closure_sha256) && hex(r.receipt_sha256)) &&
+    new Set(a.receipts.map(r=>r.invocation_id)).size===a.receipts.length);
+  return a;
+}
+
+function qualifyFreshIntegrationFacts(c,facts) {
+  const b=c.binding;
+  check(exact(facts,['head','base','reviews','findings','qualification']) &&
+    facts.head===b.head && facts.base===b.base &&
+    facts.qualification==='facts-only-requires-independent-owner-review-and-thread-resolution' &&
+    Array.isArray(facts.findings) && facts.findings.length===0 && Array.isArray(facts.reviews) &&
+    facts.reviews.every(r=>exact(r,['id','reviewer_id','state','head']) && positive(r.id) &&
+      positive(r.reviewer_id) && r.head===b.head && ['APPROVED','COMMENTED','DISMISSED'].includes(r.state)));
 }
 
 /** Optional sealed association: original reviewed commit, distinct API target.
@@ -331,6 +379,7 @@ export async function publicationStep({config:c,controller,adapterFactory,qualif
  * Root-admitted exact review facts must still match fresh canonical API facts.
  */
 export async function integrationStep({config:c,controller,adapterFactory,advanceIntegration,readOnly=false}) {
+  const admission=qualifyIntegrationAdmission(c);
   const state=await controller(readOnly?'observe':'status');
   const number=state.publication?.pr_number;
   check(state.publication?.effect==='verified' && positive(number));
@@ -360,8 +409,16 @@ export async function integrationStep({config:c,controller,adapterFactory,advanc
       snapshot.develop_contains_merge=facts.develop_contains_merge;
     } else {
       const facts=await github.readExactHeadReviewFacts();
-      check(hex(c.snapshot.github_review_facts_sha256) &&
-        fingerprint(facts)===c.snapshot.github_review_facts_sha256);
+      if(admission) {
+        qualifyFreshIntegrationFacts(c,facts);
+        snapshot.github_review_facts=structuredClone(facts);
+        snapshot.github_review_facts_sha256=fingerprint(facts);
+        snapshot.integration_admission_sha256=fingerprint(admission);
+        snapshot.automatic_integration_enabled=admission.automatic_integration_enabled;
+      } else {
+        check(hex(c.snapshot.github_review_facts_sha256) &&
+          fingerprint(facts)===c.snapshot.github_review_facts_sha256);
+      }
     }
     return snapshot;
   }

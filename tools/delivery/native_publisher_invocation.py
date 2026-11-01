@@ -102,6 +102,49 @@ def uuid(value):
         raise InvocationHold('uuid') from None
 
 
+def continuation(value, identity):
+    """Finite ROOT-sealed same-operation history grant, not invocation authority."""
+    require(exact(value, {'version','operation_id','unit_sha256','packet_sha256','claim_sha256',
+        'previous_selection_sha256','previous_capability','previous_record_sha256','receipts'})
+        and type(value['version']) is int and value['version'] == 1, 'continuation_shape')
+    for key in ('operation_id','unit_sha256','packet_sha256','claim_sha256',
+                'previous_selection_sha256','previous_record_sha256'):
+        require(hex64(value[key]), 'continuation_hash')
+    require(all(value[k] == identity[k] for k in ('operation_id','unit_sha256','packet_sha256')),
+            'continuation_identity')
+    claim = dict(binding_sha256=identity['operation_id'],
+        directory=str(CLAIM/('transaction-'+identity['operation_id'])),owner=identity['owner'])
+    require(value['claim_sha256'] == fingerprint(claim), 'continuation_claim')
+    cap = value['previous_capability']
+    require(exact(cap, {'version','closure_sha256','host_confirmation_sha256'})
+        and type(cap['version']) is int and cap['version'] == 1
+        and all(hex64(cap[k]) for k in ('closure_sha256','host_confirmation_sha256')),
+        'continuation_capability')
+    receipts = value['receipts']
+    require(type(receipts) is list and 1 <= len(receipts) <= 128, 'continuation_receipts')
+    ids = []
+    for ref in receipts:
+        require(exact(ref, {'invocation_id','closure_sha256','receipt_sha256'})
+            and hex64(ref['closure_sha256']) and hex64(ref['receipt_sha256']), 'continuation_receipt')
+        uuid(ref['invocation_id']); ids.append(ref['invocation_id'])
+    require(len(ids) == len(set(ids)), 'continuation_duplicate')
+    return value
+
+
+def original_receipt_closure(record, current_closure, grant):
+    """Old bytes retain old closure pins only under the exact sealed whitelist."""
+    intent = record['intent']
+    if grant is not None:
+        selected = [r for r in grant['receipts'] if r['invocation_id'] == intent['invocation_id']]
+        if selected:
+            ref = selected[0]
+            require(sha(wire(record)) == ref['receipt_sha256']
+                and intent['closure_sha256'] == ref['closure_sha256'], 'continuation_receipt_drift')
+            return ref['closure_sha256']
+    require(intent['closure_sha256'] == current_closure, 'unadmitted_historical_receipt')
+    return current_closure
+
+
 def request(raw):
     value = decode(raw, WIRE_LIMIT)
     require(exact(value, {'version', 'mode', 'invocation_id', 'request'})
@@ -334,6 +377,8 @@ class _Host:
         _read(directory/'state.json', 984, 0o600, 1048576)
         claim = decode(_read(CLAIM/'active-owner.json', 984, 0o600))
         require(claim == dict(binding_sha256=inner['operation_id'], directory=str(directory), owner=inner['owner']), 'existing_owner_claim')
+        self.continuation = (continuation(config['nativeContinuation'], inner)
+                             if 'nativeContinuation' in config else None)
         sys.path.insert(0, str(INSTALL/'tools/delivery'))
         self.runner = importlib.import_module('windmill_runner')
         return directory, phase, sha(manifest_raw)
@@ -533,12 +578,17 @@ def _invoke(raw, host):
         require(os.getuid() not in (0, 984) and Path('/tmp') in host.root.resolve().parents
                 and host.root.resolve() == host.root, 'synthetic_scope')
     directory, phase, closure = host.admit(envelope['request'])
+    grant = getattr(host, 'continuation', None)
+    if grant is not None:
+        continuation(grant, envelope['request'])
+        require(phase == 'integration', 'continuation_phase')
     uid = host.uid
     path = directory / ('native-invocation-' + envelope['invocation_id'] + '.json')
     def existing():
         require(not path.is_symlink(), 'receipt_symlink')
         record = decode(_read(path, uid, 0o600)) if path.exists() else None
-        return validate_result(_result(envelope, record), envelope, closure)
+        expected = original_receipt_closure(record, closure, grant) if record else closure
+        return validate_result(_result(envelope, record), envelope, expected)
     # No lock creation, mkdir, prctl, subprocess, claim or receipt mutation.
     if envelope['mode'] == 'observe':
         return existing()
@@ -555,6 +605,7 @@ def _invoke(raw, host):
             return existing()  # Same id never executes twice, including terminal failures.
         entries = list(directory.iterdir())
         require(len(entries) <= 256, 'invocation_custody_bound')
+        historical = set()
         for item in entries:
             if item.name.startswith('native-invocation-') and item.name.endswith('.json'):
                 previous = decode(_read(item, uid, 0o600))
@@ -562,9 +613,20 @@ def _invoke(raw, host):
                         and previous['intent']['operation_id'] == envelope['request']['operation_id'], 'prior_invocation')
                 prior_envelope = dict(version=1, mode='observe', invocation_id=previous['intent']['invocation_id'],
                                       request=previous['intent']['request'])
-                validate_result(_result(prior_envelope, previous), prior_envelope, closure)
+                require(all(previous['intent']['request'][k] == envelope['request'][k]
+                    for k in INNER - {'mode'}), 'prior_invocation_identity')
+                old_closure = original_receipt_closure(previous, closure, grant)
+                validate_result(_result(prior_envelope, previous), prior_envelope, old_closure)
                 require(previous['terminal'] is not None and previous['terminal']['child_tree_gone'] is True,
                         'prior_invocation_unresolved')
+                if grant and any(r['invocation_id'] == prior_envelope['invocation_id'] for r in grant['receipts']):
+                    terminal = previous['terminal']
+                    require((terminal['response'] is not None and terminal['response']['status'] not in ('pending','unknown'))
+                        or (terminal['response'] is None and prior_envelope['request']['mode'] == 'observe'),
+                        'continuation_unknown_effect')
+                    historical.add(prior_envelope['invocation_id'])
+        require(grant is None or historical == {r['invocation_id'] for r in grant['receipts']},
+                'continuation_receipt_missing')
         record = dict(version=1, kind='native-publisher-invocation-record-v1', terminal=None,
                       intent=dict(operation_id=envelope['request']['operation_id'], invocation_id=envelope['invocation_id'],
                                   request=envelope['request'], request_sha256=fingerprint(envelope['request']),
