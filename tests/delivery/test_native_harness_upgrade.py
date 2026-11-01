@@ -94,7 +94,12 @@ class UpgradeTests(unittest.TestCase):
                         (path/'source').mkdir()
                         (path/'source/fixture.py').write_bytes(b'coherent source artifact')
                         (path/'source/fixture.py').chmod(0o444)
-                self.manifest[side][role] = closure(path)
+                if side == 'old':
+                    path.chmod(0o755)
+                    info=path.stat()
+                    self.manifest[side][role]=dict(kind='retained-directory-v1',dev=info.st_dev,ino=info.st_ino,uid=info.st_uid,gid=info.st_gid,mode=stat.S_IMODE(info.st_mode))
+                else:
+                    self.manifest[side][role] = closure(path)
         source = self.source
         source.snapshot['runtime_path'] = '/private/.delivery/stokowski/current'
         for role, key in (('owner_source','source'), ('owner_venv','runtime'), ('owner_config','config')):
@@ -180,7 +185,7 @@ class UpgradeTests(unittest.TestCase):
         from native_harness_adoption import prepare
         from native_harness_contract import fingerprint
         pins=[]
-        for side in ('old','new'):
+        for side in ('new',):
             for role, relative in upgrade.PUBLIC_CA_PATHS.items():
                 target,stage,_=upgrade.locations(role,self.operation)
                 base=self.root/(target if side=='old' else stage)[1:]
@@ -432,7 +437,7 @@ class UpgradeTests(unittest.TestCase):
         self.assertEqual(self.host.moves,0)
 
     def test_old_closure_rebinding_and_backup_conflict_never_overwrite(self):
-        self.manifest['old']['owner_source']['files']['module.txt']['sha256']='0'*64
+        self.manifest['old']['owner_source']['ino']+=1
         self.admission=replace(self.admission,upgrade_sha256=upgrade.upgrade_digest(self.manifest))
         with self.assertRaisesRegex(ValueError,'old_snapshot_closure'):
             self.execute()
@@ -522,7 +527,7 @@ class UpgradeTests(unittest.TestCase):
         target, stage, backup = upgrade.locations('owner_source', self.operation)
         self.assertFalse((self.root / target[1:]).exists())
         self.host.verify(stage, self.manifest['new']['owner_source'])
-        self.host.verify(backup, self.manifest['old']['owner_source'])
+        self.host.verify_role('owner_source',backup, self.manifest['old']['owner_source'])
         with self.assertRaisesRegex(ValueError, 'prior_upgrade_no_replay'):
             self.execute()
 
@@ -1035,13 +1040,116 @@ class UpgradeTests(unittest.TestCase):
         self.assertFalse(observed['public_ca_selection_verified'])
         self.assertFalse(observed['installed_verified'])
 
-    def test_public_ca_selection_cannot_omit_original_dependency_closure(self):
+    def test_public_ca_selection_cannot_omit_new_dependency_role(self):
         self.add_selected_public_ca()
         self.public_ca_pins=self.public_ca_pins[1:]
         self.repin_public_ca()
         with patch.object(upgrade.os,'open',side_effect=AssertionError('no incomplete selection reads')):
             with self.assertRaisesRegex(ValueError,'public_ca_complete_selection'):
                 self.execute()
+
+    def test_bau_old_directories_retained_opaque_without_child_reads_or_lists(self):
+        old_ids=set();continuity=None
+        relative='.delivery/native-ssh-publication/4d589c0f73405f3fa8324bc88ec41eb59425bfb5c67fdc544a3cf5a85d6c70d2.json'
+        for role in upgrade.TARGETS:
+            if role=='publisher_config':continue
+            target,_,_=upgrade.locations(role,self.operation)
+            root=self.root/target[1:]
+            old_ids.add((root.stat().st_dev,root.stat().st_ino))
+            (root/'legacy.log').write_bytes(b'OLD LOG UNREAD')
+            (root/'unknown.pem').write_bytes(b'OLD PEM UNREAD')
+            (root/'legacy-link').symlink_to('/not-a-selected-source')
+            if role=='owner_source':
+                (root/'.git/HEAD').chmod(0o644)
+                (root/'.git/HEAD').write_bytes(b'ref: refs/heads/legacy-format\n')
+                continuity=root/relative
+                continuity.parent.mkdir(parents=True)
+                continuity.write_bytes(b'OLD CONTINUITY METADATA UNREAD')
+        opening,listing,reading=os.open,os.listdir,os.read
+        def opaque_open(path,*args,**kwargs):
+            fd=kwargs.get('dir_fd')
+            if fd is not None:
+                info=os.fstat(fd)
+                self.assertNotIn((info.st_dev,info.st_ino),old_ids,'old child open forbidden')
+            return opening(path,*args,**kwargs)
+        def opaque_list(fd):
+            info=os.fstat(fd)
+            self.assertNotIn((info.st_dev,info.st_ino),old_ids,'old root enumeration forbidden')
+            return listing(fd)
+        def opaque_read(fd,*args):
+            info=os.fstat(fd)
+            self.assertNotIn((info.st_dev,info.st_ino),old_ids,'old root byte read forbidden')
+            return reading(fd,*args)
+        with patch.object(upgrade.os,'open',side_effect=opaque_open), \
+             patch.object(upgrade.os,'listdir',side_effect=opaque_list), \
+             patch.object(upgrade.os,'read',side_effect=opaque_read):
+            result=self.execute()
+        self.assertTrue(result['installed_verified']);self.assertTrue(result['rollback_verified'])
+        self.assertEqual(result['old_custody_coverage'],'directory-root-identity-only; publisher-old-config-file-hash')
+        for role in upgrade.TARGETS:
+            if role=='publisher_config':continue
+            _,_,backup=upgrade.locations(role,self.operation)
+            root=self.root/backup[1:]
+            self.host.verify_role(role,backup,self.manifest['old'][role])
+            self.assertEqual(result['closures'][role]['rollback'],'retained-identity')
+            self.assertTrue((root/'legacy-link').is_symlink())
+        _,_,backup=upgrade.locations('owner_source',self.operation)
+        self.assertEqual((self.root/backup[1:]/relative).read_bytes(),b'OLD CONTINUITY METADATA UNREAD')
+        self.assertFalse((self.root/upgrade.TARGETS['owner_source'][1:]/relative).exists())
+
+    def test_bau_old_root_identity_or_mode_drift_refuses_without_old_audit(self):
+        target,_,_=upgrade.locations('owner_venv',self.operation)
+        path=self.root/target[1:];path.chmod(0o555)
+        with self.assertRaisesRegex(ValueError,'retained_directory_identity'):
+            self.execute()
+        path.chmod(0o755)
+        original=path.with_name('original-venv-retained')
+        path.rename(original);path.mkdir();path.chmod(0o755)
+        with self.assertRaisesRegex(ValueError,'retained_directory_identity'):
+            self.execute()
+        path.rmdir();path.symlink_to(original)
+        with self.assertRaises(OSError):self.execute()
+        self.assertEqual(self.host.moves,0)
+
+    def test_bau_backup_root_mismatch_is_unknown_and_never_replayed(self):
+        move=self.host.move
+        def replace_backup(*args):
+            move(*args)
+            if self.host.moves==10:
+                _,_,backup=upgrade.locations('owner_venv',self.operation)
+                path=self.root/backup[1:]
+                path.rename(path.with_name('original-old-venv'))
+                path.mkdir();path.chmod(0o755)
+        with patch.object(self.host,'move',side_effect=replace_backup):
+            with self.assertRaisesRegex(ValueError,'installed_readback_mismatch'):
+                self.execute()
+        observed=upgrade.observe(self.manifest,host=self.host,publisher_config_custody=self.pub_custody)
+        self.assertTrue(observed['installed_verified'])
+        self.assertFalse(observed['rollback_verified'])
+        self.assertEqual(observed['closures']['owner_venv']['rollback'],'unknown-or-mismatch')
+        with self.assertRaisesRegex(ValueError,'prior_upgrade_no_replay'):
+            self.execute()
+
+    def test_bau_retained_identity_does_not_assert_restored_legacy_body_coverage(self):
+        self.execute()
+        _,_,backup=upgrade.locations('owner_venv',self.operation)
+        old=self.root/backup[1:]/'module.txt'
+        old.chmod(0o644);old.write_bytes(b'external fixture edit to unaudited old body')
+        observed=upgrade.observe(self.manifest,host=self.host,publisher_config_custody=self.pub_custody)
+        self.assertTrue(observed['rollback_verified'])
+        self.assertEqual(observed['closures']['owner_venv']['rollback'],'retained-identity')
+        self.assertIn('identity-only',observed['old_custody_coverage'])
+        self.assertFalse(observed['legacy_retired'])
+
+    def test_bau_new_payload_remains_full_and_public_ca_needs_new_roles_only(self):
+        self.add_selected_public_ca()
+        self.assertEqual(len(self.public_ca_pins),2)
+        self.assertEqual({pin.role for pin in self.public_ca_pins},{'owner_venv','publisher'})
+        target,stage,_=upgrade.locations('owner_source',self.operation)
+        file=self.root/stage[1:]/'source/fixture.py'
+        file.chmod(0o644);file.write_bytes(b'new corrupt staged source');file.chmod(0o444)
+        with self.assertRaises(ValueError):self.execute()
+        self.assertEqual(self.host.moves,0)
 
 
 class ProcessBindingTests(unittest.TestCase):

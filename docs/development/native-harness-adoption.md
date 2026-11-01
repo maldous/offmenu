@@ -21,8 +21,10 @@ effects and permanent installer receipts remain in their original custody.
    independent review must accept, its operation must succeed, and its effect
    must be verified. Original executor-policy pins remain unchanged, separate
    from the new source release-policy fingerprint.
-4. Retain the original runtime/source/config snapshot, original install receipts,
-   rollback custody and a fresh stopped/zero-inflight/children-gone witness. The
+4. Retain opaque identities of the four original directories, the fixed old
+   publisher config hash/key metadata, original receipts and a fresh
+   stopped/zero-inflight/children-gone witness. No full legacy audit or restore
+   drill is required to restore BAU. The
    preflight reads selected evidence, not a live task database or host census.
 5. Call `prepare` from the authorized owner's existing process, supplying accepted
    references separately from request JSON. Save its returned bytes in existing
@@ -118,8 +120,10 @@ config `/etc/offmenu-publisher`. `closure_sha256` is the shared canonical
 
 The legacy snapshot is `version: 1`, `kind: native-legacy-snapshot-v1` and fields
 `runtime_path`, `source_head`, `source_tree`, `config_sha256`, `runtime_sha256`,
-`source_sha256`, `install_receipts`. The three SHA-256 fields pin preserved
-nonsecret snapshot manifests, not copied runtime data or secrets. Original
+`source_sha256`, `install_receipts`. The three SHA-256 fields pin canonical opaque directory custody records for old
+owner config, owner venv and owner source respectively. They assert root
+identity custody, not old byte coverage or copied runtime data/secrets. Known
+old source/tree/config-binding headers remain declared owner evidence. Original
 installation receipt references are read and retained, never edited or replayed.
 
 The stop witness is `version: 1`, `kind: native-stop-witness-v1`, with
@@ -134,11 +138,11 @@ the truth of the asserted host state.
 Rollback custody is `version: 1`, `kind: native-rollback-custody-v1`, with
 `snapshot_sha256`, `custodian`, `artifacts`, `verification`. `artifacts` has exactly
 `source`, `config`, `runtime` references; each digest must match the corresponding
-original snapshot manifest pin, and each selected file is read. `verification`
-references existing owner-qualified restore/custody evidence. Its meaning and
-the actual availability/restorability of underlying backups require owner review;
-hash checks cannot prove recovery. Changed/re-pinned metadata cannot silently
-replace the original snapshot. There is no rollback executor.
+original opaque custody record pin, and each selected metadata record is read.
+`verification` references existing retained-custody/inspection evidence only.
+It is not a restore exercise, legacy environment audit or BAU gate for optional
+rollback tooling. Changed/re-pinned metadata cannot silently replace the original
+snapshot. There is no automatic restore or rollback executor.
 
 ## Installer gaps and explicit holds
 
@@ -191,14 +195,20 @@ coding receipt or census arbitrary remote jobs.
 The typed upgrade object has exactly `version: 1`,
 `kind: native-harness-upgrade-v1`, `operation_id` (64 lowercase hex),
 `preflight_sha256`, `old`, `new`, and `legacy_receipts`. `old` and `new` have
-exactly the five fixed target roles from `TARGETS`. Each closure contains
+exactly the five fixed target roles from `TARGETS`. For the four OLD directory
+roles, the record is exactly `{kind: "retained-directory-v1", dev, ino, uid, gid, mode}`.
+It binds the original root directory only; the procedure never lists, reads,
+hashes or imports its children. Production roots remain UID0, safe permissions,
+and no-follow directory identity must match both FD and named entry. OLD
+publisher config remains the fixed config.json hash/metadata plus retained
+directory/key context below. Each NEW closure contains
 `directories` and `files` maps. Directory keys are canonical relative paths,
 with `""` identifying the closure root; metadata is `{mode, uid, gid}`. File
 metadata adds `{size, sha256}`. Numeric modes are observed expectations, never
 permissions to apply. Parent directories must be declared, UID must match the
 admitted host owner, and group/world writable or special mode bits are refused.
-Unexpected entries, links, hardlinks, missing files, unsafe custody and byte or
-mode drift fail closed. Known credential and log paths are excluded. Source and
+For NEW payloads, unexpected entries, links, hardlinks, missing files, unsafe
+custody and byte or mode drift fail closed. Known credential and log paths are excluded. Source and
 configuration selected by the owner must contain reference names, never secrets.
 
 `upgrade_digest` is SHA-256 of the protected owner's canonical newline-terminated
@@ -206,11 +216,13 @@ JSON bytes, capped at 32 MiB. It intentionally differs from the shared bounded
 JSON fingerprint used for the much smaller preflight contract. Whole source
 closures may exceed that contract's 64-field/object bound. Closure reads have
 finite 50,000-entry, 64 MiB/file and 1 GiB/closure limits, and inspect only the
-explicit selected closure. Old source/venv/config descriptor bytes must match
-the original snapshot's source/runtime/config manifest hashes. New config and
+explicit selected NEW closure. Old source/venv/config opaque record bytes must
+match the original snapshot's source/runtime/config descriptor hashes. Those
+hashes cover only custody metadata, never full old contents. New config and
 dependency descriptors must match the preflight pins. Selected candidate
-artifact pins must appear in the new owner source, and old/new `.git/HEAD` bytes
-must match the admitted heads. Actual Git tree truth and complete source/component
+artifact pins must appear in the new owner source, and NEW `.git/HEAD` bytes
+must match the admitted new head. No legacy Git header schema or old dependency
+CA/RECORD/body audit is required. Actual Git tree truth and complete source/component
 association remain independently qualified owner inputs, never inferred from a
 branch name. Root must compose the accepted UIF-127 correction `731ce2034` and
 UIF-128 correction `a6437a416` (or independently accepted successors); the
@@ -226,15 +238,16 @@ The procedure:
 1. Takes the existing coordinator and repository-owner locks, without creating
    replacement locks. Reads the fixed coordinator service's actual inactive,
    dead, zero-PID state and checks the separately qualified fresh native witness.
-2. Verifies all old/staged closures and original installer receipts before any
-   move. Writes and syncs a permanent old-closure fence, then operation intent.
+2. Verifies old root identities, the fixed old publisher config hash, complete
+   NEW staged closures and original installer receipt pins before any move. Writes and syncs a permanent old-closure fence, then operation intent.
    A crash even between those receipts suppresses another operation ID against
    the same old closure. It creates no queue or continuing controller.
-3. Rechecks stopped/native state and each selected closure, then uses Linux
+3. Rechecks stopped/native state, old root custody and NEW closure, then uses Linux
    create-only rename to move old target to `.old`, then staged target into place.
    Unsupported atomic rename, cross-device moves and existing targets hold.
-4. Reads back exact installed and rollback bytes/modes, binds both permanent
-   intents, then writes a create-only installed receipt. No service is started.
+4. Reads back full NEW installed bytes/modes, exact retained OLD directory-root
+   identity and old publisher config hash, binds both permanent intents, then
+   writes a create-only installed receipt. No service is started.
 
 Any interruption retains the original intent and partial custody. `observe`
 performs read-only reconciliation of that same operation, with distinct staged,
@@ -243,6 +256,30 @@ automatically rolls back a multi-directory partial move. The owner must qualify
 an explicit recovery procedure for the observed partial state. Even a fully
 installed closure is not active, released source, functional BAU or legacy
 retirement acceptance.
+
+The existing result key `rollback_verified` is retained for caller compatibility
+and means **retained custody only**. `old_custody_coverage` states
+`directory-root-identity-only; publisher-old-config-file-hash`; the four old
+backup axes report `retained-identity`, never restored or full-byte verified.
+Existing partial/uncertain operations retain their original IDs and receipts.
+A prior-format uncertain operation remains unknown; do not reinterpret it or
+issue a new ID to bypass a fence. No automatic restore, cleanup or retry follows.
+
+Legacy directories may contain old links, logs, public CA variants or Git
+formats. They stay intact without examination. Root/128 separately qualifies
+any metadata that the actual current consumer needs in the NEW package. In
+particular, the single sealed state reference
+`.delivery/native-ssh-publication/4d589c0f73405f3fa8324bc88ec41eb59425bfb5c67fdc544a3cf5a85d6c70d2.json`
+may need explicit bounded preservation at the same source-relative path when
+current-state references require it. The upgrade never reads or migrates that
+old child; whole-directory retention preserves it intact in the old slot. This
+is required state continuity, not a full history copy or legacy audit.
+
+The real read-only owner snapshot's active service and unknown native work are
+not a stop/quiescence witness. Actual stopped service, three locks, all permitted
+writer/descendant/backend quiescence, source/host permission and final time checks
+remain required. Optional rollback tooling/drills/full-old-environment audits
+are deferred; NEW payload qualification and real BAU readback are not relaxed.
 
 Every intent write, individual rename (including the second rename of a role),
 and installed-receipt write has a fresh admission/native/stopped-service guard
@@ -269,7 +306,8 @@ intent write. They assert no expired mutation syscall, retained original/partial
 custody and permanent no-replay behavior.
 
 After separately authorized owner-managed activation, `verify_active` checks
-installed/rollback bytes both before and after fixed service readback. It requires
+full NEW installed bytes and retained OLD custody both before and after fixed
+service readback. It requires
 an active/running positive PID and exactly the maintained launch argv:
 `<protected-python> <protected-stokowski_adapter.py> --current --runtime <bound-runtime>`.
 The runtime is retained from the admitted preflight in the permanent intent.
@@ -458,9 +496,10 @@ must match the selected closure's file pin and the actual read bytes. Root
 qualifies the public record and dependency-blob provenance before admission;
 the upgrade never invents the association from a worker's self-pinned payload.
 
-When either exact resource is present, `execute`, `observe` and `verify_active`
-require `public_ca_pins`, a tuple covering every distinct old/new role/closure/path
-association (at most four). `OwnerAdmission.public_ca_pins_sha256` binds
+When either exact resource is present in the NEW payload, `execute`, `observe`
+and `verify_active` require `public_ca_pins`, a tuple covering its distinct
+role/closure/path associations (at most two). No old dependency resource is
+examined or requires a compatibility pin. `OwnerAdmission.public_ca_pins_sha256` binds
 `upgrade_digest([dataclasses.asdict(pin) for pin in public_ca_pins])`; the permanent
 intent retains that digest. Missing, changed, unrelated or incomplete selection
 holds before dependency reads. If neither role contains the resource, both pins
@@ -473,5 +512,5 @@ names, `.key` files and the protected publisher key remain prohibited. The
 publisher key is still observed only through its fixed metadata custody, never
 opened as a payload. Tests use synthetic public resources under both dependency
 roles and reject wrong role/path/digest/closure, absent PUBLICRECORD pin, omitted
-original selection, changed bytes and arbitrary PEM/private-key names. No
+new-role selection, changed bytes and arbitrary PEM/private-key names. No
 protected dependency file or actual key is read by these tests.

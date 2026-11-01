@@ -259,15 +259,14 @@ def qualify_publisher_custody(custody, expected_sha256, host, now, *, require_fr
 
 def qualify_public_ca_pins(pins, expected_sha256, upgrade):
     expected = {}
-    for side in ('old', 'new'):
-        for role, path in PUBLIC_CA_PATHS.items():
-            closure = upgrade[side][role]
-            if path in closure['files']:
-                expected[(role, upgrade_digest(closure), path)] = closure['files'][path]['sha256']
+    for role, path in PUBLIC_CA_PATHS.items():
+        closure = upgrade['new'][role]
+        if path in closure['files']:
+            expected[(role, upgrade_digest(closure), path)] = closure['files'][path]['sha256']
     if not expected:
         require(pins is None and expected_sha256 is None, 'unused_public_ca_authority')
         return
-    require(type(pins) is tuple and 1 <= len(pins) <= 4
+    require(type(pins) is tuple and 1 <= len(pins) <= 2
             and all(type(pin) is PublicCARecordPin for pin in pins), 'selected_public_ca_pins_required')
     sha(expected_sha256)
     require(upgrade_digest([asdict(pin) for pin in pins]) == expected_sha256, 'public_ca_admission')
@@ -393,6 +392,29 @@ class Host:
             os.close(fd)
 
     def verify_role(self, role, absolute, closure):
+        if type(closure) is dict and closure.get('kind') == 'retained-directory-v1':
+            require(role in TARGETS and role != 'publisher_config', 'retained_directory_role')
+            fields(closure, 'kind dev ino uid gid mode')
+            require(all(type(closure[key]) is int and closure[key] >= 0
+                        for key in ('dev','ino','uid','gid','mode'))
+                    and closure['ino'] > 0 and closure['uid'] == self.uid
+                    and closure['mode'] <= 0o777 and not closure['mode'] & 0o022,
+                    'retained_directory_custody')
+            path = self.path(absolute)
+            fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+            try:
+                info = os.fstat(fd)
+                expected = {key:closure[key] for key in ('dev','ino','uid','gid','mode')}
+                actual = {key:getattr(info,'st_'+key) for key in ('dev','ino','uid','gid')}
+                actual['mode'] = stat.S_IMODE(info.st_mode)
+                named = os.stat(path, follow_symlinks=False)
+                need_named = (named.st_dev,named.st_ino,named.st_uid,named.st_gid,stat.S_IMODE(named.st_mode))
+                require(stat.S_ISDIR(info.st_mode) and stat.S_ISDIR(named.st_mode)
+                        and actual == expected and need_named == tuple(expected[key]
+                            for key in ('dev','ino','uid','gid','mode')), 'retained_directory_identity')
+            finally:
+                os.close(fd)
+            return upgrade_digest(closure)
         if role != 'publisher_config':
             return self.verify(absolute, closure, role=role)
         fields(closure, 'directories files')
@@ -646,6 +668,13 @@ def qualify(plan_bytes, upgrade, admission, now):
     require(upgrade['preflight_sha256'] == admission.plan_sha256, 'upgrade_plan')
     fields(upgrade['old'], ' '.join(TARGETS))
     fields(upgrade['new'], ' '.join(TARGETS))
+    for role in TARGETS:
+        fields(upgrade['new'][role], 'directories files')
+        if role != 'publisher_config':
+            fields(upgrade['old'][role], 'kind dev ino uid gid mode')
+            require(upgrade['old'][role]['kind'] == 'retained-directory-v1', 'opaque_old_directory_required')
+        else:
+            fields(upgrade['old'][role], 'directories files')
     for role, key in (('owner_source', 'source_sha256'), ('owner_venv', 'runtime_sha256'),
                       ('owner_config', 'config_sha256')):
         require(upgrade_digest(upgrade['old'][role]) == plan['legacy_snapshot'][key], 'old_snapshot_closure')
@@ -655,12 +684,10 @@ def qualify(plan_bytes, upgrade, admission, now):
     for ref in target['files']:
         require(upgrade['new']['owner_source']['files'].get(ref['path'], {}).get('sha256')
                 == ref['sha256'], 'new_source_artifact')
-    for side, head in (('old', plan['legacy_snapshot']['source_head']),
-                       ('new', target['source_head'])):
-        require(upgrade[side]['owner_source']['files'].get('.git/HEAD', {}).get('sha256')
-                == protected.sha((head + '\n').encode()), 'source_head_readback')
-    # Old/new directory or fixed config-file closures are independently qualified in the
-    # admitted upgrade digest, not inferred from an installer's legacy manifest.
+    require(upgrade['new']['owner_source']['files'].get('.git/HEAD', {}).get('sha256')
+            == protected.sha((target['source_head'] + '\n').encode()), 'source_head_readback')
+    # Old source/tree/config headers remain declared owner evidence; opaque old
+    # descriptor pins assert retained root custody, never old content coverage.
     require(type(upgrade['legacy_receipts']) is dict and set(upgrade['legacy_receipts']) == {
         str(protected.RECEIPT), STATE + '/publisher-install.jsonl'}, 'legacy_receipts')
     for pin in upgrade['legacy_receipts'].values():
@@ -704,8 +731,9 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
             publisher_config_custody=None, public_ca_pins=None, host=None):
     """One admitted attempt; never start services, retire legacy or auto-rollback.
 
-    All staged slots already exist, sealed by the owner. Four old directory
-    closures move intact to create-only sibling custody slots. Publisher config
+    All staged slots already exist, sealed by the owner. Four old directories
+    move opaque and intact to create-only sibling custody slots, without any
+    old child enumeration/read/hash. Publisher config
     swaps only its fixed JSON file, retaining the original directory/key in place.
     A permanent intent precedes all moves. Any failure/unknown effect requires
     observe() and explicit owner reconciliation; execute() always refuses replay.
@@ -817,13 +845,17 @@ def observe(upgrade, *, publisher_config_custody=None, public_ca_pins=None, host
                                     ('rollback', backup, upgrade['old'][role]),
                                     ('staged', stage, upgrade['new'][role])):
             try:
+                if name == 'rollback' and role != 'publisher_config':
+                    require(type(closure) is dict and closure.get('kind') == 'retained-directory-v1',
+                            'old_coverage_unknown')
                 if role == 'publisher_config':
                     require(publisher_ok, 'publisher_config_custody_required')
                     with host.publisher_config(publisher_config_custody):
                         host.verify_role(role, path, closure)
                 else:
                     host.verify_role(role, path, closure)
-                axes[name] = 'verified'
+                axes[name] = ('retained-identity' if name == 'rollback'
+                              and role != 'publisher_config' else 'verified')
             except (OSError, ValueError):
                 axes[name] = 'unknown-or-mismatch'
         results[role] = axes
@@ -840,8 +872,11 @@ def observe(upgrade, *, publisher_config_custody=None, public_ca_pins=None, host
         publisher_custody_verified=publisher_ok,
         public_ca_selection_verified=public_ca_ok,
         publisher_observed_at=time.time() if publisher_ok else None,
+        old_custody_coverage='directory-root-identity-only; publisher-old-config-file-hash',
         installed_verified=intent_ok and receipts_ok and publisher_ok and public_ca_ok and all(row['installed'] == 'verified' for row in results.values()),
-        rollback_verified=intent_ok and publisher_ok and public_ca_ok and all(row['rollback'] == 'verified' for row in results.values()),
+        rollback_verified=intent_ok and publisher_ok and public_ca_ok and all(
+            row['rollback'] == ('verified' if role == 'publisher_config' else 'retained-identity')
+            for role,row in results.items()),
         active_observed=False, legacy_retired=False, replay_authorized=False)
 
 
@@ -849,7 +884,8 @@ def verify_active(upgrade, *, publisher_config_custody=None, public_ca_pins=None
     """Separate actual service observation after owner-managed activation.
 
     This never starts a service or claims product/functional/legacy retirement
-    acceptance. Exact installed bytes are checked both sides of service readback.
+    acceptance. Full NEW installed bytes and OLD root custody are checked both
+    sides of service readback, not a restored/audited legacy environment.
     """
     host = host or Host()
     before = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody,
