@@ -27,7 +27,10 @@ class CompletedNativeTests(unittest.TestCase):
         def git(*a):
             return subprocess.check_output(['git','-c','user.name=Fixture','-c','user.email=fixture@invalid','-C',str(self.repo),*a],stderr=subprocess.DEVNULL).decode().strip()
         self.git=git;git('init','-b','fixture');(self.repo/'.gitignore').write_text('.delivery/\n')
-        (self.repo/'tools').mkdir();(self.repo/'tools/worker.py').write_text('before\n');git('add','.');git('commit','-m','native base');a=git('rev-parse','HEAD')
+        (self.repo/'tools').mkdir();(self.repo/'tools/worker.py').write_text('before\n')
+        (self.repo/'tools/delivery').mkdir()
+        (self.repo/'tools/delivery/windmill_runner.py').write_bytes(b'fixture source pin; never executed')
+        git('add','.');git('commit','-m','native base');a=git('rev-parse','HEAD')
         (self.repo/'control.txt').write_text('disjoint\n');git('add','.');git('commit','-m','integration base');base=git('rev-parse','HEAD')
         (self.repo/'tools/worker.py').write_text('after\n');(self.repo/'tools/performance.py').write_text('projection\n');(self.repo/'tests').mkdir();(self.repo/'tests/test_performance.py').write_text('test\n');git('add','.');git('commit','-m','candidate');head=git('rev-parse','HEAD');tree=git('rev-parse','HEAD^{tree}')
         git('checkout','-b','develop',base);git('merge','--no-ff',head,'-m','reviewed integration');merge=git('rev-parse','HEAD')
@@ -75,6 +78,107 @@ class CompletedNativeTests(unittest.TestCase):
         self.config['completed_native_validations']['UIF-119']=self.ref('evidence',self.evidence)
     def mutate(self,key,change):
         p=Path(self.evidence[key]['path']);v=json.loads(p.read_bytes());change(v);self.write(p,v) # Do not alter owner-admitted immutable ref.
+
+    def historical_fixture(self):
+        """Actual retained compact-review/checkpoint shapes; synthetic identities."""
+        b=json.loads(Path(self.evidence['integration_binding']['path']).read_bytes())
+        native=json.loads(self.native_path.read_bytes())
+        original=json.loads(Path(self.evidence['independent_review']['path']).read_bytes())
+        patch=self.evidence_dir/'original.patch'
+        patch.write_bytes(subprocess.check_output(['git','-C',str(self.repo),'diff','--binary',
+            self.manifest['base_revision'],b['head'],'--',*sorted(self.outputs)]));patch.chmod(0o600)
+        patch_ref=dict(path=str(patch),sha256=completed.file_sha(patch))
+        metadata=dict(receipt=dict(path=str(self.native_path),sha256=self.unit['native_receipt_sha256']),
+            patch=patch_ref,session=native['session_id'],lease=native['lease'],exit_code=0,
+            child_tree_gone=True,scope_violations=[],baseline=self.manifest['base_revision'],
+            final_head=self.manifest['base_revision'],output_sha256=self.outputs)
+        metadata_ref=self.ref('original-result-metadata',metadata)
+        raw=dict(reviewer=original['reviewer']['identity'],at='historical-fixture',
+            disposition='accepted-real-native-result-and-exact-source-patch',
+            receipt_sha256=self.unit['native_receipt_sha256'],patch_sha256=patch_ref['sha256'],
+            result_metadata_sha256=metadata_ref['sha256'],independent_tests='Retained independent tests',
+            source_assessment='Original exact native output patch',limits='No runtime acceptance')
+        self.evidence['independent_review']=self.ref('original-compact-review',raw)
+        observation=json.loads(Path(self.evidence['controller_observation']['path']).read_bytes())
+        observation['review']=dict(head=b['head'],base=b['base'],independent=True,
+            evidence_id='independent-native-source-review:'+self.evidence['independent_review']['sha256'],
+            verdict='accept',findings=[])
+        self.evidence['controller_observation']=self.ref('original-compact-observation',observation)
+        state=json.loads(Path(self.evidence['controller_state']['path']).read_bytes())
+        state['qualification_sha256']=digest(dict(validation=observation['validation'],
+            review=observation['review'],tree=b['tree'],policy=b['policy_sha256']))
+        self.evidence['controller_state']=self.ref('original-compact-state',state)
+        database=Path(self.evidence['controller_checkpoint']['path'])
+        with sqlite3.connect(database) as db:
+            db.execute('UPDATE checkpoints SET checkpoint=?',(ormsgpack.packb(
+                dict(channel_values=dict(result=state,observation=observation))),))
+        self.evidence['controller_checkpoint']['sha256']=completed.file_sha(database)
+        association=dict(version=1,kind='retained-native-source-review-v1',
+            unit_binding_sha256=digest(self.unit),integration_binding_sha256=digest(b),
+            controller_checkpoint_sha256=completed.file_sha(database),
+            raw_review_sha256=self.evidence['independent_review']['sha256'],result_metadata=metadata_ref,
+            patch=patch_ref,reviewer=original['reviewer'],
+            author='native Codex session '+native['session_id'],
+            runner_source=dict(commit=self.manifest['base_revision'],
+                sha256=self.config['source_sha256']['tools/delivery/windmill_runner.py']))
+        self.evidence['historical_association']=self.ref('historical-association',association)
+        self.config['source_sha256']['tools/delivery/windmill_runner.py']=hashlib.sha256(b'new active runner').hexdigest()
+        self.repin()
+        return association
+
+    def test_owner_associated_compact_review_preserves_original_checkpoint_and_runner(self):
+        self.historical_fixture()
+        before={key:Path(self.evidence[key]['path']).read_bytes() for key in (
+            'independent_review','controller_checkpoint','controller_observation','controller_state')}
+        packet=completed.qualify(self.current,'UIF-119')
+        self.assertEqual(packet['snapshot']['review']['evidence_id'],
+            'independent-native-source-review:'+self.evidence['independent_review']['sha256'])
+        self.assertNotEqual(packet['validation_receipt']['runner_sha256'],
+            self.config['source_sha256']['tools/delivery/windmill_runner.py'])
+        for key,raw in before.items():self.assertEqual(Path(self.evidence[key]['path']).read_bytes(),raw)
+
+    def test_historical_association_rejects_wrong_reviewer_hash_checkpoint_and_runner(self):
+        association=self.historical_fixture()
+        for change in (
+            lambda a:a.update(raw_review_sha256='0'*64),
+            lambda a:a.update(controller_checkpoint_sha256='0'*64),
+            lambda a:a.update(unit_binding_sha256='0'*64),
+            lambda a:a['reviewer'].update(identity=self.owner),
+            lambda a:a['reviewer'].update(observed_model='invented'),
+            lambda a:a.update(author='another coding author'),
+            lambda a:a['runner_source'].update(commit=self.git('rev-parse','HEAD')),
+            lambda a:a['runner_source'].update(sha256='0'*64)):
+            with self.subTest(change=change):
+                altered=copy.deepcopy(association);change(altered)
+                self.evidence['historical_association']=self.ref('altered-association',altered);self.repin()
+                with self.assertRaises(AdmissionError):completed.qualify(self.current,'UIF-119')
+
+    def test_historical_raw_metadata_and_patch_cannot_change_under_association(self):
+        association=self.historical_fixture()
+        for ref in (self.evidence['independent_review'],association['result_metadata'],association['patch']):
+            with self.subTest(ref=ref):
+                p=Path(ref['path']);before=p.read_bytes();p.write_bytes(before+b' ')
+                with self.assertRaises(AdmissionError):completed.qualify(self.current,'UIF-119')
+                p.write_bytes(before)
+
+    def test_historical_snapshot_cannot_add_or_substitute_controller_facts(self):
+        self.historical_fixture()
+        b=json.loads(Path(self.evidence['integration_binding']['path']).read_bytes())
+        native=json.loads(self.native_path.read_bytes())
+        raw=json.loads(Path(self.evidence['independent_review']['path']).read_bytes())
+        snapshot=json.loads(Path(self.evidence['controller_observation']['path']).read_bytes())
+        for change in (dict(head='e'*40),dict(base='e'*40),dict(independent=False),
+                       dict(evidence_id='sha256:'+self.evidence['independent_review']['sha256']),
+                       dict(reviewer=raw['reviewer']),dict(findings=['unresolved'])):
+            with self.subTest(change=change):
+                altered=copy.deepcopy(snapshot);altered['review'].update(change)
+                with self.assertRaises(AdmissionError):
+                    completed.historical_review(self.evidence,self.root.parent,b,native,
+                        self.unit,altered,self.manifest,raw)
+
+    def test_unassociated_evidence_still_requires_active_runner(self):
+        self.config['source_sha256']['tools/delivery/windmill_runner.py']='0'*64
+        with self.assertRaises(AdmissionError):completed.qualify(self.current,'UIF-119')
     def test_completed_packet_no_dispatch_and_truthful_distinct_bases(self):
         packet=completed.qualify(self.current,'UIF-119');self.assertEqual(packet['decision']['kind'],completed.KIND);self.assertIsNone(packet['decision']['action']);self.assertEqual(packet['unit_binding'],self.unit);self.assertNotEqual(packet['integration_binding']['base'],self.manifest['base_revision']);self.assertNotEqual(packet['integration_binding']['head_branch'],self.manifest['branch']);self.assertFalse((self.runtime/'operations').exists())
     def test_completed_publication_origin_needs_no_operations_journal(self):
