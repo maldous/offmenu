@@ -187,6 +187,11 @@ PUBLISHER_PROFILE = 'protected-publisher-bootstrap'
 PUBLISHER_TESTS = ('test_protected_owner_install', 'test_github_app_capture',
                    'test_protected_publisher_install', 'test_stokowski_operations',
                    'test_stokowski_dispatcher')
+IDENTITY_PROFILE = 'identity-client-focused'
+IDENTITY_TESTS = ('tests/web/offmenu-identity-client.test.mjs',
+                  'tests/edge/handler-auth-dispatch.test.mjs')
+IDENTITY_COMMAND = ('/bin/node', '--test', '--test-isolation=none', '--test-reporter=tap',
+                    *IDENTITY_TESTS)
 
 
 def canonical_derivations(provenance):
@@ -209,7 +214,7 @@ def canonical_derivations(provenance):
 def validated_v3(spec):
     extra = {'origin','workspace','local_source_root','execution','control_sha256'}
     legacy = {k:v for k,v in spec.items() if k not in extra}
-    if not extra.issubset(spec) or 'branch' not in legacy or spec.get('profile') not in (REVIEWED_PROFILE, PUBLISHER_PROFILE):
+    if not extra.issubset(spec) or 'branch' not in legacy or spec.get('profile') not in (REVIEWED_PROFILE, PUBLISHER_PROFILE, IDENTITY_PROFILE):
         raise OperationError('Invalid reviewed-source profile')
     validated(dict(legacy, version=1, profile='delivery-suite'))
     workspace_path(spec['workspace'])
@@ -319,8 +324,45 @@ for name,expected in spec['outputs'].items():
 """.replace('SPEC_JSON',repr(json.dumps(spec,sort_keys=True)),1).replace('SOURCE_ROOT',repr(str(root)),1)
 
 
+def identity_validation_code(spec, root):
+    """Fixed synthetic identity validator; scratch never becomes source output."""
+    return """import hashlib,json,os,pathlib,re,subprocess,sys,tempfile
+root=pathlib.Path(SOURCE_ROOT)
+oracle=SOURCE_ORACLE
+archive=subprocess.check_output(['git','-C',str(root),'archive',SOURCE_BASE,*CONTROL_FILES])
+assert hashlib.sha256(archive).hexdigest()==CONTROL_SHA, 'control source drift'
+exec(compile(oracle,'<reviewed-identity-before>','exec'),{})
+try:
+ with tempfile.TemporaryDirectory(prefix='offmenu-identity-',dir='/tmp') as directory:
+  scratch=pathlib.Path(directory)
+  assert not scratch.resolve().is_relative_to(root), 'scratch inside candidate'
+  env={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8','HOME':str(scratch),
+       'TMPDIR':str(scratch),'XDG_CONFIG_HOME':str(scratch/'config'),
+       'XDG_CACHE_HOME':str(scratch/'cache'),'XDG_STATE_HOME':str(scratch/'state'),
+       'MINIFLARE_CACHE_DIR':str(scratch/'miniflare'),
+       'CLOUDFLARE_CF_FETCH_ENABLED':'false','WRANGLER_SEND_METRICS':'false'}
+  result=subprocess.run(NODE_COMMAND,cwd=root,env=env,stdin=subprocess.DEVNULL,
+                        stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=150)
+finally:
+ exec(compile(oracle,'<reviewed-identity-after>','exec'),{})
+sys.stdout.write(result.stdout);sys.stderr.write(result.stderr)
+assert result.returncode==0, 'identity tests failed'
+matches=re.findall(r'^# (tests|suites|pass|fail|cancelled|skipped|todo) ([0-9]+)\\s*$',result.stdout,re.M)
+assert len(matches)==7, 'identity TAP summary missing or duplicated'
+assert {name:int(value) for name,value in matches}=={'tests':14,'suites':0,'pass':14,'fail':0,'cancelled':0,'skipped':0,'todo':0}, 'identity TAP acceptance'
+""".replace('SOURCE_ROOT',repr(str(root)),1).replace(
+        'SOURCE_ORACLE',repr(reviewed_check_code(spec,root)),1).replace(
+        'SOURCE_BASE',repr(spec['base']),1).replace('CONTROL_FILES',repr(IDENTITY_TESTS),1).replace(
+        'CONTROL_SHA',repr(spec['control_sha256']),1).replace('NODE_COMMAND',repr(IDENTITY_COMMAND),1)
+
+
 def reviewed_arguments(spec):
     root = spec['workspace']
+    if spec['profile'] == IDENTITY_PROFILE:
+        command = '/offmenu/.venv-delivery/bin/python -c '+shlex.quote(identity_validation_code(spec,root))
+        return dict(action='run',job_id='offmenu-'+operation_key(spec)[:48],command=command,
+            mode='read',timeout_seconds=180,resources=dict(workers=1,overhead_processes=8,cpu_millis=1000,
+            memory_bytes=2147483648,io_slots=1,output_bytes=0,read_roots=['/offmenu'],write_roots=[]))
     # The fixed consumer has no candidate-supplied argv. Missing dependencies or
     # skipped tests fail proof, even when unittest would otherwise exit zero.
     code = """import hashlib,io,os,pathlib,subprocess,tarfile,tempfile,unittest,sys
