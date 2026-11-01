@@ -146,6 +146,15 @@ context is exactly:
 }
 ```
 
+Only a `linear` binding may instead use exactly `context: {}`. Linear never
+loads Engine or unit-review context; both factory getters reject that phase,
+including with the original three-field context retained for compatibility.
+Integration and release still require the original three fields, with the
+optional publisher invocation capability below. An empty context skips only
+unused references; CurrentWork context, native gate, source pins, custody,
+authorization, durable intent and native readback remain mandatory. It grants
+no coding eligibility, accepted delivery or refill.
+
 All paths must qualify through the existing CurrentWork private-root check.
 Selection/packet bytes and canonical packet fingerprint are checked separately;
 the actual owner map, custody and imported source pins are rechecked. Missing
