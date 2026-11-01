@@ -1239,6 +1239,35 @@ class CurrentWork:
         self.state['tasks'].setdefault(issue, {})['defer'] = reason
         self.save()
 
+    def _check_task_control_source(self, issue, manifest, source, *, observation=False):
+        """A frozen stage wrapper may precede its guarded protected controller.
+
+        This never substitutes the controller's head for the original candidate
+        identity, nor permits historical coding against a changed checkout.
+        context() has already run the sealed current-source guard.
+        """
+        head = subprocess.check_output(['git','-C',str(source),'rev-parse','HEAD'],text=True).strip()
+        branch = subprocess.check_output(['git','-C',str(source),'branch','--show-current'],text=True).strip()
+        if branch != manifest['branch']:
+            raise AdmissionError('current_task_source_drift')
+        if head == manifest['base_revision']:
+            return
+        task = manifest['tasks'][issue]
+        if ('stage' not in task or not self.owner_custody or source != SOURCE or
+            self.owner_custody.get('source_root') != str(source) or head != self.config['source_head']):
+            raise AdmissionError('current_task_source_drift')
+        try:
+            subprocess.check_output(['git','-C',str(source),'merge-base','--is-ancestor',
+                manifest['base_revision'],head],stderr=subprocess.DEVNULL)
+        except subprocess.CalledProcessError as error:
+            raise AdmissionError('current_stage_control_ancestry') from error
+        # Requalify the actual original origin, with the existing limited
+        # observation mode retained for source-drift recovery/cancellation.
+        if task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1':
+            self.reviewed_origin(issue,task,observation=observation)
+        else:
+            self.stage_origin(issue,task)
+
     def context(self, issue, *, review=False, observation=False):
         self.guard()
         entry = self.entries[issue]
@@ -1276,10 +1305,7 @@ class CurrentWork:
         source = Path(admission['source'])
         if not source.is_absolute() or source != source.resolve():
             raise AdmissionError('current_source_path')
-        for args, expected in ((['rev-parse','HEAD'], manifest['base_revision']),
-                               (['branch','--show-current'], manifest['branch'])):
-            if subprocess.check_output(['git','-C',str(source),*args], text=True).strip() != expected:
-                raise AdmissionError('current_task_source_drift')
+        self._check_task_control_source(issue,manifest,source,observation=observation)
         if not isinstance(admission['inputs'],dict):
             raise AdmissionError('current_declared_inputs_schema')
         recovery_admission = None
@@ -1417,22 +1443,28 @@ class CurrentWork:
             # command with presently qualified source can survive executor drift.
             # Apply in both modes: publication and fixed review also call the
             # default mode. Journal.tick retains strict fresh-execution admission.
-            self._check_reviewed_terminal(spec, state, pins)
+            self._check_reviewed_terminal(spec, state, pins,
+                                          receipt_path=runtime/'validation-receipt.json')
             admission = stage.qualify_reviewed_source(spec,selected['admission_path'])
         return runtime,spec,selected,state,admission
 
-    def _check_reviewed_terminal(self, spec, state, pins):
+    def _check_reviewed_terminal(self, spec, state, pins, *, receipt_path=None):
         from stokowski_operations import bridge_arguments
         if (state.get('status') != 'succeeded' or state.get('cancel_requested') is not False
             or state.get('observation_intent') or state.get('reconcile_required')
             or state.get('accepted_output_sha256') != spec['outputs']
             or state.get('acceptance_sha256') != spec['acceptance_sha256']):
             raise AdmissionError('reviewed_source_terminal_required')
-        # Only owner-selected regular input bytes (already hash checked above)
-        # can supply the original receipt. A status string or a packet supplied
-        # by a new reviewer is insufficient authority for this exemption.
+        # Frozen owner inputs or the original runtime's fixed receipt custody
+        # can supply the body. The Journal commits to its entire content; a
+        # status string or a packet supplied by a new reviewer cannot replace it.
+        names = list(pins)
+        if receipt_path is not None:
+            path = self.private(str(receipt_path))
+            if path.is_file():
+                names.append(str(path))
         receipts = []
-        for name in pins:
+        for name in names:
             try:
                 receipt = read_record(name)
             except (ValueError,AdmissionError):
@@ -1451,6 +1483,50 @@ class CurrentWork:
             or receipt.get('capacity_policy_sha256') != spec['policy_sha256']
             or receipt.get('command_sha256') != hashlib.sha256(expected['command'].encode()).hexdigest()):
             raise AdmissionError('reviewed_source_terminal_receipt_binding')
+        return receipt
+
+    def retained_typed_review_packet(self, issue):
+        """Requalify already-admitted review, not a new independent review.
+
+        This separate origin preserves the typed review's actual metadata. It
+        grants no merge permission and leaves the supplement reader unchanged.
+        Every incoming byte is recomputed again by the normal unit consumer.
+        """
+        from types import SimpleNamespace
+        _, manifest, _ = self.context(issue, review=True)
+        task = manifest['tasks'][issue]
+        if (task.get('stage') != 'validation' or
+            task['stage_binding']['entry'].get('origin') != 'reviewed-source-v1'):
+            raise AdmissionError('retained_typed_review_stage')
+        runtime, spec, selected, state, admission = self.reviewed_origin(issue, task)
+        receipt = self._check_reviewed_terminal(spec, state, task['stage_binding']['inputs'],
+                                               receipt_path=runtime/'validation-receipt.json')
+        tree = subprocess.check_output(['git','-C',spec['local_source_root'],
+            'rev-parse',spec['head']+'^{tree}'], text=True).strip()
+        unit = self.gate_binding(SimpleNamespace(identifier=issue,id=self.entries[issue]['issue_id']))
+        binding = dict(owner=spec['owner'], issue_id=spec['issue_id'], project_id=unit['project_id'],
+            head=spec['head'], base=spec['base'], tree=tree, outputs=spec['outputs'],
+            head_branch=spec['branch'], capacity_policy_sha256=spec['policy_sha256'],
+            validation_operation_key=selected['operation_key'],
+            admission_sha256=spec['acceptance_sha256'], stage_identity=task['stage_binding']['identity'])
+        snapshot = dict(review=admission['review'],
+            validation=dict(operation_key=selected['operation_key'], status='succeeded',
+                head=spec['head'], base=spec['base'], outputs=spec['outputs'],
+                capacity_policy_sha256=spec['policy_sha256'], child_tree_gone=True,reconcile_required=False),
+            inputs=task['stage_binding']['inputs'], source_tree=tree,
+            publication_triggers_actions=False, accepted_delivery=False)
+        decision = dict(version=1, kind='retained-typed-review-v1', status='validation-review-qualified',
+            action=None, merge_effect='not-applicable', binding_sha256=digest(binding),
+            qualification_sha256=digest(snapshot))
+        return dict(origin='retained-typed-review-v1',issue=issue,unit_binding=unit,
+            integration_binding=binding,snapshot=snapshot,decision=decision,validation_receipt=receipt)
+
+    def continue_retained_typed_review(self, issue):
+        # Already inside the normal coordinator lock. The same immutable writer
+        # and normal consumer enforce conflicts/replay and own all gate updates.
+        packet = self.retained_typed_review_packet(issue)
+        self.unit_review_writer(lambda _: packet)(packet)
+        self._consume_unit_reviews()
 
     def stage_origin(self, issue, task):
         """Requalify the owner-pinned original; never manufacture stage receipts.
@@ -1700,6 +1776,18 @@ class CurrentWork:
                 prior = task.get('validation', {})
                 if prior.get('identity', identity) != identity:
                     raise AdmissionError('current_validation_rebind')
+                retained = (selected_task.get('stage') == 'validation' and
+                    selected_task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1')
+                if retained:
+                    # A stopped original operation needs no transport, including
+                    # when its executor predates this source correction.
+                    _, _, _, state, _ = self.reviewed_origin(issue, selected_task)
+                    if state.get('status') == 'succeeded':
+                        task['validation'] = dict(identity=identity,status='succeeded',
+                            requested_model=None,requested_effort=None,provider=None)
+                        self.continue_retained_typed_review(issue)
+                        self.save()
+                        continue
                 if selected_task.get('stage') == 'review':
                     task['validation'] = dict(identity=identity, status='awaiting-independent-review',
                         requested_model=None, requested_effort=None, provider=None)
@@ -1727,6 +1815,8 @@ class CurrentWork:
                     'cancel-requested','succeeded','failed','cancelled','refused','quarantined'} else 'held')
                 if status == 'succeeded' and 'stage' not in selected_task:
                     await self.continue_native_review(issue)
+                elif status == 'succeeded' and retained:
+                    self.continue_retained_typed_review(issue)
             except asyncio.CancelledError:
                 raise
             except Exception:
@@ -1790,10 +1880,16 @@ class CurrentWork:
             # Linear still needs the original admitted native unit; it never
             # consumes Engine or independent-review context references.
             return selection
-        if (not isinstance(context, dict)
-            or set(context) - {'publisher_invocation'} != {'engine_root', 'engine_task', 'unit_review'}
-            or not isinstance(context['engine_root'], str)
-            or not self.private(context['engine_root']).is_dir()):
+        if not isinstance(context, dict):
+            raise AdmissionError('native_harness_context')
+        keys = set(context) - {'publisher_invocation'}
+        if binding['phase'] == 'integration' and keys == {'reviewed_runtime', 'unit_review'}:
+            root_name, references = 'reviewed_runtime', ('unit_review',)
+        elif keys == {'engine_root', 'engine_task', 'unit_review'}:
+            root_name, references = 'engine_root', ('engine_task', 'unit_review')
+        else:
+            raise AdmissionError('native_harness_context')
+        if not isinstance(context[root_name], str) or not self.private(context[root_name]).is_dir():
             raise AdmissionError('native_harness_context')
         if 'publisher_invocation' in context:
             invocation = context['publisher_invocation']
@@ -1805,7 +1901,7 @@ class CurrentWork:
                 raise AdmissionError('native_harness_publisher_invocation')
             from native_harness_contract import fingerprint
             fingerprint(invocation)  # Included unchanged in the pinned selection identity.
-        for name in ('engine_task', 'unit_review'):
+        for name in references:
             ref = context[name]
             if not isinstance(ref, dict) or set(ref) != {'path', 'sha256'} or not isinstance(ref['path'], str):
                 raise AdmissionError('native_harness_context')
@@ -1902,8 +1998,10 @@ class CurrentWork:
                     if packet != pinned or module.fingerprint(packet) != binding.packet_sha256:
                         raise AdmissionError('native_harness_packet_drift')
                     return packet
+                acceptance = getattr(adapters, 'integration_acceptance', None)
                 trusted = module.OwnerAdapters(authorize, load, adapters.engine, adapters.review,
-                                                adapters.observe, adapters.step)
+                    adapters.observe, adapters.step,
+                    **({'integration_acceptance': acceptance} if acceptance is not None else {}))
                 result = await module.consume_boundary(self, issue, binding=binding, adapters=trusted)
                 return result, authorize
             result, authorize = await asyncio.wait_for(consume(), timeout=10)
@@ -2250,6 +2348,10 @@ class CurrentWork:
         issue = packet['issue']
         entry = self.entries[issue]
         unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']))
+        if packet.get('origin') == 'retained-typed-review-v1':
+            if digest(packet) != digest(self.retained_typed_review_packet(issue)):
+                raise AdmissionError('retained_typed_review_packet_mismatch')
+            return unit
         if packet.get('origin') == 'native-readonly-review-v1':
             from stokowski_unit_review import qualify_native_review
             if packet != qualify_native_review(self,issue):

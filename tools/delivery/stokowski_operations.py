@@ -615,6 +615,35 @@ class Journal:
                 state['cancel_requested'] = True
                 self.save(key,state,'cancellation-requested')
 
+    def retain_reviewed_receipt(self, receipt):
+        """Keep the original observed body, never rebuild it from Journal state."""
+        import tempfile
+        path = self.root.parent/'validation-receipt.json'
+        raw = json.dumps(receipt,sort_keys=True,separators=(',', ':')).encode()
+        if path.exists():
+            if path.is_symlink() or path.read_bytes() != raw:
+                raise OperationError('Conflicting original validation receipt')
+            return
+        fd, temporary = tempfile.mkstemp(prefix='.validation-receipt-',dir=path.parent)
+        try:
+            os.fchmod(fd,0o600)
+            with os.fdopen(fd,'wb') as stream:
+                stream.write(raw)
+                stream.flush()
+                os.fsync(stream.fileno())
+            try:
+                os.link(temporary,path)
+            except FileExistsError:
+                if path.is_symlink() or path.read_bytes() != raw:
+                    raise OperationError('Conflicting original validation receipt')
+            directory = os.open(path.parent,os.O_RDONLY | os.O_DIRECTORY)
+            try:
+                os.fsync(directory)
+            finally:
+                os.close(directory)
+        finally:
+            os.unlink(temporary)
+
     async def tick(self,key,transport):
         with self.claim(key):
             spec,state = self.read(key)
@@ -763,6 +792,13 @@ class Journal:
                     self.diagnose(key,state,'observed-unknown',error)
                 else:
                     self.save(key,state,'observed-'+state['status'])
+                    if spec['version'] == 3 and state['status'] == 'succeeded':
+                        try:
+                            self.retain_reviewed_receipt(receipt)
+                        except (OSError,OperationError) as error:
+                            # Preserve terminal business identity even if local
+                            # custody fails. The unit consumer holds; no replay.
+                            self.diagnose(key,state,'terminal-receipt-custody-held',error)
                 return state
             except TransportUnavailable as error:
                 # An observation outage changes no operation identity or intent.
