@@ -1689,6 +1689,10 @@ class CurrentWork:
             raise AdmissionError('native_harness_reference')
         self._private_pin(selection['packet'])
         context = selection['context']
+        if binding['phase'] == 'linear' and type(context) is dict and context == {}:
+            # Linear still needs the original admitted native unit; it never
+            # consumes Engine or independent-review context references.
+            return selection
         if (not isinstance(context, dict)
             or set(context) - {'publisher_invocation'} != {'engine_root', 'engine_task', 'unit_review'}
             or not isinstance(context['engine_root'], str)

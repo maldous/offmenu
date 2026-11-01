@@ -1011,6 +1011,54 @@ class CurrentDispatchTests(unittest.TestCase):
         state['config_sha256'] = adapter.file_sha(fixture.sealed)
         self.write(self.current.state_path,state)
 
+    def test_linear_empty_context_keeps_original_native_gate_without_unused_artifacts(self):
+        f = self.native_harness_fixture()
+        selection = json.loads(f.selected.read_text())
+        # Remove only disposable unqualified test artifacts; they are neither
+        # needed nor fabricated as evidence for a metadata-only transaction.
+        for name in ('engine_task','unit_review'):
+            Path(selection['context'][name]['path']).unlink()
+        selection['context'] = {}
+        self.reseal_native_harness_selection(f,selection)
+        self.current = adapter.CurrentWork(self.runtime)
+        self.assertEqual(self.current._native_harness_selection(f.issue.identifier)['context'],{})
+        asyncio.run(self.current.continue_native_harness(f.factory))
+        self.assertEqual(f.step.call_count,1)
+        self.assertEqual(self.current.state['tasks'][f.issue.identifier]['native_harness']['projection']['effect']['status'],
+                         'verified')
+        self.assertFalse(self.current.state['accepted_delivery'])
+        # Empty context is not a replacement for the original stopped native unit.
+        f.factory.reset_mock(); f.step.reset_mock()
+        self.write(f.runtime/'attempts'/f.issue.identifier/'receipt.json',{'status':'unknown'})
+        asyncio.run(self.current.continue_native_harness(f.factory))
+        f.factory.assert_not_called(); f.step.assert_not_called()
+        self.assertFalse(self.current._native_harness_refill_allowed(f.issue.identifier))
+
+    def test_linear_empty_context_rejects_wrong_phase_type_and_invocation_only(self):
+        f = self.native_harness_fixture()
+        original = json.loads(f.selected.read_text())
+        invocation = dict(version=1,closure_sha256='a'*64,host_confirmation_sha256='b'*64)
+        for phase,context in (('integration',{}),('release',{}),('linear',[]),('linear',None),
+                              ('linear',{'publisher_invocation':invocation})):
+            with self.subTest(phase=phase,context=context):
+                selection = json.loads(json.dumps(original))
+                selection['binding']['phase'], selection['context'] = phase, context
+                self.reseal_native_harness_selection(f,selection)
+                with self.assertRaisesRegex(AdmissionError,'native_harness_context'):
+                    adapter.CurrentWork(self.runtime,read_only=True)
+        f.factory.assert_not_called(); f.step.assert_not_called()
+
+    def test_linear_empty_context_preserves_nonempty_reference_checks(self):
+        f = self.native_harness_fixture()
+        original = self.current._native_harness_selection(f.issue.identifier)
+        self.assertEqual(set(original['context']),{'engine_root','engine_task','unit_review'})
+        self.assertEqual(adapter.CurrentWork(self.runtime,read_only=True)._native_harness_selection(f.issue.identifier),
+                         original)
+        # A nonempty legacy Linear context still qualifies every original ref.
+        Path(original['context']['unit_review']['path']).unlink()
+        with self.assertRaises(FileNotFoundError):
+            adapter.CurrentWork(self.runtime,read_only=True)
+
     def test_publisher_invocation_ingress_preserves_exact_metadata_and_selection_pin(self):
         f = self.native_harness_fixture()
         selection = json.loads(f.selected.read_text())
