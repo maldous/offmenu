@@ -110,6 +110,9 @@ def _config(raw, expected_hash, source_pins, dependency_pins):
         _check(c['sourceHead'] == SOURCE_HEAD)
         required = RELEASE_REQUIRED if c['version'] == 2 else REQUIRED
         source_files = RELEASE_SOURCE_FILES if c['version'] == 2 else SOURCE_FILES
+        if c['version'] == 1 and 'source_projection' in c['binding']:
+            required += ('src/offmenu/delivery/identity_source_projection.py',)
+            source_files += ('src/offmenu/delivery/identity_source_projection.py',)
         _check(type(source_pins) is dict and set(source_pins) == set(source_files)
                and all(_hex(h) for h in source_pins.values())
                and c['codePins'] == {name: source_pins[name] for name in required})
@@ -128,7 +131,8 @@ def _config(raw, expected_hash, source_pins, dependency_pins):
         fields = {'version', 'repository', 'pr_number', 'issue_id', 'owner', 'head', 'base', 'tree',
                   'policy_sha256', 'capacity_policy_sha256', 'validation_operation_key',
                   'outputs', 'head_branch', 'publication'}
-        _check(set(b) in (fields, fields | {'project_id', 'full_issue_acceptance_sha256'})
+        optional = {'source_projection'} if 'source_projection' in b else set()
+        _check(set(b) in (fields | optional, fields | optional | {'project_id', 'full_issue_acceptance_sha256'})
                and type(b['version']) is int and b['version'] == 2 and b['pr_number'] is None
                and b['repository'] == 'maldous/offmenu' and isinstance(c['logicalOwner'], str)
                and c['logicalOwner'] and b['owner'] == c['logicalOwner'])
@@ -145,7 +149,8 @@ def _config(raw, expected_hash, source_pins, dependency_pins):
         _check(set(plan) == {'operations', 'changedFiles'} and type(plan['operations']) is list
                and 2 <= len(plan['operations']) <= 128 and type(plan['changedFiles']) is dict
                and plan['changedFiles'] and all(_path(p) and _hex(h) for p, h in plan['changedFiles'].items())
-               and all(plan['changedFiles'].get(p) == h for p, h in b['outputs'].items()))
+               and all(plan['changedFiles'].get(p) == h for p, h in b['outputs'].items())
+               and ('source_projection' not in b or plan['changedFiles'] == b['outputs']))
         _check(b['publication'] == {'plan_sha256': _hash(_wire(plan)),
                                     'qualification_sha256': _hash(_wire(snapshot))})
         _plan(plan['operations'], b)
@@ -156,7 +161,9 @@ def _config(raw, expected_hash, source_pins, dependency_pins):
         for key in ('policy_sha256', 'capacity_policy_sha256'):
             _check(snapshot[key] == b[key])
         validation, review = snapshot['validation'], snapshot['review']
-        _check(all(validation[k] == b[k] and review[k] == b[k] for k in ('head', 'base'))
+        source_base = _source_projection(b, snapshot)
+        _check(validation['head'] == review['head'] == b['head']
+               and validation['base'] == review['base'] == source_base
                and validation['outputs'] == b['outputs']
                and validation['operation_key'] == b['validation_operation_key']
                and validation['capacity_policy_sha256'] == b['capacity_policy_sha256']
@@ -169,6 +176,34 @@ def _config(raw, expected_hash, source_pins, dependency_pins):
     except (KeyError, TypeError, AttributeError, ValueError, RecursionError) as exc:
         raise InstallError('Invalid config association') from exc
     return c
+
+
+def _source_projection(b, snapshot):
+    """Protected DATA association only; owner independently qualifies Git/unit proof."""
+    if 'source_projection' not in b:
+        return b['base']
+    p = b['source_projection']
+    _check(type(p) is dict and set(p) == {'version','profile','source','target','merge_tree',
+        'outputs','unit_sha256','operation_key','receipt','review_sha256'}
+        and type(p['version']) is int and p['version'] == 1 and p['profile'] == 'identity-client-focused')
+    s, t, receipt = p['source'], p['target'], p['receipt']
+    _check(type(s) is dict and set(s) == {'head','base','tree','branch'}
+        and type(t) is dict and set(t) == {'base','tree'}
+        and all(_hex(s[k], 40) for k in ('head','base','tree'))
+        and all(_hex(t[k], 40) for k in ('base','tree')) and _hex(p['merge_tree'], 40)
+        and s['head'] == b['head'] and s['tree'] == b['tree'] and s['branch'] == b['head_branch']
+        and t['base'] == b['base'] and p['outputs'] == b['outputs']
+        and not any(name.startswith(('docs/development/','tools/delivery/','tests/delivery/',
+                                    'src/offmenu/delivery/')) for name in p['outputs'])
+        and p['operation_key'] == b['validation_operation_key']
+        and all(_hex(p[k]) for k in ('unit_sha256','operation_key','review_sha256'))
+        and type(receipt) is dict and set(receipt) == {'path','sha256'} and _hex(receipt['sha256'])
+        and isinstance(receipt['path'], str) and receipt['path'].startswith('/')
+        and str(PurePosixPath(receipt['path'])) == receipt['path'] and '..' not in receipt['path'].split('/'))
+    n = snapshot['native_runtime']
+    _check(n['unit_sha256'] == p['unit_sha256'] and all(n['source'][k] == s[k]
+        for k in ('head','base','tree','branch')))
+    return s['base']
 
 
 def _release_config(c):
@@ -221,7 +256,7 @@ def _plan(operations, binding):
                    and op['readPath'] == route + '/' + op['expected'])
             if kind == 'commit':
                 _check(op['expected'] == head and body['tree'] == binding['tree']
-                       and body['parents'] == [binding['base']])
+                       and body['parents'] == [binding.get('source_projection', {}).get('source', {}).get('base', binding['base'])])
         elif kind == 'ref':
             _check(op['method'] == 'POST' and op['path'] == root + '/git/refs'
                    and op['expected'] is None and body == {'ref': 'refs/heads/' + branch, 'sha': head}

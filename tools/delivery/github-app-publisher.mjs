@@ -85,13 +85,49 @@ export function validateConfig(c, identity) {
     'tools/delivery/integration-gateway.mjs','src/offmenu/delivery/integration.py',
     'src/offmenu/delivery/engine.py','src/offmenu/__init__.py','src/offmenu/delivery/__init__.py'];
   if(c.version===2) required.push('tools/delivery/native_harness_contract.py','contracts/schemas/delivery-handoff-v1.schema.json','tools/delivery/release_qualification.py');
+  if(c.version===1 && Object.hasOwn(c.binding,'source_projection')) required.push('src/offmenu/delivery/identity_source_projection.py');
   check(c.codePins && required.every(p=>hex(c.codePins[p])) &&
     Object.entries(c.codePins).every(([p,h])=>required.includes(p)&&hex(h)) &&
     typeof c.workspace==='string' && c.workspace.startsWith('/') && !c.workspace.includes('/../') &&
     (c.version===2 || /^(feature|bugfix)\/[a-z0-9][a-z0-9/-]{0,159}$/.test(c.binding.head_branch) &&
     !c.binding.head_branch.includes('//') && !c.binding.head_branch.endsWith('/')));
   bytesJSON(c);
+  qualifySourceProjection(c);
   return c;
+}
+
+/** Optional sealed association: original reviewed commit, distinct API target.
+ * Git/Journal/unit proof qualification remains with the authenticated owner.
+ * This never relabels the original validation or manufactures a new candidate.
+ */
+export function qualifySourceProjection(c) {
+  const b=c.binding;
+  if(!Object.hasOwn(b,'source_projection')) return null;
+  const p=b.source_projection,s=p?.source,t=p?.target,n=c.snapshot.native_runtime;
+  check(c.version===1 && exact(p,['version','profile','source','target','merge_tree','outputs',
+    'unit_sha256','operation_key','receipt','review_sha256']) && p.version===1 &&
+    p.profile==='identity-client-focused' && exact(s,['head','base','tree','branch']) &&
+    exact(t,['base','tree']) && [s.head,s.base,s.tree,t.base,t.tree,p.merge_tree].every(v=>hex(v,40)) &&
+    s.head===b.head && s.tree===b.tree && s.branch===b.head_branch && t.base===b.base &&
+    same(p.outputs,b.outputs) && p.outputs && Object.getPrototypeOf(p.outputs)===Object.prototype &&
+    Object.entries(p.outputs).length>0 && Object.entries(p.outputs).every(([path,pin])=>
+      pathOK(path) && hex(pin) && !['docs/development/','tools/delivery/','tests/delivery/',
+        'src/offmenu/delivery/'].some(prefix=>path.startsWith(prefix))) &&
+    hex(p.unit_sha256) && hex(p.review_sha256) &&
+    hex(p.operation_key) && p.operation_key===b.validation_operation_key &&
+    exact(p.receipt,['path','sha256']) && hex(p.receipt.sha256) &&
+    typeof p.receipt.path==='string' && /^\/[a-zA-Z0-9_./-]{1,511}$/.test(p.receipt.path) &&
+    !p.receipt.path.includes('//') && !p.receipt.path.split('/').some(v=>v==='.'||v==='..') &&
+    n?.unit_sha256===p.unit_sha256 && n.source?.base===s.base &&
+    n.source?.head===s.head && n.source?.tree===s.tree && n.source?.branch===s.branch &&
+    c.snapshot.source_tree===s.tree &&
+    c.snapshot.validation?.head===s.head && c.snapshot.validation?.base===s.base &&
+    c.snapshot.validation?.operation_key===p.operation_key &&
+    same(c.snapshot.validation?.outputs,p.outputs) &&
+    c.snapshot.review?.head===s.head && c.snapshot.review?.base===s.base &&
+    c.snapshot.review?.independent===true && c.snapshot.review?.verdict==='accept' &&
+    same(c.snapshot.review?.findings,[]));
+  return p;
 }
 export function loadProtectedConfig({io=fs,identity={uid:process.getuid(),euid:process.geteuid(),
   gid:process.getgid(),egid:process.getegid()}}={}) {
@@ -155,6 +191,7 @@ const objectOperation=(kind,expected,body)=>({kind,method:'POST',path:`${ROOT}/g
  */
 export async function qualifyCandidate(c,{readObject,readChangedFile,branchHead}) {
   const b=c.binding;
+  const projection=qualifySourceProjection(c),sourceBase=projection?.source.base ?? b.base;
   check(branchHead===b.head && exact(c.plan,['operations','changedFiles']) &&
     Array.isArray(c.plan.operations) && c.plan.operations.length<=128);
   const object=async(type,id)=>{
@@ -162,10 +199,14 @@ export async function qualifyCandidate(c,{readObject,readChangedFile,branchHead}
     const raw=await readObject(type,id);check(Buffer.isBuffer(raw)&&raw.length<=LIMIT&&objectHash(type,raw)===id);return raw;
   };
   const commit=parseCommit(await object('commit',b.head));
-  check(commit.tree===b.tree && same(commit.parents,[b.base]));
+  check(commit.tree===b.tree && same(commit.parents,[sourceBase]));
   // Base headers can be signed/merge commits; only its immutable tree is needed.
-  const baseRaw=await object('commit',b.base);
+  const baseRaw=await object('commit',sourceBase);
   const baseTree=/^tree ([0-9a-f]{40})\n/.exec(baseRaw.toString('utf8'))?.[1];check(baseTree);
+  if(projection) {
+    const target=await object('commit',b.base);
+    check(/^tree ([0-9a-f]{40})\n/.exec(target.toString('utf8'))?.[1]===projection.target.tree);
+  }
   const operations=[],changedFiles={},seen=new Set();
   const add=operation=>{if(!seen.has(operation.expected)){seen.add(operation.expected);operations.push(operation);}};
   async function trees(head,base,prefix='',depth=0) {
@@ -189,7 +230,8 @@ export async function qualifyCandidate(c,{readObject,readChangedFile,branchHead}
   }
   await trees(commit.tree,baseTree);
   check(Object.keys(changedFiles).length>0 && same(changedFiles,c.plan.changedFiles) &&
-    Object.entries(b.outputs).every(([p,h])=>changedFiles[p]===h));
+    Object.entries(b.outputs).every(([p,h])=>changedFiles[p]===h) &&
+    (!projection || same(changedFiles,b.outputs)));
   operations.push(objectOperation('commit',b.head,commit));
   const tail=c.plan.operations.slice(operations.length);
   check(tail.length>=2 && tail.length<=3 && tail[0].kind==='ref' && tail[1].kind==='create-pr' &&
@@ -381,6 +423,7 @@ export function qualifyNativeRequest(c,request) {
   reviewWireBytes(request);check(exact(request,nativeKeys) && request.version===1 &&
     ['observe','step'].includes(request.mode));
   const n=c.snapshot.native_runtime,b=c.binding,s=n?.source;
+  const projection=qualifySourceProjection(c);
   check(exact(n,['issue_id','project_id','owner','unit_sha256','packet_sha256','source']) &&
     hex(n.unit_sha256) && hex(n.packet_sha256) &&
     n.owner===c.logicalOwner && n.owner===b.owner && n.issue_id===b.issue_id &&
@@ -389,7 +432,8 @@ export function qualifyNativeRequest(c,request) {
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(v)) &&
     s && s.repository===b.repository &&
     (c.version===2 ? same(s,b.candidate.source) && s.branch==='develop' && s.target==='main' :
-      s.branch===b.head_branch && s.base===b.base && s.head===b.head && s.tree===b.tree && s.target==='develop'));
+      s.branch===b.head_branch && s.base===(projection?.source.base ?? b.base) &&
+      s.head===b.head && s.tree===b.tree && s.target==='develop'));
   const identity={operation_id:fingerprint(b),issue_id:n.issue_id,project_id:n.project_id,owner:n.owner,
     unit_sha256:n.unit_sha256,packet_sha256:n.packet_sha256,source_sha256:fingerprint(s)};
   check(Object.entries(identity).every(([key,value])=>request[key]===value));

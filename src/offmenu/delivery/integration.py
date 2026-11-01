@@ -76,6 +76,8 @@ class Controller:
         version = binding.get('version')
         if version == 2:
             required = required | {'publication'}
+            if 'source_projection' in binding:
+                required = required | {'source_projection'}
         if (set(binding) not in (required, required | {'project_id', 'full_issue_acceptance_sha256'})
             or type(version) is not int or version not in (1, 2)):
             raise DeliveryError('Invalid integration binding')
@@ -104,6 +106,9 @@ class Controller:
                 or set(publication) != {'plan_sha256', 'qualification_sha256'}
                 or any(not re.fullmatch('[0-9a-f]{64}', str(v)) for v in publication.values())):
                 raise DeliveryError('Invalid publication binding')
+            if 'source_projection' in binding:
+                from .identity_source_projection import validate_projection
+                validate_projection(binding['source_projection'], binding)
         self._bind_state(directory, binding, claim_root, existing_only=_existing_only)
 
     def _bind_state(self, directory, binding, claim_root, *, existing_only=False):
@@ -228,7 +233,8 @@ class Controller:
             if (commit.get('sha') != pr.get('merge_commit_sha')
                 or snapshot.get('develop_contains_merge') is not True):
                 return self.result('merged-unverified',reason='awaiting-canonical-commit-and-develop-ancestry')
-            if (commit.get('parents') != [b['base'],b['head']] or commit.get('tree') != b['tree']):
+            merge_tree = b.get('source_projection', {}).get('merge_tree', b['tree'])
+            if (commit.get('parents') != [b['base'],b['head']] or commit.get('tree') != merge_tree):
                 return self.result('repair-required',reason='merged-tree-or-parent-readback-mismatch',
                     merge_commit_sha=commit['sha'],canonical_effect_verified=True,merge_effect='verified',
                     action={'kind':'prepare-corrective-candidate','repository':b['repository'],
@@ -291,16 +297,17 @@ class Controller:
             or snapshot.get('capacity_policy_sha256') != b['capacity_policy_sha256']):
             return self.result('quarantined',reason='policy-drift')
         validation = snapshot.get('validation',{})
+        source = b.get('source_projection', {}).get('source', b)
         if (validation.get('operation_key') != b['validation_operation_key']
-            or validation.get('status') != 'succeeded' or validation.get('head') != b['head']
-            or validation.get('base') != b['base']
+            or validation.get('status') != 'succeeded' or validation.get('head') != source['head']
+            or validation.get('base') != source['base']
             or validation.get('capacity_policy_sha256') != b['capacity_policy_sha256']
             or validation.get('outputs') != b['outputs']
             or validation.get('child_tree_gone') is not True
             or validation.get('reconcile_required') is not False):
             return self.result('awaiting-validation')
         review = snapshot.get('review',{})
-        if (review.get('head') != b['head'] or review.get('base') != b['base']
+        if (review.get('head') != source['head'] or review.get('base') != source['base']
             or review.get('independent') is not True or not review.get('evidence_id')):
             return self.result('awaiting-independent-review')
         if review.get('findings') or snapshot.get('unresolved_findings'):
@@ -396,7 +403,7 @@ class Controller:
             return graph.compile(checkpointer=saver).invoke({},
                 {'configurable': {'thread_id': self.key}, 'recursion_limit': 4})['result']
 
-    def prepare_publication(self, plan, snapshot):
+    def prepare_publication(self, plan, snapshot, *, source_repository=None):
         """Authenticated owner admission; no fabricated PR or merge qualification.
 
         The fixed helper pins the immutable binding and this entire owner-issued
@@ -410,17 +417,23 @@ class Controller:
             pins = b['publication']
             if fingerprint(plan) != pins['plan_sha256'] or fingerprint(snapshot) != pins['qualification_sha256']:
                 raise DeliveryError('Publication admission pin mismatch')
+            if 'source_projection' in b:
+                from .identity_source_projection import qualify_projection
+                if source_repository is None:
+                    raise DeliveryError('Identity projection requires protected publisher workspace')
+                qualify_projection(source_repository, b['source_projection'], b)
             validation, review = snapshot.get('validation', {}), snapshot.get('review', {})
+            source = b.get('source_projection', {}).get('source', b)
             if (snapshot.get('publisher_owner') != b['owner'] or snapshot.get('cancel_requested')
                 or snapshot.get('policy_sha256') != b['policy_sha256']
                 or snapshot.get('capacity_policy_sha256') != b['capacity_policy_sha256']
                 or validation.get('operation_key') != b['validation_operation_key']
-                or validation.get('status') != 'succeeded' or validation.get('head') != b['head']
-                or validation.get('base') != b['base'] or validation.get('outputs') != b['outputs']
+                or validation.get('status') != 'succeeded' or validation.get('head') != source['head']
+                or validation.get('base') != source['base'] or validation.get('outputs') != b['outputs']
                 or validation.get('capacity_policy_sha256') != b['capacity_policy_sha256']
                 or validation.get('child_tree_gone') is not True
                 or validation.get('reconcile_required') is not False
-                or review.get('head') != b['head'] or review.get('base') != b['base']
+                or review.get('head') != source['head'] or review.get('base') != source['base']
                 or review.get('independent') is not True or not review.get('evidence_id')
                 or review.get('verdict') != 'accept' or review.get('findings') != []
                 or snapshot.get('unresolved_findings') != []
@@ -833,7 +846,8 @@ def _publisher_request(controller, config, request):
         if request['index'] != index or request['action'] != expected:
             raise DeliveryError('Publisher exact admitted action mismatch')
     if operation == 'prepare':
-        return controller.prepare_publication(plan, config['snapshot'])
+        return controller.prepare_publication(plan, config['snapshot'],
+            **({'source_repository': config['workspace']} if 'source_projection' in binding else {}))
     if operation == 'status':
         with controller.ownership():
             return controller.status()
