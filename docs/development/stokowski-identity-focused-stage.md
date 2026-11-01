@@ -46,3 +46,21 @@ registers the genuine reviewed-source validation entry and its stage manifest
 with the same project-aware coordinator/catalog, then continues validation,
 review/publication/completion/refill. No historical current-admission,
 dispatch-intent or coding Journal may be manufactured for the direct native run.
+
+## Standalone dispatcher consumer
+
+UIF-133 also qualifies the frozen producer's single Python body in
+`windmill_dispatcher.py`, which Windmill deploys without checkout imports.
+The consumer parses literals only: outer workspace, embedded source oracle and
+its unique-key JSON spec. It qualifies that same v3 provenance and binds the
+workspace and immutable backend job ID, then checks the complete frozen wrapper
+hash after replacing only workspace/base/control/oracle literals. The embedded
+oracle has its separate existing complete-template hash. Node argv, environment,
+scratch, TAP acceptance and before/finally-after checks cannot vary.
+
+Only `identity-client-focused` accepts that three-token shell shape. The original
+two profiles retain their original complete three-body validators; the identity
+profile cannot borrow them. Resources, 180-second timeout, canonical shell,
+workspace, source/spec and operation-ID checks remain unchanged. Root deploys the
+reviewed dispatcher to the existing route before resuming the already-bound
+operation; this change needs no new bind, spec, producer or validation job ID.
