@@ -1239,11 +1239,12 @@ class CurrentWork:
         self.state['tasks'].setdefault(issue, {})['defer'] = reason
         self.save()
 
-    def _check_task_control_source(self, issue, manifest, source, *, observation=False):
-        """A frozen stage wrapper may precede its guarded protected controller.
+    def _check_task_control_source(self, issue, manifest, source, *, review=False, observation=False):
+        """Completed evidence may precede its guarded protected controller.
 
         This never substitutes the controller's head for the original candidate
         identity, nor permits historical coding against a changed checkout.
+        A native coding unit needs review mode and its genuine stopped success.
         context() has already run the sealed current-source guard.
         """
         head = subprocess.check_output(['git','-C',str(source),'rev-parse','HEAD'],text=True).strip()
@@ -1253,7 +1254,7 @@ class CurrentWork:
         if head == manifest['base_revision']:
             return
         task = manifest['tasks'][issue]
-        if ('stage' not in task or not self.owner_custody or source != SOURCE or
+        if (('stage' not in task and not review) or not self.owner_custody or source != SOURCE or
             self.owner_custody.get('source_root') != str(source) or head != self.config['source_head']):
             raise AdmissionError('current_task_source_drift')
         try:
@@ -1263,7 +1264,9 @@ class CurrentWork:
             raise AdmissionError('current_stage_control_ancestry') from error
         # Requalify the actual original origin, with the existing limited
         # observation mode retained for source-drift recovery/cancellation.
-        if task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1':
+        if 'stage' not in task:
+            self._completed_native_evidence(issue,self.private(self.entries[issue]['runtime']),manifest)
+        elif task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1':
             self.reviewed_origin(issue,task,observation=observation)
         else:
             self.stage_origin(issue,task)
@@ -1305,7 +1308,7 @@ class CurrentWork:
         source = Path(admission['source'])
         if not source.is_absolute() or source != source.resolve():
             raise AdmissionError('current_source_path')
-        self._check_task_control_source(issue,manifest,source,observation=observation)
+        self._check_task_control_source(issue,manifest,source,review=review,observation=observation)
         if not isinstance(admission['inputs'],dict):
             raise AdmissionError('current_declared_inputs_schema')
         recovery_admission = None
@@ -1600,6 +1603,10 @@ class CurrentWork:
         if 'stage' in task:
             view, _, _ = self.stage_origin(issue.identifier, task)
             return view.gate_binding(issue)
+        return self._native_unit_binding(issue,entry,runtime,manifest)
+
+    def _native_unit_binding(self, issue, entry, runtime, manifest):
+        task = manifest['tasks'][issue.identifier]
         request = read_record(runtime/'requests'/(issue.identifier+'.json'))
         binding = dict(branch=manifest['branch'], head=manifest['base_revision'],
                        owner=task['owner'], write_roots=task['allowed_paths'],
@@ -1625,6 +1632,102 @@ class CurrentWork:
                     admission_sha256=entry['admission_sha256'], operation_sha256=digest(binding),
                     request_sha256=file_sha(runtime/'requests'/(issue.identifier+'.json')),
                     native_receipt_sha256=file_sha(directory/'receipt.json'))
+
+    def _completed_native_evidence(self, identifier, runtime, manifest):
+        """Original stopped success, immutable native identity and finished Pool row.
+
+        This read-only proof does not create a validation binding or waive coding
+        admission. It is used only for completed validation/review continuation.
+        """
+        from types import SimpleNamespace
+        task = manifest['tasks'][identifier]
+        if 'stage' in task or not self.owner_custody:
+            raise AdmissionError('completed_native_owner_required')
+        entry = self.entries[identifier]
+        issue = SimpleNamespace(identifier=identifier,id=entry['issue_id'])
+        self._native_unit_binding(issue,entry,runtime,manifest)
+        directory = runtime/'attempts'/identifier
+        for name in ('dispatch-intent.json','intent.json','receipt.json'):
+            if directory/name != (directory/name).resolve():
+                raise AdmissionError('completed_native_artifact_path')
+        receipt = read_record(directory/'receipt.json')
+        binding = read_record(directory/'intent.json')['binding']
+        if (receipt.get('parent_binding') != binding or receipt.get('source_head') != manifest['base_revision']
+            or receipt.get('final_head') != manifest['base_revision']
+            or receipt.get('final_branch') != manifest['branch']
+            or receipt.get('source_identity_changed') is not False
+            or receipt.get('scope_violations') != [] or not receipt.get('session_id')
+            or receipt.get('turn_completed') is not True
+            or type(receipt.get('exit_code')) is not int or receipt['exit_code'] != 0
+            or not receipt.get('output_sha256')):
+            raise AdmissionError('completed_native_terminal_evidence')
+        policy = read_record(runtime/'capacity-policy.json')
+        database = Path(policy['symphony']['pool_path'])/'state.sqlite'
+        if not database.is_file() or database != database.resolve():
+            raise AdmissionError('completed_native_pool_missing')
+        from contextlib import closing
+        with closing(sqlite3.connect(database.as_uri()+'?mode=ro',uri=True)) as db:
+            row = db.execute('SELECT binding,fingerprint,status,outcome FROM leases WHERE id=?',
+                             (receipt['lease'],)).fetchone()
+        if not row or json.loads(row[0]) != binding or row[1:] != (digest(binding),'finished','succeeded'):
+            raise AdmissionError('completed_native_lease')
+        workspace = runtime/'workspaces'/identifier
+        if workspace != workspace.resolve():
+            raise AdmissionError('completed_native_workspace')
+        for args,expected in ((['rev-parse','HEAD'],manifest['base_revision']),
+                              (['branch','--show-current'],manifest['branch'])):
+            if subprocess.check_output(['git','-C',str(workspace),*args],text=True).strip() != expected:
+                raise AdmissionError('completed_native_workspace')
+        for name,expected in receipt['output_sha256'].items():
+            path = workspace/name
+            if (not path.resolve().is_relative_to(workspace) or path != path.resolve()
+                or not any(name == allowed or name.startswith(allowed+'/') for allowed in task['allowed_paths'])
+                or file_sha(path) != expected):
+                raise AdmissionError('completed_native_output')
+        from stokowski_worker import changed_paths
+        if set(changed_paths(workspace,manifest['base_revision'])) != set(receipt['output_sha256']):
+            raise AdmissionError('completed_native_output')
+        return receipt
+
+    def _native_contribution(self, issue, runtime, manifest, selected, spec):
+        """The exact committed native bytes have their own candidate branch."""
+        if (spec['profile'] != 'enrichment-resilience-focused' or spec['version'] != 1
+            or spec['base'] != manifest['base_revision']):
+            raise AdmissionError('native_contribution_profile')
+        receipt = self._completed_native_evidence(issue,runtime,manifest)
+        if type(selected['candidate_root']) is not str:
+            raise AdmissionError('native_contribution_root')
+        root = Path(selected['candidate_root'])
+        if (not root.is_absolute() or str(root) != selected['candidate_root'] or root != root.resolve()
+            or not root.is_dir() or any(p.is_symlink() for p in (root,*root.parents))):
+            raise AdmissionError('native_contribution_root')
+        def git(*args):
+            return subprocess.check_output(['git','-C',str(root),*args],text=True).strip()
+        if (git('rev-parse','--show-toplevel') != str(root) or git('rev-parse','HEAD') != spec['head']
+            or git('branch','--show-current') != spec['branch']
+            or git('status','--porcelain','--untracked-files=all')
+            or git('rev-list','--parents','-n','1',spec['head']).split() != [spec['head'],manifest['base_revision']]
+            or set(git('diff','--no-renames','--name-only',spec['base'],spec['head']).splitlines()) != set(spec['outputs'])
+            or spec['outputs'] != receipt['output_sha256']):
+            raise AdmissionError('native_contribution_source')
+        for name,expected in spec['outputs'].items():
+            path = root/name
+            if (path != path.resolve() or not path.resolve().is_relative_to(root) or file_sha(path) != expected
+                or git('ls-tree',spec['head'],'--',name).split()[:2] not in (['100644','blob'],['100755','blob'])):
+                raise AdmissionError('native_contribution_output')
+        return root
+
+    def _native_review_branch(self, issue, entry, runtime, manifest):
+        selected = read_record(runtime/'validation-bindings.json')['issues'][issue]
+        if 'candidate_root' not in selected:
+            return manifest['branch']
+        # A different branch is accepted only through the full original-native
+        # and exact committed-contribution qualifier, never packet self-labeling.
+        self.validation_binding(issue,entry)
+        from contextlib import closing
+        with closing(sqlite3.connect((runtime/'operations/operations.sqlite').as_uri()+'?mode=ro',uri=True)) as db:
+            row = db.execute('SELECT spec FROM operations WHERE key=?',(selected['operation_key'],)).fetchone()
+        return json.loads(row[0])['branch']
 
     def validation_binding(self, issue, entry):
         """Qualify existing native v1 state without constructing a writable Journal.
@@ -1662,9 +1765,11 @@ class CurrentWork:
             or bindings['history']):
             raise AdmissionError('current_validation_schema')
         selected = bindings['issues'][issue]
-        if (not isinstance(selected, dict) or set(selected) != {
+        selection_fields = {
             'operation_key','source_head','native_receipt_sha256','native_output_sha256',
-            'derivation','derivation_reason'} or selected['derivation'] != {}
+            'derivation','derivation_reason'}
+        if (not isinstance(selected, dict) or set(selected) not in (selection_fields,selection_fields | {'candidate_root'})
+            or selected['derivation'] != {}
             or selected['derivation_reason'] is not None):
             raise AdmissionError('current_validation_origin')
         key = selected['operation_key']
@@ -1691,7 +1796,8 @@ class CurrentWork:
             or row[0] != json.dumps(spec, sort_keys=True)
             or spec['issue'] != issue or spec['issue_id'] != entry['issue_id']
             or spec['owner'] != self.config['owner'] or task['owner'] != self.config['owner']
-            or spec.get('branch','feature/langgraph-delivery-standardization') != manifest['branch']
+            or ('candidate_root' not in selected and
+                spec.get('branch','feature/langgraph-delivery-standardization') != manifest['branch'])
             or selected['source_head'] != spec['head']
             or spec['base'] != manifest['base_revision']
             or spec['policy_sha256'] != self.config['policy_sha256']
@@ -1719,8 +1825,9 @@ class CurrentWork:
                 raise AdmissionError('current_validation_workspace')
         # Candidate objects belong to the task binding, independently of the
         # immutable coordinator checkout's branch, HEAD and working tree.
-        candidate_repo = None
-        for repository in dict.fromkeys((SOURCE, source)):
+        candidate_repo = (self._native_contribution(issue,runtime,manifest,selected,spec)
+                          if 'candidate_root' in selected else None)
+        for repository in (() if candidate_repo is not None else dict.fromkeys((SOURCE, source))):
             try:
                 subprocess.check_output(['git','-C',str(repository),'merge-base','--is-ancestor',
                                          spec['base'],spec['head']], stderr=subprocess.DEVNULL)
@@ -2386,6 +2493,8 @@ class CurrentWork:
         elif 'stage' in task:
             view, _, _ = self.stage_origin(issue, task)
             return view._check_unit_review(packet)
+        expected_branch = (origin_spec['branch'] if reviewed else
+            self._native_review_branch(issue,entry,runtime,manifest))
         b, snapshot, decision = (packet[k] for k in ('integration_binding','snapshot','decision'))
         review, validation = snapshot['review'], snapshot['validation']
         action = decision.get('action') or {}
@@ -2410,7 +2519,7 @@ class CurrentWork:
             self._check_prior_review_provenance(review, admission, tree, task['stage_binding']['inputs'])
         if (unit != packet['unit_binding'] or unit['project_id'] != manifest['project_id'] or
             b['issue_id'] != entry['issue_id'] or b['owner'] != self.config['owner'] or
-            b['head_branch'] != (origin_spec['branch'] if reviewed else manifest['branch']) or snapshot.get('publisher_owner') != b['owner'] or
+            b['head_branch'] != expected_branch or snapshot.get('publisher_owner') != b['owner'] or
             decision.get('binding_sha256') != digest(b) or
             (not standalone and (decision.get('status') != 'merge-intent' or decision.get('merge_effect') != 'pending' or
             action.get('kind') != 'merge-pr' or action.get('expected_head_sha') != b['head'] or
