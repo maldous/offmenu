@@ -1,6 +1,95 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {advanceIntegration,reviewWireBytes,reviewStandaloneValidation,reviewCompletedNativeValidation} from '../../tools/delivery/integration-gateway.mjs';
+
+test('fixed review transport scopes protected Python and Git trust to the installed source', async()=>{
+  const {execFileSync}=await import('node:child_process');
+  // Execute the actual module at synthetic import locations. Only OS custody,
+  // Git and process boundaries are simulated; no /opt files or child run.
+  const script=String.raw`
+    import assert from 'node:assert/strict';
+    import {SourceTextModule,SyntheticModule} from 'node:vm';
+    import {EventEmitter} from 'node:events';
+    import {readFileSync} from 'node:fs';
+    import {promisify,isDeepStrictEqual} from 'node:util';
+    import {createHash,randomBytes} from 'node:crypto';
+    import {fileURLToPath,pathToFileURL} from 'node:url';
+    const code=readFileSync('tools/delivery/integration-gateway.mjs','utf8');
+    const sha=b=>createHash('sha256').update(b).digest('hex');
+    const fixed='/opt/offmenu-stokowski-current/source';
+    for(const source of [fixed,'/tmp/legacy-source',fixed+'-other']) {
+      const protectedSource=source===fixed;
+      const python=protectedSource?'/opt/offmenu-stokowski-current/venv/bin/python':
+        '/home/user/src/offmenu/.delivery/stokowski/venv/bin/python';
+      const bytes=Buffer.from('synthetic qualified bytes');
+      const names=['stokowski_unit_review.py','integration-gateway.mjs','stokowski_stage.py',
+        'stokowski_adapter.py','stokowski_worker.py','stokowski_prepare.py','stokowski_operations.py',
+        'symphony_capacity.py','symphony_tasks.py','symphony_workspace.py','symphony_codex.py',
+        'symphony_protocol.py','windmill_runner.py'].map(n=>'tools/delivery/'+n);
+      names.push('src/offmenu/delivery/integration.py');
+      names.push('config/delivery-release-policy.json',
+        'contracts/schemas/delivery-handoff-v1.schema.json','repository-standard.json');
+      const context={python_sha256:sha(bytes),source_head:'a'.repeat(40),
+        source_sha256:Object.fromEntries(names.map(n=>[n,sha(bytes)])),
+        controller_directory:'/private/controller',issue:'UIF-117',unit_binding:{original:'unit'},
+        validation_receipt:{status:'succeeded'}};
+      let gitCalls=0,spawns=0;
+      const exec=()=>assert.fail('unexpected callback Git call');
+      exec[promisify.custom]=async(exe,args,options)=>{
+        assert.equal(exe,'/usr/bin/git');
+        assert.deepEqual(options.env,{PATH:'/usr/bin:/bin',LANG:'C.UTF-8'});
+        const prefix=protectedSource?['-c','safe.directory='+source,'-C',source]:['-C',source];
+        assert.deepEqual(args.slice(0,prefix.length),prefix);
+        const rest=args.slice(prefix.length);gitCalls++;
+        if(rest[0]==='rev-parse')return {stdout:Buffer.from(context.source_head+'\n')};
+        assert.equal(rest[0],'show');assert.ok(names.some(n=>rest[1]===context.source_head+':'+n));
+        return {stdout:bytes};
+      };
+      const spawn=(exe,args,options)=>{
+        assert.equal(exe,python);assert.deepEqual(args,['-B',source+'/tools/delivery/stokowski_unit_review.py']);
+        assert.equal(options.cwd,source);assert.equal(options.shell,false);assert.equal(options.detached,true);
+        assert.deepEqual(options.env,{PATH:'/usr/bin:/bin',PYTHONPATH:source+'/src',LANG:'C.UTF-8',
+          ...(protectedSource?{GIT_CONFIG_COUNT:'1',GIT_CONFIG_KEY_0:'safe.directory',GIT_CONFIG_VALUE_0:source}:{})});
+        spawns++;
+        const child=new EventEmitter();child.stdout=new EventEmitter();child.stderr=new EventEmitter();
+        child.stdin=new EventEmitter();child.stdin.end=input=>queueMicrotask(()=>{
+          const wire=JSON.parse(input);assert.equal(wire.version,2);assert.equal(wire.mode,'status');
+          assert.deepEqual(JSON.parse(wire.payload).context.source_sha256,context.source_sha256);
+          const reply={version:2,status:'retained',request_sha256:sha(wire.payload),issue:context.issue,
+            source_head:context.source_head,unit_binding:context.unit_binding,operation_key:'original-operation',
+            evidence_sha256:sha(wire.evidence)};
+          child.stdout.emit('data',Buffer.from(JSON.stringify(reply)));child.emit('close',0);
+        });return child;
+      };
+      const modules={'node:child_process':{spawn,execFile:exec},'node:util':{promisify,isDeepStrictEqual},
+        'node:crypto':{createHash,randomBytes},'node:url':{fileURLToPath},
+        'node:fs':{realpathSync:p=>p,readFileSync:p=>{
+          if(p===context.controller_directory+'/binding.json')return Buffer.from('{}');
+          assert.ok(p===python || names.some(n=>p===source+'/'+n));return bytes;
+        }}};
+      const module=new SourceTextModule(code+'\nexport {fixedUnitReviewWriter};',{
+        initializeImportMeta:meta=>{meta.url=pathToFileURL(source+'/tools/delivery/integration-gateway.mjs').href;}});
+      await module.link(name=>{const values=modules[name];assert.ok(values,name);
+        return new SyntheticModule(Object.keys(values),function(){for(const [k,v] of Object.entries(values))this.setExport(k,v);});});
+      await module.evaluate();
+      const writer=await module.namespace.fixedUnitReviewWriter(context);
+      assert.equal((await writer({snapshot:{validation:{operation_key:'original-operation'}},decision:{}})).status,'retained');
+      assert.equal(gitCalls,names.length+1);assert.equal(spawns,1);
+      for(const name of ['arbitrary.json','config/other.json','contracts/schemas/other.json',
+          '../repository-standard.json','config/../repository-standard.json',
+          'tools/delivery/../../repository-standard.json']) {
+        const invalid=structuredClone(context);invalid.source_sha256[name]=sha(bytes);
+        await assert.rejects(module.namespace.fixedUnitReviewWriter(invalid),/local_review_refused/);
+        assert.equal(spawns,1);
+      }
+    }
+  `;
+  const environment={...process.env};delete environment.NODE_TEST_CONTEXT;
+  try {
+    execFileSync(process.execPath,['--experimental-vm-modules','--input-type=module','-e',script],
+      {cwd:new URL('../../',import.meta.url),env:environment,timeout:10000,stdio:'pipe'});
+  } catch(error) {assert.fail(error.stderr?.toString() || error.message);}
+});
 function fixture(kind='merge-pr') {
   const action={kind,repository:'maldous/offmenu',pr_number:145,expected_head_branch:'feature/langgraph-delivery-standardization',expected_head_sha:'a'.repeat(40),expected_base_sha:'b'.repeat(40),issue_id:'issue',merge_commit_sha:'c'.repeat(40),validation_operation_key:'d'.repeat(64)};
   const f={calls:[],decision:{status:kind==='merge-pr'?'merge-intent':'linear-intent',action}};

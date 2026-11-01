@@ -50,7 +50,9 @@ from stokowski_adapter import CurrentWork, SOURCE, file_sha, read_record
 from symphony_capacity import AdmissionError, digest
 
 LIMIT = 1024 * 1024
-PYTHON = Path('/home/user/src/offmenu/.delivery/stokowski/venv/bin/python')
+PYTHON = (Path('/opt/offmenu-stokowski-current/venv/bin/python')
+          if SOURCE == Path('/opt/offmenu-stokowski-current/source')
+          else Path('/home/user/src/offmenu/.delivery/stokowski/venv/bin/python'))
 REQUIRED = {'tools/delivery/stokowski_unit_review.py',
             'tools/delivery/integration-gateway.mjs',
             'tools/delivery/stokowski_operations.py',

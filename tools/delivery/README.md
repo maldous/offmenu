@@ -308,6 +308,25 @@ consumes the unit review at refresh. Approval remains `accepted_delivery:false`.
 Unknown reviewer model/provider fields remain explicitly unavailable in the
 retained independent artifact, independent of the coding model request.
 
+For an original compact review with `accepted-real-native-result-and-exact-source-patch`
+disposition, the owner may additionally pin `historical_association` in that same
+completed evidence. Its `retained-native-source-review-v1` record binds the unit,
+integration binding, original checkpoint and raw review hashes; references the
+original result metadata and patch; and records the raw reviewer identity and
+native-session author with explicitly unobserved model/provider metadata. The
+consumer verifies those original byte pins, native receipt/session/lease/output
+bindings and the patch against the committed source delta. It accepts only the
+original checkpoint's exact compact head/base/independent/evidence-id/verdict/findings
+shape, preserving its observation and qualification digest. This is an association
+of retained acceptance, not a replacement independent review.
+
+The association's `runner_source: {commit,sha256}` must identify the original
+admitted coding base and its committed `tools/delivery/windmill_runner.py` blob.
+That blob must also match the candidate's runner and the original terminal
+receipt. Only this owner-selected completed record may use that historical hash;
+the active runner pin and all fresh execution requirements remain unchanged.
+Absent an association, the existing typed-review/current-runner contract applies.
+
 Adopt only independently reviewed source and exact owner-qualified configuration
 through the existing service owner. Historical v1 and standalone contracts remain
 unchanged. A source merge is not live adoption or proof of unattended continuity.

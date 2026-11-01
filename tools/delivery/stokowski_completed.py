@@ -30,7 +30,7 @@ def file_sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def pinned(ref, root):
+def pinned_bytes(ref, root):
     require(type(ref) is dict and set(ref) == {'path', 'sha256'})
     p = Path(ref['path'])
     require(p.is_absolute() and p == p.resolve() and p.is_relative_to(root)
@@ -38,14 +38,72 @@ def pinned(ref, root):
     st = p.stat()
     require(p.is_file() and st.st_uid == os.getuid() and not st.st_mode & 0o077
             and st.st_size <= LIMIT and file_sha(p) == ref['sha256'])
+    return p.read_bytes()
+
+
+def pinned(ref, root):
+    raw = pinned_bytes(ref, root)
     def unique(pairs):
         out = {}
         for k, v in pairs:
             require(k not in out)
             out[k] = v
         return out
-    return json.loads(p.read_bytes(), object_pairs_hook=unique,
+    return json.loads(raw, object_pairs_hook=unique,
                       parse_constant=lambda _: require(False))
+
+
+def historical_review(evidence, root, binding, native, unit, snapshot, manifest, raw):
+    """Associate retained compact source review; never rewrite its checkpoint.
+
+    Selection is the existing authenticated owner's exact completed-evidence pin.
+    This association is not a new review or authority for fresh runner execution.
+    """
+    a = pinned(evidence['historical_association'], root)
+    require(set(a) == {'version','kind','unit_binding_sha256','integration_binding_sha256',
+        'controller_checkpoint_sha256','raw_review_sha256','result_metadata','patch',
+        'reviewer','author','runner_source'}
+        and type(a['version']) is int and a['version'] == 1
+        and a['kind'] == 'retained-native-source-review-v1'
+        and a['unit_binding_sha256'] == digest(unit)
+        and a['integration_binding_sha256'] == digest(binding)
+        and a['controller_checkpoint_sha256'] == evidence['controller_checkpoint']['sha256']
+        and a['raw_review_sha256'] == evidence['independent_review']['sha256'])
+    require(set(raw) == {'reviewer','at','disposition','receipt_sha256','patch_sha256',
+                        'result_metadata_sha256','independent_tests','source_assessment','limits'}
+        and raw['disposition'] == 'accepted-real-native-result-and-exact-source-patch'
+        and raw['receipt_sha256'] == unit['native_receipt_sha256']
+        and raw['result_metadata_sha256'] == a['result_metadata']['sha256']
+        and raw['patch_sha256'] == a['patch']['sha256'])
+    metadata = pinned(a['result_metadata'], root)
+    patch = pinned_bytes(a['patch'], root)
+    require(metadata['receipt']['sha256'] == unit['native_receipt_sha256']
+        and metadata['patch']['sha256'] == a['patch']['sha256']
+        and metadata['session'] == native['session_id'] and metadata['lease'] == native['lease']
+        and metadata['exit_code'] == 0 and metadata['child_tree_gone'] is True
+        and metadata['scope_violations'] == []
+        and metadata['baseline'] == metadata['final_head'] == manifest['base_revision']
+        and metadata['output_sha256'] == native['output_sha256'] == binding['outputs'])
+    reviewer = a['reviewer']
+    require(type(raw['reviewer']) is str and raw['reviewer']
+        and reviewer == dict(identity=raw['reviewer'],
+            role='independent source reviewer; not coding author or integration writer',
+            requested_model=None,requested_effort=None,requested_provider=None,
+            observed_model=None,observed_provider=None,resolution_status='unobserved')
+        and a['author'] == 'native Codex session '+native['session_id']
+        and reviewer['identity'] not in (a['author'],binding['owner']))
+    require(snapshot['review'] == dict(head=binding['head'],base=binding['base'],
+        independent=True,evidence_id='independent-native-source-review:'+a['raw_review_sha256'],
+        verdict='accept',findings=[]))
+    runner = a['runner_source']
+    require(type(runner) is dict and set(runner) == {'commit','sha256'}
+        and runner['commit'] == manifest['base_revision']
+        and isinstance(runner['sha256'], str) and re.fullmatch('[0-9a-f]{64}',runner['sha256']))
+    review = dict(verdict='accepted',findings=[],reviewed_outputs=binding['outputs'],
+        integration_head=binding['head'],integration_base=binding['base'],
+        integration_tree=binding['tree'],native_receipt_sha256=unit['native_receipt_sha256'],
+        reviewer=reviewer)
+    return review, a, patch
 
 
 def checkpoint(ref, root, binding):
@@ -155,6 +213,11 @@ def qualify(current, issue):
     channels=checkpoint(evidence['controller_checkpoint'],root,b)
     require(channels['result']==controller and channels['observation']==snapshot)
 
+    association = None
+    if 'historical_association' in evidence:
+        review, association, original_patch = historical_review(
+            evidence, root, b, native, unit, snapshot, manifest, review)
+
     require(b['owner'] == current.config['owner'] == task['owner']
             and b['issue_id'] == entry['issue_id'] and b['repository'] == 'maldous/offmenu'
             and b['outputs'] == native['output_sha256'] == review['reviewed_outputs']
@@ -192,6 +255,13 @@ def qualify(current, issue):
         require(hashlib.sha256(blob('show',b['head']+':'+name)).hexdigest() == expected
                 and (runtime/'workspaces'/issue/name).resolve() == runtime/'workspaces'/issue/name
                 and file_sha(runtime/'workspaces'/issue/name) == expected)
+    if association is not None:
+        require(original_patch == blob('diff','--binary',manifest['base_revision'],b['head'],
+                                        '--',*sorted(b['outputs'])))
+        runner = association['runner_source']
+        require(hashlib.sha256(blob('show',runner['commit']+':tools/delivery/windmill_runner.py')).hexdigest()
+                == runner['sha256']
+                == hashlib.sha256(blob('show',b['head']+':tools/delivery/windmill_runner.py')).hexdigest())
     merge = snapshot['merge_commit']
     require(controller['status'] in ('merge-verified','accepted')
             and controller['merge_effect'] == 'verified' and controller['action'] is None
@@ -235,7 +305,8 @@ def qualify(current, issue):
             and validation['child_tree_gone'] is True and validation['reconcile_required'] is False
             and validation['job_id'] == request['job_id']
             and validation['command_sha256'] == command == b['validation_operation_key']
-            and validation['runner_sha256'] == current.config['source_sha256']['tools/delivery/windmill_runner.py']
+            and validation['runner_sha256'] == (association['runner_source']['sha256'] if association
+                else current.config['source_sha256']['tools/delivery/windmill_runner.py'])
             and validation['capacity_policy_sha256'] == current.config['policy_sha256'] == b['capacity_policy_sha256'])
     expected = dict(command_sha256=command, mode=request['mode'],timeout_seconds=request['timeout_seconds'],
         runner_sha256=validation['runner_sha256'],capacity_policy_sha256=validation['capacity_policy_sha256'],resources=request['resources'])
@@ -245,11 +316,12 @@ def qualify(current, issue):
             and len(engine['checks']) >= 2 and snapshot['validation'] == dict(operation_key=command,
                 status='succeeded',head=b['head'],base=b['base'],capacity_policy_sha256=b['capacity_policy_sha256'],
                 outputs=b['outputs'],child_tree_gone=True,reconcile_required=False))
-    require(snapshot['review']['reviewer'] == reviewer['identity']
-            and snapshot['review']['author'] == 'native Codex session '+native['session_id']
-            and snapshot['review']['independent'] is True and snapshot['review']['verdict'] == 'accept'
-            and snapshot['review']['findings'] == []
-            and snapshot['review']['evidence_id'] == 'sha256:'+evidence['independent_review']['sha256'])
+    if association is None:
+        require(snapshot['review']['reviewer'] == reviewer['identity']
+                and snapshot['review']['author'] == 'native Codex session '+native['session_id']
+                and snapshot['review']['independent'] is True and snapshot['review']['verdict'] == 'accept'
+                and snapshot['review']['findings'] == []
+                and snapshot['review']['evidence_id'] == 'sha256:'+evidence['independent_review']['sha256'])
     decision = dict(version=1,kind=KIND,status='completed-native-qualified',action=None,
         merge_effect='verified',binding_sha256=digest(b),qualification_sha256=controller['qualification_sha256'],
         merge_commit_sha=merge['sha'],completed_evidence_sha256=pin['sha256'])

@@ -56,7 +56,11 @@ export function reviewWireBytes(value) {
 async function fixedUnitReviewWriter(context) {
   reviewWireBytes(context);
   context = structuredClone(context);
-  if (sha(readFileSync(realpathSync(reviewPython))) !== context.python_sha256) throw Error('local_review_refused');
+  const installed = reviewSource === '/opt/offmenu-stokowski-current/source';
+  const python = installed ? '/opt/offmenu-stokowski-current/venv/bin/python' : reviewPython;
+  const gitTrust = installed ? ['-c',`safe.directory=${reviewSource}`] : [];
+  const gitEnvironment = installed ? {GIT_CONFIG_COUNT:'1',GIT_CONFIG_KEY_0:'safe.directory',GIT_CONFIG_VALUE_0:reviewSource} : {};
+  if (sha(readFileSync(realpathSync(python))) !== context.python_sha256) throw Error('local_review_refused');
   const required = [reviewEntry, 'tools/delivery/integration-gateway.mjs',
     'src/offmenu/delivery/integration.py', 'stokowski_stage',
     'stokowski_adapter','stokowski_worker','stokowski_prepare','stokowski_operations',
@@ -64,12 +68,14 @@ async function fixedUnitReviewWriter(context) {
     'symphony_protocol','windmill_runner'].map(n=>n.includes('/')?n:`tools/delivery/${n}.py`);
   if (!/^[0-9a-f]{40}$/.test(context.source_head) ||
       required.some(n=>!context.source_sha256[n])) throw Error('local_review_refused');
-  const git = async args => (await promisify(execFile)('/usr/bin/git', ['-C',reviewSource,...args], {
+  const git = async args => (await promisify(execFile)('/usr/bin/git', [...gitTrust,'-C',reviewSource,...args], {
     env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8'},timeout:2000,maxBuffer:reviewLimit,encoding:'buffer'
   })).stdout;
   if ((await git(['rev-parse','HEAD'])).toString().trim()!==context.source_head) throw Error('local_review_refused');
+  const policyFiles = ['config/delivery-release-policy.json',
+    'contracts/schemas/delivery-handoff-v1.schema.json','repository-standard.json'];
   for (const [name,hash] of Object.entries(context.source_sha256)) {
-    if (!/^(?:tools\/delivery|src\/offmenu\/delivery)\/[a-z0-9_./-]+$/.test(name) ||
+    if (!(/^(?:tools\/delivery|src\/offmenu\/delivery)\/[a-z0-9_./-]+$/.test(name) || policyFiles.includes(name)) ||
         name.split('/').some(p=>p==='.' || p==='..') ||
         realpathSync(`${reviewSource}/${name}`)!==`${reviewSource}/${name}` ||
         sha(readFileSync(`${reviewSource}/${name}`))!==hash ||
@@ -79,8 +85,8 @@ async function fixedUnitReviewWriter(context) {
     const input = JSON.stringify({version:2,mode,payload,evidence});
     if (Buffer.byteLength(input) > reviewLimit) throw Error('local_review_refused');
     return await new Promise((resolve,reject)=>{
-      const child = spawn(reviewPython, ['-B', `${reviewSource}/${reviewEntry}`], {
-        cwd:reviewSource, shell:false, detached:true, env:{PATH:'/usr/bin:/bin', PYTHONPATH:`${reviewSource}/src`, LANG:'C.UTF-8'},
+      const child = spawn(python, ['-B', `${reviewSource}/${reviewEntry}`], {
+        cwd:reviewSource, shell:false, detached:true, env:{PATH:'/usr/bin:/bin', PYTHONPATH:`${reviewSource}/src`, LANG:'C.UTF-8',...gitEnvironment},
         stdio:['pipe','pipe','pipe']
       });
       let output=[], size=0, failed=false;

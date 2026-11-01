@@ -217,6 +217,17 @@ class CurrentDispatchTests(unittest.TestCase):
             with self.assertRaises(AdmissionError):
                 transport.control_custody(current,1000,[source])
 
+    def test_review_transport_interpreter_selected_only_by_fixed_imported_source(self):
+        entry=Path(__file__).resolve().parents[2]/'tools/delivery/stokowski_unit_review.py'
+        fixed=Path('/opt/offmenu-stokowski-current/source')
+        for source in (fixed, self.source, Path(str(fixed)+'-other')):
+            with self.subTest(source=source),patch.object(adapter,'SOURCE',source):
+                spec=importlib.util.spec_from_file_location('review_interpreter_fixture',entry)
+                module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+                expected=(Path('/opt/offmenu-stokowski-current/venv/bin/python') if source==fixed
+                    else Path('/home/user/src/offmenu/.delivery/stokowski/venv/bin/python'))
+                self.assertEqual(module.PYTHON,expected)
+
     UIF_ROUTE = dict(project_id='ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0',
                      project_slug='21558318e036')
     UIF119 = dict(identifier='UIF-119', uuid='3e6839ad-2f22-4ab1-8f6f-973c882daabd',
@@ -692,9 +703,9 @@ class CurrentDispatchTests(unittest.TestCase):
             path.write_text(code.replace(original, f'const reviewPython = {json.dumps(sys.executable)};'))
         elif path.name == 'stokowski_unit_review.py':
             code = path.read_text()
-            original = "PYTHON = Path('/home/user/src/offmenu/.delivery/stokowski/venv/bin/python')"
+            original = "Path('/home/user/src/offmenu/.delivery/stokowski/venv/bin/python')"
             assert code.count(original) == 1
-            path.write_text(code.replace(original, f'PYTHON = Path({sys.executable!r})'))
+            path.write_text(code.replace(original, f'Path({sys.executable!r})'))
         elif path.name == 'stokowski_adapter.py':
             # Child processes need the same installed-owner isolation as setUp.
             code = path.read_text()
