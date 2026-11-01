@@ -140,7 +140,9 @@ def journal_acceptance(current, issue, reviewed_runtime, review, handoff, candid
     runtime, spec, selected, state, _ = current.reviewed_origin(issue.identifier, task)
     require(str(runtime) == reviewed_runtime and spec['version'] == 3,
             'journal_owner_runtime')
-    current._check_reviewed_terminal(spec, state, task['stage_binding']['inputs'])
+    receipt_path = runtime / 'validation-receipt.json'
+    terminal_receipt = current._check_reviewed_terminal(
+        spec, state, task['stage_binding']['inputs'], receipt_path=receipt_path)
     source = handoff['source']
     outputs = {item['path']: item['sha256'] for item in handoff['outputs']}
     require(handoff['issue_id'] == issue.id == spec['issue_id']
@@ -154,10 +156,11 @@ def journal_acceptance(current, issue, reviewed_runtime, review, handoff, candid
     operation = handoff.get('operation')
     require(type(operation) is dict, 'journal_operation_missing')
     ref = operation['receipt']
-    require(task['stage_binding']['inputs'].get(ref['path']) == ref['sha256'],
+    require(ref['path'] == str(receipt_path)
+            or task['stage_binding']['inputs'].get(ref['path']) == ref['sha256'],
             'journal_receipt_pin')
     receipt = pinned_private(current, ref)
-    require(receipt == review['validation_receipt']
+    require(receipt == terminal_receipt == review['validation_receipt']
             and digest(receipt) == state['receipt_sha256']
             and operation['id'] == selected['operation_key']
             and operation['job_id'] == state['logical_job_id'] == receipt['job_id']

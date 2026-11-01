@@ -47,7 +47,7 @@ class JournalAcceptanceTests(unittest.TestCase):
         self.reader = Mock(return_value=self.unit)
         self.origin = Mock(return_value=(self.root,self.spec,dict(operation_key='original-operation'),
                                          self.state,{}))
-        self.terminal = Mock()
+        self.terminal = Mock(return_value=self.receipt)
         stack = self.f.fixture.stack
         # Synthetic reader122 contract: no production original-reader bypass.
         stack.enter_context(patch.object(self.current, '_check_unit_review', self.reader))
@@ -86,7 +86,8 @@ class JournalAcceptanceTests(unittest.TestCase):
         self.assertEqual(context['validation']['origin'], 'reviewed-source-journal-v3')
         self.assertEqual(context['validation']['operation_id'], 'original-operation')
         self.reader.assert_called_once_with(self.review)
-        self.terminal.assert_called_once_with(self.spec,self.state,self.task['stage_binding']['inputs'])
+        self.terminal.assert_called_once_with(self.spec,self.state,self.task['stage_binding']['inputs'],
+                                             receipt_path=self.root/'validation-receipt.json')
         adapters.engine.assert_not_called()
         self.assertFalse(result['accepted_delivery'])
         self.assertFalse(result['refill_eligible'])
@@ -121,6 +122,29 @@ class JournalAcceptanceTests(unittest.TestCase):
         adapters = self.adapters()
         self.terminal.side_effect = ValueError('original Journal uncertain')
         self.assertEqual(self.f.consume(adapters=adapters)['status'], 'held')
+        self.f.step.assert_not_called()
+
+    def test_fixed_original_receipt_outside_frozen_six_inputs(self):
+        fixed = self.root/'validation-receipt.json'
+        fixed.write_bytes(Path(self.ref['path']).read_bytes())
+        # Actual admission shape: six immutable pins, none for a later receipt.
+        inputs = {str(self.root/('frozen-'+str(i)+'.json')):str(i)*64 for i in range(6)}
+        self.task['stage_binding']['inputs'] = inputs
+        self.ref['path'] = str(fixed)
+        self.f.bind('integration')  # The sealed owner packet pins this fixed reference.
+        before = copy.deepcopy(inputs)
+        result = self.f.consume(adapters=self.adapters())
+        self.assertEqual(result['status'], 'advanced', result)
+        self.assertEqual(inputs, before)
+        self.assertEqual(len(inputs), 6)
+        self.assertNotIn(str(fixed), inputs)
+        self.terminal.assert_called_once_with(self.spec,self.state,inputs,receipt_path=fixed)
+
+    def test_unpinned_noncanonical_receipt_path_is_refused(self):
+        # The bytes match, but only the fixed original path or frozen pins qualify.
+        self.task['stage_binding']['inputs'] = {}
+        result = self.f.consume(adapters=self.adapters())
+        self.assertEqual(result['reason'], 'journal_receipt_pin', result)
         self.f.step.assert_not_called()
 
     def test_release_ignores_integration_hook_and_requires_original_engine(self):

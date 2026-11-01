@@ -18,8 +18,14 @@ The hook then calls the same `reviewed_origin` and `_check_reviewed_terminal`
 readers. The selected runtime, issue/project/owner, source and output identities
 must match. The handoff operation must bind the original operation key, logical
 job, succeeded status, command/runner/policy hashes and receipt. Its receipt
-reference must be one of the stage's original file-byte pins; those bytes must
-equal the qualified packet receipt and retain the original Journal digest.
+reference must be the fixed original `reviewed_runtime/validation-receipt.json`
+path or one of the stage's original file-byte pins. The fixed path permits a
+receipt created after the frozen admission, without rewriting that admission.
+The terminal reader receives that exact fixed receipt_path and returns the
+fully qualified original receipt. The sealed handoff's file hash is checked by
+pinned_private; those bytes must equal both the terminal reader's returned
+receipt and the qualified packet receipt, retaining the original Journal digest.
+An arbitrary unpinned path cannot qualify even when its contents match.
 The handoff's existing effect/reconciliation gates also remain required.
 
 Normal `owner_adapters` supplies the optional seventh
