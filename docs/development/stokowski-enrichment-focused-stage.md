@@ -7,7 +7,9 @@
 /bin/node --test --test-concurrency=1 tests/web/enrichment-resilience.test.mjs
 ```
 
-The fixed Python wrapper runs in the exact candidate at `/offmenu`, checks
+The fixed Python wrapper runs in the exact candidate at
+`/offmenu/.delivery/stokowski/native-validation/<spec.head>` (validated 40-hex
+head), checks
 head/branch, direct contribution parent/base, clean tracked/untracked state and
 the sole committed output hash before and after execution. Scratch HOME/TMPDIR
 and XDG locations are outside the candidate; the fixed environment carries no
@@ -24,6 +26,13 @@ The standalone dispatcher recognizes the entire fixed wrapper and its literal
 spec through AST/data checks and a normalized body hash; no candidate argv,
 environment, callback or executable is selected from JSON. Existing profiles
 retain their commands. This profile does not run the Python delivery suite.
+Root prepares that new Engine-UID985 private clone under the existing host
+project bind: `/home/user/src/offmenu/.delivery/stokowski/native-validation/<head>`.
+It must contain the actual candidate head/tree/branch and be accessible to the
+existing execution actor. Neither the shared checkout HEAD/workfiles nor the
+SSH jail/mapping changes. The dispatcher requires this exact head-derived root;
+`/offmenu` itself, another head or an arbitrary path cannot qualify. Other
+profiles retain their existing roots. No workspace field is added to the spec.
 
 ## Same original runtime, separate contribution
 
