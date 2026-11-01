@@ -132,6 +132,7 @@ def journal_acceptance(current, issue, reviewed_runtime, review, handoff, candid
     review_coverage. Reopen its actual reviewed origin and terminal receipt;
     owner-selected context is an identity constraint, not an alternate reader.
     """
+    from symphony_capacity import digest as journal_digest
     require(candidate is None and handoff['source']['target'] == 'develop',
             'journal_integration_only')
     require(review.get('origin') == 'retained-typed-review-v1', 'journal_review_origin')
@@ -161,7 +162,7 @@ def journal_acceptance(current, issue, reviewed_runtime, review, handoff, candid
             'journal_receipt_pin')
     receipt = pinned_private(current, ref)
     require(receipt == terminal_receipt == review['validation_receipt']
-            and digest(receipt) == state['receipt_sha256']
+            and journal_digest(receipt) == state['receipt_sha256']
             and operation['id'] == selected['operation_key']
             and operation['job_id'] == state['logical_job_id'] == receipt['job_id']
             and operation['policy_sha256'] == spec['policy_sha256']

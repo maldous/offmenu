@@ -26,6 +26,8 @@ fully qualified original receipt. The sealed handoff's file hash is checked by
 pinned_private; those bytes must equal both the terminal reader's returned
 receipt and the qualified packet receipt, retaining the original Journal digest.
 An arbitrary unpinned path cannot qualify even when its contents match.
+Journal receipt-state digests use `symphony_capacity.digest` (compact sorted
+JSON). Engine digests and shared wire fingerprints retain their own formats.
 The handoff's existing effect/reconciliation gates also remain required.
 
 Normal `owner_adapters` supplies the optional seventh
@@ -50,3 +52,9 @@ the real owner factory and finite boundary with a synthetic reader122 trust seam
 including original-reader/terminal refusal, runtime/operation/receipt/source
 binding, and unchanged release refusal. It does not validate reader122 itself;
 the consolidated original-reader contract must be checked by its owner/reviewer.
+`RealTerminalDigestTests` additionally exercises the real original terminal
+reader with compact Journal state, six frozen nonreceipt inputs, body drift and
+sealed file-hash drift. Before consolidation its test-only
+`OFFMENU_TEST_TERMINAL_READER_SOURCE` may name owner122's exact source file;
+otherwise it uses the consolidated installed reader. No receipt reader is mocked
+in those tests, and the generated fixed command is only hashed, never executed.

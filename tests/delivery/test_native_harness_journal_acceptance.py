@@ -6,13 +6,16 @@ The separate retained-typed reader must be verified after owner consolidation.
 import copy
 from dataclasses import replace
 import hashlib
+import importlib.util
 import json
+import os
 from pathlib import Path
 import unittest
 from unittest.mock import Mock, patch
 
 import native_harness_runtime as runtime
 import test_native_harness_runtime as existing
+from symphony_capacity import AdmissionError, digest as journal_digest
 
 
 class JournalAcceptanceTests(unittest.TestCase):
@@ -36,7 +39,7 @@ class JournalAcceptanceTests(unittest.TestCase):
         self.spec = dict(version=3, issue_id=self.issue.id, owner=h['owner'],
             head=h['source']['head'], base=h['source']['base'], branch=h['source']['branch'],
             outputs={}, policy_sha256='3'*64, runner_sha256='2'*64)
-        self.state = dict(receipt_sha256=runtime.digest(self.receipt), logical_job_id='original-job')
+        self.state = dict(receipt_sha256=journal_digest(self.receipt), logical_job_id='original-job')
         self.task = dict(stage_binding=dict(inputs={self.ref['path']:self.ref['sha256']}))
         self.review = dict(origin='retained-typed-review-v1',
             integration_binding=dict(head=self.spec['head'], base=self.spec['base'],
@@ -163,6 +166,82 @@ class JournalAcceptanceTests(unittest.TestCase):
         adapters = self.adapters()
         with self.assertRaisesRegex(runtime.RuntimeHold, 'owner_context_fields'):
             adapters.authorize(self.current,self.issue,self.f.binding)
+
+
+class RealTerminalDigestTests(unittest.TestCase):
+    def setUp(self):
+        self.f = JournalAcceptanceTests(methodName='runTest')
+        self.f.setUp()
+        self.addCleanup(self.f.doCleanups)
+        # Default to the consolidated original reader. During separate-owner
+        # development this explicit test-only pin loads the exact reader122 file.
+        source = os.environ.get('OFFMENU_TEST_TERMINAL_READER_SOURCE')
+        module = existing.current_fixture.adapter
+        if source:
+            spec = importlib.util.spec_from_file_location('qualified_terminal_reader122', source)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+        reader = module.CurrentWork._check_reviewed_terminal
+        self.f.current._check_reviewed_terminal = reader.__get__(self.f.current)
+        import test_stokowski_identity_profile as identity
+        import stokowski_operations as operations
+        f = self.f
+        h = f.f.handoff
+        spec = identity.IdentityProfileTests().spec(issue=f.issue.identifier,
+            issue_id=f.issue.id, owner=h['owner'], head=h['source']['head'],
+            base=h['source']['base'], branch=h['source']['branch'])
+        f.spec.clear(); f.spec.update(spec)
+        args = operations.bridge_arguments(f.spec)
+        f.receipt.update(job_id=args['job_id'],
+            command_sha256=hashlib.sha256(args['command'].encode()).hexdigest(),
+            runner_sha256=spec['runner_sha256'], capacity_policy_sha256=spec['policy_sha256'])
+        f.state.update(status='succeeded', cancel_requested=False, reconcile_required=False,
+            accepted_output_sha256=spec['outputs'], acceptance_sha256=spec['acceptance_sha256'],
+            receipt_sha256=journal_digest(f.receipt), logical_job_id=args['job_id'])
+        self.assertNotEqual(journal_digest(f.receipt), runtime.digest(f.receipt))
+        fixed = f.root/'validation-receipt.json'
+        fixed.write_text(json.dumps(f.receipt))
+        f.ref.update(path=str(fixed), sha256=hashlib.sha256(fixed.read_bytes()).hexdigest())
+        pins = {}
+        for i in range(6):
+            path = f.root/('frozen-'+str(i)+'.json')
+            path.write_text('{}')
+            pins[str(path)] = hashlib.sha256(path.read_bytes()).hexdigest()
+        f.task['stage_binding']['inputs'] = pins
+        h['outputs'] = [dict(path=p,sha256=v) for p,v in spec['outputs'].items()]
+        h['operation'].update(job_id=args['job_id'],command_sha256=f.receipt['command_sha256'],
+            runner_sha256=spec['runner_sha256'],policy_sha256=spec['policy_sha256'])
+        f.review['integration_binding']['outputs'] = spec['outputs']
+        f.f.bind('integration')
+
+    def test_real_terminal_compact_journal_receipt_advances(self):
+        f = self.f
+        result = f.f.consume(adapters=f.adapters())
+        self.assertEqual(result['status'], 'advanced', result)
+        self.assertNotIn(f.ref['path'], f.task['stage_binding']['inputs'])
+        self.assertEqual(len(f.task['stage_binding']['inputs']), 6)
+
+    def test_real_terminal_rejects_body_drift_and_sealed_hash_drift(self):
+        f = self.f
+        path = Path(f.ref['path'])
+        original = path.read_bytes()
+        # Original Journal digest rejects changed body, even if otherwise valid.
+        body = dict(f.receipt, output_bytes={'stdout':1})
+        path.write_text(json.dumps(body))
+        with self.assertRaisesRegex(AdmissionError, 'reviewed_source_terminal_receipt_missing'):
+            f.current._check_reviewed_terminal(f.spec,f.state,
+                f.task['stage_binding']['inputs'],receipt_path=path)
+        result = f.f.consume(adapters=f.adapters())
+        self.assertEqual(result['status'], 'held', result)
+        self.assertEqual(result['reason'], 'AdmissionError')
+        f.f.step.assert_not_called()
+        # Identical body with different serialization passes the real reader,
+        # then fails the independently sealed handoff file-byte hash.
+        path.write_text(json.dumps(f.receipt,indent=2))
+        result = f.f.consume(adapters=f.adapters())
+        self.assertEqual(result['reason'], 'private_artifact_drift', result)
+        f.f.step.assert_not_called()
+        path.write_bytes(original)
 
 
 if __name__ == '__main__':
