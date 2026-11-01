@@ -6,6 +6,7 @@ import {DatabaseSync} from 'node:sqlite';
 import {build} from 'esbuild';
 import {Miniflare, createFetchMock} from 'miniflare';
 import {workerRuntimeBuildOptions} from '../../scripts/worker-build-options.mjs';
+import {createOffMenuIdentityClient} from '../../apps/web/src/offmenu-identity-client.js';
 
 const origin = 'https://offmenu.test';
 const compiled = new Map();
@@ -58,11 +59,40 @@ export default {async fetch(request, env, ctx) {
         headers: {Origin: requestOrigin, 'Content-Type': 'application/json', 'cf-connecting-ip': '192.0.2.19',
           ...(cookie ? {Cookie: cookie} : {}), ...(bearer ? {Authorization: 'Bearer ' + bearer} : {}), ...headers},
         ...(body === undefined ? {} : {body: JSON.stringify(body)})});
-    return {worker, db, request, legacyCalls: () => legacyCalls};
+    // Synthetic browser transport: cookies stay inside this fixture, never in client results.
+    const jar = new Map(), clientCalls = [];
+    const clientRequest = async (path, options) => {
+      const url = new URL(path, origin);
+      assert.equal(url.origin, origin);
+      assert.equal(options.credentials, 'same-origin');
+      assert.equal(options.redirect, 'manual');
+      const headers = new Headers(options.headers);
+      assert.equal(headers.has('Authorization'), false);
+      assert.equal(headers.has('Cookie'), false);
+      headers.set('Origin', origin);
+      headers.set('cf-connecting-ip', '192.0.2.19');
+      if (jar.size) headers.set('Cookie', [...jar].map(([name, value]) => `${name}=${value}`).join('; '));
+      const response = await worker.dispatchFetch(url.href, {...options, headers});
+      let clearedSession = false;
+      for (const cookie of response.headers.getSetCookie()) {
+        const pair = cookie.split(';')[0], split = pair.indexOf('=');
+        const name = pair.slice(0, split), value = pair.slice(split + 1);
+        if (name === '__Secure-offmenu-auth.session_token') {
+          for (const flag of [/HttpOnly/i, /Secure/i, /SameSite=Lax/i]) assert.match(cookie, flag);
+          clearedSession = /Max-Age=0(?:;|$)/i.test(cookie);
+        }
+        if (/Max-Age=0(?:;|$)/i.test(cookie)) jar.delete(name);
+        else jar.set(name, value);
+      }
+      clientCalls.push({path: url.pathname, method: options.method, status: response.status,
+        hasCookie: headers.has('Cookie'), clearedSession});
+      return response;
+    };
+    return {worker, db, request, clientRequest, clientCalls, legacyCalls: () => legacyCalls};
   } catch (error) {await worker.dispose(); throw error;}
 }
 
-async function signIn(request) {
+async function verifiedSignup(request) {
   const body = {email: 'dispatcher@example.test', password: 'SyntheticOnly_Dispatcher!234', name: 'Dispatcher'};
   const rejected = await request('/api/auth/sign-up/email', {method: 'POST', body, requestOrigin: 'https://other.test'});
   assert.equal(rejected.status, 403);
@@ -74,6 +104,11 @@ async function signIn(request) {
   assert(verification.headers.get('location'));
   assert.equal(verification.headers.get('cache-control'), 'no-store');
   assert.equal(verification.headers.get('x-content-type-options'), 'nosniff');
+  return body;
+}
+
+async function signIn(request) {
+  const body = await verifiedSignup(request);
   const signed = await request('/api/auth/sign-in/email', {method: 'POST', body});
   assert.equal(signed.status, 200);
   assert.equal(signed.headers.get('cache-control'), 'no-store');
@@ -84,6 +119,52 @@ async function signIn(request) {
   for (const flag of [/HttpOnly/, /Secure/, /SameSite=Lax/]) assert.match(session, flag);
   return {cookie: session.split(';')[0], user: (await signed.json()).user};
 }
+
+test('real identity client completes the mounted native cookie journey with isolated private state', async () => {
+  const {worker, db, request, clientRequest, clientCalls, legacyCalls} = await fixture({mode: 'better-auth', configured: true});
+  try {
+    const credentials = await verifiedSignup(request);
+    const nativeUser = await db.prepare('SELECT id FROM auth_user WHERE email=?').bind(credentials.email).first();
+    assert.equal(typeof nativeUser.id, 'string');
+    assert(nativeUser.id.length > 0);
+    const rows = [[nativeUser.id, 17, 'synthetic-owner-private'],
+      ['guest', 3, 'synthetic-guest-local'], ['Other:Opaque / owner', 29, 'synthetic-other-private']];
+    for (const [id, revision, sentinel] of rows)
+      await db.prepare('INSERT INTO user_state(user_id,revision,state_json,updated_at) VALUES(?,?,?,?)')
+        .bind(id, revision, JSON.stringify({sentinel}), '2026-10-25T00:00:00Z').run();
+    const before = (await db.prepare('SELECT * FROM user_state ORDER BY user_id').all()).results;
+    const privateState = () => clientRequest('/api/state', {method: 'GET', credentials: 'same-origin', redirect: 'manual'});
+    const client = createOffMenuIdentityClient({mode: 'better-auth', request: clientRequest,
+      netlify: {getUser() {assert.fail('Unexpected legacy client lookup');},
+        refreshSession() {assert.fail('Unexpected legacy client refresh');}}});
+    assert.equal((await privateState()).status, 401);
+    clientCalls.length = 0;
+    const user = await client.login(credentials.email, credentials.password);
+    assert.deepEqual(user, {id: nativeUser.id, name: credentials.name, email: credentials.email, emailVerified: true});
+    assert.deepEqual(clientCalls.map(({path, method, status, hasCookie}) => ({path, method, status, hasCookie})), [
+      {path: '/api/auth/sign-in/email', method: 'POST', status: 200, hasCookie: false},
+      {path: '/api/auth/get-session', method: 'GET', status: 200, hasCookie: true},
+    ]);
+    assert.deepEqual(await client.getUser(), user);
+    assert.equal(await client.refreshSession(), undefined);
+    assert.deepEqual(clientCalls.slice(2).map(({path, hasCookie}) => ({path, hasCookie})), [
+      {path: '/api/auth/get-session', hasCookie: true}, {path: '/api/auth/get-session', hasCookie: true},
+    ]);
+    const own = await privateState();
+    assert.equal(own.status, 200);
+    assert.deepEqual(await own.json(), {revision: 17, state: {sentinel: 'synthetic-owner-private'}, updated_at: '2026-10-25T00:00:00Z'});
+    const logoutStart = clientCalls.length;
+    assert.equal(await client.logout(), undefined);
+    assert.deepEqual(clientCalls.slice(logoutStart), [
+      {path: '/api/auth/sign-out', method: 'POST', status: 200, hasCookie: true, clearedSession: true},
+      {path: '/api/auth/get-session', method: 'GET', status: 200, hasCookie: false, clearedSession: false},
+    ]);
+    assert.equal(await client.getUser(), null);
+    assert.equal((await privateState()).status, 401);
+    assert.deepEqual((await db.prepare('SELECT * FROM user_state ORDER BY user_id').all()).results, before);
+    assert.equal(legacyCalls(), 0);
+  } finally {await worker.dispose();}
+});
 
 test('default export retains missing/explicit Netlify mode, proxy restrictions and opaque ownership', async () => {
   for (const mode of [undefined, 'netlify']) {
