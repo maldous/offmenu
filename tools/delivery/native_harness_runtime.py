@@ -393,6 +393,7 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
     from pathlib import Path
     import hashlib
     selected = json.loads(json.dumps(selection, allow_nan=False))
+    helper_calls = [0]
     def authorize(owner, native_issue, bound):
         require(owner is current and native_issue.id == issue.id and bound == binding,
                 'owner_factory_binding')
@@ -435,8 +436,13 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
         require(fingerprint(actual) == fingerprint(selected)
                 and set(actual) == {'binding', 'packet', 'context'}
                 and actual['binding'] == asdict(binding), 'owner_selection_drift')
-        require(set(actual['context']) == {'engine_root', 'engine_task', 'unit_review'},
+        require(set(actual['context']) in (
+                    {'engine_root', 'engine_task', 'unit_review'},
+                    {'engine_root', 'engine_task', 'unit_review', 'publisher_invocation'}),
                 'owner_context_fields')
+        if 'publisher_invocation' in actual['context']:
+            require(binding.phase in ('integration', 'release'), 'publisher_invocation_phase')
+            invocation_capability(actual['context']['publisher_invocation'])
         return True
     def load(bound):
         authorize(current, issue, bound)
@@ -491,10 +497,202 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
         if bound.phase == 'linear':
             adapter, action = linear(bound)
             return await adapter.observe(current, bound, action)
+        if 'publisher_invocation' in selected['context']:
+            return await invocation_transaction(current, bound, load(bound), selected, 'observe',
+                                                helper_calls, helper_authorize)
         return await fixed_publisher_rpc(bound, load(bound), 'observe')
     async def step(bound, context):
         if bound.phase == 'linear':
             adapter, action = linear(bound, context)
             return await adapter.step(current, bound, action)
+        if 'publisher_invocation' in selected['context']:
+            return await invocation_transaction(current, bound, load(bound), selected, 'step',
+                                                helper_calls, helper_authorize)
         return await fixed_publisher_rpc(bound, load(bound), 'step')
+    def helper_authorize(owner, bound):
+        require(authorize(owner, issue, bound) is True, 'publisher_invocation_authority')
+        require(fingerprint(current.gate_binding(issue, observation=True)) == bound.unit_sha256,
+                'publisher_invocation_unit_drift')
+        return True
     return OwnerAdapters(authorize, load, engine, review, observe, step)
+
+
+# Optional existing-host capability. No selector or identity comes from JSON.
+PUBLISHER_HELPER_ARGV = ('/usr/bin/sudo', '-n', '-u', '#984', '-g', '#976', '--',
+    '/opt/offmenu-publisher/venv/bin/python', '-I', '-B',
+    '/opt/offmenu-publisher/tools/delivery/native_publisher_invocation.py')
+INVOCATIONS = 'native_harness_publisher_invocations'
+
+
+def invocation_capability(value):
+    import re
+    require(type(value) is dict and set(value) == {
+        'version', 'closure_sha256', 'host_confirmation_sha256'}
+        and type(value['version']) is int and value['version'] == 1
+        and all(type(value[key]) is str and re.fullmatch('[0-9a-f]{64}', value[key])
+                for key in ('closure_sha256', 'host_confirmation_sha256')),
+        'publisher_invocation_capability')
+    return json.loads(json.dumps(value))
+
+
+async def fixed_invocation_wire(envelope):
+    """Only own sudo is reaped here; privileged descendants need helper proof."""
+    import asyncio
+    payload = json.dumps(envelope, sort_keys=True, ensure_ascii=True, allow_nan=False).encode()
+    require(len(payload) <= 16384, 'publisher_invocation_request_bound')
+    process = await asyncio.create_subprocess_exec(*PUBLISHER_HELPER_ARGV,
+        cwd='/', env={'PATH': '/usr/bin:/bin', 'LANG': 'C.UTF-8'}, close_fds=True,
+        start_new_session=True, stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE)
+    async def read(stream):
+        raw = bytearray()
+        while True:
+            chunk = await stream.read(4096)
+            if not chunk:
+                return bytes(raw)
+            raw.extend(chunk)
+            require(len(raw) <= 65536, 'publisher_invocation_response_bound')
+    tasks = []
+    try:
+        process.stdin.write(payload)
+        tasks = [asyncio.create_task(read(process.stdout)), asyncio.create_task(read(process.stderr)),
+                 asyncio.create_task(process.wait())]
+        await process.stdin.drain()
+        process.stdin.close()
+        stdout, _, code = await asyncio.wait_for(asyncio.gather(*tasks), timeout=25)
+        require(code == 0, 'publisher_invocation_transport_unknown')
+        return stdout
+    finally:
+        if process.returncode is None:
+            try:
+                process.kill()  # This caller owns sudo, NOT the privileged child tree.
+            except (ProcessLookupError, PermissionError):
+                pass
+        await asyncio.wait_for(process.wait(), timeout=3)
+        for task in tasks:
+            if not task.done():
+                task.cancel()
+        if tasks:
+            await asyncio.gather(*tasks, return_exceptions=True)
+
+
+def invocation_projection(module, value, envelope, capability, phase):
+    # The real pinned helper validates its ORIGINAL durable same-supervisor
+    # terminal proof. No caller ECHILD, census or sudo wait substitutes for it.
+    value = module.validate_result(value, envelope, capability['closure_sha256'])
+    require(value['status'] == 'complete' and value['receipt'] is not None,
+            'publisher_invocation_unresolved')
+    terminal = value['receipt']['body']['terminal']
+    require(terminal['outcome'] == 'succeeded' and terminal['child_tree_gone'] is True
+            and value['response'] is not None, 'publisher_invocation_native_outcome_held')
+    response = publisher_response(value['response'], envelope['request'], phase)
+    require(response['status'] not in ('pending', 'unknown'), 'publisher_native_outcome_held')
+    return dict(operation_id=envelope['request']['operation_id'], status=response['status'],
+                child_tree_gone=True)
+
+
+async def invocation_transaction(current, binding, packet, selection, mode, calls, authorize):
+    """One helper call per constructed finite boundary; same-UUID recovery only."""
+    from dataclasses import asdict
+    from pathlib import Path
+    from uuid import uuid4
+    import hashlib
+    import native_publisher_invocation as module
+    require(current.config['source_sha256'].get('tools/delivery/native_publisher_invocation.py') ==
+            hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest(), 'publisher_invocation_source_pin')
+    capability = invocation_capability(selection['context']['publisher_invocation'])
+    require(authorize(current, binding) is True, 'publisher_invocation_authority')
+    selected_sha = fingerprint(selection)
+    records = current.state.get(INVOCATIONS, {})
+    require(type(records) is dict, 'publisher_invocation_custody')
+    record = records.get(binding.operation_id)
+    if record is not None:
+        require(type(record) is dict and set(record) == {
+            'version', 'binding', 'selection_sha256', 'capability', 'invocations'}
+            and type(record['version']) is int and record['version'] == 1
+            and record['binding'] == asdict(binding) and record['selection_sha256'] == selected_sha
+            and record['capability'] == capability and type(record['invocations']) is list
+            and 1 <= len(record['invocations']) <= 128, 'publisher_invocation_rebind')
+        for old in record['invocations']:
+            require(type(old) is dict and set(old) == {'envelope', 'last_request', 'status', 'result'}
+                    and old['status'] in ('pending', 'unknown', 'complete'), 'publisher_invocation_record')
+            original = module.request(module.wire(old['envelope']))
+            require(original['mode'] == 'invoke'
+                    and original['request'] == publisher_request(binding, packet, original['request']['mode']),
+                    'publisher_invocation_original_request')
+            last = module.request(module.wire(old['last_request']))
+            require(last['invocation_id'] == original['invocation_id']
+                    and last['request'] == original['request'], 'publisher_invocation_transport_request')
+            if old['result'] is not None:
+                validated = module.validate_result(old['result'], original, capability['closure_sha256'])
+                if validated['receipt'] is not None:
+                    require(validated['receipt']['body']['intent']['phase'] == binding.phase,
+                            'publisher_invocation_phase')
+                if validated['response'] is not None:
+                    publisher_response(validated['response'], original['request'], binding.phase)
+            if old['status'] == 'complete':
+                require(old['result'] is not None and old['result']['status'] == 'complete',
+                        'publisher_invocation_completion')
+        require(all(old['status'] == 'complete' for old in record['invocations'][:-1]),
+                'publisher_invocation_prior_unresolved')
+        ids = [old['envelope']['invocation_id'] for old in record['invocations']]
+        require(len(ids) == len(set(ids)), 'publisher_invocation_duplicate_identity')
+    latest = record['invocations'][-1] if record else None
+    reobserve = False
+    if mode == 'observe' and latest and latest['status'] == 'complete':
+        try:
+            prior = invocation_projection(module, latest['result'], latest['envelope'], capability, binding.phase)
+        except RuntimeHold as error:
+            require(str(error) in ('publisher_invocation_native_outcome_held',
+                                   'publisher_native_outcome_held'), 'publisher_invocation_contradiction')
+            prior = None
+        # Readiness alone grants no refill: ONE later step goes back through the
+        # privileged helper's fresh prior-receipt/Controller gates. Verified
+        # effects are instead re-read from their protected original receipt;
+        # caller-cached JSON alone must not authorize final-unit/refill progress.
+        if prior and prior['status'] == 'ready' and latest['envelope']['request']['mode'] == 'observe':
+            return prior
+        reobserve = bool(prior and prior['status'] in ('verified', 'denied', 'failed'))
+    if calls[0]:
+        raise RuntimeHold('publisher_next_boundary_required')
+    if latest and (latest['status'] != 'complete' or reobserve):
+        # A lost/malformed/absent reply is not proof that invoke never executed.
+        # Observe this UUID with the ORIGINAL inner request, even if it was step.
+        envelope = {**latest['envelope'], 'mode': 'observe'}
+    else:
+        if mode == 'step':
+            require(latest is not None and latest['envelope']['request']['mode'] == 'observe'
+                    and invocation_projection(module, latest['result'], latest['envelope'],
+                                              capability, binding.phase)['status'] == 'ready',
+                    'publisher_readiness_required')
+        elif latest is not None:
+            # Only the ORIGINAL durable kernel-stopped proof permits a fresh
+            # supervised READONLY reconciliation. Native null/pending/unknown is
+            # never verified and cannot authorize another step/action replay.
+            proven = module.validate_result(latest['result'], latest['envelope'], capability['closure_sha256'])
+            require(proven['status'] == 'complete', 'publisher_invocation_unresolved')
+        envelope = dict(version=1, mode='invoke', invocation_id=str(uuid4()),
+                        request=publisher_request(binding, packet, mode))
+        module.request(module.wire(envelope))
+        if record is None:
+            record = dict(version=1, binding=asdict(binding), selection_sha256=selected_sha,
+                          capability=capability, invocations=[])
+            current.state.setdefault(INVOCATIONS, {})[binding.operation_id] = record
+        require(len(record['invocations']) < 128, 'publisher_invocation_budget')
+        latest = dict(envelope=json.loads(json.dumps(envelope)),
+                      last_request=json.loads(json.dumps(envelope)), status='pending', result=None)
+        record['invocations'].append(latest)
+    latest['last_request'] = json.loads(json.dumps(envelope))
+    latest['status'] = 'pending'
+    current.save()  # EXACT current outer+inner intent, before EVERY helper call.
+    calls[0] += 1
+    try:
+        raw = await fixed_invocation_wire(envelope)
+        value = module.validate_result(module.decode(raw), envelope, capability['closure_sha256'])
+        latest.update(status='complete' if value['status'] == 'complete' else 'unknown', result=value)
+        current.save()
+    except BaseException:
+        latest['status'] = 'unknown'
+        current.save()
+        raise
+    return invocation_projection(module, value, envelope, capability, binding.phase)

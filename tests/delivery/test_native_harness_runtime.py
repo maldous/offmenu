@@ -564,6 +564,11 @@ class SealedCurrentFactoryTests(unittest.TestCase):
             'tools/delivery/native_harness_linear.py':native_harness_linear.__file__}
         for path in Path(engine.__file__).parent.glob('*.py'):
             sources['src/offmenu/delivery/'+path.name]=path
+        try:
+            import native_publisher_invocation
+            sources['tools/delivery/native_publisher_invocation.py']=native_publisher_invocation.__file__
+        except ImportError:
+            pass  # The absent optional capability does not load its helper.
         sources['src/offmenu/__init__.py']=Path(engine.__file__).parent.parent/'__init__.py'
         for name,path in sources.items():
             target=source/name;target.parent.mkdir(parents=True,exist_ok=True)
@@ -582,6 +587,8 @@ class SealedCurrentFactoryTests(unittest.TestCase):
                      unit_review=artifact('original-review.json',{}))
         selection=dict(binding=asdict(f.binding),packet=artifact('native-packet.json',f.packet),context=context)
         config['native_harness_boundaries']={f.issue.identifier:artifact('native-selection.json',selection)}
+        self.selection=selection
+        self.selection_path=Path(config['native_harness_boundaries'][f.issue.identifier]['path'])
         self.protected=f.fixture.temp/'sealed-owner';self.protected.mkdir()
         (self.protected/'catalog.json').write_bytes(f.current.catalog.read_bytes())
         config['catalog']=str(self.protected/'catalog.json')
@@ -665,3 +672,260 @@ class SealedCurrentFactoryTests(unittest.TestCase):
         value['source_root']=str(self.protected/'foreign')
         self.f.fixture.write(self.protected/'binding.json',value)
         with self.assertRaisesRegex(current_fixture.AdmissionError,'protected_owner_binding'):self.current.guard()
+
+
+class PublisherInvocationClientTests(SealedCurrentFactoryTests):
+    # Reuse real constructor/guard/source/native-gate fixture, not injected
+    # OwnerAdapters. Base assertions stay useful with the optional helper copied.
+    def enable(self, prepared=True):
+        import hashlib
+        import native_publisher_invocation as helper
+        f=self.f;source=f.packet['handoff']['source']
+        publisher_binding=dict(repository=source['repository'],owner=f.binding.owner,
+            issue_id=f.binding.issue_id,project_id=f.binding.project_id,head_branch=source['branch'],
+            **{k:source[k] for k in ('base','head','tree')})
+        bound=replace(f.binding,phase='integration',operation_id=helper.fingerprint(publisher_binding))
+        self.binding=self.module.OwnerBinding(**asdict(bound))
+        capability=dict(version=1,closure_sha256='1'*64,host_confirmation_sha256='2'*64)
+        self.selection['binding']=asdict(self.binding)
+        self.selection['context']['publisher_invocation']=capability
+        f.fixture.write(self.selection_path,self.selection)
+        config=json.loads((self.protected/'current.json').read_text())
+        config['native_harness_boundaries'][f.issue.identifier]['sha256']=self.native.file_sha(self.selection_path)
+        f.fixture.write(self.protected/'current.json',config)
+        custody=json.loads((self.protected/'binding.json').read_text())
+        custody['config_sha256']=self.native.file_sha(self.protected/'current.json')
+        f.fixture.write(self.protected/'binding.json',custody)
+        state=json.loads(self.current.state_path.read_text());state['config_sha256']=custody['config_sha256']
+        f.fixture.write(self.current.state_path,state)
+        self.current=self.native.CurrentWork(self.current.runtime)
+        self.host_root=f.fixture.temp/'helper-host';self.host_root.mkdir()
+        if prepared:
+            transaction=self.host_root/'prepared-original-transaction';transaction.mkdir()
+            (transaction/'binding.json').write_text('preexisting synthetic owner binding\n')
+        config=dict(version=1,publisherUid=984,publisherGid=976,logicalOwner=bound.owner,
+            binding=publisher_binding,snapshot=dict(native_runtime=dict(issue_id=bound.issue_id,
+            project_id=bound.project_id,owner=bound.owner,unit_sha256=bound.unit_sha256,
+            packet_sha256=bound.packet_sha256,source=source)))
+        (self.host_root/'host-config.json').write_text(json.dumps(config))
+        self.calls=[];self.lose=False;self.corrupt=False;self.scenario='normal'
+        return helper
+
+    def adapters(self):
+        return self.module.owner_adapters(self.current,self.f.issue,self.binding,self.selection)
+
+    async def transport(self,envelope):
+        # This is the ONLY test replacement of the privileged route. It checks
+        # persisted exact intent, then runs the ACTUAL helper supervisor in an
+        # ordinary disposable process with real kernel-derived terminal proof.
+        import native_publisher_invocation as helper
+        self.calls.append(copy.deepcopy(envelope))
+        state=json.loads(self.current.state_path.read_text())
+        record=state[self.module.INVOCATIONS][self.binding.operation_id]['invocations'][-1]
+        self.assertEqual(record['envelope']['invocation_id'],envelope['invocation_id'])
+        self.assertEqual(record['envelope']['request'],envelope['request'])
+        self.assertEqual(record['last_request'],envelope)
+        self.assertEqual(record['status'],'pending')
+        module_root=Path(helper.__file__).resolve().parents[2]
+        script=('import sys,json,os;from pathlib import Path; '
+            +'sys.path[:0]='+repr([str(module_root/'tools/delivery'),str(module_root/'tests/delivery')])+'; '
+            +'import native_publisher_invocation as h;from test_native_publisher_invocation import SyntheticHost; '
+            +'q=h.request(sys.stdin.buffer.read());host=SyntheticHost('+repr(str(self.host_root))+','+repr(self.scenario)+'); '
+            +'host.config=json.loads((Path('+repr(str(self.host_root))+')/"host-config.json").read_text()); '
+            + ('host._body=host._body.replace("status=\'ready\'","status=\'unknown\'"); ' if self.scenario=='native-unknown' else '')
+            + ('host._body=host._body.replace("status=\'ready\'","status=\'verified\'"); ' if self.scenario=='native-verified' else '')
+            +'h._echild=(lambda:(_ for _ in ()).throw(AssertionError("observer ECHILD"))) if q["mode"]=="observe" else h._echild; '
+            + ('h._supervise=lambda *_:os._exit(99); ' if self.scenario=='crash' else '')
+            +'sys.stdout.buffer.write(h.wire(h._invoke(h.wire(q),host)))')
+        result=await asyncio.create_subprocess_exec(sys.executable,'-I','-B','-c',script,
+            stdin=asyncio.subprocess.PIPE,stdout=asyncio.subprocess.PIPE,stderr=asyncio.subprocess.PIPE)
+        stdout,stderr=await result.communicate(helper.wire(envelope))
+        if result.returncode:
+            raise self.module.RuntimeHold('synthetic_helper_refused')
+        value=helper.decode(stdout)
+        helper.validate_result(value,envelope,'1'*64)
+        if self.lose:
+            self.lose=False
+            raise TimeoutError('lost only reply after original durable terminal')
+        if self.corrupt:
+            self.corrupt=False
+            value['receipt']['body']['terminal']['waitpid_echild']=False
+            value['receipt']['sha256']=helper.sha(helper.wire(value['receipt']['body']))
+        return helper.wire(value)
+
+    def test_same_uuid_lost_reply_recovery_does_not_infer_old_children(self):
+        helper=self.enable()
+        with patch.object(self.module,'fixed_invocation_wire',side_effect=self.transport):
+            self.lose=True
+            with self.assertRaises(TimeoutError):asyncio.run(self.adapters().observe(self.binding))
+            first=self.calls[0]
+            reopened=self.native.CurrentWork(self.current.runtime);self.current=reopened
+            result=asyncio.run(self.adapters().observe(self.binding))
+            self.assertEqual(result['status'],'ready')
+            self.assertEqual(self.calls[1],{**first,'mode':'observe'})
+            self.assertEqual((self.host_root/'computation-count').read_text().count('once'),1)
+
+    def test_one_helper_call_per_boundary_and_original_step_recovery(self):
+        self.enable()
+        with patch.object(self.module,'fixed_invocation_wire',side_effect=self.transport):
+            adapters=self.adapters()
+            self.assertEqual(asyncio.run(adapters.observe(self.binding))['status'],'ready')
+            with self.assertRaisesRegex(self.module.RuntimeHold,'publisher_next_boundary_required'):
+                asyncio.run(adapters.step(self.binding,{}))
+            self.assertEqual(len(self.calls),1)
+            adapters=self.adapters()  # next existing finite boundary
+            self.assertEqual(asyncio.run(adapters.observe(self.binding))['status'],'ready')
+            self.lose=True
+            with self.assertRaises(TimeoutError):asyncio.run(adapters.step(self.binding,{}))
+            original=self.calls[-1]
+            self.assertEqual(original['request']['mode'],'step')
+            self.assertNotEqual(original['invocation_id'],self.calls[0]['invocation_id'])
+            self.assertEqual(asyncio.run(self.adapters().observe(self.binding))['status'],'ready')
+            self.assertEqual(self.calls[-1],{**original,'mode':'observe'})
+            self.assertEqual((self.host_root/'computation-count').read_text().count('once'),2)
+
+    def test_contradictory_kernel_receipt_and_capability_drift_are_held(self):
+        self.enable()
+        with patch.object(self.module,'fixed_invocation_wire',side_effect=self.transport):
+            self.corrupt=True
+            with self.assertRaises(Exception):asyncio.run(self.adapters().observe(self.binding))
+            original=self.calls[0]
+            self.assertEqual(asyncio.run(self.adapters().observe(self.binding))['status'],'ready')
+            self.assertEqual(self.calls[-1],{**original,'mode':'observe'})
+            selection=copy.deepcopy(self.selection)
+            selection['context']['publisher_invocation']['closure_sha256']='3'*64
+            with self.assertRaises(Exception):
+                asyncio.run(self.module.owner_adapters(self.current,self.f.issue,self.binding,selection).observe(self.binding))
+            self.assertEqual(len(self.calls),2)
+
+    def test_absent_prepared_owner_transaction_does_not_initialize_or_retry(self):
+        self.enable(prepared=False)
+        with patch.object(self.module,'fixed_invocation_wire',side_effect=self.transport):
+            with self.assertRaises(self.module.RuntimeHold):asyncio.run(self.adapters().observe(self.binding))
+            original=self.calls[0]
+            with self.assertRaises(self.module.RuntimeHold):asyncio.run(self.adapters().observe(self.binding))
+            self.assertEqual(self.calls[-1],{**original,'mode':'observe'})
+            self.assertFalse((self.host_root/'prepared-original-transaction').exists())
+
+    def test_lifecycle_complete_error_is_not_native_success(self):
+        self.enable();self.scenario='nonzero'
+        with patch.object(self.module,'fixed_invocation_wire',side_effect=self.transport):
+            with self.assertRaisesRegex(self.module.RuntimeHold,'native_outcome_held'):
+                asyncio.run(self.adapters().observe(self.binding))
+            # Only after the ORIGINAL terminal kernel proof may a later boundary
+            # start a NEW READONLY inner observe for the SAME operation.
+            self.scenario='normal'
+            result=asyncio.run(self.adapters().observe(self.binding))
+            self.assertEqual(result['status'],'ready')
+            self.assertNotEqual(self.calls[0]['invocation_id'],self.calls[1]['invocation_id'])
+            self.assertTrue(all(v['request']['mode']=='observe' for v in self.calls))
+            self.assertEqual(self.calls[0]['request']['operation_id'],self.calls[1]['request']['operation_id'])
+
+    def test_verified_readback_reauthenticates_same_protected_receipt_not_caller_cache(self):
+        self.enable();self.scenario='native-verified'
+        with patch.object(self.module,'fixed_invocation_wire',side_effect=self.transport):
+            self.assertEqual(asyncio.run(self.adapters().observe(self.binding))['status'],'verified')
+            original=self.calls[0]
+            self.current=self.native.CurrentWork(self.current.runtime)
+            self.assertEqual(asyncio.run(self.adapters().observe(self.binding))['status'],'verified')
+            self.assertEqual(self.calls[-1],{**original,'mode':'observe'})
+            self.assertEqual((self.host_root/'computation-count').read_text().count('once'),1)
+
+    def test_missing_original_terminal_never_gets_new_uuid_or_observer_cleanup(self):
+        self.enable();self.scenario='crash'
+        with patch.object(self.module,'fixed_invocation_wire',side_effect=self.transport):
+            with self.assertRaises(self.module.RuntimeHold):asyncio.run(self.adapters().observe(self.binding))
+            original=self.calls[0]
+            self.scenario='normal'
+            for _ in range(2):
+                with self.assertRaisesRegex(self.module.RuntimeHold,'publisher_invocation_unresolved'):
+                    asyncio.run(self.adapters().observe(self.binding))
+                self.assertEqual(self.calls[-1],{**original,'mode':'observe'})
+            self.assertFalse((self.host_root/'computation-count').exists())
+            record=self.current.state[self.module.INVOCATIONS][self.binding.operation_id]['invocations'][-1]
+            self.assertEqual(record['status'],'unknown')
+            self.assertIsNone(record['result']['receipt']['body']['terminal'])
+
+    def test_complete_unknown_native_outcome_allows_later_readonly_not_step(self):
+        self.enable();self.scenario='native-unknown'
+        with patch.object(self.module,'fixed_invocation_wire',side_effect=self.transport), \
+             patch.object(self.module,'publisher_identity',side_effect=AssertionError('protected publisher read')):
+            with self.assertRaisesRegex(self.module.RuntimeHold,'publisher_native_outcome_held'):
+                asyncio.run(self.adapters().observe(self.binding))
+            original=self.calls[0]
+            record=self.current.state[self.module.INVOCATIONS][self.binding.operation_id]['invocations'][-1]
+            self.assertEqual(record['status'],'complete')  # lifecycle only
+            self.assertEqual(record['result']['response']['status'],'unknown')
+            self.scenario='normal'
+            result=asyncio.run(self.adapters().observe(self.binding))
+            self.assertEqual(result['status'],'ready')
+            self.assertNotEqual(original['invocation_id'],self.calls[-1]['invocation_id'])
+            self.assertTrue(all(call['request']['mode']=='observe' for call in self.calls))
+            self.assertTrue(all(call['request']['operation_id']==self.binding.operation_id for call in self.calls))
+
+    def test_resealed_changed_capability_cannot_rebind_retained_invocation(self):
+        self.enable()
+        with patch.object(self.module,'fixed_invocation_wire',side_effect=self.transport):
+            asyncio.run(self.adapters().observe(self.binding))
+            self.selection['context']['publisher_invocation']['closure_sha256']='3'*64
+            self.f.fixture.write(self.selection_path,self.selection)
+            config=json.loads((self.protected/'current.json').read_text())
+            config['native_harness_boundaries'][self.f.issue.identifier]['sha256']=self.native.file_sha(self.selection_path)
+            self.f.fixture.write(self.protected/'current.json',config)
+            custody=json.loads((self.protected/'binding.json').read_text())
+            custody['config_sha256']=self.native.file_sha(self.protected/'current.json')
+            self.f.fixture.write(self.protected/'binding.json',custody)
+            state=json.loads(self.current.state_path.read_text());state['config_sha256']=custody['config_sha256']
+            self.f.fixture.write(self.current.state_path,state)
+            self.current=self.native.CurrentWork(self.current.runtime)
+            with self.assertRaisesRegex(self.module.RuntimeHold,'publisher_invocation_rebind'):
+                asyncio.run(self.adapters().observe(self.binding))
+            self.assertEqual(len(self.calls),1)
+
+    def test_optional_capability_rejects_selectors_and_absence_keeps_direct_hold(self):
+        with patch('os.getuid',return_value=1000),patch('os.geteuid',return_value=1000), \
+             patch.object(self.module,'fixed_invocation_wire') as helper:
+            original=self.current._native_harness_selection(self.f.issue.identifier)
+            bound=self.module.OwnerBinding(**original['binding'])
+            bound=replace(bound,phase='integration')
+            # Pure direct route still has its early ordinary-UID hold. No cap is
+            # minted from the host's read-only policy listing or user identity.
+            with self.assertRaisesRegex(self.module.RuntimeHold,'publisher_owner_identity_required'):
+                asyncio.run(self.module.fixed_publisher_rpc(bound,self.f.packet,'observe'))
+            helper.assert_not_called()
+        for bad in (True,{},dict(version=True,closure_sha256='1'*64,host_confirmation_sha256='2'*64),
+                    dict(version=1,closure_sha256='1'*64,host_confirmation_sha256='2'*64,command='arbitrary')):
+            with self.assertRaises(self.module.RuntimeHold):self.module.invocation_capability(bad)
+
+
+class InvocationWireTests(unittest.IsolatedAsyncioTestCase):
+    async def run_wire(self, body):
+        actual=asyncio.create_subprocess_exec;children=[]
+        envelope=dict(version=1,mode='observe',invocation_id='11111111-1111-4111-8111-111111111111',request={})
+        async def launch(*args,**kwargs):
+            self.assertEqual(args,runtime.PUBLISHER_HELPER_ARGV)
+            self.assertEqual(kwargs['cwd'],'/')
+            self.assertEqual(kwargs['env'],{'PATH':'/usr/bin:/bin','LANG':'C.UTF-8'})
+            self.assertIs(kwargs['close_fds'],True)
+            self.assertIs(kwargs['start_new_session'],True)
+            child=await actual(sys.executable,'-I','-B','-c',body,**kwargs)
+            children.append(child);return child
+        with patch.object(asyncio,'create_subprocess_exec',side_effect=launch):
+            try:return await runtime.fixed_invocation_wire(envelope)
+            finally:
+                self.assertEqual(len(children),1)
+                self.assertIsNotNone(children[0].returncode)
+
+    async def test_fixed_tuple_transport_reap_is_not_privileged_cleanup_proof(self):
+        raw=await self.run_wire('import sys; sys.stdin.buffer.read(); print("{}")')
+        self.assertEqual(json.loads(raw),{})  # Transport only, not a valid receipt.
+        import native_publisher_invocation as helper
+        with self.assertRaises(helper.InvocationHold):
+            helper.validate_result({},dict(version=1,mode='observe',
+                invocation_id='11111111-1111-4111-8111-111111111111',request={}), '1'*64)
+
+    async def test_fixed_tuple_output_bound_and_cancel_reap_only_own_child(self):
+        with self.assertRaises(runtime.RuntimeHold):
+            await self.run_wire('import sys; sys.stdin.buffer.read(); print("x"*70000)')
+        with self.assertRaises(TimeoutError):
+            await asyncio.wait_for(self.run_wire('import time; time.sleep(20)'),.1)

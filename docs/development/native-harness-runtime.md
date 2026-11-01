@@ -198,3 +198,90 @@ A standalone component checkout predating UIF-124's hook may explicitly supply
 `OFFMENU_TEST_CURRENT_ADAPTER=/exact/accepted/source/tools/delivery/stokowski_adapter.py`
 for this composition test; coherent checkouts use their own actual adapter.
 That test source selection is not a product callback/configuration surface.
+
+## Optional fixed publisher-owner invocation client
+
+The direct same-publisher-identity route remains the default, including its early
+ordinary/root UID hold. A separately qualified host owner may opt in through the
+root-sealed selection reference by adding only:
+
+```json
+{
+  "publisher_invocation": {
+    "version": 1,
+    "closure_sha256": "<installed closure file-byte SHA-256>",
+    "host_confirmation_sha256": "<actual qualified host execution/adoption proof SHA-256>"
+  }
+}
+```
+
+This is an optional field of `selection.context`, alongside its original three
+fields. It cannot select a command, path, UID, environment or callback. A sudo
+policy listing, source review or hash-shaped string alone is not host execution
+approval. The client never derives or manufactures this capability from those
+observations; root must qualify the actual installed closure, existing grant and
+mandatory execution/adoption permission before sealing it. Absence preserves the
+direct route and its existing holds.
+
+After fresh CurrentWork guard, sealed-reference and native unit checks, the
+client can call only this literal tuple, with fixed cwd `/`, closed descriptors,
+minimal PATH/LANG environment and bounded pipes/deadline:
+
+```text
+/usr/bin/sudo -n -u #984 -g #976 -- /opt/offmenu-publisher/venv/bin/python -I -B /opt/offmenu-publisher/tools/delivery/native_publisher_invocation.py
+```
+
+The ordinary caller never reads protected publisher config, key or transaction
+state. It requires the pinned source of the real helper's pure `validate_result`
+API. The helper independently admits the preexisting protected transaction,
+claim, binding and state; this client never initializes a Controller or prepares
+that transaction. Root prepares through the existing fixed local-only RPC only
+after installed qualification and actual permission.
+
+The caller records its exact invocation UUID, outer/inner request, owner/unit,
+packet, selection and capability association **before spawn**, in
+`CurrentWork.state.native_harness_publisher_invocations` via the existing `save`.
+This is bounded per-operation invocation custody, not another queue/database.
+At most one helper call occurs in a constructed finite boundary. A fresh readonly
+observation uses outer `invoke` with inner `observe`. Its completed readonly
+readiness can permit one later boundary's step; the protected publisher still
+performs its own fresh canonical checks. No second helper call is made just to
+step within the first boundary.
+
+An ambiguous/lost reply or missing original terminal proof permits only outer
+`observe` of the **same UUID and original inner request**, including an original
+inner `step`. The client never substitutes a new request or UUID to repair that
+uncertainty. A new observer's ECHILD/process census cannot clear old children.
+Only the original durable helper receipt's matching closure, request, invocation,
+supervisor and kernel-stopped proof can close lifecycle uncertainty. Reaping the
+caller's sudo process proves nothing about privileged descendants, and the
+transport returns no cleanup assertion. Contradictory proof, capability drift,
+missing receipt or lost proof remains an explicit hold.
+
+Lifecycle `complete` is not native effect success. Null/error/pending/unknown
+publisher results remain held. After a valid original durable kernel-stopped
+proof, a later boundary may create a new **readonly** supervised invocation for
+the same external operation to refresh canonical protected-journal facts. It
+cannot replay a step while native outcome is uncertain. Verified native effects
+remain bound to their original receipt and exact owner/source/unit/packet context.
+All prior invocation records are retained; a finite 128-record bound holds
+rather than silently discarding old uncertainty or extending work indefinitely.
+
+Tests construct actual CurrentWork with sealed refs and source/native gates,
+intercept the fixed privileged tuple without executing sudo, and run the actual
+helper supervisor in disposable ordinary test processes. Positive lifecycle
+receipts contain real same-supervisor kernel results. Tests cover lost readonly
+and step replies, same-UUID recovery, missing original terminal proof despite a
+dead supervisor, forbidden new-observer ECHILD inference, exact inner/outer
+association, capability drift, unknown/null native outcomes and readonly-only
+reconciliation, output/cancellation bounds and preserved direct UID holds.
+These tests establish source behavior only; they do not grant or exercise actual
+publisher-owner privileges, install code, read keys or mutate live APIs.
+
+Every helper call, including recovery, saves its exact `last_request` and pending
+transport state before launch while retaining the immutable original invoke
+intent. Verified/denied/failed readback is reauthenticated with same-UUID outer
+`observe` of the protected original receipt; caller-cached JSON alone does not
+create a final-unit/refill permit. Cached readonly readiness grants no refill
+and only bridges to a later helper step with fresh protected prior-receipt and
+Controller checks.
