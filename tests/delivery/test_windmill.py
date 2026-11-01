@@ -290,7 +290,10 @@ class WindmillResourceReceiptTests(unittest.TestCase):
         projected = bridge._safe_resources(resources, 'read')
         projected['read_roots'].append('/offmenu/data')
         self.assertEqual(resources['read_roots'], ['/offmenu'])
-        too_large = dict(resources, read_roots=['/offmenu/' + 'a'*600 + str(n) for n in range(32)])
+        # Keep the 600-byte payload while using legal filesystem components.
+        long_root = '/'.join(['a'*100]*5 + ['a'*95])
+        self.assertEqual(len(long_root), 600)
+        too_large = dict(resources, read_roots=['/offmenu/' + long_root + str(n) for n in range(32)])
         runner.validate_resources(too_large, 'read')  # Admission permits this larger declaration.
         with self.assertRaises(ValueError): bridge._safe_resources(too_large, 'read')
         for field, invalid in [('workers',0),('overhead_processes',0),('cpu_millis',27001),
