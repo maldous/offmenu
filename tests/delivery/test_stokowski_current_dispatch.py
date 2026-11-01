@@ -683,6 +683,25 @@ class CurrentDispatchTests(unittest.TestCase):
         copied = shutil.copy2(source, destination)
         path = Path(copied)
         path.chmod(path.stat().st_mode | 0o200)
+        if path.name == 'integration-gateway.mjs':
+            # Pin the selected fixture interpreter before committing synthetic
+            # source; the service host's fixed interpreter is absent in jails.
+            code = path.read_text()
+            original = "const reviewPython = '/home/user/src/offmenu/.delivery/stokowski/venv/bin/python';"
+            assert code.count(original) == 1
+            path.write_text(code.replace(original, f'const reviewPython = {json.dumps(sys.executable)};'))
+        elif path.name == 'stokowski_unit_review.py':
+            code = path.read_text()
+            original = "PYTHON = Path('/home/user/src/offmenu/.delivery/stokowski/venv/bin/python')"
+            assert code.count(original) == 1
+            path.write_text(code.replace(original, f'PYTHON = Path({sys.executable!r})'))
+        elif path.name == 'stokowski_adapter.py':
+            # Child processes need the same installed-owner isolation as setUp.
+            code = path.read_text()
+            original = "PROTECTED_OWNER = Path('/etc/offmenu-stokowski-current')"
+            assert code.count(original) == 1
+            path.write_text(code.replace(original,
+                "PROTECTED_OWNER = SOURCE/'.delivery/no-installed-owner'"))
         return copied
 
     def write(self, path, value):
@@ -2161,7 +2180,7 @@ class CurrentDispatchTests(unittest.TestCase):
         controller = Controller(claim/'fixture',b,claim)
         control_input = self.temp/'control-input.json'
         self.write(control_input,dict(binding=b,snapshot=snapshot,directory=str(controller.directory),claim=str(claim)))
-        controlled = subprocess.run(['/home/user/src/offmenu/.venv-delivery/bin/python','-c',
+        controlled = subprocess.run([sys.executable,'-c',
             'import json,sys; from offmenu.delivery.integration import Controller; '
             'v=json.load(open(sys.argv[1])); '
             'print(json.dumps(Controller(v["directory"],v["binding"],v["claim"]).run(v["snapshot"])))',
@@ -2188,7 +2207,7 @@ class CurrentDispatchTests(unittest.TestCase):
                 payload=json.dumps(dict(context=selected_context,
                     envelope={k:packet[k] for k in ('snapshot','decision')})),
                 evidence=json.dumps(packet))
-            return subprocess.run(['/home/user/src/offmenu/.delivery/stokowski/venv/bin/python',str(entry)],
+            return subprocess.run([sys.executable,str(entry)],
                 input=json.dumps(request), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
                 timeout=10, env={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8'})
         before = local_status()
