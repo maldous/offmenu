@@ -703,9 +703,9 @@ class CurrentDispatchTests(unittest.TestCase):
             path.write_text(code.replace(original, f'const reviewPython = {json.dumps(sys.executable)};'))
         elif path.name == 'stokowski_unit_review.py':
             code = path.read_text()
-            original = "PYTHON = Path('/home/user/src/offmenu/.delivery/stokowski/venv/bin/python')"
+            original = "Path('/home/user/src/offmenu/.delivery/stokowski/venv/bin/python')"
             assert code.count(original) == 1
-            path.write_text(code.replace(original, f'PYTHON = Path({sys.executable!r})'))
+            path.write_text(code.replace(original, f'Path({sys.executable!r})'))
         elif path.name == 'stokowski_adapter.py':
             # Child processes need the same installed-owner isolation as setUp.
             code = path.read_text()
