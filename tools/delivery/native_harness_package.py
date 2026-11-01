@@ -317,6 +317,37 @@ def closure(role, files):
     return dict(directories=directories, files=entries)
 
 
+def _catalog_route(current, seed, runtime):
+    """Preserve an already owner-qualified route, anchored to the sealed seed.
+
+    Pure byte/path association only: CurrentWork still qualifies actual canonical
+    custody, every finite grant and the selected private snapshot at startup.
+    No private/protected file is read and no next append is granted here.
+    """
+    versions = current.get('catalog_versions')
+    if versions is None:
+        require(current.get('catalog') == '/etc/offmenu-stokowski-current/catalog.json', 'catalog_route')
+        return
+    root, path = current.get('runtime_root'), current.get('catalog')
+    require(type(root) is str and type(path) is str, 'catalog_route')
+    for value in (root, path, runtime):
+        require(value.startswith('/') and not value.startswith('//') and len(value) <= 4096
+                and str(PurePosixPath(value)) == value and '..' not in PurePosixPath(value).parts,
+                'canonical_catalog_route')
+    require(path != root and PurePosixPath(path).is_relative_to(root) and not PurePosixPath(path).is_relative_to(runtime)
+            and type(versions) is list and 1 <= len(versions) <= 32, 'catalog_route')
+    # Associate the provided sealed seed with the already-qualified grant chain;
+    # leave full chain/snapshot validation to its existing authoritative reader.
+    first = versions[0]
+    require(type(first) is dict and set(first) == {'sha256', 'catalog'}
+            and type(first['catalog']) is dict and set(first['catalog']) == {'version', 'entries'}
+            and first['catalog']['version'] == 1 and type(first['catalog']['entries']) is list
+            and len(first['catalog']['entries']) == len(seed['entries']) + 1
+            and first['catalog']['entries'][:-1] == seed['entries'], 'catalog_seed_association')
+    raw = (json.dumps(first['catalog'], sort_keys=True, indent=2) + '\n').encode()
+    require(sha(raw) == pin(first['sha256']), 'catalog_seed_association')
+
+
 def prepare_coherent_package(stage, *, git_dir, head, tree, dependencies,
                              dependency_evidence, dependency_sha256, runtime, interpreter, interpreter_sha256,
                              interpreter_custody, node_sha256, node_custody, pyvenv_cfg, owner_current, owner_catalog,
@@ -352,7 +383,7 @@ def prepare_coherent_package(stage, *, git_dir, head, tree, dependencies,
     for key, raw in [('owner_current', owner_current), ('owner_catalog', owner_catalog), ('publisher_config', publisher_config)]:
         require(sha(bounded(raw, 1024*1024)) == pin(config_pins[key]), 'config_input_pin')
     current, catalog, publisher = [protected.record(raw) for raw in (owner_current, owner_catalog, publisher_config)]
-    require(current.get('source_head') == head and current.get('catalog') == '/etc/offmenu-stokowski-current/catalog.json'
+    require(current.get('source_head') == head
             and publisher.get('sourceHead') == head and publisher.get('publisherUid') == 984
             and publisher.get('publisherGid') == 976 and publisher.get('repositoryId') == 1416253963,
             'coherent_config_identity')
@@ -367,6 +398,7 @@ def prepare_coherent_package(stage, *, git_dir, head, tree, dependencies,
             and str(Path(runtime)) == runtime and type(current.get('runtime_root')) is str
             and Path(runtime).is_relative_to(current['runtime_root'])
             and Path(runtime) != Path(current['runtime_root']), 'runtime_binding')
+    _catalog_route(current, catalog, runtime)
     binding = dict(schema='protected-current-owner-v1', runtime=runtime,
                    config_sha256=sha(owner_current), catalog_sha256=sha(owner_catalog),
                    source_root=str(protected.SOURCE), python_sha256=interpreter_sha256)

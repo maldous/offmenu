@@ -121,7 +121,7 @@ class PackageTests(unittest.TestCase):
         source['tools/delivery/native_rpc.py']=b'from native_missing import value\n'
         with self.assertRaises(ValueError): package.publisher_sources(source)
 
-    def build(self):
+    def build(self, *, private_catalog=False):
         repo=self.root/'repo';repo.mkdir()
         source=self.source()
         # Never execute this accepted payload while producing or materializing it.
@@ -135,10 +135,18 @@ class PackageTests(unittest.TestCase):
         head,tree=git('rev-parse','HEAD'),git('rev-parse','HEAD^{tree}')
         deps,evidence=self.projection()
         interpreter=b'fixed interpreter byte fixture'
-        current=protected.encoded(dict(source_head=head,catalog='/etc/offmenu-stokowski-current/catalog.json',
+        current_value=dict(source_head=head,catalog='/etc/offmenu-stokowski-current/catalog.json',
                     source_sha256={'src/offmenu/delivery/integration.py':package.sha(source['src/offmenu/delivery/integration.py'])},
-                    runtime_root='/home/user/src/offmenu/.delivery/stokowski'))
+                    runtime_root='/home/user/src/offmenu/.delivery/stokowski')
         catalog=protected.encoded(dict(version=1,entries=[]))
+        if private_catalog:
+            seed=dict(version=1,entries=[dict(issue='UIF-1'),dict(issue='UIF-2')])
+            snapshots=[dict(version=1,entries=seed['entries']+[dict(issue='UIF-3')]),
+                       dict(version=1,entries=seed['entries']+[dict(issue='UIF-3'),dict(issue='UIF-4')])]
+            catalog=(json.dumps(seed,sort_keys=True,indent=2)+'\n').encode()
+            current_value.update(catalog='/home/user/src/offmenu/.delivery/stokowski/foo-local-protected-intake-catalog.json',
+                catalog_versions=[dict(catalog=value,sha256=package.sha((json.dumps(value,sort_keys=True,indent=2)+'\n').encode())) for value in snapshots])
+        current=protected.encoded(current_value)
         publisher=protected.encoded(dict(sourceHead=head,publisherUid=984,publisherGid=976,repositoryId=1416253963,
                     pythonSha256=package.sha(interpreter),codePins={'tools/delivery/github-app-publisher.mjs':package.sha(source['tools/delivery/github-app-publisher.mjs'])}))
         stage=self.root/'package'
@@ -154,6 +162,38 @@ class PackageTests(unittest.TestCase):
                     config_pins=dict(owner_current=package.sha(current),owner_catalog=package.sha(catalog),publisher_config=package.sha(publisher)),
                     acceptance=package.PackageAcceptance('root-owner',head,tree,{'path':'review.json','sha256':'b'*64}))
         return stage,result
+
+    def test_private_granted_catalog_route_preserves_seed_and_config_bytes(self):
+        stage,result=self.build(private_catalog=True)
+        _,content=package.read_package(stage,result['sha256'])
+        current=protected.record(content['owner_config']['current.json'])
+        seed=content['owner_config']['catalog.json']
+        binding=protected.record(content['owner_config']['binding.json'])
+        self.assertEqual(current['catalog'],'/home/user/src/offmenu/.delivery/stokowski/foo-local-protected-intake-catalog.json')
+        self.assertEqual(len(protected.record(seed)['entries']),2)
+        self.assertEqual([len(v['catalog']['entries']) for v in current['catalog_versions']],[3,4])
+        self.assertEqual(binding['catalog_sha256'],package.sha(seed))
+        self.assertEqual(binding['config_sha256'],package.sha(content['owner_config']['current.json']))
+
+    def test_private_catalog_seed_anchor_and_route_rejections(self):
+        runtime='/home/user/src/offmenu/.delivery/stokowski/selected'
+        seed=dict(version=1,entries=[dict(issue='UIF-1'),dict(issue='UIF-2')])
+        next_catalog=dict(version=1,entries=seed['entries']+[dict(issue='UIF-3')])
+        config=dict(runtime_root='/home/user/src/offmenu/.delivery/stokowski',
+                    catalog='/home/user/src/offmenu/.delivery/stokowski/catalog.json',
+                    catalog_versions=[dict(catalog=next_catalog,sha256=package.sha((json.dumps(next_catalog,sort_keys=True,indent=2)+'\n').encode()))])
+        package._catalog_route(config,seed,runtime)
+        with self.assertRaises(ValueError):
+            package._catalog_route(config,dict(version=1,entries=[dict(issue='other'),dict(issue='UIF-2')]),runtime)
+        bad=dict(config,catalog_versions=[dict(catalog=seed,sha256=package.sha(protected.encoded(seed)))])
+        with self.assertRaises(ValueError):package._catalog_route(bad,seed,runtime)
+        for path in ('/tmp/outside-catalog.json',runtime+'/catalog.json'):
+            with self.subTest(path=path),self.assertRaises(ValueError):
+                package._catalog_route(dict(config,catalog=path),seed,runtime)
+        # No grants retains only the existing sealed catalog route.
+        with self.assertRaises(ValueError):
+            package._catalog_route(dict(config,catalog_versions=None),seed,runtime)
+        package._catalog_route(dict(config,catalog='/etc/offmenu-stokowski-current/catalog.json',catalog_versions=None),seed,runtime)
 
     def host(self):
         root=self.root/'host';root.mkdir(mode=0o700)

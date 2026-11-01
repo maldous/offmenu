@@ -104,8 +104,16 @@ infer that semantic qualification from a pin. No empty catalog or new successful
 installation receipt is invented by this API. Production config belongs to the
 owner, not coding-child requests.
 
+`owner_catalog` remains the root-sealed seed bytes. Without `catalog_versions`,
+the existing fixed sealed catalogue path is required. With already owner-qualified
+finite grants, the original canonical private catalogue route beneath runtime_root
+and outside the selected coordinator is preserved; its first grant must extend
+that seed exactly. Full grant-chain, real path/custody and private snapshot checks
+remain CurrentWork startup authority. Packaging does not read or overwrite the
+private catalogue or grant another append.
+
 The owner binding is generated from those bytes, exact selected runtime, source
-root, catalog and Python hashes. Publisher code is a complete delivery seam:
+root, catalogue seed and Python hashes. Publisher code is a complete delivery seam:
 all maintained delivery Python modules, native RPC/lifecycle hooks and their
 statically resolved local Python imports, fixed JS publisher/adapter/gateway
 imports, and explicit schema/config resources. This covers RPC source strings
