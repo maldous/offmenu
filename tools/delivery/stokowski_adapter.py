@@ -1880,10 +1880,16 @@ class CurrentWork:
             # Linear still needs the original admitted native unit; it never
             # consumes Engine or independent-review context references.
             return selection
-        if (not isinstance(context, dict)
-            or set(context) - {'publisher_invocation'} != {'engine_root', 'engine_task', 'unit_review'}
-            or not isinstance(context['engine_root'], str)
-            or not self.private(context['engine_root']).is_dir()):
+        if not isinstance(context, dict):
+            raise AdmissionError('native_harness_context')
+        keys = set(context) - {'publisher_invocation'}
+        if binding['phase'] == 'integration' and keys == {'reviewed_runtime', 'unit_review'}:
+            root_name, references = 'reviewed_runtime', ('unit_review',)
+        elif keys == {'engine_root', 'engine_task', 'unit_review'}:
+            root_name, references = 'engine_root', ('engine_task', 'unit_review')
+        else:
+            raise AdmissionError('native_harness_context')
+        if not isinstance(context[root_name], str) or not self.private(context[root_name]).is_dir():
             raise AdmissionError('native_harness_context')
         if 'publisher_invocation' in context:
             invocation = context['publisher_invocation']
@@ -1895,7 +1901,7 @@ class CurrentWork:
                 raise AdmissionError('native_harness_publisher_invocation')
             from native_harness_contract import fingerprint
             fingerprint(invocation)  # Included unchanged in the pinned selection identity.
-        for name in ('engine_task', 'unit_review'):
+        for name in references:
             ref = context[name]
             if not isinstance(ref, dict) or set(ref) != {'path', 'sha256'} or not isinstance(ref['path'], str):
                 raise AdmissionError('native_harness_context')
@@ -1992,8 +1998,10 @@ class CurrentWork:
                     if packet != pinned or module.fingerprint(packet) != binding.packet_sha256:
                         raise AdmissionError('native_harness_packet_drift')
                     return packet
+                acceptance = getattr(adapters, 'integration_acceptance', None)
                 trusted = module.OwnerAdapters(authorize, load, adapters.engine, adapters.review,
-                                                adapters.observe, adapters.step)
+                    adapters.observe, adapters.step,
+                    **({'integration_acceptance': acceptance} if acceptance is not None else {}))
                 result = await module.consume_boundary(self, issue, binding=binding, adapters=trusted)
                 return result, authorize
             result, authorize = await asyncio.wait_for(consume(), timeout=10)

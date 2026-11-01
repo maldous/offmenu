@@ -67,3 +67,11 @@ receipt digest. Never rebuild the public receipt from a status summary.
 Unit approval keeps `accepted_delivery=false` and has no merge action. Existing
 owner-native publication, outcome and refill phases still require their own
 admitted evidence. This continuation starts no reviewer, model or coding work.
+
+An owner-selected native integration boundary may pin exactly `reviewed_runtime`
+(a canonical private directory) and `unit_review` (the existing file reference),
+with the existing optional `publisher_invocation`. This finite context is not
+accepted for release or Linear; legacy Engine contexts and empty Linear context
+retain their existing rules. The trusted adapter wrapper preserves an admitted
+`integration_acceptance` callback supplied by installed factory code. Context
+JSON cannot select callbacks, and selection/unit/source/owner checks still apply.
