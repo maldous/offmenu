@@ -45,3 +45,33 @@ and coherently adopt reviewed profile/adapter source. The normal coordinator the
 continues the one Journal operation and ordinary unit consumer. Local source and
 preparation checks are not actual job, review-consumption, integration or product
 acceptance evidence. This route changes no source permission or production/CIX hold.
+
+When the fixed enrichment validator fails and its corrected executor is prepared,
+the existing producer retains the previous selection in `history`. The adapter
+accepts that history only for this focused native profile, with the same native
+receipt, candidate root/source/branch, outputs and acceptance. Every retained key
+must identify a canonical original Journal spec; only its executor hash may differ
+from the current spec. Its status must be failed, with no accepted outputs,
+cancellation or reconciliation requirement, and with the original deterministic
+backend identities. A genuine regular original public failed receipt must exist at
+`validation-receipt-<original-operation-key>.json` in the original runtime. Its full
+canonical body must match the original Journal digest and prove a stopped read-only
+failure bound to the original job, runner and policy. The global
+`validation-receipt.json` remains available for final successful evidence.
+
+The historical command is never executed or regenerated with the corrected
+wrapper. Its original command/request hashes remain in the exact retained receipt;
+the complete backend receipt may remain separate when its public projection omits
+resource metadata. A sticky observation-intent flag or old incomplete-result
+diagnosis does not negate a fully qualified closed failed terminal boundary.
+Unknown/active history, missing or contradictory receipts, changed native identity
+and output acceptance remain holds. No failed result is promoted to success.
+
+The normal consumer can move its failed validation cache to the current prepared
+selection only when the prior identity exactly matches a qualified producer
+predecessor. That identity is derived from the retained selection/spec/native unit
+and the existing checkpoint serialization of its history prefix; this is metadata
+identity comparison, not reconstruction of a receipt. Approved/handled units,
+unknown or unrelated cache identities cannot use this path. Existing history,
+Journal rows, receipts and reserved job IDs remain untouched; the normal Journal
+alone continues the already-prepared current operation.

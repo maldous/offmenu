@@ -1736,6 +1736,74 @@ class CurrentWork:
                 raise AdmissionError('native_contribution_review_source')
         return spec['branch']
 
+    def _closed_failed_native_history(self, issue, runtime, bindings, selected, spec, unit):
+        """Retained failed v1 attempts are history, never output acceptance.
+
+        Historical commands are NOT regenerated with today's executor. Their
+        original terminal body remains bound by the original Journal digest.
+        """
+        if not bindings['history']:
+            return ()
+        if spec['profile'] != 'enrichment-resilience-focused' or 'candidate_root' not in selected:
+            raise AdmissionError('current_validation_schema')
+        import stokowski_operations as operations
+        from contextlib import closing
+        from uuid import uuid5,NAMESPACE_URL
+        def unique(pairs):
+            result = {}
+            for name,value in pairs:
+                if name in result: raise AdmissionError('current_validation_duplicate')
+                result[name] = value
+            return result
+        identities, seen = [], {selected['operation_key']}
+        with closing(sqlite3.connect((runtime/'operations/operations.sqlite').as_uri()+'?mode=ro',uri=True)) as db:
+            for index,prior in enumerate(bindings['history']):
+                if (not isinstance(prior,dict) or set(prior) != set(selected) | {'issue'}
+                    or prior['issue'] != issue
+                    or any(prior[k] != v for k,v in selected.items() if k != 'operation_key')):
+                    raise AdmissionError('native_failed_history_selection')
+                key = prior['operation_key']
+                if not isinstance(key,str) or not re.fullmatch('[0-9a-f]{64}',key) or key in seen:
+                    raise AdmissionError('native_failed_history_key')
+                seen.add(key)
+                row = db.execute('SELECT spec,state FROM operations WHERE key=?',(key,)).fetchone()
+                if row is None: raise AdmissionError('native_failed_history_journal')
+                old,state = (json.loads(value,object_pairs_hook=unique) for value in row)
+                operations.validated(old)
+                if (row[0] != json.dumps(old,sort_keys=True) or operations.operation_key(old) != key
+                    or {k:v for k,v in old.items() if k != 'executor_sha256'} !=
+                       {k:v for k,v in spec.items() if k != 'executor_sha256'}
+                    or state.get('status') != 'failed' or state.get('cancel_requested') is not False
+                    or state.get('reconcile_required') or state.get('accepted_output_sha256') != {}
+                    or state.get('acceptance_sha256') != old['acceptance_sha256']
+                    or state.get('windmill_job_id') != str(uuid5(NAMESPACE_URL,'offmenu:run:'+key))
+                    or state.get('cancel_job_id') != str(uuid5(NAMESPACE_URL,'offmenu:cancel:'+key))
+                    or state.get('logical_job_id') != 'offmenu-'+key[:48]):
+                    raise AdmissionError('native_failed_history_binding')
+                path = runtime/('validation-receipt-'+key+'.json')
+                if path != path.resolve() or not path.is_file():
+                    raise AdmissionError('native_failed_history_receipt_missing')
+                receipt = read_record(path)
+                if (digest(receipt) != state.get('receipt_sha256')
+                    or receipt.get('status') not in ('failed','timed_out')
+                    or type(receipt.get('exit_code')) is not int or receipt['exit_code'] == 0
+                    or receipt.get('child_tree_gone') is not True or receipt.get('reconcile_required') is not False
+                    or receipt.get('job_id') != state['logical_job_id']
+                    or receipt.get('mode') != 'read'
+                    or receipt.get('runner_sha256') != old['runner_sha256']
+                    or receipt.get('capacity_policy_sha256') != old['policy_sha256']
+                    or any(not isinstance(receipt.get(k),str) or not re.fullmatch('[0-9a-f]{64}',receipt[k])
+                           for k in ('command_sha256','request_sha256'))):
+                    raise AdmissionError('native_failed_history_receipt')
+                # A terminal backend observation resolves a sticky observation
+                # intent/diagnosis. It does not accept outputs or replay work.
+                old_selected = {k:v for k,v in prior.items() if k != 'issue'}
+                predecessor = dict(version=1,issues={issue:old_selected},history=bindings['history'][:index])
+                raw = (json.dumps(predecessor,indent=2)+'\n').encode()
+                identities.append(digest(dict(unit=unit,selected=old_selected,spec=old,
+                    bindings_sha256=hashlib.sha256(raw).hexdigest())))
+        return tuple(identities)
+
     def validation_binding(self, issue, entry):
         """Qualify existing native v1 state without constructing a writable Journal.
 
@@ -1768,8 +1836,7 @@ class CurrentWork:
         bindings = read_record(path)
         if (set(bindings) != {'version','issues','history'} or type(bindings['version']) is not int
             or bindings['version'] != 1 or not isinstance(bindings['issues'], dict)
-            or set(bindings['issues']) != {issue} or not isinstance(bindings['history'], list)
-            or bindings['history']):
+            or set(bindings['issues']) != {issue} or not isinstance(bindings['history'], list)):
             raise AdmissionError('current_validation_schema')
         selected = bindings['issues'][issue]
         selection_fields = {
@@ -1851,7 +1918,10 @@ class CurrentWork:
             committed = subprocess.check_output(['git','-C',str(candidate_repo),'show',spec['head']+':'+name])
             if hashlib.sha256(committed).hexdigest() != sha:
                 raise AdmissionError('current_validation_candidate_output')
-        return runtime, digest(dict(unit=unit, selected=selected, spec=spec, bindings_sha256=file_sha(path)))
+        predecessors = self._closed_failed_native_history(issue,runtime,bindings,selected,spec,unit)
+        identity = digest(dict(unit=unit, selected=selected, spec=spec, bindings_sha256=file_sha(path)))
+        self._qualified_failed_native_history = (issue,str(runtime),identity,predecessors)
+        return runtime, identity
 
     async def continue_validation(self):
         """One bounded phase under the existing coordinator and operation locks."""
@@ -1889,7 +1959,12 @@ class CurrentWork:
                     raise AdmissionError('stage_gate_rebind')
                 prior = task.get('validation', {})
                 if prior.get('identity', identity) != identity:
-                    raise AdmissionError('current_validation_rebind')
+                    qualified = getattr(self,'_qualified_failed_native_history',None)
+                    if (prior.get('status') != 'failed' or gate.get('disposition') != 'waiting'
+                        or gate.get('handled') or gate.get('review_sha256') or gate.get('accepted_delivery')
+                        or not qualified or qualified[:3] != (issue,str(runtime),identity)
+                        or prior['identity'] not in qualified[3]):
+                        raise AdmissionError('current_validation_rebind')
                 retained = (selected_task.get('stage') == 'validation' and
                     selected_task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1')
                 if retained:

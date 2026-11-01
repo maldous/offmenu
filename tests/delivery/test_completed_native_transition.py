@@ -1,4 +1,5 @@
 """Same-runtime native validation transition, using real Git and read-only SQL."""
+import asyncio
 import copy
 import hashlib
 import importlib.util
@@ -12,7 +13,7 @@ import tempfile
 import time
 from types import SimpleNamespace
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch,AsyncMock
 
 ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(ROOT/'src'),str(ROOT/'tools/delivery')]
@@ -148,3 +149,67 @@ class CompletedNativeTransitionTests(unittest.TestCase):
         (self.candidate/self.output).write_text('// changed after review\n')
         with self.assertRaisesRegex(AdmissionError,'native_contribution_source'):
             self.current._native_contribution('UIF-102',self.runtime,self.manifest,selected,spec)
+
+    def test_closed_failed_history_continues_same_prepared_selection_without_replay(self):
+        profile='enrichment-resilience-focused'
+        with patch.dict(operations.PROFILES,{profile:['/bin/node','--test','--test-concurrency=1',self.output]}):
+            self.test_completed_control_review_and_same_runtime_v1_contribution()
+            bindings=adapter.read_record(self.runtime/'validation-bindings.json')
+            selected=bindings['issues']['UIF-102'];journal=operations.Journal(self.runtime/'operations')
+            current,current_state=journal.read(selected['operation_key'])
+            old=dict(current,executor_sha256='e'*64);oldkey=journal.prepare(old)
+            oldspec,oldstate=journal.read(oldkey)
+            receipt=dict(status='failed',exit_code=1,mode='read',child_tree_gone=True,reconcile_required=False,
+                job_id='offmenu-'+oldkey[:48],runner_sha256=old['runner_sha256'],capacity_policy_sha256=old['policy_sha256'],
+                command_sha256=hashlib.sha256(b'ORIGINAL historical command, not current wrapper').hexdigest(),
+                request_sha256='a'*64)
+            oldstate.update(status='failed',receipt_sha256=digest(receipt),accepted_output_sha256={},
+                acceptance_sha256=old['acceptance_sha256'],observation_intent=True,
+                diagnosis={'exception_class':'ToolResultIncompleteError'})
+            journal.save(oldkey,oldstate,'SYNTHETIC actual closed failure')
+            oldselected=dict(selected,operation_key=oldkey)
+            bindings['history']=[dict(issue='UIF-102',**oldselected)]
+            self.write(self.runtime/'validation-bindings.json',bindings)
+            self.write(self.runtime/('validation-receipt-'+oldkey+'.json'),receipt)
+            unit=self.current._native_unit_binding(SimpleNamespace(identifier='UIF-102',id=self.entry['issue_id']),
+                self.entry,self.runtime,self.manifest)
+            previous=dict(version=1,issues={'UIF-102':oldselected},history=[])
+            predecessor=digest(dict(unit=unit,selected=oldselected,spec=old,
+                bindings_sha256=hashlib.sha256((json.dumps(previous,indent=2)+'\n').encode()).hexdigest()))
+            task=self.current.state['tasks']['UIF-102'];task['unit_gate']={'binding':unit,'disposition':'waiting'}
+            task['validation']={'identity':predecessor,'status':'failed'}
+            self.current.read_only=False;self.current.state_path=self.current.runtime/'current-owner.json'
+            original_arguments=operations.bridge_arguments
+            def arguments(spec,*args):
+                self.assertNotEqual(spec['executor_sha256'],'e'*64,'Do not execute/regenerate historical command')
+                return original_arguments(spec,*args)
+            with patch.object(operations,'bridge_arguments',side_effect=arguments),patch.object(self.current,'guard'), \
+                 patch.object(stage,'tick',new=AsyncMock(return_value={'issues':{'UIF-102':{'status':'prepared'}}})) as tick:
+                runtime,identity=self.current.validation_binding('UIF-102',self.entry)
+                self.assertNotEqual(identity,predecessor)
+                asyncio.run(self.current.continue_validation())
+                tick.assert_awaited_once_with(self.runtime)
+                self.assertEqual(task['validation']['identity'],identity)
+                self.assertEqual(journal.read(selected['operation_key'])[1],current_state)
+                self.assertEqual(journal.read(oldkey),(oldspec,oldstate))
+                self.assertEqual(adapter.read_record(self.runtime/'validation-bindings.json'),bindings)
+                # A cache flag alone cannot rebind: the exact predecessor identity is required.
+                task['validation']={'identity':'0'*64,'status':'failed'}
+                tick.reset_mock();asyncio.run(self.current.continue_validation());tick.assert_not_awaited()
+                self.assertEqual(task['validation']['status'],'held')
+                for field,value in (('status','unknown'),('accepted_output_sha256',current['outputs']),('reconcile_required',True)):
+                    changed=dict(oldstate,**{field:value});journal.save(oldkey,changed,'SYNTHETIC invalid history')
+                    with self.subTest(field=field),self.assertRaises(AdmissionError):
+                        self.current.validation_binding('UIF-102',self.entry)
+                journal.save(oldkey,oldstate,'SYNTHETIC restore')
+                changed=copy.deepcopy(bindings);changed['history'][0]['native_receipt_sha256']='0'*64
+                self.write(self.runtime/'validation-bindings.json',changed)
+                with self.assertRaisesRegex(AdmissionError,'native_failed_history_selection'):
+                    self.current.validation_binding('UIF-102',self.entry)
+                self.write(self.runtime/'validation-bindings.json',bindings)
+                with self.assertRaisesRegex(AdmissionError,'current_validation_schema'):
+                    self.current._closed_failed_native_history('UIF-102',self.runtime,bindings,selected,
+                        dict(current,profile='delivery-suite'),unit)
+                file=self.runtime/('validation-receipt-'+oldkey+'.json');file.unlink()
+                with self.assertRaisesRegex(AdmissionError,'native_failed_history_receipt_missing'):
+                    self.current.validation_binding('UIF-102',self.entry)
