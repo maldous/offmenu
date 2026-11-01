@@ -58,6 +58,9 @@ class OwnerAdapters:
     review: Callable
     observe: Callable
     step: Callable
+    # Integration-only alternative; never selected by a coding child or used
+    # for release. Existing six-argument adapters retain the Engine contract.
+    integration_acceptance: Callable | None = None
 
 
 async def resolved(value):
@@ -120,6 +123,52 @@ def review_coverage(review, handoff, candidate):
     require(fingerprint(facts) == fingerprint(expected), 'review_candidate_coverage')
     return {'source_sha256': fingerprint(selected), 'outputs_sha256': fingerprint(outputs),
             'review_sha256': fingerprint(review)}
+
+
+def journal_acceptance(current, issue, reviewed_runtime, review, handoff, candidate):
+    """Consume original-reader-qualified Journal v3 evidence, never Engine history.
+
+    The caller has checked this exact review through _check_unit_review and
+    review_coverage. Reopen its actual reviewed origin and terminal receipt;
+    owner-selected context is an identity constraint, not an alternate reader.
+    """
+    require(candidate is None and handoff['source']['target'] == 'develop',
+            'journal_integration_only')
+    require(review.get('origin') == 'retained-typed-review-v1', 'journal_review_origin')
+    _, manifest, _ = current.context(issue.identifier, review=True)
+    task = manifest['tasks'][issue.identifier]
+    runtime, spec, selected, state, _ = current.reviewed_origin(issue.identifier, task)
+    require(str(runtime) == reviewed_runtime and spec['version'] == 3,
+            'journal_owner_runtime')
+    current._check_reviewed_terminal(spec, state, task['stage_binding']['inputs'])
+    source = handoff['source']
+    outputs = {item['path']: item['sha256'] for item in handoff['outputs']}
+    require(handoff['issue_id'] == issue.id == spec['issue_id']
+            and handoff['project_id'] == manifest['project_id']
+            and handoff['owner'] == spec['owner'] == current.config['owner']
+            and all(source[key] == spec[key] for key in ('head', 'base', 'branch'))
+            and outputs == spec['outputs'], 'journal_handoff_binding')
+    # review_coverage binds the original reader's independently qualified tree,
+    # branch and outputs to this handoff; the Journal binds the executed source.
+    review_coverage(review, handoff, None)
+    operation = handoff.get('operation')
+    require(type(operation) is dict, 'journal_operation_missing')
+    ref = operation['receipt']
+    require(task['stage_binding']['inputs'].get(ref['path']) == ref['sha256'],
+            'journal_receipt_pin')
+    receipt = pinned_private(current, ref)
+    require(receipt == review['validation_receipt']
+            and digest(receipt) == state['receipt_sha256']
+            and operation['id'] == selected['operation_key']
+            and operation['job_id'] == state['logical_job_id'] == receipt['job_id']
+            and operation['policy_sha256'] == spec['policy_sha256']
+            and operation['runner_sha256'] == spec['runner_sha256'] == receipt['runner_sha256']
+            and operation['command_sha256'] == receipt['command_sha256']
+            and operation['status'] == 'succeeded', 'journal_operation_binding')
+    return {'origin': 'reviewed-source-journal-v3',
+            'runtime': reviewed_runtime, 'operation_id': selected['operation_key'],
+            'job_id': receipt['job_id'], 'receipt': ref,
+            'source_sha256': fingerprint(source), 'outputs_sha256': fingerprint(outputs)}
 
 
 async def consume_boundary(current, issue, *, binding=None, adapters=None):
@@ -198,11 +247,16 @@ async def consume_boundary(current, issue, *, binding=None, adapters=None):
             context['action'] = actions[0]  # one exact owner-bound metadata transaction
             require(binding.operation_id == actions[0]['action_id'], 'linear_transaction_identity')
         else:
-            engine = await resolved(adapters.engine(binding))
-            context['engine'] = engine_acceptance(engine, handoff, candidate)
+            journal = binding.phase == 'integration' and adapters.integration_acceptance is not None
+            if not journal:
+                engine = await resolved(adapters.engine(binding))
+                context['engine'] = engine_acceptance(engine, handoff, candidate)
             review = await resolved(adapters.review(current, issue, binding))
             require(current._check_unit_review(review) == unit, 'independent_review_binding')
             context['review'] = review_coverage(review, handoff, candidate)
+            if journal:
+                context['validation'] = await resolved(
+                    adapters.integration_acceptance(binding, review, handoff, candidate))
             if binding.phase == 'release':
                 require(candidate is not None and packet['release'] is not None, 'release_evidence_missing')
                 release = packet['release']
@@ -437,11 +491,18 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
                 and set(actual) == {'binding', 'packet', 'context'}
                 and actual['binding'] == asdict(binding), 'owner_selection_drift')
         context = actual['context']
+        journal_context = (binding.phase == 'integration' and type(context) is dict
+                           and set(context) - {'publisher_invocation'} ==
+                           {'reviewed_runtime', 'unit_review'})
         require(type(context) is dict and (set(context) in (
                     {'engine_root', 'engine_task', 'unit_review'},
                     {'engine_root', 'engine_task', 'unit_review', 'publisher_invocation'})
-                or (binding.phase == 'linear' and context == {})),
+                or journal_context or (binding.phase == 'linear' and context == {})),
                 'owner_context_fields')
+        if journal_context:
+            require(type(context['reviewed_runtime']) is str
+                    and current.private(context['reviewed_runtime']).is_dir(),
+                    'journal_owner_runtime')
         if 'publisher_invocation' in actual['context']:
             require(binding.phase in ('integration', 'release'), 'publisher_invocation_phase')
             invocation_capability(actual['context']['publisher_invocation'])
@@ -476,6 +537,11 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
         authorize(owner, native_issue, bound)
         require(bound.phase in ('integration', 'release'), 'review_owner_phase')
         return pinned_private(current, selected['context']['unit_review'])
+    def integration_acceptance(bound, review_packet, handoff, candidate):
+        authorize(current, issue, bound)
+        require(bound.phase == 'integration', 'journal_integration_only')
+        return journal_acceptance(current, issue, selected['context']['reviewed_runtime'],
+                                  review_packet, handoff, candidate)
     def linear(bound, context=None):
         packet = load(bound)
         actions = plan_delivery(packet['linear'], packet['policy'])['actions']
@@ -518,7 +584,11 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
         require(fingerprint(current.gate_binding(issue, observation=True)) == bound.unit_sha256,
                 'publisher_invocation_unit_drift')
         return True
-    return OwnerAdapters(authorize, load, engine, review, observe, step)
+    journal_context = (binding.phase == 'integration' and
+                       set(selected['context']) - {'publisher_invocation'} ==
+                       {'reviewed_runtime', 'unit_review'})
+    return OwnerAdapters(authorize, load, engine, review, observe, step,
+                         integration_acceptance if journal_context else None)
 
 
 # Optional existing-host capability. No selector or identity comes from JSON.
