@@ -215,7 +215,8 @@ class CurrentWork:
     current.json v1: owner (existing owner ID), runtime_root and catalog
     (canonical absolute paths),
     optional project_route (exact reviewed project_id/project_slug pair; absent
-    means legacy OffMenu), source_head, source_sha256 (repo-relative executable input hashes),
+    means legacy OffMenu), sealed project_routes (finite native routes with
+    independent normal_intake pins), source_head, source_sha256 (repo-relative executable input hashes),
     workflow_sha256, policy_sha256, installation_sha256, version. catalog.json v1: version, entries;
     each entry: issue, issue_id, runtime, admission_sha256. Each task runtime's
     current-admission.json v1: version, owner, issue, issue_id, source (canonical
@@ -230,7 +231,7 @@ class CurrentWork:
         self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config, self.config_path, self.owner_custody = current_config(runtime)
-        if set(self.config) - {'qualified_successor', 'project_route', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template', 'catalog_versions', 'native_harness_boundaries'} != {'version', 'owner', 'runtime_root', 'catalog',
+        if set(self.config) - {'qualified_successor', 'project_route', 'project_routes', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template', 'catalog_versions', 'native_harness_boundaries'} != {'version', 'owner', 'runtime_root', 'catalog',
                                'source_head', 'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}:
             raise AdmissionError('current_config_fields')
         validated_project_route(self.config.get('project_route', project_route(PROJECT)))
@@ -257,6 +258,7 @@ class CurrentWork:
             or not isinstance(self.config['source_sha256'],dict)
             or not re.fullmatch(r'[0-9a-f]{40}',self.config['source_head'])):
             raise AdmissionError('current_private_root')
+        self._project_routes_config()
         self._native_harness_refill = None
         self._native_harness_config()
         if 'catalog_versions' in self.config and not self.owner_custody:
@@ -302,6 +304,46 @@ class CurrentWork:
     @property
     def route(self):
         return validated_project_route(self.config.get('project_route', project_route(PROJECT)))
+
+    def _project_routes_config(self):
+        """Only the sealed owner can admit additional native polling routes."""
+        grants = self.config.get('project_routes')
+        if 'project_routes' not in self.config:
+            return
+        if (not self.owner_custody or not isinstance(grants, list)
+            or not 1 <= len(grants) <= 2 or 'normal_intake' in self.config):
+            raise AdmissionError('current_project_routes_grant')
+        seen = set()
+        for grant in grants:
+            if not isinstance(grant, dict) or set(grant) != {'project_id', 'project_slug', 'normal_intake'}:
+                raise AdmissionError('current_project_routes_fields')
+            route = validated_project_route({k: grant[k] for k in ('project_id', 'project_slug')})
+            if route['project_id'] in seen:
+                raise AdmissionError('current_project_routes_duplicate')
+            seen.add(route['project_id'])
+            ref = grant['normal_intake']
+            if ref is not None:
+                self._private_pin(ref)
+        if self.route['project_id'] not in seen:
+            raise AdmissionError('current_project_routes_primary')
+
+    @property
+    def routes(self):
+        grants = self.config.get('project_routes')
+        return ([self.route] if grants is None else
+                [validated_project_route({k: g[k] for k in ('project_id', 'project_slug')}) for g in grants])
+
+    def admitted_route(self, project_id):
+        for route in self.routes:
+            if route['project_id'] == project_id:
+                return route
+        raise AdmissionError('current_project_not_admitted')
+
+    def _intake_ref(self, route):
+        if self.config.get('project_routes') is None:
+            return self.config.get('normal_intake')
+        return next(g['normal_intake'] for g in self.config['project_routes']
+                    if g['project_id'] == route['project_id'])
 
     def private(self, value):
         path = Path(value)
@@ -401,7 +443,7 @@ class CurrentWork:
             or manifest['tasks'][entry['issue']]['issue_id'] != entry['issue_id']
             or manifest['tasks'][entry['issue']]['owner'] != self.config['owner']
             or manifest['project_id'] != witness['project_id']
-            or manifest['project_id'] != self.route['project_id']
+            or not any(r['project_id'] == manifest['project_id'] for r in self.routes)
             or request_sha256 == witness['request_sha256']
             or runtime_lease_ids(runtime, manifest)[entry['issue']] == witness['lease']):
             raise AdmissionError('replacement_new_identity')
@@ -489,8 +531,9 @@ class CurrentWork:
             self.save()
             raise AdmissionError('current_fatal_binding') from error
 
-    def _intake_policy(self):
-        ref = self.config.get('normal_intake')
+    def _intake_policy(self, route=None):
+        route = self.admitted_route((route or self.route)['project_id'])
+        ref = self._intake_ref(route)
         if ref is None:
             raise AdmissionError('intake_disabled: owner must pin normal_intake policy')
         policy = self._private_pin(ref)
@@ -498,7 +541,7 @@ class CurrentWork:
                             'expires_at', 'references', 'resources', 'timeout_seconds'}
             or policy['schema'] != 'offmenu-normal-intake/1' or policy['enabled'] is not True
             or policy['owner'] != self.config['owner']
-            or policy['source_head'] != self.config['source_head'] or policy['project_route'] != self.route
+            or policy['source_head'] != self.config['source_head'] or policy['project_route'] != route
             or type(policy['expires_at']) not in (int, float)
             or not math.isfinite(policy['expires_at']) or policy['expires_at'] < time.time()
             or type(policy['timeout_seconds']) is not int or not 1 <= policy['timeout_seconds'] <= 60
@@ -515,8 +558,9 @@ class CurrentWork:
             raise AdmissionError('intake_reference_drift')
         return read_record(path)
 
-    def _intake_authority(self, reference):
-        policy = self._intake_policy()
+    def _intake_authority(self, reference, route=None):
+        route = self.admitted_route((route or self.route)['project_id'])
+        policy = self._intake_policy(route)
         authority = self._private_pin(policy['references'][reference])
         if (set(authority) - {'replacement_of'} != {'schema', 'owner', 'source_head', 'issue', 'issue_id', 'project_id',
                               'accepted_scope', 'acceptance', 'dependencies', 'decision', 'handoff',
@@ -524,7 +568,7 @@ class CurrentWork:
             or authority['schema'] != 'offmenu-intake-authority/1'
             or authority['owner'] != self.config['owner']
             or authority['source_head'] != self.config['source_head']
-            or authority['project_id'] != self.route['project_id']
+            or authority['project_id'] != route['project_id']
             or not isinstance(authority['accepted_scope'], list) or not authority['accepted_scope']
             or any(not isinstance(name, str) or not name.strip() for name in authority['accepted_scope'])
             or not isinstance(authority['acceptance'], list) or not authority['acceptance']
@@ -541,7 +585,8 @@ class CurrentWork:
         for record in self.state.get('intake', {}).values():
             if record.get('status') != 'qualified' or record.get('handoff') != ref:
                 continue
-            _, authority = self._intake_authority(record['reference'])
+            _, authority = self._intake_authority(record['reference'],
+                self.admitted_route(record['authority']['project_id']))
             if (authority['decision'] == 'owner-qualified' and authority['handoff'] == ref
                 and record['authority'] == authority and time.time() - record['checked_at'] <= 120
                 and packet['execution_outcome'] == dict(identifier=authority['issue'],
@@ -554,7 +599,8 @@ class CurrentWork:
                 return True
         return False
 
-    async def _intake(self, client, issue):
+    async def _intake(self, client, issue, route=None):
+        route = self.admitted_route((route or self.route)['project_id'])
         if not re.fullmatch(r'UIF-[1-9][0-9]*', issue.identifier):
             return
         records = self.state.setdefault('intake', {})
@@ -565,12 +611,12 @@ class CurrentWork:
                 raise AdmissionError('intake_identity_drift')
             if self.stopping or (self.runtime/'cancel.json').exists():
                 raise AdmissionError('intake_cancelled')
-            self._intake_policy()
+            self._intake_policy(route)
             remote = (await client._graphql(
                 'query($id: String!){issue(id:$id){id identifier description project{id} state{name} '
                 'inverseRelations{nodes{type issue{id state{name}}}}}}', {'id': issue.id})).get('issue') or {}
             if (remote.get('id') != issue.id or remote.get('identifier') != issue.identifier
-                or remote.get('project', {}).get('id') != self.route['project_id']
+                or remote.get('project', {}).get('id') != route['project_id']
                 or remote.get('state', {}).get('name') not in ('Todo', 'In Progress')):
                 raise AdmissionError('intake_authoritative_identity_or_state')
             matches = re.findall(r'```offmenu-intake\s*\n(.*?)\n```', remote.get('description') or '', re.S)
@@ -588,7 +634,7 @@ class CurrentWork:
                 or supplied['schema'] != 'offmenu-intake-reference/1'
                 or not isinstance(supplied['reference'], str)):
                 raise AdmissionError('intake_reference_schema')
-            policy, authority = self._intake_authority(supplied['reference'])
+            policy, authority = self._intake_authority(supplied['reference'], route)
             dependencies = sorted([dict(id=n['issue']['id'], state=n['issue']['state']['name'])
                 for n in remote['inverseRelations']['nodes'] if n['type'] == 'blocks'], key=lambda n:n['id'])
             if (authority['issue'] != issue.identifier or authority['issue_id'] != issue.id
@@ -871,7 +917,8 @@ class CurrentWork:
         outcome = packet['execution_outcome']
         replacement = 'replacement_of' in packet
         previous = self._qualified_replacement(packet)[0] if replacement else None
-        if (outcome['project_id'] != self.route['project_id'] or outcome['identifier'] == issue
+        if (not any(r['project_id'] == outcome['project_id'] for r in self.routes)
+            or outcome['identifier'] == issue
             or outcome['uuid'] == entry['issue_id']
             or any((e['issue'] == outcome['identifier'] or e['issue_id'] == outcome['uuid']
                     or e['runtime'] == packet['selected_current']['task_runtime'])
@@ -1671,7 +1718,7 @@ class CurrentWork:
         if (set(binding) != {'issue_id', 'project_id', 'owner', 'packet_sha256',
                              'operation_id', 'phase', 'unit_sha256'}
             or binding['owner'] != self.config['owner']
-            or binding['project_id'] != self.route['project_id']
+            or not any(r['project_id'] == binding['project_id'] for r in self.routes)
             or binding['phase'] not in ('linear', 'integration', 'release')
             or any(not isinstance(binding[k], str) or not re.fullmatch('[0-9a-f]{64}', binding[k])
                    for k in ('packet_sha256', 'operation_id', 'unit_sha256'))):
@@ -2335,28 +2382,30 @@ class CurrentWork:
             except Exception:
                 self._hold_unit_review(issue)
 
-    async def candidates(self, client, issues):
+    async def candidates(self, client, issues, route=None):
+        route = self.admitted_route((route or self.route)['project_id'])
+        intake_route_args = (route,) if 'project_routes' in self.config else ()
         self.refresh()
         selected = []
         for issue in issues:
             entry = self.entries.get(issue.identifier)
             if not entry:
-                await self._intake(client, issue)
+                await self._intake(client, issue, *intake_route_args)
                 continue
             if issue.id != entry['issue_id'] or issue.state not in ('Todo','In Progress'):
                 continue
             try:
                 replacement_intake = False
-                if self.config.get('normal_intake'):
-                    policy = self._intake_policy()
+                if self._intake_ref(route):
+                    policy = self._intake_policy(route)
                     for reference in policy['references']:
-                        _, authority = self._intake_authority(reference)
+                        _, authority = self._intake_authority(reference, route)
                         relation = authority.get('replacement_of')
                         if (authority['issue'] == issue.identifier and relation
                             and relation.get('entry_sha256') == digest(entry)):
                             # Tracker identity is unchanged; fresh owner authority
                             # selects a new unit rather than replaying this one.
-                            await self._intake(client, issue)
+                            await self._intake(client, issue, *intake_route_args)
                             replacement_intake = True
                             break
                 if replacement_intake:
@@ -2364,7 +2413,7 @@ class CurrentWork:
                     # generation. This pass still holds the retired entry.
                     continue
                 _, selected_manifest, _ = self.context(issue.identifier)
-                if selected_manifest['project_id'] != self.route['project_id']:
+                if selected_manifest['project_id'] != route['project_id']:
                     raise AdmissionError('current_selected_project')
                 if 'stage' in selected_manifest['tasks'][issue.identifier]:
                     self.stage_origin(issue.identifier, selected_manifest['tasks'][issue.identifier])
@@ -2395,15 +2444,15 @@ def install_adapters(runtime, manifest, key, current=None, *, native_harness_ada
 
     config.ProjectConfig.agent_env = lambda self: child_environment(os.environ)
     config.ProjectConfig.resolved_api_key = lambda self: key
-    # The admitted workflow has exactly one project. Pinned ServiceConfig
-    # already delegates both methods to that project; keep its native routing.
+    # Pinned ServiceConfig.projects retains native per-project routing.
     workspace_module.run_hook = reject_hook
 
-    route = current.route if current else project_route(manifest['project_id'])
+    routes = current.routes if current else [project_route(manifest['project_id'])]
     original_fetch = linear.LinearClient.fetch_candidate_issues
 
     async def selected_candidates(client, project_slug, states):
-        if project_slug != route['project_slug']:
+        route = next((r for r in routes if r['project_slug'] == project_slug), None)
+        if route is None:
             raise AdmissionError('Wrong Linear project')
         try:
             issues = await original_fetch(client, project_slug, ['Todo','In Progress'] if current else states)
@@ -2414,7 +2463,7 @@ def install_adapters(runtime, manifest, key, current=None, *, native_harness_ada
             current.save()
             return []
         if current:
-            return await current.candidates(client, issues)
+            return await current.candidates(client, issues, route)
         selected = []
         for issue in issues:
             if issue.identifier not in manifest['tasks'] or issue.id != manifest['tasks'][issue.identifier]['issue_id']:
@@ -2517,7 +2566,13 @@ def install_adapters(runtime, manifest, key, current=None, *, native_harness_ada
     active_turns = set()
     original_tick = orchestration.Orchestrator._tick
     if current:
+        tick_lock = asyncio.Lock()
         async def current_tick(owner):
+            # Native project loops share this CurrentWork and its continuation
+            # permits. Serialize admission ticks, never the coding children.
+            async with tick_lock:
+                return await current_project_tick(owner)
+        async def current_project_tick(owner):
             current.refresh()  # Before upstream config reload can skip candidate fetching.
             await current.continue_validation()
             await current.continue_native_harness(native_harness_adapter_factory,
@@ -2804,6 +2859,21 @@ async def run(runtime, duration, dry_run=False, current_mode=False):
         return await _run(runtime, duration, dry_run, True)
 
 
+def validate_project_workflow(config, policy, routes, errors):
+    """Admit native project configs under one existing global agent ceiling."""
+    projects = config.projects
+    slugs = [p.tracker.project_slug for p in projects]
+    if (errors or len(slugs) != len(routes) or len(set(slugs)) != len(slugs)
+        or set(slugs) != {r['project_slug'] for r in routes}
+        or config.agent.max_concurrent_agents != policy['symphony']['max_concurrent_agents']
+        or config.server.port is not None
+        or any(s.runner != 'codex' for p in projects for s in p.all_states().values() if s.type == 'agent')
+        or any(vars(p.hooks).get(k) for p in projects
+               for k in ('after_create','before_run','after_run','before_remove','on_stage_enter'))
+        or any(s.hooks is not None for p in projects for s in p.all_states().values())):
+        raise AdmissionError('Workflow violates selected OffMenu contract')
+
+
 async def _run(runtime, duration, dry_run=False, current_mode=False):
     verify_install(runtime)
     current = CurrentWork(runtime) if current_mode else None
@@ -2821,23 +2891,21 @@ async def _run(runtime, duration, dry_run=False, current_mode=False):
     from stokowski.config import parse_workflow_file, validate_config
     definition = parse_workflow_file(runtime/'workflow.yaml')
     projects = definition.config.projects
-    if (validate_config(definition.config) or len(projects) != 1
-        or projects[0].tracker.project_slug != route['project_slug']
-        or definition.config.agent.max_concurrent_agents != policy['symphony']['max_concurrent_agents']
-        or definition.config.server.port is not None
-        or any(s.runner != 'codex' for s in projects[0].all_states().values() if s.type == 'agent')
-        or any(vars(projects[0].hooks).get(k) for k in ('after_create','before_run','after_run','before_remove','on_stage_enter'))
-        or any(s.hooks is not None for s in projects[0].all_states().values())):
-        raise AdmissionError('Workflow violates selected OffMenu contract')
+    routes = current.routes if current else [route]
+    validate_project_workflow(definition.config, policy, routes, validate_config(definition.config))
     from stokowski.linear import LinearClient
     client = LinearClient(endpoint='https://api.linear.app/graphql', api_key=key)
     try:
-        candidates = await client.fetch_candidate_issues(route['project_slug'], projects[0].active_linear_states())
+        candidates = []
+        for project in projects:
+            candidates.extend(await client.fetch_candidate_issues(
+                project.tracker.project_slug, project.active_linear_states()))
     finally:
         await client.close()
     if not current and {i.id for i in candidates} != {t['issue_id'] for t in manifest['tasks'].values()}:
         raise AdmissionError('Selected issues are not exactly the ready candidates')
-    checkpoint(runtime/'admission.json', dict(project_id=route['project_id'], selected=[i.identifier for i in candidates],
+    route_evidence = dict(project_routes=routes) if current and 'project_routes' in current.config else {}
+    checkpoint(runtime/'admission.json', dict(project_id=route['project_id'], **route_evidence, selected=[i.identifier for i in candidates],
                max_concurrent_agents=definition.config.agent.max_concurrent_agents,
                upstream_revision=PIN, dry_run=dry_run, credential_exported=False))
     if dry_run:
@@ -2888,7 +2956,7 @@ async def _run(runtime, duration, dry_run=False, current_mode=False):
             for sig in (signal.SIGTERM, signal.SIGINT):
                 loop.remove_signal_handler(sig)
         checkpoint(runtime/'coordinator-finished.json', dict(stopped=True, at=time.time(),
-                   accepted_delivery=False, project_id=route['project_id']))
+                   accepted_delivery=False, project_id=route['project_id'], **route_evidence))
 
 
 async def reconcile_metadata(runtime):

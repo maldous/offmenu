@@ -36,7 +36,7 @@ EXCLUDED_ARCHIVAL_EVIDENCE = {
 }
 REQUIRED = {'version', 'owner', 'runtime_root', 'catalog', 'source_head',
             'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}
-OPTIONAL = {'qualified_successor', 'project_route', 'completed_native_validations',
+OPTIONAL = {'qualified_successor', 'project_route', 'project_routes', 'completed_native_validations',
             'normal_intake', 'native_review_policies', 'native_review_template'}
 CODE = {'tools/delivery/' + name + '.py' for name in (
     'stokowski_adapter', 'stokowski_worker', 'stokowski_prepare', 'symphony_capacity',
@@ -275,13 +275,33 @@ def validate_config(config, runtime):
         require(isinstance(config[field], str) and re.fullmatch('[0-9a-f]{64}', config[field]),
                 'current digest')
     canonical(config['catalog'])
-    if 'project_route' in config:
-        routes = {'ce60c1ab-a732-4a71-8471-14c9dc393886': 'ccd080f4f6f0',
-                  'ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0': '21558318e036'}
-        route = config['project_route']
+    routes = {'ce60c1ab-a732-4a71-8471-14c9dc393886': 'ccd080f4f6f0',
+              'ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0': '21558318e036'}
+    def route_pair(route):
         require(isinstance(route, dict) and set(route) == {'project_id', 'project_slug'}
-                and route['project_id'] in routes and routes[route['project_id']] == route['project_slug'],
-                'project route pair')
+                and isinstance(route['project_id'], str) and route['project_id'] in routes
+                and routes[route['project_id']] == route['project_slug'], 'project route pair')
+    primary = config.get('project_route', {'project_id': 'ce60c1ab-a732-4a71-8471-14c9dc393886',
+                                         'project_slug': 'ccd080f4f6f0'})
+    route_pair(primary)
+    if 'project_routes' in config:
+        grants = config['project_routes']
+        require(isinstance(grants, list) and 1 <= len(grants) <= 2
+                and 'normal_intake' not in config, 'project routes grant')
+        seen = set()
+        for grant in grants:
+            require(isinstance(grant, dict)
+                    and set(grant) == {'project_id', 'project_slug', 'normal_intake'}, 'project routes fields')
+            route_pair({k: grant[k] for k in ('project_id', 'project_slug')})
+            require(grant['project_id'] not in seen, 'duplicate project route')
+            seen.add(grant['project_id'])
+            ref = grant['normal_intake']
+            if ref is not None:
+                require(isinstance(ref, dict) and set(ref) == {'path', 'sha256'}
+                        and isinstance(ref['sha256'], str) and re.fullmatch('[0-9a-f]{64}', ref['sha256']),
+                        'project intake reference')
+                require(canonical(ref['path']).is_relative_to(root), 'private project intake')
+        require(primary['project_id'] in seen, 'primary project route')
     for field in ('completed_native_validations', 'native_review_policies'):
         refs = config.get(field, {})
         require(isinstance(refs, dict), 'current references')
