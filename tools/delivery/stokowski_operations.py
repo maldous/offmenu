@@ -511,7 +511,7 @@ def enrichment_workspace(spec):
     """One private candidate root inside the existing /offmenu read boundary."""
     if not isinstance(spec.get('head'),str) or not re.fullmatch('[0-9a-f]{40}',spec['head']):
         raise OperationError('Invalid enrichment candidate head')
-    return '/offmenu/.delivery/stokowski/native-validation/'+spec['head']
+    return str(WORKSPACES/('enrichment-'+spec['head']))
 
 
 def enrichment_validation_code(spec, root=None):

@@ -235,7 +235,8 @@ def _enrichment_command(command, logical_id, tokens):
     _reviewed_legacy(spec)
     if spec['profile'] != ENRICHMENT_PROFILE or set(spec['outputs']) != {ENRICHMENT_TEST}:
         raise ValueError('Enrichment body requires exact native profile/output')
-    if root != '/offmenu/.delivery/stokowski/native-validation/'+spec['head']:
+    _reviewed_workspace(root)
+    if root != '/offmenu/data/.offmenu-platform/workspaces/enrichment-'+spec['head']:
         raise ValueError('Invalid derived enrichment root')
     key = hashlib.sha256(json.dumps({k:v for k,v in spec.items() if k != 'owner'},
         sort_keys=True,separators=(',', ':')).encode()).hexdigest()
