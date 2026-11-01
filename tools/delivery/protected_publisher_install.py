@@ -100,9 +100,11 @@ def _config(raw, expected_hash, source_pins, dependency_pins):
            'Independent config pin mismatch')
     c = _parse(raw)
     try:
+        optional = ({k for k in ('integration_admission','nativeContinuation') if k in c}
+                    if c.get('version') == 1 else set())
         _check(set(c) == {'version', 'appId', 'installationId', 'repositoryId',
             'publisherUid', 'publisherGid', 'logicalOwner', 'sourceHead', 'codePins',
-            'pythonSha256', 'binding', 'snapshot', 'plan', 'workspace'})
+            'pythonSha256', 'binding', 'snapshot', 'plan', 'workspace'} | optional)
         _check(type(c['version']) is int and c['version'] in (1, 2))
         for key, value in dict(appId=5554359, installationId=177187048,
                                repositoryId=1416253963, publisherUid=984, publisherGid=976).items():
@@ -173,9 +175,48 @@ def _config(raw, expected_hash, source_pins, dependency_pins):
                and review['verdict'] == 'accept' and review['findings'] == []
                and snapshot['unresolved_findings'] == [] and snapshot['source_clean'] is True
                and snapshot['publication_triggers_actions'] is False and not snapshot.get('cancel_requested'))
+        _integration_metadata(c)
     except (KeyError, TypeError, AttributeError, ValueError, RecursionError) as exc:
         raise InstallError('Invalid config association') from exc
     return c
+
+
+def _integration_metadata(c):
+    """Finite sealed association; permission and terminal custody stay owner-qualified."""
+    if not any(k in c for k in ('integration_admission','nativeContinuation')):
+        return
+    b, s = c['binding'], c['snapshot']
+    _check(c['version'] == 1 and 'source_projection' in b)
+    _source_projection(b, s)
+    p, n = b['source_projection'], s['native_runtime']
+    if 'integration_admission' in c:
+        a = c['integration_admission']
+        _check(type(a) is dict and set(a) == {'version','kind','binding_sha256','unit_sha256',
+            'review_sha256','permission_sha256','automatic_integration_enabled'}
+            and type(a['version']) is int and a['version'] == 1
+            and a['kind'] == 'native-reviewed-integration-v1'
+            and a['binding_sha256'] == _hash(_wire(b)) and a['unit_sha256'] == n['unit_sha256']
+            and a['review_sha256'] == p['review_sha256'] == s['review']['evidence_source']['sha256']
+            and _hex(a['permission_sha256']) and a['automatic_integration_enabled'] is True)
+    if 'nativeContinuation' in c:
+        a = c['nativeContinuation']
+        _check(type(a) is dict and set(a) == {'version','operation_id','unit_sha256','packet_sha256',
+            'claim_sha256','previous_selection_sha256','previous_capability','previous_record_sha256','receipts'}
+            and type(a['version']) is int and a['version'] == 1
+            and a['operation_id'] == _hash(_wire(b)) and a['unit_sha256'] == n['unit_sha256']
+            and a['packet_sha256'] == n['packet_sha256']
+            and all(_hex(a[k]) for k in ('operation_id','unit_sha256','packet_sha256',
+                'claim_sha256','previous_selection_sha256','previous_record_sha256')))
+        cap, receipts = a['previous_capability'], a['receipts']
+        _check(type(cap) is dict and set(cap) == {'version','closure_sha256','host_confirmation_sha256'}
+            and type(cap['version']) is int and cap['version'] == 1
+            and _hex(cap['closure_sha256']) and _hex(cap['host_confirmation_sha256'])
+            and type(receipts) is list and 1 <= len(receipts) <= 128)
+        for r in receipts:
+            _check(type(r) is dict and set(r) == {'invocation_id','closure_sha256','receipt_sha256'}
+                and isinstance(r['invocation_id'], str) and str(UUID(r['invocation_id'])) == r['invocation_id']
+                and _hex(r['closure_sha256']) and _hex(r['receipt_sha256']))
+        _check(len({r['invocation_id'] for r in receipts}) == len(receipts))
 
 
 def _source_projection(b, snapshot):

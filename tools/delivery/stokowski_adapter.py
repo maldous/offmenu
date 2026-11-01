@@ -1882,7 +1882,7 @@ class CurrentWork:
             return selection
         if not isinstance(context, dict):
             raise AdmissionError('native_harness_context')
-        keys = set(context) - {'publisher_invocation'}
+        keys = set(context) - {'publisher_invocation','publisher_continuation'}
         if binding['phase'] == 'integration' and keys == {'reviewed_runtime', 'unit_review'}:
             root_name, references = 'reviewed_runtime', ('unit_review',)
         elif keys == {'engine_root', 'engine_task', 'unit_review'}:
@@ -1891,6 +1891,15 @@ class CurrentWork:
             raise AdmissionError('native_harness_context')
         if not isinstance(context[root_name], str) or not self.private(context[root_name]).is_dir():
             raise AdmissionError('native_harness_context')
+        if 'publisher_continuation' in context:
+            if binding['phase'] != 'integration' or root_name != 'reviewed_runtime' or 'publisher_invocation' not in context:
+                raise AdmissionError('native_harness_continuation_context')
+            import native_publisher_invocation as helper
+            name = 'tools/delivery/native_publisher_invocation.py'
+            if (Path(helper.__file__).resolve() != SOURCE/name or
+                self.config['source_sha256'].get(name) != file_sha(helper.__file__)):
+                raise AdmissionError('native_harness_continuation_source')
+            helper.continuation(context['publisher_continuation'],binding)
         if 'publisher_invocation' in context:
             invocation = context['publisher_invocation']
             if (not isinstance(invocation, dict)
@@ -1954,9 +1963,14 @@ class CurrentWork:
             module = self._native_harness_module()
             selection = self._native_harness_selection(identifier)
             selected_sha = module.fingerprint(selection)
-            if state.get('selection_sha256', selected_sha) != selected_sha:
-                raise AdmissionError('native_harness_selection_rebind')
             binding = module.OwnerBinding(**selection['binding'])
+            continuation = None
+            if state.get('selection_sha256', selected_sha) != selected_sha:
+                grant = selection['context'].get('publisher_continuation',{})
+                if grant.get('previous_selection_sha256') != state['selection_sha256']:
+                    raise AdmissionError('native_harness_selection_rebind')
+                continuation = module.invocation_continuation_record(self,binding,
+                    self._private_pin(selection['packet']),selection)
             from types import SimpleNamespace
             issue = SimpleNamespace(identifier=identifier, id=self.entries[identifier]['issue_id'])
             if issue.id != binding.issue_id:
@@ -1964,6 +1978,8 @@ class CurrentWork:
             self.context(identifier, review=True, observation=True)
             if module.fingerprint(self.gate_binding(issue, observation=True)) != binding.unit_sha256:
                 raise AdmissionError('native_harness_unit_drift')
+            if continuation is not None:
+                self.state[module.INVOCATIONS][binding.operation_id] = continuation
             state.update(selection_sha256=selected_sha, operation_id=binding.operation_id,
                          unit_sha256=binding.unit_sha256, status='pending')
             state.pop('reason', None)
