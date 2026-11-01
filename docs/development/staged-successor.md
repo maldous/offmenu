@@ -28,3 +28,32 @@ must include that immutable Git branch/ref in coherent adoption. Native pins use
 only the existing required `MODULES` Python subset, each equal to the full sealed
 source map. The control source head and the reviewed candidate contribution head
 remain distinct identities. Source acceptance does not activate either route.
+
+The normal validation tick can qualify an already-admitted independent typed
+review for a `validation` stage with `reviewed-source-v1` origin. It rechecks the
+original admission, every frozen input, contribution provenance, candidate
+identity and outputs, and the original terminal Journal receipt. It writes one
+immutable `retained-typed-review-v1` incoming packet through the existing unit
+writer; the normal unit consumer recomputes the entire packet before approval.
+This separate evidence origin retains the typed review's actual fields without
+inventing model, provider, reviewer thread or turn observations. The existing
+standalone review and provenance supplement contract is unchanged.
+
+For future operations, the Journal retains the actual public receipt body from
+normal successful backend observation at the original reviewed runtime's fixed
+`validation-receipt.json`. For an already-completed operation, the owner may
+retain the original body there without changing frozen inputs or creating a new
+operation. Its full content must match the original Journal digest, stopped
+success, job, command, runner, policy, acceptance and output bindings, including
+when the original executor predates the current source. A digest or status alone
+cannot supply a missing body. Missing, changed or conflicting evidence holds the
+unit; receipt custody failure preserves the terminal job and never reruns it.
+The observed public projection is distinct from the complete backend receipt
+(which can include resource details omitted by the existing dispatcher). Retain
+the complete backend bytes separately as `validation-backend-receipt.json` when
+collecting historical evidence; its digest need not equal the Journal's public
+receipt digest. Never rebuild the public receipt from a status summary.
+
+Unit approval keeps `accepted_delivery=false` and has no merge action. Existing
+owner-native publication, outcome and refill phases still require their own
+admitted evidence. This continuation starts no reviewer, model or coding work.

@@ -1417,22 +1417,28 @@ class CurrentWork:
             # command with presently qualified source can survive executor drift.
             # Apply in both modes: publication and fixed review also call the
             # default mode. Journal.tick retains strict fresh-execution admission.
-            self._check_reviewed_terminal(spec, state, pins)
+            self._check_reviewed_terminal(spec, state, pins,
+                                          receipt_path=runtime/'validation-receipt.json')
             admission = stage.qualify_reviewed_source(spec,selected['admission_path'])
         return runtime,spec,selected,state,admission
 
-    def _check_reviewed_terminal(self, spec, state, pins):
+    def _check_reviewed_terminal(self, spec, state, pins, *, receipt_path=None):
         from stokowski_operations import bridge_arguments
         if (state.get('status') != 'succeeded' or state.get('cancel_requested') is not False
             or state.get('observation_intent') or state.get('reconcile_required')
             or state.get('accepted_output_sha256') != spec['outputs']
             or state.get('acceptance_sha256') != spec['acceptance_sha256']):
             raise AdmissionError('reviewed_source_terminal_required')
-        # Only owner-selected regular input bytes (already hash checked above)
-        # can supply the original receipt. A status string or a packet supplied
-        # by a new reviewer is insufficient authority for this exemption.
+        # Frozen owner inputs or the original runtime's fixed receipt custody
+        # can supply the body. The Journal commits to its entire content; a
+        # status string or a packet supplied by a new reviewer cannot replace it.
+        names = list(pins)
+        if receipt_path is not None:
+            path = self.private(str(receipt_path))
+            if path.is_file():
+                names.append(str(path))
         receipts = []
-        for name in pins:
+        for name in names:
             try:
                 receipt = read_record(name)
             except (ValueError,AdmissionError):
@@ -1451,6 +1457,50 @@ class CurrentWork:
             or receipt.get('capacity_policy_sha256') != spec['policy_sha256']
             or receipt.get('command_sha256') != hashlib.sha256(expected['command'].encode()).hexdigest()):
             raise AdmissionError('reviewed_source_terminal_receipt_binding')
+        return receipt
+
+    def retained_typed_review_packet(self, issue):
+        """Requalify already-admitted review, not a new independent review.
+
+        This separate origin preserves the typed review's actual metadata. It
+        grants no merge permission and leaves the supplement reader unchanged.
+        Every incoming byte is recomputed again by the normal unit consumer.
+        """
+        from types import SimpleNamespace
+        _, manifest, _ = self.context(issue, review=True)
+        task = manifest['tasks'][issue]
+        if (task.get('stage') != 'validation' or
+            task['stage_binding']['entry'].get('origin') != 'reviewed-source-v1'):
+            raise AdmissionError('retained_typed_review_stage')
+        runtime, spec, selected, state, admission = self.reviewed_origin(issue, task)
+        receipt = self._check_reviewed_terminal(spec, state, task['stage_binding']['inputs'],
+                                               receipt_path=runtime/'validation-receipt.json')
+        tree = subprocess.check_output(['git','-C',spec['local_source_root'],
+            'rev-parse',spec['head']+'^{tree}'], text=True).strip()
+        unit = self.gate_binding(SimpleNamespace(identifier=issue,id=self.entries[issue]['issue_id']))
+        binding = dict(owner=spec['owner'], issue_id=spec['issue_id'], project_id=unit['project_id'],
+            head=spec['head'], base=spec['base'], tree=tree, outputs=spec['outputs'],
+            head_branch=spec['branch'], capacity_policy_sha256=spec['policy_sha256'],
+            validation_operation_key=selected['operation_key'],
+            admission_sha256=spec['acceptance_sha256'], stage_identity=task['stage_binding']['identity'])
+        snapshot = dict(review=admission['review'],
+            validation=dict(operation_key=selected['operation_key'], status='succeeded',
+                head=spec['head'], base=spec['base'], outputs=spec['outputs'],
+                capacity_policy_sha256=spec['policy_sha256'], child_tree_gone=True,reconcile_required=False),
+            inputs=task['stage_binding']['inputs'], source_tree=tree,
+            publication_triggers_actions=False, accepted_delivery=False)
+        decision = dict(version=1, kind='retained-typed-review-v1', status='validation-review-qualified',
+            action=None, merge_effect='not-applicable', binding_sha256=digest(binding),
+            qualification_sha256=digest(snapshot))
+        return dict(origin='retained-typed-review-v1',issue=issue,unit_binding=unit,
+            integration_binding=binding,snapshot=snapshot,decision=decision,validation_receipt=receipt)
+
+    def continue_retained_typed_review(self, issue):
+        # Already inside the normal coordinator lock. The same immutable writer
+        # and normal consumer enforce conflicts/replay and own all gate updates.
+        packet = self.retained_typed_review_packet(issue)
+        self.unit_review_writer(lambda _: packet)(packet)
+        self._consume_unit_reviews()
 
     def stage_origin(self, issue, task):
         """Requalify the owner-pinned original; never manufacture stage receipts.
@@ -1700,6 +1750,18 @@ class CurrentWork:
                 prior = task.get('validation', {})
                 if prior.get('identity', identity) != identity:
                     raise AdmissionError('current_validation_rebind')
+                retained = (selected_task.get('stage') == 'validation' and
+                    selected_task['stage_binding']['entry'].get('origin') == 'reviewed-source-v1')
+                if retained:
+                    # A stopped original operation needs no transport, including
+                    # when its executor predates this source correction.
+                    _, _, _, state, _ = self.reviewed_origin(issue, selected_task)
+                    if state.get('status') == 'succeeded':
+                        task['validation'] = dict(identity=identity,status='succeeded',
+                            requested_model=None,requested_effort=None,provider=None)
+                        self.continue_retained_typed_review(issue)
+                        self.save()
+                        continue
                 if selected_task.get('stage') == 'review':
                     task['validation'] = dict(identity=identity, status='awaiting-independent-review',
                         requested_model=None, requested_effort=None, provider=None)
@@ -1727,6 +1789,8 @@ class CurrentWork:
                     'cancel-requested','succeeded','failed','cancelled','refused','quarantined'} else 'held')
                 if status == 'succeeded' and 'stage' not in selected_task:
                     await self.continue_native_review(issue)
+                elif status == 'succeeded' and retained:
+                    self.continue_retained_typed_review(issue)
             except asyncio.CancelledError:
                 raise
             except Exception:
@@ -2250,6 +2314,10 @@ class CurrentWork:
         issue = packet['issue']
         entry = self.entries[issue]
         unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']))
+        if packet.get('origin') == 'retained-typed-review-v1':
+            if digest(packet) != digest(self.retained_typed_review_packet(issue)):
+                raise AdmissionError('retained_typed_review_packet_mismatch')
+            return unit
         if packet.get('origin') == 'native-readonly-review-v1':
             from stokowski_unit_review import qualify_native_review
             if packet != qualify_native_review(self,issue):
