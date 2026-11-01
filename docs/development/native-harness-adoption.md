@@ -518,3 +518,36 @@ opened as a payload. Tests use synthetic public resources under both dependency
 roles and reject wrong role/path/digest/closure, absent PUBLICRECORD pin, omitted
 new-role selection, changed bytes and arbitrary PEM/private-key names. No
 protected dependency file or actual key is read by these tests.
+
+
+## Installed native coordinator launcher
+
+The Foo protected coordinator uses
+[`offmenu-stokowski-current-native.conf`](../../deploy/stokowski/offmenu-stokowski-current-native.conf)
+as its service `ExecStart` override. This is the exact configuration applied for
+UIF-131 to the existing protected runtime; its fixed paths are specific to that
+installation. An authorised activation owner installs it as a root-owned service
+drop-in, reloads the service configuration and controls the existing service's
+restart. Copying this repository file does not activate a service.
+
+The isolated interpreter retains `-E -s -B`. Its import path contains the sealed
+`tools/delivery` and `src` directories instead of the launcher's working-directory
+entry. The loader registers one adapter module under both `__main__` and
+`stokowski_adapter` before executing the unchanged CLI. This preserves the
+runtime's exact `CurrentWork` class identity and all existing ownership checks.
+Direct script execution omitted `src`; a first `runpy` launcher supplied that
+path but loaded a second adapter class through the canonical import.
+
+Live verification used the original UIF-117 operation: the running coordinator
+recorded and read back its exact source-integrated Linear milestone, then
+observed the same effect on subsequent polls. This proves that handover, rather
+than only interpreter import or service liveness. Coding/validation receipts,
+PR194 and its merge retain their original identities. A source milestone does
+not mark product delivery Done or demonstrate another backlog pickup.
+
+The original service directives, credentials, environment restrictions, runtime
+and installed package remain in place. The current `verify_active` helper only
+recognises direct-script process arguments; it does not accept this `-c` launcher.
+Do not claim that helper passed for this configuration. Use the actual selected
+service arguments and the original operation's effect readback as the scoped
+operational evidence until that separate diagnostic interface is updated.
