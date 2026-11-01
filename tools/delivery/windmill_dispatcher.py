@@ -25,6 +25,10 @@ IDENTITY_PROFILE = 'identity-client-focused'
 IDENTITY_TESTS = ('tests/web/offmenu-identity-client.test.mjs',
                   'tests/edge/handler-auth-dispatch.test.mjs')
 PROFILES = {'delivery-suite'}
+ENRICHMENT_PROFILE = 'enrichment-resilience-focused'
+ENRICHMENT_TEST = 'tests/web/enrichment-resilience.test.mjs'
+PROFILES.add(ENRICHMENT_PROFILE)
+ENRICHMENT_BODY_SHA256 = '2ed28f2a2b33837d12c496f5e5257eb7145101fad790978290db326d8c34ad16'
 
 
 def _reviewed_branch(value):
@@ -216,10 +220,38 @@ def _identity_command(command, logical_id, tokens):
     return key
 
 
+def _enrichment_command(command, logical_id, tokens):
+    """Recognize only the complete frozen native-v1 Node wrapper; never eval."""
+    body = tokens[2]
+    if (tokens[:2] != ['/offmenu/.venv-delivery/bin/python','-c']
+        or command != '/offmenu/.venv-delivery/bin/python -c '+shlex.quote(body)):
+        raise ValueError('Noncanonical enrichment shell')
+    parsed = ast.parse(body)
+    spec_json = ast.literal_eval(parsed.body[1].value.args[0])
+    root = ast.literal_eval(parsed.body[2].value.args[0])
+    if not isinstance(spec_json,str) or root != '/offmenu':
+        raise ValueError('Invalid enrichment literals')
+    spec = json.loads(spec_json,object_pairs_hook=_unique_json)
+    _reviewed_legacy(spec)
+    if spec['profile'] != ENRICHMENT_PROFILE or set(spec['outputs']) != {ENRICHMENT_TEST}:
+        raise ValueError('Enrichment body requires exact native profile/output')
+    key = hashlib.sha256(json.dumps({k:v for k,v in spec.items() if k != 'owner'},
+        sort_keys=True,separators=(',', ':')).encode()).hexdigest()
+    if logical_id != 'offmenu-'+key[:48] or _body_hash(body,[
+        ('spec=json.loads('+repr(json.dumps(spec,sort_keys=True))+')','SPEC')]) != ENRICHMENT_BODY_SHA256:
+        raise ValueError('Unreviewed enrichment binding/body')
+    return key
+
+
 def _reviewed_command(command, logical_id):
     try:
         tokens = shlex.split(command)
         if len(tokens) == 3:
+            parsed = ast.parse(tokens[2])
+            if (len(parsed.body) > 1 and isinstance(parsed.body[1],ast.Assign)
+                and isinstance(parsed.body[1].targets[0],ast.Name)
+                and parsed.body[1].targets[0].id == 'spec'):
+                return _enrichment_command(command,logical_id,tokens)
             return _identity_command(command,logical_id,tokens)
         if len(tokens) != 19 or tokens[10] != tokens[18]:
             raise ValueError('Invalid complete reviewed command')

@@ -21,6 +21,10 @@ BRIDGE = 'u/admin/foo_jobs_20261027'
 BASE_URL = 'https://windmill.aldous.info'
 POLICY = Path(__file__).with_name('capacity-policy.json')
 PROFILES = {'delivery-suite':['.venv-delivery/bin/python','-m','unittest','discover','-s','tests/delivery','-q']}
+ENRICHMENT_PROFILE = 'enrichment-resilience-focused'
+ENRICHMENT_TEST = 'tests/web/enrichment-resilience.test.mjs'
+ENRICHMENT_COMMAND = ('/bin/node', '--test', '--test-concurrency=1', ENRICHMENT_TEST)
+PROFILES[ENRICHMENT_PROFILE] = list(ENRICHMENT_COMMAND)
 TERMINAL = {'succeeded','failed','cancelled','refused','quarantined'}
 # The reviewed computation timeout is 180s; allow 30s for wrapper completion.
 # This only admits a status observation, never replacement computation.
@@ -119,6 +123,8 @@ def validated(spec):
         raise OperationError('Unreviewed validation profile')
     if not isinstance(spec['outputs'],dict) or not 1 <= len(spec['outputs']) <= 64:
         raise OperationError('Missing accepted outputs')
+    if spec['profile'] == ENRICHMENT_PROFILE and set(spec['outputs']) != {ENRICHMENT_TEST}:
+        raise OperationError('Enrichment profile requires its sole reviewed test output')
     for name,value in spec['outputs'].items():
         path = PurePosixPath(name)
         if (not name or path.is_absolute() or '\\' in name or str(path) != name
@@ -501,6 +507,47 @@ with tempfile.TemporaryDirectory(prefix='offmenu-accepted-validation-') as direc
     return 'python3 -c '+shlex.quote(code)
 
 
+def enrichment_validation_code(spec, root='/offmenu'):
+    """Fixed native-v1 consumer check; no inherited test context or credentials."""
+    return """import hashlib,json,os,pathlib,re,subprocess,sys,tempfile
+spec=json.loads(SPEC_JSON)
+root=pathlib.Path(ROOT)
+def verify():
+ assert root.resolve()==root and not any(p.is_symlink() for p in (root,*root.parents)), 'workspace alias'
+ def git(*args): return subprocess.check_output(['git','-C',str(root),*args])
+ assert git('rev-parse','HEAD').decode().strip()==spec['head'], 'head drift'
+ assert git('branch','--show-current').decode().strip()==spec['branch'], 'branch drift'
+ assert git('rev-list','--parents','-n','1',spec['head']).decode().split()==[spec['head'],spec['base']], 'contribution parent drift'
+ assert not git('status','--porcelain','--untracked-files=all'), 'dirty candidate'
+ subprocess.run(['git','-C',str(root),'merge-base','--is-ancestor',spec['base'],spec['head']],check=True)
+ changed=set(filter(None,git('diff','--no-renames','--name-only','-z',spec['base'],spec['head']).decode().split('\\0')))
+ assert changed==set(spec['outputs']), 'candidate delta drift'
+ for name,expected in spec['outputs'].items():
+  path=root/name
+  assert not any(p.is_symlink() for p in (path,*path.parents)), 'output alias'
+  assert git('ls-tree',spec['head'],'--',name).split()[:2] in ([b'100644',b'blob'],[b'100755',b'blob']), 'nonregular output'
+  assert hashlib.sha256(path.read_bytes()).hexdigest()==expected, 'output drift'
+  assert hashlib.sha256(git('show',spec['head']+':'+name)).hexdigest()==expected, 'committed output drift'
+verify()
+try:
+ with tempfile.TemporaryDirectory(prefix='offmenu-enrichment-',dir='/tmp') as directory:
+  scratch=pathlib.Path(directory)
+  assert not scratch.resolve().is_relative_to(root), 'scratch inside candidate'
+  env={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8','HOME':str(scratch),'TMPDIR':str(scratch),
+       'XDG_CONFIG_HOME':str(scratch/'config'),'XDG_CACHE_HOME':str(scratch/'cache')}
+  result=subprocess.run(NODE_COMMAND,cwd=root,env=env,stdin=subprocess.DEVNULL,
+                        stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=150)
+finally:
+ verify()
+sys.stdout.write(result.stdout);sys.stderr.write(result.stderr)
+assert result.returncode==0, 'enrichment tests failed'
+matches=re.findall(r'^# (tests|suites|pass|fail|cancelled|skipped|todo) ([0-9]+)\\s*$',result.stdout,re.M)
+assert len(matches)==7, 'enrichment TAP summary missing or duplicated'
+assert {name:int(value) for name,value in matches}=={'tests':4,'suites':0,'pass':4,'fail':0,'cancelled':0,'skipped':0,'todo':0}, 'enrichment TAP acceptance'
+""".replace('SPEC_JSON',repr(json.dumps(spec,sort_keys=True)),1).replace(
+        'ROOT',repr(str(root)),1).replace('NODE_COMMAND',repr(ENRICHMENT_COMMAND),1)
+
+
 def bridge_arguments(spec, action='run'):
     key = operation_key(spec)
     logical_id = 'offmenu-'+key[:48]
@@ -512,6 +559,13 @@ def bridge_arguments(spec, action='run'):
         return reviewed_arguments(spec)
     if spec['version'] == 2:
         return extraction_arguments(spec)
+    if spec['profile'] == ENRICHMENT_PROFILE:
+        return dict(action='run',job_id=logical_id,
+            command='/offmenu/.venv-delivery/bin/python -c '+shlex.quote(enrichment_validation_code(spec)),
+            mode='read',timeout_seconds=180,
+            resources=dict(workers=1,overhead_processes=8,cpu_millis=1000,
+                memory_bytes=2147483648,io_slots=1,output_bytes=0,
+                read_roots=['/offmenu'],write_roots=[]))
     output_code = ("import hashlib,json,pathlib; expected=json.loads("+repr(json.dumps(spec['outputs'],sort_keys=True))+
         "); root=pathlib.Path('/offmenu'); "
         "assert all(not any(x.is_symlink() for x in [root/p,*(root/p).parents]) "
