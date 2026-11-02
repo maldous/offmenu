@@ -203,7 +203,9 @@ def _integration_metadata(c):
             and a['review_sha256'] == p['review_sha256'] == s['review']['evidence_source']['sha256']
             and _hex(a['permission_sha256']) and a['automatic_integration_enabled'] is True)
     if 'nativeContinuation' in c:
-        _check(projected)  # Existing historical continuation remains projection-only.
+        # Original native continuity retains its separately qualified admission;
+        # completed history/new closure are checked by the normal owner reader.
+        _check(projected or 'integration_admission' in c)
         a = c['nativeContinuation']
         _check(type(a) is dict and set(a) == {'version','operation_id','unit_sha256','packet_sha256',
             'claim_sha256','previous_selection_sha256','previous_capability','previous_record_sha256','receipts'}

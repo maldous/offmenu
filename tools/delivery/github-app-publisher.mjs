@@ -164,7 +164,9 @@ function qualifyNativeSourceAdmission(c) {
 export function qualifyNativeContinuation(c) {
   if(!Object.hasOwn(c,'nativeContinuation')) return null;
   const a=c.nativeContinuation,n=c.snapshot.native_runtime;
-  check(qualifySourceProjection(c) && exact(a,['version','operation_id','unit_sha256','packet_sha256',
+  // Completed epochs and original receipt custody remain owner/helper checks.
+  const origin=qualifySourceProjection(c) || qualifyIntegrationAdmission(c);
+  check(origin && exact(a,['version','operation_id','unit_sha256','packet_sha256',
     'claim_sha256','previous_selection_sha256','previous_capability','previous_record_sha256','receipts']) &&
     a.version===1 && a.operation_id===fingerprint(c.binding) && a.unit_sha256===n.unit_sha256 &&
     a.packet_sha256===n.packet_sha256 && hex(a.packet_sha256) &&
