@@ -52,7 +52,7 @@ class ProjectSourceTests(unittest.TestCase):
             return path
         current=SimpleNamespace(root=root,private=private,guard=Mock(),read_only=False,
             stopping=False,owner_custody={'fixture':'protected owner'},
-            config={'owner':'fixture-owner','source_head':self.control})
+            config={'owner':'fixture-owner','source_head':self.control,'runtime_root':str(root)})
         self.git('remote','add','origin','git@github.com:maldous/offmenu.git')
         policy={'project_source':dict(repository='maldous/offmenu',branch='develop',
             origin='git@github.com:maldous/offmenu.git',source_repository=str(self.repository),
@@ -84,6 +84,12 @@ class ProjectSourceTests(unittest.TestCase):
         later=self.evidence(self.later,later_tree)
         # The authority accessor advances; an existing issue stays on its pin.
         self.assertEqual(source.acquire_project_source(current,'UIF-138',policy,later),first)
+        snapshot={str(p):p.read_bytes() for p in current.root.rglob('*') if p.is_file()}
+        with patch.object(source,'clone_current_workspace',side_effect=AssertionError('creation helper forbidden')):
+            self.assertEqual(source.read_project_source(current.config,'UIF-138',policy),first)
+            with self.assertRaisesRegex(AdmissionError,'not_materialized'):
+                source.read_project_source(current.config,'UIF-999',policy)
+        self.assertEqual({str(p):p.read_bytes() for p in current.root.rglob('*') if p.is_file()},snapshot)
         current.read_only=True
         self.assertEqual(source.acquire_project_source(current,'UIF-138',policy,later),first)
         current.read_only=False
@@ -123,6 +129,8 @@ class ProjectSourceTests(unittest.TestCase):
                 source.acquire_project_source(current,'UIF-138',policy,accepted)
             with self.assertRaisesRegex(AdmissionError,'fetch_requires_reconciliation'):
                 source.acquire_project_source(current,'UIF-138',policy,accepted)
+            with self.assertRaisesRegex(AdmissionError,'not_materialized'):
+                source.read_project_source(current.config,'UIF-138',policy)
         self.assertEqual(len(attempts),1)
         self.assertFalse(list(current.root.rglob('acquisition.json')))
 
