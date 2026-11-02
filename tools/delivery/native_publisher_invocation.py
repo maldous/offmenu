@@ -18,6 +18,7 @@ from pathlib import Path
 import re
 import selectors
 import signal
+import sqlite3
 import stat
 import subprocess
 import sys
@@ -104,8 +105,10 @@ def uuid(value):
 
 def continuation(value, identity):
     """Finite ROOT-sealed same-operation history grant, not invocation authority."""
+    pre = isinstance(value,dict) and 'pre_admission_refusal' in value
     require(exact(value, {'version','operation_id','unit_sha256','packet_sha256','claim_sha256',
-        'previous_selection_sha256','previous_capability','previous_record_sha256','receipts'})
+        'previous_selection_sha256','previous_capability','previous_record_sha256','receipts'} |
+        ({'pre_admission_refusal'} if pre else set()))
         and type(value['version']) is int and value['version'] == 1, 'continuation_shape')
     for key in ('operation_id','unit_sha256','packet_sha256','claim_sha256',
                 'previous_selection_sha256','previous_record_sha256'):
@@ -121,7 +124,15 @@ def continuation(value, identity):
         and all(hex64(cap[k]) for k in ('closure_sha256','host_confirmation_sha256')),
         'continuation_capability')
     receipts = value['receipts']
-    require(type(receipts) is list and 1 <= len(receipts) <= 128, 'continuation_receipts')
+    require(type(receipts) is list and (receipts == [] if pre else 1 <= len(receipts) <= 128),
+            'continuation_receipts')
+    if pre:
+        refused=value['pre_admission_refusal']
+        require(exact(refused,{'invocation_id','request_sha256','reason','evidence_sha256'})
+            and refused['reason'] == 'closure_canonical_bytes'
+            and hex64(refused['request_sha256']) and hex64(refused['evidence_sha256']),
+            'pre_admission_refusal')
+        uuid(refused['invocation_id'])
     ids = []
     for ref in receipts:
         require(exact(ref, {'invocation_id','closure_sha256','receipt_sha256'})
@@ -149,16 +160,17 @@ def request(raw):
     value = decode(raw, WIRE_LIMIT)
     require(exact(value, {'version', 'mode', 'invocation_id', 'request'})
             and type(value['version']) is int and value['version'] == 1
-            and value['mode'] in ('invoke', 'observe'), 'outer_request')
+            and value['mode'] in ('invoke', 'observe', 'review'), 'outer_request')
     uuid(value['invocation_id'])
     inner = value['request']
     require(exact(inner, INNER) and type(inner['version']) is int and inner['version'] == 1
-            and inner['mode'] in ('observe', 'step'), 'inner_request')
+            and inner['mode'] in ('observe', 'step', 'publish'), 'inner_request')
     for key in ('operation_id', 'unit_sha256', 'packet_sha256', 'source_sha256'):
         require(hex64(inner[key]), 'request_hash')
     for key in ('issue_id', 'project_id'):
         uuid(inner[key])
     owner = inner['owner']
+    require(value['mode'] != 'review' or inner['mode'] == 'observe', 'review_read_only')
     require(type(owner) is str and 0 < len(owner) <= 200 and owner == owner.strip()
             and all(ord(c) >= 32 and ord(c) != 127 for c in owner), 'request_owner')
     return value
@@ -171,6 +183,10 @@ def association(config, inner):
                 and type(config['publisherUid']) is int and config['publisherUid'] == 984
                 and type(config['publisherGid']) is int and config['publisherGid'] == 976, 'config_identity')
         binding, n = config['binding'], config['snapshot']['native_runtime']
+        require(inner['mode'] != 'publish' or (config['version'] == 1
+                and 'source_projection' not in binding
+                and config.get('integration_admission', {}).get('kind') ==
+                    'native-source-reviewed-integration-v1'), 'publication_only_admission')
         require(exact(n, {'issue_id', 'project_id', 'owner', 'unit_sha256', 'packet_sha256', 'source'}), 'sealed_native')
         s = n['source']
         require(exact(s, {'repository', 'branch', 'base', 'head', 'tree', 'target', 'policy_sha256'})
@@ -383,6 +399,63 @@ class _Host:
         self.runner = importlib.import_module('windmill_runner')
         return directory, phase, sha(manifest_raw)
 
+    def review(self, directory, inner, closure):
+        """Read the original pending checkpoint; no graph setup or side receipt."""
+        return pending_review(directory, inner, closure, root=CLAIM, uid=984)
+
+
+def pending_review(directory, inner, closure, *, root, uid):
+    # root/uid are fixed by _Host; injection is in-process synthetic tests only.
+    # Recheck ownership under the original existing lock after admission.
+    lock = os.open(root/'repository-owner.lock', os.O_RDONLY | os.O_NOFOLLOW)
+    try:
+        st = os.fstat(lock)
+        require(stat.S_ISREG(st.st_mode) and st.st_uid == uid and st.st_nlink == 1
+                and stat.S_IMODE(st.st_mode) == 0o600, 'review_lock')
+        fcntl.flock(lock, fcntl.LOCK_SH | fcntl.LOCK_NB)
+        binding = decode(_read(directory/'binding.json', uid, 0o600, 1048576), 1048576)
+        require(fingerprint(binding) == inner['operation_id'] and binding['version'] == 2
+                and binding['issue_id'] == inner['issue_id'] and binding['owner'] == inner['owner'],
+                'review_binding')
+        claim = decode(_read(root/'active-owner.json', uid, 0o600))
+        require(claim == dict(binding_sha256=inner['operation_id'], directory=str(directory),
+                              owner=inner['owner']), 'review_current_claim')
+        require(decode(_read(directory/'repository-claim.json', uid, 0o600)) == claim,
+                'review_immutable_claim')
+        state = decode(_read(directory/'state.json', uid, 0o600, 1048576), 1048576)
+        if (state.get('binding_sha256') == inner['operation_id']
+            and state.get('status') in ('publication-ready','publication-verified')
+            and state.get('publication', {}).get('effect') in ('ready','verified')
+            and not state.get('merge_effect')):
+            return dict(version=1,kind='native-publisher-unit-review-v1',status='not-ready',
+                        request_sha256=fingerprint(inner),closure_sha256=closure)
+        require(state.get('binding_sha256') == inner['operation_id']
+                and state.get('status') == 'merge-intent' and state.get('merge_effect') == 'pending'
+                and not state.get('helper_consumed')
+                and state.get('action', {}).get('kind') == 'merge-pr', 'review_pending')
+        # Open read-only, retain typed checkpoint bytes for the existing v2 decoder.
+        # Check consumed inode custody; SQLite receives no caller-supplied path.
+        database = directory/'graph.sqlite'
+        info = database.lstat()
+        require(stat.S_ISREG(info.st_mode) and info.st_uid == uid and info.st_nlink == 1
+                and stat.S_IMODE(info.st_mode) == 0o600, 'review_checkpoint_custody')
+        # SQLite mode=ro alone can create WAL/SHM files. With the owner's
+        # shared lock held, require a fully checkpointed database and use
+        # immutable reads; never ignore an uncheckpointed WAL or repair it.
+        wal = directory/'graph.sqlite-wal'
+        require(not wal.exists() or (not wal.is_symlink() and wal.stat().st_size == 0),
+                'review_checkpoint_wal')
+        with sqlite3.connect(database.as_uri()+'?mode=ro&immutable=1', uri=True) as db:
+            row = db.execute("SELECT type,checkpoint FROM checkpoints WHERE thread_id=? AND checkpoint_ns='' ORDER BY checkpoint_id DESC LIMIT 1",
+                             (inner['operation_id'],)).fetchone()
+        require(row is not None and row[0] == 'msgpack' and type(row[1]) is bytes
+                and 0 < len(row[1]) <= 524288, 'review_checkpoint')
+        return dict(version=1, kind='native-publisher-unit-review-v1',
+                    request_sha256=fingerprint(inner), closure_sha256=closure,
+                    binding=binding, decision=state, checkpoint=base64.b64encode(row[1]).decode('ascii'))
+    finally:
+        os.close(lock)
+
 
 def _write(path, value):
     """Bounded same-directory write/fsync; never initializes a job runner."""
@@ -578,6 +651,9 @@ def _invoke(raw, host):
         require(os.getuid() not in (0, 984) and Path('/tmp') in host.root.resolve().parents
                 and host.root.resolve() == host.root, 'synthetic_scope')
     directory, phase, closure = host.admit(envelope['request'])
+    if envelope['mode'] == 'review':
+        require(phase == 'integration', 'review_phase')
+        return host.review(directory, envelope['request'], closure)
     grant = getattr(host, 'continuation', None)
     if grant is not None:
         continuation(grant, envelope['request'])
@@ -650,7 +726,7 @@ def main():
     require(len(sys.argv) == 1, 'arguments')
     os.umask(0o077)
     result = invoke(sys.stdin.buffer.read(WIRE_LIMIT + 1))
-    sys.stdout.buffer.write(wire(result))
+    sys.stdout.buffer.write(wire(result, 1048576 if result.get('kind') == 'native-publisher-unit-review-v1' else LIMIT))
 
 
 if __name__ == '__main__':

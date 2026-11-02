@@ -12,7 +12,7 @@ import subprocess
 import tempfile
 import sys
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, AsyncMock
 
 import native_harness_runtime as runtime
 import native_harness_contract as contract
@@ -244,6 +244,74 @@ class RuntimeBoundaryTests(unittest.TestCase):
             self.assertEqual(self.step.call_args.args[1]['review']['source_sha256'],
                              contract.fingerprint(self.packet['handoff']['source']))
             self.assertEqual((graph.root/'counter.txt').read_text(),'1')
+
+    def test_native_preparation_returns_before_step_then_original_consumer_approves_gate(self):
+        _,review=self.publisher_fixture()
+        engine=Mock(side_effect=AssertionError('native Journal must not load Engine'))
+        waiting=self.current.state['tasks'][self.issue.identifier]['unit_gate']
+        self.assertEqual(waiting['disposition'],'waiting')
+        def prepare(bound,handoff):
+            gate=self.current.state['tasks'][self.issue.identifier]['unit_gate']
+            if gate['disposition'] == 'approved':return None
+            self.current.unit_review_writer(lambda _:review)(review)
+            self.current._consume_unit_reviews()  # REAL original reader/consumer.
+            return copy.deepcopy(self.effect)
+        adapters=replace(self.adapters,engine=engine,prepare_unit=prepare,
+            review=lambda *args:review,integration_acceptance=lambda *args:{'origin':'native-journal-v1'})
+        first=self.consume(adapters=adapters)
+        self.assertEqual(first['status'],'preparing-unit',first);self.step.assert_not_called()
+        gate=self.current.state['tasks'][self.issue.identifier]['unit_gate']
+        self.assertEqual(gate['disposition'],'approved');self.assertFalse(gate['accepted_delivery'])
+        second=self.consume(adapters=adapters)
+        self.assertEqual(second['status'],'advanced',second);self.step.assert_called_once()
+        engine.assert_not_called()
+
+    def test_normal_factory_native_preparation_uses_fixed_writer_before_original_step(self):
+        import hashlib
+        import stokowski_unit_review as unit_writer
+        _,review=self.publisher_fixture()
+        publisher_binding=dict(review['integration_binding'],version=2,pr_number=None,
+                               publication={'plan_sha256':'a'*64,'qualification_sha256':'b'*64})
+        self.binding=replace(self.binding,operation_id=contract.fingerprint(publisher_binding))
+        self.effect['operation_id']=self.binding.operation_id
+        self.current.config['source_sha256']['tools/delivery/stokowski_unit_review.py']=hashlib.sha256(
+            Path(unit_writer.__file__).read_bytes()).hexdigest()
+        task_runtime,_,_=self.current.context(self.issue.identifier,review=True)
+        c=dict(runtime=str(self.current.runtime),issue=self.issue.identifier,actor_uid=1000,
+            source_head=self.current.config['source_head'],source_sha256=self.current.config['source_sha256'],
+            unit_binding=self.current.gate_binding(self.issue,observation=True),
+            publisher_review_binding=publisher_binding,publisher_review=dict(version=1,mode='review',
+                invocation_id='12345678-1234-4234-8234-123456789abc',
+                request=runtime.publisher_request(self.binding,self.packet,'observe')))
+        selection=self.factory_selection(context=dict(native_runtime=str(task_runtime),pending_unit_review=c,
+            publisher_invocation=dict(version=1,closure_sha256='c'*64,host_confirmation_sha256='d'*64)))
+        self.assertEqual(self.current._native_harness_selection(self.issue.identifier),selection)
+        adapters=runtime.owner_adapters(self.current,self.issue,self.binding,selection)
+        def write(context):
+            self.assertEqual(context['runtime'],str(self.current.runtime))
+            self.current.unit_review_writer(lambda _:review)(review)
+        async def invoke(owner,bound,packet,selected,mode,*args):
+            owner.state[runtime.INVOCATIONS]={bound.operation_id:dict(invocations=[dict(status='complete',
+                envelope=dict(request={'mode':'observe'}),result={'response':{'status':'ready'}})])}
+            return copy.deepcopy(self.effect)
+        with patch.object(runtime,'native_journal_acceptance',return_value={'origin':'native-journal-v1'}) as original_reader, \
+             patch.object(runtime,'invocation_transaction',new=AsyncMock(side_effect=invoke)) as publisher, \
+             patch.object(unit_writer,'publish_protected_pending',side_effect=write) as writer_call:
+            with patch.object(self.current,'_native_harness_module',return_value=runtime):
+                asyncio.run(self.current.continue_native_harness(adapters_factory=lambda *a,**kw:adapters))
+            first=self.current.state['tasks'][self.issue.identifier]['native_harness']['projection']
+            self.assertEqual(first['status'],'preparing-unit',first);writer_call.assert_not_called()
+            self.assertEqual(publisher.await_args.args[4],'observe');self.step.assert_not_called()
+            second=self.consume(adapters=adapters)
+            self.assertEqual(second['status'],'preparing-unit',second);writer_call.assert_called_once()
+            self.assertEqual(publisher.await_args.args[4],'publish');self.step.assert_not_called()
+            self.assertEqual(self.current.state['tasks'][self.issue.identifier]['unit_gate']['disposition'],'approved')
+            ready=replace(adapters,observe=lambda _:self.effect,step=self.step,
+                integration_acceptance=lambda *args:{'origin':'native-journal-v1'},
+                engine=Mock(side_effect=AssertionError('no Engine')))
+            third=self.consume(adapters=ready)
+            self.assertEqual(third['status'],'advanced',third);self.step.assert_called_once()
+            original_reader.assert_called()
 
     def test_unrelated_valid_native_review_cannot_cover_engine_candidate(self):
         graph,review=self.publisher_fixture()

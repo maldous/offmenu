@@ -8,15 +8,16 @@ import asyncio
 import hashlib
 import json
 import os
+import sqlite3
 from pathlib import Path
 import subprocess
 import sys
 import time
 
 from stokowski_adapter import SOURCE
-from stokowski_operations import Journal, OperationError, TERMINAL, operation_key, validated, digest, candidate_check_code, workspace_path
+from stokowski_operations import Journal, OperationError, TERMINAL, operation_key, validated, digest, candidate_check_code, workspace_path, ENRICHMENT_PROFILE
 from stokowski_mcp import WindmillMCP
-from symphony_tasks import load_manifest
+from symphony_tasks import load_manifest, runtime_lease_ids
 from symphony_workspace import checkpoint
 
 
@@ -28,13 +29,25 @@ def git(root,*args):
     return subprocess.check_output(['git','-C',str(root),*args],text=True).strip()
 
 
-def bind(runtime,spec,derivation_reason=None):
+def bind(runtime,spec,derivation_reason=None,*,candidate_root=None):
     runtime = runtime.resolve()
     manifest = load_manifest(runtime/'manifest.json',expected_branch=None)
     validated(spec)
     if spec['version'] != 1:
         raise OperationError('Reviewed extraction requires bind_extraction')
-    if spec.get('branch','feature/langgraph-delivery-standardization') != manifest['branch']:
+    enrichment = spec['profile'] == ENRICHMENT_PROFILE
+    if candidate_root is not None and not enrichment:
+        raise OperationError('Explicit native candidate root requires enrichment profile')
+    candidate = SOURCE
+    if enrichment:
+        if candidate_root is None:
+            raise OperationError('Enrichment validation requires an explicit owner-selected candidate root')
+        candidate = Path(candidate_root)
+        if not candidate.is_absolute() or candidate != candidate.resolve():
+            raise OperationError('Aliased candidate root')
+        if spec['base'] != manifest['base_revision']:
+            raise OperationError('Candidate base differs from original coding base')
+    if not enrichment and spec.get('branch','feature/langgraph-delivery-standardization') != manifest['branch']:
         raise OperationError('Validation branch differs from admitted coding branch')
     issue = spec['issue']
     if issue not in manifest['tasks'] or spec['issue_id'] != manifest['tasks'][issue]['issue_id']:
@@ -58,20 +71,69 @@ def bind(runtime,spec,derivation_reason=None):
     for name,sha in original.items():
         if file_hash(workspace/name) != sha:
             raise OperationError('Coding output changed after its receipt')
-    head = git(SOURCE,'rev-parse','HEAD')
-    if head != spec['head'] or git(SOURCE,'branch','--show-current') != manifest['branch']:
+    if enrichment:
+        request_path = runtime/'requests'/(issue+'.json')
+        request = json.loads(request_path.read_text())
+        native_binding = dict(branch=manifest['branch'],head=manifest['base_revision'],
+            owner=manifest['tasks'][issue]['owner'],write_roots=manifest['tasks'][issue]['allowed_paths'],
+            resources=manifest['tasks'][issue]['resources'],
+            task_sha256=digest(dict(runtime=str(runtime),manifest=manifest,request=request)))
+        lease = runtime_lease_ids(runtime,manifest)[issue]
+        intent = json.loads((runtime/'attempts'/issue/'intent.json').read_text())
+        dispatch = json.loads((runtime/'attempts'/issue/'dispatch-intent.json').read_text())
+        admission = json.loads((runtime/'current-admission.json').read_text())
+        entry = dict(issue=issue,issue_id=manifest['tasks'][issue]['issue_id'],
+                     runtime=str(runtime),admission_sha256=file_hash(runtime/'current-admission.json'))
+        policy = json.loads((runtime/'capacity-policy.json').read_text())
+        database = Path(policy['symphony']['pool_path'])/'state.sqlite'
+        with sqlite3.connect(database.as_uri()+'?mode=ro',uri=True) as db:
+            row = db.execute('SELECT status,outcome,binding,fingerprint FROM leases WHERE id=?',(lease,)).fetchone()
+        if (receipt.get('origin') != 'native-coding' or receipt.get('exit_code') != 0
+            or receipt.get('turn_completed') is not True or not receipt.get('session_id')
+            or receipt.get('source_identity_changed') is not False
+            or receipt.get('final_head') != manifest['base_revision']
+            or receipt.get('final_branch') != manifest['branch']
+            or receipt.get('parent_runtime') != str(runtime) or receipt.get('issue') != issue
+            or receipt.get('parent_binding') != native_binding
+            or receipt.get('binding_sha256') != digest(native_binding) or receipt.get('lease') != lease
+            or intent != dict(lease=lease,binding=native_binding)
+            or dispatch.get('expected_lease') != lease or dispatch.get('owner') != native_binding['owner']
+            or dispatch.get('entry_sha256') != digest(entry)
+            or dispatch.get('manifest_sha256') != file_hash(runtime/'manifest.json')
+            or dispatch.get('request_sha256') != file_hash(request_path)
+            or dispatch.get('provider_proof_sha256') != file_hash(runtime/'provider-proof.json')
+            or admission.get('manifest_sha256') != file_hash(runtime/'manifest.json')
+            or admission.get('request_sha256') != file_hash(request_path)
+            or row is None or row[:2] != ('finished','succeeded')
+            or json.loads(row[2]) != native_binding or row[3] != digest(native_binding)
+            or spec['outputs'] != original or set(original) != set(manifest['tasks'][issue]['allowed_paths'])):
+            raise OperationError('Enrichment origin is not an immutable finished native result')
+        if git(candidate,'rev-list','--parents','-n','1',spec['head']).split() != [spec['head'],spec['base']]:
+            raise OperationError('Candidate must be the direct reviewed contribution')
+        changed = set(filter(None,git(candidate,'diff','--no-renames','--name-only','-z',
+                                    spec['base'],spec['head']).split('\0')))
+        if changed != set(original):
+            raise OperationError('Candidate has unrelated contribution paths')
+    head = git(candidate,'rev-parse','HEAD')
+    branch = spec['branch'] if enrichment else manifest['branch']
+    if head != spec['head'] or git(candidate,'branch','--show-current') != branch:
         raise OperationError('Candidate branch/head differs from selected publication')
-    subprocess.run(['git','-C',str(SOURCE),'merge-base','--is-ancestor',
+    subprocess.run(['git','-C',str(candidate),'merge-base','--is-ancestor',
                     manifest['base_revision'],head],check=True,capture_output=True)
-    if git(SOURCE,'status','--porcelain','--untracked-files=no'):
+    if git(candidate,'status','--porcelain','--untracked-files=no'):
         raise OperationError('Candidate tracked source is dirty')
-    accepted_policy = json.loads(git(SOURCE,'show',spec['base']+':repository-standard.json'))
-    untracked = set(filter(None,git(SOURCE,'ls-files','--others','--exclude-standard','-z').split('\0')))
+    accepted_policy = json.loads(git(candidate,'show',spec['base']+':repository-standard.json'))
+    untracked = set(filter(None,git(candidate,'ls-files','--others','--exclude-standard','-z').split('\0')))
     if untracked-set(accepted_policy.get('runtime_hold_paths',[])):
         raise OperationError('Uncommitted maintained source needs publication before validation')
     for name,sha in spec['outputs'].items():
-        if file_hash(SOURCE/name) != sha:
+        if file_hash(candidate/name) != sha:
             raise OperationError('Candidate output hash mismatch')
+        if enrichment and (git(candidate,'ls-tree',head,'--',name).split()[:2]
+                not in (['100644','blob'],['100755','blob'])
+                or hashlib.sha256(subprocess.check_output(
+                    ['git','-C',str(candidate),'show',head+':'+name])).hexdigest() != sha):
+            raise OperationError('Candidate committed output hash mismatch')
     differences = {name:{'native':sha,'candidate':spec['outputs'][name]}
                    for name,sha in original.items() if sha != spec['outputs'][name]}
     if differences and (not isinstance(derivation_reason,str) or not derivation_reason.strip()):
@@ -89,6 +151,8 @@ def bind(runtime,spec,derivation_reason=None):
     selected = {'operation_key':key,'source_head':head,'native_receipt_sha256':file_hash(receipt_path),
                 'native_output_sha256':original,'derivation':differences,
                 'derivation_reason':derivation_reason if differences else None}
+    if enrichment:
+        selected['candidate_root'] = str(candidate)
     if previous == selected:
         return key
     if previous:
@@ -331,7 +395,8 @@ def main():
     elif args.action == 'bind-extraction':
         print(json.dumps({'operation_key':bind_extraction(runtime,json.loads(args.spec.read_text()),args.admission,args.candidate_root)}))
     elif args.action == 'bind':
-        print(json.dumps({'operation_key':bind(runtime,json.loads(args.spec.read_text()),args.derivation_reason)}))
+        print(json.dumps({'operation_key':bind(runtime,json.loads(args.spec.read_text()),args.derivation_reason,
+                                             candidate_root=args.candidate_root)}))
     elif args.action in ('tick','run'):
         if not 1 <= args.duration <= 600:
             raise OperationError('Invalid finite stage duration')

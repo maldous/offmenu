@@ -1,5 +1,75 @@
 # Integration from completed Journal v3 validation
 
+## Original native-v1 enrichment unit (UIF-137)
+
+The original native unit uses the same Journal and normal coordinator. Its
+sealed integration context is exactly `native_runtime`, `pending_unit_review`,
+and `publisher_invocation`. `native_runtime` is the original coding/validation
+runtime. `pending_unit_review.runtime` is the distinct coordinator directory
+where the existing immutable incoming writer publishes. The latter contains
+the existing v2 context plus `publisher_review` and `publisher_review_binding`.
+The binding is the actual immutable protected publisher binding. The review
+request uses the same fixed helper/sudo tuple and sealed native identity, with
+outer `mode: review` and inner `mode: observe`; it carries no paths or commands.
+
+Before unit approval, normal `consume_boundary` invokes only the native
+preparation callback. `validation_binding` requalifies original native custody,
+source contribution, selected v1 operation and closed history. The native
+Journal reader requires the genuine succeeded/stopped original receipt and
+handoff operation, preserving compact Journal digests separately from Engine
+digests. No Engine acceptance or retained/standalone origin is constructed.
+The existing supervised helper alternates actual observe and publication-only
+`publish` requests, at most one invocation per boundary. Publication preserves
+the full exact Git object plan and obtains the real PR. `publish` can qualify a
+pending Controller intent through the existing read-only observation path; it
+cannot invoke a merge. The v2 writer obtains the actual original checkpoint
+under UID984 and publishes under UID1000. Only the normal unit consumer approves
+the gate. A later ordinary integration boundary may then request a merge.
+
+The fixed protected reader takes the existing shared repository lock and reads
+the current original claim, binding, state and latest checkpoint. It creates no
+lock, Controller, receipt, graph or directory, starts no publisher/API child,
+and refuses unknown/consumed/nonpending state. Before qualification exists it
+returns only a typed `not-ready` observation. SQLite reads use immutable mode
+only with no nonempty WAL under that lock, so no SHM/WAL files are created and
+uncheckpointed data is never silently ignored. Original checkpoint bytes restore
+Python int/float spelling before the existing review and Journal checks.
+The same pending unconsumed intent is freshly requalified without overwriting
+its checkpoint; consumed or unknown effects retain their existing holds.
+
+Root-owned `SOURCE` remains guarded control code. For this protected original
+native route only, `workspace_roots` contains the private UID1000 original
+output workspace. Output files remain owner-checked and unwritable by other
+identities; its private parent supplies privacy for ordinary 0644 files. The
+UID1000 contribution worktree is an untrusted read-only Git mirror, not private
+authority: unchanged native readers verify its clean branch/head/single parent,
+tree/output hashes and original receipt, without executing candidate source.
+It need not be chmodded or copied merely because its directories are 0775.
+All existing generic review and root control-custody checks remain unchanged.
+
+Nonprojected enrichment admission uses kind
+`native-source-reviewed-integration-v1`: the original seven admission fields
+plus `native_origin` with exactly `version:1`, `kind:native-v1`,
+`profile:enrichment-resilience-focused`, `source_sha256`, `packet_sha256`,
+`validation_operation_key`, `outputs`, `native_receipt`, and
+`validation_receipt`. Receipt refs equal the snapshot's original
+`native_receipt_source` and `validation_receipt_source`. Native source policy,
+integration policy and capacity policy retain separate domains. Source hash
+seals the original native source including its own policy. Binding/review/source,
+successful validation, unit/packet, permission and raw review refs must match.
+Original reviewer metadata may remain honestly unknown with null resolution.
+The projection route and its original admission shape are unchanged. Actual
+fresh GitHub findings/review/head/base checks remain mandatory before merge;
+omitting native admission retains the frozen-facts guard.
+
+Adoption requires independently reviewed exact source, coherent sealed configs
+for both identities, the existing host-confirmed helper capability and exact
+sudo permission. Retain all old claim, selection and invocation records. A
+completed boundary may leave the active owner map while its history remains.
+Source qualification and synthetic checks do not install or operate this route.
+
+## Reviewed-source Journal v3
+
 The existing protected owner may select an integration context containing exactly
 `reviewed_runtime` (the original private Journal runtime directory) and
 `unit_review` (an original private `{path, sha256}` packet reference), plus the

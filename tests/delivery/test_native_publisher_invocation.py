@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import signal
+import sqlite3
 import subprocess
 import sys
 import tempfile
@@ -160,6 +161,115 @@ class InvocationTests(unittest.TestCase):
              patch.object(module.Path, 'lstat', side_effect=AssertionError('protected read')):
             with self.assertRaisesRegex(module.InvocationHold, 'publisher_identity'):
                 module.invoke(module.wire(self.envelope))
+
+    def test_pending_review_exports_original_checkpoint_readonly_and_restores_numbers(self):
+        # Real graph/checkpoint, synthetic private custody and subprocess only.
+        from test_integration_controller import IntegrationControllerTests
+        from offmenu.delivery.integration import Controller
+        import stokowski_unit_review as consumer
+        f = IntegrationControllerTests(methodName='runTest'); f.setUp()
+        self.addCleanup(f.doCleanups)
+        snapshot = f.snapshot
+        snapshot['original_numeric'] = 1.0
+        plan = {'operations': [], 'changedFiles': f.binding['outputs']}
+        binding = dict(f.binding, version=2, pr_number=None,
+            publication=dict(plan_sha256=module.fingerprint(plan),
+                             qualification_sha256=module.fingerprint(snapshot)))
+        root = f.root/'integration'; root.mkdir(mode=0o700)
+        directory = root/('transaction-'+module.fingerprint(binding))
+        controller = Controller(directory,binding,root)
+        controller.prepare_publication(plan,snapshot)
+        state = controller.status()
+        state['publication'].update(effect='verified',pr_number=145)
+        controller._publication_checkpoint(state)  # Fixture publication, no API.
+        controller.run(snapshot)
+        for p in root.rglob('*'):
+            p.chmod(0o700 if p.is_dir() else 0o600)
+        n = dict(issue_id=binding['issue_id'],project_id=binding['project_id'],owner=binding['owner'],
+            unit_sha256='e'*64,packet_sha256='f'*64,
+            source=dict(repository=binding['repository'],branch=binding['head_branch'],
+                base=binding['base'],head=binding['head'],tree=binding['tree'],target='develop',
+                policy_sha256=binding['policy_sha256']))
+        self.host.directory = directory
+        self.host.config.update(binding=binding,logicalOwner=binding['owner'],snapshot={'native_runtime':n})
+        inner = dict(version=1,mode='observe',operation_id=module.fingerprint(binding),
+            **{k:n[k] for k in ('issue_id','project_id','owner','unit_sha256','packet_sha256')},
+            source_sha256=module.fingerprint(n['source']))
+        envelope = dict(version=1,mode='review',invocation_id=str(uuid4()),request=inner)
+        self.host.review = lambda d,i,c: module.pending_review(d,i,c,root=root,uid=os.getuid())
+        def retained():
+            return {str(p.relative_to(root)):(p.read_bytes(),p.stat().st_mtime_ns,p.stat().st_mode)
+                    for p in root.rglob('*') if p.is_file()}
+        before = retained()
+        with patch.object(module,'_supervise',side_effect=AssertionError('no child')):
+            reply = self.invoke(envelope)
+        self.assertEqual(retained(),before)
+        calls = []
+        def fixed_read(argv,**kwargs):
+            calls.append((argv,kwargs))
+            return subprocess.CompletedProcess(argv,0,stdout=module.wire(reply,1048576),stderr=b'')
+        with patch.object(consumer.subprocess,'run',side_effect=fixed_read):
+            b,decision,channels = consumer.protected_checkpoint(envelope)
+        self.assertEqual(b,binding)
+        self.assertEqual(decision['status'],'merge-intent')
+        self.assertIs(type(channels['observation']['original_numeric']),float)
+        self.assertEqual(channels['observation']['original_numeric'],1.0)
+        self.assertEqual(calls[0][0],['/usr/bin/sudo','-n','-u','#984','-g','#976','--',
+            '/opt/offmenu-publisher/venv/bin/python','-I','-B',
+            '/opt/offmenu-publisher/tools/delivery/native_publisher_invocation.py'])
+        self.assertEqual(json.loads(calls[0][1]['input']),envelope)
+        # The later normal step requalifies this exact unconsumed intent;
+        # observation never overwrites it with reconciliation-required.
+        reader=Controller(directory,binding,root,_existing_only=True)
+        reader.require_current_claim=True
+        self.assertEqual(reader.pending_unconsumed(snapshot),decision)
+        self.assertEqual(retained(),before)
+        changed=copy.deepcopy(snapshot);changed['cancel_requested']=True
+        with self.assertRaises(Exception):reader.pending_unconsumed(changed)
+        self.assertEqual(retained(),before)
+        # A reader response with a conflicting state cannot become unit evidence.
+        original = copy.deepcopy(reply)
+        reply['decision']['status']='merge-verified'
+        with patch.object(consumer.subprocess,'run',side_effect=fixed_read):
+            with self.assertRaises(Exception):consumer.protected_checkpoint(envelope)
+        reply = original
+        for path,mutate,reason in (
+            (root/'active-owner.json',lambda d:d.update(binding_sha256='0'*64),'review_current_claim'),
+            (directory/'repository-claim.json',lambda d:d.update(owner='foreign'),'review_immutable_claim'),
+            (directory/'state.json',lambda d:d.update(merge_effect='verified'),'review_pending')):
+            raw=path.read_bytes(); value=json.loads(raw);mutate(value);path.write_bytes(module.wire(value))
+            with self.subTest(reason=reason):
+                with self.assertRaisesRegex(module.InvocationHold,reason):self.invoke(envelope)
+            path.write_bytes(raw)
+        with sqlite3.connect(directory/'graph.sqlite') as db:
+            db.execute("UPDATE checkpoints SET type='pickle'")
+        db.close()
+        with self.assertRaisesRegex(module.InvocationHold,'review_checkpoint'):self.invoke(envelope)
+        with sqlite3.connect(directory/'graph.sqlite') as db:
+            db.execute("UPDATE checkpoints SET type='msgpack'")
+        db.close()
+        # UR1: the REAL reservation updates both state and original graph.
+        # State-only tampering would fail same_wire and miss this regression.
+        action=controller.status()['action']
+        intent={k:action[k] for k in ('kind','repository','pr_number','expected_head_sha',
+                                     'expected_base_sha','expected_head_branch','merge_method')}
+        intent['intent_sha256']=module.fingerprint(action)
+        self.assertTrue(controller.consume_publisher_intent(inner['operation_id'],intent))
+        consumed=controller.status()
+        self.assertEqual(consumed['helper_consumed'],module.fingerprint(action))
+        with sqlite3.connect((directory/'graph.sqlite').as_uri()+'?mode=ro&immutable=1',uri=True) as db:
+            row=db.execute("SELECT checkpoint FROM checkpoints WHERE thread_id=? AND checkpoint_ns='' ORDER BY checkpoint_id DESC LIMIT 1",
+                           (inner['operation_id'],)).fetchone()
+        reply={**original,'decision':consumed,'checkpoint':module.base64.b64encode(row[0]).decode('ascii')}
+        self.assertTrue(consumer.same_wire(consumer.checkpoint_json(row[0])['channel_values']['result'],consumed))
+        after_consume=retained()
+        with self.assertRaisesRegex(module.InvocationHold,'review_pending'):self.invoke(envelope)
+        with patch.object(consumer.subprocess,'run',side_effect=fixed_read):
+            with self.assertRaisesRegex(consumer.AdmissionError,'local_review_binding'):
+                consumer.protected_checkpoint(envelope)
+        self.assertEqual(retained(),after_consume)
+        invalid=copy.deepcopy(envelope);invalid['request']['mode']='step'
+        with self.assertRaisesRegex(module.InvocationHold,'review_read_only'):self.invoke(invalid)
 
     def test_wire_rejects_extra_duplicate_path_and_bad_identity(self):
         self.assertEqual(module.request(module.wire(self.envelope)), self.envelope)

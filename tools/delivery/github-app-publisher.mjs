@@ -103,6 +103,7 @@ export function validateConfig(c, identity) {
 export function qualifyIntegrationAdmission(c) {
   if(!Object.hasOwn(c,'integration_admission')) return null;
   const a=c.integration_admission,p=qualifySourceProjection(c),n=c.snapshot.native_runtime;
+  if (!p) return qualifyNativeSourceAdmission(c);
   check(p && exact(a,['version','kind','binding_sha256','unit_sha256','review_sha256',
     'permission_sha256','automatic_integration_enabled']) && a.version===1 &&
     a.kind==='native-reviewed-integration-v1' && a.binding_sha256===fingerprint(c.binding) &&
@@ -112,6 +113,51 @@ export function qualifyIntegrationAdmission(c) {
     a.automatic_integration_enabled===true && c.snapshot.review.independent===true &&
     c.snapshot.review.verdict==='accept' && same(c.snapshot.review.findings,[]) &&
     typeof c.snapshot.review.evidence_id==='string' && c.snapshot.review.evidence_id.length>0);
+  return a;
+}
+
+function qualifyNativeSourceAdmission(c) {
+  const b=c.binding,s=c.snapshot,a=c.integration_admission,n=s.native_runtime,o=a?.native_origin;
+  const ref=r=>exact(r,['path','sha256']) && hex(r.sha256) && typeof r.path==='string' &&
+    /^\/[a-zA-Z0-9_./-]{1,511}$/.test(r.path) && !r.path.includes('//') &&
+    !r.path.split('/').some(v=>v==='.'||v==='..');
+  check(c.version===1 && b.version===2 && !Object.hasOwn(b,'source_projection') &&
+    exact(a,['version','kind','binding_sha256','unit_sha256','review_sha256',
+      'permission_sha256','automatic_integration_enabled','native_origin']) && a.version===1 &&
+    a.kind==='native-source-reviewed-integration-v1' && a.binding_sha256===fingerprint(b) &&
+    hex(a.permission_sha256) && a.automatic_integration_enabled===true &&
+    exact(n,['issue_id','project_id','owner','unit_sha256','packet_sha256','source']) &&
+    n.owner===b.owner && n.issue_id===b.issue_id && (!b.project_id || n.project_id===b.project_id) &&
+    [n.issue_id,n.project_id].every(v=>typeof v==='string' &&
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(v)) &&
+    hex(n.unit_sha256) && hex(n.packet_sha256) && a.unit_sha256===n.unit_sha256 &&
+    same(n.source,{repository:b.repository,branch:b.head_branch,base:b.base,head:b.head,
+      tree:b.tree,target:'develop',policy_sha256:n.source?.policy_sha256}) && hex(n.source.policy_sha256) &&
+    exact(o,['version','kind','profile','source_sha256','packet_sha256','validation_operation_key',
+      'outputs','native_receipt','validation_receipt']) && o.version===1 && o.kind==='native-v1' &&
+    o.profile==='enrichment-resilience-focused' && o.source_sha256===fingerprint(n.source) &&
+    o.packet_sha256===n.packet_sha256 && o.validation_operation_key===b.validation_operation_key &&
+    same(o.outputs,b.outputs) && Object.keys(b.outputs).length>0 &&
+    Object.entries(b.outputs).every(([p,h])=>pathOK(p) && hex(h) &&
+      !['docs/development/','tools/delivery/','tests/delivery/','src/offmenu/delivery/'].some(v=>p.startsWith(v))) &&
+    ref(o.native_receipt) && ref(o.validation_receipt) &&
+    same(o.native_receipt,s.native_receipt_source) && same(o.validation_receipt,s.validation_receipt_source) &&
+    same(s.validation,{operation_key:b.validation_operation_key,status:'succeeded',head:b.head,base:b.base,
+      outputs:b.outputs,capacity_policy_sha256:b.capacity_policy_sha256,child_tree_gone:true,reconcile_required:false}) &&
+    s.publisher_owner===b.owner && s.source_tree===b.tree && s.source_clean===true &&
+    s.policy_sha256===b.policy_sha256 && s.capacity_policy_sha256===b.capacity_policy_sha256 &&
+    s.publication_triggers_actions===false && !s.cancel_requested && same(s.unresolved_findings,[]) &&
+    s.review.head===b.head && s.review.base===b.base && same(s.review.outputs,b.outputs) &&
+    s.review.independent===true && s.review.verdict==='accept' && same(s.review.findings,[]) &&
+    typeof s.review.evidence_id==='string' && s.review.evidence_id.length>0 &&
+    typeof s.review.reviewer==='string' && s.review.reviewer.length>0 &&
+    s.review.author===b.owner && s.review.reviewer!==s.review.author &&
+    ['model','provider','requested_model','requested_provider'].every(k=>
+      typeof s.review[k]==='string' && s.review[k].length>0) &&
+    ((s.review.resolution_status==='unknown' && s.review.resolved_model===null) ||
+      (s.review.resolution_status==='observed' && typeof s.review.resolved_model==='string' && s.review.resolved_model.length>0)) &&
+    ref(s.review.evidence_source) && a.review_sha256===s.review.evidence_source.sha256 &&
+    s.review.evidence_sha256===fingerprint(Object.fromEntries(Object.entries(s.review).filter(([k])=>k!=='evidence_sha256'))));
   return a;
 }
 
@@ -473,14 +519,15 @@ export function parseNativeRequest(raw) {
   const keys=[...raw.matchAll(/("(?:[^"\\]|\\.)*")\s*:/g)].map(m=>JSON.parse(m[1]));
   check(keys.length===nativeKeys.length && new Set(keys).size===keys.length);
   const request=JSON.parse(raw);reviewWireBytes(request);
-  check(exact(request,nativeKeys) && request.version===1 && ['observe','step'].includes(request.mode));
+  check(exact(request,nativeKeys) && request.version===1 && ['observe','step','publish'].includes(request.mode));
   return request;
 }
 export function qualifyNativeRequest(c,request) {
   reviewWireBytes(request);check(exact(request,nativeKeys) && request.version===1 &&
-    ['observe','step'].includes(request.mode));
+    ['observe','step','publish'].includes(request.mode));
   const n=c.snapshot.native_runtime,b=c.binding,s=n?.source;
   const projection=qualifySourceProjection(c);
+  if(request.mode==='publish') check(qualifyIntegrationAdmission(c)?.kind==='native-source-reviewed-integration-v1');
   check(exact(n,['issue_id','project_id','owner','unit_sha256','packet_sha256','source']) &&
     hex(n.unit_sha256) && hex(n.packet_sha256) &&
     n.owner===c.logicalOwner && n.owner===b.owner && n.issue_id===b.issue_id &&
@@ -496,7 +543,7 @@ export function qualifyNativeRequest(c,request) {
   check(Object.entries(identity).every(([key,value])=>request[key]===value));
   return {...identity,phase:c.version===2?'release':'integration'};
 }
-export function nativeJournalStatus(view,release=false) {
+export function nativeJournalStatus(view,release=false,native=false) {
   check(exact(view,['state','claim_current','claim_available']) &&
     typeof view.claim_current==='boolean' && typeof view.claim_available==='boolean');
   const s=view.state;check(s && typeof s.status==='string');
@@ -511,7 +558,8 @@ export function nativeJournalStatus(view,release=false) {
   } else {
     if(s.status==='merge-verified' && s.merge_effect==='verified') return 'verified';
     if(s.merge_effect==='unknown' || s.publication?.effect==='unknown') return 'unknown';
-    if(s.merge_effect==='pending') return s.helper_consumed?'unknown':'pending';
+    if(s.merge_effect==='pending') return s.helper_consumed?'unknown':
+      native && s.status==='merge-intent' && s.publication?.effect==='verified'?'ready':'pending';
     if(s.publication?.effect==='pending') return 'pending';
   }
   return ['prepared','publication-ready','publication-verified','release-tag-intent'].includes(s.status)?'ready':'pending';
@@ -524,8 +572,10 @@ export function nativeJournalStatus(view,release=false) {
 export async function nativePublisherRequest({config:c,request,controller,adapterFactory,qualify}) {
   const identity=qualifyNativeRequest(c,request);
   const release=c.version===2;
+  const native=c.integration_admission?.kind==='native-source-reviewed-integration-v1';
+  const publicationOnly=request.mode==='publish';
   let view=await controller('observe');
-  let status=nativeJournalStatus(view,release);
+  let status=nativeJournalStatus(view,release,native);
   const reconcile=request.mode==='observe' || status!=='ready';
   async function controlled(op,data) {
     if(op==='observe') return (await controller('observe')).state;
@@ -552,12 +602,14 @@ export async function nativePublisherRequest({config:c,request,controller,adapte
     } else if(!release && view.state.publication?.effect==='verified' &&
         (!reconcile || view.state.merge_effect)) {
       if(!reconcile) await qualify();
-      await integrationStep({config:c,controller:controlled,adapterFactory:factory,advanceIntegration,readOnly:reconcile});
+      await integrationStep({config:c,controller:publicationOnly ?
+        ((op,data)=>controlled(op==='step'?'observe-step':op,data)):controlled,
+        adapterFactory:factory,advanceIntegration,readOnly:reconcile || publicationOnly});
     } else if(!release && (!reconcile || ['pending','unknown'].includes(view.state.publication?.effect))) {
       await publicationStep({config:c,controller:controlled,adapterFactory:publicationFactory,
         qualify:reconcile?async()=>{}:qualify,readOnly:reconcile});
     }
-    view=await controller('observe');status=nativeJournalStatus(view,release);
+    view=await controller('observe');status=nativeJournalStatus(view,release,native);
   }
   // Process cleanup is intentionally absent: the caller must wait/reap the
   // fixed child and establish that fact independently of this JSON response.
