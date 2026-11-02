@@ -112,13 +112,23 @@ Policy `schema` is `offmenu-owner-policy-intake/1`. Its exact fields are:
   facts. An unreviewed remote tip is never accepted. New deployments require this
   descriptor; omission retains old same-source compatibility only.
 
-`owner_policy_task_source(config,issue,project,materialize=...)` calls the pinned
-`stokowski_project_source.owner_policy_project_source` API. Only a fresh eligible
-native candidate may request materialization. Read-only artifact/catalog readers
-requalify the original per-instance selection without fetching or writing. The
-helper returns repository/head/tree/issue branch/private checkout plus the
-accepted-develop evidence and immutable selection reference. 129 owns acquisition
-and its proof reader; no compiler-specific clone or source queue is added.
+`owner_policy_task_source(config,issue,project,materialize=...,current=...)`
+pins `stokowski_source.py` before calling its
+`read_project_source(config,identifier,policy)` API. Artifact/catalog construction
+requalifies the original per-instance selection without fetching, writing or
+constructing another `CurrentWork`. Only the exact
+`project_source_not_materialized` refusal allows a fresh eligible native
+candidate to acquire a selection. That route requires the actual guarded owner
+`CurrentWork`, pins `native_harness_linear.py`, obtains its trusted
+`accepted_project_source(current,project_id)` result and passes it to
+`stokowski_source.acquire_project_source(current,identifier,policy,accepted)`.
+Other reader refusals propagate without repair. Both source APIs return the same
+six fields: `source_checkout`, `base`, `branch`, `tree`, `evidence` and
+`acquisition_ref`. The compiler maps those into its task contract. 129 owns
+acquisition and its proof reader; no compiler-specific clone or source queue is
+added. Root's sealed descriptor supplies the repository, develop branch, private
+origin, source repository, accepted seed head/tree and accepted-fact path using
+the acquisition module's supported field names.
 
 The manifest, handoff, qualification request and admission source bind this task
 head/branch, while control module hashes, capacity policy and provider code stay

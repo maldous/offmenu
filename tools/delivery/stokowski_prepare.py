@@ -435,7 +435,7 @@ OWNER_CODE_ACCEPTANCE = [
 ]
 
 
-def owner_policy_task_source(config, identifier, project_id, *, materialize=False):
+def owner_policy_task_source(config, identifier, project_id, *, materialize=False, current=None):
     """129 owns acquisition and accepted-readback proof; this is its callsite.
 
     Control pins never become acceptance for a newer remote branch tip. Each
@@ -448,12 +448,33 @@ def owner_policy_task_source(config, identifier, project_id, *, materialize=Fals
         tree=subprocess.check_output(['git','-C',str(SOURCE),'rev-parse','HEAD^{tree}'],text=True).strip()
         return dict(repository='maldous/offmenu',head=config['source_head'],tree=tree,
             branch=policy['source_branch'],checkout=str(SOURCE),accepted=None,ref=None)
-    import stokowski_project_source
-    module='tools/delivery/stokowski_project_source.py'
-    if (Path(stokowski_project_source.__file__).resolve()!=SOURCE/module
-        or config['source_sha256'].get(module)!=file_sha(SOURCE/module)):
+    module='tools/delivery/stokowski_source.py'
+    if config['source_sha256'].get(module)!=file_sha(SOURCE/module):
         raise AdmissionError('owner_policy_project_source_control_pin')
-    selected=stokowski_project_source.owner_policy_project_source(config,identifier,project_id,materialize=materialize)
+    import stokowski_source
+    if Path(stokowski_source.__file__).resolve()!=SOURCE/module:
+        raise AdmissionError('owner_policy_project_source_control_pin')
+    try:
+        acquired=stokowski_source.read_project_source(config,identifier,policy)
+    except AdmissionError as error:
+        if not materialize or str(error)!='project_source_not_materialized':
+            raise
+        if (not isinstance(current,CurrentWork) or current.config!=config or current.read_only
+            or not current.owner_custody or current.stopping):
+            raise AdmissionError('owner_policy_project_source_owner')
+        module='tools/delivery/native_harness_linear.py'
+        if config['source_sha256'].get(module)!=file_sha(SOURCE/module):
+            raise AdmissionError('owner_policy_accepted_source_control_pin')
+        import native_harness_linear
+        if Path(native_harness_linear.__file__).resolve()!=SOURCE/module:
+            raise AdmissionError('owner_policy_accepted_source_control_pin')
+        accepted=native_harness_linear.accepted_project_source(current,project_id)
+        acquired=stokowski_source.acquire_project_source(current,identifier,policy,accepted)
+    if set(acquired)!={'source_checkout','base','branch','tree','evidence','acquisition_ref'}:
+        raise AdmissionError('owner_policy_task_source_schema')
+    selected=dict(repository='maldous/offmenu',head=acquired['base'],tree=acquired['tree'],
+        branch=acquired['branch'],checkout=acquired['source_checkout'],ref=acquired['acquisition_ref'],
+        accepted=dict(branch='develop',head=acquired['base'],tree=acquired['tree'],evidence=acquired['evidence']))
     if (not isinstance(selected,dict)
         or set(selected)!={'repository','head','tree','branch','checkout','accepted','ref'}
         or selected['repository']!='maldous/offmenu'
@@ -861,7 +882,7 @@ async def owner_policy_candidate(current, client, issue, route):
             or w['selection_label'] and w['selection_label'] not in
                 [v['name'] for v in remote.get('labels',{}).get('nodes',[])]):
             raise AdmissionError('owner_policy_contract_missing')
-        owner_policy_task_source(current.config,issue.identifier,route['project_id'],materialize=True)
+        owner_policy_task_source(current.config,issue.identifier,route['project_id'],materialize=True,current=current)
         selection=dict(identifier=issue.identifier,issue_id=issue.id,project_id=route['project_id'],
             assignee_id=w['assignee_id'],dependencies=dependencies,title=remote.get('title') or '',
             description=remote.get('description') or '')
@@ -901,7 +922,7 @@ async def owner_policy_candidate(current, client, issue, route):
         raise AdmissionError('owner_policy_tracker_binding')
     if 'project_source' in policy:
         owner_policy_validation_targets(current.config,issue.identifier)
-    owner_policy_task_source(current.config,issue.identifier,route['project_id'],materialize=True)
+    owner_policy_task_source(current.config,issue.identifier,route['project_id'],materialize=True,current=current)
     before = current.catalog_bytes()
     data = owner_policy_artifacts(current.config,issue.identifier,before)
     for path, raw in data['files'].items():
