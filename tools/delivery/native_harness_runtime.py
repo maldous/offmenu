@@ -137,6 +137,10 @@ def journal_acceptance(current, issue, reviewed_runtime, review, handoff, candid
     from symphony_capacity import digest as journal_digest
     require(candidate is None and handoff['source']['target'] == 'develop',
             'journal_integration_only')
+    if review.get('origin') == 'native-readonly-review-v1':
+        current._check_unit_review(review)
+        review_coverage(review,handoff,None)
+        return native_journal_acceptance(current,issue,reviewed_runtime,handoff)
     if review.get('decision', {}).get('status') == 'merge-intent' and 'origin' not in review:
         return native_journal_acceptance(current,issue,reviewed_runtime,handoff,review=review)
     require(review.get('origin') == 'retained-typed-review-v1', 'journal_review_origin')
@@ -201,7 +205,7 @@ def native_journal_acceptance(current, issue, native_runtime, handoff, *, review
     require(ref['path'] == str(runtime/'validation-receipt.json'), 'native_journal_receipt_path')
     receipt=pinned_private(current,ref)
     outputs={v['path']:v['sha256'] for v in handoff['outputs']};source=handoff['source']
-    require(spec['version'] == 1 and spec['profile'] == 'enrichment-resilience-focused'
+    require(spec['version'] == 1 and spec['profile'] in ('enrichment-resilience-focused','delivery-unit-focused')
         and handoff['issue_id'] == issue.id == spec['issue_id'] and handoff['project_id'] == manifest['project_id']
         and handoff['owner'] == spec['owner'] == current.config['owner']
         and all(source[k] == spec[k] for k in ('head','base','branch')) and outputs == spec['outputs']
@@ -497,6 +501,101 @@ async def fixed_publisher_rpc(binding, packet, mode):
     return dict(operation_id=binding.operation_id, status=response['status'], child_tree_gone=True)
 
 
+async def prepare_native_unit(current, identifier, *, linear_client=None):
+    """Derive normal publication data from original receipts under Root policy.
+
+    This is called by the existing locked owner poll. The protected publisher
+    owns preparation admission and effects; no per-item owner config is created
+    by this process, and neither this packet nor source exit marks outcome Done.
+    """
+    from pathlib import Path
+    from types import SimpleNamespace
+    import hashlib
+    import sqlite3
+    from stokowski_adapter import read_record, file_sha, SOURCE
+    from stokowski_unit_review import qualify_native_review
+    from symphony_workspace import checkpoint
+    from native_harness_contract import load_release_policy
+    import native_publisher_invocation as publisher
+    current.guard()
+    require(not current.read_only and not current.stopping, 'native_prepare_owner_hold')
+    current.postcoding_template(identifier)
+    _,contract,_ = current.postcoding_contract(identifier)
+    issue = SimpleNamespace(identifier=identifier,id=current.entries[identifier]['issue_id'])
+    original,manifest,_ = current.context(identifier,review=True,observation=True)
+    require(not (original/'cancel.json').exists() and not (current.runtime/'cancel.json').exists(), 'native_prepare_cancelled')
+    unit = current.gate_binding(issue,observation=True)
+    current.validation_binding(identifier,current.entries[identifier])
+    selected = read_record(original/'validation-bindings.json')['issues'][identifier]
+    with sqlite3.connect((original/'operations/operations.sqlite').as_uri()+'?mode=ro',uri=True) as db:
+        row=db.execute('SELECT spec,state FROM operations WHERE key=?',(selected['operation_key'],)).fetchone()
+    spec,state=map(json.loads,row)
+    native=current._completed_native_evidence(identifier,original,manifest)
+    review=qualify_native_review(current,identifier)
+    require(review == read_record(current.runtime/('unit-review-'+identifier+'.json'))
+            and review['unit_binding']==unit and review['verdict']=='accept' and not review['findings'], 'native_prepare_independent_review')
+    policy=load_release_policy(SOURCE/'config/delivery-release-policy.json')
+    def ref(path):
+        current.private(str(path))
+        return dict(path=str(path),sha256=file_sha(path))
+    author=ref(original/'attempts'/identifier/'receipt.json')
+    source=dict(repository=policy['repository'],target='develop',policy_sha256=fingerprint(policy),
+        **{k:review['source'][k] for k in ('head','base','tree','branch')})
+    handoff=dict(version=1,kind='delivery-handoff-v1',issue_id=issue.id,project_id=manifest['project_id'],
+        owner=current.config['owner'],origin=dict(kind='native-coding-v1',evidence=author),source=source,
+        outputs=[dict(path=n,sha256=h) for n,h in sorted(spec['outputs'].items())],
+        evidence=[author,ref(current.runtime/('unit-review-'+identifier+'.json'))],
+        attempt=dict(id=native['session_id'],lease_id=native['lease'],admission=ref(original/'current-admission.json')),
+        operation=dict(id=selected['operation_key'],backend='windmill',job_id=state['logical_job_id'],status='succeeded',
+            command_sha256=read_record(original/'validation-receipt.json')['command_sha256'],
+            runner_sha256=spec['runner_sha256'],policy_sha256=spec['policy_sha256'],receipt=ref(original/'validation-receipt.json')))
+    validate_handoff(handoff,policy)
+    native_journal_acceptance(current,issue,str(original),handoff)
+    review_coverage(review,handoff,None)
+    path=original/'native-publication-packet.json'
+    if path.exists():
+        packet=read_record(current.private(str(path)))
+        require(packet['handoff']==handoff and packet['policy']==policy, 'native_prepare_packet_drift')
+    else:
+        require(linear_client is not None, 'native_prepare_linear_reader_required')
+        data=await linear_client._graphql(
+            'query($id:String!){issue(id:$id){id identifier team{id} project{id name} state{type} '
+            'inverseRelations(first:100){nodes{type issue{id state{type}}} pageInfo{hasNextPage}} '
+            'attachments(first:100){nodes{url} pageInfo{hasNextPage}}}}', {'id':issue.id})
+        remote=data.get('issue') or {}
+        require(remote.get('id')==issue.id and remote.get('identifier')==identifier
+            and remote.get('project',{}).get('id')==manifest['project_id'], 'native_prepare_linear_identity')
+        relations=remote['inverseRelations'];attachments=remote['attachments']
+        require(not relations['pageInfo']['hasNextPage'] and not attachments['pageInfo']['hasNextPage'], 'native_prepare_linear_pagination_required')
+        blockers=[dict(id=v['issue']['id'],state_type=v['issue']['state']['type']) for v in relations['nodes'] if v['type']=='blocks']
+        require(set(v['id'] for v in blockers)==set(contract['dependencies']), 'native_prepare_dependency_contract')
+        outcome=dict(id=issue.id,identifier=identifier,project_id=manifest['project_id'],team_id=remote['team']['id'],
+            state_type=remote['state']['type'],blocked_by=blockers,
+            pr_urls=sorted({v['url'] for v in attachments['nodes'] if v['url'].startswith('https://github.com/maldous/offmenu/pull/')}),milestone_ids=[])
+        linear=dict(version=1,projects=[dict(id=manifest['project_id'],name=remote['project']['name'],team_id=remote['team']['id'])],
+            outcomes=[outcome],changes=[],dependencies=[],effects=[])
+        require(plan_delivery(linear,policy)['dependencies'][0]['dependencies_satisfied'], 'native_prepare_dependencies_held')
+        packet=dict(policy=policy,handoff=handoff,candidate=None,linear=linear,release=None)
+        checkpoint(path,packet)
+    pending=current.state['tasks'][identifier].setdefault('native_publication',{})
+    identity=dict(unit_sha256=fingerprint(unit),packet_sha256=fingerprint(packet),packet=ref(path))
+    require(pending.get('intent',identity)==identity,'native_prepare_intent_drift')
+    pending.update(intent=identity,status='preparing')
+    current.save()  # Before invoking the protected admission boundary.
+    require(current.config['source_sha256'].get('tools/delivery/native_publisher_invocation.py')==file_sha(publisher.__file__), 'native_prepare_publisher_source')
+    selection=await produce_native_publication(current,issue,packet)
+    require(set(selection)=={'binding','packet','context'} and selection['packet']==ref(path)
+        and selection['binding']['unit_sha256']==fingerprint(unit)
+        and selection['binding']['packet_sha256']==fingerprint(packet), 'native_prepare_selection_binding')
+    target=current.runtime/('native-publication-'+identifier+'-selection.json')
+    if target.exists():
+        require(read_record(current.private(str(target)))==selection,'native_prepare_selection_drift')
+    else: checkpoint(target,selection)
+    pending.update(selection=ref(target),status='prepared')
+    current.save()
+    return current._native_harness_selection(identifier)
+
+
 def owner_adapters(current, issue, binding, selection, *, linear_client=None):
     """Concrete normal factory; selection is DATA from the protected owner map.
 
@@ -546,8 +645,7 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
         require(all(current.config['source_sha256'].get(name) ==
                     hashlib.sha256(Path(path).read_bytes()).hexdigest()
                     for name, path in paths.items()), 'owner_factory_source_pin')
-        ref = current.config['native_harness_boundaries'][issue.identifier]
-        actual = pinned_private(current, ref)
+        actual = current._native_harness_selection(issue.identifier)
         require(fingerprint(actual) == fingerprint(selected)
                 and set(actual) == {'binding', 'packet', 'context'}
                 and actual['binding'] == asdict(binding), 'owner_selection_drift')

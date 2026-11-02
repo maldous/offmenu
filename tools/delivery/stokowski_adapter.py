@@ -1950,10 +1950,17 @@ class CurrentWork:
 
     def _native_contribution(self, issue, runtime, manifest, selected, spec):
         """The exact committed native bytes have their own candidate branch."""
-        if (spec['profile'] != 'enrichment-resilience-focused' or spec['version'] != 1
+        if (spec['profile'] not in ('enrichment-resilience-focused','delivery-unit-focused') or spec['version'] != 1
             or spec['base'] != manifest['base_revision']):
             raise AdmissionError('native_contribution_profile')
         receipt = self._completed_native_evidence(issue,runtime,manifest)
+        if spec['profile'] == 'delivery-unit-focused':
+            policy,_,plan = self.postcoding_contract(issue)
+            self.postcoding_template(issue)
+            if (spec['validation_targets'] != [plan['check']]
+                or spec['validation_scope'] != sorted(policy['workclass']['allowed_files'])
+                or spec['native_receipt_sha256'] != file_sha(runtime/'attempts'/issue/'receipt.json')):
+                raise AdmissionError('native_contribution_delegation_drift')
         if type(selected['candidate_root']) is not str:
             raise AdmissionError('native_contribution_root')
         root = Path(selected['candidate_root'])
@@ -1964,6 +1971,7 @@ class CurrentWork:
             return subprocess.check_output(['git','-C',str(root),*args],text=True).strip()
         if (git('rev-parse','--show-toplevel') != str(root) or git('rev-parse','HEAD') != spec['head']
             or git('branch','--show-current') != spec['branch']
+            or (spec['profile'] == 'delivery-unit-focused' and git('rev-parse','HEAD^{tree}') != spec['tree'])
             or git('status','--porcelain','--untracked-files=all')
             or git('rev-list','--parents','-n','1',spec['head']).split() != [spec['head'],manifest['base_revision']]
             or set(git('diff','--no-renames','--name-only',spec['base'],spec['head']).splitlines()) != set(spec['outputs'])
@@ -2182,6 +2190,68 @@ class CurrentWork:
         self._qualified_failed_native_history = (issue,str(runtime),identity,predecessors)
         return runtime, identity
 
+    def postcoding_contract(self, issue):
+        """Requalify Root's ordinary source-only delegation, not coding prose."""
+        import stokowski_prepare as prepare
+        self.guard()
+        policy = prepare.owner_intake_policy(self.config)
+        if 'workclass' not in policy or issue in policy['contracts']:
+            raise AdmissionError('postcoding_source_only_workclass_required')
+        contract = prepare.owner_policy_contract(self.config,policy,issue)
+        proposals = []
+        for name,sha in contract.get('_qualification_inputs',{}).items():
+            if file_sha(name) != sha:
+                raise AdmissionError('postcoding_qualification_drift')
+            value = read_record(name)
+            if value.get('schema') == 'offmenu-qualification-proposal/1':
+                proposals.append(json.loads(value['proposal']))
+        if len(proposals) != 1:
+            raise AdmissionError('postcoding_qualified_plan_required')
+        plan = proposals[0]
+        runtime,manifest,_ = self.context(issue,review=True,observation=True)
+        task = manifest['tasks'][issue]
+        if ('stage' in task or contract['issue_id'] != task['issue_id']
+            or contract['project_id'] != manifest['project_id'] or task['owner'] != self.config['owner']
+            or task['allowed_paths'] != contract['scope'] or task['acceptance'] != contract['acceptance']
+            or task['resources'] != contract['resources'] or plan['rights'] != 'source-only-synthetic'
+            or plan['scope'] != contract['scope']):
+            raise AdmissionError('postcoding_original_task_outside_contract')
+        return policy,contract,plan
+
+    def postcoding_template(self, issue):
+        import stokowski_worker as worker
+        ref = self.config.get('native_review_template')
+        if ref is None:
+            raise AdmissionError('postcoding_root_template_required')
+        self.private(ref['path'])
+        template = worker.pinned_record(ref)
+        if (template.get('schema') != 'native-review-template-v2'
+            or template.get('role') != 'native-review-read-only'
+            or any(template.get(k) != self.config[k] for k in
+                   ('owner','source_head','source_sha256','installation_sha256'))
+            or set(template.get('producer',{})) != {'git_author','source_repository'}
+            or any(template.get(k) != 'derived' for k in ('project_id','source_root','resources','acceptance'))):
+            raise AdmissionError('postcoding_root_template_binding')
+        self.postcoding_contract(issue)
+        return template
+
+    def prepare_native_validation(self, issue):
+        import stokowski_stage as stage
+        import stokowski_operations as operations
+        template = self.postcoding_template(issue)
+        policy,contract,plan = self.postcoding_contract(issue)
+        runtime,manifest,_ = self.context(issue,review=True,observation=True)
+        self._completed_native_evidence(issue,runtime,manifest)
+        if self.read_only or self.stopping or (runtime/'cancel.json').exists():
+            raise AdmissionError('postcoding_preparation_held')
+        producer = dict(template['producer'],profile='delivery-unit-focused',
+            validation_targets=[plan['check']],validation_scope=sorted(policy['workclass']['allowed_files']),
+            policy_sha256=self.config['policy_sha256'],
+            runner_sha256=file_sha(SOURCE/'tools/delivery/windmill_runner.py'),
+            executor_sha256=file_sha(operations.__file__))
+        return stage.prepare_completed_native(runtime,issue,
+            candidate_root=self.private(str(runtime/'contributions'/issue/'candidate')),template=producer)
+
     async def continue_validation(self):
         """One bounded phase under the existing coordinator and operation locks."""
         import stokowski_stage as stage
@@ -2210,6 +2280,10 @@ class CurrentWork:
                         requested_model=None, requested_effort=None, provider=None)
                     self.save()
                     continue  # Completed evidence never invokes stage.tick or a submitter.
+                native_runtime,_,_ = self.context(issue,review=True,observation=True)
+                if ('stage' not in selected_task and not (native_runtime/'validation-bindings.json').exists()
+                    and self.config.get('native_review_template')):
+                    self.prepare_native_validation(issue)
                 runtime, identity = self.validation_binding(issue, entry)
                 from types import SimpleNamespace
                 unit = self.gate_binding(SimpleNamespace(identifier=issue, id=entry['issue_id']), observation=True)
@@ -2295,7 +2369,12 @@ class CurrentWork:
     def _native_harness_selection(self, identifier):
         if not self.owner_custody:
             raise AdmissionError('native_harness_owner_config')
-        reference = self.config['native_harness_boundaries'][identifier]
+        reference = self.config.get('native_harness_boundaries',{}).get(identifier)
+        if reference is None:
+            self.postcoding_template(identifier)
+            reference = self.state['tasks'][identifier].get('native_publication',{}).get('selection')
+            if reference is None:
+                raise AdmissionError('native_harness_derived_selection_pending')
         if (not isinstance(reference, dict) or set(reference) != {'path', 'sha256'}
             or not isinstance(reference['path'], str)):
             raise AdmissionError('native_harness_reference')
@@ -2386,13 +2465,16 @@ class CurrentWork:
     def _native_harness_module(self):
         self.guard()
         self._native_harness_config()
+        if self.config.get('source_sha256',{}).get('tools/delivery/native_harness_runtime.py') != file_sha(SOURCE/'tools/delivery/native_harness_runtime.py'):
+            raise AdmissionError('native_harness_runtime_source_pin')
         module = importlib.import_module('native_harness_runtime')
         if Path(module.__file__).resolve() != SOURCE/'tools/delivery/native_harness_runtime.py':
             raise AdmissionError('native_harness_module_path')
         return module
 
     def _native_harness_refill_allowed(self, identifier):
-        if identifier not in self.config.get('native_harness_boundaries', {}):
+        if (identifier not in self.config.get('native_harness_boundaries', {})
+            and not self.state['tasks'].get(identifier,{}).get('native_publication',{}).get('selection')):
             return True
         # Saved diagnostics never authorize refill. Only the immediate async
         # consumer can lend this permit to the existing synchronous boundary.
@@ -2413,9 +2495,25 @@ class CurrentWork:
 
     async def continue_native_harness(self, adapters_factory=None, *, linear_client=None):
         """One finite owner-bound consumption in the existing locked poll."""
-        if not self.config.get('native_harness_boundaries') or self.read_only or self.stopping:
+        if self.read_only or self.stopping:
             return
-        eligible = [i for i in self.entries if i in self.config['native_harness_boundaries']]
+        module = self._native_harness_module() if (self.config.get('native_harness_boundaries') or self.config.get('native_review_template')) else None
+        if module is None:
+            return
+        for identifier in self.entries:
+            task = self.state['tasks'].setdefault(identifier,{})
+            if (identifier not in self.config.get('native_harness_boundaries',{})
+                and task.get('native_review',{}).get('status') == 'qualified'
+                and not task.get('native_publication',{}).get('selection')):
+                try:
+                    await module.prepare_native_unit(self,identifier,linear_client=linear_client)
+                except asyncio.CancelledError:
+                    raise
+                except Exception as error:
+                    task.setdefault('native_publication',{}).update(status='held',reason=str(error) if isinstance(error,AdmissionError) else type(error).__name__)
+                    self.save()
+                break
+        eligible = [i for i in self.entries if i in self.config.get('native_harness_boundaries',{}) or self.state['tasks'].get(i,{}).get('native_publication',{}).get('selection')]
         if not eligible:
             return
         cursor = self.state.get('native_harness_cursor')
@@ -2534,13 +2632,18 @@ class CurrentWork:
         static = {'schema','owner','reviewer_owner','project_id','source_head','source_sha256',
                   'installation_sha256','source_root','validation_receipt_name','provider','model',
                   'effort','resources','acceptance','timeout_seconds','require_stopped_child','role'}
-        if (set(template) != static or template['schema'] != 'native-review-template-v1'
+        generic = template.get('schema') == 'native-review-template-v2'
+        if (set(template) != (static | {'producer'} if generic else static) or template['schema'] not in ('native-review-template-v1','native-review-template-v2')
             or template['role'] != 'native-review-read-only'
             or any(template[k] != self.config[k] for k in
                    ('owner','source_head','source_sha256','installation_sha256'))):
             raise AdmissionError('native_review_template_binding')
         runtime, manifest, _ = self.context(issue, review=True, observation=True)
         task = manifest['tasks'][issue]
+        if generic:
+            self.postcoding_template(issue)
+            _,contract,_ = self.postcoding_contract(issue)
+            template = dict(template,project_id=manifest['project_id'],resources=contract['resources'],acceptance=contract['acceptance'])
         if ((runtime/'cancel.json').exists() or (self.runtime/'cancel.json').exists()
             or (materialize and self.state['tasks'][issue].get('unit_gate',{}).get('disposition') == 'rework')):
             raise AdmissionError('native_review_template_terminal_hold')
@@ -2582,7 +2685,8 @@ class CurrentWork:
             or lease[1] != digest(author['parent_binding'])
             or author['parent_binding']['owner'] != task['owner']):
             raise AdmissionError('native_review_template_author_lease')
-        root = Path(template['source_root'])
+        root = Path(read_record(runtime/'validation-bindings.json')['issues'][issue]['candidate_root'] if generic else template['source_root'])
+        self.private(str(root))
         source = dict(root=str(root),head=spec['head'],base=spec['base'],branch=spec['branch'],
             tree=worker.git(root,'rev-parse','HEAD^{tree}'),outputs=spec['outputs'],
             files_sha256=digest({n:file_sha(root/n) for n in worker.git(root,'ls-files','-z').split('\0') if n}))

@@ -25,6 +25,25 @@ ENRICHMENT_PROFILE = 'enrichment-resilience-focused'
 ENRICHMENT_TEST = 'tests/web/enrichment-resilience.test.mjs'
 ENRICHMENT_COMMAND = ('/bin/node', '--test', '--test-concurrency=1', '--test-reporter=tap', ENRICHMENT_TEST)
 PROFILES[ENRICHMENT_PROFILE] = list(ENRICHMENT_COMMAND)
+UNIT_PROFILE = 'delivery-unit-focused'
+PROFILES[UNIT_PROFILE] = []  # The fixed Python consumer below owns argv.
+
+
+def unit_targets(targets, scope):
+    if (not isinstance(targets,list) or not 1 <= len(targets) <= 4
+        or len(set(targets)) != len(targets) or not isinstance(scope,list)
+        or not 1 <= len(scope) <= 6 or scope != sorted(set(scope))):
+        raise OperationError('Invalid focused validation selection')
+    for target in targets:
+        if (not isinstance(target,str) or not re.fullmatch(
+            r'test_[A-Za-z0-9_]+\.[A-Za-z_][A-Za-z0-9_]*\.test_[A-Za-z0-9_]+',target)
+            or 'tests/delivery/'+target.split('.')[0]+'.py' not in scope):
+            raise OperationError('Invalid fully qualified unittest target')
+    for name in scope:
+        if (not isinstance(name,str) or str(PurePosixPath(name)) != name
+            or '..' in name.split('/') or name.startswith('/') or '\\' in name):
+            raise OperationError('Invalid focused source scope')
+    return targets
 TERMINAL = {'succeeded','failed','cancelled','refused','quarantined'}
 # The reviewed computation timeout is 180s; allow 30s for wrapper completion.
 # This only admits a status observation, never replacement computation.
@@ -105,8 +124,18 @@ def validated(spec):
         return validated_v3(spec)
     if isinstance(spec, dict) and type(spec.get('version')) is int and spec['version'] == 2:
         return validated_v2(spec)
-    if not isinstance(spec,dict) or set(spec) not in (fields,fields|{'branch'}) or type(spec['version']) is not int or spec['version'] != 1:
+    extra = {'branch','validation_targets','validation_scope','tree','native_receipt_sha256'} if isinstance(spec,dict) and spec.get('profile') == UNIT_PROFILE else {'branch'}
+    if not isinstance(spec,dict) or set(spec) not in (fields,fields|extra) or type(spec['version']) is not int or spec['version'] != 1:
         raise OperationError('Invalid operation fields')
+    if spec.get('profile') == UNIT_PROFILE:
+        if not extra <= set(spec):
+            raise OperationError('Missing focused validation selection')
+        unit_targets(spec['validation_targets'],spec['validation_scope'])
+        if (not re.fullmatch('[0-9a-f]{40}',spec['tree']) or not re.fullmatch('[0-9a-f]{64}',spec['native_receipt_sha256'])
+            or spec['branch'] != 'bugfix/native-'+spec['issue'].lower()+'-'+spec['native_receipt_sha256'][:16]):
+            raise OperationError('Invalid immutable native candidate identity')
+        if not set(spec['outputs']) <= set(spec['validation_scope']):
+            raise OperationError('Focused outputs outside delegated scope')
     if not valid_branch(spec.get('branch','feature/langgraph-delivery-standardization')):
         raise OperationError('Invalid exact selected branch')
     if str(UUID(spec['issue_id'])) != spec['issue_id'] or not re.fullmatch(r'UIF-[1-9][0-9]*',spec['issue']):
@@ -556,6 +585,59 @@ assert {name:int(value) for name,value in matches}=={'tests':4,'suites':0,'pass'
         'ROOT',repr(str(root)),1).replace('NODE_COMMAND',repr(ENRICHMENT_COMMAND),1)
 
 
+
+def unit_validation_code(spec):
+    """Frozen consumer: private bundle transport, exact AST target, no shell."""
+    return """import ast,hashlib,json,os,pathlib,re,subprocess,sys,tempfile,unittest
+spec=json.loads(SPEC_JSON)
+source=pathlib.Path('/offmenu')
+env={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8','PYTHONDONTWRITEBYTECODE':'1','GIT_CONFIG_NOSYSTEM':'1','GIT_CONFIG_GLOBAL':'/dev/null'}
+def git(root,*args):
+ return subprocess.check_output(['git','-c','safe.directory='+str(root),'-c','core.hooksPath=/dev/null','-C',str(root),*args],env=env)
+branch='bugfix/native-'+spec['issue'].lower()+'-'+spec['native_receipt_sha256'][:16]
+assert branch==spec['branch'], 'derived branch mismatch'
+assert git(source,'rev-parse','refs/heads/'+branch).decode().strip()==spec['head'], 'contribution ref drift'
+with tempfile.TemporaryDirectory(prefix='offmenu-native-unit-',dir='/tmp') as directory:
+ private=pathlib.Path(directory);env.update(HOME=str(private),TMPDIR=str(private),XDG_CONFIG_HOME=str(private/'config'),XDG_CACHE_HOME=str(private/'cache'))
+ bundle=private/'source.bundle'
+ subprocess.run(['git','-c','safe.directory='+str(source),'-C',str(source),'bundle','create',str(bundle),'refs/heads/'+branch],env=env,check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=90)
+ root=private/'candidate'
+ subprocess.run(['git','clone','--no-hardlinks','--single-branch','--branch',branch,str(bundle),str(root)],env=env,check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=90)
+ assert not (root/'.git/objects/info/alternates').exists(), 'shared object transport'
+ def verify():
+  assert git(root,'rev-parse','HEAD').decode().strip()==spec['head']
+  assert git(root,'rev-parse','HEAD^{tree}').decode().strip()==spec['tree']
+  assert git(root,'branch','--show-current').decode().strip()==branch
+  assert git(root,'rev-list','--parents','-n','1',spec['head']).decode().split()==[spec['head'],spec['base']]
+  assert not git(root,'status','--porcelain','--untracked-files=all'), 'candidate dirty'
+  changed=set(filter(None,git(root,'diff','--no-renames','--name-only','-z',spec['base'],spec['head']).decode().split('\\0')))
+  assert changed==set(spec['outputs']), 'candidate delta'
+  for name,expected in spec['outputs'].items():
+   path=root/name
+   assert path==path.resolve() and path.is_file(), 'output alias'
+   assert git(root,'ls-tree',spec['head'],'--',name).split()[:2] in ([b'100644',b'blob'],[b'100755',b'blob'])
+   assert hashlib.sha256(path.read_bytes()).hexdigest()==expected
+   assert hashlib.sha256(git(root,'show',spec['head']+':'+name)).hexdigest()==expected
+  for target in spec['validation_targets']:
+   assert re.fullmatch(r'test_[A-Za-z0-9_]+\\.[A-Za-z_][A-Za-z0-9_]*\\.test_[A-Za-z0-9_]+',target)
+   module,cls,method=target.split('.')
+   path=root/'tests/delivery'/(module+'.py')
+   assert path==path.resolve() and 'tests/delivery/'+module+'.py' in spec['validation_scope']
+   tree=ast.parse(path.read_text())
+   classes=[node for node in tree.body if isinstance(node,ast.ClassDef) and node.name==cls]
+   assert len(classes)==1 and any((isinstance(b,ast.Attribute) and isinstance(b.value,ast.Name) and b.value.id=='unittest' and b.attr=='TestCase') or (isinstance(b,ast.Name) and b.id=='TestCase') for b in classes[0].bases), 'target TestCase missing'
+   assert len([n for n in classes[0].body if isinstance(n,ast.FunctionDef) and n.name==method])==1, 'target method missing'
+ verify()
+ try:
+  env['PYTHONPATH']=str(root/'src')+':'+str(root/'tools/delivery')+':'+str(root/'tests/delivery')
+  code='import sys,unittest; suite=unittest.defaultTestLoader.loadTestsFromNames(sys.argv[1:]); result=unittest.TextTestRunner(verbosity=2).run(suite); assert result.testsRun>0 and not result.skipped and not result.expectedFailures and not result.unexpectedSuccesses; sys.exit(0 if result.wasSuccessful() else 1)'
+  result=subprocess.run(['/offmenu/.venv-delivery/bin/python','-B','-c',code,*spec['validation_targets']],cwd=root,env=env,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=150)
+ finally:
+  verify()
+ sys.stdout.write(result.stdout);sys.stderr.write(result.stderr)
+ assert result.returncode==0, 'focused unit validation failed'
+""".replace('SPEC_JSON',repr(json.dumps(spec,sort_keys=True)),1)
+
 def bridge_arguments(spec, action='run'):
     key = operation_key(spec)
     logical_id = 'offmenu-'+key[:48]
@@ -567,6 +649,12 @@ def bridge_arguments(spec, action='run'):
         return reviewed_arguments(spec)
     if spec['version'] == 2:
         return extraction_arguments(spec)
+    if spec['profile'] == UNIT_PROFILE:
+        return dict(action='run',job_id=logical_id,
+            command='/offmenu/.venv-delivery/bin/python -c '+shlex.quote(unit_validation_code(spec)),
+            mode='read',timeout_seconds=180,resources=dict(workers=1,overhead_processes=8,
+                cpu_millis=1000,memory_bytes=2147483648,io_slots=1,output_bytes=0,
+                read_roots=['/offmenu'],write_roots=[]))
     if spec['profile'] == ENRICHMENT_PROFILE:
         return dict(action='run',job_id=logical_id,
             command='/offmenu/.venv-delivery/bin/python -c '+shlex.quote(enrichment_validation_code(spec)),
@@ -854,7 +942,7 @@ class Journal:
                     self.diagnose(key,state,'observed-unknown',error)
                 else:
                     self.save(key,state,'observed-'+state['status'])
-                    if spec['version'] == 3 and state['status'] == 'succeeded':
+                    if (spec['version'] == 3 or spec['profile'] == UNIT_PROFILE) and state['status'] == 'succeeded':
                         try:
                             self.retain_reviewed_receipt(receipt)
                         except (OSError,OperationError) as error:

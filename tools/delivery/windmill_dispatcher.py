@@ -26,6 +26,8 @@ IDENTITY_TESTS = ('tests/web/offmenu-identity-client.test.mjs',
                   'tests/edge/handler-auth-dispatch.test.mjs')
 PROFILES = {'delivery-suite'}
 ENRICHMENT_PROFILE = 'enrichment-resilience-focused'
+UNIT_PROFILE = 'delivery-unit-focused'
+UNIT_BODY_SHA256 = '68a5be9c7a838b0dd42c2b69a3c47b09af10d5aa046696204aa001fa8d35d482'
 ENRICHMENT_TEST = 'tests/web/enrichment-resilience.test.mjs'
 PROFILES.add(ENRICHMENT_PROFILE)
 ENRICHMENT_BODY_SHA256 = '489ce815134040311e8779d289bbfee59128cd85937b04b8a1340f446b9771cd'
@@ -45,7 +47,8 @@ def _reviewed_workspace(value):
 def _reviewed_legacy(spec):
     fields = {'version','issue_id','issue','stage','head','base','owner','policy_sha256',
               'acceptance_sha256','outputs','profile','runner_sha256','executor_sha256'}
-    if not isinstance(spec,dict) or set(spec) not in (fields,fields|{'branch'}) or type(spec['version']) is not int or spec['version'] != 1:
+    extra={'branch','validation_targets','validation_scope','tree','native_receipt_sha256'} if isinstance(spec,dict) and spec.get('profile')==UNIT_PROFILE else {'branch'}
+    if not isinstance(spec,dict) or set(spec) not in (fields,fields|extra) or type(spec['version']) is not int or spec['version'] != 1:
         raise ValueError('Invalid operation fields')
     if not _reviewed_branch(spec.get('branch','feature/langgraph-delivery-standardization')):
         raise ValueError('Invalid exact selected branch')
@@ -59,7 +62,7 @@ def _reviewed_legacy(spec):
                        ('runner_sha256',64),('executor_sha256',64)]:
         if not isinstance(spec[name],str) or not re.fullmatch('[0-9a-f]{'+str(width)+'}',spec[name]):
             raise ValueError('Invalid '+name)
-    if spec['profile'] not in PROFILES:
+    if spec['profile'] not in PROFILES and spec['profile'] != UNIT_PROFILE:
         raise ValueError('Unreviewed validation profile')
     if not isinstance(spec['outputs'],dict) or not 1 <= len(spec['outputs']) <= 64:
         raise ValueError('Missing accepted outputs')
@@ -220,6 +223,35 @@ def _identity_command(command, logical_id, tokens):
     return key
 
 
+
+def _unit_command(command,logical_id,tokens):
+    body=tokens[2]
+    if tokens[:2]!=['/offmenu/.venv-delivery/bin/python','-c'] or command!='/offmenu/.venv-delivery/bin/python -c '+shlex.quote(body):
+        raise ValueError('Noncanonical focused Python envelope')
+    parsed=ast.parse(body)
+    literal=ast.literal_eval(parsed.body[1].value.args[0])
+    spec=json.loads(literal,object_pairs_hook=_unique_json)
+    _reviewed_legacy(spec)
+    targets=spec.get('validation_targets');scope=spec.get('validation_scope')
+    if (spec['profile']!=UNIT_PROFILE or not isinstance(targets,list) or not 1<=len(targets)<=4
+        or len(set(targets))!=len(targets) or not isinstance(scope,list) or not 1<=len(scope)<=6
+        or scope!=sorted(set(scope)) or not set(spec['outputs'])<=set(scope)
+        or not re.fullmatch('[0-9a-f]{40}',spec.get('tree',''))
+        or not re.fullmatch('[0-9a-f]{64}',spec.get('native_receipt_sha256',''))
+        or spec['branch']!='bugfix/native-'+spec['issue'].lower()+'-'+spec['native_receipt_sha256'][:16]):
+        raise ValueError('Invalid focused candidate selection')
+    for target in targets:
+        if (not isinstance(target,str) or not re.fullmatch(r'test_[A-Za-z0-9_]+\.[A-Za-z_][A-Za-z0-9_]*\.test_[A-Za-z0-9_]+',target)
+            or 'tests/delivery/'+target.split('.')[0]+'.py' not in scope):
+            raise ValueError('Invalid focused unittest target')
+    for name in scope:
+        if (not isinstance(name,str) or str(PurePosixPath(name))!=name or name.startswith('/')
+            or '..' in name.split('/') or '\\' in name): raise ValueError('Invalid focused scope')
+    key=hashlib.sha256(json.dumps({k:v for k,v in spec.items() if k!='owner'},sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    if logical_id!='offmenu-'+key[:48] or _body_hash(body,[('spec=json.loads('+repr(json.dumps(spec,sort_keys=True))+')','SPEC')])!=UNIT_BODY_SHA256:
+        raise ValueError('Unreviewed focused Python body')
+    return key
+
 def _enrichment_command(command, logical_id, tokens):
     """Recognize only the complete frozen native-v1 Node wrapper; never eval."""
     body = tokens[2]
@@ -255,6 +287,9 @@ def _reviewed_command(command, logical_id):
             if (len(parsed.body) > 1 and isinstance(parsed.body[1],ast.Assign)
                 and isinstance(parsed.body[1].targets[0],ast.Name)
                 and parsed.body[1].targets[0].id == 'spec'):
+                spec=json.loads(ast.literal_eval(parsed.body[1].value.args[0]),object_pairs_hook=_unique_json)
+                if spec.get('profile')==UNIT_PROFILE:
+                    return _unit_command(command,logical_id,tokens)
                 return _enrichment_command(command,logical_id,tokens)
             return _identity_command(command,logical_id,tokens)
         if len(tokens) != 19 or tokens[10] != tokens[18]:
