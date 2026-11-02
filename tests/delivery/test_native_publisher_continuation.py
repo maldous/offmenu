@@ -131,6 +131,7 @@ class ContinuationTests(unittest.TestCase):
             selected=copy.deepcopy(self.selection);selected['context']['publisher_continuation'][key]='0'*64
             with self.subTest(key=key),self.assertRaises((runtime.RuntimeHold,helper.InvocationHold)):
                 runtime.invocation_continuation_record(self.current,self.binding,self.packet,selected)
+
         for change in ('unknown','pending_response','contradiction','missing_receipt','wrong_receipt'):
             record=copy.deepcopy(self.old);old=record['invocations'][-1]
             if change=='unknown':old['status']='unknown'
@@ -149,6 +150,133 @@ class ContinuationTests(unittest.TestCase):
             selected=copy.deepcopy(self.selection);selected['context']['publisher_continuation']=grant
             with self.subTest(change=change),self.assertRaises((runtime.RuntimeHold,helper.InvocationHold)):
                 runtime.invocation_continuation_record(self.current,self.binding,self.packet,selected)
+
+    def test_completed_original_native_continuation_requalifies_gate_and_terminal_merge(self):
+        import time
+        import shutil
+        import stokowski_operations as operations
+        from offmenu.delivery.integration import Controller
+        from test_completed_native_transition import CompletedNativeTransitionTests
+        f=CompletedNativeTransitionTests(methodName='runTest');f.setUp();self.addCleanup(f.doCleanups)
+        f.test_completed_control_review_and_same_runtime_v1_contribution()
+        c=f.current;issue=SimpleNamespace(identifier='UIF-102',id=f.entry['issue_id'])
+        guard=patch.object(c,'guard');guard.start();self.addCleanup(guard.stop)
+        selected=adapter.read_record(f.runtime/'validation-bindings.json')['issues'][issue.identifier]
+        journal=operations.Journal(f.runtime/'operations');spec,state=journal.read(selected['operation_key'])
+        receipt=dict(status='succeeded',exit_code=0,child_tree_gone=True,reconcile_required=False,
+            job_id=state['logical_job_id'],runner_sha256=spec['runner_sha256'],
+            capacity_policy_sha256=spec['policy_sha256'],command_sha256=hashlib.sha256(
+                operations.bridge_arguments(spec)['command'].encode()).hexdigest())
+        f.write(f.runtime/'validation-receipt.json',receipt)
+        state.update(status='succeeded',receipt_sha256=adapter.digest(receipt),accepted_output_sha256=spec['outputs'],
+            acceptance_sha256=spec['acceptance_sha256'])
+        journal.save(selected['operation_key'],state,'SYNTHETIC original successful validation')
+        unit=c.gate_binding(issue,observation=True)
+        b=dict(version=1,repository='maldous/offmenu',pr_number=145,issue_id=issue.id,owner=c.config['owner'],
+            head=spec['head'],base=spec['base'],tree=f.git(f.candidate,'rev-parse','HEAD^{tree}'),
+            head_branch=spec['branch'],outputs=spec['outputs'],validation_operation_key=selected['operation_key'],
+            policy_sha256='c'*64,capacity_policy_sha256=spec['policy_sha256'])
+        review=dict(head=b['head'],base=b['base'],outputs=b['outputs'],reviewer='synthetic-independent-reviewer',
+            author=b['owner'],model='unknown',provider='unknown',independent=True,verdict='accept',findings=[],
+            evidence_id='synthetic-original-native-review')
+        review['evidence_sha256']=adapter.digest(review)
+        snapshot=dict(observed_at=time.time(),publisher_owner=b['owner'],source_tree=b['tree'],source_clean=True,
+            policy_sha256=b['policy_sha256'],capacity_policy_sha256=b['capacity_policy_sha256'],review=review,
+            validation=dict(operation_key=selected['operation_key'],status='succeeded',head=b['head'],base=b['base'],
+                outputs=b['outputs'],capacity_policy_sha256=b['capacity_policy_sha256'],child_tree_gone=True,
+                reconcile_required=False),unresolved_findings=[],publication_triggers_actions=False,
+            automatic_integration_enabled=True,github=dict(repository=b['repository'],number=145,state='open',
+                merged=False,draft=False,head=b['head'],base=b['base'],head_branch=b['head_branch'],
+                base_branch='develop',mergeable=True))
+        decision=Controller(f.root/'integration/unit',b).run(snapshot)
+        original_review=dict(issue=issue.identifier,unit_binding=unit,integration_binding=b,snapshot=snapshot,
+            decision=decision,validation_receipt=receipt)
+        f.write(c.runtime/'unit-review-UIF-102.json',original_review)
+        gate=dict(binding=unit,disposition='approved',handled=True,unit_review='approved',
+            review_sha256=adapter.digest(original_review),accepted_delivery=False)
+        c.state['tasks'][issue.identifier]['unit_gate']=gate
+        source=dict(repository=b['repository'],head=b['head'],base=b['base'],tree=b['tree'],
+            branch=b['head_branch'],target='develop',policy_sha256=b['policy_sha256'])
+        handoff=dict(issue_id=issue.id,project_id=f.manifest['project_id'],owner=b['owner'],source=source,
+            outputs=[dict(path=p,sha256=h) for p,h in b['outputs'].items()],operation=dict(
+                id=selected['operation_key'],job_id=receipt['job_id'],status='succeeded',
+                receipt=dict(path=str(f.runtime/'validation-receipt.json'),sha256=adapter.file_sha(f.runtime/'validation-receipt.json')),
+                runner_sha256=spec['runner_sha256'],policy_sha256=spec['policy_sha256'],command_sha256=receipt['command_sha256']))
+        self.packet={'handoff':handoff}
+        self.binding=runtime.OwnerBinding(issue.id,f.manifest['project_id'],b['owner'],runtime.fingerprint(self.packet),
+            runtime.fingerprint(b),'integration',runtime.fingerprint(unit))
+        fresh=self.root/'completed';fresh.mkdir();self.host=SyntheticHost(fresh);self.host.prepare()
+        self.host.config['binding']=b
+        self.host.config['snapshot']['native_runtime']=dict(issue_id=issue.id,project_id=self.binding.project_id,
+            owner=b['owner'],unit_sha256=self.binding.unit_sha256,packet_sha256=self.binding.packet_sha256,source=source)
+        self.old=dict(version=1,binding=asdict(self.binding),selection_sha256='5'*64,capability=self.oldcap,invocations=[])
+        envelope=dict(version=1,mode='invoke',invocation_id=str(uuid4()),
+            request=runtime.publisher_request(self.binding,self.packet,'step'))
+        proof=terminal(envelope['request']);proof['response']['status']='verified'
+        proof['response_sha256']=helper.fingerprint(proof['response'])
+        with patch.object(helper,'_supervise',return_value=proof):
+            value=helper._invoke(helper.wire(envelope),self.host)
+        self.old['invocations'].append(dict(envelope=envelope,last_request=envelope,status='complete',result=value))
+        self.grant=self.descriptor(self.old)
+        self.root=f.root
+        names=('tools/delivery/native_publisher_invocation.py','tools/delivery/native_harness_runtime.py',
+            'tools/delivery/native_harness_contract.py','contracts/schemas/delivery-handoff-v1.schema.json',
+            'tools/delivery/linear_delivery.py','tools/delivery/release_qualification.py',
+            'src/offmenu/delivery/engine.py','src/offmenu/delivery/status.py','tools/delivery/stokowski_unit_review.py')
+        c.config['source_sha256']={name:adapter.file_sha(ROOT/name) for name in names}
+        c.config_sha='c'*64;c.config_path=adapter.PROTECTED_OWNER/'current.json'
+        c.owner_custody.update(schema='protected-current-owner-v1',runtime=str(c.runtime),
+            config_sha256=c.config_sha,catalog_sha256='d'*64,python_sha256='e'*64)
+        c.config['project_route']=adapter.project_route(self.binding.project_id)
+        self.selection=dict(binding=asdict(self.binding),packet=self.pin('native-packet.json',self.packet),context=dict(
+            native_runtime=str(f.runtime),pending_unit_review=dict(runtime=str(c.runtime),issue=issue.identifier,
+                actor_uid=1000,source_head=c.config['source_head'],source_sha256=c.config['source_sha256'],unit_binding=unit,
+                publisher_review_binding=b,publisher_review=dict(request=runtime.publisher_request(self.binding,self.packet,'observe'))),
+            publisher_invocation=self.newcap,publisher_continuation=self.grant))
+        c.config['native_harness_boundaries']={issue.identifier:self.pin('native-selection.json',self.selection)}
+        c.state[runtime.INVOCATIONS]={self.binding.operation_id:copy.deepcopy(self.old)}
+        c.read_only=False;c.state_path=c.runtime/'current-owner.json';self.current=c
+        originals={p:p.read_bytes() for p in (f.runtime/'validation-bindings.json',f.directory/'receipt.json',
+            f.runtime/'validation-receipt.json',c.runtime/'unit-review-UIF-102.json',
+            self.host.directory/('native-invocation-'+envelope['invocation_id']+'.json'))}
+        helper_path=f.control/'tools/delivery/native_publisher_invocation.py';shutil.copyfile(helper.__file__,helper_path)
+        with patch.object(helper,'__file__',str(helper_path)):
+            self.assertEqual(c._native_harness_selection(issue.identifier),self.selection)
+            adapters=runtime.owner_adapters(c,issue,self.binding,self.selection)
+            self.assertTrue(adapters.authorize(c,issue,self.binding))
+            for change in ({'handled':False},{'disposition':'waiting'},{'review_sha256':'0'*64}):
+                gate.update(change)
+                with self.subTest(gate=change),self.assertRaises(runtime.RuntimeHold):
+                    c._native_harness_selection(issue.identifier)
+                gate.update(handled=True,disposition='approved',review_sha256=adapter.digest(original_review))
+            state['status']='unknown';journal.save(selected['operation_key'],state,'SYNTHETIC unresolved')
+            with self.assertRaises((runtime.RuntimeHold,adapter.AdmissionError)):
+                c._native_harness_selection(issue.identifier)
+            state['status']='succeeded';journal.save(selected['operation_key'],state,'SYNTHETIC restored')
+            for status in ('ready','unknown'):
+                old=copy.deepcopy(self.old);v=old['invocations'][-1]['result']
+                v['response']['status']=status;v['receipt']['body']['terminal']['response']=copy.deepcopy(v['response'])
+                v['receipt']['body']['terminal']['response_sha256']=helper.fingerprint(v['response'])
+                v['receipt']['sha256']=helper.sha(helper.wire(v['receipt']['body']))
+                c.state[runtime.INVOCATIONS][self.binding.operation_id]=old
+                self.selection['context']['publisher_continuation']=self.descriptor(old)
+                with self.subTest(terminal=status),self.assertRaises(runtime.RuntimeHold):
+                    runtime.completed_native_continuation(c,issue,self.binding,self.packet,self.selection)
+            c.state[runtime.INVOCATIONS][self.binding.operation_id]=copy.deepcopy(self.old)
+            self.selection['context']['publisher_continuation']=self.grant
+            c.state[runtime.INVOCATIONS][self.binding.operation_id]=self.upgraded()
+            # Post-save/restart requalification uses the same original predecessor.
+            c.state=json.loads(json.dumps(c.state))
+            self.assertEqual(c._native_harness_selection(issue.identifier),self.selection)
+            self.assertTrue(adapters.authorize(c,issue,self.binding))
+            with patch.object(runtime,'fixed_invocation_wire',side_effect=self.transport):
+                asyncio.run(runtime.invocation_transaction(c,self.binding,self.packet,self.selection,'observe',[0],lambda *_:True))
+            self.assertEqual(self.calls[-1]['request']['mode'],'observe')
+            self.assertNotEqual(self.calls[-1]['invocation_id'],envelope['invocation_id'])
+            self.assertEqual(c.state[runtime.INVOCATIONS][self.binding.operation_id]['history'],[self.old])
+            runtime.completed_native_continuation(c,issue,self.binding,self.packet,self.selection)
+        for p,raw in originals.items():self.assertEqual(p.read_bytes(),raw)
+        self.assertEqual(c.state['tasks'][issue.identifier]['unit_gate'],gate)
 
     def test_old_ready_cannot_step_until_new_observation_and_helper_requires_real_old_files(self):
         self.current.state[runtime.INVOCATIONS][self.binding.operation_id]=self.upgraded()

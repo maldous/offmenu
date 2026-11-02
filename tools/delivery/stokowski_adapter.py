@@ -2217,8 +2217,14 @@ class CurrentWork:
                 self.config['source_sha256'].get(name) != file_sha(helper.__file__)):
                 raise AdmissionError('native_harness_continuation_source')
             grant=helper.continuation(context['publisher_continuation'],binding)
-            if ('pre_admission_refusal' in grant) != (root_name == 'native_runtime'):
+            if 'pre_admission_refusal' in grant and root_name != 'native_runtime':
                 raise AdmissionError('native_harness_continuation_origin')
+            if root_name == 'native_runtime' and 'pre_admission_refusal' not in grant:
+                from native_harness_runtime import OwnerBinding, completed_native_continuation
+                from types import SimpleNamespace
+                completed_native_continuation(self,
+                    SimpleNamespace(identifier=identifier,id=binding['issue_id']),
+                    OwnerBinding(**binding),self._private_pin(selection['packet']),selection)
         if 'publisher_invocation' in context:
             invocation = context['publisher_invocation']
             if (not isinstance(invocation, dict)

@@ -80,6 +80,13 @@ Unit approval keeps `accepted_delivery=false` and has no merge action. Existing
 owner-native publication, outcome and refill phases still require their own
 admitted evidence. This continuation starts no reviewer, model or coding work.
 
+The ordinary nine-field `publisher_continuation` also accepts an original native
+unit after its exact original review gate is approved and handled, native
+validation requalifies, and the retained stopped publisher response proves the
+merge verified. It preserves every prior epoch and receipt, including any
+pre-admission recovery history, and begins the new closure with a fresh ordinary
+read-only observation. The active boundary map and pre-admission grant stay intact.
+
 An owner-selected native integration boundary may pin exactly `reviewed_runtime`
 (a canonical private directory) and `unit_review` (the existing file reference),
 with the existing optional `publisher_invocation`. This finite context is not
