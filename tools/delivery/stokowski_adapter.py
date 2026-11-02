@@ -2071,6 +2071,47 @@ class CurrentWork:
                     bindings_sha256=hashlib.sha256(raw).hexdigest())))
         return tuple(identities)
 
+    def _closed_native_executor(self, issue, runtime, manifest, selected, spec, state, unit):
+        """Read one Root-sealed historical success; never execute an old module.
+
+        The full native/candidate/Journal qualifier calls this only after its
+        current-source checks. A matching historical hash alone grants nothing.
+        """
+        from stokowski_operations import operation_key
+        revision = '32ba0f3cc4797f017a685b2c3a99aaeef1d86e13'
+        executor = '445a0b2aaa0294e785abc974f140fa2c93da9d18be8180d5940892087dfad64c'
+        grant = self.config.get('completed_executor_revisions',{}).get(issue)
+        if (not self.owner_custody or not isinstance(grant,dict)
+            or set(grant) != {'control_revision','profile','unit_sha256','operation_key','receipt'}
+            or issue != 'UIF-102' or spec['version'] != 1
+            or grant['control_revision'] != revision
+            or grant['profile'] != spec['profile'] or spec['profile'] != 'enrichment-resilience-focused'
+            or spec['executor_sha256'] != executor or grant['unit_sha256'] != digest(unit)
+            or grant['operation_key'] != selected['operation_key']
+            or grant['operation_key'] != operation_key(spec)
+            or state.get('status') != 'succeeded'):
+            raise AdmissionError('closed_native_executor_grant')
+        blob = subprocess.check_output(['git','-C',str(SOURCE),'show',
+            revision+':tools/delivery/stokowski_operations.py'])
+        if hashlib.sha256(blob).hexdigest() != executor:
+            raise AdmissionError('closed_native_executor_source')
+        ref = grant['receipt']
+        if (not isinstance(ref,dict) or set(ref) != {'path','sha256'}
+            or ref['path'] != str(runtime/'validation-receipt.json')):
+            raise AdmissionError('closed_native_executor_receipt')
+        path = self.private(ref['path'])
+        if (not path.is_file() or path.stat().st_nlink != 1
+            or file_sha(path) != ref['sha256']):
+            raise AdmissionError('closed_native_executor_receipt')
+        native = self._completed_native_evidence(issue,runtime,manifest)
+        if (native['output_sha256'] != spec['outputs']
+            or selected['native_receipt_sha256'] != unit['native_receipt_sha256']
+            or spec['outputs'] != selected['native_output_sha256']):
+            raise AdmissionError('closed_native_executor_outputs')
+        # Uses TODAY's unchanged enrichment command. Any command drift holds;
+        # no historical-module execution, rewritten receipt or fresh Journal.
+        return self._check_reviewed_terminal(spec,state,{ref['path']:ref['sha256']})
+
     def validation_binding(self, issue, entry):
         """Qualify existing native v1 state without constructing a writable Journal.
 
@@ -2142,7 +2183,6 @@ class CurrentWork:
             or selected['source_head'] != spec['head']
             or spec['base'] != manifest['base_revision']
             or spec['policy_sha256'] != self.config['policy_sha256']
-            or spec['executor_sha256'] != file_sha(operations.__file__)
             or spec['runner_sha256'] != file_sha(SOURCE/'tools/delivery/windmill_runner.py')
             or receipt.get('scope_violations') != []
             or receipt.get('source_head') != manifest['base_revision']
@@ -2186,6 +2226,8 @@ class CurrentWork:
             if hashlib.sha256(committed).hexdigest() != sha:
                 raise AdmissionError('current_validation_candidate_output')
         predecessors = self._closed_failed_native_history(issue,runtime,bindings,selected,spec,unit)
+        if spec['executor_sha256'] != file_sha(operations.__file__):
+            self._closed_native_executor(issue,runtime,manifest,selected,spec,state,unit)
         identity = digest(dict(unit=unit, selected=selected, spec=spec, bindings_sha256=file_sha(path)))
         self._qualified_failed_native_history = (issue,str(runtime),identity,predecessors)
         return runtime, identity
