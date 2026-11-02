@@ -10,6 +10,8 @@ from pathlib import Path
 import re
 import subprocess
 import tempfile
+import errno
+import stat
 
 from symphony_capacity import AdmissionError, valid_branch
 from stokowski_adapter import clone_current_workspace
@@ -118,16 +120,7 @@ def _snapshot(repository):
         tracked_status=_git(repository,'--no-optional-locks','status','--porcelain','--untracked-files=no'))
 
 
-def acquire_project_source(current, issue, policy, accepted):
-    """Consume trusted accepted_project_source; never derive acceptance here.
-
-    Only the existing guarded owner boundary calls this with an accessor result.
-    Per-issue selection survives later accepted-source advancement. Network
-    ambiguity retains one intent and never retries credentials or the fetch.
-    """
-    import fcntl
-    current.guard()
-    identifier = issue if isinstance(issue,str) else issue.identifier
+def _source_paths(config, identifier, policy):
     if not re.fullmatch(r'UIF-[1-9][0-9]*',identifier):
         raise AdmissionError('project_source_issue')
     descriptor = policy.get('project_source',{})
@@ -142,10 +135,92 @@ def acquire_project_source(current, issue, policy, accepted):
         or _git(repository,'rev-parse','--show-toplevel') != str(repository)
         or _git(repository,'remote','get-url','origin') != descriptor['origin']):
         raise AdmissionError('project_source_repository_binding')
-    root = current.private(str(Path(current.root)/'project-sources'))
-    current.private(descriptor['accepted_facts_path'])
-    selection_path = current.private(str(root/(identifier+'.json')))
+    private_root = Path(config['runtime_root'])
+    root = private_root/'project-sources'
+    selection_path = root/(identifier+'.json')
+    facts = Path(descriptor['accepted_facts_path'])
+    if (not private_root.is_absolute() or private_root != private_root.resolve()
+        or any(path != path.resolve() or not path.is_relative_to(private_root)
+               for path in (root,selection_path,facts))):
+        raise AdmissionError('project_source_private_path')
     route = {k:descriptor[k] for k in ('repository','branch','origin','source_repository')}
+    return descriptor,repository,root,selection_path,route
+
+
+def _read_checkout(checkout, head, tree, branch):
+    """Retained custody/identity checks without a creation-capable code path."""
+    if checkout != checkout.resolve() or not checkout.is_dir():
+        raise AdmissionError('project_source_not_materialized')
+    fd = os.open(checkout,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+    try:
+        for _,_,files,directory in os.fwalk('.',dir_fd=fd,follow_symlinks=False):
+            info = os.fstat(directory)
+            if info.st_uid != os.getuid() or info.st_mode & 0o022:
+                raise AdmissionError('project_source_checkout_custody')
+            try: os.getxattr(directory,'system.posix_acl_default')
+            except OSError as error:
+                if error.errno != errno.ENODATA: raise
+            else: raise AdmissionError('project_source_checkout_custody')
+            for name in files:
+                info = os.stat(name,dir_fd=directory,follow_symlinks=False)
+                if stat.S_ISLNK(info.st_mode): continue
+                if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid()
+                    or info.st_nlink != 1 or info.st_mode & 0o022):
+                    raise AdmissionError('project_source_checkout_custody')
+    finally: os.close(fd)
+    if (_git(checkout,'rev-parse','HEAD') != head
+        or _git(checkout,'rev-parse','HEAD^{tree}') != tree
+        or _git(checkout,'branch','--show-current') != branch
+        or _git(checkout,'--no-optional-locks','status','--porcelain','--untracked-files=all')
+        or (checkout/'.git/objects/info/alternates').exists()):
+        raise AdmissionError('project_source_checkout_drift')
+
+
+def read_project_source(config, identifier, policy):
+    """Read a frozen task source during protected configuration construction.
+
+    The caller has qualified control policy; this cannot construct CurrentWork,
+    choose a new accepted revision, create a lock/receipt, fetch or repair data.
+    """
+    _,repository,root,selection_path,route = _source_paths(config,identifier,policy)
+    if not selection_path.exists():
+        raise AdmissionError('project_source_not_materialized')
+    selection = _record(selection_path)
+    if (set(selection) != {'version','owner','issue','route','accepted','control_source_head','source_before'}
+        or selection['version'] != 1 or selection['owner'] != config['owner']
+        or selection['issue'] != identifier or selection['route'] != route):
+        raise AdmissionError('project_source_selection_drift')
+    selected = _accepted(selection['accepted'])
+    directory = root/selected['head']/identifier
+    checkout = directory/'checkout'
+    path = directory/'acquisition.json'
+    if directory != directory.resolve() or not path.exists():
+        raise AdmissionError('project_source_not_materialized')
+    branch = 'bugfix/owner-policy-'+identifier.lower()+'-'+selected['head'][:12]
+    expected = dict(version=1,selection_sha256=hashlib.sha256(_bytes(selection)).hexdigest(),
+        source_checkout=str(checkout),base=selected['head'],tree=selected['tree'],branch=branch,
+        evidence=selected['evidence'],source_repository=str(repository),
+        source_ref='refs/offmenu/accepted/'+selected['head'])
+    if _record(path) != expected:
+        raise AdmissionError('project_source_acquisition_receipt_drift')
+    _read_checkout(checkout,selected['head'],selected['tree'],branch)
+    return {k:expected[k] for k in ('source_checkout','base','branch','tree','evidence')} | dict(
+        acquisition_ref=dict(path=str(path),sha256=_sha(path)))
+
+
+def acquire_project_source(current, issue, policy, accepted):
+    """Consume trusted accepted_project_source; never derive acceptance here.
+
+    Only the existing guarded owner boundary calls this with an accessor result.
+    Per-issue selection survives later accepted-source advancement. Network
+    ambiguity retains one intent and never retries credentials or the fetch.
+    """
+    import fcntl
+    current.guard()
+    identifier = issue if isinstance(issue,str) else issue.identifier
+    if not re.fullmatch(r'UIF-[1-9][0-9]*',identifier):
+        raise AdmissionError('project_source_issue')
+    descriptor,repository,root,selection_path,route = _source_paths(current.config,identifier,policy)
     if selection_path.exists():
         selection = _record(selection_path)
         if (set(selection) != {'version','owner','issue','route','accepted','control_source_head','source_before'}
