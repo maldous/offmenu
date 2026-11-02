@@ -2640,6 +2640,31 @@ class CurrentWork:
                 and effect.get('status') == 'verified' and effect.get('child_tree_gone') is True):
                 if await asyncio.wait_for(authorize(self, issue, binding), timeout=10) is not True:
                     raise AdmissionError('native_harness_owner_authority_missing')
+                if ('owner_intake_policy' in self.config
+                    and identifier not in self.config.get('native_harness_boundaries', {})):
+                    from stokowski_prepare import owner_intake_policy, owner_policy_contract
+                    policy = owner_intake_policy(self.config)
+                    contract = owner_policy_contract(self.config, policy, identifier)
+                    if contract.get('source_outcome') is not None:
+                        name = 'tools/delivery/native_harness_linear.py'
+                        if self.config['source_sha256'].get(name) != file_sha(SOURCE/name):
+                            raise AdmissionError('source_outcome_module_pin')
+                        tail = importlib.import_module('native_harness_linear')
+                        if Path(tail.__file__).resolve() != SOURCE/name:
+                            raise AdmissionError('source_outcome_module_path')
+                        canonical = await module.verified_canonical_source(self, issue, binding)
+                        packet = self._private_pin(selection['packet'])
+                        review_path = self.private(str(self.runtime/('unit-review-'+identifier+'.json')))
+                        outcome = dict(effect=effect, handoff=packet['handoff'],
+                            review=dict(path=str(review_path), sha256=file_sha(review_path)),
+                            canonical=canonical['evidence'])
+                        state['source_outcome'] = await tail.finalize_source_outcome(
+                            self, issue, binding, policy=policy, outcome=outcome,
+                            linear_client=linear_client)
+                        if state['source_outcome'].get('refill_eligible') is not True:
+                            state.update(status='held', reason=state['source_outcome'].get(
+                                'reason', state['source_outcome']['status']))
+                            return
                 self._native_harness_refill = (identifier, selected_sha,
                                                binding.operation_id, binding.unit_sha256)
                 if 'owner_intake_policy' in self.config:
@@ -3616,7 +3641,9 @@ def install_adapters(runtime, manifest, key, current=None, *, native_harness_ada
             intent = directory/'dispatch-intent.json'
             # Exclusive creation precedes the spawn window; even an exception
             # hereafter retains an unknown effect and can never mean absence.
-            with intent.open('x') as stream:
+            with os.fdopen(os.open(intent, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                                   0o600), 'w') as stream:
+                os.fchmod(stream.fileno(), 0o600)
                 json.dump({'entry_sha256': digest(current.entries[issue.identifier]),
                            'request_sha256': file_sha(task_runtime/'requests'/(issue.identifier+'.json')),
                            'manifest_sha256': file_sha(task_runtime/'manifest.json'),
