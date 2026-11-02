@@ -1245,3 +1245,42 @@ async def produce_native_publication(current, issue, packet):
     return dict(binding=asdict(binding),packet=dict(path=str(path),sha256=file_sha(path)),context=dict(
         native_runtime=str(runtime),pending_unit_review=pending,publisher_invocation=dict(version=1,
             closure_sha256=reply['closure_sha256'],host_confirmation_sha256=reply['host_confirmation_sha256'])))
+
+
+async def verified_canonical_source(current, issue, binding):
+    """Correlate the authenticated publisher fact; no HTTP or merge replay."""
+    from dataclasses import asdict
+    import native_publisher_invocation as helper
+    from stokowski_adapter import file_sha
+    current.guard()
+    require(type(binding) is OwnerBinding and binding.phase == 'integration' and current.owner_custody
+        and issue.id == binding.issue_id,'accepted_source_owner')
+    require(current.config['source_sha256'].get('tools/delivery/native_publisher_invocation.py') ==
+        file_sha(helper.__file__),'accepted_source_reader_pin')
+    selection=current._native_harness_selection(issue.identifier)
+    require(selection['binding'] == asdict(binding)
+        and fingerprint(current.gate_binding(issue,observation=True)) == binding.unit_sha256,
+        'accepted_source_unit')
+    packet=pinned_private(current,selection['packet'])
+    require(fingerprint(packet) == binding.packet_sha256,'accepted_source_packet')
+    source=packet['handoff']['source'];context=selection['context']
+    integration=context.get('pending_unit_review',{}).get('publisher_review_binding',{})
+    require(integration.get('version') == 2 and 'source_projection' not in integration
+        and fingerprint(integration) == binding.operation_id,'accepted_source_native_selection')
+    from pathlib import Path
+    policy_module=Path(__file__).resolve().with_name('stokowski_prepare.py')
+    require(current.config['source_sha256'].get('tools/delivery/stokowski_prepare.py') ==
+        file_sha(policy_module),'accepted_source_policy_reader_pin')
+    import stokowski_prepare
+    require(Path(stokowski_prepare.__file__).resolve() == policy_module,'accepted_source_policy_reader_path')
+    policy=stokowski_prepare.owner_intake_policy(current.config)
+    descriptor=helper.project_source(policy.get('project_source'))
+    path=helper.ACCEPTED/'by-operation'/(binding.operation_id+'.json')
+    raw=helper._read(path,984,0o444)
+    reference=dict(path=str(path),sha256=helper.sha(raw))
+    fact=helper.read_accepted_fact(reference,descriptor)
+    require(all(fact[k] == getattr(binding,k) for k in ('operation_id','unit_sha256','packet_sha256'))
+        and fact['base'] == source['base'] and fact['candidate_head'] == source['head']
+        and fact['tree'] == source['tree'] and fact['policy_sha256'] == integration['policy_sha256'],
+        'accepted_source_selection_mismatch')
+    return dict(fact=fact,evidence=reference)

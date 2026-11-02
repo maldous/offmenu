@@ -261,7 +261,7 @@ def _native_source_admission(c):
         and o['source_sha256'] == _hash(_wire(n['source'])) and o['packet_sha256'] == n['packet_sha256']
         and o['validation_operation_key'] == b['validation_operation_key'] and o['outputs'] == b['outputs']
         and b['outputs'] and all(_path(p) and _hex(h) and (
-            c['native_policy']['project_id'] == n['project_id']
+            n['project_id'] in c['native_policy']['project_ids']
             and a['permission_sha256'] == _hash(_wire(c['native_policy']))
             and p in c['native_policy']['profiles'][o['profile']]['allowed_paths'] if delegated else
             not p.startswith(('docs/development/','tools/delivery/','tests/delivery/','src/offmenu/delivery/')))
