@@ -66,6 +66,7 @@ async function fixedUnitReviewWriter(context) {
     'stokowski_adapter','stokowski_worker','stokowski_prepare','stokowski_operations',
     'symphony_capacity','symphony_tasks','symphony_workspace','symphony_codex',
     'symphony_protocol','windmill_runner'].map(n=>n.includes('/')?n:`tools/delivery/${n}.py`);
+  if (context.publisher_review) required.push('tools/delivery/native_publisher_invocation.py');
   if (!/^[0-9a-f]{40}$/.test(context.source_head) ||
       required.some(n=>!context.source_sha256[n])) throw Error('local_review_refused');
   const git = async args => (await promisify(execFile)('/usr/bin/git', [...gitTrust,'-C',reviewSource,...args], {
@@ -113,7 +114,9 @@ async function fixedUnitReviewWriter(context) {
       if(raw.length>reviewLimit || sha(raw)!==ref.sha256) throw Error('local_review_refused');
       return JSON.parse(raw);
     }
-    const binding = context.completed_native_source ?
+    // The UID1000 fixed writer obtains the original protected binding itself.
+    // This projection is owner-admitted context, not authority for that reader.
+    const binding = context.publisher_review ? context.publisher_review_binding : context.completed_native_source ?
       pinnedJSON(pinnedJSON(context.completed_native_source).integration_binding) :
       context.qualification_source ? pinnedJSON(context.qualification_source).integration_binding :
       JSON.parse(readFileSync(`${context.controller_directory}/binding.json`));

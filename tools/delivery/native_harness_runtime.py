@@ -61,6 +61,8 @@ class OwnerAdapters:
     # Integration-only alternative; never selected by a coding child or used
     # for release. Existing six-argument adapters retain the Engine contract.
     integration_acceptance: Callable | None = None
+    # Original-native publication/review preparation, never a merge or Engine.
+    prepare_unit: Callable | None = None
 
 
 async def resolved(value):
@@ -135,6 +137,8 @@ def journal_acceptance(current, issue, reviewed_runtime, review, handoff, candid
     from symphony_capacity import digest as journal_digest
     require(candidate is None and handoff['source']['target'] == 'develop',
             'journal_integration_only')
+    if review.get('decision', {}).get('status') == 'merge-intent' and 'origin' not in review:
+        return native_journal_acceptance(current,issue,reviewed_runtime,handoff,review=review)
     require(review.get('origin') == 'retained-typed-review-v1', 'journal_review_origin')
     _, manifest, _ = current.context(issue.identifier, review=True)
     task = manifest['tasks'][issue.identifier]
@@ -173,6 +177,53 @@ def journal_acceptance(current, issue, reviewed_runtime, review, handoff, candid
             'runtime': reviewed_runtime, 'operation_id': selected['operation_key'],
             'job_id': receipt['job_id'], 'receipt': ref,
             'source_sha256': fingerprint(source), 'outputs_sha256': fingerprint(outputs)}
+
+
+def native_journal_acceptance(current, issue, native_runtime, handoff, *, review=None):
+    """Original native-v1 reader; no Engine/retained-origin substitution."""
+    import hashlib
+    import sqlite3
+    from symphony_capacity import digest as journal_digest
+    from stokowski_adapter import read_record
+    from stokowski_operations import bridge_arguments
+    runtime,manifest,_=current.context(issue.identifier,review=True,observation=True)
+    require('stage' not in manifest['tasks'][issue.identifier] and str(runtime) == native_runtime
+            and handoff['source']['target'] == 'develop', 'native_journal_origin')
+    qualified,_=current.validation_binding(issue.identifier,current.entries[issue.identifier])
+    require(qualified == runtime, 'native_journal_runtime')
+    selected=read_record(runtime/'validation-bindings.json')['issues'][issue.identifier]
+    with sqlite3.connect((runtime/'operations/operations.sqlite').as_uri()+'?mode=ro',uri=True) as db:
+        row=db.execute('SELECT spec,state FROM operations WHERE key=?',(selected['operation_key'],)).fetchone()
+    require(row is not None, 'native_journal_missing')
+    spec,state=map(json.loads,row)
+    operation=handoff.get('operation');require(type(operation) is dict,'native_journal_operation')
+    ref=operation['receipt']
+    require(ref['path'] == str(runtime/'validation-receipt.json'), 'native_journal_receipt_path')
+    receipt=pinned_private(current,ref)
+    outputs={v['path']:v['sha256'] for v in handoff['outputs']};source=handoff['source']
+    require(spec['version'] == 1 and spec['profile'] == 'enrichment-resilience-focused'
+        and handoff['issue_id'] == issue.id == spec['issue_id'] and handoff['project_id'] == manifest['project_id']
+        and handoff['owner'] == spec['owner'] == current.config['owner']
+        and all(source[k] == spec[k] for k in ('head','base','branch')) and outputs == spec['outputs']
+        and state.get('status') == 'succeeded' and state.get('cancel_requested') is False
+        and not state.get('observation_intent') and not state.get('reconcile_required')
+        and state.get('accepted_output_sha256') == outputs
+        and state.get('acceptance_sha256') == spec['acceptance_sha256']
+        and state.get('receipt_sha256') == journal_digest(receipt)
+        and receipt.get('status') == 'succeeded' and receipt.get('exit_code') == 0
+        and receipt.get('child_tree_gone') is True and receipt.get('reconcile_required') is False
+        and receipt.get('job_id') == state['logical_job_id'] == operation['job_id']
+        and receipt.get('runner_sha256') == spec['runner_sha256'] == operation['runner_sha256']
+        and receipt.get('capacity_policy_sha256') == spec['policy_sha256'] == operation['policy_sha256']
+        and receipt.get('command_sha256') == operation['command_sha256']
+        == hashlib.sha256(bridge_arguments(spec)['command'].encode()).hexdigest()
+        and operation['id'] == selected['operation_key'] and operation['status'] == 'succeeded',
+        'native_journal_terminal_binding')
+    if review is not None:
+        require(review['validation_receipt'] == receipt,'native_journal_review_receipt')
+        review_coverage(review,handoff,None)
+    return dict(origin='native-journal-v1',runtime=native_runtime,operation_id=selected['operation_key'],
+        job_id=receipt['job_id'],receipt=ref,source_sha256=fingerprint(source),outputs_sha256=fingerprint(outputs))
 
 
 async def consume_boundary(current, issue, *, binding=None, adapters=None):
@@ -234,6 +285,12 @@ async def consume_boundary(current, issue, *, binding=None, adapters=None):
         if binding.phase != 'linear':
             require(dependency['dependencies_satisfied'], 'linear_dependencies_held')
             require(not metadata['holds'], 'linear_effect_reconciliation_required')
+        if adapters.prepare_unit is not None:
+            require(binding.phase == 'integration' and candidate is None,'native_preparation_phase')
+            preparation=await resolved(adapters.prepare_unit(binding,handoff))
+            if preparation is not None:
+                return {**result,'status':'preparing-unit','effect':transaction(preparation,binding),
+                        'next_action':'existing-native-publication-and-review'}
         # Observe BEFORE requesting any next transaction. Readback is authoritative.
         observed = transaction(await resolved(adapters.observe(binding)), binding)
         context = {'handoff': handoff, 'candidate': candidate, 'linear': metadata,
@@ -498,15 +555,31 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
         journal_context = (binding.phase == 'integration' and type(context) is dict
                            and set(context) - {'publisher_invocation','publisher_continuation'} ==
                            {'reviewed_runtime', 'unit_review'})
+        native_context = (binding.phase == 'integration' and type(context) is dict
+                          and set(context) == {'native_runtime','pending_unit_review','publisher_invocation'})
         require(type(context) is dict and (set(context) in (
                     {'engine_root', 'engine_task', 'unit_review'},
                     {'engine_root', 'engine_task', 'unit_review', 'publisher_invocation'})
-                or journal_context or (binding.phase == 'linear' and context == {})),
+                or journal_context or native_context or (binding.phase == 'linear' and context == {})),
                 'owner_context_fields')
         if journal_context:
             require(type(context['reviewed_runtime']) is str
                     and current.private(context['reviewed_runtime']).is_dir(),
                     'journal_owner_runtime')
+        if native_context:
+            import stokowski_unit_review as writer
+            require(current.config['source_sha256'].get('tools/delivery/stokowski_unit_review.py') ==
+                    hashlib.sha256(Path(writer.__file__).read_bytes()).hexdigest(), 'native_review_writer_pin')
+            c=context['pending_unit_review']
+            original_runtime,_,_=current.context(issue.identifier,review=True,observation=True)
+            require(context['native_runtime'] == str(original_runtime) and c['runtime'] == str(current.runtime)
+                    and c['issue'] == issue.identifier and c['actor_uid'] == 1000
+                    and c['source_head'] == current.config['source_head']
+                    and c['source_sha256'] == current.config['source_sha256']
+                    and c['unit_binding'] == current.gate_binding(issue,observation=True)
+                    and c['publisher_review']['request'] == publisher_request(binding,pinned_private(current,actual['packet']), 'observe')
+                    and fingerprint(c['publisher_review_binding']) == bound.operation_id,
+                    'native_review_owner_context')
         if 'publisher_continuation' in context:
             require(journal_context and 'publisher_invocation' in context, 'publisher_continuation_context')
             import native_publisher_invocation as helper
@@ -544,11 +617,15 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
     def review(owner, native_issue, bound):
         authorize(owner, native_issue, bound)
         require(bound.phase in ('integration', 'release'), 'review_owner_phase')
+        if 'native_runtime' in selected['context']:
+            from stokowski_adapter import read_record
+            return read_record(current.private(str(current.runtime/('unit-review-'+issue.identifier+'.json'))))
         return pinned_private(current, selected['context']['unit_review'])
     def integration_acceptance(bound, review_packet, handoff, candidate):
         authorize(current, issue, bound)
         require(bound.phase == 'integration', 'journal_integration_only')
-        return journal_acceptance(current, issue, selected['context']['reviewed_runtime'],
+        runtime=selected['context'].get('native_runtime',selected['context'].get('reviewed_runtime'))
+        return journal_acceptance(current, issue, runtime,
                                   review_packet, handoff, candidate)
     def linear(bound, context=None):
         packet = load(bound)
@@ -592,11 +669,51 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
         require(fingerprint(current.gate_binding(issue, observation=True)) == bound.unit_sha256,
                 'publisher_invocation_unit_drift')
         return True
+    async def prepare_unit(bound,handoff):
+        authorize(current,issue,bound)
+        context=selected['context']
+        native_journal_acceptance(current,issue,context['native_runtime'],handoff)
+        incoming=current.runtime/('unit-review-'+issue.identifier+'.json')
+        if incoming.exists():
+            packet=review(current,issue,bound)
+            require(current._check_unit_review(packet) == current.gate_binding(issue,observation=True),
+                    'native_prepared_review_binding')
+            current._consume_unit_reviews()  # Original normal gate consumer only.
+            gate=current.state['tasks'][issue.identifier].get('unit_gate',{})
+            require(gate.get('disposition') == 'approved' and not gate.get('accepted_delivery'),
+                    'native_unit_gate_unapproved')
+            return None
+        # One supervised publisher invocation per normal boundary. Alternate
+        # fresh observe and publication-only requests using original receipts.
+        record=current.state.get(INVOCATIONS,{}).get(bound.operation_id,{})
+        invocations=record.get('invocations',[])
+        latest=invocations[-1] if invocations else None
+        mode='observe'
+        if (latest and latest.get('status') == 'complete' and latest.get('result')
+            and latest['envelope']['request']['mode'] == 'observe'
+            and (latest['result'].get('response') or {}).get('status') == 'ready'):
+            mode='publish'
+        effect=await invocation_transaction(current,bound,load(bound),selected,mode,
+                                            helper_calls,helper_authorize)
+        if mode == 'publish' and effect['status'] == 'ready' and effect['child_tree_gone']:
+            from symphony_capacity import AdmissionError
+            import stokowski_unit_review as writer
+            try:
+                writer.publish_protected_pending(context['pending_unit_review'])
+            except AdmissionError as error:
+                if str(error) != 'local_review_pending':
+                    raise
+            else:
+                current._consume_unit_reviews()
+        return effect  # Never merge in the preparation boundary.
     journal_context = (binding.phase == 'integration' and
                        set(selected['context']) - {'publisher_invocation','publisher_continuation'} ==
                        {'reviewed_runtime', 'unit_review'})
+    native_context=(binding.phase == 'integration' and set(selected['context']) ==
+                    {'native_runtime','pending_unit_review','publisher_invocation'})
     return OwnerAdapters(authorize, load, engine, review, observe, step,
-                         integration_acceptance if journal_context else None)
+                         integration_acceptance if journal_context or native_context else None,
+                         prepare_unit if native_context else None)
 
 
 # Optional existing-host capability. No selector or identity comes from JSON.
@@ -815,7 +932,7 @@ async def invocation_transaction(current, binding, packet, selection, mode, call
         # Observe this UUID with the ORIGINAL inner request, even if it was step.
         envelope = {**latest['envelope'], 'mode': 'observe'}
     else:
-        if mode == 'step':
+        if mode in ('step','publish'):
             require(latest is not None and latest['envelope']['request']['mode'] == 'observe'
                     and invocation_projection(module, latest['result'], latest['envelope'],
                                               capability, binding.phase)['status'] == 'ready',

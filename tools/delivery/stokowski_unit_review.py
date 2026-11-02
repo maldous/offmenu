@@ -38,12 +38,14 @@ incoming records remain byte-identical and are accepted only by the original
 packet checks, without upgrades or rewrites.
 """
 import hashlib
+import base64
 import math
 import json
 import os
 from pathlib import Path
 import sqlite3
 import struct
+import subprocess
 import sys
 
 from stokowski_adapter import CurrentWork, SOURCE, file_sha, read_record
@@ -211,6 +213,109 @@ def checkpoint_json(raw):
     return value
 
 
+def protected_checkpoint(request):
+    """Fixed privileged reader, never an observation supplied by the caller.
+
+    Exact sudo permission and installed/root-sealed native identity authenticate
+    this boundary. The original checkpoint restores legacy Python number types.
+    No command, path, executable, config or claim selector comes from stdin.
+    """
+    require(set(request) == {'version','mode','invocation_id','request'}
+            and type(request['version']) is int and request['version'] == 1
+            and request['mode'] == 'review' and request['request'].get('mode') == 'observe')
+    raw = json.dumps(request, sort_keys=True, separators=(',', ':')).encode()
+    require(len(raw) <= 16384)
+    result = subprocess.run(['/usr/bin/sudo', '-n', '-u', '#984', '-g', '#976', '--',
+        '/opt/offmenu-publisher/venv/bin/python', '-I', '-B',
+        '/opt/offmenu-publisher/tools/delivery/native_publisher_invocation.py'],
+        input=raw, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=8,
+        cwd='/opt/offmenu-stokowski-current/source',
+        env={'PATH':'/usr/bin:/bin', 'LANG':'C.UTF-8'}, check=False)
+    require(result.returncode == 0 and len(result.stdout) <= LIMIT)
+    reply = decode(result.stdout)
+    if (set(reply) == {'version','kind','status','request_sha256','closure_sha256'}
+        and type(reply['version']) is int and reply['version'] == 1
+        and reply['kind'] == 'native-publisher-unit-review-v1' and reply['status'] == 'not-ready'
+        and reply['request_sha256'] == digest(request['request'])):
+        raise AdmissionError('local_review_pending')
+    require(set(reply) == {'version','kind','request_sha256','closure_sha256',
+                           'binding','decision','checkpoint'}
+            and type(reply['version']) is int and reply['version'] == 1
+            and reply['kind'] == 'native-publisher-unit-review-v1'
+            and reply['request_sha256'] == digest(request['request'])
+            and digest(reply['binding']) == request['request']['operation_id'])
+    channels = checkpoint_json(base64.b64decode(reply['checkpoint'], validate=True))['channel_values']
+    # Restore the actual state from the original graph, compare typed semantics
+    # with the separately read state file, never JS-normalize its legacy digest.
+    require(same_wire(channels['result'], reply['decision']))
+    return reply['binding'], channels['result'], channels
+
+
+def publish_protected_pending(context):
+    """Normal sealed-owner adapter: fixed v2 status/write/readback only.
+
+    Called under the existing coordinator lock. The privileged observation is
+    read directly, and the child repeats that read before accepting anything.
+    This function does not consume a gate or invoke a publisher mutation.
+    """
+    b,decision,channels = protected_checkpoint(context['publisher_review'])
+    envelope = dict(snapshot=channels['observation'],decision=decision)
+    packet = dict(issue=context['issue'],unit_binding=context['unit_binding'],integration_binding=b,
+                  snapshot=channels['observation'],decision=decision,
+                  validation_receipt=context['validation_receipt'])
+    # Python retains original float/int spelling; hashes remain wire-v2 hashes.
+    payload = json.dumps(dict(context=context,envelope=envelope),sort_keys=True,separators=(',',':'))
+    evidence = json.dumps(packet,sort_keys=True,separators=(',',':'))
+    def invoke(mode):
+        raw=json.dumps(dict(version=2,mode=mode,payload=payload,evidence=evidence)).encode()
+        require(len(raw) <= LIMIT)
+        result=subprocess.run([str(PYTHON),'-B',str(SOURCE/'tools/delivery/stokowski_unit_review.py')],
+            input=raw,stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=10,cwd=str(SOURCE),
+            env={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8','PYTHONPATH':str(SOURCE/'src'),
+                'GIT_CONFIG_COUNT':'1','GIT_CONFIG_KEY_0':'safe.directory','GIT_CONFIG_VALUE_0':str(SOURCE)},check=False)
+        require(result.returncode == 0 and len(result.stdout) <= LIMIT)
+        reply=decode(result.stdout)
+        require(reply.get('version') == 2 and type(reply['version']) is int
+            and reply.get('request_sha256') == hashlib.sha256(payload.encode()).hexdigest()
+            and reply.get('evidence_sha256') == hashlib.sha256(evidence.encode()).hexdigest()
+            and reply.get('issue') == context['issue'] and reply.get('source_head') == context['source_head']
+            and reply.get('unit_binding') == context['unit_binding']
+            and reply.get('operation_key') == b['validation_operation_key'])
+        return reply
+    prior=invoke('status')
+    if prior['status'] == 'retained':
+        return prior
+    require(prior['status'] == 'absent')
+    try:
+        reply=invoke('write')
+    except Exception:
+        # communicate/run has reaped the direct writer. No second write.
+        reply=invoke('status')
+    require(reply['status'] == 'retained')
+    return reply
+
+
+def protected_native_workspaces(current, issue, entry, runtime, manifest, source, roots, uid):
+    """Root-owned CONTROL is already guarded; native data stays caller-owned."""
+    require(current.owner_custody is not None and source == SOURCE
+            and 'stage' not in manifest['tasks'][issue])
+    qualified,_=current.validation_binding(issue,entry)
+    require(qualified == runtime)
+    selected=read_record(runtime/'validation-bindings.json')['issues'][issue]
+    require('candidate_root' in selected)
+    original=custody(runtime/'workspaces'/issue,uid,private=True)
+    candidate=canonical(selected['candidate_root'])
+    require(candidate.is_dir() and candidate.stat().st_uid == uid)
+    require(roots and any(original.is_relative_to(root) for root in roots))
+    # validation_binding requalifies native receipt, exact Git contribution,
+    # branch/base/head and output bytes. The contribution is an untrusted
+    # read-only Git mirror, not another private runtime or authority store.
+    native=read_record(runtime/'attempts'/issue/'receipt.json')
+    for name in native['output_sha256']:
+        custody(original/name,uid)
+        require(canonical(str(candidate/name)).stat().st_uid == uid)
+
+
 def handle(request):
     # No v1 transport is accepted: its numeric/key canonicalization was unsafe.
     # Existing incoming packets/state retain their original legacy identities.
@@ -225,12 +330,14 @@ def handle(request):
     c, envelope = payload['context'], payload['envelope']
     standalone = 'qualification_source' in c
     completed = 'completed_native_source' in c
-    require(not (standalone and completed))
+    protected = 'publisher_review' in c
+    require(not (standalone and completed) and not (protected and (standalone or completed)))
     require(set(c) == {'source_head', 'source_sha256', 'python_sha256', 'actor_uid',
         'runtime', 'runtime_root', 'workspace_roots', 'claim_root', 'controller_directory',
         'issue', 'unit_binding', 'validation_receipt', 'validation_receipt_source'} |
         ({'qualification_source'} if standalone else set()) |
-        ({'completed_native_source'} if completed else set()))
+        ({'completed_native_source'} if completed else set()) |
+        ({'publisher_review','publisher_review_binding'} if protected else set()))
     uid = c['actor_uid']
     require(type(uid) is int and os.getuid() == os.geteuid() == uid)
     # Custody checks only. Authentication is the trusted connector-owner call;
@@ -241,20 +348,34 @@ def handle(request):
     require(Path('/proc/self/exe').resolve() == PYTHON.resolve())
     root = custody(c['runtime_root'], uid, private=True)
     runtime = custody(c['runtime'], uid, private=True)
-    claim = custody(c['claim_root'], uid, private=True)
-    directory = custody(c['controller_directory'], uid, private=True)
+    if protected:
+        require(uid == 1000 and SOURCE == Path('/opt/offmenu-stokowski-current/source'))
+        claim = Path('/var/lib/offmenu-publisher/integration')
+        inner = c['publisher_review']['request']
+        require(isinstance(inner.get('operation_id'), str)
+                and len(inner['operation_id']) == 64
+                and all(v in '0123456789abcdef' for v in inner['operation_id']))
+        directory = claim/('transaction-'+inner['operation_id'])
+        require(c['claim_root'] == str(claim) and c['controller_directory'] == str(directory)
+                and c['publisher_review']['mode'] == 'review' and inner['mode'] == 'observe'
+                and c['source_sha256'].get('tools/delivery/native_publisher_invocation.py') is not None)
+    else:
+        claim = custody(c['claim_root'], uid, private=True)
+        directory = custody(c['controller_directory'], uid, private=True)
+        require(directory.is_relative_to(claim)
+                and claim.name == 'integration' and claim.parent == root.parent)
     require(root.name == 'stokowski' and root.parent.name == '.delivery'
-            and runtime.is_relative_to(root) and directory.is_relative_to(claim)
-            and claim.name == 'integration' and claim.parent == root.parent)
+            and runtime.is_relative_to(root))
     # An invalid active pointer must never select the historical fallback.
     active = claim/'active-owner.json'
-    owner_path = active if active.exists() or active.is_symlink() else claim/'repository-claim.json'
+    owner_path = (None if protected else
+                  active if active.exists() or active.is_symlink() else claim/'repository-claim.json')
     # Only exact consumed files: no runtime traversal, refresh, chmod or repair.
     for p in (runtime/'current.json', runtime/'current-owner.json',
               runtime/'installation.json', runtime/'workflow.yaml',
-              runtime/'capacity-policy.json', directory/'binding.json',
-              *([] if standalone or completed else [directory/'state.json', directory/'graph.sqlite']),
-              owner_path):
+              runtime/'capacity-policy.json',
+              *([] if protected else [directory/'binding.json', owner_path]),
+              *([] if standalone or completed or protected else [directory/'state.json', directory/'graph.sqlite'])):
         custody(p, uid, private=True)
     current = CurrentWork(runtime, read_only=True)
     require(current.root == root and current.config['source_head'] == c['source_head']
@@ -292,15 +413,23 @@ def handle(request):
                    ('intent.json','dispatch-intent.json','receipt.json')])):
         custody(evidence_runtime/name, uid, private=True)
     roots = [custody(p, uid, private=True) for p in c['workspace_roots']]
-    require(roots and all(any(selected.is_relative_to(p) for p in roots)
-                          for selected in (source, evidence_source)))
-    b = read_record(directory/'binding.json')
-    owner_claim = read_record(owner_path)
-    if owner_path == active:
-        evidence = directory/'repository-claim.json'
-        custody(evidence, uid, private=True)
-        require(read_record(evidence) == owner_claim)
-    require(owner_claim == dict(binding_sha256=digest(b), directory=str(directory), owner=b['owner']))
+    if protected:
+        require(not reviewed and 'stage' not in task and evidence_source == source)
+        protected_native_workspaces(current,c['issue'],entry,evidence_runtime,manifest,source,roots,uid)
+    else:
+        require(roots and all(any(selected.is_relative_to(p) for p in roots)
+                              for selected in (source, evidence_source)))
+    if protected:
+        b, decision, channels = protected_checkpoint(c['publisher_review'])
+        require(same_wire(b, c['publisher_review_binding']))
+    else:
+        b = read_record(directory/'binding.json')
+        owner_claim = read_record(owner_path)
+        if owner_path == active:
+            evidence = directory/'repository-claim.json'
+            custody(evidence, uid, private=True)
+            require(read_record(evidence) == owner_claim)
+        require(owner_claim == dict(binding_sha256=digest(b), directory=str(directory), owner=b['owner']))
     require(b['owner'] == current.config['owner'])
     if standalone:
         pin = c['qualification_source']
@@ -318,7 +447,7 @@ def handle(request):
     elif completed:
         decision = None
         channels = {}
-    else:
+    elif not protected:
         require(b['issue_id'] == entry['issue_id'])
         decision = read_record(directory/'state.json')
         # Existing final checkpoint, read-only without saver setup or Controller.
@@ -327,6 +456,8 @@ def handle(request):
         require(row is not None)
         require(row[0] == 'msgpack' and len(row[1]) <= LIMIT)
         channels = checkpoint_json(row[1])['channel_values']
+    if protected:
+        require(b['issue_id'] == entry['issue_id'])
     if completed:
         from stokowski_completed import qualify, pinned
         require(c['source_sha256'].get('tools/delivery/stokowski_completed.py') is not None
@@ -375,7 +506,8 @@ def handle(request):
     # unavailable fields, requalified by the owner-pinned independent artifact.
 
     for name in b['outputs']:
-        custody((evidence_source if reviewed else evidence_runtime/'workspaces'/c['issue'])/name, uid, private=True)
+        custody((evidence_source if reviewed else evidence_runtime/'workspaces'/c['issue'])/name,
+                uid, private=not protected)
     incoming = runtime/('unit-review-' + c['issue'] + '.json')
     raw = json.dumps(packet, sort_keys=True, separators=(',', ':')).encode()
     if incoming.exists():

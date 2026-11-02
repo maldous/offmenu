@@ -2074,6 +2074,15 @@ class CurrentWork:
         keys = set(context) - {'publisher_invocation','publisher_continuation'}
         if binding['phase'] == 'integration' and keys == {'reviewed_runtime', 'unit_review'}:
             root_name, references = 'reviewed_runtime', ('unit_review',)
+        elif (binding['phase'] == 'integration' and keys == {'native_runtime','pending_unit_review'}
+              and 'publisher_invocation' in context and 'publisher_continuation' not in context):
+            root_name, references = 'native_runtime', ()
+            c=context['pending_unit_review']
+            if (not isinstance(c,dict) or c.get('runtime') != str(self.runtime)
+                or c.get('issue') != identifier or type(c.get('actor_uid')) is not int or c['actor_uid'] != 1000
+                or c.get('source_head') != self.config['source_head']
+                or c.get('source_sha256') != self.config['source_sha256']):
+                raise AdmissionError('native_harness_pending_unit_context')
         elif keys == {'engine_root', 'engine_task', 'unit_review'}:
             root_name, references = 'engine_root', ('engine_task', 'unit_review')
         else:
@@ -2204,9 +2213,10 @@ class CurrentWork:
                         raise AdmissionError('native_harness_packet_drift')
                     return packet
                 acceptance = getattr(adapters, 'integration_acceptance', None)
+                preparation = getattr(adapters, 'prepare_unit', None)
                 trusted = module.OwnerAdapters(authorize, load, adapters.engine, adapters.review,
                     adapters.observe, adapters.step,
-                    **({'integration_acceptance': acceptance} if acceptance is not None else {}))
+                    integration_acceptance=acceptance, prepare_unit=preparation)
                 result = await module.consume_boundary(self, issue, binding=binding, adapters=trusted)
                 return result, authorize
             result, authorize = await asyncio.wait_for(consume(), timeout=10)

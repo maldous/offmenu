@@ -186,10 +186,14 @@ def _integration_metadata(c):
     if not any(k in c for k in ('integration_admission','nativeContinuation')):
         return
     b, s = c['binding'], c['snapshot']
-    _check(c['version'] == 1 and 'source_projection' in b)
-    _source_projection(b, s)
-    p, n = b['source_projection'], s['native_runtime']
-    if 'integration_admission' in c:
+    _check(c['version'] == 1)
+    projected = 'source_projection' in b
+    if projected:
+        _source_projection(b, s)
+    p, n = b.get('source_projection'), s['native_runtime']
+    if 'integration_admission' in c and not projected:
+        _native_source_admission(c)
+    elif 'integration_admission' in c:
         a = c['integration_admission']
         _check(type(a) is dict and set(a) == {'version','kind','binding_sha256','unit_sha256',
             'review_sha256','permission_sha256','automatic_integration_enabled'}
@@ -199,6 +203,7 @@ def _integration_metadata(c):
             and a['review_sha256'] == p['review_sha256'] == s['review']['evidence_source']['sha256']
             and _hex(a['permission_sha256']) and a['automatic_integration_enabled'] is True)
     if 'nativeContinuation' in c:
+        _check(projected)  # Existing historical continuation remains projection-only.
         a = c['nativeContinuation']
         _check(type(a) is dict and set(a) == {'version','operation_id','unit_sha256','packet_sha256',
             'claim_sha256','previous_selection_sha256','previous_capability','previous_record_sha256','receipts'}
@@ -217,6 +222,63 @@ def _integration_metadata(c):
                 and isinstance(r['invocation_id'], str) and str(UUID(r['invocation_id'])) == r['invocation_id']
                 and _hex(r['closure_sha256']) and _hex(r['receipt_sha256']))
         _check(len({r['invocation_id'] for r in receipts}) == len(receipts))
+
+
+def _native_source_admission(c):
+    """Owner-sealed original native-v1 association, never a projection substitute."""
+    b,s,a = c['binding'],c['snapshot'],c['integration_admission']
+    n,o = s['native_runtime'],a['native_origin']
+    def ref(r):
+        return (type(r) is dict and set(r) == {'path','sha256'} and _hex(r['sha256'])
+            and isinstance(r['path'],str) and re.fullmatch(r'/[a-zA-Z0-9_./-]{1,511}',r['path'])
+            and '//' not in r['path'] and not any(v in ('.','..') for v in r['path'].split('/')))
+    _check(b['version'] == 2 and 'source_projection' not in b
+        and set(a) == {'version','kind','binding_sha256','unit_sha256','review_sha256',
+            'permission_sha256','automatic_integration_enabled','native_origin'}
+        and type(a['version']) is int and a['version'] == 1
+        and a['kind'] == 'native-source-reviewed-integration-v1'
+        and a['binding_sha256'] == _hash(_wire(b)) and _hex(a['permission_sha256'])
+        and a['automatic_integration_enabled'] is True
+        and set(n) == {'issue_id','project_id','owner','unit_sha256','packet_sha256','source'}
+        and n['owner'] == b['owner'] and n['issue_id'] == b['issue_id']
+        and ('project_id' not in b or n['project_id'] == b['project_id'])
+        and all(str(UUID(n[k])) == n[k] for k in ('issue_id','project_id'))
+        and _hex(n['unit_sha256']) and _hex(n['packet_sha256']) and a['unit_sha256'] == n['unit_sha256']
+        and n['source'] == dict(repository=b['repository'],branch=b['head_branch'],base=b['base'],
+            head=b['head'],tree=b['tree'],target='develop',policy_sha256=n['source'].get('policy_sha256'))
+        and _hex(n['source']['policy_sha256'])
+        and set(o) == {'version','kind','profile','source_sha256','packet_sha256','validation_operation_key',
+            'outputs','native_receipt','validation_receipt'}
+        and type(o['version']) is int and o['version'] == 1 and o['kind'] == 'native-v1'
+        and o['profile'] == 'enrichment-resilience-focused'
+        and o['source_sha256'] == _hash(_wire(n['source'])) and o['packet_sha256'] == n['packet_sha256']
+        and o['validation_operation_key'] == b['validation_operation_key'] and o['outputs'] == b['outputs']
+        and b['outputs'] and all(_path(p) and _hex(h) and not p.startswith((
+            'docs/development/','tools/delivery/','tests/delivery/','src/offmenu/delivery/'))
+            for p,h in b['outputs'].items())
+        and ref(o['native_receipt']) and ref(o['validation_receipt'])
+        and o['native_receipt'] == s['native_receipt_source']
+        and o['validation_receipt'] == s['validation_receipt_source']
+        and s['validation'] == dict(operation_key=b['validation_operation_key'],status='succeeded',
+            head=b['head'],base=b['base'],outputs=b['outputs'],capacity_policy_sha256=b['capacity_policy_sha256'],
+            child_tree_gone=True,reconcile_required=False)
+        and s['publisher_owner'] == b['owner'] and s['source_tree'] == b['tree'] and s['source_clean'] is True
+        and s['policy_sha256'] == b['policy_sha256'] and s['capacity_policy_sha256'] == b['capacity_policy_sha256']
+        and s['publication_triggers_actions'] is False and not s.get('cancel_requested')
+        and s['unresolved_findings'] == [])
+    r=s['review']
+    _check(r['head'] == b['head'] and r['base'] == b['base'] and r['outputs'] == b['outputs']
+        and r['independent'] is True and r['verdict'] == 'accept' and r['findings'] == []
+        and isinstance(r['evidence_id'],str) and r['evidence_id']
+        and isinstance(r['reviewer'],str) and r['reviewer'] and r['author'] == b['owner']
+        and r['reviewer'] != r['author'] and ref(r['evidence_source'])
+        and all(isinstance(r.get(k),str) and r[k] for k in
+                ('model','provider','requested_model','requested_provider'))
+        and ((r.get('resolution_status') == 'unknown' and r.get('resolved_model') is None)
+             or (r.get('resolution_status') == 'observed' and isinstance(r.get('resolved_model'),str)
+                 and r['resolved_model']))
+        and a['review_sha256'] == r['evidence_source']['sha256']
+        and r['evidence_sha256'] == _hash(_wire({k:v for k,v in r.items() if k != 'evidence_sha256'})))
 
 
 def _source_projection(b, snapshot):

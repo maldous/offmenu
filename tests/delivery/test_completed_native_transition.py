@@ -4,6 +4,7 @@ import copy
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import shutil
 import sqlite3
@@ -136,6 +137,47 @@ class CompletedNativeTransitionTests(unittest.TestCase):
         with sqlite3.connect(self.root/'pool/state.sqlite') as db:db.execute("UPDATE leases SET status='running'")
         with self.assertRaisesRegex(AdmissionError,'completed_native_lease'):
             self.current._check_task_control_source('UIF-102',self.manifest,self.control,review=True)
+
+    def test_original_native_journal_acceptance_never_uses_engine_or_retained_origin(self):
+        import native_harness_runtime as runtime
+        import stokowski_unit_review as unit_review
+        self.test_completed_control_review_and_same_runtime_v1_contribution()
+        selected=adapter.read_record(self.runtime/'validation-bindings.json')['issues']['UIF-102']
+        journal=operations.Journal(self.runtime/'operations');spec,state=journal.read(selected['operation_key'])
+        receipt=dict(status='succeeded',exit_code=0,child_tree_gone=True,reconcile_required=False,
+            job_id=state['logical_job_id'],runner_sha256=spec['runner_sha256'],capacity_policy_sha256=spec['policy_sha256'],
+            command_sha256=hashlib.sha256(operations.bridge_arguments(spec)['command'].encode()).hexdigest(),
+            observed_at=1.0)
+        path=self.runtime/'validation-receipt.json';self.write(path,receipt)
+        state.update(status='succeeded',receipt_sha256=digest(receipt),accepted_output_sha256=spec['outputs'],
+                     acceptance_sha256=spec['acceptance_sha256'])
+        journal.save(selected['operation_key'],state,'synthetic-original-terminal')
+        issue=SimpleNamespace(identifier='UIF-102',id=spec['issue_id'])
+        handoff=dict(issue_id=issue.id,project_id=self.manifest['project_id'],owner=spec['owner'],
+            source=dict(head=spec['head'],base=spec['base'],branch=spec['branch'],target='develop'),
+            outputs=[dict(path=p,sha256=h) for p,h in spec['outputs'].items()],operation=dict(
+                id=selected['operation_key'],job_id=receipt['job_id'],status='succeeded',
+                receipt=dict(path=str(path),sha256=adapter.file_sha(path)),runner_sha256=spec['runner_sha256'],
+                policy_sha256=spec['policy_sha256'],command_sha256=receipt['command_sha256']))
+        before={p:p.read_bytes() for p in (self.runtime/'manifest.json',self.directory/'receipt.json',path)}
+        with patch.object(self.current,'guard'),patch.object(runtime,'engine_acceptance',side_effect=AssertionError('no Engine')):
+            accepted=runtime.native_journal_acceptance(self.current,issue,str(self.runtime),handoff)
+            self.assertEqual(accepted['origin'],'native-journal-v1')
+            self.assertEqual(accepted['operation_id'],selected['operation_key'])
+            handoff['operation']['job_id']='foreign'
+            with self.assertRaisesRegex(runtime.RuntimeHold,'native_journal_terminal_binding'):
+                runtime.native_journal_acceptance(self.current,issue,str(self.runtime),handoff)
+            # Deployment shape: CONTROL lives outside private caller workspace
+            # roots. Only its existing guarded owner custody qualifies it.
+            self.workspace.chmod(0o700);self.candidate.chmod(0o775)
+            (self.workspace/self.output).chmod(0o644);(self.candidate/self.output).chmod(0o664)
+            with patch.object(unit_review,'SOURCE',self.control):
+                unit_review.protected_native_workspaces(self.current,'UIF-102',self.entry,self.runtime,
+                    self.manifest,self.control,[self.workspace],os.getuid())
+                with self.assertRaises(AdmissionError):
+                    unit_review.protected_native_workspaces(self.current,'UIF-102',self.entry,self.runtime,
+                        self.manifest,self.control,[self.control],os.getuid())
+        for p,raw in before.items():self.assertEqual(p.read_bytes(),raw)
 
     def test_candidate_branch_output_drift_and_unrelated_profile_refuse(self):
         selected={'candidate_root':str(self.candidate)}

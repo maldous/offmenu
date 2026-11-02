@@ -203,7 +203,7 @@ class Controller:
     def result(self,status,action=None,**extra):
         return {'status':status,'action':action,'binding_sha256':self.key,**extra}
 
-    def decide(self,snapshot):
+    def decide(self,snapshot, *, _unconsumed=False):
         b = dict(self.binding)
         if b['version'] == 2:
             publication = self.status().get('publication', {})
@@ -279,7 +279,10 @@ class Controller:
         if prior.get('merge_effect') in ('pending','unknown'):
             # An open PR after an uncertain request is not proof of nonexecution.
             # The API owner must reconcile that immutable action explicitly.
-            return self.result('reconciliation-required')
+            if not (_unconsumed and prior.get('status') == 'merge-intent'
+                    and prior.get('merge_effect') == 'pending' and not prior.get('helper_consumed')
+                    and b['version'] == 2):
+                return self.result('reconciliation-required')
         if snapshot.get('cancel_requested'):
             return self.result('cancelled')
         if prior.get('merge_effect')=='refused':
@@ -349,6 +352,23 @@ class Controller:
                 result = graph.compile(checkpointer=saver).invoke({'observation':observation},
                     {'configurable':{'thread_id':self.key},'recursion_limit':8})
             return result['result']
+
+    def pending_unconsumed(self, observation):
+        """Requalify the SAME unconsumed intent without changing its checkpoint.
+
+        Only the fixed original-native publisher path calls this under its
+        sealed admission. Consumption remains the existing before-HTTP guard.
+        """
+        with self.ownership():
+            prior = self.status()
+            if (prior.get('status') != 'merge-intent' or prior.get('merge_effect') != 'pending'
+                or prior.get('helper_consumed') or self.binding['version'] != 2):
+                raise DeliveryError('No unconsumed pending native intent')
+            fresh = self.decide(observation, _unconsumed=True)
+            if (fresh.get('status') != 'merge-intent' or any(fresh.get(k) != prior.get(k)
+                    for k in ('binding_sha256','qualification_sha256','action','merge_effect'))):
+                raise DeliveryError('Pending native intent no longer qualifies')
+            return prior
 
     def record_api_outcome(self,kind,outcome):
         with self.ownership():
@@ -872,6 +892,10 @@ def _publisher_request(controller, config, request):
                      'capacity_policy_sha256','publication_triggers_actions','publisher_owner'):
             if observation.get(name) != config['snapshot'].get(name):
                 raise DeliveryError('Publisher qualified observation changed')
+        if (config.get('integration_admission', {}).get('kind') == 'native-source-reviewed-integration-v1'
+            and state.get('status') == 'merge-intent' and state.get('merge_effect') == 'pending'
+            and not state.get('helper_consumed')):
+            return controller.pending_unconsumed(observation)
         return controller.run(observation)
     if operation == 'outcome':
         if request['kind'] != 'merge':
