@@ -85,6 +85,9 @@ def protected_catalog_bytes(config, seed):
     their digest remain root-owned; this grants no arbitrary catalog append.
     """
     versions = config.get('catalog_versions')
+    derived = 'owner_intake_policy' in config
+    if versions is None and derived:
+        versions = []
     if versions is None:
         if config.get('catalog') != str(PROTECTED_OWNER/'catalog.json'):
             raise AdmissionError('protected_owner_catalog')
@@ -94,7 +97,7 @@ def protected_catalog_bytes(config, seed):
     coordinator = Path(json.loads(protected_owner_bytes(PROTECTED_OWNER/'binding.json'))['runtime'])
     if (root != root.resolve() or path != path.resolve() or not path.is_relative_to(root)
         or path.is_relative_to(coordinator) or not isinstance(versions, list)
-        or not 1 <= len(versions) <= 32):
+        or not (0 if derived else 1) <= len(versions) <= 32):
         raise AdmissionError('protected_owner_catalog_grants')
     previous = json.loads(seed)
     allowed = {hashlib.sha256(seed).hexdigest(): previous}
@@ -121,8 +124,27 @@ def protected_catalog_bytes(config, seed):
             raw = stream.read(1048577)
     finally:
         os.close(fd)
-    if len(raw)>1048576 or hashlib.sha256(raw).hexdigest() not in allowed:
+    if len(raw)>1048576:
         raise AdmissionError('protected_owner_catalog_snapshot')
+    if hashlib.sha256(raw).hexdigest() not in allowed:
+        if not derived:
+            raise AdmissionError('protected_owner_catalog_snapshot')
+        from stokowski_prepare import owner_policy_catalog, _publication_bytes
+        selected = json.loads(raw)
+        prefix = next((v for v in reversed(list(allowed.values()))
+            if selected.get('version') == 1 and isinstance(selected.get('entries'),list)
+            and selected['entries'][:len(v['entries'])] == v['entries']), None)
+        if prefix is None:
+            raise AdmissionError('protected_owner_catalog_snapshot')
+        for entry in selected['entries'][len(prefix['entries']):]:
+            after = dict(version=1, entries=prefix['entries']+[entry])
+            owner_policy_catalog(config, _publication_bytes(prefix), _publication_bytes(after))
+            admission = Path(entry['runtime'])/'current-admission.json'
+            if admission.is_symlink() or file_sha(admission) != entry['admission_sha256']:
+                raise AdmissionError('protected_owner_catalog_snapshot')
+            prefix = after
+        if raw != _publication_bytes(prefix):
+            raise AdmissionError('protected_owner_catalog_snapshot')
     return raw
 
 
@@ -231,11 +253,14 @@ class CurrentWork:
         self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config, self.config_path, self.owner_custody = current_config(runtime)
-        if set(self.config) - {'qualified_successor', 'project_route', 'project_routes', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template', 'catalog_versions', 'native_harness_boundaries'} != {'version', 'owner', 'runtime_root', 'catalog',
+        if set(self.config) - {'qualified_successor', 'project_route', 'project_routes', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template', 'catalog_versions', 'native_harness_boundaries', 'owner_intake_policy'} != {'version', 'owner', 'runtime_root', 'catalog',
                                'source_head', 'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}:
             raise AdmissionError('current_config_fields')
         validated_project_route(self.config.get('project_route', project_route(PROJECT)))
         self.root = Path(self.config['runtime_root'])
+        if 'owner_intake_policy' in self.config:
+            from stokowski_prepare import owner_intake_policy
+            owner_intake_policy(self.config)
         completed = self.config.get('completed_native_validations', {})
         native = self.config.get('native_review_policies', {})
         if not isinstance(native, dict):
@@ -382,6 +407,11 @@ class CurrentWork:
             if selected == (previous,version['sha256']):
                 return
             previous = version['sha256']
+        if 'owner_intake_policy' in self.config:
+            from stokowski_prepare import owner_policy_catalog, owner_intake_policy
+            owner_intake_policy(self.config, creating=True)
+            owner_policy_catalog(self.config, before, after)
+            return
         raise AdmissionError('protected_owner_catalog_transition')
 
     def guard(self):
@@ -559,6 +589,9 @@ class CurrentWork:
         return read_record(path)
 
     def _intake_authority(self, reference, route=None):
+        if isinstance(reference, str) and reference.startswith('owner-policy:'):
+            from stokowski_prepare import owner_policy_authority
+            return owner_policy_authority(self.config, reference)
         route = self.admitted_route((route or self.route)['project_id'])
         policy = self._intake_policy(route)
         authority = self._private_pin(policy['references'][reference])
@@ -2234,6 +2267,9 @@ class CurrentWork:
                     raise AdmissionError('native_harness_owner_authority_missing')
                 self._native_harness_refill = (identifier, selected_sha,
                                                binding.operation_id, binding.unit_sha256)
+                if 'owner_intake_policy' in self.config:
+                    from stokowski_prepare import owner_policy_refill
+                    await owner_policy_refill(self, linear_client)
                 self._successor_boundary()
         except asyncio.CancelledError:
             state.update(status='unknown', reason='owner-cancelled-reconcile-existing-operation')
@@ -2757,12 +2793,22 @@ class CurrentWork:
     async def candidates(self, client, issues, route=None):
         route = self.admitted_route((route or self.route)['project_id'])
         intake_route_args = (route,) if 'project_routes' in self.config else ()
+        if 'owner_intake_policy' in self.config:
+            self._owner_policy_observation = (tuple(issues), route)
         self.refresh()
         selected = []
         for issue in issues:
             entry = self.entries.get(issue.identifier)
             if not entry:
-                await self._intake(client, issue, *intake_route_args)
+                if 'owner_intake_policy' in self.config:
+                    try:
+                        from stokowski_prepare import owner_policy_candidate
+                        await owner_policy_candidate(self, client, issue, route)
+                    except Exception as error:
+                        self.defer(issue.identifier, str(error) if isinstance(error, AdmissionError)
+                                   else 'owner_policy_input_or_tracker_unavailable')
+                else:
+                    await self._intake(client, issue, *intake_route_args)
                 continue
             if issue.id != entry['issue_id'] or issue.state not in ('Todo','In Progress'):
                 continue
