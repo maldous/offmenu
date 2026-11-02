@@ -1696,10 +1696,10 @@ class CurrentWork:
             raise AdmissionError('native_contribution_profile')
         receipt = self._completed_native_evidence(issue,runtime,manifest)
         if spec['profile'] == 'delivery-unit-focused':
-            policy,_,plan = self.postcoding_contract(issue)
+            _,_,selection = self.postcoding_contract(issue)
             self.postcoding_template(issue)
-            if (spec['validation_targets'] != [plan['check']]
-                or spec['validation_scope'] != sorted(policy['workclass']['allowed_files'])
+            if (spec['validation_targets'] != selection['validation_targets']
+                or spec['validation_scope'] != selection['validation_scope']
                 or spec['native_receipt_sha256'] != file_sha(runtime/'attempts'/issue/'receipt.json')):
                 raise AdmissionError('native_contribution_delegation_drift')
         if type(selected['candidate_root']) is not str:
@@ -1936,28 +1936,31 @@ class CurrentWork:
         import stokowski_prepare as prepare
         self.guard()
         policy = prepare.owner_intake_policy(self.config)
-        if 'workclass' not in policy or issue in policy['contracts']:
-            raise AdmissionError('postcoding_source_only_workclass_required')
         contract = prepare.owner_policy_contract(self.config,policy,issue)
-        proposals = []
-        for name,sha in contract.get('_qualification_inputs',{}).items():
-            if file_sha(name) != sha:
-                raise AdmissionError('postcoding_qualification_drift')
-            value = read_record(name)
-            if value.get('schema') == 'offmenu-qualification-proposal/1':
-                proposals.append(json.loads(value['proposal']))
-        if len(proposals) != 1:
-            raise AdmissionError('postcoding_qualified_plan_required')
-        plan = proposals[0]
+        # Both accessors requalify the original Root authority. Finite entries
+        # retain their explicit sealed test association; workclass entries retain
+        # their original finished qualification. Neither is relabeled as the other.
+        targets = prepare.owner_policy_validation_targets(self.config,issue)
+        finite = issue in policy['contracts']
+        allowed = prepare.OWNER_CODE_FILES
+        scope = contract['scope']
+        inputs = contract['input_paths']
+        validation_scope = sorted(set(scope + inputs + [
+            'tests/delivery/'+target.split('.')[0]+'.py' for target in targets]))
+        if (not 1 <= len(scope) <= 4 or not set(scope + inputs) <= allowed
+            or not set(validation_scope) <= allowed or len(validation_scope) > 6
+            or (finite and contract.get('validation_targets') != targets)):
+            raise AdmissionError('postcoding_source_only_contract_required')
+        selection = dict(validation_targets=targets,validation_scope=validation_scope,
+            authority_origin='root-finite-contract' if finite else 'qualified-workclass')
         runtime,manifest,_ = self.context(issue,review=True,observation=True)
         task = manifest['tasks'][issue]
         if ('stage' in task or contract['issue_id'] != task['issue_id']
             or contract['project_id'] != manifest['project_id'] or task['owner'] != self.config['owner']
             or task['allowed_paths'] != contract['scope'] or task['acceptance'] != contract['acceptance']
-            or task['resources'] != contract['resources'] or plan['rights'] != 'source-only-synthetic'
-            or plan['scope'] != contract['scope']):
+            or task['resources'] != contract['resources']):
             raise AdmissionError('postcoding_original_task_outside_contract')
-        return policy,contract,plan
+        return policy,contract,selection
 
     def postcoding_template(self, issue):
         import stokowski_worker as worker
@@ -1980,13 +1983,13 @@ class CurrentWork:
         import stokowski_stage as stage
         import stokowski_operations as operations
         template = self.postcoding_template(issue)
-        policy,contract,plan = self.postcoding_contract(issue)
+        _,contract,selection = self.postcoding_contract(issue)
         runtime,manifest,_ = self.context(issue,review=True,observation=True)
         self._completed_native_evidence(issue,runtime,manifest)
         if self.read_only or self.stopping or (runtime/'cancel.json').exists():
             raise AdmissionError('postcoding_preparation_held')
         producer = dict(template['producer'],profile='delivery-unit-focused',
-            validation_targets=[plan['check']],validation_scope=sorted(policy['workclass']['allowed_files']),
+            validation_targets=selection['validation_targets'],validation_scope=selection['validation_scope'],
             policy_sha256=self.config['policy_sha256'],
             runner_sha256=file_sha(SOURCE/'tools/delivery/windmill_runner.py'),
             executor_sha256=file_sha(operations.__file__))

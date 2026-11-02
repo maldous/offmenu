@@ -34,9 +34,12 @@ Root seals one `native-review-template-v2` through the existing
 `source_root`, `resources` and `acceptance` are the literal `derived`. Owner,
 control source/install pins, independent reviewer, provider/model/effort,
 timeout, stopped-child requirement, receipt basename and read-only role retain
-their existing checks. The qualified source-only workclass contract and its
-original finished qualification supply task scope and focused test; they must
-match the original admitted coding task. No issue prose grants rights. The
+their existing checks. The owner-policy contract and typed validation-target accessor supply scope
+and focused tests. A finite contract must explicitly bind its validation targets
+in the original Root seal. A workclass contract retains its original finished
+qualification. Both stay bounded to the existing six source files, and must
+match the original admitted coding task. Neither authority is converted into
+the other, and existing native source identities are preserved. No issue prose grants rights. The
 review policy binds the actual private candidate and successful Journal receipt.
 Requested and observed model/provider identities retain their original evidence.
 
