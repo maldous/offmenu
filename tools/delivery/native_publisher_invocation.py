@@ -2,7 +2,9 @@
 
 Production invoke() runs only as the installed UID984/GID976 custodian. Outer
 observe reads the named ORIGINAL receipt and never starts a process or creates
-state. Missing preparation/terminal proof stays held. Installation, exact sudo
+state. The separate fixed prepare request requires a reusable Root-sealed native
+policy and only creates a qualified protected admission, never an HTTP effect.
+Missing preparation/terminal proof stays held. Installation, exact sudo
 permission and mandatory host approval are separate; this module grants none.
 """
 import base64
@@ -44,6 +46,8 @@ ENV = {'PATH': '/usr/bin:/bin', 'LANG': 'C.UTF-8',
 INNER = {'version', 'mode', 'operation_id', 'issue_id', 'project_id', 'owner',
          'unit_sha256', 'packet_sha256', 'source_sha256'}
 STATUSES = {'ready', 'pending', 'unknown', 'verified', 'denied', 'failed'}
+OWNER_SOURCE = Path('/opt/offmenu-stokowski-current/source')
+OWNER_PYTHON = Path('/opt/offmenu-stokowski-current/venv/bin/python')
 
 
 class InvocationHold(ValueError):
@@ -101,6 +105,321 @@ def uuid(value):
         require(type(value) is str and str(UUID(value)) == value and UUID(value).int != 0, 'uuid')
     except (ValueError, AttributeError):
         raise InvocationHold('uuid') from None
+
+
+def native_policy(config):
+    """One Root-sealed reusable delegation, never a packet-supplied grant."""
+    p=config.get('native_policy')
+    require(exact(p, {'version','kind','owner','project_id','controller_runtime',
+        'source_head','source_sha256','owner_python_sha256','profiles','automatic_integration_enabled'}), 'native_policy_fields')
+    require(type(p['version']) is int and p['version'] == 1
+        and p['kind'] == 'native-source-publication-policy-v1'
+        and p['owner'] == config['logicalOwner'] and config['version'] == 1
+        and p['automatic_integration_enabled'] is True,
+        'native_policy_identity')
+    uuid(p['project_id'])
+    root=p['controller_runtime']
+    require(type(root) is str and root.startswith('/home/user/src/offmenu/.delivery/stokowski/')
+        and re.fullmatch(r'/[a-zA-Z0-9_./-]{1,511}',root)
+        and not any(v in ('.','..') for v in root.split('/')) and '//' not in root,
+        'native_policy_runtime')
+    require(type(p['source_head']) is str and p['source_head'] == config['sourceHead']
+        and re.fullmatch('[0-9a-f]{40}',p['source_head'])
+        and hex64(p['owner_python_sha256']) and type(p['source_sha256']) is dict
+        and 1 <= len(p['source_sha256']) <= 128, 'native_policy_source')
+    for name,pin in p['source_sha256'].items():
+        require(type(name) is str and re.fullmatch(r'(?:tools/delivery|src/offmenu/delivery)/[a-zA-Z0-9_./-]+',name)
+            and not any(v in ('.','..') for v in name.split('/')) and hex64(pin), 'native_policy_source_pin')
+    require(type(p['profiles']) is dict and 1 <= len(p['profiles']) <= 2, 'native_policy_profiles')
+    for name,scope in p['profiles'].items():
+        require(name in ('enrichment-resilience-focused','delivery-unit-focused')
+            and exact(scope, {'allowed_paths'}) and type(scope['allowed_paths']) is list
+            and 1 <= len(scope['allowed_paths']) <= 16
+            and len(set(scope['allowed_paths'])) == len(scope['allowed_paths']), 'native_policy_profile')
+        for path in scope['allowed_paths']:
+            require(type(path) is str and re.fullmatch(r'(?:tools/delivery|tests/delivery|src/offmenu/delivery|tests/web)/[a-zA-Z0-9_.-]+',path),
+                'native_policy_output')
+            require(name != 'delivery-unit-focused' or path.endswith('.py'),'native_policy_python_output')
+    return p
+
+
+def prepare_request(value):
+    require(exact(value, {'version','mode','issue','issue_id','project_id','owner',
+        'unit_sha256','packet_sha256'}) and type(value['version']) is int
+        and value['version'] == 1 and value['mode'] == 'prepare', 'native_prepare_request')
+    require(type(value['issue']) is str and re.fullmatch(r'UIF-[1-9][0-9]*',value['issue'])
+        and type(value['owner']) is str and 0 < len(value['owner']) <= 128
+        and hex64(value['unit_sha256']) and hex64(value['packet_sha256']), 'native_prepare_identity')
+    uuid(value['issue_id']);uuid(value['project_id'])
+    return value
+
+
+def derived_config(base, value, inner):
+    """Check the fixed Root template against publisher-owned admission output."""
+    p=native_policy(base)
+    mutable={'binding','snapshot','plan','workspace','integration_admission'}
+    require(type(value) is dict and set(value) == (set(base)-{'nativeContinuation'})
+        and all(value[k] == v for k,v in base.items() if k not in mutable | {'nativeContinuation'}),
+        'native_prepare_template')
+    n=value['snapshot']['native_runtime'];a=value['integration_admission'];b=value['binding']
+    require(n['project_id'] == p['project_id'] and n['owner'] == p['owner']
+        and a['kind'] == 'native-source-reviewed-integration-v1'
+        and a['native_origin']['profile'] in p['profiles']
+        and set(b['outputs']) and set(b['outputs']) <= set(p['profiles'][a['native_origin']['profile']]['allowed_paths'])
+        and a['permission_sha256'] == fingerprint(p), 'native_prepare_scope')
+    association(value,inner)
+    return value
+
+
+def selected_config(base, inner, *, root=CLAIM, uid=984):
+    if inner['operation_id'] == fingerprint(base['binding']):
+        return base
+    native_policy(base)
+    path=root/('transaction-'+inner['operation_id'])/'native-config.json'
+    _directory(path.parent,uid,0o700)
+    return derived_config(base,decode(_read(path,uid,0o600,1048576),1048576),inner)
+
+
+def native_publication_plan(repository, source, issue, *, objects=None):
+    """Derive bounded Git object requests; never execute candidate code/hooks."""
+    from datetime import datetime, timedelta, timezone
+    root='/repos/maldous/offmenu';operations=[];seen=set();changed={}
+    def git(*args):
+        command=['/usr/bin/git','--no-optional-locks','-c','safe.directory='+str(repository),
+            '-c','core.hooksPath=/dev/null','-c','core.fsmonitor=false','-C',str(repository),*args]
+        process=subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,
+            env=dict(ENV,GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL='/dev/null',GIT_NO_REPLACE_OBJECTS='1'))
+        try:
+            chunks=[];size=0;deadline=time.monotonic()+3
+            with selectors.DefaultSelector() as ready:
+                ready.register(process.stdout,selectors.EVENT_READ)
+                while True:
+                    remaining=deadline-time.monotonic()
+                    require(remaining>0 and ready.select(remaining),'native_prepare_git_timeout')
+                    part=os.read(process.stdout.fileno(),min(65536,1048577-size))
+                    if not part:break
+                    chunks.append(part);size+=len(part)
+                    require(size<=1048576,'native_prepare_git_size')
+            require(process.wait(timeout=max(.001,deadline-time.monotonic())) == 0,'native_prepare_git')
+            return b''.join(chunks)
+        finally:
+            if process.poll() is None:process.kill();process.wait(timeout=3)
+            process.stdout.close()
+    def obj(kind,key):
+        require(re.fullmatch('[0-9a-f]{40}',key),'native_prepare_git_identity')
+        raw=git('cat-file',kind,key)
+        require(hashlib.sha1((kind+' '+str(len(raw))+'\0').encode()+raw).hexdigest() == key,
+            'native_prepare_git_object')
+        if objects is not None:objects[key]=dict(type=kind,content=base64.b64encode(raw).decode())
+        return raw
+    def add(kind,key,body):
+        if key in seen:return
+        seen.add(key);collection={'blob':'blobs','tree':'trees','commit':'commits'}[kind]
+        operations.append(dict(kind=kind,method='POST',path=root+'/git/'+collection,
+            body=body,readPath=root+'/git/'+collection+'/'+key,expected=key))
+        require(len(operations) <= 126,'native_prepare_plan_bound')
+    def tree(key):
+        raw=obj('tree',key);result=[];pos=0
+        while pos < len(raw):
+            space=raw.index(b' ',pos);end=raw.index(b'\0',space)
+            mode=raw[pos:space].decode();name=raw[space+1:end].decode()
+            require(mode in ('100644','100755','40000') and re.fullmatch(r'[a-zA-Z0-9_.@+-]+',name)
+                and name not in ('.','..','.git'),'native_prepare_git_entry')
+            result.append(dict(path=name,mode='040000' if mode == '40000' else mode,type='tree' if mode == '40000' else 'blob',
+                sha=raw[end+1:end+21].hex()));pos=end+21
+        require(pos == len(raw) and len({r['path'] for r in result}) == len(result),'native_prepare_git_tree')
+        return result
+    def trees(head,base,prefix='',depth=0):
+        require(depth < 24,'native_prepare_tree_depth')
+        if head == base:return
+        entries=tree(head);previous={v['path']:v for v in tree(base)} if base else {}
+        require(all(any(v['path'] == p and v['mode'] == old['mode'] for v in entries)
+            for p,old in previous.items()),'native_prepare_deleted_output')
+        for entry in entries:
+            old=previous.get(entry['path'])
+            if old and old['sha'] == entry['sha']:continue
+            path=prefix+entry['path']
+            if entry['type'] == 'tree':trees(entry['sha'],old['sha'] if old else None,path+'/',depth+1)
+            else:
+                raw=obj('blob',entry['sha']);local=repository/path
+                require(local.resolve() == local and _read(local,os.getuid(),stat.S_IMODE(local.lstat().st_mode),1048576) == raw,
+                    'native_prepare_output_drift')
+                changed[path]=sha(raw);add('blob',entry['sha'],dict(content=base64.b64encode(raw).decode(),encoding='base64'))
+        add('tree',head,dict(tree=entries))
+    raw=obj('commit',source['head']);headers,message=raw.decode().split('\n\n',1);headers=headers.splitlines()
+    require(len(headers) == 4 and headers[:2] == ['tree '+source['tree'],'parent '+source['base']]
+        and message and message.endswith('\n'),'native_prepare_commit')
+    def identity(line,role):
+        m=re.fullmatch(role+r' ([^<>\n]+) <([^<>\s]+)> ([0-9]+) ([+-])([0-9]{2})([0-9]{2})',line)
+        require(m is not None,'native_prepare_identity')
+        name,email,epoch,sign,hours,minutes=m.groups();offset=int(hours)*60+int(minutes)
+        require(offset <= 840 and int(minutes) < 60,'native_prepare_timezone')
+        tz=timezone(timedelta(minutes=offset if sign == '+' else -offset))
+        return dict(name=name,email=email,date=datetime.fromtimestamp(int(epoch),tz).isoformat(timespec='seconds'))
+    base=obj('commit',source['base']);m=re.match(rb'tree ([0-9a-f]{40})\n',base)
+    require(m is not None,'native_prepare_base');trees(source['tree'],m[1].decode())
+    require(changed == source['outputs'],'native_prepare_changed_scope')
+    add('commit',source['head'],dict(message=message,tree=source['tree'],parents=[source['base']],
+        author=identity(headers[2],'author'),committer=identity(headers[3],'committer')))
+    branch=source['branch']
+    operations.extend([dict(kind='ref',method='POST',path=root+'/git/refs',
+        body=dict(ref='refs/heads/'+branch,sha=source['head']),readPath=root+'/git/ref/heads/'+branch,expected=None),
+        dict(kind='create-pr',method='POST',path=root+'/pulls',body=dict(title=issue+': qualified native unit',
+        body='Original native source, validation and independent review qualified.',base='develop',head=branch),
+        readPath=root+'/pulls?state=all&head=maldous:'+branch+'&base=develop',expected=source['head'])])
+    plan=dict(operations=operations,changedFiles=changed);wire(plan,1048576);return plan
+
+
+def qualify_native_publication(base, envelope, current):
+    """Read original owner evidence under its controlled actor; no side effects."""
+    from types import SimpleNamespace
+    from stokowski_adapter import read_record, file_sha
+    from stokowski_unit_review import qualify_native_review
+    from stokowski_operations import bridge_arguments
+    from symphony_capacity import digest
+    from native_harness_contract import validate_handoff
+    p=native_policy(base);r=prepare_request(envelope)
+    require(r['owner'] == p['owner'] and r['project_id'] == p['project_id']
+        and str(current.runtime) == p['controller_runtime'] and current.owner_custody,
+        'native_prepare_owner')
+    current.guard();issue=SimpleNamespace(identifier=r['issue'],id=r['issue_id'])
+    runtime,manifest,_=current.context(issue.identifier,review=True,observation=True)
+    require('stage' not in manifest['tasks'][issue.identifier] and manifest['project_id'] == r['project_id'],
+        'native_prepare_original')
+    unit=current.gate_binding(issue,observation=True)
+    require(fingerprint(unit) == r['unit_sha256'],'native_prepare_unit')
+    path=runtime/'native-publication-packet.json';packet=read_record(current.private(str(path)))
+    require(fingerprint(packet) == r['packet_sha256'] and exact(packet,{'policy','handoff','candidate','linear','release'})
+        and packet['candidate'] is None and packet['release'] is None,'native_prepare_packet')
+    handoff=validate_handoff(packet['handoff'],packet['policy']);source=handoff['source']
+    require(source['target'] == 'develop' and handoff['origin']['kind'] == 'native-coding-v1'
+        and handoff['origin']['evidence'] == dict(path=str(runtime/'attempts'/issue.identifier/'receipt.json'),
+            sha256=file_sha(runtime/'attempts'/issue.identifier/'receipt.json')) and handoff['issue_id'] == issue.id
+        and handoff['project_id'] == p['project_id'] and handoff['owner'] == p['owner'], 'native_prepare_handoff')
+    qualified,_=current.validation_binding(issue.identifier,current.entries[issue.identifier])
+    require(qualified == runtime,'native_prepare_validation_runtime')
+    selected=read_record(runtime/'validation-bindings.json')['issues'][issue.identifier]
+    database=runtime/'operations/operations.sqlite'
+    with sqlite3.connect(database.as_uri()+'?mode=ro',uri=True) as db:
+        row=db.execute('SELECT spec,state FROM operations WHERE key=?',(selected['operation_key'],)).fetchone()
+    require(row is not None,'native_prepare_validation_missing');spec,state=map(json.loads,row)
+    require(spec['profile'] in p['profiles'] and set(spec['outputs'])
+        and set(spec['outputs']) <= set(p['profiles'][spec['profile']]['allowed_paths']), 'native_prepare_profile')
+    receipt=read_record(runtime/'validation-receipt.json');op=handoff['operation']
+    require(state['status'] == 'succeeded' and not state.get('cancel_requested')
+        and not state.get('observation_intent') and not state.get('reconcile_required')
+        and state['accepted_output_sha256'] == spec['outputs'] and state['acceptance_sha256'] == spec['acceptance_sha256']
+        and state['receipt_sha256'] == digest(receipt) and receipt['status'] == 'succeeded'
+        and receipt['exit_code'] == 0 and receipt['child_tree_gone'] is True and receipt['reconcile_required'] is False
+        and op['id'] == selected['operation_key'] and op['status'] == 'succeeded'
+        and op['receipt'] == dict(path=str(runtime/'validation-receipt.json'),sha256=file_sha(runtime/'validation-receipt.json'))
+        and op['job_id'] == receipt['job_id'] == state['logical_job_id']
+        and op['runner_sha256'] == receipt['runner_sha256'] == spec['runner_sha256']
+        and op['policy_sha256'] == receipt['capacity_policy_sha256'] == spec['policy_sha256']
+        and op['command_sha256'] == receipt['command_sha256'] == sha(bridge_arguments(spec)['command'].encode())
+        and all(source[k] == spec[k] for k in ('head','base','branch'))
+        and {v['path']:v['sha256'] for v in handoff['outputs']} == spec['outputs'], 'native_prepare_validation')
+    review=qualify_native_review(current,issue.identifier)
+    require(current._check_unit_review(review) == unit and review['verdict'] == 'accept' and not review['findings'],
+        'native_prepare_independent_review')
+    gate=current.state['tasks'][issue.identifier].get('unit_gate',{})
+    require(gate.get('binding') == unit and gate.get('disposition') == 'approved'
+        and gate.get('review_sha256') == digest(review),'native_prepare_review_gate')
+    reviewed=review['source'];require(all(reviewed[k] == source[k] for k in ('head','base','tree','branch'))
+        and reviewed['outputs'] == spec['outputs'],'native_prepare_review_coverage')
+    policy=read_record(current.private(review['policy']['path']))
+    require(file_sha(review['policy']['path']) == review['policy']['sha256'],'native_prepare_review_policy')
+    evidence=read_record(current.private(review['receipt']['path']))
+    rr=dict(head=source['head'],base=source['base'],outputs=spec['outputs'],author=p['owner'],
+        reviewer=policy['reviewer_owner'],independent=True,verdict='accept',findings=[],
+        evidence_id=review['native_session_id'],evidence_source=review['receipt'],
+        model='unknown',provider='unknown',requested_model=policy['model'],requested_provider=policy['provider'],
+        resolved_model=evidence.get('resolved_model'),resolution_status='observed' if evidence.get('resolved_model') else 'unknown')
+    rr['evidence_sha256']=fingerprint(rr)
+    n=dict(issue_id=issue.id,project_id=p['project_id'],owner=p['owner'],unit_sha256=r['unit_sha256'],
+        packet_sha256=r['packet_sha256'],source=source)
+    b=dict(version=2,repository='maldous/offmenu',pr_number=None,owner=p['owner'],issue_id=issue.id,
+        head=source['head'],base=source['base'],tree=source['tree'],head_branch=source['branch'],
+        validation_operation_key=selected['operation_key'],outputs=spec['outputs'],
+        policy_sha256=fingerprint(p),capacity_policy_sha256=spec['policy_sha256'])
+    native_receipt=dict(path=str(runtime/'attempts'/issue.identifier/'receipt.json'),
+        sha256=file_sha(runtime/'attempts'/issue.identifier/'receipt.json'))
+    validation_ref=op['receipt']
+    snapshot=dict(publisher_owner=p['owner'],native_runtime=n,source_tree=source['tree'],source_clean=True,
+        policy_sha256=b['policy_sha256'],capacity_policy_sha256=spec['policy_sha256'],publication_triggers_actions=False,
+        unresolved_findings=[],review=rr,native_receipt_source=native_receipt,validation_receipt_source=validation_ref,
+        validation=dict(operation_key=selected['operation_key'],status='succeeded',head=source['head'],base=source['base'],
+        outputs=spec['outputs'],capacity_policy_sha256=spec['policy_sha256'],child_tree_gone=True,reconcile_required=False))
+    objects={}
+    plan=native_publication_plan(Path(reviewed['root']),dict(source,outputs=spec['outputs']),issue.identifier,objects=objects)
+    b['publication']=dict(plan_sha256=fingerprint(plan),qualification_sha256=fingerprint(snapshot))
+    result={k:v for k,v in base.items() if k != 'nativeContinuation'}
+    result.update(binding=b,snapshot=snapshot,plan=plan,workspace=str(CLAIM/('transaction-'+fingerprint(b))),integration_admission=dict(
+        version=1,kind='native-source-reviewed-integration-v1',binding_sha256=fingerprint(b),unit_sha256=r['unit_sha256'],
+        review_sha256=review['receipt']['sha256'],permission_sha256=fingerprint(p),
+        automatic_integration_enabled=p['automatic_integration_enabled'],
+        native_origin=dict(version=1,kind='native-v1',profile=spec['profile'],source_sha256=fingerprint(source),
+            packet_sha256=r['packet_sha256'],validation_operation_key=selected['operation_key'],outputs=spec['outputs'],
+            native_receipt=native_receipt,validation_receipt=validation_ref)))
+    derived_config(base,result,dict(version=1,mode='observe',operation_id=fingerprint(b),**{k:n[k]
+        for k in ('issue_id','project_id','owner','unit_sha256','packet_sha256')},source_sha256=fingerprint(source)))
+    return dict(config=result,objects=objects)
+
+
+def commit_native_preparation(config, request, closure, *, objects, root=CLAIM, uid=984, prepare):
+    """Create once; a partial admission is a hold, never inferred success/retry."""
+    key=fingerprint(config['binding']);raw=wire(config,1048576)
+    _directory(root,uid,0o700)
+    lock=os.open(root/'native-preparation.lock',os.O_RDWR|os.O_CREAT|os.O_NOFOLLOW,0o600)
+    try:
+        st=os.fstat(lock)
+        require(stat.S_ISREG(st.st_mode) and st.st_uid == uid and st.st_nlink == 1
+            and stat.S_IMODE(st.st_mode) == 0o600,'native_prepare_lock')
+        fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        directory=root/('transaction-'+key);done=directory/'native-prepared.json'
+        proof=dict(version=1,kind='native-publisher-prepared-v1',operation_id=key,
+            unit_sha256=request['unit_sha256'],packet_sha256=request['packet_sha256'],
+            source_sha256=fingerprint(config['snapshot']['native_runtime']['source']),
+            integration_binding=config['binding'],closure_sha256=closure,
+            host_confirmation_sha256=fingerprint(dict(config_sha256=sha(raw),closure_sha256=closure,
+                request_sha256=fingerprint(request))))
+        if directory.exists() or directory.is_symlink():
+            _directory(directory,uid,0o700)
+            require(_read(directory/'native-config.json',uid,0o600,1048576) == raw,
+                'native_prepare_existing_config')
+            require(done.exists(),'native_prepare_unknown')
+            require(decode(_read(directory/'native-objects.json',uid,0o600,1048576),1048576) == objects,
+                'native_prepare_existing_objects')
+            require(decode(_read(done,uid,0o600,1048576),1048576) == proof,
+                'native_prepare_existing_proof')
+            return proof  # Existing original receipt; never reacquire a claim.
+        os.mkdir(directory,0o700)
+        parent=os.open(root,os.O_RDONLY|os.O_DIRECTORY)
+        try:os.fsync(parent)
+        finally:os.close(parent)
+        def create(path,value):
+            fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+            try:
+                content=wire(value,1048576)
+                with os.fdopen(fd,'wb',closefd=False) as output:
+                    output.write(content);output.flush();os.fsync(fd)
+            finally:os.close(fd)
+            fd=os.open(directory,os.O_RDONLY|os.O_DIRECTORY)
+            try:os.fsync(fd)
+            finally:os.close(fd)
+        create(directory/'native-objects.json',objects)
+        create(directory/'native-config.json',config)
+        # Existing Controller ownership acquires the repository claim under its
+        # global lock, rechecking any pending/unknown predecessor before prepare.
+        state=prepare()
+        require(state.get('status') == 'publication-ready' and state.get('publication',{}).get('effect') == 'ready',
+            'native_prepare_controller')
+        create(done,proof)
+        return proof
+    finally:
+        os.close(lock)
+
+
 
 
 def continuation(value, identity):
@@ -340,7 +659,38 @@ class _Host:
     command = (str(NODE), str(PUBLISHER), '--native-rpc')
     timeout = TIMEOUT
 
-    def admit(self, inner):
+    def prepare(self, envelope):
+        base,closure=self._sealed();p=native_policy(base);r=prepare_request(envelope)
+        require(r['owner'] == p['owner'] and r['project_id'] == p['project_id'],'native_prepare_owner')
+        # Fixed read-only actor boundary: private owner evidence stays private.
+        # Root's one-time exact sudo rule permits only this sealed program/flag.
+        for path in (*OWNER_SOURCE.parents,*OWNER_PYTHON.parents):
+            _directory(path,0)
+        require(_file_hash(OWNER_PYTHON,maximum=256*1024*1024) == p['owner_python_sha256'],
+            'native_prepare_owner_python')
+        for name,pin in p['source_sha256'].items():
+            require(_file_hash(OWNER_SOURCE/name) == pin,'native_prepare_owner_source')
+        require(p['source_sha256'].get('tools/delivery/native_publisher_invocation.py') ==
+            _file_hash(OWNER_SOURCE/'tools/delivery/native_publisher_invocation.py'),'native_prepare_reader_pin')
+        code=OWNER_SOURCE/'tools/delivery/native_publisher_invocation.py'
+        child=subprocess.run(['/usr/bin/sudo','-n','-u','#1000','--',str(OWNER_PYTHON),'-I','-B',
+            str(code),'--qualify-native'],input=wire(dict(config=base,request=r),1048576),
+            stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,timeout=8,cwd=INSTALL,env=ENV)
+        require(child.returncode == 0 and len(child.stdout) <= 1048576,'native_prepare_reader')
+        value=decode(child.stdout,1048576)
+        require(exact(value,{'config','objects'}),'native_prepare_reader_fields')
+        config=value['config'];n=config['snapshot']['native_runtime'];key=fingerprint(config['binding'])
+        inner=dict(version=1,mode='observe',operation_id=key,source_sha256=fingerprint(n['source']),
+            **{k:n[k] for k in ('issue_id','project_id','owner','unit_sha256','packet_sha256')})
+        require(all(inner[k] == r[k] for k in ('issue_id','project_id','owner','unit_sha256','packet_sha256')),
+            'native_prepare_reader_identity')
+        derived_config(base,config,inner)
+        sys.path[:0]=[str(INSTALL/'src'),str(INSTALL/'tools/delivery')]
+        from offmenu.delivery.integration import publisher_request
+        return commit_native_preparation(config,r,closure,objects=value['objects'],root=CLAIM,uid=984,
+            prepare=lambda:publisher_request(config,{'op':'prepare'}))
+
+    def _sealed(self):
         require((os.getuid(), os.geteuid(), os.getgid(), os.getegid()) == (984, 984, 976, 976), 'publisher_identity')
         require(Path(__file__).resolve() == ENTRY and Path(sys.executable).resolve() == PYTHON, 'installed_entry')
         # Validate the entire import closure before importing maintained helpers.
@@ -361,7 +711,6 @@ class _Host:
         raw = _read(CONFIG, 0, 0o440, 1048576)
         config = decode(raw, 1048576)
         require(CONFIG.stat().st_gid == 976, 'config_group')
-        phase = association(config, inner)
         manifest_raw = _read(CLOSURE, 0, 0o444, MANIFEST_LIMIT)
         manifest = validate_closure(manifest_raw, config['sourceHead'])
         files = manifest['files']
@@ -384,6 +733,12 @@ class _Host:
         require(type(config['codePins']) is dict and 0 < len(config['codePins']) <= 32, 'code_pins')
         require(all(files.get(name) == pin for name, pin in config['codePins'].items())
                 and files['venv/bin/python'] == config['pythonSha256'], 'existing_code_pins')
+        return config, sha(manifest_raw)
+
+    def admit(self, inner):
+        base,closure=self._sealed()
+        config=selected_config(base,inner)
+        phase=association(config,inner)
         # No legacy-state migration or new Controller initialization.
         _directory(CLAIM, 984, 0o700)
         directory = CLAIM / ('transaction-' + inner['operation_id'])
@@ -397,7 +752,7 @@ class _Host:
                              if 'nativeContinuation' in config else None)
         sys.path.insert(0, str(INSTALL/'tools/delivery'))
         self.runner = importlib.import_module('windmill_runner')
-        return directory, phase, sha(manifest_raw)
+        return directory, phase, closure
 
     def review(self, directory, inner, closure):
         """Read the original pending checkpoint; no graph setup or side receipt."""
@@ -645,6 +1000,11 @@ def validate_result(value, envelope, closure_sha256):
 
 
 def _invoke(raw, host):
+    candidate=decode(raw,WIRE_LIMIT)
+    if type(candidate) is dict and candidate.get('mode') == 'prepare':
+        require(type(host) is _Host or (os.getuid() not in (0,984)
+            and Path('/tmp') in host.root.resolve().parents),'synthetic_scope')
+        return host.prepare(prepare_request(candidate))
     envelope = request(raw)
     if type(host) is not _Host:
         # Disposable in-process tests only; there is no executable selector.
@@ -723,6 +1083,21 @@ def invoke(raw):
 
 
 def main():
+    if sys.argv[1:] == ['--qualify-native']:
+        require(os.getuid() == os.geteuid() == 1000 and Path(__file__).resolve() ==
+            OWNER_SOURCE/'tools/delivery/native_publisher_invocation.py'
+            and Path(sys.executable).resolve() == OWNER_PYTHON,'native_prepare_reader_identity')
+        sys.path[:0]=[str(OWNER_SOURCE/'src'),str(OWNER_SOURCE/'tools/delivery')]
+        from stokowski_adapter import CurrentWork
+        body=decode(sys.stdin.buffer.read(1048577),1048576)
+        require(exact(body,{'config','request'}),'native_prepare_reader_fields')
+        p=native_policy(body['config'])
+        current=CurrentWork(Path(p['controller_runtime']),read_only=True)
+        require(current.config['source_head'] == p['source_head']
+            and all(current.config['source_sha256'].get(k) == v for k,v in p['source_sha256'].items()),
+            'native_prepare_reader_source')
+        sys.stdout.buffer.write(wire(qualify_native_publication(body['config'],body['request'],current),1048576))
+        return
     require(len(sys.argv) == 1, 'arguments')
     os.umask(0o077)
     result = invoke(sys.stdin.buffer.read(WIRE_LIMIT + 1))
