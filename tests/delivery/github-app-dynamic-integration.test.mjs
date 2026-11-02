@@ -134,6 +134,27 @@ function nativeFixture() {
       native_receipt:s.native_receipt_source,validation_receipt:s.validation_receipt_source}};
   return f;
 }
+test('original native continuity requires its qualified admission and exact ordinary grant',()=>{
+  const {config:c}=nativeFixture(),before=structuredClone(c),n=c.snapshot.native_runtime;
+  c.nativeContinuation={version:1,operation_id:fingerprint(c.binding),unit_sha256:n.unit_sha256,
+    packet_sha256:n.packet_sha256,claim_sha256:'1'.repeat(64),previous_selection_sha256:'2'.repeat(64),
+    previous_record_sha256:'3'.repeat(64),previous_capability:{version:1,
+      closure_sha256:'4'.repeat(64),host_confirmation_sha256:'5'.repeat(64)},
+    receipts:[{invocation_id:'12345678-1234-4234-8234-123456789abc',
+      closure_sha256:'4'.repeat(64),receipt_sha256:'6'.repeat(64)}]};
+  const identity={uid:2345,euid:2345,gid:3456,egid:3456};
+  validateConfig(c,identity);
+  assert.equal(Object.hasOwn(c.binding,'source_projection'),false);
+  assert.deepEqual(c.binding,before.binding);assert.deepEqual(c.snapshot,before.snapshot);
+  for(const change of [c=>{delete c.integration_admission;},
+    c=>{c.integration_admission.native_origin.packet_sha256='0'.repeat(64);},
+    c=>{c.nativeContinuation.operation_id='0'.repeat(64);},
+    c=>{c.nativeContinuation.unit_sha256='0'.repeat(64);},
+    c=>{c.nativeContinuation.receipts=[];},c=>{c.nativeContinuation.pre_admission_refusal={};}]) {
+    const bad=structuredClone(c);change(bad);
+    assert.throws(()=>validateConfig(bad,identity),/publisher-held/);
+  }
+});
 test('unprojected native origin retains exact original source, review, terminal refs and fresh facts',async()=>{
   const f=nativeFixture(),before=structuredClone(f.config);
   validateConfig(f.config,{uid:2345,euid:2345,gid:3456,egid:3456});

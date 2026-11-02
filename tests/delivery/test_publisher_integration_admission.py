@@ -62,7 +62,7 @@ class IntegrationAdmissionTests(unittest.TestCase):
                 a=copy.deepcopy(self.continuation);change(a);self.config['nativeContinuation']=a
                 with self.assertRaises(self.codec.InstallError):self.qualify()
 
-    def test_unprojected_native_origin_requires_exact_original_receipt_review_and_source(self):
+    def native_config(self):
         c=self.config;b=c['binding'];s=c['snapshot'];n=s['native_runtime']
         del b['source_projection'];b['base']=n['source']['base']
         del c['codePins']['src/offmenu/delivery/identity_source_projection.py']
@@ -80,6 +80,10 @@ class IntegrationAdmissionTests(unittest.TestCase):
             profile='enrichment-resilience-focused',source_sha256=self.codec._hash(self.codec._wire(n['source'])),
             packet_sha256=n['packet_sha256'],validation_operation_key=b['validation_operation_key'],outputs=b['outputs'],
             native_receipt=s['native_receipt_source'],validation_receipt=s['validation_receipt_source']))
+        return c
+
+    def test_unprojected_native_origin_requires_exact_original_receipt_review_and_source(self):
+        c=self.native_config()
         self.assertEqual(self.qualify(),c)
         original=copy.deepcopy(c)
         for change in (
@@ -94,6 +98,25 @@ class IntegrationAdmissionTests(unittest.TestCase):
             self.config=copy.deepcopy(original);change(self.config)
             with self.subTest(change=change):
                 with self.assertRaises(self.codec.InstallError):self.qualify()
+
+    def test_native_continuation_requires_original_native_admission_and_exact_grant(self):
+        c=self.native_config();before=copy.deepcopy(c)
+        c['nativeContinuation']=dict(self.continuation,
+            operation_id=self.codec._hash(self.codec._wire(c['binding'])))
+        self.assertEqual(self.qualify(),c)
+        self.assertNotIn('source_projection',c['binding'])
+        self.assertEqual(c['binding'],before['binding'])
+        self.assertEqual(c['snapshot'],before['snapshot'])
+        original=copy.deepcopy(c)
+        for change in (
+            lambda c:c.pop('integration_admission'),
+            lambda c:c['integration_admission']['native_origin'].update(packet_sha256='0'*64),
+            lambda c:c['nativeContinuation'].update(operation_id='0'*64),
+            lambda c:c['nativeContinuation'].update(unit_sha256='0'*64),
+            lambda c:c['nativeContinuation'].update(receipts=[]),
+            lambda c:c['nativeContinuation'].update(pre_admission_refusal={})):
+            self.config=copy.deepcopy(original);change(self.config)
+            with self.subTest(change=change),self.assertRaises(self.codec.InstallError):self.qualify()
 
 
 if __name__=='__main__':unittest.main()
