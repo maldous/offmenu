@@ -15,7 +15,7 @@ import sys
 import time
 
 from stokowski_adapter import SOURCE
-from stokowski_operations import Journal, OperationError, TERMINAL, operation_key, validated, digest, candidate_check_code, workspace_path, ENRICHMENT_PROFILE
+from stokowski_operations import Journal, OperationError, TERMINAL, operation_key, validated, digest, candidate_check_code, workspace_path, ENRICHMENT_PROFILE, UNIT_PROFILE, unit_targets
 from stokowski_mcp import WindmillMCP
 from symphony_tasks import load_manifest, runtime_lease_ids
 from symphony_workspace import checkpoint
@@ -29,13 +29,184 @@ def git(root,*args):
     return subprocess.check_output(['git','-C',str(root),*args],text=True).strip()
 
 
+def completed_native(runtime, issue):
+    """Read and qualify the original native result and finished lease only."""
+    runtime = Path(runtime)
+    if not runtime.is_absolute() or runtime != runtime.resolve():
+        raise OperationError('Aliased native runtime')
+    manifest = load_manifest(runtime/'manifest.json',expected_branch=None)
+    if issue not in manifest['tasks'] or 'stage' in manifest['tasks'][issue]:
+        raise OperationError('Expected an admitted coding task')
+    paths = [runtime/name for name in ('manifest.json','current-admission.json',
+        'capacity-policy.json','provider-proof.json')]
+    paths += [runtime/'requests'/(issue+'.json')]
+    paths += [runtime/'attempts'/issue/name for name in
+              ('receipt.json','intent.json','dispatch-intent.json')]
+    if any(path != path.resolve() or not path.is_file() for path in paths):
+        raise OperationError('Aliased or missing native evidence')
+    receipt_path = runtime/'attempts'/issue/'receipt.json'
+    receipt = json.loads(receipt_path.read_text())
+    workspace = runtime/'workspaces'/issue
+    original = receipt.get('output_sha256',{})
+    if (workspace != workspace.resolve() or receipt.get('status') != 'succeeded'
+        or receipt.get('child_tree_gone') is not True or receipt.get('scope_violations') != []
+        or receipt.get('source_head') != manifest['base_revision']
+        or git(workspace,'rev-parse','HEAD') != manifest['base_revision']
+        or git(workspace,'branch','--show-current') != manifest['branch']):
+        raise OperationError('Coding output is not reconciled against its admitted source')
+    request_path = runtime/'requests'/(issue+'.json')
+    request = json.loads(request_path.read_text())
+    native_binding = dict(branch=manifest['branch'],head=manifest['base_revision'],
+        owner=manifest['tasks'][issue]['owner'],write_roots=manifest['tasks'][issue]['allowed_paths'],
+        resources=manifest['tasks'][issue]['resources'],
+        task_sha256=digest(dict(runtime=str(runtime),manifest=manifest,request=request)))
+    lease = runtime_lease_ids(runtime,manifest)[issue]
+    intent = json.loads((runtime/'attempts'/issue/'intent.json').read_text())
+    dispatch = json.loads((runtime/'attempts'/issue/'dispatch-intent.json').read_text())
+    admission = json.loads((runtime/'current-admission.json').read_text())
+    entry = dict(issue=issue,issue_id=manifest['tasks'][issue]['issue_id'],
+                 runtime=str(runtime),admission_sha256=file_hash(runtime/'current-admission.json'))
+    policy = json.loads((runtime/'capacity-policy.json').read_text())
+    database = Path(policy['symphony']['pool_path'])/'state.sqlite'
+    with sqlite3.connect(database.as_uri()+'?mode=ro',uri=True) as db:
+        row = db.execute('SELECT status,outcome,binding,fingerprint FROM leases WHERE id=?',(lease,)).fetchone()
+    if (receipt.get('origin') != 'native-coding' or receipt.get('exit_code') != 0
+        or receipt.get('turn_completed') is not True or not receipt.get('session_id')
+        or receipt.get('source_identity_changed') is not False
+        or receipt.get('final_head') != manifest['base_revision']
+        or receipt.get('final_branch') != manifest['branch']
+        or receipt.get('parent_runtime') != str(runtime) or receipt.get('issue') != issue
+        or receipt.get('parent_binding') != native_binding
+        or receipt.get('binding_sha256') != digest(native_binding) or receipt.get('lease') != lease
+        or intent != dict(lease=lease,binding=native_binding)
+        or dispatch.get('expected_lease') != lease or dispatch.get('owner') != native_binding['owner']
+        or dispatch.get('entry_sha256') != digest(entry)
+        or dispatch.get('manifest_sha256') != file_hash(runtime/'manifest.json')
+        or dispatch.get('request_sha256') != file_hash(request_path)
+        or dispatch.get('provider_proof_sha256') != file_hash(runtime/'provider-proof.json')
+        or admission.get('manifest_sha256') != file_hash(runtime/'manifest.json')
+        or admission.get('request_sha256') != file_hash(request_path)
+        or row is None or row[:2] != ('finished','succeeded')
+        or json.loads(row[2]) != native_binding or row[3] != digest(native_binding)
+        or not original or not all(any(name == allowed or name.startswith(allowed+'/')
+            for allowed in manifest['tasks'][issue]['allowed_paths']) for name in original)):
+        raise OperationError('Origin is not an immutable finished native result')
+    from stokowski_worker import changed_paths
+    if set(changed_paths(workspace,manifest['base_revision'])) != set(original):
+        raise OperationError('Native output scope changed')
+    for name,sha in original.items():
+        path = workspace/name
+        if (path != path.resolve() or not path.is_file() or path.stat().st_nlink != 1
+            or file_hash(path) != sha):
+            raise OperationError('Coding output changed after its receipt')
+    return manifest,receipt
+
+
+
+
+def prepare_completed_native(runtime, issue, *, candidate_root, template):
+    """Assemble exact native output once; bind existing Journal, never execute it."""
+    import fcntl
+    import tempfile
+    import re
+    runtime,candidate=Path(runtime),Path(candidate_root)
+    manifest,receipt=completed_native(runtime,issue)
+    fields={'profile','policy_sha256','runner_sha256','executor_sha256','git_author',
+            'validation_targets','validation_scope','source_repository'}
+    if set(template)!=fields or template['profile']!=UNIT_PROFILE:
+        raise OperationError('Root-selected focused validation template required')
+    unit_targets(template['validation_targets'],template['validation_scope'])
+    author=template['git_author']
+    if (set(author)!={'name','email'} or any(not isinstance(v,str) or not v.strip()
+        or len(v)>256 or any(c in v for c in '\n\r<>') for v in author.values()) or '@' not in author['email']):
+        raise OperationError('Root-approved Git identity required')
+    repository=Path(template['source_repository'])
+    if (not repository.is_absolute() or repository!=repository.resolve()
+        or not candidate.is_absolute() or candidate!=candidate.resolve()
+        or candidate==repository or candidate.is_relative_to(runtime/'workspaces')):
+        raise OperationError('Private candidate and canonical object repository required')
+    if git(repository,'rev-parse','--show-toplevel')!=str(repository):
+        raise OperationError('Contribution object store is not project repository')
+    task=manifest['tasks'][issue];sha=file_hash(runtime/'attempts'/issue/'receipt.json')
+    branch='bugfix/native-'+issue.lower()+'-'+sha[:16]
+    spec=dict(version=1,issue=issue,issue_id=task['issue_id'],owner=task['owner'],stage='validate',
+        head=manifest['base_revision'],base=manifest['base_revision'],branch=branch,
+        tree=git(repository,'rev-parse',manifest['base_revision']+'^{tree}'),native_receipt_sha256=sha,
+        outputs=receipt['output_sha256'],acceptance_sha256=digest(dict(task=task,
+            native_receipt_sha256=sha,profile=UNIT_PROFILE)),
+        **{k:template[k] for k in fields-{'git_author','source_repository'}})
+    validated(spec)
+    directory=runtime/'contributions'/issue
+    if directory!=directory.resolve(): raise OperationError('Aliased contribution preparation')
+    directory.mkdir(parents=True,exist_ok=True,mode=0o700)
+    fd=os.open(directory/'producer.lock',os.O_CREAT|os.O_RDWR|os.O_NOFOLLOW,0o600)
+    try:
+        fcntl.flock(fd,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        intent=dict(runtime=str(runtime),issue=issue,candidate_root=str(candidate),template=template,native_receipt_sha256=sha)
+        path=directory/'intent.json'
+        if path.exists():
+            if path!=path.resolve() or json.loads(path.read_bytes())!=intent:
+                raise OperationError('Conflicting contribution intent')
+        else:
+            if candidate.exists(): raise OperationError('Unowned candidate needs reconciliation')
+            checkpoint(path,intent)
+        # A private index writes ordinary Git objects without touching any HEAD,
+        # working tree, shared index or native receipt. Author is assembly owner.
+        environment={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8','HOME':str(directory),
+            'GIT_CONFIG_NOSYSTEM':'1','GIT_CONFIG_GLOBAL':'/dev/null',
+            'GIT_AUTHOR_NAME':author['name'],'GIT_AUTHOR_EMAIL':author['email'],
+            'GIT_COMMITTER_NAME':author['name'],'GIT_COMMITTER_EMAIL':author['email'],
+            'GIT_AUTHOR_DATE':'2000-01-01T00:00:00+0000','GIT_COMMITTER_DATE':'2000-01-01T00:00:00+0000'}
+        command=['git','-c','safe.directory='+str(repository),'-c','core.hooksPath=/dev/null','-C',str(repository)]
+        with tempfile.TemporaryDirectory(prefix='index-',dir=directory) as temporary:
+            environment['GIT_INDEX_FILE']=str(Path(temporary)/'index')
+            def run(*args,data=None):
+                return subprocess.check_output(command+list(args),input=data,env=environment).decode().strip()
+            run('read-tree',spec['base'])
+            workspace=runtime/'workspaces'/issue
+            for name,expected in spec['outputs'].items():
+                output=workspace/name;body=output.read_bytes()
+                if hashlib.sha256(body).hexdigest()!=expected: raise OperationError('Native output drift')
+                mode='100755' if output.stat().st_mode&0o100 else '100644'
+                blob=run('hash-object','-w','--stdin',data=body)
+                run('update-index','--add','--cacheinfo',mode,blob,name)
+            tree=run('write-tree')
+            message=(issue+': native coding contribution\n\nNative-Session: '+receipt['session_id']+
+                     '\nNative-Receipt-SHA256: '+sha+'\n')
+            head=run('commit-tree',tree,'-p',spec['base'],data=message.encode())
+            ref='refs/heads/'+branch
+            existing=subprocess.run(command+['rev-parse','--verify',ref],env=environment,capture_output=True,text=True)
+            if existing.returncode==0 and existing.stdout.strip()!=head:
+                raise OperationError('Conflicting immutable contribution ref')
+            run('update-ref',ref,head,head if existing.returncode==0 else '0'*40)
+            if not candidate.exists():
+                bundle=Path(temporary)/'source.bundle'
+                run('bundle','create',str(bundle),ref)
+                clone=Path(temporary)/'candidate'
+                subprocess.run(['git','clone','--no-hardlinks','--single-branch','--branch',branch,str(bundle),str(clone)],env={k:v for k,v in environment.items() if k!='GIT_INDEX_FILE'},check=True,capture_output=True)
+                candidate.parent.mkdir(parents=True,exist_ok=True,mode=0o700)
+                os.rename(clone,candidate)
+        spec['head']=head
+        spec['tree']=tree
+        completed_native(runtime,issue)
+        spec_path=directory/'spec.json'
+        if spec_path.exists():
+            if spec_path!=spec_path.resolve() or json.loads(spec_path.read_bytes())!=spec:
+                raise OperationError('Immutable contribution spec drift')
+        else: checkpoint(spec_path,spec)
+        key=bind(runtime,spec,candidate_root=candidate)
+        return dict(operation_key=key,candidate_root=str(candidate),source_head=head,
+            spec_path=str(spec_path),spec_sha256=file_hash(spec_path))
+    finally:
+        os.close(fd)
+
 def bind(runtime,spec,derivation_reason=None,*,candidate_root=None):
     runtime = runtime.resolve()
     manifest = load_manifest(runtime/'manifest.json',expected_branch=None)
     validated(spec)
     if spec['version'] != 1:
         raise OperationError('Reviewed extraction requires bind_extraction')
-    enrichment = spec['profile'] == ENRICHMENT_PROFILE
+    enrichment = spec['profile'] in (ENRICHMENT_PROFILE,UNIT_PROFILE)
     if candidate_root is not None and not enrichment:
         raise OperationError('Explicit native candidate root requires enrichment profile')
     candidate = SOURCE
@@ -106,7 +277,8 @@ def bind(runtime,spec,derivation_reason=None,*,candidate_root=None):
             or admission.get('request_sha256') != file_hash(request_path)
             or row is None or row[:2] != ('finished','succeeded')
             or json.loads(row[2]) != native_binding or row[3] != digest(native_binding)
-            or spec['outputs'] != original or set(original) != set(manifest['tasks'][issue]['allowed_paths'])):
+            or spec['outputs'] != original
+            or (spec['profile'] == ENRICHMENT_PROFILE and set(original) != set(manifest['tasks'][issue]['allowed_paths']))):
             raise OperationError('Enrichment origin is not an immutable finished native result')
         if git(candidate,'rev-list','--parents','-n','1',spec['head']).split() != [spec['head'],spec['base']]:
             raise OperationError('Candidate must be the direct reviewed contribution')
