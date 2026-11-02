@@ -69,7 +69,7 @@ class NativePublicationProducerTests(unittest.TestCase):
             review_sha256=adapter.digest(self.review))
         self.policy=dict(version=1,kind='native-source-publication-policy-v1',owner=c.config['owner'],
             automatic_integration_enabled=True,
-            project_id=f.manifest['project_id'],controller_runtime='/home/user/src/offmenu/.delivery/stokowski/coordinator',
+            project_ids=['ce60c1ab-a732-4a71-8471-14c9dc393886','ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0'],controller_runtime='/home/user/src/offmenu/.delivery/stokowski/coordinator',
             source_head=c.config['source_head'],owner_python_sha256='a'*64,
             source_sha256={'tools/delivery/native_publisher_invocation.py':'b'*64},
             profiles={'enrichment-resilience-focused':dict(allowed_paths=[f.output]),
@@ -81,7 +81,7 @@ class NativePublicationProducerTests(unittest.TestCase):
                 'src/offmenu/__init__.py','src/offmenu/delivery/__init__.py')},
             binding={},snapshot={},plan={},workspace='/unused',integration_admission={},native_policy=self.policy)
         self.request=dict(version=1,mode='prepare',issue=self.issue.identifier,issue_id=self.issue.id,
-            project_id=self.policy['project_id'],owner=self.policy['owner'],unit_sha256=helper.fingerprint(self.unit),
+            project_id=f.manifest['project_id'],owner=self.policy['owner'],unit_sha256=helper.fingerprint(self.unit),
             packet_sha256=helper.fingerprint(self.packet))
         self.root=f.root/'publisher';self.root.mkdir(mode=0o700)
 
@@ -154,6 +154,11 @@ class NativePublicationProducerTests(unittest.TestCase):
 
     def test_generic_python_profile_and_dynamic_template_are_policy_bound(self):
         c=self.qualify()['config'];b=c['binding'];s=c['snapshot'];a=c['integration_admission']
+        grant=copy.deepcopy(c)
+        grant['native_policy']['profiles']['delivery-unit-focused']['allowed_paths'].append('docs/development/project-aware-intake.md')
+        helper.native_policy(grant)
+        grant['native_policy']['profiles']['delivery-unit-focused']['allowed_paths'].append('docs/development/foreign.md')
+        with self.assertRaises(helper.InvocationHold):helper.native_policy(grant)
         # Codec association only: the existing profile executor and original
         # reviewer independently qualify the actual generic source in122/129.
         outputs={'tools/delivery/stokowski_adapter.py':'a'*64}
@@ -173,8 +178,11 @@ class NativePublicationProducerTests(unittest.TestCase):
                 installer._integration_metadata(bad)
         path=self.f.root/'generic.json';path.write_text(json.dumps(c))
         script="""import fs from 'node:fs';import assert from 'node:assert/strict';
-import {validateConfig,selectNativeConfig,fingerprint} from './tools/delivery/github-app-publisher.mjs';
+import {validateConfig,selectNativeConfig,fingerprint,qualifyNativePolicy} from './tools/delivery/github-app-publisher.mjs';
 const c=JSON.parse(fs.readFileSync(process.argv[1]));c.workspace='/var/lib/offmenu-publisher/integration/transaction-'+fingerprint(c.binding);
+const scoped=structuredClone(c);scoped.native_policy.profiles['delivery-unit-focused'].allowed_paths.push('docs/development/project-aware-intake.md');
+qualifyNativePolicy(scoped);scoped.native_policy.profiles['delivery-unit-focused'].allowed_paths.push('docs/development/foreign.md');
+assert.throws(()=>qualifyNativePolicy(scoped));
 const who={uid:984,euid:984,gid:976,egid:976};validateConfig(c,who);
 const base=structuredClone(c);base.binding.issue_id='12345678-1234-1234-1234-123456789abc';
 const n=c.snapshot.native_runtime,request={version:1,mode:'observe',operation_id:fingerprint(c.binding),

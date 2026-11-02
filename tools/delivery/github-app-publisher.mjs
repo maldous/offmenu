@@ -102,10 +102,13 @@ export function validateConfig(c, identity) {
 
 export function qualifyNativePolicy(c) {
   const p=c.native_policy;
-  check(c.version===1 && exact(p,['version','kind','owner','project_id','controller_runtime',
-    'source_head','source_sha256','owner_python_sha256','profiles','automatic_integration_enabled']) && p.version===1 &&
+  const extra=Object.hasOwn(p??{},'project_source')?['project_source']:[];
+  check(c.version===1 && exact(p,['version','kind','owner','project_ids','controller_runtime',
+    'source_head','source_sha256','owner_python_sha256','profiles','automatic_integration_enabled',...extra]) && p.version===1 &&
     p.kind==='native-source-publication-policy-v1' && p.owner===c.logicalOwner && p.automatic_integration_enabled===true &&
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(p.project_id) &&
+    Array.isArray(p.project_ids) && p.project_ids.length>0 && p.project_ids.length<=2 &&
+    new Set(p.project_ids).size===p.project_ids.length && p.project_ids.every(v=>
+      ['ce60c1ab-a732-4a71-8471-14c9dc393886','ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0'].includes(v)) &&
     p.source_head===c.sourceHead && hex(p.owner_python_sha256) &&
     typeof p.controller_runtime==='string' && /^\/home\/user\/src\/offmenu\/\.delivery\/stokowski\/[a-zA-Z0-9_./-]+$/.test(p.controller_runtime) &&
     !p.controller_runtime.includes('//') && !p.controller_runtime.split('/').some(v=>v==='.'||v==='..') &&
@@ -116,8 +119,16 @@ export function qualifyNativePolicy(c) {
     Object.entries(p.profiles).every(([n,s])=>['enrichment-resilience-focused','delivery-unit-focused'].includes(n) &&
       exact(s,['allowed_paths']) && Array.isArray(s.allowed_paths) && s.allowed_paths.length>0 && s.allowed_paths.length<=16 &&
       new Set(s.allowed_paths).size===s.allowed_paths.length && s.allowed_paths.every(v=>typeof v==='string' &&
-        /^(?:tools\/delivery|tests\/delivery|src\/offmenu\/delivery|tests\/web)\/[a-zA-Z0-9_.-]+$/.test(v) &&
-        (n!=='delivery-unit-focused'||v.endsWith('.py')))));
+        /^(?:(?:tools\/delivery|tests\/delivery|src\/offmenu\/delivery|tests\/web)\/[a-zA-Z0-9_.-]+|docs\/development\/project-aware-intake\.md)$/.test(v) &&
+        (n!=='delivery-unit-focused'||v.endsWith('.py')||v==='docs/development/project-aware-intake.md'))));
+  if(extra.length) {
+    const s=p.project_source;
+    check(exact(s,['repository','branch','origin','source_repository','seed','accepted_facts_path']) &&
+      s.repository==='maldous/offmenu' && s.branch==='develop' && s.origin==='git@github.com:maldous/offmenu.git' &&
+      s.source_repository==='/home/user/src/offmenu' &&
+      s.accepted_facts_path==='/var/lib/offmenu-publisher/accepted-sources/latest.json' &&
+      exact(s.seed,['head','tree']) && hex(s.seed.head,40) && hex(s.seed.tree,40));
+  }
   return p;
 }
 
@@ -163,7 +174,7 @@ function qualifyNativeSourceAdmission(c) {
     same(o.outputs,b.outputs) && Object.keys(b.outputs).length>0 &&
     Object.entries(b.outputs).every(([p,h])=>pathOK(p) && hex(h) &&
       (delegated ?
-        c.native_policy.project_id===n.project_id && a.permission_sha256===fingerprint(c.native_policy) &&
+        c.native_policy.project_ids.includes(n.project_id) && a.permission_sha256===fingerprint(c.native_policy) &&
         c.native_policy.profiles[o.profile]?.allowed_paths.includes(p) :
         !['docs/development/','tools/delivery/','tests/delivery/','src/offmenu/delivery/'].some(v=>p.startsWith(v)))) &&
     ref(o.native_receipt) && ref(o.validation_receipt) &&
@@ -298,7 +309,7 @@ export function selectNativeConfig(base,request,{readAdmission}={}) {
   const mutable=['binding','snapshot','plan','workspace','integration_admission','nativeContinuation'];
   check(Object.entries(base).every(([k,v])=>mutable.includes(k)||same(value[k],v)) &&
     fingerprint(value.binding)===request.operation_id && value.workspace===`${CLAIM}/transaction-${request.operation_id}` &&
-    value.snapshot.native_runtime.project_id===policy.project_id &&
+    policy.project_ids.includes(value.snapshot.native_runtime.project_id) &&
     value.integration_admission.permission_sha256===fingerprint(policy));
   validateConfig(value,{uid:base.publisherUid,euid:base.publisherUid,gid:base.publisherGid,egid:base.publisherGid});
   qualifyNativeRequest(value,request);

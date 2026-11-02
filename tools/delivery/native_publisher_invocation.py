@@ -48,6 +48,7 @@ INNER = {'version', 'mode', 'operation_id', 'issue_id', 'project_id', 'owner',
 STATUSES = {'ready', 'pending', 'unknown', 'verified', 'denied', 'failed'}
 OWNER_SOURCE = Path('/opt/offmenu-stokowski-current/source')
 OWNER_PYTHON = Path('/opt/offmenu-stokowski-current/venv/bin/python')
+ACCEPTED = Path('/var/lib/offmenu-publisher/accepted-sources')
 
 
 class InvocationHold(ValueError):
@@ -110,14 +111,18 @@ def uuid(value):
 def native_policy(config):
     """One Root-sealed reusable delegation, never a packet-supplied grant."""
     p=config.get('native_policy')
-    require(exact(p, {'version','kind','owner','project_id','controller_runtime',
-        'source_head','source_sha256','owner_python_sha256','profiles','automatic_integration_enabled'}), 'native_policy_fields')
+    optional={'project_source'} if type(p) is dict and 'project_source' in p else set()
+    require(exact(p, {'version','kind','owner','project_ids','controller_runtime',
+        'source_head','source_sha256','owner_python_sha256','profiles','automatic_integration_enabled'} | optional), 'native_policy_fields')
     require(type(p['version']) is int and p['version'] == 1
         and p['kind'] == 'native-source-publication-policy-v1'
         and p['owner'] == config['logicalOwner'] and config['version'] == 1
         and p['automatic_integration_enabled'] is True,
         'native_policy_identity')
-    uuid(p['project_id'])
+    require(type(p['project_ids']) is list and 1 <= len(p['project_ids']) <= 2
+        and len(set(p['project_ids'])) == len(p['project_ids'])
+        and set(p['project_ids']) <= {'ce60c1ab-a732-4a71-8471-14c9dc393886','ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0'},
+        'native_policy_projects')
     root=p['controller_runtime']
     require(type(root) is str and root.startswith('/home/user/src/offmenu/.delivery/stokowski/')
         and re.fullmatch(r'/[a-zA-Z0-9_./-]{1,511}',root)
@@ -137,10 +142,248 @@ def native_policy(config):
             and 1 <= len(scope['allowed_paths']) <= 16
             and len(set(scope['allowed_paths'])) == len(scope['allowed_paths']), 'native_policy_profile')
         for path in scope['allowed_paths']:
-            require(type(path) is str and re.fullmatch(r'(?:tools/delivery|tests/delivery|src/offmenu/delivery|tests/web)/[a-zA-Z0-9_.-]+',path),
+            require(type(path) is str and re.fullmatch(r'(?:(?:tools/delivery|tests/delivery|src/offmenu/delivery|tests/web)/[a-zA-Z0-9_.-]+|docs/development/project-aware-intake\.md)',path),
                 'native_policy_output')
-            require(name != 'delivery-unit-focused' or path.endswith('.py'),'native_policy_python_output')
+            require(name != 'delivery-unit-focused' or (path.endswith('.py') or path == 'docs/development/project-aware-intake.md'),'native_policy_python_output')
+    if optional:project_source(p['project_source'])
     return p
+
+
+def project_source(value):
+    require(exact(value,{'repository','branch','origin','source_repository','seed','accepted_facts_path'})
+        and value['repository'] == 'maldous/offmenu' and value['branch'] == 'develop'
+        and value['origin'] == 'git@github.com:maldous/offmenu.git'
+        and value['source_repository'] == '/home/user/src/offmenu'
+        and value['accepted_facts_path'] == str(ACCEPTED/'latest.json')
+        and exact(value['seed'],{'head','tree'})
+        and all(type(value['seed'][k]) is str and re.fullmatch('[0-9a-f]{40}',value['seed'][k])
+            for k in ('head','tree')), 'accepted_source_policy')
+    return value
+
+
+def accepted_fact(value, *, root=ACCEPTED, claim_root=CLAIM):
+    require(exact(value,{'schema','repository','branch','head','tree','parents','base','candidate_head','pr_url',
+        'operation_id','unit_sha256','packet_sha256','policy_sha256','helper_receipt','previous','observed_at'})
+        and value['schema'] == 'offmenu-accepted-project-source/1'
+        and value['repository'] == 'maldous/offmenu' and value['branch'] == 'develop'
+        and all(type(value[k]) is str and re.fullmatch('[0-9a-f]{40}',value[k])
+            for k in ('head','tree','base','candidate_head'))
+        and value['parents'] == [value['base'],value['candidate_head']]
+        and all(hex64(value[k]) for k in ('operation_id','unit_sha256','packet_sha256','policy_sha256'))
+        and type(value['pr_url']) is str and re.fullmatch(r'https://github.com/maldous/offmenu/pull/[1-9][0-9]*',value['pr_url'])
+        and type(value['observed_at']) is int and value['observed_at'] > 0,'accepted_source_fact')
+    ref=value['helper_receipt'];key=value['operation_id']
+    require(exact(ref,{'path','sha256'}) and hex64(ref['sha256']) and type(ref['path']) is str
+        and re.fullmatch(re.escape(str(claim_root/('transaction-'+key)))+r'/native-invocation-[0-9a-f-]{36}\.json',ref['path']),
+        'accepted_source_receipt')
+    previous=value['previous']
+    if type(previous) is dict and previous.get('schema') == 'offmenu-accepted-project-source-seed/1':
+        require(exact(previous,{'schema','head','tree','policy_sha256'}) and hex64(previous['policy_sha256'])
+            and all(type(previous[k]) is str and re.fullmatch('[0-9a-f]{40}',previous[k]) for k in ('head','tree'))
+            and previous['head'] == value['base'],'accepted_source_seed')
+    else:accepted_reference(previous,root=root)
+    return value
+
+
+def accepted_reference(value, *, root=ACCEPTED):
+    require(exact(value,{'path','sha256'}) and type(value['path']) is str and hex64(value['sha256'])
+        and re.fullmatch(re.escape(str(root/'by-operation'))+r'/[0-9a-f]{64}\.json',value['path']),
+        'accepted_source_reference')
+    return value
+
+
+def read_accepted_fact(reference, descriptor, *, root=ACCEPTED, uid=984, claim_root=CLAIM):
+    """Public metadata only; each immutable hop must anchor at the Root seed."""
+    project_source(descriptor);accepted_reference(reference,root=root)
+    if root == ACCEPTED:
+        for parent in root.parents:_directory(parent,0)
+    _directory(root,uid,0o755);_directory(root/'by-operation',uid,0o755)
+    first=None;current=reference;seen=set()
+    for _ in range(128):
+        require(current['path'] not in seen,'accepted_source_cycle');seen.add(current['path'])
+        raw=_read(Path(current['path']),uid,0o444)
+        require(sha(raw) == current['sha256'],'accepted_source_hash')
+        fact=accepted_fact(decode(raw),root=root,claim_root=claim_root)
+        require(Path(current['path']).name == fact['operation_id']+'.json','accepted_source_operation_path')
+        if first is None:first=fact
+        if fact['head'] == descriptor['seed']['head']:
+            require(fact['tree'] == descriptor['seed']['tree'],'accepted_source_seed_tree');return first
+        previous=fact['previous']
+        if previous.get('schema') == 'offmenu-accepted-project-source-seed/1':
+            require(previous == dict(schema='offmenu-accepted-project-source-seed/1',
+                **descriptor['seed'],policy_sha256=fingerprint(descriptor)),'accepted_source_seed_pin')
+            return first
+        accepted_reference(previous,root=root)
+        prior_raw=_read(Path(previous['path']),uid,0o444)
+        require(sha(prior_raw) == previous['sha256'],'accepted_source_hash')
+        prior=accepted_fact(decode(prior_raw),root=root,claim_root=claim_root)
+        require(prior['head'] == fact['base'],'accepted_source_parent_chain')
+        current=previous
+    raise InvocationHold('accepted_source_chain_bound')
+
+
+def accepted_checkpoint_json(raw):
+    """Decode only JSON-compatible MessagePack from the existing saver schema.
+
+    No pickle, extension objects, imports or arbitrary object constructors.
+    Stokowski's pinned interpreter intentionally has no LangGraph dependency.
+    """
+    import struct
+    def need(ok):require(ok, "accepted_source_checkpoint_json")
+    offset = 0
+    def take(n):
+        nonlocal offset
+        need(0 <= n <= LIMIT and offset+n <= len(raw))
+        value = raw[offset:offset+n]
+        offset += n
+        return value
+    def unpack(depth=0):
+        need(depth < 64)
+        tag = take(1)[0]
+        if tag <= 0x7f:
+            return tag
+        if tag >= 0xe0:
+            return tag-256
+        if 0xa0 <= tag <= 0xbf:
+            return take(tag & 31).decode('utf8')
+        if tag in (0xc0, 0xc2, 0xc3):
+            return {0xc0:None, 0xc2:False, 0xc3:True}[tag]
+        formats = {0xca:'>f',0xcb:'>d',0xcc:'>B',0xcd:'>H',0xce:'>I',0xcf:'>Q',
+                   0xd0:'>b',0xd1:'>h',0xd2:'>i',0xd3:'>q'}
+        if tag in formats:
+            fmt = formats[tag]
+            return struct.unpack(fmt,take(struct.calcsize(fmt)))[0]
+        if tag in (0xd9,0xda,0xdb):
+            n = int.from_bytes(take({0xd9:1,0xda:2,0xdb:4}[tag]),'big')
+            return take(n).decode('utf8')
+        if 0x90 <= tag <= 0x9f or tag in (0xdc,0xdd):
+            n = tag & 15 if tag < 0xa0 else int.from_bytes(take(2 if tag==0xdc else 4),'big')
+            need(n <= LIMIT)
+            return [unpack(depth+1) for _ in range(n)]
+        if 0x80 <= tag <= 0x8f or tag in (0xde,0xdf):
+            n = tag & 15 if tag < 0x90 else int.from_bytes(take(2 if tag==0xde else 4),'big')
+            need(n <= LIMIT)
+            out = {}
+            for _ in range(n):
+                key = unpack(depth+1)
+                need(isinstance(key,str) and key not in out)
+                out[key] = unpack(depth+1)
+            return out
+        raise InvocationHold('accepted_source_checkpoint_type')
+    value = unpack()
+    need(offset == len(raw))
+    return value
+
+
+def canonical_checkpoint(directory, inner, *, uid=984):
+    """Read the actual existing Controller checkpoint, without running its graph."""
+    state=decode(_read(directory/'state.json',uid,0o600))
+    binding=decode(_read(directory/'binding.json',uid,0o600))
+    require(fingerprint(binding) == inner['operation_id'] and binding['version'] == 2
+        and 'source_projection' not in binding and state.get('binding_sha256') == inner['operation_id']
+        and state.get('status') == 'merge-verified' and state.get('merge_effect') == 'verified'
+        and hex64(state.get('qualification_sha256')),'accepted_source_unverified')
+    database=directory/'graph.sqlite';info=database.lstat()
+    require(database.resolve() == database and stat.S_ISREG(info.st_mode) and info.st_uid == uid
+        and info.st_nlink == 1 and stat.S_IMODE(info.st_mode) == 0o600,'accepted_source_checkpoint_custody')
+    wal=directory/'graph.sqlite-wal'
+    require(not wal.exists() or (not wal.is_symlink() and wal.stat().st_size == 0),'accepted_source_checkpoint_wal')
+    with sqlite3.connect(database.as_uri()+'?mode=ro&immutable=1',uri=True) as db:
+        row=db.execute("SELECT type,checkpoint FROM checkpoints WHERE thread_id=? AND checkpoint_ns='' ORDER BY checkpoint_id DESC LIMIT 1",
+            (inner['operation_id'],)).fetchone()
+    require(row is not None and row[0] == 'msgpack' and type(row[1]) is bytes and len(row[1])<=524288,
+        'accepted_source_checkpoint')
+    decoded=accepted_checkpoint_json(row[1])
+    channels=decoded['channel_values'];observation=channels['observation'];commit=observation.get('merge_commit',{})
+    github=observation.get('github',{});pr=state.get('publication',{}).get('pr_number')
+    require(channels['result'] == state and github.get('merged') is True
+        and github.get('repository') == 'maldous/offmenu' and github.get('number') == pr
+        and type(pr) is int and pr>0 and state.get('publication',{}).get('effect') == 'verified'
+        and observation.get('develop_contains_merge') is True
+        and commit.get('sha') == state.get('merge_commit_sha') == github.get('merge_commit_sha')
+        and type(commit.get('sha')) is str and re.fullmatch('[0-9a-f]{40}',commit['sha'])
+        and commit.get('parents') == [binding['base'],binding['head']] and commit.get('tree') == binding['tree']
+        and type(observation.get('observed_at')) in (int,float) and observation['observed_at']>0,
+        'accepted_source_canonical_readback')
+    return binding,commit,pr,int(observation['observed_at'])
+
+
+def publish_accepted_source(config, value, *, write, root=ACCEPTED, claim_root=CLAIM, uid=984):
+    """Append metadata after an actual stopped verified invocation; never HTTP."""
+    descriptor=project_source(native_policy(config)['project_source'])
+    record=value['receipt']['body'];inner=record['intent']['request'];key=inner['operation_id']
+    require(value['status'] == 'complete' and record['terminal']['child_tree_gone'] is True
+        and value['response'] is not None and value['response']['status'] == 'verified'
+        and record['intent']['phase'] == 'integration','accepted_source_terminal')
+    directory=claim_root/('transaction-'+key);path=root/'by-operation'/(key+'.json')
+    if not write:
+        if not path.exists():return None
+        raw=_read(path,uid,0o444);reference=dict(path=str(path),sha256=sha(raw))
+        fact=read_accepted_fact(reference,descriptor,root=root,uid=uid,claim_root=claim_root)
+        require(all(fact[k] == inner[k] for k in ('operation_id','unit_sha256','packet_sha256')),
+            'accepted_source_identity')
+        return dict(reference=reference,fact=fact)
+    _directory(root,uid,0o755)
+    lock=os.open(claim_root/'repository-owner.lock',os.O_RDONLY|os.O_NOFOLLOW)
+    try:
+        st=os.fstat(lock)
+        require(stat.S_ISREG(st.st_mode) and st.st_uid == uid and st.st_nlink == 1
+            and stat.S_IMODE(st.st_mode) == 0o600,'accepted_source_lock')
+        fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        claim=decode(_read(claim_root/'active-owner.json',uid,0o600))
+        require(claim == dict(binding_sha256=key,directory=str(directory),owner=inner['owner']),
+            'accepted_source_current_claim')
+        binding,commit,pr,observed=canonical_checkpoint(directory,inner,uid=uid)
+        require(binding == config['binding'],'accepted_source_binding')
+        if not (root/'by-operation').exists():
+            os.mkdir(root/'by-operation',0o700)
+            fd=os.open(root/'by-operation',os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+            try:os.fchmod(fd,0o755);os.fsync(fd)
+            finally:os.close(fd)
+        _directory(root/'by-operation',uid,0o755)
+        pointer_path=root/'latest.json';previous=None
+        if pointer_path.exists() or pointer_path.is_symlink():
+            pointer=decode(_read(pointer_path,uid,0o444))
+            require(exact(pointer,{'schema','latest'}) and pointer['schema'] == 'offmenu-accepted-project-source-pointer/1',
+                'accepted_source_pointer')
+            previous=pointer['latest'];prior=read_accepted_fact(previous,descriptor,root=root,uid=uid,claim_root=claim_root)
+        else:
+            prior=descriptor['seed']
+            previous=dict(schema='offmenu-accepted-project-source-seed/1',**descriptor['seed'],policy_sha256=fingerprint(descriptor))
+        def store(target,obj,replace=False):
+            content=wire(obj);temporary=target.with_name('.'+target.name+'.'+str(os.getpid())+'.tmp') if replace else target
+            fd=os.open(temporary,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+            try:
+                with os.fdopen(fd,'wb',closefd=False) as stream:stream.write(content);stream.flush()
+                os.fchmod(fd,0o444);os.fsync(fd)
+            finally:os.close(fd)
+            if replace:os.replace(temporary,target)
+            fd=os.open(target.parent,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+            try:os.fsync(fd)
+            finally:os.close(fd)
+        if path.exists() or path.is_symlink():
+            raw=_read(path,uid,0o444);reference=dict(path=str(path),sha256=sha(raw))
+            fact=read_accepted_fact(reference,descriptor,root=root,uid=uid,claim_root=claim_root)
+            require(all(fact[k] == inner[k] for k in ('operation_id','unit_sha256','packet_sha256'))
+                and fact['head'] == commit['sha'] and fact['tree'] == commit['tree']
+                and fact['base'] == binding['base'] and fact['candidate_head'] == binding['head']
+                and fact['pr_url'] == 'https://github.com/maldous/offmenu/pull/'+str(pr), 'accepted_source_existing_fact')
+            if prior['head'] != fact['base']:
+                return dict(reference=reference,fact=fact)  # Never rewind a later accepted pointer.
+            require(fact['previous'] == previous,'accepted_source_existing_previous')
+        else:
+            require(prior['head'] == binding['base'],'accepted_source_not_latest_base')
+            fact=dict(schema='offmenu-accepted-project-source/1',repository='maldous/offmenu',branch='develop',
+                head=commit['sha'],tree=commit['tree'],parents=commit['parents'],base=binding['base'],candidate_head=binding['head'],
+                pr_url='https://github.com/maldous/offmenu/pull/'+str(pr),operation_id=key,
+                unit_sha256=inner['unit_sha256'],packet_sha256=inner['packet_sha256'],policy_sha256=binding['policy_sha256'],
+                helper_receipt=dict(path=str(directory/('native-invocation-'+record['intent']['invocation_id']+'.json')),
+                    sha256=value['receipt']['sha256']),previous=previous,observed_at=observed)
+            accepted_fact(fact,root=root,claim_root=claim_root);store(path,fact)
+            reference=dict(path=str(path),sha256=sha(wire(fact)))
+        store(pointer_path,dict(schema='offmenu-accepted-project-source-pointer/1',latest=reference),replace=True)
+        return dict(reference=reference,fact=fact)
+    finally:os.close(lock)
 
 
 def prepare_request(value):
@@ -162,7 +405,7 @@ def derived_config(base, value, inner):
         and all(value[k] == v for k,v in base.items() if k not in mutable | {'nativeContinuation'}),
         'native_prepare_template')
     n=value['snapshot']['native_runtime'];a=value['integration_admission'];b=value['binding']
-    require(n['project_id'] == p['project_id'] and n['owner'] == p['owner']
+    require(n['project_id'] in p['project_ids'] and n['owner'] == p['owner']
         and a['kind'] == 'native-source-reviewed-integration-v1'
         and a['native_origin']['profile'] in p['profiles']
         and set(b['outputs']) and set(b['outputs']) <= set(p['profiles'][a['native_origin']['profile']]['allowed_paths'])
@@ -279,7 +522,7 @@ def qualify_native_publication(base, envelope, current):
     from symphony_capacity import digest
     from native_harness_contract import validate_handoff
     p=native_policy(base);r=prepare_request(envelope)
-    require(r['owner'] == p['owner'] and r['project_id'] == p['project_id']
+    require(r['owner'] == p['owner'] and r['project_id'] in p['project_ids']
         and str(current.runtime) == p['controller_runtime'] and current.owner_custody,
         'native_prepare_owner')
     current.guard();issue=SimpleNamespace(identifier=r['issue'],id=r['issue_id'])
@@ -295,7 +538,7 @@ def qualify_native_publication(base, envelope, current):
     require(source['target'] == 'develop' and handoff['origin']['kind'] == 'native-coding-v1'
         and handoff['origin']['evidence'] == dict(path=str(runtime/'attempts'/issue.identifier/'receipt.json'),
             sha256=file_sha(runtime/'attempts'/issue.identifier/'receipt.json')) and handoff['issue_id'] == issue.id
-        and handoff['project_id'] == p['project_id'] and handoff['owner'] == p['owner'], 'native_prepare_handoff')
+        and handoff['project_id'] == r['project_id'] and handoff['owner'] == p['owner'], 'native_prepare_handoff')
     qualified,_=current.validation_binding(issue.identifier,current.entries[issue.identifier])
     require(qualified == runtime,'native_prepare_validation_runtime')
     selected=read_record(runtime/'validation-bindings.json')['issues'][issue.identifier]
@@ -336,7 +579,7 @@ def qualify_native_publication(base, envelope, current):
         model='unknown',provider='unknown',requested_model=policy['model'],requested_provider=policy['provider'],
         resolved_model=evidence.get('resolved_model'),resolution_status='observed' if evidence.get('resolved_model') else 'unknown')
     rr['evidence_sha256']=fingerprint(rr)
-    n=dict(issue_id=issue.id,project_id=p['project_id'],owner=p['owner'],unit_sha256=r['unit_sha256'],
+    n=dict(issue_id=issue.id,project_id=r['project_id'],owner=p['owner'],unit_sha256=r['unit_sha256'],
         packet_sha256=r['packet_sha256'],source=source)
     b=dict(version=2,repository='maldous/offmenu',pr_number=None,owner=p['owner'],issue_id=issue.id,
         head=source['head'],base=source['base'],tree=source['tree'],head_branch=source['branch'],
@@ -661,7 +904,7 @@ class _Host:
 
     def prepare(self, envelope):
         base,closure=self._sealed();p=native_policy(base);r=prepare_request(envelope)
-        require(r['owner'] == p['owner'] and r['project_id'] == p['project_id'],'native_prepare_owner')
+        require(r['owner'] == p['owner'] and r['project_id'] in p['project_ids'],'native_prepare_owner')
         # Fixed read-only actor boundary: private owner evidence stays private.
         # Root's one-time exact sudo rule permits only this sealed program/flag.
         for path in (*OWNER_SOURCE.parents,*OWNER_PYTHON.parents):
@@ -738,6 +981,7 @@ class _Host:
     def admit(self, inner):
         base,closure=self._sealed()
         config=selected_config(base,inner)
+        self.native_config=config if config is not base else None
         phase=association(config,inner)
         # No legacy-state migration or new Controller initialization.
         _directory(CLAIM, 984, 0o700)
@@ -757,6 +1001,14 @@ class _Host:
     def review(self, directory, inner, closure):
         """Read the original pending checkpoint; no graph setup or side receipt."""
         return pending_review(directory, inner, closure, root=CLAIM, uid=984)
+
+    def accepted_source(self, value, *, write):
+        config=getattr(self,'native_config',None)
+        if (config is None or 'project_source' not in config.get('native_policy',{})
+            or value['status'] != 'complete' or (value['response'] or {}).get('status') != 'verified'):
+            return value
+        facet=publish_accepted_source(config,value,write=write)
+        return dict(value,accepted_source=facet) if facet is not None else value
 
 
 def pending_review(directory, inner, closure, *, root, uid):
@@ -949,15 +1201,16 @@ def _result(envelope, record):
 def validate_result(value, envelope, closure_sha256):
     """Pure126 boundary: a body hash alone is NOT privileged authentication."""
     envelope = request(wire(envelope))
+    optional={'accepted_source'} if type(value) is dict and 'accepted_source' in value else set()
     require(exact(value, {'version', 'kind', 'operation_id', 'invocation_id', 'request_sha256',
-                          'status', 'response', 'receipt'}), 'outer_response')
+                          'status', 'response', 'receipt'} | optional), 'outer_response')
     require(type(value['version']) is int and value['version'] == 1
             and value['kind'] == 'native-publisher-invocation-v1'
             and value['operation_id'] == envelope['request']['operation_id']
             and value['invocation_id'] == envelope['invocation_id']
             and value['request_sha256'] == fingerprint(envelope['request']), 'result_identity')
     if value['receipt'] is None:
-        require(value['status'] == 'not-found' and value['response'] is None, 'missing_receipt')
+        require(not optional and value['status'] == 'not-found' and value['response'] is None, 'missing_receipt')
         return value
     ref = value['receipt']
     require(exact(ref, {'sha256', 'body'}) and ref['sha256'] == sha(wire(ref['body'])), 'receipt_hash')
@@ -996,6 +1249,16 @@ def validate_result(value, envelope, closure_sha256):
             require(terminal['response_sha256'] is None, 'terminal_response')
     expected = 'complete' if terminal and terminal['child_tree_gone'] else 'unknown'
     require(value['status'] == expected and (terminal is not None or value['response'] is None), 'result_status')
+    if optional:
+        facet=value['accepted_source'];inner=envelope['request']
+        require(value['status'] == 'complete' and intent['phase'] == 'integration'
+            and (value['response'] or {}).get('status') == 'verified'
+            and exact(facet,{'reference','fact'}),'accepted_source_facet')
+        accepted_reference(facet['reference']);fact=accepted_fact(facet['fact'])
+        require(facet['reference']['path'] == str(ACCEPTED/'by-operation'/(inner['operation_id']+'.json'))
+            and facet['reference']['sha256'] == sha(wire(fact))
+            and all(fact[k] == inner[k] for k in ('operation_id','unit_sha256','packet_sha256')),
+            'accepted_source_facet_identity')
     return value
 
 
@@ -1024,7 +1287,10 @@ def _invoke(raw, host):
         require(not path.is_symlink(), 'receipt_symlink')
         record = decode(_read(path, uid, 0o600)) if path.exists() else None
         expected = original_receipt_closure(record, closure, grant) if record else closure
-        return validate_result(_result(envelope, record), envelope, expected)
+        value=validate_result(_result(envelope, record), envelope, expected)
+        if hasattr(host,'accepted_source'):
+            value=host.accepted_source(value,write=envelope['mode'] == 'invoke')
+        return validate_result(value,envelope,expected)
     # No lock creation, mkdir, prctl, subprocess, claim or receipt mutation.
     if envelope['mode'] == 'observe':
         return existing()

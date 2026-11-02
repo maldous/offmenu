@@ -23,7 +23,7 @@ Root may seal the optional `native_policy` in the existing publisher config:
   "version": 1,
   "kind": "native-source-publication-policy-v1",
   "owner": "<existing logical owner>",
-  "project_id": "<exact admitted native project UUID>",
+  "project_ids": ["ce60c1ab-a732-4a71-8471-14c9dc393886", "ffb6c7d9-4eff-46eb-a805-99f0cc2edfa0"],
   "controller_runtime": "/home/user/src/offmenu/.delivery/stokowski/<existing coordinator>",
   "source_head": "<accepted installed controller/publisher source head>",
   "source_sha256": {"tools/delivery/native_publisher_invocation.py": "<actual owner source pin>"},
@@ -39,7 +39,8 @@ Root may seal the optional `native_policy` in the existing publisher config:
 The source pins must cover the actual accepted owner source used by qualification
 and match the protected owner config. Profile paths are exact repository file
 allowlists, bounded to sixteen entries; the generic profile permits Python files
-only. Root selects the narrower approved work class, including its file count.
+and the exact reviewed `docs/development/project-aware-intake.md` output. Markdown
+is hashed source data and is never executed. Root selects the narrower approved work class, including its file count.
 The policy is an explicit delegation of ordinary develop integration. It grants
 no release, new credential, caller API or coding-child merge authority.
 
@@ -94,3 +95,47 @@ custody and the already-qualified independent-review reader are explicit test
 boundaries. Generic profile cases test the Python/JavaScript policy association;
 the fixed generic executor and full reviewer admission belong to their existing
 owners. No test installs, reads a real key, calls an API or changes live claims.
+
+## Accepted project source after verified readback
+
+The optional `native_policy.project_source` uses exactly `repository`, `branch`,
+`origin`, `source_repository`, `seed: {head, tree}` and `accepted_facts_path`.
+The repository is `maldous/offmenu`, branch `develop`, origin
+`git@github.com:maldous/offmenu.git`, shared object repository
+`/home/user/src/offmenu`, and pointer path
+`/var/lib/offmenu-publisher/accepted-sources/latest.json`. This descriptor keeps
+project source separate from the sealed control-code source head. The shared
+repository's dirty checkout is never changed by the publisher metadata writer.
+
+Root initially creates the fixed accepted-sources directory as UID 984/GID 976,
+mode 0755. After a new dynamic operation's actual stopped, verified helper
+receipt, the publisher reopens the existing Controller's actual saved canonical
+observation under the repository lock. Only `merge-verified`, exact canonical
+commit/tree/parents/PR and develop ancestry qualify. Repair, unknown or a forged
+status summary cannot stamp a fact. No new API request or merge replay is used.
+
+The append-only public fact is `by-operation/<operation hash>.json`, UID 984,
+mode 0444, schema `offmenu-accepted-project-source/1`, with exactly repository,
+branch, head, tree, parents, base, candidate_head, pr_url, operation_id,
+unit_sha256, packet_sha256, policy_sha256, helper_receipt `{path, sha256}`,
+previous and integer observed_at. Previous is an immutable `{path, sha256}`
+fact reference or the first `offmenu-accepted-project-source-seed/1` marker
+containing head, tree and the fingerprint of the Root-sealed descriptor.
+`latest.json` atomically points to the fact as
+`{schema: offmenu-accepted-project-source-pointer/1, latest: {path, sha256}}`.
+Facts never overwrite; repeated observations retain the first receipt/timestamp
+and cannot rewind the pointer. The chain is bounded and anchored at the sealed
+seed. A partial write or broken chain holds for reconciliation.
+
+The optional outer helper result facet is `accepted_source: {reference, fact}`;
+the original terminal publisher response stays unchanged. Outer observation
+only reads an existing fact. The legacy fixed original operation does not emit
+or downgrade a source seed.
+
+The fixed async accessor
+`native_harness_runtime.verified_canonical_source(current, issue, binding)`
+returns exactly `{fact, evidence: {path, sha256}}`. It pins the installed owner
+policy accessor before import, reads the publisher-owned fixed fact, validates
+custody, digest and seed chain, and correlates the actual selected operation,
+unit, packet, candidate, base, tree and integration policy. The normal outcome
+owner consumes this evidence; writable coordinator projections are not authority.
