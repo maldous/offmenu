@@ -253,7 +253,7 @@ class CurrentWork:
         self.read_only = read_only
         self.runtime = runtime.resolve()
         self.config, self.config_path, self.owner_custody = current_config(runtime)
-        if set(self.config) - {'qualified_successor', 'project_route', 'project_routes', 'completed_native_validations', 'normal_intake', 'native_review_policies', 'native_review_template', 'catalog_versions', 'native_harness_boundaries', 'owner_intake_policy'} != {'version', 'owner', 'runtime_root', 'catalog',
+        if set(self.config) - {'qualified_successor', 'project_route', 'project_routes', 'completed_native_validations', 'completed_executor_revisions', 'normal_intake', 'native_review_policies', 'native_review_template', 'catalog_versions', 'native_harness_boundaries', 'owner_intake_policy'} != {'version', 'owner', 'runtime_root', 'catalog',
                                'source_head', 'source_sha256', 'workflow_sha256', 'policy_sha256', 'installation_sha256'}:
             raise AdmissionError('current_config_fields')
         validated_project_route(self.config.get('project_route', project_route(PROJECT)))
