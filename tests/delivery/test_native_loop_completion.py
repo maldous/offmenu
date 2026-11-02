@@ -92,6 +92,37 @@ class NativeLoopCompletionTests(unittest.TestCase):
             self.assertIsNone(current._native_harness_refill)
             self.assertEqual(native.step.call_count, 1)
 
+    def test_constructor_qualifies_original_native_context_before_refresh_or_save(self):
+        f = self.fixture()
+        native = f.native_harness_fixture()
+        original = adapter.CurrentWork._native_harness_config
+        checked = []
+        def qualify(current):
+            original(current)
+            # The completed-continuation reader enters these actual owner and
+            # original-unit readers; only its protected host boundary is double.
+            current.guard()
+            runtime, manifest, _ = current.context(native.issue.identifier,
+                review=True, observation=True)
+            self.assertEqual(current.state['references'][native.issue.identifier],
+                             current.entries[native.issue.identifier])
+            self.assertIn(native.issue.identifier, manifest['tasks'])
+            checked.append(current.config_sha)
+        before = f.current.state_path.read_bytes()
+        with patch.object(adapter.CurrentWork, '_native_harness_config', new=qualify):
+            opened = adapter.CurrentWork(f.runtime, read_only=True)
+        self.assertEqual(checked, [opened.config_sha])
+        self.assertEqual(f.current.state_path.read_bytes(), before)
+        def refuse(current):
+            qualify(current)
+            raise AdmissionError('original-continuation-held')
+        with patch.object(adapter.CurrentWork, '_native_harness_config', new=refuse), \
+             patch.object(adapter.CurrentWork, 'refresh') as refresh:
+            with self.assertRaisesRegex(AdmissionError, 'original-continuation-held'):
+                adapter.CurrentWork(f.runtime)
+        refresh.assert_not_called()
+        self.assertEqual(f.current.state_path.read_bytes(), before)
+
 
 if __name__ == '__main__':
     unittest.main()

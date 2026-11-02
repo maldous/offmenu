@@ -285,7 +285,6 @@ class CurrentWork:
             raise AdmissionError('current_private_root')
         self._project_routes_config()
         self._native_harness_refill = None
-        self._native_harness_config()
         if 'catalog_versions' in self.config and not self.owner_custody:
             raise AdmissionError('protected_owner_catalog_grants')
         self.catalog = Path(self.config['catalog']) if self.owner_custody else self.private(self.config['catalog'])
@@ -302,6 +301,15 @@ class CurrentWork:
         self.fatal = None
         self.stopping = False
         self.state['accepted_delivery'] = False
+        # Completed native continuations need the original owner header and
+        # catalog entries. Qualify them before refresh can consume or save work.
+        self.guard()
+        catalog = self.catalog_record()
+        if catalog.get('version') != 1 or not isinstance(catalog.get('entries'), list):
+            raise AdmissionError('current_catalog_fields')
+        self.entries = self._active_catalog(catalog)
+        self._native_harness_config()
+        self.entries = {}
         if read_only:
             # Incoming readers reuse all admission/native checks, without an
             # owner refresh, consumption, PID update on disk or journal writes.
