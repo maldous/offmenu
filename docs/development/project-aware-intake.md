@@ -77,7 +77,8 @@ files or configuration. Issue prose and a bare proposal never extend authority.
 Policy `schema` is `offmenu-owner-policy-intake/1`. Its exact fields are:
 
 - `owner`, `source_head`, `source_branch`, `coordinator_runtime`: the existing
-  guarded coordinator identity and accepted source, not a future candidate.
+  guarded **control-code** identity. This is separate from each task's accepted
+  develop base; it must not freeze every future task to the control revision.
 - `expires_at`: a finite epoch deadline for new preparation/publication.
   Expiry does not remove previously admitted catalog history.
 - `resource_ceiling`: the four existing integer resource fields. Normal Pool
@@ -92,7 +93,9 @@ Policy `schema` is `offmenu-owner-policy-intake/1`. Its exact fields are:
 - `contracts`: at most 32 records keyed by exact issue identifier. Each has
   `issue_id`, `project_id`, `assignee_id` (UUID or explicit null), `purpose`,
   `scope`, `input_paths`, `acceptance`, `prompt`, `timeout_seconds`, `resources`
-  and `dependencies` (exact UUID list). Paths, immutable accepted text, resources
+  and `dependencies` (exact UUID list). An explicit `validation_targets` list
+  binds finite contracts to safe unittest IDs; it is never filled from prose.
+  Paths, immutable accepted text, resources
   and dependency identities are owner-approved typed data, never issue prose.
 - Optional `workclass`: `assignee_id` (Matthew's exact UUID), `project_ids`
   (subsets of the two existing routes), `allowed_files`, `max_files:4`, the four
@@ -104,6 +107,35 @@ Policy `schema` is `offmenu-owner-policy-intake/1`. Its exact fields are:
   replacement conditions. CPU/memory/IO/output ceilings are 1000 millicores,
   1.5 GiB, one slot and 512 MiB. Requested model/effort are fixed to the existing
   `gpt-6.1-sol`/`medium` route. No other workclass is introduced.
+- `project_source`: 129's sealed project-source descriptor. Its reader qualifies
+  the initial accepted-develop seed and subsequent verified-publisher source
+  facts. An unreviewed remote tip is never accepted. New deployments require this
+  descriptor; omission retains old same-source compatibility only.
+
+`owner_policy_task_source(config,issue,project,materialize=...)` calls the pinned
+`stokowski_project_source.owner_policy_project_source` API. Only a fresh eligible
+native candidate may request materialization. Read-only artifact/catalog readers
+requalify the original per-instance selection without fetching or writing. The
+helper returns repository/head/tree/issue branch/private checkout plus the
+accepted-develop evidence and immutable selection reference. 129 owns acquisition
+and its proof reader; no compiler-specific clone or source queue is added.
+
+The manifest, handoff, qualification request and admission source bind this task
+head/branch, while control module hashes, capacity policy and provider code stay
+bound to the installed control source. Source inputs are compared to exact Git
+blobs at the task's accepted base. A later verified accepted head can be selected
+for a new issue without changing Root's policy/configuration or retagging an old
+unit. The original source selection reference is retained in admission inputs.
+
+Postcoding producers use `owner_policy_contract` and
+`owner_policy_validation_targets(config,issue,candidate_root=None)`. Targets are
+only explicit sealed finite targets or the qualified plan's check, using exactly
+one of the three permitted delivery-test modules, a class and a `test_` method.
+No arbitrary command/argv is accepted. An optional candidate root validates the
+actual class/method with AST parsing, never imports. Already admitted finite
+units retain their original native source evidence; these accessors do not
+manufacture qualification receipts or rewrite that source. 122/129 own the
+existing postcoding candidate/validation/review wiring.
 
 `CurrentWork.candidates` calls `stokowski_prepare.owner_policy_candidate` only
 for an uncatalogued issue. It checks the guarded source and fresh native Linear

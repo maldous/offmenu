@@ -216,7 +216,7 @@ def prepare_publication(handoff_path, *, handoff_sha256, authenticated_caller,
         for ref in (claim_ref, association['authenticated_observation']):
             require(packet['inputs'].get(ref['path']) == ref['sha256'], 'input_coverage')
         require(packet['inputs'].get(claim_ref['binding_path']) == claim_ref['binding_sha256'], 'input_coverage')
-        policy_path = canonical(source/'tools/delivery/capacity-policy.json')
+        policy_path = canonical((SOURCE if owner_policy else source)/'tools/delivery/capacity-policy.json')
         require(packet['inputs'].get(str(policy_path)) == file_sha(policy_path), 'policy_pin')
         installation_record = pinned(dict(path=packet['installation']['manifest_path'],
                                           sha256=packet['installation']['manifest_sha256']))
@@ -435,6 +435,84 @@ OWNER_CODE_ACCEPTANCE = [
 ]
 
 
+def owner_policy_task_source(config, identifier, project_id, *, materialize=False):
+    """129 owns acquisition and accepted-readback proof; this is its callsite.
+
+    Control pins never become acceptance for a newer remote branch tip. Each
+    instance retains its original accepted source selection across later merges.
+    """
+    from symphony_capacity import AdmissionError, valid_branch
+    policy=owner_intake_policy(config)
+    if 'project_source' not in policy:
+        # Old policy compatibility only, not the advancing-project-source mode.
+        tree=subprocess.check_output(['git','-C',str(SOURCE),'rev-parse','HEAD^{tree}'],text=True).strip()
+        return dict(repository='maldous/offmenu',head=config['source_head'],tree=tree,
+            branch=policy['source_branch'],checkout=str(SOURCE),accepted=None,ref=None)
+    import stokowski_project_source
+    module='tools/delivery/stokowski_project_source.py'
+    if (Path(stokowski_project_source.__file__).resolve()!=SOURCE/module
+        or config['source_sha256'].get(module)!=file_sha(SOURCE/module)):
+        raise AdmissionError('owner_policy_project_source_control_pin')
+    selected=stokowski_project_source.owner_policy_project_source(config,identifier,project_id,materialize=materialize)
+    if (not isinstance(selected,dict)
+        or set(selected)!={'repository','head','tree','branch','checkout','accepted','ref'}
+        or selected['repository']!='maldous/offmenu'
+        or any(not isinstance(selected[k],str) or not re.fullmatch('[0-9a-f]{40}',selected[k]) for k in ('head','tree'))
+        or not valid_branch(selected['branch'])):
+        raise AdmissionError('owner_policy_task_source_schema')
+    path=Path(selected['checkout']);ref=selected['ref'];accepted=selected['accepted']
+    if (path!=path.resolve() or not path.is_relative_to(Path(config['runtime_root']))
+        or not isinstance(ref,dict) or set(ref)!={'path','sha256'}
+        or Path(ref['path'])!=Path(ref['path']).resolve()
+        or not Path(ref['path']).is_relative_to(Path(config['runtime_root']))
+        or file_sha(Path(ref['path']))!=ref['sha256']
+        or not isinstance(accepted,dict) or set(accepted)!={'branch','head','tree','evidence'}
+        or accepted['branch']!='develop' or any(accepted[k]!=selected[k] for k in ('head','tree'))):
+        raise AdmissionError('owner_policy_task_source_binding')
+    return selected
+
+
+def owner_policy_validation_targets(config, identifier, *, candidate_root=None):
+    """Safe unittest IDs, never commands. AST inspection never imports a test."""
+    from symphony_capacity import AdmissionError
+    import ast
+    policy=owner_intake_policy(config)
+    contract=owner_policy_contract(config,policy,identifier)
+    targets=contract.get('validation_targets')
+    if (not isinstance(targets,list) or not 1<=len(targets)<=4 or len(set(targets))!=len(targets)):
+        raise AdmissionError('owner_policy_validation_targets_missing')
+    for target in targets:
+        if (not isinstance(target,str) or not re.fullmatch(r'test_stokowski_(?:current_dispatch|first_dispatch_setup|owner_policy_intake)\.[A-Za-z_][A-Za-z0-9_]*\.test_[A-Za-z0-9_]+',target)):
+            raise AdmissionError('owner_policy_validation_target')
+        module,cls,method=target.split('.')
+        relative='tests/delivery/'+module+'.py'
+        if relative not in OWNER_CODE_FILES:
+            raise AdmissionError('owner_policy_validation_scope')
+        if candidate_root is not None:
+            root=Path(candidate_root);path=root/relative
+            if root!=root.resolve() or path!=path.resolve() or not path.is_file() or path.stat().st_size>1048576:
+                raise AdmissionError('owner_policy_validation_source')
+            tree=ast.parse(path.read_bytes())
+            if not any(isinstance(c,ast.ClassDef) and c.name==cls and any(
+                isinstance(f,(ast.FunctionDef,ast.AsyncFunctionDef)) and f.name==method for f in c.body)
+                for c in tree.body):
+                raise AdmissionError('owner_policy_validation_ast_target')
+    return list(targets)
+
+
+def owner_policy_task_contract(config, identifier):
+    """129/122 postcoding accessor; returns data, never a dispatch command."""
+    policy=owner_intake_policy(config)
+    contract=owner_policy_contract(config,policy,identifier)
+    return dict(schema='offmenu-owner-policy-task/1',issue=identifier,
+        issue_id=contract['issue_id'],project_id=contract['project_id'],owner=config['owner'],
+        control_source_head=config['source_head'],
+        task_source=owner_policy_task_source(config,identifier,contract['project_id']),
+        scope=list(contract['scope']),acceptance=list(contract['acceptance']),
+        validation_targets=owner_policy_validation_targets(config,identifier),
+        resources=dict(contract['resources']))
+
+
 def owner_policy_authority(config, reference):
     """Let the existing read-only child reopen only its owner-pinned request."""
     from symphony_capacity import AdmissionError
@@ -452,6 +530,7 @@ def owner_policy_authority(config, reference):
 def owner_qualification_spec(config, policy, selection):
     """The delegated operation is fixed even when the requested behavior varies."""
     w=policy['workclass']
+    source=owner_policy_task_source(config,selection['identifier'],selection['project_id'])
     workspace=Path(config['runtime_root'])/('qualification-owner-policy-'+
         config['owner_intake_policy']['sha256'][:16]+'-'+selection['identifier'].lower())/'workspace'
     instructions = (
@@ -467,12 +546,13 @@ def owner_qualification_spec(config, policy, selection):
         '"scope":[...],"input_paths":[...],"purpose":<short text>,"behavior":<bounded requested behavior>,'
         '"check":<test_stokowski_current_dispatch.Class.test_method or corresponding allowed test module>}. '
         'The plan cannot grant rights, choose resources/provider, approve review or authorize merge. '
-        'Current guarded source head: '+config['source_head']+'. Requested metadata: '+json.dumps(selection,sort_keys=True))
-    spec=dict(workspace=str(workspace),branch=policy['source_branch'],head=config['source_head'],
+        'Root-sealed CONTROL head: '+config['source_head']+'. Accepted TASK source head: '+source['head']+
+        '. Requested metadata: '+json.dumps(selection,sort_keys=True))
+    spec=dict(workspace=str(workspace),branch=source['branch'],head=source['head'],
         prompt=instructions,resources=w['resources'],output='qualification-output.json')
     ref=dict(path=str(workspace.parent/'qualification-spec.json'),
              sha256=hashlib.sha256(_publication_bytes(spec)).hexdigest())
-    authority=dict(schema='offmenu-intake-authority/1',owner=config['owner'],source_head=config['source_head'],
+    authority=dict(schema='offmenu-intake-authority/1',owner=config['owner'],source_head=source['head'],
         issue=selection['identifier'],issue_id=selection['issue_id'],project_id=selection['project_id'],
         accepted_scope=sorted(w['allowed_files']),acceptance=w['acceptance'],
         dependencies=[dict(id=v,state='Done') for v in selection['dependencies']],
@@ -525,7 +605,7 @@ def owner_policy_contract(config, policy, name):
     w=policy['workclass']
     if (set(plan)!={'schema','issue_id','source_head','rights','scope','input_paths','purpose','behavior','check'}
         or plan['schema']!='offmenu-owner-policy-plan/1' or plan['rights']!='source-only-synthetic'
-        or plan['issue_id']!=record['selection']['issue_id'] or plan['source_head']!=config['source_head']
+        or plan['issue_id']!=record['selection']['issue_id'] or plan['source_head']!=spec['head']
         or not isinstance(plan['scope'],list) or not 1<=len(plan['scope'])<=w['max_files']
         or len(set(plan['scope']))!=len(plan['scope']) or not set(plan['scope'])<=set(w['allowed_files'])
         or not any(path.endswith('.py') for path in plan['scope'])
@@ -538,6 +618,7 @@ def owner_policy_contract(config, policy, name):
         purpose=plan['purpose'],scope=plan['scope'],input_paths=plan['input_paths'],
         acceptance=['Requested bounded behavior: '+plan['behavior'],*w['acceptance']],resources=w['resources'],
         timeout_seconds=w['timeout_seconds'],dependencies=selection['dependencies'],
+        validation_targets=[plan['check']],
         prompt='Implement ONLY the Root-delegated source-only synthetic code fix. No other paths, held data, '
             'network, runtime, credentials, production, CIX, Actions, spend or self approval. '+
             json.dumps(plan,sort_keys=True)+' Required focused check: python -B -m unittest '+plan['check'],
@@ -563,7 +644,7 @@ def owner_intake_policy(config, *, creating=False):
             result[k] = v
         return result
     policy = json.loads(raw, object_pairs_hook=unique)
-    require(set(policy) - {'workclass'} == {'schema','owner','source_head','source_branch','coordinator_runtime',
+    require(set(policy) - {'workclass','project_source'} == {'schema','owner','source_head','source_branch','coordinator_runtime',
         'expires_at','resource_ceiling','provider_requirements','installation','contracts'}
         and policy['schema'] == 'offmenu-owner-policy-intake/1'
         and policy['owner'] == config['owner'] and policy['source_head'] == config['source_head']
@@ -571,6 +652,7 @@ def owner_intake_policy(config, *, creating=False):
         and type(policy['expires_at']) in (int,float) and math.isfinite(policy['expires_at'])
         and (not creating or time.time() < policy['expires_at'])
         and isinstance(policy['contracts'], dict) and (0 if 'workclass' in policy else 1) <= len(policy['contracts']) <= 32)
+    require('project_source' not in policy or isinstance(policy['project_source'],dict))
     root = Path(config['runtime_root'])
     for key in ('coordinator_runtime',):
         p = Path(policy[key])
@@ -605,7 +687,7 @@ def owner_intake_policy(config, *, creating=False):
         and type(requirements['checked_at_max_future_skew_seconds']) is int
         and 0 <= requirements['checked_at_max_future_skew_seconds'] <= 5)
     for name, contract in policy['contracts'].items():
-        require(isinstance(contract, dict) and set(contract) == {'issue_id','project_id','purpose',
+        require(isinstance(contract, dict) and set(contract)-{'validation_targets'} == {'issue_id','project_id','purpose',
             'scope','input_paths','acceptance','prompt','timeout_seconds','resources','dependencies','assignee_id'}
             and re.fullmatch(r'UIF-[1-9][0-9]*', name)
             and str(UUID(contract['issue_id'])) == contract['issue_id']
@@ -636,6 +718,8 @@ def owner_policy_artifacts(config, name, before):
     from symphony_capacity import AdmissionError, digest
     policy = owner_intake_policy(config)
     c = owner_policy_contract(config, policy, name)
+    task_source=owner_policy_task_source(config,name,c['project_id'])
+    checkout=Path(task_source['checkout'])
     root = Path(config['runtime_root'])
     token = config['owner_intake_policy']['sha256'][:16] + '-' + name.lower()
     directory, runtime = root/('qualification-owner-policy-'+token), root/('owner-policy-'+token)
@@ -661,31 +745,41 @@ def owner_policy_artifacts(config, name, before):
         publication_authority=dict(automatic_start=False, historical_workers_resume=False,
                                   require_normal_execution_admission=True))
     owner_ref = blob(directory/'owner-config.json', owner)
-    manifest = dict(version=1, branch=policy['source_branch'], base_revision=config['source_head'],
+    manifest = dict(version=1, branch=task_source['branch'], base_revision=task_source['head'],
         project_id=c['project_id'], label='owner-policy-'+name.lower(), tasks={name:dict(
             issue_id=c['issue_id'], owner=config['owner'], purpose=c['purpose'], allowed_paths=c['scope'],
             acceptance=c['acceptance'], resources=c['resources'], attempt_limit=1)})
     manifest_ref = blob(directory/'manifest.json', manifest)
     request_ref = blob(directory/'request.json', dict(prompt=c['prompt'],timeout_seconds=c['timeout_seconds']))
     requirements_ref = blob(directory/'provider-requirements.json', policy['provider_requirements'])
+    blob(directory/'task-contract.json',dict(schema='offmenu-owner-policy-task/1',issue=name,
+        issue_id=c['issue_id'],project_id=c['project_id'],control_source_head=config['source_head'],
+        task_source=task_source,scope=c['scope'],acceptance=c['acceptance'],
+        validation_targets=c.get('validation_targets'),resources=c['resources']))
     installation_ref = policy['installation']
     installation_path = Path(installation_ref['path'])
     if file_sha(installation_path) != installation_ref['sha256']:
         raise AdmissionError('owner_policy_installation_drift')
     installation = json.loads(installation_path.read_bytes())
     inputs = {str(path):hashlib.sha256(raw).hexdigest() for path,raw in files.items()}
-    source_inputs = set(c['input_paths']) | {name for name in c['scope'] if (SOURCE/name).exists()}
-    for path in set(config['source_sha256']) | source_inputs:
+    for path,sha in config['source_sha256'].items():
         p = SOURCE/path
         if p != p.resolve() or not p.is_file():
             raise AdmissionError('owner_policy_source_path')
         inputs[str(p)] = file_sha(p)
-        if path in config['source_sha256'] and inputs[str(p)] != config['source_sha256'][path]:
+        if inputs[str(p)] != sha:
             raise AdmissionError('owner_policy_source_drift')
-        if path in source_inputs:
-            accepted = subprocess.check_output(['git','-C',str(SOURCE),'show',config['source_head']+':'+path])
-            if hashlib.sha256(accepted).hexdigest() != inputs[str(p)]:
-                raise AdmissionError('owner_policy_source_not_reviewed')
+    source_inputs = set(c['input_paths']) | {name for name in c['scope'] if (checkout/name).exists()}
+    for path in source_inputs:
+        p=checkout/path
+        if p!=p.resolve() or not p.is_file():
+            raise AdmissionError('owner_policy_source_path')
+        inputs[str(p)]=file_sha(p)
+        accepted=subprocess.check_output(['git','-C',str(checkout),'show',task_source['head']+':'+path])
+        if hashlib.sha256(accepted).hexdigest()!=inputs[str(p)]:
+            raise AdmissionError('owner_policy_source_not_reviewed')
+    if task_source['ref'] is not None:
+        inputs[task_source['ref']['path']]=task_source['ref']['sha256']
     inputs[installation_ref['path']] = installation_ref['sha256']
     inputs[str(SOURCE/'tools/delivery/capacity-policy.json')] = file_sha(SOURCE/'tools/delivery/capacity-policy.json')
     inputs[config['owner_intake_policy']['path']] = config['owner_intake_policy']['sha256']
@@ -694,8 +788,8 @@ def owner_policy_artifacts(config, name, before):
     packet = dict(schema='offmenu-owner-bound-preexecution-task/1', origin='owner-policy-v1',
         contract=name, owner=config['owner'],
         unit_id=manifest['label'], source_issue=identity, execution_outcome=identity,
-        source=dict(repository='maldous/offmenu',source_checkout=str(SOURCE),base=config['source_head'],
-                    branch=policy['source_branch']), scope=c['scope'], acceptance=c['acceptance'],
+        source=dict(repository='maldous/offmenu',source_checkout=str(checkout),base=task_source['head'],
+                    branch=task_source['branch']), scope=c['scope'], acceptance=c['acceptance'],
         resources=c['resources'], selected_current=selected, owner_config=owner_ref,
         manifest=manifest_ref, request=request_ref, provider_requirements=requirements_ref,
         installation=dict(manifest_path=installation_ref['path'],manifest_sha256=installation_ref['sha256'],
@@ -704,10 +798,10 @@ def owner_policy_artifacts(config, name, before):
     packet_ref = blob(directory/'task-packet.json', packet)
     handoff = dict(directory=str(directory), authenticated_principal=dict(id=caller['principal_id'],
         login=caller['login']), source_issue=identity, execution_outcome=identity,
-        source_base=config['source_head'], owner_config=owner_ref, manifest=manifest_ref,
+        source_base=task_source['head'], owner_config=owner_ref, manifest=manifest_ref,
         request=request_ref, task_packet=packet_ref)
     handoff_ref = blob(directory/'handoff.json', handoff)
-    admission = dict(version=1, owner=config['owner'], issue=name, issue_id=c['issue_id'],source=str(SOURCE),
+    admission = dict(version=1, owner=config['owner'], issue=name, issue_id=c['issue_id'],source=str(checkout),
         manifest_sha256=manifest_ref['sha256'],request_sha256=request_ref['sha256'],
         policy_sha256=file_sha(SOURCE/'tools/delivery/capacity-policy.json'),
         installation_sha256=installation_ref['sha256'],
@@ -767,6 +861,7 @@ async def owner_policy_candidate(current, client, issue, route):
             or w['selection_label'] and w['selection_label'] not in
                 [v['name'] for v in remote.get('labels',{}).get('nodes',[])]):
             raise AdmissionError('owner_policy_contract_missing')
+        owner_policy_task_source(current.config,issue.identifier,route['project_id'],materialize=True)
         selection=dict(identifier=issue.identifier,issue_id=issue.id,project_id=route['project_id'],
             assignee_id=w['assignee_id'],dependencies=dependencies,title=remote.get('title') or '',
             description=remote.get('description') or '')
@@ -785,7 +880,8 @@ async def owner_policy_candidate(current, client, issue, route):
         workspace=current.private(spec['workspace'])
         if not record.get('qualification_intent'):
             from stokowski_adapter import clone_current_workspace
-            clone_current_workspace(SOURCE,workspace,spec['head'],spec['branch'])
+            task_source=owner_policy_task_source(current.config,issue.identifier,route['project_id'])
+            clone_current_workspace(Path(task_source['checkout']),workspace,spec['head'],spec['branch'])
         spec_path=current.private(authority['qualification']['path'])
         if spec_path.exists():
             if spec_path.read_bytes()!=_publication_bytes(spec):
@@ -803,6 +899,9 @@ async def owner_policy_candidate(current, client, issue, route):
         or c['assignee_id']!=(remote.get('assignee') or {}).get('id')
         or sorted(c['dependencies'])!=dependencies):
         raise AdmissionError('owner_policy_tracker_binding')
+    if 'project_source' in policy:
+        owner_policy_validation_targets(current.config,issue.identifier)
+    owner_policy_task_source(current.config,issue.identifier,route['project_id'],materialize=True)
     before = current.catalog_bytes()
     data = owner_policy_artifacts(current.config,issue.identifier,before)
     for path, raw in data['files'].items():
