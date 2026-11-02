@@ -1333,6 +1333,114 @@ class CurrentWork:
         proof = read_record(runtime/'provider-proof.json')
         checked = proof.get('checked_at')
         policy = read_record(runtime/'capacity-policy.json')
+        task = manifest['tasks'][issue]
+        def unstarted():
+            self.guard()
+            if (self.stopping or (self.runtime/'cancel.json').exists() or (runtime/'cancel.json').exists()
+                or task['owner'] != self.config['owner']):
+                raise AdmissionError('current_task_cancelled_or_owner_changed')
+            self.observe(issue)
+            if ((runtime/'attempts'/issue).exists()
+                or any(k in self.state['tasks'][issue] for k in
+                       ('dispatch-intent.json','intent.json','receipt.json'))):
+                raise AdmissionError('current_retained_effect_requires_reconciliation')
+            lease = runtime_lease_ids(runtime, manifest)[issue]
+            database = Path(policy['symphony']['pool_path'])/'state.sqlite'
+            if database.exists():
+                from symphony_capacity import overlap
+                with sqlite3.connect(database.as_uri()+'?mode=ro',uri=True) as db:
+                    rows = db.execute('SELECT id,status,binding FROM leases').fetchall()
+                if any(row[0] == lease for row in rows):
+                    raise AdmissionError('current_retained_lease_requires_reconciliation')
+                for _,status,binding in rows:
+                    if status != 'finished' and any(overlap(a,b) for a in task['allowed_paths']
+                            for b in json.loads(binding)['write_roots']):
+                        raise AdmissionError('current_first_dispatch_ownership_conflict')
+            from symphony_workspace import workspace_processes
+            if workspace_processes(runtime/'workspaces'/issue):
+                raise AdmissionError('current_first_dispatch_owned_child')
+        first_coding = (not review and not observation and 'stage' not in task
+            and not (runtime/'attempts'/issue).exists()
+            and not any(k in self.state['tasks'][issue] for k in
+                        ('dispatch-intent.json','intent.json','receipt.json')))
+        if first_coding:
+            unstarted()
+            if (proof.get('route') != 'codex-chatgpt' or proof.get('available') is not True
+                or type(checked) not in (int,float) or not math.isfinite(checked)
+                or checked > time.time()+5 or type(proof.get('session_ceiling')) is not int
+                or proof['session_ceiling'] < 1):
+                raise AdmissionError('provider_unavailable_or_stale')
+        if (first_coding and not self.read_only and type(checked) in (int,float)
+            and math.isfinite(checked)
+            and time.time()-checked > policy['symphony']['provider_proof_ttl_seconds']):
+            # Requalify finite owner authority; a published entry is not permission
+            # to manufacture proof freshness after its approved authority expires.
+            record = self.state.get('intake',{}).get(issue,{})
+            if not isinstance(record.get('reference'),str):
+                raise AdmissionError('current_first_dispatch_authority_missing')
+            _, authority = self._intake_authority(record['reference'],
+                self.admitted_route(manifest['project_id']))
+            pending = self.state.get('successor_request',{})
+            if (record.get('status') != 'qualified' or record.get('authority') != authority
+                or authority['decision'] != 'owner-qualified'
+                or authority['issue_id'] != entry['issue_id']
+                or authority['accepted_scope'] != task['allowed_paths']
+                or authority['acceptance'] != task['acceptance']
+                or pending.get('status') not in ('published','duplicate')
+                or pending.get('handoff') != authority['handoff']):
+                raise AdmissionError('current_first_dispatch_authority_or_publication')
+            handoff = self._private_pin(authority['handoff'])
+            packet = self._private_pin(handoff['task_packet'])
+            if (packet['selected_current']['task_runtime'] != str(runtime)
+                or packet['execution_outcome']['uuid'] != entry['issue_id']
+                or type(packet.get('expires_at')) not in (int,float)
+                or not math.isfinite(packet['expires_at']) or packet['expires_at'] < time.time()):
+                raise AdmissionError('current_first_dispatch_authority_expired')
+            proof_path = runtime/'provider-proof.json'
+            before = proof_path.read_bytes()
+            if str(proof_path) in admission['inputs'] or proof_path.with_suffix('.pending').exists():
+                raise AdmissionError('current_first_dispatch_immutable_or_pending_proof')
+            module = SOURCE/'tools/delivery/symphony_launch.py'
+            if self.config['source_sha256'].get('tools/delivery/symphony_launch.py') != file_sha(module):
+                raise AdmissionError('current_first_dispatch_provider_source_pin')
+            import symphony_launch
+            if Path(symphony_launch.__file__).resolve() != module.resolve():
+                raise AdmissionError('current_first_dispatch_provider_module')
+            fresh = symphony_launch.provider_proof(MODEL,policy['symphony']['provider_session_ceiling'])
+            now = time.time()
+            if (fresh.get('route') != 'codex-chatgpt' or fresh.get('available') is not True
+                or fresh.get('requested_model') != MODEL
+                or type(fresh.get('checked_at')) not in (int,float)
+                or not math.isfinite(fresh['checked_at']) or fresh['checked_at'] > now+5
+                or now-fresh['checked_at'] > policy['symphony']['provider_proof_ttl_seconds']
+                or type(fresh.get('session_ceiling')) is not int
+                or not 1 <= fresh['session_ceiling'] <= policy['symphony']['provider_session_ceiling']):
+                raise AdmissionError('provider_unavailable_or_stale')
+            unstarted()
+            if proof_path.read_bytes() != before:
+                raise AdmissionError('current_first_dispatch_proof_changed')
+            # Current proof is consumed by the existing worker. Preserve the exact
+            # previous bytes separately; never edit publication/custody history.
+            history = runtime/'provider-proof-history'
+            if history.is_symlink():
+                raise AdmissionError('current_first_dispatch_proof_history')
+            history.mkdir(mode=0o700,exist_ok=True)
+            archived = history/(hashlib.sha256(before).hexdigest()+'.json')
+            if archived.exists():
+                if archived.is_symlink() or archived.read_bytes() != before:
+                    raise AdmissionError('current_first_dispatch_proof_history')
+            else:
+                with archived.open('xb') as stream:
+                    os.fchmod(stream.fileno(),0o600)
+                    stream.write(before);stream.flush();os.fsync(stream.fileno())
+            directory = os.open(history,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+            try: os.fsync(directory)
+            finally: os.close(directory)
+            checkpoint(proof_path,fresh)
+            directory = os.open(runtime,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+            try: os.fsync(directory)
+            finally: os.close(directory)
+            proof,checked = fresh,fresh['checked_at']
         # Fresh provider capacity is a dispatch condition. Exact-bound completed
         # evidence remains reviewable after that admission proof expires.
         if (proof.get('route') != 'codex-chatgpt' or proof.get('available') is not True
@@ -2805,6 +2913,117 @@ class CurrentWork:
         return selected
 
 
+def clone_current_workspace(source,path,head,branch):
+    """Proven private bundle transport. Return created; retained data is never repaired.
+
+    Callers qualify the source/actor/task separately. No provider probe, Pool,
+    coding, global Git trust or protected-source mutation occurs here.
+    """
+    source,path = Path(source),Path(path)
+    if (not source.is_absolute() or source != source.resolve()
+        or not path.is_absolute() or path != path.resolve()):
+        raise AdmissionError('Workspace source or destination alias')
+    selected_manifest = dict(base_revision=head,branch=branch)
+    if path.is_symlink():
+        raise AdmissionError('Workspace ownership or permissions')
+    target = path
+    created = not path.exists()
+    if created:
+        import tempfile
+        path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+        preparation = Path(tempfile.mkdtemp(prefix='.'+path.name+'-source-',dir=path.parent))
+        environment = child_environment(os.environ)
+        original = ['git','-c','safe.directory='+str(source),'-C',str(source)]
+        expected_head = selected_manifest['base_revision']
+        expected_tree = subprocess.check_output(original+['rev-parse',expected_head+'^{tree}'],
+            text=True,env=environment).strip()
+        if subprocess.check_output(original+['rev-parse','HEAD'],text=True,
+                                   env=environment).strip() != expected_head:
+            raise AdmissionError('Workspace source HEAD changed')
+        bundle = preparation/'source.bundle'
+        # No local-clone upload-pack/ownership fastpath, shared alternates,
+        # global trust or changes to the protected source repository.
+        subprocess.run(original+['bundle','create',str(bundle),
+            'refs/heads/'+selected_manifest['branch']],check=True,capture_output=True,
+            env=environment,timeout=90)
+        path = preparation/'workspace'
+        subprocess.run(['git','clone','--no-hardlinks','--single-branch','--branch',
+            selected_manifest['branch'],str(bundle),str(path)],check=True,
+            capture_output=True,env=environment,timeout=90)
+    # A default ACL can override the service umask during git clone. Close
+    # the new root before exposing it to the coding confinement binder.
+    # Retained workspaces require explicit owner reconciliation instead.
+    fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        info = os.fstat(fd)
+        if info.st_uid != os.getuid():
+            raise AdmissionError('Workspace ownership or permissions')
+        # Git may inherit defaults on source folders as well as the root.
+        # Only new clones may be changed; retained contents stay refuse-only.
+        for _, _, filenames, directory_fd in os.fwalk('.', dir_fd=fd, follow_symlinks=False):
+            if os.fstat(directory_fd).st_uid != os.getuid():
+                raise AdmissionError('Workspace ownership or permissions')
+            if created:
+                os.fchmod(directory_fd, 0o700)
+                try:
+                    os.removexattr(directory_fd, 'system.posix_acl_default')
+                except OSError as error:
+                    if error.errno != errno.ENODATA:
+                        raise
+            if os.fstat(directory_fd).st_mode & 0o022:
+                raise AdmissionError('Workspace ownership or permissions')
+            try:
+                os.getxattr(directory_fd, 'system.posix_acl_default')
+            except OSError as error:
+                if error.errno != errno.ENODATA:
+                    raise
+            else:
+                raise AdmissionError('Workspace inherited default ACL')
+            for name in filenames:
+                info = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+                if stat.S_ISLNK(info.st_mode):
+                    continue
+                file_fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                                  dir_fd=directory_fd)
+                try:
+                    info = os.fstat(file_fd)
+                    if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid()
+                        or info.st_nlink != 1):
+                        raise AdmissionError('Workspace ownership or permissions')
+                    if created:
+                        # Preserve user execute without inherited access ACLs.
+                        os.fchmod(file_fd, stat.S_IMODE(info.st_mode) & 0o700)
+                        os.fsync(file_fd)
+                    if os.fstat(file_fd).st_mode & 0o022:
+                        raise AdmissionError('Workspace ownership or permissions')
+                finally:
+                    os.close(file_fd)
+            if created:
+                os.fsync(directory_fd)
+    finally:
+        os.close(fd)
+    head = subprocess.check_output(['git', '-C', str(path), 'rev-parse', 'HEAD'], text=True).strip()
+    branch = subprocess.check_output(['git', '-C', str(path), 'branch', '--show-current'], text=True).strip()
+    if head != selected_manifest['base_revision'] or branch != selected_manifest['branch']:
+        raise AdmissionError('Workspace HEAD differs from selected source')
+    if subprocess.check_output(['git','--no-optional-locks','-C',str(path),'status',
+                                '--porcelain','--untracked-files=all'],text=True).strip():
+        raise AdmissionError('Retained workspace needs reconciliation')
+    if created:
+        tree = subprocess.check_output(['git','-C',str(path),'rev-parse','HEAD^{tree}'],text=True).strip()
+        if (tree != expected_tree or (path/'.git/objects/info/alternates').exists()
+            or subprocess.check_output(original+['rev-parse','HEAD'],text=True,
+                                       env=environment).strip() != expected_head
+            or target.exists() or target.is_symlink()):
+            raise AdmissionError('Workspace source identity or destination changed')
+        os.rename(path,target)
+        directory = os.open(target.parent,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+        try: os.fsync(directory)
+        finally: os.close(directory)
+        path = target
+    return created
+
+
 def install_adapters(runtime, manifest, key, current=None, *, native_harness_adapter_factory=None):
     import stokowski.config as config
     import stokowski.linear as linear
@@ -2860,70 +3079,9 @@ def install_adapters(runtime, manifest, key, current=None, *, native_harness_ada
         if 'stage' in selected_manifest['tasks'][identifier]:
             raise AdmissionError('nonimplementation_workspace_refused')
         path = selected_runtime/'workspaces'/identifier
-        created = not path.exists()
-        if created:
-            path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-            subprocess.run(['git', 'clone', '--shared', '--single-branch', '--branch',
-                            selected_manifest['branch'], str(source), str(path)], check=True,
-                           capture_output=True, env=child_environment(os.environ))
-        # A default ACL can override the service umask during git clone. Close
-        # the new root before exposing it to the coding confinement binder.
-        # Retained workspaces require explicit owner reconciliation instead.
-        fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
-        try:
-            info = os.fstat(fd)
-            if info.st_uid != os.getuid():
-                raise AdmissionError('Workspace ownership or permissions')
-            # Git may inherit defaults on source folders as well as the root.
-            # Only new clones may be changed; retained contents stay refuse-only.
-            for _, _, filenames, directory_fd in os.fwalk('.', dir_fd=fd, follow_symlinks=False):
-                if os.fstat(directory_fd).st_uid != os.getuid():
-                    raise AdmissionError('Workspace ownership or permissions')
-                if created:
-                    os.fchmod(directory_fd, 0o700)
-                    try:
-                        os.removexattr(directory_fd, 'system.posix_acl_default')
-                    except OSError as error:
-                        if error.errno != errno.ENODATA:
-                            raise
-                if os.fstat(directory_fd).st_mode & 0o022:
-                    raise AdmissionError('Workspace ownership or permissions')
-                try:
-                    os.getxattr(directory_fd, 'system.posix_acl_default')
-                except OSError as error:
-                    if error.errno != errno.ENODATA:
-                        raise
-                else:
-                    raise AdmissionError('Workspace inherited default ACL')
-                for name in filenames:
-                    info = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
-                    if stat.S_ISLNK(info.st_mode):
-                        continue
-                    file_fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
-                                      dir_fd=directory_fd)
-                    try:
-                        info = os.fstat(file_fd)
-                        if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid()
-                            or info.st_nlink != 1):
-                            raise AdmissionError('Workspace ownership or permissions')
-                        if created:
-                            # Preserve user execute without inherited access ACLs.
-                            os.fchmod(file_fd, stat.S_IMODE(info.st_mode) & 0o700)
-                            os.fsync(file_fd)
-                        if os.fstat(file_fd).st_mode & 0o022:
-                            raise AdmissionError('Workspace ownership or permissions')
-                    finally:
-                        os.close(file_fd)
-                if created:
-                    os.fsync(directory_fd)
-        finally:
-            os.close(fd)
-        head = subprocess.check_output(['git', '-C', str(path), 'rev-parse', 'HEAD'], text=True).strip()
-        branch = (subprocess.check_output(['git', '-C', str(path), 'branch', '--show-current'], text=True).strip()
-                  if current else selected_manifest['branch'])
-        if head != selected_manifest['base_revision'] or branch != selected_manifest['branch']:
-            raise AdmissionError('Workspace HEAD differs from selected source')
-        return workspace_module.WorkspaceResult(path, identifier, created)
+        created = clone_current_workspace(source,path,selected_manifest['base_revision'],
+                                          selected_manifest['branch'])
+        return workspace_module.WorkspaceResult(path,identifier,created)
 
     async def retain_workspace(*args, **kwargs):
         # No upstream rmtree: accepted output and uncertainty survive restarts.
