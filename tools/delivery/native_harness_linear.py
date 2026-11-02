@@ -261,9 +261,14 @@ def _sha(value, length=64):
 
 
 def _source_policy(current):
-    from stokowski_adapter import CurrentWork
+    from stokowski_adapter import CurrentWork, SOURCE, file_sha
+    from pathlib import Path
     require(type(current) is CurrentWork, 'source_outcome_current_required')
     current.guard()
+    module = 'tools/delivery/native_harness_linear.py'
+    require(Path(__file__).resolve() == SOURCE / module
+            and current.config['source_sha256'].get(module) == file_sha(__file__),
+            'source_outcome_module_pin')
     require(type(current.owner_custody) is dict and not current.stopping
             and not (current.runtime / 'cancel.json').exists(), 'source_outcome_owner_required')
     require(type(current.config.get('owner_intake_policy')) is dict, 'source_outcome_disabled')

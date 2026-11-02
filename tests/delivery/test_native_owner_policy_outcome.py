@@ -67,7 +67,8 @@ class OutcomeTests(unittest.IsolatedAsyncioTestCase):
         c.read_only = c.stopping = False
         import native_harness_runtime
         c.config = {'owner': 'root-owner', 'source_sha256': {
-            'tools/delivery/native_harness_runtime.py': hashlib.sha256(Path(native_harness_runtime.__file__).read_bytes()).hexdigest()}}
+            'tools/delivery/native_harness_runtime.py': hashlib.sha256(Path(native_harness_runtime.__file__).read_bytes()).hexdigest(),
+            'tools/delivery/native_harness_linear.py': hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest()}}
         c.state = {'owner': 'root-owner', 'accepted_delivery': False}
         c.entries = {'UIF-138': {'issue': 'UIF-138', 'issue_id': ISSUE}}
         c.state_path = self.runtime / 'current-owner.json'
