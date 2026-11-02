@@ -59,27 +59,46 @@ class OwnerPolicyIntakeTests(unittest.TestCase):
                 return real_git_output(argv,**kwargs)
             return original_git(argv,**kwargs)
         fixture.git.side_effect=observations
-        def project_source(config,identifier,project_id,*,materialize=False):
+        def project_source(config,identifier,verified):
             if identifier not in sources:
-                self.assertTrue(materialize)
-                head=accepted[0];branch='bugfix/source-'+identifier.lower()
+                head=verified['head'];branch='bugfix/source-'+identifier.lower()
                 checkout=fixture.root/'task-sources'/identifier;checkout.parent.mkdir(exist_ok=True)
                 subprocess.run(['git','clone','--no-hardlinks','--no-checkout',str(project),str(checkout)],
                     check=True,capture_output=True)
                 real_git_output(['git','-C',str(checkout),'checkout','-b',branch,head],stderr=subprocess.PIPE)
                 tree=git('rev-parse',head+'^{tree}')
-                evidence=fixture.root/(identifier+'-accepted-evidence.json')
-                fixture.write(evidence,dict(head=head,tree=tree,kind='synthetic-verified-publisher-readback'))
                 value=dict(repository='maldous/offmenu',head=head,tree=tree,branch=branch,checkout=str(checkout),
-                    accepted=dict(branch='develop',head=head,tree=tree,evidence=dict(path=str(evidence),sha256=adapter.file_sha(evidence))))
+                    accepted=verified)
                 ref=fixture.root/(identifier+'-task-source.json');fixture.write(ref,value)
                 sources[identifier]=dict(value,ref=dict(path=str(ref),sha256=adapter.file_sha(ref)))
             return sources[identifier]
-        helper=fixture.source/'tools/delivery/stokowski_project_source.py'
+        def shape(value):
+            return dict(source_checkout=value['checkout'],base=value['head'],branch=value['branch'],
+                tree=value['tree'],evidence=value['accepted']['evidence'],acquisition_ref=value['ref'])
+        def read(config,identifier,policy):
+            if identifier not in sources:
+                raise AdmissionError('project_source_not_materialized')
+            return shape(sources[identifier])
+        def acquire(owner,identifier,policy,verified):
+            return shape(project_source(owner.config,identifier,verified))
+        accepted_calls=[]
+        def verified_source(owner,project_id):
+            head=accepted[0];tree=git('rev-parse',head+'^{tree}')
+            evidence=fixture.root/(head+'-accepted-evidence.json')
+            if not evidence.exists():
+                fixture.write(evidence,dict(head=head,tree=tree,kind='synthetic-verified-publisher-readback'))
+            accepted_calls.append(head)
+            return dict(repository='maldous/offmenu',branch='develop',head=head,tree=tree,
+                evidence=dict(path=str(evidence),sha256=adapter.file_sha(evidence)))
+        helper=fixture.source/'tools/delivery/stokowski_source.py'
         helper.write_text('# Synthetic trusted acquisition component boundary.\n')
-        current.config['source_sha256']['tools/delivery/stokowski_project_source.py']=adapter.file_sha(helper)
-        self.enterContext(patch.dict(sys.modules,stokowski_project_source=SimpleNamespace(
-            __file__=str(helper),owner_policy_project_source=project_source)))
+        current.config['source_sha256']['tools/delivery/stokowski_source.py']=adapter.file_sha(helper)
+        outcome=fixture.source/'tools/delivery/native_harness_linear.py'
+        outcome.write_text('# Synthetic trusted verified accepted-source accessor boundary.\n')
+        current.config['source_sha256']['tools/delivery/native_harness_linear.py']=adapter.file_sha(outcome)
+        self.enterContext(patch.dict(sys.modules,stokowski_source=SimpleNamespace(
+            __file__=str(helper),read_project_source=read,acquire_project_source=acquire),
+            native_harness_linear=SimpleNamespace(__file__=str(outcome),accepted_project_source=verified_source)))
         def contract(issue, dependencies):
             return dict(issue_id=issue.id,project_id=adapter.PROJECT,purpose='Approved synthetic regression',
                 scope=['tests/delivery/test_stokowski_owner_policy_intake.py'],input_paths=[],acceptance=['Exact sealed synthetic acceptance'],
@@ -91,9 +110,9 @@ class OwnerPolicyIntakeTests(unittest.TestCase):
             coordinator_runtime=str(current.runtime),expires_at=time.time()+300,
             resource_ceiling=resources,
             project_source=dict(repository='maldous/offmenu',branch='develop',
-                origin='git@github.com:maldous/offmenu.git',repository_path=str(project),
+                origin='git@github.com:maldous/offmenu.git',source_repository=str(project),
                 seed=dict(head=seed_head,tree=git('rev-parse',seed_head+'^{tree}')),
-                accepted_source_path=str(fixture.root/'accepted-source-pointer.json')),
+                accepted_facts_path=str(fixture.root/'accepted-source-pointer.json')),
             installation=dict(path=str(fixture.root/'installation.json'),sha256=adapter.file_sha(fixture.root/'installation.json')),
             provider_requirements=dict(requested_model=adapter.MODEL,requested_effort='medium',route='codex-chatgpt',
                 session_ceiling=8,max_age_seconds=300,checked_at_max_future_skew_seconds=5),
@@ -199,6 +218,7 @@ class OwnerPolicyIntakeTests(unittest.TestCase):
         self.assertEqual(second_manifest['base_revision'],next_head)
         self.assertNotEqual(second_manifest['base_revision'],unreviewed_tip)
         self.assertEqual(current.config['source_head'],'a'*40)
+        self.assertEqual(accepted_calls,[seed_head,next_head])
         targets=prepare.owner_policy_validation_targets(current.config,second.identifier,
             candidate_root=Path(sources[second.identifier]['checkout']))
         self.assertEqual(targets,contract(second,[])['validation_targets'])
