@@ -1,4 +1,21 @@
-# offmenu
+# OffMenu
+
+**Turn the food you have into useful meal choices.**
+
+OffMenu connects barcode-based inventory, ingredient requirements, recipe discovery and retailer price observations. This repository brings together the local Python/SQLite tooling and the web application.
+
+[Open OffMenu](https://offmenu.aldous.info/) · [Architecture and portfolio](https://aldous.info/) · [Contact Matthew](mailto:matthew.aldous@gmail.com)
+
+## Explore the project
+
+- **Inventory:** identify products and track the ingredients available.
+- **Meals:** connect recipe requirements to inventory and useful meal options.
+- **Engineering:** local command-line tools alongside the Cloudflare-hosted web surface.
+- **Data:** retain source attribution and usage conditions for imported product and recipe information.
+
+The technical reference below describes setup and individual capabilities. Deployment availability does not establish that every ingestion or automation path has completed operational validation.
+
+---
 
 Local barcode inventory → ingredient requirements → meal options → retailer price observations.
 Python 3.10+ and SQLite; no runtime dependencies or network required. Run commands from this directory.
