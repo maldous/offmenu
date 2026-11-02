@@ -586,7 +586,10 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
                     'publisher_continuation_context')
             import native_publisher_invocation as helper
             grant=helper.continuation(context['publisher_continuation'],asdict(binding))
-            require(('pre_admission_refusal' in grant) == native_context,'publisher_continuation_origin')
+            require('pre_admission_refusal' not in grant or native_context,'publisher_continuation_origin')
+            if native_context and 'pre_admission_refusal' not in grant:
+                completed_native_continuation(current,issue,binding,
+                    pinned_private(current,actual['packet']),actual)
         if 'publisher_invocation' in actual['context']:
             require(binding.phase in ('integration', 'release'), 'publisher_invocation_phase')
             invocation_capability(actual['context']['publisher_invocation'])
@@ -913,6 +916,65 @@ def invocation_epochs(module, record, binding, packet, *, complete=False):
     return refs
 
 
+def completed_native_continuation(current, issue, binding, packet, selection):
+    """Requalify an already merged ORIGINAL native unit without changing it."""
+    import native_publisher_invocation as module
+    from dataclasses import asdict
+    from stokowski_adapter import read_record, digest as original_digest
+    context=selection['context']
+    runtime,manifest,_=current.context(issue.identifier,review=True,observation=True)
+    require('stage' not in manifest['tasks'][issue.identifier]
+            and str(runtime) == context['native_runtime'], 'completed_native_origin')
+    unit=current.gate_binding(issue,observation=True)
+    require(fingerprint(unit) == binding.unit_sha256
+            and context['pending_unit_review']['unit_binding'] == unit,
+            'completed_native_unit')
+    review=read_record(current.private(str(current.runtime/('unit-review-'+issue.identifier+'.json'))))
+    gate=current.state['tasks'][issue.identifier].get('unit_gate',{})
+    require(gate.get('binding') == unit and gate.get('disposition') == 'approved'
+            and gate.get('handled') is True and gate.get('unit_review') == 'approved'
+            and gate.get('review_sha256') == original_digest(review), 'completed_native_gate')
+    require(current._check_unit_review(review) == unit, 'completed_native_review')
+    require(fingerprint(packet) == binding.packet_sha256, 'completed_native_packet')
+    native_journal_acceptance(current,issue,str(runtime),packet['handoff'],review=review)
+    grant=module.continuation(context['publisher_continuation'],asdict(binding))
+    require('pre_admission_refusal' not in grant, 'completed_native_continuation')
+    record=current.state.get(INVOCATIONS,{}).get(binding.operation_id)
+    if record is not None and record.get('selection_sha256') == fingerprint(selection):
+        # Normal consumption may already have installed the new empty epoch.
+        # Retain and validate its original predecessor, including recovery history.
+        require(record.get('version') == 2 and record.get('continuation') == grant
+                and record.get('capability') == invocation_capability(context['publisher_invocation'])
+                and len(record.get('history',[])) == 1, 'completed_native_history')
+        invocation_epochs(module,record,binding,packet)
+        record=record['history'][0]
+    require(record is not None and module.fingerprint(record) == grant['previous_record_sha256']
+            and record['selection_sha256'] == grant['previous_selection_sha256']
+            and record['capability'] == grant['previous_capability'], 'publisher_continuation_record_pin')
+    require(invocation_capability(context['publisher_invocation'])['closure_sha256'] !=
+            record['capability']['closure_sha256'], 'publisher_continuation_new_closure')
+    complete_continuation_history(module,record,binding,packet,grant)
+    require(record['invocations'], 'completed_native_terminal')
+    latest=record['invocations'][-1]
+    value=module.validate_result(latest['result'],latest['envelope'],record['capability']['closure_sha256'])
+    # The fixed integration publisher maps only merge-verified + verified
+    # merge_effect to this authenticated terminal protocol status.
+    require(value['response'] is not None and value['response']['status'] == 'verified'
+            and value['receipt']['body']['terminal']['response'] == value['response'],
+            'completed_native_merge_unverified')
+
+
+def complete_continuation_history(module, record, binding, packet, grant):
+    refs = invocation_epochs(module,record,binding,packet,complete=True)
+    require({r['invocation_id']:r for r in refs} == {r['invocation_id']:r for r in grant['receipts']},
+            'publisher_continuation_receipt_pins')
+    depth, cursor = 1, record
+    while cursor['version'] == 2:
+        depth += 1
+        cursor = cursor['history'][0]
+    require(depth < 8 and len(refs) < 128, 'publisher_continuation_bound')
+
+
 def invocation_continuation_record(current, binding, packet, selection):
     """Propose one atomic normal-owner state transition from a sealed grant."""
     import native_publisher_invocation as module
@@ -931,14 +993,7 @@ def invocation_continuation_record(current, binding, packet, selection):
         return dict(version=2,binding=asdict(binding),selection_sha256=fingerprint(selection),
             capability=capability,invocations=[],history=[json.loads(json.dumps(record))],
             continuation=json.loads(json.dumps(grant)),recovery_observation=None)
-    refs = invocation_epochs(module,record,binding,packet,complete=True)
-    require({r['invocation_id']:r for r in refs} == {r['invocation_id']:r for r in grant['receipts']},
-            'publisher_continuation_receipt_pins')
-    depth, cursor = 1, record
-    while cursor['version'] == 2:
-        depth += 1
-        cursor = cursor['history'][0]
-    require(depth < 8 and len(refs) < 128, 'publisher_continuation_bound')
+    complete_continuation_history(module,record,binding,packet,grant)
     return dict(version=2,binding=asdict(binding),selection_sha256=fingerprint(selection),
         capability=capability,invocations=[],history=[json.loads(json.dumps(record))],
         continuation=json.loads(json.dumps(grant)))
