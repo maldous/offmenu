@@ -185,3 +185,26 @@ Changed source is limited to the eight manifest paths: `stokowski_worker.py`,
 `tools/delivery/README.md`. No local validation failures remain. Next step is
 independent exact-source review; all runtime boundaries listed above remain
 unobserved and adoption/App creation remain held.
+
+### UIF-134 first coding setup
+
+For an already published, owner-qualified, unstarted coding task, `context`
+refreshes an expired provider proof through the source-pinned
+`symphony_launch.provider_proof` producer. The original proof bytes are retained
+under `provider-proof-history/<sha256>.json`; task admission, request and owner
+publication records remain unchanged. Finite owner authority and publication
+must still match. Attempts, lease records, overlapping active ownership, owned
+children, cancellation or changed authority refuse refresh. Read-only, review,
+observation and typed-stage paths never perform this probe.
+
+`clone_current_workspace(source, path, head, branch)` is the shared transport
+used by normal workspace setup and owner-policy qualification. It reads a Git
+bundle from the selected source with command-local trust, then clones into a
+private preparation directory and checks exact HEAD/tree/branch and custody
+before exposing the workspace. No shared object alternates or global trust are
+introduced. Existing workspaces are checked without repair; dirty, mismatched
+or unsafe retained work requires reconciliation by its owner.
+
+The dedicated `test_stokowski_first_dispatch_setup.py` checks the normal setup
+seam with real local Git and the refresh seam with synthetic provider authority.
+These tests do not demonstrate a live provider probe or a coding dispatch.
