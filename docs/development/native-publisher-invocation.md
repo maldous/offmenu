@@ -206,3 +206,39 @@ cancellation, setsid/double-fork cleanup, false cleanup success with a live adop
 child, actual process crash, retained unknown intent, lost-response/reopen without
 replay, strict wire/association and durable receipt/custody refusal. These tests
 are source evidence, not actual host approval, installed equivalence or BAU proof.
+
+## Confirmed refusal before admission
+
+An initial `invoke` whose inner request is `observe` can be refused by
+`closure_canonical_bytes` before any privileged receipt or publisher child is
+created. Correct the descriptor using the actual helper's `wire` and
+`validate_closure`; retain the canonical-byte guard. Its changed file hash needs
+a newly sealed capability and selection, not a rewrite of the unknown record.
+
+For exactly this case, the existing coordinator `publisher_continuation` grant
+retains its nine fields with `receipts: []` and adds `pre_admission_refusal`:
+`{invocation_id, request_sha256, reason: closure_canonical_bytes, evidence_sha256}`.
+Root pins genuine refusal/absence evidence and the exact prior record, selection,
+capability, claim, unit and packet. The previous selection pin is its canonical
+fingerprint, not the selection file hash. Only a version1 record with exactly
+one unknown/result-null original inner-observe attempt qualifies. Other modes,
+existing results or unrelated history remain held. The grant belongs only in
+the sealed coordinator selection; no publisher `nativeContinuation` is needed
+when there was never a privileged admission.
+
+The normal owner transition retains that original record unchanged in existing
+version2 history and adds `recovery_observation` metadata. Its first fresh helper
+call under the corrected closure is outer `observe` for the SAME UUID and inner
+request. Only the actual fixed helper's `not-found`, with no receipt/response,
+permits a later normal invocation of that SAME original UUID/inner observe.
+The absence observation remains separate metadata, never a completed receipt or
+stopped-child flag. A present privileged receipt is retained and refused even
+when completed; no reinvocation is allowed. A lost absence read is observed again,
+never interpreted as nonexecution. Subsequent normal readiness, publication and
+integration gates are unchanged. No new operation, key, Controller or job is
+created to sidestep the old record; source/descriptor adoption remains Root-owned.
+
+The focused continuation test covers the real normal owner transition/restart,
+actual fixed-reader absence, same UUID invocation and no replay, a present
+privileged receipt refusal, and unchanged descriptor canonicality checks, using
+only disposable fixtures and a synthetic publisher child proof.

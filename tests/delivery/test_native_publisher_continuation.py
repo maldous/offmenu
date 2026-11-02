@@ -169,3 +169,81 @@ class ContinuationTests(unittest.TestCase):
         with patch.object(self.host,'admit',side_effect=admit),patch.object(helper,'_supervise',side_effect=AssertionError('no child')):
             with self.assertRaisesRegex(helper.InvocationHold,'continuation_receipt_missing'):
                 helper._invoke(helper.wire(envelope),self.host)
+
+    def test_pre_admission_refusal_keeps_unknown_history_and_reuses_only_same_observe_uuid(self):
+        # The descriptor correction must retain the canonical-byte guard.
+        names=['tools/delivery/native_publisher_invocation.py','tools/delivery/windmill_runner.py',
+            'tools/delivery/capacity-policy.json','tools/delivery/github-app-publisher.mjs',
+            'tools/delivery/github-app-adapter.mjs','tools/delivery/integration-gateway.mjs',
+            'src/offmenu/delivery/integration.py','venv/bin/python']
+        manifest=dict(version=1,kind='native-publisher-closure-v1',source_head='a'*40,
+                      source_tree='b'*40,node_sha256='c'*64,files={n:'d'*64 for n in names})
+        with self.assertRaisesRegex(helper.InvocationHold,'closure_canonical_bytes'):
+            helper.validate_closure((json.dumps(manifest,indent=2)+'\n').encode(),'a'*40)
+        helper.validate_closure(helper.wire(manifest,helper.MANIFEST_LIMIT),'a'*40)
+        # Separate empty privileged fixture: the failed admission created NOTHING.
+        fresh=self.root/'pre-admission';fresh.mkdir()
+        self.host=SyntheticHost(fresh);self.host.prepare();self.host.config=self.config
+        envelope=dict(version=1,mode='invoke',invocation_id=str(uuid4()),
+            request=runtime.publisher_request(self.binding,self.packet,'observe'))
+        old=dict(version=1,binding=asdict(self.binding),selection_sha256='5'*64,capability=self.oldcap,
+            invocations=[dict(envelope=envelope,last_request={**envelope,'mode':'observe'},status='unknown',result=None)])
+        self.current.state[runtime.INVOCATIONS][self.binding.operation_id]=copy.deepcopy(old)
+        grant={**self.grant,'previous_record_sha256':helper.fingerprint(old),'receipts':[],
+            'pre_admission_refusal':dict(invocation_id=envelope['invocation_id'],
+                request_sha256=helper.fingerprint(envelope['request']),reason='closure_canonical_bytes',evidence_sha256='e'*64)}
+        self.current.config['source_head']='a'*40
+        context=dict(native_runtime=str(self.root),pending_unit_review=dict(runtime=str(self.root),issue='UIF-96',
+            actor_uid=1000,source_head='a'*40,source_sha256=self.current.config['source_sha256']),
+            publisher_invocation=self.newcap,publisher_continuation=grant)
+        selection={**self.selection,'context':context}
+        self.current.config['native_harness_boundaries']['UIF-96']=self.pin('pre-selection.json',selection)
+        original_admit=self.host.admit
+        def admit(inner):
+            directory,phase,_=original_admit(inner);return directory,phase,self.newcap['closure_sha256']
+        async def transport(request):
+            self.calls.append(copy.deepcopy(request))
+            return helper.wire(helper._invoke(helper.wire(request),self.host))
+        async def consume(current,issue,*,binding,adapters):
+            value=await runtime.invocation_transaction(current,binding,self.packet,selection,'observe',[0],lambda *_:True)
+            return dict(status=value['status'],operation_id=binding.operation_id)
+        module=SimpleNamespace(OwnerBinding=runtime.OwnerBinding,OwnerAdapters=runtime.OwnerAdapters,
+            fingerprint=runtime.fingerprint,INVOCATIONS=runtime.INVOCATIONS,
+            invocation_continuation_record=runtime.invocation_continuation_record,consume_boundary=consume)
+        adapters=runtime.OwnerAdapters(lambda *_:True,lambda _:self.packet,lambda _:None,
+            lambda *_:None,lambda _:None,lambda *_:None)
+        with patch.object(adapter,'SOURCE',ROOT),patch.object(self.current,'_native_harness_module',return_value=module), \
+             patch.object(self.current,'guard'),patch.object(self.current,'context'), \
+             patch.object(self.current,'gate_binding',return_value=self.unit), \
+             patch.object(runtime,'fixed_invocation_wire',side_effect=transport), \
+             patch.object(self.host,'admit',side_effect=admit), \
+             patch.object(helper,'_supervise',return_value=terminal(envelope['request'])) as supervise:
+            asyncio.run(self.current.continue_native_harness(lambda *a,**kw:adapters))
+            record=self.current.state[runtime.INVOCATIONS][self.binding.operation_id]
+            self.assertEqual(record['history'],[old]);self.assertEqual(record['invocations'],[])
+            self.assertEqual(record['recovery_observation']['result']['status'],'not-found')
+            self.assertEqual(self.calls,[{**envelope,'mode':'observe'}]);supervise.assert_not_called()
+            # Cold reload preserves unknown history and the actual absence proof.
+            self.current.state=json.loads(self.current.state_path.read_text())
+            asyncio.run(self.current.continue_native_harness(lambda *a,**kw:adapters))
+            record=self.current.state[runtime.INVOCATIONS][self.binding.operation_id]
+            self.assertEqual(record['history'],[old]);self.assertEqual(len(record['invocations']),1)
+            self.assertEqual(record['invocations'][0]['envelope'],envelope)
+            self.assertEqual(record['invocations'][0]['status'],'complete');supervise.assert_called_once()
+            self.assertEqual([v['mode'] for v in self.calls],['observe','invoke'])
+            self.assertEqual({v['invocation_id'] for v in self.calls},{envelope['invocation_id']})
+            asyncio.run(self.current.continue_native_harness(lambda *a,**kw:adapters))
+            self.assertEqual(len(self.calls),2);supervise.assert_called_once()
+            # A real existing privileged receipt, even completed, cannot be
+            # relabeled as pre-admission absence or authorize another invoke.
+            self.current.state[runtime.INVOCATIONS][self.binding.operation_id]=copy.deepcopy(old)
+            recovered=runtime.invocation_continuation_record(self.current,self.binding,self.packet,selection)
+            self.current.state[runtime.INVOCATIONS][self.binding.operation_id]=recovered
+            with self.assertRaisesRegex(runtime.RuntimeHold,'pre_admission_privileged_record_exists'):
+                asyncio.run(runtime.invocation_transaction(self.current,self.binding,self.packet,selection,
+                    'observe',[0],lambda *_:True))
+            self.assertEqual(recovered['invocations'],[]);self.assertEqual(recovered['history'],[old])
+            self.assertIsNotNone(recovered['recovery_observation']['result']['receipt']);supervise.assert_called_once()
+        wrong=copy.deepcopy(old);wrong['invocations'][0]['envelope']['request']['mode']='step'
+        with self.assertRaisesRegex(runtime.RuntimeHold,'pre_admission_original_observe'):
+            runtime.pre_admission_history(helper,grant,wrong,self.binding,self.packet)

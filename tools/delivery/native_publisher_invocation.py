@@ -105,8 +105,10 @@ def uuid(value):
 
 def continuation(value, identity):
     """Finite ROOT-sealed same-operation history grant, not invocation authority."""
+    pre = isinstance(value,dict) and 'pre_admission_refusal' in value
     require(exact(value, {'version','operation_id','unit_sha256','packet_sha256','claim_sha256',
-        'previous_selection_sha256','previous_capability','previous_record_sha256','receipts'})
+        'previous_selection_sha256','previous_capability','previous_record_sha256','receipts'} |
+        ({'pre_admission_refusal'} if pre else set()))
         and type(value['version']) is int and value['version'] == 1, 'continuation_shape')
     for key in ('operation_id','unit_sha256','packet_sha256','claim_sha256',
                 'previous_selection_sha256','previous_record_sha256'):
@@ -122,7 +124,15 @@ def continuation(value, identity):
         and all(hex64(cap[k]) for k in ('closure_sha256','host_confirmation_sha256')),
         'continuation_capability')
     receipts = value['receipts']
-    require(type(receipts) is list and 1 <= len(receipts) <= 128, 'continuation_receipts')
+    require(type(receipts) is list and (receipts == [] if pre else 1 <= len(receipts) <= 128),
+            'continuation_receipts')
+    if pre:
+        refused=value['pre_admission_refusal']
+        require(exact(refused,{'invocation_id','request_sha256','reason','evidence_sha256'})
+            and refused['reason'] == 'closure_canonical_bytes'
+            and hex64(refused['request_sha256']) and hex64(refused['evidence_sha256']),
+            'pre_admission_refusal')
+        uuid(refused['invocation_id'])
     ids = []
     for ref in receipts:
         require(exact(ref, {'invocation_id','closure_sha256','receipt_sha256'})

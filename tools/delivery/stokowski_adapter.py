@@ -2075,7 +2075,7 @@ class CurrentWork:
         if binding['phase'] == 'integration' and keys == {'reviewed_runtime', 'unit_review'}:
             root_name, references = 'reviewed_runtime', ('unit_review',)
         elif (binding['phase'] == 'integration' and keys == {'native_runtime','pending_unit_review'}
-              and 'publisher_invocation' in context and 'publisher_continuation' not in context):
+              and 'publisher_invocation' in context):
             root_name, references = 'native_runtime', ()
             c=context['pending_unit_review']
             if (not isinstance(c,dict) or c.get('runtime') != str(self.runtime)
@@ -2090,14 +2090,17 @@ class CurrentWork:
         if not isinstance(context[root_name], str) or not self.private(context[root_name]).is_dir():
             raise AdmissionError('native_harness_context')
         if 'publisher_continuation' in context:
-            if binding['phase'] != 'integration' or root_name != 'reviewed_runtime' or 'publisher_invocation' not in context:
+            if (binding['phase'] != 'integration' or root_name not in ('reviewed_runtime','native_runtime')
+                or 'publisher_invocation' not in context):
                 raise AdmissionError('native_harness_continuation_context')
             import native_publisher_invocation as helper
             name = 'tools/delivery/native_publisher_invocation.py'
             if (Path(helper.__file__).resolve() != SOURCE/name or
                 self.config['source_sha256'].get(name) != file_sha(helper.__file__)):
                 raise AdmissionError('native_harness_continuation_source')
-            helper.continuation(context['publisher_continuation'],binding)
+            grant=helper.continuation(context['publisher_continuation'],binding)
+            if ('pre_admission_refusal' in grant) != (root_name == 'native_runtime'):
+                raise AdmissionError('native_harness_continuation_origin')
         if 'publisher_invocation' in context:
             invocation = context['publisher_invocation']
             if (not isinstance(invocation, dict)

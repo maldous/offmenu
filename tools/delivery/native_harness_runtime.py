@@ -556,7 +556,8 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
                            and set(context) - {'publisher_invocation','publisher_continuation'} ==
                            {'reviewed_runtime', 'unit_review'})
         native_context = (binding.phase == 'integration' and type(context) is dict
-                          and set(context) == {'native_runtime','pending_unit_review','publisher_invocation'})
+                          and set(context) - {'publisher_continuation'} ==
+                          {'native_runtime','pending_unit_review','publisher_invocation'})
         require(type(context) is dict and (set(context) in (
                     {'engine_root', 'engine_task', 'unit_review'},
                     {'engine_root', 'engine_task', 'unit_review', 'publisher_invocation'})
@@ -581,9 +582,11 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
                     and fingerprint(c['publisher_review_binding']) == bound.operation_id,
                     'native_review_owner_context')
         if 'publisher_continuation' in context:
-            require(journal_context and 'publisher_invocation' in context, 'publisher_continuation_context')
+            require((journal_context or native_context) and 'publisher_invocation' in context,
+                    'publisher_continuation_context')
             import native_publisher_invocation as helper
-            helper.continuation(context['publisher_continuation'],asdict(binding))
+            grant=helper.continuation(context['publisher_continuation'],asdict(binding))
+            require(('pre_admission_refusal' in grant) == native_context,'publisher_continuation_origin')
         if 'publisher_invocation' in actual['context']:
             require(binding.phase in ('integration', 'release'), 'publisher_invocation_phase')
             invocation_capability(actual['context']['publisher_invocation'])
@@ -709,7 +712,7 @@ def owner_adapters(current, issue, binding, selection, *, linear_client=None):
     journal_context = (binding.phase == 'integration' and
                        set(selected['context']) - {'publisher_invocation','publisher_continuation'} ==
                        {'reviewed_runtime', 'unit_review'})
-    native_context=(binding.phase == 'integration' and set(selected['context']) ==
+    native_context=(binding.phase == 'integration' and set(selected['context']) - {'publisher_continuation'} ==
                     {'native_runtime','pending_unit_review','publisher_invocation'})
     return OwnerAdapters(authorize, load, engine, review, observe, step,
                          integration_acceptance if journal_context or native_context else None,
@@ -790,15 +793,52 @@ def invocation_projection(module, value, envelope, capability, phase):
                 child_tree_gone=True)
 
 
+def pre_admission_history(module, grant, record, binding, packet):
+    """Exact first observation refused before privileged admission, never success."""
+    from dataclasses import asdict
+    require(binding.phase == 'integration' and record.get('version') == 1
+        and set(record) == {'version','binding','selection_sha256','capability','invocations'}
+        and record['binding'] == asdict(binding) and len(record['invocations']) == 1,
+        'pre_admission_original_record')
+    old=record['invocations'][0];ref=grant['pre_admission_refusal']
+    require(set(old) == {'envelope','last_request','status','result'}
+        and old['status'] == 'unknown' and old['result'] is None,'pre_admission_unknown_only')
+    original=module.request(module.wire(old['envelope']))
+    last=module.request(module.wire(old['last_request']))
+    require(original['mode'] == 'invoke' and original['request'] == publisher_request(binding,packet,'observe')
+        and original['invocation_id'] == ref['invocation_id'] == last['invocation_id']
+        and last['request'] == original['request'] and last['mode'] in ('invoke','observe')
+        and module.fingerprint(original['request']) == ref['request_sha256'],
+        'pre_admission_original_observe')
+    return original
+
+
+def recovery_observation(module, epoch, binding, packet):
+    original=pre_admission_history(module,epoch['continuation'],epoch['history'][0],binding,packet)
+    observed=epoch['recovery_observation']
+    if observed is None:
+        return original,False
+    require(type(observed) is dict and set(observed) == {'envelope','result'}
+        and observed['envelope'] == {**original,'mode':'observe'},'pre_admission_observation')
+    if observed['result'] is None:
+        return original,False
+    value=module.validate_result(observed['result'],observed['envelope'],epoch['capability']['closure_sha256'])
+    require(value['status'] == 'not-found' and value['receipt'] is None and value['response'] is None,
+            'pre_admission_privileged_record_exists')
+    return original,True
+
+
 def invocation_epochs(module, record, binding, packet, *, complete=False):
     """Validate retained epochs with EACH original capability, never today's pin."""
     from dataclasses import asdict
-    epochs, cursor = [], record
+    epochs, cursor, refused_history, recovered_ids = [], record, set(), set()
     fields = {'version','binding','selection_sha256','capability','invocations'}
     while True:
+        pre=(type(cursor) is dict and cursor.get('version') == 2
+             and 'pre_admission_refusal' in cursor.get('continuation',{}))
         require(type(cursor) is dict and type(cursor.get('version')) is int
             and cursor['version'] in (1,2) and set(cursor) == (fields if cursor['version'] == 1
-                else fields | {'history','continuation'}), 'publisher_invocation_record')
+                else fields | {'history','continuation'} | ({'recovery_observation'} if pre else set())), 'publisher_invocation_record')
         require(cursor['binding'] == asdict(binding) and type(cursor['invocations']) is list
             and len(cursor['invocations']) <= 128, 'publisher_invocation_binding')
         invocation_capability(cursor['capability'])
@@ -813,10 +853,17 @@ def invocation_epochs(module, record, binding, packet, *, complete=False):
         require(module.fingerprint(previous) == grant['previous_record_sha256']
             and previous['selection_sha256'] == grant['previous_selection_sha256']
             and previous['capability'] == grant['previous_capability'], 'publisher_continuation_history_pin')
+        if pre:
+            original,absent=recovery_observation(module,cursor,binding,packet)
+            require(not cursor['invocations'] or absent,'pre_admission_absence_required')
+            if cursor['invocations']:
+                require(cursor['invocations'][0]['envelope'] == original,'pre_admission_same_uuid')
+            refused_history.add(id(previous));recovered_ids.add(original['invocation_id'])
         cursor = previous
     refs, ids = [], []
     for epoch in reversed(epochs):
         historical = epoch is not record
+        refused=id(epoch) in refused_history
         require(epoch['invocations'] or (epoch['version'] == 2 and not historical),
                 'publisher_invocation_empty_history')
         for old in epoch['invocations']:
@@ -837,10 +884,10 @@ def invocation_epochs(module, record, binding, packet, *, complete=False):
                     closure_sha256=epoch['capability']['closure_sha256'],receipt_sha256=value['receipt']['sha256']))
             if value and value['response'] is not None:
                 publisher_response(value['response'],original['request'],binding.phase)
-            if old['status'] == 'complete' or historical or complete:
+            if old['status'] == 'complete' or ((historical or complete) and not refused):
                 require(old['status'] == 'complete' and value is not None and value['status'] == 'complete',
                         'publisher_invocation_completion')
-            if historical or complete:
+            if (historical or complete) and not refused:
                 terminal = value['receipt']['body']['terminal']
                 require(terminal['child_tree_gone'] is True and
                     ((terminal['response'] is None and original['request']['mode'] == 'observe') or
@@ -848,9 +895,12 @@ def invocation_epochs(module, record, binding, packet, *, complete=False):
                     'publisher_continuation_unknown_effect')
         require(all(old['status'] == 'complete' for old in epoch['invocations'][:-1]),
                 'publisher_invocation_prior_unresolved')
-    require(len(ids) <= 128 and len(ids) == len(set(ids)), 'publisher_invocation_duplicate_identity')
+    require(len(ids) <= 128 and all(ids.count(v) == 1 or (v in recovered_ids and ids.count(v) == 2)
+                                   for v in set(ids)), 'publisher_invocation_duplicate_identity')
     # Every historical grant remains checkable after restart, with no history rewrite.
     for epoch in epochs[:-1]:
+        if 'pre_admission_refusal' in epoch['continuation']:
+            continue  # The pinned old unknown has no privileged receipt at all.
         allowed = {r['invocation_id']:r for r in epoch['continuation']['receipts']}
         prior_ids = set()
         previous = epoch['history'][0]
@@ -876,6 +926,11 @@ def invocation_continuation_record(current, binding, packet, selection):
     capability = invocation_capability(selection['context']['publisher_invocation'])
     require(capability['closure_sha256'] != record['capability']['closure_sha256'],
             'publisher_continuation_new_closure')
+    if 'pre_admission_refusal' in grant:
+        pre_admission_history(module,grant,record,binding,packet)
+        return dict(version=2,binding=asdict(binding),selection_sha256=fingerprint(selection),
+            capability=capability,invocations=[],history=[json.loads(json.dumps(record))],
+            continuation=json.loads(json.dumps(grant)),recovery_observation=None)
     refs = invocation_epochs(module,record,binding,packet,complete=True)
     require({r['invocation_id']:r for r in refs} == {r['invocation_id']:r for r in grant['receipts']},
             'publisher_continuation_receipt_pins')
@@ -909,6 +964,23 @@ async def invocation_transaction(current, binding, packet, selection, mode, call
             and record['capability'] == capability and type(record['invocations']) is list
             and len(record['invocations']) <= 128, 'publisher_invocation_rebind')
         invocation_epochs(module,record,binding,packet)
+    recovered_original=None
+    if (record and record['version'] == 2 and not record['invocations']
+        and 'pre_admission_refusal' in record['continuation']):
+        recovered_original,absent=recovery_observation(module,record,binding,packet)
+        require(mode == 'observe','pre_admission_observe_only')
+        if not absent:
+            require(not calls[0],'publisher_next_boundary_required')
+            envelope={**recovered_original,'mode':'observe'}
+            record['recovery_observation']=dict(envelope=envelope,result=None)
+            current.save()  # Read intent, never a manufactured complete receipt.
+            calls[0]+=1
+            raw=await fixed_invocation_wire(envelope)
+            value=module.validate_result(module.decode(raw),envelope,capability['closure_sha256'])
+            record['recovery_observation']['result']=value
+            current.save()  # Retain an existing/unknown receipt too, then hold.
+            recovery_observation(module,record,binding,packet)
+            return dict(operation_id=binding.operation_id,status='pending',child_tree_gone=False)
     latest = record['invocations'][-1] if record and record['invocations'] else None
     reobserve = False
     if mode == 'observe' and latest and latest['status'] == 'complete':
@@ -943,8 +1015,9 @@ async def invocation_transaction(current, binding, packet, selection, mode, call
             # never verified and cannot authorize another step/action replay.
             proven = module.validate_result(latest['result'], latest['envelope'], capability['closure_sha256'])
             require(proven['status'] == 'complete', 'publisher_invocation_unresolved')
-        envelope = dict(version=1, mode='invoke', invocation_id=str(uuid4()),
-                        request=publisher_request(binding, packet, mode))
+        envelope = (recovered_original if recovered_original is not None else
+                    dict(version=1, mode='invoke', invocation_id=str(uuid4()),
+                         request=publisher_request(binding, packet, mode)))
         module.request(module.wire(envelope))
         if record is None:
             record = dict(version=1, binding=asdict(binding), selection_sha256=selected_sha,
