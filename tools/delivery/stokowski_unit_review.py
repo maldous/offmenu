@@ -243,7 +243,10 @@ def protected_checkpoint(request):
             and type(reply['version']) is int and reply['version'] == 1
             and reply['kind'] == 'native-publisher-unit-review-v1'
             and reply['request_sha256'] == digest(request['request'])
-            and digest(reply['binding']) == request['request']['operation_id'])
+            and digest(reply['binding']) == request['request']['operation_id']
+            and reply['decision'].get('status') == 'merge-intent'
+            and reply['decision'].get('merge_effect') == 'pending'
+            and not reply['decision'].get('helper_consumed'))
     channels = checkpoint_json(base64.b64decode(reply['checkpoint'], validate=True))['channel_values']
     # Restore the actual state from the original graph, compare typed semantics
     # with the separately read state file, never JS-normalize its legacy digest.

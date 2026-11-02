@@ -243,7 +243,31 @@ class InvocationTests(unittest.TestCase):
             path.write_bytes(raw)
         with sqlite3.connect(directory/'graph.sqlite') as db:
             db.execute("UPDATE checkpoints SET type='pickle'")
+        db.close()
         with self.assertRaisesRegex(module.InvocationHold,'review_checkpoint'):self.invoke(envelope)
+        with sqlite3.connect(directory/'graph.sqlite') as db:
+            db.execute("UPDATE checkpoints SET type='msgpack'")
+        db.close()
+        # UR1: the REAL reservation updates both state and original graph.
+        # State-only tampering would fail same_wire and miss this regression.
+        action=controller.status()['action']
+        intent={k:action[k] for k in ('kind','repository','pr_number','expected_head_sha',
+                                     'expected_base_sha','expected_head_branch','merge_method')}
+        intent['intent_sha256']=module.fingerprint(action)
+        self.assertTrue(controller.consume_publisher_intent(inner['operation_id'],intent))
+        consumed=controller.status()
+        self.assertEqual(consumed['helper_consumed'],module.fingerprint(action))
+        with sqlite3.connect((directory/'graph.sqlite').as_uri()+'?mode=ro&immutable=1',uri=True) as db:
+            row=db.execute("SELECT checkpoint FROM checkpoints WHERE thread_id=? AND checkpoint_ns='' ORDER BY checkpoint_id DESC LIMIT 1",
+                           (inner['operation_id'],)).fetchone()
+        reply={**original,'decision':consumed,'checkpoint':module.base64.b64encode(row[0]).decode('ascii')}
+        self.assertTrue(consumer.same_wire(consumer.checkpoint_json(row[0])['channel_values']['result'],consumed))
+        after_consume=retained()
+        with self.assertRaisesRegex(module.InvocationHold,'review_pending'):self.invoke(envelope)
+        with patch.object(consumer.subprocess,'run',side_effect=fixed_read):
+            with self.assertRaisesRegex(consumer.AdmissionError,'local_review_binding'):
+                consumer.protected_checkpoint(envelope)
+        self.assertEqual(retained(),after_consume)
         invalid=copy.deepcopy(envelope);invalid['request']['mode']='step'
         with self.assertRaisesRegex(module.InvocationHold,'review_read_only'):self.invoke(invalid)
 

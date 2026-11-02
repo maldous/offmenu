@@ -421,6 +421,7 @@ def pending_review(directory, inner, closure, *, root, uid):
                         request_sha256=fingerprint(inner),closure_sha256=closure)
         require(state.get('binding_sha256') == inner['operation_id']
                 and state.get('status') == 'merge-intent' and state.get('merge_effect') == 'pending'
+                and not state.get('helper_consumed')
                 and state.get('action', {}).get('kind') == 'merge-pr', 'review_pending')
         # Open read-only, retain typed checkpoint bytes for the existing v2 decoder.
         # Check consumed inode custody; SQLite receives no caller-supplied path.
