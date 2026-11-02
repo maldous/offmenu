@@ -774,6 +774,88 @@ class CurrentDispatchTests(unittest.TestCase):
         self.assertIn('intake_reference_missing', held['reason'])
         self.assertEqual(held['required_actor'], self.current.config['owner'])
 
+    def test_owner_qualified_intake_refreshes_source_only_before_any_publication(self):
+        import copy
+        issue,client,authority,_=self.intake_fixture(decision='owner-qualified')
+        authority['qualification']=None
+        oldhead='b'*40;newhead=self.current.config['source_head']
+        ref=lambda p:dict(path=str(p),sha256=adapter.file_sha(p))
+        def inputs(head,name):
+            q=self.root/name;runtime=self.root/(name+'-task')
+            task=dict(issue_id=issue.id,owner=authority['owner'],purpose='Synthetic bounded source correction',
+                allowed_paths=authority['accepted_scope'],acceptance=authority['acceptance'],
+                resources=self.policy['symphony']['default_resources'],attempt_limit=1)
+            self.write(q/'manifest.json',dict(version=1,branch='feature/test-current',base_revision=head,
+                project_id=authority['project_id'],label='synthetic-source-refresh',tasks={issue.identifier:task}))
+            self.write(q/'request.json',dict(prompt='Use reviewed source '+head,timeout_seconds=60))
+            self.write(q/'provider.json',dict(requested_model='gpt-6.1-sol',requested_effort='medium',route='codex-chatgpt'))
+            self.write(q/'caller.json',{'expected':'same owner, authentication still required'})
+            binding=dict(issue_id=issue.id,owner=authority['owner'],repository='maldous/offmenu')
+            self.write(q/'binding.json',binding)
+            self.write(q/'claim.json',dict(owner=authority['owner'],directory=str(q),binding_sha256=adapter.digest(binding)))
+            selected=dict(runtime_root=str(self.root),task_runtime=str(runtime),coordinator_runtime=str(self.runtime),
+                          catalog_path=str(self.catalog))
+            config=dict(schema='offmenu-source-owner-publication-config/1',owner=authority['owner'],repository='maldous/offmenu',
+                selected_current=selected,publication_authority={'automatic_start':False},
+                caller_association=dict(service='github-ssh',principal_id='synthetic',login='synthetic',
+                    native_route={'synthetic':'unchanged fixed route'},authenticated_observation=ref(q/'caller.json')),
+                repository_claim=dict(**ref(q/'claim.json'),binding_path=str(q/'binding.json'),
+                    binding_sha256=adapter.file_sha(q/'binding.json'),binding_identity_sha256=adapter.digest(binding)),
+                native_publication=dict(source_base='d'*40,source_head=head,source_branch='feature/test-current',
+                    python_sha256='e'*64,source_sha256={'tools/delivery/stokowski_adapter.py':
+                        self.current.config['source_sha256']['tools/delivery/stokowski_adapter.py']}))
+            self.write(q/'config.json',config)
+            packet=dict(schema='offmenu-owner-bound-preexecution-task/1',origin='qualified-successor-v1',
+                owner=authority['owner'],unit_id='synthetic-source-refresh',scope=task['allowed_paths'],acceptance=task['acceptance'],
+                resources=task['resources'],source=dict(repository='maldous/offmenu',source_checkout=str(self.source),
+                    base=head,branch='feature/test-current'),selected_current=selected,
+                execution_outcome=dict(identifier=issue.identifier,uuid=issue.id,project_id=authority['project_id']),
+                manifest=ref(q/'manifest.json'),request=ref(q/'request.json'),owner_config=ref(q/'config.json'),
+                provider_requirements=ref(q/'provider.json'),inputs={str(self.catalog):adapter.file_sha(self.catalog)},
+                trigger={'synthetic':'unchanged original unit'},expires_at=time.time()+300)
+            self.write(q/'packet.json',packet)
+            self.write(q/'handoff.json',dict(directory=str(q),source_base=head,task_packet=ref(q/'packet.json'),
+                owner_config=packet['owner_config'],manifest=packet['manifest'],request=packet['request']))
+            return q,runtime,ref(q/'handoff.json')
+        oldq,oldruntime,oldref=inputs(oldhead,'old-unpublished')
+        newq,newruntime,newref=inputs(newhead,'new-unpublished')
+        previous=dict(authority,source_head=oldhead,handoff=oldref)
+        renewed=dict(authority,handoff=newref)
+        # Expiry is permitted to renew; neither packet changes task authority.
+        oldpacket=adapter.read_record(oldq/'packet.json');newpacket=adapter.read_record(newq/'packet.json')
+        oldpacket['expires_at']=newpacket['expires_at'];self.write(oldq/'packet.json',oldpacket)
+        oldhandoff=adapter.read_record(oldq/'handoff.json');oldhandoff['task_packet']=ref(oldq/'packet.json')
+        self.write(oldq/'handoff.json',oldhandoff);oldref=ref(oldq/'handoff.json');previous['handoff']=oldref
+        self.write(self.root/'intake-authority.json',renewed)
+        policy=adapter.read_record(self.root/'intake-policy.json')
+        policy['references']['owner/finite-341']=ref(self.root/'intake-authority.json');self.write(self.root/'intake-policy.json',policy)
+        self.current.config['normal_intake']=ref(self.root/'intake-policy.json')
+        self.write(self.runtime/'current.json',self.current.config);self.current.config_sha=adapter.file_sha(self.runtime/'current.json')
+        self.current.state['config_sha256']=self.current.config_sha
+        original=dict(issue_id=issue.id,status='qualified',reference='owner/finite-341',authority=previous,handoff=oldref)
+        oldbytes={p:p.read_bytes() for p in oldq.iterdir()}
+        def waiting():self.current.state['successor_hold']='AdmissionError: native_harness_refill_readback_required'
+        with patch.object(self.current,'_successor_boundary',side_effect=waiting) as boundary:
+            for hold in ('runtime','qualification_intent','scope'):
+                record=copy.deepcopy(original);self.current.state['intake']={issue.identifier:record}
+                if hold=='runtime':oldruntime.mkdir()
+                elif hold=='qualification_intent':record['qualification_intent']={'synthetic':'pending'}
+                else:record['authority']['accepted_scope']=['tests/different-rights.py']
+                asyncio.run(self.current._intake(client,issue))
+                self.assertEqual(record['status'],'held',record)
+                self.assertNotIn('qualification_history',record);boundary.assert_not_called()
+                if hold=='runtime':oldruntime.rmdir()
+            self.current.state['intake']={issue.identifier:copy.deepcopy(original)}
+            asyncio.run(self.current._intake(client,issue));boundary.assert_called_once()
+        record=self.current.state['intake'][issue.identifier]
+        self.assertEqual(record['status'],'qualified',record);self.assertEqual(record['authority'],renewed)
+        self.assertEqual(record['qualification_history'],[dict(authority=previous,reference='owner/finite-341',
+            handoff=oldref,disposition='source-requalified-before-publication')])
+        self.assertEqual(self.current.state['intake_handoff'],newref)
+        self.assertFalse(oldruntime.exists());self.assertFalse(newruntime.exists())
+        self.assertNotIn(issue.identifier,self.current.state.get('references',{}))
+        for p,raw in oldbytes.items():self.assertEqual(p.read_bytes(),raw)
+
     def test_intake_authority_and_fresh_dependency_drift_never_launch(self):
         issue, client, authority, _ = self.intake_fixture()
         remote = client._graphql.return_value['issue']
@@ -857,6 +939,98 @@ class CurrentDispatchTests(unittest.TestCase):
         with self.assertRaisesRegex(AdmissionError, 'prior_unit_unreconciled'):
             self.current._rearm_successor(pending)
         self.assertEqual(self.current.state['successor_request'], pending)
+
+    def test_reconciled_unit_rearms_only_freshly_qualified_closed_failed_native_history(self):
+        # This case uses the existing real-Git native fixture, not this class's
+        # default synthetic Git transport. Close only our disposable setup.
+        self.stack.close()
+        import copy
+        from test_completed_native_transition import CompletedNativeTransitionTests
+        from offmenu.delivery.integration import Controller
+        import stokowski_operations as operations
+        f=CompletedNativeTransitionTests(methodName='runTest');f.setUp()
+        self.addCleanup(f.doCleanups)
+        f.test_completed_control_review_and_same_runtime_v1_contribution()
+        c=f.current;issue=SimpleNamespace(identifier='UIF-102',id=f.entry['issue_id'])
+        guard=patch.object(c,'guard');guard.start();self.addCleanup(guard.stop)
+        bindings=adapter.read_record(f.runtime/'validation-bindings.json');selected=bindings['issues']['UIF-102']
+        journal=operations.Journal(f.runtime/'operations');spec,current=journal.read(selected['operation_key'])
+        oldspec=dict(spec,executor_sha256='e'*64);oldkey=journal.prepare(oldspec);_,old=journal.read(oldkey)
+        failed=dict(status='failed',exit_code=1,mode='read',child_tree_gone=True,reconcile_required=False,
+            job_id=old['logical_job_id'],runner_sha256=oldspec['runner_sha256'],
+            capacity_policy_sha256=oldspec['policy_sha256'],command_sha256='a'*64,request_sha256='b'*64)
+        old.update(status='failed',receipt_sha256=adapter.digest(failed),accepted_output_sha256={},
+            acceptance_sha256=oldspec['acceptance_sha256'],observation_intent=True,
+            diagnosis={'exception_class':'ToolResultIncompleteError'})
+        journal.save(oldkey,old,'SYNTHETIC closed failed predecessor')
+        failed_path=f.runtime/('validation-receipt-'+oldkey+'.json');f.write(failed_path,failed)
+        bindings['history']=[dict(issue='UIF-102',**dict(selected,operation_key=oldkey))]
+        f.write(f.runtime/'validation-bindings.json',bindings)
+        receipt=dict(status='succeeded',exit_code=0,child_tree_gone=True,reconcile_required=False,
+            job_id=current['logical_job_id'],runner_sha256=spec['runner_sha256'],
+            capacity_policy_sha256=spec['policy_sha256'],command_sha256=hashlib.sha256(
+                operations.bridge_arguments(spec)['command'].encode()).hexdigest())
+        current.update(status='succeeded',receipt_sha256=adapter.digest(receipt),accepted_output_sha256=spec['outputs'],
+                       acceptance_sha256=spec['acceptance_sha256'])
+        journal.save(selected['operation_key'],current,'SYNTHETIC original successful validation')
+        unit=c.gate_binding(issue,observation=True)
+        b=dict(version=1,repository='maldous/offmenu',pr_number=145,issue_id=issue.id,owner=c.config['owner'],
+            head=spec['head'],base=spec['base'],tree=f.git(f.candidate,'rev-parse','HEAD^{tree}'),
+            head_branch=spec['branch'],outputs=spec['outputs'],validation_operation_key=selected['operation_key'],
+            policy_sha256='c'*64,capacity_policy_sha256=spec['policy_sha256'])
+        review=dict(head=b['head'],base=b['base'],outputs=b['outputs'],reviewer='synthetic-independent-reviewer',
+            author=b['owner'],model='unknown',provider='unknown',independent=True,verdict='accept',findings=[],
+            evidence_id='synthetic-original-native-review')
+        review['evidence_sha256']=adapter.digest(review)
+        snapshot=dict(observed_at=time.time(),publisher_owner=b['owner'],source_tree=b['tree'],source_clean=True,
+            policy_sha256=b['policy_sha256'],capacity_policy_sha256=b['capacity_policy_sha256'],review=review,
+            validation=dict(operation_key=selected['operation_key'],status='succeeded',head=b['head'],base=b['base'],
+                outputs=b['outputs'],capacity_policy_sha256=b['capacity_policy_sha256'],child_tree_gone=True,reconcile_required=False),
+            unresolved_findings=[],publication_triggers_actions=False,automatic_integration_enabled=True,
+            github=dict(repository=b['repository'],number=145,state='open',merged=False,draft=False,
+                head=b['head'],base=b['base'],head_branch=b['head_branch'],base_branch='develop',mergeable=True))
+        decision=Controller(f.root/'integration/unit',b).run(snapshot)  # Real private graph, no HTTP.
+        packet=dict(issue='UIF-102',unit_binding=unit,integration_binding=b,snapshot=snapshot,
+                    decision=decision,validation_receipt=receipt)
+        f.write(c.runtime/'unit-review-UIF-102.json',packet)
+        c.state['tasks']['UIF-102']['unit_gate']=dict(binding=unit,disposition='approved',handled=True,
+            unit_review='approved',review_sha256=adapter.digest(packet),accepted_delivery=False)
+        c.read_only=False;c.state_path=c.runtime/'current-owner.json'
+        f.write(c.runtime/'prior-packet.json',dict(execution_outcome={'identifier':'UIF-102'}))
+        f.write(c.runtime/'prior-handoff.json',dict(task_packet=dict(path=str(c.runtime/'prior-packet.json'),
+            sha256=adapter.file_sha(c.runtime/'prior-packet.json'))))
+        pending=dict(status='published',handoff=dict(path=str(c.runtime/'prior-handoff.json'),
+            sha256=adapter.file_sha(c.runtime/'prior-handoff.json')))
+        c.state['successor_request']=copy.deepcopy(pending)
+        originals={p:p.read_bytes() for p in (failed_path,f.runtime/'validation-bindings.json',
+            f.directory/'receipt.json',c.runtime/'unit-review-UIF-102.json')}
+        with patch.object(c,'guard'):
+            self.assertTrue(c._reconciled_unit('UIF-102'))
+            # A previous successful qualification/cache cannot mask live drift.
+            for changes in ({'status':'unknown'},{'cancel_requested':True},{'reconcile_required':True}):
+                journal.save(oldkey,dict(old,**changes),'SYNTHETIC unresolved predecessor')
+                with self.subTest(changes=changes):
+                    self.assertFalse(c._reconciled_unit('UIF-102'))
+                    with self.assertRaisesRegex(AdmissionError,'successor_prior_unit_unreconciled'):
+                        c._rearm_successor(pending)
+                    self.assertEqual(c.state['successor_request'],pending)
+                journal.save(oldkey,old,'SYNTHETIC restore original predecessor')
+            f.write(f.runtime/'validation-bindings.json',dict(bindings,history=[]))
+            self.assertFalse(c._reconciled_unit('UIF-102'))  # No blanket failed-row exemption.
+            f.write(f.runtime/'validation-bindings.json',bindings)
+            f.write(failed_path,dict(failed,child_tree_gone=False))
+            self.assertFalse(c._reconciled_unit('UIF-102'))
+            failed_path.write_bytes(originals[failed_path])
+            journal.save(selected['operation_key'],dict(current,observation_intent=True),'SYNTHETIC current observation')
+            self.assertFalse(c._reconciled_unit('UIF-102'))
+            journal.save(selected['operation_key'],current,'SYNTHETIC restore selected success')
+            c._rearm_successor(pending)
+        self.assertNotIn('successor_request',c.state)
+        self.assertEqual(c.state['successor_history'][0]['terminal_unit'],unit)
+        self.assertEqual(journal.read(oldkey),(oldspec,old))
+        self.assertEqual(journal.read(selected['operation_key']),(spec,current))
+        self.assertTrue(journal.read(oldkey)[1]['observation_intent'])
+        for p,raw in originals.items():self.assertEqual(p.read_bytes(),raw)
 
     def git_read(self, args, **kwargs):
         if args[3] == 'merge-base':

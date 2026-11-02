@@ -657,6 +657,9 @@ class CurrentWork:
                     record.setdefault('replacement_history', []).append(dict(
                         reference=record['reference'], authority=previous,
                         handoff=record.get('handoff'), refusal=witness))
+                elif previous['decision'] == authority['decision'] == 'owner-qualified':
+                    history = self._source_requalified_unpublished_intake(record,authority)
+                    record.setdefault('qualification_history', []).append(history)
                 else:
                     if (previous['decision'] != 'qualification-only' or authority['decision'] != 'owner-qualified'
                         or any(previous[k] != authority[k] for k in stable)
@@ -695,6 +698,108 @@ class CurrentWork:
             record.update(status='held', reason=str(error), required_actor=self.config['owner'],
                           required_input='fresh owner-qualified private authority and exact accepted scope/handoff')
         self.save()
+
+    def _source_requalified_unpublished_intake(self, record, authority):
+        """Root-sealed source-only refresh before ANY original publication.
+
+        Retain the old authority/handoff; normal intake/producer still owns the
+        new admission. No effect, runtime, lease or uncertain intent is reset.
+        """
+        previous=record['authority']
+        def require(ok):
+            if not ok: raise AdmissionError('intake_source_requalification_held')
+        require(record.get('status') == 'qualified' and previous['source_head'] != authority['source_head']
+            and set(previous) == set(authority) and 'replacement_of' not in authority
+            and all(previous[k] == authority[k] for k in authority if k not in ('source_head','handoff'))
+            and previous['decision'] == authority['decision'] == 'owner-qualified'
+            and previous['qualification'] is None and authority['source_head'] == self.config['source_head']
+            and record.get('handoff') == previous['handoff']
+            and not any(k in record for k in ('qualification_intent','qualification_result')))
+        packets=[];runtimes=[];leases=[];configurations=[];external_inputs=[]
+        for a in (previous,authority):
+            handoff=self._private_pin(a['handoff']);packet=self._private_pin(handoff['task_packet'])
+            config=self._private_pin(handoff['owner_config'])
+            manifest,task=self._successor_task(packet,config)
+            runtime=self.private(packet['selected_current']['task_runtime'])
+            require(packet['origin'] == 'qualified-successor-v1' and 'replacement_of' not in packet
+                and 'stage' not in task and packet['source']['base'] == handoff['source_base'] == a['source_head']
+                and packet['owner_config'] == handoff['owner_config'] and packet['manifest'] == handoff['manifest']
+                and packet['request'] == handoff['request'] and runtime.parent == self.root
+                and not runtime.exists() and not runtime.is_symlink()
+                and packet['source']['source_checkout'] == str(SOURCE)
+                and packet['owner'] == config['owner'] == a['owner']
+                and packet['selected_current'] == config['selected_current']
+                and packet['selected_current']['runtime_root'] == str(self.root)
+                and packet['selected_current']['coordinator_runtime'] == str(self.runtime)
+                and packet['selected_current']['catalog_path'] == str(self.catalog)
+                and config['native_publication']['source_head'] == a['source_head']
+                and config['native_publication']['source_branch'] == packet['source']['branch']
+                and packet['execution_outcome'] == dict(identifier=a['issue'],uuid=a['issue_id'],project_id=a['project_id'])
+                and packet['scope'] == a['accepted_scope'] and packet['acceptance'] == a['acceptance'])
+            # The normal publisher records this journal before creating runtime.
+            for path in (self.root/(runtime.name+'-publication.json'),
+                         self.root.parent/'native-ssh-publication'/(a['handoff']['sha256']+'.json'),
+                         SOURCE/'.delivery/native-ssh-publication'/(a['handoff']['sha256']+'.json')):
+                require(not path.exists() and not path.is_symlink())
+            packets.append((packet,manifest,self._private_pin(packet['request'])))
+            configurations.append(config);runtimes.append(str(runtime))
+            leases.append(runtime_lease_ids(runtime,manifest)[a['issue']])
+            claim=config['repository_claim']
+            owned=self._private_pin(dict(path=claim['binding_path'],sha256=claim['binding_sha256']))
+            require(owned == dict(issue_id=a['issue_id'],owner=a['owner'],repository=config['repository'])
+                and claim['binding_identity_sha256'] == digest(owned)
+                and self._private_pin({k:claim[k] for k in ('path','sha256')}) ==
+                    dict(owner=a['owner'],directory=str(Path(claim['binding_path']).parent),binding_sha256=digest(owned)))
+            qualified=Path(a['handoff']['path']).parent
+            external_inputs.append({k:v for k,v in packet['inputs'].items() if not Path(k).is_relative_to(qualified)})
+        old,old_manifest,old_request=packets[0];new,new_manifest,new_request=packets[1]
+        require(old['source'] == dict(new['source'],base=previous['source_head'])
+            and old_manifest == dict(new_manifest,base_revision=previous['source_head'])
+            and all(old[k] == new[k] for k in old if k not in
+                ('source','selected_current','manifest','request','owner_config','provider_requirements','inputs','expires_at'))
+            and set(old) == set(new)
+            and {k:v for k,v in old['selected_current'].items() if k!='task_runtime'} ==
+                {k:v for k,v in new['selected_current'].items() if k!='task_runtime'}
+            and new_request == dict(old_request,prompt=old_request['prompt']
+                .replace(previous['source_head'],authority['source_head'])
+                .replace(previous['source_head'][:8],authority['source_head'][:8])
+                .replace(previous['source_head'][:4],authority['source_head'][:4]))
+            and self._private_pin(old['provider_requirements']) == self._private_pin(new['provider_requirements'])
+            and external_inputs[0] == external_inputs[1])
+        before,after=configurations
+        require(before['owner'] == after['owner'] == authority['owner']
+            and before['repository'] == after['repository']
+            and set(before) == set(after) and all(before[k] == after[k] for k in before
+                if k not in ('native_publication','selected_current','repository_claim','caller_association'))
+            and all(before['caller_association'][k] == after['caller_association'][k]
+                    for k in ('service','principal_id','login','native_route'))
+            and self._private_pin(before['caller_association']['authenticated_observation']) ==
+                self._private_pin(after['caller_association']['authenticated_observation'])
+            and set(before['native_publication']['source_sha256']) == set(after['native_publication']['source_sha256'])
+            and all(before['native_publication'][k] == after['native_publication'][k]
+                    for k in before['native_publication'] if k not in ('source_head','source_sha256'))
+            and after['native_publication']['source_head'] == authority['source_head']
+            and all(self.config['source_sha256'].get(k) == v
+                    for k,v in after['native_publication']['source_sha256'].items()))
+        # An unused predicted catalog grant is not a published catalog entry.
+        entries=list(self.state.get('references',{}).values())+list(self.entries.values())+self.catalog_record()['entries']
+        require(not any(e['issue'] == authority['issue'] or e['issue_id'] == authority['issue_id']
+                        or e['runtime'] in runtimes for e in entries))
+        pending=self.state.get('successor_request')
+        if pending:
+            prior=self._private_pin(self._private_pin(pending['handoff'])['task_packet'])
+            require(pending.get('status') in ('published','duplicate')
+                and prior['execution_outcome']['identifier'] != authority['issue'])
+        require(not any(v.get('binding',{}).get('issue_id') == authority['issue_id'] for name in
+            ('native_harness_publisher_invocations','native_harness_linear') for v in self.state.get(name,{}).values()))
+        capacity=read_record(self.runtime/'capacity-policy.json')
+        database=Path(capacity['symphony']['pool_path'])/'state.sqlite'
+        if database.exists():
+            from contextlib import closing
+            with closing(sqlite3.connect(database.as_uri()+'?mode=ro',uri=True)) as db:
+                require(db.execute('SELECT 1 FROM leases WHERE id IN (?,?)',leases).fetchone() is None)
+        return dict(authority=previous,reference=record['reference'],handoff=record['handoff'],
+                    disposition='source-requalified-before-publication')
 
     def _qualification_boundary(self, record, policy, authority):
         # One finite worker process, observed only at native poll boundaries.
@@ -758,11 +863,24 @@ class CurrentWork:
             operations = runtime/'operations'/'operations.sqlite'
             if operations.exists():
                 with sqlite3.connect(operations.as_uri()+'?mode=ro', uri=True) as db:
-                    effects = [json.loads(row[0]) for row in db.execute('SELECT state FROM operations')]
+                    effects = [(key,json.loads(state)) for key,state in db.execute('SELECT key,state FROM operations')]
                 if any(effect.get('status') not in ('succeeded', 'failed')
                        or effect.get('cancel_requested') or effect.get('reconcile_required')
-                       or effect.get('observation_intent') for effect in effects):
+                       for _,effect in effects):
                     return False
+                observing = {key for key,effect in effects if effect.get('observation_intent')}
+                if observing:
+                    if 'stage' in task:
+                        return False
+                    # Reuse the original native qualifier, including exact
+                    # failed receipt/selection/command custody. A sticky flag
+                    # alone neither makes a terminal failure active nor proves
+                    # that an unknown operation is closed. Never rewrite it.
+                    qualified_runtime,_ = self.validation_binding(issue,entry)
+                    bindings = read_record(runtime/'validation-bindings.json')
+                    closed_failed = {prior['operation_key'] for prior in bindings['history']}
+                    if qualified_runtime != runtime or not observing <= closed_failed:
+                        return False
             if 'stage' not in task:
                 lease = runtime_lease_ids(runtime, manifest)[issue]
                 policy = read_record(runtime/'capacity-policy.json')
