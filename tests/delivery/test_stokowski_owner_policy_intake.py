@@ -2,6 +2,9 @@
 import asyncio
 import copy
 import json
+import subprocess
+import sys
+from types import SimpleNamespace
 from pathlib import Path
 import time
 import unittest
@@ -16,6 +19,7 @@ import test_stokowski_current_dispatch as fixtures
 
 class OwnerPolicyIntakeTests(unittest.TestCase):
     def test_two_contracts_native_boundary_and_refusals(self):
+        real_git_output=subprocess.check_output
         fixture = fixtures.CurrentDispatchTests('runTest')
         fixture.setUp()
         self.addCleanup(fixture.doCleanups)
@@ -36,15 +40,60 @@ class OwnerPolicyIntakeTests(unittest.TestCase):
         matthew='00000000-0000-4000-8000-000000000901'
         first = Issue(id='00000000-0000-4000-8000-000000000801',identifier='UIF-801',title='Synthetic',state='Todo')
         second = Issue(id='00000000-0000-4000-8000-000000000802',identifier='UIF-802',title='Synthetic',state='Todo')
+        project=fixture.root/'project-origin'
+        subprocess.run(['git','init','-b','develop',str(project)],check=True,capture_output=True)
+        test_path='tests/delivery/test_stokowski_owner_policy_intake.py'
+        def git(*args):
+            return real_git_output(['git','-C',str(project),*args],text=True).strip()
+        for version in (1,2,3):
+            p=project/test_path;p.parent.mkdir(parents=True,exist_ok=True)
+            p.write_text('class OwnerPolicyIntakeTests:\n    def test_two_contracts_native_boundary_and_refusals(self): pass\n# version '+str(version)+'\n')
+            git('add','.');git('-c','user.name=Synthetic','-c','user.email=fixture@example.invalid',
+                '-c','commit.gpgsign=false','commit','-m','Synthetic accepted-source fixture')
+            if version==1:seed_head=git('rev-parse','HEAD')
+            if version==2:next_head=git('rev-parse','HEAD')
+        unreviewed_tip=git('rev-parse','HEAD');accepted=[seed_head];sources={}
+        original_git=fixture.git.side_effect
+        def observations(argv,**kwargs):
+            if argv[:2]==['git','-C'] and str(argv[2]).startswith(str(fixture.root/'task-sources')):
+                return real_git_output(argv,**kwargs)
+            return original_git(argv,**kwargs)
+        fixture.git.side_effect=observations
+        def project_source(config,identifier,project_id,*,materialize=False):
+            if identifier not in sources:
+                self.assertTrue(materialize)
+                head=accepted[0];branch='bugfix/source-'+identifier.lower()
+                checkout=fixture.root/'task-sources'/identifier;checkout.parent.mkdir(exist_ok=True)
+                subprocess.run(['git','clone','--no-hardlinks','--no-checkout',str(project),str(checkout)],
+                    check=True,capture_output=True)
+                real_git_output(['git','-C',str(checkout),'checkout','-b',branch,head],stderr=subprocess.PIPE)
+                tree=git('rev-parse',head+'^{tree}')
+                evidence=fixture.root/(identifier+'-accepted-evidence.json')
+                fixture.write(evidence,dict(head=head,tree=tree,kind='synthetic-verified-publisher-readback'))
+                value=dict(repository='maldous/offmenu',head=head,tree=tree,branch=branch,checkout=str(checkout),
+                    accepted=dict(branch='develop',head=head,tree=tree,evidence=dict(path=str(evidence),sha256=adapter.file_sha(evidence))))
+                ref=fixture.root/(identifier+'-task-source.json');fixture.write(ref,value)
+                sources[identifier]=dict(value,ref=dict(path=str(ref),sha256=adapter.file_sha(ref)))
+            return sources[identifier]
+        helper=fixture.source/'tools/delivery/stokowski_project_source.py'
+        helper.write_text('# Synthetic trusted acquisition component boundary.\n')
+        current.config['source_sha256']['tools/delivery/stokowski_project_source.py']=adapter.file_sha(helper)
+        self.enterContext(patch.dict(sys.modules,stokowski_project_source=SimpleNamespace(
+            __file__=str(helper),owner_policy_project_source=project_source)))
         def contract(issue, dependencies):
             return dict(issue_id=issue.id,project_id=adapter.PROJECT,purpose='Approved synthetic regression',
                 scope=['tests/delivery/test_stokowski_owner_policy_intake.py'],input_paths=[],acceptance=['Exact sealed synthetic acceptance'],
                 prompt='Implement only the sealed synthetic regression.',timeout_seconds=30,
-                resources=resources,dependencies=dependencies,assignee_id=matthew)
+                resources=resources,dependencies=dependencies,assignee_id=matthew,
+                validation_targets=['test_stokowski_owner_policy_intake.OwnerPolicyIntakeTests.test_two_contracts_native_boundary_and_refusals'])
         policy = dict(schema='offmenu-owner-policy-intake/1',owner=current.config['owner'],
             source_head=current.config['source_head'],source_branch='feature/test-current',
             coordinator_runtime=str(current.runtime),expires_at=time.time()+300,
             resource_ceiling=resources,
+            project_source=dict(repository='maldous/offmenu',branch='develop',
+                origin='git@github.com:maldous/offmenu.git',repository_path=str(project),
+                seed=dict(head=seed_head,tree=git('rev-parse',seed_head+'^{tree}')),
+                accepted_source_path=str(fixture.root/'accepted-source-pointer.json')),
             installation=dict(path=str(fixture.root/'installation.json'),sha256=adapter.file_sha(fixture.root/'installation.json')),
             provider_requirements=dict(requested_model=adapter.MODEL,requested_effort='medium',route='codex-chatgpt',
                 session_ceiling=8,max_age_seconds=300,checked_at_max_future_skew_seconds=5),
@@ -101,6 +150,7 @@ class OwnerPolicyIntakeTests(unittest.TestCase):
         # Native terminal reconciliation remains an independent authority. A
         # tracker Done alone is insufficient; no fixture launches a child.
         states[first.id]='Done'
+        accepted[0]=next_head  # Only a verified publisher readback advances acceptance.
         reconciled=set()
         self.enterContext(patch.object(current,'_reconciled_unit',side_effect=lambda issue:issue in reconciled))
         self.assertEqual(selected([second]),[])
@@ -121,7 +171,7 @@ class OwnerPolicyIntakeTests(unittest.TestCase):
             pool=Pool(fixture.policy['symphony']['pool_path'],fixture.policy)
             pool.admit(lease,binding,json.loads(proof_path.read_bytes()),host_snapshot(workspace))
             fixture.write(directory/'intent.json',dict(lease=lease,binding=binding))
-            proposal=dict(schema='offmenu-owner-policy-plan/1',issue_id=second.id,source_head=current.config['source_head'],
+            proposal=dict(schema='offmenu-owner-policy-plan/1',issue_id=second.id,source_head=spec['head'],
                 rights='source-only-synthetic',scope=contract(second,[])['scope'],input_paths=[],
                 purpose='Synthetic delegated regression',behavior='Preserve approved synthetic behavior',
                 check='test_stokowski_owner_policy_intake.OwnerPolicyIntakeTests.test_two_contracts_native_boundary_and_refusals')
@@ -143,6 +193,15 @@ class OwnerPolicyIntakeTests(unittest.TestCase):
         self.assertEqual(adapter.load_manifest(runtime/'manifest.json',expected_branch=None)['tasks'][second.identifier]['allowed_paths'],
                          contract(second,[])['scope'])
         self.assertEqual(len(launches),1)
+        first_manifest=adapter.load_manifest(Path(entries[-2]['runtime'])/'manifest.json',expected_branch=None)
+        second_manifest=adapter.load_manifest(runtime/'manifest.json',expected_branch=None)
+        self.assertEqual(first_manifest['base_revision'],seed_head)
+        self.assertEqual(second_manifest['base_revision'],next_head)
+        self.assertNotEqual(second_manifest['base_revision'],unreviewed_tip)
+        self.assertEqual(current.config['source_head'],'a'*40)
+        targets=prepare.owner_policy_validation_targets(current.config,second.identifier,
+            candidate_root=Path(sources[second.identifier]['checkout']))
+        self.assertEqual(targets,contract(second,[])['validation_targets'])
         self.assertEqual(adapter.file_sha(current.config_path),current.config_sha)
         self.assertEqual(adapter.file_sha(policy_path),current.config['owner_intake_policy']['sha256'])
         self.assertEqual(current.state.get('successor_request'),None)
