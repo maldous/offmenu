@@ -38,6 +38,8 @@ class OwnerPolicyIntakeTests(unittest.TestCase):
             checked_at=time.time(),requested_model=adapter.MODEL,session_ceiling=8))
         resources = dict(cpu_millis=1000,memory_bytes=1610612736,io_slots=1,output_bytes=536870912)
         matthew='00000000-0000-4000-8000-000000000901'
+        team='00000000-0000-4000-8000-000000000902'
+        done='00000000-0000-4000-8000-000000000903'
         first = Issue(id='00000000-0000-4000-8000-000000000801',identifier='UIF-801',title='Synthetic',state='Todo')
         second = Issue(id='00000000-0000-4000-8000-000000000802',identifier='UIF-802',title='Synthetic',state='Todo')
         project=fixture.root/'project-origin'
@@ -119,6 +121,10 @@ class OwnerPolicyIntakeTests(unittest.TestCase):
             contracts={first.identifier:contract(first,[])},workclass=dict(assignee_id=matthew,
                 project_ids=[adapter.PROJECT],allowed_files=sorted(prepare.OWNER_CODE_FILES),max_files=4,
                 resources=resources,timeout_seconds=60,acceptance=prepare.OWNER_CODE_ACCEPTANCE,selection_label='offmenu-source-bau'))
+        policy['contracts'][first.identifier]['source_outcome']=dict(full_issue_contract=True,
+            team_id=team,done_state_id=done,
+            description_sha256=adapter.hashlib.sha256(b'Qualify one bounded code path.').hexdigest())
+        policy['workclass']['source_outcome']=dict(full_issue_contract=True)
         fixture.write(policy_path,policy)
         current.config['owner_intake_policy']=dict(path=str(policy_path),sha256=adapter.file_sha(policy_path))
         fixture.write(current.config_path,current.config)
@@ -142,6 +148,7 @@ class OwnerPolicyIntakeTests(unittest.TestCase):
                 return dict(issue=dict(id=selected.id,identifier=selected.identifier,project=dict(id=adapter.PROJECT),
                     title='Source-only synthetic regression',description='Qualify one bounded code path.',delegate=None,
                     labels=dict(nodes=[dict(name='offmenu-source-bau')]),
+                    team=dict(id=team,states=dict(nodes=[dict(id=done,name='Done',type='completed')])),
                     assignee=dict(id=matthew),state=dict(name=states[selected.id]),inverseRelations=dict(nodes=deps)))
         client=Client()
         # Metadata provider boundary only; production calls the existing pinned
@@ -219,6 +226,15 @@ class OwnerPolicyIntakeTests(unittest.TestCase):
         self.assertNotEqual(second_manifest['base_revision'],unreviewed_tip)
         self.assertEqual(current.config['source_head'],'a'*40)
         self.assertEqual(accepted_calls,[seed_head,next_head])
+        issued=prepare.owner_policy_contract(current.config,policy,second.identifier)
+        self.assertEqual(issued['source_outcome'],policy['contracts'][first.identifier]['source_outcome'])
+        # Closure of historical parent obligations is never granted by metadata.
+        bad=copy.deepcopy(policy);bad['contracts']['UIF-102']=bad['contracts'].pop(first.identifier)
+        with patch.object(adapter,'protected_owner_bytes',return_value=prepare._publication_bytes(bad)):
+            cfg=dict(current.config,owner_intake_policy=dict(path=str(policy_path),
+                sha256=adapter.hashlib.sha256(prepare._publication_bytes(bad)).hexdigest()))
+            with self.assertRaisesRegex(AdmissionError,'owner_policy_binding'):
+                prepare.owner_intake_policy(cfg)
         targets=prepare.owner_policy_validation_targets(current.config,second.identifier,
             candidate_root=Path(sources[second.identifier]['checkout']))
         self.assertEqual(targets,contract(second,[])['validation_targets'])

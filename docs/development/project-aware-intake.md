@@ -147,6 +147,19 @@ units retain their original native source evidence; these accessors do not
 manufacture qualification receipts or rewrite that source. 122/129 own the
 existing postcoding candidate/validation/review wiring.
 
+An explicit finite contract may also carry Root-sealed `source_outcome` metadata:
+`full_issue_contract` (boolean), `team_id`, `description_sha256` and
+`done_state_id` (UUID or null). Full-issue closure requires a Done state and is
+forbidden for UIF-102 and UIF-130. The candidate reader compares the initial
+description digest, actual team and completed Done state with those sealed
+values. A workclass may instead seal `source_outcome:{full_issue_contract:true}`
+(or false); the compiler binds the initial authoritative issue description,
+actual team and single completed Done state into the original qualification
+selection. Genuine qualification then carries that fixed metadata into the
+derived contract. Issue text and qualification proposals cannot set this flag.
+125 owns outcome consumption and fresh effect qualification; these compiler
+fields do not write Linear, publish source or establish completed delivery.
+
 `CurrentWork.candidates` calls `stokowski_prepare.owner_policy_candidate` only
 for an uncatalogued issue. It checks the guarded source and fresh native Linear
 identity, admitted project, assignee, Todo/In Progress state and exact completed
