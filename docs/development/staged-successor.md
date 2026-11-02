@@ -29,6 +29,18 @@ only the existing required `MODULES` Python subset, each equal to the full seale
 source map. The control source head and the reviewed candidate contribution head
 remain distinct identities. Source acceptance does not activate either route.
 
+Closed failed native predecessors may retain an observation intent after their
+original stopped failed receipt resolves the backend uncertainty. Rearm uses the
+existing fresh native validation/history qualifier for those exact keys; it
+does not clear the flag, accept failed outputs or exempt unknown operations.
+If a control-source advance affects an owner-qualified but wholly unpublished
+coding intake, Root may seal a source-only replacement authority/handoff. Normal
+`_intake` retains the old reference/authority/handoff in `qualification_history`
+only while both runtimes, publication artifacts, catalog entries and leases are
+absent, task/rights/provider/caller inputs are unchanged and no qualification or
+native effect is pending. The original handoff remains immutable. This is not
+an effect migration or a substitute for the native consumer's fresh permit.
+
 A frozen stage wrapper can retain an older control base when the same protected
 control checkout advances. `context()` first verifies the current sealed source
 and custody. The stage-only compatibility check then requires the identical
