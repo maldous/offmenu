@@ -187,3 +187,47 @@ class PostcodingFiniteAssociationTests(unittest.TestCase):
             task['acceptance']=['a different outcome']
             with self.assertRaisesRegex(adapter.AdmissionError,'postcoding_original_task_outside_contract'):
                 adapter.CurrentWork.postcoding_contract(current,'UIF-138')
+
+
+class ClosedNativeExecutorTests(unittest.TestCase):
+    def test_sealed_closed_original_executor_never_accepts_prepared_or_drifted_command(self):
+        with tempfile.TemporaryDirectory() as directory:
+            original=Path(directory)
+            revision='32ba0f3cc4797f017a685b2c3a99aaeef1d86e13'
+            executor='445a0b2aaa0294e785abc974f140fa2c93da9d18be8180d5940892087dfad64c'
+            unit=dict(native_receipt_sha256='a'*64)
+            outputs={operations.ENRICHMENT_TEST:'b'*64}
+            spec=dict(version=1,issue='UIF-102',issue_id='418060d3-ef43-491d-ac8e-70747129b448',
+                stage='validate',owner='synthetic-owner',head='c'*40,base='d'*40,branch='bugfix/contribution',
+                profile=operations.ENRICHMENT_PROFILE,executor_sha256=executor,policy_sha256='e'*64,
+                runner_sha256='f'*64,acceptance_sha256='1'*64,outputs=outputs)
+            key=operations.operation_key(spec)
+            selected=dict(operation_key=key,native_receipt_sha256=unit['native_receipt_sha256'],native_output_sha256=outputs)
+            receipt=dict(job_id=operations.bridge_arguments(spec)['job_id'],status='succeeded',exit_code=0,
+                child_tree_gone=True,reconcile_required=False,runner_sha256=spec['runner_sha256'],
+                capacity_policy_sha256=spec['policy_sha256'],command_sha256=hashlib.sha256(operations.bridge_arguments(spec)['command'].encode()).hexdigest())
+            state=dict(status='succeeded',cancel_requested=False,accepted_output_sha256=outputs,
+                acceptance_sha256=spec['acceptance_sha256'],logical_job_id=receipt['job_id'],receipt_sha256=operations.digest(receipt))
+            path=original/'validation-receipt.json';path.write_text(json.dumps(receipt))
+            grant=dict(control_revision=revision,profile=spec['profile'],unit_sha256=operations.digest(unit),operation_key=key,
+                receipt=dict(path=str(path),sha256=stage.file_hash(path)))
+            current=SimpleNamespace(owner_custody={'fixture_only':True},config={'completed_executor_revisions':{'UIF-102':grant}},
+                private=lambda value:Path(value),_completed_native_evidence=lambda *a:dict(output_sha256=outputs))
+            # Existing stopped-native reader is an explicit boundary double;
+            # this case tests the new sealed old-executor/terminal consumer.
+            current._check_reviewed_terminal=lambda *a,**k:adapter.CurrentWork._check_reviewed_terminal(current,*a,**k)
+            before=path.read_bytes()
+            observed=adapter.CurrentWork._closed_native_executor(current,'UIF-102',original,{},selected,spec,state,unit)
+            self.assertEqual(observed,receipt)
+            self.assertEqual(path.read_bytes(),before)
+            with self.assertRaisesRegex(adapter.AdmissionError,'closed_native_executor_grant'):
+                adapter.CurrentWork._closed_native_executor(current,'UIF-102',original,{},selected,spec,dict(state,status='prepared'),unit)
+            with self.assertRaisesRegex(adapter.AdmissionError,'closed_native_executor_grant'):
+                adapter.CurrentWork._closed_native_executor(current,'UIF-138',original,{},selected,spec,state,unit)
+            with self.assertRaisesRegex(adapter.AdmissionError,'closed_native_executor_grant'):
+                adapter.CurrentWork._closed_native_executor(current,'UIF-102',original,{},selected,dict(spec,executor_sha256='0'*64),state,unit)
+            receipt['command_sha256']='0'*64
+            path.write_text(json.dumps(receipt));grant['receipt']['sha256']=stage.file_hash(path)
+            state['receipt_sha256']=operations.digest(receipt)
+            with self.assertRaisesRegex(adapter.AdmissionError,'reviewed_source_terminal_receipt_binding'):
+                adapter.CurrentWork._closed_native_executor(current,'UIF-102',original,{},selected,spec,state,unit)

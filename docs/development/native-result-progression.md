@@ -72,3 +72,20 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:tools/delivery:tests/delivery \
 It uses real isolated Git, SQLite, bundles and unittest execution, with explicit
 review-provider and protected-publisher boundary doubles. It is source evidence,
 not a live operational receipt.
+
+## Closed UIF-102 executor compatibility
+
+An upgraded executor never recomputes old validation. Root may seal
+`completed_executor_revisions['UIF-102']` with exactly `control_revision`,
+`profile`, `unit_sha256`, `operation_key`, and `receipt: {path,sha256}`. The
+reader accepts only the known enrichment profile and the operations blob at
+accepted control revision `32ba0f3cc4797f017a685b2c3a99aaeef1d86e13`
+(SHA-256 `445a0b2aaa0294e785abc974f140fa2c93da9d18be8180d5940892087dfad64c`).
+The selected operation must already have succeeded with its original canonical
+receipt, unchanged command, accepted outputs, stopped native child and genuine
+finished lease. Normal candidate and failed C21 history checks still run. A
+current failed/prepared operation, another issue, an unsealed hash, changed
+command, receipt or output holds. Original spec, receipt, flags and operation
+identity are never rewritten; no new submission follows this compatibility
+reader. New operations continue to require the current executor. The config
+allowlist is owned separately by the owner-policy compiler change.
