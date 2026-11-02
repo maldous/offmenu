@@ -1199,3 +1199,49 @@ async def invocation_transaction(current, binding, packet, selection, mode, call
         current.save()
         raise
     return invocation_projection(module, value, envelope, capability, binding.phase)
+
+
+async def produce_native_publication(current, issue, packet):
+    """Normal owner caller; return the existing selection, no Root config write."""
+    from stokowski_adapter import file_sha, read_record
+    from native_publisher_invocation import prepare_request, decode, hex64, exact
+    import native_publisher_invocation
+    from dataclasses import asdict
+    current.guard()
+    require(current.owner_custody and not current.read_only and not current.stopping,'native_prepare_owner')
+    require(current.config['source_sha256'].get('tools/delivery/native_publisher_invocation.py') ==
+        file_sha(native_publisher_invocation.__file__),'native_prepare_source_pin')
+    runtime,_,_=current.context(issue.identifier,review=True,observation=True)
+    path=runtime/'native-publication-packet.json'
+    require(read_record(current.private(str(path))) == packet,'native_prepare_packet_file')
+    unit=current.gate_binding(issue,observation=True);handoff=packet['handoff']
+    envelope=dict(version=1,mode='prepare',issue=issue.identifier,issue_id=issue.id,
+        project_id=handoff['project_id'],owner=current.config['owner'],unit_sha256=fingerprint(unit),
+        packet_sha256=fingerprint(packet))
+    prepare_request(envelope)
+    reply=decode(await fixed_invocation_wire(envelope),1048576)
+    require(exact(reply,{'version','kind','operation_id','unit_sha256','packet_sha256','source_sha256',
+        'integration_binding','closure_sha256','host_confirmation_sha256'}) and type(reply['version']) is int
+        and reply['version'] == 1 and reply['kind'] == 'native-publisher-prepared-v1'
+        and all(hex64(reply[k]) for k in ('operation_id','unit_sha256','packet_sha256','source_sha256',
+            'closure_sha256','host_confirmation_sha256'))
+        and reply['operation_id'] == fingerprint(reply['integration_binding'])
+        and all(reply[k] == envelope[k] for k in ('unit_sha256','packet_sha256'))
+        and reply['source_sha256'] == fingerprint(handoff['source']), 'native_prepare_reply')
+    b=reply['integration_binding'];source=handoff['source']
+    require(b['issue_id'] == issue.id and b['owner'] == envelope['owner'] and b['repository'] == 'maldous/offmenu'
+        and b['version'] == 2 and b['pr_number'] is None and 'source_projection' not in b
+        and all(b[k] == source[k] for k in ('head','base','tree')) and b['head_branch'] == source['branch']
+        and b['outputs'] == {v['path']:v['sha256'] for v in handoff['outputs']},'native_prepare_reply_source')
+    binding=OwnerBinding(issue.id,envelope['project_id'],envelope['owner'],envelope['packet_sha256'],
+        reply['operation_id'],'integration',envelope['unit_sha256'])
+    request=dict(version=1,mode='review',invocation_id=None,request=publisher_request(binding,packet,'observe'))
+    pending=dict(runtime=str(current.runtime),issue=issue.identifier,actor_uid=1000,
+        source_head=current.config['source_head'],source_sha256=current.config['source_sha256'],
+        unit_binding=unit,publisher_review_binding=b,publisher_review=request)
+    # A normal UUID is part of the existing read-only review transport identity.
+    from uuid import uuid5, NAMESPACE_URL
+    request['invocation_id']=str(uuid5(NAMESPACE_URL,'offmenu:native-review:'+binding.operation_id))
+    return dict(binding=asdict(binding),packet=dict(path=str(path),sha256=file_sha(path)),context=dict(
+        native_runtime=str(runtime),pending_unit_review=pending,publisher_invocation=dict(version=1,
+            closure_sha256=reply['closure_sha256'],host_confirmation_sha256=reply['host_confirmation_sha256'])))

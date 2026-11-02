@@ -100,7 +100,7 @@ def _config(raw, expected_hash, source_pins, dependency_pins):
            'Independent config pin mismatch')
     c = _parse(raw)
     try:
-        optional = ({k for k in ('integration_admission','nativeContinuation') if k in c}
+        optional = ({k for k in ('integration_admission','nativeContinuation','native_policy') if k in c}
                     if c.get('version') == 1 else set())
         _check(set(c) == {'version', 'appId', 'installationId', 'repositoryId',
             'publisherUid', 'publisherGid', 'logicalOwner', 'sourceHead', 'codePins',
@@ -183,6 +183,9 @@ def _config(raw, expected_hash, source_pins, dependency_pins):
 
 def _integration_metadata(c):
     """Finite sealed association; permission and terminal custody stay owner-qualified."""
+    if 'native_policy' in c:
+        from native_publisher_invocation import native_policy
+        native_policy(c)
     if not any(k in c for k in ('integration_admission','nativeContinuation')):
         return
     b, s = c['binding'], c['snapshot']
@@ -230,6 +233,7 @@ def _native_source_admission(c):
     """Owner-sealed original native-v1 association, never a projection substitute."""
     b,s,a = c['binding'],c['snapshot'],c['integration_admission']
     n,o = s['native_runtime'],a['native_origin']
+    delegated=('native_policy' in c and a['permission_sha256'] == _hash(_wire(c['native_policy'])))
     def ref(r):
         return (type(r) is dict and set(r) == {'path','sha256'} and _hex(r['sha256'])
             and isinstance(r['path'],str) and re.fullmatch(r'/[a-zA-Z0-9_./-]{1,511}',r['path'])
@@ -252,11 +256,15 @@ def _native_source_admission(c):
         and set(o) == {'version','kind','profile','source_sha256','packet_sha256','validation_operation_key',
             'outputs','native_receipt','validation_receipt'}
         and type(o['version']) is int and o['version'] == 1 and o['kind'] == 'native-v1'
-        and o['profile'] == 'enrichment-resilience-focused'
+        and (o['profile'] == 'enrichment-resilience-focused' or
+             delegated and o['profile'] in c['native_policy']['profiles'])
         and o['source_sha256'] == _hash(_wire(n['source'])) and o['packet_sha256'] == n['packet_sha256']
         and o['validation_operation_key'] == b['validation_operation_key'] and o['outputs'] == b['outputs']
-        and b['outputs'] and all(_path(p) and _hex(h) and not p.startswith((
-            'docs/development/','tools/delivery/','tests/delivery/','src/offmenu/delivery/'))
+        and b['outputs'] and all(_path(p) and _hex(h) and (
+            c['native_policy']['project_id'] == n['project_id']
+            and a['permission_sha256'] == _hash(_wire(c['native_policy']))
+            and p in c['native_policy']['profiles'][o['profile']]['allowed_paths'] if delegated else
+            not p.startswith(('docs/development/','tools/delivery/','tests/delivery/','src/offmenu/delivery/')))
             for p,h in b['outputs'].items())
         and ref(o['native_receipt']) and ref(o['validation_receipt'])
         and o['native_receipt'] == s['native_receipt_source']

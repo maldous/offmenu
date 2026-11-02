@@ -946,6 +946,22 @@ def publisher_main():
         if len(raw) > 1048576:
             raise DeliveryError('Publisher request too large')
         request = json.loads(raw)
+        if (isinstance(request,dict) and request.get('native_binding_sha256') is not None
+            and request['native_binding_sha256'] != fingerprint(config['binding'])):
+            # Only authenticated publisher-owned output under a Root-sealed
+            # reusable policy; no config path is accepted on this wire.
+            import native_publisher_invocation as native
+            key=request['native_binding_sha256']
+            if not native.hex64(key):
+                raise DeliveryError('Invalid native operation')
+            path=root/('transaction-'+key)/'native-config.json'
+            native._directory(path.parent,uid,0o700)
+            value=native.decode(native._read(path,uid,0o600,1048576),1048576)
+            n=value['snapshot']['native_runtime']
+            inner=dict(version=1,mode='observe',operation_id=key,
+                **{k:n[k] for k in ('issue_id','project_id','owner','unit_sha256','packet_sha256')},
+                source_sha256=fingerprint(n['source']))
+            config=native.derived_config(config,value,inner)
         selected = publisher_directory(root, config['binding'])
         # Observe never creates a transaction or acquires repository ownership.
         observing = isinstance(request,dict) and request.get('op','').startswith('observe')

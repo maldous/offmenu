@@ -66,7 +66,7 @@ export function protectedRead(path,{uid=0,gid,mode=0o440,max=LIMIT,io=fs}={}) {
   } finally {io.closeSync(fd);}
 }
 export function validateConfig(c, identity) {
-  const optional=['integration_admission','nativeContinuation'].filter(k=>Object.hasOwn(c,k));
+  const optional=['integration_admission','nativeContinuation','native_policy'].filter(k=>Object.hasOwn(c,k));
   check(exact(c,['version','appId','installationId','repositoryId','publisherUid','publisherGid',
     'logicalOwner','sourceHead','codePins','pythonSha256','binding','snapshot','plan','workspace',...optional]));
   check([1,2].includes(c.version) && [c.appId,c.installationId,c.publisherUid,c.publisherGid].every(positive) &&
@@ -93,10 +93,32 @@ export function validateConfig(c, identity) {
     (c.version===2 || /^(feature|bugfix)\/[a-z0-9][a-z0-9/-]{0,159}$/.test(c.binding.head_branch) &&
     !c.binding.head_branch.includes('//') && !c.binding.head_branch.endsWith('/')));
   bytesJSON(c);
+  if(Object.hasOwn(c,'native_policy')) qualifyNativePolicy(c);
   qualifySourceProjection(c);
   qualifyIntegrationAdmission(c);
   qualifyNativeContinuation(c);
   return c;
+}
+
+export function qualifyNativePolicy(c) {
+  const p=c.native_policy;
+  check(c.version===1 && exact(p,['version','kind','owner','project_id','controller_runtime',
+    'source_head','source_sha256','owner_python_sha256','profiles','automatic_integration_enabled']) && p.version===1 &&
+    p.kind==='native-source-publication-policy-v1' && p.owner===c.logicalOwner && p.automatic_integration_enabled===true &&
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(p.project_id) &&
+    p.source_head===c.sourceHead && hex(p.owner_python_sha256) &&
+    typeof p.controller_runtime==='string' && /^\/home\/user\/src\/offmenu\/\.delivery\/stokowski\/[a-zA-Z0-9_./-]+$/.test(p.controller_runtime) &&
+    !p.controller_runtime.includes('//') && !p.controller_runtime.split('/').some(v=>v==='.'||v==='..') &&
+    p.source_sha256 && Object.keys(p.source_sha256).length>0 && Object.keys(p.source_sha256).length<=128 &&
+    Object.entries(p.source_sha256).every(([n,h])=>/^(?:tools\/delivery|src\/offmenu\/delivery)\/[a-zA-Z0-9_./-]+$/.test(n) &&
+      !n.split('/').some(v=>v==='.'||v==='..') && hex(h)) &&
+    p.profiles && Object.keys(p.profiles).length>0 && Object.keys(p.profiles).length<=2 &&
+    Object.entries(p.profiles).every(([n,s])=>['enrichment-resilience-focused','delivery-unit-focused'].includes(n) &&
+      exact(s,['allowed_paths']) && Array.isArray(s.allowed_paths) && s.allowed_paths.length>0 && s.allowed_paths.length<=16 &&
+      new Set(s.allowed_paths).size===s.allowed_paths.length && s.allowed_paths.every(v=>typeof v==='string' &&
+        /^(?:tools\/delivery|tests\/delivery|src\/offmenu\/delivery|tests\/web)\/[a-zA-Z0-9_.-]+$/.test(v) &&
+        (n!=='delivery-unit-focused'||v.endsWith('.py')))));
+  return p;
 }
 
 /** Root-sealed permission and original review association, not future API facts. */
@@ -118,6 +140,7 @@ export function qualifyIntegrationAdmission(c) {
 
 function qualifyNativeSourceAdmission(c) {
   const b=c.binding,s=c.snapshot,a=c.integration_admission,n=s.native_runtime,o=a?.native_origin;
+  const delegated=Object.hasOwn(c,'native_policy') && a?.permission_sha256===fingerprint(qualifyNativePolicy(c));
   const ref=r=>exact(r,['path','sha256']) && hex(r.sha256) && typeof r.path==='string' &&
     /^\/[a-zA-Z0-9_./-]{1,511}$/.test(r.path) && !r.path.includes('//') &&
     !r.path.split('/').some(v=>v==='.'||v==='..');
@@ -135,11 +158,14 @@ function qualifyNativeSourceAdmission(c) {
       tree:b.tree,target:'develop',policy_sha256:n.source?.policy_sha256}) && hex(n.source.policy_sha256) &&
     exact(o,['version','kind','profile','source_sha256','packet_sha256','validation_operation_key',
       'outputs','native_receipt','validation_receipt']) && o.version===1 && o.kind==='native-v1' &&
-    o.profile==='enrichment-resilience-focused' && o.source_sha256===fingerprint(n.source) &&
+    (o.profile==='enrichment-resilience-focused' || (delegated && c.native_policy.profiles[o.profile])) && o.source_sha256===fingerprint(n.source) &&
     o.packet_sha256===n.packet_sha256 && o.validation_operation_key===b.validation_operation_key &&
     same(o.outputs,b.outputs) && Object.keys(b.outputs).length>0 &&
     Object.entries(b.outputs).every(([p,h])=>pathOK(p) && hex(h) &&
-      !['docs/development/','tools/delivery/','tests/delivery/','src/offmenu/delivery/'].some(v=>p.startsWith(v))) &&
+      (delegated ?
+        c.native_policy.project_id===n.project_id && a.permission_sha256===fingerprint(c.native_policy) &&
+        c.native_policy.profiles[o.profile]?.allowed_paths.includes(p) :
+        !['docs/development/','tools/delivery/','tests/delivery/','src/offmenu/delivery/'].some(v=>p.startsWith(v)))) &&
     ref(o.native_receipt) && ref(o.validation_receipt) &&
     same(o.native_receipt,s.native_receipt_source) && same(o.validation_receipt,s.validation_receipt_source) &&
     same(s.validation,{operation_key:b.validation_operation_key,status:'succeeded',head:b.head,base:b.base,
@@ -239,6 +265,60 @@ export function loadProtectedKey(c,{io=fs}={}) {
   const d=io.lstatSync('/etc/offmenu-publisher');
   check(d.isDirectory() && d.uid===0 && d.gid===c.publisherGid && (d.mode&0o7777)===0o750);
   return protectedRead(KEY,{gid:c.publisherGid,io,max:65536});
+}
+
+function nativeStateRead(c,name,{io=fs,key=fingerprint(c.binding)}={}) {
+  check(hex(key) && ['native-config.json','native-objects.json'].includes(name));
+  for(let parent=dirname(CLAIM);;parent=dirname(parent)) {
+    const st=io.lstatSync(parent);check(st.isDirectory() && st.uid===0 && (st.mode&0o022)===0);
+    if(parent==='/') break;
+  }
+  const directory=`${CLAIM}/transaction-${key}`,path=`${directory}/${name}`;
+  for(const part of [CLAIM,directory]) {
+    const s=io.lstatSync(part);check(io.realpathSync(part)===part && s.isDirectory() &&
+      s.uid===c.publisherUid && s.gid===c.publisherGid && (s.mode&0o7777)===0o700);
+  }
+  const s=io.lstatSync(path);check(io.realpathSync(path)===path && s.isFile() && s.nlink===1 &&
+    s.uid===c.publisherUid && s.gid===c.publisherGid && (s.mode&0o7777)===0o600 && s.size>0 && s.size<=LIMIT);
+  const fd=io.openSync(path,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW|fs.constants.O_NONBLOCK);
+  try {
+    const after=io.fstatSync(fd);check(after.ino===s.ino && after.dev===s.dev && after.size===s.size &&
+      after.uid===s.uid && after.gid===s.gid && after.mode===s.mode && after.nlink===1);
+    const raw=io.readFileSync(fd);check(raw.length===s.size);return JSON.parse(raw.toString('utf8'));
+  } finally {io.closeSync(fd);}
+}
+
+export function selectNativeConfig(base,request,{readAdmission}={}) {
+  if(request.operation_id===fingerprint(base.binding)) return base;
+  const policy=qualifyNativePolicy(base);check(hex(request.operation_id));
+  const value=readAdmission ? readAdmission(request.operation_id) :
+    nativeStateRead(base,'native-config.json',{key:request.operation_id});
+  const names=Object.keys(base).filter(k=>k!=='nativeContinuation');
+  check(exact(value,names));
+  const mutable=['binding','snapshot','plan','workspace','integration_admission','nativeContinuation'];
+  check(Object.entries(base).every(([k,v])=>mutable.includes(k)||same(value[k],v)) &&
+    fingerprint(value.binding)===request.operation_id && value.workspace===`${CLAIM}/transaction-${request.operation_id}` &&
+    value.snapshot.native_runtime.project_id===policy.project_id &&
+    value.integration_admission.permission_sha256===fingerprint(policy));
+  validateConfig(value,{uid:base.publisherUid,euid:base.publisherUid,gid:base.publisherGid,egid:base.publisherGid});
+  qualifyNativeRequest(value,request);
+  return value;
+}
+
+export async function qualifyPreparedObjects(c,objects) {
+  check(c.workspace===`${CLAIM}/transaction-${fingerprint(c.binding)}` && objects && typeof objects==='object');
+  const readObject=async(type,key)=>{
+    const o=objects[key];check(exact(o,['type','content']) && o.type===type && typeof o.content==='string');
+    const raw=Buffer.from(o.content,'base64');check(raw.toString('base64')===o.content && raw.length<=LIMIT);
+    return raw;
+  };
+  return qualifyCandidate(c,{branchHead:c.binding.head,readObject,readChangedFile:async path=>{
+    check(Object.hasOwn(c.binding.outputs,path));
+    for(const [key,o] of Object.entries(objects)) if(o.type==='blob') {
+      const raw=await readObject('blob',key);if(hash(raw)===c.binding.outputs[path]) return raw;
+    }
+    fail();
+  }});
 }
 
 function pathOK(path) {
@@ -675,7 +755,8 @@ export async function main() {
   check(!process.env.NODE_OPTIONS && !process.env.NODE_PATH);
   process.umask(0o077);
   const request=native?readNativeStdin():null;
-  const c=loadProtectedConfig();
+  const base=loadProtectedConfig();
+  const c=native?selectNativeConfig(base,request):base;
   installedTree(INSTALL); // no writable code, Python packages, native extension or import path
   for(const [path,pin] of Object.entries(c.codePins))
     check(hash(protectedRead(`${INSTALL}/${path}`,{mode:0o444}))===pin);
@@ -694,6 +775,7 @@ export async function main() {
   checkedWorkspace(c);
   if(native) {
     const qualify=async()=>{
+      if(c!==base) return qualifyPreparedObjects(c,nativeStateRead(c,'native-objects.json'));
       if(c.version===2) {
         const source=c.binding.candidate.source;
         const raw=await fixedGit(c,['cat-file','commit',source.head]);
