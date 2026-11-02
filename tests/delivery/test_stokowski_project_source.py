@@ -68,6 +68,7 @@ class ProjectSourceTests(unittest.TestCase):
 
     def test_accepted_advance_control_separation_frozen_selection_and_receipt_refusal(self):
         current,policy=self.context()
+        policy['project_source']['accepted_facts_path']='/var/lib/offmenu-publisher/accepted-sources/latest.json'
         accepted=self.evidence(self.accepted,self.tree)
         (self.repository/'file.txt').write_text('preserve dirty primary work\n')
         before=(self.git('rev-parse','HEAD'),self.git('status','--porcelain'),
