@@ -635,6 +635,13 @@ def owner_policy_contract(config, policy, name):
         or not re.fullmatch(r'test_stokowski_(?:current_dispatch|first_dispatch_setup|owner_policy_intake)\.[A-Za-z_][A-Za-z0-9_]*\.test_[A-Za-z0-9_]+',plan['check'])):
         raise AdmissionError('owner_policy_plan_outside_delegation')
     selection=record['selection']
+    outcome = {}
+    if 'source_outcome' in w:
+        value=selection.get('source_outcome')
+        if (not isinstance(value,dict)
+            or value.get('full_issue_contract') != w['source_outcome']['full_issue_contract']):
+            raise AdmissionError('owner_policy_source_outcome_binding')
+        outcome['source_outcome']=value
     return dict(issue_id=selection['issue_id'],project_id=selection['project_id'],assignee_id=w['assignee_id'],
         purpose=plan['purpose'],scope=plan['scope'],input_paths=plan['input_paths'],
         acceptance=['Requested bounded behavior: '+plan['behavior'],*w['acceptance']],resources=w['resources'],
@@ -643,7 +650,7 @@ def owner_policy_contract(config, policy, name):
         prompt='Implement ONLY the Root-delegated source-only synthetic code fix. No other paths, held data, '
             'network, runtime, credentials, production, CIX, Actions, spend or self approval. '+
             json.dumps(plan,sort_keys=True)+' Required focused check: python -B -m unittest '+plan['check'],
-        _qualification_inputs={str(p):file_sha(p) for p in paths})
+        _qualification_inputs={str(p):file_sha(p) for p in paths}, **outcome)
 
 
 def owner_intake_policy(config, *, creating=False):
@@ -684,7 +691,7 @@ def owner_intake_policy(config, *, creating=False):
             and all(type(v) is int and 0 < v <= limits[k] for k,v in ceiling.items()))
     if 'workclass' in policy:
         w = policy['workclass']
-        require(set(w) == {'assignee_id','project_ids','allowed_files','max_files','resources',
+        require(set(w)-{'source_outcome'} == {'assignee_id','project_ids','allowed_files','max_files','resources',
             'timeout_seconds','acceptance','selection_label'}
             and str(UUID(w['assignee_id'])) == w['assignee_id']
             and isinstance(w['project_ids'],list) and w['project_ids']
@@ -697,6 +704,10 @@ def owner_intake_policy(config, *, creating=False):
             and all(type(v) is int and 0 < v <= min(limits[k],ceiling[k]) for k,v in w['resources'].items())
             and w['acceptance'] == OWNER_CODE_ACCEPTANCE
             and isinstance(w['selection_label'],str) and w['selection_label'].strip())
+        if 'source_outcome' in w:
+            require(isinstance(w['source_outcome'],dict)
+                and set(w['source_outcome']) == {'full_issue_contract'}
+                and type(w['source_outcome']['full_issue_contract']) is bool)
     ids = set()
     requirements = policy['provider_requirements']
     require(set(requirements) == {'requested_model','requested_effort','route','session_ceiling',
@@ -708,7 +719,7 @@ def owner_intake_policy(config, *, creating=False):
         and type(requirements['checked_at_max_future_skew_seconds']) is int
         and 0 <= requirements['checked_at_max_future_skew_seconds'] <= 5)
     for name, contract in policy['contracts'].items():
-        require(isinstance(contract, dict) and set(contract)-{'validation_targets'} == {'issue_id','project_id','purpose',
+        require(isinstance(contract, dict) and set(contract)-{'validation_targets','source_outcome'} == {'issue_id','project_id','purpose',
             'scope','input_paths','acceptance','prompt','timeout_seconds','resources','dependencies','assignee_id'}
             and re.fullmatch(r'UIF-[1-9][0-9]*', name)
             and str(UUID(contract['issue_id'])) == contract['issue_id']
@@ -731,6 +742,17 @@ def owner_intake_policy(config, *, creating=False):
             and len(set(contract['dependencies'])) == len(contract['dependencies']))
         for dependency in contract['dependencies']:
             require(str(UUID(dependency)) == dependency and dependency != contract['issue_id'])
+        if 'source_outcome' in contract:
+            value=contract['source_outcome']
+            require(isinstance(value,dict) and set(value)=={
+                'full_issue_contract','team_id','description_sha256','done_state_id'}
+                and type(value['full_issue_contract']) is bool
+                and str(UUID(value['team_id']))==value['team_id']
+                and isinstance(value['description_sha256'],str)
+                and re.fullmatch('[0-9a-f]{64}',value['description_sha256'])
+                and (value['done_state_id'] is None or str(UUID(value['done_state_id']))==value['done_state_id'])
+                and (not value['full_issue_contract'] or
+                     value['done_state_id'] is not None and name not in ('UIF-102','UIF-130')))
     return policy
 
 
@@ -863,6 +885,7 @@ async def owner_policy_candidate(current, client, issue, route):
         raise AdmissionError('owner_policy_runtime')
     remote = (await client._graphql('query($id: String!){issue(id:$id){id identifier title description '
         'project{id} assignee{id} delegate{id} labels{nodes{name}} state{name} '
+        'team{id states{nodes{id name type}}} '
         'inverseRelations{nodes{type issue{id state{name}}}}}}', {'id':issue.id})).get('issue') or {}
     dependencies = sorted(n['issue']['id'] for n in remote.get('inverseRelations',{}).get('nodes',[])
                           if n['type']=='blocks')
@@ -886,6 +909,22 @@ async def owner_policy_candidate(current, client, issue, route):
         selection=dict(identifier=issue.identifier,issue_id=issue.id,project_id=route['project_id'],
             assignee_id=w['assignee_id'],dependencies=dependencies,title=remote.get('title') or '',
             description=remote.get('description') or '')
+        if 'source_outcome' in w:
+            from uuid import UUID
+            template=w['source_outcome'];team=remote.get('team') or {}
+            done=[s for s in team.get('states',{}).get('nodes',[])
+                  if s.get('name')=='Done' and s.get('type')=='completed']
+            if (len(done)!=1 or not team.get('id') or
+                template['full_issue_contract'] and issue.identifier in ('UIF-102','UIF-130')):
+                raise AdmissionError('owner_policy_source_outcome_binding')
+            try:
+                if str(UUID(team['id']))!=team['id'] or str(UUID(done[0]['id']))!=done[0]['id']:
+                    raise ValueError('noncanonical UUID')
+            except (ValueError,TypeError,KeyError):
+                raise AdmissionError('owner_policy_source_outcome_binding')
+            selection['source_outcome']=dict(full_issue_contract=template['full_issue_contract'],
+                team_id=team['id'],done_state_id=done[0]['id'],
+                description_sha256=hashlib.sha256(selection['description'].encode()).hexdigest())
         if len(selection['description'])>16384 or len(selection['title'])>1024:
             raise AdmissionError('owner_policy_qualification_input_bounds')
         reference='owner-policy:'+config_reference(current.config)+':'+issue.identifier
@@ -920,6 +959,14 @@ async def owner_policy_candidate(current, client, issue, route):
         or c['assignee_id']!=(remote.get('assignee') or {}).get('id')
         or sorted(c['dependencies'])!=dependencies):
         raise AdmissionError('owner_policy_tracker_binding')
+    if 'source_outcome' in c:
+        outcome=c['source_outcome'];team=remote.get('team') or {}
+        if (outcome['team_id']!=team.get('id')
+            or outcome['description_sha256']!=hashlib.sha256((remote.get('description') or '').encode()).hexdigest()
+            or outcome['done_state_id'] is not None and not any(
+                s.get('id')==outcome['done_state_id'] and s.get('name')=='Done' and s.get('type')=='completed'
+                for s in team.get('states',{}).get('nodes',[]))):
+            raise AdmissionError('owner_policy_source_outcome_binding')
     if 'project_source' in policy:
         owner_policy_validation_targets(current.config,issue.identifier)
     owner_policy_task_source(current.config,issue.identifier,route['project_id'],materialize=True,current=current)
