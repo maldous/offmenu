@@ -141,7 +141,10 @@ def _source_paths(config, identifier, policy):
     facts = Path(descriptor['accepted_facts_path'])
     if (not private_root.is_absolute() or private_root != private_root.resolve()
         or any(path != path.resolve() or not path.is_relative_to(private_root)
-               for path in (root,selection_path,facts))):
+               for path in (root,selection_path))
+        or not facts.is_absolute() or facts != facts.resolve()
+        or (facts != Path('/var/lib/offmenu-publisher/accepted-sources/latest.json')
+            and not facts.is_relative_to(private_root))):
         raise AdmissionError('project_source_private_path')
     route = {k:descriptor[k] for k in ('repository','branch','origin','source_repository')}
     return descriptor,repository,root,selection_path,route
