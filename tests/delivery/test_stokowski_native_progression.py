@@ -152,3 +152,38 @@ class NativeProgressionTests(unittest.TestCase):
             with self.assertRaises(operations.OperationError):operations.validated(dict(spec,validation_targets=['os.system']))
             (workspace/output).write_text('drift')
             with self.assertRaises(operations.OperationError):stage.prepare_completed_native(original,'UIF-138',candidate_root=candidate,template=template)
+
+
+class PostcodingFiniteAssociationTests(unittest.TestCase):
+    def test_explicit_finite_targets_preserve_original_authority_and_scope(self):
+        import stokowski_prepare as prepare
+        path='tests/delivery/test_stokowski_current_dispatch.py'
+        target='test_stokowski_current_dispatch.CurrentDispatchTests.test_owned_turn_private_dispatch_intent_under_permissive_umask'
+        original=dict(issue_id='418060d3-ef43-491d-ac8e-70747129b448',project_id='ce60c1ab-a732-4a71-8471-14c9dc393886',
+            scope=[path],input_paths=[],resources={'cpu_millis':1000},acceptance=['finite source fix'],validation_targets=[target])
+        policy=dict(contracts={'UIF-138':original})  # No workclass or qualification.
+        task=dict(issue_id=original['issue_id'],owner='root-owner',allowed_paths=[path],acceptance=original['acceptance'],resources=original['resources'])
+        current=SimpleNamespace(config={'owner':'root-owner'},guard=lambda:None,
+            context=lambda *a,**k:(Path('/synthetic/native'),dict(project_id=original['project_id'],base_revision='a'*40,tasks={'UIF-138':task}),None))
+        before=copy.deepcopy((policy,task))
+        # Compiler/seal accessors are the owned authority boundary. This check
+        # exercises the postcoding consumer only; it invents no native proof.
+        with patch.object(prepare,'owner_intake_policy',return_value=policy,create=True), \
+             patch.object(prepare,'owner_policy_contract',side_effect=lambda c,p,i:p['contracts'][i],create=True), \
+             patch.object(prepare,'owner_policy_validation_targets',return_value=[target],create=True), \
+             patch.object(prepare,'OWNER_CODE_FILES',{path},create=True):
+            _,retained,selection=adapter.CurrentWork.postcoding_contract(current,'UIF-138')
+            self.assertIs(retained,original)
+            self.assertEqual(selection,dict(authority_origin='root-finite-contract',validation_targets=[target],validation_scope=[path]))
+            self.assertEqual((policy,task),before)
+            del original['validation_targets']
+            with self.assertRaisesRegex(adapter.AdmissionError,'postcoding_source_only_contract_required'):
+                adapter.CurrentWork.postcoding_contract(current,'UIF-138')
+            original['validation_targets']=[target]
+            original['input_paths']=['data/held/private.json']
+            with self.assertRaisesRegex(adapter.AdmissionError,'postcoding_source_only_contract_required'):
+                adapter.CurrentWork.postcoding_contract(current,'UIF-138')
+            original['input_paths']=[]
+            task['acceptance']=['a different outcome']
+            with self.assertRaisesRegex(adapter.AdmissionError,'postcoding_original_task_outside_contract'):
+                adapter.CurrentWork.postcoding_contract(current,'UIF-138')
