@@ -3139,7 +3139,8 @@ def install_adapters(runtime, manifest, key, current=None, *, native_harness_ada
             intent = directory/'dispatch-intent.json'
             # Exclusive creation precedes the spawn window; even an exception
             # hereafter retains an unknown effect and can never mean absence.
-            with intent.open('x') as stream:
+            with os.fdopen(os.open(intent, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                                   0o600), 'w') as stream:
                 json.dump({'entry_sha256': digest(current.entries[issue.identifier]),
                            'request_sha256': file_sha(task_runtime/'requests'/(issue.identifier+'.json')),
                            'manifest_sha256': file_sha(task_runtime/'manifest.json'),
