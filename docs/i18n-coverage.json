@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3980,
+  "messages": 3992,
   "arabicTranslated": 376,
-  "arabicMissing": 3604,
+  "arabicMissing": 3616,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -3162,6 +3162,12 @@
     "Account unavailable": {
       "sources": [
         "apps/web/server/lot-restriction-owner28.mjs"
+      ],
+      "arabic": false
+    },
+    "Account, kitchen or member changed. Reopen the member profile.": {
+      "sources": [
+        "apps/web/src/app.js"
       ],
       "arabic": false
     },
@@ -7669,6 +7675,12 @@
       ],
       "arabic": true
     },
+    "Enter up to 32 comma-separated terms per field, 100 characters per term.": {
+      "sources": [
+        "apps/web/assets/index.html"
+      ],
+      "arabic": false
+    },
     "Entered ": {
       "sources": [
         "apps/web/src/freshness-ui.js"
@@ -9252,6 +9264,12 @@
     "Home scopes belong to carer declarations": {
       "sources": [
         "apps/web/src/meal-context-model.js"
+      ],
+      "arabic": false
+    },
+    "Hot": {
+      "sources": [
+        "apps/web/assets/index.html"
       ],
       "arabic": false
     },
@@ -11292,6 +11310,12 @@
       ],
       "arabic": true
     },
+    "Likes (comma-separated)": {
+      "sources": [
+        "apps/web/assets/index.html"
+      ],
+      "arabic": false
+    },
     "Likes, dislikes, leftovers…": {
       "sources": [
         "apps/web/assets/index.html",
@@ -11889,6 +11913,12 @@
       ],
       "arabic": false
     },
+    "Medium": {
+      "sources": [
+        "apps/web/assets/index.html"
+      ],
+      "arabic": false
+    },
     "Meet your table.": {
       "sources": [
         "apps/web/assets/index.html"
@@ -12005,6 +12035,12 @@
     "Metric identifier": {
       "sources": [
         "apps/web/assets/data-workspace.html"
+      ],
+      "arabic": false
+    },
+    "Mild": {
+      "sources": [
+        "apps/web/assets/index.html"
       ],
       "arabic": false
     },
@@ -16120,6 +16156,12 @@
       ],
       "arabic": false
     },
+    "Reset taste preferences": {
+      "sources": [
+        "apps/web/assets/index.html"
+      ],
+      "arabic": false
+    },
     "Resolve appeal": {
       "sources": [
         "apps/web/src/care-ui.js"
@@ -18738,6 +18780,12 @@
       ],
       "arabic": false
     },
+    "Spice preference": {
+      "sources": [
+        "apps/web/assets/index.html"
+      ],
+      "arabic": false
+    },
     "Spoonacular": {
       "sources": [
         "apps/web/src/sources.js"
@@ -19753,6 +19801,24 @@
       ],
       "arabic": false
     },
+    "Taste draft reset. Save member profile to apply.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false
+    },
+    "Taste preferences": {
+      "sources": [
+        "apps/web/assets/index.html"
+      ],
+      "arabic": false
+    },
+    "Taste preferences require an existing member in your signed-in private account.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false
+    },
     "Terms review": {
       "sources": [
         "apps/web/src/sources.js"
@@ -19768,6 +19834,12 @@
     "Texture.toJSON": {
       "sources": [
         "apps/web/src/scanner-three.js"
+      ],
+      "arabic": false
+    },
+    "Textures (comma-separated)": {
+      "sources": [
+        "apps/web/assets/index.html"
       ],
       "arabic": false
     },
