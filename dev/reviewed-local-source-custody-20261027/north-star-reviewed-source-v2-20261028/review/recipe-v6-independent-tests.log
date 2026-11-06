@@ -1,0 +1,28 @@
+test_correct_recipe_joins_and_selected_asset_filter (test_recipe_inspector.RecipeInspectorTests.test_correct_recipe_joins_and_selected_asset_filter) ... ok
+test_nonrecipe_subject_not_counted_as_recipe_join (test_recipe_inspector.RecipeInspectorTests.test_nonrecipe_subject_not_counted_as_recipe_join) ... ok
+test_private_citation_with_public_row_rejected (test_recipe_inspector.RecipeInspectorTests.test_private_citation_with_public_row_rejected) ... ok
+test_public_quantity_scope_difference_not_joined (test_recipe_inspector.RecipeInspectorTests.test_public_quantity_scope_difference_not_joined) ... ok
+test_step_use_not_counted_as_recipe_quantity (test_recipe_inspector.RecipeInspectorTests.test_step_use_not_counted_as_recipe_quantity) ... ok
+test_superseded_edges_not_resolved (test_recipe_inspector.RecipeInspectorTests.test_superseded_edges_not_resolved) ... ok
+test_unknown_quantity_not_zero (test_recipe_inspector.RecipeInspectorTests.test_unknown_quantity_not_zero) ... ok
+test_zero_quantity_not_unknown (test_recipe_inspector.RecipeInspectorTests.test_zero_quantity_not_unknown) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.136s
+
+OK
+test_explicit_recipe_asset_selection (test_recipe_selection.RecipeSelectionTests.test_explicit_recipe_asset_selection) ... ok
+test_index_hash_streams_instead_of_read_bytes (test_recipe_selection.RecipeSelectionTests.test_index_hash_streams_instead_of_read_bytes) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.087s
+
+OK
+test_extra_resource_cannot_hide_in_existing_index (test_recipe_reverify_delta.ReverifyDeltaProbes.test_extra_resource_cannot_hide_in_existing_index) ... ok
+test_missing_relation_cannot_survive_reverification (test_recipe_reverify_delta.ReverifyDeltaProbes.test_missing_relation_cannot_survive_reverification) ... ok
+test_preserved_numbers_do_not_hide_evidence_mutation (test_recipe_reverify_delta.ReverifyDeltaProbes.test_preserved_numbers_do_not_hide_evidence_mutation) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.119s
+
+OK

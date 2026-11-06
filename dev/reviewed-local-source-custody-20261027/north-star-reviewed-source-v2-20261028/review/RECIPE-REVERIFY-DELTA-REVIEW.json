@@ -1,0 +1,16 @@
+{
+  "schemaVersion":"offmenu-independent-recipe-reverify-delta-review/1",
+  "reviewer":"/root/align_north_star_graph/scale_north_star_derivation",
+  "author":"/root/align_north_star_graph",
+  "verdict":"approved-for-selected-manifest-bound-read-only-reverification",
+  "candidateSha256":"55cc3e67bd01fd887b2d1375bb3ed4439c330e56686b3ed4e6be4ffde66b8d31",
+  "previousReviewedSha256":"402d026e7b4f0254a78f56b105368820a33267493768ec53a4a6fddd380d0e5b",
+  "helperDependencySha256":"07a6f7cd7eab6a446f52ba783808c8be8c9188d29a764a3fd5425824ccc107fc",
+  "schemaSha256":"89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+  "reviewed":["Only optional recipes/ or complete manifest-declared packet asset selection","Canonical schema pin and Rust/fallback validator parity interface","Streamed1MiB index hash rather than whole-file read","Read-only immutable existingSQLite with every selected resource/fact/relation projection checked","Fact and relation evidence/citation digests preserved; exact table extent checks","Existing SQL query semantics unchanged","Index bytes checked unchanged before/after successful reverify"],
+  "tests":{"existingIndependentTestsPassed":8,"authoredSelectionTestsIndependentlyRun":2,"additionalIndependentProbesPassed":3,"failed":0,"additionalProbeSha256":"d531d0f6ff1b5b0d9fc0a2d1c6adb70a1a8129e744860162c5c26ff1ce1d29eb","log":"recipe-v6-independent-tests.log","probes":["Extra resource row rejected by table extent","Missing relation rejected by exact projection","Evidence digest mutation rejected even when numeric value preserved","All rejected reverify attempts leave input index byte-identical and emit no report"]},
+  "actualMetadataOnlyVerification":{"windmillRun":"01a181a4-1623-5354-d220-e0a5cacf47d1","reportBytes":16031,"reportSha256":"9ab94d1566f9a3c784baea3621059a954736dd9b08899d718ebb6d7f5c38fbec","packets":25135,"selectedAssets":51,"assetPrefix":"recipes/","queryIndexMode":"exact-source-reverified-read-only-existing","queryIndexSha256":"c2de1379038bfe8cae003c394d343fefb0282ffb0637f56e18f57053eb89e428"},
+  "limits":["Reviewer did not repeat full corpus ingestion/reverification or read raw recipe bodies from Foo","Approval is for selected exact source package and existing immutable index, not arbitrary merged/mutable databases","Old diagnostic occurrence/identity-admission limits remain unchanged","No accepted ingredient identity, nutritional comparability, culinary qualification or live application query coverage","This does not gate independent base corpus publication"],
+  "originalInputsModified":false,
+  "servedAppQueriesExercised":0
+}

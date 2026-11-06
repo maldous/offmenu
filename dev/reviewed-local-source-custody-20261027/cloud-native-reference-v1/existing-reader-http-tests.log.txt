@@ -1,0 +1,28 @@
+✔ synthetic admitted claim serves exact lexical IDs/unknowns without phase, name, type or nutrition (11.453261ms)
+✔ only exact localhost/127 origin+optional matchingOrigin, no CORS or other host/scheme/port (5.331238ms)
+✔ unknown/duplicate params, invalid pagination/source/ns and controls rejected without repair (3.392875ms)
+✔ HEAD has exact GET metadata and no body; method/unrelatedroute stay bounded (2.819809ms)
+✔ prepared/wrongcut admission refuses construction, without request/network/runtime (2.201296ms)
+✔ explicit FDC native identity and source-scoped empty remain separate from canonical eligibility (2.108675ms)
+✔ bounded independent pagination and operator selection isolation (1.639036ms)
+✔ caller mutation during asynchronous construction cannot replace verified bytes or reported pins (1.572045ms)
+✔ identity claim is available without a name, English mapping, food type or nutrition (7.16302ms)
+✔ prepared release and public/runtime admission cannot start this local reader (3.681101ms)
+✔ exact source spelling is used, without zero stripping, UPC conversion or ISBN/food inference (1.174294ms)
+✔ tampered bytes and a receipt bound to a different cut fail before lookup (3.772269ms)
+✔ native/source identity, posting membership, provenance and rights cannot be mixed (0.428327ms)
+✔ unqualified extra fields and canonical/normalized claims are refused (0.380625ms)
+✔ same-code source observations remain separate, with bounded pagination and no physical merge (3.03163ms)
+✔ returned objects and later operator selection mutations cannot change reader state (1.147533ms)
+✔ invalid source barcode remains an explicitly invalid claim and native FDC identity stays queryable (1.193904ms)
+✔ qualified phase observations are unchanged and suppress only the same complete source subject (1.842873ms)
+✔ partial presentation is permitted for an empty selected phase result, but never masks a technical error (1.327355ms)
+✔ after-hash caller-buffer mutation never changes parsed provenance under the original pin (1.176817ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 138.039256

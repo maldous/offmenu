@@ -1,0 +1,16 @@
+{
+  "path": "u/admin/offmenu_public_development_batch_20261028",
+  "sha256": "6b07bc1cb60354bef5648b8482f9fda00cb3db5f036d8447d40172cb4525598b",
+  "deployed": true,
+  "deployed_readback_isDraft": false,
+  "extraPerms": {},
+  "tests": 9,
+  "new_provider_inference_calls": 0,
+  "non_inference_verification_jobs": [
+    "01a180f6-b76c-84ec-31c8-106f06cb4feb",
+    "01a180f6-c692-1e14-3ab8-febd9ec264df",
+    "01a180f7-72db-bda1-a3b3-30982941f337"
+  ],
+  "data_boundary": "fixed_public_synthetic_task_catalog_only",
+  "per_batch_not_global_lease": true
+}

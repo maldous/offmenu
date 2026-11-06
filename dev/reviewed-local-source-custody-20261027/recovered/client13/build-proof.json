@@ -1,0 +1,229 @@
+{
+  "status": "PASS_EXACT_R8_GUEST_REPRODUCED_SEPARATE_IDENTITY_SOURCE_CANDIDATE",
+  "baseline": {
+    "sha256": "b4eb939ee3744e26f1f4a7f4b22880c634288a5405a7db92e906202e9e94d849",
+    "bytes": 882785
+  },
+  "candidate": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/assets/full-scanner.js",
+    "sha256": "8122309b555de4c6aa79a16d8f876d2a495a20105593239d88d765d2548c4b4c",
+    "bytes": 903392
+  },
+  "changedInputs": [
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/typed-identifier-contract.mjs",
+      "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/typed-identifier-contract.mjs",
+      "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-client.mjs",
+      "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-client.mjs",
+      "sha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-selection.mjs",
+      "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-selection.mjs",
+      "sha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/composed-scanner-client.mjs",
+      "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/composed-scanner-client.mjs",
+      "sha256": "45e6f713a55073ea102af06d9c5e6f20f07053d96a02dc608dacfa9d3019e7bc"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/guest-shelf-scanner-inventory.js",
+      "logical": "13/guest-controller",
+      "sha256": "a175b40c61f91a498b74e8fad30eec0f389408808626f0b2f908883cdc7ce668"
+    }
+  ],
+  "removedInputs": [],
+  "unchangedInputs": 32,
+  "inputs": [
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-handoff-bindings.mjs",
+      "logical": "00/bindings",
+      "sha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-scanner-handoff.mjs",
+      "logical": "00/helper",
+      "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/foundation-scanner-client.mjs",
+      "logical": "13/client",
+      "sha256": "d6e82b813a49184d5fb4ac5e234404acf2bd46009e8cebb8e36240d38381f073"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/guest-foundation-client.mjs",
+      "logical": "13/guest-availability",
+      "sha256": "d9f531f4e41d049aaf0609dccb8479aea24357c7d35218a94addf990abffd9ad"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/typed-identifier-contract.mjs",
+      "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/typed-identifier-contract.mjs",
+      "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-client.mjs",
+      "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-client.mjs",
+      "sha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-selection.mjs",
+      "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-selection.mjs",
+      "sha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/composed-scanner-client.mjs",
+      "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/composed-scanner-client.mjs",
+      "sha256": "45e6f713a55073ea102af06d9c5e6f20f07053d96a02dc608dacfa9d3019e7bc"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker19/full-scanner-guest-providers-20261026/candidate/public/production-scanner/guest-scanner-state.mjs",
+      "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker19/full-scanner-guest-providers-20261026/candidate/public/production-scanner/guest-scanner-state.mjs",
+      "sha256": "dc600a66de0f160ca28c2ef16e681f4e87690ec59f26e4215a459cdfeba51906"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/source-category-claims.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/source-category-claims.js",
+      "sha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/scanner-identity-v2.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/scanner-identity-v2.js",
+      "sha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/source-classification-contract.mjs",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/source-classification-contract.mjs",
+      "sha256": "e781776fd220a9957c8e03b8e365d62ac161ebc85ba376d5d916c6696b8a82ef"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-source-assertions.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-source-assertions.js",
+      "sha256": "ea2266461c216750d6a9bc7e34a0a781e2beacf479bb1c5751f3490f61175c16"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/locales/ar.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/locales/ar.js",
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/locale-negotiation.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/locale-negotiation.js",
+      "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/i18n.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/i18n.js",
+      "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-model.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-model.js",
+      "sha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/typed-identifier-contract.mjs",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/typed-identifier-contract.mjs",
+      "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-capture-envelope.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-capture-envelope.js",
+      "sha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/source/production-scanner/guest-scanner-ui.js",
+      "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/source/production-scanner/guest-scanner-ui.js",
+      "sha256": "68cd03afac308f3e8f16f1de46f29dafae28db55ca00093973511e1d4bb69856"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/product-visual-selector.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/product-visual-selector.js",
+      "sha256": "03daa6a6e6575c74cebb06b3320111e022877434e41b4d5698bad6b43d2029fa"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/local-retained-category-presentation.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/local-retained-category-presentation.js",
+      "sha256": "a775711245bb829b84e009ab2d0354e02815793511d36bb4acf6624c59e4251c"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/retained-source-photo-selection.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/retained-source-photo-selection.js",
+      "sha256": "a76143f08fedd1683d91ce8d6501c71e13d619d7d3c8ff6ed84a7be9504a3eaa"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/typed-identifier-contract.mjs",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/typed-identifier-contract.mjs",
+      "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/scanner-kitchen-handoff.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/scanner-kitchen-handoff.js",
+      "sha256": "e35169fee6a7391491c460ddb590f9e1d0b0e59a20a00dcbce557aee7faf1eb1"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/locales/ar.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/locales/ar.js",
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/locale-negotiation.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/locale-negotiation.js",
+      "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/i18n.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/i18n.js",
+      "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/ingredients.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/ingredients.js",
+      "sha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/model.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/model.js",
+      "sha256": "74ae172868765650cd08a90ae356ae8072b04529e7be00469a3e30973e8b4785"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/off-photo-metadata.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/off-photo-metadata.js",
+      "sha256": "1a3808a413e4302b440fe71e7c326e4e66c84a9d6a653bcc55dc7da9f18f9280"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/off-photo-catalogue.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/off-photo-catalogue.js",
+      "sha256": "991791f2b176c0e216cfe3d96c9e9d7daf86a3a2d89ab0b527d578098ebab430"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/product-visual-association.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/product-visual-association.js",
+      "sha256": "7cbeb14a1c39dc079cad96f155f1ae0c6ea4f6402ffecf6f871dade6956ce661"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/scanner-product-visuals.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/scanner-product-visuals.js",
+      "sha256": "a980f106d2194116d78a7efe71e183d57949e3dab61fa55440b57db5125ad915"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-product-visuals-production.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-product-visuals-production.js",
+      "sha256": "37f2a6642afc5991ecc37577e2a09c4312439f12a2018179d45e81c02a3488e2"
+    },
+    {
+      "path": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-three.js",
+      "logical": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-three.js",
+      "sha256": "316e4a74c70140ee8253c44032b2f1a3e683f8f36608c8fce2a789256fd8fe8a"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/guest-shelf-scanner-inventory.js",
+      "logical": "13/guest-controller",
+      "sha256": "a175b40c61f91a498b74e8fad30eec0f389408808626f0b2f908883cdc7ce668"
+    }
+  ],
+  "scope": "IdentitySOURCEONLY: core client/helper/bindings/guestavailability unchanged. Existing controller inspection branches plus separate identity modules; List1aff helper/choice/Undo/guestFinish unchanged; defaultselectionnull. No logger/entry/auth/runtime change."
+}

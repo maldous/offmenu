@@ -1,0 +1,15 @@
+{
+  "actualDataExerciseRun": false,
+  "actualIndicesOpened": false,
+  "actualSourceRowsRead": false,
+  "deploymentOrPublication": false,
+  "fixtureKind": "synthetic-metadata-and-pinned-adapter-fixture-builder; source-only-loader-check",
+  "observedElapsedSeconds": 0.04,
+  "priorAdapterTestsRerun": false,
+  "recordedUtc": "2026-10-28T20:26:42.906096+00:00",
+  "schemaVersion": "offmenu-typed-context-consumer-wrapper-check/1",
+  "status": "ready-for-independent-source-review-before-one-key-exercise",
+  "testCommand": "python3 -B -m unittest discover -s typed-context-consumer-v1 -p test_typed_context_consumer.py -v",
+  "testCount": 15,
+  "testExitCode": 0
+}

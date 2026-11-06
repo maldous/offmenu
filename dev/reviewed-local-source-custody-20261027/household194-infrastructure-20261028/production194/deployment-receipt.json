@@ -1,0 +1,30 @@
+{
+  "status": "deployed-and-served-verified",
+  "version": 194,
+  "versionId": "40a3e73d-6aac-45ea-b7e4-8d529376c812",
+  "deploymentId": "554724b3-a638-4f81-8c34-bcc52214806f",
+  "deployedUTC": "2026-10-28T06:19:42.54046Z",
+  "percentage": 100,
+  "origin": "https://offmenu.aldous.info",
+  "rollbackVersionId": "d572a1e0-f43d-432b-8033-fc78564ef7c9",
+  "moduleSHA256": "7ef438457349a113e48a3c3546b8ac268fb5756d6b25f1ec47c4cb934a090fcc",
+  "moduleBytes": 2507611,
+  "appSHA256": "9d5df398c92ba8fbb9eb979907a2e3570972deb337c7cafa93f705529c61edf8",
+  "appBytes": 464444,
+  "appStatus": 200,
+  "unchangedModules": 211,
+  "totalModules": 212,
+  "settingsBindingsPreserved": true,
+  "focusedTestsPassed": 76,
+  "privateAPIAnonymousStatus": 401,
+  "protectedDocumentsAnonymousStatus": 303,
+  "landingStoryUnchanged": true,
+  "authenticatedJourneyTested": false,
+  "landingGPUVerified": false,
+  "heldShoppingDeficitAdopted": false,
+  "scope": [
+    "shopping existing canWrite guards including canonical reset",
+    "unknown intake CSV blank rather than known zero",
+    "stale account/profile member editor guard"
+  ]
+}

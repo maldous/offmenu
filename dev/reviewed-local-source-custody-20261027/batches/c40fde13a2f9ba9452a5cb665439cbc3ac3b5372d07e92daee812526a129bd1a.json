@@ -1,0 +1,351 @@
+{
+  "baseCommit": "39396038705628dea85e165d5eab1b571d1bc353",
+  "comparisonScope": [
+    {
+      "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+      "treeSha": "71779bed7a1469cdc3dd116759dd49e97febc815"
+    },
+    {
+      "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+      "treeSha": "d0f272757ca95ef40985bdce75fb568773c62400"
+    },
+    {
+      "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+      "treeSha": "03fb1c0398327871f3f31876a23f19d56aff1a7d"
+    },
+    {
+      "commit": "39396038705628dea85e165d5eab1b571d1bc353",
+      "treeSha": "c391536cd1ca47e59c9db51398c6f18e931a12a2"
+    }
+  ],
+  "dataPublication": false,
+  "files": [
+    {
+      "bytes": 6200,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "46301064925884825954b749909a248e0dfbd4a152136aad58bbd088cce05b59",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "6bba21e01909a3c77bdb43c01e712fc8df90b163",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-native-reference-v1/README.md",
+      "reviewRef": "owned-data-reviewed-native-reference-delta-20261027",
+      "sha256": "46301064925884825954b749909a248e0dfbd4a152136aad58bbd088cce05b59",
+      "sourcePath": "/workspace/shared/offmenu-native-reference-integration-20261027/README.md"
+    },
+    {
+      "bytes": 73952,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "e139becf2e6130d22e42aa811393a078becc6d3ea12f3894954e35bc54a0eb59",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "172799f30536e33ce9273bf122f95da034238c07",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-native-reference-v1/native-reference-integration.patch",
+      "reviewRef": "owned-data-reviewed-native-reference-delta-20261027",
+      "sha256": "e139becf2e6130d22e42aa811393a078becc6d3ea12f3894954e35bc54a0eb59",
+      "sourcePath": "/workspace/shared/offmenu-native-reference-integration-20261027/native-reference-integration.patch"
+    },
+    {
+      "bytes": 18405,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "386433453c583ec46066cf58ebd9492a7fea75b54f6a39302f99a371657d4df3",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "c4edfa29de72a585be1e0a8b0a3e653b9d69ec97",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-native-reference-v1/native-reference-integration.test.mjs.source.txt",
+      "reviewRef": "owned-data-reviewed-native-reference-delta-20261027",
+      "sha256": "386433453c583ec46066cf58ebd9492a7fea75b54f6a39302f99a371657d4df3",
+      "sourcePath": "/workspace/shared/offmenu-native-reference-integration-20261027/native-reference-integration.test.mjs"
+    },
+    {
+      "bytes": 4598,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "909407cde7d330d076ed1c88a2033ad7dbf24326529b69e05a8e3cef47f065cc",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "9ca2da950c8d9e58dda9010d8abacb96d75764c3",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-native-reference-v1/integration-manifest.json",
+      "reviewRef": "owned-data-reviewed-native-reference-delta-20261027",
+      "sha256": "909407cde7d330d076ed1c88a2033ad7dbf24326529b69e05a8e3cef47f065cc",
+      "sourcePath": "/workspace/shared/offmenu-native-reference-integration-20261027/integration-manifest.json"
+    },
+    {
+      "bytes": 32455,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "5ec60aff83ed975e29da2cc885e21d2c560075067136bce1aa1e050dd1f780c7",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "14e298727db66a0abe0e0090488d5008d205d959",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-native-reference-v1/base-dependency-manifest.json",
+      "reviewRef": "owned-data-reviewed-native-reference-delta-20261027",
+      "sha256": "5ec60aff83ed975e29da2cc885e21d2c560075067136bce1aa1e050dd1f780c7",
+      "sourcePath": "/workspace/shared/offmenu-native-reference-integration-20261027/base-dependency-manifest.json"
+    },
+    {
+      "bytes": 785,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "b7859d4d488b3f53e90842fda238bdd7fdffda5c808e335accdc7a9cafe24d2e",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "558bae1439fccd48bcd193a36c673d94e4304330",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-native-reference-v1/pr139-http-status-type.patch",
+      "reviewRef": "owned-data-reviewed-native-reference-delta-20261027",
+      "sha256": "b7859d4d488b3f53e90842fda238bdd7fdffda5c808e335accdc7a9cafe24d2e",
+      "sourcePath": "/workspace/shared/offmenu-native-reference-integration-20261027/pr139-http-status-type.patch"
+    },
+    {
+      "bytes": 1189,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "b4f77819b1e6b21d399bfbaaef815bd3165deb6f5776181efe55d72b46c43496",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "2a1cfc742e8dc1419d8cc4b3a453e2ff7ab76181",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-native-reference-v1/focused-integration-tests.log.txt",
+      "reviewRef": "owned-data-reviewed-native-reference-delta-20261027",
+      "sha256": "b4f77819b1e6b21d399bfbaaef815bd3165deb6f5776181efe55d72b46c43496",
+      "sourcePath": "/workspace/shared/offmenu-native-reference-integration-20261027/focused-integration-tests.log"
+    },
+    {
+      "bytes": 2191,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "18598bc199fc26ceca174ffc841768091f6af2845bc75bef52904a141f353dc7",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "b2febcbe2ad6f0628645e20f1acba274a2679e62",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-native-reference-v1/existing-reader-http-tests.log.txt",
+      "reviewRef": "owned-data-reviewed-native-reference-delta-20261027",
+      "sha256": "18598bc199fc26ceca174ffc841768091f6af2845bc75bef52904a141f353dc7",
+      "sourcePath": "/workspace/shared/offmenu-native-reference-integration-20261027/existing-reader-http-tests.log"
+    },
+    {
+      "bytes": 1523,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "67024770ffedecf992d6b9f05049bb332667f2f8917c534794a54d0f86905a61",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "aabfd2ba3baa73e38244294bebbd90ae48fa912f",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-native-reference-v1/artifact-manifest.json",
+      "reviewRef": "owned-data-reviewed-native-reference-delta-20261027",
+      "sha256": "67024770ffedecf992d6b9f05049bb332667f2f8917c534794a54d0f86905a61",
+      "sourcePath": "/workspace/shared/offmenu-native-reference-integration-20261027/artifact-manifest.json"
+    },
+    {
+      "bytes": 16833,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "d0e8a399e7e8a5290c0259a8b3ae70049717e7239d3739c0fa99a114f103c60c",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "270aba1be5bf2ce5ed8548bd4558565232026760",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/scripts/direct_publish_selected_r3.py",
+      "reviewRef": "39396038-bounded-projection-and-source-only-artifact-review",
+      "sha256": "d0e8a399e7e8a5290c0259a8b3ae70049717e7239d3739c0fa99a114f103c60c",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-custody-import-20261027/direct_publish_selected_r3.py"
+    },
+    {
+      "bytes": 7134,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "3b87d43d0d1347e16e463cb4b78f1b281f60cea7719f6c0be855624ff92522b8",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "cf837693727d1c9381a3399c0b81ba71f09f9013",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/tests/test_direct_publish_selected_r3.py.source.txt",
+      "reviewRef": "39396038-bounded-projection-and-source-only-artifact-review",
+      "sha256": "3b87d43d0d1347e16e463cb4b78f1b281f60cea7719f6c0be855624ff92522b8",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-custody-import-20261027/test_direct_publish_selected_r3.py"
+    },
+    {
+      "bytes": 9165,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "1f2ddc4514eb8a8434e8d013e11a722101db314f57053553909dbd8a50e5f9c6",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "b6b6a3986416cb92bd64de4abf2d27a2cdc46792",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/scripts/extract-landing-source-literals.py",
+      "reviewRef": "39396038-bounded-projection-and-source-only-artifact-review",
+      "sha256": "1f2ddc4514eb8a8434e8d013e11a722101db314f57053553909dbd8a50e5f9c6",
+      "sourcePath": "/workspace/shared/offmenu-landing-integration-39396038/extract-landing-source-literals.py"
+    },
+    {
+      "bytes": 3748,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "11d2db6522616f432cf3317d5bd25de97c8872ded6650621deabb14a4095fe36",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "ee3b59057fb7d915c2a9d3efc774cfad9a785cee",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/tests/extract-landing-source-literals.test.py.source.txt",
+      "reviewRef": "39396038-bounded-projection-and-source-only-artifact-review",
+      "sha256": "11d2db6522616f432cf3317d5bd25de97c8872ded6650621deabb14a4095fe36",
+      "sourcePath": "/workspace/shared/offmenu-landing-integration-39396038/extract-landing-source-literals.test.py"
+    },
+    {
+      "bytes": 4224,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "0065dd735cf04e45f88ece46545c762b07aeba9fc60d2bb0fb8ce05fd85606b4",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "62a25c2a77ff55c70e5ff094578de0a2c0e0611f",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/reviewed-source-requests-r3.json",
+      "reviewRef": "39396038-bounded-projection-and-source-only-artifact-review",
+      "sha256": "0065dd735cf04e45f88ece46545c762b07aeba9fc60d2bb0fb8ce05fd85606b4",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-custody-import-20261027/reviewed-source-requests-r3.json"
+    },
+    {
+      "bytes": 3216,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "599fcff21f0b4767c8967b1c1ad5908ff47c7c9d052d196dbfcac4c51c48545c",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "b97497294d073dc05a73dec541eb11e5a2cf4a2f",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/DIRECT-SELECTED-R3.md",
+      "reviewRef": "39396038-bounded-projection-and-source-only-artifact-review",
+      "sha256": "599fcff21f0b4767c8967b1c1ad5908ff47c7c9d052d196dbfcac4c51c48545c",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-custody-import-20261027/DIRECT-SELECTED-R3.md"
+    },
+    {
+      "bytes": 1923,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "actual-pinned-source-review-and-focused-tests",
+        "reviewedBy": "cloud-custody-helper-wiring-owned-data-source-owners",
+        "sha256": "9e33f16943f3f0a9caca8c1f53c53cd074289dd23588a36df9b073cb1b9da14a",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "259874ca4c740ee206ed23e95ff16c570c6cb418",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/embedded-api-content-disposition.json",
+      "reviewRef": "39396038-bounded-projection-and-source-only-artifact-review",
+      "sha256": "9e33f16943f3f0a9caca8c1f53c53cd074289dd23588a36df9b073cb1b9da14a",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-custody-import-20261027/embedded-api-content-disposition.json"
+    }
+  ],
+  "repository": "maldous/offmenu",
+  "runtimeAdoption": false,
+  "schemaVersion": "offmenu-source-custody-import/1",
+  "scope": "exact-source-test-documentation-custody-only-unimported",
+  "screeningLimit": "Pattern scanning supplements the recorded exact-byte content reviews; it is not a confidentiality proof.",
+  "selectionSha256": "c40fde13a2f9ba9452a5cb665439cbc3ac3b5372d07e92daee812526a129bd1a",
+  "transport": null
+}

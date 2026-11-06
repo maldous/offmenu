@@ -1,0 +1,230 @@
+{
+  "schema": "offmenu-input-metadata/1",
+  "inputs": [
+    {
+      "root": "common-bulk-food-20261014",
+      "exists": true,
+      "writable": false,
+      "manifestBytes": 1834410,
+      "manifestByteSha256": "5b88f9e37909f2ba19113d9df2af56bffcb1f274a9e6dd852bac249f8a61db74",
+      "topKeys": [
+        "complete",
+        "completedAtUnix",
+        "counts",
+        "curatedInputDirectory",
+        "expectedCounts",
+        "expectedSourceRecords",
+        "files",
+        "inputCoverage",
+        "limit",
+        "manifestSha256",
+        "observedCounts",
+        "observedSourceRecords",
+        "partitionCoverage",
+        "releaseId",
+        "schemaVersion",
+        "scope",
+        "seconds",
+        "sources",
+        "status"
+      ],
+      "schemaVersion": "offmenu-common-bulk-food/1",
+      "releaseId": "bulk-food-common-20261014",
+      "manifestSha256": "bf3199ed93e36b9cfd6ce71d1c05a498d1904b6052a37d966193760c29935340",
+      "counts": {
+        "translations": 0,
+        "packets": 9796656,
+        "resources": 9796656,
+        "assertions": 137295959,
+        "relations": 2915727
+      },
+      "expectedCounts": {
+        "translations": 0,
+        "packets": 9796656,
+        "resources": 9796656,
+        "assertions": 137295959,
+        "relations": 2915727
+      },
+      "observedCounts": {
+        "translations": 0,
+        "packets": 9796656,
+        "resources": 9796656,
+        "assertions": 137295959,
+        "relations": 2915727
+      },
+      "filesCount": 9800,
+      "filesDeclaredBytes": 14180020131,
+      "noticesCount": 0,
+      "noticesDeclaredBytes": 0,
+      "sources": null,
+      "manifestPayloadDigestMatches": true,
+      "actualRegularFiles": 9801,
+      "actualBytes": 14181854541,
+      "nonRegularFiles": 0
+    },
+    {
+      "root": "curated-expanded-country-search-20261013/blobs",
+      "exists": true,
+      "writable": false,
+      "manifestBytes": 5950633,
+      "manifestByteSha256": "312a7f5ce7c32b81d1eb02251303a000073eea2d0b46d9ac710e09ff89dee895",
+      "topKeys": [
+        "acquisitionAtRuntime",
+        "completedAt",
+        "countryIndexAcceptance",
+        "curatedAcceptance",
+        "curationPolicy",
+        "engineVersion",
+        "entries",
+        "entryPageSize",
+        "entryPages",
+        "files",
+        "format",
+        "manifestSha256",
+        "mergedReleaseIds",
+        "notices",
+        "privateProviderData",
+        "records",
+        "releaseId",
+        "shardLength",
+        "sources",
+        "status"
+      ],
+      "format": "offmenu-curated/1",
+      "releaseId": "expanded-country-search-20261013",
+      "manifestSha256": "a74b82eec8b70e47e304874c21740414242d371349b1449d38a1426d09adac90",
+      "filesCount": 46873,
+      "filesDeclaredBytes": 5248570958,
+      "noticesCount": 3,
+      "noticesDeclaredBytes": 15760,
+      "sources": {
+        "off": {
+          "records": 5452981,
+          "releaseId": "2026-10-12",
+          "archiveSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
+          "rawSourcePayloadPublished": false
+        },
+        "usda-files": {
+          "records": 4025777,
+          "releaseId": "usda-2026-04",
+          "archiveSha256": "c33d91e5c44ddbcd71ed6038714fb648b26089b3f91fabfa3be63d96d5763a01",
+          "rawSourcePayloadPublished": false
+        },
+        "prices": {
+          "records": 317898,
+          "releaseId": "2026-10-12",
+          "archiveSha256": "337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0",
+          "rawSourcePayloadPublished": false
+        },
+        "afcd": {
+          "records": 1801,
+          "releaseId": "3",
+          "archiveSha256": "ee2e99fe0856e29eb0b67247b12bb02a1b36ae2d01a5a910f67a0080f60043c6",
+          "rawSourcePayloadPublished": false
+        },
+        "ciqual": {
+          "records": 3484,
+          "releaseId": "2025",
+          "archiveSha256": "5e89a52960dc6e0d87e73f55364c149e1af41a088e13e579d0fcd4fab56eee49",
+          "rawSourcePayloadPublished": false
+        },
+        "cofid": {
+          "records": 2887,
+          "releaseId": "2021",
+          "archiveSha256": "2f031fd67ae55dfb5e638e286ef369ecad5a1f0a4bf0cc81f52afdd66705b63e",
+          "rawSourcePayloadPublished": false
+        },
+        "germany-bls": {
+          "records": 7140,
+          "releaseId": "4.0",
+          "archiveSha256": "a5ba3a151e50834673c335afd719929557d4a22e7c4de9788a20d8e60cd9fb7c",
+          "rawSourcePayloadPublished": false
+        },
+        "matvaretabellen": {
+          "records": 2121,
+          "releaseId": "2026",
+          "archiveSha256": "1bac8a781ed170e16535fd95ee808d0d04e4c8f6233b96cf4766d192b2852d75",
+          "rawSourcePayloadPublished": false
+        },
+        "frida": {
+          "records": 1381,
+          "releaseId": "5.5",
+          "archiveSha256": "14101f7df7b93dd78472c3e5506bf39104dd61d33f4ec45a9ee170a3e4063f92",
+          "rawSourcePayloadPublished": false
+        },
+        "wikidata-food-businesses": {
+          "records": 1505,
+          "releaseId": "2026-10-13-direct-types",
+          "archiveSha256": "de3e72f283252c31f075bb3bf544a1ed9d17e7956e89abfa9ae4f8bd5332f559",
+          "rawSourcePayloadPublished": false
+        },
+        "dietary-guidelines": {
+          "records": 100,
+          "releaseId": "fao-directory-20261013",
+          "archiveSha256": "eb28660ef816bfa4c5186a4b088d3cbaae57334ccf1f24b3dd5b5d1a7ad6a334",
+          "rawSourcePayloadPublished": false
+        },
+        "wikibooks": {
+          "records": 3796,
+          "releaseId": "2026-10-13-live",
+          "archiveSha256": "efadf48d40d6a8e6f67f13c3c0dd66a07feaff5f8c294eda34292045326d8f88",
+          "rawSourcePayloadPublished": false
+        },
+        "cnf": {
+          "records": 5690,
+          "releaseId": "2015",
+          "archiveSha256": "fb77503d88186844cc2c27b39432d755505f97a789c97fc5973a30d0cd4b0367",
+          "rawSourcePayloadPublished": false
+        },
+        "mext": {
+          "records": 2538,
+          "releaseId": "2023-corrected-20260327-main",
+          "archiveSha256": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c",
+          "rawSourcePayloadPublished": false
+        },
+        "overture-food-places": {
+          "records": 12681108,
+          "releaseId": "2026-09-23.1",
+          "archiveSha256": "9dd97acae860f74aba19a407c1a473fe0d1f0e9cfcbe82ad4b36f59a869b5a7a",
+          "rawSourcePayloadPublished": false
+        },
+        "fineli": {
+          "records": 4232,
+          "releaseId": "20.0",
+          "archiveSha256": "e7e6bd8d4b9261d751229e763dad436b297d36d48fe853faf49e1fd2a116d262",
+          "rawSourcePayloadPublished": false
+        },
+        "foodfiles": {
+          "records": 2857,
+          "releaseId": "2024-v01",
+          "archiveSha256": "fad47d11c97814b1d7be5a9d538f0b32cd4807b7d231e516e57c939c75a18a5f",
+          "rawSourcePayloadPublished": false
+        },
+        "sweden-food": {
+          "records": 2606,
+          "releaseId": "2026-07-01",
+          "archiveSha256": "4424c9e4656368a94517a2c697313e3b8682d959ccc4b4c848181083c4dd6569",
+          "rawSourcePayloadPublished": false
+        }
+      },
+      "manifestPayloadDigestMatches": true,
+      "actualRegularFiles": 46877,
+      "actualBytes": 5254537351,
+      "nonRegularFiles": 0
+    }
+  ],
+  "disk": {
+    "total": 1964627075072,
+    "used": 1655985524736,
+    "free": 208768462848,
+    "freeGiB": 194.431
+  },
+  "codePins": {
+    "scripts/repair-bulk-controls-20261014.py": "2c025c07f0561d2ca0ac161778ca4ec98b0593b7c70b570ae53577a698c5bb4c",
+    "scripts/verify-bulk-repair-checkpoint.py": "98b319da19ece78d6f6df74b811af41071ff20c5dd67fb0c614058399d403fcb",
+    "scripts/align-places-common.py": "95a07c0bcfb1e09aeb879dd45ba8dd682c4c30dfc7e46a563ee8ed9878dd8c35",
+    "scripts/places_checkpoint.py": null,
+    "corpus/common-data.schema.json": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+    "corpus/common-data-contract.json": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"
+  }
+}

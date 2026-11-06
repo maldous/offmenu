@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "offmenu-offline-source-consumer-independent-review/1",
+  "reviewer": "/root/align_north_star_graph/scale_north_star_derivation",
+  "author": "/root/align_north_star_graph",
+  "verdict": "approved-for-explicit-opt-in-selected-immutable-source-packages",
+  "candidateSha256": "a87b2117981ffa6beba37547a23b8ee36040bb7b8bec17aaec99b22ff70322f0",
+  "supersededCandidateSha256": "de8c6cef794b61453f2fdd2620434ad9a30606419ec7f99179f828b89634965d",
+  "tests": {
+    "authoredTestsIndependentlyRun": 10,
+    "additionalIndependentProbes": 4,
+    "failed": 0,
+    "probeSha256": "437865bf8ad87f4babc596da4a27ed449c23800972ef53a4140ae967de02e1a8",
+    "log": "consumer-independent-tests.log"
+  },
+  "narrowCorrectionsVerified": [
+    "Only literal True opts in; truthy strings/integers do not fetch candidate data",
+    "Actual single-resource/single-citation bulk packet convention enforced for all row references",
+    "Verified source/release citation objects including licence/attribution returned with product/profile context"
+  ],
+  "covered": [
+    "Exact source/release/namespace/lexical keys and leading-zero preservation",
+    "Ambiguous source keys not arbitrarily merged",
+    "Manifest/index/asset/packet pins, locator identity and explicit original edge/assertion digests",
+    "Nutrient context and same-source per-nutrient basis candidates retrieved by bounded immutable shard locator",
+    "Derived packet digest checked in addition to file digest",
+    "Read-only indices unchanged; no network fallback or serving activation"
+  ],
+  "limits": [
+    "Synthetic end-to-end tests use actual reviewed builders; no real corpus lookup claimed",
+    "Actual full consumer exercise awaits completed basis packet-locator and derived manifests",
+    "No accepted food/ingredient identity, nutrition aggregation, automatic planning or cross-source nutrient equivalence",
+    "Trusted immutable roots/manifests are required; no general mutable or merged-source index support",
+    "This does not gate independent base publication"
+  ],
+  "servedApplicationActivation": false,
+  "originalInputsModified": false
+}

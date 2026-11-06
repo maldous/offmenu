@@ -1,0 +1,45 @@
+{
+  "schema": "offmenu-reviewed-source-candidate/1",
+  "files": [
+    {
+      "path": "INDEPENDENT-REVIEW.md",
+      "bytes": 1976,
+      "sha256": "5a480765526e166379f5fc73bc19a64272a649e17800e4fd91e63adf2d7386ea"
+    },
+    {
+      "path": "REVIEW.md",
+      "bytes": 2341,
+      "sha256": "4f1acabf231117fa261dd1cd89397360025968b83259cb1ffa408c2d9c5fac81"
+    },
+    {
+      "path": "corpus/common-data-contract.json",
+      "bytes": 46420,
+      "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"
+    },
+    {
+      "path": "corpus/common-data.schema.json",
+      "bytes": 17632,
+      "sha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+    },
+    {
+      "path": "scripts/repair-bulk-controls-20261014.py",
+      "bytes": 28816,
+      "sha256": "2fde257a76102f192972cefe19d6fc908649be766fbf27c338d3c0fe8986d544"
+    },
+    {
+      "path": "tests/test_bounded_recovery.py",
+      "bytes": 3395,
+      "sha256": "dc1f70fb543d8aaa23da72952abb37e28e6ea7e633976d8de3f94b7ad942ca22"
+    },
+    {
+      "path": "tests/test_bulk_control_recovery.py",
+      "bytes": 9133,
+      "sha256": "7c1979352513b45ba71bbf72d7608b88cc75baec840e362df215e0bde52ba35e"
+    },
+    {
+      "path": "tests/test_parallel_recovery.py",
+      "bytes": 3793,
+      "sha256": "64e6842f0830d4d56da65a51a62c2e6de4ee9c0581ec1e7ced3fb82e2fe7afa3"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "offmenu-recipe-fidelity-review/1",
+  "status": "pass-scoped",
+  "reviewer": "/root/align_north_star_graph/review_north_star_derivations",
+  "candidateSha256": "ca9fa354f518cccf96493f4b5c93e04b0997e3e3b41a38b53e249364f683e403",
+  "helperDependencySha256": "07a6f7cd7eab6a446f52ba783808c8be8c9188d29a764a3fd5425824ccc107fc",
+  "scope": "Finite comparison of manifest-listed pre-alignment normalized recipe fields to common graph; no claim about earlier upstream extraction",
+  "independentTests": {
+    "passed": 11,
+    "failed": 0,
+    "command": "python3 -m unittest discover -s review -p test_recipe_fidelity.py -v",
+    "testSha256": "cc487e43b30491ff07986ca4ab2635337afe86fc08373706f4e4b949353625f4",
+    "log": "fidelity-independent-final.log"
+  },
+  "covered": [
+    "Native original recipe identity bound to RecipeVariant subject",
+    "Ingredient ordinal mapped through usesIngredient to typed IngredientMention quantity owner",
+    "Duplicate graph recipe and duplicate resource identity rejected",
+    "Extra graph ingredient extent rejected",
+    "Known zero distinct from unknown null",
+    "Graph false distinct from numeric zero for compared scalar amount",
+    "Missing required quantity sourceValue differs from explicit null",
+    "Yield sourceUnit mismatch detected",
+    "Unknown source unit text bucketed rather than exported"
+  ],
+  "limitations": [
+    "Comparison applies only to selected yield and ingredient quantity fields, not every source field",
+    "Existing selected graph schema/global qualification is not replaced by this comparator",
+    "Nested range/type semantic validation relies on selected input schema validation; this script is not a complete graph schema validator",
+    "Original upstream extraction fidelity not verified",
+    "No real corpus/Foo/Git/production calls performed by reviewer"
+  ],
+  "originalEightPackagesModified": false,
+  "blocksIndependentCorpusPublication": false
+}

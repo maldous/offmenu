@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "offmenu-curated-basis-input-custody/1",
+  "authority": "Parent scope decision2026-10-28T07:29UTC covers existing read-only public curated OFF/USDA subsets for same-source deterministic field restoration; no raw archives/new mount/acquisition or adoption rights.",
+  "root": "/offmenu-corpus/curated-expanded-country-search-20261013/blobs",
+  "manifestPath": "/offmenu-corpus/curated-expanded-country-search-20261013/blobs/manifest.json",
+  "manifestBytes": 5950633,
+  "manifestByteSha256": "312a7f5ce7c32b81d1eb02251303a000073eea2d0b46d9ac710e09ff89dee895",
+  "manifestFilesShape": "files is list of {key,bytes,sha256}; selected exact records/{off,usda-files}/*.jsonl.gz entries only",
+  "recordLineShape": "[key,[record,...]], as original align-bulk-food-common.py; otherwise one record object",
+  "status": "curated-release-ready",
+  "privateProviderData": false,
+  "curationPolicyVersion": "offmenu-curation/1",
+  "sourceIndependentlyAccepted": false,
+  "recordCurationStatus": "selected-source-facts",
+  "recordHumanReviewed": false,
+  "automaticDietQualification": false,
+  "rawSourcePayloadPublished": false,
+  "entryDigestSerialization": "json.dumps(entry,sort_keys=True,separators=(comma,colon)), default ensure_ascii=True",
+  "sources": {
+    "off": {
+      "records": 5452981,
+      "assets": 4096,
+      "compressedBytes": 680880510,
+      "entrySha256": "d933d51ea8364e699a9bc35d861e61a83ee884d917b77c1cec7295cb3166e56b",
+      "license": "ODbL / DbCL; images CC BY-SA",
+      "withheldRecords": 4161453,
+      "firstAsset": {
+        "key": "records/off/000.jsonl.gz",
+        "bytes": 177876,
+        "sha256": "90e9602ef726c9d0343c2771bd422a0d026bc2623c6620e12ce590d6336b0a81"
+      }
+    },
+    "usda-files": {
+      "records": 4025777,
+      "assets": 4096,
+      "compressedBytes": 629744410,
+      "entrySha256": "8fbebc9ee3bb799d102b3d66363d34080fe98a0f5369d5376b890dd7c1f9523e",
+      "license": "USDA FoodData Central public domain / CC0",
+      "withheldRecords": 176781,
+      "firstAsset": {
+        "key": "records/usda-files/000.jsonl.gz",
+        "bytes": 159671,
+        "sha256": "c16208f639fb03a1f97140739f14352cc184521c988f34ccd079e624462b824c"
+      }
+    }
+  },
+  "sourceRights": "Original source licence/attribution retained; no private provider results",
+  "limitation": "Structural and synthetic consumer checks do not establish independently reviewed food identity or dietary qualification.",
+  "withheldSourcesIncluded": false,
+  "originalPayloadExported": false,
+  "preparationStateFinding": {
+    "firstOffAssetOwnNutrientStates": 4128,
+    "firstUsdaAssetOwnNutrientStates": 7840,
+    "fullSourceScanComplete": false
+  },
+  "nativeSourceConventionExercise": {
+    "scope": "same manifest-pinned first/middle/last asset per source; not full-source assertion",
+    "off": {
+      "equal": 4168,
+      "other": 0,
+      "missing": 0
+    },
+    "usda-files": {
+      "equal": 2965,
+      "other": 0,
+      "missing": 0
+    }
+  }
+}

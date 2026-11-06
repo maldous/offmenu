@@ -1,0 +1,94 @@
+{
+  "schema": "offmenu-existing-guest-owned-foundation-splice/1",
+  "before": {
+    "bytes": 885653,
+    "sha256": "bab01e0e6f58219be7c5febf1d7372e78816ac8156eecc2b30a99d8843566531"
+  },
+  "helper": {
+    "bytes": 21264,
+    "sha256": "7c250884bcf9f6273f72a747a20e3bc49344d20755a0e00251aa5b1a1f87877a"
+  },
+  "after": {
+    "bytes": 907183,
+    "sha256": "484e302e75e11521ebeb98299f7138883eea046357f42f6927f82f82d26c7e67"
+  },
+  "edits": [
+    {
+      "label": "inventory factory only",
+      "start": 841305,
+      "end": 841401,
+      "text": "_OffMenuGuestFoundation.createGuestFoundationLookup({origin:location.origin,analyzeIdentifier})",
+      "before": "createQualifiedGuestLookup({ selections: QUALIFIED_PUBLIC_SELECTIONS, origin: location.origin })"
+    },
+    {
+      "label": "foundation-specific truthful readout",
+      "start": 850662,
+      "end": 850662,
+      "text": "\n  if(current?.foundationLookup){const rows=_OffMenuGuestFoundation.foundationReadout(selected2,current,tab);if(current.matches?.length||current.hasMore)rows.push({label:\"Separate source observations\",text:\"Inspect source records\",action:showMatches});return rows;}\n",
+      "before": ""
+    }
+  ],
+  "unchangedOutsideHelperAndTwoSeams": true,
+  "retainedFunctions": [
+    {
+      "name": "capture",
+      "bytes": 2054,
+      "sha256": "8641099bc2936c316247941323ffe47d9f8674c29e685b6e2e14c5cb887cc270"
+    },
+    {
+      "name": "finishGuestSession",
+      "bytes": 285,
+      "sha256": "3012d489ff50d530e6bbc929db7a967228dd9f671e0597df77ea5dc4c389aae2"
+    },
+    {
+      "name": "enableAudio",
+      "bytes": 609,
+      "sha256": "ca7c8642bd877ba377ba9004b49d125614030d948f51a314772b08471ce7cfc2"
+    },
+    {
+      "name": "readTone",
+      "bytes": 773,
+      "sha256": "4fb83211f903678edf82d230d37ce2330cd681d9a845776797bba95a4d33de02"
+    },
+    {
+      "name": "showReadCue",
+      "bytes": 344,
+      "sha256": "c53ddaa0e9416af64a3aa2248aa4d551b41519e164868fa831ea07926759e0ae"
+    },
+    {
+      "name": "englishDisplayName",
+      "bytes": 745,
+      "sha256": "080cb39b1d627af46aece4dae60bcdea3e8bf47097a9f6f56d76972facec96a3"
+    },
+    {
+      "name": "cancelPendingSpeech",
+      "bytes": 235,
+      "sha256": "95eb341461d2d22cc54693f384f6ad311a9f6191be1bff8ebb82b22b596c5a52"
+    },
+    {
+      "name": "speakResolvedName",
+      "bytes": 1934,
+      "sha256": "d5672642d8f6f0525b1ec7980e8e37b3dd553f0abffe8b9eed7406f07c0f2b2f"
+    },
+    {
+      "name": "updateFeedbackButtons",
+      "bytes": 320,
+      "sha256": "347b9945bdc8cf3e85599e83d46df13e8c4d0bc900e732d2492756aeb0e1468b"
+    },
+    {
+      "name": "showMatches",
+      "bytes": 1536,
+      "sha256": "631e717d6cef616786639a28e3f7b6ba705acddb91ba8c5e42358e9151433c2f"
+    },
+    {
+      "name": "renderQueue",
+      "bytes": 844,
+      "sha256": "ed881acdd5fcccdc14c1db0258187e147f2b084a76767208faab9c25877fc536"
+    }
+  ],
+  "scannerUIReplaced": false,
+  "cameraDecoderOrAudioChanged": false,
+  "guestFinishPersists": false,
+  "newPrivateProfileAccess": false,
+  "externalFallback": false
+}

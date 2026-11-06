@@ -1,0 +1,38 @@
+{
+  "query": {
+    "engine": {
+      "threads": 8,
+      "version": "1.5.6",
+      "spill_gib": 1,
+      "memory_gib": 1
+    },
+    "job_id": "sql-wrapper-20261028-0541",
+    "status": "completed",
+    "input_rows": 3,
+    "sql_sha256": "269cd3d97c34ad6ade05f375a0fe02f8debc96c872a99017b3be7119f3c73f95",
+    "plan_sha256": "dda025225d8432ae0f36351e8ca3ae2087cea19106a2578a15d0b91dedc347d9",
+    "result_rows": 1,
+    "result_bytes": 227,
+    "result_sha256": "4048c66c5acbbb5d40947d77658c1a2ea5c3ee4d7d69f16a4f3419ef06fa6b87",
+    "profile_sha256": "a2d49ae271161835c290fc3c77fedacb688b76cd4652dee37770bca5a31269d0",
+    "input_row_groups": 1,
+    "cpu_to_wall_ratio": 1.304390267930517,
+    "query_cpu_seconds": 0.0016583640000000094,
+    "query_wall_seconds": 0.0012713710311800241,
+    "process_peak_rss_kib": 62496,
+    "result_content_reverified": false,
+    "input_content_hash_verified": false
+  },
+  "job_id": "sql-wrapper-20261028-0541",
+  "admission": {
+    "reason": null,
+    "status": "succeeded",
+    "admitted": true,
+    "job_succeeded": true,
+    "child_tree_gone": true
+  },
+  "local_result": "/offmenu/data/.offmenu-platform/sql_queries/sql-wrapper-20261028-0541/result.parquet",
+  "local_profile": "/offmenu/data/.offmenu-platform/sql_queries/sql-wrapper-20261028-0541/profile.json",
+  "windmill_status": "COMPLETED",
+  "windmill_success": true
+}

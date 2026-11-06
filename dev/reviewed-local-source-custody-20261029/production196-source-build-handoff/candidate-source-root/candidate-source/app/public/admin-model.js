@@ -1,0 +1,6 @@
+export const ADMIN_CREDENTIALS=Object.freeze(['SENTRY_DSN','BREVO_API_KEY','BREVO_SENDER_EMAIL','BREVO_SENDER_NAME','SUPPORT_EMAIL']);
+export function cloneAdmin(value){return JSON.parse(JSON.stringify(value));}
+export function cleanAdminSettings(value){if(!value||typeof value!=='object'||!value.services||!value.global)throw Error('Administrative settings are incomplete.');return {services:cloneAdmin(value.services),global:cloneAdmin(value.global)};}
+export function changedAdminPaths(before,after){const paths=[];for(const group of ['services','global'])for(const key of new Set([...Object.keys(before?.[group]||{}),...Object.keys(after?.[group]||{})]))if(JSON.stringify(before?.[group]?.[key])!==JSON.stringify(after?.[group]?.[key]))paths.push(group+'.'+key);return paths.sort();}
+export function credentialPatch(controls){const patch={};for(const name of ADMIN_CREDENTIALS){const control=controls[name]||{},mode=control.mode||'keep',value=control.value||'';if(mode==='disable')patch[name]=null;else if(mode==='replace'){if(typeof value!=='string'||!value.trim())throw Error('Enter a replacement value for '+name+'.');patch[name]=value.trim();}}return patch;}
+export function previewAdminChanges(before,after,credentials){return {paths:changedAdminPaths(before,after),credentials:Object.keys(credentials).sort()};}

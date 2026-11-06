@@ -1,0 +1,1630 @@
+{
+  "status": "executed-changed-integration-only",
+  "release": {
+    "version": "abead872-5f5e-48f8-96f8-7cb96446fbbe",
+    "sha256": "e510c7a4cc6f418cbda6d984e0ff7de90f0d7b85d350640b9f624fd9b818c057",
+    "bytes": 468574
+  },
+  "callback": {
+    "symbol": "applyNutrition production callback",
+    "startCharacter": 465683,
+    "endCharacter": 465983,
+    "sha256": "c68d845e5247b7fdbc83373d2729dabcf5124345f44c6bb43d3b56c8bd4a41cb"
+  },
+  "checkpoints": [
+    {
+      "label": "01-exact-served-applyNutrition-callback",
+      "state": {
+        "profile": {
+          "country": "AU",
+          "units": "metric",
+          "servings": 2,
+          "members": [
+            {
+              "id": "person-a",
+              "name": "Synthetic A",
+              "portion": 1,
+              "advisors": [
+                "balanced"
+              ],
+              "avoid": [],
+              "restrictions": []
+            }
+          ],
+          "plan": [],
+          "batches": [],
+          "history": []
+        },
+        "inventory": [
+          {
+            "id": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+            "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+            "name": "Synthetic rice",
+            "ingredient": "rice",
+            "quantity": 500,
+            "unit": "g",
+            "expires": null,
+            "location": {
+              "area": "Pantry",
+              "shelf": "Fixture shelf"
+            },
+            "amountBasis": "manual",
+            "needsReview": false,
+            "nutritionSelection": {
+              "schema": "offmenu-lot-nutrition-selection/1",
+              "scope": {
+                "lotId": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                "ingredient": "rice",
+                "unit": "g"
+              },
+              "sourceProfile": {
+                "kind": "nutrientProfile",
+                "id": "synthetic-private-profile-rice-v1",
+                "basis": {
+                  "amount": 100,
+                  "unit": "g",
+                  "state": "raw"
+                },
+                "nutrients": {
+                  "energy": {
+                    "value": 200,
+                    "unit": "kcal"
+                  },
+                  "salt": {
+                    "value": 0,
+                    "unit": "g"
+                  }
+                },
+                "status": null
+              },
+              "provenance": {
+                "sourceId": "personal-import",
+                "recordId": "synthetic-rice-record",
+                "releaseId": "synthetic-release-v1",
+                "license": "Synthetic non-sensitive fixture only",
+                "attribution": "Independent acceptance fixture",
+                "sourceDate": "2026-10-28",
+                "visibility": "private",
+                "privateUseConfirmed": true
+              },
+              "nutriments": {
+                "energy-kcal_100g": 200,
+                "salt_100g": 0
+              },
+              "relationship": "user-selected-for-this-lot",
+              "canonicalIdentityAsserted": false
+            },
+            "dateType": "use-by"
+          },
+          {
+            "id": "29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+            "barcode": "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+            "name": "Synthetic peas",
+            "ingredient": "peas",
+            "quantity": 500,
+            "unit": "g",
+            "expires": null,
+            "location": {
+              "area": "Pantry",
+              "shelf": "Fixture shelf"
+            },
+            "amountBasis": "manual",
+            "needsReview": false,
+            "dateType": "use-by"
+          }
+        ],
+        "products": {
+          "local:8a077a22-7a3f-4eb9-9244-e625340cf371": {
+            "name": "Synthetic rice",
+            "nutrition_data_per": "100g",
+            "nutriments": {
+              "energy-kcal_100g": 100,
+              "salt_100g": 0
+            }
+          },
+          "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119": {
+            "name": "Synthetic peas",
+            "nutrition_data_per": "100g",
+            "nutriments": {
+              "energy-kcal_100g": 50,
+              "salt_100g": 0
+            }
+          }
+        },
+        "recipes": [
+          {
+            "id": "fixture-rice-peas",
+            "title": "Rice and peas (synthetic)",
+            "servings": 2,
+            "ingredients": [
+              {
+                "ingredient": "rice",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "ingredient": "peas",
+                "quantity": 100,
+                "unit": "g"
+              }
+            ],
+            "instructions": [
+              "Prepare these synthetic example ingredients.",
+              "Cook and portion for the fixture journey."
+            ],
+            "source": "OffMenu local synthetic lifecycle fixture",
+            "license": "Synthetic test data; no external source or nutrition claim."
+          },
+          {
+            "id": "fixture-egg-carrot",
+            "title": "Eggs and carrots (synthetic)",
+            "servings": 2,
+            "ingredients": [
+              {
+                "ingredient": "egg",
+                "quantity": 2,
+                "unit": "count"
+              },
+              {
+                "ingredient": "carrot",
+                "quantity": 100,
+                "unit": "g"
+              }
+            ],
+            "instructions": [
+              "Prepare these synthetic example ingredients.",
+              "Cook and portion for the fixture journey."
+            ],
+            "source": "OffMenu local synthetic lifecycle fixture",
+            "license": "Synthetic test data; no external source or nutrition claim."
+          },
+          {
+            "id": "fixture-rice-carrot",
+            "title": "Rice and carrots (synthetic)",
+            "servings": 2,
+            "ingredients": [
+              {
+                "ingredient": "rice",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "ingredient": "carrot",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "ingredient": "olive oil",
+                "quantity": 10,
+                "unit": "ml"
+              }
+            ],
+            "instructions": [
+              "Prepare these synthetic example ingredients.",
+              "Cook and portion for the fixture journey."
+            ],
+            "source": "OffMenu local synthetic lifecycle fixture",
+            "license": "Synthetic test data; no external source or nutrition claim."
+          }
+        ]
+      }
+    },
+    {
+      "label": "02-actual-menu-plan-cook-selected-source",
+      "state": {
+        "profile": {
+          "country": "AU",
+          "units": "metric",
+          "servings": 2,
+          "members": [
+            {
+              "id": "person-a",
+              "name": "Synthetic A",
+              "portion": 1,
+              "advisors": [
+                "balanced"
+              ],
+              "avoid": [],
+              "restrictions": []
+            }
+          ],
+          "plan": [
+            {
+              "id": "53cf3a08-e873-4342-9762-b6e102df49d4",
+              "recipeId": "fixture-rice-peas",
+              "date": "2026-10-28",
+              "slot": "Dinner",
+              "servings": 2,
+              "memberIds": [
+                "person-a"
+              ],
+              "adjustments": [],
+              "cookBatchId": "b9650b66-0456-4634-a126-e02a22ef3503"
+            }
+          ],
+          "batches": [
+            {
+              "id": "b9650b66-0456-4634-a126-e02a22ef3503",
+              "planId": "53cf3a08-e873-4342-9762-b6e102df49d4",
+              "recipeId": "fixture-rice-peas",
+              "title": "Rice and peas (synthetic)",
+              "date": "2026-10-28",
+              "createdAt": "2026-10-28T12:00:00.000Z",
+              "servings": 2,
+              "remaining": 2,
+              "allocations": [
+                {
+                  "lotId": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                  "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                  "ingredient": "rice",
+                  "unit": "g",
+                  "quantity": 100,
+                  "original": {
+                    "id": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                    "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                    "name": "Synthetic rice",
+                    "ingredient": "rice",
+                    "quantity": 500,
+                    "unit": "g",
+                    "expires": null,
+                    "location": {
+                      "area": "Pantry",
+                      "shelf": "Fixture shelf"
+                    },
+                    "amountBasis": "manual",
+                    "needsReview": false,
+                    "nutritionSelection": {
+                      "schema": "offmenu-lot-nutrition-selection/1",
+                      "scope": {
+                        "lotId": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                        "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                        "ingredient": "rice",
+                        "unit": "g"
+                      },
+                      "sourceProfile": {
+                        "kind": "nutrientProfile",
+                        "id": "synthetic-private-profile-rice-v1",
+                        "basis": {
+                          "amount": 100,
+                          "unit": "g",
+                          "state": "raw"
+                        },
+                        "nutrients": {
+                          "energy": {
+                            "value": 200,
+                            "unit": "kcal"
+                          },
+                          "salt": {
+                            "value": 0,
+                            "unit": "g"
+                          }
+                        },
+                        "status": null
+                      },
+                      "provenance": {
+                        "sourceId": "personal-import",
+                        "recordId": "synthetic-rice-record",
+                        "releaseId": "synthetic-release-v1",
+                        "license": "Synthetic non-sensitive fixture only",
+                        "attribution": "Independent acceptance fixture",
+                        "sourceDate": "2026-10-28",
+                        "visibility": "private",
+                        "privateUseConfirmed": true
+                      },
+                      "nutriments": {
+                        "energy-kcal_100g": 200,
+                        "salt_100g": 0
+                      },
+                      "relationship": "user-selected-for-this-lot",
+                      "canonicalIdentityAsserted": false
+                    },
+                    "dateType": "use-by"
+                  }
+                },
+                {
+                  "lotId": "29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+                  "barcode": "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+                  "ingredient": "peas",
+                  "unit": "g",
+                  "quantity": 100,
+                  "original": {
+                    "id": "29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+                    "barcode": "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+                    "name": "Synthetic peas",
+                    "ingredient": "peas",
+                    "quantity": 500,
+                    "unit": "g",
+                    "expires": null,
+                    "location": {
+                      "area": "Pantry",
+                      "shelf": "Fixture shelf"
+                    },
+                    "amountBasis": "manual",
+                    "needsReview": false,
+                    "dateType": "use-by"
+                  }
+                }
+              ],
+              "totals": {
+                "energy-kcal_100g": {
+                  "value": 250,
+                  "known": 2,
+                  "total": 2
+                },
+                "proteins_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "carbohydrates_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "fat_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "sugars_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "salt_100g": {
+                  "value": 0,
+                  "known": 2,
+                  "total": 2
+                },
+                "sodium_mg_100g": {
+                  "value": 0,
+                  "known": 2,
+                  "total": 2
+                },
+                "saturated-fat_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "fiber_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "calcium_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "iron_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "potassium_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "vitamin-c_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                }
+              },
+              "events": [],
+              "undone": false
+            }
+          ],
+          "history": []
+        },
+        "inventory": [
+          {
+            "id": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+            "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+            "name": "Synthetic rice",
+            "ingredient": "rice",
+            "quantity": 400,
+            "unit": "g",
+            "expires": null,
+            "location": {
+              "area": "Pantry",
+              "shelf": "Fixture shelf"
+            },
+            "amountBasis": "manual",
+            "needsReview": false,
+            "nutritionSelection": {
+              "schema": "offmenu-lot-nutrition-selection/1",
+              "scope": {
+                "lotId": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                "ingredient": "rice",
+                "unit": "g"
+              },
+              "sourceProfile": {
+                "kind": "nutrientProfile",
+                "id": "synthetic-private-profile-rice-v1",
+                "basis": {
+                  "amount": 100,
+                  "unit": "g",
+                  "state": "raw"
+                },
+                "nutrients": {
+                  "energy": {
+                    "value": 200,
+                    "unit": "kcal"
+                  },
+                  "salt": {
+                    "value": 0,
+                    "unit": "g"
+                  }
+                },
+                "status": null
+              },
+              "provenance": {
+                "sourceId": "personal-import",
+                "recordId": "synthetic-rice-record",
+                "releaseId": "synthetic-release-v1",
+                "license": "Synthetic non-sensitive fixture only",
+                "attribution": "Independent acceptance fixture",
+                "sourceDate": "2026-10-28",
+                "visibility": "private",
+                "privateUseConfirmed": true
+              },
+              "nutriments": {
+                "energy-kcal_100g": 200,
+                "salt_100g": 0
+              },
+              "relationship": "user-selected-for-this-lot",
+              "canonicalIdentityAsserted": false
+            },
+            "dateType": "use-by"
+          },
+          {
+            "id": "29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+            "barcode": "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+            "name": "Synthetic peas",
+            "ingredient": "peas",
+            "quantity": 400,
+            "unit": "g",
+            "expires": null,
+            "location": {
+              "area": "Pantry",
+              "shelf": "Fixture shelf"
+            },
+            "amountBasis": "manual",
+            "needsReview": false,
+            "dateType": "use-by"
+          },
+          {
+            "id": "cooked-b9650b66-0456-4634-a126-e02a22ef3503",
+            "barcode": "local:b9650b66-0456-4634-a126-e02a22ef3503",
+            "name": "Rice and peas (synthetic) · cooked",
+            "ingredient": "cooked:b9650b66-0456-4634-a126-e02a22ef3503",
+            "quantity": 2,
+            "unit": "count",
+            "expires": null,
+            "location": {
+              "area": "Fridge",
+              "shelf": "Cooked meals"
+            },
+            "amountBasis": "manual",
+            "needsReview": false,
+            "cookBatchId": "b9650b66-0456-4634-a126-e02a22ef3503"
+          }
+        ],
+        "products": {
+          "local:8a077a22-7a3f-4eb9-9244-e625340cf371": {
+            "name": "Synthetic rice",
+            "nutrition_data_per": "100g",
+            "nutriments": {
+              "energy-kcal_100g": 100,
+              "salt_100g": 0
+            }
+          },
+          "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119": {
+            "name": "Synthetic peas",
+            "nutrition_data_per": "100g",
+            "nutriments": {
+              "energy-kcal_100g": 50,
+              "salt_100g": 0
+            }
+          }
+        },
+        "recipes": [
+          {
+            "id": "fixture-rice-peas",
+            "title": "Rice and peas (synthetic)",
+            "servings": 2,
+            "ingredients": [
+              {
+                "ingredient": "rice",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "ingredient": "peas",
+                "quantity": 100,
+                "unit": "g"
+              }
+            ],
+            "instructions": [
+              "Prepare these synthetic example ingredients.",
+              "Cook and portion for the fixture journey."
+            ],
+            "source": "OffMenu local synthetic lifecycle fixture",
+            "license": "Synthetic test data; no external source or nutrition claim."
+          },
+          {
+            "id": "fixture-egg-carrot",
+            "title": "Eggs and carrots (synthetic)",
+            "servings": 2,
+            "ingredients": [
+              {
+                "ingredient": "egg",
+                "quantity": 2,
+                "unit": "count"
+              },
+              {
+                "ingredient": "carrot",
+                "quantity": 100,
+                "unit": "g"
+              }
+            ],
+            "instructions": [
+              "Prepare these synthetic example ingredients.",
+              "Cook and portion for the fixture journey."
+            ],
+            "source": "OffMenu local synthetic lifecycle fixture",
+            "license": "Synthetic test data; no external source or nutrition claim."
+          },
+          {
+            "id": "fixture-rice-carrot",
+            "title": "Rice and carrots (synthetic)",
+            "servings": 2,
+            "ingredients": [
+              {
+                "ingredient": "rice",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "ingredient": "carrot",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "ingredient": "olive oil",
+                "quantity": 10,
+                "unit": "ml"
+              }
+            ],
+            "instructions": [
+              "Prepare these synthetic example ingredients.",
+              "Cook and portion for the fixture journey."
+            ],
+            "source": "OffMenu local synthetic lifecycle fixture",
+            "license": "Synthetic test data; no external source or nutrition claim."
+          }
+        ]
+      }
+    },
+    {
+      "label": "03-actual-serving-history-batch-link",
+      "state": {
+        "profile": {
+          "country": "AU",
+          "units": "metric",
+          "servings": 2,
+          "members": [
+            {
+              "id": "person-a",
+              "name": "Synthetic A",
+              "portion": 1,
+              "advisors": [
+                "balanced"
+              ],
+              "avoid": [],
+              "restrictions": []
+            }
+          ],
+          "plan": [
+            {
+              "id": "53cf3a08-e873-4342-9762-b6e102df49d4",
+              "recipeId": "fixture-rice-peas",
+              "date": "2026-10-28",
+              "slot": "Dinner",
+              "servings": 2,
+              "memberIds": [
+                "person-a"
+              ],
+              "adjustments": [],
+              "cookBatchId": "b9650b66-0456-4634-a126-e02a22ef3503"
+            }
+          ],
+          "batches": [
+            {
+              "id": "b9650b66-0456-4634-a126-e02a22ef3503",
+              "planId": "53cf3a08-e873-4342-9762-b6e102df49d4",
+              "recipeId": "fixture-rice-peas",
+              "title": "Rice and peas (synthetic)",
+              "date": "2026-10-28",
+              "createdAt": "2026-10-28T12:00:00.000Z",
+              "servings": 2,
+              "remaining": 1,
+              "allocations": [
+                {
+                  "lotId": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                  "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                  "ingredient": "rice",
+                  "unit": "g",
+                  "quantity": 100,
+                  "original": {
+                    "id": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                    "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                    "name": "Synthetic rice",
+                    "ingredient": "rice",
+                    "quantity": 500,
+                    "unit": "g",
+                    "expires": null,
+                    "location": {
+                      "area": "Pantry",
+                      "shelf": "Fixture shelf"
+                    },
+                    "amountBasis": "manual",
+                    "needsReview": false,
+                    "nutritionSelection": {
+                      "schema": "offmenu-lot-nutrition-selection/1",
+                      "scope": {
+                        "lotId": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                        "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                        "ingredient": "rice",
+                        "unit": "g"
+                      },
+                      "sourceProfile": {
+                        "kind": "nutrientProfile",
+                        "id": "synthetic-private-profile-rice-v1",
+                        "basis": {
+                          "amount": 100,
+                          "unit": "g",
+                          "state": "raw"
+                        },
+                        "nutrients": {
+                          "energy": {
+                            "value": 200,
+                            "unit": "kcal"
+                          },
+                          "salt": {
+                            "value": 0,
+                            "unit": "g"
+                          }
+                        },
+                        "status": null
+                      },
+                      "provenance": {
+                        "sourceId": "personal-import",
+                        "recordId": "synthetic-rice-record",
+                        "releaseId": "synthetic-release-v1",
+                        "license": "Synthetic non-sensitive fixture only",
+                        "attribution": "Independent acceptance fixture",
+                        "sourceDate": "2026-10-28",
+                        "visibility": "private",
+                        "privateUseConfirmed": true
+                      },
+                      "nutriments": {
+                        "energy-kcal_100g": 200,
+                        "salt_100g": 0
+                      },
+                      "relationship": "user-selected-for-this-lot",
+                      "canonicalIdentityAsserted": false
+                    },
+                    "dateType": "use-by"
+                  }
+                },
+                {
+                  "lotId": "29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+                  "barcode": "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+                  "ingredient": "peas",
+                  "unit": "g",
+                  "quantity": 100,
+                  "original": {
+                    "id": "29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+                    "barcode": "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+                    "name": "Synthetic peas",
+                    "ingredient": "peas",
+                    "quantity": 500,
+                    "unit": "g",
+                    "expires": null,
+                    "location": {
+                      "area": "Pantry",
+                      "shelf": "Fixture shelf"
+                    },
+                    "amountBasis": "manual",
+                    "needsReview": false,
+                    "dateType": "use-by"
+                  }
+                }
+              ],
+              "totals": {
+                "energy-kcal_100g": {
+                  "value": 250,
+                  "known": 2,
+                  "total": 2
+                },
+                "proteins_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "carbohydrates_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "fat_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "sugars_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "salt_100g": {
+                  "value": 0,
+                  "known": 2,
+                  "total": 2
+                },
+                "sodium_mg_100g": {
+                  "value": 0,
+                  "known": 2,
+                  "total": 2
+                },
+                "saturated-fat_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "fiber_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "calcium_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "iron_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "potassium_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "vitamin-c_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                }
+              },
+              "events": [
+                {
+                  "id": "9de62588-ad1b-4d00-9fc6-d540ea7d92f8",
+                  "portions": 1,
+                  "eaten": 1,
+                  "saved": 0,
+                  "discarded": 0,
+                  "shared": 0,
+                  "unknownRemainder": 0,
+                  "draw": 1,
+                  "memberId": "person-a",
+                  "date": "2026-10-28",
+                  "slot": "Dinner",
+                  "remainder": "unspecified"
+                }
+              ],
+              "undone": false
+            }
+          ],
+          "history": [
+            {
+              "id": "9de62588-ad1b-4d00-9fc6-d540ea7d92f8",
+              "batchId": "b9650b66-0456-4634-a126-e02a22ef3503",
+              "recipeId": "fixture-rice-peas",
+              "title": "Rice and peas (synthetic)",
+              "date": "2026-10-28",
+              "slot": "Dinner",
+              "memberId": "person-a",
+              "servings": 1,
+              "servedPortions": 1,
+              "completion": 100,
+              "intakeKnown": true,
+              "leftovers": "unspecified",
+              "createdAt": "2026-10-28T12:00:00.000Z",
+              "source": "Actual cooking lots · homogeneous-dish estimate",
+              "totals": {
+                "energy-kcal_100g": {
+                  "value": 125,
+                  "known": 2,
+                  "total": 2
+                },
+                "proteins_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "carbohydrates_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "fat_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "sugars_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "salt_100g": {
+                  "value": 0,
+                  "known": 2,
+                  "total": 2
+                },
+                "sodium_mg_100g": {
+                  "value": 0,
+                  "known": 2,
+                  "total": 2
+                },
+                "saturated-fat_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "fiber_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "calcium_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "iron_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "potassium_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "vitamin-c_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                }
+              },
+              "unresolved": 0,
+              "note": "Based on actual allocated ingredient lots; mixed plates may need manual correction."
+            }
+          ]
+        },
+        "inventory": [
+          {
+            "id": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+            "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+            "name": "Synthetic rice",
+            "ingredient": "rice",
+            "quantity": 400,
+            "unit": "g",
+            "expires": null,
+            "location": {
+              "area": "Pantry",
+              "shelf": "Fixture shelf"
+            },
+            "amountBasis": "manual",
+            "needsReview": false,
+            "nutritionSelection": {
+              "schema": "offmenu-lot-nutrition-selection/1",
+              "scope": {
+                "lotId": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                "ingredient": "rice",
+                "unit": "g"
+              },
+              "sourceProfile": {
+                "kind": "nutrientProfile",
+                "id": "synthetic-private-profile-rice-v1",
+                "basis": {
+                  "amount": 100,
+                  "unit": "g",
+                  "state": "raw"
+                },
+                "nutrients": {
+                  "energy": {
+                    "value": 200,
+                    "unit": "kcal"
+                  },
+                  "salt": {
+                    "value": 0,
+                    "unit": "g"
+                  }
+                },
+                "status": null
+              },
+              "provenance": {
+                "sourceId": "personal-import",
+                "recordId": "synthetic-rice-record",
+                "releaseId": "synthetic-release-v1",
+                "license": "Synthetic non-sensitive fixture only",
+                "attribution": "Independent acceptance fixture",
+                "sourceDate": "2026-10-28",
+                "visibility": "private",
+                "privateUseConfirmed": true
+              },
+              "nutriments": {
+                "energy-kcal_100g": 200,
+                "salt_100g": 0
+              },
+              "relationship": "user-selected-for-this-lot",
+              "canonicalIdentityAsserted": false
+            },
+            "dateType": "use-by"
+          },
+          {
+            "id": "29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+            "barcode": "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+            "name": "Synthetic peas",
+            "ingredient": "peas",
+            "quantity": 400,
+            "unit": "g",
+            "expires": null,
+            "location": {
+              "area": "Pantry",
+              "shelf": "Fixture shelf"
+            },
+            "amountBasis": "manual",
+            "needsReview": false,
+            "dateType": "use-by"
+          },
+          {
+            "id": "cooked-b9650b66-0456-4634-a126-e02a22ef3503",
+            "barcode": "local:b9650b66-0456-4634-a126-e02a22ef3503",
+            "name": "Rice and peas (synthetic) · cooked",
+            "ingredient": "cooked:b9650b66-0456-4634-a126-e02a22ef3503",
+            "quantity": 1,
+            "unit": "count",
+            "expires": null,
+            "location": {
+              "area": "Fridge",
+              "shelf": "Cooked meals"
+            },
+            "amountBasis": "manual",
+            "needsReview": false,
+            "cookBatchId": "b9650b66-0456-4634-a126-e02a22ef3503"
+          }
+        ],
+        "products": {
+          "local:8a077a22-7a3f-4eb9-9244-e625340cf371": {
+            "name": "Synthetic rice",
+            "nutrition_data_per": "100g",
+            "nutriments": {
+              "energy-kcal_100g": 100,
+              "salt_100g": 0
+            }
+          },
+          "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119": {
+            "name": "Synthetic peas",
+            "nutrition_data_per": "100g",
+            "nutriments": {
+              "energy-kcal_100g": 50,
+              "salt_100g": 0
+            }
+          }
+        },
+        "recipes": [
+          {
+            "id": "fixture-rice-peas",
+            "title": "Rice and peas (synthetic)",
+            "servings": 2,
+            "ingredients": [
+              {
+                "ingredient": "rice",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "ingredient": "peas",
+                "quantity": 100,
+                "unit": "g"
+              }
+            ],
+            "instructions": [
+              "Prepare these synthetic example ingredients.",
+              "Cook and portion for the fixture journey."
+            ],
+            "source": "OffMenu local synthetic lifecycle fixture",
+            "license": "Synthetic test data; no external source or nutrition claim."
+          },
+          {
+            "id": "fixture-egg-carrot",
+            "title": "Eggs and carrots (synthetic)",
+            "servings": 2,
+            "ingredients": [
+              {
+                "ingredient": "egg",
+                "quantity": 2,
+                "unit": "count"
+              },
+              {
+                "ingredient": "carrot",
+                "quantity": 100,
+                "unit": "g"
+              }
+            ],
+            "instructions": [
+              "Prepare these synthetic example ingredients.",
+              "Cook and portion for the fixture journey."
+            ],
+            "source": "OffMenu local synthetic lifecycle fixture",
+            "license": "Synthetic test data; no external source or nutrition claim."
+          },
+          {
+            "id": "fixture-rice-carrot",
+            "title": "Rice and carrots (synthetic)",
+            "servings": 2,
+            "ingredients": [
+              {
+                "ingredient": "rice",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "ingredient": "carrot",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "ingredient": "olive oil",
+                "quantity": 10,
+                "unit": "ml"
+              }
+            ],
+            "instructions": [
+              "Prepare these synthetic example ingredients.",
+              "Cook and portion for the fixture journey."
+            ],
+            "source": "OffMenu local synthetic lifecycle fixture",
+            "license": "Synthetic test data; no external source or nutrition claim."
+          }
+        ]
+      }
+    },
+    {
+      "label": "04-reselection-and-local-reload",
+      "state": {
+        "profile": {
+          "country": "AU",
+          "units": "metric",
+          "servings": 2,
+          "members": [
+            {
+              "id": "person-a",
+              "name": "Synthetic A",
+              "portion": 1,
+              "advisors": [
+                "balanced"
+              ],
+              "avoid": [],
+              "restrictions": []
+            }
+          ],
+          "plan": [
+            {
+              "id": "53cf3a08-e873-4342-9762-b6e102df49d4",
+              "recipeId": "fixture-rice-peas",
+              "date": "2026-10-28",
+              "slot": "Dinner",
+              "servings": 2,
+              "memberIds": [
+                "person-a"
+              ],
+              "adjustments": [],
+              "cookBatchId": "b9650b66-0456-4634-a126-e02a22ef3503"
+            }
+          ],
+          "batches": [
+            {
+              "id": "b9650b66-0456-4634-a126-e02a22ef3503",
+              "planId": "53cf3a08-e873-4342-9762-b6e102df49d4",
+              "recipeId": "fixture-rice-peas",
+              "title": "Rice and peas (synthetic)",
+              "date": "2026-10-28",
+              "createdAt": "2026-10-28T12:00:00.000Z",
+              "servings": 2,
+              "remaining": 1,
+              "allocations": [
+                {
+                  "lotId": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                  "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                  "ingredient": "rice",
+                  "unit": "g",
+                  "quantity": 100,
+                  "original": {
+                    "id": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                    "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                    "name": "Synthetic rice",
+                    "ingredient": "rice",
+                    "quantity": 500,
+                    "unit": "g",
+                    "expires": null,
+                    "location": {
+                      "area": "Pantry",
+                      "shelf": "Fixture shelf"
+                    },
+                    "amountBasis": "manual",
+                    "needsReview": false,
+                    "nutritionSelection": {
+                      "schema": "offmenu-lot-nutrition-selection/1",
+                      "scope": {
+                        "lotId": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                        "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                        "ingredient": "rice",
+                        "unit": "g"
+                      },
+                      "sourceProfile": {
+                        "kind": "nutrientProfile",
+                        "id": "synthetic-private-profile-rice-v1",
+                        "basis": {
+                          "amount": 100,
+                          "unit": "g",
+                          "state": "raw"
+                        },
+                        "nutrients": {
+                          "energy": {
+                            "value": 200,
+                            "unit": "kcal"
+                          },
+                          "salt": {
+                            "value": 0,
+                            "unit": "g"
+                          }
+                        },
+                        "status": null
+                      },
+                      "provenance": {
+                        "sourceId": "personal-import",
+                        "recordId": "synthetic-rice-record",
+                        "releaseId": "synthetic-release-v1",
+                        "license": "Synthetic non-sensitive fixture only",
+                        "attribution": "Independent acceptance fixture",
+                        "sourceDate": "2026-10-28",
+                        "visibility": "private",
+                        "privateUseConfirmed": true
+                      },
+                      "nutriments": {
+                        "energy-kcal_100g": 200,
+                        "salt_100g": 0
+                      },
+                      "relationship": "user-selected-for-this-lot",
+                      "canonicalIdentityAsserted": false
+                    },
+                    "dateType": "use-by"
+                  }
+                },
+                {
+                  "lotId": "29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+                  "barcode": "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+                  "ingredient": "peas",
+                  "unit": "g",
+                  "quantity": 100,
+                  "original": {
+                    "id": "29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+                    "barcode": "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+                    "name": "Synthetic peas",
+                    "ingredient": "peas",
+                    "quantity": 500,
+                    "unit": "g",
+                    "expires": null,
+                    "location": {
+                      "area": "Pantry",
+                      "shelf": "Fixture shelf"
+                    },
+                    "amountBasis": "manual",
+                    "needsReview": false,
+                    "dateType": "use-by"
+                  }
+                }
+              ],
+              "totals": {
+                "energy-kcal_100g": {
+                  "value": 250,
+                  "known": 2,
+                  "total": 2
+                },
+                "proteins_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "carbohydrates_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "fat_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "sugars_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "salt_100g": {
+                  "value": 0,
+                  "known": 2,
+                  "total": 2
+                },
+                "sodium_mg_100g": {
+                  "value": 0,
+                  "known": 2,
+                  "total": 2
+                },
+                "saturated-fat_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "fiber_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "calcium_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "iron_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "potassium_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "vitamin-c_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                }
+              },
+              "events": [
+                {
+                  "id": "9de62588-ad1b-4d00-9fc6-d540ea7d92f8",
+                  "portions": 1,
+                  "eaten": 1,
+                  "saved": 0,
+                  "discarded": 0,
+                  "shared": 0,
+                  "unknownRemainder": 0,
+                  "draw": 1,
+                  "memberId": "person-a",
+                  "date": "2026-10-28",
+                  "slot": "Dinner",
+                  "remainder": "unspecified"
+                }
+              ],
+              "undone": false
+            }
+          ],
+          "history": [
+            {
+              "id": "9de62588-ad1b-4d00-9fc6-d540ea7d92f8",
+              "batchId": "b9650b66-0456-4634-a126-e02a22ef3503",
+              "recipeId": "fixture-rice-peas",
+              "title": "Rice and peas (synthetic)",
+              "date": "2026-10-28",
+              "slot": "Dinner",
+              "memberId": "person-a",
+              "servings": 1,
+              "servedPortions": 1,
+              "completion": 100,
+              "intakeKnown": true,
+              "leftovers": "unspecified",
+              "createdAt": "2026-10-28T12:00:00.000Z",
+              "source": "Actual cooking lots · homogeneous-dish estimate",
+              "totals": {
+                "energy-kcal_100g": {
+                  "value": 125,
+                  "known": 2,
+                  "total": 2
+                },
+                "proteins_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "carbohydrates_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "fat_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "sugars_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "salt_100g": {
+                  "value": 0,
+                  "known": 2,
+                  "total": 2
+                },
+                "sodium_mg_100g": {
+                  "value": 0,
+                  "known": 2,
+                  "total": 2
+                },
+                "saturated-fat_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "fiber_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "calcium_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "iron_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "potassium_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                },
+                "vitamin-c_100g": {
+                  "value": 0,
+                  "known": 0,
+                  "total": 2
+                }
+              },
+              "unresolved": 0,
+              "note": "Based on actual allocated ingredient lots; mixed plates may need manual correction."
+            }
+          ]
+        },
+        "inventory": [
+          {
+            "id": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+            "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+            "name": "Synthetic rice",
+            "ingredient": "rice",
+            "quantity": 400,
+            "unit": "g",
+            "expires": null,
+            "location": {
+              "area": "Pantry",
+              "shelf": "Fixture shelf"
+            },
+            "amountBasis": "manual",
+            "needsReview": false,
+            "nutritionSelection": {
+              "schema": "offmenu-lot-nutrition-selection/1",
+              "scope": {
+                "lotId": "8a077a22-7a3f-4eb9-9244-e625340cf371",
+                "barcode": "local:8a077a22-7a3f-4eb9-9244-e625340cf371",
+                "ingredient": "rice",
+                "unit": "g"
+              },
+              "sourceProfile": {
+                "kind": "nutrientProfile",
+                "id": "synthetic-private-profile-rice-v2",
+                "basis": {
+                  "amount": 100,
+                  "unit": "g",
+                  "state": "raw"
+                },
+                "nutrients": {
+                  "energy": {
+                    "value": 900,
+                    "unit": "kcal"
+                  },
+                  "salt": {
+                    "value": 0,
+                    "unit": "g"
+                  }
+                },
+                "status": null
+              },
+              "provenance": {
+                "sourceId": "personal-import",
+                "recordId": "synthetic-rice-record",
+                "releaseId": "synthetic-release-v2",
+                "license": "Synthetic non-sensitive fixture only",
+                "attribution": "Independent acceptance fixture",
+                "sourceDate": "2026-10-28",
+                "visibility": "private",
+                "privateUseConfirmed": true
+              },
+              "nutriments": {
+                "energy-kcal_100g": 900,
+                "salt_100g": 0
+              },
+              "relationship": "user-selected-for-this-lot",
+              "canonicalIdentityAsserted": false
+            },
+            "dateType": "use-by"
+          },
+          {
+            "id": "29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+            "barcode": "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119",
+            "name": "Synthetic peas",
+            "ingredient": "peas",
+            "quantity": 400,
+            "unit": "g",
+            "expires": null,
+            "location": {
+              "area": "Pantry",
+              "shelf": "Fixture shelf"
+            },
+            "amountBasis": "manual",
+            "needsReview": false,
+            "dateType": "use-by"
+          },
+          {
+            "id": "cooked-b9650b66-0456-4634-a126-e02a22ef3503",
+            "barcode": "local:b9650b66-0456-4634-a126-e02a22ef3503",
+            "name": "Rice and peas (synthetic) · cooked",
+            "ingredient": "cooked:b9650b66-0456-4634-a126-e02a22ef3503",
+            "quantity": 1,
+            "unit": "count",
+            "expires": null,
+            "location": {
+              "area": "Fridge",
+              "shelf": "Cooked meals"
+            },
+            "amountBasis": "manual",
+            "needsReview": false,
+            "cookBatchId": "b9650b66-0456-4634-a126-e02a22ef3503"
+          }
+        ],
+        "products": {
+          "local:8a077a22-7a3f-4eb9-9244-e625340cf371": {
+            "name": "Synthetic rice",
+            "nutrition_data_per": "100g",
+            "nutriments": {
+              "energy-kcal_100g": 100,
+              "salt_100g": 0
+            }
+          },
+          "local:29b29bac-b8ae-4aa6-9ab4-95e5ef5ef119": {
+            "name": "Synthetic peas",
+            "nutrition_data_per": "100g",
+            "nutriments": {
+              "energy-kcal_100g": 50,
+              "salt_100g": 0
+            }
+          }
+        },
+        "recipes": [
+          {
+            "id": "fixture-rice-peas",
+            "title": "Rice and peas (synthetic)",
+            "servings": 2,
+            "ingredients": [
+              {
+                "ingredient": "rice",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "ingredient": "peas",
+                "quantity": 100,
+                "unit": "g"
+              }
+            ],
+            "instructions": [
+              "Prepare these synthetic example ingredients.",
+              "Cook and portion for the fixture journey."
+            ],
+            "source": "OffMenu local synthetic lifecycle fixture",
+            "license": "Synthetic test data; no external source or nutrition claim."
+          },
+          {
+            "id": "fixture-egg-carrot",
+            "title": "Eggs and carrots (synthetic)",
+            "servings": 2,
+            "ingredients": [
+              {
+                "ingredient": "egg",
+                "quantity": 2,
+                "unit": "count"
+              },
+              {
+                "ingredient": "carrot",
+                "quantity": 100,
+                "unit": "g"
+              }
+            ],
+            "instructions": [
+              "Prepare these synthetic example ingredients.",
+              "Cook and portion for the fixture journey."
+            ],
+            "source": "OffMenu local synthetic lifecycle fixture",
+            "license": "Synthetic test data; no external source or nutrition claim."
+          },
+          {
+            "id": "fixture-rice-carrot",
+            "title": "Rice and carrots (synthetic)",
+            "servings": 2,
+            "ingredients": [
+              {
+                "ingredient": "rice",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "ingredient": "carrot",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "ingredient": "olive oil",
+                "quantity": 10,
+                "unit": "ml"
+              }
+            ],
+            "instructions": [
+              "Prepare these synthetic example ingredients.",
+              "Cook and portion for the fixture journey."
+            ],
+            "source": "OffMenu local synthetic lifecycle fixture",
+            "license": "Synthetic test data; no external source or nutrition claim."
+          }
+        ]
+      }
+    }
+  ],
+  "nutritionText": "Energy: 250 kcal\nProtein: not available\nCarbs: not available\nFat: not available\nSugars: not available\nSalt: 0 g\nSodium: 0 mg\nSaturated fat: not available\nFibre: not available\nCalcium: not available\nIron: not available\nPotassium: not available\nVitamin C: not available\nFor all 2 portions. Based on allocated ingredient lots with a compatible nutrition basis; brands can differ. Uncovered amounts and missing nutrition remain unknown.",
+  "blockedRequests": [
+    "/api/services"
+  ],
+  "findingUpdate": {
+    "id": "NS195-G1",
+    "v196SelectedLotPath": "Original nutrient profile and source release are now retained indirectly: history.batchId -> profile.batches[id].allocations[].original.nutritionSelection. Re-selecting v2 on current lot leaves frozen v1 witness and totals intact after reload.",
+    "remaining": "Legacy product-cache-only path is not retroactively provided a source-profile witness. Recipe version/source snapshot is still not explicitly frozen in cooking batch. No complete real-source, device, account/privacy or full-loop acceptance inferred."
+  },
+  "limitations": [
+    "Minimal DOM/storage shim; actual picker UI is fixture-disabled, so exact extracted production applyNutrition callback receives explicitly confirmed non-sensitive normalized fixture, then real menu/cook/serve handlers execute.",
+    "No prior full journey or four isolated regressions rerun. One changed production callback-to-meal/history/local-reload integration case only.",
+    "No private data/session/device/provider or external food lookup accessed; all runtime fetches blocked."
+  ]
+}

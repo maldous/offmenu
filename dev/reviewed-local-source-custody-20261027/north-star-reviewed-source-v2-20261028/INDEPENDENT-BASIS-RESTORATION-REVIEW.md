@@ -1,0 +1,9 @@
+# Pure per-nutrient basis restoration review — 2026-10-28 07:48 UTC
+
+Approved pure module `candidate/scripts/north_star_basis_restoration.py` SHA256 `cae8b86cbacdbf0d81b9a52bb508dadae56e29639cfd332f87fb2b71bd18566a`.
+
+Independently13focused tests pass0.006s, using exact retained align-bulk-food-common.py packet projection for synthetic fixtures. One concrete defect reproduced on prior ac293fd5…: changing native provenance.sourceId to another-source while retaining the off source entry and original packet still emitted two restored nutrient targets. Final module rejects native provenance.sourceId unequal to selected source. Actual source-field convention remains the runner owner's metadata verification responsibility; guard is not weakened by this approval.
+
+Verified: selected off/usda-files source entry, public selected-source-facts curation with raw-payload publication and automatic diet qualification false; exact profile/resource/citation IDs and scopes; matching source, record, revision, archive/content hash, licence and source path; exact original record assertion; exact nutrient assertion ID/path/status/citation and retained quantity digest. Per-nutrient native basis is required; no profile-basis fallback. Null state remains unknown, zero quantity remains zero, distinct source bases remain separate. Existing quantity is immutable. Native field/record/curation/entry and normalized assertion digests are retained. Human review and independent acceptance flags are carried, not upgraded. Candidate/no-admission/no-nutrition/no-confidence-calibration flags remain explicit.
+
+This approval is pure-module only. Caller must validate native manifest/file bytes and record those pins; native projection is local-only source evidence, not approved raw export. No original packages, global proof, source holds or runtime application activation are changed. No live Foo/Git/production action or runner review performed here.

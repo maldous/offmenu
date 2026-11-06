@@ -1,0 +1,1119 @@
+{
+  "schema": "offmenu-ready-country-receipt-dispositions/1",
+  "asOfUTC": "2026-10-28T06:05:00Z",
+  "source": {
+    "path": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+    "sha256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+    "gitBlob": "577ffcc448672c8de789a17f96a829338f787bfe",
+    "bytes": 3282752,
+    "retainedCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+    "sourceSequence": 5271,
+    "asOfUTC": "2026-10-17T00:49:26.041869+00:00",
+    "qualification": "Historical pinned source, not a live current worker-state claim"
+  },
+  "sourceVerifiedLocally": true,
+  "integrationOwner": "Morgan/root; no Git writes by child",
+  "scope": "14 ready-metadata-only roster rows, exact retained receipt acceptance/refusal/missing-dependency reconciliation",
+  "rows": [
+    {
+      "id": "COUNTRY-04",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/pending/286",
+          "sequence": 1991,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/offmenu-parallel-contracts/owner-4/country-04-preflight/next-pure-implementation-selection/author-receipt.json",
+            "sha256": "4151b96835dd0ba2fd939033d104e77455fd4a18263fa56719303b9b35e58d20"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/364",
+          "sequence": 2249,
+          "source": {
+            "path": "[retained-host]/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/review-country04-child0-983f3e65-20261017/review-receipt.json",
+            "sha256": "fc93bdee44efa4644bc8296e9fb82959a0af995834b302b2a00866737ad91e17"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/372",
+          "sequence": 2282,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/offmenu-parallel-contracts/owner-4/country-04-preflight/correction-review2249-20261017/author-receipt.json",
+            "sha256": "5825b04db1cc47c7a10901e6840563c5438774b637df9fe18724ae25a2c7a8fb"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/379",
+          "sequence": 2311,
+          "source": {
+            "path": "[retained-host]/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/review-country04-correction-ec88bcaa-20261017/review-receipt.json",
+            "sha256": "23819d42b471b448b9da252440c309cde0b9b98417980bc0a4ad60f3a9ddee42"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/385",
+          "sequence": 2325,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/session-action-backfill-20261017.json",
+            "sha256": "81a4f9bae8646aa6402ed9f712582a6270b47465cf5e1432bc97e04f2777a943"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/2",
+          "sequence": 344,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/worker41-uae-source-packet-review/review-receipt.json",
+            "sha256": "1d7b2c06197aeb33bcbf1d51a05968f8c994923c59bd6100da5b5e0cfd9398e3"
+          },
+          "recordedState": "blocked"
+        }
+      ],
+      "disposition": "Retain original child0 refusal 2249; successor 2282/review2311 resolves W11-C04-P01/P02 only, with exact scoped review already bound at2325. Do not replay accepted successor review. GL chronology scoped PASS remains separately preserved.",
+      "blocker": "AE finite same-release composition extent/units and source-specific use/right/version evidence remain required; source reviewer344 retains no-reopen owner30 hold. No current country/category acceptance.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner04",
+        "recorded source custodian37"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/pending/379/nextAction",
+          "contains": "mark only W11-C04-P01/P02 resolved on successor"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    },
+    {
+      "id": "COUNTRY-55",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/pending/76",
+          "sequence": 361,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/country-bundles-20261016/owner-55/retained-metadata-packet.json",
+            "sha256": "9b6ae95dc5981adaa644d8c0c7e1bb7cd0d99f8f5e1c9eed04bc7439bd9a9aa9"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/77",
+          "sequence": 385,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/worker-44-country-review/9b6ae95dc5981adaa644d8c0c7e1bb7cd0d99f8f5e1c9eed04bc7439bd9a9aa9/receipt.json",
+            "sha256": "044a261ed1b0bc8f7b97d33c78907265e64c1ad71f72677c67fb3c2e9d5f422b"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/349",
+          "sequence": 2184,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/offmenu-parallel-contracts/owner-55/country-55-preflight/correction2177-country-55/closure.json",
+            "sha256": "74d9998700946e927286423fc21804ab3c7ada37cb32a16fa50997390ff6e84c"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/354",
+          "sequence": 2195,
+          "source": {
+            "path": "[retained-host]/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/review-country55-correction-74d99987-20261017/review-receipt.json",
+            "sha256": "9a6695c492e88066ab3d17b5e665020cdf06c0c19bbae45f478472192490cb94"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/55",
+          "sequence": 2527,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-17/worker24-country55-cpi-validator-review/receipt.json",
+            "sha256": "5b8c40a52f13861c185400a5d11c85a70ab01c82889e18f51d1a1368337057b5"
+          },
+          "recordedState": "exhausted"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/445",
+          "sequence": 2679,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-55/manifest.json",
+            "sha256": "a81d106b5aa68bdf1c1e6d620e2e75236d43e5b716a740822c81215bea93b589"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/awaitingEvidenceOrDisposition/80",
+          "sequence": 4621,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/LU-GB-type-proposal/correction-review4611/manifest.json",
+            "sha256": "e2cfb02055860f1e044a0d3cb93b802080cf2c26d62dba9a1cd8dee3a47da4f0"
+          },
+          "recordedState": "admitted-awaiting-effect"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/306",
+          "sequence": 4636,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/review-LU-GB-correction4621/review-receipt.json",
+            "sha256": "7307fc616ebc1e680d88407f088dec81703d0fb2f6287dc175b2912e089e08e4"
+          },
+          "recordedState": "exhausted"
+        }
+      ],
+      "disposition": "Bind retained metadata packet9b6ae95d to review044a261e; do not resend metadata review. Successor74d99987/review9a6695c4 resolves parser P01/P02 only. CPI validator review2527 is exhausted; dictionary correction4621/review4636 is separately scoped accepted with no further correction. Real MY candidate source-row witness scope remains separate.",
+      "blocker": "BOBS historical b8f87cbe versus e38ebcf9 requires exact immutable revision/handoff from recorded13. MY actual owner38 row mapping and source-use decision remain unqualified; BW/GA/KH/SH own source/use mappings remain distinct.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner55",
+        "recorded BOBS custodian13",
+        "recorded MY custodian38"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/pending/354/nextAction",
+          "contains": "mark W11-C55-P01/P02 resolved on successor only"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    },
+    {
+      "id": "COUNTRY-19",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/pending/486",
+          "sequence": 2914,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-19/AF-source-semantic-proposal-v1/manifest.json",
+            "sha256": "405f23aa42f8dc6415b2bc39f1f661e4396833343d37d7862f33521ff1fafa61"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/76",
+          "sequence": 2937,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-17/owner46-AF-semantic-review-405f23aa42f8/review.json",
+            "sha256": "b674047c77a890250dd2a0d008fb0e6f70d8abfadd729a53f2970235e2f9daab"
+          },
+          "recordedState": "exhausted"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/440",
+          "sequence": 2657,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-19/delivery-manifest.json",
+            "sha256": "d00f20ac8b538907047f2c3d62579f9e444edad5994d9584b18581b49dcd9df0"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/6",
+          "sequence": 369,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/worker46-country-metadata-reviews/country19-eadae1381a2f-review.json",
+            "sha256": "8997d6981c0bf7cd5f5acde4928227da7e59413fc3686dde707d8cd5598dd722"
+          },
+          "recordedState": "blocked"
+        }
+      ],
+      "disposition": "Author405f23aa and reviewb674047c are already accepted for14 source-role definitions and514 links only. The stale request for another source-semantic review is superseded; no fixes or replay needed.",
+      "blocker": "Separate AF lineage-index d00f20ac acceptance/admission remains pending. Other finite release/licence/coverage inputs remain held; metadata PASS is not food/status/country qualification.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner19",
+        "recorded lineage reviewer46/source custodian10"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/disposed/76/reason",
+          "contains": "Exact2914/2937pair accepted for14source-role definitions and514links only"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    },
+    {
+      "id": "COUNTRY-23",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/pending/65",
+          "sequence": 296,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/country-bundles-20261016/owner-23/delta-05-CK-retailer-provider-scope/manifest.json",
+            "sha256": "60f0b31c2599b20f99dd0483632d12ab53efbab76da8b58c46c4eb94028e4139"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/11",
+          "sequence": 469,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/owner14-reviews/country-deltas-20261016/CK-retailer-provider-scope-delta05/receipt.json",
+            "sha256": "407b218785e12498e08032a3da27c0197a5b33cd9230331fa833847f0121f45d"
+          },
+          "recordedState": "exhausted"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/439",
+          "sequence": 2655,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-23/manifest.json",
+            "sha256": "b971fdbda3d38cfcb21123cc3d2e0ac6f8f8c92db81c83ed6434b3b1fb94c117"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/64",
+          "sequence": 2725,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-17/owner46-real-candidates-review-2655-2672/CI-review-result2655.json",
+            "sha256": "ca64747031b2d981cacd8bef4c871a6b927cd25e7705cb782f51d6188b4ed00c"
+          },
+          "recordedState": "exhausted"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/471",
+          "sequence": 2821,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-23/CI-english-crosswalk-v1/manifest.json",
+            "sha256": "0420d79118d4ad6a4a9a2ac4031ce73b0121def37e6047c63e4fd771468f283f"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/482",
+          "sequence": 2874,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-17/owner46-ci-semantic-review-0420d79118d4/review.json",
+            "sha256": "cfce52d1e95a12b78be89bc20ba4a71fadcb57d9b6df69a635db258bcee150ff"
+          },
+          "recordedState": "needs-management-disposition"
+        }
+      ],
+      "disposition": "CK delta60f0b31c has existing independent14 receipt407b2187; CI source-preserving transformationb971fdbd/reviewca647470 is bound and must not replay. Exact CI English crosswalk0420d791/reviewcfce52d1 is retained with unknown alternatives.",
+      "blocker": "Dictionary55/terminology56 exact inputs and actual admission contract missing; four identity alternatives, state/eligibility/currency unknowns, CM basis and CK rights/register/menu-date gaps stay unresolved. Older CM/11/46 results do not qualify later sources.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner23",
+        "recorded dictionary55",
+        "recorded terminology56"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/disposed/64/reason",
+          "contains": "Exact independent source-preserving PASS bound"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    },
+    {
+      "id": "COUNTRY-25",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/pending/28",
+          "sequence": 154,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/owner25-country-bundle-dietary-metadata-delta01/receipt.json",
+            "sha256": "ba5fa2e145020f490116717f3e3c8ac33f1afd93a0cf34e8e78a41c9c4ed7d4d"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/58",
+          "sequence": 265,
+          "source": {
+            "path": "[retained-host]/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/review-country25-dietary-metadata-delta01-20261016/review-receipt.json",
+            "sha256": "ff334cfa8a652c8dc40740634cfbcaeaf85eff4d420a0db504b6a9d394db362d"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/81",
+          "sequence": 406,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/owner25-country-bundle-dietary-metadata-delta02/receipt.json",
+            "sha256": "f365d78f316acd537bf6d45dcfd801f096cdc0a817f4ab2b1b521b7c11c0f128"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/85",
+          "sequence": 415,
+          "source": {
+            "path": "[retained-host]/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/review-country25-dietary-metadata-delta02-20261016/review-receipt.json",
+            "sha256": "095e55e7cc544984849a5df679c8a1a201b472ff24ee68a05d60a242780c1e53"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/401",
+          "sequence": 2408,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/offmenu-parallel-contracts/owner-25/country-25-preflight/batch1980-country-25/author-receipt.json",
+            "sha256": "5b514f7d938d66b85870987d54015e2d52cff05db98c06a849f118829dec7eba"
+          },
+          "recordedState": "reconciliation-required"
+        }
+      ],
+      "disposition": "Dietary metadata delta01 refusal265 is preserved; delta02f365d78f/review095e55e7 resolves only W11-COUNTRY25-D01. Binding-parser author5b514f7d has an admitted review2462 but no exact result in its retained record; do not treat admission/pickup as PASS or resend.",
+      "blocker": "Binding-parser exact verdict/receipt and owner-bound pickup proof remain missing for author2408. Known proof hold: pickup owner not bound to next action. Root must obtain already-existing immutable verdict or explicit no-result, not restart historical thread. Metadata guide edition/licence/current applicability stay held.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical author25",
+        "historical reviewer11 custody lead"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/pending/401/requiredManagementAction",
+          "contains": "Reconcile exact proof hold; no resend of prior/uncertain attempts"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    },
+    {
+      "id": "COUNTRY-26",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/pending/39",
+          "sequence": 191,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/worker-38-country-review-continuation-20261016/retained-original-review/CZ-review.json",
+            "sha256": "2dc36b2b4516b3fe505616bb0888140967f265b518ef65d1c0de02ed2b454dcf"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/453",
+          "sequence": 2767,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-26/CA-finite-continuation-rows257-141432/manifest.json",
+            "sha256": "a2363b71d64959d5e54d40138eac6a3f678517af3124f77989ce024a73b58731"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/457",
+          "sequence": 2795,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/worker-38-CA-remainder-review-20261017/review.json",
+            "sha256": "f9f428765d5fec409848571ffd81a2453b10a75f0bbb62dd12f4d1a24ab451b9"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/487",
+          "sequence": 2915,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-26/CA-source-typed-proposal-v1/manifest.json",
+            "sha256": "6c810ce2fc753dac922e3843624e68caef83f14ab5810dfe8ec4c599533ba1ef"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/awaitingEvidenceOrDisposition/50",
+          "sequence": 2928,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/worker-38-CA-typed-review-20261017/review.json",
+            "sha256": "5e86238614961496a5679864631ccfc95ed32b284934613a9e9d2608b29eeabe"
+          },
+          "recordedState": "effect-recorded-disposition-pending"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/492",
+          "sequence": 2954,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-26/CA-source-typed-proposal-v1/CA-TYPED-R1/author-receipt.json",
+            "sha256": "99e5098fc58b95750dd0e9dcce583a848c833e3fbea855c72b8a5378445c3eb2"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/79",
+          "sequence": 2970,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/worker-38-CA-typed-R1-review-20261017/review.json",
+            "sha256": "129fe09f88a093842ed6fc62a26583685e727ec5b0f0be9260840da5f3743875"
+          },
+          "recordedState": "exhausted"
+        }
+      ],
+      "disposition": "CZ e09ae860 metadata/custody review2dc36b2b already exists. CA finite StatCan transformationa2363b71/reviewf9f42876 accepted141432 candidate records, not country completion. Original typed-graph refusal2928 retained; successor99e5098f/review129fe09f resolves CA-TYPED-R1 only.",
+      "blocker": "Canonical dictionary/equivalence/gold/admission and actual operation-specific source use remain unqualified. CZ body/recipe normalization needs exact reuse entitlement and finite page scope; no new data work selected.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner26",
+        "recorded dictionary55/schema56"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/disposed/79/reason",
+          "contains": "CA-TYPED-R1 resolved on exact successor"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    },
+    {
+      "id": "COUNTRY-34",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/disposed/7",
+          "sequence": 371,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/worker46-country-metadata-reviews/country34-65a5e8d5e28c-review.json",
+            "sha256": "8b394b26ece9d259dc1a249e4acdcfcb343d5702269ac0e3e9dc66844d1cc686"
+          },
+          "recordedState": "blocked"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/343",
+          "sequence": 2172,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-17/owner46-country34-projection-review-168e23e8dbc6/review.json",
+            "sha256": "c90229825d4d6e8801a251fa2e67a0e5312b9950f69cd50b6cda2543cb7a95de"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/408",
+          "sequence": 2444,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-17/owner46-country34-array-correction-review-1f309ee789a2/review.json",
+            "sha256": "3c318e308d504ba3cb22e9bc9ec0a907f9e1ecf9b74fd040a3a2b17d4e24d100"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/446",
+          "sequence": 2694,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-34/result.json",
+            "sha256": "495458bf5c29f9bd04bacbf786fc5cd4124ecb2f9c305af98bfda76a13a2a338"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/488",
+          "sequence": 2931,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-17/worker52-GW-WAFCT-review/review-receipt.json",
+            "sha256": "c450102640ba44a5563af50f5e7353c2be9da363f8814e58ccf923229ce30051"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/awaitingEvidenceOrDisposition/51",
+          "sequence": 2955,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-34/GW52-01-documentary-correction/closure.json",
+            "sha256": "b40460957fe709625b8ba48d6b7b61a25e430a58af0fabacb500dc89802f6c42"
+          },
+          "recordedState": "admitted-awaiting-effect"
+        }
+      ],
+      "disposition": "Existing metadata review8b394b26 is bound with missing-source concerns. Array-prototype refusal2172 resolved only by successor review3c318e30. GW documentary correctionb4046095 has exact review2969/disposition2981 in countryDecisionJoins; no review replay.",
+      "blocker": "GQ original16 failed/incomplete publisher responses; GT original20 no derivative-use licence; GU original21 one-card reuse/field-role entitlement and87-card remaining extent; GW source fidelity/semantics/assay/currentness and adaptation authority remain held. No national-membership promotion.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner34",
+        "recorded source custodians16/20/21/24"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/pending/408/nextAction",
+          "contains": "mark only R46-C34-001 resolved"
+        },
+        {
+          "pointer": "/countryManagementCoverage/countryDecisionJoins/1/retainedMetadata/nextFiniteOperationOrExactPrerequisite",
+          "contains": "Exact2955GW52-01 documentary correction accepted only"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims.",
+      "extraPointers": [
+        "/countryManagementCoverage/countryDecisionJoins/1"
+      ]
+    },
+    {
+      "id": "COUNTRY-35",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/disposed/3",
+          "sequence": 354,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/country-bundles/COUNTRY-BUNDLE-20261016/owner-35/category-gap-packet-v1.json",
+            "sha256": "387a6b2483449f31a7103ef904750b46a7ab4e62d47005d50f8b6e5534754ad9"
+          },
+          "recordedState": "blocked"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/79",
+          "sequence": 395,
+          "source": {
+            "path": "[retained-host]/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/review-country35-category-gap-v1-20261016/review-receipt.json",
+            "sha256": "60835a1993773bd4fea5d420f67f725c565a9126151a8c88a83b4a6c8ae633ba"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/285",
+          "sequence": 1988,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/country-bundles/COUNTRY-BUNDLE-20261016/owner-35/technical-preflight-specifications-v1/next-pure-implementation-selection/closure.json",
+            "sha256": "c2ce29b98f9100c7f1789d886360a0104c70fec52b830001152dbef7d666c522"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/303",
+          "sequence": 4582,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-15/reviews/author35-table5-result4540/review-receipt.json",
+            "sha256": "9eb81853e0e7a7d1d7c399646e6eca7860ed4f08dfc0ee09790bc5b7f3daa89b"
+          },
+          "recordedState": "exhausted"
+        }
+      ],
+      "disposition": "Category-gap packet387a6b24 and SAME11 receipt60835a19 were already explicitly bound without replay. Frozen-review-pending obligation text is stale for that packet. Later HN Table5 review4582 (9eb81853) already accepts literal fidelity/missing-period controls only; preserve it without replay. Separate synthetic child0 c2ce29b9 has no scoped review receipt in selected retained record.",
+      "blocker": "Retain exact source/version/access/rights gaps under country owner35: HK27/45 authorization, HM28 reproduction/scope, GY26 source gap, HN CPI use and HR33 rights. Synthetic child0 requires its exact already-existing review or no-result confirmation before adoption; metadata review395 cannot substitute.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner35",
+        "recorded source custodians26/27/28/32/33/45"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/disposed/3/reason",
+          "contains": "Exact author hash and existing SAME11 receipt bound without review replay"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    },
+    {
+      "id": "COUNTRY-40",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/disposed/5",
+          "sequence": 368,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/worker-38-country-review-continuation-20261016/owner40-retained-metadata-review/review.json",
+            "sha256": "d62703ae11a03a99a55f4d3e95d81ec478439e54480dfd88108c9c156df8f509"
+          },
+          "recordedState": "blocked"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/283",
+          "sequence": 1984,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/offmenu-parallel-contracts/owner-40/country-40-preflight/next-pure-implementation-selection/author-receipt.json",
+            "sha256": "cd8c9f05732c10b7a76628c76fe23ac3961125e2d553955c17466a4768982c2e"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/60",
+          "sequence": 2652,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-40/result.json",
+            "sha256": "ad32a6691fe0160addacfe2bfea72909d172f1f72b73811cc5e67993b5c05098"
+          },
+          "recordedState": "blocked"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/449",
+          "sequence": 2761,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-40/support2738-successor/result.json",
+            "sha256": "ca880fcddb89927f673ccb90e62a87140dfac026191f228158422bfc57f462f2"
+          },
+          "recordedState": "needs-management-disposition"
+        }
+      ],
+      "disposition": "Owner40 a70b5d5f metadata reviewd62703ae is complete and bound; stale pending38 metadata-review request must not replay. Later support resultca880fcd identifies AHM05 decision/output handoff gap, not permission to project rows.",
+      "blocker": "AHM05 exact retained source-use decision, row mapping/normalized-output handoff or scoped no-existing-decision/output from current recognized custodian needed. Historical38 is only a custody lead. Synthetic child0cd8c9f05 has no reviewer14 receipt in selected record. HT/HU/ID/IE source-specific edition/basis/use gaps remain.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner40",
+        "recorded AHM05 custodian38; verify current custody"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/disposed/5/reason",
+          "contains": "Reviewed bounded artifact complete"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    },
+    {
+      "id": "COUNTRY-42",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/pending/26",
+          "sequence": 151,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/country-bundles-20261016/owner42/batch-d-dietary-provenance/evidence-table.json",
+            "sha256": "e94d817af42c4de03abba22a9d7401b578137040d47a4c8df6878250ec208a1d"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/30",
+          "sequence": 166,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/worker-44-country-review/e94d817af42c4de03abba22a9d7401b578137040d47a4c8df6878250ec208a1d/receipt.json",
+            "sha256": "1d29bc6deb0ca642358a0c821425e13adcad354171bb1203ac0c5d12cfe94777"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/442",
+          "sequence": 2669,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-42/closure.json",
+            "sha256": "ad9caaff905542180c72810e231283c887339cd6863c9a9880a42951067561d8"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/66",
+          "sequence": 2727,
+          "source": {
+            "path": "[retained-host]/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/review-gb-ir-real-candidates-20261017/country42-review-receipt.json",
+            "sha256": "605d931690aceb911565f913f3f6383b9b7995d5386a62753512ff2e9e2e5d98"
+          },
+          "recordedState": "exhausted"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/50",
+          "sequence": 2449,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-17/worker44-country42-receipt-projection-review/review-receipt.json",
+            "sha256": "c615a0cfa841e61549bfdf671472b49117fc52eb10ff8fbaae7fa235591235db"
+          },
+          "recordedState": "exhausted"
+        }
+      ],
+      "disposition": "Six dietary claims have existing provenance/authority-only review1d29bc6d. Authorad9caaff/review605d9316 already has exact source-preserving PASS for the569-candidate+1-held transformation; do not replay that review. Synthetic projection reviewc615a0cf is separately exhausted.",
+      "blocker": "Remaining versioned mapping/canonical/admission prerequisites, national issuer/version/pages/digest and guideline rights remain missing. Recorded original custodian44 unchanged; underlying restricted originals not read.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner42",
+        "recorded source custodian44"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/disposed/66/reason",
+          "contains": "Exact independent source-preserving PASS bound"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    },
+    {
+      "id": "COUNTRY-45",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/pending/155",
+          "sequence": 1370,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/country-bundles-20261016/owner-45/JM/table3-qualification-1/frozen-delta.json",
+            "sha256": "337340fdd13f780f88e072e18cab375a2b1ebfb3be35b1e6a8ab41a796cbc333"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/160",
+          "sequence": 1402,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/owner14-reviews/jm-table3-20261016/review.json",
+            "sha256": "2ac8384cd8ea402a651a7cc5bf78b7cacf4807a4f2446f7b5b50cd9a38ed087d"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/493",
+          "sequence": 2956,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/worker57-readiness-coverage-cut2922/owner45-JM-source-semantic-proposal-v1/manifest.json",
+            "sha256": "88cdd80f46602050608a225ecb8c98faa68c585304dc5c2fc77f82d05bc277c5"
+          },
+          "recordedState": "reconciliation-required"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/80",
+          "sequence": 2977,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/owner14-reviews/jm-semantic-2956-review-20261017.json",
+            "sha256": "45ba385d8c23bbca873b8189193ac8350f43bc0655db245874881dbc10d22366"
+          },
+          "recordedState": "exhausted"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/224",
+          "sequence": 3588,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/scope3501-followthrough/owner45/IT-first8-private-reference-v1/manifest.json",
+            "sha256": "80bb9bcfc371aa2633cab4224c3053e3c67dc3a94dad69f6b7b7f47563a70b59"
+          },
+          "recordedState": "exhausted"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/226",
+          "sequence": 3592,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-17/owner46-IT-first8-3588-review/review.json",
+            "sha256": "c7c931e50fde1e0d07e985be53f9a90ab58ade9feb0f6763a65fab004315d2a1"
+          },
+          "recordedState": "exhausted"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/185",
+          "sequence": 3393,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-allocation-after3128/owner57/deliverables/prereq-receipt-remaining55-41-JM-owner45/author-receipt.json",
+            "sha256": "845cc2466b9a693fdc6d4296b9eeb4ef4063f443729bfef1ba7a526116e3f52d"
+          },
+          "recordedState": "exhausted"
+        }
+      ],
+      "disposition": "JM Table3 manifest337340fd/review2ac8384c already has literal-only scoped PASS. Later semantic88cdd80f/review45ba385d is bound for14 dish/13 column roles and14 links, preserving182 lexemes/27 censored/2 zero. IT first-eight private projection80bb9bcf/reviewc7c931e5 needs no correction; no IT/JE replay.",
+      "blocker": "JM row4/5 numeric anomalies and unresolved abbreviations require scientific/source clarification; UK sample is not Jamaica national. Separate2025 farmgate original/use/currency/basis evidence from48 stays access-no-retry. Private IT eight-record scope grants no recipe/image/publication expansion.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner45",
+        "recorded JM source custodian48",
+        "recorded IT custodian46"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/disposed/80/reason",
+          "contains": "JM new source-semantic proposal scoped PASS"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    },
+    {
+      "id": "COUNTRY-54",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/pending/40",
+          "sequence": 192,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/worker-38-country-review-continuation-20261016/retained-original-review/KN-review.json",
+            "sha256": "9389e4c1a521cb5ee5de1721786ab02329e03fa63ac37ce62301d82793c5a160"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/225",
+          "sequence": 1747,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/offmenu-parallel-contracts/owner-54/country-54-preflight/manifest.json",
+            "sha256": "e984a86c280dbb175fbc20d9bd560fcb6480d01891b0f96e8cb1344d32d483e6"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/226",
+          "sequence": 1748,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/offmenu-parallel-contracts/owner-54/country-54-preflight/manifest.json",
+            "sha256": "e984a86c280dbb175fbc20d9bd560fcb6480d01891b0f96e8cb1344d32d483e6"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/awaitingEvidenceOrDisposition/66",
+          "sequence": 4116,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-54/batch-result.json",
+            "sha256": "03ee2ad0df1d4d645321ecf0f78ca93725cf09810b70cf269d9bb3285fed4b6d"
+          },
+          "recordedState": "admitted-awaiting-effect"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/273",
+          "sequence": 4207,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/worker-38-KM4116-candidate-review-20261017/review.json",
+            "sha256": "50d0a262906a092955494b491fad6a81f135a5e22eedda4babd141a3f2454db6"
+          },
+          "recordedState": "exhausted"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/664",
+          "sequence": 4397,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-54/KM/full-source-cell-fidelity.json",
+            "sha256": "1811d418121f08198bd0d7e17ef79d57b87e2e594bd18370fe0cbb5171e35dcc"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/676",
+          "sequence": 4451,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-54/KM/full-source-cell-fidelity.json",
+            "sha256": "1811d418121f08198bd0d7e17ef79d57b87e2e594bd18370fe0cbb5171e35dcc"
+          },
+          "recordedState": "needs-management-disposition"
+        }
+      ],
+      "disposition": "KN retained7ecce16d review9389e4c1 exists for metadata/custody only. KN body/item-price normalization remains explicitly held. KM148-row candidate structure/metadata-consistency review4207 (50d0a262) is already scoped PASS without corrective findings; no replay. Later full-fidelity4397 remains additive author evidence, not independent body-fidelity acceptance.",
+      "blocker": "KN reuse entitlement and edition needed; ambiguous G,F/malformed legend must remain literal. KM source reference-mass/preparation/unit/FCT/source issues need exact original55 evidence; independent original-body fidelity remains unverified, without replay of accepted structure review4207. KP scoped survey/use and KR lawful-original/RDA-manifest dependencies remain distinct; no held takeover.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner54",
+        "recorded KM custodian55",
+        "recorded reviewer38 custody lead"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/pending/40/nextAction",
+          "contains": "Menu body/item-price normalization HELD for source reuse entitlement"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    },
+    {
+      "id": "COUNTRY-53",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/pending/454",
+          "sequence": 2768,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-53/crosswalk-proposal-v1-after2736/manifest.json",
+            "sha256": "3b86114691714702d553af05e5e8449a0972d043539c3c213d2684f5db10a04e"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/464",
+          "sequence": 2805,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-17/worker52-crosswalk2768-review/review-receipt.json",
+            "sha256": "17400bf3a49c07bab2998e88efac1b3d62104c9818c8dc4093c8dd049aa1b9ab"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/awaitingEvidenceOrDisposition/52",
+          "sequence": 2957,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-53/LU-LR-source-typed-proposal-v1/manifest.json",
+            "sha256": "c11f225ac5d5d1c9eba2a7f988080b08c706341fd1bcc79fc3d691cdf6593c5f"
+          },
+          "recordedState": "admitted-awaiting-effect"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/402",
+          "sequence": 2411,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/offmenu-parallel-contracts/owner-53/country-53-preflight/batch1980-country-53/author-receipt.json",
+            "sha256": "fed1194681af10125ebfc65fdeb89847f0b01bba34b2db43bdf5d79f38fd75e7"
+          },
+          "recordedState": "needs-management-disposition"
+        }
+      ],
+      "disposition": "595-crosswalk manifest3b861146/review17400bf3 already has scoped PASS; preserve null canonical targets and120 collision groups. LU/LR typed proposalc11f225a was admitted at2983, not accepted by that admission; no repeat dispatch.",
+      "blocker": "Exact LU/LR reviewer52 verdict absent from retained2957 record; obtain existing verdict/no-result. Canonical target dictionary/equivalence requires actual56 inputs. LK684 cells/148 blanks/eight discrepancies remain literal pending authoritative explanation; no repair or new raw reads. Separate synthetic2411 review unbound here.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner53",
+        "recorded reviewer52",
+        "recorded dictionary56"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/pending/464/nextAction",
+          "contains": "author2768+this scoped PASS only"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    },
+    {
+      "id": "COUNTRY-6",
+      "sourceSequence": 5271,
+      "bindings": [
+        {
+          "pointer": "/pendingManagementActions/pending/0",
+          "sequence": 1,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/owner14-reviews/country-deltas-20261016/owner06-portfolio-v2/receipt.json",
+            "sha256": "74a12a367b4ad5bb6c3b27256aaaf7edd85d73c016c6211ad5dd1bd47e71a1c6"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/17",
+          "sequence": 95,
+          "source": {
+            "path": "[retained-host]/src/offmenu-data/worker-06-MF-MG-dietary-batch-b-20261016/report.json",
+            "sha256": "9e9b617c9f59bddc3b9264b0a208a10fb93dd2c9f32080851960e9b8b90fd7b0"
+          },
+          "recordedState": "needs-management-disposition"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/260",
+          "sequence": 1887,
+          "source": {
+            "path": "[retained-host]/Documents/Codex/2026-10-16/offmenu-parallel-contracts/owner-20/management-selected-remaining-specs/COUNTRY-6/contracts.json",
+            "sha256": "5a562a151fc40aab0c26500194396f2ec9e68157dbd20789b6dc60132bc7b220"
+          },
+          "recordedState": "needs-management-disposition"
+        }
+      ],
+      "disposition": "Owner06 provenance-v2 review74a12a36 is preserved. It is not a review of later MF/MG batch-b report9e9b617c; retained95 record contains no dispatch/effect/verdict binding. Do not use earlier v2 receipt to close batch-b.",
+      "blocker": "Exact independent14 receipt binding report9e9b617c or explicit no-review confirmation required. MF territorial applicability/use and MH rights/exact SPC chapter scope remain missing from recorded34/36/37/38; ME catalogue-only and53 HTTP412 excluded. No guideline/body acquisition.",
+      "accountableOwner": "Morgan/root",
+      "nextEvidenceOwners": [
+        "Morgan/root",
+        "historical country owner06",
+        "recorded reviewer14",
+        "recorded source custodians34/36/37/38"
+      ],
+      "parentComplete": false,
+      "sourceRightsReleased": false,
+      "underlyingReceiptBytesVerified": false,
+      "rawDataRead": false,
+      "reviewReplayRequired": false,
+      "assertions": [
+        {
+          "pointer": "/pendingManagementActions/pending/17/nextAction",
+          "contains": "Designated14 review exact metadata/negative scope"
+        }
+      ],
+      "evidenceQualification": "Exact retained receipt/disposition metadata verified against immutable Git blob, not underlying packet or receipt bytes; historical owners are custody leads, not active-worker claims."
+    }
+  ],
+  "newCountryCompletions": 0,
+  "underlyingOriginalsRead": 0,
+  "historicalReviewsReplayed": 0,
+  "secondaryPinnedSources": [
+    {
+      "path": "docs/handover/2026-10-17/operational-ledger/interim-obligation-index.json",
+      "sha256": "f52ce5a9c748a10b5fa3562d03a1dadc8aebaf96eac073b7a800e532b9611d5a",
+      "gitBlob": "2c6564f1ee88b9cb29a1e2eaa7cbd12316fd9808",
+      "bytes": 316718
+    },
+    {
+      "path": "docs/handover/2026-10-17/morgan-batches-20261017/B01-preflight.json",
+      "sha256": "d15686f7970e00e1d4c21f8290b602376dfe67227b11e223e2e590f0a32f6f75",
+      "gitBlob": "3420ee2bcd3a4b3f4f06196f8d47b3939254577f",
+      "bytes": 43451
+    },
+    {
+      "path": "docs/handover/2026-10-17/morgan-batches-20261017/B02-preflight.json",
+      "sha256": "0f322210026faf94df06657c9471fab954d906cc36696cdb65a6c5c03e1c8448",
+      "gitBlob": "3070ec047f37be690f17cba3080ca8a2ffe63bea",
+      "bytes": 25145
+    },
+    {
+      "path": "docs/handover/2026-10-17/morgan-batches-20261017/B03-preflight.json",
+      "sha256": "eee886deb3df8bf758ecfa89f11a2a96dda1c6c4ed9f1bab8bf5d39a58b92aec",
+      "gitBlob": "7fb8e509a0b2aa30076be41b985535f44fabb4c5",
+      "bytes": 46489
+    }
+  ],
+  "publicationQualification": "Host path prefix redacted; exact original source paths remain addressable by the pinned source document and JSON pointers. No underlying receipt or raw-data bytes included.",
+  "nativeValidation": {
+    "status": "blocked-by-auto-review",
+    "attempts": 2,
+    "jobsAdmitted": 0,
+    "childJobs": 0,
+    "lastReason": "General Windmill routing did not specifically authorize transmitting the 3.28 MB private derived ledger payload. Explicit payload-specific authorization required.",
+    "noFurtherRetry": true,
+    "scriptDeploymentIsNotAJob": true
+  }
+}

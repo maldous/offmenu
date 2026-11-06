@@ -1,0 +1,50 @@
+{
+  "baseCommit": "d1a576374a62c41e736464e2c1a8e68cdff37576",
+  "changes": [
+    {
+      "path": "public/model.js",
+      "old": "export const normalize = canonicalIngredient;",
+      "new": "import {copyLotNutritionSelection} from './lot-nutrition.js';\nexport const normalize = canonicalIngredient;"
+    },
+    {
+      "path": "public/model.js",
+      "old": "  if(typeof value.needsReview==='boolean')lot.needsReview=value.needsReview;",
+      "new": "  if(typeof value.needsReview==='boolean')lot.needsReview=value.needsReview;\n  if(value.nutritionSelection)lot.nutritionSelection=copyLotNutritionSelection(value.nutritionSelection);"
+    },
+    {
+      "path": "public/menu-model.js",
+      "old": "import {normalize,eligibleStock} from './model.js';",
+      "new": "import {normalize,eligibleStock} from './model.js';\nimport {nutritionForLot} from './lot-nutrition.js';"
+    },
+    {
+      "path": "public/menu-model.js",
+      "old": "const product=products[stock.barcode];",
+      "new": "const product=nutritionForLot(stock,products);"
+    },
+    {
+      "path": "public/cooking-model.js",
+      "old": "import {t} from './i18n.js';",
+      "new": "import {t} from './i18n.js';\nimport {nutritionForLot} from './lot-nutrition.js';"
+    },
+    {
+      "path": "public/cooking-model.js",
+      "old": "const p=products[d.barcode];",
+      "new": "const p=nutritionForLot(d.original,products);"
+    },
+    {
+      "path": "public/app.js",
+      "old": "import {loadPriceObservations,renderSavedPriceObservations} from './saved-price-observations.js';",
+      "new": "import {createLotNutritionSelection} from './lot-nutrition.js';\nimport {loadPriceObservations,renderSavedPriceObservations} from './saved-price-observations.js';"
+    },
+    {
+      "path": "public/app.js",
+      "old": "(lot,record,nutriments)=>{const p=products[lot.barcode]||{name:lot.name,quantity:lot.quantity+' '+lot.unit,product_quantity:lot.quantity,product_quantity_unit:lot.unit};products[lot.barcode]={...p,nutriments,nutritionProvenance:{...record.provenance,nutrientProfile:{id:record.id,basis:structuredClone(record.data.basis),status:record.status??record.data.status??null}}};localStorage.setItem(PRODUCTS,JSON.stringify(products));markDirty();findMeals();}",
+      "new": "(lot,record,nutriments)=>{if(!sharing.canWrite())throw Error(t('Open an editable kitchen before assigning nutrition.'));if(lots.find(current=>current.id===lot.id)!==lot)throw Error(t('Inventory item changed. Select the current pantry item.'));const selected=createLotNutritionSelection(lot,record,nutriments,{confirmed:true});save(lots.map(current=>current===lot?validateLot({...current,nutritionSelection:selected}):current));pantry();findMeals();}"
+    },
+    {
+      "path": "public/unified-data.js",
+      "old": "export function asOffNutriments(profile,unit){if(profile.kind!=='nutrientProfile'||profile.data.basis?.amount!==100||profile.data.basis.unit!==unit)throw Error(t(\"Nutrition basis must match this inventory item: per 100 {v0}.\", {v0:(unit)}));const keys={energy:['energy-kcal_100g','kcal',1],protein:['proteins_100g','g',1],carbohydrate:['carbohydrates_100g','g',1],fat:['fat_100g','g',1],sugars:['sugars_100g','g',1],salt:['salt_100g','g',1],sodium:['sodium_100g','mg',.001],saturatedFat:['saturated-fat_100g','g',1],fibre:['fiber_100g','g',1],calcium:['calcium_100g','mg',.001],iron:['iron_100g','mg',.001],potassium:['potassium_100g','mg',.001],vitaminC:['vitamin-c_100g','mg',.001]};const result={};for(const [name,[key,unit,factor]]of Object.entries(keys)){const nutrient=profile.data.nutrients?.[name];if(typeof nutrient?.value==='number'&&Number.isFinite(nutrient.value)&&nutrient.value>=0&&nutrient.unit===unit)result[key]=nutrient.value*factor;}return result;}",
+      "new": "export {asOffNutriments} from './nutrient-profile.js';"
+    }
+  ]
+}

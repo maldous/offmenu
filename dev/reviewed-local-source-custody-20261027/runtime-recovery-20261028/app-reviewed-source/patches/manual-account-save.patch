@@ -1,0 +1,32 @@
+--- a/public/app.js
++++ b/public/app.js
+@@ -162,7 +162,28 @@
+ async function cloudRequest(method,body){if(demoMode)throw Error(t('Exit the demo to save your own kitchen.'));const response=await boundFetch('/api/state',{method,headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(15000)});const data=await response.json();if(!response.ok)throw apiError(data,'Cloud operation failed.');return data;}
+ async function loadCloud(ask=true){const started=requestIdentity;const check=()=>{if(requestIdentity!==started)throw Error(t('Account changed. Retry from your current account.'));};const data=await cloudRequest('GET');check();if(data.state){if(ask&&!confirm(t('Replace this browser copy with the cloud save? Export local changes first.')))return;const state=data.state;const nextRecipes=validateRecipes([...new Map([...state.recipes,...await fetchRecipes()].map(r=>[r.id,r])).values()]);check();localStorage.setItem(KEY,JSON.stringify(state.inventory));localStorage.setItem(PRODUCTS,JSON.stringify(state.products));localStorage.setItem(RECIPES,JSON.stringify(state.recipes));localStorage.setItem(PROFILE,JSON.stringify(state.profile));localStorage.setItem(SELECTIONS,JSON.stringify(state.selections));lots=state.inventory;products=state.products;recipes=nextRecipes;localStorage.setItem(RECIPES,JSON.stringify(recipes));loadProfile();pantry();findMeals();}revision=data.revision;localStorage.setItem(KEY+'-revision',String(revision));dirty=false;localStorage.removeItem(KEY+'-dirty');if(syncReady&&data.state)autoSync.reset(data.state,data.revision);setLocalizedText($('sync-status'),data.state?t('Cloud copy restored.'):t('No cloud copy yet. Add items or import a backup, then save.'));}
+ $('cloud-load').onclick=()=>{if(sharing.active())return syncStatus('Return to your private kitchen before restoring its cloud copy.','pending');return loadCloud().catch(e=>setLocalizedText($('sync-status'),e.message));};
+-$('cloud-save').onclick=async()=>{if(sharing.active()){sharing.schedule();return;}try{saveProfile();const data=await cloudRequest('PUT',{revision,state:{inventory:lots,products,recipes,profile,selections}});revision=data.revision;localStorage.setItem(KEY+'-revision',String(revision));localStorage.removeItem(KEY+'-dirty');dirty=false;setLocalizedText($('sync-status'),'Saved to cloud. Automatic saving continues.');}catch(e){setLocalizedText($('sync-status'),e.message);}};
++$('cloud-save').onclick=async()=>{
++ if(sharing.active()){sharing.schedule();return;}
++ const started=requestIdentity,key=KEY,startedRevision=revision,storedRevision=localStorage.getItem(KEY+'-revision');
++ const current=()=>requestIdentity===started&&KEY===key&&!sharing.active()&&revision===startedRevision&&localStorage.getItem(key+'-revision')===storedRevision;
++ try{
++  saveProfile();
++  const submitted=JSON.stringify(currentState());
++  const data=await cloudRequest('PUT',{revision:startedRevision,state:JSON.parse(submitted)});
++  // A response belongs to its originating private account/revision, not the
++  // account or kitchen that happens to be selected when the request finishes.
++  if(!current())return;
++  revision=data.revision;localStorage.setItem(key+'-revision',String(revision));
++  if(JSON.stringify(currentState())===submitted){
++   localStorage.removeItem(key+'-dirty');dirty=false;
++   setLocalizedText($('sync-status'),'Saved to cloud. Automatic saving continues.');
++  }else{
++   // New edits (including meal preferences) were not part of the saved snapshot.
++   localStorage.setItem(key+'-dirty','1');dirty=true;
++   setLocalizedText($('sync-status'),'New changes pending');
++  }
++ }catch(e){if(current())setLocalizedText($('sync-status'),e.message);}
++};
+ async function signedIn(next){demoMode=false;session=null;switchAccount(next);sharing.reset();loadProfile();lots=JSON.parse(localStorage.getItem(KEY)||'[]').map(validateLot);products=JSON.parse(localStorage.getItem(PRODUCTS)||'{}');recipes=validateRecipes(JSON.parse(localStorage.getItem(RECIPES)||'null')||await fetchRecipes());pantry();findMeals();connectivity();if(next&&!dirty&&!demoMode&&!localStorage.getItem(KEY+'-shared-session'))await loadCloud(false);else if(next) setLocalizedText($('sync-status'),'Unsaved local changes retained. Export or save before loading cloud data.');$('password').value='';$('account-dialog').close();if(next){await sharing.resume().catch(e=>syncStatus(e.message,'pending'));autoSync.schedule();openWorkspace();await access.checkConsent();}}
+ $('login').onclick=async()=>{try{await signedIn(await login($('email').value,$('password').value));}catch(e){setLocalizedText($('account-status'),e.message);}};
+ $('signup').onclick=async()=>{try{await signup($('email').value,$('password').value);const next=await getUser();if(next)await signedIn(next);else setLocalizedText($('account-status'),'Check your email to confirm your account.');$('password').value='';}catch(e){setLocalizedText($('account-status'),e.message);}};

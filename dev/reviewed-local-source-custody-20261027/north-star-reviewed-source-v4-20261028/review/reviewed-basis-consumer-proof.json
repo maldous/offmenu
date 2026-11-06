@@ -1,0 +1,253 @@
+{
+  "acceptedIdentityJoins": 0,
+  "actualCaller": {
+    "bytes": 3306,
+    "report": {
+      "acceptedIdentityJoins": 0,
+      "codePins": {
+        "derive_north_star_bulk.py": "3adc476be2a6694d62c76bb4d539f0fc698810fd3b942dc9ae501e940efde7a1",
+        "exercise_source_scoped_consumer.py": "ecb88b1c814987e7e266b7431825c6a9a9629deeea8856d67614b7f88e0b865e",
+        "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+        "source_scoped_north_star_consumer.py": "75a43f30967c2ea38606e0a1468132629a51b9c79744eed71938a5e1d146b3bc"
+      },
+      "counts": {
+        "citationOccurrences": 128,
+        "nutrientContextOccurrences": 1024,
+        "productOccurrences": 64,
+        "profileOccurrences": 64,
+        "profilesWithBasisCandidate": 64,
+        "restoredBasisTargetOccurrences": 1024,
+        "sourceKeyQueries": 64,
+        "unknownBasisGroupOccurrences": 0,
+        "unknownQuantityOccurrences": 400,
+        "zeroQuantityOccurrences": 124
+      },
+      "fullNorthStarComplete": false,
+      "groups": [
+        {
+          "citationOccurrences": 44,
+          "namespace": "barcode",
+          "nutrientContextOccurrences": 352,
+          "productOccurrences": 22,
+          "profileOccurrences": 22,
+          "profilesWithBasisCandidate": 22,
+          "restoredBasisTargetOccurrences": 352,
+          "sourceId": "off",
+          "sourceKeyQueries": 22,
+          "sourceRelease": "2026-10-12",
+          "unknownBasisGroupOccurrences": 0,
+          "unknownQuantityOccurrences": 155,
+          "zeroQuantityOccurrences": 40
+        },
+        {
+          "citationOccurrences": 82,
+          "namespace": "USDA-FDC",
+          "nutrientContextOccurrences": 656,
+          "productOccurrences": 41,
+          "profileOccurrences": 41,
+          "profilesWithBasisCandidate": 41,
+          "restoredBasisTargetOccurrences": 656,
+          "sourceId": "usda-files",
+          "sourceKeyQueries": 41,
+          "sourceRelease": "usda-2026-04",
+          "unknownBasisGroupOccurrences": 0,
+          "unknownQuantityOccurrences": 240,
+          "zeroQuantityOccurrences": 78
+        },
+        {
+          "citationOccurrences": 2,
+          "namespace": "barcode",
+          "nutrientContextOccurrences": 16,
+          "productOccurrences": 1,
+          "profileOccurrences": 1,
+          "profilesWithBasisCandidate": 1,
+          "restoredBasisTargetOccurrences": 16,
+          "sourceId": "usda-files",
+          "sourceKeyQueries": 1,
+          "sourceRelease": "usda-2026-04",
+          "unknownBasisGroupOccurrences": 0,
+          "unknownQuantityOccurrences": 5,
+          "zeroQuantityOccurrences": 6
+        }
+      ],
+      "inputsOpenedReadOnly": true,
+      "lexicalIdentifiersExported": false,
+      "limits": "Finite source-key value-returning caller probes only; repeated profiles are occurrences, not distinct foods. Whole-index namespace SQL reports coverage separately. No food identity, nutrient comparability, recipe nutrition, planning or app activation.",
+      "maxSourceKeys": 64,
+      "rawRecordValuesExported": false,
+      "schemaVersion": "offmenu-north-star-source-consumer-probe/1",
+      "selectionSql": "SELECT i.key_sha,i.source,i.release,i.namespace,i.lexical\nFROM identifiers i\nWHERE EXISTS(SELECT 1 FROM unique_product_keys k\n             WHERE k.subject=i.subject AND k.key_sha=i.key_sha)\nAND EXISTS(SELECT 1 FROM resolved_edges e\n           WHERE e.subject=i.subject AND e.has_context=1)\nORDER BY i.key_sha,i.subject,i.assertion_id LIMIT ?",
+      "servedApplicationQueries": 0,
+      "sourcePins": {
+        "basisConsumerProofSha256": "1691828696477efe932d6b3bfc1e20cbdc99ddf047da3e695067f40478e8c2cd",
+        "basisDerivedManifestByteSha256": "3520dff24e7b96635fd3d8f8cfa60664d03d5bd65709b547059cee10b306e1a9",
+        "bulkConsumerIndexSha256": "5e6d5c14a26515632a56aac2ff128a12baaa6ec7d030703c368cc8c297a4c1ad",
+        "bulkDerivedManifestByteSha256": "83773291ac70931a110f60e872ae47a2bd470b5f397c709195dcf016c0bf0694",
+        "sourceManifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e"
+      },
+      "status": "finite-source-scoped-local-caller-exercised",
+      "wholeIndexConnectedSourceKeys": 2980298
+    },
+    "sha256": "921fa2113c67b05213786dbebfb10e350e2716a45a325b977f44c18e7bacf61b"
+  },
+  "automaticPlanningEligible": false,
+  "baseDependencies": {
+    "bulkDerivedManifestByteSha256": "83773291ac70931a110f60e872ae47a2bd470b5f397c709195dcf016c0bf0694",
+    "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+    "nativeManifestByteSha256": "312a7f5ce7c32b81d1eb02251303a000073eea2d0b46d9ac710e09ff89dee895",
+    "normalizedManifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e",
+    "publicationDependencyStatus": "awaiting-exact-actually-served-base-binding-by-publication-owner",
+    "resolver": "Citation/resource/assertion IDs resolve against the exact selected immutable normalized input graph. Native selection pins are provenance references, not a grant to export raw inputs.",
+    "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+  },
+  "confidence": {
+    "probability": null,
+    "status": "not-calibrated"
+  },
+  "consumerProof": {
+    "acceptedIdentityJoins": 0,
+    "queries": {
+      "matchedProfilesWithBasisTargets": {
+        "count": 2924709,
+        "sql": "SELECT count(*) FROM matched WHERE targets>0"
+      },
+      "nativeProfilesMatched": {
+        "count": 2924709,
+        "sql": "SELECT count(*) FROM matched"
+      },
+      "nativeProfilesWithoutNormalizedMatch": {
+        "count": 0,
+        "sql": "SELECT count(*) FROM source.projections p WHERE NOT EXISTS(SELECT 1 FROM matched m WHERE m.resource_id=p.resource_id)"
+      },
+      "normalizedResourceLocators": {
+        "count": 9796656,
+        "sql": "SELECT count(*) FROM locations"
+      },
+      "projectionDigestMismatches": {
+        "count": 0,
+        "sql": "SELECT count(*) FROM matched m JOIN source.projections p USING(resource_id) WHERE m.projection_sha<>p.payload_sha OR m.source_id<>p.source_id OR m.targets<>p.metrics OR m.unknown_states<>p.unknown_states"
+      },
+      "restoredNutrientBasisTargets": {
+        "count": 46795344,
+        "sql": "SELECT coalesce(sum(targets),0) FROM matched"
+      },
+      "unknownSourceStateTargets": {
+        "count": 0,
+        "sql": "SELECT coalesce(sum(unknown_states),0) FROM matched"
+      }
+    },
+    "servedAppQueries": 0,
+    "sqliteBytes": 2320580608,
+    "sqliteSha256": "1691828696477efe932d6b3bfc1e20cbdc99ddf047da3e695067f40478e8c2cd"
+  },
+  "counts": {
+    "matchedNativeProfiles": 2924709,
+    "packets": 9796656,
+    "resourceLocators": 9796656,
+    "restoredNutrientBasisTargets": 46795344,
+    "sidecarPackets": 2924709,
+    "sourceMetricsWithoutOwnState": 0,
+    "unknownSourceStateTargets": 0
+  },
+  "evidenceFilePins": {
+    "INDEPENDENT-BASIS-RESTORATION-REVIEW.md": "a42aa6dcb5303f5bbdceec0a96e821ab77ca16e6415de2e817e23a3e8cba678a",
+    "evidence/BASIS-FINAL-MANIFEST-SUMMARY.json": "0f0b549b828d6e871f9b441e0df97fb675516ec6caf8b184c6fdc262f38a59ea",
+    "evidence/BASIS-NATIVE-INDEX-FINAL.json": "144ab6d443961cba4a8980357a32874f575cc6336cf4d299c5eb17635f2d7654",
+    "evidence/BASIS-RESTORE-002-INDEPENDENT-TERMINAL.json": "12a7f1c8005d00e23fd553202f9608b68624dfb7ea483f492018863884861830",
+    "evidence/CURATED-BASIS-INPUT-CUSTODY.json": "21df87189350a63c9fd1c7f495d23e5a269bfe81b0ef7c74f81d0fa527e7565e",
+    "evidence/SOURCE-CALLER-002-INDEPENDENT-TERMINAL.json": "79c8484247400c08069dab274e9e81386b53fc7eb1bd5559b641caf4ea5636ea",
+    "evidence/SOURCE-CALLER-ACTUAL-PROOF.json": "e98db8ae60d1bdcf00f97d90656ae36646b8592ad5381bf75ee01cc60dc9f3ad",
+    "review/BASIS-RUNNER-REVIEW.json": "8a60bf78d00a5e9161bcf6670af03541cd3e1632d4e7bd0e78dd1abe3d0c78df",
+    "review/SOURCE-CONSUMER-PROBE-REVIEW.json": "7b540355c4272eff1a667436770d867bd0c2698fde6240d76dd3b457c0644b7e",
+    "review/SOURCE-CONSUMER-QUERY-DELTA-REVIEW.json": "7445d3f62d5da2b36050db6bc3617976824ebac084a4b6ff4e967e7c5f188f1a",
+    "review/SOURCE-CONSUMER-REVIEW.json": "f1a1e8b7ee3d20351517852c5216bf11aa0cae6d34b8c3c28f284584181167ae"
+  },
+  "fullNorthStarComplete": false,
+  "limits": [
+    "The full basis SQL proves matched-source profile/target/locator reconciliation; the actual value-returning caller exercised 64 keys only, not every connected key.",
+    "Whole-index literal-namespace coverage remains the separately pinned full bulk report; do not multiply finite occurrences into full-corpus serving counts.",
+    "Unknown quantities remain distinct from exact zero. Zero missing/null basis states does not imply accepted canonical preparation or independently verified upstream semantics.",
+    "No ingredient identity, recipe nutrition, planning, external lookup, app activation or Cloudflare wiring follows from this receipt."
+  ],
+  "localOnlyArtifacts": [
+    "*.sqlite",
+    "shards/*/matched-profiles.jsonl.gz",
+    "shards/*/packet-locations.jsonl.gz",
+    "shards/*/receipt.json",
+    "selection.json",
+    "*-progress.json",
+    "native-index-manifest.json"
+  ],
+  "nativeIndexBinding": {
+    "manifestByteSha256": "d7de2786c96d246688ea15fd7d1e3e56d714872fbd00583bfb31e5eed59bd42a",
+    "sqliteSha256": "66677901ec78853ed791f9763149606433e7db448b107b713d71b4a01513d746"
+  },
+  "observedAtUtc": "2026-10-28T11:44:50Z",
+  "originalsModified": false,
+  "privatePayloadExcluded": true,
+  "producerManifestBytes": 1406971,
+  "producerManifestSha256": "3520dff24e7b96635fd3d8f8cfa60664d03d5bd65709b547059cee10b306e1a9",
+  "producerOwner": "/root/align_north_star_graph/scale_north_star_derivation",
+  "producerPublicationEligible": false,
+  "producerSchemaVersion": "offmenu-same-source-basis-restoration/1",
+  "producerSemanticStatus": "candidate-not-admitted",
+  "producerStatus": "full-selected-normalized-input-scanned-and-source-basis-candidates-materialized",
+  "profileBasisUsed": false,
+  "proposedImmutableNamespace": "/common-data/derived-releases/north-star-basis-restoration-v1-20261028/",
+  "publicAdmissionGranted": false,
+  "publicFileAllowlist": [
+    "shards/NNNNNN/basis-restorations.jsonl.gz"
+  ],
+  "publicFileInventory": {
+    "bytes": 7028472464,
+    "canonicalSha256": "03d8232028cb39132281140d2986986a2cf30b6625eaa8029a3e18eeb6c1af50",
+    "count": 9797
+  },
+  "publicInventoryCanonicalization": "JSON UTF-8, ensure_ascii=False, sort_keys=True, separators comma/colon, files array only without newline",
+  "publicationScope": "candidate-sidecars-only",
+  "recipeNutritionJoinsAccepted": false,
+  "reviewer": "/root/align_north_star_graph",
+  "schemaVersion": "offmenu-north-star-basis-consumer-review/1",
+  "selection": {
+    "codePins": {
+      "derive_north_star_bulk.py": "3adc476be2a6694d62c76bb4d539f0fc698810fd3b942dc9ae501e940efde7a1",
+      "north_star_basis_restoration.py": "cae8b86cbacdbf0d81b9a52bb508dadae56e29639cfd332f87fb2b71bd18566a",
+      "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+      "run_north_star_basis_restoration.py": "24b477296d17675f7eb2ef3c674e5ae153a603afa599743161a13d0e05106d59"
+    },
+    "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+    "nativeManifestByteSha256": "312a7f5ce7c32b81d1eb02251303a000073eea2d0b46d9ac710e09ff89dee895",
+    "normalizedManifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e",
+    "rulesetVersion": "north-star-per-nutrient-basis-restoration/1",
+    "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+    "selectedSources": [
+      "off",
+      "usda-files"
+    ]
+  },
+  "semanticMeaning": "Exact source-literal basis fields copied from pinned retained curated inputs as candidates; not independently verified upstream preparation classifications, canonical preparation or nutritional comparability.",
+  "servedAppQueries": 0,
+  "sourceCoverage": {
+    "nativeProfilesMatched": 2924709,
+    "nativeProfilesSelected": 2924709,
+    "nativeProfilesUnmatched": 0,
+    "normalizedPacketsScanned": 9796656,
+    "normalizedResourcesLocated": 9796656
+  },
+  "sourceQualification": {
+    "automaticDietQualification": false,
+    "humanReviewed": false,
+    "independentlyAccepted": false,
+    "rawNativePayloadPublished": false,
+    "withheldSourcesIncluded": false
+  },
+  "sourceRightsPreserved": true,
+  "status": "reviewed-source-scoped-consumer-proof",
+  "verification": {
+    "callerCanonicalReportBytesReconstructedAndHashVerified": true,
+    "manifestSourceCodeAndIndexPinsReconciled": true,
+    "producerAndCallerTerminalsIndependentlyRead": true,
+    "publicArtifactIntegrityScope": "Reviewed producer verifies exact input assets and durable shard receipts; publication projection independently binds/rechecks exact public file bytes. No fresh redundant corpus scan is asserted.",
+    "sourceRightsScope": "Preservation of existing source scopes/licences/attribution and curation flags only, not a new rights or identity-admission grant."
+  }
+}

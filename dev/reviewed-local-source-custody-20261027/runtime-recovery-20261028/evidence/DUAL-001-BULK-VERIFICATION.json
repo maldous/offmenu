@@ -1,0 +1,16 @@
+{
+  "schema": "offmenu-bulk-batch-verification/1",
+  "checkpointComplete": false,
+  "checkpointSha256": "c12df2c10ba951db33fbc85d982b284f8cd050c3d81a39a41931f17264a03c59",
+  "verifiedAssets": 400,
+  "verifiedBytes": 454177027,
+  "verifiedPackets": 400000,
+  "recoveredCopyAssets": 400,
+  "recoveredCopiesByteIdentical": 400,
+  "heldLegacyAssets": [],
+  "legacyTruncatedTailUnchanged": true,
+  "finalManifestPresent": false,
+  "unexpectedOutputFiles": 0,
+  "freeBytes": 207120904192,
+  "qualificationComplete": false
+}

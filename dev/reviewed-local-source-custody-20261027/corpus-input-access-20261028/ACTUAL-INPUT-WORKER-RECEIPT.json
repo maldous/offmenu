@@ -1,0 +1,15 @@
+{
+  "schema": "offmenu-input-worker-verification/1",
+  "run_id": "01a18019-e9c6-9787-47ba-4a51b215f0b3",
+  "safe_output_read_run_id": "01a1801a-1377-2edd-0f2d-8a5665c02a6c",
+  "exit_code": 0,
+  "cleanup_verified": true,
+  "truncated": false,
+  "probe_sha256": "5f8092ec92ef1bcb0b533a82407e7d42986d23473c3502ef4a2a728d56fdfc99",
+  "both_roots_accessible": true,
+  "both_roots_non_writable_for_worker": true,
+  "both_manifest_payload_digests_match": true,
+  "input_assets_checksummed": false,
+  "source_equivalence_verified": false,
+  "qualification_established": false
+}

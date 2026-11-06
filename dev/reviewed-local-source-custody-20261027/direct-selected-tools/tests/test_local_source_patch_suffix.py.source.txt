@@ -1,0 +1,40 @@
+"""Explicit hash-pinned source patch/diff export, never patch application."""
+import importlib.util
+from pathlib import Path
+import tempfile
+import unittest
+from unittest import mock
+
+ROOT = Path(__file__).resolve().parents[1]
+SPEC = importlib.util.spec_from_file_location('patch_export', ROOT / 'scripts/export-local-source.py')
+export = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(export)
+
+
+class PatchSuffix(unittest.TestCase):
+    def test_explicit_patch_and_diff_export_preserves_pins_and_secret_path_exclusion(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            body = b'--- a/source.py\n+++ b/source.py\n@@ -1 +1 @@\n-old\n+new\n'
+            with mock.patch.object(export, 'EXTERNAL', str(root)):
+                for suffix in ('.patch', '.diff'):
+                    target = root / ('reviewed' + suffix)
+                    target.write_bytes(body)
+                    selection = [{'sourcePath': str(target), 'repositoryPath': 'recovered/reviewed' + suffix,
+                                  'bytes': len(body), 'sha256': export.digest(body),
+                                  'kind': 'source', 'reviewRef': 'explicit-reviewed-source-fixture'}]
+                    parts = export.selected_parts(selection)
+                    prepared = export.packets('selected', 'foo-reviewed-patch-fixture',
+                                              {'head': 'a' * 40, 'branch': 'fixture'}, selection, parts)
+                    export.validate_packet_set(prepared)
+                    self.assertEqual(target.read_bytes(), body)
+                    self.assertEqual(prepared[0]['selection'], selection)
+                    with self.assertRaisesRegex(export.Rejected, 'excluded-path'):
+                        export.source_path(str(root / ('.env' + suffix)))
+                    selection[0]['sha256'] = '0' * 64
+                    with self.assertRaisesRegex(export.Rejected, 'selected-source-pin-mismatch'):
+                        export.selected_parts(selection)
+
+
+if __name__ == '__main__':
+    unittest.main()
