@@ -26,14 +26,14 @@ const codePaths=['tools/delivery/github-app-publisher.mjs','tools/delivery/githu
 const clone=structuredClone;
 const objectOp=(kind,sha,body)=>({kind,method:'POST',path:`${ROOT}/git/${{blob:'blobs',tree:'trees',commit:'commits'}[kind]}`,
   body,readPath:`${ROOT}/git/${{blob:'blobs',tree:'trees',commit:'commits'}[kind]}/${sha}`,expected:sha});
-function fixture() {
+function fixture(message='reviewed candidate\n') {
   const objects=new Map(), raw=Buffer.from('synthetic candidate\n');
   const add=(type,b)=>{const sha=gitHash(type,b);objects.set(sha,{type,raw:b});return sha;};
   const blob=add('blob',raw), empty=add('tree',Buffer.alloc(0));
   const identity=`Dummy <dummy@example.invalid> ${epoch} +0000`;
   const base=add('commit',Buffer.from(`tree ${empty}\nauthor ${identity}\ncommitter ${identity}\n\nbase\n`));
   const tree=add('tree',Buffer.concat([Buffer.from('100644 a.txt\0'),Buffer.from(blob,'hex')]));
-  const head=add('commit',Buffer.from(`tree ${tree}\nparent ${base}\nauthor ${identity}\ncommitter ${identity}\n\nreviewed candidate\n`));
+  const head=add('commit',Buffer.from(`tree ${tree}\nparent ${base}\nauthor ${identity}\ncommitter ${identity}\n\n${message}`));
   const who={name:'Dummy',email:'dummy@example.invalid',date:'2026-10-31T00:00:00+00:00'};
   const binding={version:2,repository:repo.full_name,pr_number:null,
     issue_id:'8daac134-01ab-4a02-a4d2-c0c417d0bd32',owner:'synthetic-owner',
@@ -49,7 +49,7 @@ function fixture() {
     automatic_integration_enabled:true};
   const operations=[objectOp('blob',blob,{content:raw.toString('base64'),encoding:'base64'}),
     objectOp('tree',tree,{tree:[{path:'a.txt',mode:'100644',type:'blob',sha:blob}]}),
-    objectOp('commit',head,{message:'reviewed candidate\n',tree,parents:[base],author:who,committer:who}),
+    objectOp('commit',head,{message,tree,parents:[base],author:who,committer:who}),
     {kind:'ref',method:'POST',path:`${ROOT}/git/refs`,body:{ref:`refs/heads/${binding.head_branch}`,sha:head},
       readPath:`${ROOT}/git/ref/heads/${binding.head_branch}`,expected:null},
     {kind:'create-pr',method:'POST',path:`${ROOT}/pulls`,
@@ -600,4 +600,20 @@ test('consumed unknown commit reconciles projected message by GET without anothe
   const result=await net.step();assert.equal(result.status,'publication-ready');
   const state=await ctl.state();assert.equal(state.publication.next,3);assert.equal(state.publication.effect,'ready');
   assert.equal(net.calls.filter(c=>c.method==='POST'&&c.path===operation.path).length,0);
+});
+
+test('qualified raw commits with multiple terminal LFs accept exactly one omitted LF',async()=>{
+  for(const count of [1,2,3]) {
+    const f=fixture('reviewed candidate'+'\n'.repeat(count));
+    await f.qualify();
+    const op=f.config.plan.operations[2];
+    const exact={...clone(op.body),sha:op.expected,tree:{sha:op.body.tree},
+      parents:op.body.parents.map(sha=>({sha}))};
+    assert.equal(canonicalPublication(op,exact,f.config.binding,null),true);
+    assert.equal(canonicalPublication(op,{...exact,message:op.body.message.slice(0,-1)},
+      f.config.binding,null),true,'one omitted LF from '+count+' terminal LFs');
+    for(const message of [op.body.message+'\n',op.body.message.slice(0,-2),
+        op.body.message.slice(0,-1)+'\r'])
+      assert.equal(canonicalPublication(op,{...exact,message},f.config.binding,null),false);
+  }
 });
