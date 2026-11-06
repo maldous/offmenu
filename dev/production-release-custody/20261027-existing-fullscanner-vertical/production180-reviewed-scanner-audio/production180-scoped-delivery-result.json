@@ -1,0 +1,74 @@
+{
+  "atUTC": "2026-10-26T15:27:09.799818+00:00",
+  "status": "DONE_WITH_CONCERNS_EXACT_REVIEWED_SCANNER_AUDIO180_DELIVERED",
+  "worker": 0,
+  "threadId": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+  "host": "local",
+  "version": {
+    "number": 180,
+    "id": "c9a114d9-cfe4-4eaf-95c5-5cf0230d8efb",
+    "deployment": "b625b2f7-3351-4db3-b2f8-f545eb7901d1",
+    "percentage": 100
+  },
+  "main": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/scanner-audio-over179-r1/landing-only.mjs",
+    "sha256": "d55eb1ecea1eb5d28517b4d2f1fafb8dd4ce0e65afd0a41d2286c597905aea32"
+  },
+  "moduleCount": 206,
+  "totalModuleBytes": 38095877,
+  "modulePins": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/scanner-audio-over179-r1/candidate-206-expected-pins.json",
+    "sha256": "b4503c80348869d52387a7527753252db64c1e5b08b5975a1ef274a949510887"
+  },
+  "audioBody": {
+    "route": "/demo/full-scanner.js",
+    "sha256": "bab01e0e6f58219be7c5febf1d7372e78816ac8156eecc2b30a99d8843566531",
+    "bytes": 885653
+  },
+  "author": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/scanner-audio-current176-20261027/timeout-r1/result.json",
+    "sha256": "67deba50687980801b14092a1cddd2051f78e07a4fb985dfcdaff60fab248ca7"
+  },
+  "independentReview": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/independent-scanner-audio-review-20261027/owner07/timeout-r1-closure/closure.json",
+    "sha256": "ad0ffbbcb1e19294bde503c634593d9e72d64de54f1181e7f012318ca4784cc5"
+  },
+  "validation": {
+    "authorFocused": "10/10 PASS reused; two speechcalls and oldA/newB timeout race positive/negative",
+    "independent07": "exactlatestbundle/controller/patch findingclosed; noopenfindings",
+    "composition": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/scanner-audio-over179-r1/package-qualification.json",
+      "sha256": "9da21ee405a0af3298c94085e3803471f24da10ed9bf3159352491dd7cb9329d"
+    },
+    "independent206Pins": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/scanner-audio-over179-r1/inactive180-independent206-readback.json",
+      "sha256": "5d26c2518b470351723fc029a3ef449b40ab8a3d44af2a6c7e6ba3c10e3e9397"
+    },
+    "activeReadback": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/scanner-audio-over179-r1/activation180-readback-envelope.json",
+      "sha256": "ae8ed94feb0828476f401d33c01d4484a4365f32f8cbe17d5c5293a91900925f"
+    }
+  },
+  "preservation": "All203nonmain179modules unchanged;434oldroutebodies/headers+3existingroomresources equal;rootHTML597143/story5139/CSS483a/authHTML768188/authJS61ab unchanged;existingguard/Netlifyconfig/own-data/CSP/STOP preserved",
+  "semantics": "Missing two own-resolved-name speechcalls restored; cancel pendingvoice timeout withlistener; timeoutboundtoexactlistener andcurrentgeneration/entry. Usergesture/defaultbeep/dedup/mute/localEnglishvoice/currentguestMaptab-onlypreferences retained. No storage/provider/identity changes.",
+  "limits": [
+    "Synthetic event/controller/reviewer evidence; no physical audible phone/browser output or realaccountlogin claim.",
+    "No forbidden publicHTTPprobe.",
+    "No newcountryacquisition/dataimport/Gold/publication or source-usehold lift."
+  ],
+  "rollback": {
+    "number": 179,
+    "id": "47755daf-3bb3-48c6-a993-b459faf8aa05",
+    "source": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/landing-only.mjs",
+      "sha256": "d1ffce4e4f1ac4ea51b48013a1d4cf00faa151e365a516bf1e30638f93c3d7c8"
+    }
+  },
+  "authority": "Latest scoped Parent/Gateway instruction forprompt currentbaselineaudiointegration afterboundedreview; allmain/CIX/source/privacy/security/generalproduction outsideexactscopeholds retained.",
+  "cleanup": {
+    "ownedProcessesStarted": 0,
+    "retained": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/scanner-audio-over179-r1",
+    "reason": "Active180source/pins/review/readback andprivate-origincustody required; no other worktree/process cleanup."
+  },
+  "nextAction": "Preserve180source viaexistingPR138; completeAPP05normalrole/pair/identity/privatee40/currentstopstart;19terminalbundle/phasepolicy;no newGooglegrant/no duplicate19run."
+}

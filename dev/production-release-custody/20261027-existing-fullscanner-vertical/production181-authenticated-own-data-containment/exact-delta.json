@@ -1,0 +1,17 @@
+{
+  "source": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/production-selected-lookup-preparation-20261026/provider-module-custody/exact-source-readback-20261026/deployed-application.mjs",
+    "sha256": "2a07a3e6e302a328c65dbb0c21b3dce0fa8bd993edcfc5dbcf3511762c15ff6e"
+  },
+  "candidate": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/authenticated-app-delivery-20261026/own-data-enforcement-current180/deployed-application.candidate.mjs",
+    "sha256": "13bd5e94c11ded5756a09edafc414791164425f4aca0b12b947849e1af60157a"
+  },
+  "edit": {
+    "start": 52158,
+    "end": 53376,
+    "beforeSHA256": "861c0c182e212b36294ec1b1c5821c62b087be54b71856615c1a215ddb27cdf9",
+    "replacement": "if(C===\"/api/data/lookup\"&&A.method===\"POST\")return G({error:\"External provider lookup is unavailable. Use your saved OffMenu records.\",code:\"OWN_DATA_REQUIRED\"},503);"
+  },
+  "preservation": "Prefix and suffix exact; existing DB availability, allowed method, same-origin mutation and verifiedUser checks precede replaced branch. Saved-records/recipes/identity/connections code untouched."
+}
