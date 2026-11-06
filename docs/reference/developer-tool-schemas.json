@@ -1,0 +1,1615 @@
+{
+  "schema": "offmenu-developer-tool-reference/1",
+  "qualifiedSource": {
+    "schema": "offmenu-example-source/1",
+    "qualifiedCommit": "3540b2d4d5f4e96a518a63c832ccd6c3db809686",
+    "qualifiedTree": "62efa45bb564affe4f1f1b2388bbb3447a14482c",
+    "meaning": "Source qualification pin, not a deployment claim. Runtime verifies the listed local module and schema bytes.",
+    "files": {
+      "apps/web/server/admin-mcp.mjs": "820aa8f09ea943ce6f26c55d105861f273e41805aad201d310b0f17153898735",
+      "apps/web/server/admin-operations.mjs": "d9768acfd996b58aa4fcda4a943a2294f2229a559327b1a89d000ebef67c26d4",
+      "apps/web/server/admin-settings.mjs": "d6ca6fb1f4b7788aca4de17c796b734f29b5ce55227c2f9bc4ea5cbbda8831e9",
+      "apps/web/server/care-cases.mjs": "c46d7ebf5fc5a5099c157371a34a0d5cc14f2b935c287be141e67b3b22fba1af",
+      "apps/web/server/care-community.mjs": "ab312f15408e26570011eb9f13025967f2496752c9aab413cabc829038c2a9d7",
+      "apps/web/server/care-updates.mjs": "a98609ea91ad987768b55c59f491ef3738af278d594301aebbcf9829cf623015",
+      "apps/web/server/catalogue-schema.sql": "cab38bc6743d57832dcc293474c15a708e6461f7ccce15c4dc77c821e56c8dff",
+      "apps/web/server/catalogue.mjs": "98b7ca93456025d1b4079672586beacf6e800afe230436b80400091b6db901f7",
+      "apps/web/server/community-ai.mjs": "b2212706dc2ad13fd84f1f2eb27fadf0ef0597fc47af190d729922ccc71272c6",
+      "apps/web/server/corpus.mjs": "f0787a9719110ae8427a8362602976fdc11100b9948339b7c94b3cd00c53ee98",
+      "apps/web/server/global-settings.mjs": "c533cb8d76f4e91365491cb195a73c9c3cf7fce80c03f50f4760d4a08f5d8b52",
+      "apps/web/server/integrations.mjs": "7a11b3deb0bb7cd50d9ab55b5f7494ce490118157c577b4f403a24e95eb5761b",
+      "apps/web/server/personal-ai.mjs": "5ff4a3c34e4600bcb28044aaec451a64c92ddb9aa2850c0d7a81f192479a161a",
+      "apps/web/server/provider-data.mjs": "ab8211a7482450f91fcba287b51a9cb403c58a5915af8edb1aac53aca1db428e",
+      "apps/web/server/recipe-community.mjs": "782f410b1d01ef555556dfc914b09903b8fd1238ae1478aa9ee801296325cc3f",
+      "apps/web/server/schema.sql": "48bad7a6e855478f3364f7e43292ccc34aa54802571c943ed9226a3a7270e380",
+      "apps/web/server/service-config.mjs": "bf79c76108caf4754950e89c1af52a43ef8d7ebaef4e47c839b8d8a2e9369bc7",
+      "apps/web/server/service-support.mjs": "d5bc9cd3baaf9da35ecc360338738ec70195e3d1a0ddc2905a3c5b61296e971f",
+      "apps/web/server/state.mjs": "50023d296d373ab1fc39c6034c9ff5a331dc18fd9a5a965a31d6ae700a40c0ff",
+      "apps/web/src/basket-model.js": "232b09d7446c733d9992ef42c82dfcfcf36c2a2547d10ac2b7e2765cf6468bf3",
+      "apps/web/src/cooking-model.js": "f2cc79de2ce5f69028e920411120f668f48a9f6cc4cd79e502f1a35f727f33d4",
+      "apps/web/src/countries.js": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3",
+      "apps/web/src/evidence-model.js": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9",
+      "apps/web/src/health-model.js": "04448e0b34f8e92dcbab5006787af6683b41353bfb2e389181dd5ae8c739e5b1",
+      "apps/web/src/i18n.js": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+      "apps/web/src/ingredients.js": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab",
+      "apps/web/src/insights-model.js": "f8008145063c8bbcf2c9322ece541ee10dc5a9f63678af78fb6f6167bf51f678",
+      "apps/web/src/locale-negotiation.js": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+      "apps/web/src/locales/ar.js": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "apps/web/src/menu-model.js": "45edbd9f55c5527ec67445f24c6483c091888dbdfc285bcc88aca264402cbc9b",
+      "apps/web/src/model.js": "4edfc0bc5fa54a0ca3152a3f0321c5c50aa9501b4d6229bd2ac3d8ff8b886fac",
+      "apps/web/src/record-policy.js": "048c6cfe0491c341f11424cd39a062c80d317f8bd13ff513c798867f848818a9",
+      "apps/web/src/scanner-identity-v2.js": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76",
+      "apps/web/src/scanner-kitchen-handoff.js": "e35169fee6a7391491c460ddb590f9e1d0b0e59a20a00dcbce557aee7faf1eb1",
+      "apps/web/src/source-category-claims.js": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6",
+      "apps/web/src/sources.js": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933",
+      "apps/web/src/typed-identifier-contract.mjs": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "apps/web/src/unified-data.js": "82d027668d9f528dd83bce3cbb8c6f39b0bcdfbb88c62994456c433bc402b782",
+      "docs/research/manifest.json": "f4b575138d4e097855531c056032be3e8dca57043cd7543c0fe1ca62dd481483",
+      "tools/corpus/assert-curated.mjs": "c64ce47a881d987b4e3b48b84be1c22f1e95031a77d390d433404ed327bed69d",
+      "tools/corpus/engine.mjs": "130dbb2cfc63b1859b9044a26e3fd26759d5fbc1e3d186af9e812c20d19d555a"
+    }
+  },
+  "discoveryOnlyForAdditionalActions": true,
+  "personalTools": [
+    {
+      "requiredScopes": [
+        "health:read"
+      ],
+      "name": "get_health_observations",
+      "description": "Read separately authorised private health observations.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "cursor": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "baskets:read"
+      ],
+      "name": "get_saved_baskets",
+      "description": "Read private quantified baskets and their nutrient calculations.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "cursor": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "evidence:read"
+      ],
+      "name": "get_private_evidence",
+      "description": "Read private enrichment assertions, preserving unverified status.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "cursor": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "inventory:read"
+      ],
+      "name": "get_inventory",
+      "description": "Read the authorised user\u2019s recorded kitchen inventory.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "plans:read"
+      ],
+      "name": "get_meal_plan",
+      "description": "Read the authorised user\u2019s saved meal plan.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "description": "Inclusive YYYY-MM-DD"
+          },
+          "to": {
+            "type": "string",
+            "description": "Inclusive YYYY-MM-DD"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "history:read"
+      ],
+      "name": "get_food_history",
+      "description": "Read the authorised user\u2019s consumed-food and cleanup history.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "description": "Inclusive YYYY-MM-DD"
+          },
+          "to": {
+            "type": "string",
+            "description": "Inclusive YYYY-MM-DD"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "directory:read"
+      ],
+      "name": "get_directory",
+      "description": "Read saved recipe and storage-location directory.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "data:read"
+      ],
+      "name": "get_unified_records",
+      "description": "Read the authorised user\u2019s private normalized source records; no credentials are returned.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "cursor": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "profile:read"
+      ],
+      "name": "get_profile",
+      "description": "Read the authorised owner\u2019s private profile snapshot.",
+      "scope": "profile:read",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "recipes:read"
+      ],
+      "name": "get_recipes",
+      "description": "Read the authorised owner\u2019s saved private recipes.",
+      "scope": "recipes:read",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "providers:read"
+      ],
+      "name": "get_providers",
+      "description": "List metadata for the authorised owner\u2019s connected providers. Credentials are never returned.",
+      "scope": "providers:read",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "providers:lookup"
+      ],
+      "name": "lookup_provider",
+      "description": "Use a connected personal provider adapter without exposing its credentials.",
+      "scope": "providers:lookup",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "sourceId": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "query": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "sourceId",
+          "query"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "requiredScopes": [
+        "profile:write"
+      ],
+      "name": "update_profile",
+      "description": "Save reviewed country, units, servings, or interface language using the owner\u2019s current state revision.",
+      "scope": "profile:write",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "confirmed": {
+            "const": true
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "profile": {
+            "type": "object",
+            "properties": {
+              "country": {
+                "type": "string",
+                "maxLength": 2
+              },
+              "units": {
+                "enum": [
+                  "metric",
+                  "imperial"
+                ]
+              },
+              "servings": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "uiLanguage": {
+                "enum": [
+                  "en",
+                  "ar"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "confirmed",
+          "revision",
+          "profile"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "recipes:write"
+      ],
+      "name": "save_recipe",
+      "description": "Save one private recipe using the owner\u2019s current state revision.",
+      "scope": "recipes:write",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "confirmed": {
+            "const": true
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "recipe": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "confirmed",
+          "revision",
+          "recipe"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "plans:write"
+      ],
+      "name": "save_plan",
+      "description": "Replace a reviewed meal plan using the owner\u2019s current state revision.",
+      "scope": "plans:write",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "confirmed": {
+            "const": true
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "plan": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "confirmed",
+          "revision",
+          "plan"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "inventory:write"
+      ],
+      "name": "update_inventory",
+      "description": "Replace reviewed inventory using the owner\u2019s current state revision.",
+      "scope": "inventory:write",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "confirmed": {
+            "const": true
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "inventory": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "confirmed",
+          "revision",
+          "inventory"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "ai:read"
+      ],
+      "name": "get_ai_preferences",
+      "description": "Read the owner\u2019s encrypted personal AI preferences.",
+      "scope": "ai:read",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "ai:write"
+      ],
+      "name": "save_ai_preferences",
+      "description": "Save reviewed personal AI preferences.",
+      "scope": "ai:write",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "confirmed": {
+            "const": true
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "preferences": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "confirmed",
+          "revision",
+          "preferences"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "community:contribute"
+      ],
+      "name": "contribute_recipe",
+      "description": "Submit a personally reviewed AI-attributed recipe for public moderation.",
+      "scope": "community:contribute",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 128
+          },
+          "confirmed": {
+            "const": true
+          },
+          "rightsConfirmed": {
+            "const": true
+          },
+          "alias": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "recipe": {
+            "type": "object"
+          },
+          "license": {
+            "enum": [
+              "CC BY 4.0",
+              "CC0-1.0"
+            ]
+          }
+        },
+        "required": [
+          "idempotencyKey",
+          "confirmed",
+          "rightsConfirmed",
+          "alias",
+          "recipe",
+          "license"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    }
+  ],
+  "adminTools": [
+    {
+      "requiredScopes": [
+        "admin:community:read"
+      ],
+      "name": "listCommunityQueue",
+      "description": "List pending public community items without private owner data.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:community:manage"
+      ],
+      "name": "moderateCommunityItem",
+      "description": "Apply a confirmed community moderation action.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "revision",
+          "confirmed",
+          "action",
+          "reason"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "topic",
+              "reply",
+              "recipe",
+              "comment"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "confirmed": {
+            "const": true
+          },
+          "action": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 500
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:community:manage"
+      ],
+      "name": "completeCommunityAIDecision",
+      "description": "Complete an awaiting-agent public community decision.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "revision",
+          "confirmed",
+          "action",
+          "reason"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "recipe",
+              "topic",
+              "reply",
+              "recipe-comment"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "confirmed": {
+            "const": true
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "approve",
+              "hide",
+              "reject"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:updates:manage"
+      ],
+      "name": "publishUpdate",
+      "description": "Create or revise a confirmed public care update.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "action",
+          "confirmed"
+        ],
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "create",
+              "publish",
+              "withdraw",
+              "edit"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "confirmed": {
+            "const": true
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en",
+              "ar"
+            ]
+          },
+          "publishAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "releaseRef": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 500
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:care:read"
+      ],
+      "name": "listCareCases",
+      "description": "List submitted care cases.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "cursor": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:care:read"
+      ],
+      "name": "readCareCase",
+      "description": "Read one staff-visible care case.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:care:manage"
+      ],
+      "name": "updateCareCase",
+      "description": "Apply a confirmed care-case update.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "id",
+          "revision",
+          "confirmed",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "confirmed": {
+            "const": true
+          },
+          "status": {
+            "type": "string"
+          },
+          "assignedTo": {},
+          "proposal": {},
+          "releaseRef": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:care:manage"
+      ],
+      "name": "replyCareCase",
+      "description": "Send a confirmed staff reply or internal note.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "id",
+          "revision",
+          "idempotencyKey",
+          "confirmed",
+          "message",
+          "internal"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "idempotencyKey": {
+            "type": "string"
+          },
+          "confirmed": {
+            "const": true
+          },
+          "message": {
+            "type": "string"
+          },
+          "internal": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:settings:read"
+      ],
+      "name": "readServiceSettings",
+      "description": "Read service metadata only.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:settings:read"
+      ],
+      "name": "listPublicSources",
+      "description": "List public source policies.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:settings:write"
+      ],
+      "name": "updateServiceSettings",
+      "description": "Apply confirmed service settings.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "revision",
+          "confirmed",
+          "settings"
+        ],
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "confirmed": {
+            "const": true
+          },
+          "settings": {
+            "type": "object"
+          },
+          "credentials": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:settings:write"
+      ],
+      "name": "togglePublicSource",
+      "description": "Toggle a public source.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "id",
+          "revision",
+          "active",
+          "confirmed"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "confirmed": {
+            "const": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:settings:read"
+      ],
+      "name": "readCommunityAISettings",
+      "description": "Read the pinned community AI configuration metadata.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:settings:write"
+      ],
+      "name": "configureCommunityAISettings",
+      "description": "Apply a confirmed revision-checked community AI configuration.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "revision",
+          "confirmed",
+          "settings"
+        ],
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "confirmed": {
+            "const": true
+          },
+          "settings": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:community:manage"
+      ],
+      "name": "runCommunityAIReview",
+      "description": "Run a confirmed bounded community AI review.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "confirmed"
+        ],
+        "properties": {
+          "confirmed": {
+            "const": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "requiredScopes": [
+        "admin:community:read"
+      ],
+      "name": "listCommunityAIDecisions",
+      "description": "List bounded community AI decision metadata.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ],
+  "openapi": {
+    "openapi": "3.1.0",
+    "info": {
+      "title": "offmenu personal kitchen API",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "https://offmenu.example.invalid"
+      }
+    ],
+    "components": {
+      "securitySchemes": {
+        "personalToken": {
+          "type": "http",
+          "scheme": "bearer"
+        }
+      }
+    },
+    "security": [
+      {
+        "personalToken": []
+      }
+    ],
+    "paths": {
+      "/api/v1/inventory": {
+        "get": {
+          "summary": "Read your inventory",
+          "description": "Requires inventory:read. Token audience must be /api/v1. History includes food and cleanup records; directory includes saved recipes and locations.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Versioned personal records",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "integer"
+                      },
+                      "revision": {
+                        "type": "integer"
+                      },
+                      "updatedAt": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid or expired token"
+            },
+            "403": {
+              "description": "Scope missing"
+            }
+          }
+        }
+      },
+      "/api/v1/plans": {
+        "get": {
+          "summary": "Read your plans",
+          "description": "Requires plans:read. Token audience must be /api/v1. History includes food and cleanup records; directory includes saved recipes and locations.",
+          "parameters": [
+            {
+              "name": "from",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              }
+            },
+            {
+              "name": "to",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Versioned personal records",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "integer"
+                      },
+                      "revision": {
+                        "type": "integer"
+                      },
+                      "updatedAt": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid or expired token"
+            },
+            "403": {
+              "description": "Scope missing"
+            }
+          }
+        }
+      },
+      "/api/v1/history": {
+        "get": {
+          "summary": "Read your history",
+          "description": "Requires history:read. Token audience must be /api/v1. History includes food and cleanup records; directory includes saved recipes and locations.",
+          "parameters": [
+            {
+              "name": "from",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              }
+            },
+            {
+              "name": "to",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Versioned personal records",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "integer"
+                      },
+                      "revision": {
+                        "type": "integer"
+                      },
+                      "updatedAt": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid or expired token"
+            },
+            "403": {
+              "description": "Scope missing"
+            }
+          }
+        }
+      },
+      "/api/v1/directory": {
+        "get": {
+          "summary": "Read your directory",
+          "description": "Requires directory:read. Token audience must be /api/v1. History includes food and cleanup records; directory includes saved recipes and locations.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Versioned personal records",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "integer"
+                      },
+                      "revision": {
+                        "type": "integer"
+                      },
+                      "updatedAt": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid or expired token"
+            },
+            "403": {
+              "description": "Scope missing"
+            }
+          }
+        }
+      },
+      "/api/v1/data": {
+        "get": {
+          "summary": "Read your data",
+          "description": "Requires data:read. Token audience must be /api/v1. History includes food and cleanup records; directory includes saved recipes and locations.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Versioned personal records",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "integer"
+                      },
+                      "revision": {
+                        "type": "integer"
+                      },
+                      "updatedAt": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid or expired token"
+            },
+            "403": {
+              "description": "Scope missing"
+            }
+          }
+        }
+      },
+      "/api/v1/health": {
+        "get": {
+          "summary": "Read your health",
+          "description": "Requires health:read. Token audience must be /api/v1. History includes food and cleanup records; directory includes saved recipes and locations.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Versioned personal records",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "integer"
+                      },
+                      "revision": {
+                        "type": "integer"
+                      },
+                      "updatedAt": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid or expired token"
+            },
+            "403": {
+              "description": "Scope missing"
+            }
+          }
+        }
+      },
+      "/api/v1/baskets": {
+        "get": {
+          "summary": "Read your baskets",
+          "description": "Requires baskets:read. Token audience must be /api/v1. History includes food and cleanup records; directory includes saved recipes and locations.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Versioned personal records",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "integer"
+                      },
+                      "revision": {
+                        "type": "integer"
+                      },
+                      "updatedAt": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid or expired token"
+            },
+            "403": {
+              "description": "Scope missing"
+            }
+          }
+        }
+      },
+      "/api/v1/evidence": {
+        "get": {
+          "summary": "Read your evidence",
+          "description": "Requires evidence:read. Token audience must be /api/v1. History includes food and cleanup records; directory includes saved recipes and locations.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Versioned personal records",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "integer"
+                      },
+                      "revision": {
+                        "type": "integer"
+                      },
+                      "updatedAt": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid or expired token"
+            },
+            "403": {
+              "description": "Scope missing"
+            }
+          }
+        }
+      }
+    }
+  },
+  "schemaCoverageGaps": [
+    {
+      "path": "/api/v1/data",
+      "documentedKeys": [
+        "data",
+        "revision",
+        "updatedAt",
+        "version"
+      ],
+      "actualKeys": [
+        "nextCursor",
+        "records",
+        "schemaVersion",
+        "scope",
+        "withheld"
+      ],
+      "reason": "The advertised common envelope is incomplete for this pagination-specific response; schema has no required fields and accepts arbitrary additional properties."
+    },
+    {
+      "path": "/api/v1/health",
+      "documentedKeys": [
+        "data",
+        "revision",
+        "updatedAt",
+        "version"
+      ],
+      "actualKeys": [
+        "documents",
+        "nextCursor",
+        "scope"
+      ],
+      "reason": "The advertised common envelope is incomplete for this pagination-specific response; schema has no required fields and accepts arbitrary additional properties."
+    },
+    {
+      "path": "/api/v1/baskets",
+      "documentedKeys": [
+        "data",
+        "revision",
+        "updatedAt",
+        "version"
+      ],
+      "actualKeys": [
+        "documents",
+        "nextCursor",
+        "scope"
+      ],
+      "reason": "The advertised common envelope is incomplete for this pagination-specific response; schema has no required fields and accepts arbitrary additional properties."
+    },
+    {
+      "path": "/api/v1/evidence",
+      "documentedKeys": [
+        "data",
+        "revision",
+        "updatedAt",
+        "version"
+      ],
+      "actualKeys": [
+        "documents",
+        "nextCursor",
+        "scope"
+      ],
+      "reason": "The advertised common envelope is incomplete for this pagination-specific response; schema has no required fields and accepts arbitrary additional properties."
+    }
+  ]
+}
