@@ -4,6 +4,9 @@ Start with [setup, checks, local run and configuration](maintainer.md), then
 [operations and integration](operations.md). Use the accepted source/release
 receipt for the work; dated reports do not establish current activation.
 
+For scoped REST/MCP, schema limits and offline executable examples, use the
+[developer interface reference](developer-interfaces.md).
+
 ## Code and workflow map
 
 | Area | Entry points and guides |
