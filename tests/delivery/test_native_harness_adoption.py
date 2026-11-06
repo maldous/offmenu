@@ -165,6 +165,51 @@ class AdoptionTests(unittest.TestCase):
             with self.subTest(kind=kind), self.assertRaisesRegex(adoption.Refused, error):
                 self.prepare()
 
+    def test_prepared_dependency_descriptor_over_454k_is_verified_without_summary_substitution(self):
+        closure = dict(directories={'': dict(mode=0o755, uid=0, gid=0)}, files={
+            f'lib/python3.12/site-packages/synthetic/dependency-{index}.py':
+                dict(mode=0o444, uid=0, gid=0, size=1, sha256='a' * 64)
+            for index in range(3000)})
+        raw = adoption.owner_install.encoded(closure)
+        self.assertGreaterEqual(len(raw), 454123)
+        self.assertLess(len(raw), 8 * 1024 * 1024)
+        ref = self.write(raw, 'prepared/dependencies.json')
+        self.request['target']['dependencies'] = ref
+        self.request['readback']['dependencies_sha256'] = ref['sha256']
+        self.request['readback']['closure_sha256'] = fingerprint(self.request['target'])
+        before = self.disk()
+        result = self.prepare()
+        self.assertIn(ref, result['evidence_pins'])
+        self.assertEqual(result['request']['target']['dependencies'], ref)
+        self.assertEqual(ref['sha256'], hashlib.sha256(raw).hexdigest())
+        self.assertTrue(result['milestones']['coherent_validation_accepted'])
+        self.assertFalse(result['host_mutation_authorized'])
+        self.assertEqual(before, self.disk())
+        (self.root / ref['path']).write_bytes(raw[:-1] + b' ')
+        with self.assertRaisesRegex(adoption.Refused, 'evidence_pin'):
+            self.prepare()
+
+    def test_dependency_manifest_bound_keeps_other_metadata_small_and_refuses_over_8m(self):
+        baseline = copy.deepcopy(self.request)
+        ref = self.write(b' ' * (adoption.LIMIT + 1))
+        for kind in ('config', 'component'):
+            self.request = copy.deepcopy(baseline)
+            if kind == 'config':
+                self.request['target']['config'] = ref
+                self.request['readback']['config_sha256'] = ref['sha256']
+                self.request['readback']['closure_sha256'] = fingerprint(self.request['target'])
+            else:
+                self.request['components']['UIF-121']['source'] = ref
+            with self.subTest(kind=kind), self.assertRaises(adoption.owner_install.Refused):
+                self.prepare()
+        self.request = copy.deepcopy(baseline)
+        ref = self.write(b' ' * (8 * 1024 * 1024 + 1))
+        self.request['target']['dependencies'] = ref
+        self.request['readback']['dependencies_sha256'] = ref['sha256']
+        self.request['readback']['closure_sha256'] = fingerprint(self.request['target'])
+        with self.assertRaises(adoption.owner_install.Refused):
+            self.prepare()
+
     def test_latest_component_and_validation_pins_are_required(self):
         for role in ('source', 'tests', 'review'):
             value = copy.deepcopy(self.request)

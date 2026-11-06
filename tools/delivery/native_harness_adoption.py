@@ -189,9 +189,9 @@ def prepare(request, policy, *, evidence_root, accepted=None, now=None):
     refs(target['files'], maximum=128)
     for ref in target['files']:
         evidence.raw(ref)
-    for key in ('dependencies', 'config'):
-        evidence.raw(target[key])
     # Existing prepared manifests have their own larger, finite metadata bounds.
+    evidence.raw(target['dependencies'], 8 * 1024 * 1024)
+    evidence.raw(target['config'])
     evidence.raw(target['owner_manifest'], 8 * 1024 * 1024)
     evidence.raw(target['publisher_manifest'], publisher_install.MAX_MANIFEST)
     names = request['credential_references']
