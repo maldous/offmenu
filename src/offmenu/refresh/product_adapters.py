@@ -32,6 +32,7 @@ from .product_clock import clock_marker, validate_clock
 MIN_CACHE_SECONDS = 30 * 86400
 VERSION = 'offmenu-products-offline/2'
 OFF_CATEGORY_FIELD_VERSION = 'offmenu-off-source-category-fields/1'
+OFF_OPTIONAL_PROJECTION_VERSION = 'offmenu-off-optional-nutrition-names/2'
 
 # Original source keys, never a translated taxonomy or a composition claim.
 _OFF_CATEGORY_FIELDS = (
@@ -320,32 +321,77 @@ def _off_category_fields(row):
     return values, evidence
 
 
+def _off_nutrient_projection(row):
+    """Optional nutrition failures do not prevent identity/metadata delivery."""
+    raw = row.get('nutriments')
+    if raw is None:
+        return {}, {'$nutriments': {'state': 'unknown', 'reason': 'nutriments-missing-or-null', 'sourceAmount': None}}, None
+    if not isinstance(raw, dict):
+        return {}, {'$nutriments': {'state': 'unknown', 'reason': 'nutriments-not-object', 'sourceAmount': raw}}, None
+    per = row.get('nutrition_data_per')
+    basis = ({'amount': 100, 'unit': 'g', 'state': 'as-sold',
+              'qualificationStatus': 'unverified-source-assertions'} if per == '100g' else
+             {'amount': 100, 'unit': 'ml', 'state': 'as-sold',
+              'qualificationStatus': 'unverified-source-assertions'} if per == '100ml' else None)
+    nutrients, dispositions = {}, {}
+    for field, (name, unit) in _OFF_NUTRIENTS.items():
+        if field not in raw:
+            continue
+        value = raw[field]
+        reason = None
+        try:
+            number = _number(value)
+        except (RefreshError, OverflowError):
+            number = None
+            reason = ('trace-not-quantified' if isinstance(value, str) and
+                      value.lower() in ('tr', 'trace') else 'invalid-numeric-amount')
+        if reason is None and number is None:
+            reason = 'missing-or-empty-amount'
+        if reason is None and number < 0:
+            reason = 'negative-nutrient-amount'
+        if reason is None and basis is None:
+            reason = 'source-basis-unknown-or-unsupported'
+        if reason:
+            dispositions[field] = {'state': 'unknown', 'reason': reason,
+                                   'sourceAmount': value, 'sourceUnit': unit,
+                                   'sourceBasis': per, 'sourceField': field}
+        else:
+            nutrients[name] = {'value': number, 'unit': unit, 'basis': basis,
+                               'sourceAmount': value, 'sourceField': field, 'method': 'source'}
+    return nutrients, dispositions, basis
+
+
 def _off(context, row):
     key = str(row['code'])
     identifiers = [{'system': 'barcode', 'value': key}]
-    # Country names/tags remain unmodified. No guessed name-to-ISO translation.
-    countries = []  # Resolve source tags only through a separately reviewed country mapping.
-    basis = {'amount': 100, 'unit': 'ml' if row.get('nutrition_data_per') == '100ml' else 'g',
-             'state': 'as-sold', 'qualificationStatus': 'unverified-source-assertions'}
-    raw_nutrients = row.get('nutriments') or {}
-    if not isinstance(raw_nutrients, dict):
-        raise RefreshError('product-invalid-nutriments')
-    nutrients = {name: {'value': _number(raw_nutrients[field]), 'unit': unit, 'basis': basis,
-                       'sourceAmount': raw_nutrients[field], 'sourceField': field, 'method': 'source'}
-                 for field, (name, unit) in _OFF_NUTRIENTS.items() if field in raw_nutrients}
+    countries = []  # Resolve source tags only through a separately reviewed mapping.
     name = row.get('product_name') or row.get('product_name_en') or key
+    names = {k[len('product_name_'):]: deepcopy(v) for k, v in row.items()
+             if re.fullmatch(r'product_name_[A-Za-z]{2,3}(?:[-_][A-Za-z0-9]+)*', k)}
+    if 'product_name' in row:
+        language = row.get('lang') or row.get('lc')
+        names.setdefault(language if isinstance(language, str) and language else 'und',
+                         deepcopy(row['product_name']))
     category_fields, category_evidence = _off_category_fields(row)
     product = _record(context, 'product', key, {'name': name, 'identifiers': identifiers,
+        'names': names, 'nameLanguage': ((row.get('lang') or row.get('lc')) if row.get('product_name') else 'en' if row.get('product_name_en') else None),
         'brand': row.get('brands'), 'ingredientsText': row.get('ingredients_text'),
-        'sourceCountryTags': row.get('countries_tags', []), 'rawNutriments': raw_nutrients,
+        'sourceCountryTags': row.get('countries_tags', []), 'rawNutriments': row.get('nutriments'),
         'nutritionSourceBasis': row.get('nutrition_data_per'),
         'qualificationStatus': 'unverified-source-assertions',
         'sourceCategoryFields': category_fields,
         'nutritionId': f'off:nutrientProfile:{key}'}, countries)
     product['provenance']['sourceCategoryFields'] = category_evidence
+    product['provenance']['offOptionalNutritionProjectionVersion'] = OFF_OPTIONAL_PROJECTION_VERSION
+    # Identity, source names and category metadata exist independently of nutrition.
     yield product
-    yield _record(context, 'nutrientProfile', key, {'foodName': name, 'identifiers': identifiers,
-                  'basis': basis, 'nutrients': nutrients}, countries)
+    nutrients, dispositions, basis = _off_nutrient_projection(row)
+    profile = _record(context, 'nutrientProfile', key,
+                      {'foodName': name, 'identifiers': identifiers, 'basis': basis,
+                       'nutrients': nutrients, 'nutrientDispositions': dispositions,
+                       'nutritionSourceBasis': row.get('nutrition_data_per')}, countries)
+    profile['provenance']['offOptionalNutritionProjectionVersion'] = OFF_OPTIONAL_PROJECTION_VERSION
+    yield profile
 
 
 def _price(context, db, row):
@@ -450,6 +496,7 @@ def _product_contract(context, limits, files):
                 'clockPolicySha256': hashlib.sha256(Path(product_clock.__file__).read_bytes()).hexdigest()}
     if context.source_id == 'off':
         contract['offCategoryFieldProjectionVersion'] = OFF_CATEGORY_FIELD_VERSION
+        contract['offOptionalNutritionNamesProjectionVersion'] = OFF_OPTIONAL_PROJECTION_VERSION
     return contract
 
 

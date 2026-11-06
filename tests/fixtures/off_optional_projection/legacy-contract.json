@@ -1,0 +1,59 @@
+{
+  "baselinePreimageSha256": "1632280c5586546f5104fab6a3688ae2fe73d996f2ed4ae6ad00ba39196e5d3e",
+  "context": {
+    "source_id": "off",
+    "release_id": "2026-10-12",
+    "acquired_at": null,
+    "license": "ODbL / DbCL (retained data only)",
+    "attribution": "Open Food Facts",
+    "rights_evidence_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "scope_evidence_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "cache_seconds": 2592000,
+    "acquisition_clock_status": "unknown-retained",
+    "clock_evidence_sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+  },
+  "files": [
+    {
+      "role": "products",
+      "path": "generated.jsonl.gz",
+      "bytes": 123,
+      "sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+    }
+  ],
+  "contract": {
+    "context": {
+      "source_id": "off",
+      "release_id": "2026-10-12",
+      "acquired_at": null,
+      "license": "ODbL / DbCL (retained data only)",
+      "attribution": "Open Food Facts",
+      "rights_evidence_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "scope_evidence_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "cache_seconds": 2592000,
+      "acquisition_clock_status": "unknown-retained",
+      "clock_evidence_sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+    },
+    "limits": {
+      "max_input_bytes": 67108864,
+      "max_expanded_bytes": 268435456,
+      "max_line_bytes": 4194304,
+      "max_rows": 1000000,
+      "max_output_bytes": 268435456,
+      "max_database_bytes": 536870912,
+      "max_archive_members": 256,
+      "max_nutrients_per_food": 4096
+    },
+    "inputFiles": [
+      {
+        "role": "products",
+        "path": "generated.jsonl.gz",
+        "bytes": 123,
+        "sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+      }
+    ],
+    "adapterVersion": "offmenu-products-offline/2",
+    "clockPolicySha256": "7784e74ecb8a613c86d822248cf6e0ff1e5a6e84fba8521e1ce9f65d866bd828",
+    "offCategoryFieldProjectionVersion": "offmenu-off-source-category-fields/1"
+  },
+  "meaning": "Generatedmetadata-onlyexactoldcachecontract, notsourcebody/qualification/grant"
+}

@@ -21,7 +21,7 @@ class ProductQualificationTest(unittest.TestCase):
         (self.bundle/'data').mkdir()
         self.source = self.bundle/'data/products.gz'
         with gzip.open(self.source, 'wt') as f:
-            f.write(json.dumps({'code': '1234', 'product_name': 'Fixture', 'nutriments': {'proteins_100g': 2}})+'\n')
+            f.write(json.dumps({'code': '1234', 'product_name': 'Fixture', 'nutrition_data_per': '100g', 'nutriments': {'proteins_100g': 2}})+'\n')
         (self.bundle/'rights.txt').write_text('Synthetic fixture permit: retain parse transform; no public export')
         (self.bundle/'scope.txt').write_text('Exactly product:1234 and nutrientProfile:1234, two output records')
         def asset(name):

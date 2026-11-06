@@ -74,8 +74,11 @@ class OffNativePolicyTests(unittest.TestCase):
         self.assertEqual(profile['data']['basis']['unit'],'ml')
         self.assertEqual(profile['data']['nutrients']['protein']['value'],1.25)
         self.assertEqual(profile['data']['nutrients']['energy']['value'],0.0)
-        self.assertIsNone(profile['data']['nutrients']['salt']['value'])
-        self.assertIsNone(profile['data']['nutrients']['fat']['value'])
+        for name, field in (('salt', 'salt_100g'), ('fat', 'fat_100g')):
+            self.assertNotIn(name, profile['data']['nutrients'])
+            disposition = profile['data']['nutrientDispositions'][field]
+            self.assertEqual(disposition['reason'], 'missing-or-empty-amount')
+            self.assertEqual(disposition['sourceAmount'], self.raw['nutriments'][field])
         self.assertNotIn('unknown/source~key',profile['data']['nutrients'])
 
     def test_missing_optional_values_fallback_name_and_explicit_null_tags(self):
@@ -198,7 +201,8 @@ class OffNativePolicyTests(unittest.TestCase):
             row=deepcopy(self.rows[1]);row['data']['nutrients']['sodium'][field]=value
             self.assertTrue(self.errors(row))
         raw=source();raw['nutriments']['proteins_100g']=True
-        self.assertIn('off-native-record-or-source-invalid',self.errors(self.rows[0],raw))
+        self.assertIn('off-native-source-projection-mismatch',self.errors(self.rows[0],raw))
+        for row in records(raw):self.assertEqual(self.errors(row,raw),[])
         raw=source();raw['nutriments']={'proteins_100g':-1}
         for row in records(raw):self.assertEqual(self.errors(row,raw),[])
 
