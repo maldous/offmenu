@@ -31,3 +31,6 @@ deploy/auth-return/i18n.js
 build/
 .cache/
 integrations/staged/auth/dist/
+
+# Explicit installed Windmill runtime; ADR 0010. No source or custody masking.
+.offmenu-runtime/

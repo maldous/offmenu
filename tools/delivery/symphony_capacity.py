@@ -37,7 +37,7 @@ def scope(value):
     if (not isinstance(value,str) or not value or value.startswith('/') or '\\' in value
         or any(x in value for x in ['*','?','[','\x00','\n'])
         or any(x in ('','.','..') for x in value.split('/'))
-        or value.split('/')[0] in ('.git','.delivery','data','output','node_modules','.cache')):
+        or value.split('/')[0] in ('.git','.delivery','.offmenu-runtime','data','output','node_modules','.cache')):
         raise AdmissionError('invalid_write_scope')
     return value
 
