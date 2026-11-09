@@ -2,6 +2,9 @@
 import importlib.util
 import json
 import os
+import subprocess
+import sys
+import time
 from pathlib import Path
 import tempfile
 import unittest
@@ -229,6 +232,89 @@ class InstallationPlan(unittest.TestCase):
             with self.assertRaises(FileNotFoundError):
                 self.installer.install(self.staged, self.candidate, self.destination, self.fingerprint)
         self.assertEqual(list(folder.iterdir()), [])
+
+
+class RuntimeProcesses(unittest.TestCase):
+    """Actual child lifecycle checks against private synthetic state only."""
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name); self.runtime = self.root / 'runtime'
+        self.runner = self.runtime / stage.RUNNER; self.runner.parent.mkdir(parents=True)
+        self.runner.write_bytes((ROOT / stage.RUNNER).read_bytes())
+        policy = json.loads((ROOT / stage.POLICY).read_text()); policy['resource_accounting'] = 'observed-host-v1'
+        # Synthetic fixtures must not inherit production host reserves.
+        policy['host'].update(cpu_reserve=0, memory_reserve_bytes=0, disk_reserve_bytes=0,
+                              memory_budget_bytes=1024**3, io_slots=8)
+        policy['symphony'].update(cpu_budget_millis=0, memory_budget_bytes=0, io_slots=0)
+        (self.runtime / stage.POLICY).write_text(json.dumps(policy))
+        self.state = self.root / 'state'; self.children = []
+        self.addCleanup(self.reap)
+        self.resources = {'workers': 1, 'overhead_processes': 1, 'cpu_millis': 1,
+                          'memory_bytes': 16*1024**2, 'output_bytes': 0, 'io_slots': 1,
+                          'read_roots': ['/offmenu/data'], 'write_roots': []}
+
+    def reap(self):
+        for child in self.children:
+            if child.poll() is None:
+                child.terminate()
+            try: child.communicate(timeout=8)
+            except subprocess.TimeoutExpired:
+                child.kill(); child.communicate(timeout=5)
+
+    def start(self, job, command='while [ ! -f release ]; do sleep 0.02; done', resources=True, mode='read', timeout=8):
+        args = [sys.executable, '-B', str(self.runner), '--root', str(self.state),
+                'run', '--job-id', job, '--mode', mode, '--timeout', str(timeout)]
+        child = subprocess.Popen(args, cwd=self.root, stdin=subprocess.PIPE,
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        payload = {'command': command}
+        if resources: payload['resources'] = self.resources
+        child.stdin.write(json.dumps(payload)); child.stdin.close(); child.stdin = None
+        self.children.append(child); return child
+
+    def finish(self, child):
+        out, err = child.communicate(timeout=10)
+        self.assertEqual(child.returncode, 0, err)
+        return json.loads(out)
+
+    def await_running(self, job):
+        path = self.state / 'jobs' / job / 'receipt.json'
+        for _ in range(100):
+            if path.exists() and json.loads(path.read_text()).get('status') == 'running': return
+            time.sleep(0.02)
+        self.fail('Synthetic child did not enter running state')
+
+    def test_two_capacity_reads_complete_and_release_markers(self):
+        one = self.start('one'); self.await_running('one')
+        two = self.start('two'); self.await_running('two')
+        self.assertIsNone(one.poll()); self.assertIsNone(two.poll())
+        (self.root / 'release').write_text('release both readers')
+        for child in [one, two]:
+            result = self.finish(child)
+            self.assertEqual(result['status'], 'succeeded'); self.assertTrue(result['child_tree_gone'])
+        self.assertFalse(list((self.state / 'locks').glob('*.inflight.json')))
+
+    def test_legacy_writer_blocks_capacity_without_duplicate_execution(self):
+        legacy = self.start('legacy', resources=False, mode='write'); self.await_running('legacy')
+        candidate = self.finish(self.start('candidate'))
+        self.assertEqual(candidate['status'], 'busy')
+        self.assertFalse(candidate['reserved'])
+        self.assertIsNone(legacy.poll())
+        (self.root / 'release').write_text('release legacy writer')
+        self.assertEqual(self.finish(legacy)['status'], 'succeeded')
+
+    def test_timeout_reaps_child_and_releases_marker(self):
+        result = self.finish(self.start('timeout', command='sleep 3', timeout=1))
+        self.assertEqual(result['status'], 'timed_out'); self.assertTrue(result['child_tree_gone'])
+        self.assertFalse(list((self.state / 'locks').glob('*.inflight.json')))
+
+    def test_cancel_preserves_receipt_and_releases_marker(self):
+        child = self.start('cancel', command='sleep 3'); self.await_running('cancel')
+        result = json.loads(subprocess.check_output([sys.executable, '-B', str(self.runner),
+            '--root', str(self.state), 'cancel', '--job-id', 'cancel'], text=True))
+        self.assertEqual(result['status'], 'cancellation_requested')
+        final = self.finish(child)
+        self.assertEqual(final['status'], 'cancelled'); self.assertTrue(final['child_tree_gone'])
+        self.assertFalse(list((self.state / 'locks').glob('*.inflight.json')))
 
 
 if __name__ == "__main__":
