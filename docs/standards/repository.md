@@ -1,4 +1,4 @@
-# Repository standard 2.4.0
+# Repository standard 2.5.0
 
 Status: adopted through reviewed integration after independent source review and
 real retained-extraction validation. Changes enter `develop`
@@ -168,3 +168,5 @@ tests, source integration and a service start do not establish useful BAU or
 legacy retirement. Exact installed, active and functional evidence is required
 before retiring the obsolete lane. This source standard grants no product
 deployment, CIX execution, Actions, new credentials or spend.
+
+The explicit installed `.offmenu-runtime/` location is governed by [ADR 0010](../adr/0010-explicit-windmill-runtime-installation.md). It does not replace private `.delivery/` staging or release existing runtime holds without a verified consumer handoff.

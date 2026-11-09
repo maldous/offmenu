@@ -20,7 +20,7 @@ import sys
 import time
 import uuid
 
-"""Cooperative aggregate admission, not a cgroup or security boundary.
+"""Cooperative host admission, not a cgroup or security boundary.
 
 The supervisor owns a common lock while reading every reservation and committing
 its durable marker. Limits are operating demand, never ceiling x job count.
@@ -31,6 +31,10 @@ from pathlib import Path
 POLICY_PATH = Path(__file__).resolve().parents[2] / 'tools/delivery/capacity-policy.json'
 POLICY_BYTES = POLICY_PATH.read_bytes()
 POLICY = json.loads(POLICY_BYTES)
+ACCOUNTING = POLICY.get('resource_accounting', 'reserved-maxima-v1')
+if ACCOUNTING not in ('reserved-maxima-v1', 'observed-host-v1'):
+    raise ValueError('InvalidResourceAccounting')
+OBSERVED_HOST = ACCOUNTING == 'observed-host-v1'
 JOB_CEILING = POLICY['windmill']['resource_pool_jobs']
 WORKER_CEILING = POLICY['windmill']['computation_subprocesses_per_job']
 OVERHEAD_CEILING = POLICY['windmill']['overhead_processes_per_job']
@@ -39,9 +43,11 @@ CPU_RESERVE = POLICY['host']['cpu_reserve']
 MEMORY_RESERVE = POLICY['host']['memory_reserve_bytes']
 NATIVE_CPU_RESERVATION = POLICY['symphony']['cpu_budget_millis']
 NATIVE_MEMORY_RESERVATION = POLICY['symphony']['memory_budget_bytes']
-MEMORY_BUDGET = POLICY['host']['memory_budget_bytes'] - NATIVE_MEMORY_RESERVATION
+MEMORY_BUDGET = (POLICY['host']['memory_budget_bytes'] if OBSERVED_HOST else
+                 POLICY['host']['memory_budget_bytes'] - NATIVE_MEMORY_RESERVATION)
 DISK_RESERVE = POLICY['host']['disk_reserve_bytes']
-IO_BUDGET = POLICY['host']['io_slots'] - POLICY['symphony']['io_slots']
+IO_BUDGET = (POLICY['host']['io_slots'] if OBSERVED_HOST else
+             POLICY['host']['io_slots'] - POLICY['symphony']['io_slots'])
 PROCESS_BUDGET = JOB_CEILING * (WORKER_CEILING + OVERHEAD_CEILING)
 
 
@@ -87,7 +93,8 @@ def validate_resources(value, mode, scope=Path('/offmenu')):
     # A pooled writer must not modify the shared coordinator itself.
     control = scope / 'data/.offmenu-platform'
     protected = [control / name for name in ('locks', 'jobs', 'checkpoints')]
-    protected += [scope / 'scripts/windmill', scope / 'tools/delivery']
+    protected += [scope / 'scripts/windmill', scope / 'tools/delivery',
+                  scope / '.delivery/windmill-runtime', scope / '.offmenu-runtime']
     if any(overlap(p, q) for p in value['write_roots'] for q in protected):
         raise ValueError('CapacityCoordinatorWrite')
     return value
@@ -113,24 +120,28 @@ def free_bytes(root):
 def decide(request, active, cpu_count, available_memory, available_disk):
     """Pure conservative decision; caller validates records under one lock.
 
-    CPU demand is independent of worker count, so 256 I/O workers can request
-    1000 millicores rather than 256 physical CPUs. RAM/disk checks subtract all
-    outstanding declarations, even when current usage already appears in the
-    observed free amount; this may queue work conservatively, never oversubscribe.
+    CPU demand is independent of worker count. Legacy mode reserves aggregate
+    maxima and the native partition. Observed mode checks each job maximum
+    against actual shared host headroom; resident work is already in the sample.
+    Neither mode guarantees instantaneous kernel enforcement or throughput.
     """
-    if sum(x.get('io_slots', 1) for x in [*active, request]) > IO_BUDGET:
+    demands = [request] if OBSERVED_HOST else [*active, request]
+    if sum(x.get('io_slots', 1) for x in demands) > IO_BUDGET:
         return 'capacity_io_reserved'
     if len(active) >= JOB_CEILING:
         return 'capacity_slots_active'
-    all_resources = [*active, request]
-    if sum(x['cpu_millis'] for x in all_resources) > max(0, (cpu_count - CPU_RESERVE) * 1000 - NATIVE_CPU_RESERVATION):
+    all_resources = demands
+    native_cpu = 0 if OBSERVED_HOST else NATIVE_CPU_RESERVATION
+    native_memory = 0 if OBSERVED_HOST else NATIVE_MEMORY_RESERVATION
+    if sum(x['cpu_millis'] for x in all_resources) > max(0, (cpu_count - CPU_RESERVE) * 1000 - native_cpu):
         return 'capacity_cpu_reserved'
     memory = sum(x['memory_bytes'] for x in all_resources)
-    if memory > min(MEMORY_BUDGET, available_memory - MEMORY_RESERVE - NATIVE_MEMORY_RESERVATION):
+    if memory > min(MEMORY_BUDGET, available_memory - MEMORY_RESERVE - native_memory):
         return 'capacity_memory_reserved'
-    if sum(requested_processes(x) for x in all_resources) > PROCESS_BUDGET:
+    if sum(requested_processes(x) for x in [*active, request]) > PROCESS_BUDGET:
         return 'capacity_processes_reserved'
-    if sum(x['output_bytes'] for x in all_resources) + DISK_RESERVE + JOB_CEILING * 2 * 1024**2 > available_disk:
+    future_logs = 0 if OBSERVED_HOST else JOB_CEILING * 2 * 1024**2
+    if sum(x['output_bytes'] for x in all_resources) + DISK_RESERVE + future_logs > available_disk:
         return 'capacity_disk_reserved'
     for other in active:
         if (any(overlap(a, b) for a in request['write_roots'] for b in other['write_roots'] + other['read_roots'])
@@ -432,7 +443,8 @@ def run(root, job_id, command, mode, timeout, resources=None):
             child_env = dict(os.environ, OFFMENU_COMPUTATION_SUBPROCESS_CEILING=str(resources['workers']),
                              OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1', MKL_NUM_THREADS='1',
                              NUMEXPR_NUM_THREADS='1', VECLIB_MAXIMUM_THREADS='1')
-            compute_cpus = sorted(os.sched_getaffinity(0))[CPU_RESERVE + (NATIVE_CPU_RESERVATION + 999)//1000:]
+            first = CPU_RESERVE if OBSERVED_HOST else CPU_RESERVE + (NATIVE_CPU_RESERVATION + 999)//1000
+            compute_cpus = sorted(os.sched_getaffinity(0))[first:]
             def child_preexec():
                 os.sched_setaffinity(0, compute_cpus)
         proc = subprocess.Popen(['/bin/bash', '--noprofile', '--norc', '-c', command],
@@ -453,6 +465,8 @@ def run(root, job_id, command, mode, timeout, resources=None):
                 # Sampled guardrails are not instantaneous kernel enforcement.
                 if usage['processes'] > requested_processes(resources) or usage['rss_bytes'] > resources['memory_bytes']:
                     outcome = 'failed'; update(error_class='CapacityBudgetExceeded'); break
+                if OBSERVED_HOST and memory_available() < MEMORY_RESERVE:
+                    outcome = 'failed'; update(error_class='CapacityHostMemoryPressure'); break
                 if free_bytes(root) < DISK_RESERVE:
                     outcome = 'failed'; update(error_class='CapacityDiskReserve'); break
                 last_capacity_sample = time.monotonic()
