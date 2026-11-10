@@ -519,5 +519,55 @@ class CompactObservationTests(unittest.TestCase):
             mcp.tool_value({'content':[None,{'type':'text','text':'not completed'}]})
 
 
+
+
+class RootSourceParityTests(unittest.TestCase):
+    def spec(self, name):
+        from test_stokowski_operations import PublisherProfileTests
+        spec = PublisherProfileTests().spec(outputs={name:'a'*64})
+        spec['origin']['provenance'][0].update(outputs={name:'a'*64},
+                                             path_mapping={name:name})
+        return spec
+
+    def test_exact_root_allowlist_and_existing_directories_match(self):
+        for name in ('AGENTS.md','repository-standard.json','src/example.py',
+                     'apps/example.js','tests/example.py','tools/example.py',
+                     'scripts/example.py','docs/example.md','contracts/example.json',
+                     'config/example.json'):
+            for profile in (operations.REVIEWED_PROFILE,operations.PUBLISHER_PROFILE,
+                            operations.IDENTITY_PROFILE):
+                with self.subTest(name=name,profile=profile):
+                    spec = self.spec(name)
+                    spec['profile'] = profile
+                    self.assertIs(operations.validated(spec),spec)
+                    self.assertIs(dispatcher._qualified_reviewed_spec(spec),spec)
+                    request = operations.bridge_arguments(spec)
+                    self.assertIs(dispatcher.validate_request(request),request)
+
+    def test_forbidden_roots_private_paths_and_aliases_match(self):
+        for name in ('README.md','package.json','arbitrary.py','.env','.git/config',
+                     '.delivery/receipt.json','data/private.json','output/raw.json',
+                     'agents.md','AGENTS.md/child','repository-standard.json/child',
+                     './AGENTS.md','AGENTS.md/','/AGENTS.md','../AGENTS.md',
+                     'docs/../AGENTS.md','docs//AGENTS.md','docs/./AGENTS.md',
+                     'docs/../../private','docs\\AGENTS.md'):
+            with self.subTest(name=name):
+                spec = self.spec(name)
+                with self.assertRaises(operations.OperationError):
+                    operations.validated(spec)
+                with self.assertRaises(ValueError):
+                    dispatcher._qualified_reviewed_spec(spec)
+
+    def test_root_allowance_retains_hash_and_profile_restrictions(self):
+        for changes in ({'outputs':{'AGENTS.md':'invalid'}},
+                        {'profile':'unreviewed-profile'}):
+            spec = self.spec('AGENTS.md')
+            spec.update(changes)
+            with self.assertRaises(operations.OperationError):
+                operations.validated(spec)
+            with self.assertRaises(ValueError):
+                dispatcher._qualified_reviewed_spec(spec)
+
+
 if __name__ == '__main__':
     unittest.main()
