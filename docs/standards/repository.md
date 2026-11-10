@@ -1,6 +1,6 @@
-# Repository standard 2.4.0
+# Repository standard 2.4.1
 
-Status: adopted through reviewed integration after independent source review and
+Status: 2.4.1 instruction-distribution candidate; previous standard status: adopted through reviewed integration after independent source review and
 real retained-extraction validation. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
 [`repository-standard.json`](../../repository-standard.json). This document
@@ -168,3 +168,9 @@ tests, source integration and a service start do not establish useful BAU or
 legacy retirement. Exact installed, active and functional evidence is required
 before retiring the obsolete lane. This source standard grants no product
 deployment, CIX execution, Actions, new credentials or spend.
+
+## Shared agent instructions
+
+[ADR 0010](../adr/0010-shared-worker-policy.md) adds a pinned local UIF worker
+policy copy and startup reference. It changes no runtime capacity/admission rule,
+source layout, integration ownership or publication permission.

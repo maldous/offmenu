@@ -1,3 +1,12 @@
+# Shared UIF worker directions
+
+At every startup, including independent Foo work, read
+[the shared worker policy](docs/agents/uif-worker-policy.md) and
+[its local version manifest](docs/agents/uif-worker-policy.json).
+Apply them with this repository's project-specific instructions, not instead of them.
+
+Read the existing delivery contract below. ADR 0010 records this additive instruction-distribution change. Existing suspended workers, typed admission, resource controls and integration ownership remain unchanged.
+
 # OffMenu developer and agent entrypoint
 
 Read `docs/standards/repository.md`, `repository-standard.json` and the relevant
