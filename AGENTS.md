@@ -44,9 +44,12 @@ delivery BAU, application deployment and product acceptance are separate facts.
 
 Select work using [task routing and tracking](docs/development/task-routing.md).
 Keep immediate bounded answers and genuine decisions with the coordinating owner;
-use available independent reasoning for separable analysis, owned Foo/Stokowski
-branches for repository work, and resource-admitted Windmill jobs for long-running
-deterministic work. Link runs and evidence to the existing Linear outcome rather
+use available independent reasoning for separable analysis and the dedicated
+project agent's isolated cloud Git checkout for independent repository work.
+Owned Foo/Stokowski branches are the optional Foo execution lane when that task
+requires it; resource-admitted Windmill jobs handle long-running deterministic
+work. All lanes retain existing typed admission, bound review and sole integration
+writer controls. Link runs and evidence to the existing Linear outcome rather
 than creating issues for messages or subprocesses. Recover from durable receipts;
 chat polling is not an execution or recovery mechanism. Capacity ceilings describe
 available capabilities, not utilization targets or permission to resume workers.
