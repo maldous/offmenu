@@ -1,6 +1,6 @@
-# Repository standard 2.5.1
+# Repository standard 2.5.2
 
-Status: 2.5.1 instruction-distribution candidate based on accepted standard 2.5.0; previous standard status: adopted through reviewed integration after independent source review and
+Status: 2.5.2 instruction-distribution candidate based on accepted standard 2.5.1; previous standard status: adopted through reviewed integration after independent source review and
 real retained-extraction validation. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
 [`repository-standard.json`](../../repository-standard.json). This document
@@ -185,3 +185,8 @@ or security configuration and cannot certify its own integration.
 [ADR 0010](../adr/0010-shared-worker-policy.md) adds a pinned local UIF worker
 policy copy and startup reference. It changes no runtime capacity/admission rule,
 source layout, integration ownership or publication permission.
+
+Standard 2.5.2 follows [ADR 0012](../adr/0012-cloud-routing-policy-1-2.md):
+carry the exact canonical UIF worker policy 1.2.0 and reconcile task routing with
+independent project-cloud execution and optional scoped Foo MCP. Existing typed
+admission, resource, review and integration requirements remain unchanged.
