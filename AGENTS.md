@@ -88,4 +88,3 @@ No Actions execution/dispatch/retry, production deployment, live food/barcode
 lookups, local model installation, force push/reset/clean or permanent data
 removal is authorized. Inspect workflow triggers before publishing. Only push
 this authorized feature branch; do not push the runner control branch.
-

@@ -16,7 +16,10 @@ python3.12 scripts/bootstrap_delivery.py --check
 .venv-delivery/bin/python -m offmenu.delivery discover
 .venv-delivery/bin/python -m offmenu.delivery check
 .venv-delivery/bin/python scripts/check_final_layout.py
-.venv-delivery/bin/python -m unittest discover -s tests/delivery -v
+GIT_CONFIG_COUNT=2 GIT_CONFIG_KEY_0=gc.auto GIT_CONFIG_VALUE_0=0 \
+  GIT_CONFIG_KEY_1=maintenance.auto GIT_CONFIG_VALUE_1=false \
+  PYTHONPATH="$PWD/src:$PWD/tools/delivery" \
+  .venv-delivery/bin/python -m unittest discover -s tests/delivery -v
 ```
 
 Bootstrap creates only the ignored project-local `.venv-delivery/`. `--check` checks all locked versions without network; installation is repeatable from a clean checkout and never mutates system Python.
@@ -27,6 +30,21 @@ inference is configured. LangGraph owns the finite graph and SQLite checkpoints;
 LangChain core is its integration dependency, not a second autonomous manager.
 LangSmith is installed transitively but tracing is disabled in graph execution
 and child commands, even if a developer's shell enables it.
+
+## Standalone and optional executor validation
+
+The OffMenu package and pinned delivery bootstrap do not depend on the external
+Stokowski package or a UIF checkout. Run the commands above in this checkout.
+The delivery suite includes optional Stokowski executor integration tests; when
+that executor is absent, those tests explicitly skip before installing fixtures.
+The test invocation disables Git background maintenance only in its child
+processes: process-supervision tests become subreapers, so detached maintenance
+children would otherwise contaminate later process-budget assertions. It does
+not change saved Git settings or relax any execution resource limits.
+Report skipped integration coverage separately from passing standalone checks.
+A standalone pass does not qualify the optional executor, its publisher, or a
+merge. Its existing pinned validation profiles still require their dependencies
+and positive, unskipped tests. Do not install Stokowski merely to build OffMenu.
 
 ## Reviewed task contract
 
