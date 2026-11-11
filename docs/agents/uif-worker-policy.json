@@ -1,13 +1,13 @@
 {
   "schema": "uif-worker-policy-manifest-v1",
   "policy_id": "uif-worker-policy",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "repository": "maldous/offmenu",
   "policy_path": "docs/agents/uif-worker-policy.md",
-  "sha256": "8a905f5482d1e7f05868571a49756f36cde5f9cf8571e4049fcca95bc64fe9b5",
+  "sha256": "d526aa6428eb6c73e134b9b757e79a643bf4f28beca3b9ebc171fe01a03fc19c",
   "maintenance_repository": "maldous/uif",
   "maintenance_path": "docs/agents/uif-worker-policy.md",
   "distribution": "reviewed-local-copy",
-  "base_commit": "a21e68c07c09750abbb1b3b284bb74609692cb5e",
-  "prior_agents_sha256": "488f95c935061f84bc45e130e47cbd29285d092277c6e7706f3473fd02fdc7b5"
+  "prior_agents_sha256": "8969297c959ed0be5867a4622cf2ddce95be419fbeb7279b946f14910500b7e3",
+  "base_commit": "850d4b71c1ca2af5a0989fb50952445071597068"
 }
