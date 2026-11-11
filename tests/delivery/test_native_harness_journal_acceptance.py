@@ -21,8 +21,8 @@ from symphony_capacity import AdmissionError, digest as journal_digest
 class JournalAcceptanceTests(unittest.TestCase):
     def setUp(self):
         self.f = existing.RuntimeBoundaryTests(methodName='runTest')
-        self.f.setUp()
         self.addCleanup(self.f.doCleanups)
+        self.f.setUp()
         self.current, self.issue = self.f.current, self.f.issue
         self.root = self.f.task_runtime
         h = self.f.handoff
@@ -171,8 +171,8 @@ class JournalAcceptanceTests(unittest.TestCase):
 class RealTerminalDigestTests(unittest.TestCase):
     def setUp(self):
         self.f = JournalAcceptanceTests(methodName='runTest')
-        self.f.setUp()
         self.addCleanup(self.f.doCleanups)
+        self.f.setUp()
         # Default to the consolidated original reader. During separate-owner
         # development this explicit test-only pin loads the exact reader122 file.
         source = os.environ.get('OFFMENU_TEST_TERMINAL_READER_SOURCE')

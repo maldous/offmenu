@@ -58,7 +58,7 @@ class SyntheticHost:
     """In-process test fixture only, never selected through a request or CLI."""
     uid = os.getuid()
     runner = runner
-    timeout = .25
+    timeout = 2
 
     def __init__(self, root, scenario='normal'):
         self.root = Path(root).resolve()
@@ -66,6 +66,10 @@ class SyntheticHost:
         self.config, _ = fixture()
         self.directory = self.root/'prepared-original-transaction'
         self.scenario = scenario
+        # Timeout scenarios stay short; ordinary child startup is not a 250ms
+        # performance contract on shared CI/cloud CPUs. Production is unchanged.
+        if scenario in ('escape', 'doublefork'):
+            self.timeout = .25
         body = '''import os,sys,json,time
 from pathlib import Path
 q=json.load(sys.stdin)

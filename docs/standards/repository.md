@@ -1,6 +1,6 @@
-# Repository standard 2.5.0
+# Repository standard 2.5.1
 
-Status: 2.5.0 conditional-validation candidate; previous standard status: adopted through reviewed integration after independent source review and
+Status: 2.5.1 instruction-distribution candidate based on accepted standard 2.5.0; previous standard status: adopted through reviewed integration after independent source review and
 real retained-extraction validation. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
 [`repository-standard.json`](../../repository-standard.json). This document
@@ -179,3 +179,9 @@ Foo-independent scope may use an independent cloud receipt. Foo-dependent or
 unclassified work still requires Windmill. Historical v1/v2 bindings retain their
 existing semantics. This source activation changes no installed publisher, host
 or security configuration and cannot certify its own integration.
+
+## Shared agent instructions
+
+[ADR 0010](../adr/0010-shared-worker-policy.md) adds a pinned local UIF worker
+policy copy and startup reference. It changes no runtime capacity/admission rule,
+source layout, integration ownership or publication permission.
