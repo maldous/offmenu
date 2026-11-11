@@ -1,3 +1,13 @@
+## Fixed operating role
+
+This repository belongs to the OffMenu dedicated project role. Read the fixed project agents and general Cloud role
+section in the local shared worker policy at startup and pass its version/hash to
+children. Project cloud Git, CPU and storage are independent of Foo; optional MCP
+execution must bind the correct host, project, worktree and branch. The general
+Cloud role has no Git configuration or repository binding. Additional Foo Codex sessions require
+restored allowance and current ownership checks. These are operating requirements,
+not proof of provisioning, availability or universal adoption.
+
 # Shared UIF worker directions
 
 At every startup, including independent Foo work, read
@@ -75,3 +85,4 @@ No Actions execution/dispatch/retry, production deployment, live food/barcode
 lookups, local model installation, force push/reset/clean or permanent data
 removal is authorized. Inspect workflow triggers before publishing. Only push
 this authorized feature branch; do not push the runner control branch.
+
