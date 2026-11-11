@@ -4,6 +4,9 @@ Read `docs/standards/repository.md`, `repository-standard.json` and the relevant
 ADR before changing structure. Read `tools/delivery/README.md` for the repeatable
 workflow. Discover the actual source/manifests before proposing new rules.
 
+For MCP work, follow the [execution identities and privilege boundary](tools/delivery/README.md#execution-identities-and-privilege-boundary). Keep service-job grants separate
+from developer access; normal typed validation needs no new sudo grant.
+
 Use `develop` for integration, `main` for reviewed releases, and a reviewed
 `feature/` or `bugfix/` branch for changes. The standardization workstream uses
 `feature/langgraph-delivery-standardization`. New qualified product/backlog work
