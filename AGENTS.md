@@ -89,10 +89,11 @@ lookups, local model installation, force push/reset/clean or permanent data
 removal is authorized. Inspect workflow triggers before publishing. Only push
 this authorized feature branch; do not push the runner control branch.
 
-The conditional validation policy in ADR 0011 has separate owner adoption under
-its explicit one-time initial exception. This branch selects the exact reviewed
-version 2 policy bytes in `tools/delivery/integration-policy.json`; normal source
-integration remains pending. Subsequent candidates must use an accepted policy
+The conditional validation policy in ADR 0011 was adopted into `develop` by
+PR #217 under its explicit one-time initial exception. PR #216 subsequently
+integrated the shared worker directions and standalone validation fixes into
+`develop`. The accepted version 2 policy is recorded in
+`tools/delivery/integration-policy.json`. Subsequent candidates must use an accepted policy
 base and the version 4 existing-PR contract for independently reviewed exact-source
 cloud validation of explicit Foo-independent scope. Unknown/Foo-dependent scope
 and historical bindings retain Windmill. No host configuration is changed.

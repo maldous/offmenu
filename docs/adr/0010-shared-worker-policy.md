@@ -1,6 +1,6 @@
 # ADR 0010: Portable shared worker directions
 
-- Status: source candidate for standard 2.5.1 (originally proposed as 2.4.1), published in PR #213 and continued in PR #216; not merged into develop or deployed
+- Status: source adopted into `develop` by PR #216, including PR #213, for standard 2.5.1 (originally proposed as 2.4.1); runtime deployment and adoption by existing workers are separate
 - Scope: root AGENTS.md and docs/agents local policy and manifest
 - Existing ADR 0004 through 0009 admission/integration contracts remain unchanged
 
@@ -33,7 +33,7 @@ the local manifest records the coordinated copy's exact SHA-256.
 Check policy-copy identity and manifest references, preserve old AGENTS bytes,
 run the existing discovery, delivery and final-layout checks in the pinned
 interpreter, and report any blocked checks. Source review/adoption and remote
-readback remain distinct from this local candidate. Existing active workers need
+readback are recorded by the merged PR #216; runtime adoption remains separate. Existing active workers need
 an explicit handoff; old worktrees do not inherit changes on another branch.
 No runtime script, capacity-policy, workflow, scheduler or production service is
 changed. Windmill enforcement investigation belongs to UIF documentation.

@@ -172,9 +172,9 @@ deployment, CIX execution, Actions, new credentials or spend.
 ## Conditional validation source activation
 
 [ADR 0011](../adr/0011-conditional-independent-validation.md) records separate
-owner adoption of integration policy v2. This branch selects its exact reviewed
-bytes in `integration-policy.json`; normal source integration is still pending.
-After integration, exact-source candidates with independently reviewed, explicitly
+owner adoption of integration policy v2, integrated into `develop` by PR #217.
+Its exact reviewed bytes are in `integration-policy.json`. Exact-source candidates
+with independently reviewed, explicitly
 Foo-independent scope may use an independent cloud receipt. Foo-dependent or
 unclassified work still requires Windmill. Historical v1/v2 bindings retain their
 existing semantics. This source activation changes no installed publisher, host
