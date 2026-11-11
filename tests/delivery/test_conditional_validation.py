@@ -89,10 +89,11 @@ class ConditionalValidationTests(unittest.TestCase):
         self.assertEqual(restarted['status'], 'reconciliation-required')
         self.assertIsNone(restarted['action'])
 
-    def test_inactive_policy_is_not_changed_or_automatically_selected(self):
-        active = json.loads((ROOT/'tools/delivery/integration-policy.json').read_text())
-        self.assertEqual(active['version'], 1)
-        self.assertIs(active['require_bound_windmill_validation'], True)
+    def test_selected_policy_still_requires_separate_adoption(self):
+        active = ROOT/'tools/delivery/integration-policy.json'
+        reviewed = ROOT/'tools/delivery/integration-policy-v2-candidate.json'
+        self.assertEqual(active.read_bytes(), reviewed.read_bytes())
+        self.assertEqual(json.loads(active.read_text())['version'], 2)
         self.snapshot.pop('policy_adoption')
         self.assert_held()
 

@@ -1,8 +1,9 @@
 # ADR 0011: Conditional independent validation
 
-- Status: proposed, inactive; repository standard candidate 2.5.0
-- Active integration policy: version 1, unchanged
-- Proposed policy: `tools/delivery/integration-policy-v2-candidate.json`, version 2
+- Status: owner-adopted; source integration pending; repository standard candidate 2.5.0
+- Selected source policy: `tools/delivery/integration-policy.json`, version 2
+- Reviewed policy bytes: `tools/delivery/integration-policy-v2-candidate.json`
+- Owner adoption source: `441285d6ba19f0a2affe070c349b7261eb095350`
 
 ## Decision and boundary
 
@@ -89,10 +90,11 @@ is restricted to the fixed initial policy digest. It cannot authorize different
 future policy bytes. The exact source head is pinned off-repository by the owner,
 avoiding a self-referential commit-hash field or an implementation-issued approval.
 
-Keep v1 active until exact source review, cloud validation and explicit owner
-adoption are complete. The owner may then activate that reviewed policy through
-the normal reviewed source integration under this exception, with normal GitHub
-protections, sole-writer ownership and canonical readback. Before subsequent
+Exact source review, independent cloud validation and explicit owner adoption
+are complete for the policy identified above. This source activation copies the
+reviewed policy bytes into `integration-policy.json`; normal reviewed integration
+is still pending. It remains subject to normal GitHub protections, sole-writer
+ownership and canonical readback. No host configuration is changed. Before subsequent
 candidates use v4, refresh their base to the accepted policy revision and obtain
 fresh source review/validation. Do not make the initial policy candidate qualify
 itself with v4 or report that a v1 Git base already contains the adopted policy.

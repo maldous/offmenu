@@ -169,12 +169,13 @@ legacy retirement. Exact installed, active and functional evidence is required
 before retiring the obsolete lane. This source standard grants no product
 deployment, CIX execution, Actions, new credentials or spend.
 
-## Conditional validation candidate
+## Conditional validation source activation
 
-[ADR 0011](../adr/0011-conditional-independent-validation.md) proposes integration
-policy v2. The active v1 `integration-policy.json` remains unchanged. Only after
-separate owner adoption under ADR 0011 may an exact-source candidate
-with independently reviewed, explicitly Foo-independent scope use an independent
-cloud receipt. Foo-dependent or unclassified work still requires Windmill.
-Historical v1/v2 bindings retain their existing semantics. This candidate does
-not activate itself or change installed publisher, host or security configuration.
+[ADR 0011](../adr/0011-conditional-independent-validation.md) records separate
+owner adoption of integration policy v2. This branch selects its exact reviewed
+bytes in `integration-policy.json`; normal source integration is still pending.
+After integration, exact-source candidates with independently reviewed, explicitly
+Foo-independent scope may use an independent cloud receipt. Foo-dependent or
+unclassified work still requires Windmill. Historical v1/v2 bindings retain their
+existing semantics. This source activation changes no installed publisher, host
+or security configuration and cannot certify its own integration.
