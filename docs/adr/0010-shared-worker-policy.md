@@ -1,6 +1,6 @@
 # ADR 0010: Portable shared worker directions
 
-- Status: source candidate for standard 2.4.1, published in PR #213; not merged into develop or deployed
+- Status: source candidate for standard 2.4.1, published in PR #213 and continued in PR #216; not merged into develop or deployed
 - Scope: root AGENTS.md and docs/agents local policy and manifest
 - Existing ADR 0004 through 0009 admission/integration contracts remain unchanged
 
@@ -17,6 +17,16 @@ Separate native/cloud subagent availability, cloud durable task admission,
 MCP deterministic execution and Foo/other Codex quota. A Foo quota outage must
 not stop independent eligible work. A restored quota must not resume old work
 without current normal admission and reconciled ownership.
+
+## Policy 1.1.1 clarification
+
+The coordinated shared copy clarifies that `develop` is the expected baseline
+when available and the normal merge destination, rather than an unconditional
+gate when absent. After integration, preserve unrelated work while returning
+the project checkout to current `develop` when available. New task worktrees
+retain their own branches and existing ownership, review and admission controls.
+Version 1.1.1 also conforms to the repository's single-final-newline convention;
+the local manifest records the coordinated copy's exact SHA-256.
 
 ## Validation and rollout
 
