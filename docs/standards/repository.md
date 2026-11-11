@@ -1,6 +1,6 @@
-# Repository standard 2.4.0
+# Repository standard 2.5.0
 
-Status: adopted through reviewed integration after independent source review and
+Status: 2.5.0 conditional-validation candidate; previous standard status: adopted through reviewed integration after independent source review and
 real retained-extraction validation. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
 [`repository-standard.json`](../../repository-standard.json). This document
@@ -168,3 +168,13 @@ tests, source integration and a service start do not establish useful BAU or
 legacy retirement. Exact installed, active and functional evidence is required
 before retiring the obsolete lane. This source standard grants no product
 deployment, CIX execution, Actions, new credentials or spend.
+
+## Conditional validation candidate
+
+[ADR 0011](../adr/0011-conditional-independent-validation.md) proposes integration
+policy v2. The active v1 `integration-policy.json` remains unchanged. Only after
+separate owner adoption under ADR 0011 may an exact-source candidate
+with independently reviewed, explicitly Foo-independent scope use an independent
+cloud receipt. Foo-dependent or unclassified work still requires Windmill.
+Historical v1/v2 bindings retain their existing semantics. This candidate does
+not activate itself or change installed publisher, host or security configuration.

@@ -66,3 +66,10 @@ No Actions execution/dispatch/retry, production deployment, live food/barcode
 lookups, local model installation, force push/reset/clean or permanent data
 removal is authorized. Inspect workflow triggers before publishing. Only push
 this authorized feature branch; do not push the runner control branch.
+
+The conditional validation proposal in ADR 0011 and
+`tools/delivery/integration-policy-v2-candidate.json` is inactive until separate
+owner adoption under ADR 0011’s explicit one-time initial exception. Keep the
+active v1 Windmill gate in force until that adoption completes. After adoption, only the version 4 existing-PR contract may consume
+an independently reviewed exact-source cloud receipt for explicit Foo-independent
+scope. Unknown/Foo-dependent scope and historical bindings retain Windmill.
