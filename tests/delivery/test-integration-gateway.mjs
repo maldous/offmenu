@@ -394,3 +394,12 @@ if (!['--local-review-fixture','--standalone-review-fixture'].includes(process.a
   }
   assert.equal(writes,1);
 });
+
+test('a cloud receipt without controller qualification never authorizes a merge',async()=>{
+  const f=fixture();
+  f.observe=async()=>({validation:{route:'independent-cloud',status:'succeeded'}});
+  f.controller.step=async()=>({status:'awaiting-validation',action:null});
+  const result=await advanceIntegration(f);
+  assert.equal(result.status,'awaiting-validation');
+  assert.deepEqual(f.calls,[]);
+});

@@ -376,3 +376,39 @@ This is not cloud voice/approval intake, an always-on supervisor or a new schedu
 
 Source-only native privilege confinement and its runtime adoption hold are in the
 [coding child confinement handoff](../../docs/development/coding-child-confinement.md).
+
+## Conditional validation source activation (integration pending)
+
+ADR 0011 defines the version 4 existing-PR binding for the connector-owner lane.
+The owner-adopted `integration-policy-v2-candidate.json` bytes are selected in
+`integration-policy.json`; normal source integration remains pending.
+Do not use candidate source to approve its own policy or relabel an old receipt.
+The explicitly authorized one-time initial adoption uses independent review and
+cloud validation under ADR 0011, with original approval, review and validation
+evidence pinned by the owner. It is distinct from prior-policy verification and
+cannot be reused for future policy bytes. Owner adoption is complete for the
+reviewed policy source identified in ADR 0011. This activation still requires
+exact-head review, validation and normal merge/readback before subsequent use.
+
+After source integration, the owner supplies `integration_policy`,
+`policy_adoption` and `accepted_policy_at_base_sha256` from accepted policy state,
+not the coding worker. The binding's `validation_contract` pins the route,
+complete implementation/provenance actor set, sorted exact `source_paths`, original receipt hash, adoption
+hash and (for cloud only) independent scope-review hash. The owner obtains
+`changed_paths` from the canonical base/head diff, including both names of a
+rename and deletions, and compares it with the bound list. No path allowlist or
+cloud label establishes independence.
+
+The original receipt binds repository, branch, base/head/tree, policy, capacity,
+operation, source paths, accepted output hashes, accepted-base validator revision,
+actual executor identity, environment/dependency hashes and command/log/results.
+Required checks must pass without skips. Optional skipped coverage remains
+explicit and cannot satisfy required checks. Review binds the receipt and scope
+hashes to the exact candidate. A changed source, base, policy, receipt or review
+requires a fresh binding. Retain runtime evidence privately under `.delivery/`.
+
+Version 4 is intentionally limited to an existing PR and the existing
+`advanceIntegration` gateway. Its action has the same exact-head/base normal
+merge contract; claims, protection, cancellation, reconciliation and canonical
+readback are unchanged. Version 2 pre-publication, source projection, installed
+Foo publishers, completed validation and release bindings are not migrated.
