@@ -94,9 +94,16 @@ archival/deletion, alter USF/CIX ownership or import their obligations into OffM
 | --- | --- | --- |
 | Immediate bounded answer, communication or genuine product/access decision | Coordinating owner; inspect the relevant source/receipt directly | Answer or explicit decision, linked to an existing issue when it changes durable work |
 | Separable analysis or independent review | An available reasoning worker with a finite question, read scope and immutable candidate; use the existing qualified GitHub review route where appropriate | Findings against exact source/evidence; implementing workers cannot certify their own merge |
-| Repository-heavy coding, builds or focused tests | An admitted Foo/Stokowski coding session, isolated exact feature/bugfix branch, allowed paths and accepted outputs | Native attempt receipt, stopped child tree, scope check, commit and affected behavior checks |
-| Long-running deterministic validation or computation | Existing Windmill MCP/API route and Foo runner, explicit resource reservation and bounded command/profile | Operation key, exact job ID, terminal backend receipt, child-tree cleanup and accepted output hashes |
+| Repository-heavy coding, builds or focused tests | An available dedicated project-cloud checkout or an admitted Foo/Stokowski session; isolated exact feature/bugfix branch, allowed paths, resources and accepted outputs | Actual executor/attempt evidence, stopped child tree where applicable, scope check, commit and affected behavior checks |
+| Long-running deterministic validation or computation | Independent cloud validation for independently reviewed Foo-independent scope under ADR 0011; otherwise the existing resource-admitted Windmill MCP/API route and Foo runner | Exact-source operation/receipt, Windmill job ID when used, terminal result, child-tree cleanup and accepted output hashes |
 | Integration | Sole authenticated integration owner through existing controller/gateway | Exact-base/head independent review, persisted intent, GitHub merge/tree/ancestry readback |
+
+The dedicated project-cloud checkout, CPU and storage are independent of Foo.
+Optional MCP execution is additive and must identify the correct host, project,
+worktree, branch and owner; it does not relocate cloud Git work to Foo. Follow the
+[shared worker policy](../agents/uif-worker-policy.md) and preserve normal admission,
+resource limits and writer ownership on either route. The general Cloud role has
+no Git configuration or repository binding.
 
 Do not delegate a trivial answer merely to fill slots. Do not start a second owner
 for an issue/attempt because one channel is slow. Check provider availability,
@@ -115,12 +122,12 @@ is not itself an issue. An issue can own several finite attempts.
 
 Link the existing identifiers, rather than inventing another universal run ID:
 
-`Linear issue → admitted coding run/attempt → operation key → Windmill job → candidate commit → validation/review → integration readback → acceptance evidence`
+`Linear issue → admitted coding run/attempt → operation key and executor receipt (Windmill job when used) → candidate commit → validation/review → integration readback → acceptance evidence`
 
 Record the owner, source base/head, exact branch, allowed paths, accepted output
 hashes, acceptance revision and resource declaration at the relevant handoff.
-The operation journal binds the issue, stage, source identities, profile, policy,
-runner/executor hashes and outputs. It persists submit intent and deterministic
+For the Foo/Windmill route, the operation journal binds the issue, stage, source
+identities, profile, policy, runner/executor hashes and outputs. It persists submit intent and deterministic
 job identity before network submission. Changing the owner does not manufacture
 a new operation key. A changed semantic candidate needs a new bound attempt after
 the previous effect is reconciled; it is not a retry shortcut.
@@ -164,12 +171,16 @@ use the existing [delivery runbook](../../tools/delivery/README.md) for recovery
 1. Select or refine the existing Linear outcome, its subject project, owner,
    dependencies and acceptance. Preserve active bindings; project placement is
    neither execution admission nor permission to migrate historical work.
-2. Select the lane above. Use cloud reasoning only when its actual task/provider
-   availability is established. Admit Foo/Stokowski repository work with an owned
+2. Select the lane above using actual task/provider and executor availability.
+   Use the dedicated project-cloud checkout for eligible independent work, or an
+   admitted Foo/Stokowski session when appropriate. Either route needs an owned
    branch, finite scope, resource budget and explicit acceptance revision.
-3. Bind deterministic work to the existing operation journal and Windmill route.
-   Persist intent/job identity, observe bounded execution and cleanup, and retain
-   LangGraph checkpoints and exact command/output evidence. Recover from receipts.
+3. Classify validation scope under ADR 0011. Independently reviewed Foo-independent
+   changes may use the accepted v4 cloud-validation contract; Foo-dependent or
+   unclassified work retains Windmill. For Windmill work, preserve the existing
+   operation journal and persist intent/job identity before submission. On either
+   route retain exact source, command/output and cleanup evidence and applicable
+   LangGraph checkpoints. Recover from the actual executor receipts.
 4. Review the immutable candidate independently, route findings to bounded repair,
    and let the sole integration owner validate exact base/head and consume the
    controller action. GitHub source review and canonical merge readback establish
@@ -199,7 +210,7 @@ profile uses the declared service-owned candidate checkout, accepted-base
 validators and bound output hashes.
 
 Choose task-fit lane/model before admission; record requested model, effort and
-provider separately from observed or unknown resolution. The existing repository
+provider separately from observed or unknown resolution. The existing Foo/Stokowski
 coding route requests `gpt-6.1-sol`/`medium` via its existing ChatGPT session.
 Reasoning slots are not provider/cloud-task availability. An unavailable route
 does not authorize paid fallback or a duplicate owner. Separate resource budgets
@@ -214,17 +225,20 @@ Unknown effects remain owned.
 Sends and one inspector returned backend `UNKNOWN` while reads/Foo worked; later
 supported same-owner send succeeded after readback, cause unknown. Native placement
 format 3 was unsupported by one cloud read. Optional settings/model changes are
-not established causes or fixes. Cloud approval/session intake remains unsupported,
-not a reason to bypass a gate or silently change owners.
+not established causes or fixes. These historical intake limitations do not
+establish that independent project-cloud checkout work is unavailable. Verify the
+actual route; an unsupported intake path is not a reason to bypass a gate or
+silently change owners.
 
 Placement adoption is partial. UIF-105 completed fourteen synthetic refusal checks
 and eight UI checks directly in its durable session, with no coding lease or
 Windmill job; UIF-101/104 also used direct local checks. These are observed direct
 validation, not Windmill acceptance or evidence of a denied harness route. Source
-inspection is legitimate direct-session reasoning. For future useful deterministic
-suites use the existing typed stage/profile and resource-admitted Windmill path
-when supported; retain the phase/checkpoint evidence. Do not replay already
-accepted checks solely to relabel their execution placement.
+inspection is legitimate direct-session reasoning. Future validation follows the
+accepted ADR 0011 classification: independently reviewed Foo-independent scope may
+use exact-source cloud evidence; Foo-dependent or unclassified scope retains the
+typed, resource-admitted Windmill path. Keep phase/checkpoint evidence and do not
+replay already accepted checks solely to relabel their execution placement.
 
 ## Recovery at phase boundaries
 
