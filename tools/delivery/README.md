@@ -177,6 +177,44 @@ or clear permissions/markers to force admission.
 
 Checkpoints predating exact branch/output evidence remain retained historical records. They are not silently upgraded into new verification evidence; the runner refuses to reuse their incomplete binding. Reconcile their recorded outcome and prepare a reviewed task on the fixed source.
 
+### Execution identities and privilege boundary
+
+The deployed route observed on 2026-11-10 is
+`u/admin/offmenu_delivery_dispatch` -> `u/admin/foo_jobs_20261027` in workspace
+`offmenu`. The dispatcher uses Windmill's logical `admin` identity and SDK;
+the bridge connects to Foo as `offmenu-wm` through the `offmenu-exec-v1` SSH
+protocol and invokes `python3 /offmenu/tools/delivery/windmill_runner.py`.
+Neither deployed adapter invokes sudo directly.
+
+Keep these identities distinct: the inspected Windmill worker containers used
+UID/GID 1000:1000, while the host SSH account `offmenu-wm` was UID 985,
+GID 977, with only its own group. Container IDs do not establish host access.
+The developer account's grants are separate and cannot be attributed to
+service jobs.
+
+On that date, administrator-side and service-account-side sudo policy listings
+both reported exactly `(root) NOPASSWD: /usr/local/libexec/uif-foo-root-exec ""`
+for `offmenu-wm`. The empty argument string permits no command-line arguments.
+This is passwordless eligibility for one helper, not authorization for arbitrary
+operations or input, proof of root execution, or verification of the helper's
+internal confinement. Protected shell source and helper internals were not
+audited; do not infer their behavior from this listing.
+
+Normal reviewed validation and status work needs no additional sudo grant.
+Use the existing typed route, reviewed command/source bindings, resource
+admission and original job identities; reconcile uncertain outcomes before
+retrying. The bridge's `read` mode is a scheduling declaration, not a read-only
+filesystem boundary. Use the existing execution identity and project interpreter
+rather than adding sudo to Python, shell, Git, Docker or service-management
+commands.
+
+Continue already-authorized operations within their existing scope. These
+observations introduce no new approval or delivery gate and do not expand
+permissions. Any security change, including sudoers, privileged helpers or SSH
+confinement, requires its concrete scope and mandatory action-time confirmation.
+Recheck effective policy when a task depends on it; documentation alone is not
+runtime enforcement or permission to bypass a denial.
+
 ## Alternate checkout mounts
 
 An editable install records its installation path. The existing SSH jail mounts
