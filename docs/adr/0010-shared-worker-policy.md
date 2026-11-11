@@ -1,6 +1,6 @@
 # ADR 0010: Portable shared worker directions
 
-- Status: source candidate for standard 2.4.1, published in PR #213 and continued in PR #216; not merged into develop or deployed
+- Status: source candidate for standard 2.5.1 (originally proposed as 2.4.1), published in PR #213 and continued in PR #216; not merged into develop or deployed
 - Scope: root AGENTS.md and docs/agents local policy and manifest
 - Existing ADR 0004 through 0009 admission/integration contracts remain unchanged
 

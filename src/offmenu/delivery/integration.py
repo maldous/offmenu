@@ -20,6 +20,10 @@ from uuid import UUID
 
 from .engine import atomic, DeliveryError
 
+# Initial policy digest only. Exact authorized source and evidence stay in the
+# owner's immutable adoption record, never in a self-referential source hash.
+INITIAL_CONDITIONAL_POLICY_SHA256 = '642a8ae29791f7b538f542d389270569f800dee3d5f9d4317638ebb8a3b8fb56'
+
 
 def fingerprint(value):
     return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -74,14 +78,16 @@ class Controller:
         required = {'version','repository','pr_number','issue_id','owner','head','base','tree',
                     'policy_sha256','capacity_policy_sha256','validation_operation_key','outputs','head_branch'}
         version = binding.get('version')
+        if version == 4:
+            required = required | {'validation_contract'}
         if version == 2:
             required = required | {'publication'}
             if 'source_projection' in binding:
                 required = required | {'source_projection'}
         if (set(binding) not in (required, required | {'project_id', 'full_issue_acceptance_sha256'})
-            or type(version) is not int or version not in (1, 2)):
+            or type(version) is not int or version not in (1, 2, 4)):
             raise DeliveryError('Invalid integration binding')
-        valid_pr = (type(binding['pr_number']) is int and binding['pr_number'] > 0) if version == 1 else binding['pr_number'] is None
+        valid_pr = (type(binding['pr_number']) is int and binding['pr_number'] > 0) if version in (1, 4) else binding['pr_number'] is None
         if (binding['repository'] != 'maldous/offmenu' or not valid_pr
             or not binding['owner'] or not binding['outputs']):
             raise DeliveryError('Invalid integration identity')
@@ -109,7 +115,169 @@ class Controller:
             if 'source_projection' in binding:
                 from .identity_source_projection import validate_projection
                 validate_projection(binding['source_projection'], binding)
+        if version == 4:
+            self._validate_contract(binding)
         self._bind_state(directory, binding, claim_root, existing_only=_existing_only)
+
+    @staticmethod
+    def _validate_contract(binding):
+        """Version 4 is a new existing-PR contract, never a v1/v2 reinterpretation."""
+        c = binding['validation_contract']
+        keys = {'version', 'route', 'implementation_actors', 'source_paths',
+                'receipt_sha256', 'scope_review_sha256', 'policy_adoption_sha256'}
+        if (not isinstance(c, dict) or set(c) != keys or type(c['version']) is not int
+            or c['version'] != 1 or c['route'] not in ('windmill', 'independent-cloud')
+            or not isinstance(c['implementation_actors'], list) or not c['implementation_actors']
+            or not all(isinstance(a, str) and a for a in c['implementation_actors'])
+            or c['implementation_actors'] != sorted(set(c['implementation_actors']))
+            or not Controller._source_paths(c['source_paths'])
+            or any(not re.fullmatch('[0-9a-f]{64}', str(c[k]))
+                   for k in ('receipt_sha256', 'policy_adoption_sha256'))
+            or (c['route'] == 'independent-cloud' and
+                not re.fullmatch('[0-9a-f]{64}', str(c['scope_review_sha256'])))
+            or (c['route'] == 'windmill' and c['scope_review_sha256'] is not None)
+            or not isinstance(binding['outputs'], dict)
+            or not Controller._source_paths(sorted(binding['outputs']))
+            or any(not re.fullmatch('[0-9a-f]{64}', str(v)) for v in binding['outputs'].values())):
+            raise DeliveryError('Invalid conditional validation contract')
+
+    @staticmethod
+    def _source_paths(paths):
+        return (isinstance(paths, list) and bool(paths)
+                and all(isinstance(p, str) and p and not p.startswith('/')
+                        and '\\' not in p and not any(ord(c) < 32 for c in p)
+                        and not any(v in ('', '.', '..', '.git') for v in p.split('/'))
+                        for p in paths) and paths == sorted(set(paths)))
+
+    def validation_qualified(self, snapshot):
+        """Consume owner-observed evidence; hashes bind bytes, not authority.
+
+        The authenticated owner independently obtains the original receipts,
+        canonical diff and adopted policy. Coding-child JSON is not an observer.
+        No validator or receipt-supplied command is executed by this consumer.
+        """
+        b, v = self.binding, snapshot.get('validation', {})
+        source = b.get('source_projection', {}).get('source', b)
+        if (not isinstance(v, dict) or v.get('operation_key') != b['validation_operation_key']
+            or v.get('status') != 'succeeded' or v.get('head') != source['head']
+            or v.get('base') != source['base'] or v.get('outputs') != b['outputs']
+            or v.get('capacity_policy_sha256') != b['capacity_policy_sha256']
+            or v.get('child_tree_gone') is not True or v.get('reconcile_required') is not False):
+            return False
+        if b['version'] != 4:
+            # Existing unlabelled Windmill receipts remain readable. A new route
+            # cannot be smuggled through the historical, less detailed schema.
+            return v.get('route', 'windmill') == 'windmill'
+        c = b['validation_contract']
+        policy, adoption = snapshot.get('integration_policy'), snapshot.get('policy_adoption')
+        if (not isinstance(policy, dict) or not isinstance(adoption, dict)
+            or fingerprint(policy) != b['policy_sha256']
+            or type(policy.get('version')) is not int or policy['version'] != 2
+            or policy.get('repository') != b['repository'] or policy.get('base_branch') != 'develop'
+            or policy.get('enabled') is not True
+            or any(policy.get(k) is not False for k in ('actions_execution', 'main_promotion',
+                                                        'production_deployment', 'legacy_workers_resume'))
+            or policy.get('validation_routes') != {
+                'default': 'windmill', 'independently_reviewed_foo_independent': 'independent-cloud'}
+            or any(policy.get(k) is not True for k in (
+                'require_independent_exact_head_review', 'require_normal_github_protection',
+                'require_canonical_merge_readback', 'require_prior_policy_adoption'))
+            or fingerprint(adoption) != c['policy_adoption_sha256']
+            or adoption.get('kind') != 'integration-policy-adoption-v1'
+            or adoption.get('decision') != 'adopted' or adoption.get('owner') != b['owner']
+            or adoption.get('policy_sha256') != b['policy_sha256']
+            or not re.fullmatch('[0-9a-f]{40}', str(adoption.get('policy_source_head')))
+            or adoption['policy_source_head'] == b['head']
+            or not adoption.get('independent_review_evidence_id')
+            or not self._adoption_verified(adoption)
+            or snapshot.get('accepted_policy_at_base_sha256') != b['policy_sha256']
+            or snapshot.get('changed_paths') != c['source_paths']
+            or snapshot.get('implementation_actors') != c['implementation_actors']
+            or fingerprint(v) != c['receipt_sha256']
+            or v.get('route') != c['route'] or v.get('repository') != b['repository']
+            or v.get('branch') != b['head_branch'] or v.get('tree') != b['tree']
+            or v.get('source_paths') != c['source_paths'] or v.get('policy_sha256') != b['policy_sha256']
+            or v.get('validator_revision') != b['base']
+            or v.get('independent') is not True or not v.get('evidence_id')
+            or not isinstance(v.get('executor_actor'), str) or not v['executor_actor']
+            or v['executor_actor'] in c['implementation_actors']
+            or any(not re.fullmatch('[0-9a-f]{64}', str(v.get(k)))
+                   for k in ('environment_sha256', 'dependencies_sha256'))):
+            return False
+        checks = v.get('checks')
+        if (not isinstance(checks, list) or not checks or not all(isinstance(x, dict) for x in checks)
+            or not any(x.get('required') is True for x in checks)):
+            return False
+        for check in checks:
+            if (not isinstance(check.get('id'), str) or not check['id']
+                or type(check.get('required')) is not bool
+                or not isinstance(check.get('argv'), list) or not check['argv']
+                or not all(isinstance(a, str) and a for a in check['argv'])
+                or not re.fullmatch('[0-9a-f]{64}', str(check.get('log_sha256')))):
+                return False
+            passed = (check.get('status') == 'succeeded' and type(check.get('exit_code')) is int
+                      and check['exit_code'] == 0 and check.get('skipped') is False)
+            optional_skip = (check['required'] is False and check.get('status') == 'skipped'
+                             and check.get('exit_code') is None and check.get('skipped') is True)
+            if not (passed or optional_skip):
+                return False
+        if len({x['id'] for x in checks}) != len(checks):
+            return False
+        review = snapshot.get('review', {})
+        if (not self._independent_reviewer(review, c['implementation_actors'])
+            or review.get('validation_receipt_sha256') != c['receipt_sha256']):
+            return False
+        if c['route'] == 'windmill':
+            return isinstance(v.get('windmill_job_id'), str) and bool(v['windmill_job_id'])
+        scope = snapshot.get('scope_review')
+        return (isinstance(scope, dict) and fingerprint(scope) == c['scope_review_sha256']
+                and scope.get('kind') == 'foo-independence-review-v1'
+                and scope.get('classification') == 'foo-independent'
+                and scope.get('repository') == b['repository'] and scope.get('head') == b['head']
+                and scope.get('base') == b['base'] and scope.get('tree') == b['tree']
+                and scope.get('source_paths') == c['source_paths']
+                and scope.get('independent') is True and scope.get('verdict') == 'accept'
+                and scope.get('findings') == [] and bool(scope.get('evidence_id'))
+                and self._independent_reviewer(scope, c['implementation_actors'])
+                and bool(scope.get('rationale'))
+                and review.get('scope_review_sha256') == c['scope_review_sha256']
+                and review.get('validation_receipt_sha256') == c['receipt_sha256'])
+
+    @staticmethod
+    def _adoption_verified(adoption):
+        previous = adoption.get('previous_policy_sha256')
+        evidence = adoption.get('verification')
+        if (not re.fullmatch('[0-9a-f]{64}', str(previous))
+            or previous == adoption.get('policy_sha256') or not isinstance(evidence, dict)):
+            return False
+        if evidence.get('kind') == 'prior-policy':
+            return (set(evidence) == {'kind', 'policy_sha256', 'validation_receipt_sha256'}
+                    and evidence['policy_sha256'] == previous
+                    and bool(re.fullmatch('[0-9a-f]{64}', str(evidence['validation_receipt_sha256']))))
+        # The one-time user-authorized bootstrap is not a previous-policy pass.
+        # It only adopts the initial v2 policy; future policy bytes cannot reuse it.
+        return (set(evidence) == {'kind', 'exception_id', 'policy_sha256', 'policy_source_head',
+                                 'authorization_evidence_sha256', 'review_evidence_sha256',
+                                 'cloud_validation_receipt_sha256'}
+                and evidence.get('kind') == 'one-time-cloud-bootstrap'
+                and evidence.get('exception_id') == 'offmenu-conditional-validation-20261111'
+                and evidence.get('policy_sha256') == adoption.get('policy_sha256')
+                and evidence['policy_sha256'] == INITIAL_CONDITIONAL_POLICY_SHA256
+                and evidence.get('policy_source_head') == adoption.get('policy_source_head')
+                and all(re.fullmatch('[0-9a-f]{64}', str(evidence.get(k))) for k in (
+                    'authorization_evidence_sha256', 'review_evidence_sha256',
+                    'cloud_validation_receipt_sha256')))
+
+    @staticmethod
+    def _independent_reviewer(review, authors):
+        return (isinstance(review, dict) and isinstance(review.get('reviewer'), str)
+                and bool(review['reviewer']) and review['reviewer'] not in authors
+                and review.get('independent') is True
+                and isinstance(review.get('provider'), str) and bool(review['provider'])
+                and isinstance(review.get('requested_model'), str) and bool(review['requested_model'])
+                and ((review.get('resolution_status') == 'unknown' and review.get('resolved_model') is None)
+                     or (review.get('resolution_status') == 'observed'
+                         and isinstance(review.get('resolved_model'), str) and bool(review['resolved_model']))))
 
     def _bind_state(self, directory, binding, claim_root, *, existing_only=False):
         self.directory = Path(directory).absolute()
@@ -301,13 +469,7 @@ class Controller:
             return self.result('quarantined',reason='policy-drift')
         validation = snapshot.get('validation',{})
         source = b.get('source_projection', {}).get('source', b)
-        if (validation.get('operation_key') != b['validation_operation_key']
-            or validation.get('status') != 'succeeded' or validation.get('head') != source['head']
-            or validation.get('base') != source['base']
-            or validation.get('capacity_policy_sha256') != b['capacity_policy_sha256']
-            or validation.get('outputs') != b['outputs']
-            or validation.get('child_tree_gone') is not True
-            or validation.get('reconcile_required') is not False):
+        if not self.validation_qualified(snapshot):
             return self.result('awaiting-validation')
         review = snapshot.get('review',{})
         if (review.get('head') != source['head'] or review.get('base') != source['base']
@@ -447,6 +609,7 @@ class Controller:
             if (snapshot.get('publisher_owner') != b['owner'] or snapshot.get('cancel_requested')
                 or snapshot.get('policy_sha256') != b['policy_sha256']
                 or snapshot.get('capacity_policy_sha256') != b['capacity_policy_sha256']
+                or not self.validation_qualified(snapshot)
                 or validation.get('operation_key') != b['validation_operation_key']
                 or validation.get('status') != 'succeeded' or validation.get('head') != source['head']
                 or validation.get('base') != source['base'] or validation.get('outputs') != b['outputs']

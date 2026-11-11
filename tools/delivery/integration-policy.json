@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "standard": "2.2.0",
+  "version": 2,
+  "standard": "2.5.0",
   "enabled": true,
   "repository": "maldous/offmenu",
   "base_branch": "develop",
@@ -9,12 +9,18 @@
   "controller": "src/offmenu/delivery/integration.py",
   "gateway": "tools/delivery/integration-gateway.mjs",
   "require_independent_exact_head_review": true,
-  "require_bound_windmill_validation": true,
   "require_normal_github_protection": true,
   "require_canonical_merge_readback": true,
   "metadata_retry_limit": 2,
   "production_deployment": false,
   "main_promotion": false,
   "actions_execution": false,
-  "legacy_workers_resume": false
+  "legacy_workers_resume": false,
+  "activation": "explicit-owner-adoption-after-prior-policy-verification",
+  "validation_routes": {
+    "default": "windmill",
+    "independently_reviewed_foo_independent": "independent-cloud"
+  },
+  "require_prior_policy_adoption": true,
+  "conditional_binding_version": 4
 }
