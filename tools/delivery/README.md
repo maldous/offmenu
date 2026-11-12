@@ -159,8 +159,20 @@ continuation APIs. A 403 is a refusal, not evidence of a pending approval.
 
 ## Existing Windmill bridge and separate execution identity
 
-The verified deployed entrypoint is `u/admin/foo_jobs_20261027` in workspace
-`offmenu`. It runs reviewed commands through the existing `offmenu-wm` SSH jail,
+The current connected Foo Workspace account exposes only workspace `foo`;
+supported connector calls use `workspace_id="foo"`. See the
+[current workspace binding and adapter mismatch](../../docs/development/execution-protocols.md#connected-windmill-workspace).
+The typed dispatcher and checkpoint adapters still hardcode `offmenu`, so their
+dependent execution remains held pending UIF-owned alignment and qualification.
+Do not pass the old workspace to this connector, infer a grant from a script
+name, or change a fixed wrapper's arguments to bypass its contract.
+
+The bridge procedure below records the historically verified
+`u/admin/foo_jobs_20261027` route in workspace `offmenu`; it is not current
+connector admission or proof that a deployed wrapper has switched namespaces.
+Retain existing operation identities and verify the actual owner, target and
+binding through supported controls before any later authorized execution.
+The historical route runs reviewed commands through the existing `offmenu-wm` SSH jail,
 where the source is `/offmenu`. Use `mode=write` for graph checkpoint creation,
 even when checks read source. Its service account cannot write the developer's
 private `.delivery/`; do not loosen that directory's permissions.
