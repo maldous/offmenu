@@ -429,8 +429,26 @@ class CompactObservationTests(unittest.TestCase):
         compact = dispatcher.compact_job(remote)
         self.assertIs(compact['running'],False)
         self.assertEqual(compact['args_sha256'],digest(remote['args']))
-        self.assertTrue(observation_matches(compact,remote['id'],remote['args']))
+        self.assertEqual(compact['workspace_id'],'offmenu')
+        # The unchanged legacy producer still normalizes/binds its original
+        # observation; the new foo-bound consumer must not adopt that namespace.
+        self.assertFalse(observation_matches(compact,remote['id'],remote['args']))
         self.assertEqual(remote,original)
+
+    def test_synthetic_foo_observation_binds_exact_digest_without_legacy_dispatch(self):
+        from stokowski_operations import digest, observation_matches
+        expected = {'action':'status','job_id':'offmenu-'+'b'*48}
+        # Independently authored current-consumer input, not an old receipt
+        # relabelled or passed through the still offmenu-bound dispatcher.
+        synthetic = {'id':DispatcherBoundaryTests.job_id,'workspace_id':'foo',
+            'script_path':dispatcher.BRIDGE,'type':'QueuedJob','running':False,
+            'success':None,'inspect_version':dispatcher.INSPECT_VERSION,
+            'args_sha256':digest(expected),'result':None}
+        original = copy.deepcopy(synthetic)
+        self.assertTrue(observation_matches(synthetic,synthetic['id'],expected))
+        self.assertFalse(observation_matches(dict(synthetic,args_sha256='0'*64),
+            synthetic['id'],expected))
+        self.assertEqual(synthetic,original)
 
     def test_status_job_completion_keeps_backend_cleanup_uncertainty(self):
         remote = self.remote()
