@@ -16,7 +16,10 @@ python3.12 scripts/bootstrap_delivery.py --check
 .venv-delivery/bin/python -m offmenu.delivery discover
 .venv-delivery/bin/python -m offmenu.delivery check
 .venv-delivery/bin/python scripts/check_final_layout.py
-.venv-delivery/bin/python -m unittest discover -s tests/delivery -v
+GIT_CONFIG_COUNT=2 GIT_CONFIG_KEY_0=gc.auto GIT_CONFIG_VALUE_0=0 \
+  GIT_CONFIG_KEY_1=maintenance.auto GIT_CONFIG_VALUE_1=false \
+  PYTHONPATH="$PWD/src:$PWD/tools/delivery" \
+  .venv-delivery/bin/python -m unittest discover -s tests/delivery -v
 ```
 
 Bootstrap creates only the ignored project-local `.venv-delivery/`. `--check` checks all locked versions without network; installation is repeatable from a clean checkout and never mutates system Python.
@@ -27,6 +30,21 @@ inference is configured. LangGraph owns the finite graph and SQLite checkpoints;
 LangChain core is its integration dependency, not a second autonomous manager.
 LangSmith is installed transitively but tracing is disabled in graph execution
 and child commands, even if a developer's shell enables it.
+
+## Standalone and optional executor validation
+
+The OffMenu package and pinned delivery bootstrap do not depend on the external
+Stokowski package or a UIF checkout. Run the commands above in this checkout.
+The delivery suite includes optional Stokowski executor integration tests; when
+that executor is absent, those tests explicitly skip before installing fixtures.
+The test invocation disables Git background maintenance only in its child
+processes: process-supervision tests become subreapers, so detached maintenance
+children would otherwise contaminate later process-budget assertions. It does
+not change saved Git settings or relax any execution resource limits.
+Report skipped integration coverage separately from passing standalone checks.
+A standalone pass does not qualify the optional executor, its publisher, or a
+merge. Its existing pinned validation profiles still require their dependencies
+and positive, unskipped tests. Do not install Stokowski merely to build OffMenu.
 
 ## Reviewed task contract
 
@@ -141,8 +159,20 @@ continuation APIs. A 403 is a refusal, not evidence of a pending approval.
 
 ## Existing Windmill bridge and separate execution identity
 
-The verified deployed entrypoint is `u/admin/foo_jobs_20261027` in workspace
-`offmenu`. It runs reviewed commands through the existing `offmenu-wm` SSH jail,
+The current connected Foo Workspace account exposes only workspace `foo`;
+supported connector calls use `workspace_id="foo"`. See the
+[current workspace binding and adapter mismatch](../../docs/development/execution-protocols.md#connected-windmill-workspace).
+The typed dispatcher and checkpoint adapters still hardcode `offmenu`, so their
+dependent execution remains held pending UIF-owned alignment and qualification.
+Do not pass the old workspace to this connector, infer a grant from a script
+name, or change a fixed wrapper's arguments to bypass its contract.
+
+The bridge procedure below records the historically verified
+`u/admin/foo_jobs_20261027` route in workspace `offmenu`; it is not current
+connector admission or proof that a deployed wrapper has switched namespaces.
+Retain existing operation identities and verify the actual owner, target and
+binding through supported controls before any later authorized execution.
+The historical route runs reviewed commands through the existing `offmenu-wm` SSH jail,
 where the source is `/offmenu`. Use `mode=write` for graph checkpoint creation,
 even when checks read source. Its service account cannot write the developer's
 private `.delivery/`; do not loosen that directory's permissions.
@@ -376,3 +406,59 @@ This is not cloud voice/approval intake, an always-on supervisor or a new schedu
 
 Source-only native privilege confinement and its runtime adoption hold are in the
 [coding child confinement handoff](../../docs/development/coding-child-confinement.md).
+
+## Adopted conditional validation
+
+ADR 0011 defines the version 4 existing-PR binding for the connector-owner lane.
+PR #217 integrated the owner-adopted `integration-policy-v2-candidate.json` bytes
+in `integration-policy.json` into `develop`. PR #216 subsequently used this
+accepted policy for independent cloud validation.
+Do not use candidate source to approve its own policy or relabel an old receipt.
+The explicitly authorized one-time initial adoption uses independent review and
+cloud validation under ADR 0011, with original approval, review and validation
+evidence pinned by the owner. It is distinct from prior-policy verification and
+cannot be reused for future policy bytes. Owner adoption is complete for the
+reviewed policy source identified in ADR 0011. Exact-head review, validation and
+normal merge/readback completed for that source activation; future candidates
+still require their own bound review, validation and integration.
+
+The owner supplies `integration_policy`,
+`policy_adoption` and `accepted_policy_at_base_sha256` from accepted policy state,
+not the coding worker. The binding's `validation_contract` pins the route,
+complete implementation/provenance actor set, sorted exact `source_paths`, original receipt hash, adoption
+hash and (for cloud only) independent scope-review hash. The owner obtains
+`changed_paths` from the canonical base/head diff, including both names of a
+rename and deletions, and compares it with the bound list. No path allowlist or
+cloud label establishes independence.
+
+The original receipt binds repository, branch, base/head/tree, policy, capacity,
+operation, source paths, accepted output hashes, accepted-base validator revision,
+actual executor identity, environment/dependency hashes and command/log/results.
+Required checks must pass without skips. Optional skipped coverage remains
+explicit and cannot satisfy required checks. Review binds the receipt and scope
+hashes to the exact candidate. A changed source, base, policy, receipt or review
+requires a fresh binding. Retain runtime evidence privately under `.delivery/`.
+
+Version 4 is intentionally limited to an existing PR and the existing
+`advanceIntegration` gateway. Its action has the same exact-head/base normal
+merge contract; claims, protection, cancellation, reconciliation and canonical
+readback are unchanged. Version 2 pre-publication, source projection, installed
+Foo publishers, completed validation and release bindings are not migrated.
+
+### Merge-only amendment candidate
+
+[ADR 0013](../../docs/adr/0013-merge-only-existing-pr.md) proposes an explicit
+v4 shape with `integration_mode: "merge-only"` and `issue_id: null`. This is a
+candidate contract until separately authorized bootstrap, reviewed integration
+and canonical readback establish adoption; accepted old control code rejects it.
+The issue key cannot be omitted, and project/full-issue acceptance fields are
+forbidden. Observations must omit `linear` and `full_issue_acceptance`; no Linear
+adapter or Done effect belongs to this mode. Canonical readback ends at
+`merge-verified`. Existing issue-bound bindings and fingerprints are unchanged.
+
+The authenticated caller derives `integrationMode` from the immutable binding
+and passes `integrationMode: "merge-only"` to `advanceIntegration`. Its controller
+adapter maps `step` to the pinned Python `Controller.run` and `outcome` to
+`record_api_outcome`, using the same existing claim root/lock. The gateway also
+refuses unexpected Linear actions. Never select a new root or run this candidate
+controller to bootstrap itself without the concrete finite exception authority.

@@ -13,6 +13,8 @@ import tarfile
 import subprocess
 import shlex
 import unittest
+import venv
+from types import ModuleType
 from unittest.mock import patch
 
 TOOLS = Path(__file__).resolve().parents[2]/'tools/delivery'
@@ -90,8 +92,9 @@ class OperationRecoveryTests(unittest.TestCase):
         base=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip()
         validator.write_text('import unittest\nclass Weakened(unittest.TestCase):\n def test_empty(self): pass\n')
         (root/'src/target.py').write_text('answer=0\n')
-        (root/'.venv-delivery/bin').mkdir(parents=True)
-        (root/'.venv-delivery/bin/python').symlink_to(sys.executable)
+        # A bare symlink loses relocatable Python's stdlib prefix. Preserve the
+        # interpreter configuration without installing packages or using network.
+        venv.EnvBuilder(with_pip=False, symlinks=True).create(root/'.venv-delivery')
         command=operations.trusted_validation_command(dict(self.spec,base=base))
         argv=shlex.split(command);argv[2]=argv[2].replace("pathlib.Path('/offmenu')",'pathlib.Path('+repr(str(root))+')')
         result=subprocess.run(argv,text=True,capture_output=True,timeout=20)
@@ -687,6 +690,7 @@ class PublisherProfileTests(unittest.TestCase):
                     finally:
                         sys.path[:] = previous
                 with self.subTest(bad_index=bad_index,kind=kind), \
+                     patch.dict(sys.modules, {'stokowski': ModuleType('stokowski')}), \
                      patch('subprocess.check_output',return_value=archive) as control, \
                      patch('subprocess.run',side_effect=run), \
                      patch.object(unittest.TestLoader,'loadTestsFromNames',side_effect=load), \

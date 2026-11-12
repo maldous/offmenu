@@ -29,8 +29,8 @@ REAL_CHECK_OUTPUT = subprocess.check_output
 class RuntimeBoundaryTests(unittest.TestCase):
     def setUp(self):
         self.fixture = current_fixture.CurrentDispatchTests(methodName='runTest')
-        self.fixture.setUp()
         self.addCleanup(self.fixture.doCleanups)
+        self.fixture.setUp()
         self.issue, self.task_runtime, _, _ = self.fixture.bound_gate(221)
         self.current = self.fixture.current
         self.policy = contract.load_release_policy(ROOT / 'config/delivery-release-policy.json')
@@ -649,8 +649,9 @@ class SealedCurrentFactoryTests(unittest.TestCase):
         spec.loader.exec_module(actual)
         self.stack.enter_context(patch.object(current_fixture,'adapter',actual))
         self.stack.enter_context(patch.object(current_fixture.prepare,'CurrentWork',actual.CurrentWork))
-        self.f=RuntimeBoundaryTests(methodName='runTest');self.f.setUp()
+        self.f=RuntimeBoundaryTests(methodName='runTest')
         self.addCleanup(self.f.doCleanups)
+        self.f.setUp()
         self.native=actual
         f=self.f;source=f.fixture.source
         import native_harness_contract,linear_delivery,release_qualification,native_harness_linear

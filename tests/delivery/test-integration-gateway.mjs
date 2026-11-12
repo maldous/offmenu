@@ -2,6 +2,34 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {advanceIntegration,reviewWireBytes,reviewStandaloneValidation,reviewCompletedNativeValidation} from '../../tools/delivery/integration-gateway.mjs';
 
+test('merge-only gateway completes normal merge/readback without a Linear adapter', async()=>{
+  let steps=0, merges=0;
+  const outcomes=[];
+  const github={
+    getPullRequest:async()=>({merged:false,head_sha:'a',base_sha:'b',base:'develop',head:'bugfix/test',draft:false,mergeable:true}),
+    mergePullRequest:async request=>{merges++;assert.equal(request.expected_head_sha,'a');return {merged:true};}
+  };
+  const result=await advanceIntegration({integrationMode:'merge-only',github,observe:async()=>({}),
+    controller:{step:async()=>++steps===1?{action:{kind:'merge-pr',repository:'maldous/offmenu',pr_number:222,
+      expected_head_sha:'a',expected_base_sha:'b',expected_head_branch:'bugfix/test'}}:
+      {status:'merge-verified',action:null},outcome:async(...args)=>outcomes.push(args)}});
+  assert.equal(result.status,'merge-verified');assert.equal(merges,1);
+  assert.deepEqual(outcomes,[['merge','succeeded']]);
+});
+
+test('merge-only gateway rejects an unexpected Linear action before calling its adapter', async()=>{
+  let calls=0;
+  await assert.rejects(advanceIntegration({integrationMode:'merge-only',observe:async()=>({}),
+    controller:{step:async()=>({action:{kind:'update-linear',issue_id:null}})},
+    linear:{completeIssue:async()=>calls++}}),/merge-only-linear-action/);
+  assert.equal(calls,0);
+});
+
+test('unknown integration mode is refused before observing or mutating', async()=>{
+  await assert.rejects(advanceIntegration({integrationMode:'other',observe:()=>assert.fail('observed')}),
+    /invalid-integration-mode/);
+});
+
 test('fixed review transport scopes protected Python and Git trust to the installed source', async()=>{
   const {execFileSync}=await import('node:child_process');
   // Execute the actual module at synthetic import locations. Only OS custody,
@@ -393,4 +421,13 @@ if (!['--local-review-fixture','--standalone-review-fixture'].includes(process.a
     await assert.rejects(reviewCompletedNativeValidation({...call,observe:async()=>({snapshot:{...snapshot,...change},decision})}));
   }
   assert.equal(writes,1);
+});
+
+test('a cloud receipt without controller qualification never authorizes a merge',async()=>{
+  const f=fixture();
+  f.observe=async()=>({validation:{route:'independent-cloud',status:'succeeded'}});
+  f.controller.step=async()=>({status:'awaiting-validation',action:null});
+  const result=await advanceIntegration(f);
+  assert.equal(result.status,'awaiting-validation');
+  assert.deepEqual(f.calls,[]);
 });

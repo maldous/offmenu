@@ -36,6 +36,10 @@ from symphony_tasks import runtime_lease_ids
 @unittest.skipUnless(importlib.util.find_spec('stokowski'), 'Use pinned Stokowski environment')
 class CurrentDispatchTests(unittest.TestCase):
     def setUp(self):
+        # Other integration suites compose this fixture directly, bypassing the
+        # TestCase class decorator. Refuse before installing process-wide mocks.
+        if importlib.util.find_spec('stokowski') is None:
+            self.skipTest('Optional Stokowski executor integration is not installed')
         self.stack = ExitStack()
         self.addCleanup(self.stack.close)
         self.temp = Path(self.stack.enter_context(tempfile.TemporaryDirectory())).resolve()
@@ -4081,6 +4085,19 @@ class ProtectedCatalogTransitionTests(unittest.TestCase):
         self.config['catalog']=str(self.coordinator/'catalog.json')
         with self.assertRaisesRegex(AdmissionError,'catalog_grants'):
             adapter.protected_catalog_bytes(self.config,self.seed_bytes)
+
+
+class OptionalExecutorFixtureTests(unittest.TestCase):
+    def test_composed_fixture_without_executor_skips_before_global_patches(self):
+        original = subprocess.check_output
+        fixture = CurrentDispatchTests(methodName='runTest')
+        self.addCleanup(fixture.doCleanups)
+        with patch.object(importlib.util, 'find_spec', return_value=None), \
+                patch.object(tempfile, 'TemporaryDirectory') as temporary:
+            with self.assertRaisesRegex(unittest.SkipTest, 'Optional Stokowski'):
+                fixture.setUp()
+        temporary.assert_not_called()
+        self.assertIs(subprocess.check_output, original)
 
 
 if __name__ == '__main__':

@@ -1,3 +1,22 @@
+## Fixed operating role
+
+This repository belongs to the OffMenu dedicated project role. Read the fixed project agents and general Cloud role
+section in the local shared worker policy at startup and pass its version/hash to
+children. Project cloud Git, CPU and storage are independent of Foo; optional MCP
+execution must bind the correct host, project, worktree and branch. The general
+Cloud role has no Git configuration or repository binding. Additional Foo Codex sessions require
+restored allowance and current ownership checks. These are operating requirements,
+not proof of provisioning, availability or universal adoption.
+
+# Shared UIF worker directions
+
+At every startup, including independent Foo work, read
+[the shared worker policy](docs/agents/uif-worker-policy.md) and
+[its local version manifest](docs/agents/uif-worker-policy.json).
+Apply them with this repository's project-specific instructions, not instead of them.
+
+Read the existing delivery contract below. ADR 0010 records this additive instruction-distribution change. Existing suspended workers, typed admission, resource controls and integration ownership remain unchanged.
+
 # OffMenu developer and agent entrypoint
 
 Read `docs/standards/repository.md`, `repository-standard.json` and the relevant
@@ -25,9 +44,12 @@ delivery BAU, application deployment and product acceptance are separate facts.
 
 Select work using [task routing and tracking](docs/development/task-routing.md).
 Keep immediate bounded answers and genuine decisions with the coordinating owner;
-use available independent reasoning for separable analysis, owned Foo/Stokowski
-branches for repository work, and resource-admitted Windmill jobs for long-running
-deterministic work. Link runs and evidence to the existing Linear outcome rather
+use available independent reasoning for separable analysis and the dedicated
+project agent's isolated cloud Git checkout for independent repository work.
+Owned Foo/Stokowski branches are the optional Foo execution lane when that task
+requires it; resource-admitted Windmill jobs handle long-running deterministic
+work. All lanes retain existing typed admission, bound review and sole integration
+writer controls. Link runs and evidence to the existing Linear outcome rather
 than creating issues for messages or subprocesses. Recover from durable receipts;
 chat polling is not an execution or recovery mechanism. Capacity ceilings describe
 available capabilities, not utilization targets or permission to resume workers.
@@ -66,3 +88,12 @@ No Actions execution/dispatch/retry, production deployment, live food/barcode
 lookups, local model installation, force push/reset/clean or permanent data
 removal is authorized. Inspect workflow triggers before publishing. Only push
 this authorized feature branch; do not push the runner control branch.
+
+The conditional validation policy in ADR 0011 was adopted into `develop` by
+PR #217 under its explicit one-time initial exception. PR #216 subsequently
+integrated the shared worker directions and standalone validation fixes into
+`develop`. The accepted version 2 policy is recorded in
+`tools/delivery/integration-policy.json`. Subsequent candidates must use an accepted policy
+base and the version 4 existing-PR contract for independently reviewed exact-source
+cloud validation of explicit Foo-independent scope. Unknown/Foo-dependent scope
+and historical bindings retain Windmill. No host configuration is changed.
