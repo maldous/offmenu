@@ -78,13 +78,17 @@ class Controller:
         required = {'version','repository','pr_number','issue_id','owner','head','base','tree',
                     'policy_sha256','capacity_policy_sha256','validation_operation_key','outputs','head_branch'}
         version = binding.get('version')
+        merge_only = version == 4 and binding.get('integration_mode') == 'merge-only'
         if version == 4:
             required = required | {'validation_contract'}
+        if merge_only:
+            required = required | {'integration_mode'}
         if version == 2:
             required = required | {'publication'}
             if 'source_projection' in binding:
                 required = required | {'source_projection'}
-        if (set(binding) not in (required, required | {'project_id', 'full_issue_acceptance_sha256'})
+        allowed = (required,) if merge_only else (required, required | {'project_id', 'full_issue_acceptance_sha256'})
+        if (set(binding) not in allowed
             or type(version) is not int or version not in (1, 2, 4)):
             raise DeliveryError('Invalid integration binding')
         valid_pr = (type(binding['pr_number']) is int and binding['pr_number'] > 0) if version in (1, 4) else binding['pr_number'] is None
@@ -93,7 +97,14 @@ class Controller:
             raise DeliveryError('Invalid integration identity')
         if not re.fullmatch(r'(?:feature|bugfix)/[a-z0-9][a-z0-9/-]{0,159}',str(binding['head_branch'])) or binding['head_branch'].endswith('/') or '//' in binding['head_branch']:
             raise DeliveryError('Invalid exact selected branch')
-        UUID(binding['issue_id'])
+        if merge_only:
+            if binding['issue_id'] is not None:
+                raise DeliveryError('Merge-only binding requires null issue')
+        else:
+            try:
+                UUID(binding['issue_id'])
+            except (TypeError, ValueError, AttributeError) as exc:
+                raise DeliveryError('Invalid integration issue') from exc
         if 'project_id' in binding:
             try:
                 if str(UUID(binding['project_id'])) != binding['project_id']:
@@ -368,6 +379,10 @@ class Controller:
         path = self.directory/'state.json'
         return json.loads(path.read_text()) if path.exists() else {'status':'prepared','action':None}
 
+    @property
+    def merge_only(self):
+        return self.binding.get('version') == 4 and self.binding.get('integration_mode') == 'merge-only'
+
     def result(self,status,action=None,**extra):
         return {'status':status,'action':action,'binding_sha256':self.key,**extra}
 
@@ -379,6 +394,10 @@ class Controller:
                 return self.result('publication-reconciliation-required')
             b['pr_number'] = publication['pr_number']
         prior = self.status()
+        if self.merge_only and (any(k in snapshot for k in ('linear', 'full_issue_acceptance'))
+            or prior.get('status') == 'accepted' or prior.get('linear_effect')
+            or (prior.get('action') or {}).get('kind') == 'update-linear'):
+            return self.result('quarantined', reason='merge-only-linear-metadata')
         if prior['status'] == 'accepted':
             return prior
         # Observation time is issued by the trusted connector owner, not by a
@@ -409,6 +428,8 @@ class Controller:
                             'merge_commit_sha':pr.get('merge_commit_sha'),'force':False})
             def merged_result(status,action=None,**extra):
                 return self.result(status,action,merge_effect='verified',merge_commit_sha=commit['sha'],**extra)
+            if self.merge_only:
+                return merged_result('merge-verified', reason='merge-only-no-issue')
             linear = snapshot.get('linear',{})
             project = b.get('project_id')
             if not project:
@@ -533,6 +554,8 @@ class Controller:
             return prior
 
     def record_api_outcome(self,kind,outcome):
+        if self.merge_only and kind == 'linear':
+            raise DeliveryError('Merge-only integration forbids Linear outcomes')
         with self.ownership():
             current = self.status()
             if kind not in ('merge','linear') or current.get(kind+'_effect') != 'pending':
@@ -557,6 +580,8 @@ class Controller:
         with self.ownership():
             current = self.status()
             used = current.get('authority_receipts',[])
+            if self.merge_only and current.get('refused_kind') == 'linear':
+                raise DeliveryError('Merge-only integration forbids Linear reauthorization')
             if (current['status'] != 'authority-refused'
                 or not re.fullmatch('[0-9a-f]{64}',str(authority_receipt_sha256))
                 or authority_receipt_sha256 in used):

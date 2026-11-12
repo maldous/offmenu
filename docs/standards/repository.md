@@ -1,6 +1,6 @@
-# Repository standard 2.5.2
+# Repository standard 2.5.3
 
-Status: 2.5.2 instruction-distribution candidate based on accepted standard 2.5.1; previous standard status: adopted through reviewed integration after independent source review and
+Status: 2.5.3 merge-only amendment candidate based on accepted source 349dbf9; previous standard status: adopted through reviewed integration after independent source review and
 real retained-extraction validation. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
 [`repository-standard.json`](../../repository-standard.json). This document
@@ -190,3 +190,13 @@ Standard 2.5.2 follows [ADR 0012](../adr/0012-cloud-routing-policy-1-2.md):
 carry the exact canonical UIF worker policy 1.2.0 and reconcile task routing with
 independent project-cloud execution and optional scoped Foo MCP. Existing typed
 admission, resource, review and integration requirements remain unchanged.
+
+## Explicit merge-only existing PRs
+
+[ADR 0013](../adr/0013-merge-only-existing-pr.md) proposes the narrow amendment
+to ADR 0005's issue-association requirement. A v4 existing-PR binding may select
+`integration_mode: "merge-only"` with an explicit `issue_id: null` only after
+this amendment/controller is accepted through its separately authorized bootstrap.
+Such a binding rejects project/full-issue acceptance fields, never publishes or
+completes Linear work, and ends at canonical `merge-verified`. Existing issue-bound
+records and their fingerprints are unchanged. No candidate can adopt itself.
