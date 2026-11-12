@@ -117,6 +117,22 @@ class OffNativeBindingTests(unittest.TestCase):
                 with self.bind(manifest=manifest):
                     self.fail('stale or changed category projection must not bind')
 
+    def test_optional_projection_stamp_is_required_and_exact_in_bound_manifest(self):
+        key = 'offOptionalNutritionNamesProjectionVersion'
+        self.assertEqual(self.manifest['contract'][key], adapters.OFF_OPTIONAL_PROJECTION_VERSION)
+        with self.bind() as checked:
+            for row in self.records:
+                self.assertEqual(checked.semantic_validator(row), [])
+        for value in (None, 'unreviewed-optional-projection'):
+            manifest = deepcopy(self.manifest)
+            if value is None:
+                del manifest['contract'][key]
+            else:
+                manifest['contract'][key] = value
+            with self.subTest(value=value), self.assertRaisesRegex(RefreshError, 'manifest-context'):
+                with self.bind(manifest=manifest):
+                    self.fail('stale or changed optional projection must not bind')
+
     def test_bridge_hook_qualifies_and_retries_same_frozen_inputs(self):
         for _ in range(2):
             output=qualify_product_candidate(self.contract,self.bundle,{'products':self.source.path},self.normalized,

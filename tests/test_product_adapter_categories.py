@@ -4,7 +4,8 @@ from dataclasses import replace
 import unittest
 
 from offmenu.refresh.product_adapters import (
-    OFF_CATEGORY_FIELD_VERSION, ProductContext, ProductLimits, _off, _product_contract,
+    OFF_CATEGORY_FIELD_VERSION, OFF_OPTIONAL_PROJECTION_VERSION,
+    ProductContext, ProductLimits, _off, _product_contract,
 )
 
 
@@ -15,7 +16,7 @@ class ProductCategoryPreservationTest(unittest.TestCase):
 
     def project(self, **fields):
         return list(_off(self.context, {'code': '001234', 'product_name': 'Generated item',
-            'nutriments': {'proteins_100g': 2.3}, **fields}))
+            'nutriments': {'proteins_100g': 2.3}, 'nutrition_data_per': '100g', **fields}))
 
     def test_exact_original_fields_and_multiple_paths_survive(self):
         source = {
@@ -102,13 +103,22 @@ class ProductCategoryPreservationTest(unittest.TestCase):
         files = [{'role': 'products', 'sha256': 'c'*64}]
         contract = _product_contract(self.context, ProductLimits(), files)
         self.assertEqual(contract['offCategoryFieldProjectionVersion'], OFF_CATEGORY_FIELD_VERSION)
-        legacy = dict(contract)
-        del legacy['offCategoryFieldProjectionVersion']
-        self.assertNotEqual(contract, legacy)  # existing exact-contract retry rejects stale OFF output
+        self.assertEqual(contract['offOptionalNutritionNamesProjectionVersion'],
+                         OFF_OPTIONAL_PROJECTION_VERSION)
+        for stamp in ['offCategoryFieldProjectionVersion',
+                      'offOptionalNutritionNamesProjectionVersion']:
+            legacy = dict(contract)
+            del legacy[stamp]
+            # Either absent stamp makes prior OFF output a different contract.
+            self.assertNotEqual(contract, legacy)
+        common = dict(contract)
+        del common['offCategoryFieldProjectionVersion']
+        del common['offOptionalNutritionNamesProjectionVersion']
         for source_id in ['prices', 'usda-files']:
             other = _product_contract(replace(self.context, source_id=source_id), ProductLimits(), files)
             self.assertNotIn('offCategoryFieldProjectionVersion', other)
-            self.assertEqual(set(other), set(legacy))
+            self.assertNotIn('offOptionalNutritionNamesProjectionVersion', other)
+            self.assertEqual(set(other), set(common))
 
 
 if __name__ == '__main__':
