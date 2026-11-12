@@ -15,10 +15,25 @@ test('editing a household member preserves stored typed and scoped preferences',
  const other={id:'generated-b',name:'Generated B',portion:1.5,advisors:['balanced'],avoid:['carrot'],restrictions:[]};
  const otherBefore=JSON.stringify(other),nodes=new Map();let stored;
  const values={'member-name':'Generated A renamed','member-portion':'.75','member-avoid':'coriander','member-allergies':'milk','member-intolerances':'','member-religious':'','member-age':'','member-height':'','member-weight':''};
- const $=id=>{if(!nodes.has(id))nodes.set(id,{value:values[id]??'',close(){}});return nodes.get(id);};
- const context={$,Object,Number,crypto:globalThis.crypto,editingMemberId:member.id,profile:{members:[member,other]},document:{querySelectorAll:()=>[{dataset:{advisor:'vegan'}}]},householdPortions,persistProfile(){stored=JSON.stringify(context.profile);},renderHousehold(){},findMeals(){}};
- vm.createContext(context);vm.runInContext(source.slice(matches[0].start,matches[0].end),context);
+ const $=id=>{if(!nodes.has(id))nodes.set(id,{value:'',textContent:'',reset(){},showModal(){},close(){}});return nodes.get(id);};
+ const advisors=[{dataset:{advisor:'vegan'},checked:false}];
+ const context={$,Object,Number,crypto:globalThis.crypto,editingMemberId:null,profile:{members:[member,other]},
+  user:{id:'generated-owner'},requestIdentity:{owner:'generated-owner'},demoMode:false,sharing:{active:()=>false},
+  document:{querySelectorAll:selector=>selector.includes(':checked')?advisors.filter(x=>x.checked):advisors},
+  t:text=>text,setLocalizedText:(node,text)=>{node.textContent=text;},householdPortions,
+  persistProfile(){stored=JSON.stringify(context.profile);},renderHousehold(){},findMeals(){}};
+ vm.createContext(context);
+ // Exercise the real open/save lifecycle so the current owner/member identity
+ // checks and unchanged taste draft are present, rather than bypassing them.
+ for(const node of ast.body){
+  if(node.type==='VariableDeclaration'&&node.declarations.some(d=>d.id.name==='memberEditor')||
+     node.type==='FunctionDeclaration'&&node.id.name==='openMember')vm.runInContext(source.slice(node.start,node.end),context);
+ }
+ vm.runInContext(source.slice(matches[0].start,matches[0].end),context);
+ context.openMember(member);
+ for(const [id,value]of Object.entries(values))$(id).value=value;
  $('member-form').onsubmit({preventDefault(){}});
+ assert.equal($('member-notice').textContent,'');
  const saved=JSON.parse(stored),edited=saved.members.find(x=>x.id===member.id);
  assert.deepEqual(edited.mealPreferences,preferences);
  assert.ok(edited.restrictions.some(x=>x.type==='preference'&&x.term==='peanut'));

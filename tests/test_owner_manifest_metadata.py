@@ -103,21 +103,24 @@ class MetadataTests(unittest.TestCase):
             with self.assertRaises(m.Blocked): m.read_source(p, owner)
 
     def test_symlink_and_oversize_rejected(self):
-        # /tmp is world-writable, so test anchored traversal with patched stat
-        # observations only for that known test ancestor; leaves stay real.
+        # The test temp parent may be world-writable or owned by the sandbox's
+        # mapped user. Simulate a trusted identity for that exact ancestor only;
+        # the fixture directory, leaf and descriptor operations stay real.
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp); p = root / 'manifest.json'; p.write_bytes(b'{}')
             link = root / 'link.json'; link.symlink_to(p)
+            ancestor = root.parent.stat()
+            owner = SimpleNamespace(pw_uid=os.getuid(), pw_gid=os.getgid())
             real_fstat = os.fstat
             def fstat(fd):
                 st = real_fstat(fd)
-                if __import__('stat').S_ISDIR(st.st_mode):
+                if (st.st_dev, st.st_ino) == (ancestor.st_dev, ancestor.st_ino):
                     vals = list(st); vals[0] &= ~0o002
+                    vals[4], vals[5] = owner.pw_uid, owner.pw_gid
                     return os.stat_result(vals)
                 return st
-            owner = SimpleNamespace(pw_uid=os.getuid(), pw_gid=os.getgid())
             with patch.object(m.os, 'fstat', side_effect=fstat), patch.object(m, 'no_acl'):
-                with self.assertRaises(m.Blocked): m.read_source(link, owner)
+                with self.assertRaisesRegex(m.Blocked, 'unsafe-file'): m.read_source(link, owner)
                 p.write_bytes(b'x'*(m.CAP+1))
                 with self.assertRaisesRegex(m.Blocked, 'oversized'): m.read_source(p, owner)
 
