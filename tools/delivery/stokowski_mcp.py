@@ -12,7 +12,8 @@ import subprocess
 from uuid import UUID
 
 from stokowski_operations import (OperationError, RequestRefused, TransportUnavailable,
-    RPCIdentityError, ToolResultIncompleteError, ToolResultTruncatedError, ObservationBindingError)
+    RPCIdentityError, ToolResultIncompleteError, ToolResultTruncatedError, ObservationBindingError,
+    BRIDGE, WINDMILL_WORKSPACE)
 
 URL = 'https://windmill.aldous.info/api/mcp'
 DISPATCHER = 'u/admin/offmenu_delivery_dispatch'
@@ -118,7 +119,7 @@ class WindmillMCP:
                 arguments['request'] = request
             response = await post({'jsonrpc':'2.0','id':2,'method':'tools/call','params':{
                 'name':'test_run_script' if self.preview else 'run_script',
-                'arguments':{'workspace_id':'offmenu','path':DISPATCHER,
+                'arguments':{'workspace_id':WINDMILL_WORKSPACE,'path':DISPATCHER,
                 'args':arguments,'wait_seconds':15}}})
             result = tool_value(rpc_result(response,2))
         if result.get('error') == 'refused':
@@ -141,6 +142,10 @@ class WindmillMCP:
             return None
         if not isinstance(value.get('job'),dict):
             raise ToolResultIncompleteError('Missing inspect job')
+        remote = value['job']
+        if (remote.get('id') != job_id or remote.get('workspace_id') != WINDMILL_WORKSPACE or
+            remote.get('script_path') != BRIDGE):
+            raise ObservationBindingError('Windmill observation identity conflict')
         return value['job']
 
     async def submit(self,job_id,args):

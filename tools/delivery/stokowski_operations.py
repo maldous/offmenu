@@ -18,6 +18,10 @@ from uuid import UUID, uuid5, NAMESPACE_URL
 from symphony_capacity import digest, valid_branch
 
 BRIDGE = 'u/admin/foo_jobs_20261027'
+# Fixed route for newly admitted operations using this executor's exact hash.
+# Historical specs retain their old executor pin; Journal.tick quarantines that
+# mismatch before transport. This is not a migration of their jobs or receipts.
+WINDMILL_WORKSPACE = 'foo'
 BASE_URL = 'https://windmill.aldous.info'
 POLICY = Path(__file__).with_name('capacity-policy.json')
 PROFILES = {'delivery-suite':['.venv-delivery/bin/python','-m','unittest','discover','-s','tests/delivery','-q']}
@@ -75,7 +79,7 @@ def safe_diagnosis(error):
 
 def observation_matches(remote, job_id, expected):
     if (not isinstance(remote, dict) or remote.get('id') != job_id or
-        remote.get('workspace_id') != 'offmenu' or remote.get('script_path') != BRIDGE):
+        remote.get('workspace_id') != WINDMILL_WORKSPACE or remote.get('script_path') != BRIDGE):
         return False
     if 'inspect_version' not in remote:
         return 'args_sha256' not in remote and remote.get('args') == expected
@@ -921,7 +925,7 @@ class WindmillAPI:
     async def inspect(self,job_id):
         import httpx
         try:
-            response = await self.client.get('/w/offmenu/jobs_u/get/'+str(UUID(job_id)))
+            response = await self.client.get('/w/'+WINDMILL_WORKSPACE+'/jobs_u/get/'+str(UUID(job_id)))
         except httpx.TransportError:
             raise TransportUnavailable('Windmill observation unavailable') from None
         if response.status_code == 404:
@@ -931,11 +935,15 @@ class WindmillAPI:
         if response.status_code in (401,403):
             raise RequestRefused('Windmill observation refused')
         response.raise_for_status()
-        return response.json()
+        remote = response.json()
+        if (not isinstance(remote,dict) or remote.get('id') != job_id or
+            remote.get('workspace_id') != WINDMILL_WORKSPACE or remote.get('script_path') != BRIDGE):
+            raise ObservationBindingError('Windmill observation identity conflict')
+        return remote
 
     async def submit(self,job_id,args):
         # v1.850.0 NewJobId is server-enforced across queued/completed jobs.
-        response = await self.client.post('/w/offmenu/jobs/run/p/'+BRIDGE,
+        response = await self.client.post('/w/'+WINDMILL_WORKSPACE+'/jobs/run/p/'+BRIDGE,
                     params={'job_id':str(UUID(job_id))},json=args)
         if response.status_code in (401,403):
             raise RequestRefused('Windmill submission refused')
@@ -948,8 +956,10 @@ class WindmillAPI:
 
     @classmethod
     def injected(cls):
-        token = os.environ.get('OFFMENU_WINDMILL_TOKEN')
-        if not token and os.environ.get('WM_WORKSPACE') == 'offmenu':
+        # Reuse existing injected authentication; a variable name does not prove
+        # its grant. Never fall back to the retired product-workspace variable.
+        token = os.environ.get('WINDMILL_TOKEN')
+        if not token and os.environ.get('WM_WORKSPACE') == WINDMILL_WORKSPACE:
             token = os.environ.get('WM_TOKEN')
         directory = os.environ.get('CREDENTIALS_DIRECTORY')
         if not token and directory and (Path(directory)/'windmill-api-token').is_file():

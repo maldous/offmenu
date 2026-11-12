@@ -41,7 +41,7 @@ class FaultedWindmill:
         if job_id in self.jobs:
             raise RuntimeError('Duplicate UUID')
         self.submissions.append((job_id,copy.deepcopy(args)))
-        self.jobs[job_id] = {'id':job_id,'workspace_id':'offmenu',
+        self.jobs[job_id] = {'id':job_id,'workspace_id':'foo',
             'script_path':operations.BRIDGE,'args':copy.deepcopy(args),
             'type':'QueuedJob','running':True}
         if self.lose_ack:
@@ -170,6 +170,36 @@ class OperationRecoveryTests(unittest.TestCase):
         state = self.tick()
         self.remote.jobs[state['windmill_job_id']]['workspace_id'] = 'another-workspace'
         self.assertEqual(self.tick()['status'],'quarantined')
+
+    def test_retired_workspace_observation_never_authorizes_new_foo_submission(self):
+        args = operations.bridge_arguments(self.spec)
+        state = self.journal.read(self.key)[1]
+        # A valid old-workspace observation at the same UUID is foreign, even
+        # while this new operation is prepared. It must not be treated as absent.
+        self.remote.jobs[state['windmill_job_id']] = dict(id=state['windmill_job_id'],
+            workspace_id='offmenu',script_path=operations.BRIDGE,args=args,
+            type='QueuedJob',running=True)
+        self.assertEqual(self.tick()['status'],'quarantined')
+        self.assertEqual(self.remote.submissions,[])
+
+    def test_old_executor_pin_quarantines_prepared_and_unknown_before_transport(self):
+        class ForbiddenTransport:
+            async def inspect(self,*args):
+                raise AssertionError('old operation must not inspect the new route')
+            async def submit(self,*args):
+                raise AssertionError('old operation must not submit to the new route')
+        old = dict(self.spec,executor_sha256='0'*64)
+        key = self.journal.prepare(old)
+        original_ids = self.journal.read(key)[1]
+        for status in ('prepared','submit-intent','unknown','running'):
+            with self.subTest(status=status):
+                state = dict(original_ids,status=status)
+                self.journal.save(key,state,'fixture-old-state')
+                result = asyncio.run(self.journal.tick(key,ForbiddenTransport()))
+                self.assertEqual(result['status'],'quarantined')
+                self.assertEqual(result['windmill_job_id'],original_ids['windmill_job_id'])
+                self.assertEqual(result['cancel_job_id'],original_ids['cancel_job_id'])
+                self.assertEqual(self.journal.read(key)[0],old)
 
     def test_wrong_command_receipt_does_not_pass(self):
         state = self.tick()
