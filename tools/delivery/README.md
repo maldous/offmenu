@@ -432,3 +432,21 @@ Version 4 is intentionally limited to an existing PR and the existing
 merge contract; claims, protection, cancellation, reconciliation and canonical
 readback are unchanged. Version 2 pre-publication, source projection, installed
 Foo publishers, completed validation and release bindings are not migrated.
+
+### Merge-only amendment candidate
+
+[ADR 0013](../../docs/adr/0013-merge-only-existing-pr.md) proposes an explicit
+v4 shape with `integration_mode: "merge-only"` and `issue_id: null`. This is a
+candidate contract until separately authorized bootstrap, reviewed integration
+and canonical readback establish adoption; accepted old control code rejects it.
+The issue key cannot be omitted, and project/full-issue acceptance fields are
+forbidden. Observations must omit `linear` and `full_issue_acceptance`; no Linear
+adapter or Done effect belongs to this mode. Canonical readback ends at
+`merge-verified`. Existing issue-bound bindings and fingerprints are unchanged.
+
+The authenticated caller derives `integrationMode` from the immutable binding
+and passes `integrationMode: "merge-only"` to `advanceIntegration`. Its controller
+adapter maps `step` to the pinned Python `Controller.run` and `outcome` to
+`record_api_outcome`, using the same existing claim root/lock. The gateway also
+refuses unexpected Linear actions. Never select a new root or run this candidate
+controller to bootstrap itself without the concrete finite exception authority.

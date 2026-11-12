@@ -88,6 +88,11 @@ accepted output hashes, provenance, known limitations and independent review
 findings/disposition. An exit-zero job, model confidence, Linear Done state,
 tracking comment or pushed branch alone cannot authorize a merge.
 
+[ADR 0013](0013-merge-only-existing-pr.md) is the proposed narrow exception for
+explicit v4 merge-only existing PRs without a real issue association. It requires
+separate acceptance/bootstrap authority before use; it does not reinterpret old
+records or allow a candidate controller to authorize its own integration.
+
 The implementing agent cannot edit its own trusted acceptance baseline, policy,
 review outcome or integration credentials to manufacture eligibility. Treat
 candidate code and generated reports as untrusted inputs. Run trusted validators
