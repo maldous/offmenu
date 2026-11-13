@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3992,
+  "messages": 4004,
   "arabicTranslated": 376,
-  "arabicMissing": 3616,
+  "arabicMissing": 3628,
   "arabicComplete": false,
   "entries": {
     "\tattribute mat4 instanceMatrix;": {
@@ -1968,6 +1968,12 @@
       ],
       "arabic": false
     },
+    "./integration-openapi.mjs": {
+      "sources": [
+        "apps/web/server/integrations.mjs"
+      ],
+      "arabic": false
+    },
     "./integrations.js": {
       "sources": [
         "apps/web/src/documents.js",
@@ -2682,9 +2688,9 @@
       ],
       "arabic": false
     },
-    ":read. Token audience must be /api/v1. History includes food and cleanup records; directory includes saved recipes and locations.": {
+    ":read. Token audience must be /api/v1. Responses contain saved account data, not unsaved browser edits. Record content and nested document data remain source-specific; missing values are not zero.": {
       "sources": [
-        "apps/web/server/integrations.mjs"
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false
     },
@@ -6189,6 +6195,12 @@
       ],
       "arabic": false
     },
+    "Country/market used for export rights and record-country filtering. Filtering may leave an empty page with a non-null cursor.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false
+    },
     "Counts describe ingested records. Source inclusion and global feeds do not establish complete coverage of any country.": {
       "sources": [
         "apps/web/server/provider-data.mjs"
@@ -7881,6 +7893,12 @@
       ],
       "arabic": false
     },
+    "Exact normalized record-kind filter.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false
+    },
     "Exact observation": {
       "sources": [
         "apps/web/src/shelf-scanner.js"
@@ -7896,6 +7914,12 @@
     "Exact observation timestamp required": {
       "sources": [
         "apps/web/server/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
+    "Exact provenance source ID filter.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false
     },
@@ -9596,6 +9620,12 @@
       ],
       "arabic": false
     },
+    "Inclusive date boundary. Send YYYY-MM-DD; the REST implementation compares strings without calendar validation.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false
+    },
     "Incomplete source inventory: ": {
       "sources": [
         "apps/web/server/owned-snapshot-extractor.mjs"
@@ -9898,6 +9928,7 @@
     },
     "Integration storage unavailable": {
       "sources": [
+        "apps/web/server/integration-openapi.mjs",
         "apps/web/server/integrations.mjs"
       ],
       "arabic": false
@@ -10445,12 +10476,6 @@
       ],
       "arabic": false
     },
-    "Invalid or expired token": {
-      "sources": [
-        "apps/web/server/integrations.mjs"
-      ],
-      "arabic": false
-    },
     "Invalid or full transition journal.": {
       "sources": [
         "apps/web/src/stock-transition-model.js"
@@ -10890,6 +10915,12 @@
     "Invalid waste receipt.": {
       "sources": [
         "apps/web/server/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid, expired, revoked or wrong-audience token": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false
     },
@@ -13265,6 +13296,12 @@
       ],
       "arabic": false
     },
+    "Only GET is supported for personal API resources": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false
+    },
     "Only controls reported by this camera are shown. Preview mirroring and rotation do not change barcode decoding.": {
       "sources": [
         "apps/web/assets/index.html"
@@ -13310,6 +13347,18 @@
     "Only your saved cloud copy is exposed. Save local changes to cloud before requesting them from another app.": {
       "sources": [
         "apps/web/src/access-ui.js"
+      ],
+      "arabic": false
+    },
+    "Opaque cursor returned by the preceding page. Omit for the first page.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false
+    },
+    "Opaque last scanned ID, or null when no later page remains. Continue even when a rights-filtered page contains no records.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false
     },
@@ -13736,6 +13785,12 @@
     "Owner permission required": {
       "sources": [
         "apps/web/server/kitchens.mjs"
+      ],
+      "arabic": false
+    },
+    "Owner-scoped document page": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false
     },
@@ -15398,7 +15453,7 @@
     },
     "Read your ": {
       "sources": [
-        "apps/web/server/integrations.mjs"
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false
     },
@@ -16132,6 +16187,12 @@
       ],
       "arabic": false
     },
+    "Requested scanned page size. Omitted, non-numeric and zero values default to 100; other numeric values are clamped to 1–1000. Send an integer.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false
+    },
     "Required gates": {
       "sources": [
         "apps/web/server/cache-invalidation-owner29.mjs"
@@ -16144,9 +16205,15 @@
       ],
       "arabic": false
     },
+    "Required scope missing": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false
+    },
     "Requires ": {
       "sources": [
-        "apps/web/server/integrations.mjs"
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false
     },
@@ -16580,6 +16647,12 @@
       ],
       "arabic": false
     },
+    "Rights-filtered normalized records from the scanned page": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false
+    },
     "Rights: ": {
       "sources": [
         "apps/web/src/shelf-scanner.js"
@@ -16601,6 +16674,12 @@
     "Rolled oats · invented test assertion": {
       "sources": [
         "apps/web/src/scanner-surrogate.js"
+      ],
+      "arabic": false
+    },
+    "Rows withheld from this scanned page by export rights or country filtering.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false
     },
@@ -17286,12 +17365,6 @@
     "Schema, account or revision mismatch": {
       "sources": [
         "apps/web/server/health-import-owner28.mjs"
-      ],
-      "arabic": false
-    },
-    "Scope missing": {
-      "sources": [
-        "apps/web/server/integrations.mjs"
       ],
       "arabic": false
     },
@@ -21203,7 +21276,7 @@
     },
     "Versioned personal records": {
       "sources": [
-        "apps/web/server/integrations.mjs"
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false
     },
@@ -23292,7 +23365,7 @@
     },
     "offmenu personal kitchen API": {
       "sources": [
-        "apps/web/server/integrations.mjs"
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false
     },
@@ -23535,6 +23608,7 @@
     "private account": {
       "sources": [
         "apps/web/server/catalogue.mjs",
+        "apps/web/server/integration-openapi.mjs",
         "apps/web/server/provider-data.mjs",
         "apps/web/src/data-workspace.js"
       ],
