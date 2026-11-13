@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "2.5.3",
+  "version": "3.0.0",
   "status": "candidate",
   "roots": {
     ".agents": {
@@ -8,7 +8,7 @@
       "owner": "developer-experience"
     },
     ".github": {
-      "kind": "automation-contracts",
+      "kind": "product-validation-config",
       "owner": "developer-experience"
     },
     ".editorconfig": {
@@ -76,11 +76,11 @@
       "owner": "maintainers"
     },
     "tools": {
-      "kind": "delivery-data-and-operations-tools",
+      "kind": "product-data-and-development-tools",
       "owner": "developer-experience"
     },
     "scripts": {
-      "kind": "developer-build-bootstrap-entrypoints",
+      "kind": "product-build-and-validation-entrypoints",
       "owner": "developer-experience"
     },
     "tests": {
@@ -88,15 +88,11 @@
       "owner": "maintainers"
     },
     "docs": {
-      "kind": "current-guides-and-historical-evidence",
+      "kind": "product-guides-and-decisions",
       "owner": "maintainers"
     },
     "examples": {
       "kind": "redistributable-offline-examples",
-      "owner": "maintainers"
-    },
-    "archive": {
-      "kind": "immutable-release-and-migration-custody",
       "owner": "maintainers"
     }
   },
@@ -129,11 +125,9 @@
       "bugfix/",
       "hotfix/"
     ],
-    "workstream_branch": "feature/langgraph-delivery-standardization",
     "one_integration_writer": true
   },
   "runtime_paths": [
-    ".delivery/",
     ".venv/",
     "node_modules/",
     "dist/",
@@ -141,7 +135,6 @@
     "output/",
     "*.egg-info/",
     "__pycache__/",
-    ".venv-delivery/",
     ".cache/",
     "build/"
   ],
@@ -157,36 +150,10 @@
       "tests/compat/"
     ],
     "preserve_held_paths": true,
-    "required_layout_audit": "scripts/check_final_layout.py"
+    "required_layout_audit": "scripts/check_final_layout.py",
+    "required_repository_check": "scripts/check_repository.py"
   },
   "legacy_paths": [
-    "archive/release-custody/20261026-existing-fullscanner-vertical/build-scoped-package.py",
-    "docs/CODEX_HANDOVER.md",
-    "docs/CODEX_PROMPT.txt",
-    "docs/I18N_DATA_HANDOFF.json",
-    "docs/MIGRATION.md",
-    "docs/OFFMENU_CORPUS_INDEX.md",
-    "docs/OFFMENU_CORPUS_REFS.json",
-    "docs/OFFMENU_CUSTODY_HANDOVER_20261014.json",
-    "docs/consolidation/2026-10-18/knowledge/CATALOGUE.md",
-    "docs/consolidation/2026-10-20/SYNCHRONIZATION-HANDOVER.md",
-    "docs/reconciliation/2026-10-29/CLEANUP-RESTORE-MAP-BATCH2.json",
-    "docs/reconciliation/2026-10-29/CLEANUP-RESTORE-MAP.json",
-    "docs/reconciliation/2026-10-29/CONSOLIDATION-PROGRESS-BATCH2.json",
-    "docs/reconciliation/2026-10-29/CONSOLIDATION-PROGRESS.json",
-    "docs/reconciliation/2026-10-29/EXTERNAL-DEVELOPER-BRANCH-QUEUE.json",
-    "docs/reconciliation/2026-10-29/EXTERNAL-DEVELOPER-PICKUP.md",
-    "docs/reconciliation/2026-10-29/GITFLOW-AND-NEXT-BATCHES.md",
-    "docs/reconciliation/2026-10-29/ONBOARDING.env.example",
-    "docs/reconciliation/2026-10-29/ONBOARDING.md",
-    "docs/reconciliation/2026-10-29/OWNER-BRANCH-HANDOFFS.json",
-    "docs/reconciliation/2026-10-29/PUBLICATION-FACTS-DIAGNOSTIC.json",
-    "docs/reconciliation/2026-10-29/PUBLICATION-INDEX-BUDGET.json",
-    "docs/reconciliation/2026-10-29/RETAINED-HOLDS-AND-OWNER-HANDOFF.md",
-    "docs/reconciliation/2026-10-29/SOURCE-BRANCH-WORKTREE-LOCATORS.json",
-    "docs/reconciliation/2026-10-29/SOURCE-MANIFEST.json",
-    "docs/reconciliation/2026-10-29/WORKTREE-MAP.json",
-    "docs/reconciliation/2026-10-29/WORKTREE-MAP.md",
     "docs/research/OffMenu_Basket_Normalization_Spec.json",
     "docs/research/OffMenu_Country_Basket_Register.json",
     "docs/research/OffMenu_Enrichment_Source_Register_249.json",
@@ -202,222 +169,21 @@
     "tests/fixtures/norway-reference/collect-national.py",
     "tests/fixtures/norway-reference/import-national-tables.py"
   ],
-  "runtime_hold_paths": [
-    "scripts/windmill/PLATFORM-BASELINE.md",
-    "scripts/windmill/README.md",
-    "scripts/windmill/deployment-receipt.json",
-    "scripts/windmill/duckdb/ARTIFACT-SHA256SUMS",
-    "scripts/windmill/duckdb/DEPLOYMENT-RECEIPT.json",
-    "scripts/windmill/duckdb/INDEPENDENT-VERIFICATION.json",
-    "scripts/windmill/duckdb/LICENSE.duckdb",
-    "scripts/windmill/duckdb/README.md",
-    "scripts/windmill/duckdb/build_worker.py",
-    "scripts/windmill/duckdb/finalize_existing.py",
-    "scripts/windmill/duckdb/install_offline.py",
-    "scripts/windmill/duckdb/lock.json",
-    "scripts/windmill/duckdb/requirements.lock",
-    "scripts/windmill/duckdb/runtime.py",
-    "scripts/windmill/duckdb/test_offline_runtime.py",
-    "scripts/windmill/duckdb/transfer_helper.py",
-    "scripts/windmill/duckdb/windmill_duckdb_offline.py",
-    "scripts/windmill/job_runner.py",
-    "scripts/windmill/job_runner_capacity_v3.py",
-    "scripts/windmill/native/DEPLOYMENT-RECEIPT.json",
-    "scripts/windmill/native/README.md",
-    "scripts/windmill/native/build_native.py",
-    "scripts/windmill/native/incident_selftest.py",
-    "scripts/windmill/native/platform_check_entrypoint.py",
-    "scripts/windmill/native/schedule_receipt.py",
-    "scripts/windmill/native/skill-resources.json",
-    "scripts/windmill/native/ssh_transport.py",
-    "scripts/windmill/native/test_platform_check.py",
-    "scripts/windmill/native/test_schedule_receipt.py",
-    "scripts/windmill/native/test_windmill_incidents.py",
-    "scripts/windmill/native/windmill_incidents.py",
-    "scripts/windmill/native/windmill_platform_check.py",
-    "scripts/windmill/phase2-deployment-receipt.json",
-    "scripts/windmill/platform_check.py",
-    "scripts/windmill/platform_check_capacity64.py",
-    "scripts/windmill/skills/README.md",
-    "scripts/windmill/skills/reference-pins.json",
-    "scripts/windmill/storage/README.md",
-    "scripts/windmill/storage/checkpoint-record.schema.json",
-    "scripts/windmill/storage/deployment-receipt.json",
-    "scripts/windmill/storage/offmenu_storage.py",
-    "scripts/windmill/storage/source-manifest.json",
-    "scripts/windmill/storage/test_offmenu_storage.py",
-    "scripts/windmill/storage/test_windmill_checkpoint.py",
-    "scripts/windmill/storage/windmill_checkpoint.py",
-    "scripts/windmill/test_job_runner.py",
-    "scripts/windmill/test_platform_check.py",
-    "scripts/windmill/test_windmill_foo_jobs.py",
-    "scripts/windmill/windmill_foo_jobs.py"
-  ],
   "legacy_exception_reasons": {
-    "archive/release-custody/20261026-existing-fullscanner-vertical/build-scoped-package.py": {
-      "category": "immutable-release-custody",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/CODEX_HANDOVER.md": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/CODEX_PROMPT.txt": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/I18N_DATA_HANDOFF.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/MIGRATION.md": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/OFFMENU_CORPUS_INDEX.md": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/OFFMENU_CORPUS_REFS.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/OFFMENU_CUSTODY_HANDOVER_20261014.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/consolidation/2026-10-18/knowledge/CATALOGUE.md": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/consolidation/2026-10-20/SYNCHRONIZATION-HANDOVER.md": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/CLEANUP-RESTORE-MAP-BATCH2.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/CLEANUP-RESTORE-MAP.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/CONSOLIDATION-PROGRESS-BATCH2.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/CONSOLIDATION-PROGRESS.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/EXTERNAL-DEVELOPER-BRANCH-QUEUE.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/EXTERNAL-DEVELOPER-PICKUP.md": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/GITFLOW-AND-NEXT-BATCHES.md": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/ONBOARDING.env.example": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/ONBOARDING.md": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/OWNER-BRANCH-HANDOFFS.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/PUBLICATION-FACTS-DIAGNOSTIC.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/PUBLICATION-INDEX-BUDGET.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/RETAINED-HOLDS-AND-OWNER-HANDOFF.md": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/SOURCE-BRANCH-WORKTREE-LOCATORS.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/SOURCE-MANIFEST.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/WORKTREE-MAP.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/reconciliation/2026-10-29/WORKTREE-MAP.md": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/research/OffMenu_Basket_Normalization_Spec.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/research/OffMenu_Country_Basket_Register.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/research/OffMenu_Enrichment_Source_Register_249.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/research/OffMenu_Global_Data_Source_Register.json": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "docs/research/reports/05-OffMenu_Global_Shopping_Baskets.pdf": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "tests/fixtures/ciqual-reference/collect-national.py": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "tests/fixtures/ciqual-reference/import-national-tables.py": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "tests/fixtures/ciqual/Table Ciqual 2025_ENG_2025_11_03.xlsx": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "tests/fixtures/norway-reference/collect-national.py": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    },
-    "tests/fixtures/norway-reference/import-national-tables.py": {
-      "category": "historical-imported-or-pinned-evidence",
-      "reason": "Preserve published evidence identity and exact pinned filename; current consumers use the versioned migration map."
-    }
+    "docs/research/OffMenu_Basket_Normalization_Spec.json": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "docs/research/OffMenu_Country_Basket_Register.json": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "docs/research/OffMenu_Enrichment_Source_Register_249.json": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "docs/research/OffMenu_Global_Data_Source_Register.json": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "docs/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "docs/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "docs/research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "docs/research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "docs/research/reports/05-OffMenu_Global_Shopping_Baskets.pdf": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "tests/fixtures/ciqual-reference/collect-national.py": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "tests/fixtures/ciqual-reference/import-national-tables.py": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "tests/fixtures/ciqual/Table Ciqual 2025_ENG_2025_11_03.xlsx": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "tests/fixtures/norway-reference/collect-national.py": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service.",
+    "tests/fixtures/norway-reference/import-national-tables.py": "Preserve established source and fixture filenames and byte identities; these paths do not require another checkout or service."
   },
   "retired_roots": [
     "auth-source-preparation",
@@ -447,20 +213,16 @@
     "apps/retailer-extension",
     "deploy/netlify/public",
     "deploy/auth-return",
-    "integrations/staged/auth",
-    "integrations/staged/private-product-lookup",
-    "integrations/candidates",
     "contracts/corpus",
     "contracts/schemas",
     "config/source-bindings",
-    "tools/delivery/README.md",
+    "tools/corpus",
     "tools/data-processing",
-    "tools/operations",
     "tests/web",
     "tests/edge",
     "tests/compat",
-    "docs/adr/0003-final-repository-layout.md",
+    "docs/adr/0014-standalone-product.md",
+    "scripts/check_repository.py",
     "scripts/check_final_layout.py"
-  ],
-  "execution_capacity_policy": "tools/delivery/capacity-policy.json"
+  ]
 }

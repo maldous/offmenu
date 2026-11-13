@@ -39,10 +39,10 @@ The unknown dietary-reference requirements remain visible in the 24-cell report.
 python3 -B -m offmenu.refresh.portfolio48 --now 2026-10-18T00:00:00Z
 python3 -B -m offmenu.refresh.portfolio48 --now 2026-10-18T00:00:00Z \
   --metadata-map /approved/receipt-map.json \
-  --candidate-output /approved/foo/metadata-candidate.jsonl
+  --candidate-output /approved/offmenu/metadata-candidate.jsonl
 python3 -B -m offmenu.refresh.portfolio48 --now 2026-10-18T00:00:00Z \
   --metadata-map /approved/receipt-map.json \
-  --previous-candidate /approved/foo/metadata-candidate.jsonl
+  --previous-candidate /approved/offmenu/metadata-candidate.jsonl
 ```
 
 The explicit map is `{ "ec-map-2021.receipt.json": "path/to/receipt.json" }`;
@@ -98,7 +98,7 @@ or relabelled here. `plannerCapability` is
 `not-enabled-no-source-cache-read`, and `nextOnlineStep` is `none`. These
 diagnostics are not a new planner or proof of 30-day production cached reuse.
 
-Proposed shared-interface request to existing integrator00: if Morgan selects
+Proposed shared-interface request to the product integrator: if the product maintainer selects
 it, provide one pure source-neutral `plan_retained_input` in shared policy,
 accepting reviewed source/release/bundle identity, original-acquisition and
 revalidation evidence, explicit UTC clock, retention/operation/hold state. It

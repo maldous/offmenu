@@ -80,11 +80,3 @@ Checks cover the cooked-stock regression, date remapping, deep-copy custody,
 unknown/unavailable bounds, all-or-nothing results, account/review gating,
 ID collisions, invalid dates, quantities and template limits. No heavy suite,
 browser/server, provider, install, bulk job or extra worker was used.
-
-Shared-checkout custody baseline and pre-commit read-back: common-dir remained
-`/home/user/src/offmenu/.git`; SHA-256 of the shared main checkout index was
-`4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389`,
-shared HEAD `28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80`,
-and main ref `4b9c51c3f104ae9af331274450d8d1fa2cf3b06df913f45339abc4a5536e408e`.
-The result commit command asserts these values both before and after committing
-only the three reserved new files; its actual result is reported with the commit.

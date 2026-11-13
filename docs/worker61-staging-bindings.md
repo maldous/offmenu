@@ -5,7 +5,7 @@ The pending handover and PR42 are separate and remain unmerged. This package own
 only its portfolio configuration, binding module, authored fixtures and tests.
 No shared engine, registry admission, source policy or core validator is changed.
 
-## Run on Foo
+## Run on the selected local executor
 
 Requires the existing Python test extra (`jsonschema`); nothing is installed by
 the command. Use this worktree's Python module, never dynamically import an old
@@ -26,7 +26,7 @@ manifest points to a bounded, hash/size-pinned JSON receipt only. Original paths
 and checksums are returned as **historical receipt values**, never followed.
 Names, URLs and general licence assertions remain source-scoped evidence.
 Do not point the tool at a source body disguised as receipt metadata; only the
-reviewed configuration is an execution input. Raw assets stay outside Git on Foo.
+reviewed configuration is an execution input. Raw assets stay outside Git on the selected local executor.
 
 ## Source and type boundaries
 
@@ -106,7 +106,7 @@ An absent internal custodian is not itself a legal prohibition. No extra grant i
 presumed necessary when applicable published terms suffice. Landing access alone
 is not treated as permission. No held original or denied endpoint was read.
 
-## Exact proposed interface for integrator00 (not implemented in shared core)
+## Exact proposed interface for the product integrator (not implemented in shared core)
 
 Provide a pure, source-neutral policy entry point, for example
 `plan_retained_metadata(source_id, release_id, input_pins, original_acquired_at,
@@ -122,7 +122,7 @@ point; it does not edit either implementation or the existing acquisition P2.
 Later payload execution additionally needs reviewed rights/scope assets, exact
 field-origin selectors and full counts/IDs for `acceptance.SourceContract`,
 source-specific semantic validation, and a matching supported adapter. Current
-PDF/HTML format support remains absent. Integrator00/Morgan own any shared-core
+PDF/HTML format support remains absent. the product maintainer own any shared-core
 change, independent review, corrections and develop integration. Golden
 promotion, production, CIX, DEV7645, Finland/Frida and native NO/FR restrictions
 remain unchanged.
@@ -158,4 +158,4 @@ serialization/clocks/origins/no-op preservation. Subprocess timeout guards kill
 and reap a hung regression child; passing runs terminate normally. Prior14-test
 and independent positive evidence is retained, not claimed as a newly rerun
 suite. SAME reviewer49 must assess the changed immutable delta before acceptance;
-integrator00 retains develop and live-provider gates.
+the product integrator retains develop and live-provider gates.

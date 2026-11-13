@@ -41,7 +41,7 @@ WALL_SECONDS = 100
 PROBE_WALL_SECONDS = 30
 MEMORY_BYTES = 1024 * 1024 * 1024
 HEX = re.compile(r'[0-9a-f]{64}\Z')
-# Sizes/hashes independently observed on Foo in diagnostics run 39077114923.
+# Sizes/hashes independently observed on the original host in diagnostics run 39077114923.
 # Paths are fixed code, never taken from source files, receipt labels or callers.
 ASSETS = {
  'NO_EN_FOODS': ('norway/en-foods.json', 13690405, '89b8f5f494a79731bf7d8d98065ee66c55263ccdbb519e7c87941218be6c948d'),
@@ -605,7 +605,7 @@ def _write_new(path, value):
 
 
 def survey_selected(workspace):
-    """CLI boundary: fixed input root and approved Foo output area only."""
+    """CLI boundary: fixed input root and approved local output area only."""
     workspace = Path(workspace)
     if not workspace.is_absolute() or not workspace.is_relative_to(OUTPUT) or workspace == OUTPUT:
         raise SurveyError('survey-workspace-outside-output-root')

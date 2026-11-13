@@ -56,7 +56,7 @@ No actual SG rows were loaded or projected for this task.
 validation, retained candidate and B03 rights/semantic metadata paths and hashes.
 These are **recorded custody pins**, not fresh raw-body validation. The recorded
 original acquisition times are 14 October 2026 UTC; later validation times are
-kept distinct. Raw data stays on Foo. Credit text is retained from B03 evidence;
+kept distinct. Raw data stays on the selected local executor. Credit text is retained from B03 evidence;
 no new publisher terms or licence grant is inferred.
 
 MX/SG report `binding-ready-pending-review`, while `datasetExecutionAllowed` and
@@ -66,7 +66,7 @@ erratum and numeric-use evidence not held. Explicit HTTP403/404, Finland/Frida,
 native NO/FR crash, credential, privacy, production/CIX and DEV7645 holds remain.
 Counts/types here do not establish required whole-country coverage.
 
-## Integration proposal for existing integrator00
+## Integration proposal for the product integrator
 
 No shared interface change is needed to review or consume this package. Do not
 add production ADMISSIONS or global routes in this patch. After designated
@@ -90,13 +90,13 @@ are tied to their registered historical/fixture sources; calling them for MX/SG
 would report the wrong source identity. This portfolio therefore provides a
 pure metadata-only age diagnostic with identical 30-day/no-download boundary,
 not a copied cache/acquisition engine. Any future generic source-aware policy
-extension belongs to integrator00 and must preserve the automatic under-30-day
+extension belongs to the product integrator and must preserve the automatic under-30-day
 zero-download invariant. No shared change is included or required now.
 
 Typed remaining blockers: application-owned scope/rights and independent
-inventory approval (Morgan/designated reviewer); source-body execution selection
-(Morgan); RS use and SS authoritative scale/use inputs (recorded source owners);
-actual production cache/refresh/isolated qualification wiring (integrator00 after
+inventory approval (the product maintainer/designated reviewer); source-body execution selection
+(the product maintainer); RS use and SS authoritative scale/use inputs (recorded source owners);
+actual production cache/refresh/isolated qualification wiring (the product integrator after
 selection). Public documentation already retained resolves the selected MX/SG
 native meanings; unknown canonical mappings are not papered over with new data.
 

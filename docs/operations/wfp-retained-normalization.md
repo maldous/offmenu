@@ -66,12 +66,12 @@ not an OS sandbox. The source hash/format/size, disk reservation, time and
 destination volume must fit the actual reviewed runtime before the real run.
 The ceilings are not permission or resource-reservation evidence.
 
-Morgan selected writer59 and the existing Foo destination separately. Actual
+the product maintainer selected writer59 and the existing local executor destination separately. Actual
 execution still requires independent reviewer45 approval of the immutable code,
 current exact input/rights checks and qualified runtime limits. Custody/use is
 bound to worker27's source-specific receipt. The later independent source-output
 review belongs to27 if not the handler author, otherwise45. Source-native data
-stays on Foo. Production, publication, gold/real admission, CIX, DEV7645 and
+stays on the selected local executor. Production, publication, gold/real admission, CIX, DEV7645 and
 actual source/denial holds remain in force.
 
 The tests use authored fixture records only, including a non-food exchange

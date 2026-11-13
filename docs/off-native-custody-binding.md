@@ -113,7 +113,7 @@ expectations and `fixture=True`. No source override or fixture switch is added t
 the production API; no retained original/cache/sample/live database is accessed.
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tests /home/user/src/offmenu-preservation-20261020/checkpoint-venv/bin/python -B -m unittest test_off_native_binding test_off_native_policy test_product_qualification test_product_input_roots test_usda_product_contract -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tests python -B -m unittest test_off_native_binding test_off_native_policy test_product_qualification test_product_input_roots test_usda_product_contract -v
 ```
 
 Coverage includes both native kinds through qualification, fixture acceptance and
@@ -139,8 +139,8 @@ and proposed flags cannot fill these fields. Real source use remains private dat
 assertions under exact conditions; barcode strings are not verified GTIN/product
 identity. No English/ingredient relationship/public/gold/country delivery follows.
 
-Gateway routes this exact candidate to fresh existing56 independent review, then
-Worker00 alone integrates the current accepted author/review pair. Worker57's live
+the product maintainer routes this exact candidate to fresh existing56 independent review, then
+the product integrator alone integrates the current accepted author/review pair. Worker57's live
 witness and all source/custody/incident10230/privacy/denial/production/CIX holds
 remain unchanged. No new job, charge, controller or framework is created.
 Real independently approved original-derivation snapshot/review pins also remain

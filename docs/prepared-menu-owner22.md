@@ -22,7 +22,6 @@ run and existing13 exact-pin review/root acceptance are required. Provider revie
 must also be read at the corrected head. No merge attempted at the old accepted pin.
 Only owner adapter/tests/docs change; no shared hook or production activation.
 
-
 ## Current-develop composition (15 October 2026)
 
 Branch: feature/prepared-menu-composition22-20261015; base: 148fec8102ee64ec6801d4df96dfeb9a946ac619.
@@ -68,15 +67,6 @@ Candidate only; independent review and owner02 adoption remain required. Whole10
 acceptance and recipe production STOP remain. No cooking, source admission or
 nutrient calculation is authorized by this projection.
 
-Owner/thread: Worker22 / 01a138fa-1d15-7701-94a1-39bdf19ffb22.
-Fixed checkout: /home/user/src/offmenu-workers/worker-22.
-Task branch: feature/prepared-menu-owner22-20261015.
-Fresh locked origin/develop base: 5f5bdb6ae716cbf80fab1e174d1af2e354468ead; fetch exit0 at 2026-10-14T14:16:08.544011+00:00.
-Prior workspace branch feature/reference-view-consumer-22-20261014, exact head a14382e4e2a9f5e85c5829759530dbbe4dff30d6, is retained.
-Pre-switch status clean; excluded untracked material: none. Old dataset/helper refs
-and their immutable artifacts remain intact. Main HEAD 8652b312ce7989c5e4f2d49ae765d5d8daf5841d and
-index SHA-256 4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389 are protected before/after checkpoint.
-
 ## Requirements and source evidence
 
 NORM-06 register: docs/recommendation-delivery-register.json (prepared recipe/menu/
@@ -87,7 +77,7 @@ yield alone supplies no retention factors; substitution needs fresh composition 
 specific qualifications. Private recipe access is not redistribution authority.
 
 Actual retained source fixture (read-only, no corpus copying):
-/home/user/src/offmenu-data/world-recipes-global-checked-20261014/normalized.jsonl.gz,
+the `world-recipes-global-checked-20261014` normalized JSONL artifact,
 first bounded JSON line SHA-256
 8f5def1c8e7c6b8e6f42dfee77e2aca150f4a9240bde218a4e597265ab4a9972.
 The first record is world-recipes:recipe:f5a6fefcb72aac1d15f771ee, source
@@ -175,13 +165,6 @@ for nonforced checkpoint backup. Local checkpoint, private-origin backup exact S
 independent reviewer/verdict and develop merge are separate states. Final checkpoint
 and independent ls-remote receipt will be reported externally (self SHA is not embedded).
 Only this task branch is backed up; older branch remote backups are not inferred.
-
-Supplied controls unchanged: unrestricted filesystem/danger-full-access, network enabled,
-mandatory auto_review; separate approval policy unavailable. Routine preservation follows
-/home/user/Documents/Codex/2026-10-14/task-2/offmenu-preservation-workflow.md. Safe explicit
-file list: public/prepared-menu-owner22.mjs, tests-web/prepared-menu-owner22.test.mjs,
-docs/prepared-menu-owner22.md. Recovery: checkout this branch/pin and rerun the focused
-checks against the retained checksum fixture. No new worker/coordinator/session.
 
 Correction declared-files export: 10 passed/0 failed, 39.483177ms; output SHA-256
 a847da300f2714d908df8a80ab64dc8afc473289eca327ff98cdb2c3f40be648.

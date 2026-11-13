@@ -1,60 +1,47 @@
-# Web source and deployment layout
-
-The JavaScript application now has explicit source, asset, and server boundaries:
+# Web source and build layout
 
 ```text
-apps/
-  web/
-    src/              # Browser modules, shared models, and retained candidates
-    assets/           # HTML, CSS, JSON, icons, fonts, and licence notices
-    server/           # Worker handlers, schema/migrations, selected native hosts
-  retailer-extension/ # Authored extension and checked generated popup
-deploy/
-  netlify/public/     # Curated-publication landing template
-  auth-return/        # Separate authentication return-page adapter
-integrations/
-  staged/auth/        # Unmounted reviewed authentication source preparation
-  staged/private-product-lookup/
-  candidates/         # Retained unmounted domain and local-adapter candidates
+apps/web/src/        browser modules and shared product models
+apps/web/assets/     HTML, CSS, catalogues, icons, fonts and notices
+apps/web/server/     Worker handlers, schemas and product server modules
+apps/retailer-extension/
+                     extension source and checked generated popup
+deploy/netlify/public/
+                     product curation landing template
+deploy/auth-return/  authentication return-page adapter
+integrations/        optional unmounted product components
 ```
 
-The root `package.json` and lockfile remain the JavaScript workspace entrypoint.
-This migration changes physical repository paths; the build retains existing
-public asset names, Worker routes, extension archive layout, and authentication
-return behavior. Relocating a staged component does not mount it.
+The root `package.json` and lockfile define the JavaScript dependencies. The
+application build retains product asset names, Worker routes, extension archive
+layout and authentication return behavior. It does not require another project
+checkout or service credentials.
 
-`scripts/build.mjs` bundles `apps/web/src` entrypoints, reads static material
-from `apps/web/assets`, and composes the Worker with `apps/web/server/handler.mjs`.
-Outputs remain ignored under `dist/`, `apps/web/server/generated.mjs`, and
-`deploy/auth-return/i18n.js`. The extension's committed generated popup remains
-checked against its source by `npm run check:generated`.
-
-The i18n extractor scans browser modules, server modules, extension markup and
-auth-return markup at their new locations. Its authored English catalogue is
-`apps/web/assets/locales/en.json`; `docs/i18n-coverage.json` records the current
-source paths. The Arabic translation module remains importable source under
-`apps/web/src/locales/ar.js`. Message and translation coverage are not expanded
-by moving these files.
+`scripts/build.mjs` bundles browser entrypoints, reads local assets and composes
+the Worker with `apps/web/server/handler.mjs`. A real Git checkout is required
+because the build embeds HEAD. Generated outputs are ignored under `dist/`,
+`apps/web/server/generated.mjs` and `deploy/auth-return/i18n.js`. The committed
+extension popup is checked against its source before regeneration.
 
 ```sh
-npm ci --ignore-scripts --no-audit --no-fund
-npm run check:web-imports
+npm ci
 npm run check:generated
 npm run i18n:check
 npm run build
-node integrations/staged/auth/build.mjs
 ```
 
-`check:web-imports` parses maintained modules and verifies relative imports
-without executing or mounting them. It separately reports the existing unmounted
-production-scanner worker's absent `scanner-decode.js` helper. That source hold
-is not a new migration defect; introducing the candidate into a runtime build
-closure makes the check fail. Historical snapshot fixtures and archived source
-retain their original internal paths and hashes. Native identifier host and
-private-lookup readers retain their explicitly pinned foreign-checkout and
-source-selection dependencies.
+The i18n extractor scans product browser/server/extension/auth-return source.
+English inventory is `apps/web/assets/locales/en.json`; coverage is recorded in
+`docs/i18n-coverage.json`. Arabic remains source translation with explicit
+fallback, not a promise of complete coverage. Moving files does not translate
+messages or qualify rendering.
 
-Focused tests exercise migrated scanner models and WASM, selected-source photos,
-label scenarios, auth/session boundaries, candidate and diagnostic modules,
-extension regeneration, portable CLI behavior, and disposable local Worker/D1
-routes. They do not accept unfinished scanner UI work or production source use.
+`check:web-imports` checks relative imports without mounting components. An
+optional staged authentication component has its own build procedure in the
+maintainer guide. A retained unmounted component's prerequisites do not become
+a service dependency of the product build.
+
+Build success establishes compilation and asset packaging. It does not certify
+hosted authentication, selected data-source availability, camera/scanner hardware,
+browser layout or production deployment. Keep source-specific admission and
+actual device/runtime evidence separate.

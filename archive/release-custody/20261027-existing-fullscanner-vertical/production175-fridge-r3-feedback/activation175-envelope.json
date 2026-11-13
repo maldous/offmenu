@@ -1,8 +1,0 @@
-{
-  "content": [
-    {
-      "type": "text",
-      "text": "{\n  \"atUTC\": \"2026-10-26T13:17:32.243Z\",\n  \"activationHTTP\": 200,\n  \"version\": \"dba469db-450d-4289-b182-351355a99806\",\n  \"number\": 175,\n  \"deploymentId\": \"da799f97-622e-4f9e-9806-1a844e46fe91\",\n  \"createdOn\": \"2026-10-26T13:17:31.497127Z\",\n  \"percentage\": 100,\n  \"moduleCount\": 202,\n  \"totalBytes\": 37074820,\n  \"all202ExpectedBytesTypesHashesPassed\": true,\n  \"mainSHA256\": \"13820aa6b77d75a99cc152ef2b2349bea94f35837b698aca824170fc95ebd339\",\n  \"scope\": \"UNFINISHED_VERSIONED_FRIDGE_R3_FEEDBACK_ONLY\",\n  \"rootLandingReplaced\": false,\n  \"authProductionActivated\": false,\n  \"foodDataProjectionAdopted\": false,\n  \"immutable165Retained\": true\n}"
-    }
-  ]
-}

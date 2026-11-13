@@ -69,8 +69,8 @@ implemented. An interrupted transfer cannot be reported as complete.
   cache storage root. This gate precedes cached-body hashing as well as network
   access. This supports streaming files, not archive extraction,
   decompression or paginated source semantics. The runner must establish the
-  approved execution host (Foo for large payloads), storage root and resource
-  budget; a string saying Foo is not identity proof. No cloud large-payload
+  approved execution host (local executor for large payloads), storage root and resource
+  budget; a string saying local executor is not identity proof. No cloud large-payload
   transfer was performed or authorized by these tests.
 - ResourceBudget(storage_root, max_transfer_bytes, minimum_free_bytes=64MiB,
   max_seconds=600) is bounded at 1 TiB cumulative transferred bytes and 86400
@@ -134,11 +134,12 @@ exactly five fields:
   deadline limits also apply across the batch, including failed network reads.
 - `sources`: entries with `spec` (the existing `SourceSpec` fields), `operation`,
   `claim`, `holds`, `retained`. Operations are `https-refresh` or `retained-copy`.
-  A claim is `{owner: 0, state: "selected", evidence: {path, sha256}}`: this
-  bounded runner is currently assigned to existing Worker00. Other-owner claims,
+  A claim is `{owner: 0, state: "selected", evidence: {path, sha256}}`; numeric
+  owner `0` is the current schema value, not a grant of account or runtime
+  authority. Other-owner claims,
   explicit holds, unapproved sources and unsupported operations fail closed.
   The operator must reconcile actual competing claims before selection; this
-  local check does not replace Gateway's allocation authority.
+  local check does not establish permission to perform the selected operation.
 - `bindings`: `{sourceKey, country, type, evidence: {path, sha256}}` edges. Multiple
   countries/types share a single source entry. Duplicate representation aliases
   are rejected; duplicate edges are rejected. All selected sources need an edge.

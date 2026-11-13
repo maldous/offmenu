@@ -1,23 +1,82 @@
-# OffMenu operations
+# OffMenu product operations
 
-Repository: private `maldous/offmenu`. The primary checkout is `/home/user/src/offmenu`; `main` is stable and `develop` is the integration branch. Feature and pinned review checkouts live under `/home/user/src/offmenu-worktrees`, while retained data and operational evidence live under `/home/user/src/offmenu-data`. Select the accepted integration/release receipt for the work; a remote tip or an old local branch alone does not establish acceptance.
+Use the selected reviewed commit and a dedicated checkout. `develop` accepts
+reviewed integration; `main` changes only for approved product releases. The
+[maintainer guide](maintainer.md) describes local dependencies, build outputs and
+the small Python demo. Product build/test commands require no other project
+checkout or service credentials.
 
-Use the [maintainer setup and local checks](maintainer.md) for dependencies, build side effects and the small Python demo. A held live checkout may intentionally remain behind accepted integration while loaded source, assets and state depend on it. Preserve that runtime until its owner records a safe handoff; do not reset or repoint it to perform documentation/build work.
+## Release and deployment
 
-OffMenu action tracking belongs in the existing canonical ledger, not GitHub Issues; pull requests remain code review. Follow the [automatic tracking contract](maintainer.md#automatic-work-tracking), preserving separate transport, pickup and completion evidence.
+Follow [`config/release-policy.json`](../config/release-policy.json). Freeze the
+exact source base, head, tree, policy and artifact hashes. Independent review,
+complete candidate validation, canonical tree readback and an immutable tag
+are required for release. A repair creates a new candidate. Keep `main` static
+between approved releases. A source merge or local build does not deploy the
+application, switch authentication or publish data.
 
-Historical pre-migration GitHub reconstruction and checkpoint observations remain in their original receipts. They are not current authentication, deployment or branch-freshness evidence.
+For an authorized deployment, qualify its actual platform, account, selected
+bindings and existing state. Do not overwrite authentication, database bindings
+or credential protection with example configuration. The generated Worker embeds
+its Git commit and build time; its public health response is source identity
+information, not proof that every feature or data source is working.
 
-Install the declared development dependencies and run the current baseline checks listed in the maintainer guide. `npm test` covers the web suite; locale-edge and Python checks are separate. Production deployment is a separate reviewed release action under the current operational holds. The generated Worker embeds its source commit and build date; `/api/health` exposes these without private state. Build after committing functional source. Production verification results belong in a subsequent evidence-only commit.
+## Storage and authentication
 
-Cloudflare Worker `offmenu` binds D1 `offmenu-users` (`006cbdd6-6be8-4181-9dd5-519de280b6ef`) as `DB`. Keep current compatibility settings, observability query redaction and hourly maintenance schedule. Module upload must set `keep_bindings:["secret_text"]`; never replace `PROVIDER_VAULT_KEY`. Netlify Identity remains the identity provider. Source uploads must not recreate authentication or reset D1.
+`DB` is the deployment's account/application database binding. It is separate
+from a local demo database and from original source corpora. Preserve the
+configured provider-vault secret and account state during a change. Use reviewed
+migrations rather than recreating databases or identity configuration.
 
-New resolver leases prevent equivalent public misses from sharing in-flight request promises across Workers requests. Keys partition by source, exact query, source policy document and normalizer version. Expired leases are reclaimable; failures back off. Policy checks occur before reads and before writes. Source withdrawal immediately denies reads; maintenance removes expired cache, leases and explicitly expired private retained records. Shared contribution and behavioural aggregates remain disabled.
+The default handler retains its existing authentication verifier. Selecting an
+optional authentication adapter requires its trusted session policy and enabled
+configuration; a changed environment string alone is insufficient. Source and
+synthetic tests do not prove hosted sign-in, provider continuity, physical-device
+behavior or live account migration.
 
-Private imported records retain original rights. Reviewed open sources permit private processing under their attached notices. Unknown provider persistence/export/derivation is denied until a reviewed active source policy permits the action/audience/market. `source_policies` is operator-maintained, not writable by anonymous import payloads. User-confirmed personal/retailer imports remain private and unverified. Provider disconnect removes account-owned source records; external credentials must be revoked at the provider separately. Sensitive unified kinds use dedicated consented health/history workflows, not generic data scopes.
+Personal REST and MCP use separately scoped, audience-bound tokens. A shared
+kitchen membership does not grant access to private measurements/history.
+Sensitive health scope is not automatically requested when a caller omits scopes.
+External-client acceptance and delegated household access remain separately
+qualified features, not an implicit expansion of token permissions.
 
-Read-only REST and MCP use separately scoped tokens. Sensitive health scope is never automatically requested when the caller omits scopes. APIs remain account-scoped; a kitchen membership does not grant private measurements/history. Household-scoped delegated integrations and external-client certification remain acceptance work, not an implicit widening of existing token permissions.
+## Sources, caching and rights
 
-Deployment acceptance: verify release commit, catalogue completeness, country/source pagination, special territory behaviour, synthetic calculations/comparisons, company candidates and warm cache, auth-required private routes, identity settings, OpenAPI/OAuth metadata, and browser demo. Recheck D1 counts, account aggregate revision/size and secret binding. Do not include private documents, credential values or production snapshots in logs or evidence files.
+Selected source policies determine permitted lookup, retention, export,
+derivation, audience and market. Unknown provider rights deny the affected
+operation until qualified. A user checkbox cannot override a source policy.
+Source policies are operator-maintained and cannot be replaced by anonymous
+import payloads.
 
-Public food-place API attribution: Overture/Foursquare references retain the full [Foursquare publisher NOTICE](https://offmenu-corpus.netlify.app/notices/overture-food-places/2026-09-23.1/FOURSQUARE-NOTICE.txt), Apache 2.0 and CDLA Permissive 2.0 licence copies. See [public lookup contracts and notices](places-national-expansion.md).
+Resolver leases partition by source, exact query, policy and normalizer version.
+Policy checks occur before reads and writes. Expired leases can be reclaimed;
+failures back off. Withdrawal denies reads, and maintenance removes expired
+cache/leases and explicitly expired retained records according to their actual
+policy. Source integration does not enable shared contributions or behavioral
+aggregation.
+
+Private imports retain their source rights. Personal/retailer confirmations
+remain private and unverified. Provider disconnect removes the account-owned
+source records handled by that action; revoke external credentials at the
+provider separately when intended. Sensitive health/history records use their
+separately consented workflows rather than generic record scopes.
+
+Preserve attribution and notices for public datasets. Food-place references
+include the full Foursquare publisher notice and applicable Apache 2.0/CDLA
+Permissive 2.0 licence copies; see [public lookup contracts and notices](places-national-expansion.md).
+Normalization never relicenses an original source.
+
+## Verification and recovery
+
+Check the exact candidate's generated output, packaging, affected behavior and
+source-policy boundaries. For a selected hosted change, record actual service,
+account isolation, pagination, source citation and browser evidence separately
+from the local build. Never log private records, credential values or production
+snapshots.
+
+Preserve the original operation identity when an external result is uncertain.
+Observe that original effect before retrying; do not repeat a source publication,
+account mutation or deployment merely because its response was lost. Keep
+unrelated user data and held consumers intact until their owner records a safe
+handoff. Historical evidence preserved elsewhere is not current configuration or
+proof of deployment.

@@ -14,7 +14,7 @@ It creates one exclusive0700 generation,0600SQLite and fsynced progress.json.
 Never pass the old failed generation or construct permissions from user JSON.
 
 The currently proposed real source is the retained
-`/home/user/src/offmenu-data/wikidata-businesses-20261013-native/normalized.jsonl.gz`,
+normalized JSONL artifact for `wikidata-businesses-20261013-native`,
 79,372compressed bytes,1505manifest-declared source organizations. Manifest
 SHA6794bc2b2a1d527b7326fc2c6a90076d98fc73094b187885f597bc2363010072;
 prior structural-exercise SHA9e132d99af59bf7b34b961b8bd8de3c4f49f235668b67802c4d17ff16c1e1813.

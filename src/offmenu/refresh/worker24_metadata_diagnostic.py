@@ -1,4 +1,4 @@
-"""Explicit Foo-only metadata evidence check; never reads source/candidate bodies.
+"""Explicit private local metadata evidence check; never reads source/candidate bodies.
 
 The pure selector check is also exercised with committed authored fixtures.
 Private evidence availability is not a dependency of default test discovery.
@@ -90,7 +90,7 @@ def check_selector(asset, raw):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--foo-metadata', action='store_true', required=True,
-                        help='Explicitly read private pinned metadata evidence on Foo')
+                        help='Explicitly read private pinned metadata evidence on the local host')
     parser.parse_args(argv)
     try:
         document = catalogue()

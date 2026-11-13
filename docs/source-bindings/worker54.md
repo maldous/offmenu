@@ -4,7 +4,7 @@ This package binds **retained metadata declarations**, not raw country records,
 to the accepted `abecb99ee1125730ccbc2824b6ec49ffc5cc4302` contract snapshot.
 It owns only `portfolio54_config.py`, `portfolio54_binding.py`, this document and
 the focused test. No shared core, source registry, production admission or country
-coverage requirement is changed. Integrator00's result5798 confirms this proposal
+coverage requirement is changed. the product integrator's result5798 confirms this proposal
 baseline; live provider/candidate/base checks remain delivery gates.
 
 The code reuses `strict_json`, `timestamp`, canonical serialization/fingerprinting,
@@ -12,7 +12,7 @@ The code reuses `strict_json`, `timestamp`, canonical serialization/fingerprinti
 exercise the existing `SourceContract`/qualification/acceptance interface. There
 is no KM XLSX, KN HTML, KP PDF or KR guideline parser here. The retained KM parser
 remains a separate asset with unresolved scientific/source scope; it is not run
-or dynamically imported. All raw and staged source bodies remain on Foo.
+or dynamically imported. All raw and staged source bodies remain on the selected local executor.
 
 ## Country/type declarations
 
@@ -23,7 +23,7 @@ or dynamically imported. All raw and staged source bodies remain on Foo.
 | KP | `KP-input-resolution-proposal.json`, SHA256 `382b8b9074b9f74e83f4e5452b82ab0b9d403a27add96192740bb3179213aabc` | GIEWS crop/weather reference (04 September2026) and distinct population-survey lead; neither supplies the requested price/recipe/provider/guideline observations. Matching source manifest and native fields are absent in the scoped evidence. |
 | KR | `KR-input-resolution-proposal.json`, SHA256 `28cbb9aec8ab5089acd77156eb9f92730e423e4dcd429aae262413ab89475b95` | FAO profile metadata for a2016 guideline claim; not the original Korean guideline or current numeric advice. Original edition/body/page/use evidence remains unresolved. |
 
-Configuration includes exact retained Foo metadata paths and digests, separately
+Configuration includes exact retained local executor metadata paths and digests, separately
 labelled original-body digest claims where supplied. Importing or calling this
 module never opens those paths, verifies original bytes or grants custody. The
 KM acquisition time comes from the historical acquisition receipt `/utc`, not
@@ -116,7 +116,7 @@ or registering a real source as a fixture.
 ## Integration proposal and remaining blockers
 
 No shared API change is required to run this diagnostic/declaration CLI. For
-source execution, integrator00/Morgan must select and independently review the
+source execution, the product maintainer must select and independently review the
 exact adapter, source/release/input manifest, actual field origins, native units,
 bases, scope, operation-specific rights and acceptance contract. Retained licence
 metadata or public landing access alone is not such a contract. The existing
@@ -126,7 +126,7 @@ official metadata/method/licence evidence is already pinned in the retained B03
 package; the remaining KM document is explicitly denied, while KN/KP/KR need exact
 source applicability/original inputs, not a generic landing-page permission.
 
-If Morgan selects a shared pure-planner extension, reuse integrator00's result5798
+If the product maintainer selects a shared pure-planner extension, reuse the product integrator's result5798
 proposal for one source-neutral, I/O-free helper; do not promote this private
 portfolio helper into shared execution. It must retain identity/pin/time chains,
 unknown/held outcomes, the minimum30day no-download automatic window and explicit
@@ -138,5 +138,5 @@ malformed, stale, no-op/policy-change and missing-runtime-dependency outcomes;
 literal unit/unknown retention; exact per-datum origins; deterministic bounded
 CLI output; and shared qualification with `accepted-fixture-scope` only. No test
 claims real-source freshness, source acceptance, country completion or golden
-promotion. Independent review, Morgan verdict and develop integration remain
+promotion. Independent review, the product maintainer verdict and develop integration remain
 required. Production/CIX and the separate DEV7645 custodian are unchanged.

@@ -1,10 +1,10 @@
-# Global coverage reconciliation and next Foo assessment
+# Global coverage assessment
 
 ## Scope and evidence
 
-The metadata-only `offmenu.refresh.coverage.assess(matrix_path, ledger_path)` is deterministic and has no HTTP client, adapter execution, scheduling, acceptance or publication operation. The large inventories stay on Foo. Only compact code, pins and historical handler descriptors are checked in.
+The metadata-only `offmenu.refresh.coverage.assess(matrix_path, ledger_path)` is deterministic and has no HTTP client, adapter execution, scheduling, acceptance or publication operation. The large inventories stay on the selected local executor. Only compact code, pins and historical handler descriptors are checked in.
 
-Exact inspected baseline: `2266e85046eb22d5baccba09149c0f3b70dadd25`. The frozen country matrix is 133,210 bytes, SHA-256 `894e05f09744c76b790f8e5f159141bed6c308a9af3d90c3c82aa79105cf5ea8`; the source ledger is 1,701,843 bytes, SHA-256 `2f3c917a6463153824b8c807b41707870e7f763c65b5ff7957ec4988cd96bfcf`. Missing or different inventory bytes fail closed. No fallback source URL generation is supported. Runtime paths must be supplied from existing approved Foo mounts; the historical `/home/user/src/offmenu/docs/` locations do not establish current container access.
+Exact inspected baseline: `2266e85046eb22d5baccba09149c0f3b70dadd25`. The frozen country matrix is 133,210 bytes, SHA-256 `894e05f09744c76b790f8e5f159141bed6c308a9af3d90c3c82aa79105cf5ea8`; the source ledger is 1,701,843 bytes, SHA-256 `2f3c917a6463153824b8c807b41707870e7f763c65b5ff7957ec4988cd96bfcf`. Missing or different inventory bytes fail closed. No fallback source URL generation is supported. Supply the exact matrix and source-inventory paths on the selected executor. Historical directory names do not establish that those files are available.
 
 The 249 ISO entries and 13 required domain names yield 3,237 country/domain cells. All 1,303 discovery records originally represent landing-page access checks. Historical counts remain 1,040 HTTP 200s, 182 sources with download candidates and 456 sources with rights links. These never establish payload availability, current rights or completeness.
 
@@ -25,7 +25,7 @@ Every retained release includes its source ID, release, historical count, canoni
 5. `apps/web/server/cache-invalidation-owner29.mjs` handles bounded D1 resolver envelopes and policy/dependency epochs. It is not an immutable raw-dataset cache or a national-source acquisition handler. Its adoption boundary remains explicit.
 6. Complete exact source/release/endpoint binding, original asset set, rights-by-operation and pinned normalization contract for the eligible sources. Registration of remaining discoveries can remain explicit unsupported records while independent permitted sources progress.
 
-## Required next bounded Foo assessment contract
+## Required next bounded local executor assessment contract
 
 The assessment must report the full registered source universe, not only the first cache hits. It may inspect only currently approved accessible roots. Report a missing/inaccessible root as such; do not expand mounts or follow symlinks. No source-body download, held parsing, native NO/FR replay, production activity or scheduler changes are implied.
 
@@ -43,6 +43,6 @@ Include aggregate counts that reconcile to all 1,303 registered discoveries plus
 
 ## Current blockers and stopping boundary
 
-Current approved runner-accessible matrix/ledger paths, cache-acquisition manifest paths, full cache metadata and retained acceptance sidecars have not been established by this code inspection. The inventory loader is ready; it is not evidence that a running Foo container has those paths. The next read-only job should expose these precise missing inputs and runtime limits while preserving all independent observations. Broad source refresh requires reviewed endpoint bindings and retention/normalization rights; the generic acquisition transport currently admits zero production endpoints by default.
+Current approved runner-accessible matrix/ledger paths, cache-acquisition manifest paths, full cache metadata and retained acceptance sidecars have not been established by this code inspection. The inventory loader is ready; it is not evidence that a running local executor container has those paths. The next read-only job should expose these precise missing inputs and runtime limits while preserving all independent observations. Broad source refresh requires reviewed endpoint bindings and retention/normalization rights; the generic acquisition transport currently admits zero production endpoints by default.
 
 This deliverable has seven synthetic tests plus successful metadata-only reconciliation against the exact baseline files. It performs zero publisher requests and reads zero raw dataset bodies. Bulk runtime reports and inventories are not included in the repository artifact set.

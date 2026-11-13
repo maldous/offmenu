@@ -5,7 +5,7 @@ Selected request: `M-STAGING-BIND-20261018-W11`. Base is accepted develop
 `offmenu/portfolio_bm_lc_sc.py`, `config/portfolios/bm-lc-sc.json`, its authored
 fixture/tests and this document. No shared refresh implementation is changed.
 
-Run from the repository on Foo, using an explicit UTC validation clock:
+Run from the repository on the selected local executor, using an explicit UTC validation clock:
 
 ```sh
 python3 -m offmenu.portfolio_bm_lc_sc --now 2026-10-18T06:00:00Z
@@ -19,7 +19,7 @@ exit 2 means at least one missing/held/malformed binding. Nothing is written
 to a cache or staging directory. This is a proposed source-input metadata envelope,
 not an adapter that extracts recipes or menu/price values. The existing generic
 `field_origin_errors`, strict JSON, canonical serialization, timestamp/path guards
-are reused. No country engine is copied. The metadata reader descends through no-follow directory descriptors, opens the final descriptor nonblocking, checks regular-file/type/size, and verifies stable descriptor identity/size around its bounded read. A FIFO or special file returns a fixed isolated error before the next peer. This guard is for local Foo files, not an OS sandbox or network-filesystem timeout promise.
+are reused. No country engine is copied. The metadata reader descends through no-follow directory descriptors, opens the final descriptor nonblocking, checks regular-file/type/size, and verifies stable descriptor identity/size around its bounded read. A FIFO or special file returns a fixed isolated error before the next peer. This guard is for local local executor files, not an OS sandbox or network-filesystem timeout promise.
 
 `assess(binding, raw_metadata, now=..., previous_key=...)` is the pure interface
 for reviewed callers and authored tests. `run` isolates failures by binding;
@@ -56,7 +56,7 @@ to an internal custodian. BM stays private inspection only, LC's edition-bound
 grant was explicitly not held in the declared source-record scope, and SC lacks
 an adaptation/redistribution grant. Public landing/download access and unrelated
 CC0 directory metadata do not clear those operations. Rights-holder/source scope
-acceptance remains a separate Morgan-selected step. No new legal determination
+acceptance remains a separate the product maintainer-selected step. No new legal determination
 or universal prohibition on every possible use is asserted.
 
 ## Acquisition clock, replay and diagnostics
@@ -93,10 +93,10 @@ boundaries, replay with changed holds, nonregular reader/peer progress, descript
 cleanup, failure isolation, and absence of body/network I/O. Passing those fixtures
 does not qualify any real source or country.
 
-## Integrator00 interface proposal and remaining gates
+## the product integrator interface proposal and remaining gates
 
 No shared edit is necessary to review or run this metadata preflight. Proposed
-future shared addition, for integrator00 only: extract a source-neutral, pure
+future shared addition, for the product integrator only: extract a source-neutral, pure
 cache-evidence planner accepting reviewed source/release/content identity,
 original acquisition UTC and later validation UTC, with the existing minimum
 30-day policy, zero-download return, no force bypass, and fixed diagnostics.
@@ -109,7 +109,7 @@ source field dictionaries/native units/bases and per-datum semantic acceptance,
 then select a compatible shared parser/factory and independent review. Exact
 source locks and all no-body/denial/Finland/Frida/NO-FR crash restrictions survive.
 Golden promotion, country acceptance, production/CIX and DEV7645 are separate.
-Independent approval and integrator00's normal expected-head develop integration
+Independent approval and the product integrator's normal expected-head develop integration
 must complete before this worker's next request.
 
 ## Correction to reviewed predecessor 902d7310

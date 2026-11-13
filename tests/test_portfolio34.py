@@ -143,7 +143,7 @@ class Portfolio34Tests(unittest.TestCase):
 
     def test_module_cli_uses_same_binding_class_and_only_declared_metadata(self):
         # Patch the canonical reader before exercising the actual -m entrypoint.
-        # This is portable: tests never depend on the Foo receipt paths existing.
+        # This is portable: tests never depend on the historical receipt paths existing.
         script = """import runpy,sys
 import offmenu.refresh.portfolio34 as p
 p.read_declared_metadata=lambda binding: {}

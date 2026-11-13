@@ -13,7 +13,7 @@ async function collect(directory) {
   for (const entry of await readdir(resolve(root, directory), {withFileTypes: true})) {
     const path = directory + '/' + entry.name;
     if (entry.isDirectory()) {
-      if (!['node_modules', 'dist', 'fixtures', '__pycache__'].includes(entry.name) && !path.startsWith('scripts/windmill')) await collect(path);
+      if (!['node_modules', 'dist', 'fixtures', '__pycache__'].includes(entry.name)) await collect(path);
     } else if (['.js', '.mjs'].includes(extname(path)) && !excluded.has(path)) modules.push(path);
   }
 }

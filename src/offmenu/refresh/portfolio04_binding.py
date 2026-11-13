@@ -121,7 +121,7 @@ def read_metadata(profile):
             before = path.stat(follow_symlinks=False)
             if not stat.S_ISREG(before.st_mode):
                 continue
-            # Fail closed where this owned Foo reader cannot express its guards.
+            # Fail closed where this owned local reader cannot express its guards.
             if not hasattr(os, 'O_NONBLOCK') or not hasattr(os, 'O_NOFOLLOW'):
                 continue
             fd = os.open(path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW)

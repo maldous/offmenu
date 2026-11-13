@@ -1,6 +1,6 @@
 """Synthetic code-boundary tests only: no publisher rows, fixtures, or source acceptance.
 
-These tests do not run a full-data builder, read Foo paths, fetch data, execute
+These tests do not run a full-data builder, read private host paths, fetch data, execute
 historical Git dependencies, or replace the preserved source-validation suites.
 """
 import copy

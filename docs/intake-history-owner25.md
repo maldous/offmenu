@@ -103,13 +103,3 @@ revocation deletion/tombstone, source permission on writes/reads and concurrent
 duplicate rejection are exercised. Store and auth are bounded synthetic adapters;
 real handler/D1/browser/identity integration is unexercised. No broad suite or
 Git-writing fixture. Staged diff whitespace check and three-file scope verified.
-
-Primary main HEAD/ref remain `8652b312ce7989c5e4f2d49ae765d5d8daf5841d`; primary
-index SHA256 remains
-`4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389`.
-Common-dir remains /home/user/src/offmenu/.git. Assertions run before/after commit.
-No force, extra worker, settings change, provider payment, corpus copy, deployment
-or Actions. Git author identity is command-scoped. Actual supplied filesystem is
-unrestricted/danger-full-access; network enabled; mandatory reviewer auto_review;
-separate approval policy unavailable. These are supplied controls, not inferred
-from user configuration or successful commands.

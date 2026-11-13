@@ -25,7 +25,7 @@ requires no shared packaging changes.
 
 The catalog contains exact **metadata** paths, SHA256, sizes and JSON pointers;
 it is reviewed application configuration, not a discovery/URL input interface.
-These Foo-local paths deliberately return `MISSING` elsewhere rather than
+These host-local paths deliberately return `MISSING` elsewhere rather than
 downloading, searching for replacement files or following a corpus path.
 An unavailable or altered metadata file never silently substitutes a new pin.
 
@@ -58,7 +58,7 @@ open a PDF/workbook, run a collector, publish or install a source contract.
   is represented as a supported national/product/reference body adapter.
 
 No new shared interface is necessary for the selected metadata-only operation.
-Integrator00 may register this portfolio command as a metadata-only caller.
+the product integrator may register this portfolio command as a metadata-only caller.
 It must not install it as a GLOBAL parse/transform/accept factory. Any future
 source-family adapter or `SourceContract` needs a separately reviewed exact
 release/format, source semantics, rights, scope and independently expected
@@ -68,12 +68,12 @@ cells. With no reviewed actual-source `CellRequirement` and acceptance installed
 all remain explicitly unassessed, including ingredients and other absent types.
 Metadata-ready reports cannot fill these cells.
 
-Integrator00 interface result5798 confirms that **no source-neutral pure cache
+the product integrator interface result5798 confirms that **no source-neutral pure cache
 planner exists at this baseline**. Reports type that capability as
 `UNAVAILABLE_AT_ABEC`, and real body-adapter capability as unsupported for this
 scope. The age observation below is local metadata diagnostic intent, not a new
 shared freshness engine or `core.cache_policy` replacement. A future shared
-`plan_retained_input` extension remains proposal-only for Morgan/00.
+`plan_retained_input` extension remains proposal-only for the product maintainer.
 
 ## Six bindings and their exact scope
 
@@ -161,7 +161,7 @@ one `MISSING` report (BEreference47 acquisition evidence). All six requested
 body operations remain `HELD` before IO. These are binding/diagnostic outputs,
 not six processed data releases. Source-specific manifests, rights, actual body
 custody, selectors, field semantics and independent acceptance remain typed
-dependencies. Raw data stays Foo; Finland/Frida, native NO/FR, 403, privacy,
+dependencies. Raw data stays on the selected local executor; Finland/Frida, native NO/FR, 403, privacy,
 production/CIX and DEV7645 restrictions are unchanged.
 
 Every `MALFORMED` planner exit clears its record, build key, replay and cache,

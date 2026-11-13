@@ -81,7 +81,7 @@ FIFO replacement at the open boundary with sibling progress and a growing regula
 file whose read is limited to pin size plus one byte. They do not replay historical source suites or
 native NO/FR handlers.
 
-## Proposed shared interface for integrator00
+## Proposed shared interface for the product integrator
 
 No shared-core edit is included. The previous local threshold/eligibility logic
 was removed in the correction for W12-W14-2192504-F2. `policy.plan_fixture` requires a registered
@@ -96,5 +96,5 @@ for00 review, not a prerequisite for using this metadata report or authorization
 to modify the core. Wiring to execution/admission remains separately selected.
 
 Independent approval and develop integration are required. The integrator must
-reconcile the current target against this immutable base. Raw data stays Foo;
+reconcile the current target against this immutable base. Raw data stays on the selected local executor;
 Finland/Frida/NO-FR/source/privacy/denial/production/CIX/DEV7645 holds remain.

@@ -1,3 +1,0 @@
-import{mountSourceActionPreview}from'../source-action-preview-r4.mjs';
-const modules={"6": "/full15/incremental-06-07-11-13-r1/scene-06/module.mjs", "7": "/full15/incremental-06-07-11-13-r1/scene-07/module.mjs", "11": "/full15/incremental-06-07-11-13-r1/scene-11/scene-11.mjs", "13": "/full15/incremental-06-07-11-13-r1/scene-13/scene-13.mjs"};
-const id=new URL(location.href).searchParams.get('scene')||'6';if(!modules[id])throw Error('Available authored source scenes:06,07,11,13');document.title='OffMenu scene '+id+' source action';const p=await mountSourceActionPreview(document.querySelector('canvas'),new URL(modules[id],location.href).href);Object.defineProperty(window,'__OFFMENU_SOURCE_ACTION__',{value:p});

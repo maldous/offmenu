@@ -104,13 +104,13 @@ OffMenu keeps its existing stack: a JavaScript browser/PWA application under `ap
 
 The existing interface contracts include REST `/api/v1`, MCP `/mcp` and OpenAPI `/openapi.json`; access is scoped and may read the saved account snapshot rather than unsaved browser edits. [Personal AI](docs/personal-ai.md) has its own capability and reviewed-action boundaries. The app's [optional operational services](docs/third-party-services.md), such as diagnostics, consent and support, are separate from Phase 3 household/retailer integrations; configuration is not activation.
 
-The current authentication default remains the established Netlify path. The alternative authentication seam is integrated in source, but a live change still requires explicit configuration, staging, account-continuity and release work; it is not a completed sign-in migration. See the [current configuration guide](docs/maintainer.md#configuration-and-authentication-state).
+The current authentication default remains the established Netlify path. The alternative authentication seam is integrated in source, but a live change still requires explicit configuration, staging, account-continuity and release work; it is not a completed sign-in migration. See the [current configuration guide](docs/maintainer.md#product-configuration).
 
 ### Source catalogue and coverage
 
-OffMenu's source programme is much broader than the small CLI examples below. It spans product labels, national food composition, recipes, prices, companies, safety notices, places and optional personal connections. The [source catalogue](docs/OFFMENU_CORPUS_INDEX.md#source-catalogue) points to the existing registers, release mappings and later country/recipe catalogues, rather than treating six import examples as the whole corpus.
+OffMenu's source programme is much broader than the small CLI examples below. It spans product labels, national food composition, recipes, prices, companies, safety notices, places and optional personal connections. The [source acceptance contract](docs/source-acceptance-contract.md) and [research delivery guide](docs/research-delivery-plan.md) describe qualification and delivery boundaries, rather than treating six import examples as the whole corpus.
 
-The repository records **1,303 discovery entries**, **22 historical retained-release mappings** and **54 app-directory entries**, with additional country and recipe evidence. These inventories overlap and have different purposes; they are **not an additive total of collected or live sources**. Discovery, collection, parsing, qualification and live use are separate milestones. Historical counts and directory labels are not a current coverage guarantee.
+Discovery, collection, parsing, qualification and live use are separate milestones. Historical inventories and directory labels are not a current coverage guarantee. Each selected source needs its own release, provenance, operation rights and validation evidence.
 
 | Source group | Named sources and what they contribute | Delivery boundary |
 | --- | --- | --- |
@@ -124,7 +124,7 @@ The repository records **1,303 discovery entries**, **22 historical retained-rel
 | Meaning, units and enrichment | FoodOn, FAO AGROVOC, QUDT, ChEBI and Codex references, alongside source-native classifications and nutrient definitions. | Some named releases have reference adapters; others are research candidates. A vocabulary or parser does not itself prove ingredient equivalence, a unit conversion or a dietary conclusion. |
 | Optional personal services and imports | USDA's personal API, Edamam, Spoonacular, fatsecret and Nutritics; Apple HealthKit, Android Health Connect, Google Health, Withings, Garmin and Strava; user-provided files, receipts and open document formats. | Provider approval, plan-specific rights and per-person consent remain separate from source registration. Private account data is not the shared food corpus. Native OffMenu JSON and Schema.org Recipe are formats, not external datasets. |
 
-For exact source IDs, releases, historical evidence and outstanding restrictions, use the [catalogue and status guide](docs/OFFMENU_CORPUS_INDEX.md#source-catalogue), [source acceptance contract](docs/source-acceptance-contract.md) and [delivery programme](docs/research-delivery-plan.md). This summary is not fresh licence clearance, download permission, provider entitlement or proof that a connector is live.
+For source qualification, release evidence and outstanding restrictions, use the [source acceptance contract](docs/source-acceptance-contract.md) and [delivery programme](docs/research-delivery-plan.md). This summary is not fresh licence clearance, download permission, provider entitlement or proof that a connector is live.
 
 <details>
 <summary>Historical small-CLI import notes — a limited subset, not the source catalogue</summary>
@@ -189,21 +189,23 @@ For a phone on the same network, camera access needs HTTPS with a certificate tr
 
 Source licences and per-record attribution remain attached to the data; normalization does not relicense it. Credentials, private customer records and raw datasets do not belong in this repository. Health interpretation, high-risk dietary claims and physical-device reliability require evidence beyond source code and automated fixtures.
 
-## Developer delivery
+## Developer workflow
 
-Start with [the repository standard](docs/standards/repository.md),
-[the repeatable developer workflow](tools/delivery/README.md) and
-[agent instructions](AGENTS.md). Run `npm run check:repository` to check the
-versioned layout and naming contract. Browser, edge and compatibility tests now
-live under `tests/web`, `tests/edge` and `tests/compat`.
+Start with [the maintainer guide](docs/maintainer.md),
+[the repository standard](docs/standards/repository.md) and
+[project instructions](AGENTS.md). Product setup uses a normal Python virtual
+environment and the locked JavaScript dependencies. Run `npm run check:repository`
+and `npm run check:layout` for the versioned source-layout contract. Browser,
+edge and compatibility tests live under `tests/web`, `tests/edge` and
+`tests/compat`.
 
 ## Current repository layout
 
-Maintained Python packages live under `src/`; application source under `apps/`;
-hosting adapters under `deploy/`; inactive seams under `integrations/`;
-contracts under `contracts/`; developer and operations programs under `tools/`.
-See [root disposition](docs/development/root-layout.md),
-[standard 2.0.0](docs/standards/repository.md) and
-[ADR 0003](docs/adr/0003-final-repository-layout.md) for the complete structure.
-Bootstrap with `python3.12 scripts/bootstrap_delivery.py`; use the installed
-`.venv-delivery/bin/python` for package commands and graph validation.
+Installed Python packages live under `src/`; browser, Worker and extension source
+under `apps/`; hosting adapters under `deploy/`; optional unmounted components
+under `integrations/`; source contracts under `contracts/`; and product data and
+development programs under `tools/`. See [the root layout](docs/development/root-layout.md)
+and [the standalone-product decision](docs/adr/0014-standalone-product.md).
+The product build needs this Git checkout, its declared dependencies and bundled
+assets. Deployment accounts, provider credentials and optional services are
+configured separately and are not build prerequisites.

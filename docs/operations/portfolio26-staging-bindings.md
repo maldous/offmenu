@@ -8,7 +8,7 @@ Pending PR42 code is not imported or treated as accepted develop.
 
 ## Run and consume
 
-From this repository checkout on Foo:
+From this repository checkout on the selected local executor:
 
 ```sh
 python3 -m offmenu.refresh.portfolio26 --now 2026-10-18T00:00:00Z
@@ -23,7 +23,7 @@ The default configuration is an inert package-local Python literal returned as
 a deep copy, including in wheel and sdist layouts. The retained repository JSON
 is an equivalent review snapshot; it is not a required installed resource.
 An explicit `configuration(path)` still reads trusted review JSON. Descriptors
-use exact existing Foo metadata locators, so another host reports missing
+use exact existing local executor metadata locators, so another host reports missing
 metadata instead of copying raw data. Loading the catalogue reads no sources.
 
 `configuration()` returns ten portfolio descriptors. `plan(config, now=...,
@@ -117,7 +117,7 @@ missing acquisition time, an old retention window or an unsupported planner;
 it never authorizes reuse of unread
 payload bytes or a download. A new source pin/evidence/scope changes the key.
 
-## Precise interface requests to integrator00
+## Precise interface requests to the product integrator
 
 No shared-core edits are included. These are proposed interfaces for the
 existing integrator's decision, not approval to implement or execute them:
@@ -138,7 +138,7 @@ existing integrator's decision, not approval to implement or execute them:
    and shared acceptance entry points; never build trusted contracts from this
    JSON config. StatCan needs a separately selected generic tabular interface.
 
-Next ready dependency is independent review of this commit and integrator00's
+Next ready dependency is independent review of this commit and the product integrator's
 decision on these exact interfaces. Actual payload work, source admission,
 refresh execution and develop integration require their existing gates. Raw
-stays on Foo; Finland/Frida/NO/FR, production/CIX and DEV7645 boundaries persist.
+stays on the selected local executor; Finland/Frida/NO/FR, production/CIX and DEV7645 boundaries persist.

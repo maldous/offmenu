@@ -1,13 +1,5 @@
 # Worker 28 health-preview closure on f6
 
-Task: OFFMENU-DELIVERY-20261015-C2, Worker28 existing health-preview closure.
-Fixed checkout: /home/user/src/offmenu-workers/worker-28.
-Branch: feature/health-preview-closure-owner28-f6cb92ae-20261015.
-Exact composition base: f6cb92aef52a5cc8193717d7e794556bd84f8b3b.
-The original checkout was already synchronized and clean on
-sync/worker-28/f6cb92ae-20261015. No fetch, synchronization repair, merge or
-central wiring was performed; Worker64 retains shared-fetch/sync ownership.
-
 ## Immutable reviewed source and fixture closure
 
 This composition preserves the module and tests BYTE FOR BYTE from original

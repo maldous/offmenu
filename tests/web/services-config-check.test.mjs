@@ -36,16 +36,21 @@ test('partial, unapproved, or arbitrary service configuration is rejected', () =
   assert.throws(() => parseThirdPartyConfig(unsupportedPolicyLanguage), /Unsupported privacy policy language/);
 });
 
-test('the disposition is exhaustive and keeps the inventory as its evidence-status authority', async () => {
+test('product dispositions exhaust the product inventory without asserting account history', async () => {
   const dispositionPath = new URL('../../docs/third-party-service-disposition.json', import.meta.url);
   const disposition = JSON.parse(await readFile(dispositionPath, 'utf8'));
   const actual = disposition.dispositions.flatMap(group => group.recordIds);
-  assert.equal(disposition.sourceInventory.records, 149);
-  assert.equal(actual.length, 149);
+  assert.ok(disposition.sourceInventory.records > 0);
+  assert.equal(actual.length, disposition.sourceInventory.records);
   assert.equal(new Set(actual).size, actual.length);
   const sourceBytes = await readFile(new URL(disposition.sourceInventory.path, dispositionPath));
   assert.equal(createHash('sha256').update(sourceBytes).digest('hex'), disposition.sourceInventory.sha256);
   const source = JSON.parse(sourceBytes);
   assert.equal(source.records.length, disposition.sourceInventory.records);
   assert.deepEqual([...actual].sort(), source.records.map(record => record.id).sort());
+  for (const id of ['cloudflare', 'netlify-identity', 'sentry', 'brevo', 'iubenda',
+    'sleekplan', 'cloudflare-zaraz', 'google-adsense', 'offmenu-source-off',
+    'offmenu-source-usda', 'offmenu-enrichment-gleif']) assert.ok(actual.includes(id), id);
+  assert.ok(source.records.every(record => !('projects' in record) && !('evidence' in record)));
+  assert.ok(actual.every(id => !id.startsWith('usf-software-')));
 });

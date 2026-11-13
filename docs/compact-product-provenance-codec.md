@@ -127,12 +127,8 @@ dictionary and graph wire bound is
 `1MiB + K*Q + R*B + O*G`. Sharing/deduplication can only reduce this quantity.
 
 The recorded independent witness supplies F=2101279,O=27195013,R=4202558:
-Worker57 terminal result9995 at
-`/home/user/Documents/Codex/2026-10-20/worker57-usda-full-witness-execution/terminal-result.json`,
-SHA-256 `aba42829675c17293104440f27e5190e2fdf543fdd0b0ec057a33b3a787efb5d`;
-Worker64 output review9993 at
-`/home/user/Documents/Codex/2026-10-20/worker64-usda-witness-output-review/terminal-output-review.json`,
-SHA-256 `b0c4b52d078a6bc50e49d578e0ebef27535083a6cd9e12c3d670998df17b29d7`.
+a retained terminal result with SHA-256 `aba42829675c17293104440f27e5190e2fdf543fdd0b0ec057a33b3a787efb5d`;
+and a retained independent output review with SHA-256 `b0c4b52d078a6bc50e49d578e0ebef27535083a6cd9e12c3d670998df17b29d7`.
 These are consumed as recorded count evidence, without opening original data.
 The result packet contains exact evaluated arithmetic. This is a conditional
 wire-only theorem, not a sample extrapolation or proof that the real producer
@@ -145,7 +141,7 @@ non-USDA shapes and multiple dictionaries are outside this bound.
 Run from the isolated checkout:
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tests /home/user/src/offmenu-preservation-20261020/checkpoint-venv/bin/python -B -m unittest test_compact_product_origins -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tests python -B -m unittest test_compact_product_origins -v
 ```
 
 Tests cover exact nested roundtrip/order/repeated inputs, CSV/JSONL/spans,
@@ -156,8 +152,8 @@ coverage/chunk sequence/greedy packing, work caps, profile rejection and
 serializer-component/global-count arithmetic including sparse observations
 distributed across multiple records. No raw-source, mapper or normalizer runs.
 
-Freeze this three-new-path candidate for independent review through Gateway;
-Worker00 alone integrates accepted changes. The held P1 correction, failed25
+Freeze this three-new-path candidate for independent review;
+the product integrator alone integrates accepted changes. The held P1 correction, failed25
 review route, emitter/shared iterator, USDA binding, product bridge, wrapper and
 acceptance/schema wiring remain separate. This candidate does not retry or
 substitute for that review. Source/country ownership and all source-use,

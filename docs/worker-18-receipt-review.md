@@ -49,7 +49,7 @@ separate reviewed strategy. Retention expiry/deletion of the ledger also ends
 duplicate memory; this is deliberate minimal retention, not forever deduplication.
 
 An existing caller such as `public/app.js` could later adopt this sequence through
-its owner, after Morgan review and explicit integration dispatch:
+its owner, after the product maintainer review and explicit integration dispatch:
 
 1. Resolve active authenticated account and write permissions; acquire OCR through
    an authorized provider adapter; calculate source digest; pass admitted rights,
@@ -85,11 +85,3 @@ Tests cover replay, scope separation, corrections/source preservation, missing
 fields, explicit decisions, consent/rights expiry, image deadlines/withdrawal and
 bounded malformed extraction. No provider calls, Git-writing fixtures, servers,
 installs or broad suites. No additional agents, sessions or worktrees.
-
-Shared custody baseline: common directory `/home/user/src/offmenu/.git`, main SHA
-`8652b312ce7989c5e4f2d49ae765d5d8daf5841d`, main checkout clean, main index SHA-256
-`4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389`.
-These invariants are asserted again after the worker commit. Shared Git object
-storage necessarily receives the new result commit; main and its index stay intact.
-Synthetic unit checks establish this module's bounded behavior only; the feature
-is not shipped, independently accepted, integrated or release-certified.

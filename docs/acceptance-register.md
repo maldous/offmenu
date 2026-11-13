@@ -141,4 +141,8 @@ Production data remains preserved: 1 account record, summed revision 2, 821 snap
 | HN discovery | OpenNutrition publisher checksum verified; primary methodology and modified attribution checked | Supplemental source/quality register in progress; no measured-nutrition claim |
 | Durable raw release archive | Checksum and named upstream release retained; local archives acquired | R2 API error 10042 requires account activation; not claimed durable |
 
-Detailed evidence: `docs/collection-execution.md`, `docs/collections/`. This is an in-progress checkpoint, not programme completion. No current account state or credential was read or modified.
+The former `docs/collection-execution.md` is historical execution evidence
+preserved outside the current product tree. The product collection contracts
+remain under `docs/collections/`. This dated checkpoint is not programme
+completion or evidence of present live state. No current account state or
+credential was read or modified.

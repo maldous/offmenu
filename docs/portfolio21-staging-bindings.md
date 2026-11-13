@@ -11,7 +11,7 @@ From this checkout, with an existing destination parent:
 
 ```sh
 python3 -m offmenu.portfolio21 \
-  --metadata-root /home/user/src/offmenu-data \
+  --metadata-root /absolute/private/metadata-root \
   --as-of 2026-10-18T00:00:00Z \
   --output /absolute/new/portfolio21-metadata.json
 python3 -m unittest tests.test_portfolio21_staging -v
@@ -47,11 +47,11 @@ production contract. There is no runtime plugin or config-driven permission path
 
 | Binding | Evidence and current interpretation | Missing prerequisite / next owner action |
 | --- | --- | --- |
-| MD Prices 2026-10-12 | Pinned normalized manifest claims 4 MD observations; original archive SHA is a claim only. `/completedAt` is normalization time. `/license`, `/attribution`, `/scope` are declarations. | Gateway obtain the actual raw custodian, original acquisition time, role assets/pins, retained rights/scope evidence and reviewed exact inventory. Owner59 produced a derivative; native custody remains unverified. |
-| SJ SSB | Pinned receipt `/release` null, zero retained response bytes, no original. Discontinued Svalbard CPI is not a current SJ basket. | Gateway and historical owner38 resolve exact asset/release, explicit source-use scope, actual custodian and SJ applicability. No Jan Mayen inference. |
-| TD WFP markets/prices | Two receipts claim complete CSV originals (355 / 134716 rows; 17637 / 16677432 bytes). Their `/rights_evidence` points to an unqualified package receipt; no body/schema verification in this task. | Worker21 retains ownership. Gateway/source-use reviewer resolve exact publisher release, licence text, intended operations, attribution and custody before authorizing body access. Then bind reviewed CSV selectors and exact inventory through an appropriate shared adapter. |
+| MD Prices 2026-10-12 | Pinned normalized manifest claims 4 MD observations; original archive SHA is a claim only. `/completedAt` is normalization time. `/license`, `/attribution`, `/scope` are declarations. | the product maintainer obtain the actual raw custodian, original acquisition time, role assets/pins, retained rights/scope evidence and reviewed exact inventory. Owner59 produced a derivative; native custody remains unverified. |
+| SJ SSB | Pinned receipt `/release` null, zero retained response bytes, no original. Discontinued Svalbard CPI is not a current SJ basket. | the product maintainer and historical owner38 resolve exact asset/release, explicit source-use scope, actual custodian and SJ applicability. No Jan Mayen inference. |
+| TD WFP markets/prices | Two receipts claim complete CSV originals (355 / 134716 rows; 17637 / 16677432 bytes). Their `/rights_evidence` points to an unqualified package receipt; no body/schema verification in this task. | Worker21 retains ownership. the source-use reviewer resolve exact publisher release, licence text, intended operations, attribution and custody before authorizing body access. Then bind reviewed CSV selectors and exact inventory through an appropriate shared adapter. |
 | TD other leads | JS route, package metadata, advertised PDF answered with HTML, menu API metadata. | Exact permitted original corpus and finite scope still needed. No dataset count from these responses. |
-| UM DLA | Receipt reports 403, 510 response bytes, zero source records. | Gateway/historical owner45 identify an independently permitted exact UM asset, rights and applicability. Existing denial means no retry or alternate-host bypass. Native custody remains unverified. |
+| UM DLA | Receipt reports 403, 510 response bytes, zero source records. | the product maintainer/historical owner45 identify an independently permitted exact UM asset, rights and applicability. Existing denial means no retry or alternate-host bypass. Native custody remains unverified. |
 
 No nutrition, recipe, current national basket or country-completeness claim follows
 from these bindings. MD's four earlier validated price observations remain a partial
@@ -94,11 +94,11 @@ pin needs a separate reviewed action, not an mtime heuristic. Audit verification
 time is reported separately from source validation time; source times are unknown
 for these real metadata-only bindings.
 
-No generic pure cache planner exists at this pinned base (integrator00 result5798).
+No generic pure cache planner exists at this pinned base (the product integrator result5798).
 The local age calculation is metadata bookkeeping only and does not invoke or
 replace a shared acquisition engine. Its absent capability is explicit in reports.
 
-Integrator00 must resolve two shared interface gaps before real production binding:
+the product integrator must resolve two shared interface gaps before real production binding:
 (1) how a shared acquisition receipt preserves `originalAcquiredAt` separately from
 `checkedAt` under revalidation (the current generic acquisition cache uses checkedAt
 for its window); (2) where the Prices stage emits full per-datum fieldOrigins and
@@ -115,7 +115,7 @@ Official pages consulted 2026-10-18, documentation only, no API/data request:
 
 All existing source/ownership/denied-action holds remain. Production, CIX, UI/runtime
 and native NO/FR crash or Finland/Frida holds remain paused; no retry, new worker,
-source-body read or acquisition was performed. Morgan retains scheduling and ledger
+source-body read or acquisition was performed. the product maintainer retains scheduling and ledger
 reconciliation. COUNTRY-QUEUE stays open.
 
 Review correction6190 addresses W11-W21-READER-01 and W11-W21-POINTER-02 only.
