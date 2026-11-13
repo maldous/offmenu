@@ -1,0 +1,40 @@
+{
+  "exit_code": 1,
+  "summary": [
+    "\u2139 tests 13",
+    "\u2139 suites 0",
+    "\u2139 pass 2",
+    "\u2139 fail 11",
+    "\u2139 cancelled 0",
+    "\u2139 skipped 0",
+    "\u2139 todo 0",
+    "\u2139 duration_ms 78.102452"
+  ],
+  "tests": [
+    "\u2716 new cook captures exact recipe version/source and actual ingredient inputs (4.165168ms)",
+    "\u2716 recipe v2 and changed current profile cannot mutate old cooking inputs (1.314814ms)",
+    "\u2716 serving retains the cooking witness without consulting current recipe (1.582ms)",
+    "\u2716 history normalization preserves the batch-bound witness (4.547956ms)",
+    "\u2716 local JSON and current cloud validator retain v1 while recipe is now v2 (1.053147ms)",
+    "\u2716 ordinary pantry backup/restore retains captured provenance and totals (1.51571ms)",
+    "\u2716 absent upstream version stays unknown and legacy meals are never backfilled (0.287605ms)",
+    "\u2714 retry after recipe edit returns the original batch without recomputation (0.428346ms)",
+    "\u2716 private or unknown-public witness content is not added to shared projections (1.093218ms)",
+    "\u2716 batch and history validators reject a witness rebound to a different meal (0.693275ms)",
+    "\u2716 exact retained server-history helper preserves the same witness and zero/unknown behavior (1.700987ms)",
+    "\u2714 final server-state seam copies only validated witness fields without recomputing values (1.158376ms)",
+    "\u2716 retained source references do not acquire a public visibility grant (0.804451ms)",
+    "\u2716 failing tests:",
+    "\u2716 new cook captures exact recipe version/source and actual ingredient inputs (4.165168ms)",
+    "\u2716 recipe v2 and changed current profile cannot mutate old cooking inputs (1.314814ms)",
+    "\u2716 serving retains the cooking witness without consulting current recipe (1.582ms)",
+    "\u2716 history normalization preserves the batch-bound witness (4.547956ms)",
+    "\u2716 local JSON and current cloud validator retain v1 while recipe is now v2 (1.053147ms)",
+    "\u2716 ordinary pantry backup/restore retains captured provenance and totals (1.51571ms)",
+    "\u2716 absent upstream version stays unknown and legacy meals are never backfilled (0.287605ms)",
+    "\u2716 private or unknown-public witness content is not added to shared projections (1.093218ms)",
+    "\u2716 batch and history validators reject a witness rebound to a different meal (0.693275ms)",
+    "\u2716 exact retained server-history helper preserves the same witness and zero/unknown behavior (1.700987ms)",
+    "\u2716 retained source references do not acquire a public visibility grant (0.804451ms)"
+  ]
+}

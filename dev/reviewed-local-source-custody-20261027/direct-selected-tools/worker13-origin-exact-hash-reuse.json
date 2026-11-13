@@ -1,0 +1,4310 @@
+{
+  "schema": "offmenu-worker13-origin-source-reuse/1",
+  "evidenceCommit": "ba133e1c48a5a61c791cc1399430f3ef1b21386f",
+  "sourceClosureSha256": "c240c2937e5e6e44b12b2e8e7d9484ae927fce8c901374f6e57694be05f2278f",
+  "method": "Retrieved 74 immutable GitHub blob candidates at observed commits; independently decoded exact base64 bytes, checked GitHub blob id and length, computed SHA-256; matched against exact closure entries. Candidate search used recorded file basename+byte-length across supplied origin snapshots, not exhaustive arbitrary path-history search.",
+  "rows": [
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-handoff-bindings.mjs",
+      "bytes": 2268,
+      "sha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-scanner-handoff.mjs",
+      "bytes": 6878,
+      "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00",
+      "matches": [
+        {
+          "blob": "c29c25292c01da77f252acd04072a90ffb5f2886",
+          "locations": [
+            {
+              "path": "dev/local-foundation-retained-cutsets-20261027/foundation-scanner-handoff.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "dev/local-named-foundation-r3-custody-20261027/consumer/foundation-scanner-handoff.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/record-policy.js",
+      "bytes": 2376,
+      "sha256": "048c6cfe0491c341f11424cd39a062c80d317f8bd13ff513c798867f848818a9",
+      "matches": [
+        {
+          "blob": "2f8b63e9968df8a16c28c5500a6c9733b407822b",
+          "locations": [
+            {
+              "path": "public/record-policy.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/record-policy.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/record-policy.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/record-policy.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locales/ar.js",
+      "bytes": 27728,
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "matches": [
+        {
+          "blob": "9cb5613e516233e79ac0f5dc4580c98d06b225a8",
+          "locations": [
+            {
+              "path": "public/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locale-negotiation.js",
+      "bytes": 2881,
+      "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+      "matches": [
+        {
+          "blob": "d7fae0ff34e49e75f66ff185ea4eb0f1b85d510b",
+          "locations": [
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/i18n.js",
+      "bytes": 8381,
+      "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+      "matches": [
+        {
+          "blob": "476085e180cbc4f8b74945ffc862d5ccaeaba646",
+          "locations": [
+            {
+              "path": "public/i18n.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/i18n.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/i18n.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/i18n.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/source-category-claims.js",
+      "bytes": 1857,
+      "sha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6",
+      "matches": [
+        {
+          "blob": "5e3dce43881fabcd69482ea2af1542bc37249325",
+          "locations": [
+            {
+              "path": "public/source-category-claims.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/source-category-claims.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/source-category-claims.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/source-category-claims.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/countries.js",
+      "bytes": 1497,
+      "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3",
+      "matches": [
+        {
+          "blob": "5af4429faf87c7672c5675580556ee6fdd6a3e9c",
+          "locations": [
+            {
+              "path": "public/countries.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/countries.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/countries.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/countries.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/countries.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/countries.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/countries.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/countries.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/countries.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/countries.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/countries.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/countries.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/typed-identifier-contract.mjs",
+      "bytes": 10793,
+      "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "matches": [
+        {
+          "blob": "84641cb514ec4f20adfa8abb260e95aa7f2be9dd",
+          "locations": [
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "dev/source-identity-consumer-candidate-20261027/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/scanner-kitchen-handoff.js",
+      "bytes": 6281,
+      "sha256": "d07d6ce268a4d07cc0c9368ae867b807aa2710ffae9265e737d0a889f74f3803",
+      "matches": [
+        {
+          "blob": "1cee87a3cfead7c178823ed8214eeebc3ad00664",
+          "locations": [
+            {
+              "path": "dev/local-foundation-confirmed-handoff-20261027/owner00/scanner-kitchen-handoff.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "dev/local-foundation-retained-cutsets-20261027/scanner-kitchen-handoff.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/ingredients.js",
+      "bytes": 5212,
+      "sha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab",
+      "matches": [
+        {
+          "blob": "d92d570bf13efdfb651242dfd55de482a120dd1d",
+          "locations": [
+            {
+              "path": "public/ingredients.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/ingredients.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/ingredients.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/ingredients.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-identity-v2.js",
+      "bytes": 14759,
+      "sha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76",
+      "matches": [
+        {
+          "blob": "6a024dcd5b0349e91f28980139be11b0a2b92a73",
+          "locations": [
+            {
+              "path": "public/scanner-identity-v2.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/scanner-identity-v2.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/scanner-identity-v2.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/scanner-identity-v2.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/model.js",
+      "bytes": 8006,
+      "sha256": "ac59b94a9d0089bb770c86196fcd634d15d1ddc87d701bd2875ac3e55e786c2a",
+      "matches": [
+        {
+          "blob": "e05ed256295aff75efda95d13b9da13346d066de",
+          "locations": [
+            {
+              "path": "dev/local-foundation-confirmed-handoff-20261027/owner00/model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "dev/local-foundation-retained-cutsets-20261027/model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/menu-model.js",
+      "bytes": 4308,
+      "sha256": "71a4f4f4e05d8c62a49ac55233448be42346427e528c485ecc76b7a7cbaeec16",
+      "matches": [
+        {
+          "blob": "bf6c454584c5f097d3f5f54cb6d578729b4eafde",
+          "locations": [
+            {
+              "path": "public/menu-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/menu-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/menu-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/menu-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/unified-data.js",
+      "bytes": 15990,
+      "sha256": "82d027668d9f528dd83bce3cbb8c6f39b0bcdfbb88c62994456c433bc402b782",
+      "matches": [
+        {
+          "blob": "a5a224098a7ecaff869de414ab4f6c5e7952e7fb",
+          "locations": [
+            {
+              "path": "public/unified-data.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/unified-data.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/unified-data.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/unified-data.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/saved-price-observations.js",
+      "bytes": 4160,
+      "sha256": "bc07674f9c59e140dce59f93cf85eef4bfde3cec3d2e0635472771c3fe7886cd",
+      "matches": [
+        {
+          "blob": "58724a6fa1889b30981426c2ea6360b76e364edc",
+          "locations": [
+            {
+              "path": "public/saved-price-observations.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/saved-price-observations.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/saved-price-observations.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/saved-price-observations.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/content-locale.js",
+      "bytes": 5887,
+      "sha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d",
+      "matches": [
+        {
+          "blob": "877d9d36691fc60cbd8b3ef3c860b54e2e76088a",
+          "locations": [
+            {
+              "path": "public/content-locale.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/content-locale.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/content-locale.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/content-locale.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-ingredient-aliases.json",
+      "bytes": 10156,
+      "sha256": "c2dbca1d379ce93fa4423993ed0d1ace7669447c7899be025b7af3a8855bb609",
+      "matches": [
+        {
+          "blob": "45d76d62641ce3f08d4b0e73d88a87d64fa90972",
+          "locations": [
+            {
+              "path": "public/recipe-ingredient-aliases.json",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/recipe-ingredient-aliases.json",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/recipe-ingredient-aliases.json",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/recipe-ingredient-aliases.json",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-review.js",
+      "bytes": 1006,
+      "sha256": "06c291981207ee25288a8bdfe7f1c5fd8eee41eb266cf249f067fddcd4b7600c",
+      "matches": [
+        {
+          "blob": "91fe36b85a47eb70a491ac9cbf6b4660b76396fc",
+          "locations": [
+            {
+              "path": "public/recipe-review.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/recipe-review.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/recipe-review.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/recipe-review.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-library-model.js",
+      "bytes": 4739,
+      "sha256": "7558a5b2fc7f8cb1c3fafc100b3a585b0c52560842270261b0aad85c4670a912",
+      "matches": [
+        {
+          "blob": "36b47c03638255e42a33b7950b0f6da058e24949",
+          "locations": [
+            {
+              "path": "public/recipe-library-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/recipe-library-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/recipe-library-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/recipe-library-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/corpus/assert-curated.mjs",
+      "bytes": 644,
+      "sha256": "c64ce47a881d987b4e3b48b84be1c22f1e95031a77d390d433404ed327bed69d",
+      "matches": [
+        {
+          "blob": "9e8803b26d983fef7f4aeeb3bc4ed70e2f9411f7",
+          "locations": [
+            {
+              "path": "corpus/assert-curated.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "corpus/assert-curated.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "corpus/assert-curated.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "corpus/assert-curated.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/recipe-discovery-client.js",
+      "bytes": 4022,
+      "sha256": "e8e026682f06bd803091c3dfc72cdcee86a822d87d230629b5784f48702ea562",
+      "matches": [
+        {
+          "blob": "ee3d8de4623d8ea01de0f396a958f29837747e0c",
+          "locations": [
+            {
+              "path": "public/recipe-discovery-client.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/recipe-discovery-client.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/recipe-discovery-client.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/recipe-discovery-client.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/recipe-library-ui.js",
+      "bytes": 8930,
+      "sha256": "9873ff604170e7df5a0120c5f771540ac83ec910df9609f1a5cb368ad6c6e7fc",
+      "matches": [
+        {
+          "blob": "5d4ee2380a4986546ad0319f339d313e97a932d6",
+          "locations": [
+            {
+              "path": "public/recipe-library-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/recipe-library-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/recipe-library-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/recipe-library-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/cooking-model.js",
+      "bytes": 8148,
+      "sha256": "96d160f5fd8c75f6e84148d4001ba7ec5ae991f487bf9c4b0777828cb2baed42",
+      "matches": [
+        {
+          "blob": "fe267bce2065bb50619b09aa83772f7578bf6bab",
+          "locations": [
+            {
+              "path": "public/cooking-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/cooking-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/cooking-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/cooking-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sync-model.js",
+      "bytes": 3990,
+      "sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+      "matches": [
+        {
+          "blob": "11a9ad5b07226d881a7542f63ef58c6bd63b2596",
+          "locations": [
+            {
+              "path": "public/sync-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/sync-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/sync-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/sync-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sync-ui.js",
+      "bytes": 5535,
+      "sha256": "bf35b0e04b8c77f1e8f453124d12fee69b99e39d7210bb8763218c9ea00759db",
+      "matches": [
+        {
+          "blob": "b58c5abcae4472537ccc28b2fe8e2c8e15990106",
+          "locations": [
+            {
+              "path": "public/sync-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/sync-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/sync-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/sync-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sharing-ui.js",
+      "bytes": 6845,
+      "sha256": "f84d30e1c236eb400e5e0587b764c470000a16f3ad7b2f6ec5e3cb6c183f1cc6",
+      "matches": [
+        {
+          "blob": "6bafe618eae47e9a9ebc690ebca9fce27daecc03",
+          "locations": [
+            {
+              "path": "public/sharing-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/sharing-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/sharing-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/sharing-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/household-model.js",
+      "bytes": 7253,
+      "sha256": "88a375ef4062fe84646af2cc7661749c2c2f2bc2dd8178852ff58ccbefbce587",
+      "matches": [
+        {
+          "blob": "88424bbf2a6e0aa8cb81d002d9ae01bcc3d62abc",
+          "locations": [
+            {
+              "path": "public/household-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/household-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/household-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/household-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/normal-app-dc39-minimal-20261027/source/public/journey-ui.js",
+      "bytes": 9993,
+      "sha256": "72ad38d3698fbf139e42d995a781bbab1551a8f1236289864a9b3707f46cc308",
+      "matches": [
+        {
+          "blob": "babb0c1a1bb5ae7f58af6c98a947ea3b9a3c3224",
+          "locations": [
+            {
+              "path": "public/journey-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/journey-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/journey-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/journey-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/common-corpus-locale.js",
+      "bytes": 11249,
+      "sha256": "728a26ac7eae0a6e55fdf03df2d347ffb5fd7f7a8a44334b243cd6b7df2f14b7",
+      "matches": [
+        {
+          "blob": "6887d007ae8fe705c936f61477f749f288259c10",
+          "locations": [
+            {
+              "path": "public/common-corpus-locale.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/common-corpus-locale.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/common-corpus-locale.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/common-corpus-locale.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sources.js",
+      "bytes": 17882,
+      "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933",
+      "matches": [
+        {
+          "blob": "01069c7e14908d026a9f430ccea48901f008a96c",
+          "locations": [
+            {
+              "path": "public/sources.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/sources.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/sources.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/sources.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/data-ui.js",
+      "bytes": 23348,
+      "sha256": "ca5e89125bbc896cc7ec5f8e383d7875f1515dc6af2a6a92405efc5cd6e567ed",
+      "matches": [
+        {
+          "blob": "400cbf5c42fd9b4ead947eff730da30cfa2ff6e8",
+          "locations": [
+            {
+              "path": "public/data-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/data-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/data-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/data-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/access-ui.js",
+      "bytes": 7881,
+      "sha256": "5a394ea2b04fdba6ab39c6e53122a5c883040e353cdf98249bf213a527e85b15",
+      "matches": [
+        {
+          "blob": "c78e7cb66c208e791d09059e954c7b6251f769e5",
+          "locations": [
+            {
+              "path": "public/access-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/access-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/access-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/access-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/waste-analysis-model.js",
+      "bytes": 3506,
+      "sha256": "060e1ab4ca3ccef9506a87ab9d563a6bb626c7b76fe330d746420b97df94052d",
+      "matches": [
+        {
+          "blob": "25dd7b05e1f7251b4965fdb3c6c7c7c88100896d",
+          "locations": [
+            {
+              "path": "public/waste-analysis-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/waste-analysis-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/waste-analysis-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/waste-analysis-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/integration-owner03.mjs",
+      "bytes": 5711,
+      "sha256": "8e05b6896e840e4a8806b1d44a59f71fc690b6059af529401df5ddcd7731eab8",
+      "matches": [
+        {
+          "blob": "68f0747a54775226b8b8538097a97f28debdc6e9",
+          "locations": [
+            {
+              "path": "public/integration-owner03.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/integration-owner03.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/integration-owner03.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/integration-owner03.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/insights-model.js",
+      "bytes": 6815,
+      "sha256": "f8008145063c8bbcf2c9322ece541ee10dc5a9f63678af78fb6f6167bf51f678",
+      "matches": [
+        {
+          "blob": "e54218ab012d841f9ef28ee58ea98c3ba41ed0f6",
+          "locations": [
+            {
+              "path": "public/insights-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/insights-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/insights-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/insights-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/integrations.js",
+      "bytes": 2087,
+      "sha256": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9",
+      "matches": [
+        {
+          "blob": "fccfc184dca0407cb150a9e04eb2efb12162faee",
+          "locations": [
+            {
+              "path": "public/integrations.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/integrations.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/integrations.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/integrations.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/insights-ui.js",
+      "bytes": 18069,
+      "sha256": "45937c6133b3f70af1c2a0cbc589c9d7d889d5fc190a2dd00afd24a1ec39e863",
+      "matches": [
+        {
+          "blob": "0950d4f9345c18721e991e5797edcfb0d052975d",
+          "locations": [
+            {
+              "path": "public/insights-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/insights-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/insights-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/insights-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/checkout-model.js",
+      "bytes": 5052,
+      "sha256": "e66f7436ddf823d116cc2fc777a86401fa74071f3d59758fb8ff5038c5a41ce8",
+      "matches": [
+        {
+          "blob": "c6b18d6692295cdef8933b779f1923feebc419b8",
+          "locations": [
+            {
+              "path": "dev/local-foundation-confirmed-handoff-20261027/owner00/checkout-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "dev/local-foundation-retained-cutsets-20261027/checkout-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/freshness-ui.js",
+      "bytes": 3194,
+      "sha256": "c7a0d22bb09d060fd5b917a6076473f8b6da9d43a43db8dd92a49989234c9caf",
+      "matches": [
+        {
+          "blob": "086134cb99662161ee1b996f7e4bf053f483a811",
+          "locations": [
+            {
+              "path": "public/freshness-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/freshness-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/freshness-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/freshness-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/session-fetch.js",
+      "bytes": 1126,
+      "sha256": "cddc55fc2666ed0d4eef67ca3315540b032c86f47628294ce0dc8f180204a8f3",
+      "matches": [
+        {
+          "blob": "dafeb773ae47b245830553cf3390eabb0cb92f4e",
+          "locations": [
+            {
+              "path": "public/session-fetch.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/session-fetch.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/session-fetch.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/session-fetch.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/offmenu-identity-client.js",
+      "bytes": 3555,
+      "sha256": "f94c0df448c762224ea61fcb2e85b32cd5419a962ae793a45ab450e1ea78b53f",
+      "matches": [
+        {
+          "blob": "0f0a1c16942f4864f107393dc8fc7ad49dc0ce43",
+          "locations": [
+            {
+              "path": "public/offmenu-identity-client.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/offmenu-identity-client.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/offmenu-identity-client.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/offmenu-identity-client.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/care-model.js",
+      "bytes": 2133,
+      "sha256": "81a5c3771f8420bc81129aeeb57309a0d851dd3878e3c1016895890e40e7f96e",
+      "matches": [
+        {
+          "blob": "4494f7fa20e15430aae6e3e0e569620de0c2868b",
+          "locations": [
+            {
+              "path": "public/care-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/care-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/care-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/care-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/care-ui.js",
+      "bytes": 20929,
+      "sha256": "a67258db6ef0c952450aeb089db3485021966dd0a837a1c0e96725ef7c0a581b",
+      "matches": [
+        {
+          "blob": "49c04698f612a4e9170717edf03ae068c0d0dec7",
+          "locations": [
+            {
+              "path": "public/care-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/care-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/care-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/care-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-community-model.js",
+      "bytes": 1356,
+      "sha256": "dde224681112c5085ef0038d57ab64e3a3e20eeba1a43da967e5ccbaa7c093d4",
+      "matches": [
+        {
+          "blob": "d850731caf57ef5c749ff735f26fc2936bd93334",
+          "locations": [
+            {
+              "path": "public/recipe-community-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/recipe-community-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/recipe-community-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/recipe-community-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-community-ui.js",
+      "bytes": 10713,
+      "sha256": "9dd5d426122e602bcd8d42d9b74a44983323858afeb870c49f446b17e1be2acb",
+      "matches": [
+        {
+          "blob": "98b45e64b6e5352f05c3f2bc99584fcd163e0e14",
+          "locations": [
+            {
+              "path": "public/recipe-community-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/recipe-community-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/recipe-community-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/recipe-community-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/community-ai-ui.js",
+      "bytes": 5470,
+      "sha256": "6c4bdbba7fc208a6340b696373ce4a7ca3d7d2243306ebf999d9033dd6eaf560",
+      "matches": [
+        {
+          "blob": "65af3a6ae1c3b478f8d13196b3ad45d47898bba2",
+          "locations": [
+            {
+              "path": "public/community-ai-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/community-ai-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/community-ai-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/community-ai-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/personal-ai-ui.js",
+      "bytes": 2795,
+      "sha256": "79d6479ed36cb197ec270c993a501e8ec31e3c22b66603df112ff6c45ee01db8",
+      "matches": [
+        {
+          "blob": "709039913f1c75416ac11b1cce35aef33465659c",
+          "locations": [
+            {
+              "path": "public/personal-ai-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/personal-ai-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/personal-ai-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/personal-ai-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/services-model.js",
+      "bytes": 5585,
+      "sha256": "05d3279638586ad890de104504b40466f13cbdd1bbb87d4091f1962c77ed1ff9",
+      "matches": [
+        {
+          "blob": "79b802aea4f5ee9619845c5190e51238b03b2296",
+          "locations": [
+            {
+              "path": "public/services-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/services-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/services-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/services-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/services-ui.js",
+      "bytes": 18582,
+      "sha256": "0db7f4719d4244ce28bf8e26763ac477f948d21aa3be4f31c95aeb49ecd397f4",
+      "matches": [
+        {
+          "blob": "bd9446c7ee3d274bd60e57f30c953aa71e373909",
+          "locations": [
+            {
+              "path": "public/services-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/services-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/services-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/services-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-model.js",
+      "bytes": 1322,
+      "sha256": "93de743170678cd633eea2ea737da784386a8e2f3f42d3c0501eb809c50c8de9",
+      "matches": [
+        {
+          "blob": "92419482345d7791e4033fd0c8775296a35131b8",
+          "locations": [
+            {
+              "path": "public/admin-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/admin-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/admin-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/admin-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-ui.js",
+      "bytes": 7128,
+      "sha256": "5437925cabde6eec107532d9470dcefe3639f06e73a8aa96a6867b88718000e9",
+      "matches": [
+        {
+          "blob": "31e78788b70c32633c3b0ad90a8ab47d66467fdf",
+          "locations": [
+            {
+              "path": "public/admin-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/admin-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/admin-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/admin-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-operations-ui.js",
+      "bytes": 3309,
+      "sha256": "7d8e5385abd34b3bcfad22780482d0465b1333fee2c0d98c267242c366da186d",
+      "matches": [
+        {
+          "blob": "9479054b1d5c480c14ddda1b0ac80a609ac33336",
+          "locations": [
+            {
+              "path": "public/admin-operations-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/admin-operations-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/admin-operations-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/admin-operations-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/documents.js",
+      "bytes": 14592,
+      "sha256": "a19e076a3e9924f0a20ffac53ab7169e1b55768953b39fe3b41a33b0f1bd1f54",
+      "matches": [
+        {
+          "blob": "1fec2f9e26207395feab45871336daf512e7ddf1",
+          "locations": [
+            {
+              "path": "public/documents.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/documents.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/documents.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/documents.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/cloud/state.mjs",
+      "bytes": 6798,
+      "sha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce",
+      "matches": [
+        {
+          "blob": "c24929816da7f8e3a7825d0123b5e2fe13e7eaa6",
+          "locations": [
+            {
+              "path": "cloud/state.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "cloud/state.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "cloud/state.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "cloud/state.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/cloud/meal-preference-owner20.mjs",
+      "bytes": 5835,
+      "sha256": "0f49e01eeb5209fd98e39b50efc94b789f066c4a7c00cd4ea4764d54762a741e",
+      "matches": [
+        {
+          "blob": "a921e357aa8e19c7880533ffe0facb9678cb7147",
+          "locations": [
+            {
+              "path": "cloud/meal-preference-owner20.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "cloud/meal-preference-owner20.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "cloud/meal-preference-owner20.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "cloud/meal-preference-owner20.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/pantry-backup.js",
+      "bytes": 2118,
+      "sha256": "15043b581af000070ac9db1499af0693eb6dad9dd7071e741f18e70da7c24c80",
+      "matches": [
+        {
+          "blob": "ebdcc2fa2e1b139accbb265f0e3211df26e9c234",
+          "locations": [
+            {
+              "path": "public/pantry-backup.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/pantry-backup.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/pantry-backup.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/pantry-backup.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/lifecycle-fixture.js",
+      "bytes": 2512,
+      "sha256": "ae75bc08ce8818278b6a330b1872943868ad19991cf536bb4d9863a6fadb40d1",
+      "matches": [
+        {
+          "blob": "bb25920012380029c850f771c76bada8714aa792",
+          "locations": [
+            {
+              "path": "public/lifecycle-fixture.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/lifecycle-fixture.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/lifecycle-fixture.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/lifecycle-fixture.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-model.js",
+      "bytes": 3559,
+      "sha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228",
+      "matches": [
+        {
+          "blob": "15d6e963bd2e74f825448cd9bc4f77151a44d9b9",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/scanner-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/scanner-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/scanner-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/scanner-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-capture-envelope.js",
+      "bytes": 6765,
+      "sha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89",
+      "matches": [
+        {
+          "blob": "8e933485cc0a701fee2c11f7bd29bc7911c4ae20",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-capture-envelope.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/scanner-capture-envelope.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-capture-envelope.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/scanner-capture-envelope.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-capture-envelope.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/scanner-capture-envelope.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-capture-envelope.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/scanner-capture-envelope.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-ui.js",
+      "bytes": 18334,
+      "sha256": "d4224f3c61bc301f9ed0cc331be7338fb4e7af179dbd64456e64dc94f1905dd6",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-retained-identity-ui-20261025/node_modules/gotrue-js/lib/index.js",
+      "bytes": 12998,
+      "sha256": "0f26ddf432d7693264ede22528edb58087f646bc6cecfc686ce47351e89bc5df",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-retained-identity-ui-20261025/node_modules/@netlify/identity/dist/main.js",
+      "bytes": 32999,
+      "sha256": "bbfddfc66293ecc3a2ca94c6cdc4a3fd039705bded3e44808ec4e159bc6c23d3",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/app.js",
+      "bytes": 104523,
+      "sha256": "722720c61f4d0a76cf782f690093a28a8efff0d06ce3f49c6e661acc25307c60",
+      "matches": [
+        {
+          "blob": "dbf961261aea27e0bbe8147e8f2c2dc7f4a29a11",
+          "locations": [
+            {
+              "path": "dev/local-foundation-confirmed-handoff-20261027/owner13/app.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/source-classification-contract.mjs",
+      "bytes": 4219,
+      "sha256": "e781776fd220a9957c8e03b8e365d62ac161ebc85ba376d5d916c6696b8a82ef",
+      "matches": [
+        {
+          "blob": "fa8fdb31f2daf1ba00d479591bf7259597dd20e7",
+          "locations": [
+            {
+              "path": "public/source-classification-contract.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/source-classification-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/source-classification-contract.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/source-classification-contract.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-source-assertions.js",
+      "bytes": 22771,
+      "sha256": "ea2266461c216750d6a9bc7e34a0a781e2beacf479bb1c5751f3490f61175c16",
+      "matches": [
+        {
+          "blob": "84ee52382675c46f9da7ef19fcf37b6bff69421a",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-source-assertions.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-source-assertions.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-source-assertions.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-source-assertions.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/foundation-scanner-client.mjs",
+      "bytes": 10468,
+      "sha256": "d6e82b813a49184d5fb4ac5e234404acf2bd46009e8cebb8e36240d38381f073",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/guest-foundation-client.mjs",
+      "bytes": 2091,
+      "sha256": "d9f531f4e41d049aaf0609dccb8479aea24357c7d35218a94addf990abffd9ad",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/typed-identifier-contract.mjs",
+      "bytes": 10793,
+      "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "matches": [
+        {
+          "blob": "84641cb514ec4f20adfa8abb260e95aa7f2be9dd",
+          "locations": [
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "dev/source-identity-consumer-candidate-20261027/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-client.mjs",
+      "bytes": 10890,
+      "sha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-selection.mjs",
+      "bytes": 204,
+      "sha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/composed-scanner-client.mjs",
+      "bytes": 5349,
+      "sha256": "45e6f713a55073ea102af06d9c5e6f20f07053d96a02dc608dacfa9d3019e7bc",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/locales/ar.js",
+      "bytes": 27728,
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "matches": [
+        {
+          "blob": "9cb5613e516233e79ac0f5dc4580c98d06b225a8",
+          "locations": [
+            {
+              "path": "public/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/locale-negotiation.js",
+      "bytes": 2881,
+      "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+      "matches": [
+        {
+          "blob": "d7fae0ff34e49e75f66ff185ea4eb0f1b85d510b",
+          "locations": [
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/i18n.js",
+      "bytes": 8381,
+      "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+      "matches": [
+        {
+          "blob": "476085e180cbc4f8b74945ffc862d5ccaeaba646",
+          "locations": [
+            {
+              "path": "public/i18n.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/i18n.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/i18n.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/i18n.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-model.js",
+      "bytes": 3559,
+      "sha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228",
+      "matches": [
+        {
+          "blob": "15d6e963bd2e74f825448cd9bc4f77151a44d9b9",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/scanner-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/scanner-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/scanner-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/scanner-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/typed-identifier-contract.mjs",
+      "bytes": 10793,
+      "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "matches": [
+        {
+          "blob": "84641cb514ec4f20adfa8abb260e95aa7f2be9dd",
+          "locations": [
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "dev/source-identity-consumer-candidate-20261027/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-capture-envelope.js",
+      "bytes": 6765,
+      "sha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89",
+      "matches": [
+        {
+          "blob": "8e933485cc0a701fee2c11f7bd29bc7911c4ae20",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-capture-envelope.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/scanner-capture-envelope.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-capture-envelope.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/scanner-capture-envelope.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-capture-envelope.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/scanner-capture-envelope.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-capture-envelope.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/scanner-capture-envelope.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-ui.js",
+      "bytes": 18345,
+      "sha256": "6d36d4a364c89f38550c9f0050e5f4076d11a248e8a692b54e71f6b6c3a7b12b",
+      "matches": [
+        {
+          "blob": "703d5941b5cb7296ddad78972eb222c0dc6d9d6e",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-ui.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-ui.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-ui.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-ui.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/retained-source-photo-selection.js",
+      "bytes": 7301,
+      "sha256": "a76143f08fedd1683d91ce8d6501c71e13d619d7d3c8ff6ed84a7be9504a3eaa",
+      "matches": [
+        {
+          "blob": "6313e2b83ad72b349f64710f1f630602c2099e92",
+          "locations": [
+            {
+              "path": "public/retained-source-photo-selection.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/retained-source-photo-selection.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/retained-source-photo-selection.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/retained-source-photo-selection.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/off-photo-metadata.js",
+      "bytes": 8143,
+      "sha256": "1a3808a413e4302b440fe71e7c326e4e66c84a9d6a653bcc55dc7da9f18f9280",
+      "matches": [
+        {
+          "blob": "7d77711b8e9d3e8f1a0a4a038286dc484b58e892",
+          "locations": [
+            {
+              "path": "public/off-photo-metadata.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/off-photo-metadata.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/off-photo-metadata.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/off-photo-metadata.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/off-photo-catalogue.js",
+      "bytes": 4008,
+      "sha256": "991791f2b176c0e216cfe3d96c9e9d7daf86a3a2d89ab0b527d578098ebab430",
+      "matches": [
+        {
+          "blob": "5fe8e30c03b3bf0ad529f62eabc2f4d901b11580",
+          "locations": [
+            {
+              "path": "public/off-photo-catalogue.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/off-photo-catalogue.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/off-photo-catalogue.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/off-photo-catalogue.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-selector.js",
+      "bytes": 9824,
+      "sha256": "635040c812cb96cb323260ee153a58767006adbd25c0b09c34eae0aa163032c4",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-association.js",
+      "bytes": 10747,
+      "sha256": "7cbeb14a1c39dc079cad96f155f1ae0c6ea4f6402ffecf6f871dade6956ce661",
+      "matches": [
+        {
+          "blob": "ed148b169fcc985bef8331cf2ae1e6200bdff853",
+          "locations": [
+            {
+              "path": "public/product-visual-association.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/product-visual-association.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/product-visual-association.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/product-visual-association.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/scanner-product-visuals.js",
+      "bytes": 4087,
+      "sha256": "3993582332aa3b9708cf349cbb1a352676ea2500014a83c066d2615393e5a769",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-product-visuals-production.js",
+      "bytes": 224,
+      "sha256": "37f2a6642afc5991ecc37577e2a09c4312439f12a2018179d45e81c02a3488e2",
+      "matches": [
+        {
+          "blob": "2cfe7ea71c4da51096d45aabe78ad2ff5394d0b7",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-product-visuals-production.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-product-visuals-production.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-product-visuals-production.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-product-visuals-production.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-three.js",
+      "bytes": 487719,
+      "sha256": "316e4a74c70140ee8253c44032b2f1a3e683f8f36608c8fce2a789256fd8fe8a",
+      "matches": [
+        {
+          "blob": "a3c17bba3f7eb31261ef7fed67bfbc5e39ee7e26",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-three.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/scanner-three.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-three.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/scanner-three.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-three.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/scanner-three.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-three.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/scanner-three.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/shelf-scanner.js",
+      "bytes": 45959,
+      "sha256": "271366dfa06b165a5e6ac64240895359726d5308d5e761f0458a43856aa05d95",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker19/full-scanner-guest-providers-20261026/candidate/public/production-scanner/guest-scanner-state.mjs",
+      "bytes": 1427,
+      "sha256": "dc600a66de0f160ca28c2ef16e681f4e87690ec59f26e4215a459cdfeba51906",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/source-category-claims.js",
+      "bytes": 1857,
+      "sha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6",
+      "matches": [
+        {
+          "blob": "5e3dce43881fabcd69482ea2af1542bc37249325",
+          "locations": [
+            {
+              "path": "public/source-category-claims.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/source-category-claims.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/source-category-claims.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/source-category-claims.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/scanner-identity-v2.js",
+      "bytes": 14759,
+      "sha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76",
+      "matches": [
+        {
+          "blob": "6a024dcd5b0349e91f28980139be11b0a2b92a73",
+          "locations": [
+            {
+              "path": "public/scanner-identity-v2.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/scanner-identity-v2.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/scanner-identity-v2.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/scanner-identity-v2.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/source-classification-contract.mjs",
+      "bytes": 4219,
+      "sha256": "e781776fd220a9957c8e03b8e365d62ac161ebc85ba376d5d916c6696b8a82ef",
+      "matches": [
+        {
+          "blob": "fa8fdb31f2daf1ba00d479591bf7259597dd20e7",
+          "locations": [
+            {
+              "path": "public/source-classification-contract.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/source-classification-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/source-classification-contract.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/source-classification-contract.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-source-assertions.js",
+      "bytes": 22771,
+      "sha256": "ea2266461c216750d6a9bc7e34a0a781e2beacf479bb1c5751f3490f61175c16",
+      "matches": [
+        {
+          "blob": "84ee52382675c46f9da7ef19fcf37b6bff69421a",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-source-assertions.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-source-assertions.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-source-assertions.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-source-assertions.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/locales/ar.js",
+      "bytes": 27728,
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "matches": [
+        {
+          "blob": "9cb5613e516233e79ac0f5dc4580c98d06b225a8",
+          "locations": [
+            {
+              "path": "public/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/locale-negotiation.js",
+      "bytes": 2881,
+      "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+      "matches": [
+        {
+          "blob": "d7fae0ff34e49e75f66ff185ea4eb0f1b85d510b",
+          "locations": [
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/i18n.js",
+      "bytes": 8381,
+      "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+      "matches": [
+        {
+          "blob": "476085e180cbc4f8b74945ffc862d5ccaeaba646",
+          "locations": [
+            {
+              "path": "public/i18n.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/i18n.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/i18n.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/i18n.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-model.js",
+      "bytes": 3559,
+      "sha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228",
+      "matches": [
+        {
+          "blob": "15d6e963bd2e74f825448cd9bc4f77151a44d9b9",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/scanner-model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/scanner-model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/scanner-model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/scanner-model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/typed-identifier-contract.mjs",
+      "bytes": 10793,
+      "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "matches": [
+        {
+          "blob": "84641cb514ec4f20adfa8abb260e95aa7f2be9dd",
+          "locations": [
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "dev/source-identity-consumer-candidate-20261027/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-capture-envelope.js",
+      "bytes": 6765,
+      "sha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89",
+      "matches": [
+        {
+          "blob": "8e933485cc0a701fee2c11f7bd29bc7911c4ae20",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-capture-envelope.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/scanner-capture-envelope.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-capture-envelope.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/scanner-capture-envelope.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-capture-envelope.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/scanner-capture-envelope.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-capture-envelope.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/scanner-capture-envelope.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/source/production-scanner/guest-scanner-ui.js",
+      "bytes": 18339,
+      "sha256": "68cd03afac308f3e8f16f1de46f29dafae28db55ca00093973511e1d4bb69856",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/product-visual-selector.js",
+      "bytes": 11859,
+      "sha256": "03daa6a6e6575c74cebb06b3320111e022877434e41b4d5698bad6b43d2029fa",
+      "matches": [
+        {
+          "blob": "56530470bd926c15c0e9fb8db35370a231f4e7b7",
+          "locations": [
+            {
+              "path": "public/product-visual-selector.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/product-visual-selector.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/product-visual-selector.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/product-visual-selector.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/local-retained-category-presentation.js",
+      "bytes": 2527,
+      "sha256": "a775711245bb829b84e009ab2d0354e02815793511d36bb4acf6624c59e4251c",
+      "matches": [
+        {
+          "blob": "1d3f4f24d09683a83d666e499884634f6d1d7cf5",
+          "locations": [
+            {
+              "path": "public/local-retained-category-presentation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/local-retained-category-presentation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/local-retained-category-presentation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/local-retained-category-presentation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/retained-source-photo-selection.js",
+      "bytes": 7301,
+      "sha256": "a76143f08fedd1683d91ce8d6501c71e13d619d7d3c8ff6ed84a7be9504a3eaa",
+      "matches": [
+        {
+          "blob": "6313e2b83ad72b349f64710f1f630602c2099e92",
+          "locations": [
+            {
+              "path": "public/retained-source-photo-selection.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/retained-source-photo-selection.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/retained-source-photo-selection.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/retained-source-photo-selection.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/typed-identifier-contract.mjs",
+      "bytes": 10793,
+      "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "matches": [
+        {
+          "blob": "84641cb514ec4f20adfa8abb260e95aa7f2be9dd",
+          "locations": [
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "dev/source-identity-consumer-candidate-20261027/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/typed-identifier-contract.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/typed-identifier-contract.mjs",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/scanner-kitchen-handoff.js",
+      "bytes": 6134,
+      "sha256": "e35169fee6a7391491c460ddb590f9e1d0b0e59a20a00dcbce557aee7faf1eb1",
+      "matches": [
+        {
+          "blob": "441fee0f1970f1be785e725f6275af9085336fda",
+          "locations": [
+            {
+              "path": "public/scanner-kitchen-handoff.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/scanner-kitchen-handoff.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/scanner-kitchen-handoff.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/scanner-kitchen-handoff.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/locales/ar.js",
+      "bytes": 27728,
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "matches": [
+        {
+          "blob": "9cb5613e516233e79ac0f5dc4580c98d06b225a8",
+          "locations": [
+            {
+              "path": "public/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/production-scanner/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-state-owner16/sqlite04/public/locales/ar.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/locale-negotiation.js",
+      "bytes": 2881,
+      "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+      "matches": [
+        {
+          "blob": "d7fae0ff34e49e75f66ff185ea4eb0f1b85d510b",
+          "locations": [
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/locale-negotiation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/production-scanner/locale-negotiation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/i18n.js",
+      "bytes": 8381,
+      "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+      "matches": [
+        {
+          "blob": "476085e180cbc4f8b74945ffc862d5ccaeaba646",
+          "locations": [
+            {
+              "path": "public/i18n.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/i18n.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/i18n.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/i18n.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/production-scanner/i18n.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/ingredients.js",
+      "bytes": 5212,
+      "sha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab",
+      "matches": [
+        {
+          "blob": "d92d570bf13efdfb651242dfd55de482a120dd1d",
+          "locations": [
+            {
+              "path": "public/ingredients.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/ingredients.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/ingredients.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/ingredients.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/model.js",
+      "bytes": 7059,
+      "sha256": "74ae172868765650cd08a90ae356ae8072b04529e7be00469a3e30973e8b4785",
+      "matches": [
+        {
+          "blob": "64729ae4465efcff3d8201350d9d459f7d957502",
+          "locations": [
+            {
+              "path": "public/model.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/model.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/model.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/model.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/off-photo-metadata.js",
+      "bytes": 8143,
+      "sha256": "1a3808a413e4302b440fe71e7c326e4e66c84a9d6a653bcc55dc7da9f18f9280",
+      "matches": [
+        {
+          "blob": "7d77711b8e9d3e8f1a0a4a038286dc484b58e892",
+          "locations": [
+            {
+              "path": "public/off-photo-metadata.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/off-photo-metadata.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/off-photo-metadata.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/off-photo-metadata.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/off-photo-catalogue.js",
+      "bytes": 4008,
+      "sha256": "991791f2b176c0e216cfe3d96c9e9d7daf86a3a2d89ab0b527d578098ebab430",
+      "matches": [
+        {
+          "blob": "5fe8e30c03b3bf0ad529f62eabc2f4d901b11580",
+          "locations": [
+            {
+              "path": "public/off-photo-catalogue.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/off-photo-catalogue.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/off-photo-catalogue.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/off-photo-catalogue.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/product-visual-association.js",
+      "bytes": 10747,
+      "sha256": "7cbeb14a1c39dc079cad96f155f1ae0c6ea4f6402ffecf6f871dade6956ce661",
+      "matches": [
+        {
+          "blob": "ed148b169fcc985bef8331cf2ae1e6200bdff853",
+          "locations": [
+            {
+              "path": "public/product-visual-association.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/product-visual-association.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/product-visual-association.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/product-visual-association.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/scanner-product-visuals.js",
+      "bytes": 4899,
+      "sha256": "a980f106d2194116d78a7efe71e183d57949e3dab61fa55440b57db5125ad915",
+      "matches": [
+        {
+          "blob": "bd383cafd77cc4bf9b64b7629403ffcfe5f909ff",
+          "locations": [
+            {
+              "path": "public/scanner-product-visuals.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/scanner-product-visuals.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/scanner-product-visuals.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/scanner-product-visuals.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-product-visuals-production.js",
+      "bytes": 224,
+      "sha256": "37f2a6642afc5991ecc37577e2a09c4312439f12a2018179d45e81c02a3488e2",
+      "matches": [
+        {
+          "blob": "2cfe7ea71c4da51096d45aabe78ad2ff5394d0b7",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-product-visuals-production.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-product-visuals-production.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-product-visuals-production.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-product-visuals-production.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-third-party-source-group-20261026/public/production-scanner/scanner-three.js",
+      "bytes": 487719,
+      "sha256": "316e4a74c70140ee8253c44032b2f1a3e683f8f36608c8fce2a789256fd8fe8a",
+      "matches": [
+        {
+          "blob": "a3c17bba3f7eb31261ef7fed67bfbc5e39ee7e26",
+          "locations": [
+            {
+              "path": "public/production-scanner/scanner-three.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/scanner-three.js",
+              "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+              "label": "develop"
+            },
+            {
+              "path": "public/production-scanner/scanner-three.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/scanner-three.js",
+              "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+              "label": "foundation"
+            },
+            {
+              "path": "public/production-scanner/scanner-three.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/scanner-three.js",
+              "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+              "label": "source08"
+            },
+            {
+              "path": "public/production-scanner/scanner-three.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            },
+            {
+              "path": "public/scanner-three.js",
+              "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+              "label": "integration-custody"
+            }
+          ]
+        }
+      ],
+      "status": "exact-origin-bytes"
+    },
+    {
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/guest-shelf-scanner-inventory.js",
+      "bytes": 50619,
+      "sha256": "a175b40c61f91a498b74e8fad30eec0f389408808626f0b2f908883cdc7ce668",
+      "matches": [],
+      "status": "no-size-basename-candidate-in-snapshots"
+    }
+  ]
+}
+

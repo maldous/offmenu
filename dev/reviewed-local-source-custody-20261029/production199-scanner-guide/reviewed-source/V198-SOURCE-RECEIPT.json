@@ -1,0 +1,58 @@
+{
+  "version": 198,
+  "versionId": "188dac2d-ac29-4354-a757-e112a9a84258",
+  "mainModuleSHA256": "c2ddec2cf5b1965160160eab24e1a2cd43f8395f7095906955ff67148b95c180",
+  "wrapperModuleSHA256": "7cef6c38c9a35e4b94d5e7d7d25702a04d64abf35a8497fbd6f91be848f0eabd",
+  "wrapperModuleBytes": 4604740,
+  "routeEvidence": "aders:{...lA,\"Content-Type\":s,\"Cache-Control\":\"no-cache\"}})}if(t.pathname===\"/kitchen.html\")return t.pathname=\"/\",IA(new Request(t,A),e,B);if(t.pathname===\"/index.html\")return IA(A,e,B)}return U.fetch(A,e,B)})())},scheduled(A,e,B){return U.scheduled(A,e,B)}};const _offmenuOwnedFoundationApplication=",
+  "extraction": "AST-decoded static literals only; no user/session data or camera access",
+  "assets": [
+    {
+      "name": "kitchen.html",
+      "bytes": 89013,
+      "sha256": "9aaaa29afca7efcbb2c9e157f59bf5f3ec9e9a98f11b6608e58a8ffb13e9235c"
+    },
+    {
+      "name": "style.css",
+      "bytes": 44509,
+      "sha256": "d938cb1fb07965d2a0e1b0358b5b983a99acdeb95ef1793e0e5c5476975c21ae"
+    },
+    {
+      "name": "shelf-scanner.html",
+      "bytes": 45261,
+      "sha256": "097b4f0a9a5d2d70d78cd4b05bd996ff281c196e4752370a22cff2e2280f1eab"
+    },
+    {
+      "name": "shelf-scanner-inline.css",
+      "bytes": 34458,
+      "sha256": "0bfe2640b19f7862605e659dc20ddd11a90dc4744000bbb2a52e6bbd205fc93e"
+    }
+  ],
+  "scannerLinkedCSS": [
+    "<link rel=\"stylesheet\" href=\"/offmenu-system.css\">"
+  ],
+  "kitchenLinkedCSS": [
+    "<link rel=\"stylesheet\" href=\"/style.css?v=i18n-1\">"
+  ],
+  "excerpts": [
+    {
+      "source": "kitchen.html",
+      "startCharacter": 16696,
+      "endCharacter": 16942,
+      "sha256": "3151096ac7221b3411de0f94c0f6c729a32946babd8882bfe537c17d464c3320"
+    },
+    {
+      "source": "shelf-scanner.html",
+      "startCharacter": 35033,
+      "endCharacter": 36169,
+      "sha256": "2d5f2e55ce2f4cf8ed444ac12a6697e7bcddd077b7acd11811f9719eec6ebdb5"
+    }
+  ],
+  "systemCSS": {
+    "url": "https://offmenu.aldous.info/offmenu-system.css",
+    "retrieval": "anonymous HTTP200 public static asset",
+    "sha256": "223df367294c0c9391e99cfbfdce43e28d5b5df5b1f5b6c4a9d73d762d55b264",
+    "bytes": 46847,
+    "verifiedExact198WrapperLiteral": true
+  }
+}

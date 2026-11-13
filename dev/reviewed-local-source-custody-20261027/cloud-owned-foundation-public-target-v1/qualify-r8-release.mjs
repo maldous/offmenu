@@ -1,0 +1,51 @@
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {createHash,webcrypto} from 'node:crypto';
+import {gunzipSync} from 'node:zlib';
+import {createRequire} from 'node:module';
+import {createAcceptedFoundationReader} from './source-origin/foundation-origin-reader.mjs';
+const require=createRequire(import.meta.url),acorn=require('/workspace/shared/offmenu-next-i18n/deps/node_modules/acorn');
+globalThis.crypto ||= webcrypto;
+const root=new URL('.',import.meta.url).pathname,hash=b=>createHash('sha256').update(b).digest('hex'),need=(v,m)=>{if(!v)throw Error(m);};
+const bundlePath='/workspace/shared/offmenu-actual-source-39396038/sources/landing-next/alias/foundation-local-response.bundled.mjs.source';
+const bundle=await readFile(bundlePath);need(hash(bundle)==='26efc3a3b0ecdad63f9a6eddc478d49227e9c5ace4879fbab12d4bf3786def8f','Original bundle pin mismatch');
+const metadata=JSON.parse(await readFile('/workspace/shared/offmenu-actual-source-39396038/embedded-api-release-metadata.json','utf8')),code=bundle.toString('utf8');
+function literal(node){if(node.type==='Literal'&&['string','number','boolean','object'].includes(typeof node.value))return node.value;if(node.type==='UnaryExpression'&&node.operator==='!'&&node.argument.type==='Literal')return !node.argument.value;if(node.type==='ArrayExpression')return node.elements.map(literal);if(node.type==='ObjectExpression'){const result={};for(const p of node.properties){need(p.type==='Property'&&!p.computed&&!p.method&&p.kind==='init','Nonliteral property');const key=p.key.name??p.key.value;need(typeof key==='string'&&!Object.hasOwn(result,key)&&!['__proto__','prototype','constructor'].includes(key),'Unsafe literal key');result[key]=literal(p.value);}return result;}throw Error('Executable value excluded from literal extraction');}
+// Importer's passive parser records Python Unicode-codepoint offsets; Acorn uses
+// UTF-16 offsets. Convert boundaries without evaluating any embedded code.
+const wanted=new Set(Object.values(metadata.literalRanges).flatMap(r=>[r.start,r.end])),utf16Offsets=new Map();let cpOffset=0,jsOffset=0;
+for(const char of code){if(wanted.has(cpOffset))utf16Offsets.set(cpOffset,jsOffset);cpOffset++;jsOffset+=char.length;}
+if(wanted.has(cpOffset))utf16Offsets.set(cpOffset,jsOffset);
+function extract(range){const fragment=code.slice(utf16Offsets.get(range.start),utf16Offsets.get(range.end)),node=acorn.parseExpressionAt(fragment,0,{ecmaVersion:'latest'});need(node.end===fragment.length,'Literal range mismatch');return literal(node);}
+const selections=extract(metadata.literalRanges.selections),table=extract(metadata.literalRanges.embeddedTable),bindings=extract(metadata.literalRanges.handoffBindings);
+need(JSON.stringify(selections)===JSON.stringify(metadata.selectionMetadata),'Selection metadata mismatch');need(JSON.stringify(bindings)===JSON.stringify(metadata.handoffBindingMetadata),'Binding metadata mismatch');
+const sourcePrefix='own-data/foundation/offmenu-reviewed-foundation-r8-local-20261027-v1/';
+const bytes=new Map(),schemaKeys={},deny=new Set(['rawFields','rawNutriments','ingredientsText','originalTextLines','sealed','credentials','password','accessToken','refreshToken','apiKey','owner','proofId']);
+for(const [key,d] of Object.entries(table)){need(key.startsWith(sourcePrefix)&&/^[A-Za-z0-9._/-]+$/.test(key)&&!key.split('/').includes('..'),'Invalid embedded key');const b=Buffer.from(d.bodyBase64,'base64');need(b.length===d.bytes&&hash(b)===d.sha256&&d.bytes<=1048576,'Blob integrity/bound mismatch');bytes.set(key,b);}
+need(bytes.size===515,'Unexpected source blob count');
+const manifest=JSON.parse(bytes.get(selections.off.manifest.key)),policy=JSON.parse(bytes.get(selections.off.policy.key));
+need(manifest.deploymentScope==='localhost-only'&&manifest.publicPublicationAccepted===false,'Original local scope changed');
+need(manifest.rawSourcePayloadPublished===false&&manifest.privateProviderData===false&&manifest.acquisitionAtRuntime===false,'Original publication boundary changed');
+const readBlob=async(key,d)=>{const b=bytes.get(key),known=table[key];need(b&&known.sha256===d.sha256&&known.bytes===d.bytes&&known.uncompressedBytes===d.uncompressedBytes,'Unselected blob requested');return b;};
+function shape(label,value){if(!value||typeof value!=='object'||Array.isArray(value))return;const k=Object.keys(value).sort().join(',');schemaKeys[label]??={};schemaKeys[label][k]=(schemaKeys[label][k]??0)+1;}
+function privacy(value){if(!value||typeof value!=='object')return;if(Array.isArray(value)){for(const x of value)privacy(x);return;}for(const [k,v]of Object.entries(value)){need(!deny.has(k),'Disallowed raw/private field in public projection: '+k);if(typeof v==='string')need(!/(?:^|\s)(?:file:\/\/|\/home\/|\/workspace\/|\/Users\/|Bearer\s)/.test(v),'Local/private locator in public projection');else privacy(v);}}
+const counts={sourceObservations:0,sourceSpecificQueries:0,partitions:0,bySource:{},parameterStates:{known:0,unknown:0,notApplicable:0},goldAdmitted:0,normalizationComplete:0,fullProductComplete:0};
+const queryIndex=[],projectionHash=createHash('sha256');
+for(const sourceId of Object.keys(manifest.sources).sort()){
+ const source=manifest.sources[sourceId],selected=selections[sourceId];need(selected?.consumerCodeSha256==='0b098783399eb129970b33d2b90a4382d5475329b8a83bb9ad871e7407bd050f','Consumer pin mismatch');
+ counts.bySource[sourceId]={observations:0,queries:0};const seenQueries=new Set();
+ for(const [prefix,d] of Object.entries(source.partitions).sort(([a],[b])=>a.localeCompare(b))){
+  need(d.key.startsWith(sourcePrefix+'products/'+sourceId+'/')&&table[d.key]?.sha256===d.sha256&&table[d.key]?.bytes===d.bytes&&table[d.key]?.uncompressedBytes===d.uncompressedBytes,'Partition descriptor mismatch');
+  need(Number.isSafeInteger(d.uncompressedBytes)&&d.uncompressedBytes>0&&d.uncompressedBytes<=2097152,'Expanded bound mismatch');const decoded=gunzipSync(bytes.get(d.key),{maxOutputLength:d.uncompressedBytes});need(decoded.length===d.uncompressedBytes,'Expanded length mismatch');const partition=JSON.parse(decoded);need(partition.schema==='offmenu-foundation-products/2'&&partition.sourceId===sourceId&&partition.policySha256===selected.policy.sha256&&partition.entries&&typeof partition.entries==='object'&&!Array.isArray(partition.entries),'Partition schema mismatch');counts.partitions++;
+  const reader=await createAcceptedFoundationReader(readBlob,selected);
+  for(const barcode of Object.keys(partition.entries).sort()){
+   need(!seenQueries.has(barcode)&&/^[0-9]{4,32}$/.test(barcode)&&hash(Buffer.from(barcode)).startsWith(prefix),'Exact source query partition mismatch');seenQueries.add(barcode);const rows=partition.entries[barcode];need(Array.isArray(rows)&&rows.length>0,'Invalid product rows');
+   for(const row of rows){shape('row',row);shape('candidate',row.candidate);shape('identity',row.candidate?.identity);shape('classification',row.candidate?.classification);shape('base',row.candidate?.base);shape('type',row.candidate?.type);for(const p of Object.values(row.candidate?.parameters??{})){shape('parameter:'+p.state,p);for(const e of p.evidence??[])shape('evidence',e);}}
+   let cursor='',observed=0;do{const dto=await reader.lookup({source:sourceId,barcode,cursor,limit:20});need(dto.httpStatus===200&&dto.externalFallback===false&&dto.goldAdmitted===false&&dto.fullProductComplete===false&&dto.qualifiedSourceObservationCount===rows.length,'Qualified DTO mismatch');privacy(dto);for(const record of dto.records){need(record.provenance.visibility==='public'&&record.provenance.license===source.license&&record.provenance.attribution===source.attribution&&record.curation.rawSourcePayloadPublished===false&&record.data.foundationComplete===true&&record.data.normalizationComplete===false&&record.data.goldAdmitted===false&&record.data.fullProductComplete===false&&record.data.automaticPlanningEligible===false&&record.data.recipeNutritionJoinsAccepted===false,'Qualified DTO field boundary changed');for(const p of Object.values(record.data.variantParameters)){if(p.state==='known')counts.parameterStates.known++;else if(p.state==='unknown')counts.parameterStates.unknown++;else if(p.state==='not-applicable')counts.parameterStates.notApplicable++;else throw Error('Unexpected parameter state');}projectionHash.update(JSON.stringify(record)+'\n');}observed+=dto.records.length;cursor=dto.nextCursor??'';}while(cursor);
+   need(observed===rows.length,'Reader omitted or added source observations');counts.sourceObservations+=observed;counts.sourceSpecificQueries++;counts.bySource[sourceId].observations+=observed;counts.bySource[sourceId].queries++;queryIndex.push({sourceId,barcode,partition:d.key,observations:observed});
+  }
+ }
+}
+need(counts.sourceObservations===manifest.counts.sourceObservations&&counts.sourceSpecificQueries===manifest.counts.sourceSpecificQueries,'Original count reconciliation failed');
+const report={schema:'offmenu-existing-r8-public-projection-qualification/1',sourceBundleSha256:hash(bundle),sourceManifestSha256:selections.off.manifest.sha256,sourcePolicySha256:selections.off.policy.sha256,originalLocalAdmissionDeclaredSha256:selections.off.admissionReceiptSha256,originalAdmissionBodyVerified:false,consumerSha256:selections.off.consumerCodeSha256,method:'Exact blobs and expanded bounds checked; all selected source-specific queries exercised through unchanged existing reader and policy/phase assessor; public DTO raw/private-field and locator checks; no executable source bundle evaluation and no external lookup',counts,publicProjectionSha256:projectionHash.digest('hex'),schemaKeys,originalLocalScopeUnchanged:true,productionTargetAccepted:false,independentSemanticReviewClaimed:false};
+await mkdir(root+'private-release-build',{recursive:true});await writeFile(root+'private-release-build/original-blobs.json',JSON.stringify(table));await writeFile(root+'private-release-build/verified-source-queries.json',JSON.stringify(queryIndex));await writeFile(root+'r8-projection-qualification.json',JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify({counts,publicProjectionSha256:report.publicProjectionSha256,schemaKeys,originalAdmissionBodyVerified:false,productionTargetAccepted:false},null,2));

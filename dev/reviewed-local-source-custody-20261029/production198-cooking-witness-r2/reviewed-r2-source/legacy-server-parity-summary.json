@@ -1,0 +1,6 @@
+{
+  "checks": 7,
+  "pass": 7,
+  "fail": 0,
+  "scope": "Existing seven legacy server-history case families reused from production195 history-server-parity.cjs; helper locator/namespace adapted, prior fix not reapplied."
+}

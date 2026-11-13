@@ -1,0 +1,18 @@
+{
+  "observed_at_utc": "2026-10-28T04:36:50Z",
+  "metadata_run_id": "01a180cb-faf5-1851-63ad-c107ed9b0adf",
+  "metadata_run_url": "https://windmill.aldous.info/run/01a180cb-faf5-1851-63ad-c107ed9b0adf?workspace=offmenu",
+  "method": "Existing confined SSH preview, Python resource.getrlimit; no sysctl or host configuration read",
+  "runner_sha256": "81b2918d8384ac3da63397263263c01340dc9b90031672d1fa4baab16aef8c1a",
+  "runner_version": 1,
+  "RLIMIT_NPROC": {"soft": 254265, "hard": 254265},
+  "RLIMIT_NOFILE": {"soft": 1024, "hard": 1048576},
+  "RLIMIT_AS": {"soft": -1, "hard": -1, "meaning": "unlimited"},
+  "cpu_affinity_count": 31,
+  "cgroup_mount_visible": false,
+  "unobservable": ["pids.max", "pids.current", "memory.max", "cpu.max", "ancestor cgroup limits", "host-wide available PID headroom"],
+  "recent_default_workers": 64,
+  "supervisor_legacy_short_reader_slots": 2,
+  "supervisor_legacy_long_jobs": 1,
+  "supervisor_legacy_write_exclusion": "global"
+}

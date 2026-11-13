@@ -1,0 +1,26 @@
+{
+  "namespace": "__offmenuCookingWitness198",
+  "esbuild": "0.25.12",
+  "output": "/home/user/src/offmenu-v198-candidate-20261029-r2/candidate-v198-r2/candidate-build/cooking-witness-parity.iife.js",
+  "bytes": 6446,
+  "sha256": "b98427279bb9a04fa081140cbbbb2711f6146ffe6bee37599122da8ee18c1193",
+  "inputs": [
+    {
+      "path": "public/cooking-witness.js",
+      "bytes": 10223,
+      "sha256": "8b2032742e0b3f14bae9d5f6ae314cca8f1162a2aa6aa1591bea573047afe304"
+    },
+    {
+      "path": "cloud/cooking-witness-parity.mjs",
+      "bytes": 505,
+      "sha256": "dfbf8109dc81b0f1d4c62dd7642e00cafe0432c645d1a7461509b4bee6b5cdee"
+    }
+  ],
+  "exports": [
+    "copyCookingWitness",
+    "finishCookingWitnessState",
+    "preserveCookingWitnesses",
+    "sharedCookingBatch"
+  ],
+  "scope": "Compiled component only; no claim of full Worker state/history wiring or authenticated acceptance."
+}

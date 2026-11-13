@@ -1,0 +1,74 @@
+OPTIONAL_CORPUS_NAMES = (
+ 'common-places-semantic-final-20261014.checkpoint.sqlite',
+ 'common-places-semantic-final-20261014.checkpoint.sqlite-journal',
+ 'common-places-semantic-final-20261014.checkpoint.sqlite-wal',
+ 'common-places-semantic-final-20261014.checkpoint.sqlite-shm',
+ 'common-places-semantic-final-20261014.alignment.lock',
+ 'common-bulk-food-semantic-final-20261014.repair.lock',
+)
+
+def open_corpus_mounts():
+    # Only the six fixed sidecars may be omitted, never substituted or discovered.
+    active = []
+    try:
+        with open('/proc/self/mountinfo') as f:
+            mounted = [line.split()[4] for line in f]
+        for item in CORPUS_MOUNTS:
+            optional = item.get('optional', False)
+            if 'optional' in item:
+                if optional is not True or item['kind'] != 'file' or not any(
+                    item['source'] == '/home/user/src/offmenu-data/' + name and
+                    item['destination'] == '/offmenu-corpus/' + name for name in OPTIONAL_CORPUS_NAMES):
+                    fail()
+            if any(mp == item['source'] or mp.startswith(item['source'] + '/') for mp in mounted):
+                fail()
+            fd = os.open('/', os.O_PATH | os.O_DIRECTORY | os.O_CLOEXEC)
+            walked = ''
+            try:
+                parts = item['source'].strip('/').split('/')
+                for i, part in enumerate(parts):
+                    walked += '/' + part
+                    flags = os.O_PATH | os.O_NOFOLLOW | os.O_CLOEXEC
+                    if i < len(parts) - 1 or item['kind'] == 'directory':
+                        flags |= os.O_DIRECTORY
+                    nxt = os.open(part, flags, dir_fd=fd)
+                    os.close(fd)
+                    fd = nxt
+                    st = os.fstat(fd)
+                    # For optional final components compare pinned identity first:
+                    # replacement symlinks/files/directories must be omitted.
+                    if i < len(parts) - 1 or not optional:
+                        if stat.S_ISLNK(st.st_mode) or os.access(walked, os.W_OK, effective_ids=True):
+                            fail()
+                st = os.fstat(fd)
+                if (st.st_dev, st.st_ino, stat.S_IFMT(st.st_mode)) != tuple(item['identity']):
+                    if optional:
+                        continue
+                    fail()
+                if stat.S_ISLNK(st.st_mode) or os.access(item['source'], os.W_OK, effective_ids=True):
+                    fail()
+                if not os.access(item['source'], os.R_OK | (os.X_OK if item['kind'] == 'directory' else 0), effective_ids=True):
+                    fail()
+                active.append((fd, item))
+                fd = None
+            except (FileNotFoundError, NotADirectoryError):
+                if not optional:
+                    raise
+            finally:
+                if fd is not None:
+                    os.close(fd)
+        return active
+    except BaseException:
+        for fd, _ in active:
+            os.close(fd)
+        raise
+
+# Runs only inside the completed jail, before any supplied command. This closes
+# the trusted-host rename window without passing host-rooted descriptors.
+BIND_IDENTITY_GUARD = '''import json,os,stat,sys
+for item in json.loads(sys.argv[1]):
+    p=item['destination'];s=os.stat(p,follow_symlinks=False)
+    if [s.st_dev,s.st_ino,stat.S_IFMT(s.st_mode)] != item['identity'] or not os.statvfs(p).f_flag & os.ST_RDONLY:
+        raise SystemExit(126)
+os.execv('/bin/bash',['/bin/bash','--noprofile','--norc','-c',sys.argv[2]])
+'''

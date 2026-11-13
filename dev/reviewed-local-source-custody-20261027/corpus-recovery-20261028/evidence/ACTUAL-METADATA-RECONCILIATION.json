@@ -1,0 +1,261 @@
+{
+  "checks": {
+    "custody_asset_count_match": true,
+    "custody_exact_six_ready_paths": true,
+    "custody_graph_counts_match": true,
+    "mapping_contract_hash_current": true,
+    "mapping_declared_counts_match": true,
+    "proof_aggregate_graph_counts_match": true,
+    "proof_contract_hash_current": true,
+    "proof_declared_asset_count_match": true,
+    "proof_exact_six_package_paths": true,
+    "proof_package_count": true,
+    "proof_schema_hash_current": true
+  },
+  "coverage": {
+    "covered_count_mismatches": {},
+    "graph_counts": {
+      "assertions": 4253530,
+      "packets": 120270,
+      "relations": 1121221,
+      "resources": 1107357,
+      "translations": 3242
+    },
+    "manifest_listed_assets": 1661,
+    "mapping_records": 22574390,
+    "mapping_sources": 22,
+    "six_package_records": 95121,
+    "six_package_sources": 17,
+    "uncovered_mapping_sources": {
+      "off": 5452981,
+      "overture-food-places": 12681108,
+      "prices": 317898,
+      "usda-files": 4025777,
+      "wikidata-food-businesses": 1505
+    }
+  },
+  "current_definition_hashes": {
+    "contract": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+    "mapping": "cf0251cbdb7b42476059a52bd8b291a0fb519969b19c6b4ec3bcdb8cdb6719a2",
+    "schema": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+  },
+  "custody": {
+    "current_process_quiescence_verified": false,
+    "quiescence_receipt_sha256": "6ada3fee02c79255680276cb76a03045f1e916e2dd49673b6b7d5f74d43b601b",
+    "quiescence_schema": "offmenu-positive-quiescence/1",
+    "quiescence_status": null,
+    "sha256": "3caabc9b5be86562ccef5630da5683a10c46ac30aa99b3b09b098332b9d89f79",
+    "status": "writers-quiesced-files-and-history-retained"
+  },
+  "metadata_bytes_read": 439469,
+  "packages": [
+    {
+      "admittedSourceRecords": {
+        "foodon": 29255,
+        "world-recipes": 25135
+      },
+      "counts": {
+        "assertions": 2199543,
+        "packets": 79534,
+        "relations": 459245,
+        "resources": 441391,
+        "translations": 3242
+      },
+      "declared_files": 170,
+      "duplicate_coverage_ids": [],
+      "grandfather_foodon_manifestSha256": "13730c88a627abbc00fa84632bbbf97f7b685977c3878e52d59ac6a744fa27f8",
+      "manifestByteSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+      "mappingCoverage": {
+        "foodon": 29255,
+        "world-recipes": 25135
+      },
+      "package": "common-data-reviewed-package-20261014",
+      "producer_manifestSha256": "99a5b2cb384ec1d8b03f958f1380954a07e470b92d47299698cbe4d43aca2121",
+      "proof_admitted_records_match": true,
+      "proof_counts_match": true,
+      "proof_manifest_hash_match": true,
+      "releaseId": "common-data-20261014",
+      "schemaVersion": "offmenu-common-package/1",
+      "status": "all-packets-schema-identity-citation-and-scope-checked"
+    },
+    {
+      "admittedSourceRecords": {
+        "dietary-guidelines": 100,
+        "wikibooks": 3796
+      },
+      "counts": {
+        "assertions": 31168,
+        "packets": 3896,
+        "relations": 0,
+        "resources": 3896,
+        "translations": 0
+      },
+      "declared_complete": true,
+      "declared_files": 9,
+      "duplicate_coverage_ids": [],
+      "expected_observed_counts_equal": true,
+      "expected_observed_records_equal": true,
+      "manifestByteSha256": "bec93ffedf4d80eef10ec11000c18161024a3c30999697ad1f3db5f3318ff3e7",
+      "mappingCoverage": {
+        "dietary-guidelines": 100,
+        "wikibooks": 3796
+      },
+      "package": "common-reference-delivery-final-20261014",
+      "producer_manifestSha256": null,
+      "proof_admitted_records_match": true,
+      "proof_counts_match": true,
+      "proof_manifest_hash_match": true,
+      "releaseId": "common-references-20261014",
+      "schemaVersion": "offmenu-common-source-package/1",
+      "status": "all-packets-schema-identity-citation-and-scope-checked"
+    },
+    {
+      "admittedSourceRecords": {
+        "afcd": 1801,
+        "ciqual": 3484,
+        "cnf": 5690,
+        "cofid": 2887,
+        "fineli": 4232,
+        "foodfiles": 2857,
+        "frida": 1381,
+        "germany-bls": 7140,
+        "matvaretabellen": 2121,
+        "mext": 2538,
+        "sweden-food": 2606
+      },
+      "counts": {
+        "assertions": 2020535,
+        "packets": 36737,
+        "relations": 661266,
+        "resources": 661266,
+        "translations": 0
+      },
+      "declared_complete": true,
+      "declared_files": 1470,
+      "duplicate_coverage_ids": [],
+      "expected_observed_counts_equal": true,
+      "expected_observed_records_equal": true,
+      "manifestByteSha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+      "mappingCoverage": {
+        "afcd": 1801,
+        "ciqual": 3484,
+        "cnf": 5690,
+        "cofid": 2887,
+        "fineli": 4232,
+        "foodfiles": 2857,
+        "frida": 1381,
+        "germany-bls": 7140,
+        "matvaretabellen": 2121,
+        "mext": 2538,
+        "sweden-food": 2606
+      },
+      "package": "common-national-semantic-final-20261014",
+      "producer_manifestSha256": null,
+      "proof_admitted_records_match": true,
+      "proof_counts_match": true,
+      "proof_manifest_hash_match": true,
+      "releaseId": "common-national-20261014",
+      "schemaVersion": "offmenu-common-national/1",
+      "status": "all-packets-schema-identity-citation-scope-checked"
+    },
+    {
+      "admittedSourceRecords": {
+        "qudt-measurement-definitions": 56
+      },
+      "counts": {
+        "assertions": 440,
+        "packets": 56,
+        "relations": 0,
+        "resources": 56,
+        "translations": 0
+      },
+      "declared_complete": true,
+      "declared_files": 2,
+      "duplicate_coverage_ids": [],
+      "expected_observed_counts_equal": true,
+      "expected_observed_records_equal": true,
+      "manifestByteSha256": "75c33340f1ee25c4121c57d8fc124621b4455412717fc6d9dd01bfb162351679",
+      "mappingCoverage": {
+        "qudt-measurement-definitions": 56
+      },
+      "package": "measurement-terminology-final-qualified-20261014",
+      "producer_manifestSha256": null,
+      "proof_admitted_records_match": true,
+      "proof_counts_match": true,
+      "proof_manifest_hash_match": true,
+      "releaseId": "qudt-measurement-definitions-3.5.2-20261014",
+      "schemaVersion": "offmenu-measurement-terminology/1",
+      "status": "accepted-schema-validated"
+    },
+    {
+      "admittedSourceRecords": {
+        "Remarknl/Indisch-eten": 1,
+        "chefdelakarma/libre_cuisine": 6,
+        "clicat/Ricette": 2,
+        "lvisintini/recetasdemami": 33,
+        "rochacbruno/vegan_recipes": 0
+      },
+      "counts": {
+        "assertions": 1588,
+        "packets": 42,
+        "relations": 644,
+        "resources": 682,
+        "translations": 0
+      },
+      "declared_complete": true,
+      "declared_files": 7,
+      "duplicate_coverage_ids": [],
+      "expected_observed_counts_equal": true,
+      "expected_observed_records_equal": true,
+      "manifestByteSha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
+      "mappingCoverage": {
+        "recipe-expansion-20261014": 42
+      },
+      "package": "recipe-expansion-final-qualified-20261014/common-graph",
+      "producer_manifestSha256": "e6a4db1c9853d6cf2753ddaca0c1ed45cf05e43c9bb64a3a4c44abb41675fa9c",
+      "proof_admitted_records_match": true,
+      "proof_counts_match": true,
+      "proof_manifest_hash_match": true,
+      "releaseId": "recipe-expansion-qualified-20261014",
+      "schemaVersion": "offmenu-common-expansion-graph/1",
+      "status": "schema-validated-source-scoped-graph"
+    },
+    {
+      "admittedSourceRecords": {
+        "smithsonian-archive": 5
+      },
+      "counts": {
+        "assertions": 256,
+        "packets": 5,
+        "relations": 66,
+        "resources": 66,
+        "translations": 0
+      },
+      "declared_complete": true,
+      "declared_files": 3,
+      "duplicate_coverage_ids": [],
+      "expected_observed_counts_equal": true,
+      "expected_observed_records_equal": true,
+      "manifestByteSha256": "e4c06a1d4a2fcb492529c37c6245a595dd104061ef1a63427cbe9d65e7e2241f",
+      "mappingCoverage": {},
+      "package": "historical-recipe-quality-final-corrected-20261014",
+      "producer_manifestSha256": null,
+      "proof_admitted_records_match": true,
+      "proof_counts_match": true,
+      "proof_manifest_hash_match": true,
+      "releaseId": "historical-recipe-quality-final-20261014",
+      "schemaVersion": "offmenu-historical-recovery/1",
+      "status": "bounded-source-cited-recovery-admitted"
+    }
+  ],
+  "proof": {
+    "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+    "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+    "schemaVersion": "offmenu-common-expansion-qualification/1",
+    "sha256": "6d6cb00806d6cd4350e0bb703de1ed7b7722c8e4bc33fc7fea8c96e6a9413fbd",
+    "status": "all-packages-streamed-global-identities-references-and-provenance-checked"
+  },
+  "qualification_rerun": false,
+  "raw_payloads_read": false,
+  "schema": "offmenu-corpus-metadata-reconciliation/1"
+}

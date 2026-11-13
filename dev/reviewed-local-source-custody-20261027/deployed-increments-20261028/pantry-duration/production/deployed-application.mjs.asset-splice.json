@@ -1,0 +1,27 @@
+{
+  "schema": "offmenu-exact-asset-splice/1",
+  "base": {
+    "bytes": 2506854,
+    "sha256": "7b41d23cdf8149f19c4c20605d961826de8d22aa63e17230526d8724cc0fcc68"
+  },
+  "output": {
+    "bytes": 2507100,
+    "sha256": "0e4420ef0152586a80cf982d7084582180b9e8798d9dd87cb6aae304da305a34"
+  },
+  "serverCodeAndOtherAssetsInvariant": true,
+  "outsideChangedLiteralsSha256": "765b95b4e48075c325933f70d272e9389bd9a7345ca0c282635aba7419f7024d",
+  "replacements": [
+    {
+      "asset": "app.js",
+      "object": "f",
+      "before": {
+        "bytes": 463709,
+        "sha256": "d43a11eb3b9f0c67403a664484fc59782f48655aeb7e70918864fb06fbbbfaf8"
+      },
+      "after": {
+        "bytes": 463945,
+        "sha256": "9b0d51064d746887ee70dbb79baee98e32a4eb57caf8652a7111d3b9e383bf67"
+      }
+    }
+  ]
+}

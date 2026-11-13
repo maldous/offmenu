@@ -1,0 +1,59 @@
+{
+  "disk_admission": {
+    "declared_additional_output_bytes": 45000000000,
+    "enforcement": "aggregate admission plus monitored free-space stop; producer output ceilings required",
+    "observed_free_bytes": 207866691584,
+    "required_free_bytes": 120178704896,
+    "shared_reserve_bytes": 75161927680
+  },
+  "lanes": [
+    {
+      "cpu_affinity": [
+        0,
+        1
+      ],
+      "declared_lane_memory_budget": 2147483648,
+      "declared_python_processes": 1,
+      "id": "bulk",
+      "log_bytes": {
+        "stderr": 0,
+        "stdout": 0
+      },
+      "output_bytes": {
+        "stderr": 0,
+        "stdout": 0
+      },
+      "output_root": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/bulk-parallel",
+      "per_process_virtual_memory_limit": 2147483648,
+      "status": "running"
+    },
+    {
+      "cpu_affinity": [
+        2,
+        3
+      ],
+      "declared_lane_memory_budget": 8589934592,
+      "declared_python_processes": 1,
+      "id": "places",
+      "log_bytes": {
+        "stderr": 0,
+        "stdout": 0
+      },
+      "output_bytes": {
+        "stderr": 0,
+        "stdout": 0
+      },
+      "output_root": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/places",
+      "per_process_virtual_memory_limit": 8589934592,
+      "status": "running"
+    }
+  ],
+  "outer_cleanup_verification_required": true,
+  "outer_job_id": "corpus-dual-lanes-001-20261028",
+  "output_qualification_established": false,
+  "plan_sha256": "d618a7e7a5874f58ed9940b0b56ce888b39263696707eb9a72c532b93dc4f072",
+  "run_id": "bulk-prefix-places-001",
+  "status": "running",
+  "version": 1,
+  "observedAt": "2026-10-28T01:53:12Z"
+}

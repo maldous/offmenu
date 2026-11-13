@@ -1,0 +1,267 @@
+{
+  "baseCommit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+  "comparisonScope": [
+    {
+      "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+      "treeSha": "71779bed7a1469cdc3dd116759dd49e97febc815"
+    },
+    {
+      "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+      "treeSha": "d0f272757ca95ef40985bdce75fb568773c62400"
+    },
+    {
+      "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+      "treeSha": "03fb1c0398327871f3f31876a23f19d56aff1a7d"
+    }
+  ],
+  "dataPublication": false,
+  "files": [
+    {
+      "bytes": 11834,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "cloud-source-byte-inspection-20261027-0215",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "ace42950c2467f66513fc3248250da2a3f57445c48b30c77666fe8b01c11c775",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "e1c570187363f8ddda932ad1e5addf657bb31634",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-wiring/ROUTE-WIRING-MAP.md",
+      "reviewRef": "cloud-wiring-source-custody-20261027",
+      "sha256": "ace42950c2467f66513fc3248250da2a3f57445c48b30c77666fe8b01c11c775",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-wiring-cloud-20261027/ROUTE-WIRING-MAP.md"
+    },
+    {
+      "bytes": 18316,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "cloud-source-byte-inspection-20261027-0215",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "7b0758c56cdd5956c83d6fb2c8d4eedc0142baa10ea84af8a0f4fbcae7826d60",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "f804734a35f8d3e62b66dfd72b84a9a4125de243",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-wiring/shared-kitchen-scope-wiring.patch",
+      "reviewRef": "cloud-wiring-source-custody-20261027",
+      "sha256": "7b0758c56cdd5956c83d6fb2c8d4eedc0142baa10ea84af8a0f4fbcae7826d60",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-wiring-cloud-20261027/shared-kitchen-scope-wiring.patch"
+    },
+    {
+      "bytes": 2166,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "cloud-source-byte-inspection-20261027-0215",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "315e8da5dc38656b8fc948c97b867e9b736bf8512f41994ac300eaa5e3a1c024",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "775d58262d25ed886ab7f35d6ccd1a54cba5c2cd",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-wiring/source-custody.json",
+      "reviewRef": "cloud-wiring-source-custody-20261027",
+      "sha256": "315e8da5dc38656b8fc948c97b867e9b736bf8512f41994ac300eaa5e3a1c024",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-wiring-cloud-20261027/source-custody.json"
+    },
+    {
+      "bytes": 7338,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "cloud-source-byte-inspection-20261027-0215",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "8ce72cc27171e0b2c4eb3e016409e0bebf59289bed28b41e549d80a403159913",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "80cfa9477027d1f6c3050a62278513d09bc9cb36",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-wiring/candidate/public/sharing-ui.js",
+      "reviewRef": "cloud-wiring-source-custody-20261027",
+      "sha256": "8ce72cc27171e0b2c4eb3e016409e0bebf59289bed28b41e549d80a403159913",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-wiring-cloud-20261027/candidate/public/sharing-ui.js"
+    },
+    {
+      "bytes": 1102,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "cloud-source-byte-inspection-20261027-0215",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "802473f7d488f06f76d5e38ba0301d890ec90521ebadfb3fd2dc5fcf035d9733",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "bab31855568a3e1d4f1cdbbd67925f506e53c21e",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-wiring/candidate/public/scoped-kitchen-request.js",
+      "reviewRef": "cloud-wiring-source-custody-20261027",
+      "sha256": "802473f7d488f06f76d5e38ba0301d890ec90521ebadfb3fd2dc5fcf035d9733",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-wiring-cloud-20261027/candidate/public/scoped-kitchen-request.js"
+    },
+    {
+      "bytes": 3164,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "cloud-source-byte-inspection-20261027-0215",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "ff1a743b9af33175272a285fb13db3e30763a89be9c55f4ca4d7e8c3660ad545",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "da7c44049582df48473b45e49ba86c40b5953012",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-wiring/candidate/tests-web/scoped-kitchen-request.test.mjs.source.txt",
+      "reviewRef": "cloud-wiring-source-custody-20261027",
+      "sha256": "ff1a743b9af33175272a285fb13db3e30763a89be9c55f4ca4d7e8c3660ad545",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-wiring-cloud-20261027/candidate/tests-web/scoped-kitchen-request.test.mjs"
+    },
+    {
+      "bytes": 3924,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "cloud-source-byte-inspection-20261027-0215",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "935d9c554b988321093ff150bf2ca14e00b174b50318d1ec0a839f8b329caf28",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "d8e1c9b652f89bb393a86073a7004f916667b2fd",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-wiring/candidate/tests-web/sharing-scope-lifecycle.test.mjs.source.txt",
+      "reviewRef": "cloud-wiring-source-custody-20261027",
+      "sha256": "935d9c554b988321093ff150bf2ca14e00b174b50318d1ec0a839f8b329caf28",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-wiring-cloud-20261027/candidate/tests-web/sharing-scope-lifecycle.test.mjs"
+    },
+    {
+      "bytes": 34746,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "cloud-source-byte-inspection-20261027-0215",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "823a69a9bb8f8fb5aea4a504959ffb7b2e05c5bd2a2511803d5f86f07f90a931",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "315b93ee5daee2814dbf169ecf17389965df674d",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-readme/README.md",
+      "reviewRef": "cloud-readme-revision2-review-20261027",
+      "sha256": "823a69a9bb8f8fb5aea4a504959ffb7b2e05c5bd2a2511803d5f86f07f90a931",
+      "sourcePath": "/workspace/shared/offmenu-readme-20261027/README.md"
+    },
+    {
+      "bytes": 23383,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "cloud-source-byte-inspection-20261027-0215",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "2fbfde9afa11a78071988dcbdbda18ca0241cedc35768742378ba3a2873af1da",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "4026893cc1dc5ac0595af9cd1dcdfa3d94bf27f2",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-readme/README.patch",
+      "reviewRef": "cloud-readme-revision2-review-20261027",
+      "sha256": "2fbfde9afa11a78071988dcbdbda18ca0241cedc35768742378ba3a2873af1da",
+      "sourcePath": "/workspace/shared/offmenu-readme-20261027/README.patch"
+    },
+    {
+      "bytes": 6190,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "cloud-source-byte-inspection-20261027-0215",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "4bc011a2c5740c8fbca462dbdd8cff1f38cef4766be47119e5fae2f692eb085b",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "cfc078bc8e87d1aaee36643442de571f79315ba4",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-readme/REVIEW.md",
+      "reviewRef": "cloud-readme-revision2-review-20261027",
+      "sha256": "4bc011a2c5740c8fbca462dbdd8cff1f38cef4766be47119e5fae2f692eb085b",
+      "sourcePath": "/workspace/shared/offmenu-readme-20261027/REVIEW.md"
+    },
+    {
+      "bytes": 61991,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "cloud-source-byte-inspection-20261027-0215",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "0472be9edf9d3109f5f249f72f98e35fab257cec1be0b0c07019e8f7aee7f124",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "79b1402340a69523cadb0b8263b2ba1cf3537d56",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-source-evidence/source-matrix.json",
+      "reviewRef": "cloud-source-evidence-20261027",
+      "sha256": "0472be9edf9d3109f5f249f72f98e35fab257cec1be0b0c07019e8f7aee7f124",
+      "sourcePath": "/workspace/shared/offmenu-source-evidence-20261027/source-matrix.json"
+    },
+    {
+      "bytes": 32093,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "cloud-source-byte-inspection-20261027-0215",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "cf3bc57eb683754af8580f4990844728f416b7eae004cc4d6948c50730830fb4",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "cf0ddfd00cb12851b6932fbbb855ce059d33dcf3",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-source-evidence/source-matrix.md",
+      "reviewRef": "cloud-source-evidence-20261027",
+      "sha256": "cf3bc57eb683754af8580f4990844728f416b7eae004cc4d6948c50730830fb4",
+      "sourcePath": "/workspace/shared/offmenu-source-evidence-20261027/source-matrix.md"
+    }
+  ],
+  "repository": "maldous/offmenu",
+  "runtimeAdoption": false,
+  "schemaVersion": "offmenu-source-custody-import/1",
+  "scope": "exact-source-test-documentation-custody-only-unimported",
+  "screeningLimit": "Pattern scanning supplements the recorded exact-byte content reviews; it is not a confidentiality proof.",
+  "selectionSha256": "05aac41057f64db0bdfd73a3ddbee76a273e71b93298fe278a02384459b3192c",
+  "transport": null
+}

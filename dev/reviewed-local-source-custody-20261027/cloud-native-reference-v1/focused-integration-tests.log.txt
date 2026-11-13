@@ -1,0 +1,17 @@
+✔ mixed explicit choices retain complete identity provenance without changing phase reference or leading zeros (3.921223ms)
+✔ native source namespace and invalid exact barcode claims remain available without checksum repair (1.493917ms)
+✔ unknown amount stages and restores as unknown; only explicit positive manual amount can reach stock (1.891637ms)
+✔ Finish validates source identity, preserves references, and replays exactly without duplicate stock (3.742523ms)
+✔ unconfigured selection, stale/foreign choice, altered pins/rights/claims and mixed reference types fail closed (2.356529ms)
+✔ actual protected Finish controller uses mixed handoff, keeps guest separate, and navigates only after persistence (1.949304ms)
+✔ actual app handoff reader accepts new schema and keeps old payload bound unchanged (1.920962ms)
+✔ actual app autoAccept stages unknown quantity with operation receipt and never queries a product fallback (1.589211ms)
+✔ real HTTP adapter output satisfies recovered strict client without changing semantic qualification (11.362445ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 151.653822

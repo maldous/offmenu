@@ -1,0 +1,175 @@
+--- offmenu-driver-capacity-v7-20261028/parallel_driver_v6_preimage.py	2026-10-28 16:35:38.525793469 +1100
++++ offmenu-driver-capacity-v7-20261028/parallel_driver_v7.py	2026-10-28 16:35:38.651712268 +1100
+@@ -1,7 +1,8 @@
+ #!/usr/bin/env python3
+ """Bounded cooperating-lane fanout INSIDE existing job_runner write supervision.
+ Not an extra sandbox: lane declarations are scheduling contracts for reviewed commands.
+-The existing outer supervisor owns global exclusion, cancellation and descendant cleanup.
++The existing outer supervisor owns admission, cancellation and descendant cleanup.
++Legacy jobs retain global exclusion. Opt-in v3 jobs validate their own live reservation.
+ """
+ import argparse
+ import fcntl
+@@ -50,8 +51,9 @@
+ 
+ 
+ def read_json(path):
+-    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
++    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+     with os.fdopen(fd) as f:
++        if not stat.S_ISREG(os.fstat(f.fileno()).st_mode): raise ValueError('Regular JSON required')
+         raw = f.read(131073)
+     if len(raw) > 131072: raise ValueError('Plan too large')
+     return json.loads(raw)
+@@ -164,10 +166,10 @@
+     s=os.statvfs(root); return s.f_bavail*s.f_frsize
+ 
+ 
+-def allocation(plan, affinity, memory):
++def allocation(plan, affinity, memory, capacity_admitted=False):
+     cpus=sorted(affinity)
+     need=sum(x['cpu_count'] for x in plan['lanes'])
+-    if need>max(0,len(cpus)-4): raise ValueError('Four control CPUs must remain unassigned')
++    if need>max(0,len(cpus)-(0 if capacity_admitted else 4)): raise ValueError('CPU reservation or control headroom unavailable')
+     if sum(declared_memory(x) for x in plan['lanes'])>memory-8*GIB: raise ValueError('Eight GiB control memory headroom required')
+     result=[]
+     for lane in plan['lanes']:
+@@ -216,20 +218,99 @@
+     return {'process_count':observed,'rss_sum_bytes':rss,'read_errors':errors,'truncated':bool(pending),'max_process_virtual_bytes':max_vm,'max_process_rss_bytes':max_rss}
+ 
+ 
+-def run(plan, root=PLATFORM):
++def paths_overlap(a,b):
++    a,b=Path(a),Path(b)
++    return a==b or a in b.parents or b in a.parents
++
++
++def covers(roots,path):
++    path=Path(path)
++    return any(Path(r)==path or Path(r) in path.parents for r in roots)
++
++
++def outer_reservation(plan, root, outer_job_id=None):
++    """Inspect metadata only; v3 owns atomic admission and holds slot through cleanup.
++    Explicit ID plus marker/receipt request digest selects this reservation; it is
++    not a security credential. Commands remain trusted cooperating participants.
++    """
++    admission=None
++    try:
++        if outer_job_id is not None:
++            if not isinstance(outer_job_id,str) or not IDENT.fullmatch(outer_job_id): raise ValueError('Outer job identity')
++            admission=os.open(root/'locks'/'capacity-admission.lock',os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK)
++            if not stat.S_ISREG(os.fstat(admission).st_mode): raise ValueError('Regular admission lock required')
++            fcntl.flock(admission,fcntl.LOCK_SH|fcntl.LOCK_NB)
++        markers=list((root/'locks').glob('execution-slot-*.inflight.json'))
++        if len(markers)>64: raise ValueError('Too many reservations')
++        active=[(p,read_json(p)) for p in markers]
++        if any(not isinstance(r,dict) for _,r in active): raise ValueError('Invalid reservation')
++        if outer_job_id is None:
++            if len(active)!=1 or active[0][1].get('mode')!='write' or active[0][1].get('capacity_version') is not None:
++                raise ValueError('Exactly one legacy outer writer required')
++            own=active[0][1]
++        else:
++            selected=[(p,r) for p,r in active if r.get('job_id')==outer_job_id]
++            if len(selected)!=1: raise ValueError('Unique own reservation required')
++            marker,own=selected[0]
++            match=re.fullmatch(r'execution-slot-([0-9]+)\.inflight\.json',marker.name)
++            if not match or not 0<=int(match[1])<64: raise ValueError('Slot identity')
++            if own.get('capacity_version')!=1 or own.get('mode')!='write': raise ValueError('Capacity writer reservation required')
++            digest=own.get('request_sha256')
++            if not isinstance(digest,str) or not re.fullmatch('[0-9a-f]{64}',digest): raise ValueError('Reservation digest')
++            fd=os.open(marker.with_name('execution-slot-'+match[1]+'.lock'),os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK)
++            try:
++                if not stat.S_ISREG(os.fstat(fd).st_mode): raise ValueError('Regular slot lock required')
++                try: fcntl.flock(fd,fcntl.LOCK_EX|fcntl.LOCK_NB)
++                except BlockingIOError: pass
++                else: raise ValueError('Reservation is not held')
++            finally: os.close(fd)
++            receipt=read_json(root/'jobs'/outer_job_id/'receipt.json')
++            for key in ('job_id','mode','timeout_seconds','request_sha256','resources'):
++                if receipt.get(key)!=own.get(key): raise ValueError('Reservation receipt mismatch')
++            if receipt.get('version')!=3 or receipt.get('status') not in ('starting','running'): raise ValueError('Outer supervisor inactive')
++            resources=own.get('resources')
++            if not isinstance(resources,dict): raise ValueError('Resource declaration required')
++            for key in ('workers','overhead_processes','cpu_millis','memory_bytes','output_bytes'):
++                if type(resources.get(key)) is not int or resources[key]<0: raise ValueError('Resource declaration')
++            for key in ('read_roots','write_roots'):
++                if not isinstance(resources.get(key),list) or any(not isinstance(x,str) or not Path(x).is_absolute() for x in resources[key]): raise ValueError('Resource roots')
++            lanes=plan['lanes']
++            workers=sum(int(x['argv'][x['argv'].index('--workers')+1]) if '--workers' in x['argv'] else 1 for x in lanes)
++            # Shell + this driver, plus every lane parent/tracker beyond computation workers.
++            overhead=2+sum(x['memory_processes'] for x in lanes)-workers
++            if resources['workers']<workers or resources['overhead_processes']<overhead: raise ValueError('Outer process budget understated')
++            if resources['cpu_millis']<1000*sum(x['cpu_count'] for x in lanes): raise ValueError('Outer CPU budget understated')
++            if resources['memory_bytes']<sum(declared_memory(x) for x in lanes)+512*1024**2: raise ValueError('Outer memory budget lacks control allowance')
++            if resources['output_bytes']<sum(x['additional_output_budget_bytes'] for x in lanes): raise ValueError('Outer output budget understated')
++            for path in [*(x['output_root'] for x in lanes),str(root/'parallel'/plan['run_id'])]:
++                if not covers(resources['write_roots'],path): raise ValueError('Outer write scope incomplete')
++            for lane in lanes:
++                for pin in lane['source_pins']:
++                    if not covers(resources['read_roots']+resources['write_roots'],pin['path']): raise ValueError('Outer source read scope incomplete')
++            # Fail closed for legacy/malformed peers; v3 admission protects future arrivals.
++            for _,other in active:
++                if other is own: continue
++                if other.get('capacity_version')!=1 or not isinstance(other.get('resources'),dict): raise ValueError('Incompatible outer reservation')
++                peer=other['resources']
++                if any(paths_overlap(a,b) for a in resources['write_roots'] for b in peer['write_roots']+peer['read_roots']) or any(paths_overlap(a,b) for a in resources['read_roots'] for b in peer['write_roots']):
++                    raise ValueError('Overlapping outer reservation')
++        timeout=own.get('timeout_seconds')
++        if type(timeout) is not int or plan['timeout_seconds']>timeout-20: raise ValueError('Outer deadline headroom required')
++        if not isinstance(own.get('job_id'),str) or not IDENT.fullmatch(own['job_id']): raise ValueError('Outer job identity')
++        return own
++    finally:
++        if admission is not None: os.close(admission)
++
++
++def run(plan, root=PLATFORM, outer_job_id=None):
+     global STOP
+     STOP=False; validate(plan,root)
+     started=time.monotonic(); deadline=started+plan['timeout_seconds']
+     usage_start=resource.getrusage(resource.RUSAGE_CHILDREN);disk_start=free_bytes(root)
+     telemetry={'samples':0,'peak_sampled_max_process_virtual_bytes':0,'peak_sampled_max_process_rss_bytes':0,'peak_sampled_process_count':0,'peak_sampled_rss_sum_bytes':0,'sample_read_errors':0,'sample_truncated':False,'rss_note':'Sampled descendant RSS sum; shared pages may be double counted; peaks between samples may be missed','cpu_note':'Reaped-child CPU accounting, including descendants accounted by waited parents; not all detached or unreaped work guaranteed','disk_note':'Filesystem free-space delta includes unrelated activity, not exact lane output bytes'}
+-    # This driver must be launched through the existing outer write supervisor.
+-    markers=list((root/'locks').glob('execution-slot-*.inflight.json'))
+-    active=[read_json(p) for p in markers]
+-    if len(active)!=1 or active[0].get('mode')!='write': raise ValueError('Exactly one outer writer required')
+-    outer_timeout=active[0].get('timeout_seconds')
+-    if type(outer_timeout) is not int or plan['timeout_seconds'] > outer_timeout-20: raise ValueError('Outer deadline headroom required')
+-    outer_id=active[0].get('job_id')
+-    if not isinstance(outer_id,str) or not IDENT.fullmatch(outer_id): raise ValueError('Outer job identity')
++    outer = outer_reservation(plan, root, outer_job_id)
++    outer_id = outer['job_id']
++    capacity_admitted = outer.get('capacity_version') == 1
+     control=root/'jobs'/outer_id
+     plan_bytes=json.dumps(plan,sort_keys=True,separators=(',',':')).encode()
+     runroot=root/'parallel'/plan['run_id']
+@@ -237,7 +318,7 @@
+     runroot.parent.mkdir(mode=0o700,exist_ok=True)
+     runroot.mkdir(mode=0o700) # Existing run requires reconciliation, never replays.
+     receipt={'version':1,'run_id':plan['run_id'],'outer_job_id':outer_id,'plan_sha256':hashlib.sha256(plan_bytes).hexdigest(),
+-             'status':'preflight','lanes':[],'telemetry':telemetry,'output_qualification_established':False,'outer_cleanup_verification_required':True}
++             'status':'preflight','lanes':[],'telemetry':telemetry,'output_qualification_established':False,'outer_cleanup_verification_required':True,'capacity_admitted':capacity_admitted,'outer_request_sha256':outer.get('request_sha256')}
+     path=runroot/'receipt.json'; atomic(path,receipt)
+     locks=[]; items=[]; logs=[]; sel=selectors.DefaultSelector()
+     def stop(sig,frame):
+@@ -246,7 +327,7 @@
+     old={s:signal.signal(s,stop) for s in (signal.SIGTERM,signal.SIGINT,signal.SIGHUP)}
+     outcome='preflight_error'
+     try:
+-        groups=allocation(plan,os.sched_getaffinity(0),available_memory())
++        groups=allocation(plan,os.sched_getaffinity(0),available_memory(),capacity_admitted)
+         required_free=plan['reserve_bytes']+sum(x['additional_output_budget_bytes'] for x in plan['lanes'])+16*1024**2
+         if free_bytes(root)<required_free: raise ValueError('Aggregate output and disk reserve unavailable')
+         receipt['disk_admission']={'observed_free_bytes':free_bytes(root),'required_free_bytes':required_free,'shared_reserve_bytes':plan['reserve_bytes'],'declared_additional_output_bytes':sum(x['additional_output_budget_bytes'] for x in plan['lanes']), 'enforcement':'aggregate admission plus monitored free-space stop; producer output ceilings required'}
+@@ -316,9 +397,9 @@
+ 
+ 
+ def main():
+-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('plan');args=p.parse_args()
++    p=argparse.ArgumentParser(description=__doc__);p.add_argument('plan');p.add_argument('--outer-job-id');args=p.parse_args()
+     try:
+-        result=run(read_json(beneath(args.plan,PLATFORM)))
++        result=run(read_json(beneath(args.plan,PLATFORM)),outer_job_id=args.outer_job_id)
+         print(json.dumps(result,sort_keys=True))
+         return 0 if result['status']=='commands_exited' and all(x.get('exit_code')==0 for x in result['lanes']) else 1
+     except Exception as exc:

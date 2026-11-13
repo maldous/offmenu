@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "offmenu-recipe-portable-schema-fixture-review/1",
+  "reviewer": "/root/align_north_star_graph/scale_north_star_derivation",
+  "verdict": "approved-fixture-path-only",
+  "priorReviewReceiptSha256": "f4e0d8ce5e27c83a6d4b345b506dbc79d5162741fc14a387b5d5fdc3b43be52c",
+  "productionSourceSha256": "55cc3e67bd01fd887b2d1375bb3ed4439c330e56686b3ed4e6be4ffde66b8d31",
+  "canonicalSchemaPath": "selected/package-contract/common-data.schema.json",
+  "canonicalSchemaSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+  "fixturePins": {
+    "review/test_recipe_inspector.py": "50667deae0f50c5f0860cbf03b9a20dc8c38daaee039809a8872ce6128b3e089",
+    "candidate/tests/test_recipe_selection.py": "f47e7caf188c2851f1dec57599a2622bd8c5b13f7378aab4de194e0b3cde7452",
+    "review/test_recipe_reverify_delta.py": "8ae1ef8bd88474794501d376fe203d08e3fe0e4f970bfaacceb2db3bdf39036b"
+  },
+  "testsPassed": 13,
+  "testsFailed": 0,
+  "log": "recipe-portable-schema-tests.log",
+  "scope": "Same exact retained89ff schema bytes moved into portable custody packet; only fixture paths changed, no production code/data/query semantics change. No Foo data job rerun."
+}

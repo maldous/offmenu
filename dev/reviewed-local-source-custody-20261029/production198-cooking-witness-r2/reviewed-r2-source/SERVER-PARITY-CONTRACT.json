@@ -1,0 +1,24 @@
+{
+  "revision": "privacy-r2",
+  "namespace": "__offmenuCookingWitness198",
+  "exports": [
+    "copyCookingWitness",
+    "preserveCookingWitnesses",
+    "sharedCookingBatch",
+    "finishCookingWitnessState"
+  ],
+  "SA": {
+    "input": "existing individual batch before its direct spread",
+    "expression": "...__offmenuCookingWitness198.sharedCookingBatch(batch)",
+    "preserve": "existing event projection and other batch fields",
+    "rule": "same pure helper as client; it rechecks nested retained evidence visibility"
+  },
+  "lg": {
+    "exactReplacementFile": "evidence/server-history-helper.patch"
+  },
+  "CA": {
+    "expression": "__offmenuCookingWitness198.finishCookingWitnessState(rawInput,existingValidatedOutput)",
+    "position": "successful return after existing full state validation"
+  },
+  "productionMutation": false
+}

@@ -1,0 +1,366 @@
+{
+  "schema": "offmenu-finite-product-delivery-closure-delta/1",
+  "preparedUTC": "2026-10-28T06:56:00Z",
+  "mode": "read-only existing source/receipt reconciliation; no build/tests/deploy/Git/ledger writes",
+  "production": {
+    "status": "deployed-and-served-verified",
+    "version": 194,
+    "versionId": "40a3e73d-6aac-45ea-b7e4-8d529376c812",
+    "deploymentId": "554724b3-a638-4f81-8c34-bcc52214806f",
+    "deployedUTC": "2026-10-28T06:19:42.54046Z",
+    "percentage": 100,
+    "origin": "https://offmenu.aldous.info",
+    "rollbackVersionId": "d572a1e0-f43d-432b-8033-fc78564ef7c9",
+    "moduleSHA256": "7ef438457349a113e48a3c3546b8ac268fb5756d6b25f1ec47c4cb934a090fcc",
+    "moduleBytes": 2507611,
+    "appSHA256": "9d5df398c92ba8fbb9eb979907a2e3570972deb337c7cafa93f705529c61edf8",
+    "appBytes": 464444,
+    "appStatus": 200,
+    "unchangedModules": 211,
+    "totalModules": 212,
+    "settingsBindingsPreserved": true,
+    "focusedTestsPassed": 76,
+    "privateAPIAnonymousStatus": 401,
+    "protectedDocumentsAnonymousStatus": 303,
+    "landingStoryUnchanged": true,
+    "authenticatedJourneyTested": false,
+    "landingGPUVerified": false,
+    "heldShoppingDeficitAdopted": false,
+    "scope": [
+      "shopping existing canWrite guards including canonical reset",
+      "unknown intake CSV blank rather than known zero",
+      "stale account/profile member editor guard"
+    ]
+  },
+  "commonProductionEvidence": [
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-household194-20261028/deployment-receipt.json",
+      "sha256": "e3220151552acbac2fa0329042e5d9eb1abd4382d11aea5fb30d3bb53803653d",
+      "bytes": 1114
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-household194-20261028/served-probes.json",
+      "sha256": "e4274911ef0af07beca98213b95ec7b7906bbdc2cdf38a3495acc5bf7675cb67",
+      "bytes": 2697
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-household194-20261028/version-fingerprints.json",
+      "sha256": "4fed66bf574396b13ff088dd4dbe1007b140edaacd1b57cee0a9213a18495ea1",
+      "bytes": 1216
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-household194-20261028/merged-tests.log",
+      "sha256": "10e11516d6e820d702c713e239eb61aacff08a1c0260924195b201a7496422cc",
+      "bytes": 6972
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-household194-20261028/deployed-application.mjs.asset-splice.json",
+      "sha256": "01c3a99d3ec507eaec8cc1ce35062358d59b0a6727db7b5dfdd4c303f37049dc",
+      "bytes": 791
+    }
+  ],
+  "finalIntegratedSources": [
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-household194-20261028/candidate-source-root/candidate-source/app/public/app.js",
+      "sha256": "9dcebe457842f8596a89cf5902dcd89fb6a1b7f50ef8855001613d0005a5c9fb",
+      "bytes": 109255
+    },
+    {
+      "path": "/workspace/scratch/88f4120a216c/offmenu-production-household194-20261028/candidate-source-root/candidate-source/app/public/insights-ui.js",
+      "sha256": "aa4e5ccd6896ad51e2d4230016b7c9d01b9c97fb7e9859af5a63c2f2681143b4",
+      "bytes": 18357
+    }
+  ],
+  "rows": [
+    {
+      "ledgerId": "HOUSEHOLD-DIET-PROFILES",
+      "originalReadyFiniteStepState": "DELIVERED_AND_EVIDENCED",
+      "parentObligationState": "OPEN_DEPENDENCY_PENDING",
+      "authorLane": "household-planner existing-caller lane",
+      "integrationOwner": "prepare_production_integration",
+      "finiteStepClosed": "Existing edit/save/validated-snapshot/planner path examined; stale member editor cross-account and replaced-profile writes corrected, reviewed and served in194;15focused/51combined synthetic checks,76merged release checks.",
+      "remainingDependency": "Broader dietary qualification not established: culinary alias/tag map is not package/market/version or rights/certification evidence.",
+      "proposedCurrentState": "Original ready current-caller audit/fix delivered in production194; broader obligation remains open. Do not rerun the same retained-source audit without changed source or new required evidence.",
+      "nextInput": "Selected ingredient/rule and profile custodians plus representative package/market/version qualification evidence. No new health/diet inference.",
+      "removeStaleReadyRequest": true,
+      "readyUnexecutedStepProven": false,
+      "evidence": [
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/HANDOFF.md",
+          "sha256": "f19a677c08c960283925e28c28de02d98583b2d32687c3c69f9c2340057c295e",
+          "bytes": 8480
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/INDEPENDENT-REVIEW.md",
+          "sha256": "f2ce58450dff2b96b44f3e301a4695101d9b181ea20193e9c8e3064c453f208c",
+          "bytes": 1426
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/member-editor-scope.patch",
+          "sha256": "50ff1fc4aa40937feb3cb156ec33b7bd645a846be566e8315689f37b7768e7a5",
+          "bytes": 13621
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/source-pins.json",
+          "sha256": "11ed7575b3fb99ee42227523b42f86c92624af4a8ef8ff0c49c656252fd5a748",
+          "bytes": 2383
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/candidate-tests.log",
+          "sha256": "3a0024f389b7f73bc1b7324bbbdc9e92a5d4f27e7180e0a4c1e8c32cb693df72",
+          "bytes": 1590
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/combined-tests.log",
+          "sha256": "80caff7146532779e29f357e01eb18c2b227675746c238d26458fcc4643bf4d5",
+          "bytes": 4767
+        }
+      ],
+      "productionEvidenceRefs": "commonProductionEvidence"
+    },
+    {
+      "ledgerId": "HOUSEHOLD-MEAL-PLANNING",
+      "originalReadyFiniteStepState": "DELIVERED_AND_EVIDENCED",
+      "parentObligationState": "OPEN_DEPENDENCY_PENDING",
+      "authorLane": "household-planner existing-caller lane",
+      "integrationOwner": "prepare_production_integration",
+      "finiteStepClosed": "Actual generate-day input/member assignment and nonmutating cumulative planSummary allocation audited; synthetic two100g meals/150g stock yields50g gap; no inspected summary regression. Related stale editor fix served194.",
+      "remainingDependency": "Proposal generation may include shortages; summary discloses them. No prior-plan input or durable reservation write exists in inspected caller. No held deficit helper adopted.",
+      "proposedCurrentState": "Original ready current-caller audit/fix delivered in production194; broader obligation remains open. Do not rerun the same retained-source audit without changed source or new required evidence.",
+      "nextInput": "Selected existing prior-plan/reservation contract if that broader behavior is required, or exact next caller evidence; do not invent persistent reservation API or rerun unchanged audit.",
+      "removeStaleReadyRequest": true,
+      "readyUnexecutedStepProven": false,
+      "evidence": [
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/HANDOFF.md",
+          "sha256": "f19a677c08c960283925e28c28de02d98583b2d32687c3c69f9c2340057c295e",
+          "bytes": 8480
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/INDEPENDENT-REVIEW.md",
+          "sha256": "f2ce58450dff2b96b44f3e301a4695101d9b181ea20193e9c8e3064c453f208c",
+          "bytes": 1426
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/member-editor-scope.patch",
+          "sha256": "50ff1fc4aa40937feb3cb156ec33b7bd645a846be566e8315689f37b7768e7a5",
+          "bytes": 13621
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/source-pins.json",
+          "sha256": "11ed7575b3fb99ee42227523b42f86c92624af4a8ef8ff0c49c656252fd5a748",
+          "bytes": 2383
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/candidate-tests.log",
+          "sha256": "3a0024f389b7f73bc1b7324bbbdc9e92a5d4f27e7180e0a4c1e8c32cb693df72",
+          "bytes": 1590
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/combined-tests.log",
+          "sha256": "80caff7146532779e29f357e01eb18c2b227675746c238d26458fcc4643bf4d5",
+          "bytes": 4767
+        }
+      ],
+      "productionEvidenceRefs": "commonProductionEvidence"
+    },
+    {
+      "ledgerId": "PRODUCT-PREFERENCE-QUALIFICATION",
+      "originalReadyFiniteStepState": "DELIVERED_AND_EVIDENCED",
+      "parentObligationState": "OPEN_DEPENDENCY_PENDING",
+      "authorLane": "household-planner existing-caller lane",
+      "integrationOwner": "prepare_production_integration",
+      "finiteStepClosed": "Custody/account validation and preservation of scoped likes/textures/spice checked through actual editor/serialization/planner journey. Explicit test confirms inspected suitability/ranking does not consume these positive preference fields.",
+      "remainingDependency": "Selected positive-preference-to-qualified-product/recipe consumer join absent; current caller consumes advisors, avoidance and restrictions only.",
+      "proposedCurrentState": "Original ready current-caller audit/fix delivered in production194; broader obligation remains open. Do not rerun the same retained-source audit without changed source or new required evidence.",
+      "nextInput": "Authorized selected preference consumer join plus exact ENRICH02\u201306 source/input/version evidence. Source/ingredient identity holds remain.",
+      "removeStaleReadyRequest": true,
+      "readyUnexecutedStepProven": false,
+      "evidence": [
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/HANDOFF.md",
+          "sha256": "f19a677c08c960283925e28c28de02d98583b2d32687c3c69f9c2340057c295e",
+          "bytes": 8480
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/INDEPENDENT-REVIEW.md",
+          "sha256": "f2ce58450dff2b96b44f3e301a4695101d9b181ea20193e9c8e3064c453f208c",
+          "bytes": 1426
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/member-editor-scope.patch",
+          "sha256": "50ff1fc4aa40937feb3cb156ec33b7bd645a846be566e8315689f37b7768e7a5",
+          "bytes": 13621
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/source-pins.json",
+          "sha256": "11ed7575b3fb99ee42227523b42f86c92624af4a8ef8ff0c49c656252fd5a748",
+          "bytes": 2383
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/candidate-tests.log",
+          "sha256": "3a0024f389b7f73bc1b7324bbbdc9e92a5d4f27e7180e0a4c1e8c32cb693df72",
+          "bytes": 1590
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-household-planner-20261028/combined-tests.log",
+          "sha256": "80caff7146532779e29f357e01eb18c2b227675746c238d26458fcc4643bf4d5",
+          "bytes": 4767
+        }
+      ],
+      "productionEvidenceRefs": "commonProductionEvidence"
+    },
+    {
+      "ledgerId": "NUTRITION-HISTORY-GOALS",
+      "originalReadyFiniteStepState": "DELIVERED_AND_EVIDENCED",
+      "parentObligationState": "OPEN_DEPENDENCY_PENDING",
+      "authorLane": "consumption-history existing-caller lane",
+      "integrationOwner": "prepare_production_integration",
+      "finiteStepClosed": "Existing cook/serve/history persistence/validation/render/export journey audited; unknown intake CSV Portions corrected from misleading zero to blank, preserving known zero/positive;9focused/45combined tests, served194.",
+      "remainingDependency": "Historical selected owner03 frozen producer/confirmed-receipt trace remains missing/unadmitted; no qualified real nutrition or goal acceptance established.",
+      "proposedCurrentState": "Original ready current-caller audit/fix delivered in production194; broader obligation remains open. Do not rerun the same retained-source audit without changed source or new required evidence.",
+      "nextInput": "Exact selected owner03 producer and confirmed-receipt trace plus admission/disposition under existing holds; no substitute producer or receipt-metadata integration.",
+      "removeStaleReadyRequest": true,
+      "readyUnexecutedStepProven": false,
+      "evidence": [
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-consumption-history-20261028/RESULT.md",
+          "sha256": "2073b564ed4c76ebed8961ed0d7ff8573a201de3d6429cd85628215e6221f770",
+          "bytes": 4725
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-consumption-history-20261028/INDEPENDENT-REVIEW.md",
+          "sha256": "15cc4d4ea2289b1a172828a3b802cf05d4f14287e25b14a5fc40fcdcfb97c521",
+          "bytes": 731
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-consumption-history-20261028/history-csv-unknown-intake.patch",
+          "sha256": "85e0e3e9bffe56742e92a98229b10e1f9cb9fe4a6e031ff38deeef4b5f7898f0",
+          "bytes": 3792
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-consumption-history-20261028/source-pins.json",
+          "sha256": "5498d27b4948d6dc35eebc5fd80de1ed3200654b23db3edd62b1d687729bf7b5",
+          "bytes": 1862
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-consumption-history-20261028/candidate-tests.log",
+          "sha256": "a41e72f1910f774268443996b8ae115bcecf940b36dcfdc251a4d289208eacbb",
+          "bytes": 983
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-consumption-history-20261028/combined-tests.log",
+          "sha256": "3047253eb191475dab75ad79fde043b28c291f76a29d5f76e78d9d31b5691217",
+          "bytes": 4164
+        }
+      ],
+      "productionEvidenceRefs": "commonProductionEvidence"
+    },
+    {
+      "ledgerId": "CONSUMPTION-LEFTOVERS-RECONCILIATION",
+      "originalReadyFiniteStepState": "DELIVERED_AND_EVIDENCED",
+      "parentObligationState": "OPEN_DEPENDENCY_PENDING",
+      "authorLane": "consumption-history existing-caller lane",
+      "integrationOwner": "prepare_production_integration",
+      "finiteStepClosed": "Actual cook/serve retry and history callers tested with synthetic stock conservation, saved/discarded/shared/unknown remainder, removal, storage/validator roundtrip; CSVunknown-intake correction served194.",
+      "remainingDependency": "Same separate producer/confirmed-receipt join remains unresolved; synthetic conservation is not real receipt provenance or full end-to-end lifecycle acceptance.",
+      "proposedCurrentState": "Original ready current-caller audit/fix delivered in production194; broader obligation remains open. Do not rerun the same retained-source audit without changed source or new required evidence.",
+      "nextInput": "Exact selected owner03 frozen producer/confirmed-receipt evidence and permitted join; keep receipt-metadata denial/admission holds intact.",
+      "removeStaleReadyRequest": true,
+      "readyUnexecutedStepProven": false,
+      "evidence": [
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-consumption-history-20261028/RESULT.md",
+          "sha256": "2073b564ed4c76ebed8961ed0d7ff8573a201de3d6429cd85628215e6221f770",
+          "bytes": 4725
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-consumption-history-20261028/INDEPENDENT-REVIEW.md",
+          "sha256": "15cc4d4ea2289b1a172828a3b802cf05d4f14287e25b14a5fc40fcdcfb97c521",
+          "bytes": 731
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-consumption-history-20261028/history-csv-unknown-intake.patch",
+          "sha256": "85e0e3e9bffe56742e92a98229b10e1f9cb9fe4a6e031ff38deeef4b5f7898f0",
+          "bytes": 3792
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-consumption-history-20261028/source-pins.json",
+          "sha256": "5498d27b4948d6dc35eebc5fd80de1ed3200654b23db3edd62b1d687729bf7b5",
+          "bytes": 1862
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-consumption-history-20261028/candidate-tests.log",
+          "sha256": "a41e72f1910f774268443996b8ae115bcecf940b36dcfdc251a4d289208eacbb",
+          "bytes": 983
+        },
+        {
+          "path": "/workspace/scratch/88f4120a216c/offmenu-consumption-history-20261028/combined-tests.log",
+          "sha256": "3047253eb191475dab75ad79fde043b28c291f76a29d5f76e78d9d31b5691217",
+          "bytes": 4164
+        }
+      ],
+      "productionEvidenceRefs": "commonProductionEvidence"
+    },
+    {
+      "ledgerId": "COLLABORATIVE-SHOPPING-LIST",
+      "originalReadyFiniteStepState": "DELIVERED_AND_EVIDENCED",
+      "parentObligationState": "OPEN_DEPENDENCY_PENDING",
+      "authorLane": "collaborative-shopping existing-caller lane",
+      "integrationOwner": "prepare_production_integration",
+      "finiteStepClosed": "Actual193 server contract audited via6synthetic SQLite checks; viewer checkbox misleading local mutation corrected using existing canWrite capability including canonical checkbox restoration, reviewed/merged and served194;11focused/53retained checks.",
+      "remainingDependency": "No list-item\u2192confirmed receive operation\u2192inventory lot/receipt binding; checked flag is not stock receipt. Independent IDs cannot establish same physical purchase.",
+      "proposedCurrentState": "Original ready current-caller audit/fix delivered in production194; broader obligation remains open. Do not rerun the same retained-source audit without changed source or new required evidence.",
+      "nextInput": "Selected authorized consumer/producer contract with stable item/operation/receipt provenance and ownership semantics; preserve held receipt integration. No matching-food-text substitute.",
+      "removeStaleReadyRequest": true,
+      "readyUnexecutedStepProven": false,
+      "evidence": [
+        {
+          "path": "/workspace/shared/offmenu-collaborative-shopping-20261028/HANDOFF.md",
+          "sha256": "3b8b653c46384f9576d2a7e79076f5656bbe1c7785baba9dcfce6ffbb1251acb",
+          "bytes": 7207
+        },
+        {
+          "path": "/workspace/shared/offmenu-collaborative-shopping-20261028/shopping-write-scope.patch",
+          "sha256": "bd4aa57a367d29adb27b8ab0a4b9d8376c512c620c7d388530e09665af1844bc",
+          "bytes": 15433
+        },
+        {
+          "path": "/workspace/shared/offmenu-collaborative-shopping-20261028/manifest.json",
+          "sha256": "e40260e8015641993c885b639e9ef77e03c3b6cc8e448991a2238e2e5e0c592d",
+          "bytes": 3684
+        },
+        {
+          "path": "/workspace/shared/offmenu-collaborative-shopping-20261028/parent-review-repro.log",
+          "sha256": "215f8fbf630d6d1708591876022b7737508f639d8ff72735c90ab2dcfc6d4e90",
+          "bytes": 2100
+        },
+        {
+          "path": "/workspace/shared/offmenu-collaborative-shopping-20261028/candidate-tests.log",
+          "sha256": "0e0e1031c539de8146fb5f4f6e7cc87e1c29fc94f80ce679edf60e54e3bbf026",
+          "bytes": 1057
+        },
+        {
+          "path": "/workspace/shared/offmenu-collaborative-shopping-20261028/contract-tests.log",
+          "sha256": "3397618dd0b565a0b4ac6674e9cd3426dc55b0a6fc290bead0fa091a5bb8968c",
+          "bytes": 756
+        },
+        {
+          "path": "/workspace/shared/offmenu-collaborative-shopping-20261028/all-tests.log",
+          "sha256": "f8ea73b22619500845612329fa8b07cccd4303f21aca3c81f974dd167753766b",
+          "bytes": 4876
+        }
+      ],
+      "productionEvidenceRefs": "commonProductionEvidence"
+    }
+  ],
+  "stillReadyUnexecutedSteps": [],
+  "stillReadyConclusion": "No additional executable ready substep is established by the inspected six audit packets. This does not assert the entire backlog complete; custodian should join new required artifacts to specific remaining obligations.",
+  "reviewAttribution": "Household and consumption separate independent review documents are pinned. Shopping canonical reset correction and parent-review reproduction are pinned; root explicitly confirmed independent reviewed integration and76merged checks. No absent standalone shopping-review document invented.",
+  "limitations": [
+    "76is merged synthetic assertion count, not76features or real-user acceptance.",
+    "194 servedapp hash proves reviewed bundle delivery, not authenticated household/clinical/nutrition acceptance.",
+    "No private profile/raw dataset inspected; source/identity/confirmed-receipt/privacy/minor/security holds remain.",
+    "Route-only navigation does not universally invalidate member editor; exact guard is account generation/storage scope/profile object/dialog state."
+  ]
+}

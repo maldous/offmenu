@@ -1,0 +1,711 @@
+diff --git a/typed-context-consumer-v1/typed_context_consumer.py b/typed-context-consumer-v1/typed_context_consumer.py
+new file mode 100644
+--- /dev/null
++++ b/typed-context-consumer-v1/typed_context_consumer.py
+@@ -0,0 +1,320 @@
++"""Pinned, offline reader -> frozen typed adapter; candidate context only."""
++import argparse
++import builtins
++import contextlib
++import fcntl
++import hashlib
++import json
++from pathlib import Path
++import sys
++import time
++from types import ModuleType
++
++DEFAULT_BASE = Path("/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1")
++SOURCE_PIN = "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e"
++BULK_PIN = "83773291ac70931a110f60e872ae47a2bd470b5f397c709195dcf016c0bf0694"
++BASIS_PIN = "3520dff24e7b96635fd3d8f8cfa60664d03d5bd65709b547059cee10b306e1a9"
++CONTRACT_PIN = "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"
++SCHEMA_PIN = "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
++CONTRACT_CANONICAL_PIN = "3c3397af8c735cf19eef98f88ddd4da9ce23602c46ec97b4c67561fa15fc3bf1"
++INDEX_PIN = "5e6d5c14a26515632a56aac2ff128a12baaa6ec7d030703c368cc8c297a4c1ad"
++PROOF_PIN = "1691828696477efe932d6b3bfc1e20cbdc99ddf047da3e695067f40478e8c2cd"
++NATIVE_PIN = "312a7f5ce7c32b81d1eb02251303a000073eea2d0b46d9ac710e09ff89dee895"
++CODE = {
++    "source_scoped_north_star_consumer.py": "75a43f30967c2ea38606e0a1468132629a51b9c79744eed71938a5e1d146b3bc",
++    "derive_north_star_bulk.py": "3adc476be2a6694d62c76bb4d539f0fc698810fd3b942dc9ae501e940efde7a1",
++    "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
++    "north_star_basis_restoration.py": "cae8b86cbacdbf0d81b9a52bb508dadae56e29639cfd332f87fb2b71bd18566a",
++    "run_north_star_basis_restoration.py": "24b477296d17675f7eb2ef3c674e5ae153a603afa599743161a13d0e05106d59",
++    "typed_nutrient_context.py": "d85a499493f982bec60af67e2588290f56d74b50a0cba03602de083b26a16e8e",
++}
++SOURCE_PINS = {"sourceManifestByteSha256": SOURCE_PIN,
++               "bulkDerivedManifestByteSha256": BULK_PIN,
++               "basisDerivedManifestByteSha256": BASIS_PIN}
++ONE_KEY_SQL = """SELECT i.source,i.release,i.namespace,i.lexical
++FROM identifiers i
++WHERE EXISTS(SELECT 1 FROM unique_product_keys k
++             WHERE k.subject=i.subject AND k.key_sha=i.key_sha)
++AND EXISTS(SELECT 1 FROM resolved_edges e
++           WHERE e.subject=i.subject AND e.has_context=1)
++ORDER BY i.key_sha,i.subject,i.assertion_id LIMIT 1"""
++
++
++class BindingError(ValueError):
++    """A required reviewed local source/package binding is unavailable or differs."""
++
++
++def require(ok, message):
++    if not ok:
++        raise BindingError(message)
++
++
++def canonical(value):
++    return json.dumps(value, ensure_ascii=False, sort_keys=True,
++                      separators=(",", ":"), allow_nan=False).encode("utf-8")
++
++
++def digest(value):
++    return hashlib.sha256(canonical(value)).hexdigest()
++
++
++def checked_bytes(path, pin, max_bytes=64 * 1024 * 1024):
++    # No aliases, symlink traversal or arbitrary import path substitution.
++    require(path.is_absolute() and path.resolve(strict=True) == path,
++            "exact existing nonsymlink source path required")
++    require(path.stat().st_size <= max_bytes, "bounded source metadata required")
++    data = path.read_bytes()
++    require(len(data) <= max_bytes and hashlib.sha256(data).hexdigest() == pin,
++            "reviewed file byte pin differs: " + path.name)
++    return data
++
++
++def json_bytes(data):
++    def object_pairs(pairs):
++        obj = {}
++        for key, value in pairs:
++            require(key not in obj, "duplicate JSON metadata key")
++            obj[key] = value
++        return obj
++    def nonfinite(_):
++        raise BindingError("nonfinite JSON metadata")
++    return json.loads(data, object_pairs_hook=object_pairs, parse_constant=nonfinite)
++
++
++def paths(base):
++    base = Path(base)
++    derived = base / "north-star-derived-20261028"
++    return {"base": base, "derived": derived, "source": base / "bulk-parallel",
++            "bulk": derived / "full-bulk-v1", "basis": derived / "basis-restoration-v1",
++            "caller_code": derived / "caller-code-v2", "basis_code": derived / "basis-code-v1",
++            "adapter": derived / "typed-context-adapter-v1"}
++
++
++def verify_inputs(p):
++    source = json_bytes(checked_bytes(p["source"] / "manifest.json", SOURCE_PIN))
++    bulk = json_bytes(checked_bytes(p["bulk"] / "manifest.json", BULK_PIN))
++    basis = json_bytes(checked_bytes(p["basis"] / "manifest.json", BASIS_PIN))
++    require(source.get("schemaVersion") == "offmenu-common-bulk-food/1"
++            and source.get("complete") is True, "completed normalized source required")
++    for package, schema, rules, source_key in (
++        (bulk, "offmenu-north-star-full-derivation/1",
++         "north-star-structural-derivations/2", "manifestByteSha256"),
++        (basis, "offmenu-same-source-basis-restoration/1",
++         "north-star-per-nutrient-basis-restoration/1", "normalizedManifestByteSha256"),
++    ):
++        require(package.get("schemaVersion") == schema and package.get("complete") is True
++                and package.get("semanticStatus") == "candidate-not-admitted"
++                and package.get("publicationEligible") is False,
++                "completed candidate-only derived package required")
++        s = package["selection"]
++        require(s[source_key] == SOURCE_PIN and s["contractByteSha256"] == CONTRACT_PIN
++                and s["schemaByteSha256"] == SCHEMA_PIN and s["rulesetVersion"] == rules,
++                "derived source/contract/schema selection differs")
++    bulk_code = {k: CODE[k] for k in ("derive_north_star_bulk.py", "north_star_derivations.py")}
++    basis_code = {k: CODE[k] for k in ("derive_north_star_bulk.py", "north_star_derivations.py",
++                                     "north_star_basis_restoration.py", "run_north_star_basis_restoration.py")}
++    require(bulk["selection"]["codePins"] == bulk_code
++            and basis["selection"]["codePins"] == basis_code, "derived producer code selection differs")
++    require(basis["selection"]["nativeManifestByteSha256"] == NATIVE_PIN
++            and basis["selection"]["selectedSources"] == ["off", "usda-files"],
++            "basis native selection differs")
++    require(bulk["consumerIndex"]["sqliteSha256"] == INDEX_PIN
++            and basis["consumerProof"]["sqliteSha256"] == PROOF_PIN, "reader index selection differs")
++    for index in (bulk["consumerIndex"], basis["consumerProof"]):
++        require(type(index["acceptedIdentityJoins"]) is int and index["acceptedIdentityJoins"] == 0
++                and type(index["servedAppQueries"]) is int and index["servedAppQueries"] == 0,
++                "index admission boundary differs")
++    entries = {}
++    for entry in source["files"]:
++        require(entry["key"] not in entries, "duplicate source manifest asset key")
++        entries[entry["key"]] = entry
++    values = {}
++    for key, pin in (("contract.json", CONTRACT_PIN), ("schema.json", SCHEMA_PIN)):
++        entry = entries.get(key)
++        require(entry is not None and entry["sha256"] == pin, "manifest-listed contract/schema required")
++        data = checked_bytes(p["source"] / key, pin)
++        require(type(entry["bytes"]) is int and len(data) == entry["bytes"],
++                "manifest-listed metadata size differs")
++        values[key] = json_bytes(data)
++    contract_pin = digest(values["contract.json"])
++    require(contract_pin == CONTRACT_CANONICAL_PIN, "reviewed canonical contract differs")
++    return contract_pin
++
++
++def exec_verified(name, path, pin, bindings):
++    """Compile the verified bytes; bind local imports to verified module objects.
++
++    This is trusted pinned source loading, not a sandbox for untrusted code.
++    Restore the retained producer's module-level sys.path insertion afterwards.
++    No global sys.modules entries are replaced.
++    """
++    data = checked_bytes(path, pin, max_bytes=2 * 1024 * 1024)
++    module = ModuleType(name); module.__file__ = str(path)
++    original_import = builtins.__import__
++    def verified_import(import_name, globals=None, locals=None, fromlist=(), level=0):
++        if level == 0 and import_name in bindings:
++            return bindings[import_name]
++        return original_import(import_name, globals, locals, fromlist, level)
++    module.__dict__["__builtins__"] = dict(vars(builtins), __import__=verified_import)
++    original_path = sys.path[:]
++    try:
++        exec(compile(data, str(path), "exec"), module.__dict__)
++    finally:
++        sys.path[:] = original_path
++    return module
++
++
++def load_runtime(p):
++    local = {}
++    for name in ("north_star_derivations", "derive_north_star_bulk", "source_scoped_north_star_consumer"):
++        local[name] = exec_verified(name, p["caller_code"] / (name + ".py"), CODE[name + ".py"], local)
++    # These are selected producer prerequisites, not re-executed derivations.
++    for name in ("north_star_derivations.py", "north_star_basis_restoration.py",
++                 "run_north_star_basis_restoration.py", "derive_north_star_bulk.py"):
++        checked_bytes(p["basis_code"] / name, CODE[name], max_bytes=2 * 1024 * 1024)
++    adapter = exec_verified("typed_nutrient_context", p["adapter"] / "typed_nutrient_context.py",
++                            CODE["typed_nutrient_context.py"], {})
++    return local["source_scoped_north_star_consumer"].SourceScopedConsumer, adapter
++
++
++class TypedContextConsumer:
++    """Lazy, closable qualified offline entrypoint for one selected package set."""
++    def __init__(self, base=DEFAULT_BASE):
++        self.paths = paths(base)
++        self.reader = None
++        self.adapter = None
++        self.contract_pin = None
++        self._locks = None
++
++    def _prepare(self):
++        if self.reader is None:
++            locks = contextlib.ExitStack()
++            try:
++                for key in ("bulk", "basis"):
++                    lock = locks.enter_context((self.paths[key] / ".writer.lock").open("rb"))
++                    fcntl.flock(lock.fileno(), fcntl.LOCK_SH | fcntl.LOCK_NB)
++                contract_pin = verify_inputs(self.paths)
++                reader_class, adapter = load_runtime(self.paths)
++                reader = reader_class(self.paths["source"], self.paths["bulk"], self.paths["basis"],
++                                      BULK_PIN, BASIS_PIN)
++            except BaseException:
++                locks.close()
++                raise
++            self.contract_pin, self.adapter, self.reader = contract_pin, adapter, reader
++            self._locks = locks
++
++    def lookup(self, source_id, release, namespace, lexical_value, *, include_candidates=False):
++        if include_candidates is not True:
++            return {"schemaVersion": "offmenu-typed-context-consumer/1",
++                    "status": "candidate-opt-in-required", "records": [],
++                    "acceptedIdentityJoins": 0, "publicationEligible": False,
++                    "automaticPlanningEligible": False, "nutritionAggregationEligible": False,
++                    "servedApplicationActivation": False}
++        require(all(isinstance(v, str) and v for v in (source_id, release, namespace, lexical_value)),
++                "explicit source/release/namespace/lexical key required")
++        self._prepare()
++        result = self.reader.lookup(source_id, release, namespace, lexical_value, include_candidates=True)
++        typed = self.adapter.adapt(
++            result, include_candidates=True, expected_source_pins=dict(SOURCE_PINS),
++            upstream_code_pins={k: CODE[k] for k in self.adapter.CODE_PINS},
++            expected_contract_canonical_sha256=self.contract_pin)
++        typed["upstreamReader"] = {
++            "method": "SourceScopedConsumer.lookup", "verification": "pinned-existing-local-reader",
++            "codePins": dict(CODE), "sourcePins": dict(SOURCE_PINS),
++            "consumerIndexSha256": INDEX_PIN, "basisConsumerProofSha256": PROOF_PIN,
++            "contractByteSha256": CONTRACT_PIN, "schemaByteSha256": SCHEMA_PIN,
++            "contractCanonicalSha256": self.contract_pin,
++            "scope": "selected-source-key-only-not-fresh-full-corpus-proof",
++        }
++        return typed
++
++    def close(self):
++        if self.reader is not None:
++            try:
++                self.reader.close()
++            finally:
++                self.reader = None
++                self._locks.close()
++                self._locks = None
++
++    def __enter__(self):
++        return self
++
++    def __exit__(self, *_):
++        self.close()
++
++
++def exercise_one(consumer, max_seconds=600):
++    """One index-selected key; return only non-row aggregate evidence."""
++    require(type(max_seconds) is int and 1 <= max_seconds <= 600, "bounded exercise deadline required")
++    started = time.monotonic(); deadline = started + max_seconds
++    consumer._prepare()
++    require(time.monotonic() < deadline, "reader verification exceeded exercise deadline")
++    try:
++        for db in (consumer.reader.index, consumer.reader.locations):
++            db.set_progress_handler(lambda: int(time.monotonic() >= deadline), 10000)
++        key = consumer.reader.index.execute(ONE_KEY_SQL).fetchone()
++        require(time.monotonic() < deadline, "key selection exceeded exercise deadline")
++        if key is None:
++            return {"schemaVersion": "offmenu-typed-context-integration-proof/1",
++                    "status": "no-connected-source-key-available", "sourceKeyQueries": 0,
++                    "sourcePins": dict(SOURCE_PINS), "codePins": dict(CODE),
++                    "automaticPlanningEligible": False, "nutritionAggregationEligible": False,
++                    "servedApplicationActivation": False, "publicationEligible": False,
++                    "acceptedIdentityJoins": 0}
++        output = consumer.lookup(*key, include_candidates=True)
++        require(time.monotonic() < deadline, "selected-key read exceeded exercise deadline")
++        require(output["callerStatus"] == "source-scoped-candidate-context" and output["records"],
++                "index-selected connected key did not return typed records")
++        records = output["records"]
++        return {
++            "schemaVersion": "offmenu-typed-context-integration-proof/1",
++            "status": "one-connected-source-key-typed-offline",
++            "sourceKeyQueries": 1, "typedRecordCount": len(records),
++            "unknownQuantityCount": sum(r["quantity"]["original"]["value"] is None for r in records),
++            "zeroQuantityCount": sum(r["quantity"]["original"]["value"] == 0 for r in records),
++            "ownBasisCount": sum(r["provenance"]["basisMatch"] is not None for r in records),
++            "unknownPreparationCount": sum(r["preparation"]["status"] == "unknown" for r in records),
++            "missingPreparationCount": sum(r["preparation"]["status"] == "not-supplied" for r in records),
++            "outputCanonicalSha256": digest(output),
++            "sourcePins": dict(SOURCE_PINS), "codePins": dict(CODE),
++            "consumerIndexSha256": INDEX_PIN, "basisConsumerProofSha256": PROOF_PIN,
++            "contractByteSha256": CONTRACT_PIN, "schemaByteSha256": SCHEMA_PIN,
++            "contractCanonicalSha256": consumer.contract_pin,
++            "candidateOptIn": True, "acceptedIdentityJoins": 0, "publicationEligible": False,
++            "automaticPlanningEligible": False, "nutritionAggregationEligible": False,
++            "servedApplicationActivation": False,
++            "confidence": {"status": "not-calibrated", "probability": None},
++            "rawRecordValuesExported": False, "lexicalIdentifiersExported": False,
++            "elapsedSeconds": round(time.monotonic() - started, 6),
++        }
++    finally:
++        for db in (consumer.reader.index, consumer.reader.locations):
++            db.set_progress_handler(None, 0)
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description="One bounded offline typed-context integration proof")
++    parser.add_argument("--base", type=Path, default=DEFAULT_BASE)
++    parser.add_argument("--proof-root", type=Path, required=True)
++    parser.add_argument("--max-seconds", type=int, default=600)
++    args = parser.parse_args(argv)
++    p = paths(args.base); root = args.proof_root
++    require(root.is_absolute() and root.parent == p["derived"]
++            and root.name.startswith("typed-context-proof-v1-"),
++            "fresh disjoint proof root under selected derived root required")
++    require(root.parent.resolve(strict=True) == root.parent and not root.exists(),
++            "existing proof root or aliased output parent forbidden")
++    # Execution/admission authority remains the existing confined job supervisor.
++    # This command does not acquire admission, launch another job, or alter it.
++    with TypedContextConsumer(args.base) as consumer:
++        result = exercise_one(consumer, args.max_seconds)
++    root.mkdir(mode=0o700)
++    with (root / "integration-proof.json").open("x", encoding="utf-8") as handle:
++        handle.write(canonical(result).decode("utf-8") + "\n")
++    print(canonical(result).decode("utf-8"))
++    return result
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/typed-context-consumer-v1/test_typed_context_consumer.py b/typed-context-consumer-v1/test_typed_context_consumer.py
+new file mode 100644
+--- /dev/null
++++ b/typed-context-consumer-v1/test_typed_context_consumer.py
+@@ -0,0 +1,261 @@
++"""Wrapper-only synthetic integration tests; never run the accepted adapter suite."""
++import contextlib
++from copy import deepcopy
++import hashlib
++import importlib.util
++import json
++from pathlib import Path
++import sys
++import tempfile
++from types import SimpleNamespace
++import unittest
++from unittest.mock import patch
++
++sys.dont_write_bytecode = True
++HERE = Path(__file__).resolve().parent
++BASE = HERE.parent.parent
++sys.path.insert(0, str(HERE))
++import typed_context_consumer as w
++
++# Reuse only the retained synthetic fixture builder, not its test suite.
++test_path = HERE.parent / "typed-context-adapter-v1/test_typed_nutrient_context.py"
++assert hashlib.sha256(test_path.read_bytes()).hexdigest() == "e1b5aee280344ed7104f31e69295d97cc463238bcaa72eed50bfdd3215e065bc"
++spec = importlib.util.spec_from_file_location("retained_adapter_fixture_only", test_path)
++fixture_module = importlib.util.module_from_spec(spec)
++spec.loader.exec_module(fixture_module)
++adapter = sys.modules["typed_nutrient_context"]
++
++
++class FakeDB:
++    def __init__(self, row=None):
++        self.row = row
++        self.calls = []
++        self.handlers = []
++    def execute(self, sql):
++        self.calls.append(sql)
++        return self
++    def fetchone(self):
++        return self.row
++    def set_progress_handler(self, handler, steps):
++        self.handlers.append((handler, steps))
++
++
++class WrapperTests(unittest.TestCase):
++    def setUp(self):
++        self.result, self.options = fixture_module.fixture()
++        self.temp = tempfile.TemporaryDirectory(dir=HERE)
++        self.addCleanup(self.temp.cleanup)
++        self.base = Path(self.temp.name)
++        self.p = w.paths(self.base)
++        for key in ("bulk", "basis", "source"):
++            self.p[key].mkdir(parents=True)
++        for key in ("bulk", "basis"):
++            (self.p[key] / ".writer.lock").write_bytes(b"")
++        result = self.result
++        class Reader:
++            def __init__(self, *args):
++                self.args = args
++                self.calls = []
++                self.closed = False
++                self.index = FakeDB(("synthetic-source", "synthetic-release", "synthetic-namespace", "0000000000000"))
++                self.locations = FakeDB()
++            def lookup(self, *key, **kwargs):
++                self.calls.append((key, kwargs))
++                return deepcopy(result)
++            def close(self):
++                self.closed = True
++        self.reader_class = Reader
++
++    @contextlib.contextmanager
++    def prepared(self):
++        with patch.object(w, "verify_inputs", return_value=self.options["expected_contract_canonical_sha256"]) as verify, \
++             patch.object(w, "load_runtime", return_value=(self.reader_class, adapter)) as load, \
++             patch.object(w, "SOURCE_PINS", self.options["expected_source_pins"]):
++            with w.TypedContextConsumer(self.base) as consumer:
++                yield consumer, verify, load
++
++    def test_opt_in_skips_all_package_and_index_reads(self):
++        with patch.object(w, "verify_inputs") as verify, patch.object(w, "load_runtime") as load:
++            c = w.TypedContextConsumer(self.base)
++            for opt in (False, None, 1, "true"):
++                out = c.lookup("", "", "", "", include_candidates=opt)
++                self.assertEqual(out["status"], "candidate-opt-in-required")
++                self.assertEqual(out["records"], [])
++            verify.assert_not_called(); load.assert_not_called()
++
++    def test_existing_reader_invoked_then_real_frozen_adapter(self):
++        with self.prepared() as (c, verify, load):
++            out = c.lookup("s", "r", "n", "0001", include_candidates=True)
++            self.assertEqual(len(out["records"]), 4)
++            self.assertEqual(c.reader.calls, [(("s", "r", "n", "0001"), {"include_candidates": True})])
++            self.assertEqual(c.reader.args[:3], (self.p["source"], self.p["bulk"], self.p["basis"]))
++            self.assertEqual(c.reader.args[3:], (w.BULK_PIN, w.BASIS_PIN))
++            self.assertEqual(out["upstreamReader"]["contractCanonicalSha256"],
++                             self.options["expected_contract_canonical_sha256"])
++            c.lookup("s", "r", "n", "0001", include_candidates=True)
++            verify.assert_called_once(); load.assert_called_once()
++            reader = c.reader
++        self.assertTrue(reader.closed)
++
++    def test_missing_and_ambiguous_keys_preserve_status_without_fallback(self):
++        for status in ("source-key-not-found", "ambiguous-source-product-key"):
++            self.result.update(status=status, products=[])
++            with self.prepared() as (c, _, __):
++                out = c.lookup("s", "r", "n", "missing", include_candidates=True)
++                self.assertEqual(out["callerStatus"], status)
++                self.assertEqual(out["records"], [])
++                self.assertEqual(len(c.reader.calls), 1)
++                self.assertFalse(out["servedApplicationActivation"])
++
++    def test_result_manifest_tampering_not_used_as_expected_bindings(self):
++        self.result["sourcePins"]["sourceManifestByteSha256"] = "0" * 64
++        with self.prepared() as (c, _, __):
++            with self.assertRaises(adapter.EvidenceError):
++                c.lookup("s", "r", "n", "key", include_candidates=True)
++
++    def test_invalid_key_does_not_prepare_reader(self):
++        with patch.object(w, "verify_inputs") as verify:
++            with self.assertRaises(w.BindingError):
++                w.TypedContextConsumer(self.base).lookup("", "r", "n", "key", include_candidates=True)
++            verify.assert_not_called()
++
++    def test_single_key_exercise_exports_only_aggregates(self):
++        with self.prepared() as (c, _, __):
++            report = w.exercise_one(c, 60)
++            self.assertEqual(report["sourceKeyQueries"], 1)
++            self.assertEqual(report["typedRecordCount"], 4)
++            self.assertEqual(report["unknownQuantityCount"], 1)
++            self.assertEqual(report["zeroQuantityCount"], 1)
++            self.assertEqual(len(c.reader.calls), 1)
++            self.assertEqual(c.reader.index.calls, [w.ONE_KEY_SQL])
++            self.assertEqual(c.reader.index.handlers[-1], (None, 0))
++            serialized = w.canonical(report).decode()
++            self.assertNotIn("0000000000000", serialized)
++            self.assertNotIn("synthetic-profile", serialized)
++            self.assertNotIn("synthetic attribution", serialized.lower())
++            self.assertNotIn("records", report)
++            self.assertEqual(len(report["outputCanonicalSha256"]), 64)
++
++    def test_no_connected_key_returns_no_false_success(self):
++        with self.prepared() as (c, _, __):
++            c._prepare(); c.reader.index.row = None
++            out = w.exercise_one(c, 60)
++            self.assertEqual(out["sourceKeyQueries"], 0)
++            self.assertEqual(out["status"], "no-connected-source-key-available")
++            self.assertEqual(c.reader.calls, [])
++
++    def test_failed_preflight_never_loads_reader_or_keeps_locks(self):
++        c = w.TypedContextConsumer(self.base)
++        with patch.object(w, "verify_inputs", side_effect=w.BindingError("test refusal")), \
++             patch.object(w, "load_runtime") as load:
++            with self.assertRaises(w.BindingError):
++                c.lookup("s", "r", "n", "key", include_candidates=True)
++            load.assert_not_called()
++            self.assertIsNone(c.reader)
++            self.assertIsNone(c._locks)
++
++    def synthetic_metadata(self, mutate=None):
++        contract = {"units": {"g": {"id": "urn:synthetic:unit:g"}}}
++        schema = {"title": "synthetic-only-schema"}
++        cb = w.canonical(contract) + b"\n"; sb = w.canonical(schema) + b"\n"
++        cp = hashlib.sha256(cb).hexdigest(); sp = hashlib.sha256(sb).hexdigest()
++        source = {"schemaVersion": "offmenu-common-bulk-food/1", "complete": True,
++                  "files": [{"key": "contract.json", "sha256": cp, "bytes": len(cb)},
++                            {"key": "schema.json", "sha256": sp, "bytes": len(sb)}]}
++        if mutate:
++            mutate("source", source)
++        source_bytes = w.canonical(source); source_pin = hashlib.sha256(source_bytes).hexdigest()
++        common = {"complete": True, "semanticStatus": "candidate-not-admitted", "publicationEligible": False}
++        selection = {"contractByteSha256": cp, "schemaByteSha256": sp}
++        bulk = dict(common, schemaVersion="offmenu-north-star-full-derivation/1",
++                    selection=dict(selection, manifestByteSha256=source_pin,
++                                   rulesetVersion="north-star-structural-derivations/2",
++                                   codePins={k: w.CODE[k] for k in ("derive_north_star_bulk.py", "north_star_derivations.py")}),
++                    consumerIndex={"sqliteSha256": w.INDEX_PIN, "acceptedIdentityJoins": 0, "servedAppQueries": 0})
++        basis = dict(common, schemaVersion="offmenu-same-source-basis-restoration/1",
++                     selection=dict(selection, normalizedManifestByteSha256=source_pin,
++                                    rulesetVersion="north-star-per-nutrient-basis-restoration/1",
++                                    nativeManifestByteSha256=w.NATIVE_PIN, selectedSources=["off", "usda-files"],
++                                    codePins={k: w.CODE[k] for k in ("derive_north_star_bulk.py", "north_star_derivations.py",
++                                                                  "north_star_basis_restoration.py", "run_north_star_basis_restoration.py")}),
++                     consumerProof={"sqliteSha256": w.PROOF_PIN, "acceptedIdentityJoins": 0, "servedAppQueries": 0})
++        if mutate:
++            mutate("bulk", bulk); mutate("basis", basis)
++        bb = w.canonical(bulk); nb = w.canonical(basis)
++        for p, data in [(self.p["source"] / "manifest.json", source_bytes), (self.p["source"] / "contract.json", cb),
++                        (self.p["source"] / "schema.json", sb), (self.p["bulk"] / "manifest.json", bb),
++                        (self.p["basis"] / "manifest.json", nb)]:
++            p.write_bytes(data)
++        return {"SOURCE_PIN": source_pin, "BULK_PIN": hashlib.sha256(bb).hexdigest(),
++                "BASIS_PIN": hashlib.sha256(nb).hexdigest(), "CONTRACT_PIN": cp, "SCHEMA_PIN": sp,
++                "CONTRACT_CANONICAL_PIN": w.digest(contract)}
++
++    def test_canonical_contract_comes_from_manifest_listed_verified_bytes(self):
++        bindings = self.synthetic_metadata()
++        with patch.multiple(w, **bindings):
++            self.assertEqual(w.verify_inputs(self.p), bindings["CONTRACT_CANONICAL_PIN"])
++        self.assertNotEqual(bindings["CONTRACT_CANONICAL_PIN"], bindings["CONTRACT_PIN"])
++
++    def test_contract_schema_selection_missing_duplicate_or_rights_mismatch_rejected(self):
++        mutations = [
++            lambda kind, d: d["files"].pop() if kind == "source" else None,
++            lambda kind, d: d["files"].append(deepcopy(d["files"][0])) if kind == "source" else None,
++            lambda kind, d: d["selection"].update(contractByteSha256="0" * 64) if kind == "basis" else None,
++            lambda kind, d: d["selection"].update(schemaByteSha256="0" * 64) if kind == "bulk" else None,
++            lambda kind, d: d.update(publicationEligible=True) if kind == "bulk" else None,
++            lambda kind, d: d.update(complete=False) if kind == "basis" else None,
++        ]
++        for mutation in mutations:
++            bindings = self.synthetic_metadata(mutation)
++            with patch.multiple(w, **bindings), self.assertRaises(w.BindingError):
++                w.verify_inputs(self.p)
++
++    def test_index_producer_and_native_bindings_checked(self):
++        for target in ("index", "producer", "native"):
++            def mutate(kind, d):
++                if kind == "bulk" and target == "index":
++                    d["consumerIndex"]["sqliteSha256"] = "0" * 64
++                if kind == "basis" and target == "producer":
++                    d["selection"]["codePins"]["north_star_basis_restoration.py"] = "0" * 64
++                if kind == "basis" and target == "native":
++                    d["selection"]["nativeManifestByteSha256"] = "0" * 64
++            bindings = self.synthetic_metadata(mutate)
++            with patch.multiple(w, **bindings), self.assertRaises(w.BindingError):
++                w.verify_inputs(self.p)
++
++    def test_changed_metadata_bytes_or_symlink_rejected(self):
++        bindings = self.synthetic_metadata()
++        (self.p["source"] / "contract.json").write_bytes(b"changed")
++        with patch.multiple(w, **bindings), self.assertRaises(w.BindingError):
++            w.verify_inputs(self.p)
++        data = self.base / "source-code.py"; data.write_text("value = 1\n")
++        link = self.base / "alias.py"; link.symlink_to(data)
++        with self.assertRaises(w.BindingError):
++            w.checked_bytes(link, hashlib.sha256(data.read_bytes()).hexdigest())
++
++    def test_pinned_loader_rejects_modified_code_before_execution(self):
++        p = self.base / "source.py"; p.write_text("raise RuntimeError('must not execute')\n")
++        with self.assertRaises(w.BindingError):
++            w.exec_verified("synthetic", p, "0" * 64, {})
++
++    def test_actual_source_only_loader_uses_pinned_modules_without_global_replacement(self):
++        before_path = sys.path[:]
++        before = {k: sys.modules.get(k) for k in ("north_star_derivations", "derive_north_star_bulk",
++                                                 "source_scoped_north_star_consumer", "typed_nutrient_context")}
++        reader, loaded_adapter = w.load_runtime(w.paths(BASE))
++        self.assertEqual(reader.__name__, "SourceScopedConsumer")
++        self.assertEqual(loaded_adapter.CODE_PINS, adapter.CODE_PINS)
++        self.assertEqual(sys.path, before_path)
++        self.assertEqual({k: sys.modules.get(k) for k in before}, before)
++
++    def test_existing_or_outside_proof_root_refused_without_reader(self):
++        with patch.object(w, "TypedContextConsumer") as consumer:
++            for root in (self.base / "outside", self.p["derived"] / "typed-context-proof-v1-existing"):
++                root.mkdir()
++                with self.assertRaises(w.BindingError):
++                    w.main(["--base", str(self.base), "--proof-root", str(root)])
++            consumer.assert_not_called()
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/typed-context-consumer-v1/CONTRACT.md b/typed-context-consumer-v1/CONTRACT.md
+new file mode 100644
+--- /dev/null
++++ b/typed-context-consumer-v1/CONTRACT.md
+@@ -0,0 +1,115 @@
++# Pinned typed-context consumer v1 — source-review candidate
++
++This disjoint wrapper invokes the existing qualified
++`SourceScopedConsumer.lookup(..., include_candidates=True)`, then the frozen
++`typed-context-adapter-v1.adapt()`. It neither edits nor replaces those modules.
++It supplies its own reviewed bindings after verifying existing local metadata;
++the caller does not supply manifest or code hashes.
++
++## Public entrypoint
++
++```python
++with TypedContextConsumer(base=existing_confined_base) as consumer:
++    typed = consumer.lookup(source_id, release, namespace, lexical_value,
++                            include_candidates=True)
++```
++
++No literal True opt-in: return no records without opening packages or indices.
++The four exact source-key strings go only to the existing reader. Missing and
++ambiguous keys retain `callerStatus` and empty records; there is no text/name
++matching, fallback lookup, external network or identity admission.
++
++## Verified upstream
++
++The confined default base is the already-existing
++`/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1`.
++The corresponding source metadata inspected in this executor was actually at
++`/home/user/src/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1`.
++No alias, mount or input copy was created. All paths beneath the chosen existing
++base have fixed package/source-relative names, and aliases/symlink traversal are
++rejected. The actual exercise must use its existing confined namespace.
++
++1. Read and byte-verify the exact reviewed source, structural and basis manifests.
++   Require completed candidate-only packages, matching normalized selection,
++   exact producer code pins, same selected schema/contract byte pins, native
++   selection and the two expected consumer-index/proof pins.
++2. Read the unique manifest-listed `contract.json` and `schema.json`; verify both
++   manifest-listed byte sizes and pinned SHA256 values. Parse exact contract
++   bytes and compute its canonical digest using the producer's JSON encoding.
++   The canonical contract digest is
++   `3c3397af8c735cf19eef98f88ddd4da9ce23602c46ec97b4c67561fa15fc3bf1`;
++   it differs from the byte digest
++   `b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa`.
++   This was computed from the actual selected 46,420-byte contract, not a fixture.
++3. Verify exact retained code bytes before compiling fresh local module objects.
++   Bind the caller's local imports to verified producer modules; restore the
++   producer's sys.path insertion and do not replace global sys.modules entries.
++   Verify selected basis producer sources but do not rerun their derivations.
++   The frozen adapter's byte SHA is
++   `d85a499493f982bec60af67e2588290f56d74b50a0cba03602de083b26a16e8e`.
++   This loader executes trusted pinned code; it is not a sandbox for foreign code.
++4. Hold nonblocking shared locks on the two existing derived-package
++   `.writer.lock` files, opened read-only. The retained reader byte-verifies both
++   immutable SQLite indices, uses its existing query-only readers, and verifies
++   selected normalized/sidecar asset bytes, packet bindings, exact identifier/
++   edge/source/citation/scope evidence. These guarantees remain reader-bound.
++5. Call the frozen adapter with the verified manifest pins, verified code bindings
++   and computed canonical contract digest. Annotate output with the exact
++   `SourceScopedConsumer.lookup` upstream identity and selected verification scope.
++
++Manifest/index pins are fixed in the new module:
++- Normalized manifest: `8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e`
++- Structural manifest: `83773291ac70931a110f60e872ae47a2bd470b5f397c709195dcf016c0bf0694`
++- Basis manifest: `3520dff24e7b96635fd3d8f8cfa60664d03d5bd65709b547059cee10b306e1a9`
++- Structural index: `5e6d5c14a26515632a56aac2ff128a12baaa6ec7d030703c368cc8c297a4c1ad`
++- Basis proof index: `1691828696477efe932d6b3bfc1e20cbdc99ddf047da3e695067f40478e8c2cd`
++- Schema bytes: `89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c`
++
++The pure adapter remains caller-bound. This wrapper establishes its particular
++verified upstream reader and selection; it does not freshly re-prove the whole
++corpus, source rights, culinary identity or nutritional comparability. Original
++licence/attribution, unknown/zero, literal preparation, uncalibrated confidence,
++and candidate-only/no-admission/no-aggregation/planning/application boundaries
++remain unchanged. Ingredient/recipe links remain not supplied by this caller.
++Previously retained immutable source, rights, qualification and namespace proofs
++remain prerequisites; stale or unknown evidence is not upgraded.
++
++## One-key exercise — pending independent source review
++
++The optional CLI is solely a new integration exercise:
++```sh
++python3 -B typed-context-consumer-v1/typed_context_consumer.py \
++  --base /offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1 \
++  --proof-root /offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/north-star-derived-20261028/typed-context-proof-v1-exercise-001 \
++  --max-seconds 600
++```
++
++It selects at most one existing connected unique source key with the retained
++index predicates and LIMIT 1, invokes the actual reader and adapter once, then
++writes only `integration-proof.json` into a fresh create-only proof directory.
++No real returned identifiers or values are printed/persisted by this entrypoint.
++The exported report contains code/source/index/contract pins, typed-record,
++unknown/zero/preparation counts, false admission/activation flags and canonical
++output SHA256. No connected key produces an explicit zero-query non-success
++status rather than a fabricated result. SQLite progress handlers bound SQL;
++deadline checks surround verification and reading. Existing supervisor wall-time
++and resource limits remain necessary, including during index hashing, gzip
++reads and source loading; Python deadline checks alone do not preempt those IOs.
++
++Run ONLY through the existing deployed `u/admin/foo_jobs_20261027` confined
++supervisor with normal capacity admission: one worker, three overhead processes,
++1,000 CPU millicores, 2 GiB RAM, 8 MiB output reservation and 660-second outer
++timeout. Declare only selected packages/code as read roots and the fresh proof
++root as write root. The supervisor must preserve its existing 70 GiB free-space
++reserve; do not bypass a busy or refused admission. This wrapper does not submit
++jobs, acquire capacity admission itself, reconcile other owners' reservations,
++or create another data producer. The only write is its fresh aggregate proof.
++
++Source review must precede that real exercise. At this handoff, only new focused
++synthetic tests have run. The 24 accepted adapter tests and previous 64-key actual
++caller exercise were not rerun. Wrapper tests reuse only the pinned synthetic
++fixture builder from the frozen adapter tests, plus actual retained source-only
++module loading; no populated indices, source rows or derived data are read.
++
++There is no deployment, publication, app integration, source-rights grant,
++external lookup, model call, paid call or runtime activation in this packet.

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "offmenu-independent-phase2-capacity-estimator-review/1",
+  "reviewer": "/root/align_north_star_graph",
+  "author": "/root/align_north_star_graph/scale_north_star_derivation",
+  "verdict": "approved-finite-read-only-capacity-estimate",
+  "observedAtUtc": "2026-10-28T09:57:00Z",
+  "helperSha256": "195bca997482c4be7dff936b7c2b61d18d38aeb692dacee915e80602f35bec3c",
+  "supersededHelperSha256": "5f944f39b2be55bf28a939646edf951b40aa1ba43ca61c5a8f65ab6ee6b790a8",
+  "testPins": {
+    "authored": "ccf89c34615433b17c031de71c8ac8609486c48081b39aed7990b92481350bf9",
+    "independent": "dd0266cf030143e2a27e8d73d761369c1b88feaaf5c72f2b7eaae2e3ce9d46ac"
+  },
+  "tests": {
+    "authoredIndependentlyRun": 4,
+    "additionalIndependent": 4,
+    "failed": 0
+  },
+  "reviewed": [
+    "Exact completed native-index manifest and SQLite pins plus normalized manifest/file pins",
+    "Actual loaded runner, pure restoration, canonical serializer and digest code bound to native selection code pins",
+    "Exact reviewed restore() with read-only native index and shared writer lock",
+    "Six deterministic manifest-spaced assets, compressed candidate/matched/locator streams held in memory",
+    "Two16KiB WITHOUT ROWID layouts match final native-independent matched/locator tables",
+    "Projection and locator costs weighted to respective full native-profile and normalized-resource populations",
+    "Retained index included once plus explicit receipt/fixed overhead and35%+512MiB margin",
+    "Strict deadline bounds and final deadline guard; estimator exports only counts, sizes and pins"
+  ],
+  "independentProbes": [
+    "Changed loaded-code selection rejected",
+    "Changed selected normalized asset rejected",
+    "Expired final deadline cannot mint success",
+    "Unknown state and zero-value fixture inputs unchanged; exact contexts and helper pins retained"
+  ],
+  "limits": [
+    "Estimate is not guaranteed upper bound or semantic/full-corpus proof.",
+    "Ordinary v3 admission, absolute final-output cap and70GiB reserve remain mandatory.",
+    "Phase2 reservation must include retained index, sidecars, local matched/locator shards, final SQLite, receipts and scratch; only actual clean-boundary owned bytes may offset required growth.",
+    "SQLite unlinked temporary storage is not fully accounted by named-file measurement; existing reserve/guards remain required.",
+    "No actual measurement or phase2 production result is claimed here."
+  ]
+}

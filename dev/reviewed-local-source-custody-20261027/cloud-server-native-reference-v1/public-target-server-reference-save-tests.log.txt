@@ -1,0 +1,13 @@
+✔ actual previous server strips native reference; configured dispatch persists full refs through actual PUT and GET (19.965452ms)
+✔ phase reference remains distinct; native one-character and leading-zero namespaces survive save/reload without coercion (4.898921ms)
+✔ actual unconfigured helper rejects native stock; malformed provenance or assumed amount never writes (5.961407ms)
+✔ legacy state results, authentication, origin, revision and own-data provider containment stay unchanged (2.624805ms)
+✔ patch modifies only two insertions and refuses wrong input or duplicate dispatch (8.346419ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 566.708466

@@ -1,0 +1,160 @@
+{
+  "basis": {
+    "readmeGitBlob": "1bb6cb6a177ea1d8c8c98cce3747f2c973769e78",
+    "planGitBlob": "ebc1cdd6af2ac8e09db4d2cd0e0d749cad6a6885",
+    "sourceCustodyCommit": "009caee01aed805db5d7d141a3fab9e845e72bdc",
+    "release": {
+      "version": "8db6b5c4-2e5f-483f-90ea-de0260733526",
+      "bytes": 464652,
+      "sha256": "fce748582a1e4aa940022b00ccaab7ac00ec5d1ca5d357d5f45f4ff0756e1fdf"
+    }
+  },
+  "execution": "One connected actual served-code caller journey; synthetic inputs, minimal in-memory DOM/storage, denied runtime fetches. No helper-only suite or broad accepted checks repeated.",
+  "stages": [
+    {
+      "stage": "Barcode",
+      "status": "partial-cached-synthetic-manual-controller",
+      "executedCheckpoints": [
+        "09-cached-synthetic-barcode-receipt-draft"
+      ],
+      "exactRemainingAcceptance": "No physical camera/device/decoder, external lookup, GTIN authenticity or real source release exercised."
+    },
+    {
+      "stage": "Product",
+      "status": "synthetic-cached-product-input",
+      "executedCheckpoints": [
+        "01-pantry-manual-entry",
+        "09-cached-synthetic-barcode-receipt-draft"
+      ],
+      "exactRemainingAcceptance": "Real released product identities/variants/all permitted fields and lookup/provider acceptance remain outside this synthetic journey."
+    },
+    {
+      "stage": "Ingredient",
+      "status": "explicit-manual-culinary-mapping",
+      "executedCheckpoints": [
+        "01-pantry-manual-entry",
+        "03-plan-cooked"
+      ],
+      "exactRemainingAcceptance": "Typed source-scoped product/ingredient equivalence and qualified relationships are not established by local rice/peas names; existing graph owner owns implementation."
+    },
+    {
+      "stage": "Recipe",
+      "status": "executed-through-actual-menu-caller",
+      "executedCheckpoints": [
+        "02-quantified-menu-planned"
+      ],
+      "exactRemainingAcceptance": "Synthetic quantified recipe and instructions/source/license only; no new qualified-real-recipe admission or worldwide coverage asserted."
+    },
+    {
+      "stage": "Quantity",
+      "status": "executed-mass-allocation-and-scaling",
+      "executedCheckpoints": [
+        "02-quantified-menu-planned",
+        "03-plan-cooked",
+        "08-future-plan-shopping-checked-not-stock"
+      ],
+      "exactRemainingAcceptance": "100g each consumed from500g lots for2portions;12-portion future plan requires600g each and reports200g gaps. Unsupported density/yield/retention/preparation conversions not exercised."
+    },
+    {
+      "stage": "Nutrition",
+      "status": "executed-synthetic-known-zero-unknown-and-frozen-totals",
+      "executedCheckpoints": [
+        "03-plan-cooked",
+        "04-A-half-eaten-saved",
+        "07-person-specific-history-rendered"
+      ],
+      "exactRemainingAcceptance": "Energy150kcal/batch, salt0known2/2, vitaminCunknown0/2. NS195-G1: frozen source nutrient-profile/release provenance missing in batch/history. No clinical or real source nutritional acceptance."
+    },
+    {
+      "stage": "Menu",
+      "status": "executed-actual-card-plan-to-cook",
+      "executedCheckpoints": [
+        "02-quantified-menu-planned",
+        "03-plan-cooked",
+        "08-future-plan-shopping-checked-not-stock"
+      ],
+      "exactRemainingAcceptance": "Two synthetic diner IDs carried; no real household authorization, complex variants/allergens or qualified preference-consumer acceptance."
+    },
+    {
+      "stage": "Serving",
+      "status": "executed-person-linked-batch-partition",
+      "executedCheckpoints": [
+        "04-A-half-eaten-saved",
+        "05-B-fully-eaten",
+        "06-next-day-leftover-eaten"
+      ],
+      "exactRemainingAcceptance": "Explicit1portion50percent saved,1portion100percent,then0.5portion next day; no authenticated person/private-health authority established."
+    },
+    {
+      "stage": "Consumption",
+      "status": "executed-recorded-intake-separate-from-served",
+      "executedCheckpoints": [
+        "04-A-half-eaten-saved",
+        "05-B-fully-eaten",
+        "06-next-day-leftover-eaten"
+      ],
+      "exactRemainingAcceptance": "Three records consume total2portions/150synthetic kcal; A75 and B75. Unlogged real meals, mixed plates and real nutrition remain unobserved."
+    },
+    {
+      "stage": "Leftovers",
+      "status": "executed-manual-existing-batch-reuse",
+      "executedCheckpoints": [
+        "04-A-half-eaten-saved",
+        "06-next-day-leftover-eaten"
+      ],
+      "exactRemainingAcceptance": "Cooked stock2→1.5→0.5→0; raw lots stay400g each across serving. Generic chosen-location edit, multi-device persistence and dated-plan leftover selection not exercised."
+    },
+    {
+      "stage": "History",
+      "status": "executed-person-specific-render-frozen-values-local-reload",
+      "executedCheckpoints": [
+        "07-person-specific-history-rendered",
+        "12-local-reload"
+      ],
+      "exactRemainingAcceptance": "Mutable product lookup correction did not change old recorded values. NS195-G1 source-profile provenance still absent; account/health scoping and multi-device recovery require their own evidence."
+    },
+    {
+      "stage": "Planning",
+      "status": "executed-future-manual-plan-and-shopping-gaps",
+      "executedCheckpoints": [
+        "08-future-plan-shopping-checked-not-stock"
+      ],
+      "exactRemainingAcceptance": "History-informed suggestions, opt-in preference learning, reusable plans/reservations and selecting an existing leftover batch as a new plan entry are not established. Existing recipe/menu/shopping author owns that connection."
+    },
+    {
+      "stage": "Integration",
+      "status": "not-executed",
+      "executedCheckpoints": "",
+      "exactRemainingAcceptance": "No external REST/MCP/retailer or account sharing call. Actual connected external-client/consent/authority acceptance remains distinct."
+    },
+    {
+      "stage": "Ordering",
+      "status": "shopping-intention-boundary-executed-no-real-order",
+      "executedCheckpoints": [
+        "08-future-plan-shopping-checked-not-stock"
+      ],
+      "exactRemainingAcceptance": "Checking a derived shopping item changes no stock/history. No retailer order/provider submission/payment or current offer exercise; do not infer a working ordering service."
+    },
+    {
+      "stage": "Receipt",
+      "status": "executed-home-checkout-explicit-confirmation",
+      "executedCheckpoints": [
+        "09-cached-synthetic-barcode-receipt-draft",
+        "10-receipt-preview-not-stock",
+        "11-explicit-receipt-confirmed-stock",
+        "12-local-reload"
+      ],
+      "exactRemainingAcceptance": "Draft and final-preview add no stock; explicit confirm adds200g synthetic rice, history unchanged. Actual arrival is simulated user input, not a verified purchase or OCR/import integration."
+    }
+  ],
+  "connectedConservation": {
+    "rawRice": "500 - 100 cooked + 200 explicitly confirmed received = 600g",
+    "rawPeas": "500 - 100 cooked = 400g",
+    "batchPortions": "2 - 0.5 A consumed - 1 B consumed - 0.5 A later consumed = 0",
+    "intake": "A75 + B75 = 150 synthetic kcal once",
+    "unknown": "vitaminC aggregate storage numeric0 with known0 is displayed not available; salt numeric0 with known2 displayed0g"
+  },
+  "wholeNorthStarAccepted": false,
+  "sourceBodiesChanged": false,
+  "broadNewReleaseGate": false
+}

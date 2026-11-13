@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-27",
+  "workspace": "offmenu",
+  "path": "u/admin/foo_jobs_20261027",
+  "isDraft": false,
+  "extraPerms": {},
+  "deployed_source_sha256": "b136113ffe4c0e5564fa475f2c9b2842b6188dae13191742f20cdc8fabbf60e5",
+  "runner_sha256": "81b2918d8384ac3da63397263263c01340dc9b90031672d1fa4baab16aef8c1a",
+  "server_version_hash": null,
+  "server_version_hash_note": "Connector readback exposes source, schema and ACL but not a separate server script hash; exact deployed source bytes matched local SHA256.",
+  "host_tests": {
+    "passed": 13,
+    "job_id": "01a17f78-3519-af3f-9c68-2cdfcfcd7f10"
+  },
+  "draft_smoke": "01a17f78-eca7-16ea-0a24-22f683eb3761",
+  "deployed_smoke": "01a17f79-58ac-33e6-a112-3a831c853a33",
+  "long_background_smoke": {
+    "job_id": "01a17f79-9493-18e9-88f0-582b58e44d0f",
+    "duration_ms": 62569,
+    "exit_code": 0,
+    "child_tree_gone": true
+  },
+  "live_control_read": "01a17f79-bc56-7ea6-d952-46cf462a2c9e",
+  "second_long_admission": {
+    "job_id": "01a17f79-d06b-2069-3919-b9b558953e5b",
+    "status": "busy",
+    "reserved": false
+  },
+  "limitations": [
+    "Same-disk receipts are not independent backup",
+    "Read mode is scheduling intent, not read-only filesystem enforcement",
+    "Unknown in-flight markers require explicit reconciliation",
+    "Maximum configured 1800-second request is not a measured Windmill timeout guarantee",
+    "No process-resume guarantee after SSH or Windmill termination"
+  ],
+  "prior_deployed_source_sha256": "980a2220cc06ed1a9c60e222396299f9ec99a2ab7e96f9460b51a674a13f3549",
+  "transport_dependencies": {
+    "paramiko": "5.1.0",
+    "wmill": "1.850.0"
+  },
+  "pinned_transport_deployed_readback": "01a17f84-7075-bdb9-20f9-26fbd9f0266d"
+}

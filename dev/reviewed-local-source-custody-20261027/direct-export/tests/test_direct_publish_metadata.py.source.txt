@@ -1,0 +1,169 @@
+"""Synthetic direct-sync behavior; every GitHub operation is a local fake."""
+import copy
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+import tempfile
+import types
+import unittest
+from unittest.mock import patch
+
+HERE = Path(__file__).resolve().parent
+TOOL = HERE.parent / 'scripts' / 'direct_publish_metadata.py'
+if not TOOL.exists(): TOOL = HERE / 'direct_publish_metadata.py'
+SPEC = importlib.util.spec_from_file_location('direct_metadata_publisher_tested', TOOL)
+D = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(D)
+
+
+class Helper:
+    MAX_PACKET = 8 * 1024 * 1024
+    ANCHORS = []
+
+    @staticmethod
+    def canonical(value):
+        return (json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n").encode()
+
+    decode = staticmethod(json.loads)
+    read_regular = staticmethod(lambda p, limit: (D.safe_local_read(p, limit), None))
+
+    @staticmethod
+    def validate_packet(packet, job):
+        assert packet["jobId"] == job
+        return packet
+
+    @staticmethod
+    def validate_packet_directory(directory):
+        return json.loads((Path(directory) / "packet-set.json").read_bytes())
+
+
+class API:
+    def __init__(self):
+        self.ref = "a" * 40; self.new = "c" * 40; self.writes = []; self.entries = None
+        self.bad_workflow = False; self.move_before_update = False; self.ref_reads = 0
+
+    def __call__(self, endpoint, method="GET", payload=None):
+        if method != "GET": self.writes.append((endpoint, method, copy.deepcopy(payload)))
+        suffix = endpoint.removeprefix("repos/" + D.REPOSITORY)
+        if suffix == "": return {"full_name": D.REPOSITORY, "private": True}
+        if suffix.startswith("/contents/.github/workflows"):
+            rows = [{"name": k, "sha": v, "type": "file"} for k, v in D.WORKFLOWS.items()]
+            if self.bad_workflow: rows[0]["sha"] = "0" * 40
+            return rows
+        if suffix.startswith("/git/ref/heads/"):
+            self.ref_reads += 1
+            if self.move_before_update and self.ref_reads == 2: self.ref = "f" * 40
+            return {"ref": "refs/heads/" + D.BRANCH, "object": {"type": "commit", "sha": self.ref}}
+        if suffix.startswith("/git/commits/"):
+            sha = suffix.rsplit("/", 1)[-1]
+            return {"sha": sha, "tree": {"sha": "d" * 40 if sha == self.new else "b" * 40},
+                    "parents": [{"sha": "a" * 40}]}
+        if suffix == "/git/blobs":
+            import base64
+            return {"sha": D.git_blob(base64.b64decode(payload["content"]))}
+        if suffix == "/git/trees" and method == "POST":
+            self.entries = [{**e, "path": e["path"].rsplit("/", 1)[-1], "size": self.sizes[e["sha"]]} for e in payload["tree"]]
+            return {"sha": "d" * 40}
+        if suffix == "/git/commits" and method == "POST": return {"sha": self.new}
+        if suffix.startswith("/git/refs/heads/") and method == "PATCH":
+            assert payload == {"sha": self.new, "force": False}; self.ref = self.new
+            return {"object": {"sha": self.ref}}
+        raise AssertionError((suffix, method))
+
+
+class DirectPublishTests(unittest.TestCase):
+    def fixture(self, directory, phase="inventory"):
+        packet = {"jobId": "synthetic-inventory-0001", "phase": phase,
+                  "batch": {"index": 1, "count": 1},
+                  "custody": {"selectionSha256": "e" * 64}, "selection": [], "items": []}
+        raw = Helper.canonical(packet); name = packet["jobId"] + ".json"
+        Path(directory, name).write_bytes(raw)
+        item = {**{k: packet[k] for k in ("jobId", "phase", "batch", "custody")},
+                "bytes": len(raw), "sha256": D.sha256(raw)}
+        manifest = {"schemaVersion": "offmenu-local-source-packet-set/1", "packets": [item]}
+        Path(directory, "packet-set.json").write_bytes(Helper.canonical(manifest))
+        return packet, manifest
+
+    def fake_tree(self, api, root, path):
+        return api.entries if root == "d" * 40 else None
+
+    def test_only_metadata_paths_single_parent_nonforce(self):
+        with tempfile.TemporaryDirectory() as directory:
+            self.fixture(directory)
+            api = API(); api.sizes = {D.git_blob(p.read_bytes()): p.stat().st_size for p in Path(directory).iterdir()}
+            with patch.object(D, "tree_at", side_effect=lambda root_api, tree, path: self.fake_tree(api, tree, path)):
+                result = D.publish(directory, Helper, api)
+            self.assertEqual(result["commit"], "c" * 40)
+            self.assertEqual(result["actionsDispatched"], 0)
+            self.assertFalse(result["applicationSourceUploaded"])
+            self.assertTrue(all("/actions/" not in url for url, _, _ in api.writes))
+            tree = next(data for url, method, data in api.writes if url.endswith("/git/trees"))
+            self.assertTrue(all(e["path"].startswith(D.PREFIX) for e in tree["tree"]))
+            commit = next(data for url, method, data in api.writes if url.endswith("/git/commits"))
+            self.assertEqual(commit["parents"], ["a" * 40])
+
+    def test_workflow_change_stops_before_any_write(self):
+        with tempfile.TemporaryDirectory() as directory:
+            self.fixture(directory); api = API(); api.bad_workflow = True
+            with self.assertRaisesRegex(D.Refused, "workflow-pins-changed"):
+                D.publish(directory, Helper, api)
+            self.assertEqual(api.writes, [])
+
+    def test_concurrent_branch_change_never_updates_ref(self):
+        with tempfile.TemporaryDirectory() as directory:
+            self.fixture(directory); api = API(); api.move_before_update = True
+            api.sizes = {D.git_blob(p.read_bytes()): p.stat().st_size for p in Path(directory).iterdir()}
+            with patch.object(D, "tree_at", return_value=None):
+                with self.assertRaisesRegex(D.Refused, "branch-moved"):
+                    D.publish(directory, Helper, api)
+            self.assertFalse(any(method == "PATCH" for _, method, _ in api.writes))
+
+    def test_existing_metadata_conflict_never_overwritten(self):
+        with tempfile.TemporaryDirectory() as directory:
+            self.fixture(directory); api = API()
+            with patch.object(D, "tree_at", return_value=[{"path": "other", "mode": "100644", "type": "blob", "sha": "a" * 40, "size": 1}]):
+                with self.assertRaisesRegex(D.Refused, "conflict-no-overwrite"):
+                    D.publish(directory, Helper, api)
+            self.assertEqual(api.writes, [])
+
+    def test_changed_packet_pin_and_unapproved_selected_payload_reject(self):
+        with tempfile.TemporaryDirectory() as directory:
+            packet, manifest = self.fixture(directory)
+            packet["items"] = [{"unexpected": "synthetic"}]
+            Path(directory, packet["jobId"] + ".json").write_bytes(Helper.canonical(packet))
+            with self.assertRaisesRegex(D.Refused, "packet-set-pin-changed"):
+                D.prepare_directory(directory, Helper)
+
+    def test_real_pinned_streaming_validator_compatibility(self):
+        helper_path = HERE.parent / 'scripts' / 'export-local-source.py'
+        if not helper_path.exists():
+            helper_path = HERE.parent / "offmenu-local-source-export-20261027/scripts/export-local-source.py"
+        raw = D.safe_local_read(helper_path, 1024 * 1024)
+        helper = D.load_helper(helper_path, D.sha256(raw))
+        row = {"sourcePath": helper.CANONICAL + "/public/synthetic.js",
+               "repositoryPath": "public/synthetic.js", "kind": "source-text",
+               "indexObject": None, "indexMode": None, "bytes": 2**30,
+               "sha256": None, "state": "present-unhashed"}
+        packets = helper.packets("inventory", "synthetic-direct-custody",
+                    {"head": "a" * 40, "branch": "synthetic"}, [], [row])
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "packets"
+            helper.private_output(str(target), packets)
+            records, manifest_digest, inventory_digest = D.prepare_directory(str(target), helper)
+            self.assertEqual(len(records), 2)
+            self.assertEqual(manifest_digest, D.sha256((target / "packet-set.json").read_bytes()))
+            self.assertEqual(inventory_digest, packets[0]["custody"]["selectionSha256"])
+        with tempfile.TemporaryDirectory() as directory:
+            packet, manifest = self.fixture(directory, "selected")
+            packet["selection"] = [{"sourcePath": "/synthetic/raw.json", "repositoryPath": "raw.json", "sha256": "f" * 64,
+                                    "kind": "source", "reviewRef": "unapproved"}]
+            raw = Helper.canonical(packet); Path(directory, packet["jobId"] + ".json").write_bytes(raw)
+            manifest["packets"][0].update(bytes=len(raw), sha256=D.sha256(raw))
+            Path(directory, "packet-set.json").write_bytes(Helper.canonical(manifest))
+            with self.assertRaisesRegex(D.Refused, "arbitrary-selected-source"):
+                D.prepare_directory(directory, Helper)
+
+
+if __name__ == "__main__":
+    unittest.main()

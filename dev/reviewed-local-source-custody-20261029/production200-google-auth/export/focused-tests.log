@@ -1,0 +1,20 @@
+✔ configured Google dispatches only the existing SDK route; unknown provider refused (1.75087ms)
+✔ runtime gate, synthetic transport and disabled provider cannot dispatch (0.457164ms)
+✔ OAuth callback requires callback/current/server user equality and matching mode (4.363462ms)
+✔ matched callback signs in but navigation re-verifies session and uses fixed destinations (0.241539ms)
+✔ provider error or wrong origin cannot become a recovered signed-in user (0.140591ms)
+✔ stalled callback and return verification finish within the operation deadline (50.418808ms)
+✔ stalled provider dispatch returns failure without navigating or exposing errors (30.479915ms)
+✔ email, signup and signout retain independent verified-session gates (0.512613ms)
+✔ fragment return bridge retains bytes, rejects arbitrary next URLs and handles provider denial (0.289507ms)
+✔ actual candidate bundle discovers Google, renders official branding, dispatches unchanged authorize route (17.627636ms)
+✔ actual bundle retains hidden providers under unqualified runtime gate (1.285719ms)
+✔ actual bundled SDK callback reaches matching server verification before return navigation (synthetic responses) (2.761507ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 146.341936

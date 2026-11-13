@@ -1,0 +1,5 @@
+{
+  "scripts/repair-bulk-controls-20261014.py": "cb7355ecc5d62e34fc68b6dcbb1ab6828ddc7c3b6dccb7f5fa4ee9c79deb41f6",
+  "corpus/common-data.schema.json": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+  "corpus/common-data-contract.json": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"
+}

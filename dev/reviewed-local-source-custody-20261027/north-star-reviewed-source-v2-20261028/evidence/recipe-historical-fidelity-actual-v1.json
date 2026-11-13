@@ -1,0 +1,100 @@
+{
+  "availableBytes": 128738824192,
+  "files": {
+    "historical-recipe-v2/input-fidelity.json": {
+      "sha256": "7eb8971f02d4f4f8ea9138253844f31ee031033f232510ccc01141a4ed059218",
+      "bytes": 1589,
+      "document": {
+        "conclusion": "A null already present in pre-alignment normalized input cannot be repaired by the common aligner. Original extraction fidelity requires the exact earlier source material/decision; source numeric values with unsupported units remain distinguishable from genuinely absent source magnitudes.",
+        "counts": {
+          "ingredientsCompared": 51,
+          "nativeAutomaticPlanningFalse": 5,
+          "nativeCanonicalUnknownAmounts": 51,
+          "nativeSourceUnknownAmounts": 51,
+          "nativeUnknownYields": 5,
+          "recipesCompared": 5
+        },
+        "graphAsset": {
+          "bytes": 21218,
+          "key": "recipe-source-alignment.jsonl.gz",
+          "packets": 5,
+          "sha256": "d80bd026a23a74d1c6472b429701803a8ae0392973eb3eba094e98151ab60b42"
+        },
+        "manifestByteSha256": "e4c06a1d4a2fcb492529c37c6245a595dd104061ef1a63427cbe9d65e7e2241f",
+        "mismatches": [],
+        "nativeAsset": {
+          "bytes": 3546,
+          "key": "normalized.jsonl.gz",
+          "sha256": "45789b46f23cbe77abb1973cac92d8aafeab2a39eca30415865692e294ed4bff"
+        },
+        "originalSourceExtractionVerified": false,
+        "originalsModified": false,
+        "quantityStatuses": {
+          "unrecognized-sha256:c03022f3a11bbcf820429f2d5f23e8a162b244294288936858c1795d4c820da4 / unrecognized-sha256:b2996c1c236cb84bddfe94bddfd2f598fb6acd860f7d6d6632314947e3d352ed": 51
+        },
+        "releaseId": "historical-recipe-quality-final-20261014",
+        "schemaVersion": "offmenu-recipe-alignment-fidelity/1",
+        "sourceCodeSha256": "da98835561781d1855f06b44e8e9c3f70c5ac9f1939af5d5b2e6c83aca76d258",
+        "sourceUnitCounts": {
+          "unknown": 51
+        },
+        "status": "exact-normalized-input-fields-preserved"
+      }
+    },
+    "recipe-context-v1/historical/manifest.json": {
+      "sha256": "a4841c72557976b9e84022bf38f3487fda156b5a16b7530c984fd73f175d9a28",
+      "bytes": 1754,
+      "document": {
+        "assertedIdentityJoins": 0,
+        "automaticPlanningEligible": false,
+        "complete": true,
+        "counts": {
+          "recipesExamined": 5
+        },
+        "files": [
+          {
+            "bytes": 720,
+            "key": "recipe-context.jsonl.gz",
+            "packets": 5,
+            "sha256": "7a25292779b7803073c5176241bdc303e8465ea4ad56de85a2c3aff8acc83358"
+          }
+        ],
+        "helperSourceSha256": {
+          "inspect_north_star_sample.py": "07a6f7cd7eab6a446f52ba783808c8be8c9188d29a764a3fd5425824ccc107fc",
+          "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+          "reconcile_recipe_fidelity.py": "da98835561781d1855f06b44e8e9c3f70c5ac9f1939af5d5b2e6c83aca76d258"
+        },
+        "nutritionAggregationEligible": false,
+        "originalsModified": false,
+        "publicationEligible": false,
+        "qualifications": [
+          "Exact copied native normalized field candidates, not new source facts.",
+          "Unknown yield remains unknown; scaling codes confer no calculation safety.",
+          "References require the exact base package and its original citations."
+        ],
+        "releaseId": "historical-recipe-quality-final-20261014-context-v1",
+        "rulesetVersion": "recipe-normalized-field-restoration/1",
+        "schemaVersion": "offmenu-recipe-context-release/1",
+        "servedApplicationQueries": 0,
+        "sourceCodeSha256": "a82cf054ff613467de1dc58c2a34a9f1e08e6c3f5d44ad24edd2d66c5e1ec214",
+        "sourcePins": {
+          "graphAsset": {
+            "bytes": 21218,
+            "key": "recipe-source-alignment.jsonl.gz",
+            "packets": 5,
+            "sha256": "d80bd026a23a74d1c6472b429701803a8ae0392973eb3eba094e98151ab60b42"
+          },
+          "manifestByteSha256": "e4c06a1d4a2fcb492529c37c6245a595dd104061ef1a63427cbe9d65e7e2241f",
+          "nativeAsset": {
+            "bytes": 3546,
+            "key": "normalized.jsonl.gz",
+            "sha256": "45789b46f23cbe77abb1973cac92d8aafeab2a39eca30415865692e294ed4bff"
+          },
+          "packagePath": "/offmenu-corpus/historical-recipe-quality-final-corrected-20261014",
+          "releaseId": "historical-recipe-quality-final-20261014"
+        },
+        "status": "candidate-not-admitted"
+      }
+    }
+  }
+}

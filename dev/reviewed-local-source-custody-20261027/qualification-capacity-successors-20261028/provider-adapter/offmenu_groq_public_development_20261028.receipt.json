@@ -1,0 +1,37 @@
+{
+  "workspace": "offmenu",
+  "path": "u/admin/offmenu_groq_public_development_20261028",
+  "type": "script",
+  "language": "python3",
+  "version_requested": "deployed",
+  "isDraft": false,
+  "extraPerms": {},
+  "observed_at": "2026-10-28T04:51:26Z",
+  "source_export": "read_workspace_item(version=deployed)",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": [
+      "connection"
+    ],
+    "properties": {
+      "connection": {
+        "description": "",
+        "type": "object",
+        "format": "resource-groq"
+      },
+      "task": {
+        "description": "",
+        "type": "string",
+        "originalType": "string",
+        "default": "atomic_checkpoint_review"
+      }
+    }
+  },
+  "verified_runs": [
+    "01a180cb-0380-4e03-b8c5-1cbd5b56ee10",
+    "01a180cd-8c18-5e1a-4305-a77649bb5ff3"
+  ],
+  "url": "https://windmill.aldous.info/scripts/get/u/admin/offmenu_groq_public_development_20261028?workspace=offmenu",
+  "security": "Source has no credential values. Resource-typed input; issuer-pinned; fixed synthetic fixtures only; no provider call during export."
+}

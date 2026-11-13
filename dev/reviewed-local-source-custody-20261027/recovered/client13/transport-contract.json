@@ -1,0 +1,109 @@
+{
+  "schema": "offmenu-source-identity-transport-contract/1",
+  "id": "worker00-source-identity-http-contract-r1-20261027",
+  "atUTC": "2026-10-27T00:48:42.637592+00:00",
+  "status": "SELECTED_SOURCE_CONTRACT_FOR_DISJOINT_IMPLEMENTATION_NOT_ADMITTED_NOT_SERVED",
+  "owner": 0,
+  "reader": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/source-identity-consumer-candidate-v1-20261027/r2/source-identity-reader.mjs",
+    "sha256": "40e1a27a17d1cbb9cda3e788c667876d03c9d84928cb6945297a461cbd68c8c4"
+  },
+  "reviewPacket": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/source-identity-consumer-candidate-v1-20261027/r2/focused-review-handoff-result.json",
+    "sha256": "1f88170ad4b562e58ff824a39826067723da041a156b672a7d785861a54cb99a"
+  },
+  "compatibility": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-compatibility-r1/result.json",
+    "sha256": "462171a0971f59d3586db6531eeb9d8f9002e945a2a45b4f028773912bd4126a"
+  },
+  "route": "/api/corpus/source-identity",
+  "methods": [
+    "GET",
+    "HEAD"
+  ],
+  "originPolicy": {
+    "exactOrigins": [
+      "http://127.0.0.1:7645",
+      "http://localhost:7645"
+    ],
+    "optionalOriginMustEqualActualRequestOrigin": true,
+    "CORS": false,
+    "externalFallback": false
+  },
+  "query": {
+    "required": [
+      "source",
+      "namespace",
+      "value"
+    ],
+    "optional": [
+      "offset",
+      "limit"
+    ],
+    "source": "usda-files",
+    "namespace": [
+      "barcode",
+      "USDA-FDC"
+    ],
+    "value": "Exact source lexical string,1..512 chars,no ASCII controls. Do not trim/strip/pad/repair or infer physical equivalence. USDA-FDC explicitly selects source recordID.",
+    "offset": "Canonical decimal integer0..10000,default0; reader enforcesactualselectedrecordCount.",
+    "limit": "Canonical decimal integer1..20,default20",
+    "duplicateOrUnknownParameters": "400; no caller release/manifest/policy/origin/module/index overrides"
+  },
+  "wire": {
+    "schema": "offmenu-source-identity-http/1",
+    "kind": "source-identifier-claims",
+    "httpStatus": 200,
+    "selectionSha256": "SHA256 fixed operator selection JSON; no clientprovidedselection",
+    "admissionSha256": "Exact actual componentadmission bytesSHA; no syntheticpositivefixtureonrealdata",
+    "readerResult": "Exact unmodified source reader lookup object, including sourceId/namespace/lexicalValue/manifestSha256/totalSourceObservations/nextOffset/records/status/falsesemanticflags",
+    "status": [
+      "source-identity-claims-found",
+      "no-selected-source-identity"
+    ],
+    "emptyMeaning": "Only this selected admitted cut has no exact source claim; no global absence/food classification claim.",
+    "pagination": "Offset is independent for sourceidentity only; request binds exact source/namespace/value; reply pins fixed manifest+selection. Never mix different cuts/queries. Refuse reply selection/admission/manifest mismatch."
+  },
+  "errors": {
+    "400": "invalid-source-identity-request",
+    "403": "source-identity-origin-not-allowed",
+    "405": "source-identity-method-not-allowed",
+    "503": "source-identity-service-unavailable; no partialresults/providerfallback/raw exception text"
+  },
+  "phaseComposition": {
+    "existingPhaseEndpoint": "/api/corpus/foundation",
+    "phaseValidator": "Unchanged, never accepts identitywire as phase DTO.",
+    "recordKind": "source-identity; retain entire source observation separately from phase foundationRecord.",
+    "precedence": "Qualifiedphase wins ONLY samecomplete7field source subject: sourceId,releaseId,recordId,sourceObservationSha256,sourceDocumentSha256,inputDatabaseSha256,sourceQualificationSha256. Different observations remain separate even samebarcode/nativeID. Do not changephasebytes or inventphaseSourceReference.",
+    "technicalErrors": "Do not treat HTTP503 alone as verifiedphaseabsence; only existing validated selected-empty phase DTO can mean empty. Malformed/network/admission failures remain explicit. Do not hide phase failure under identity success.",
+    "phasePagination": "Existing phasecursor/cut unchanged; identityoffset distinct."
+  },
+  "consumerScope": {
+    "existingLayout": "Keep existing choice/Overview/Source/List/Inspect/Undo/raw lexical/memberpointer/generation semantics; no new frame/external view/design.",
+    "identityDetails": "Show exact native/FDC/barcode identifiers, source/release/attribution/licence/sourceURL and allunknown fields; sourceID identifies observation, never inventproductname/name/language/type/nutrition/variant/equivalence.",
+    "loadedQueueStatus": "Use existing source-match/ambiguous/partial status for loaded candidates with explicit kind=source-identity. Still require explicit singletonchoice, retain selectedpointer/raw/choicecount.",
+    "sourceCredits": "Use exactsource rights/qualified sourceURL, not localpaths/rawSQLite/auditlocators.",
+    "speechAndImages": "No invented name/speech/image lookup. Existing phase behaviour remains unchanged.",
+    "guestFinish": "Existing guest Map-only Finish unchanged; no protectedpantrywrite.",
+    "protectedFinish": "Current helper/model only accept qualifiedphase refs. This contract DOES NOT changeFinish, disableit, silentlydrop partialrows, fakephaseRef or claimfullprotectedhandoff.13 can implement independent wire/client/inspection branches; protectedmixedqueue/sourceidentityhandoff remains an explicit open model integration task requiring a truthful native/source reference and ordinary scoped implementation/review. No identity inspection foodtype gate."
+  },
+  "coverage": {
+    "selectedClaims": 2574,
+    "additionalUnadmittedSubjects": 2558,
+    "currentPhaseSubjectsPreserved": 16,
+    "checksumFalseClaimsRetained": 15,
+    "namesMissing": "Concrete availability gap retained; not authorized to remove user-requiredname/productfields. No completeproduct/corpus/normalizationclaim.",
+    "globalScope": "This partialcut is incremental integration, not substitute for fullcorpus or broaderfunctionality."
+  },
+  "ownership": {
+    "HTTPAdapterAndOutwardAdmission": 0,
+    "consumerClientAndInspection": 13,
+    "readerFocusedReview": 57,
+    "sourceQualification": 56,
+    "sourceProducer": 19,
+    "runtimeOwner": 5,
+    "scheduling": "Gateway/Morgan"
+  },
+  "nextAction": "00implement boundedHTTP adapter+focusedsynthetic tests usingthiscontract; Gateway may dispatch13 disjointclient/inspection source preparation now, no realdata/runtime adoption untilexact review/admission. Fullprotectedhandoff remainsopen andmustnotbeclaimeddelivered.",
+  "holds": "Allsource/ownership/actualpermission/mandatoryauto_review/denial/main/production/CIX/security/credentials/cost holds retained."
+}

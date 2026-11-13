@@ -1,0 +1,23 @@
+{
+  "observedAt": "2026-10-28T06:19:23Z",
+  "status": "stored_reference_fixed_site_read_verified",
+  "jobId": "01a18129-7374-a1ae-9466-7a11cdeacb7d",
+  "siteId": "a1df1508-4bb9-4b55-ab1f-88611e456e61",
+  "publishedDeployId": "6ade30f984233b1725dc0501",
+  "credentialReturned": false,
+  "netlifyMutations": 0,
+  "deploymentWritePermission": "not_tested",
+  "testsPassed": 38,
+  "publisherReview": "approved_exact_sources_by_review_corpus_mount_delta",
+  "sourcePins": {
+    "netlify_fixed_site_publisher.py": "bdeb6fdbcf1f9c21277d06d319d112e519faab66303d352b80195fd7a4a1ccee",
+    "netlify_publication_seed.py": "7e7feaadbde370346e73d223f4d01259464956645d670d3211d8bd0eace1d7e9",
+    "prepare_publication_delta.py": "f2e03697beeaf173c8f732340fcca73b28cf90c8d305926831f432f8cb157034",
+    "netlify_publisher_inspect.py": "d3514c11b802a3aa6b10de523cae234680715482664b5dc551eef06e8627e638"
+  },
+  "nativePublisherPath": "u/admin/offmenu_netlify_fixed_publisher_20261028",
+  "nativeSeedPath": "u/admin/offmenu_netlify_publication_seed_20261028",
+  "nativePublisherStatusJob": "01a18138-a3cb-a6e8-ca68-56ef86e15ac8",
+  "nativePublisherStatus": "ready_existing_deploy",
+  "corpusPublication": "not_started_pending_completed_proof_and_accepted_candidate"
+}

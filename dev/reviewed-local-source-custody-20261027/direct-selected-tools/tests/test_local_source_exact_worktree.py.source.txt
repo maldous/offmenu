@@ -1,0 +1,29 @@
+"""One reviewed source path, never a worktree directory grant."""
+import importlib.util
+from pathlib import Path
+import unittest
+
+ROOT = Path(__file__).resolve().parents[1]
+SPEC = importlib.util.spec_from_file_location('exact_source', ROOT / 'scripts/export-local-source.py')
+export = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(export)
+
+
+class ExactWorktreeSource(unittest.TestCase):
+    def test_only_exact_reviewed_worktree_source_path_is_allowed(self):
+        source = '/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-ui.js'
+        self.assertEqual(export.source_path(source), source)
+        selection = [{'sourcePath': source, 'repositoryPath': 'recovered/scanner-ui.js',
+                      'bytes': 18334, 'sha256': 'd4224f3c61bc301f9ed0cc331be7338fb4e7af179dbd64456e64dc94f1905dd6',
+                      'kind': 'source', 'reviewRef': 'explicit-owned-data-closure'}]
+        self.assertEqual(export.validate_selection(selection), 18334)
+        for rejected in (source.replace('scanner-ui.js', 'sibling.js'),
+                         source.replace('public/', 'private/'),
+                         source.replace('worker00-', 'worker01-'),
+                         source.replace('scanner-ui.js', '../public/scanner-ui.js')):
+            with self.assertRaisesRegex(export.Rejected, 'source-outside-selected-roots'):
+                export.source_path(rejected)
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -1,0 +1,43 @@
+{
+  "kind": "source-only-independent-acceptance-evidence",
+  "authoritativeDefinition": {
+    "commit": "009caee01aed805db5d7d141a3fab9e845e72bdc",
+    "readmeGitBlobSHA": "1bb6cb6a177ea1d8c8c98cce3747f2c973769e78",
+    "readmeSHA256": "c6b3a4991f9cdbace5a5b4f60776167f27e4ad892f1e5c6894b370a9a4ee8e3b",
+    "planGitBlobSHA": "ebc1cdd6af2ac8e09db4d2cd0e0d749cad6a6885",
+    "planSHA256": "8cd221641016246f9cfeaab56f580203bff7a4b81f075f764c394c8dccbce47e"
+  },
+  "v195": {
+    "version": "8db6b5c4-2e5f-483f-90ea-de0260733526",
+    "servedAppBytes": 464652,
+    "servedAppSHA256": "fce748582a1e4aa940022b00ccaab7ac00ec5d1ca5d357d5f45f4ff0756e1fdf",
+    "scope": "One connected actual served-code caller journey,12state checkpoints, isolated non-sensitive fixtures. Not12isolated tests or full North Star acceptance.",
+    "sourceHarnessSHA256": "7ce1942f00c5a566a15d1c81ca1b3dce06b569e5dbf12cc320d9ba26a79f8f15"
+  },
+  "v196": {
+    "version": "abead872-5f5e-48f8-96f8-7cb96446fbbe",
+    "servedAppBytes": 468574,
+    "servedAppSHA256": "e510c7a4cc6f418cbda6d984e0ff7de90f0d7b85d350640b9f624fd9b818c057",
+    "scope": "Only changed lot-specific nutrition production callback to actual menu/cook/serve/history/local-reload integration,4state checkpoints. Fullv195 journey and four earlier isolated regressions not rerun.",
+    "sourceHarnessSHA256": "7697e6f661d72dcb5514db83cb9f4756ac9bb49ab49203887fb2daada1e73eec"
+  },
+  "findingStatus": {
+    "NS195-G1": "Retained historical finding. v196selected-lot path preserves source nutrient profile/release through batch allocation and history.batchId; do not treat that finding as unchanged current selected-lot defect.",
+    "NS196-G2": "Immutable recipe-version/source witness acceptance case; existing app author actively implementing on turn01a18424-e8e1-7693-ba77-09db09dcd989 per parent. No duplicate correction or new assignment created; implementation/deployment acceptance not claimed."
+  },
+  "excluded": [
+    "served app.js bundles",
+    "app.formatted.js debugging copies",
+    "credentials/cookies/browser session stores",
+    "private real household/user/profile/purchase records",
+    "raw corpus records",
+    "unrelated source-custody or runtime candidates"
+  ],
+  "packagingOnly": {
+    "journeysRerun": 0,
+    "newTests": 0,
+    "productionChanges": 0,
+    "providerCalls": 0,
+    "globalActivation": false
+  }
+}

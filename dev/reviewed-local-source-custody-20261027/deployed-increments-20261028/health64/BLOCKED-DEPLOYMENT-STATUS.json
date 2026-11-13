@@ -1,0 +1,17 @@
+{
+  "updated_at": "2026-10-28T05:40:17Z",
+  "host_helper_created": true,
+  "host_helper_path": "/offmenu/scripts/windmill/platform_check_capacity64.py",
+  "host_helper_sha256": "ca919ab491685c9b60bad9ff827b8da3e77ae5d3ec06424c160a8c386e2b2334",
+  "install_job_id": "01a18105-2e8f-7f90-3f13-9d97776e335a",
+  "old_host_checker_unchanged": true,
+  "client_deployment_executed": false,
+  "client_deployment_status": "rejected_by_platform_approval",
+  "denial_reason": "This deploys a modified existing Windmill script and changes a live workspace; the transcript lacks clear user authorization for this exact deployment, and assistant/parent approvals do not establish it.",
+  "undeployed_draft_discarded": true,
+  "live_client_exact_old_source": true,
+  "live_client_private_acl": {},
+  "live_health_slot_coverage": 2,
+  "new_helper_invoked": false,
+  "approval_required": "Deploy the reviewed 64-slot health-check update to existing private u/admin/offmenu_platform_check, retaining its schedules and access."
+}

@@ -1,0 +1,167 @@
+{
+  "reportPath": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/north-star-derived-20261028/core-recipe-verified-v2/report.json",
+  "reportBytes": 16031,
+  "reportSha256": "9ab94d1566f9a3c784baea3621059a954736dd9b08899d718ebb6d7f5c38fbec",
+  "report": {
+    "assertionStatuses": {
+      "candidate": 393604,
+      "source-asserted": 1399148
+    },
+    "assetPrefix": "recipes/",
+    "fullNorthStarComplete": false,
+    "identityAdmissionGranted": false,
+    "limits": "Counts apply only to selected manifest-listed common/1 recipe assets. SQL joins preserve asserted/candidate statuses; missing edges are not synthesized. No live app or nutritional/culinary qualification claimed.",
+    "manifestByteSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+    "originalsModified": false,
+    "packetsSchemaValidated": 25135,
+    "predicateCounts": {
+      "urn:offmenu:relation:assertedOrigin": 501,
+      "urn:offmenu:relation:candidateMatch": 37241,
+      "urn:offmenu:relation:hasCulturalRepresentation": 25135,
+      "urn:offmenu:relation:hasStep": 137218,
+      "urn:offmenu:relation:usesIngredient": 199504,
+      "urn:offmenu:relation:variantOf": 25135
+    },
+    "queries": {
+      "automaticPlanningEligibleFalseAssertions": {
+        "count": 25135,
+        "parameters": [
+          "urn:offmenu:property:automaticPlanningEligible"
+        ],
+        "sql": "SELECT count(*) FROM facts WHERE property=? AND boolean_value=0"
+      },
+      "automaticPlanningEligibleTrueAssertions": {
+        "count": 0,
+        "parameters": [
+          "urn:offmenu:property:automaticPlanningEligible"
+        ],
+        "sql": "SELECT count(*) FROM facts WHERE property=? AND boolean_value=1"
+      },
+      "ingredientIdentityCandidates": {
+        "count": 37241,
+        "parameters": [
+          "urn:offmenu:relation:candidateMatch"
+        ],
+        "sql": "SELECT count(*) FROM relations WHERE predicate=? AND status='candidate'"
+      },
+      "ingredientMentions": {
+        "count": 199504,
+        "parameters": [
+          "urn:offmenu:type:IngredientMention"
+        ],
+        "sql": "SELECT count(*) FROM resources WHERE type=?"
+      },
+      "ingredientQuantityJoins": {
+        "count": 198791,
+        "parameters": [
+          "urn:offmenu:relation:usesIngredient",
+          "urn:offmenu:type:RecipeVariant",
+          "urn:offmenu:type:IngredientMention",
+          "urn:offmenu:property:requiredQuantity"
+        ],
+        "sql": "SELECT count(*) FROM relations e JOIN resources r ON r.id=e.subject JOIN resources i ON i.id=e.object JOIN facts q ON q.subject=i.id WHERE e.predicate=? AND r.type=? AND i.type=? AND q.property=? AND q.value_kind='quantity' AND e.scope=r.scope AND r.scope=i.scope AND i.scope=q.scope AND e.status NOT IN ('superseded','conflicting','needs-transcription','unknown') AND q.status NOT IN ('superseded','conflicting','needs-transcription')"
+      },
+      "ingredientUnknownQuantities": {
+        "count": 151339,
+        "parameters": [
+          "urn:offmenu:property:requiredQuantity"
+        ],
+        "sql": "SELECT count(*) FROM facts WHERE property=? AND value_kind='quantity' AND numeric_value IS NULL"
+      },
+      "ingredientZeroQuantities": {
+        "count": 0,
+        "parameters": [
+          "urn:offmenu:property:requiredQuantity"
+        ],
+        "sql": "SELECT count(*) FROM facts WHERE property=? AND value_kind='quantity' AND numeric_value=0"
+      },
+      "knownSourceYieldAssertions": {
+        "count": 1853,
+        "parameters": [
+          "urn:offmenu:property:yield"
+        ],
+        "sql": "SELECT count(*) FROM facts WHERE property=? AND value_kind='quantity' AND numeric_value>0"
+      },
+      "recipeIngredientMentionsResolved": {
+        "count": 198791,
+        "parameters": [
+          "urn:offmenu:relation:usesIngredient",
+          "urn:offmenu:type:RecipeVariant",
+          "urn:offmenu:type:IngredientMention"
+        ],
+        "sql": "SELECT count(*) FROM relations e JOIN resources r ON r.id=e.subject JOIN resources i ON i.id=e.object WHERE e.predicate=? AND r.type=? AND i.type=? AND r.scope=i.scope AND e.scope=r.scope AND e.status NOT IN ('superseded','conflicting','needs-transcription','unknown')"
+      },
+      "recipeNutrientObservationEdges": {
+        "count": 0,
+        "parameters": [
+          "urn:offmenu:relation:hasNutrientObservation",
+          "urn:offmenu:type:RecipeVariant"
+        ],
+        "sql": "SELECT count(*) FROM relations e JOIN resources s ON s.id=e.subject WHERE e.predicate=? AND s.type=?"
+      },
+      "recipeVariants": {
+        "count": 24879,
+        "parameters": [
+          "urn:offmenu:type:RecipeVariant"
+        ],
+        "sql": "SELECT count(*) FROM resources WHERE type=?"
+      },
+      "reviewedExactIngredientIdentityLinks": {
+        "count": 0,
+        "parameters": [
+          "urn:offmenu:relation:exactMatch",
+          "urn:offmenu:type:IngredientMention"
+        ],
+        "sql": "SELECT count(*) FROM relations e JOIN resources s ON s.id=e.subject WHERE e.predicate=? AND e.status IN ('reviewed','verified') AND s.type=?"
+      },
+      "sourceRecipeStepJoins": {
+        "count": 136962,
+        "parameters": [
+          "urn:offmenu:relation:hasStep",
+          "urn:offmenu:type:RecipeVariant",
+          "urn:offmenu:type:RecipeStep"
+        ],
+        "sql": "SELECT count(*) FROM relations e JOIN resources r ON r.id=e.subject JOIN resources s ON s.id=e.object WHERE e.predicate=? AND r.type=? AND s.type=? AND e.scope=r.scope AND r.scope=s.scope AND e.status NOT IN ('superseded','conflicting','needs-transcription','unknown')"
+      },
+      "stepIngredientJoins": {
+        "count": 0,
+        "parameters": [
+          "urn:offmenu:relation:usesIngredient",
+          "urn:offmenu:type:RecipeStep",
+          "urn:offmenu:type:IngredientMention"
+        ],
+        "sql": "SELECT count(*) FROM relations e JOIN resources s ON s.id=e.subject JOIN resources i ON i.id=e.object WHERE e.predicate=? AND s.type=? AND i.type=? AND e.scope=s.scope AND s.scope=i.scope AND e.status NOT IN ('superseded','conflicting','needs-transcription','unknown')"
+      }
+    },
+    "queryIndexBytes": 1362837504,
+    "queryIndexMode": "exact-source-reverified-read-only-existing",
+    "queryIndexSha256": "c2de1379038bfe8cae003c394d343fefb0282ffb0637f56e18f57053eb89e428",
+    "releaseId": "common-data-20261014",
+    "resourceTypes": {
+      "urn:offmenu:type:CulturalRepresentation": 25135,
+      "urn:offmenu:type:HistoricalRecipeCandidate": 256,
+      "urn:offmenu:type:IngredientMention": 199504,
+      "urn:offmenu:type:RecipeStep": 137218,
+      "urn:offmenu:type:RecipeVariant": 24879
+    },
+    "rowCitationScopesVerified": true,
+    "schemaVersion": "offmenu-north-star-recipe-consumer-exercise/1",
+    "selectedSchemaSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+    "servedAppQueriesExercised": 0,
+    "sourceCodeSha256": "55cc3e67bd01fd887b2d1375bb3ed4439c330e56686b3ed4e6be4ffde66b8d31",
+    "status": "selected-normalized-package-queries-exercised",
+    "validatorEngine": "jsonschema_rs",
+    "selectedAssetCount": 51,
+    "selectedAssetsCanonicalSha256": "d7d48643debe4d10898c31c027beea37c2341b8f210bd27873325cfca3e4fe89"
+  },
+  "runReceipt": {
+    "jobId": "north-star-core-recipes-reverify-v6",
+    "windmillRun": "01a18198-c544-d001-17e9-65e5542d7d9e",
+    "status": "succeeded",
+    "exitCode": 0,
+    "childTreeGone": true,
+    "seconds": 59.123,
+    "commandSha256": "aaf58c6e3286426d84c5162bb30027b61733bb136b89f8d551c72514664d52c6",
+    "requestSha256": "17e71bdf555c0a41b1798a10453b0c21caa724f8556737cdada8d2ddfc7ee777"
+  }
+}

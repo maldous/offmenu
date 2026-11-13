@@ -1,0 +1,50 @@
+{
+  "schema": "offmenu-native-reference-integration-artifacts/1",
+  "sourceOnly": true,
+  "actualSelection": "null/unconfigured",
+  "admitted": false,
+  "runtimeActivation": false,
+  "deployed": false,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 6200,
+      "sha256": "46301064925884825954b749909a248e0dfbd4a152136aad58bbd088cce05b59"
+    },
+    {
+      "path": "native-reference-integration.patch",
+      "bytes": 73952,
+      "sha256": "e139becf2e6130d22e42aa811393a078becc6d3ea12f3894954e35bc54a0eb59"
+    },
+    {
+      "path": "native-reference-integration.test.mjs",
+      "bytes": 18405,
+      "sha256": "386433453c583ec46066cf58ebd9492a7fea75b54f6a39302f99a371657d4df3"
+    },
+    {
+      "path": "integration-manifest.json",
+      "bytes": 4598,
+      "sha256": "909407cde7d330d076ed1c88a2033ad7dbf24326529b69e05a8e3cef47f065cc"
+    },
+    {
+      "path": "base-dependency-manifest.json",
+      "bytes": 32455,
+      "sha256": "5ec60aff83ed975e29da2cc885e21d2c560075067136bce1aa1e050dd1f780c7"
+    },
+    {
+      "path": "pr139-http-status-type.patch",
+      "bytes": 785,
+      "sha256": "b7859d4d488b3f53e90842fda238bdd7fdffda5c808e335accdc7a9cafe24d2e"
+    },
+    {
+      "path": "focused-integration-tests.log",
+      "bytes": 1189,
+      "sha256": "b4f77819b1e6b21d399bfbaaef815bd3165deb6f5776181efe55d72b46c43496"
+    },
+    {
+      "path": "existing-reader-http-tests.log",
+      "bytes": 2191,
+      "sha256": "18598bc199fc26ceca174ffc841768091f6af2845bc75bef52904a141f353dc7"
+    }
+  ]
+}

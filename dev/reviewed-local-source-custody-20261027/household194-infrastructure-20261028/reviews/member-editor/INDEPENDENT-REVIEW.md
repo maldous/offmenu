@@ -1,0 +1,7 @@
+# Independent member-editor scope review
+
+Approved app.js preimage55bc0086192208e7fe0892ef7fe8a0d34c67f293290c48f33b7597929f997ee2 to7cc662886fa5c46c9bca09ff404fb6a2da255d201cf4aad3e7c1e169a1138c5a, patch50ff1fc4aa40937feb3cb156ec33b7bd645a846be566e8315689f37b7768e7a5.
+
+Independently51tests pass including15focused actual extracted editor/persistence/caller tests. Open captures identity object, account profile key and profile object. Submit verifies all plus modal open before mutating. Current switchAccount creates a fresh identity generation, including same-account reset; loadProfile/applySynced replace snapshot objects. Closed/cancelled dialogs reject late submissions; success clears scope. Same-snapshot edits and explicit reopening succeed, preserving existing scoped meal preferences and preference restrictions.
+
+Route-only navigation is not itself an account/snapshot change; popstate/restoreView/setView do not universally close dialogs, and no universal route invalidation is claimed. An open editor remains valid while the same account and profile snapshot remain current. The guard does not invent global revision coupling. No nutrition/planner/identity-mapping/receipt semantics changed and no held packet imported. Synthetic tests do not claim authenticated live-browser acceptance. Parent merges disjoint shopping/CSV/editor hunks and owns deployment. No Foo/Git/production writes performed by reviewer.

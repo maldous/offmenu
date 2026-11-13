@@ -1,0 +1,33 @@
+{
+  "original_sha256": "5498d27b4948d6dc35eebc5fd80de1ed3200654b23db3edd62b1d687729bf7b5",
+  "sanitization": "private source locators omitted; source hashes retained",
+  "receipt": {
+    "schema": "offmenu-consumption-history-candidate/1",
+    "production": "193",
+    "deployedServer": {
+      "sha256": "0e4420ef0152586a80cf982d7084582180b9e8798d9dd87cb6aae304da305a34"
+    },
+    "preimages": {
+      "public/cooking-model.js": "96d160f5fd8c75f6e84148d4001ba7ec5ae991f487bf9c4b0777828cb2baed42",
+      "public/journey-ui.js": "72ad38d3698fbf139e42d995a781bbab1551a8f1236289864a9b3707f46cc308",
+      "public/app.js": "55bc0086192208e7fe0892ef7fe8a0d34c67f293290c48f33b7597929f997ee2",
+      "public/menu-model.js": "71a4f4f4e05d8c62a49ac55233448be42346427e528c485ecc76b7a7cbaeec16",
+      "public/insights-model.js": "f8008145063c8bbcf2c9322ece541ee10dc5a9f63678af78fb6f6167bf51f678",
+      "public/insights-ui.js": "45937c6133b3f70af1c2a0cbc589c9d7d889d5fc190a2dd00afd24a1ec39e863",
+      "cloud/state.mjs": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce",
+      "public/sync-model.js": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3"
+    },
+    "candidate": {
+      "public/insights-ui.js": "676e47a44d17b738e049ea18268749bf4f68320ad0b68d6fd9151f135b8c2574"
+    },
+    "test": {
+      "path": "candidate/app/tests-web/consumption-history.test.mjs",
+      "sha256": "71f75bf615c928b4994defed5272db74146d48502855a3338bb06544fc833b59"
+    },
+    "baseline": "8 passed; 1 failed, unknown Portions exports 0",
+    "candidateTests": "9 passed; 0 failed",
+    "authorization": "Parent is sole production integrator; no external writes in this lane",
+    "remainingDependency": "Previously selected owner03 frozen producer/confirmed-receipt trace remains absent/unadmitted; no receipt-metadata integration or source-data qualification claim",
+    "combinedTests": "45 passed; 0 failed; existing manual-save, sharing-scope, navigation tests preserved"
+  }
+}

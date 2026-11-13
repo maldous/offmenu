@@ -1,0 +1,20 @@
+test_cross_process_single_flight_and_unique_artifact (test_accepted_reuse.AcceptedReuseTests.test_cross_process_single_flight_and_unique_artifact) ... ok
+test_each_fixed_task_shape_and_strict_json (test_accepted_reuse.AcceptedReuseTests.test_each_fixed_task_shape_and_strict_json) ... ok
+test_each_provenance_dimension_invalidates (test_accepted_reuse.AcceptedReuseTests.test_each_provenance_dimension_invalidates) ... ok
+test_exact_reuse_revalidates_and_does_not_recount_usage_or_artifacts (test_accepted_reuse.AcceptedReuseTests.test_exact_reuse_revalidates_and_does_not_recount_usage_or_artifacts) ... ok
+test_missing_namespace_or_model_epoch_rejected_before_provider (test_accepted_reuse.AcceptedReuseTests.test_missing_namespace_or_model_epoch_rejected_before_provider) ... ok
+test_rejections_errors_truncation_and_malformed_json_are_retained_not_cached (test_accepted_reuse.AcceptedReuseTests.test_rejections_errors_truncation_and_malformed_json_are_retained_not_cached) ... ok
+test_simultaneous_failures_shared_but_later_call_is_not_cached (test_accepted_reuse.AcceptedReuseTests.test_simultaneous_failures_shared_but_later_call_is_not_cached) ... ok
+test_tampering_cannot_be_reused_or_duplicate_identical_artifact (test_accepted_reuse.AcceptedReuseTests.test_tampering_cannot_be_reused_or_duplicate_identical_artifact) ... ok
+test_transport_records_provider_cached_tokens_only_when_present (test_accepted_reuse.AcceptedReuseTests.test_transport_records_provider_cached_tokens_only_when_present) ... ok
+test_both_retained_live_task_shapes (test_deadline_and_live_tasks.DeadlineAndLiveTaskTests.test_both_retained_live_task_shapes) ... ok
+test_cancellation_is_reraised_and_receipted (test_deadline_and_live_tasks.DeadlineAndLiveTaskTests.test_cancellation_is_reraised_and_receipted) ... ok
+test_invalid_deadlines_fail_before_provider (test_deadline_and_live_tasks.DeadlineAndLiveTaskTests.test_invalid_deadlines_fail_before_provider) ... ok
+test_total_provider_deadline_kills_stalled_child_and_retains_failure (test_deadline_and_live_tasks.DeadlineAndLiveTaskTests.test_total_provider_deadline_kills_stalled_child_and_retains_failure) ... ok
+test_waiter_has_finite_outcome_without_duplicate_fallback (test_deadline_and_live_tasks.DeadlineAndLiveTaskTests.test_waiter_has_finite_outcome_without_duplicate_fallback) ... ok
+test_worker_deadline_does_not_depend_on_supervisor (test_deadline_and_live_tasks.DeadlineAndLiveTaskTests.test_worker_deadline_does_not_depend_on_supervisor) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 1.446s
+
+OK

@@ -1,0 +1,8 @@
+{
+  "package": "gotrue-js",
+  "version": "1.0.1",
+  "tarball": "https://registry.npmjs.org/gotrue-js/-/gotrue-js-1.0.1.tgz",
+  "integrity": "sha512-ZynwwM4bEo2y5yNWO3/Ynbx1AvQz9ONJSM9tB1jpooAvDPevGdvgeFP3NwM59FAlkd0szSkQRAhjINMkJSDfAQ==",
+  "file": "lib/index.js",
+  "sha256": "0f26ddf432d7693264ede22528edb58087f646bc6cecfc686ce47351e89bc5df"
+}

@@ -1,0 +1,54 @@
+import base64,importlib.util,json,unittest
+from pathlib import Path
+p=Path(__file__).with_name('extract-landing-source-literals.py');s=importlib.util.spec_from_file_location('extractor',p);m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+class TestProjection(unittest.TestCase):
+ def fixture(self,body=b'export const x=1;',extra=None):
+  h=m.digest(body);r={'/landing-world/a.mjs':{'sha256':h,'bytes':len(body),'mime':'application/javascript'}};b={h:base64.b64encode(body).decode()}
+  if extra:r.update(extra)
+  raw=('export const ROOT14_ROUTES='+json.dumps(r)+';\nexport const ROOT14_BODIES='+json.dumps(b)+';\n').encode();return raw
+ def test_only_pinned_source_text_selected(self):
+  raw=self.fixture(extra={'/landing-world/image.png':{'sha256':'a'*64,'bytes':100,'mime':'image/png'}});r,b=m.project(raw,m.digest(raw));self.assertEqual(len(r),2);self.assertEqual(len(b),1)
+ def test_exact_source_above_one_mib_is_selected_without_size_cap(self):
+  body=b'//'+b'x'*(1024*1024)+b'\nexport const x=1;'
+  raw=self.fixture(body);_,selected=m.project(raw,m.digest(raw))
+  self.assertEqual(selected[m.digest(body)]['bytes'],body)
+ def test_above_one_mib_still_requires_declared_size_and_route_sha(self):
+  body=b'//'+b'x'*(1024*1024)+b'\nexport const x=1;'
+  raw=self.fixture(body).replace(('"bytes": '+str(len(body))).encode(),('"bytes": '+str(len(body)+1)).encode())
+  with self.assertRaisesRegex(ValueError,'pin mismatch'):m.project(raw,m.digest(raw))
+ def test_source_preimage_checked(self):
+  with self.assertRaisesRegex(ValueError,'preimage'):m.project(self.fixture(),'0'*64)
+ def test_inert_freeze_wrapper_and_asi_supported(self):
+  self.assertEqual(m.literal_table('export const ROOT14_ROUTES=Object.freeze({})\nexport const NEXT=1;', 'ROOT14_ROUTES'),{})
+ def test_dynamic_initializer_refused(self):
+  raw=b'export const ROOT14_ROUTES=getRoutes(); export const ROOT14_BODIES={};'
+  with self.assertRaisesRegex(ValueError,'JSON object'):m.project(raw,m.digest(raw))
+ def test_duplicate_keys_refused(self):
+  with self.assertRaisesRegex(ValueError,'Duplicate'):m.literal_table('const ROOT14_ROUTES={"x":1,"x":2};','ROOT14_ROUTES')
+ def test_payload_table_refused(self):
+  raw=self.fixture(b'const bodyBase64="example";')
+  with self.assertRaisesRegex(ValueError,'payload'):m.project(raw,m.digest(raw))
+ def test_body_hash_mismatch_refused(self):
+  raw=self.fixture().replace(b'ZXhwb3J0IGNvbnN0IHg9MTs=',b'ZXhwb3J0IGNvbnN0IHg9Mjs=')
+  with self.assertRaisesRegex(ValueError,'pin mismatch'):m.project(raw,m.digest(raw))
+ def test_extra_descriptor_body_is_rejected_even_for_unselected_route(self):
+  raw=self.fixture(extra={'/unselected.png':{'sha256':'a'*64,'bytes':1,'mime':'image/png','body':'DO_NOT_PROJECT'}})
+  with self.assertRaisesRegex(ValueError,'Descriptor fields'):m.project(raw,m.digest(raw))
+ def test_arbitrary_landing_json_body_never_decoded(self):
+  raw=self.fixture(extra={'/landing-surprise.json':{'sha256':'a'*64,'bytes':1,'mime':'application/json'}})
+  routes,bodies=m.project(raw,m.digest(raw));self.assertEqual(len(bodies),1)
+  self.assertTrue(all(set(d)==m.DESCRIPTOR_FIELDS for d in routes.values()))
+ def test_forbidden_route_tokens_never_decode_any_source_body(self):
+  for token in ['api','data','auth','state','config','corpus','products','datasets']:
+   for route in ['/landing-'+token+'.json','/landing-world/'+token+'/handler.mjs']:
+    with self.subTest(route=route):
+     raw=self.fixture(extra={route:{'sha256':'a'*64,'bytes':1,'mime':'application/javascript'}})
+     _,bodies=m.project(raw,m.digest(raw));self.assertEqual(len(bodies),1)
+ def test_explicit_observed_scene_json_is_selected(self):
+  body=b'{"layers":{}}';h=m.digest(body);route='/landing-motion-v12/assets/layers.json'
+  raw=('export const ROOT14_ROUTES='+json.dumps({route:{'sha256':h,'bytes':len(body),'mime':'application/json'}})+';export const ROOT14_BODIES='+json.dumps({h:base64.b64encode(body).decode()})+';').encode()
+  _,bodies=m.project(raw,m.digest(raw));self.assertEqual(bodies[h]['bytes'],body)
+ def test_encoded_route_bypass_refused(self):
+  raw=self.fixture(extra={'/landing-world/%64ata/handler.mjs':{'sha256':'a'*64,'bytes':1,'mime':'application/javascript'}})
+  with self.assertRaisesRegex(ValueError,'Unsafe source route'):m.project(raw,m.digest(raw))
+if __name__=='__main__':unittest.main()

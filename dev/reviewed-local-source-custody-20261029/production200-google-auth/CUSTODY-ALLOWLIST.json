@@ -1,0 +1,167 @@
+[
+  {
+    "path": "baseline-fingerprint.json",
+    "sha256": "c5c123a82917598dc10e0654246941eadeec8af77439af4a2c08f8c2d824d1c4",
+    "bytes": 773
+  },
+  {
+    "path": "version-fingerprint.json",
+    "sha256": "9dcc864c0966e998e8715a616bc8d9602806ae3f0d23affbd63d5febc16bd3f0",
+    "bytes": 824
+  },
+  {
+    "path": "upload-receipt.json",
+    "sha256": "363c9f98f61c9b429d20c5ac4aa6000413f5600318a941d8ccb9ddc005c62323",
+    "bytes": 172
+  },
+  {
+    "path": "deployment-receipt.json",
+    "sha256": "4ffd5aa40411e30e4e0ff61fcce47768beeaf5d7af5dd4f7bbf94530c94015db",
+    "bytes": 243
+  },
+  {
+    "path": "splice-receipt.json",
+    "sha256": "023f1b4a5781d046d4ad389d6dcb25428ecb0930286283cc13b2702d063fef65",
+    "bytes": 735
+  },
+  {
+    "path": "served-proof.json",
+    "sha256": "0356beb241dd3a738895196b6e7558d3d00ddc234556ff3c1be405c12a6d3e31",
+    "bytes": 1387
+  },
+  {
+    "path": "BROWSER-PROOF.md",
+    "sha256": "3784b2e65d8715406aa5b90d987e2a04145174bd32cef58e1dd541f6d2bc61f8",
+    "bytes": 761
+  },
+  {
+    "path": "INDEPENDENT-GOOGLE-AUTH-REVIEW.md",
+    "sha256": "e188dab61c3e3ea9d23e4a5e732fe0cdf2af1ec2e7f423a74e15ca5813ae0fc5",
+    "bytes": 1836
+  },
+  {
+    "path": "upload-inactive.js",
+    "sha256": "f72296e4b8e899b917471b42e10b026da73c152462d29f4ed41c2f5f2d77529b",
+    "bytes": 56433
+  },
+  {
+    "path": "dryrun.js",
+    "sha256": "0a81011f377ec0afac5a5bdd16418c7573d6eaea5e99544f32d9a8683d0b8465",
+    "bytes": 55651
+  },
+  {
+    "path": "served-auth.html.headers",
+    "sha256": "b26321088b2b04a4a6692ee5eb8396d3c310426d77f5a78ab51f7f6563d1d6d6",
+    "bytes": 1065
+  },
+  {
+    "path": "export/build-auth.mjs",
+    "sha256": "563ad52597412899205731d62ca453b36bfde8a399698ad71068dceaf199d242",
+    "bytes": 2701
+  },
+  {
+    "path": "export/CANDIDATE-RECEIPT.json",
+    "sha256": "ca876c283662c31dbf3faccc0cb5e37d40cec6f5e797642d83991c3bf59a384e",
+    "bytes": 3435
+  },
+  {
+    "path": "export/focused-tests.log",
+    "sha256": "98023665378973a5e3f6db40fb0b49557c574dd736dd8c9fb282466fee657853",
+    "bytes": 1327
+  },
+  {
+    "path": "export/WORKER-GATE-HOOK.json",
+    "sha256": "ff10eaf948f6ea69dc951cd7665b1393b7735b45635e3df44084066dd87247e6",
+    "bytes": 1010
+  },
+  {
+    "path": "export/auth-google.patch",
+    "sha256": "a8f184deb652d3c80adff36bc7407ddc5335e4fed7dc9b439da024ba748fa939",
+    "bytes": 78216
+  },
+  {
+    "path": "export/MANIFEST.json",
+    "sha256": "b707d55709093f79c11e8826f360bafd8f05300bfc0c306f211cce1b140fbf1a",
+    "bytes": 3469
+  },
+  {
+    "path": "export/HANDOFF.md",
+    "sha256": "82c72d08c851fe7a1f8e3e651de1114b51f729336fe9a337b4618776b08af7cd",
+    "bytes": 5532
+  },
+  {
+    "path": "export/tests/auth-google.test.mjs",
+    "sha256": "956494818e54c00b15c0b3a06f0203500e53476d5159182cbb162bc0c14af166",
+    "bytes": 12576
+  },
+  {
+    "path": "export/candidate/auth.html",
+    "sha256": "0f4af61bea945c8945c34f055bdfde8d878dbe75bee397ee4ba47e1317fd787a",
+    "bytes": 2848
+  },
+  {
+    "path": "export/candidate/auth-return-bridge.js",
+    "sha256": "24256faa5f5c5b527bd15fedcb28fd4c5195b7c19c879a43d1332eaa0d9e42c7",
+    "bytes": 620
+  },
+  {
+    "path": "export/candidate/auth.js",
+    "sha256": "e17aecb376d5483fe7afc8f3c505ebb19bf6f41b03415b521b6d0ca2efd9583f",
+    "bytes": 46477
+  },
+  {
+    "path": "export/baseline/AUTH-HANDOFF.json",
+    "sha256": "f6678d912a0c390e730007252f85f61500edceed062a26c041613a27ed7ab2d6",
+    "bytes": 1288
+  },
+  {
+    "path": "export/baseline/auth.html",
+    "sha256": "768188e484f3eea7ee0ef1125e2df07f9cf59c11838e51af157ce573ef2e3e01",
+    "bytes": 2410
+  },
+  {
+    "path": "export/baseline/auth-config.json",
+    "sha256": "aba12af67c61de10214a603360d04766eee522e72387a10529d8ad86d7104a8b",
+    "bytes": 272
+  },
+  {
+    "path": "export/baseline/auth-gate-source-evidence.json",
+    "sha256": "b663ec58dd37a02bf7d0783f1fab8dbf28b1c33df5add893a27632e0ec17e1c5",
+    "bytes": 4371
+  },
+  {
+    "path": "export/baseline/auth-return-bridge.js",
+    "sha256": "fdd80162819472361807e81bc7845de745c60d63fcd083f9a398dc7f3b3d840e",
+    "bytes": 340
+  },
+  {
+    "path": "export/baseline/auth.js",
+    "sha256": "61ab5315ca62cecba443e7fad2563fb4955e27930f7658b4b9a6fab8ac03f472",
+    "bytes": 34912
+  },
+  {
+    "path": "export/baseline/identity-settings.json",
+    "sha256": "a1c3e114ca735830ec5615789c1556512d1c7310961aadbc5efa143899f97895",
+    "bytes": 183
+  },
+  {
+    "path": "export/source/auth-return-bridge.mjs",
+    "sha256": "24256faa5f5c5b527bd15fedcb28fd4c5195b7c19c879a43d1332eaa0d9e42c7",
+    "bytes": 620
+  },
+  {
+    "path": "export/source/auth-controller.mjs",
+    "sha256": "775afb6203a01cdfce6dca37a58ef74a2adbfec876665bde934ff495abcd5748",
+    "bytes": 7468
+  },
+  {
+    "path": "export/source/google-sign-in-official.png",
+    "sha256": "892062091f35e69dd838ba4a4f238d37a0562d52ecda6406eb343a1127251409",
+    "bytes": 5331
+  },
+  {
+    "path": "export/source/auth-controller-baseline.js",
+    "sha256": "0c34727055ba0fb6d54af3ce19663dc4c5aeae861a45fcf89a2ae1cefb068316",
+    "bytes": 3191
+  }
+]

@@ -1,0 +1,47 @@
+{
+  "status": "PASS_LOCAL_METADATA_BINDINGS_ONLY",
+  "rows": 14,
+  "receiptBindings": 76,
+  "assertions": 15,
+  "testsPassed": 7,
+  "testLog": "tests.log",
+  "sourceFilesVerified": [
+    {
+      "path": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+      "sha256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+      "gitBlob": "577ffcc448672c8de789a17f96a829338f787bfe",
+      "bytes": 3282752
+    },
+    {
+      "path": "docs/handover/2026-10-17/operational-ledger/interim-obligation-index.json",
+      "sha256": "f52ce5a9c748a10b5fa3562d03a1dadc8aebaf96eac073b7a800e532b9611d5a",
+      "gitBlob": "2c6564f1ee88b9cb29a1e2eaa7cbd12316fd9808",
+      "bytes": 316718
+    },
+    {
+      "path": "docs/handover/2026-10-17/morgan-batches-20261017/B01-preflight.json",
+      "sha256": "d15686f7970e00e1d4c21f8290b602376dfe67227b11e223e2e590f0a32f6f75",
+      "gitBlob": "3420ee2bcd3a4b3f4f06196f8d47b3939254577f",
+      "bytes": 43451
+    },
+    {
+      "path": "docs/handover/2026-10-17/morgan-batches-20261017/B02-preflight.json",
+      "sha256": "0f322210026faf94df06657c9471fab954d906cc36696cdb65a6c5c03e1c8448",
+      "gitBlob": "3070ec047f37be690f17cba3080ca8a2ffe63bea",
+      "bytes": 25145
+    },
+    {
+      "path": "docs/handover/2026-10-17/morgan-batches-20261017/B03-preflight.json",
+      "sha256": "eee886deb3df8bf758ecfa89f11a2a96dda1c6c4ed9f1bab8bf5d39a58b92aec",
+      "gitBlob": "7fb8e509a0b2aa30076be41b985535f44fabb4c5",
+      "bytes": 46489
+    }
+  ],
+  "countryCompletions": 0,
+  "nativeJobsAdmitted": 0,
+  "privateUnderlyingReceiptsVerified": 0,
+  "rawDataReads": 0,
+  "rightsHoldsReleased": 0,
+  "historicalReviewsReplayed": 0,
+  "scopeNote": "Local tests and immutable-source extraction verification; not independent re-review of underlying source artifacts or country acceptance."
+}

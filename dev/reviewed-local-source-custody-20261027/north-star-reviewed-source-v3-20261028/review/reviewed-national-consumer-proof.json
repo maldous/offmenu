@@ -1,0 +1,136 @@
+{
+  "acceptedIdentityJoins": 0,
+  "baseDependencies": {
+    "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+    "manifestByteSha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+    "resolver": "Original citation and resource IDs resolve only against the exact selected immutable input graph; no copied rights grant or identity admission.",
+    "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+  },
+  "consumerIndex": {
+    "acceptedIdentityJoins": 0,
+    "queries": {
+      "foodProfileEdgesResolved": {
+        "count": 36737,
+        "sql": "SELECT count(*) FROM resolved_edges WHERE subject_type IN ('urn:offmenu:type:FoodConcept','urn:offmenu:type:FoodPreparation')"
+      },
+      "foodProfileMetricContextPaths": {
+        "count": 587792,
+        "sql": "SELECT count(*) FROM resolved_edges f JOIN resolved_edges m ON f.object=m.subject WHERE f.subject_type IN ('urn:offmenu:type:FoodConcept','urn:offmenu:type:FoodPreparation') AND m.subject_type='urn:offmenu:type:FoodCompositionObservation' AND m.has_context=1"
+      },
+      "foodProfileMetricPaths": {
+        "count": 587792,
+        "sql": "SELECT count(*) FROM resolved_edges f JOIN resolved_edges m ON f.object=m.subject WHERE f.subject_type IN ('urn:offmenu:type:FoodConcept','urn:offmenu:type:FoodPreparation') AND m.subject_type='urn:offmenu:type:FoodCompositionObservation'"
+      },
+      "foodsWithMetricContext": {
+        "count": 36737,
+        "sql": "SELECT count(DISTINCT f.subject) FROM resolved_edges f JOIN resolved_edges m ON f.object=m.subject WHERE f.subject_type IN ('urn:offmenu:type:FoodConcept','urn:offmenu:type:FoodPreparation') AND m.subject_type='urn:offmenu:type:FoodCompositionObservation' AND m.has_context=1"
+      },
+      "profileMetricContextJoins": {
+        "count": 587792,
+        "sql": "SELECT count(*) FROM resolved_edges WHERE subject_type='urn:offmenu:type:FoodCompositionObservation' AND has_context=1"
+      },
+      "profileMetricEdgesResolved": {
+        "count": 587792,
+        "sql": "SELECT count(*) FROM resolved_edges WHERE subject_type='urn:offmenu:type:FoodCompositionObservation'"
+      },
+      "unresolvedOrIncompatibleStructuralEdges": {
+        "count": 0,
+        "sql": "SELECT (SELECT count(*) FROM edges)-(SELECT count(*) FROM resolved_edges)"
+      }
+    },
+    "servedAppQueries": 0,
+    "sqliteBytes": 1064263680,
+    "sqliteSha256": "13b349154a2fb93bffc20ed4fa029646eeda4041cc7a81e127c43f7706ce4ba7"
+  },
+  "fullNorthStarComplete": false,
+  "knownQuantityCount": null,
+  "limits": [
+    "National food\u2192profile\u2192metric contexts are not barcode coverage or accepted cross-source nutrient definitions.",
+    "Literal units, methods and preparation remain source-scoped; null and zero stay distinct, with no recipe aggregation or nutrition qualification.",
+    "Original eight-package assets and source/use restrictions remain unchanged; base qualification and serving are separate."
+  ],
+  "localShardInventory": {
+    "canonicalSha256": "18685dfcad0077d0c208fefb775282c7893998002f03ee251960717a356a5d92",
+    "canonicalization": "JSON UTF-8, ensure_ascii=False, sort_keys=True, separators comma/colon",
+    "count": 1470
+  },
+  "normalizationComplete": false,
+  "privatePayloadExcluded": true,
+  "producerManifestBytes": 753945,
+  "producerManifestSha256": "71fbf6f68e050989b95c4c602ee90775e2eac83a53ae66790f3b915d091af29d",
+  "producerOwner": "/root/align_north_star_graph/scale_north_star_derivation",
+  "producerPublicationEligible": false,
+  "publicAdmissionGranted": false,
+  "publicFileInventory": {
+    "bytes": 383962603,
+    "canonicalSha256": "fb73943be75088389cb734171306189445b34403d282843fdf33eb89e3f73f40",
+    "canonicalization": "JSON UTF-8, ensure_ascii=False, sort_keys=True, separators comma/colon",
+    "count": 1470,
+    "first": {
+      "bytes": 286794,
+      "key": "shards/000000/derivations.jsonl.gz",
+      "sha256": "59744a2ded19eb969f68a978acfa833666ac4c423f995f3a2e7bb0d06c917f2a",
+      "sidecarPackets": 25
+    },
+    "last": {
+      "bytes": 137481,
+      "key": "shards/001469/derivations.jsonl.gz",
+      "sha256": "8ef51bf2cc3bb8934d752366919e7007abf87cd67af2f8563d1d2fa375c8a2af",
+      "sidecarPackets": 12
+    }
+  },
+  "publicationDependencies": {
+    "fixedNationalPublicationDescriptor": "not yet implemented by publication owner",
+    "qualifiedActuallyServedBaseManifestSha256": null,
+    "sourceCitationAndResourceResolverRequired": true,
+    "thisReceiptDoesNotAuthorizeNewDestinationWrites": true
+  },
+  "publicationScope": "candidate-sidecars-only",
+  "quantityCountStatus": "not separately aggregated by selected full-run SQL; context presence does not mean numeric value known or nutritionally comparable",
+  "reviewBasis": {
+    "directTerminalReceiptSha256": "309124e166de498e05478528fdf87afc2a1ce62ba9524c55b35cb67fd75a20ce",
+    "exactFinalManifestSummarySha256": "5688eedae3cbb4c45ff9b809d6b895131e8d264d22725cba3adf0c46a3610fe2",
+    "independentCodeReviewSha256": "61e52e81a1500458dcb2013695299942cdb63f9cf448411dfe463bb96fca5ca4",
+    "noNewInputOrOutputPayloadPassPerformed": true,
+    "originalQuantityDefinitionMethodAndBasisPreserved": true,
+    "sourceAssertedVsCandidateFlagsNotUpgraded": true,
+    "sourceFieldsJoinedOnlySameSubjectPathCitationSetAndScope": true,
+    "terminalWindmillRun": "01a181bf-c416-8068-da08-852b39d3f5ee"
+  },
+  "reviewedAtUtc": "2026-10-28T09:20:00Z",
+  "reviewer": "/root/align_north_star_graph",
+  "schemaVersion": "offmenu-reviewed-national-consumer-proof/1",
+  "semanticStatus": "candidate-not-admitted",
+  "servedAppQueries": 0,
+  "sourceAndDerivedCounts": {
+    "assertions": 2020535,
+    "canonicalUnitCandidates": 0,
+    "derivedAssertions": 587792,
+    "derivedRelations": 624529,
+    "indexRows": 1285795,
+    "packets": 36737,
+    "profileReportedBasisContexts": 0,
+    "relations": 661266,
+    "resources": 661266,
+    "sidecarPackets": 36737,
+    "translations": 0
+  },
+  "sourceRightsMeaning": "Pinned public-input guard and same-source citation/scope propagation, not a new rights grant or completed public release.",
+  "sourceRightsPreserved": true,
+  "sourceSelection": {
+    "additionalRulesetVersions": [
+      "north-star-national-metric-context/1"
+    ],
+    "codePins": {
+      "derive_north_star_national.py": "db14fe986b3d6c5e1b51cfb7ff88b89244fc54e44fb940dc075e4def41242160",
+      "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+      "north_star_national_context.py": "c9d3594287884e5f6060aa97aef284903ff9bb23397cbbba03ff60f21bbdd5bb"
+    },
+    "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+    "manifestByteSha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+    "rulesetVersion": "north-star-structural-derivations/2",
+    "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+  },
+  "status": "reviewed-source-scoped-consumer-proof",
+  "unknownQuantityCount": null
+}
