@@ -7,6 +7,17 @@ receipt for the work; dated reports do not establish current activation.
 For scoped REST/MCP, schema limits and offline executable examples, use the
 [developer interface reference](developer-interfaces.md).
 
+## Source-bound user guides
+
+These guides describe the pinned implementation and distinguish it from live
+service, device and account qualification:
+
+- [Account data, privacy and backup controls](account-data-guide.md).
+- [Kitchen inventory and planning](kitchen-planning-guide.md).
+
+The OffMenu documentation owner maintains these alongside their linked source.
+Contextual in-app help and search integration remain separate work.
+
 ## Code and workflow map
 
 | Area | Entry points and guides |
