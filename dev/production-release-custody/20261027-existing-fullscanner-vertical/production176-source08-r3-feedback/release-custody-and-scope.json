@@ -1,0 +1,70 @@
+{
+  "id": "worker00-production176-versioned-source08-source-custody-20261027",
+  "atUTC": "2026-10-26T14:26:50.072055+00:00",
+  "worker": 0,
+  "threadId": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+  "acceptedDevelop": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+  "branch": "codex/source08-feedback-176-20261027",
+  "scope": "Exact already-authorized source08feedback176reproduction source+nonsecretproof ONLY.11priorassets reusedfrom175retainedsource. No dataset/household/account/credentials/privateDB/runtimegrant orsecretbindingvalues uploaded.",
+  "actualActiveVersion": "95a06159-302d-4aaa-aa6a-6b554f57e60b",
+  "actualDeployment": "56ff2bb9-b877-4b9d-a961-0aa522ba93d7",
+  "files": [
+    {
+      "path": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production176-source08-r3-feedback/landing-only.mjs",
+      "sha256": "fceb82446a02e3460a5df805cfb2a9af1b4ce2d21a012eae30510dff65edb98e",
+      "bytes": 585614
+    },
+    {
+      "path": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production176-source08-r3-feedback/source08-r3-3753c38ecdcf228e.bin",
+      "sha256": "3753c38ecdcf228e9194d545c2752ebb110bb875765ef5fe0d5ad5b792bb42a1",
+      "bytes": 15884
+    },
+    {
+      "path": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production176-source08-r3-feedback/manifest.json",
+      "sha256": "d799e8085e653538c738250b1712bceaf6ebf5c2b95c96ed731f5de622e0ae08",
+      "bytes": 227561
+    },
+    {
+      "path": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production176-source08-r3-feedback/source08-203-expected-pins.json",
+      "sha256": "40793457d9a3088dc9228d8d322ca883f8d26aafed5e2a2825b269c5903655ec",
+      "bytes": 41283
+    },
+    {
+      "path": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production176-source08-r3-feedback/inverse-source-proof.json",
+      "sha256": "ee1239fbe46aae607529aa45ed1b601802e7856c893ee81d33d17358bca625d6",
+      "bytes": 353
+    },
+    {
+      "path": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production176-source08-r3-feedback/package-qualification.json",
+      "sha256": "5960432b4b06539d1fc713e1047495212397cd94d8dae5ad7b2c0d86d53410a3",
+      "bytes": 1297
+    },
+    {
+      "path": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production176-source08-r3-feedback/candidate-source08-exact-ast-reference-closure.json",
+      "sha256": "1f38b4c01e91804cfb5e97b897d161d37f4aa01c563b1f5b13794a8ab3bcf5d7",
+      "bytes": 19354
+    },
+    {
+      "path": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production176-source08-r3-feedback/production176-scoped-delivery-result.json",
+      "sha256": "bd0eb9db317a80e21e5cc818d1af2b12f483f13b8eff953c8d5dd558998b9d64",
+      "bytes": 7802
+    },
+    {
+      "path": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production176-source08-r3-feedback/inactive176-independent203-exact-readback-envelope.json",
+      "sha256": "dfd00232ec07af3f7051f760e56692082d84b10328485d8193aa3ecafef7df67",
+      "bytes": 903
+    },
+    {
+      "path": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production176-source08-r3-feedback/activation176-envelope.json",
+      "sha256": "5bc764db431b53abc7911393c02429f3eebf512f8a88abd834e31b0010bc25f1",
+      "bytes": 265
+    },
+    {
+      "path": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production176-source08-r3-feedback/activation176-readback-envelope.json",
+      "sha256": "0c899ecce7387a35ae6a1fd4e2e658e2e0901a699866392c01944fd84acae05b",
+      "bytes": 542
+    }
+  ],
+  "qualification": "16newactualresponsehashes/HEAD,348oldroutesbyteheaders,3roomresources,inverse175source,all203providerpins; actual18001smallRGBtolerance asrecorded. No fullworld/full15/natural/auth/data acceptance.",
+  "holds": "Own-only94/STOP/private/CSP/rootlanding/sourcepermissions/denials/Sonar/main/generalproduction/CIX remain. Branchis currentfinitefeedbackfeature, normalPRreview/integrationnext; noarchivebranch perold snapshot."
+}

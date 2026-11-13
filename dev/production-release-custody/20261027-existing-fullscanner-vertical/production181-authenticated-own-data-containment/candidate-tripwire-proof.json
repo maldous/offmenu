@@ -1,0 +1,262 @@
+{
+  "pins": {
+    "main": "d55eb1ecea1eb5d28517b4d2f1fafb8dd4ce0e65afd0a41d2286c597905aea32",
+    "worker": "83421e679296b4f0a59e3f9a7ebde12b40638ad8cc1c480709f34c5a393b61bb",
+    "app": "2a07a3e6e302a328c65dbb0c21b3dce0fa8bd993edcfc5dbcf3511762c15ff6e"
+  },
+  "rows": [
+    {
+      "path": "/kitchen.html",
+      "method": "GET",
+      "signed": true,
+      "status": 200,
+      "bytes": 56089,
+      "bodySHA": "032c45a0f87dbe29e056bafd126d920ef37a20333717bcf8e17c1a25d2b86872",
+      "location": null,
+      "calls": [
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        }
+      ],
+      "sqlStatements": 0
+    },
+    {
+      "path": "/shelf-scanner.html",
+      "method": "GET",
+      "signed": true,
+      "status": 200,
+      "bytes": 45224,
+      "bodySHA": "097b4f0a9a5d2d70d78cd4b05bd996ff281c196e4752370a22cff2e2280f1eab",
+      "location": null,
+      "calls": [
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        }
+      ],
+      "sqlStatements": 0
+    },
+    {
+      "path": "/app.js",
+      "method": "GET",
+      "signed": true,
+      "status": 200,
+      "bytes": 242455,
+      "bodySHA": "9c10335aa2582bc7e9792329dd4e4f517e0d7ab6f524512924463c731b9d9e3e",
+      "location": null,
+      "calls": [],
+      "sqlStatements": 0
+    },
+    {
+      "path": "/shelf-scanner.js",
+      "method": "GET",
+      "signed": true,
+      "status": 200,
+      "bytes": 597129,
+      "bodySHA": "06b0758fd21ced593d7cc7b590106dfd8a7ec15c844234277b7c2a6b5127f93e",
+      "location": null,
+      "calls": [
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        }
+      ],
+      "sqlStatements": 0
+    },
+    {
+      "path": "/recipes.json",
+      "method": "GET",
+      "signed": true,
+      "status": 200,
+      "bytes": 163859,
+      "bodySHA": "2859bd50bca7caa8f3122cd3ec8c77e530588b1c7845d9db97bca267638f4c40",
+      "location": null,
+      "calls": [
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        }
+      ],
+      "sqlStatements": 0
+    },
+    {
+      "path": "/ingredients.json",
+      "method": "GET",
+      "signed": true,
+      "status": 404,
+      "bytes": 9,
+      "bodySHA": "e3ebaa16dd9d9b9fc107c42183fb6cf9d22927e1af03dbbdfa0ccc38e4e4ac31",
+      "location": null,
+      "calls": [],
+      "sqlStatements": 0
+    },
+    {
+      "path": "/api/recipes",
+      "method": "GET",
+      "signed": true,
+      "status": 200,
+      "bytes": 122554,
+      "bodySHA": "df8df0c72ffea1e8b87906fbfcf7d8f24ff7c3b16bc7aac027397cfe8523a3cb",
+      "location": null,
+      "calls": [
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        }
+      ],
+      "sqlStatements": 1
+    },
+    {
+      "path": "/api/product?barcode=0011110016973",
+      "method": "GET",
+      "signed": true,
+      "status": 503,
+      "bytes": 47,
+      "bodySHA": "1d82772816061258eb3fc83077a14f6d2c990a3966e64edbaa5f987b5d15b665",
+      "location": null,
+      "calls": [
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        }
+      ],
+      "sqlStatements": 0
+    },
+    {
+      "path": "/api/prices?barcode=0011110016973",
+      "method": "GET",
+      "signed": true,
+      "status": 503,
+      "bytes": 47,
+      "bodySHA": "1d82772816061258eb3fc83077a14f6d2c990a3966e64edbaa5f987b5d15b665",
+      "location": null,
+      "calls": [
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        }
+      ],
+      "sqlStatements": 0
+    },
+    {
+      "path": "/api/data/public?source=off&barcode=0011110016973",
+      "method": "GET",
+      "signed": true,
+      "status": 503,
+      "bytes": 47,
+      "bodySHA": "1d82772816061258eb3fc83077a14f6d2c990a3966e64edbaa5f987b5d15b665",
+      "location": null,
+      "calls": [
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        }
+      ],
+      "sqlStatements": 0
+    },
+    {
+      "path": "/api/data/public?source=world-recipes&query=rice",
+      "method": "GET",
+      "signed": true,
+      "status": 503,
+      "bytes": 47,
+      "bodySHA": "1d82772816061258eb3fc83077a14f6d2c990a3966e64edbaa5f987b5d15b665",
+      "location": null,
+      "calls": [
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        }
+      ],
+      "sqlStatements": 0
+    },
+    {
+      "path": "/api/data/records?kind=nutrientProfile",
+      "method": "GET",
+      "signed": true,
+      "status": 200,
+      "bytes": 93,
+      "bodySHA": "4258fbef3e555bc320b38b156b305eadc2c1a487ac8b1b66ceca75961881ab31",
+      "location": null,
+      "calls": [
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        },
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        }
+      ],
+      "sqlStatements": 1
+    },
+    {
+      "path": "/api/data/lookup",
+      "method": "POST",
+      "signed": true,
+      "status": 503,
+      "bytes": 111,
+      "bodySHA": "d49b1b319ab3f3c4168c497aaa815a4aa5b09c3e66e627ddf6b6c144c35d365d",
+      "location": null,
+      "calls": [
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        },
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        }
+      ],
+      "sqlStatements": 0
+    },
+    {
+      "path": "/api/data/lookup",
+      "method": "POST",
+      "signed": true,
+      "status": 503,
+      "bytes": 111,
+      "bodySHA": "d49b1b319ab3f3c4168c497aaa815a4aa5b09c3e66e627ddf6b6c144c35d365d",
+      "location": null,
+      "calls": [
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        },
+        {
+          "origin": "https://offmenu-accounts.netlify.app",
+          "path": "/.netlify/identity/user",
+          "identity": true
+        }
+      ],
+      "sqlStatements": 0
+    },
+    {
+      "path": "/api/data/lookup",
+      "method": "POST",
+      "signed": false,
+      "status": 401,
+      "bytes": 50,
+      "bodySHA": "9153fc34443b131b78f6f2856b73ba424c3ad0de8e183ed118729cfaa33fcdd0",
+      "location": null,
+      "calls": [],
+      "sqlStatements": 0
+    }
+  ],
+  "qualification": "Exact current180main/83421worker with minimal2a07candidate executed offline. Unused static binary imports are opaque empty values; selected own reader returns generated unavailable without source reads. Actual protected HTML/JS are supplied by exact worker/app. Generated encrypted credentials/DB only; every outbound fetch trapped; identity separately mocked. No network, real keys, real DB or provider calls."
+}

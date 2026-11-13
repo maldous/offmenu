@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"atUTC\": \"2026-10-26T16:06:20.753Z\",\n  \"version\": \"d89559ad-cae4-4a9d-babf-c9d425123e44\",\n  \"number\": 183,\n  \"moduleCount\": 208,\n  \"totalBytes\": 39267635,\n  \"mismatches\": [],\n  \"all208Exact\": true,\n  \"active\": {\n    \"id\": \"356f56b4-f188-4b1d-9cd9-78f0e5c4176c\",\n    \"versions\": [\n      {\n        \"version_id\": \"9cf3a5db-264a-4aae-8479-fc6b1551b0d7\",\n        \"percentage\": 100\n      }\n    ]\n  },\n  \"containedApp13bdExact\": true,\n  \"activation\": false\n}"
+    }
+  ]
+}

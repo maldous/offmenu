@@ -1,0 +1,136 @@
+{
+  "atUTC": "2026-10-26T15:23:56.111055+00:00",
+  "scope": "Exact source and nonsecret qualification custody for scoped authorized releases178/179. No runtime adoption/import from custody folders. No raw corpus/private account data/credentials/binding values/operation grants. Existing main/CIX/general deployment holds retained.",
+  "acceptedDevelop": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+  "newSourceFiles": [
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production178-normal-auth-root/landing-only.mjs",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/landing-only.mjs",
+      "bytes": 626324,
+      "sha256": "c327f5eaf9c51a77b36c327da40a5b904b706e30f3f397f3092a24bd2e2512d6"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production178-normal-auth-root/manifest.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/manifest.json",
+      "bytes": 228616,
+      "sha256": "94c15a66ac4dfdb8320f2c4accf5890815501e387fbe4f7abe84dde1e92ca959"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production178-normal-auth-root/qualify.mjs",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/qualify.mjs",
+      "bytes": 8465,
+      "sha256": "5fcb9a2e757a6fbff29fa9775cf8542b1940d77a6e3782efb71d1d86735be58b"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production178-normal-auth-root/package-qualification.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/package-qualification.json",
+      "bytes": 1295,
+      "sha256": "f73d1481395ba2f9179719b74da442fd286c38613d8b46737ae1da74dacf3e73"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production178-normal-auth-root/candidate-203-expected-pins.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/candidate-203-expected-pins.json",
+      "bytes": 41283,
+      "sha256": "2349d6df350336aab2e45f96dd5401d72c2fd22ecb0843e29cc04384b765c0ed"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production178-normal-auth-root/inactive178-independent203-readback.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/inactive178-independent203-readback.json",
+      "bytes": 752,
+      "sha256": "e26398853aaeedcac21cc1eeb6aad1303a95247c2ecb09375eaccf4ab6092ab7"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production178-normal-auth-root/activation178-envelope.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/activation178-envelope.json",
+      "bytes": 320,
+      "sha256": "92a419b9bd8c14aef57355eb2d6bfebc9dedb7c8535fc415412067849062f9c7"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production178-normal-auth-root/activation178-readback-envelope.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/activation178-readback-envelope.json",
+      "bytes": 506,
+      "sha256": "0cbdbdff74b4d7e2bb4fc521670d43cdfbaaff119e5d75db7f2562d98b824835"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production178-normal-auth-root/production178-normal-auth-scoped-delivery-result.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/production178-normal-auth-scoped-delivery-result.json",
+      "bytes": 11903,
+      "sha256": "9b7129837b0671548be6f6fdbaae59ed1784e5acb939c877934b4acb302f3417"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production178-normal-auth-root/root-override-disposition.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/root-override-disposition.json",
+      "bytes": 971,
+      "sha256": "1e5e5f939de4258e49d527ca0e7ab96b9f1442991da8c4fe5ad810033b79fb4d"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production179-root-working-worlds/landing-only.mjs",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/landing-only.mjs",
+      "bytes": 647288,
+      "sha256": "d1ffce4e4f1ac4ea51b48013a1d4cf00faa151e365a516bf1e30638f93c3d7c8"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production179-root-working-worlds/manifest.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/manifest.json",
+      "bytes": 279137,
+      "sha256": "524b6f695561d4a5f50bf9e14e9e72bff6bf132ca7661c21679ab50d5f07ac61"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production179-root-working-worlds/qualify.mjs",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/qualify.mjs",
+      "bytes": 8495,
+      "sha256": "a730ef8a996ab9c0ba135c52c6ac7eebeebde7e5b997a9eee03a14b9262dc706"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production179-root-working-worlds/package-qualification.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/package-qualification.json",
+      "bytes": 1344,
+      "sha256": "033a51539f10bde2627b19099be606cf06d412173c855a444d15fa103f2575ce"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production179-root-working-worlds/candidate-204-expected-pins.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/candidate-204-expected-pins.json",
+      "bytes": 41491,
+      "sha256": "d1360de1d5fd92d9ceeb1b32cd99caff0f1bff283ed2342776debb505f95be73"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production179-root-working-worlds/inactive179-independent204-readback.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/inactive179-independent204-readback.json",
+      "bytes": 752,
+      "sha256": "38a9ae273ab7586a6968cd843231c4682f74c57dc4c5fa334061cd0e1df19422"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production179-root-working-worlds/activation179-envelope.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/activation179-envelope.json",
+      "bytes": 222,
+      "sha256": "b897f1bb659264de100066f6bd4ba03f2a0ff446edc8d818d91f1c73dd80099c"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production179-root-working-worlds/activation179-readback-envelope.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/activation179-readback-envelope.json",
+      "bytes": 500,
+      "sha256": "b4a9870c6eb7611b03685ff7515ecda2649091225d0c398b4eae1ffd18e12e5b"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production179-root-working-worlds/production179-scoped-delivery-result.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/production179-scoped-delivery-result.json",
+      "bytes": 5940,
+      "sha256": "dc6a2a17e3f4ee4d4ef56e9cd9fc801d6df7e2e5a4f2096e456597a97a588bf1"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production179-root-working-worlds/arraybuffer-provider-rejection-disposition.json",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/arraybuffer-provider-rejection-disposition.json",
+      "bytes": 852,
+      "sha256": "2d74254b1b144ef7983f455acc0a4b35e42463f4d82a4fad1027bba514aa0728"
+    },
+    {
+      "repositoryPath": "dev/production-release-custody/20261027-existing-fullscanner-vertical/production179-root-working-worlds/root-world-r3-e8239a9dad9c15d8.bin",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r1/root-world-r3-e8239a9dad9c15d8.bin",
+      "bytes": 53508,
+      "sha256": "e8239a9dad9c15d8e148993a4bf9115f80e957ed9c68393252cd407e99d90f6e"
+    }
+  ],
+  "dependencies": "All202nonmain178 modules preserved in179; exact original production-source lineages and prior release custody are retained. Absolute runtime paths are historical provenance; these folders are not standalone deploy commands.",
+  "receiptLimits": "Actual204 modulepins and179100percent management readback. Rootfocused actual7entry/finalnativeproof only,9selected sourceIDs,notallnine/full15/realaccount/phone/neoncomplete. OriginalproviderABI rejection retained, correctedArrayBufferfixture qualified.",
+  "currentWorktreePreservation": "G remains6c8d foundation branch with alluntrackedfiles unchanged. SeparatetemporaryGitindex creates fastforward sourcecustody successor without checkout/reset/clean."
+}

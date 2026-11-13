@@ -1,0 +1,108 @@
+{
+  "atUTC": "2026-10-26T16:07:32.704575+00:00",
+  "status": "DONE_WITH_CONCERNS_ROOT03_04_10_INCREMENT183_ACTIVE",
+  "worker": 0,
+  "threadId": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+  "version": {
+    "number": 183,
+    "id": "d89559ad-cae4-4a9d-babf-c9d425123e44",
+    "deployment": "e5623c6b-45dc-4955-ad78-aef4b9be7efc",
+    "percentage": 100,
+    "activatedAtUTC": "2026-10-26T16:06:27.238407Z"
+  },
+  "main": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root13-mounts-r1-over182-r1/landing-only.mjs",
+    "sha256": "b09170144f2cb286ee94bc7051091ec980a795e570c8a44441b269842a5e8c7c"
+  },
+  "moduleCount": 208,
+  "totalModuleBytes": 39267635,
+  "pins": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root13-mounts-r1-over182-r1/candidate-208-expected-pins.json",
+    "sha256": "70246980c49a869ce2c9e777d0b496772002dd162c649894ea3e028a46d73e7b"
+  },
+  "selection": {
+    "selectedIds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      13,
+      14
+    ],
+    "sourceConfiguredCount": 13,
+    "staticRetainedIds": [
+      12,
+      15
+    ],
+    "postActivationAllThirteenExecuted": false
+  },
+  "composition": {
+    "routes": 122,
+    "aliasesReused": 116,
+    "newUniqueBodies": 6,
+    "newBodyBytes": 48659,
+    "oldRoutesPreserved": 519,
+    "changedExistingOldRoute": "/landing-static-15/story.js",
+    "story": {
+      "route": "/landing-static-15/story.js",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current180-mounts-r1/story.js",
+      "sha256": "db28ef9abf001fe4462a584cebdec40b7fc39e504be2680e3e8ed3c3d10427b9",
+      "bytes": 30513,
+      "mime": "application/javascript; charset=utf-8"
+    },
+    "other206NonMainModulesUnchangedFrom182": true,
+    "containedApp": "13bd5e94c11ded5756a09edafc414791164425f4aca0b12b947849e1af60157a",
+    "rootHTML": "597143c955773000f7aaaa3ca07811070e3ceeaf0cdd355bcf7632af1401a066",
+    "CSS": "483a693065ea2eff4b849ae4749b1959b932122b8832f051f7aa0d983a0d02b3",
+    "authPreserved": true,
+    "audioBab01Preserved": true,
+    "privateOwnDataCSPSTOPPreserved": true
+  },
+  "evidence": {
+    "source": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current180-mounts-r1/actual-ready-for-delivery.json",
+      "sha256": "742f081c4efbde7946d97a962d34171550fcac64e077d6c836863dee77aefbde"
+    },
+    "manifest": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current180-mounts-r1/manifest.json",
+      "sha256": "c7f67fb237fec775c82bcce2d2d947fe391d3ff44c8290ef7542ba84819626d6"
+    },
+    "actualNew03_04_10": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker64/world11-vertical-browser-20261026/root-current180-mounts-r1/new03-04-10-mounts-result.json",
+      "sha256": "4b4813d9c6106ec80a0246a43a36acfa83ca153d2ebbe7c589e19d8f20b2b3a0"
+    },
+    "offline": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root13-mounts-r1-over182-r1/package-qualification.json",
+      "sha256": "afdab6c741ccdde5740d64a19b5c4a7c5968d7aafa6662a71f66fa454b1cbb50"
+    },
+    "independent208Pins": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root13-mounts-r1-over182-r1/inactive183-independent208-readback.json",
+      "sha256": "de1069f0bc81c0d9c47df52cc285bc2ae98da30183e8672c9d76763e2b734da2"
+    },
+    "activeReadback": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root13-mounts-r1-over182-r1/activation183-readback-envelope.json",
+      "sha256": "7616ac876dd2b0105f1064d8d5bfeb69701600c6427902e9d04e312e048b7833"
+    }
+  },
+  "proofReuse": "Actual18108 new03/04/10action/~5hold/nextworldsready plus12native+3mobilemid frames; previous05action18082/pending6fix18094 andoldnineproofsreused. No full13/newauth/fullneonrepeat.",
+  "limits": [
+    "13source-configured IDsverifiedthrough exactprovidermodule/readback, notall13executedafteractivation/full15/physicalphone/naturalquality/neoncomplete/useracceptance.",
+    "Actualflatplane/cutout/matte/diagonalbackground/anatomy/physicalsupport/fargrip/sourcecamera limitsretained; functionalincrement only.",
+    "Privateworkerand3nativeparts opaque instaticVM; 519old+122bodySHAHEAD+4resources measured, no forbiddenpublicHTTPprobe."
+  ],
+  "authority": "Existingincrementalrootdirection plusParentexplicit18108/c7f67usable03/04/10incrementoverFRESH181ornewer; noall13/full15/minorpolishgate. No broaderprovider/security/data/main/CIXapproval.",
+  "rollback": {
+    "number": 182,
+    "id": "9cf3a5db-264a-4aae-8479-fc6b1551b0d7",
+    "constraint": "13bdpatchedappMUSTremain;neveruncontained1802a07"
+  },
+  "cleanup": "Retainactivesource/208pins/readbacks/newassetbin andpriorfailureproofs;noownedserver/browser/childprocess started.",
+  "nextAction": "Privateorigin182/183sourcecustodynow.12/15unfinishedRenderer-owned; no duplicatewriter. Local05genuine06window815cGatewayrelayed05, actualexecutionunclaimed. ShiftRoottypedphasepublicreader/compiledaccepted13relationsand19R2closedoverlay/appendonlyCAS; unknownoptionalnotglobalgate."
+}

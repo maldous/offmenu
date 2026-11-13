@@ -1,0 +1,44 @@
+--- a/public/production-scanner/guest-shelf-scanner-inventory.js
++++ b/public/production-scanner/guest-shelf-scanner-inventory.js
+@@ -14,7 +14,7 @@
+ const modes={Explore:'Inspect source information. No inventory changes.',Buy:'Collect shopping intent for later receipt comparison. This is not payment.',Stock:'Unpacking intake needs eligible identity, quantity and a verified pantry action.',Audit:'Reconcile existing lots; never double-add scanned inventory.',Discard:'Outflow needs an identified lot, quantity and reason, with undo.'};
+ const BEEP_PREFERENCE='offmenu-scanner-read-beep',SPEECH_PREFERENCE='offmenu-scanner-spoken-name';
+ function feedbackPreference(key){try{return guestStorage.getItem(key)!=='off';}catch{return true;}}
+-let mode='Explore',active=true,paused=false,streaming=false,finished=false,queue=[],generation=0,current=null,selected=null,tab='overview',sound=feedbackPreference(BEEP_PREFERENCE),spokenName=feedbackPreference(SPEECH_PREFERENCE),audio=null,readCueTimer=null,waitingReadCue=null,pendingSpeech=null;
++let mode='Explore',active=true,paused=false,streaming=false,finished=false,queue=[],generation=0,current=null,selected=null,tab='overview',sound=feedbackPreference(BEEP_PREFERENCE),spokenName=feedbackPreference(SPEECH_PREFERENCE),audio=null,readCueTimer=null,waitingReadCue=null,pendingSpeech=null,pendingSpeechTimer=null;
+ let sheetSnap=0,sheetTouched=false,optionsSnap=2;
+ function setSheetSnap(next,{user=false}={}){
+  sheetSnap=Math.max(0,Math.min(3,next));if(user)sheetTouched=true;
+@@ -136,6 +136,7 @@
+  return typeof name==='string'&&name.trim()?name.trim().slice(0,160):null;
+ }
+ function cancelPendingSpeech(){
++ clearTimeout(pendingSpeechTimer);pendingSpeechTimer=null;
+  if(pendingSpeech){window.speechSynthesis?.removeEventListener?.('voiceschanged',pendingSpeech);pendingSpeech=null;}
+ }
+ function speakResolvedName(entry,variant,token,retry=false){
+@@ -148,7 +149,8 @@
+    cancelPendingSpeech();
+    pendingSpeech=()=>{cancelPendingSpeech();speakResolvedName(entry,variant,token,true);};
+    synth.addEventListener('voiceschanged',pendingSpeech,{once:true});
+-   setTimeout(()=>{if(pendingSpeech){cancelPendingSpeech();$('feedback-status').textContent='No local English voice is available on this device.';}},2500);
++   const listener=pendingSpeech;
++   pendingSpeechTimer=setTimeout(()=>{if(pendingSpeech!==listener)return;cancelPendingSpeech();if(token===generation&&current?.id===entry.id)$('feedback-status').textContent='No local English voice is available on this device.';},2500);
+   }else $('feedback-status').textContent='No local English voice is available on this device.';
+   return;
+  }
+@@ -173,12 +175,13 @@
+  current=entry;if(result.matches?.length&&['source-match','ambiguous'].includes(result.status))scanner.noteAccepted();
+  selected=result.status==='source-match'?result.matches[0]:null;
+  render();
++ if(selected)speakResolvedName(entry,selected,token);
+ 
+ }
+ function showMatches(){
+  const entry=current,token=generation,host=$('match-list');host.replaceChildren();
+  $('matches-note').textContent=(entry?.matches?.length||0)+' public source product record(s). Source claims are attributed; ingredient suitability is not inferred.';
+- for(const match of entry?.matches||[]){const box=el('div','','choice');box.append(el('strong',match.name||'Name not supplied'),el('p','Source: '+match.provenance.sourceId+' · release '+(match.provenance.releaseId||'unknown')+' · record '+match.id),btn('Inspect product record',()=>{if(token!==generation||current?.id!==entry.id)return;selected=match;close('matches-dialog');render();}));host.append(box);}
++ for(const match of entry?.matches||[]){const box=el('div','','choice');box.append(el('strong',match.name||'Name not supplied'),el('p','Source: '+match.provenance.sourceId+' · release '+(match.provenance.releaseId||'unknown')+' · record '+match.id),btn('Inspect product record',()=>{if(token!==generation||current?.id!==entry.id)return;selected=match;close('matches-dialog');render();speakResolvedName(entry,match,token);}));host.append(box);}
+  if(entry?.hasMore)host.append(btn('Continue source search',async()=>{const result=await lookupIdentifiers(entry.raw,entry.queryGeneration??entry.generation,entry.nextCursor,entry.symbology,entry.namespace);if(token!==generation||current?.id!==entry.id)return;if(result.status==='unavailable'){message('Next source page is unavailable; loaded records remain visible.');return;}try{Object.assign(entry,mergeIdentifierPages(entry,result));}catch{message('Source release changed; loaded records remain visible.');return;}render();showMatches();}));open('matches-dialog');
+ }
+ function renderQueue(){const host=$('queue-list');host.replaceChildren();$('session-summary').textContent=(queue.length?queue.length+' item'+(queue.length===1?'':'s')+' scanned. '+queue.filter(x=>x.status==='ambiguous').length+' need'+(queue.filter(x=>x.status==='ambiguous').length===1?'s':'')+' a choice. Nothing has been added to your pantry.':'No items scanned yet.');
