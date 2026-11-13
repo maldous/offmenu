@@ -53,8 +53,8 @@ its descriptor must be a regular file with exactly one hard link and a bounded
 size before any bytes are read. FIFO/directory/alias failures remain isolated
 under the existing fixed per-input diagnostics. Authored regressions cover a
 FIFO with a healthy peer, leaf and parent symlink swaps, and a hard-link alias.
-Absolute paths are existing Foo-local evidence locators; relocated custody needs
-a newly reviewed configuration, not an inferred replacement. Raw stays on Foo.
+Absolute paths are existing host-local evidence locators; relocated custody needs
+a newly reviewed configuration, not an inferred replacement. Raw stays on the selected local executor.
 
 Shared implementations are reused directly:
 
@@ -90,7 +90,7 @@ unknown; it is never presented as a source cell. Known scalar metadata values
 retain exact input SHA and JSON-pointer origins. The shared validator checks
 origin coverage/identity; it does not establish semantic or rights acceptance.
 
-## Shared-interface proposal for Integrator00
+## Shared-interface proposal for the product integrator
 
 No generic pure source cache planner exists at the selected base.
 `policy.plan_fixture` is fixture-registry-specific; `core.cache_policy` carries
@@ -99,7 +99,7 @@ it is never called here. Sources/fixtures are not spoofed to use those APIs.
 
 The binding emits a read-only age observation and a typed
 `unsupported-interface-at-selected-base` capability. It is not a new cache or
-acquisition engine. Proposed shared interface, for Morgan/00 review only:
+acquisition engine. Proposed shared interface, for the product maintainer review only:
 
 ```python
 plan_retained_metadata(source_id, release_id, input_sha256,

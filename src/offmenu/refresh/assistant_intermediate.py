@@ -2,7 +2,7 @@
 
 No model call or network access is implemented here. The assistant response is
 supplied by the caller, then source-checked and replayed through the existing
-OffMenu recipe schema. Originals and cache envelopes belong on Foo, not Git.
+OffMenu recipe schema. Originals and cache envelopes belong in private local storage, not Git.
 """
 from __future__ import annotations
 

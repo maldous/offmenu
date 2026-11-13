@@ -1,4 +1,4 @@
-"""Metadata-only reconciliation of the frozen global inventory retained on Foo.
+"""Metadata-only reconciliation of the frozen global inventory retained in private local storage.
 
 This module never downloads, parses a dataset, invokes an adapter or grants rights.
 The two large inventories are deliberately not packaged or copied into GitHub.
@@ -54,7 +54,7 @@ def assess(matrix_path, ledger_path):
     """Load exact retained inventory pins and return exhaustive discovery coverage.
 
 Missing inventory is a blocker, never substituted with generated source URLs.
-Result is deterministic, contains no raw payload, and is intended to stay on Foo.
+Result is deterministic, contains no raw payload, and is intended to stay in private local storage.
 Global routes are listed separately: they do not establish every country's scope.
 """
     return _reconcile(_read(matrix_path, 'matrix'), _read(ledger_path, 'ledger'))

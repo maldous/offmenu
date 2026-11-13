@@ -86,13 +86,13 @@ This code does not verify actual raw-cache retention. It cannot demonstrate
 shared acquired-body cache/automatic refresh must be wired only after exact
 source scope and independent review. No force-download option is exposed.
 
-Integrator00 result5798 and its pinned late addendum confirm that no source-neutral
+the product integrator result5798 and its pinned late addendum confirm that no source-neutral
 pure cache planner exists on this baseline. The report types that capability as
 `unavailable-on-pinned-baseline` and real body adapters as `not-selected`.
 The local `cache` field is metadata-age **intent only**, not a replacement shared
 engine. Neither Wikibooks `core.cache_policy`, registry-only `plan_fixture`, nor
 operational/body-reading `CachedAcquirer` is called or identity-spoofed. A future
-central pure-planner API remains Integrator00/Morgan's separate proposal.
+central pure-planner API remains the product maintainer's separate proposal.
 
 ## Public documentation checked
 
@@ -108,7 +108,7 @@ source-specific notice and does not change a recorded restriction.
 ## Integration and typed remaining blockers
 
 Owned additions are these two portfolio modules, tests and this document. Shared
-core is unchanged. Integrator00 can review the exact commit and run the authored
+core is unchanged. the product integrator can review the exact commit and run the authored
 tests plus shared provenance/qualification tests. No shared interface change is
 required to consume the metadata report or the `semantic_errors` callback.
 
@@ -123,10 +123,10 @@ Future **source-data** staging needs separate reviewed source contracts:
    GT/GU reviewed per-original clock-to-cache bindings and validator/retention
    evidence, plus demonstrated shared >=30day raw cache policy.
 4. `REVIEW_AND_INTEGRATION_PENDING`: independent approval of this immutable
-   commit, then Integrator00's normal develop integration. Golden promotion and
+   commit, then the product integrator's normal develop integration. Golden promotion and
    fresh baseline qualification remain later gates.
 
 All source/privacy/Finland/Frida/NO-FR/native crash/credential/denied-action holds,
-old uncertain sends, raw-Foo locality, DEV7645 separation and production/CIX pause
+old uncertain sends, raw-local executor locality, DEV7645 separation and production/CIX pause
 remain. No refresh of raw sources, runtime installation, automation or shared
 engine change is selected by this package.

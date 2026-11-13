@@ -11,7 +11,7 @@ from pathlib import Path
 
 POLICY = "repository-standard.json"
 PRIVATE_DIRECTORIES = {
-    "node_modules", ".delivery", ".venv-delivery", "data", "output", "dist",
+    "node_modules", ".cache", ".venv", "venv", "build", "data", "output", "dist",
     "__pycache__",
 }
 
@@ -56,7 +56,7 @@ def load_policy(root):
     ):
         raise AuditError("contract.version")
     for field in ("retired_roots", "required_paths", "runtime_hold_paths"):
-        values = policy.get(field)
+        values = policy.get(field, []) if field == "runtime_hold_paths" else policy.get(field)
         if (not isinstance(values, list) or not all(valid_path(p) for p in values)
                 or len(set(values)) != len(values)):
             raise AuditError("contract." + field)
@@ -110,7 +110,7 @@ def audit(root):
             root, "ls-files", "--others", "--exclude-standard", "-z"
         ).split(b"\0") if p) - tracked
         counts.update(tracked=len(tracked), untracked=len(untracked))
-        holds = set(policy["runtime_hold_paths"])
+        holds = set(policy.get("runtime_hold_paths", []))
         retired = set(policy["retired_roots"])
         for path in sorted(tracked | untracked):
             if not os.path.lexists(root / path):

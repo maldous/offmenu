@@ -11,8 +11,8 @@ baseline. No shared core, registry, acquisition grant or runtime admission chang
 From a source checkout with Python 3.10+:
 
 ```sh
-python3 -m offmenu.portfolio39 --now 2026-10-18T05:10:00Z --output /private/foo/new-plan.json
-python3 -m offmenu.portfolio39 --now 2026-10-18T05:10:00Z --previous /private/foo/new-plan.json
+python3 -m offmenu.portfolio39 --now 2026-10-18T05:10:00Z --output /private/offmenu/new-plan.json
+python3 -m offmenu.portfolio39 --now 2026-10-18T05:10:00Z --previous /private/offmenu/new-plan.json
 python3 -m unittest discover -s tests -p test_portfolio39_bindings.py -v
 ```
 
@@ -104,15 +104,15 @@ mtime. Same bytes/policy yield the same key; a previous matching key may report
 metadata no-op, but cannot skip current pin verification. Changed receipts require
 a newly reviewed binding; they never silently repin a release.
 
-Integrator00 result 5798 and addendum are retained as interface evidence:
+the product integrator result 5798 and addendum are retained as interface evidence:
 
-- `/home/user/Documents/Codex/2026-10-18/offmenu-worker00-portfolio-baseline-interface/baseline-interface-receipt.json`
+- the retained baseline-interface receipt
   SHA-256 `f94fbf0a42b5d7906e20ace0416295ae569ee400ddfd770f90a427f803d3b7cb`.
 - `late-dependency-addendum.json` in the same directory,
   SHA-256 `73af91948fe0e7529d7c73a022e6f04234544dcfbc48718a5899ed76fa0e3b0d`.
 
-No shared change is required to run this metadata package. If Morgan later selects
-a standard pure planner, the proposal for existing integrator00 is a keyword-only
+No shared change is required to run this metadata package. If the product maintainer later selects
+a standard pure planner, the proposal for the product integrator is a keyword-only
 `policy.plan_retained_input(source_id, release_id, input_identity,
 original_acquired_at, revalidations, now, retention_status, hold_status)`, returning
 identity-bound, zero-I/O/no-download intents and explicit unknown/held diagnostics.
@@ -138,5 +138,5 @@ parser, OS isolation or real full-country dataset qualification. Existing guarde
 runner/isolation, fresh input manifests, source-specific rights/custody, field
 semantics, reviewer appointment and independent acceptance remain required before
 any real execution. Finland/Frida, native NO/FR crash, 403/private/credential and
-other explicit denied-action holds, raw-on-Foo, production/CIX and DEV7645 custody
+other explicit denied-action holds, raw-on-local executor, production/CIX and DEV7645 custody
 remain unchanged.

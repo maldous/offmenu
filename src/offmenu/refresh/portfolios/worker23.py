@@ -171,7 +171,7 @@ def assess(spec, raw, *, now, operation='metadata', previous_key=None, code_pins
 
 
 def _read_metadata(path):
-    """Bound a read to no-follow directory/file descriptors on local Foo.
+    """Bound a read to no-follow directory/file descriptors on the local filesystem.
 
     Nonblocking open prevents a replacement FIFO from hanging before fstat.
     Name/descriptor custody is checked around the same bounded descriptor read;

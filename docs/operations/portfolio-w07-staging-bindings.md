@@ -1,10 +1,10 @@
 # Worker 07 retained metadata staging bindings
 
-This portfolio proposal starts at develop `abecb99ee1125730ccbc2824b6ec49ffc5cc4302` for assignment `M-STAGING-BIND-20261018-W07`. It supplies six pinned metadata bindings across AQ, AR, AS and AT. It does not supply a real-source SourceContract or country acceptance. Originals remain in Foo custody outside Git. The authored fixture contains invented values only.
+This portfolio proposal starts at develop `abecb99ee1125730ccbc2824b6ec49ffc5cc4302` for assignment `M-STAGING-BIND-20261018-W07`. It supplies six pinned metadata bindings across AQ, AR, AS and AT. It does not supply a real-source SourceContract or country acceptance. Originals remain in local executor custody outside Git. The authored fixture contains invented values only.
 
 ## Run locally
 
-From the repository root, with retained Foo metadata available:
+From the repository root, with retained local executor metadata available:
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 -m offmenu.refresh.portfolio_w07 \
@@ -28,12 +28,12 @@ Exact metadata paths, sizes, hashes and selectors are in `config/refresh/portfol
 
 | Binding | Meaning and unresolved dependency | Next action / owner |
 |---|---|---|
-| AQ ASE | Retained education article; not a cookbook or recipe corpus. Source use remains unqualified. | W07 retains role correction; Morgan selects an authorized cookbook/source qualification route. Existing source custodian20 supplies provenance if needed. |
+| AQ ASE | Retained education article; not a cookbook or recipe corpus. Source use remains unqualified. | W07 retains role correction; the product maintainer selects an authorized cookbook/source qualification route. Existing source custodian20 supplies provenance if needed. |
 | AR provincial recipe | Retained May2023/January2025 recipe-document metadata; recipe use and semantics unqualified. | Existing source custodian21 supplies exact release/use evidence; W07 can bind a reviewed grant and field/unit/basis map once supplied. |
-| AS USDA census | Aggregate agriculture statistics, not retailer/provider identities. | W07 preserves nonapplicability; Morgan selects an actual provider source, avoiding duplicate acquisition by existing custodian24. |
-| AS PNDB | Regional metadata; American Samoa membership unknown, not excluded. Dataset-specific use, definitions and units/bases unresolved. | Existing PNDB/source-rights custodian via Morgan supplies country membership and operation-specific evidence. W07 implements a reviewed binding after that dependency. No retry/download authorized here. |
-| AT Vienna market | Retained HTTP404/error context, not market data; no-retry hold. | Morgan routes an alternate authorized source to existing custodian26; preserve the failed attempt. |
-| AT COREMA | Image-object reference; image licence does not establish recipe-text or commercial recipe-use permission. | Existing custodian26/source-rights authority supplies a source-specific text grant or alternative, routed by Morgan. |
+| AS USDA census | Aggregate agriculture statistics, not retailer/provider identities. | W07 preserves nonapplicability; the product maintainer selects an actual provider source, avoiding duplicate acquisition by existing custodian24. |
+| AS PNDB | Regional metadata; American Samoa membership unknown, not excluded. Dataset-specific use, definitions and units/bases unresolved. | Existing PNDB/source-rights custodian via the product maintainer supplies country membership and operation-specific evidence. W07 implements a reviewed binding after that dependency. No retry/download authorized here. |
+| AT Vienna market | Retained HTTP404/error context, not market data; no-retry hold. | the product maintainer routes an alternate authorized source to existing custodian26; preserve the failed attempt. |
+| AT COREMA | Image-object reference; image licence does not establish recipe-text or commercial recipe-use permission. | Existing custodian26/source-rights authority supplies a source-specific text grant or alternative, routed by the product maintainer. |
 
 No cell of the four-country/six-type requirement is completed by this package:
 
@@ -52,7 +52,7 @@ Each cell still needs source/release identity, applicable evidence, exact input 
 
 The implementation reuses shared strict JSON, canonicalization, hashing, UTC timestamps, safe-path validation and descriptor custody checks, singleton JSONL serialization, field origins, logical input-name validation and MIN_TTL. No shared core, engine or source registry is modified. Focused tests cover valid/missing/held/malformed/stale inputs, literal values/units/bases/unknowns, original versus validation clocks, exact TTL boundary, replay/tamper/partial-stage checks and isolated failures. One trusted, fully constrained authored-fixture SourceContract passes the shared qualifier; adding an authored hold fails qualification. That fixture contract is test code, not a runtime rights constructor or real-source permission.
 
-`sourceInputBinding` currently has no reviewed real-source contract/schema factory. The metadata stage is a proposal, not an acceptance manifest consumed directly by `qualify`. A next real-source acceptance path needs an independently reviewed trusted contract, schemas and semantic callback with exact inventory/rights/scope evidence. Morgan/integrator00 owns shared-interface selection; W07 owns portfolio corrections. Submit the local commit through Gateway for independent review and integrator00, preserving the existing branch/artifacts. Do not copy another country engine, edit shared core or retry held source acquisition to fill this gap. Pending review/integration is separate from the completed local implementation.
+`sourceInputBinding` currently has no reviewed real-source contract/schema factory. The metadata stage is a proposal, not an acceptance manifest consumed directly by `qualify`. A next real-source acceptance path needs an independently reviewed trusted contract, schemas and semantic callback with exact inventory/rights/scope evidence. the product maintainer and integrator owns shared-interface selection; W07 owns portfolio corrections. Submit the local commit through the product maintainer for independent review and the product integrator, preserving the existing branch/artifacts. Do not copy another country engine, edit shared core or retry held source acquisition to fill this gap. Pending review/integration is separate from the completed local implementation.
 
 Production and CIX execution remain paused. Source/ownership/custody, denied-action, actual permission and mandatory auto_review holds remain active. This package grants no release, publication, permission change, new worker, scheduler or deployment authority.
 

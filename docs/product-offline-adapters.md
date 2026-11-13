@@ -2,7 +2,7 @@
 
 `offmenu.refresh.product_adapters` parses local immutable inputs only. It does not
 fetch, register production admissions, execute runner jobs, accept a release,
-change permissions, export public data, or claim country completion. Large/raw source custody remains exclusively in the authorized Foo workflow.
+change permissions, export public data, or claim country completion. Large/raw source custody remains exclusively in the authorized local executor workflow.
 Synthetic/small metadata placement follows reviewed runner capacity, locality and
 latency policy; tests generate small synthetic sources. Resource limits are explicit caller-owned configuration.
 
@@ -78,7 +78,7 @@ are never promoted. No automatic network retry/download is performed.
 
 Production operation still requires independently reviewed exact input pins,
 rights and scope evidence, source-specific complete schemas and semantic policy,
-expected full IDs/counts, Foo resource/custody authorization and distinct accepted
+expected full IDs/counts, local executor resource/custody authorization and distinct accepted
 native/curated/common contracts. Native parser success is not graph readiness.
 The default limits support fixture/review runs, not multi-gigabyte release jobs;
 reviewed runner budgets must raise them explicitly without changing source identity.

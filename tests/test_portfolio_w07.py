@@ -136,7 +136,7 @@ class PortfolioW07Tests(unittest.TestCase):
 
     def test_fingerprint_ignores_locality_and_validation_age(self):
         a = plan([self.s], {'authored-one': self.raw}, now=NOW)
-        self.s['manifest']['localPath'] = '/different/Foo/path.json'
+        self.s['manifest']['localPath'] = '/different/local/path.json'
         b = plan([self.s], {'authored-one': self.raw}, now='2026-10-19T00:00:00Z')
         self.assertEqual(a['bindingFingerprint'], b['bindingFingerprint'])
         self.assertEqual(a['candidateJsonl'], b['candidateJsonl'])

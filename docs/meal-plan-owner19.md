@@ -22,12 +22,6 @@ in this adapter-only correction. Helper correction/review remains a separate gat
 
 ## Pickup and scope
 
-Same permanent Worker 19, host foo, cwd /home/user/src/offmenu-workers/worker-19,
-thread 01a138f8-5f61-78b0-a899-7ec31a611daa. Fresh fetch under
-/tmp/offmenu-develop-fetch.lock exited 0 at 2026-10-14T10:16:19.952123+00:00.
-Branch feature/meal-plan-consumer-19-20261014; exact base
-908ca373dfc918f2e33fd5e44260879577bed5c5.
-
 Retained helper pin verified as a commit:
 38dcb3f8a542a0c8d3f1d3341c1e4a4a779a1d18. It remains on its original branch;
 the new module does not import or adopt it. Independent review of both the

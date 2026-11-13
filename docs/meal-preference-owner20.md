@@ -152,18 +152,9 @@ dense limits/scalars, and actual shared-kitchen projection/apply behavior.
 Fake endpoint DB is a handler wiring probe, not D1, persistence durability or provider
 authentication qualification. No servers, installs, source copies or broad tests ran.
 
-Primary common-dir `/home/user/src/offmenu/.git`, HEAD/main
-`8652b312ce7989c5e4f2d49ae765d5d8daf5841d` and primary index SHA-256
-`4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389`
-are checked before/after commit. Only this module, focused test and owned doc change.
-Supplied controls remain unrestricted filesystem/danger-full-access, network enabled,
-mandatory auto_review; separate approval policy unavailable. No settings changed.
-
 Root must select an existing independent reviewer for the retained helper and this
-exact result commit before adoption. Morgan owns final verdict. Pending owner wiring
+exact result commit before adoption. the product maintainer owns final verdict. Pending owner wiring
 and session qualification are explicit remaining contracts, not completion claims.
-
-
 
 ## Current-source private state candidate — 18 October 2026
 

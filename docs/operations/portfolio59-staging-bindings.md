@@ -80,7 +80,7 @@ or attach arbitrary logs to the report.
 Tests use an authored pure seam fixture, **not an implemented production TTL
 planner**. No 30-day cache execution or body integrity is certified here.
 
-Proposed shared extension for integrator00: one source-neutral pure planner in
+Proposed shared extension for the product integrator: one source-neutral pure planner in
 the existing policy module, with exact input identity / acquisition / revalidation
 chain validation, explicit missing/held/unknown states, under-30-day reuse intent,
 post-window conditional-review intent, zero I/O and no authority activation.
@@ -103,10 +103,10 @@ distinct. CLI malformed-input errors are bounded; no raw logs or data are echoed
 - Exact rights/scope/staging acceptance and independently qualified country/type
   requirements. Existing source holds remain; missing custody alone is not a
   newly invented legal prohibition.
-- The shared pure planner and any missing generic source adapter require Morgan
+- The shared pure planner and any missing generic source adapter require the product maintainer
   selection and integrator review. No source-body work is selected by this code.
 
 Finland/Frida, NO/FR native crashes, 403/certificate/private/credential/actual
-denials, raw-on-Foo, DEV7645, production/CIX and later golden-promotion holds are
+denials, raw-on-local executor, DEV7645, production/CIX and later golden-promotion holds are
 unchanged. The package requires independent review and integration before a next
 request. The authored tests are code evidence, not real-source acceptance.

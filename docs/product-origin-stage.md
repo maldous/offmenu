@@ -52,6 +52,6 @@ It is not yet selected by a production scheduler or admission registry; callers
 must use this entry point rather than the old normalization-only bridge to claim
 field-origin coverage. The emitter remains pinned to the previously reviewed
 product adapter SHA-256; changing those adapter bytes requires a new review and
-explicit repin. Original source rights, scope and capacity/Foo custody rules
+explicit repin. Original source rights, scope and capacity/local executor custody rules
 still apply. No network, raw production inputs, scheduler, GitHub write or
 production admission occurred during implementation/testing.

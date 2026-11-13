@@ -30,7 +30,7 @@ Original pinned bytes remain immutable. Legacy parsing uses Python numeric value
 
 ## Limits and failure behavior
 
-This lane reuses the existing worker's **64 MiB combined input**, **1 GiB address-space**, **120 second wall / 110 second CPU**, **256 MiB total output** ceilings. Parsers and preflight eagerly materialize tables; no streaming or production-scale adequacy is claimed. Large original archives may exceed this ceiling and must stay in Foo; this implementation does not relax limits or substitute an unpinned small derivative.
+This lane reuses the existing worker's **64 MiB combined input**, **1 GiB address-space**, **120 second wall / 110 second CPU**, **256 MiB total output** ceilings. Parsers and preflight eagerly materialize tables; no streaming or production-scale adequacy is claimed. Large original archives may exceed this ceiling and must stay in local executor; this implementation does not relax limits or substitute an unpinned small derivative.
 
 Failures return explicit contract errors before launch or generic execution-worker-failed for guarded collector/preflight failures. A failed candidate directory is never represented as a successful receipt, admission or accepted result. Global peer stages remain independent. Successful output uses deterministic candidate JSONL and gzip, evidence-derived acquisition timestamps, neutralized historical manifests, and no acceptance count.
 

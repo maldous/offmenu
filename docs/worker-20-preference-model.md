@@ -87,15 +87,8 @@ Actual run: six passed, zero failed; reported duration 23.346735 ms. The negativ
 example and test runner used two Node processes total (test isolation disabled).
 Only synthetic fixtures are used; no Git-writing fixtures or disposable repos.
 
-Before/after assertions verify common-dir `/home/user/src/offmenu/.git`, primary
-checkout HEAD and main ref at the base SHA, primary branch `main`, and primary
-index SHA-256 `4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389`.
-The result commit changes only the three reserved new files. Worker 20's own
-branch/ref/index necessarily change when committing; shared Git object storage
-receives that commit. No primary ref/index or other owner's files are changed.
-
 Focused checks do not establish shipping, integration, medical safety, allergy
-certainty, complete requirement acceptance or release qualification. Morgan review
+certainty, complete requirement acceptance or release qualification. the product maintainer review
 and the owner-controlled dependencies remain required.
 
 ## Worker 12 review follow-through — M12-01 and M12-02

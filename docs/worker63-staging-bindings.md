@@ -3,7 +3,7 @@
 Portfolio-specific metadata/code proposal on develop
 `abecb99ee1125730ccbc2824b6ec49ffc5cc4302`. This installs no source admission,
 country acceptance, gold record, source-body parser, acquisition or shared-core
-change. Raw assets stay on Foo. The configuration is reviewed code/configuration,
+change. Raw assets stay on the selected local executor. The configuration is reviewed code/configuration,
 not a manifest that can grant `SourceContract`/`Admission` privileges.
 
 ## Run
@@ -69,7 +69,7 @@ is Wikibooks-specific and is not used; `plan_fixture` is registry-bound;
 `CachedAcquirer` is operational/body-reading and is not invoked. The optional
 shared proposal below is not needed to run the present metadata package.
 
-Suggested integrator00-only future interface, **proposal, not implemented**:
+Suggested the product integrator-only future interface, **proposal, not implemented**:
 `plan_retained_input(source_id, release_id, bundle_identity, original_acquired_at,
 validated_at, now, retention_seconds, holds)` in shared policy code. It should be
 pure/no-I/O, preserve unknowns and original age, require explicit trusted identity,
@@ -88,12 +88,12 @@ Replay preserves14 snapshot files including mtimes. No source records normalized
 
 Private local evidence, command logs, parser/import failure and correction,
 per-country cache/source blockers and snapshot hashes are retained under:
-`/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-63/M-STAGING-BIND-20261018-W63/validation-v2/`.
+the retained `owner-63/M-STAGING-BIND-20261018-W63/validation-v2` evidence directory.
 The first pre-preparation import attempt failed because old checkout shadowed the
 shared export; no test ran then. The corrected prepared checkout runs passed.
-No reported code pass substitutes for independent exact review/Morgan verdict or
-fresh-develop integration. Integrator00 receives the exact commit/patch/checks
-through Gateway; no remote push, merge or shared source mutation is performed.
+No reported code pass substitutes for independent exact review or
+fresh-develop integration. the product integrator receives the exact commit/patch/checks
+through independent review; no remote push, merge or shared source mutation is performed.
 
 ## F1/F2 review correction
 

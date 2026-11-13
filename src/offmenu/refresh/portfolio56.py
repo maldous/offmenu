@@ -88,7 +88,7 @@ def _check_binding(binding):
 def _read_regular(path, *, limit, allow_empty=False):
     """Bound reads to one checked descriptor, including ancestor identities.
 
-Linux/Foo no-follow/nonblocking opens reject special files before any read.
+Linux no-follow/nonblocking opens reject special files before any read.
 A pathname is never reopened after its content/identity has been validated.
 """
     required = ('O_NOFOLLOW', 'O_NONBLOCK', 'O_DIRECTORY', 'O_CLOEXEC')

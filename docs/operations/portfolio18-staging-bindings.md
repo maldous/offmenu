@@ -95,20 +95,20 @@ claim production dispatch isolation from this test.
 
 ## Integration handoff and dependencies
 
-The integrator00 baseline/interface result5798 (receipt SHA256
+The the product integrator baseline/interface result5798 (receipt SHA256
 `f94fbf0a42b5d7906e20ace0416295ae569ee400ddfd770f90a427f803d3b7cb`)
-confirms the missing source-neutral pure-planner interface. If Morgan selects a
+confirms the missing source-neutral pure-planner interface. If the product maintainer selects a
 shared extension, propose `policy.plan_retained_input` centrally with explicit
 source/release/bundle identity, acquisition/revalidation times, holds/unknowns
 and zero-I/O intent output. This commit adds no such public shared API.
 
-Next: independent review of this exact commit/config/tests, then integrator00
+Next: independent review of this exact commit/config/tests, then the product integrator
 decides integration and any shared interface extension. Source-specific body
 projection requires a separately qualified dispatch and reviewed semantic
 callback/asset inventory/rights scope. Retain correction ownership while review
 is pending; do not repeat completed tests without changes or new evidence.
 
-Morgan owns cross-worker scheduling and ledger reconciliation. Existing25
+the product maintainer owns cross-worker scheduling and ledger reconciliation. Existing25
 reviews,57 NL adapter,64 continuation/sync and source custodians49/50 remain
 separate. All source-use/privacy/custody/actual denial, Finland/Frida, native
-NO/FR crash restrictions, raw-on-Foo, production/CIX and DEV7645 holds remain.
+NO/FR crash restrictions, raw-on-local executor, production/CIX and DEV7645 holds remain.

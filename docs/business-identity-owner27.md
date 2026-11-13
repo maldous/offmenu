@@ -101,12 +101,10 @@ Final readback must match. Filesystem controls actually supplied: unrestricted
 danger-full-access; network enabled; mandatory reviewer auto_review. Separate
 approval policy unavailable; no named profile inferred. Controls unchanged.
 
-
 ## Worker 09 correction follow-through — 15 October 2026
 
 Prior immutable candidate c9277fd8e06c1d16fcd98e04736d47dfd1f58d2c remains the
-parent on the same branch. Review input is the exact Worker09 review.md and
-review-receipt.json in /home/user/Documents/Codex/2026-10-15/task-2/worker-09-business-identity-review.
+parent on the same branch. The retained independent review identified the following contract corrections.
 W09-BI-F1 arose from the generic company/brand child fallback being applied to
 accounting-parent; this predicate now requires company -> company explicitly.
 An evidenced brand-control -> company -> accounting-parent chain remains usable;

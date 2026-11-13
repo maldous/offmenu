@@ -4,18 +4,18 @@ import {readFileSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
 import {createOffMenuHandler} from '../../apps/web/server/handler.mjs';
 
-// UIF-102 / OM-C037 / CACHE-06: synthetic source/consumer cut only.
+// OM-C037 / CACHE-06: synthetic source/consumer cut only.
 // No live GLEIF terms/adoption, whole-row acceptance, or historical seed rights
 // are established here. The local policy is fabricated test data, not activation.
-const query = 'UIF102 SYNTHETIC ORGANIZATION';
+const query = 'OFFMENU SYNTHETIC ORGANIZATION';
 const envelope = () => ({data: [{
-  id: 'UIF102-SYNTHETIC-NOT-A-REAL-LEI',
+  id: 'OFFMENU-SYNTHETIC-NOT-A-REAL-LEI',
   attributes: {entity: {legalName: {name: query}, jurisdiction: 'ZZ', status: 'SYNTHETIC'}},
 }]});
 const syntheticPolicy = {
-  id: 'gleif', version: 'uif102-synthetic-only/1',
+  id: 'gleif', version: 'offmenu-synthetic-only/1',
   actions: ['display', 'persist'], audiences: ['public'], countries: [],
-  evidenceUrl: 'https://synthetic.invalid/uif102',
+  evidenceUrl: 'https://synthetic.invalid/offmenu',
 };
 
 function database() {
@@ -170,7 +170,7 @@ test('equivalent concurrent queries share one provider fetch and release the res
     const body = await response.json();
     assert.equal(body.cache, 'miss');
     assert.equal(body.records.length, 1);
-    assert.equal(body.records[0].id, 'lei:UIF102-SYNTHETIC-NOT-A-REAL-LEI');
+    assert.equal(body.records[0].id, 'lei:OFFMENU-SYNTHETIC-NOT-A-REAL-LEI');
     assert.equal(body.records[0].legalName, query);
     assert.equal(body.records[0].matchStatus, 'candidate');
     assert.deepEqual(JSON.parse(f.cache().document), body);
@@ -181,7 +181,7 @@ test('equivalent concurrent queries share one provider fetch and release the res
 
 test('provider 503 remains a failure, pauses retries, then recovers after stored retry_after', async () => {
   await fixture(async f => {
-    f.expectFetch({error: 'UIF102 SYNTHETIC OUTAGE'}, 503);
+    f.expectFetch({error: 'OFFMENU SYNTHETIC OUTAGE'}, 503);
     const failure = await f.call();
     assert.equal(failure.status, 502);
     const body = await failure.json();

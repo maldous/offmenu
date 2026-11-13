@@ -1,37 +1,25 @@
-# Data and operations tools
+# Product data and development tools
 
-Repository commands are grouped by responsibility. Importable application code
-lives in the installed `src/` packages. Python command filenames use snake_case;
-command directories use kebab-case like the other repository areas.
+Importable product code lives in the installed `src/` packages. Repository
+programs are grouped by responsibility:
 
-| Area | Maintained commands |
+| Area | Purpose |
 | --- | --- |
-| `tools/data-processing/` | Acquisition adapters, normalization, qualification, packaging and offline evidence checks; specialized subgroups retain their boundaries. |
-| `tools/corpus/` | Corpus policy and curation helpers. |
-| `tools/source-processing/completed-observation-query/` | Inactive read-only adapter and generated-fixture checks for completed observations. |
-| `tools/operations/` | Runner setup, dispatch, readiness, ledger and selected-dataset grant commands. |
-| `scripts/` | Small developer bootstrap and layout-check entrypoints. |
+| `tools/data-processing/` | Source adapters, normalization, qualification and offline evidence checks. |
+| `tools/corpus/` | Product corpus policy and curation helpers. |
+| `tools/source-processing/` | Bounded source-processing interfaces and authored fixture checks. |
+| `scripts/` | Product builds, generated-output and repository checks. |
 
-Use the repository's pinned delivery Python environment after bootstrapping it;
-commands import the installed packages rather than injecting a legacy repository
-root into Python's import path. For example, from the repository root:
+Use this checkout's ordinary `.venv` with the declared dependencies. Do not
+inject another checkout into `PYTHONPATH`, create package symlinks or depend on
+an unrelated host directory. For example:
 
 ```sh
-.venv-delivery/bin/python -B -m unittest discover \
-  -s tools/source-processing/completed-observation-query \
-  -p 'test_query_normalization.py'
-.venv-delivery/bin/python -B tools/data-processing/run_ciqual_synthetic.py --help
-.venv-delivery/bin/python -B tools/operations/dispatch_foo_job.py --help
+python -B tools/data-processing/run_ciqual_synthetic.py --help
 ```
 
-Moving a command does not authorize its execution. Acquisition, publication,
-runner administration and dataset grants retain their explicit admission and
-source-use conditions. Historical measurement reruns remain disabled. Historical
-commit references keep their original paths; current consumers use the migrated
-paths. Exact implementation hashes in current grant dependencies are measured
-from their current bytes, while historical evidence and dataset locks remain
-unchanged.
-
-The held files under `scripts/windmill/` are private live bridge dependencies.
-They are not part of this tracked-source migration and must remain where their
-existing consumers expect them until a separately verified runtime transition.
+A tool's presence or relocation does not authorize its real inputs or effects.
+Acquisition, export, publication and source-specific processing keep their
+licence, consent, audience and exact-input requirements. Authored fixtures are
+not real-source acceptance. Historical source identities are provenance, not
+filesystem paths that a clean checkout must provide.

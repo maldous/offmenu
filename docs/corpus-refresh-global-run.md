@@ -8,15 +8,14 @@ Baseline: `2266e85046eb22d5baccba09149c0f3b70dadd25`.
 
 The coverage loader verifies the exact retained inventory pins. This command
 reads metadata only. It does not read source bodies, fetch landing pages, start
-Foo work, change accepted pointers, or run national adapters. Source paths must
+other jobs, change accepted pointers, or run national adapters. Source paths must
 be registered separately before adding this operation to a runner profile.
 No caller-provided URL or dynamically imported plugin is supported.
 
 Default stdout is the comprehensive JSON assessment. `--compact` emits a closed
 summary under 2 KiB suitable for bounded control logs. Its `reportSha256` and
 `reportBytes` describe the comprehensive report encoded as UTF-8 JSON with sorted
-keys, comma/colon separators, and no trailing newline. Full reports belong on
-Foo, not GitHub or shared control logs. `--output /approved/foo/report.json`
+keys, comma/colon separators, and no trailing newline. Full reports belong in private local storage, not GitHub or shared control logs. `--output /approved/offmenu/report.json`
 streams canonical JSON to an exclusive output file and emits only compact stdout.
 Existing files and symlink paths are rejected. Serialization and digesting are
 incremental, avoiding a second giant JSON string; the bounded report object remains
@@ -73,7 +72,7 @@ or force-download still cannot override holds or retention/use restrictions.
 Acquisition defaults to 64 MiB/180 seconds. A separately reviewed streaming
 acquisition binding may reserve up to 1 TiB/600 seconds via `acquire_bytes` and
 `acquire_wall_seconds`, using the acquisition module’s explicit `ResourceBudget`
-and verified Foo storage policy. A configured path is not proof of the host.
+and verified local executor storage policy. A configured path is not proof of the host.
 This does not raise the separate parser input cap (64 MiB), admit an endpoint,
 expand archive processing, or create a production binding.
 Network counts remain unknown for bound adapters until measured receipts are

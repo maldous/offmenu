@@ -6,7 +6,7 @@ receipt JSONs, never a path found inside them. It does not parse original menu,
 research, CPI or composition bytes. No source admission, country completion,
 translation, nutrient equivalence or golden promotion follows from this package.
 
-Run from the source checkout on Foo:
+Run from the source checkout on the selected local executor:
 
 ```sh
 python3 -m offmenu.refresh.portfolios.worker38 --now 2026-10-18T00:00:00Z
@@ -22,7 +22,7 @@ descriptor. There is no copied country engine or shared-core edit.
 
 ## Source and field evidence
 
-Each declaration pins the actual retained receipt SHA256 and absolute Foo path.
+Each declaration pins the actual retained receipt SHA256 and absolute local executor path.
 Receipt selectors are JSON pointers. Generated metadata candidate `data` fields
 have matching shared `fieldOrigins`: source/release namespace, receipt digest,
 canonical relative input alias, receipt identity and exact literal source field.
@@ -81,7 +81,7 @@ tests inject fixed authored protocol responses to exercise the seam; they
 do not spoof a production source or reuse the Wikibooks policy. A separate
 authored metadata packet qualifies through actual shared SourceContract/qualify,
 and candidate corruption is refused by that same validator. Implementing/reviewing the shared pure planner belongs to integration00
-under Morgan's selection. The production CLI fails closed until that dependency
+under the product maintainer's selection. The production CLI fails closed until that dependency
 is resolved; no new cache engine has been installed.
 
 `diagnose` accepts an optional prior build key; `run` accepts prior keys per
@@ -109,8 +109,8 @@ metadata, not a native nutrient/product/recipe record or production admission.
 
 Remaining dependencies: exact source-use/field-origin selectors/native unit and
 basis/scope acceptance for each actual payload; independently reviewed per-source
-contracts; shared pure cache planner; independent review and integrator00's
-develop integration. Raw data stays Foo. Finland/Frida, NO/FR native crash,
+contracts; shared pure cache planner; independent review and the product integrator's
+develop integration. Raw data stays on the selected local executor. Finland/Frida, NO/FR native crash,
 403/private/credential denials, production/CIX and DEV7645 boundaries survive.
 
 Authored fixture coverage exercises positive metadata, missing file/selector,

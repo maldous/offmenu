@@ -1,202 +1,82 @@
-# Repository standard 2.5.3
+# Repository standard 3.0.0
 
-Status: 2.5.3 merge-only amendment candidate based on accepted source 349dbf9; previous standard status: adopted through reviewed integration after independent source review and
-real retained-extraction validation. Changes enter `develop`
-through the reviewed GitFlow integration process. The machine-readable contract is
-[`repository-standard.json`](../../repository-standard.json). This document
-explains decisions; historical handovers do not override it.
+Status: standalone-product candidate. The machine-readable contract is
+[`repository-standard.json`](../../repository-standard.json); the decision is
+[ADR 0014](../adr/0014-standalone-product.md). Acceptance and clean-build results
+must be recorded against the actual reviewed candidate, not inferred from this
+version label.
 
-## Decisions from discovery
+## Product boundary
 
-OffMenu has three installed Python packages, a browser/Worker application,
-a retailer extension, hosting adapters, source contracts and inactive integration
-seams. Standard 2.0.0 groups those actual responsibilities and updates their
-consumers. [ADR 0003](../adr/0003-final-repository-layout.md) supersedes the earlier
-transitional root decision. A filename-check pass alone does not establish an
-adequate architecture.
+This repository contains OffMenu product source, its contracts, examples,
+dependencies, build tools and tests. A fresh checkout must install and build
+without another project checkout, machine-specific directories, service
+credentials or a shared orchestration process. Optional product integrations
+have requirements only when selected for use or deployment.
+
+Shared coordination, host/session administration and historical operational
+records are maintained outside this product source tree. Their preservation
+retains original identities and hashes; it does not assert a recipient transfer,
+system adoption or runtime transition. Existing held private consumers must not
+be moved or deleted merely because tracked source is reorganized.
+
+## Layout
 
 | Location | Responsibility |
 | --- | --- |
-| `src/offmenu/`, `src/offmenu_ciqual/`, `src/offmenu_norway/` | Installed Python packages with explicit resource packaging. |
-| `apps/web/{src,assets,server}/`, `apps/retailer-extension/` | Browser/Worker application and retailer extension. |
-| `deploy/netlify/public/`, `deploy/auth-return/` | Hosting adapters; published routes remain compatible. |
-| `integrations/staged/`, `integrations/candidates/` | Inactive source seams; moving them does not activate them. |
-| `contracts/{corpus,schemas}/`, `config/source-bindings/` | Source/provenance schemas and reviewed non-secret configuration. |
-| `tools/` | Delivery, source-processing, corpus, data-processing, diagnostics and operations programs. |
-| `scripts/` | Small build/bootstrap/validation entrypoints. |
-| `tests/` | Python suites and `web/`, `edge/`, `compat/`, `support/` runtime verification. |
-| `docs/`, `examples/`, `archive/` | Current guides and ADRs, offline examples, and explicitly frozen custody. |
+| `src/offmenu/`, `src/offmenu_ciqual/`, `src/offmenu_norway/` | Installed product Python packages and declared resources. |
+| `apps/web/`, `apps/retailer-extension/` | Browser/Worker product and retailer extension. |
+| `deploy/netlify/public/`, `deploy/auth-return/` | Product hosting/authentication adapters. |
+| `integrations/` | Optional unmounted product components; source presence does not activate them. |
+| `contracts/`, `config/` | Product schemas, source/provenance contracts and reviewed non-secret configuration. |
+| `tools/`, `scripts/` | Product data/development tools, build and validation entrypoints. |
+| `tests/` | Authored fixtures, Python, browser, edge and compatibility checks. |
+| `docs/`, `examples/` | Current product guides/decisions and offline examples. |
 
-Root manifests/configuration remain where their tools require them. Ignored
-`node_modules/`, `dist/`, `build/`, virtual environments, package metadata and
-caches remain generated local state. Private `data/`, `output/` and `.delivery/`
-remain excluded from Git and preserve existing access/consumers. The exact 49
-held operational files retain their paths. Other retired generated directories
-are recoverably relocated, with a private restore journal. See
-[root disposition](../development/root-layout.md) and the
-[tracked migration map](layout-migration-v2.json). Dated evidence paths remain
-historical; no raw datasets, secrets or private receipts are published.
+Root manifests and configuration stay where their package/build tools require
+them. Keep dependencies, virtual environments, databases, build output, private
+exports and caches untracked. Data rights and current consumers remain explicit;
+a directory move never creates qualification or publication permission.
 
-Run both `python -m offmenu.delivery check` and
-`python scripts/check_final_layout.py` in the bootstrapped environment. The former
-checks classification/names; the latter enforces required architecture and
-rejects retired maintained roots or tracked private artifacts. Neither replaces
-behavior, packaging or accepted-output checks.
+## Names and encoded checks
 
-## Naming and coding conventions
+Use snake_case for Python modules/tests, descriptive lower kebab case for authored
+JavaScript/prose/JSON filenames, and the conventional platform names listed in
+the contract. Preserve imported product fixtures and source identities through
+explicit naming exceptions, rather than renaming externally specified content.
+New exceptions or structural policy changes require a versioned decision.
 
-New Python modules and tests use `snake_case.py` and `test_<behavior>.py`.
-JavaScript modules, styles, schemas and prose use descriptive lower kebab case;
-JS tests use `<behavior>.test.mjs`. Python package directory underscores remain
-correct. JSON field casing follows its existing public schema, not its filename.
-Keep platform conventions such as `README.md`, `MANIFEST.in`, `SKILL.md`,
-`__init__.py` and lockfile names. Never rename an externally specified path just
-to satisfy a generic regular expression.
+Use UTF-8, LF and a final newline. Keep new Python indentation at four spaces and
+new JSON at two. Follow adjacent module style and avoid unrelated formatting.
 
-Use UTF-8, LF, one final newline, four spaces in Python and two in new JSON.
-Follow the adjacent JavaScript module style when changing existing code; use
-ES modules in this `type: module` project. Changes must keep Python's declared
-supported version and the Node version documented in the maintainer guide.
-Do not reformat unrelated files. Python tests use `unittest`; JavaScript tests
-use `node:test`. Check the smallest materially affected command surface, then
-expand only for dependencies or failures. Installation alone is not validation.
+```sh
+python3 scripts/check_repository.py --discover
+python3 scripts/check_repository.py
+python3 scripts/check_final_layout.py
+```
 
-The exact `legacy_paths` list retains only imported, historic custody and pinned
-fixture identities, with a reason for each path. Authored Python CLI names now
-use snake case under `tools/`; their current callers moved with them. New
-exceptions require an ADR. Migration updates imports, packaging, build/routing
-consumers and tests together. Logical provenance identities and dataset
-qualification are not silently replaced by current physical source paths.
+These checks inspect the selected repository and its layout/naming contract.
+They need no project-specific environment bootstrap or service. Their pass does
+not replace package installation, a complete product build or behavior checks.
 
-## Branch and merge discipline
+## Branch, release and evidence
 
-`develop` is the integration branch; `main` is the reviewed release branch.
-Create `feature/<purpose>` or `bugfix/<purpose>` from freshly checked `develop`.
-Use `hotfix/<purpose>` only for a selected release repair and reconcile its
-accepted change back to `develop`. This workstream uses exactly
-`feature/langgraph-delivery-standardization`; parallel specialists share its
-single integration writer. Existing suspended workers and branches remain held.
+Use `feature/` or `bugfix/` branches from the selected current `develop` and retain
+one integration writer. Review the exact diff and materially affected behavior
+before source acceptance. Record source base/head/tree, changed paths, commands,
+exits, artifacts, unrun checks and remaining limitations. Reconcile unknown
+external effects before retrying the same operation.
 
-Before acceptance, record the base/head, exact changed paths, check results,
-unrun checks and blockers. A clean checkout, pushed commit or preserved source
-is not proof that application behavior works. Confirm the remote feature ref
-and reviewed file content after pushing. Merge feature work into `develop`
-through review. Freeze the accepted release candidate from `develop`, and promote
-that exact candidate through `release/candidate-<candidate fingerprint>` to
-`main` with separate release review. Exhaustive release checks remain bound to
-the candidate's source, tree and artifacts while `develop` advances. A repair
-creates a new candidate; it never rewrites prior evidence. Verify the resulting
-`main` tree and immutable release tag. Keep `main` static between approved releases.
-Never merge unqualified historical work simply because its branch exists.
+Follow [`config/release-policy.json`](../../config/release-policy.json) for the
+immutable release candidate, independent review, complete qualification,
+canonical tree readback and immutable tag. A repair creates a new candidate;
+keep `main` static between approved releases. No automatic product deployment
+follows from this standard.
 
-The workflows inspected at adoption are manual, except the narrowly scoped
-`offmenu-runner-jobs` push trigger in `foo-runner.yml`. This work does not dispatch
-Actions or push to that control branch. Reinspect trigger changes before any
-future publishing operation. Do not add broad release gates to routine fixes.
+## Changes to the boundary
 
-## Evolving the standard
-
-Discovery reads tracked source, manifests, build scripts, imports, tests,
-current operational contracts and Git status. Classify a proposed move as source,
-generated, runtime/private data or historical evidence before planning it.
-Emit a specific proposal, affected consumers, reversible migration and acceptance
-checks. Compare current evidence with the last accepted checkpoint.
-
-A change to the standard requires a new version, an ADR explaining evidence and
-tradeoffs, explicit exception changes and verification. An LLM may propose a
-revision; it cannot silently rewrite the standard, approve its own migration,
-claim completion from an intermediate job, or convert an exception into success.
-Deterministic local checks remain the acceptance authority for encoded rules.
-For guarantees that require judgment, preserve the reviewer decision and scope.
-
-## Parallel execution capacity
-
-Standard 2.1.0 adopts [ADR 0004](../adr/0004-resource-aware-parallel-capacity.md)
-and the explicit [8/16/32/64 policy](../../tools/delivery/capacity-policy.json).
-See [admission and resource limits](../development/parallel-capacity.md) and
-[actual protocol boundaries](../development/execution-protocols.md). Capacity
-selects ceilings; it does not activate workers, invent work or grant provider
-entitlement. The single integration writer and existing pause boundaries remain.
-
-## Autonomous integration
-
-Standard 2.2.0 adopts [ADR 0005](../adr/0005-autonomous-integration.md).
-The [integration policy](../../tools/delivery/integration-policy.json) enables
-the deterministic controller for an authenticated connector owner. Persist intent
-before mutation, compare exact head/base, require bound independent review and
-Windmill validation, and verify canonical merge parents/tree and develop ancestry.
-Linear metadata failure retries only metadata. Unknown external effects retain
-repository ownership until reconciled. This authority does not enable Actions,
-production deployment, main promotion or suspended historical workers.
-
-## Origin-bound validation and continuation observations
-
-The proposed 2.3.0 extension is described in
-[ADR 0006](../adr/0006-typed-extraction-validation-and-refill.md). A reviewed
-source-only extraction has its own origin/admission contract; it never acquires
-a fabricated native coding receipt. Bind its exact mapping, review, candidate
-workspace and output hashes to a fixed profile and same-base trusted validators.
-The existing Windmill/integration policy and independent review remain required.
-
-New receipts separate task-fit/model requests from actual observations and retain
-parent/lease/job identity. Phase-boundary ready-refill records are provisional
-observations, not new admission/dispatch authority. Missing provider or platform
-capability is explicit. Active operation IDs, aggregate limits, legacy pauses and
-publication permissions remain unchanged.
-
-
-Standard 2.3.1 adds the bounded completed-native evidence consumer in
-[ADR 0007](../adr/0007-completed-native-validation-consumption.md). Original
-native admission, coding receipt, Engine validation and completed integration
-retain distinct identities. This does not create a Journal, replay execution,
-close a parent outcome, or grant new publication, provider or service authority.
-
-## Native-platform harness and frozen releases
-
-Standard 2.4.0 adopts the source and ownership contract in
-[ADR 0009](../adr/0009-native-platform-harness.md) and
-[`delivery-release-policy.json`](../../config/delivery-release-policy.json).
-Linear retains outcomes and dependencies, Stokowski admitted coding, LangGraph
-finite workflow state, Windmill deterministic jobs, and GitHub source/review and
-release facts. Shared handoffs preserve distinct origins and original operation
-identities; an uncertain effect must be reconciled before another write.
-
-Coherent source review and meaningful validation precede installation. The
-[adoption procedure](../development/native-harness-adoption.md) retains original
-installer receipts, rollback custody and actual host confirmations. Component
-tests, source integration and a service start do not establish useful BAU or
-legacy retirement. Exact installed, active and functional evidence is required
-before retiring the obsolete lane. This source standard grants no product
-deployment, CIX execution, Actions, new credentials or spend.
-
-## Conditional validation source activation
-
-[ADR 0011](../adr/0011-conditional-independent-validation.md) records separate
-owner adoption of integration policy v2, integrated into `develop` by PR #217.
-Its exact reviewed bytes are in `integration-policy.json`. Exact-source candidates
-with independently reviewed, explicitly
-Foo-independent scope may use an independent cloud receipt. Foo-dependent or
-unclassified work still requires Windmill. Historical v1/v2 bindings retain their
-existing semantics. This source activation changes no installed publisher, host
-or security configuration and cannot certify its own integration.
-
-## Shared agent instructions
-
-[ADR 0010](../adr/0010-shared-worker-policy.md) adds a pinned local UIF worker
-policy copy and startup reference. It changes no runtime capacity/admission rule,
-source layout, integration ownership or publication permission.
-
-Standard 2.5.2 follows [ADR 0012](../adr/0012-cloud-routing-policy-1-2.md):
-carry the exact canonical UIF worker policy 1.2.0 and reconcile task routing with
-independent project-cloud execution and optional scoped Foo MCP. Existing typed
-admission, resource, review and integration requirements remain unchanged.
-
-## Explicit merge-only existing PRs
-
-[ADR 0013](../adr/0013-merge-only-existing-pr.md) proposes the narrow amendment
-to ADR 0005's issue-association requirement. A v4 existing-PR binding may select
-`integration_mode: "merge-only"` with an explicit `issue_id: null` only after
-this amendment/controller is accepted through its separately authorized bootstrap.
-Such a binding rejects project/full-issue acceptance fields, never publishes or
-completes Linear work, and ends at canonical `merge-verified`. Existing issue-bound
-records and their fingerprints are unchanged. No candidate can adopt itself.
+A structural change must identify actual consumers, distinguish product source
+from generated/private/history material, preserve necessary originals outside the
+tracked product tree, update the versioned contract and its callers together,
+and verify the affected imports, packaging and outputs. Never weaken privacy,
+source rights, authentication or data-loss assertions to make checks pass.

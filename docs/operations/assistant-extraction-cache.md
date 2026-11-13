@@ -38,7 +38,7 @@ and version, inference settings, parser/schema version, and transformation
 version. The envelope preserves the exact raw response, its SHA-256, extraction
 time, validation status/uncertainty, source provenance, transformation versions,
 and the base deterministic record. Cache files and response bodies belong on
-Foo and must not be committed or published.
+local executor and must not be committed or published.
 
 Cache schema 2 also binds the current deterministic record digest and its full
 source provenance, source-policy digest, permission evidence, declared encoding
@@ -116,13 +116,13 @@ violations fail explicitly rather than yielding a silently truncated recipe.
 Both menu adapters use the same strict whitespace-aware field locator; failed
 inline-name lookup cannot fabricate a span starting at zero.
 
-## Foo execution
+## local executor execution
 
 Run heavy corpus decompression, source parsing, schema checks, and future
-normalization batches on Foo. Use bounded worker pools subject to measured
+normalization batches on the selected local executor. Use bounded worker pools subject to measured
 memory and IO, checkpoint per asset, and one cache writer lock. Do not run
 duplicate parser/cache writers. Fetch remains paused and is outside this stage.
-Raw originals and all source-derived cache contents remain local to Foo.
+Raw originals and all source-derived cache contents remain local to local executor.
 
 ## Published inventory snapshot and current scope
 

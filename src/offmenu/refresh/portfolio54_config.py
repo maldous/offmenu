@@ -1,6 +1,6 @@
 """Reviewed metadata declarations only; no runtime admissions or source bodies.
 
-Paths/hashes identify retained Foo evidence. No referenced path is opened here.
+Paths/hashes identify retained local evidence. No referenced path is opened here.
 Unknown selectors/bases and all source-use restrictions remain explicit.
 """
 
