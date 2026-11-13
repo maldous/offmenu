@@ -1,7 +1,7 @@
 """Offline, bounded candidate projection of retained OFF, Prices and USDA files.
 
 No network, admissions, acceptance or publication. Large/raw custody stays on
-the separately authorized local runner; synthetic/small metadata placement follows
+the separately authorized Foo runner; synthetic/small metadata placement follows
 the reviewed runner capacity/locality/latency policy. Countries never create another download
 or change source rights. Originals stay in the immutable cache; source.sqlite is
 PRIVATE staging, not a public artifact (it can contain contributor metadata).
@@ -507,7 +507,7 @@ def normalize_products(context, inputs, destination, *, limits=ProductLimits()):
     Existing complete matching output is verified/reused; changed contract or
     corrupted output fails closed. Failures clean only this call's staging tree.
     Rights evidence strings are attribution, NOT proof of permission to execute.
-    Caller must enforce reviewed input pins, local custody and operation authority.
+    Caller must enforce reviewed input pins, Foo custody and operation authority.
     """
     context.validate()
     limits.validate()

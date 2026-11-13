@@ -41,6 +41,7 @@ test('product dispositions exhaust the product inventory without asserting accou
   const disposition = JSON.parse(await readFile(dispositionPath, 'utf8'));
   const actual = disposition.dispositions.flatMap(group => group.recordIds);
   assert.ok(disposition.sourceInventory.records > 0);
+  assert.equal(disposition.integrity.expectedRecordIds, disposition.sourceInventory.records);
   assert.equal(actual.length, disposition.sourceInventory.records);
   assert.equal(new Set(actual).size, actual.length);
   const sourceBytes = await readFile(new URL(disposition.sourceInventory.path, dispositionPath));

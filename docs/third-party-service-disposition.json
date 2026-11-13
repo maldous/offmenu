@@ -155,7 +155,7 @@
     }
   ],
   "integrity": {
-    "expectedRecordIds": 149,
+    "expectedRecordIds": 83,
     "verification": "Every inventory record ID appears exactly once in dispositions[].recordIds; verify-third-party-config tests configuration, and the service-document test checks this register against the source inventory."
   },
   "scope": "Product-only provider/source slice; no shared orchestration or cross-project account inventory."
