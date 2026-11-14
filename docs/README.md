@@ -11,6 +11,9 @@ For source-bound user guidance, see [support and optional-service preferences](s
 The guide distinguishes reviewing a request from submitting it and separates
 native help from optional third-party services.
 
+For barcode capture, source-result inspection and session controls, see the
+[source-bound scanner task guide](scanner-user-guide.md).
+
 ## Code and workflow map
 
 | Area | Entry points and guides |
