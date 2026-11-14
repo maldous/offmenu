@@ -11,6 +11,9 @@ For source-bound user guidance, see [support and optional-service preferences](s
 The guide distinguishes reviewing a request from submitting it and separates
 native help from optional third-party services.
 
+For source-bound user guidance, see [finding and reviewing shared recipes](recipe-library-guide.md).
+The guide distinguishes implemented controls from unverified deployment behavior.
+
 ## Code and workflow map
 
 | Area | Entry points and guides |
