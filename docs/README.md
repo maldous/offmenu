@@ -11,6 +11,9 @@ For source-bound user guidance, see [support and optional-service preferences](s
 The guide distinguishes reviewing a request from submitting it and separates
 native help from optional third-party services.
 
+For source-bound user guidance, see [using a shared kitchen](shared-kitchen-guide.md).
+The guide distinguishes source behavior from unverified deployment and sync.
+
 ## Code and workflow map
 
 | Area | Entry points and guides |
