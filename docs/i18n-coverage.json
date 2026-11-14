@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4016,
+  "messages": 4028,
   "arabicTranslated": 376,
-  "arabicMissing": 3640,
+  "arabicMissing": 3652,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 212,
@@ -1599,6 +1599,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "./integration-openapi.mjs": {
+      "sources": [
+        "apps/web/server/integrations.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "./integrations.js": {
       "sources": [
         "apps/web/src/documents.js",
@@ -2434,9 +2441,9 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    ":read. Token audience must be /api/v1. History includes food and cleanup records; directory includes saved recipes and locations.": {
+    ":read. Token audience must be /api/v1. Responses contain saved account data, not unsaved browser edits. Record content and nested document data remain source-specific; missing values are not zero.": {
       "sources": [
-        "apps/web/server/integrations.mjs"
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -6701,6 +6708,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Country/market used for export rights and record-country filtering. Filtering may leave an empty page with a non-null cursor.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Counts describe ingested records. Source inclusion and global feeds do not establish complete coverage of any country.": {
       "sources": [
         "apps/web/server/provider-data.mjs"
@@ -8723,6 +8737,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Exact normalized record-kind filter.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Exact observation": {
       "sources": [
         "apps/web/src/shelf-scanner.js"
@@ -8740,6 +8761,13 @@
     "Exact observation timestamp required": {
       "sources": [
         "apps/web/server/waste-observation-owner24.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Exact provenance source ID filter.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -10814,6 +10842,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Inclusive date boundary. Send YYYY-MM-DD; the REST implementation compares strings without calendar validation.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Incomplete source inventory: ": {
       "sources": [
         "apps/web/server/owned-snapshot-extractor.mjs"
@@ -11180,6 +11215,7 @@
     },
     "Integration storage unavailable": {
       "sources": [
+        "apps/web/server/integration-openapi.mjs",
         "apps/web/server/integrations.mjs"
       ],
       "arabic": false,
@@ -11828,13 +11864,6 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Invalid or expired token": {
-      "sources": [
-        "apps/web/server/integrations.mjs"
-      ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
-    },
     "Invalid or full transition journal.": {
       "sources": [
         "apps/web/src/stock-transition-model.js"
@@ -12346,6 +12375,13 @@
     "Invalid waste receipt.": {
       "sources": [
         "apps/web/server/state.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Invalid, expired, revoked or wrong-audience token": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -15202,6 +15238,13 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Only GET is supported for personal API resources": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Only controls reported by this camera are shown. Preview mirroring and rotation do not change barcode decoding.": {
       "sources": [
         "apps/web/assets/index.html"
@@ -15257,6 +15300,20 @@
       ],
       "arabic": false,
       "classification": "explicit-ui"
+    },
+    "Opaque cursor returned by the preceding page. Omit for the first page.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Opaque last scanned ID, or null when no later page remains. Continue even when a rights-filtered page contains no records.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
     },
     "Open Food Facts": {
       "sources": [
@@ -15772,6 +15829,13 @@
     "Owner permission required": {
       "sources": [
         "apps/web/server/kitchens.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Owner-scoped document page": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -17792,7 +17856,7 @@
     },
     "Read your ": {
       "sources": [
-        "apps/web/server/integrations.mjs"
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -18681,6 +18745,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Requested scanned page size. Omitted, non-numeric and zero values default to 100; other numeric values are clamped to 1–1000. Send an integer.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Required gates": {
       "sources": [
         "apps/web/server/cache-invalidation-owner29.mjs"
@@ -18695,9 +18766,16 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Required scope missing": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Requires ": {
       "sources": [
-        "apps/web/server/integrations.mjs"
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -19209,6 +19287,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Rights-filtered normalized records from the scanned page": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Rights: ": {
       "sources": [
         "apps/web/src/shelf-scanner.js"
@@ -19243,6 +19328,13 @@
       ],
       "arabic": false,
       "classification": "explicit-ui"
+    },
+    "Rows withheld from this scanned page by export rights or country filtering.": {
+      "sources": [
+        "apps/web/server/integration-openapi.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
     },
     "Rule and evidence JSON": {
       "sources": [
@@ -20105,13 +20197,6 @@
     "Schema, account or revision mismatch": {
       "sources": [
         "apps/web/server/health-import-owner28.mjs"
-      ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
-    },
-    "Scope missing": {
-      "sources": [
-        "apps/web/server/integrations.mjs"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -24822,7 +24907,7 @@
     },
     "Versioned personal records": {
       "sources": [
-        "apps/web/server/integrations.mjs"
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -27238,7 +27323,7 @@
     },
     "offmenu personal kitchen API": {
       "sources": [
-        "apps/web/server/integrations.mjs"
+        "apps/web/server/integration-openapi.mjs"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -27527,6 +27612,7 @@
     "private account": {
       "sources": [
         "apps/web/server/catalogue.mjs",
+        "apps/web/server/integration-openapi.mjs",
         "apps/web/server/provider-data.mjs",
         "apps/web/src/data-workspace.js"
       ],
