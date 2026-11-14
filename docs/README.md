@@ -11,6 +11,9 @@ For source-bound user guidance, see [support and optional-service preferences](s
 The guide distinguishes reviewing a request from submitting it and separates
 native help from optional third-party services.
 
+For the member's assistant name, private instructions and save/conflict states,
+see [Personal AI preferences](personal-ai-guide.md).
+
 ## Code and workflow map
 
 | Area | Entry points and guides |
