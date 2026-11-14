@@ -21,6 +21,8 @@ native help from optional third-party services.
 | Authentication seam | [foundation](better-auth-foundation.md), [unmounted runtime seam](better-auth-runtime-seam.md); source integration is not activation. |
 | Local originals / static delivery | [curation architecture](curation-architecture.md), [source acceptance](source-acceptance-contract.md), [refresh/acquisition](refresh-acquisition-contract.md). |
 | Private source-only processing | [ingredient ingestion](ingredient-ingestion.md), [`tools/source-processing/`](source-processing/README.md) source interfaces; selected inputs and review are required. |
+| Member food history and recorded estimates | [Insights guide](insights-guide.md), including record scope, missing data and full-history export. |
+| Application administration | [Administrator controls](administrator-controls-guide.md) for reviewed settings and existing public source policies. |
 | Work and action status | Existing OffMenu Linear issues hold active status, dependencies and acceptance; [routing and documentation homes](development/task-routing.md#documentation-homes-and-update-responsibility) define the complementary repo/ADR/AGENTS references. GitHub PRs are code review; historical ledgers preserve provenance. |
 
 For repository layout, use the [root architecture](development/root-layout.md).
