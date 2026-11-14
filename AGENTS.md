@@ -1,21 +1,21 @@
-## Fixed operating role
+# OffMenu agent execution context
 
-This repository belongs to the OffMenu dedicated project role. Read the fixed project agents and general Cloud role
-section in the local shared worker policy at startup and pass its version/hash to
-children. Project cloud Git, CPU and storage are independent of Foo; optional MCP
-execution must bind the correct host, project, worktree and branch. The general
-Cloud role has no Git configuration or repository binding. Additional Foo Codex sessions require
-restored allowance and current ownership checks. These are operating requirements,
-not proof of provisioning, availability or universal adoption.
+This repository owns OffMenu product and source contracts. Optional UIF
+maintenance orchestration is supplied by the selected execution environment;
+read the [policy reference](docs/agents/uif-worker-policy.md) and
+[profile reference manifest](docs/agents/uif-worker-policy.json) when that lane
+is selected. Load its verified policy 2.0.0 bundle and `offmenu` profile, then
+this file and applicable component instructions. Record the actual policy
+version, digest, source revision, executor and ownership in the existing handoff.
+Do not treat the local reference as an installed bundle or make UIF a product
+build/runtime prerequisite.
 
-# Shared UIF worker directions
-
-At every startup, including independent Foo work, read
-[the shared worker policy](docs/agents/uif-worker-policy.md) and
-[its local version manifest](docs/agents/uif-worker-policy.json).
-Apply them with this repository's project-specific instructions, not instead of them.
-
-Read the existing delivery contract below. ADR 0010 records this additive instruction-distribution change. Existing suspended workers, typed admission, resource controls and integration ownership remain unchanged.
+Cloud Git, Foo Codex inference and Foo MCP commands retain distinct prerequisites.
+Project cloud CPU/storage are independent of Foo; host execution must bind the
+actual project, host, owner, worktree and branch. Deterministic MCP commands do
+not consume a Foo Codex session. Quota return permits fresh admitted work only
+after current ownership and original-operation reconciliation. Historical workers
+remain held. ADR 0014 records this instruction-distribution change.
 
 # OffMenu developer and agent entrypoint
 

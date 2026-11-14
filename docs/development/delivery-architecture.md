@@ -56,12 +56,16 @@ or dispatch the next task. Existing admission must recheck scope, source, provid
 freshness and aggregate resources before work. There is no new polling manager,
 schedule or permission to resume historical workers or the paused hourly automation.
 
-Native coding currently requests `gpt-6.1-sol` / `medium` through `codex-chatgpt`.
+This adapter's reviewed native coding configuration requests `gpt-6.1-sol` /
+`medium` through `codex-chatgpt`.
 Receipts distinguish that request from an observed resolution or explicit unknown.
 Declared resources, affinity and sampled process/RSS observations are distinct;
 they do not prove a kernel quota. Deterministic jobs have no model. The
-[8 coding / 16 service / 32 admitted jobs / 64 subprocesses ceilings](parallel-capacity.md)
-are capabilities, not utilization targets or guaranteed provider entitlement.
+[retained adapter's 8 coding / 16 service / 32 admitted jobs / 64 subprocesses ceilings](parallel-capacity.md)
+are distinct from current UIF host capacity. The environment policy owns the
+64-local-session target and quota handoff, subject to current runtime readback,
+shared resource admission and qualified ownership controls. No ceiling is a
+utilization target or guaranteed provider entitlement.
 
 At the UIF-119 documentation checkpoint, compact observer correction
 `0becb3a668d60910c9553118a2ff54bb0552c408` has independent candidate acceptance;

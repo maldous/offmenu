@@ -1,6 +1,17 @@
 # Parallel capacity and task admission
 
-The selected operating ceilings are **8 / 16 / 32 / 64**:
+## Current operating-policy boundary
+
+The [environment-owned UIF policy reference](../agents/uif-worker-policy.md)
+describes the new 64 Foo-local-session ceiling, shared resource admission and
+quota handoff to active Morgan. The installed native runtime and effective
+capacity policy must be read back before using that ceiling. This document's
+older OffMenu adapter configuration is not the current multi-project host
+capacity declaration and does not qualify the new mode-transition controls.
+
+## OffMenu adapter source configuration
+
+The retained adapter's configured ceilings are **8 / 16 / 32 / 64**:
 
 | Layer | Configured ceiling | Enforcement/evidence |
 | --- | --- | --- |
@@ -13,7 +24,7 @@ Native collaboration's root-plus-six pool is separate. The cloud durable-task
 platform concurrency limit is not established by that number. Subscription usage
 windows are also separate from session concurrency and from paid API entitlement.
 
-`tools/delivery/capacity-policy.json` is the reviewed source of settings.
+`tools/delivery/capacity-policy.json` is the reviewed source of this adapter's settings.
 [ADR 0004](../adr/0004-resource-aware-parallel-capacity.md) records budget partitions,
 tradeoffs and limits. No automatic coding/merge/deploy, schedules or telemetry are
 enabled by choosing capacity. Existing Codex/Antigravity allowances and OpenRouter
@@ -54,7 +65,10 @@ against the exact allowed paths and remains unaccepted until integration review.
 
 ## Windmill jobs
 
-The existing deployed path remains `u/admin/foo_jobs_20261027`. Supply explicit
+This historical adapter binds `u/admin/foo_jobs_20261027`. Current UIF execution
+must discover its selected `foo` workspace route and deployed schema from the
+environment profile; do not retarget or replay historical jobs by name alone.
+For this adapter, supply explicit
 `resources` for pool admission: `workers`, `overhead_processes`, `cpu_millis`,
 `memory_bytes`, `output_bytes`, `read_roots`, `write_roots`, and optional
 `io_slots` (defaults to one). Requests retain exact job/command/runner/policy hashes.
