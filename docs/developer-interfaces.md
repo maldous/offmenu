@@ -1,8 +1,9 @@
 # OffMenu developer interfaces
 
-This reference describes source at commit `3540b2d4d5f4e96a518a63c832ccd6c3db809686`
+The frozen broader reference below describes source at commit `3540b2d4d5f4e96a518a63c832ccd6c3db809686`
 (tree `62efa45bb564affe4f1f1b2388bbb3447a14482c`). It does not establish which
-version is deployed. Source acceptance, authentication activation and live
+version is deployed. The current OpenAPI correction is separately pinned in
+[the current OpenAPI section](#current-openapi-correction). Source acceptance, authentication activation and live
 provider availability are separate facts. Example URLs use the reserved
 `offmenu.example.invalid` domain and are not service addresses.
 
@@ -56,10 +57,10 @@ required scope returns 403. Non-GET API calls return 405, unknown resource paths
 [catalogue pagination](../apps/web/server/catalogue.mjs) and
 [record permissions/export](../apps/web/server/provider-data.mjs).
 
-### OpenAPI limitation
+### Frozen OpenAPI limitation
 
-`/openapi.json` advertises OpenAPI 3.1.0, bearer authentication and all eight
-paths. Its common 200-response description lists only
+At the frozen source pin above, `/openapi.json` advertises OpenAPI 3.1.0, bearer
+authentication and all eight paths. Its common 200-response description lists only
 `version, revision, updatedAt, data`. That description is incomplete for
 `data`, `health`, `baskets` and `evidence`, whose actual envelopes are
 listed above. Pagination and extra unified-record filters are also omitted.
@@ -68,6 +69,44 @@ this is an under-specified contract, not proof that those responses fail
 JSON Schema validation. Do not generate a complete response model from it.
 The example captures both descriptions and actual responses; it does not
 silently change the product schema.
+
+### Current OpenAPI correction
+
+The additive correction at [code commit `3b36d969f35e04a820961ac99c2d6bc7407f565d`](https://github.com/maldous/offmenu/commit/3b36d969f35e04a820961ac99c2d6bc7407f565d)
+(tree `7c12006dbc3d0a97ceafcc7e9cacab1ba157abfd`) describes the actual eight
+GET response envelopes and their guaranteed outer fields. `data` has
+`schemaVersion, records, nextCursor, withheld, scope`; `health`, `baskets` and
+`evidence` have `documents, nextCursor, scope`. The other four retain the
+versioned state envelope. Nested records/document data remain source-specific,
+not fully modeled schemas.
+
+The document now includes document/record `cursor` and `limit`, unified-record
+`kind`, `source` and `country`, and inclusive plans/history date parameters.
+Descriptions preserve existing behavior: omitted, non-numeric and zero page
+limits default to 100, other numeric values are clamped to 1–1000, and clients
+should send an integer. REST date filters compare strings without calendar
+validation; clients should send `YYYY-MM-DD`. An empty rights-filtered page can
+still carry a next cursor. Schema correction changes no route, permission,
+authentication, data handling or runtime validation.
+
+Run `node examples/openapi-contract.mjs` from the repository root for the focused
+current example. It verifies [42 code/schema file hashes](../examples/openapi-contract-source.json)
+before loading the handler, blocks network entry points, and uses only authored
+in-memory accounts, documents and normalized records. It checks actual populated
+responses against the emitted envelope keywords, document pagination, an empty
+rights-withheld page with an advancing cursor, country/kind/source filters and
+inclusive dates. It prints JSON to stdout; keep captured results in ignored
+private evidence storage.
+
+The tested runtime is Node 24.22.1 with built-in `node:sqlite`; no server or
+package installation is required. This later example/manifest pins the code
+closure at the immutable code commit; it does not claim the example files were
+present in that commit. The code pin is a reviewed candidate, not a statement of
+accepted `develop`, deployed HTTP behavior or account activation. General
+OpenAPI/JSON Schema validation, nested schemas and all possible rights/source
+policies remain unqualified. The original broader REST/MCP example and its
+3540b2d source manifest are preserved unchanged below; use their exact frozen
+source, not this corrected checkout, to reproduce that historical example.
 
 ## MCP protocol and discovery
 
@@ -164,7 +203,14 @@ SQLite database is distinct from the deployment D1 binding.
 
 ## Reproduce the synthetic REST/MCP example
 
-Run `node examples/developer-interfaces.mjs` from the repository root.
+To reproduce the preserved broader example, use the exact qualified code/schema
+bytes from `3540b2d4d5f4e96a518a63c832ccd6c3db809686` as the working directory
+and invoke `node /path/to/preserved-reference/examples/developer-interfaces.mjs`.
+The script resolves source files from the working directory and reads its
+manifest alongside the script. The later reference/example artifacts are not
+claimed to have existed in that qualified code commit. Its unchanged manifest
+intentionally rejects the corrected handler in a current checkout. Use the
+focused current command above for the OpenAPI repair.
 The tested runtime is Node 24.16.0 with built-in `node:sqlite`;
 no package installation or server is needed. The script first checks the
 [source file manifest](../examples/developer-interface-source.json), then uses
@@ -199,10 +245,12 @@ The pinned [service metadata builder](../apps/web/server/service-config.mjs)
 marks Cloudflare and Netlify Identity as configured unconditionally; those
 labels are not runtime, identity-activation or account-entitlement evidence.
 
-The source-change owner must update this reference, schemas and example
-manifest when an affected handler/tool/configuration contract changes.
-Regenerate from the reviewed current source and rerun the example, then review
-the exact diff through the existing integration owner. Do not blindly replace
+The source-change owner must update affected current reference/schema/example
+coverage when a handler/tool/configuration contract changes. Preserve explicit
+frozen artifacts and their original provenance; add separately pinned current
+coverage rather than relabelling historical acceptance. Generate from reviewed
+source, run the relevant current example and review the exact diff through the
+existing integration owner. Do not blindly replace
 hashes to make a drift failure pass. Historical acceptance is not current
 source presence. Product-specific gaps belong in OffMenu; shared source-role
 and consumer principles remain in the existing

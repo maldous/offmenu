@@ -7,6 +7,10 @@ receipt for the work; dated reports do not establish current activation.
 For scoped REST/MCP, schema limits and offline executable examples, use the
 [developer interface reference](developer-interfaces.md).
 
+For source-bound user guidance, see [support and optional-service preferences](support-preferences-guide.md).
+The guide distinguishes reviewing a request from submitting it and separates
+native help from optional third-party services.
+
 ## Source-bound user guides
 
 These guides describe the pinned implementation and distinguish it from live
