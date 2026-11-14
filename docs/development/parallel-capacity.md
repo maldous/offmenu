@@ -3,8 +3,10 @@
 ## Current operating-policy boundary
 
 The [environment-owned UIF policy reference](../agents/uif-worker-policy.md)
-describes the new 64 Foo-local-session ceiling, shared resource admission and
-quota handoff to active Morgan. The installed native runtime and effective
+describes the 64 Foo-local-session ceiling, shared resource admission and
+unattended quota/outage recovery through durable Morgan and off-Foo ownership.
+Preserve existing authorized running capacity; qualify the supported transitions
+without treating policy adoption as a stop instruction. The installed native runtime and effective
 capacity policy must be read back before using that ceiling. This document's
 older OffMenu adapter configuration is not the current multi-project host
 capacity declaration and does not qualify the new mode-transition controls.

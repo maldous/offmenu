@@ -25,14 +25,23 @@ policy installation.
 Linear remains the authoritative queue. In qualified runtime operation,
 Stokowski admits local work while quota is available. Hard quota exhaustion
 closes affected local model admission, reconciles original operations and
-transfers eligible unfinished work to active Morgan project agents through one
-durable ownership authority. Agents can use isolated cloud Git or deterministic
+transfers eligible unfinished work to the corresponding project roles through
+one durable ownership authority. Agents can use isolated cloud Git or deterministic
 Foo MCP execution. On recovery, active cloud tasks keep their claims while fresh
 independent local work resumes under resource admission.
 
-The initial rollout requires reachable Foo ownership coordination and an active
-Morgan session. Missing either holds dependent transfers/effects. It supplies no
-unattended cloud-session wake-up guarantee. The 64 Foo-local-session ceiling is
+The final operating target includes unattended Morgan reconstruction and an
+ownership authority independent of Foo and this conversation. Sustained Foo/MCP
+reachability failure defaults to a configurable 900-second grace and at least two
+qualified probes; a healthy probe resets grace. Confirmed hard quota is a
+separate immediate local-admission signal. Eligible cloud delivery continues
+through the qualified independent authority; uncertain original effects and
+unavailable dependencies hold only their affected units.
+
+Preserve existing authorized running capacity and automatically resume eligible
+work through supported recovery/admission when its prerequisites return. The
+source contribution does not qualify the lifecycle or off-Foo authority adapter.
+The 64 Foo-local-session ceiling is
 separate from the older OffMenu adapter's eight-session configuration, Windmill
 workers, deterministic jobs and subprocesses. Actual admission uses verified
 current source/configuration and a shared resource budget.

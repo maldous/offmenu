@@ -14,11 +14,21 @@ execution policy holds that maintenance lane; it does not create a product build
 or runtime dependency on UIF.
 
 Cloud Git, Foo Codex inference and Foo MCP commands have different prerequisites.
-Quota exhaustion permits transfer only through qualified ownership and effect
-fences. In the initial quota-only rollout, Foo must remain reachable and Morgan
-must be active. On quota recovery, active cloud tasks retain their claims while
-fresh independent local work may resume. A 64 Foo-local-session ceiling is bounded
-by current resource admission and is separate from job/subprocess counts.
+Qualified UIF operation uses durable unattended Morgan recovery and an ownership
+authority independent of Foo and this conversation. Confirmed hard quota closes
+local model admission immediately. Foo/MCP reachability failover uses the
+configurable 900-second sustained-failure grace with at least two qualified
+probes; a healthy probe resets grace. Independent cloud work continues through
+intake, claims, review, publication and refill where its authority and dependencies
+remain available. Reconcile uncertain original operations before takeover.
+
+Preserve existing authorized running capacity. Resume eligible reasoning
+automatically when its current availability and admission checks pass; no new
+provider or spending is implied. On quota recovery, active cloud tasks retain
+their claims while fresh independent local work resumes. A 64 Foo-local-session
+ceiling is bounded by shared resource admission and is separate from job and
+subprocess counts. These requirements do not prove an installed lifecycle or
+qualified off-Foo authority adapter.
 
 The environment policy does not activate services, relax project holds, transfer
 publication rights or establish that handoff controls are deployed. This
