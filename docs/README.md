@@ -36,3 +36,12 @@ commands. Foo runner documentation describes a separate selected execution
 workflow; it is not required to build or run the small local demo. AI instruction
 files have their own maintenance lane and are not a substitute for this human
 maintainer guide.
+
+## Community task guides
+
+Members can use [recipe contributions and public profiles](recipe-contribution-guide.md)
+for the implemented community submission, comment and voting controls.
+Administrators can use [AI community review](community-ai-review-guide.md) for
+settings, explicit review requests and decision states. These guides describe
+the source controls; they do not establish that a live service has accepted or
+published a contribution.
