@@ -11,6 +11,17 @@ For source-bound user guidance, see [support and optional-service preferences](s
 The guide distinguishes reviewing a request from submitting it and separates
 native help from optional third-party services.
 
+## Source-bound user guides
+
+These guides describe the pinned implementation and distinguish it from live
+service, device and account qualification:
+
+- [Account data, privacy and backup controls](account-data-guide.md).
+- [Kitchen inventory and planning](kitchen-planning-guide.md).
+
+The OffMenu documentation owner maintains these alongside their linked source.
+Contextual in-app help and search integration remain separate work.
+
 ## Code and workflow map
 
 | Area | Entry points and guides |
