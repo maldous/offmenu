@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "offmenu-independent-runtime-terminal-receipt/1",
+  "observedAtUtc": "2026-10-28T09:05:54Z",
+  "windmillRun": "01a181b3-4525-d5c6-9ef8-fb0dab41ebae",
+  "windmillStatus": "success",
+  "durationMs": 534006,
+  "ok": true,
+  "job_id": "north-star-full-bulk-004",
+  "receipt": {
+    "logs": {
+      "stderr": "/offmenu/data/.offmenu-platform/jobs/north-star-full-bulk-004/stderr.log",
+      "stdout": "/offmenu/data/.offmenu-platform/jobs/north-star-full-bulk-004/stdout.log"
+    },
+    "mode": "write",
+    "job_id": "north-star-full-bulk-004",
+    "status": "succeeded",
+    "version": 3,
+    "exit_code": 0,
+    "log_bytes": {
+      "stderr": 0,
+      "stdout": 3530
+    },
+    "created_at": 1793177372.4069757,
+    "started_at": 1793177372.438004,
+    "finished_at": 1793177905.8994431,
+    "heartbeat_at": 1793177905.8994482,
+    "output_bytes": {
+      "stderr": 0,
+      "stdout": 3530
+    },
+    "runner_sha256": "2ae57cc8edc66d9b56f43ad26dd8871fda155d23e50563988d3b0cac89d21674",
+    "command_sha256": "640f6816f2a2b7cda9b0c3862bddba69fc4b5cacaea1175dfdfbf0ca6f2498a2",
+    "logs_truncated": {
+      "stderr": false,
+      "stdout": false
+    },
+    "request_sha256": "4b278e55a45d3232f307a08c7f46d9aa81c22373905efed1f7dc8809b538606b",
+    "child_tree_gone": true,
+    "timeout_seconds": 1800,
+    "reconcile_required": false
+  },
+  "admitted": true,
+  "transport_ok": true,
+  "job_succeeded": true,
+  "note": "Direct read of existing Windmill run receipt only. Bridge mem_peak is not Foo aggregate RAM; source/consumer manifest proof remains separately pinned."
+}

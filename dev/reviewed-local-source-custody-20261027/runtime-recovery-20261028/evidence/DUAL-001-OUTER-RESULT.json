@@ -1,0 +1,35 @@
+{
+  "schema": "offmenu-sanitized-worker-outcome/1",
+  "windmill_job_id": "01a18035-d8ac-16c0-a167-f69b15bf84cb",
+  "status": "success",
+  "duration_ms": 180314,
+  "receipt": {
+    "mode": "write",
+    "job_id": "corpus-dual-lanes-001-20261028",
+    "status": "succeeded",
+    "version": 1,
+    "exit_code": 0,
+    "log_bytes": {
+      "stderr": 0,
+      "stdout": 1390
+    },
+    "created_at": 1793152375.5483513,
+    "started_at": 1793152375.5522323,
+    "finished_at": 1793152555.2897716,
+    "heartbeat_at": 1793152555.2897747,
+    "output_bytes": {
+      "stderr": 0,
+      "stdout": 1390
+    },
+    "runner_sha256": "81b2918d8384ac3da63397263263c01340dc9b90031672d1fa4baab16aef8c1a",
+    "command_sha256": "65a3ea388b5087fc40041d83aaa0b438134f59e0b6766f95915a314f3c606562",
+    "logs_truncated": {
+      "stderr": false,
+      "stdout": false
+    },
+    "request_sha256": "8b67a41697b0571b9461ca4b93622686c7666c8e51a77e4c4efaed4653c1c9cc",
+    "child_tree_gone": true,
+    "timeout_seconds": 300,
+    "reconcile_required": false
+  }
+}

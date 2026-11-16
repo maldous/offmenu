@@ -1,0 +1,23 @@
+{
+  "schema": "offmenu-places-batch-verification/1",
+  "checkpointVersion": 2,
+  "checkpointSha256": "deaec581bd5366c00ff1d1e6f1b12c27d967908fc65a9401f4db819ca0fe5d4e",
+  "inputCounts": {
+    "overture-food-places": 275000
+  },
+  "uniqueSourceIdentities": 275000,
+  "completedInputFiles": 89,
+  "verifiedClosedAssets": 274,
+  "assetReceiptDigest": "873f35af74fbcb085d5403cdfc2cb0d4beead8a696d443cbbee7ca7a8c828e88",
+  "verifiedClosedBytes": 278028652,
+  "schemaValidatedClosedPackets": 274,
+  "schemaValidatedClosedResources": 274000,
+  "schemaValidatedClosedAssertions": 548000,
+  "schemaValidatedBufferedPackets": 1,
+  "schemaValidatedBufferedResources": 1000,
+  "unflushedCurrentResources": 0,
+  "finalManifestPresent": false,
+  "producerImplementationPin": "8a43e699a0d29e01d9ec1ba8c70ef3cd943aeb796a067302631e7c00d71ca808",
+  "freeBytes": 207867383808,
+  "qualificationComplete": false
+}

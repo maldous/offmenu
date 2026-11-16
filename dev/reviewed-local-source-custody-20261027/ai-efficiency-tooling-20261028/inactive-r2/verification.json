@@ -1,0 +1,11 @@
+{
+  "base_sha256": "3760b83e2678f89e2330a62f2ccdf0a8e935461f5cbc2168a3f57d0e725e9f38",
+  "base_evidence": "owner-supplied source diff, hash verified",
+  "previous_frozen_files_unchanged": true,
+  "original_windmill_files_unchanged": 68,
+  "patch_applies_cleanly": true,
+  "tests_passed": 15,
+  "provider_inference_calls": 0,
+  "deployed": false,
+  "shared_posix_mount_verified": false
+}

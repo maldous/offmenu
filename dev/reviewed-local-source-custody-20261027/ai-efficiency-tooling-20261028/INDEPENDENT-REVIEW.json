@@ -1,0 +1,71 @@
+{
+  "kind": "independent_source_review_and_custody_receipt",
+  "recorded_at": "2026-10-28T11:15:18.132173+00:00",
+  "reviewer_task_as_recorded_by_parent": "01a181f1-8cbc-707c-b44d-b0b9edfaf037",
+  "archive": {
+    "name": "offmenu-ai-source-custody-20261028-bundle.tar.gz",
+    "bytes": 36863,
+    "sha256": "1a7cd9fa05dbc8352c4a13d7b9b1ae4cc5a2cf0b17f8898103067e6b7464d039"
+  },
+  "original_manifest_sha256": "b46a20ba2563f544d53edf37443d40ae1fe738731c4168eb3ca3fb48f0ac0069",
+  "custody_verification": {
+    "archive_hash_and_size_match": true,
+    "regular_utf8_files": 22,
+    "manifest_payload_hashes_verified": 20,
+    "included_manifest_and_tsv_match_adjacent_originals": true,
+    "safe_paths_no_traversal_links_devices_or_duplicates": true,
+    "maximum_file_bytes": 39041,
+    "uncompressed_file_bytes": 159332,
+    "credentials_or_raw_datasets_found": false,
+    "content_scope": "Reviewed adapter/caller source, synthetic mocked tests, source patches, bounded test logs and provenance/capability/custody metadata. Credential references remain references; no credential values or raw datasets included."
+  },
+  "existing_independent_reviews": {
+    "r2": {
+      "verdict": "approved_no_remaining_mandatory_source_defect",
+      "base_sha256": "3760b83e2678f89e2330a62f2ccdf0a8e935461f5cbc2168a3f57d0e725e9f38",
+      "candidate_sha256": "1e24c1d5ce2d5b6cecb47666f775f85c4a2b582215e951c1845815eb102fef67",
+      "author_mocked_tests_independently_rerun_passed": 15,
+      "additional_check": "Supervisor SIGKILL leaves child holding exact-key lock; bounded waiter makes no fallback inference; independent child alarm releases lock and permits one later explicit call.",
+      "limits": "Schema validation is not semantic acceptance. Shared trusted persistent POSIX storage and actual Windmill fork/signal support remain unverified. Source-only approval; inactive."
+    },
+    "metrics": {
+      "verdict": "approved_no_concrete_defect_or_required_correction",
+      "review_turn_as_supplied_by_parent": "01a1821f-f08f-7028-bbe4-2b91a311ad15",
+      "patch_sha256": "06f906eb149a4c97b65e20c0f79a083d58c231b06e61a5600a8939477cf56575",
+      "adapter_sha256": "133572094dedd81d42a66413cfcc160145d923491684cc3cbe384431b51f083b",
+      "caller_sha256": "9cec2d0eb2286cbd07a82bd2e9d43395794e868c6071a3ed6889fa77871c9ca2",
+      "inventory_entries_verified": 8,
+      "mocked_cases_passed": 12,
+      "mocked_case_breakdown": "9 transport cases, 1 unsupported-task case, 2 caller-summary cases",
+      "limits": "Metrics/validation only; no cache, unique accepted-output or savings claims. Missing usage stays null and reported zero stays zero. Recheck deployed baseline hashes immediately before any separately authorized adoption."
+    }
+  },
+  "current_turn": {
+    "accepted_tests_rerun": 0,
+    "source_executed": false,
+    "source_modified": false,
+    "credentials_or_datasets_accessed": false,
+    "remote_writes": 0,
+    "provider_calls": 0,
+    "deployments": 0
+  },
+  "live_adoption_hold": "Parent reports exact metrics live-adoption step platform-held after known non-executed denials. This custody work neither retries nor reroutes that step; no deployment authority inferred.",
+  "publication_preparation": {
+    "repository": "maldous/offmenu",
+    "visibility": "private",
+    "existing_connector_access_verified": true,
+    "push_permission_reported": true,
+    "branch": "integration/reviewed-local-source-custody-20261027",
+    "observed_head": "083a4e200c50f94d54ab1a325d9b8b1a07cf849d",
+    "destination": "dev/reviewed-local-source-custody-20261027/ai-efficiency-tooling-20261028/",
+    "destination_absent_at_observed_head": true,
+    "status": "planned_only_awaiting_parent_branch_write_lease",
+    "workflow_guards_inspected": [
+      ".github/workflows/foo-runner.yml",
+      ".github/workflows/third-party-services.yml"
+    ],
+    "workflow_trigger_result": "foo-runner push restricted to offmenu-runner-jobs and .github/offmenu-runner/request.json; third-party-services manual only. Planned additive custody files on integration branch match neither push trigger. No workflow dispatch or edits planned.",
+    "commit_message_plan": "Preserve reviewed inactive AI efficiency source custody [skip ci]",
+    "overwrite_policy": "Create new destination files only; no ledger/workflow/prior-source changes. Recheck head and guards under parent lease; do not force branch update."
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "finding": "NS196-G2",
+  "revision": "privacy-r2",
+  "supersedesArchiveSha256": "f07003162e1627b47a07c3b636473b5bcc8c3395d878440337df409af98e002b",
+  "baseCommit": "92a0463b3f4ef48fa96ec2fe5adc65a3c513700a",
+  "files": [
+    {
+      "path": "FOO-TEST-EVIDENCE.json",
+      "sha256": "8eb29c50425051c3f016e7d509b2b5c989975180e471d8932ca0b9ee4a01faee",
+      "bytes": 5685
+    },
+    {
+      "path": "HANDOFF.md",
+      "sha256": "616ebd09a7e77c7e49ebd2fdf9b4d62d831ed31dbb42a8cedc38e4ce48c9b8da",
+      "bytes": 3337
+    },
+    {
+      "path": "ORIGINAL-R1-HANDOFF-SUPERSEDED.md",
+      "sha256": "50a8f09cb8b674b01f9f0887d689aa46adc85ca5d328dd158edc763b261124cc",
+      "bytes": 5002
+    },
+    {
+      "path": "SERVER-PARITY-CONTRACT.json",
+      "sha256": "3f37a5a5c93c9f074132754ad60d3916babeee3e5a76f8842d8519ffc3b79194",
+      "bytes": 838
+    },
+    {
+      "path": "app-source.patch",
+      "sha256": "fe55a6394bbe10e4437a01086987ec5069665b83e47b2b6655252dc330db17e9",
+      "bytes": 55614
+    },
+    {
+      "path": "baseline-source/cloud/state.mjs",
+      "sha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce",
+      "bytes": 6798
+    },
+    {
+      "path": "baseline-source/evidence/server-history-helper.js",
+      "sha256": "40c77c1e5ee1e2a82f35fa14699652cfc646f008791b7ccb17ea2fcf0dfb20de",
+      "bytes": 2978
+    },
+    {
+      "path": "baseline-source/public/cooking-model.js",
+      "sha256": "04363e49fffcacdb7f395938b2818e647cb826737f8988adbde53f81f0af0f16",
+      "bytes": 8394
+    },
+    {
+      "path": "baseline-source/public/insights-model.js",
+      "sha256": "e872f71ea7c7938defcc8f416f04b7c6f990750c819823be1e1b07b76f01a895",
+      "bytes": 6858
+    },
+    {
+      "path": "baseline-source/public/sync-model.js",
+      "sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+      "bytes": 3990
+    },
+    {
+      "path": "baseline-source-pins.json",
+      "sha256": "cac6e86f369abcdb67335b022ae1d9539ef7c7fde89317b4480af782b613d8ff",
+      "bytes": 3286
+    },
+    {
+      "path": "cloud/cooking-witness-parity.mjs",
+      "sha256": "dfbf8109dc81b0f1d4c62dd7642e00cafe0432c645d1a7461509b4bee6b5cdee",
+      "bytes": 505
+    },
+    {
+      "path": "cloud/state.mjs",
+      "sha256": "8919a11490495d6338c7789527e879ea5258a91e10cc49fe8118daa5cad58711",
+      "bytes": 6903
+    },
+    {
+      "path": "evidence/legacy-server-parity.mjs",
+      "sha256": "74ab350eb546d9c76476854d8d87639370aef1ba310132e4edde27e94b619054",
+      "bytes": 1527
+    },
+    {
+      "path": "evidence/server-history-helper.js",
+      "sha256": "8200e33c6f0cd30f73973f604e059c5e7e8c8d11f0e6015851d4e5b3ed43c1c6",
+      "bytes": 3033
+    },
+    {
+      "path": "evidence/server-history-helper.patch",
+      "sha256": "601037599931f193c24517160afb1cec5e6b45c4ab218fafa6d12e18c6c3e475",
+      "bytes": 6105
+    },
+    {
+      "path": "function-local-replacements.json",
+      "sha256": "a6d17612b9690ef5fc28e482ded7bd1b91bdaad0f80d2aa6ff34b9a77b302a1b",
+      "bytes": 3585
+    },
+    {
+      "path": "legacy-server-parity-summary.json",
+      "sha256": "53b85d9fd738a345178097e0cc1aab128300fda4cb7a70bd1d2b9feac1b3c8b5",
+      "bytes": 221
+    },
+    {
+      "path": "legacy-server-parity.log",
+      "sha256": "18d027d37774fbd20988db690b64278a249a5963b3cb8490fed4dc322b1c9bce",
+      "bytes": 204
+    },
+    {
+      "path": "public/cooking-model.js",
+      "sha256": "a1d77f7dd8f142c36a4caa184f4ca2c52ea8107c3e8086861d28d056288d2931",
+      "bytes": 8911
+    },
+    {
+      "path": "public/cooking-witness.js",
+      "sha256": "8b2032742e0b3f14bae9d5f6ae314cca8f1162a2aa6aa1591bea573047afe304",
+      "bytes": 10223
+    },
+    {
+      "path": "public/insights-model.js",
+      "sha256": "c7491462ba3b2bc38c66de44c9fc3894d77aa963f757bd0ba973643995fa4223",
+      "bytes": 6985
+    },
+    {
+      "path": "public/sync-model.js",
+      "sha256": "c4970231dbbb2974c600ac129e6662c1a6378757312dae43caf54822aa3be535",
+      "bytes": 4067
+    },
+    {
+      "path": "r1-privacy-baseline-summary.json",
+      "sha256": "301dd9e00d129a3667a9ab9e5fbb22697c901960845b93d6194a2ef132b19ac8",
+      "bytes": 2641
+    },
+    {
+      "path": "r1-to-r2.patch",
+      "sha256": "b8234b05e125e4fbea1565173ba0d4a95d42e30aaf3dd651898a3658ef2362c8",
+      "bytes": 10686
+    },
+    {
+      "path": "r2-candidate-summary.json",
+      "sha256": "abef71239db1a9f7988fc60483be5a0b1607a0f467674b0c585676e8f6684391",
+      "bytes": 2086
+    },
+    {
+      "path": "superseded-r1-source/cloud/cooking-witness-parity.mjs",
+      "sha256": "f6cce26e7c415cb9a2bfb765caf1b4f2306eec8b7198a6c76cd997e3299a8a12",
+      "bytes": 486
+    },
+    {
+      "path": "superseded-r1-source/public/cooking-witness.js",
+      "sha256": "a6b6406475482faeea52e78db007b1ff9870e05646eca8aecf9f72974637f8ea",
+      "bytes": 8818
+    },
+    {
+      "path": "superseded-r1-source/tests-web/cooking-witness-ns196-g2.test.mjs",
+      "sha256": "1eeb65745acedc3f807e36dfc8bad36d5fc6731a883a6973939fb7bc2b514246",
+      "bytes": 9807
+    },
+    {
+      "path": "tests-web/cooking-witness-ns196-g2.test.mjs",
+      "sha256": "deb1a89e639c3859d24fca40ec2c9126f2b23b9cc4da08413050deda56689d71",
+      "bytes": 13937
+    },
+    {
+      "path": "v196-original-baseline-summary.json",
+      "sha256": "67cc72ef14785b4e2faba34532c59d4a5d550796d9acf15738142b72e88d8f62",
+      "bytes": 2680
+    },
+    {
+      "path": "v196-original-baseline-tests.log",
+      "sha256": "36c99ef5c03de4490f92c3cefe10cbecb92d961a21ad880da7c2c57f8e4ed0dd",
+      "bytes": 26544
+    }
+  ],
+  "v196Preimages": [
+    {
+      "path": "public/cooking-model.js",
+      "sha256": "04363e49fffcacdb7f395938b2818e647cb826737f8988adbde53f81f0af0f16",
+      "bytes": 8394
+    },
+    {
+      "path": "public/insights-model.js",
+      "sha256": "e872f71ea7c7938defcc8f416f04b7c6f990750c819823be1e1b07b76f01a895",
+      "bytes": 6858
+    },
+    {
+      "path": "public/sync-model.js",
+      "sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+      "bytes": 3990
+    },
+    {
+      "path": "cloud/state.mjs",
+      "sha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce",
+      "bytes": 6798
+    },
+    {
+      "path": "evidence/server-history-helper.js",
+      "sha256": "40c77c1e5ee1e2a82f35fa14699652cfc646f008791b7ccb17ea2fcf0dfb20de",
+      "bytes": 2978
+    }
+  ],
+  "r1Preimages": [
+    {
+      "path": "public/cooking-witness.js",
+      "sha256": "a6b6406475482faeea52e78db007b1ff9870e05646eca8aecf9f72974637f8ea",
+      "bytes": 8818
+    },
+    {
+      "path": "cloud/cooking-witness-parity.mjs",
+      "sha256": "f6cce26e7c415cb9a2bfb765caf1b4f2306eec8b7198a6c76cd997e3299a8a12",
+      "bytes": 486
+    },
+    {
+      "path": "tests-web/cooking-witness-ns196-g2.test.mjs",
+      "sha256": "1eeb65745acedc3f807e36dfc8bad36d5fc6731a883a6973939fb7bc2b514246",
+      "bytes": 9807
+    }
+  ],
+  "r1PrivacyBaseline": {
+    "tests": 18,
+    "pass": 13,
+    "fail": 5
+  },
+  "r2Candidate": {
+    "tests": 18,
+    "pass": 18,
+    "fail": 0
+  },
+  "legacyParity": {
+    "checks": 7,
+    "pass": 7,
+    "fail": 0
+  },
+  "patchReconstruction": {
+    "completeCandidateFiles": 8,
+    "r1ToR2Files": 3,
+    "allBytesMatch": true
+  },
+  "independentAcceptance": "pending",
+  "productionMutated": false
+}

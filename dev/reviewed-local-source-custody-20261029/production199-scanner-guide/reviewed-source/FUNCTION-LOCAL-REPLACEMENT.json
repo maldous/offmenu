@@ -1,0 +1,14 @@
+{
+  "target": "Exact shelf-scanner.html retained inline <style> literal in v198 wrapper worker; shelf-scanner-inline.css is extracted CSS source, not a newly served asset",
+  "wrapperModuleSha256": "7cef6c38c9a35e4b94d5e7d7d25702a04d64abf35a8497fbd6f91be848f0eabd",
+  "mainModuleSha256": "c2ddec2cf5b1965160160eab24e1a2cd43f8395f7095906955ff67148b95c180",
+  "preimageCssSha256": "0bfe2640b19f7862605e659dc20ddd11a90dc4744000bbb2a52e6bbd205fc93e",
+  "candidateCssSha256": "ee8f8e8bfa058c9f5840c103cfe00f1bf7e753be3b700d163edf9fe901a34477",
+  "matchCount": 1,
+  "old": ".scanner-approved .capture-guide{top:82px;bottom:calc(58px + env(safe-area-inset-bottom) + 15px)}",
+  "new": ".scanner-approved .capture-guide{top:82px}",
+  "offsetCharacters": 31225,
+  "byteOffset": 31226,
+  "boundary": "Remove bottom declaration from existing max-height:520px capture-guide rule; retain top:82px and inherited sheet-aware bottom rule",
+  "productionMutated": false
+}

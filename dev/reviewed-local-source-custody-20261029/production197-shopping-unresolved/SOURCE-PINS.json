@@ -1,0 +1,3242 @@
+{
+  "schema": "offmenu-worker13-normalized-build-source/1",
+  "groups": [
+    "app",
+    "scanner",
+    "guest",
+    "server"
+  ],
+  "exactOriginalManifest": "source-inputs-manifest.json",
+  "files": [
+    {
+      "group": "app",
+      "path": "public/foundation-handoff-bindings.mjs",
+      "beforeSha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76",
+      "bytes": 2982,
+      "sourceAvailable": true,
+      "afterSha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584",
+      "beforeProductionTargetSha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76",
+      "productionTargetBindingDelta": true
+    },
+    {
+      "group": "app",
+      "path": "public/foundation-scanner-handoff.mjs",
+      "beforeSha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00",
+      "bytes": 6878,
+      "sourceAvailable": true,
+      "afterSha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+    },
+    {
+      "group": "app",
+      "path": "public/record-policy.js",
+      "beforeSha256": "048c6cfe0491c341f11424cd39a062c80d317f8bd13ff513c798867f848818a9",
+      "bytes": 2376,
+      "sourceAvailable": true,
+      "afterSha256": "048c6cfe0491c341f11424cd39a062c80d317f8bd13ff513c798867f848818a9"
+    },
+    {
+      "group": "app",
+      "path": "public/locales/ar.js",
+      "beforeSha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "bytes": 27728,
+      "sourceAvailable": true,
+      "afterSha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+    },
+    {
+      "group": "app",
+      "path": "public/locale-negotiation.js",
+      "beforeSha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+      "bytes": 2881,
+      "sourceAvailable": true,
+      "afterSha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+    },
+    {
+      "group": "app",
+      "path": "public/i18n.js",
+      "beforeSha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+      "bytes": 8381,
+      "sourceAvailable": true,
+      "afterSha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+    },
+    {
+      "group": "app",
+      "path": "public/source-category-claims.js",
+      "beforeSha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6",
+      "bytes": 1857,
+      "sourceAvailable": true,
+      "afterSha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6"
+    },
+    {
+      "group": "app",
+      "path": "public/countries.js",
+      "beforeSha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3",
+      "bytes": 1497,
+      "sourceAvailable": true,
+      "afterSha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3"
+    },
+    {
+      "group": "app",
+      "path": "public/typed-identifier-contract.mjs",
+      "beforeSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "bytes": 10793,
+      "sourceAvailable": true,
+      "afterSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "group": "app",
+      "path": "public/scanner-kitchen-handoff.js",
+      "beforeSha256": "d07d6ce268a4d07cc0c9368ae867b807aa2710ffae9265e737d0a889f74f3803",
+      "bytes": 6528,
+      "sourceAvailable": true,
+      "afterSha256": "fb7757734898b93a3ca5e6647d60e7928ae4c226b38cec3f7f282fc11e5ad595",
+      "integrationDelta": true
+    },
+    {
+      "group": "app",
+      "path": "public/ingredients.js",
+      "beforeSha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab",
+      "bytes": 5212,
+      "sourceAvailable": true,
+      "afterSha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab"
+    },
+    {
+      "group": "app",
+      "path": "public/scanner-identity-v2.js",
+      "beforeSha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76",
+      "bytes": 14759,
+      "sourceAvailable": true,
+      "afterSha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76"
+    },
+    {
+      "group": "app",
+      "path": "public/model.js",
+      "beforeSha256": "ac59b94a9d0089bb770c86196fcd634d15d1ddc87d701bd2875ac3e55e786c2a",
+      "bytes": 8867,
+      "sourceAvailable": true,
+      "afterSha256": "1b72f9540fc578e4f07881855edfa3cf1052b613c209bf151d9d9709696c4ee7",
+      "integrationDelta": true
+    },
+    {
+      "group": "app",
+      "path": "public/menu-model.js",
+      "beforeSha256": "71a4f4f4e05d8c62a49ac55233448be42346427e528c485ecc76b7a7cbaeec16",
+      "bytes": 4368,
+      "sourceAvailable": true,
+      "afterSha256": "f3d33960451af9e0676489b324ec7f8af05f4f59c261661fad349ae2323e9c3e"
+    },
+    {
+      "group": "app",
+      "path": "public/unified-data.js",
+      "beforeSha256": "82d027668d9f528dd83bce3cbb8c6f39b0bcdfbb88c62994456c433bc402b782",
+      "bytes": 15077,
+      "sourceAvailable": true,
+      "afterSha256": "ab4a141a51159df086519bba1cd59c850de4e73d8b2fd0b4e2a4d884ddedcda0"
+    },
+    {
+      "group": "app",
+      "path": "public/saved-price-observations.js",
+      "beforeSha256": "bc07674f9c59e140dce59f93cf85eef4bfde3cec3d2e0635472771c3fe7886cd",
+      "bytes": 4160,
+      "sourceAvailable": true,
+      "afterSha256": "bc07674f9c59e140dce59f93cf85eef4bfde3cec3d2e0635472771c3fe7886cd"
+    },
+    {
+      "group": "app",
+      "path": "public/content-locale.js",
+      "beforeSha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d",
+      "bytes": 5887,
+      "sourceAvailable": true,
+      "afterSha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d"
+    },
+    {
+      "group": "app",
+      "path": "public/recipe-ingredient-aliases.json",
+      "beforeSha256": "c2dbca1d379ce93fa4423993ed0d1ace7669447c7899be025b7af3a8855bb609",
+      "bytes": 10156,
+      "sourceAvailable": true,
+      "afterSha256": "c2dbca1d379ce93fa4423993ed0d1ace7669447c7899be025b7af3a8855bb609"
+    },
+    {
+      "group": "app",
+      "path": "public/recipe-review.js",
+      "beforeSha256": "06c291981207ee25288a8bdfe7f1c5fd8eee41eb266cf249f067fddcd4b7600c",
+      "bytes": 1006,
+      "sourceAvailable": true,
+      "afterSha256": "06c291981207ee25288a8bdfe7f1c5fd8eee41eb266cf249f067fddcd4b7600c"
+    },
+    {
+      "group": "app",
+      "path": "public/recipe-library-model.js",
+      "beforeSha256": "7558a5b2fc7f8cb1c3fafc100b3a585b0c52560842270261b0aad85c4670a912",
+      "bytes": 4739,
+      "sourceAvailable": true,
+      "afterSha256": "7558a5b2fc7f8cb1c3fafc100b3a585b0c52560842270261b0aad85c4670a912"
+    },
+    {
+      "group": "app",
+      "path": "corpus/assert-curated.mjs",
+      "beforeSha256": "c64ce47a881d987b4e3b48b84be1c22f1e95031a77d390d433404ed327bed69d",
+      "bytes": 644,
+      "sourceAvailable": true,
+      "afterSha256": "c64ce47a881d987b4e3b48b84be1c22f1e95031a77d390d433404ed327bed69d"
+    },
+    {
+      "group": "app",
+      "path": "public/recipe-discovery-client.js",
+      "beforeSha256": "e8e026682f06bd803091c3dfc72cdcee86a822d87d230629b5784f48702ea562",
+      "bytes": 4022,
+      "sourceAvailable": true,
+      "afterSha256": "e8e026682f06bd803091c3dfc72cdcee86a822d87d230629b5784f48702ea562"
+    },
+    {
+      "group": "app",
+      "path": "public/recipe-library-ui.js",
+      "beforeSha256": "9873ff604170e7df5a0120c5f771540ac83ec910df9609f1a5cb368ad6c6e7fc",
+      "bytes": 8930,
+      "sourceAvailable": true,
+      "afterSha256": "9873ff604170e7df5a0120c5f771540ac83ec910df9609f1a5cb368ad6c6e7fc"
+    },
+    {
+      "group": "app",
+      "path": "public/cooking-model.js",
+      "beforeSha256": "96d160f5fd8c75f6e84148d4001ba7ec5ae991f487bf9c4b0777828cb2baed42",
+      "bytes": 8394,
+      "sourceAvailable": true,
+      "afterSha256": "04363e49fffcacdb7f395938b2818e647cb826737f8988adbde53f81f0af0f16",
+      "integrationReason": "Approved exact function-local four-fix integration; preserve production194 status strings and expiry/date correction"
+    },
+    {
+      "group": "app",
+      "path": "public/sync-model.js",
+      "beforeSha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+      "bytes": 3990,
+      "sourceAvailable": true,
+      "afterSha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3"
+    },
+    {
+      "group": "app",
+      "path": "public/sync-ui.js",
+      "beforeSha256": "bf35b0e04b8c77f1e8f453124d12fee69b99e39d7210bb8763218c9ea00759db",
+      "bytes": 5535,
+      "sourceAvailable": true,
+      "afterSha256": "bf35b0e04b8c77f1e8f453124d12fee69b99e39d7210bb8763218c9ea00759db"
+    },
+    {
+      "group": "app",
+      "path": "public/sharing-ui.js",
+      "beforeSha256": "f84d30e1c236eb400e5e0587b764c470000a16f3ad7b2f6ec5e3cb6c183f1cc6",
+      "bytes": 7338,
+      "sourceAvailable": true,
+      "afterSha256": "8ce72cc27171e0b2c4eb3e016409e0bebf59289bed28b41e549d80a403159913",
+      "integrationReason": "Reviewed account/reset-scoped shared-kitchen lifecycle guard; exact preimage matched"
+    },
+    {
+      "group": "app",
+      "path": "public/household-model.js",
+      "beforeSha256": "88a375ef4062fe84646af2cc7661749c2c2f2bc2dd8178852ff58ccbefbce587",
+      "bytes": 7717,
+      "sourceAvailable": true,
+      "afterSha256": "42041d92a0e89e312e051b34b8987fb29958719bf274441a748c0c068357e41c",
+      "integrationReason": "Approved exact function-local four-fix integration; preserve production194 status strings and expiry/date correction"
+    },
+    {
+      "group": "app",
+      "path": "public/journey-ui.js",
+      "beforeSha256": "72ad38d3698fbf139e42d995a781bbab1551a8f1236289864a9b3707f46cc308",
+      "bytes": 9993,
+      "sourceAvailable": true,
+      "afterSha256": "72ad38d3698fbf139e42d995a781bbab1551a8f1236289864a9b3707f46cc308"
+    },
+    {
+      "group": "app",
+      "path": "public/common-corpus-locale.js",
+      "beforeSha256": "728a26ac7eae0a6e55fdf03df2d347ffb5fd7f7a8a44334b243cd6b7df2f14b7",
+      "bytes": 11249,
+      "sourceAvailable": true,
+      "afterSha256": "728a26ac7eae0a6e55fdf03df2d347ffb5fd7f7a8a44334b243cd6b7df2f14b7"
+    },
+    {
+      "group": "app",
+      "path": "public/sources.js",
+      "beforeSha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933",
+      "bytes": 17882,
+      "sourceAvailable": true,
+      "afterSha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933"
+    },
+    {
+      "group": "app",
+      "path": "public/data-ui.js",
+      "beforeSha256": "ca5e89125bbc896cc7ec5f8e383d7875f1515dc6af2a6a92405efc5cd6e567ed",
+      "bytes": 23348,
+      "sourceAvailable": true,
+      "afterSha256": "ca5e89125bbc896cc7ec5f8e383d7875f1515dc6af2a6a92405efc5cd6e567ed"
+    },
+    {
+      "group": "app",
+      "path": "public/access-ui.js",
+      "beforeSha256": "5a394ea2b04fdba6ab39c6e53122a5c883040e353cdf98249bf213a527e85b15",
+      "bytes": 7881,
+      "sourceAvailable": true,
+      "afterSha256": "5a394ea2b04fdba6ab39c6e53122a5c883040e353cdf98249bf213a527e85b15"
+    },
+    {
+      "group": "app",
+      "path": "public/waste-analysis-model.js",
+      "beforeSha256": "060e1ab4ca3ccef9506a87ab9d563a6bb626c7b76fe330d746420b97df94052d",
+      "bytes": 3506,
+      "sourceAvailable": true,
+      "afterSha256": "060e1ab4ca3ccef9506a87ab9d563a6bb626c7b76fe330d746420b97df94052d"
+    },
+    {
+      "group": "app",
+      "path": "public/integration-owner03.mjs",
+      "beforeSha256": "8e05b6896e840e4a8806b1d44a59f71fc690b6059af529401df5ddcd7731eab8",
+      "bytes": 5711,
+      "sourceAvailable": true,
+      "afterSha256": "8e05b6896e840e4a8806b1d44a59f71fc690b6059af529401df5ddcd7731eab8"
+    },
+    {
+      "group": "app",
+      "path": "public/insights-model.js",
+      "beforeSha256": "f8008145063c8bbcf2c9322ece541ee10dc5a9f63678af78fb6f6167bf51f678",
+      "bytes": 6858,
+      "sourceAvailable": true,
+      "afterSha256": "e872f71ea7c7938defcc8f416f04b7c6f990750c819823be1e1b07b76f01a895",
+      "integrationReason": "Approved exact function-local four-fix integration; preserve production194 status strings and expiry/date correction"
+    },
+    {
+      "group": "app",
+      "path": "public/integrations.js",
+      "beforeSha256": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9",
+      "bytes": 2360,
+      "sourceAvailable": true,
+      "afterSha256": "fbe3f4efc7131e2a318858671acf18cc29f48949ccf731d99c37577e1590a6ee"
+    },
+    {
+      "group": "app",
+      "path": "public/insights-ui.js",
+      "beforeSha256": "45937c6133b3f70af1c2a0cbc589c9d7d889d5fc190a2dd00afd24a1ec39e863",
+      "bytes": 18357,
+      "sourceAvailable": true,
+      "afterSha256": "aa4e5ccd6896ad51e2d4230016b7c9d01b9c97fb7e9859af5a63c2f2681143b4"
+    },
+    {
+      "group": "app",
+      "path": "public/checkout-model.js",
+      "beforeSha256": "e66f7436ddf823d116cc2fc777a86401fa74071f3d59758fb8ff5038c5a41ce8",
+      "bytes": 5588,
+      "sourceAvailable": true,
+      "afterSha256": "5343262bab8a3f95300037feb238b2ad7b06be52f0937964bd2012563051c0e7",
+      "integrationDelta": true
+    },
+    {
+      "group": "app",
+      "path": "public/freshness-ui.js",
+      "beforeSha256": "c7a0d22bb09d060fd5b917a6076473f8b6da9d43a43db8dd92a49989234c9caf",
+      "bytes": 3194,
+      "sourceAvailable": true,
+      "afterSha256": "c7a0d22bb09d060fd5b917a6076473f8b6da9d43a43db8dd92a49989234c9caf"
+    },
+    {
+      "group": "app",
+      "path": "public/session-fetch.js",
+      "beforeSha256": "cddc55fc2666ed0d4eef67ca3315540b032c86f47628294ce0dc8f180204a8f3",
+      "bytes": 1126,
+      "sourceAvailable": true,
+      "afterSha256": "cddc55fc2666ed0d4eef67ca3315540b032c86f47628294ce0dc8f180204a8f3"
+    },
+    {
+      "group": "app",
+      "path": "public/offmenu-identity-client.js",
+      "beforeSha256": "f94c0df448c762224ea61fcb2e85b32cd5419a962ae793a45ab450e1ea78b53f",
+      "bytes": 3555,
+      "sourceAvailable": true,
+      "afterSha256": "f94c0df448c762224ea61fcb2e85b32cd5419a962ae793a45ab450e1ea78b53f"
+    },
+    {
+      "group": "app",
+      "path": "public/care-model.js",
+      "beforeSha256": "81a5c3771f8420bc81129aeeb57309a0d851dd3878e3c1016895890e40e7f96e",
+      "bytes": 2133,
+      "sourceAvailable": true,
+      "afterSha256": "81a5c3771f8420bc81129aeeb57309a0d851dd3878e3c1016895890e40e7f96e"
+    },
+    {
+      "group": "app",
+      "path": "public/care-ui.js",
+      "beforeSha256": "a67258db6ef0c952450aeb089db3485021966dd0a837a1c0e96725ef7c0a581b",
+      "bytes": 20929,
+      "sourceAvailable": true,
+      "afterSha256": "a67258db6ef0c952450aeb089db3485021966dd0a837a1c0e96725ef7c0a581b"
+    },
+    {
+      "group": "app",
+      "path": "public/recipe-community-model.js",
+      "beforeSha256": "dde224681112c5085ef0038d57ab64e3a3e20eeba1a43da967e5ccbaa7c093d4",
+      "bytes": 1356,
+      "sourceAvailable": true,
+      "afterSha256": "dde224681112c5085ef0038d57ab64e3a3e20eeba1a43da967e5ccbaa7c093d4"
+    },
+    {
+      "group": "app",
+      "path": "public/recipe-community-ui.js",
+      "beforeSha256": "9dd5d426122e602bcd8d42d9b74a44983323858afeb870c49f446b17e1be2acb",
+      "bytes": 10713,
+      "sourceAvailable": true,
+      "afterSha256": "9dd5d426122e602bcd8d42d9b74a44983323858afeb870c49f446b17e1be2acb"
+    },
+    {
+      "group": "app",
+      "path": "public/community-ai-ui.js",
+      "beforeSha256": "6c4bdbba7fc208a6340b696373ce4a7ca3d7d2243306ebf999d9033dd6eaf560",
+      "bytes": 5470,
+      "sourceAvailable": true,
+      "afterSha256": "6c4bdbba7fc208a6340b696373ce4a7ca3d7d2243306ebf999d9033dd6eaf560"
+    },
+    {
+      "group": "app",
+      "path": "public/personal-ai-ui.js",
+      "beforeSha256": "79d6479ed36cb197ec270c993a501e8ec31e3c22b66603df112ff6c45ee01db8",
+      "bytes": 2795,
+      "sourceAvailable": true,
+      "afterSha256": "79d6479ed36cb197ec270c993a501e8ec31e3c22b66603df112ff6c45ee01db8"
+    },
+    {
+      "group": "app",
+      "path": "public/services-model.js",
+      "beforeSha256": "05d3279638586ad890de104504b40466f13cbdd1bbb87d4091f1962c77ed1ff9",
+      "bytes": 5585,
+      "sourceAvailable": true,
+      "afterSha256": "05d3279638586ad890de104504b40466f13cbdd1bbb87d4091f1962c77ed1ff9"
+    },
+    {
+      "group": "app",
+      "path": "public/services-ui.js",
+      "beforeSha256": "0db7f4719d4244ce28bf8e26763ac477f948d21aa3be4f31c95aeb49ecd397f4",
+      "bytes": 18582,
+      "sourceAvailable": true,
+      "afterSha256": "0db7f4719d4244ce28bf8e26763ac477f948d21aa3be4f31c95aeb49ecd397f4"
+    },
+    {
+      "group": "app",
+      "path": "public/admin-model.js",
+      "beforeSha256": "93de743170678cd633eea2ea737da784386a8e2f3f42d3c0501eb809c50c8de9",
+      "bytes": 1322,
+      "sourceAvailable": true,
+      "afterSha256": "93de743170678cd633eea2ea737da784386a8e2f3f42d3c0501eb809c50c8de9"
+    },
+    {
+      "group": "app",
+      "path": "public/admin-ui.js",
+      "beforeSha256": "5437925cabde6eec107532d9470dcefe3639f06e73a8aa96a6867b88718000e9",
+      "bytes": 7128,
+      "sourceAvailable": true,
+      "afterSha256": "5437925cabde6eec107532d9470dcefe3639f06e73a8aa96a6867b88718000e9"
+    },
+    {
+      "group": "app",
+      "path": "public/admin-operations-ui.js",
+      "beforeSha256": "7d8e5385abd34b3bcfad22780482d0465b1333fee2c0d98c267242c366da186d",
+      "bytes": 3309,
+      "sourceAvailable": true,
+      "afterSha256": "7d8e5385abd34b3bcfad22780482d0465b1333fee2c0d98c267242c366da186d"
+    },
+    {
+      "group": "app",
+      "path": "public/documents.js",
+      "beforeSha256": "a19e076a3e9924f0a20ffac53ab7169e1b55768953b39fe3b41a33b0f1bd1f54",
+      "bytes": 14592,
+      "sourceAvailable": true,
+      "afterSha256": "a19e076a3e9924f0a20ffac53ab7169e1b55768953b39fe3b41a33b0f1bd1f54"
+    },
+    {
+      "group": "app",
+      "path": "cloud/state.mjs",
+      "beforeSha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce",
+      "bytes": 6798,
+      "sourceAvailable": true,
+      "afterSha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce"
+    },
+    {
+      "group": "app",
+      "path": "cloud/meal-preference-owner20.mjs",
+      "beforeSha256": "0f49e01eeb5209fd98e39b50efc94b789f066c4a7c00cd4ea4764d54762a741e",
+      "bytes": 5835,
+      "sourceAvailable": true,
+      "afterSha256": "0f49e01eeb5209fd98e39b50efc94b789f066c4a7c00cd4ea4764d54762a741e"
+    },
+    {
+      "group": "app",
+      "path": "public/pantry-backup.js",
+      "beforeSha256": "15043b581af000070ac9db1499af0693eb6dad9dd7071e741f18e70da7c24c80",
+      "bytes": 2118,
+      "sourceAvailable": true,
+      "afterSha256": "15043b581af000070ac9db1499af0693eb6dad9dd7071e741f18e70da7c24c80"
+    },
+    {
+      "group": "app",
+      "path": "public/lifecycle-fixture.js",
+      "beforeSha256": "ae75bc08ce8818278b6a330b1872943868ad19991cf536bb4d9863a6fadb40d1",
+      "bytes": 2512,
+      "sourceAvailable": true,
+      "afterSha256": "ae75bc08ce8818278b6a330b1872943868ad19991cf536bb4d9863a6fadb40d1"
+    },
+    {
+      "group": "app",
+      "path": "public/scanner-model.js",
+      "beforeSha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228",
+      "bytes": 3559,
+      "sourceAvailable": true,
+      "afterSha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228"
+    },
+    {
+      "group": "app",
+      "path": "public/scanner-capture-envelope.js",
+      "beforeSha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89",
+      "bytes": 6765,
+      "sourceAvailable": true,
+      "afterSha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89"
+    },
+    {
+      "group": "app",
+      "path": "public/scanner-ui.js",
+      "beforeSha256": "d4224f3c61bc301f9ed0cc331be7338fb4e7af179dbd64456e64dc94f1905dd6",
+      "bytes": 18578,
+      "sourceAvailable": true,
+      "afterSha256": "b4edd379720ba7e7ad3b69fde081946e4427a54166d3a6c4b6e28ac38f1914bd",
+      "integrationReason": "Approved exact function-local four-fix integration; preserve production194 status strings and expiry/date correction"
+    },
+    {
+      "group": "app",
+      "path": "node_modules/gotrue-js/lib/index.js",
+      "beforeSha256": "0f26ddf432d7693264ede22528edb58087f646bc6cecfc686ce47351e89bc5df",
+      "bytes": 12998,
+      "sourceAvailable": false
+    },
+    {
+      "group": "app",
+      "path": "node_modules/@netlify/identity/dist/main.js",
+      "beforeSha256": "bbfddfc66293ecc3a2ca94c6cdc4a3fd039705bded3e44808ec4e159bc6c23d3",
+      "bytes": 32999,
+      "sourceAvailable": false
+    },
+    {
+      "group": "app",
+      "path": "public/app.js",
+      "beforeSha256": "722720c61f4d0a76cf782f690093a28a8efff0d06ce3f49c6e661acc25307c60",
+      "bytes": 109316,
+      "sourceAvailable": true,
+      "afterSha256": "66d63ccdc619ec886e0e5b602701eeaa5abe3739d9b7025eca45b378f1171638",
+      "integrationDelta": true,
+      "integrationReason": "Reviewed view-history restoration preserving OAuth query and manual-save lifecycle"
+    },
+    {
+      "group": "scanner",
+      "path": "public/foundation-handoff-bindings.mjs",
+      "beforeSha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76",
+      "bytes": 2982,
+      "sourceAvailable": true,
+      "afterSha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584",
+      "beforeProductionTargetSha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76",
+      "productionTargetBindingDelta": true
+    },
+    {
+      "group": "scanner",
+      "path": "public/foundation-scanner-handoff.mjs",
+      "beforeSha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00",
+      "bytes": 6878,
+      "sourceAvailable": true,
+      "afterSha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+    },
+    {
+      "group": "scanner",
+      "path": "public/source-category-claims.js",
+      "beforeSha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6",
+      "bytes": 1857,
+      "sourceAvailable": true,
+      "afterSha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6"
+    },
+    {
+      "group": "scanner",
+      "path": "public/scanner-identity-v2.js",
+      "beforeSha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76",
+      "bytes": 14759,
+      "sourceAvailable": true,
+      "afterSha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76"
+    },
+    {
+      "group": "scanner",
+      "path": "public/source-classification-contract.mjs",
+      "beforeSha256": "e781776fd220a9957c8e03b8e365d62ac161ebc85ba376d5d916c6696b8a82ef",
+      "bytes": 4219,
+      "sourceAvailable": true,
+      "afterSha256": "e781776fd220a9957c8e03b8e365d62ac161ebc85ba376d5d916c6696b8a82ef"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/scanner-source-assertions.js",
+      "beforeSha256": "ea2266461c216750d6a9bc7e34a0a781e2beacf479bb1c5751f3490f61175c16",
+      "bytes": 22771,
+      "sourceAvailable": true,
+      "afterSha256": "ea2266461c216750d6a9bc7e34a0a781e2beacf479bb1c5751f3490f61175c16"
+    },
+    {
+      "group": "scanner",
+      "path": "public/typed-identifier-contract.mjs",
+      "beforeSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "bytes": 10793,
+      "sourceAvailable": true,
+      "afterSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "group": "scanner",
+      "path": "public/scanner-kitchen-handoff.js",
+      "beforeSha256": "d07d6ce268a4d07cc0c9368ae867b807aa2710ffae9265e737d0a889f74f3803",
+      "bytes": 6528,
+      "sourceAvailable": true,
+      "afterSha256": "fb7757734898b93a3ca5e6647d60e7928ae4c226b38cec3f7f282fc11e5ad595",
+      "integrationDelta": true
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/foundation-scanner-client.mjs",
+      "beforeSha256": "d6e82b813a49184d5fb4ac5e234404acf2bd46009e8cebb8e36240d38381f073",
+      "bytes": 10461,
+      "sourceAvailable": true,
+      "afterSha256": "46d43f13d06caafc22ddc47e361e04e5e0abb97e23709c3d028ed48f0d518e3d",
+      "beforeProductionTargetSha256": "d6e82b813a49184d5fb4ac5e234404acf2bd46009e8cebb8e36240d38381f073",
+      "productionTargetBindingDelta": true
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/guest-foundation-client.mjs",
+      "beforeSha256": "d9f531f4e41d049aaf0609dccb8479aea24357c7d35218a94addf990abffd9ad",
+      "bytes": 2091,
+      "sourceAvailable": true,
+      "afterSha256": "d9f531f4e41d049aaf0609dccb8479aea24357c7d35218a94addf990abffd9ad"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/typed-identifier-contract.mjs",
+      "beforeSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "bytes": 10793,
+      "sourceAvailable": true,
+      "afterSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/source-identity-client.mjs",
+      "beforeSha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca",
+      "bytes": 10890,
+      "sourceAvailable": true,
+      "afterSha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/source-identity-selection.mjs",
+      "beforeSha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f",
+      "bytes": 204,
+      "sourceAvailable": true,
+      "afterSha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/composed-scanner-client.mjs",
+      "beforeSha256": "45e6f713a55073ea102af06d9c5e6f20f07053d96a02dc608dacfa9d3019e7bc",
+      "bytes": 5349,
+      "sourceAvailable": true,
+      "afterSha256": "45e6f713a55073ea102af06d9c5e6f20f07053d96a02dc608dacfa9d3019e7bc"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/locales/ar.js",
+      "beforeSha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "bytes": 27728,
+      "sourceAvailable": true,
+      "afterSha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/locale-negotiation.js",
+      "beforeSha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+      "bytes": 2881,
+      "sourceAvailable": true,
+      "afterSha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/i18n.js",
+      "beforeSha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+      "bytes": 8381,
+      "sourceAvailable": true,
+      "afterSha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/scanner-model.js",
+      "beforeSha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228",
+      "bytes": 3559,
+      "sourceAvailable": true,
+      "afterSha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/typed-identifier-contract.mjs",
+      "beforeSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "bytes": 10793,
+      "sourceAvailable": true,
+      "afterSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/scanner-capture-envelope.js",
+      "beforeSha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89",
+      "bytes": 6765,
+      "sourceAvailable": true,
+      "afterSha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/scanner-ui.js",
+      "beforeSha256": "6d36d4a364c89f38550c9f0050e5f4076d11a248e8a692b54e71f6b6c3a7b12b",
+      "bytes": 18345,
+      "sourceAvailable": true,
+      "afterSha256": "6d36d4a364c89f38550c9f0050e5f4076d11a248e8a692b54e71f6b6c3a7b12b"
+    },
+    {
+      "group": "scanner",
+      "path": "public/retained-source-photo-selection.js",
+      "beforeSha256": "a76143f08fedd1683d91ce8d6501c71e13d619d7d3c8ff6ed84a7be9504a3eaa",
+      "bytes": 7301,
+      "sourceAvailable": true,
+      "afterSha256": "a76143f08fedd1683d91ce8d6501c71e13d619d7d3c8ff6ed84a7be9504a3eaa"
+    },
+    {
+      "group": "scanner",
+      "path": "public/locales/ar.js",
+      "beforeSha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "bytes": 27728,
+      "sourceAvailable": true,
+      "afterSha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+    },
+    {
+      "group": "scanner",
+      "path": "public/locale-negotiation.js",
+      "beforeSha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+      "bytes": 2881,
+      "sourceAvailable": true,
+      "afterSha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+    },
+    {
+      "group": "scanner",
+      "path": "public/i18n.js",
+      "beforeSha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+      "bytes": 8381,
+      "sourceAvailable": true,
+      "afterSha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+    },
+    {
+      "group": "scanner",
+      "path": "public/ingredients.js",
+      "beforeSha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab",
+      "bytes": 5212,
+      "sourceAvailable": true,
+      "afterSha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab"
+    },
+    {
+      "group": "scanner",
+      "path": "public/model.js",
+      "beforeSha256": "ac59b94a9d0089bb770c86196fcd634d15d1ddc87d701bd2875ac3e55e786c2a",
+      "bytes": 8699,
+      "sourceAvailable": true,
+      "afterSha256": "4f37f779f445e27bcc8a73f6c03c4604033dae7e6ca153fc4a2cad5395f79807",
+      "integrationDelta": true
+    },
+    {
+      "group": "scanner",
+      "path": "public/off-photo-metadata.js",
+      "beforeSha256": "1a3808a413e4302b440fe71e7c326e4e66c84a9d6a653bcc55dc7da9f18f9280",
+      "bytes": 8143,
+      "sourceAvailable": true,
+      "afterSha256": "1a3808a413e4302b440fe71e7c326e4e66c84a9d6a653bcc55dc7da9f18f9280"
+    },
+    {
+      "group": "scanner",
+      "path": "public/off-photo-catalogue.js",
+      "beforeSha256": "991791f2b176c0e216cfe3d96c9e9d7daf86a3a2d89ab0b527d578098ebab430",
+      "bytes": 4008,
+      "sourceAvailable": true,
+      "afterSha256": "991791f2b176c0e216cfe3d96c9e9d7daf86a3a2d89ab0b527d578098ebab430"
+    },
+    {
+      "group": "scanner",
+      "path": "public/product-visual-selector.js",
+      "beforeSha256": "635040c812cb96cb323260ee153a58767006adbd25c0b09c34eae0aa163032c4",
+      "bytes": 9824,
+      "sourceAvailable": true,
+      "afterSha256": "635040c812cb96cb323260ee153a58767006adbd25c0b09c34eae0aa163032c4"
+    },
+    {
+      "group": "scanner",
+      "path": "public/product-visual-association.js",
+      "beforeSha256": "7cbeb14a1c39dc079cad96f155f1ae0c6ea4f6402ffecf6f871dade6956ce661",
+      "bytes": 10747,
+      "sourceAvailable": true,
+      "afterSha256": "7cbeb14a1c39dc079cad96f155f1ae0c6ea4f6402ffecf6f871dade6956ce661"
+    },
+    {
+      "group": "scanner",
+      "path": "public/scanner-product-visuals.js",
+      "beforeSha256": "3993582332aa3b9708cf349cbb1a352676ea2500014a83c066d2615393e5a769",
+      "bytes": 4087,
+      "sourceAvailable": true,
+      "afterSha256": "3993582332aa3b9708cf349cbb1a352676ea2500014a83c066d2615393e5a769"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/scanner-product-visuals-production.js",
+      "beforeSha256": "37f2a6642afc5991ecc37577e2a09c4312439f12a2018179d45e81c02a3488e2",
+      "bytes": 224,
+      "sourceAvailable": true,
+      "afterSha256": "37f2a6642afc5991ecc37577e2a09c4312439f12a2018179d45e81c02a3488e2"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/scanner-three.js",
+      "beforeSha256": "316e4a74c70140ee8253c44032b2f1a3e683f8f36608c8fce2a789256fd8fe8a",
+      "bytes": 487719,
+      "sourceAvailable": true,
+      "afterSha256": "316e4a74c70140ee8253c44032b2f1a3e683f8f36608c8fce2a789256fd8fe8a"
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/shelf-scanner.js",
+      "beforeSha256": "271366dfa06b165a5e6ac64240895359726d5308d5e761f0458a43856aa05d95",
+      "bytes": 46144,
+      "sourceAvailable": true,
+      "afterSha256": "b57877928dc9ca5b5ee1e9adb96ac3982467acc9aa2aade8b237357d4e34b143",
+      "integrationDelta": true
+    },
+    {
+      "group": "guest",
+      "path": "public/foundation-handoff-bindings.mjs",
+      "beforeSha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76",
+      "bytes": 2982,
+      "sourceAvailable": true,
+      "afterSha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584",
+      "beforeProductionTargetSha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76",
+      "productionTargetBindingDelta": true
+    },
+    {
+      "group": "guest",
+      "path": "public/foundation-scanner-handoff.mjs",
+      "beforeSha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00",
+      "bytes": 6878,
+      "sourceAvailable": true,
+      "afterSha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/foundation-scanner-client.mjs",
+      "beforeSha256": "d6e82b813a49184d5fb4ac5e234404acf2bd46009e8cebb8e36240d38381f073",
+      "bytes": 10461,
+      "sourceAvailable": true,
+      "afterSha256": "46d43f13d06caafc22ddc47e361e04e5e0abb97e23709c3d028ed48f0d518e3d",
+      "beforeProductionTargetSha256": "d6e82b813a49184d5fb4ac5e234404acf2bd46009e8cebb8e36240d38381f073",
+      "productionTargetBindingDelta": true
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/guest-foundation-client.mjs",
+      "beforeSha256": "d9f531f4e41d049aaf0609dccb8479aea24357c7d35218a94addf990abffd9ad",
+      "bytes": 2091,
+      "sourceAvailable": true,
+      "afterSha256": "d9f531f4e41d049aaf0609dccb8479aea24357c7d35218a94addf990abffd9ad"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/typed-identifier-contract.mjs",
+      "beforeSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "bytes": 10793,
+      "sourceAvailable": true,
+      "afterSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/source-identity-client.mjs",
+      "beforeSha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca",
+      "bytes": 10890,
+      "sourceAvailable": true,
+      "afterSha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/source-identity-selection.mjs",
+      "beforeSha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f",
+      "bytes": 204,
+      "sourceAvailable": true,
+      "afterSha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/composed-scanner-client.mjs",
+      "beforeSha256": "45e6f713a55073ea102af06d9c5e6f20f07053d96a02dc608dacfa9d3019e7bc",
+      "bytes": 5349,
+      "sourceAvailable": true,
+      "afterSha256": "45e6f713a55073ea102af06d9c5e6f20f07053d96a02dc608dacfa9d3019e7bc"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/guest-scanner-state.mjs",
+      "beforeSha256": "dc600a66de0f160ca28c2ef16e681f4e87690ec59f26e4215a459cdfeba51906",
+      "bytes": 1427,
+      "sourceAvailable": true,
+      "afterSha256": "dc600a66de0f160ca28c2ef16e681f4e87690ec59f26e4215a459cdfeba51906"
+    },
+    {
+      "group": "guest",
+      "path": "public/source-category-claims.js",
+      "beforeSha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6",
+      "bytes": 1857,
+      "sourceAvailable": true,
+      "afterSha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6"
+    },
+    {
+      "group": "guest",
+      "path": "public/scanner-identity-v2.js",
+      "beforeSha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76",
+      "bytes": 14759,
+      "sourceAvailable": true,
+      "afterSha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76"
+    },
+    {
+      "group": "guest",
+      "path": "public/source-classification-contract.mjs",
+      "beforeSha256": "e781776fd220a9957c8e03b8e365d62ac161ebc85ba376d5d916c6696b8a82ef",
+      "bytes": 4219,
+      "sourceAvailable": true,
+      "afterSha256": "e781776fd220a9957c8e03b8e365d62ac161ebc85ba376d5d916c6696b8a82ef"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/scanner-source-assertions.js",
+      "beforeSha256": "ea2266461c216750d6a9bc7e34a0a781e2beacf479bb1c5751f3490f61175c16",
+      "bytes": 22771,
+      "sourceAvailable": true,
+      "afterSha256": "ea2266461c216750d6a9bc7e34a0a781e2beacf479bb1c5751f3490f61175c16"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/locales/ar.js",
+      "beforeSha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "bytes": 27728,
+      "sourceAvailable": true,
+      "afterSha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/locale-negotiation.js",
+      "beforeSha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+      "bytes": 2881,
+      "sourceAvailable": true,
+      "afterSha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/i18n.js",
+      "beforeSha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+      "bytes": 8381,
+      "sourceAvailable": true,
+      "afterSha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/scanner-model.js",
+      "beforeSha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228",
+      "bytes": 3559,
+      "sourceAvailable": true,
+      "afterSha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/typed-identifier-contract.mjs",
+      "beforeSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "bytes": 10793,
+      "sourceAvailable": true,
+      "afterSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/scanner-capture-envelope.js",
+      "beforeSha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89",
+      "bytes": 6765,
+      "sourceAvailable": true,
+      "afterSha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/guest-scanner-ui.js",
+      "beforeSha256": "68cd03afac308f3e8f16f1de46f29dafae28db55ca00093973511e1d4bb69856",
+      "bytes": 18339,
+      "sourceAvailable": true,
+      "afterSha256": "68cd03afac308f3e8f16f1de46f29dafae28db55ca00093973511e1d4bb69856"
+    },
+    {
+      "group": "guest",
+      "path": "public/product-visual-selector.js",
+      "beforeSha256": "03daa6a6e6575c74cebb06b3320111e022877434e41b4d5698bad6b43d2029fa",
+      "bytes": 11859,
+      "sourceAvailable": true,
+      "afterSha256": "03daa6a6e6575c74cebb06b3320111e022877434e41b4d5698bad6b43d2029fa"
+    },
+    {
+      "group": "guest",
+      "path": "public/local-retained-category-presentation.js",
+      "beforeSha256": "a775711245bb829b84e009ab2d0354e02815793511d36bb4acf6624c59e4251c",
+      "bytes": 2527,
+      "sourceAvailable": true,
+      "afterSha256": "a775711245bb829b84e009ab2d0354e02815793511d36bb4acf6624c59e4251c"
+    },
+    {
+      "group": "guest",
+      "path": "public/retained-source-photo-selection.js",
+      "beforeSha256": "a76143f08fedd1683d91ce8d6501c71e13d619d7d3c8ff6ed84a7be9504a3eaa",
+      "bytes": 7301,
+      "sourceAvailable": true,
+      "afterSha256": "a76143f08fedd1683d91ce8d6501c71e13d619d7d3c8ff6ed84a7be9504a3eaa"
+    },
+    {
+      "group": "guest",
+      "path": "public/typed-identifier-contract.mjs",
+      "beforeSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "bytes": 10793,
+      "sourceAvailable": true,
+      "afterSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "group": "guest",
+      "path": "public/scanner-kitchen-handoff.js",
+      "beforeSha256": "e35169fee6a7391491c460ddb590f9e1d0b0e59a20a00dcbce557aee7faf1eb1",
+      "bytes": 6134,
+      "sourceAvailable": true,
+      "afterSha256": "e35169fee6a7391491c460ddb590f9e1d0b0e59a20a00dcbce557aee7faf1eb1"
+    },
+    {
+      "group": "guest",
+      "path": "public/locales/ar.js",
+      "beforeSha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "bytes": 27728,
+      "sourceAvailable": true,
+      "afterSha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+    },
+    {
+      "group": "guest",
+      "path": "public/locale-negotiation.js",
+      "beforeSha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+      "bytes": 2881,
+      "sourceAvailable": true,
+      "afterSha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+    },
+    {
+      "group": "guest",
+      "path": "public/i18n.js",
+      "beforeSha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+      "bytes": 8381,
+      "sourceAvailable": true,
+      "afterSha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+    },
+    {
+      "group": "guest",
+      "path": "public/ingredients.js",
+      "beforeSha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab",
+      "bytes": 5212,
+      "sourceAvailable": true,
+      "afterSha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab"
+    },
+    {
+      "group": "guest",
+      "path": "public/model.js",
+      "beforeSha256": "74ae172868765650cd08a90ae356ae8072b04529e7be00469a3e30973e8b4785",
+      "bytes": 7059,
+      "sourceAvailable": true,
+      "afterSha256": "74ae172868765650cd08a90ae356ae8072b04529e7be00469a3e30973e8b4785"
+    },
+    {
+      "group": "guest",
+      "path": "public/off-photo-metadata.js",
+      "beforeSha256": "1a3808a413e4302b440fe71e7c326e4e66c84a9d6a653bcc55dc7da9f18f9280",
+      "bytes": 8143,
+      "sourceAvailable": true,
+      "afterSha256": "1a3808a413e4302b440fe71e7c326e4e66c84a9d6a653bcc55dc7da9f18f9280"
+    },
+    {
+      "group": "guest",
+      "path": "public/off-photo-catalogue.js",
+      "beforeSha256": "991791f2b176c0e216cfe3d96c9e9d7daf86a3a2d89ab0b527d578098ebab430",
+      "bytes": 4008,
+      "sourceAvailable": true,
+      "afterSha256": "991791f2b176c0e216cfe3d96c9e9d7daf86a3a2d89ab0b527d578098ebab430"
+    },
+    {
+      "group": "guest",
+      "path": "public/product-visual-association.js",
+      "beforeSha256": "7cbeb14a1c39dc079cad96f155f1ae0c6ea4f6402ffecf6f871dade6956ce661",
+      "bytes": 10747,
+      "sourceAvailable": true,
+      "afterSha256": "7cbeb14a1c39dc079cad96f155f1ae0c6ea4f6402ffecf6f871dade6956ce661"
+    },
+    {
+      "group": "guest",
+      "path": "public/scanner-product-visuals.js",
+      "beforeSha256": "a980f106d2194116d78a7efe71e183d57949e3dab61fa55440b57db5125ad915",
+      "bytes": 4899,
+      "sourceAvailable": true,
+      "afterSha256": "a980f106d2194116d78a7efe71e183d57949e3dab61fa55440b57db5125ad915"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/scanner-product-visuals-production.js",
+      "beforeSha256": "37f2a6642afc5991ecc37577e2a09c4312439f12a2018179d45e81c02a3488e2",
+      "bytes": 224,
+      "sourceAvailable": true,
+      "afterSha256": "37f2a6642afc5991ecc37577e2a09c4312439f12a2018179d45e81c02a3488e2"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/scanner-three.js",
+      "beforeSha256": "316e4a74c70140ee8253c44032b2f1a3e683f8f36608c8fce2a789256fd8fe8a",
+      "bytes": 487719,
+      "sourceAvailable": true,
+      "afterSha256": "316e4a74c70140ee8253c44032b2f1a3e683f8f36608c8fce2a789256fd8fe8a"
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/guest-shelf-scanner-inventory.js",
+      "beforeSha256": "a175b40c61f91a498b74e8fad30eec0f389408808626f0b2f908883cdc7ce668",
+      "bytes": 50619,
+      "sourceAvailable": true,
+      "afterSha256": "a175b40c61f91a498b74e8fad30eec0f389408808626f0b2f908883cdc7ce668"
+    },
+    {
+      "group": "app",
+      "path": "public/production-scanner/source-identity-client.mjs",
+      "bytes": 10890,
+      "afterSha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca",
+      "sourceAvailable": true,
+      "reason": "New helper depends on unchanged recovered strict source validator"
+    },
+    {
+      "group": "app",
+      "path": "public/production-scanner/source-identity-selection.mjs",
+      "bytes": 204,
+      "afterSha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f",
+      "sourceAvailable": true,
+      "reason": "New helper depends on unchanged recovered strict source validator"
+    },
+    {
+      "group": "app",
+      "path": "public/production-scanner/typed-identifier-contract.mjs",
+      "bytes": 10793,
+      "afterSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "sourceAvailable": true,
+      "reason": "New helper depends on unchanged recovered strict source validator"
+    },
+    {
+      "group": "app",
+      "path": "public/source-identity-handoff.mjs",
+      "sourceAvailable": true,
+      "afterSha256": "469be2b518e2b8422d89400ba686a09f73f736a87db61fbd6cb8db7e31f3f04d",
+      "bytes": 6874,
+      "integrationDelta": true
+    },
+    {
+      "group": "scanner",
+      "path": "public/source-identity-handoff.mjs",
+      "sourceAvailable": true,
+      "afterSha256": "469be2b518e2b8422d89400ba686a09f73f736a87db61fbd6cb8db7e31f3f04d",
+      "bytes": 6874,
+      "integrationDelta": true
+    },
+    {
+      "group": "server",
+      "path": "dev/source-identity-consumer-candidate-20261027/source-identity-http.mjs",
+      "bytes": 3242,
+      "afterSha256": "180aa806e6074e42e76ef38607a61ebbd3b5336975d22b023f803f4b099fa8ad",
+      "sourceAvailable": true,
+      "integrationDelta": true,
+      "boundary": "Existing localhost-only HTTP origin policy unchanged; not a production admission"
+    },
+    {
+      "group": "server",
+      "path": "dev/source-identity-consumer-candidate-20261027/source-identity-reader.mjs",
+      "bytes": 14281,
+      "afterSha256": "4fb214b234d0362b9889ec6f1b83620372302ec836be1b05ad6f1778183e9877",
+      "sourceAvailable": true,
+      "integrationDelta": false,
+      "boundary": "Existing localhost-only HTTP origin policy unchanged; not a production admission"
+    },
+    {
+      "group": "server",
+      "path": "dev/source-identity-consumer-candidate-20261027/typed-identifier-contract.mjs",
+      "bytes": 10793,
+      "afterSha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "sourceAvailable": true,
+      "integrationDelta": false,
+      "boundary": "Existing localhost-only HTTP origin policy unchanged; not a production admission"
+    },
+    {
+      "group": "app",
+      "path": "public/scoped-kitchen-request.js",
+      "sourceAvailable": true,
+      "afterSha256": "802473f7d488f06f76d5e38ba0301d890ec90521ebadfb3fd2dc5fcf035d9733",
+      "bytes": 1102
+    },
+    {
+      "group": "app",
+      "path": "public/lot-nutrition.js",
+      "sourceAvailable": true,
+      "afterSha256": "52bf54ffb375d4a84ac9b821d83ae2508b97fe6957d886f78737ff356b3ca2ce",
+      "bytes": 5358
+    },
+    {
+      "group": "app",
+      "path": "public/nutrient-profile.js",
+      "sourceAvailable": true,
+      "afterSha256": "852801c373a679623cf8f40569cb3d84ddda2d34e221c031b913e5ed671f3a9a",
+      "bytes": 997
+    }
+  ],
+  "literalImports": [
+    {
+      "group": "app",
+      "importer": "cloud/state.mjs",
+      "specifier": "../public/cooking-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/cooking-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "cloud/state.mjs",
+      "specifier": "../public/unified-data.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/unified-data.js"
+    },
+    {
+      "group": "app",
+      "importer": "cloud/state.mjs",
+      "specifier": "../public/insights-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/insights-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "cloud/state.mjs",
+      "specifier": "../public/model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "app",
+      "importer": "cloud/meal-preference-owner20.mjs",
+      "specifier": "./state.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "cloud/state.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/scanner-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/scanner-ui.js",
+      "specifier": "./scanner-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/scanner-ui.js",
+      "specifier": "./scanner-capture-envelope.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-capture-envelope.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/household-model.js",
+      "specifier": "./ingredients.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/ingredients.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/household-model.js",
+      "specifier": "./model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/household-model.js",
+      "specifier": "./menu-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/menu-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/admin-operations-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/admin-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/admin-ui.js",
+      "specifier": "./admin-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/admin-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/community-ai-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/access-ui.js",
+      "specifier": "./content-locale.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/content-locale.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/access-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/content-locale.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/scanner-kitchen-handoff.js",
+      "specifier": "./source-identity-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-identity-handoff.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/scanner-kitchen-handoff.js",
+      "specifier": "./foundation-scanner-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-scanner-handoff.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/scanner-kitchen-handoff.js",
+      "specifier": "./typed-identifier-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/typed-identifier-contract.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/unified-data.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/unified-data.js",
+      "specifier": "./source-category-claims.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-category-claims.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/unified-data.js",
+      "specifier": "./countries.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/countries.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/unified-data.js",
+      "specifier": "./menu-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/menu-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/cooking-model.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/cooking-model.js",
+      "specifier": "./model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/cooking-model.js",
+      "specifier": "./ingredients.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/ingredients.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/cooking-model.js",
+      "specifier": "./menu-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/menu-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/sharing-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/sharing-ui.js",
+      "specifier": "./sync-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/sync-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/sharing-ui.js",
+      "specifier": "./sync-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/sync-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/sync-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/sync-ui.js",
+      "specifier": "./sync-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/sync-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/journey-ui.js",
+      "specifier": "./content-locale.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/content-locale.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/journey-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/journey-ui.js",
+      "specifier": "./household-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/household-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/journey-ui.js",
+      "specifier": "./ingredients.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/ingredients.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/journey-ui.js",
+      "specifier": "./cooking-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/cooking-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/journey-ui.js",
+      "specifier": "./model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/integration-owner03.mjs",
+      "specifier": "./waste-analysis-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/waste-analysis-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/integration-owner03.mjs",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-library-model.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-library-model.js",
+      "specifier": "./recipe-ingredient-aliases.json",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/recipe-ingredient-aliases.json"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-library-model.js",
+      "specifier": "./ingredients.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/ingredients.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-library-model.js",
+      "specifier": "./recipe-review.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/recipe-review.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/pantry-backup.js",
+      "specifier": "../cloud/state.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "cloud/state.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/pantry-backup.js",
+      "specifier": "../cloud/meal-preference-owner20.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "cloud/meal-preference-owner20.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/pantry-backup.js",
+      "specifier": "./model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/i18n.js",
+      "specifier": "./locales/ar.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/locales/ar.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/i18n.js",
+      "specifier": "./locale-negotiation.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/locale-negotiation.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-discovery-client.js",
+      "specifier": "../corpus/assert-curated.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "corpus/assert-curated.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/scanner-capture-envelope.js",
+      "specifier": "./typed-identifier-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/typed-identifier-contract.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/scanner-identity-v2.js",
+      "specifier": "./source-category-claims.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-category-claims.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/documents.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/documents.js",
+      "specifier": "./content-locale.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/content-locale.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/documents.js",
+      "specifier": "./insights-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/insights-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/documents.js",
+      "specifier": "./integrations.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/integrations.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/documents.js",
+      "specifier": "./menu-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/menu-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/documents.js",
+      "specifier": "./checkout-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/checkout-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/documents.js",
+      "specifier": "./household-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/household-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/common-corpus-locale.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-library-ui.js",
+      "specifier": "./content-locale.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/content-locale.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-library-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-library-ui.js",
+      "specifier": "./recipe-library-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/recipe-library-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-library-ui.js",
+      "specifier": "./recipe-discovery-client.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/recipe-discovery-client.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/saved-price-observations.js",
+      "specifier": "./record-policy.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/record-policy.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/saved-price-observations.js",
+      "specifier": "./unified-data.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/unified-data.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/saved-price-observations.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-review.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-review.js",
+      "specifier": "./model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-review.js",
+      "specifier": "./record-policy.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/record-policy.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/integrations.js",
+      "specifier": "./sources.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/sources.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/integrations.js",
+      "specifier": "./menu-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/menu-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/data-ui.js",
+      "specifier": "./common-corpus-locale.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/common-corpus-locale.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/data-ui.js",
+      "specifier": "./content-locale.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/content-locale.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/data-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/data-ui.js",
+      "specifier": "./record-policy.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/record-policy.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/data-ui.js",
+      "specifier": "./sources.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/sources.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/data-ui.js",
+      "specifier": "./unified-data.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/unified-data.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/freshness-ui.js",
+      "specifier": "./content-locale.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/content-locale.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/freshness-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/freshness-ui.js",
+      "specifier": "./checkout-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/checkout-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/foundation-scanner-handoff.mjs",
+      "specifier": "./foundation-handoff-bindings.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-handoff-bindings.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/care-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/care-ui.js",
+      "specifier": "./care-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/care-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/model.js",
+      "specifier": "./source-identity-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-identity-handoff.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/model.js",
+      "specifier": "./foundation-scanner-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-scanner-handoff.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/model.js",
+      "specifier": "./scanner-kitchen-handoff.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-kitchen-handoff.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/model.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/model.js",
+      "specifier": "./ingredients.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/ingredients.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/model.js",
+      "specifier": "./scanner-identity-v2.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-identity-v2.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/checkout-model.js",
+      "specifier": "./source-identity-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-identity-handoff.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/checkout-model.js",
+      "specifier": "./model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/checkout-model.js",
+      "specifier": "./foundation-scanner-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-scanner-handoff.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/checkout-model.js",
+      "specifier": "./scanner-kitchen-handoff.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-kitchen-handoff.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/checkout-model.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/ingredients.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./source-identity-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-identity-handoff.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./foundation-scanner-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-scanner-handoff.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./saved-price-observations.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/saved-price-observations.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./scanner-kitchen-handoff.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-kitchen-handoff.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./content-locale.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/content-locale.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./recipe-library-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/recipe-library-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./recipe-review.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/recipe-review.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./cooking-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/cooking-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./sync-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/sync-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./sharing-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/sharing-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./journey-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/journey-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./ingredients.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/ingredients.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./data-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/data-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./access-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/access-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./insights-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/insights-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./freshness-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/freshness-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./session-fetch.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/session-fetch.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./offmenu-identity-client.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/offmenu-identity-client.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./care-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/care-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./recipe-community-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/recipe-community-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./community-ai-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/community-ai-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./personal-ai-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/personal-ai-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./services-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/services-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./admin-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/admin-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./admin-operations-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/admin-operations-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./household-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/household-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./documents.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/documents.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./menu-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/menu-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./checkout-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/checkout-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./pantry-backup.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/pantry-backup.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./lifecycle-fixture.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/lifecycle-fixture.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "@netlify/identity",
+      "kind": "external-or-bare",
+      "resolved": false
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./scanner-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-ui.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "./model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/menu-model.js",
+      "specifier": "./model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/menu-model.js",
+      "specifier": "./ingredients.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/ingredients.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/insights-model.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/insights-model.js",
+      "specifier": "./menu-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/menu-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/personal-ai-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/source-identity-handoff.mjs",
+      "specifier": "./foundation-scanner-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-scanner-handoff.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/source-identity-handoff.mjs",
+      "specifier": "./production-scanner/source-identity-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/source-identity-client.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/source-identity-handoff.mjs",
+      "specifier": "./production-scanner/source-identity-selection.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/source-identity-selection.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/services-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/services-ui.js",
+      "specifier": "./services-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/services-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-community-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/recipe-community-ui.js",
+      "specifier": "./recipe-community-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/recipe-community-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/insights-ui.js",
+      "specifier": "./saved-price-observations.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/saved-price-observations.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/insights-ui.js",
+      "specifier": "./integration-owner03.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/integration-owner03.mjs"
+    },
+    {
+      "group": "app",
+      "importer": "public/insights-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/insights-ui.js",
+      "specifier": "./menu-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/menu-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/insights-ui.js",
+      "specifier": "./insights-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/insights-model.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/insights-ui.js",
+      "specifier": "./integrations.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/integrations.js"
+    },
+    {
+      "group": "app",
+      "importer": "public/production-scanner/source-identity-client.mjs",
+      "specifier": "./typed-identifier-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/typed-identifier-contract.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/scanner-kitchen-handoff.js",
+      "specifier": "./source-identity-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-identity-handoff.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/scanner-kitchen-handoff.js",
+      "specifier": "./foundation-scanner-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-scanner-handoff.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/scanner-kitchen-handoff.js",
+      "specifier": "./typed-identifier-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/typed-identifier-contract.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/scanner-product-visuals.js",
+      "specifier": "./product-visual-association.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/product-visual-association.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/scanner-product-visuals.js",
+      "specifier": "./model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/i18n.js",
+      "specifier": "./locales/ar.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/locales/ar.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/i18n.js",
+      "specifier": "./locale-negotiation.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/locale-negotiation.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/scanner-identity-v2.js",
+      "specifier": "./source-category-claims.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-category-claims.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/foundation-scanner-handoff.mjs",
+      "specifier": "./foundation-handoff-bindings.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-handoff-bindings.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/model.js",
+      "specifier": "./source-identity-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-identity-handoff.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/model.js",
+      "specifier": "./foundation-scanner-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-scanner-handoff.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/model.js",
+      "specifier": "./scanner-kitchen-handoff.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-kitchen-handoff.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/model.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/model.js",
+      "specifier": "./ingredients.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/ingredients.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/model.js",
+      "specifier": "./scanner-identity-v2.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-identity-v2.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/product-visual-association.js",
+      "specifier": "./source-classification-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-classification-contract.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/product-visual-association.js",
+      "specifier": "./retained-source-photo-selection.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/retained-source-photo-selection.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/product-visual-association.js",
+      "specifier": "./model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/product-visual-association.js",
+      "specifier": "./off-photo-catalogue.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/off-photo-catalogue.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/retained-source-photo-selection.js",
+      "specifier": "./scanner-identity-v2.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-identity-v2.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/ingredients.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/source-identity-handoff.mjs",
+      "specifier": "./foundation-scanner-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-scanner-handoff.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/source-identity-handoff.mjs",
+      "specifier": "./production-scanner/source-identity-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/source-identity-client.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/source-identity-handoff.mjs",
+      "specifier": "./production-scanner/source-identity-selection.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/source-identity-selection.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/off-photo-catalogue.js",
+      "specifier": "./off-photo-metadata.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/off-photo-metadata.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/off-photo-catalogue.js",
+      "specifier": "./off-photo-metadata.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/off-photo-metadata.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/scanner-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/i18n.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/scanner-ui.js",
+      "specifier": "./scanner-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-model.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/scanner-ui.js",
+      "specifier": "./scanner-capture-envelope.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-capture-envelope.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/shelf-scanner.js",
+      "specifier": "../source-identity-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-identity-handoff.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/shelf-scanner.js",
+      "specifier": "../foundation-scanner-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-scanner-handoff.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/shelf-scanner.js",
+      "specifier": "./scanner-source-assertions.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-source-assertions.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/shelf-scanner.js",
+      "specifier": "../scanner-kitchen-handoff.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-kitchen-handoff.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/shelf-scanner.js",
+      "specifier": "./composed-scanner-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/composed-scanner-client.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/shelf-scanner.js",
+      "specifier": "./scanner-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-ui.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/shelf-scanner.js",
+      "specifier": "./scanner-product-visuals-production.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-product-visuals-production.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/shelf-scanner.js",
+      "specifier": "./scanner-capture-envelope.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-capture-envelope.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/shelf-scanner.js",
+      "specifier": "./scanner-three.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-three.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/composed-scanner-client.mjs",
+      "specifier": "./guest-foundation-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/guest-foundation-client.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/composed-scanner-client.mjs",
+      "specifier": "./foundation-scanner-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/foundation-scanner-client.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/composed-scanner-client.mjs",
+      "specifier": "./source-identity-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/source-identity-client.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/composed-scanner-client.mjs",
+      "specifier": "./source-identity-selection.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/source-identity-selection.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/composed-scanner-client.mjs",
+      "specifier": "./source-identity-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/source-identity-client.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/source-identity-client.mjs",
+      "specifier": "./typed-identifier-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/typed-identifier-contract.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/scanner-source-assertions.js",
+      "specifier": "../scanner-identity-v2.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-identity-v2.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/scanner-source-assertions.js",
+      "specifier": "../source-classification-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-classification-contract.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/i18n.js",
+      "specifier": "./locales/ar.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/locales/ar.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/i18n.js",
+      "specifier": "./locale-negotiation.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/locale-negotiation.js"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/scanner-capture-envelope.js",
+      "specifier": "./typed-identifier-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/typed-identifier-contract.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/foundation-scanner-client.mjs",
+      "specifier": "../foundation-scanner-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-scanner-handoff.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/guest-foundation-client.mjs",
+      "specifier": "./foundation-scanner-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/foundation-scanner-client.mjs"
+    },
+    {
+      "group": "scanner",
+      "importer": "public/production-scanner/scanner-product-visuals-production.js",
+      "specifier": "../scanner-product-visuals.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-product-visuals.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/scanner-kitchen-handoff.js",
+      "specifier": "./typed-identifier-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/typed-identifier-contract.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/local-retained-category-presentation.js",
+      "specifier": "./product-visual-selector.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/product-visual-selector.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/scanner-product-visuals.js",
+      "specifier": "./local-retained-category-presentation.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/local-retained-category-presentation.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/scanner-product-visuals.js",
+      "specifier": "./product-visual-association.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/product-visual-association.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/scanner-product-visuals.js",
+      "specifier": "./model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/i18n.js",
+      "specifier": "./locales/ar.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/locales/ar.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/i18n.js",
+      "specifier": "./locale-negotiation.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/locale-negotiation.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/scanner-identity-v2.js",
+      "specifier": "./source-category-claims.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-category-claims.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/foundation-scanner-handoff.mjs",
+      "specifier": "./foundation-handoff-bindings.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-handoff-bindings.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/model.js",
+      "specifier": "./scanner-kitchen-handoff.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-kitchen-handoff.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/model.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/model.js",
+      "specifier": "./ingredients.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/ingredients.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/model.js",
+      "specifier": "./scanner-identity-v2.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-identity-v2.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/product-visual-association.js",
+      "specifier": "./source-classification-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-classification-contract.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/product-visual-association.js",
+      "specifier": "./retained-source-photo-selection.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/retained-source-photo-selection.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/product-visual-association.js",
+      "specifier": "./model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/model.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/product-visual-association.js",
+      "specifier": "./off-photo-catalogue.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/off-photo-catalogue.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/retained-source-photo-selection.js",
+      "specifier": "./scanner-identity-v2.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-identity-v2.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/ingredients.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/i18n.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/off-photo-catalogue.js",
+      "specifier": "./off-photo-metadata.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/off-photo-metadata.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/off-photo-catalogue.js",
+      "specifier": "./off-photo-metadata.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/off-photo-metadata.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/composed-scanner-client.mjs",
+      "specifier": "./guest-foundation-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/guest-foundation-client.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/composed-scanner-client.mjs",
+      "specifier": "./foundation-scanner-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/foundation-scanner-client.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/composed-scanner-client.mjs",
+      "specifier": "./source-identity-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/source-identity-client.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/composed-scanner-client.mjs",
+      "specifier": "./source-identity-selection.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/source-identity-selection.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/composed-scanner-client.mjs",
+      "specifier": "./source-identity-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/source-identity-client.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/source-identity-client.mjs",
+      "specifier": "./typed-identifier-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/typed-identifier-contract.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/scanner-source-assertions.js",
+      "specifier": "../scanner-identity-v2.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-identity-v2.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/scanner-source-assertions.js",
+      "specifier": "../source-classification-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/source-classification-contract.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/guest-scanner-ui.js",
+      "specifier": "./i18n.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/i18n.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/guest-scanner-ui.js",
+      "specifier": "./scanner-model.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-model.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/guest-scanner-ui.js",
+      "specifier": "./scanner-capture-envelope.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-capture-envelope.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/i18n.js",
+      "specifier": "./locales/ar.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/locales/ar.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/i18n.js",
+      "specifier": "./locale-negotiation.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/locale-negotiation.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/scanner-capture-envelope.js",
+      "specifier": "./typed-identifier-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/typed-identifier-contract.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/guest-shelf-scanner-inventory.js",
+      "specifier": "./composed-scanner-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/composed-scanner-client.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/guest-shelf-scanner-inventory.js",
+      "specifier": "./guest-scanner-state.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/guest-scanner-state.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/guest-shelf-scanner-inventory.js",
+      "specifier": "./scanner-source-assertions.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-source-assertions.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/guest-shelf-scanner-inventory.js",
+      "specifier": "./guest-scanner-ui.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/guest-scanner-ui.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/guest-shelf-scanner-inventory.js",
+      "specifier": "./scanner-product-visuals-production.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-product-visuals-production.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/guest-shelf-scanner-inventory.js",
+      "specifier": "./scanner-capture-envelope.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-capture-envelope.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/guest-shelf-scanner-inventory.js",
+      "specifier": "./scanner-three.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/scanner-three.js"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/foundation-scanner-client.mjs",
+      "specifier": "../foundation-scanner-handoff.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/foundation-scanner-handoff.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/guest-foundation-client.mjs",
+      "specifier": "./foundation-scanner-client.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/production-scanner/foundation-scanner-client.mjs"
+    },
+    {
+      "group": "guest",
+      "importer": "public/production-scanner/scanner-product-visuals-production.js",
+      "specifier": "../scanner-product-visuals.js",
+      "kind": "relative",
+      "resolved": true,
+      "target": "public/scanner-product-visuals.js"
+    },
+    {
+      "group": "server",
+      "importer": "dev/source-identity-consumer-candidate-20261027/source-identity-reader.mjs",
+      "specifier": "./typed-identifier-contract.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "dev/source-identity-consumer-candidate-20261027/typed-identifier-contract.mjs"
+    },
+    {
+      "group": "server",
+      "importer": "dev/source-identity-consumer-candidate-20261027/source-identity-http.mjs",
+      "specifier": "./source-identity-reader.mjs",
+      "kind": "relative",
+      "resolved": true,
+      "target": "dev/source-identity-consumer-candidate-20261027/source-identity-reader.mjs"
+    }
+  ],
+  "unresolvedImports": [
+    {
+      "group": "app",
+      "importer": "public/app.js",
+      "specifier": "@netlify/identity",
+      "kind": "external-or-bare",
+      "resolved": false
+    }
+  ],
+  "notes": [
+    "Guest uses exact recovered graph with no protected/model/Finish overlay.",
+    "App and scanner preserve their separate source dependencies; do not merge conflicting group versions silently.",
+    "App index/style are not proved by Worker13 source closure. Exact current production assets remain authoritative.",
+    "Historical R8 binding is preserved only as exact source preimage; current production binding selection is parent-owned.",
+    "Two third-party auth source inputs are deliberately not acquired; preserve current authentication rather than substitute an npm version."
+  ],
+  "productionTarget": {
+    "releaseId": "offmenu-foundation-production-20261027-v1",
+    "manifestSha256": "10f4f5acb9dbab8e5411dc7c7aa9136d6bb6317cd5eb11d9ec6c9ccdd4a1a0db",
+    "publicationReceiptSha256": "fedce50756a6598ee3fc53d6e0507a4d21103711dcaee6911c61679b70cb2cdb",
+    "sourceScope": "New target receipt from actual checked curated projection; old local pins retained as historical references",
+    "partialIdentitySelection": "null; unchanged",
+    "servedGuestWarning": "Recovered guest build is source-only; current183 reviewed-audio guest is NOT replaced wholesale."
+  }
+}

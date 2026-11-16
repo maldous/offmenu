@@ -1,0 +1,123 @@
+{
+  "schema": "offmenu-native-reference-integration-source/1",
+  "sourceCustodyCommit": "7dd3ed8cf25b345b41edeaa4367735c0bda66444",
+  "originFoundationCommit": "d6267b36bba7db669561293bd191980e1a6b567a",
+  "changes": [
+    {
+      "path": "dev/source-identity-consumer-candidate-20261027/source-identity-http.mjs",
+      "before": {
+        "bytes": 3221,
+        "sha256": "1ae40f2ac0b08ca80f5e1686daf64d50fc641927db7857a77495268eaf19536b",
+        "gitBlobSha": "d3691a66d83cfbc2dabb7878a5dcfc82a0bd0b97"
+      },
+      "after": {
+        "bytes": 3242,
+        "sha256": "180aa806e6074e42e76ef38607a61ebbd3b5336975d22b023f803f4b099fa8ad",
+        "gitBlobSha": "eb3c9b32eb952932440f6746007ba0f534c4eb79"
+      }
+    },
+    {
+      "path": "public/app.js",
+      "before": {
+        "bytes": 104523,
+        "sha256": "722720c61f4d0a76cf782f690093a28a8efff0d06ce3f49c6e661acc25307c60",
+        "gitBlobSha": "dbf961261aea27e0bbe8147e8f2c2dc7f4a29a11"
+      },
+      "after": {
+        "bytes": 105634,
+        "sha256": "62a5aa5c056712bce5a075cf0c0e98f0b2b9b0a18ce7e6cb7dbbb09026b18973",
+        "gitBlobSha": "cc7e5ce7667cded9bcf51fd06888b77d98626168"
+      }
+    },
+    {
+      "path": "public/checkout-model.js",
+      "before": {
+        "bytes": 5052,
+        "sha256": "e66f7436ddf823d116cc2fc777a86401fa74071f3d59758fb8ff5038c5a41ce8",
+        "gitBlobSha": "c6b18d6692295cdef8933b779f1923feebc419b8"
+      },
+      "after": {
+        "bytes": 5588,
+        "sha256": "5343262bab8a3f95300037feb238b2ad7b06be52f0937964bd2012563051c0e7",
+        "gitBlobSha": "3e8807c48fc81e9ab315eb4d45cae0b4d749d112"
+      }
+    },
+    {
+      "path": "public/model.js",
+      "before": {
+        "bytes": 8006,
+        "sha256": "ac59b94a9d0089bb770c86196fcd634d15d1ddc87d701bd2875ac3e55e786c2a",
+        "gitBlobSha": "e05ed256295aff75efda95d13b9da13346d066de"
+      },
+      "after": {
+        "bytes": 8699,
+        "sha256": "4f37f779f445e27bcc8a73f6c03c4604033dae7e6ca153fc4a2cad5395f79807",
+        "gitBlobSha": "da590e48def0342a3c9db010f2cdea420a01078a"
+      }
+    },
+    {
+      "path": "public/production-scanner/shelf-scanner.js",
+      "before": {
+        "bytes": 45959,
+        "sha256": "271366dfa06b165a5e6ac64240895359726d5308d5e761f0458a43856aa05d95",
+        "gitBlobSha": "bc92fd84466a4b6f14ec5f223da55ba66119fe94"
+      },
+      "after": {
+        "bytes": 46144,
+        "sha256": "b57877928dc9ca5b5ee1e9adb96ac3982467acc9aa2aade8b237357d4e34b143",
+        "gitBlobSha": "ed6137a8365d404748ac5027918f9243f20bd682"
+      }
+    },
+    {
+      "path": "public/scanner-kitchen-handoff.js",
+      "before": {
+        "bytes": 6281,
+        "sha256": "d07d6ce268a4d07cc0c9368ae867b807aa2710ffae9265e737d0a889f74f3803",
+        "gitBlobSha": "1cee87a3cfead7c178823ed8214eeebc3ad00664"
+      },
+      "after": {
+        "bytes": 6528,
+        "sha256": "fb7757734898b93a3ca5e6647d60e7928ae4c226b38cec3f7f282fc11e5ad595",
+        "gitBlobSha": "21e043776d19af31c62490d91c5d995c031e257f"
+      }
+    },
+    {
+      "path": "public/source-identity-handoff.mjs",
+      "before": null,
+      "after": {
+        "bytes": 6874,
+        "sha256": "469be2b518e2b8422d89400ba686a09f73f736a87db61fbd6cb8db7e31f3f04d",
+        "gitBlobSha": "173b0c68bda786bf3b02f0c7162bd9104d2ae13b"
+      }
+    }
+  ],
+  "unchangedBoundaryFiles": [
+    "public/production-scanner/source-identity-client.mjs",
+    "public/production-scanner/composed-scanner-client.mjs",
+    "public/production-scanner/foundation-scanner-client.mjs",
+    "public/production-scanner/guest-foundation-client.mjs",
+    "public/production-scanner/guest-shelf-scanner-inventory.js",
+    "public/production-scanner/source-identity-selection.mjs",
+    "public/production-scanner/typed-identifier-contract.mjs",
+    "public/foundation-scanner-handoff.mjs",
+    "public/foundation-handoff-bindings.mjs",
+    "dev/source-identity-consumer-candidate-20261027/source-identity-reader.mjs"
+  ],
+  "actualIdentitySelection": "null/unconfigured; no admission issued",
+  "runtimeActivation": false,
+  "deployment": false,
+  "checks": {
+    "focusedIntegration": {
+      "passed": 9,
+      "failed": 0
+    },
+    "existingReaderHTTP": {
+      "passed": 20,
+      "failed": 0
+    },
+    "syntax": "all seven changed source files checked",
+    "browser": "not run",
+    "production": "not deployed"
+  },
+  "adoption": "Apply only seven listed source deltas. Do not copy test-support base/overlay wholesale or replace newer foundation/landing/alias/cover bindings. Full client selection and actual currently selected source graph remain operator-owned."
+}

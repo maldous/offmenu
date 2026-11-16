@@ -1,0 +1,11 @@
+# OffMenu independent North Star acceptance evidence, v195/v196
+
+This packet preserves non-sensitive synthetic fixture/harness source and executed evidence. It is source-only custody, not a deployment, new acceptance manager or broad release gate. Exact release/app/source hashes and scope are in RELEASES.json. MANIFEST.json and FILES.tsv are the explicit payload allowlist; no other source files are included.
+
+v195: one connected actual served-code journey through pantry/recipe/quantity/nutrition/menu, cook/serve/leftovers/history, future-plan shopping gaps and explicit home receipt confirmation/local reload. v196: only the changed lot-specific nutrition callback integration; no full journey or four previously accepted isolated regressions repeated. All runtime fetch attempts were blocked by the isolated harness. Synthetic inputs and in-memory DOM/storage are not real-source, browser/device, authenticated/person-health or provider/retailer acceptance.
+
+The served app bundles and formatted debugging copies are deliberately excluded. Reproduction requires the exact matching app.js from the existing source custodian/frozen capture, plus its harness in a fresh private scratch directory. A current public URL is not an immutable release pin. The harness rejects a mismatched app hash; do not substitute later releases. The v196 harness also uses the already-installed acorn parser; no installation is implied or authorized. Do not overwrite the original frozen evidence.
+
+NS196-G2 is already owned by the existing active application correction turn01a18424-e8e1-7693-ba77-09db09dcd989. Preserve it as the actual regression/coverage case for that owner; do not create or implement a duplicate correction. v196resolved NS195-G1 for selected-lot provenance, as documented. Future execution must stay within the existing owners' separately authorized source/release scope.
+
+This packaging turn ran no journeys or tests and accessed no credentials, cookies, session stores, real private user data or raw corpus. Earlier development notes distinguish a transient-pending assertion correction from an app defect. Existing snapshots remain unchanged. Permission/semantic/source qualification, cross-account privacy, physical devices, multi-device persistence and actual retailer ordering/received goods remain unproven where explicitly stated in the reports.

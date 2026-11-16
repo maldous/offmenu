@@ -1,0 +1,10 @@
+{
+  "checks": 7,
+  "actualExtractedServerHelper": "lg",
+  "beforeSha256": "f1e2be02a279f1d9fb9aad45073c7d4aaa427a67c33b12f6197009433ea4bf19",
+  "afterSha256": "9a9a15c6da6c12e98c2b9683839da509060cb21e9974b6a562f78d5ebdfddd7d",
+  "bytes": 2507864,
+  "onlyServerExpressionChanged": true,
+  "old": "servedPortions:g.servedPortions??g.servings,",
+  "replacement": "...((g.servedPortions??g.servings)>0?{servedPortions:g.servedPortions??g.servings}:{}),"
+}

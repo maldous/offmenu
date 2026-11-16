@@ -1,0 +1,14 @@
+{
+  "baseline": {
+    "tests": 14,
+    "pass": 9,
+    "fail": 5
+  },
+  "candidate": {
+    "tests": 25,
+    "pass": 25,
+    "fail": 0
+  },
+  "run": "01a182e2-13ce-a7b6-23be-96537103de0b",
+  "runURL": "https://windmill.aldous.info/run/01a182e2-13ce-a7b6-23be-96537103de0b?workspace=offmenu"
+}

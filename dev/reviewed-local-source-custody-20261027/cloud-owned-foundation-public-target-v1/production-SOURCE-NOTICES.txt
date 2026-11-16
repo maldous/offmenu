@@ -1,0 +1,23 @@
+OffMenu retained OFF / USDA barcode foundation candidate — source notices
+
+Open Food Facts. Retained source release: 2026-10-12. Attribution: Open Food Facts. Retained source-data declaration: ODbL / DbCL.
+ODbL: https://opendatacommons.org/licenses/odbl/1-0/
+DbCL: https://opendatacommons.org/licenses/dbcl/1-0/
+
+USDA Agricultural Research Service FoodData Central. Retained source release: 2026-04-30. Retained source-data declaration: public domain / CC0. Attribution: USDA Agricultural Research Service FoodData Central.
+
+This selected OffMenu derivative contains source-scoped identifier/provenance metadata and separately reviewed English interpretations. Transformations, retained source observations, source documents, input qualifications and semantic review versions remain identified. Normalization does not relicense source data. Retained release dates and original-clock caveats apply; this is not verification of a current product.
+
+A lexical barcode can return multiple separately identified source observations. No physical-product equivalence, constituent substitution or cross-source nutrition link follows. Supported parameter assertions remain distinct from source attributes, field-quality effects and unresolved facts. Recipe and nutrition joins are deferred. Phase admission and full-product/Gold completion are separate qualifications.
+
+No contributor database, images, trademarks, private provider payloads or local filesystem locators are selected for publication by these notices. Image/trademark rights are not inferred. No external live lookup/fallback is part of this package. The previously accepted selected release retains its own provenance and notices.
+
+LOCAL named-food extension: one retained source observation, derived curator policy. Full product, normalized, Gold, automatic planning and recipe nutrition joins remain unaccepted.
+
+Additional local OFF derivative: reviewed whole-product policy, exact source identity readback and phase assessment. Twenty-four parameter axes remain unknown. Full normalization, product completion, Gold, planning, publication and physical equivalence are not admitted.
+
+
+PRODUCTION-TARGET DERIVATIVE — offmenu-foundation-production-20261027-v1
+This separately named release is selected for own-data foundation lookup at https://offmenu.aldous.info. Its publication-target decision is new; the original local release and its historical non-public scope above are unchanged. All 11,527 previously qualified source observations are retained, with identical phase DTO source facts. Only 651 unused internal producer sourceProjection envelope members are omitted from this delivery. No raw contributor database, image, trademark, provider credential, private payload or filesystem locator is included. Source licences, attribution and original-clock caveats remain applicable; no re-licensing is asserted.
+
+The actual technical qualification used the existing immutable reader and policy/phase assessor, not a new independent semantic review. Unknown parameter states, separate source observations, exact lexical identifiers and all false full-product/normalization/Gold/planning/nutrition-join flags are preserved. Production publication of these selected phase fields does not make them full-product, normalized or Gold records. Partial identity-only candidates are not part of this release.

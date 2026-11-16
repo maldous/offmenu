@@ -1,0 +1,121 @@
+{
+  "allSelectedNativeProfilesMatched": true,
+  "availableBytes": 184790507520,
+  "committedShardBytes": 7548084221,
+  "complete": true,
+  "completedAssets": 9797,
+  "confidence": {
+    "probability": null,
+    "status": "not-calibrated"
+  },
+  "consumerProof": {
+    "acceptedIdentityJoins": 0,
+    "queries": {
+      "matchedProfilesWithBasisTargets": {
+        "count": 2924709,
+        "sql": "SELECT count(*) FROM matched WHERE targets>0"
+      },
+      "nativeProfilesMatched": {
+        "count": 2924709,
+        "sql": "SELECT count(*) FROM matched"
+      },
+      "nativeProfilesWithoutNormalizedMatch": {
+        "count": 0,
+        "sql": "SELECT count(*) FROM source.projections p WHERE NOT EXISTS(SELECT 1 FROM matched m WHERE m.resource_id=p.resource_id)"
+      },
+      "normalizedResourceLocators": {
+        "count": 9796656,
+        "sql": "SELECT count(*) FROM locations"
+      },
+      "projectionDigestMismatches": {
+        "count": 0,
+        "sql": "SELECT count(*) FROM matched m JOIN source.projections p USING(resource_id) WHERE m.projection_sha<>p.payload_sha OR m.source_id<>p.source_id OR m.targets<>p.metrics OR m.unknown_states<>p.unknown_states"
+      },
+      "restoredNutrientBasisTargets": {
+        "count": 46795344,
+        "sql": "SELECT coalesce(sum(targets),0) FROM matched"
+      },
+      "unknownSourceStateTargets": {
+        "count": 0,
+        "sql": "SELECT coalesce(sum(unknown_states),0) FROM matched"
+      }
+    },
+    "servedAppQueries": 0,
+    "sqliteSha256": "1691828696477efe932d6b3bfc1e20cbdc99ddf047da3e695067f40478e8c2cd"
+  },
+  "counts": {
+    "matchedNativeProfiles": 2924709,
+    "packets": 9796656,
+    "resourceLocators": 9796656,
+    "restoredNutrientBasisTargets": 46795344,
+    "sidecarPackets": 2924709,
+    "sourceMetricsWithoutOwnState": 0,
+    "unknownSourceStateTargets": 0
+  },
+  "expectedAssets": 9797,
+  "finalManifestExists": true,
+  "localOnlyArtifacts": [
+    "*.sqlite",
+    "shards/*/matched-profiles.jsonl.gz",
+    "shards/*/packet-locations.jsonl.gz",
+    "shards/*/receipt.json",
+    "selection.json",
+    "*-progress.json",
+    "native-index-manifest.json"
+  ],
+  "matchedProofSqliteBytes": 2320580608,
+  "metadataBytes": 1406971,
+  "metadataSha256": "3520dff24e7b96635fd3d8f8cfa60664d03d5bd65709b547059cee10b306e1a9",
+  "nativeIndexBinding": {
+    "manifestByteSha256": "d7de2786c96d246688ea15fd7d1e3e56d714872fbd00583bfb31e5eed59bd42a",
+    "sqliteSha256": "66677901ec78853ed791f9763149606433e7db448b107b713d71b4a01513d746"
+  },
+  "originalsModified": false,
+  "ownedAllocatedBytes": 18125860864,
+  "ownedLogicalBytes": 18032733156,
+  "phase": "restore-normalized",
+  "profileBasisUsed": false,
+  "publicFileInventory": {
+    "bytes": 7028472464,
+    "canonicalSha256": "03d8232028cb39132281140d2986986a2cf30b6625eaa8029a3e18eeb6c1af50",
+    "count": 9797,
+    "first": {
+      "bytes": 429334,
+      "key": "shards/000000/basis-restorations.jsonl.gz",
+      "sha256": "8c1965aa53bb65e7d4b35b9d2783df1d87e6edc44f3b387b5231e0258745aecc"
+    },
+    "last": {
+      "bytes": 45,
+      "key": "shards/009796/basis-restorations.jsonl.gz",
+      "sha256": "2468f20f042e508a5181f42d0c44b0abe46df365f4a61788c614dda054005966"
+    }
+  },
+  "publicationEligible": false,
+  "schemaVersion": "offmenu-same-source-basis-restoration/1",
+  "selection": {
+    "codePins": {
+      "derive_north_star_bulk.py": "3adc476be2a6694d62c76bb4d539f0fc698810fd3b942dc9ae501e940efde7a1",
+      "north_star_basis_restoration.py": "cae8b86cbacdbf0d81b9a52bb508dadae56e29639cfd332f87fb2b71bd18566a",
+      "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+      "run_north_star_basis_restoration.py": "24b477296d17675f7eb2ef3c674e5ae153a603afa599743161a13d0e05106d59"
+    },
+    "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+    "nativeManifestByteSha256": "312a7f5ce7c32b81d1eb02251303a000073eea2d0b46d9ac710e09ff89dee895",
+    "normalizedManifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e",
+    "rulesetVersion": "north-star-per-nutrient-basis-restoration/1",
+    "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+    "selectedSources": [
+      "off",
+      "usda-files"
+    ]
+  },
+  "semanticStatus": "candidate-not-admitted",
+  "sourceCoverage": {
+    "nativeProfilesMatched": 2924709,
+    "nativeProfilesSelected": 2924709,
+    "nativeProfilesUnmatched": 0,
+    "normalizedPacketsScanned": 9796656,
+    "normalizedResourcesLocated": 9796656
+  },
+  "status": "full-selected-normalized-input-scanned-and-source-basis-candidates-materialized"
+}

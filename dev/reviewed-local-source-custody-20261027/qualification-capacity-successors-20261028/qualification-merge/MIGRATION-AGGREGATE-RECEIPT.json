@@ -1,0 +1,51 @@
+{
+  "schema": "offmenu-sanitized-migration-result/1",
+  "ok": true,
+  "exit_code": 0,
+  "truncated": {
+    "stderr": false,
+    "stdout": false
+  },
+  "results": [
+    {
+      "phase": "packets",
+      "packageIndex": 6,
+      "assetIndex": 7530,
+      "observed": {
+        "assertions": 95899850,
+        "packets": 7530000,
+        "relations": 1983883,
+        "resources": 7530000,
+        "translations": 0
+      },
+      "aggregate": {
+        "assertions": 4253530,
+        "assets": 11461,
+        "externalReferences": 65129086,
+        "packets": 120270,
+        "relations": 1121221,
+        "resources": 1107357,
+        "translations": 3242
+      },
+      "scratchBytes": 14038941696,
+      "evidenceExists": false,
+      "memory": {
+        "MemTotal": 66900197376,
+        "MemAvailable": 44846764032
+      },
+      "orchestrator": "9fea04504b33581140a6c05c3a23a17681047208ad11313ae1e647f9993cd816"
+    },
+    {
+      "applied": true,
+      "migrationId": "0a56076fb04d495d8b0ad8d8d8c65633",
+      "priorCode": "62e1ab2078356f538ebfa1bb3cadd706f6e9cba10d21ab98ccfb78005eabd46c",
+      "priorHelper": "206841d5a34cf6a8798d553af3207c58ba1318ee307d15c49933a37ded3ece82",
+      "nextCode": "9fea04504b33581140a6c05c3a23a17681047208ad11313ae1e647f9993cd816",
+      "helperCode": "2bac27e64a4631ad9e82856eb51362c6d829191a49b540a4fe3983e71669db3b",
+      "checkpointUnchanged": true,
+      "phase": "packets",
+      "package": 6,
+      "asset": 7530
+    }
+  ]
+}

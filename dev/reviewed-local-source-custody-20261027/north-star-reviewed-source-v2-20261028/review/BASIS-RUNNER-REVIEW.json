@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "offmenu-independent-basis-runner-review/1",
+  "verdict": "approved-for-declared-two-phase-confined-run",
+  "reviewer": "align_north_star_graph",
+  "author": "scale_north_star_derivation",
+  "sourcePins": {
+    "run_north_star_basis_restoration.py": "24b477296d17675f7eb2ef3c674e5ae153a603afa599743161a13d0e05106d59",
+    "north_star_basis_restoration.py": "cae8b86cbacdbf0d81b9a52bb508dadae56e29639cfd332f87fb2b71bd18566a",
+    "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+    "derive_north_star_bulk.py": "3adc476be2a6694d62c76bb4d539f0fc698810fd3b942dc9ae501e940efde7a1"
+  },
+  "authoredIntegrationTestsIndependentlyRun": 12,
+  "independentExercises": [
+    "two distinct source profiles: exact normalized packet ordinal/file SHA lookup",
+    "unknown state targets and totaltargets reconcile actualsource",
+    "phase2 idempotent resume leaves nativeindex byte-identical",
+    "changed normalized asset rejected without finalmanifest"
+  ],
+  "scope": [
+    "source/target manifest and filepins",
+    "source-policy guards and originalpuremoduleapprovedseparately",
+    "transactional assetresume and duplicateidentity refusal",
+    "atomic output shards, exclusivewriter lock, deadlines and absolute totalstoragebudget",
+    "typed literalbasis candidates with no profile substitution, no admission",
+    "matched/unmatched coverage separate from fullscan completion",
+    "actualresource locator onlylocal, original datasets unchanged"
+  ],
+  "limits": [
+    "No basis productionrun has launched; no actual fullsourcecounts claimed.",
+    "10GiB phase1 budget is bounded estimate from measured16KiB SQLite layout, not a guarantee; reserve/absolutebudget guards retained.",
+    "Phase2 requires separately measured absolute totalbudget including nativeindex and locator/proof storage.",
+    "No source rights, food identity, nutrient equivalence, planning or appadoption granted."
+  ]
+}

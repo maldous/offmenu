@@ -1,0 +1,52 @@
+[
+  {
+    "path": "/auth.html",
+    "status": "200",
+    "bytes": 2848,
+    "sha256": "0f4af61bea945c8945c34f055bdfde8d878dbe75bee397ee4ba47e1317fd787a",
+    "exactCandidate": true
+  },
+  {
+    "path": "/auth.js",
+    "status": "200",
+    "bytes": 46477,
+    "sha256": "e17aecb376d5483fe7afc8f3c505ebb19bf6f41b03415b521b6d0ca2efd9583f",
+    "exactCandidate": true
+  },
+  {
+    "path": "/auth-return-bridge.js",
+    "status": "200",
+    "bytes": 620,
+    "sha256": "24256faa5f5c5b527bd15fedcb28fd4c5195b7c19c879a43d1332eaa0d9e42c7",
+    "exactCandidate": true
+  },
+  {
+    "path": "/api/auth-page/config",
+    "status": "200",
+    "bytes": 257,
+    "sha256": "308a0bb0750ca5f84fbb5de665689f4d14dd62e4d1b7cbba739df98529058ed1",
+    "body": {
+      "schema": "offmenu-auth-page/1",
+      "mode": "netlify",
+      "origin": "https://offmenu.aldous.info",
+      "identityTransport": "real",
+      "synthetic": false,
+      "emailSignIn": "existing-provider",
+      "oauthAvailable": true,
+      "callbackStatus": "owner-qualified",
+      "nextPath": "/shelf-scanner.html"
+    }
+  },
+  {
+    "path": "/app.js",
+    "status": "200",
+    "bytes": 476307,
+    "sha256": "19c11668db13b88a4c77ddd565dbf7853928b9c0c22cebe1da87fa3742cdb7a5"
+  },
+  {
+    "path": "/api/state",
+    "status": "401",
+    "bytes": 50,
+    "sha256": "9153fc34443b131b78f6f2856b73ba424c3ad0de8e183ed118729cfaa33fcdd0"
+  }
+]

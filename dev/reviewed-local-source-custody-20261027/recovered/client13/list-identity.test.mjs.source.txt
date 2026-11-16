@@ -1,0 +1,47 @@
+import {identityReadout,identityStatusRows,identityTitle} from './candidate/source-identity-client.mjs';
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const source=fs.readFileSync(new URL(process.env.LIST_SOURCE??'candidate/guest-shelf-scanner-inventory.js',import.meta.url),'utf8');
+class Node {constructor(tag='div'){this.tag=tag;this.children=[];this.textContent='';this.open=false;this.dataset={};}append(...items){this.children.push(...items);}replaceChildren(...items){this.children=[...items];}setAttribute(name,value){this[name]=value;}showModal(){this.open=true;}close(){this.open=false;}}
+function record(id){return {id,name:'Record '+id,provenance:{attribution:'Synthetic source'},foundationRecord:{data:{name:'Food '+id,classification:'ingredient',meaningfulType:{canonicalEnglishLabel:'Synthetic type'},variantParameters:{}}}};}
+function entry(id,status='ambiguous',n=2){return {id,raw:'4006381333931',namespace:'barcode',mode:'Explore',status,foundationLookup:true,lookupPending:false,sourceChoiceConfirmed:false,matches:Array.from({length:n},(_,i)=>record(id+'-'+i)),selectedRecord:null};}
+function harness(queue){const nodes=new Map(),node=id=>{if(!nodes.has(id))nodes.set(id,new Node());return nodes.get(id);};let lookups=0;
+ const c=vm.createContext({identityReadout,identityStatusRows,identityTitle,queue,current:queue.at(-1)||null,selected:queue.at(-1)?.selectedRecord??null,generation:1,mode:'Explore',finished:false,paused:false,streaming:false,document:{getElementById:node,createElement:tag=>new Node(tag),documentElement:{dataset:{theme:'light'}}},navigator:{onLine:true},$:node,productVisual:{show(){}},projectedField:()=>null,displayValue:(id,value)=>node(id).textContent=value||'—',renderConsumerSummary(){},renderData(){},message:text=>node('lookup-status').textContent=text,speakResolvedName(){},lookupIdentifiers(){lookups++;throw Error('List must not query data');},scanner:{stop(){},start(){}},foundationReadout:()=>[],finishGuestSession(){throw Error('not part of this correction');}});
+ const run=s=>vm.runInContext(s,c);
+ for(const name of ['el','btn','open','close','selectedQueueRecord'])run(source.split('\n').find(line=>line.startsWith('function '+name+'(')));
+ run(source.slice(source.indexOf('function guestFoundationReadout('),source.indexOf('function renderProjected(')));
+ run(source.slice(source.indexOf('function render(){'),source.indexOf('async function enableAudio(')));
+ const choiceStart=source.indexOf('function showMatches('),helper=source.indexOf('function needsSourceChoice('),queueStart=source.indexOf('function renderQueue(');run(source.slice(choiceStart,helper>=0?helper:queueStart));run(source.slice(helper>=0?helper:queueStart,source.indexOf('const scanner=setupScanner',queueStart)));
+ const listStart=source.indexOf("$('session-button').onclick="),listEnd=source.indexOf(";$('close-session').onclick",listStart)+1;run(source.slice(listStart,listEnd));
+ run(source.split('\n').find(line=>line.startsWith("$('undo').onclick=")));
+ return {c,node,run,get lookups(){return lookups;},list(){node('session-button').onclick();return node('session-summary').textContent;},count(){const text=this.list();return text==='No items scanned yet.'?0:Number(text.match(/(\d+) needs? a choice/)[1]);},choose(index=0){c.showMatches();node('match-list').children[index].children[2].onclick();},inspect(index=0){this.list();node('queue-list').children[index].children[2].onclick();},undo(){node('undo').onclick();}};
+}
+test('ambiguous entry needs one choice before selection and zero afterward without changing identity/status',()=>{
+ const e=entry('amb'),h=harness([e]),selected=e.matches[1];assert.equal(h.count(),1);assert.equal(h.c.selected,null);h.choose(1);assert.equal(h.count(),0);assert.equal(e.status,'ambiguous');assert.equal(e.sourceChoiceConfirmed,true);assert.equal(e.selectedRecord,selected);assert.equal(e.matches.length,2);assert.equal(h.lookups,0);
+});
+test('singleton needs an explicit choice even when a selected pointer exists; choosing clears its count',()=>{
+ const e=entry('single','source-match',1),h=harness([e]);assert.equal(h.count(),1);assert.equal(e.selectedRecord,null);h.c.selected=e.matches[0];h.c.render();assert.equal(h.count(),1);assert.equal(e.sourceChoiceConfirmed,false);h.choose();assert.equal(h.count(),0);assert.equal(e.selectedRecord,e.matches[0]);
+});
+test('unavailable/error/pending/no-candidate entries do not ask for an impossible choice; partial loaded records do',()=>{
+ const entries=[entry('unavailable','unavailable',0),entry('error','error',0),entry('pending','pending',0),entry('empty','source-match',0)],h=harness(entries);assert.equal(h.count(),0);
+ const p=entry('partial','partial',1);entries.push(p);h.c.current=p;h.c.selected=null;assert.equal(h.count(),1);h.choose();assert.equal(h.count(),0);
+ const inFlight=entry('inflight','source-match',1);inFlight.lookupPending=true;entries.push(inFlight);assert.equal(h.count(),0);
+});
+test('confirmation is insufficient when its saved record is missing or outside the same entry matches',()=>{
+ const e=entry('stale'),h=harness([e]);e.sourceChoiceConfirmed=true;assert.equal(h.count(),1);e.selectedRecord={...e.matches[0]};assert.equal(h.count(),1);e.selectedRecord=e.matches[0];assert.equal(h.count(),0);e.sourceChoiceConfirmed=false;assert.equal(h.count(),1);
+});
+test('actual List Inspect preserves explicit selection/count and never auto-selects an unresolved singleton',()=>{
+ const chosen=entry('chosen'),unresolved=entry('unresolved','source-match',1);chosen.sourceChoiceConfirmed=true;chosen.selectedRecord=chosen.matches[1];const h=harness([chosen,unresolved]);assert.equal(h.count(),1);h.inspect(0);assert.equal(h.c.current,chosen);assert.equal(h.c.selected,chosen.matches[1]);assert.equal(h.count(),1);h.inspect(1);assert.equal(h.c.current,unresolved);assert.equal(h.c.selected,null);assert.equal(h.count(),1);assert.equal(h.lookups,0);
+});
+test('actual Undo restores preceding confirmed or unresolved state and the rendered count follows the remaining list',()=>{
+ const chosen=entry('chosen'),unresolved=entry('unresolved','source-match',1);chosen.sourceChoiceConfirmed=true;chosen.selectedRecord=chosen.matches[1];const h=harness([chosen,unresolved]);assert.equal(h.count(),1);h.undo();assert.equal(h.c.current,chosen);assert.equal(h.c.selected,chosen.matches[1]);assert.equal(h.count(),0);h.undo();assert.equal(h.count(),0);assert.equal(h.c.current,null);
+ const first=entry('first','source-match',1),last=entry('last');last.sourceChoiceConfirmed=true;last.selectedRecord=last.matches[0];const h2=harness([first,last]);assert.equal(h2.count(),1);h2.undo();assert.equal(h2.c.current,first);assert.equal(h2.c.selected,null);assert.equal(h2.count(),1);assert.equal(h2.lookups,0);
+});
+
+function sourceOnly(id){return {kind:'source-identity',id,name:null,brand:null,provenance:{attribution:'USDA Agricultural Research Service FoodData Central'},sourceIdentityRecord:{stageId:id,nativeId:'usda-files:product:0007',sourceBinding:{sourceId:'usda-files',releaseId:'2026-04-30',recordId:'0007'},sourceIdentifiers:[{system:'USDA-FDC',value:'0007'},{system:'barcode',value:'4006381333931'}],sourceRights:{license:'USDA FoodData Central public domain / CC0 (retained declaration)',attribution:'USDA Agricultural Research Service FoodData Central'},sourceURL:'https://fdc.nal.usda.gov/download-datasets/',matchedIdentifier:{namespace:'barcode',lexicalValue:'4006381333931',sourceChecksumValid:true}}};}
+test('identity singleton actual chooser/List/Inspect/Undo retains exact raw/member choice with no fake name',()=>{
+ const e=entry('identity','partial',0);e.raw='00001234';e.matches=[sourceOnly('identity')];const h=harness([e]);assert.equal(h.count(),1);assert.equal(h.c.selected,null);h.choose();assert.equal(h.count(),0);assert.equal(e.selectedRecord,e.matches[0]);assert.equal(e.selectedRecord.name,null);assert.equal(h.node('product-name').textContent,'—');assert.equal(h.node('category-value').textContent,'Unknown');assert.equal(h.node('ingredient-value').textContent,'Unknown');h.inspect();assert.equal(h.c.selected,e.matches[0]);assert.equal(e.raw,'00001234');const other=entry('other','source-match',1);h.c.queue.push(other);h.c.current=other;h.c.selected=null;h.undo();assert.equal(h.c.selected,e.matches[0]);assert.equal(h.lookups,0);
+});
+test('actual identity Overview/Source branches show unknowns/native identifiers/notices without enrichment',()=>{const e=entry('identity','partial',0);e.matches=[sourceOnly('identity')];const h=harness([e]);for(const view of ['overview','source','ingredients','nutrition']){const rows=h.c.guestFoundationReadout(e.matches[0],e,view);assert.ok(rows.some(r=>r.label==='Source record'&&r.text==='USDA-FDC · 0007'));assert.equal(rows.filter(r=>['Product name','Language','English name','Food type','Nutrition'].includes(r.label)&&r.text.startsWith('Unknown')).length,5);assert.ok(rows.some(r=>r.label==='Source URL'));assert.ok(rows.some(r=>r.label==='Licence and credits'));assert.ok(!JSON.stringify(rows).includes('Synthetic type'));}assert.ok(h.c.guestFoundationReadout(e.matches[0],e,'source').some(r=>r.label==='Source record reference'));});

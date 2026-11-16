@@ -1,0 +1,699 @@
+✖ new cook captures exact recipe version/source and actual ingredient inputs (4.165168ms)
+✖ recipe v2 and changed current profile cannot mutate old cooking inputs (1.314814ms)
+✖ serving retains the cooking witness without consulting current recipe (1.582ms)
+✖ history normalization preserves the batch-bound witness (4.547956ms)
+✖ local JSON and current cloud validator retain v1 while recipe is now v2 (1.053147ms)
+✖ ordinary pantry backup/restore retains captured provenance and totals (1.51571ms)
+✖ absent upstream version stays unknown and legacy meals are never backfilled (0.287605ms)
+✔ retry after recipe edit returns the original batch without recomputation (0.428346ms)
+✖ private or unknown-public witness content is not added to shared projections (1.093218ms)
+✖ batch and history validators reject a witness rebound to a different meal (0.693275ms)
+✖ exact retained server-history helper preserves the same witness and zero/unknown behavior (1.700987ms)
+✔ final server-state seam copies only validated witness fields without recomputing values (1.158376ms)
+✖ retained source references do not acquire a public visibility grant (0.804451ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 2
+ℹ fail 11
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 78.102452
+
+✖ failing tests:
+
+test at tests-web/cooking-witness-ns196-g2.test.mjs:29:1
+✖ new cook captures exact recipe version/source and actual ingredient inputs (4.165168ms)
+  AssertionError [ERR_ASSERTION]: cooking-time witness required
+      at TestContext.<anonymous> (file:///offmenu/data/.offmenu-platform/artifacts/staging/cooking-witness-ns196-g2-20261029/baseline-check/tests-web/cooking-witness-ns196-g2.test.mjs:30:51)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests-web/cooking-witness-ns196-g2.test.mjs:33:1
+✖ recipe v2 and changed current profile cannot mutate old cooking inputs (1.314814ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  11 !== 0
+  
+      at TestContext.<anonymous> (file:///offmenu/data/.offmenu-platform/artifacts/staging/cooking-witness-ns196-g2-20261029/baseline-check/tests-web/cooking-witness-ns196-g2.test.mjs:35:209)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 11,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests-web/cooking-witness-ns196-g2.test.mjs:38:1
+✖ serving retains the cooking witness without consulting current recipe (1.582ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + undefined
+  - {
+  -   allocations: [
+  -     {
+  -       barcode: '1111',
+  -       ingredient: 'rice',
+  -       lotId: 'raw',
+  -       quantity: 100,
+  -       sourceReferences: {},
+  -       unit: 'g'
+  -     }
+  -   ],
+  -   batchId: 'batch-a',
+  -   canonicalIdentityAsserted: false,
+  -   nutrientInputs: [
+  -     {
+  -       canonicalIdentityAsserted: false,
+  -       declaredBasisLabel: null,
+  -       lotId: 'raw',
+  -       nutriments: {
+  -         fat_100g: 7,
+  -         proteins_100g: 0
+  -       },
+  -       profileReference: {
+  -         basis: {
+  -           amount: 100,
+  -           state: 'as-described',
+  -           unit: 'g'
+  -         },
+  -         id: 'usda-files:nutrientProfile:fixture-v1',
+  -         status: 'candidate'
+  -       },
+  -       profileState: 'supplied-input',
+  -       provenance: {
+  -         attribution: 'Synthetic source',
+  -         license: 'CC0',
+  -         recordId: 'fixture-v1',
+  -         releaseId: 'source-v1',
+  -         sourceId: 'usda-files',
+  -         visibility: 'public'
+  -       },
+  -       quantity: 100,
+  -       relationship: 'user-selected-for-this-lot',
+  -       sourceNutrientContext: {
+  -         fat: {
+  -           unit: 'g',
+  -           value: 7
+  -         },
+  -         protein: {
+  -           unit: 'g',
+  -           value: 0
+  -         },
+  -         sugars: {
+  -           qualifier: 'unknown',
+  -           unit: 'g',
+  -           value: null
+  -         }
+  -       },
+  -       unit: 'g'
+  -     }
+  -   ],
+  -   recipe: {
+  -     attribution: 'Synthetic source',
+  -     id: 'rice',
+  -     ingredients: [
+  -       {
+  -         ingredient: 'rice',
+  -         quantity: 100,
+  -         raw: '100 g rice',
+  -         unit: 'g'
+  -       }
+  -     ],
+  -     instructions: [
+  -       'Cook v1.'
+  -     ],
+  -     license: 'CC0',
+  -     provenance: {
+  -       manifestSha256: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+  -       recordId: 'rice-variant',
+  -       releaseId: 'edition-v1',
+  -       sourceId: 'synthetic',
+  -       visibility: 'public'
+  -     },
+  -     servings: 2,
+  -     source: 'https://example.invalid/recipe/v1',
+  -     title: 'Rice v1',
+  -     version: 'v1'
+  -   },
+  -   recipeId: 'rice',
+  -   schema: 'offmenu-cooking-witness/1',
+  -   sourceVersionState: 'supplied',
+  -   visibility: 'public'
+  - }
+  
+      at TestContext.<anonymous> (file:///offmenu/data/.offmenu-platform/artifacts/staging/cooking-witness-ns196-g2-20261029/baseline-check/tests-web/cooking-witness-ns196-g2.test.mjs:39:81)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { schema: 'offmenu-cooking-witness/1', batchId: 'batch-a', recipeId: 'rice', recipe: { id: 'rice', title: 'Rice v1', servings: 2, source: 'https://example.invalid/recipe/v1', license: 'CC0', attribution: 'Synthetic source', version: 'v1', provenance: [Object], ingredients: [Array], instructions: [Array] }, sourceVersionState: 'supplied', allocations: [ [Object] ], nutrientInputs: [ [Object] ], visibility: 'public', canonicalIdentityAsserted: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests-web/cooking-witness-ns196-g2.test.mjs:41:1
+✖ history normalization preserves the batch-bound witness (4.547956ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + undefined
+  - {
+  -   allocations: [
+  -     {
+  -       barcode: '1111',
+  -       ingredient: 'rice',
+  -       lotId: 'raw',
+  -       quantity: 100,
+  -       sourceReferences: {},
+  -       unit: 'g'
+  -     }
+  -   ],
+  -   batchId: 'batch-a',
+  -   canonicalIdentityAsserted: false,
+  -   nutrientInputs: [
+  -     {
+  -       canonicalIdentityAsserted: false,
+  -       declaredBasisLabel: null,
+  -       lotId: 'raw',
+  -       nutriments: {
+  -         fat_100g: 7,
+  -         proteins_100g: 0
+  -       },
+  -       profileReference: {
+  -         basis: {
+  -           amount: 100,
+  -           state: 'as-described',
+  -           unit: 'g'
+  -         },
+  -         id: 'usda-files:nutrientProfile:fixture-v1',
+  -         status: 'candidate'
+  -       },
+  -       profileState: 'supplied-input',
+  -       provenance: {
+  -         attribution: 'Synthetic source',
+  -         license: 'CC0',
+  -         recordId: 'fixture-v1',
+  -         releaseId: 'source-v1',
+  -         sourceId: 'usda-files',
+  -         visibility: 'public'
+  -       },
+  -       quantity: 100,
+  -       relationship: 'user-selected-for-this-lot',
+  -       sourceNutrientContext: {
+  -         fat: {
+  -           unit: 'g',
+  -           value: 7
+  -         },
+  -         protein: {
+  -           unit: 'g',
+  -           value: 0
+  -         },
+  -         sugars: {
+  -           qualifier: 'unknown',
+  -           unit: 'g',
+  -           value: null
+  -         }
+  -       },
+  -       unit: 'g'
+  -     }
+  -   ],
+  -   recipe: {
+  -     attribution: 'Synthetic source',
+  -     id: 'rice',
+  -     ingredients: [
+  -       {
+  -         ingredient: 'rice',
+  -         quantity: 100,
+  -         raw: '100 g rice',
+  -         unit: 'g'
+  -       }
+  -     ],
+  -     instructions: [
+  -       'Cook v1.'
+  -     ],
+  -     license: 'CC0',
+  -     provenance: {
+  -       manifestSha256: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+  -       recordId: 'rice-variant',
+  -       releaseId: 'edition-v1',
+  -       sourceId: 'synthetic',
+  -       visibility: 'public'
+  -     },
+  -     servings: 2,
+  -     source: 'https://example.invalid/recipe/v1',
+  -     title: 'Rice v1',
+  -     version: 'v1'
+  -   },
+  -   recipeId: 'rice',
+  -   schema: 'offmenu-cooking-witness/1',
+  -   sourceVersionState: 'supplied',
+  -   visibility: 'public'
+  - }
+  
+      at TestContext.<anonymous> (file:///offmenu/data/.offmenu-platform/artifacts/staging/cooking-witness-ns196-g2-20261029/baseline-check/tests-web/cooking-witness-ns196-g2.test.mjs:42:95)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { schema: 'offmenu-cooking-witness/1', batchId: 'batch-a', recipeId: 'rice', recipe: { id: 'rice', title: 'Rice v1', servings: 2, source: 'https://example.invalid/recipe/v1', license: 'CC0', attribution: 'Synthetic source', version: 'v1', provenance: [Object], ingredients: [Array], instructions: [Array] }, sourceVersionState: 'supplied', allocations: [ [Object] ], nutrientInputs: [ [Object] ], visibility: 'public', canonicalIdentityAsserted: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests-web/cooking-witness-ns196-g2.test.mjs:44:1
+✖ local JSON and current cloud validator retain v1 while recipe is now v2 (1.053147ms)
+  TypeError: Cannot read properties of undefined (reading 'recipe')
+      at TestContext.<anonymous> (file:///offmenu/data/.offmenu-platform/artifacts/staging/cooking-witness-ns196-g2-20261029/baseline-check/tests-web/cooking-witness-ns196-g2.test.mjs:46:167)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at tests-web/cooking-witness-ns196-g2.test.mjs:48:1
+✖ ordinary pantry backup/restore retains captured provenance and totals (1.51571ms)
+  TypeError: Cannot read properties of undefined (reading 'recipe')
+      at TestContext.<anonymous> (file:///offmenu/data/.offmenu-platform/artifacts/staging/cooking-witness-ns196-g2-20261029/baseline-check/tests-web/cooking-witness-ns196-g2.test.mjs:50:53)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at tests-web/cooking-witness-ns196-g2.test.mjs:52:1
+✖ absent upstream version stays unknown and legacy meals are never backfilled (0.287605ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'unknown'
+  
+      at TestContext.<anonymous> (file:///offmenu/data/.offmenu-platform/artifacts/staging/cooking-witness-ns196-g2-20261029/baseline-check/tests-web/cooking-witness-ns196-g2.test.mjs:53:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'unknown',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests-web/cooking-witness-ns196-g2.test.mjs:59:1
+✖ private or unknown-public witness content is not added to shared projections (1.093218ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + {
+  +   allocations: [
+  +     {
+  +       barcode: '1111',
+  +       ingredient: 'rice',
+  +       lotId: 'raw',
+  +       quantity: 100,
+  +       sourceReferences: {},
+  +       unit: 'g'
+  +     }
+  +   ],
+  +   batchId: 'batch-a',
+  +   canonicalIdentityAsserted: false,
+  +   nutrientInputs: [
+  +     {
+  +       canonicalIdentityAsserted: false,
+  +       declaredBasisLabel: null,
+  +       lotId: 'raw',
+  +       nutriments: {
+  +         fat_100g: 7,
+  +         proteins_100g: 0
+  +       },
+  +       profileReference: {
+  +         basis: {
+  +           amount: 100,
+  +           state: 'as-described',
+  +           unit: 'g'
+  +         },
+  +         id: 'usda-files:nutrientProfile:fixture-v1',
+  +         status: 'candidate'
+  +       },
+  +       profileState: 'supplied-input',
+  +       provenance: {
+  +         attribution: 'Synthetic source',
+  +         license: 'CC0',
+  +         recordId: 'fixture-v1',
+  +         releaseId: 'source-v1',
+  +         sourceId: 'usda-files',
+  +         visibility: 'private'
+  +       },
+  +       quantity: 100,
+  +       relationship: 'user-selected-for-this-lot',
+  +       sourceNutrientContext: {
+  +         fat: {
+  +           unit: 'g',
+  +           value: 7
+  +         },
+  +         protein: {
+  +           unit: 'g',
+  +           value: 0
+  +         },
+  +         sugars: {
+  +           qualifier: 'unknown',
+  +           unit: 'g',
+  +           value: null
+  +         }
+  +       },
+  +       unit: 'g'
+  +     }
+  +   ],
+  +   recipe: {
+  +     attribution: 'Synthetic source',
+  +     id: 'rice',
+  +     ingredients: [
+  +       {
+  +         ingredient: 'rice',
+  +         quantity: 100,
+  +         raw: '100 g rice',
+  +         unit: 'g'
+  +       }
+  +     ],
+  +     instructions: [
+  +       'Cook v1.'
+  +     ],
+  +     license: 'CC0',
+  +     provenance: {
+  +       manifestSha256: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+  +       recordId: 'rice-variant',
+  +       releaseId: 'edition-v1',
+  +       sourceId: 'synthetic',
+  +       visibility: 'private'
+  +     },
+  +     servings: 2,
+  +     source: 'https://example.invalid/recipe/v1',
+  +     title: 'Rice v1',
+  +     version: 'v1'
+  +   },
+  +   recipeId: 'rice',
+  +   schema: 'offmenu-cooking-witness/1',
+  +   sourceVersionState: 'supplied',
+  +   visibility: 'private'
+  + }
+  - undefined
+  
+      at TestContext.<anonymous> (file:///offmenu/data/.offmenu-platform/artifacts/staging/cooking-witness-ns196-g2-20261029/baseline-check/tests-web/cooking-witness-ns196-g2.test.mjs:60:162)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'offmenu-cooking-witness/1', batchId: 'batch-a', recipeId: 'rice', recipe: { id: 'rice', title: 'Rice v1', servings: 2, source: 'https://example.invalid/recipe/v1', license: 'CC0', attribution: 'Synthetic source', version: 'v1', provenance: [Object], ingredients: [Array], instructions: [Array] }, sourceVersionState: 'supplied', allocations: [ [Object] ], nutrientInputs: [ [Object] ], visibility: 'private', canonicalIdentityAsserted: false },
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests-web/cooking-witness-ns196-g2.test.mjs:63:1
+✖ batch and history validators reject a witness rebound to a different meal (0.693275ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///offmenu/data/.offmenu-platform/artifacts/staging/cooking-witness-ns196-g2-20261029/baseline-check/tests-web/cooking-witness-ns196-g2.test.mjs:65:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /witness/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests-web/cooking-witness-ns196-g2.test.mjs:67:1
+✖ exact retained server-history helper preserves the same witness and zero/unknown behavior (1.700987ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + undefined
+  - {
+  -   allocations: [
+  -     {
+  -       barcode: '1111',
+  -       ingredient: 'rice',
+  -       lotId: 'raw',
+  -       quantity: 100,
+  -       sourceReferences: {},
+  -       unit: 'g'
+  -     }
+  -   ],
+  -   batchId: 'batch-a',
+  -   canonicalIdentityAsserted: false,
+  -   nutrientInputs: [
+  -     {
+  -       canonicalIdentityAsserted: false,
+  -       declaredBasisLabel: null,
+  -       lotId: 'raw',
+  -       nutriments: {
+  -         fat_100g: 7,
+  -         proteins_100g: 0
+  -       },
+  -       profileReference: {
+  -         basis: {
+  -           amount: 100,
+  -           state: 'as-described',
+  -           unit: 'g'
+  -         },
+  -         id: 'usda-files:nutrientProfile:fixture-v1',
+  -         status: 'candidate'
+  -       },
+  -       profileState: 'supplied-input',
+  -       provenance: {
+  -         attribution: 'Synthetic source',
+  -         license: 'CC0',
+  -         recordId: 'fixture-v1',
+  -         releaseId: 'source-v1',
+  -         sourceId: 'usda-files',
+  -         visibility: 'public'
+  -       },
+  -       quantity: 100,
+  -       relationship: 'user-selected-for-this-lot',
+  -       sourceNutrientContext: {
+  -         fat: {
+  -           unit: 'g',
+  -           value: 7
+  -         },
+  -         protein: {
+  -           unit: 'g',
+  -           value: 0
+  -         },
+  -         sugars: {
+  -           qualifier: 'unknown',
+  -           unit: 'g',
+  -           value: null
+  -         }
+  -       },
+  -       unit: 'g'
+  -     }
+  -   ],
+  -   recipe: {
+  -     attribution: 'Synthetic source',
+  -     id: 'rice',
+  -     ingredients: [
+  -       {
+  -         ingredient: 'rice',
+  -         quantity: 100,
+  -         raw: '100 g rice',
+  -         unit: 'g'
+  -       }
+  -     ],
+  -     instructions: [
+  -       'Cook v1.'
+  -     ],
+  -     license: 'CC0',
+  -     provenance: {
+  -       manifestSha256: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+  -       recordId: 'rice-variant',
+  -       releaseId: 'edition-v1',
+  -       sourceId: 'synthetic',
+  -       visibility: 'public'
+  -     },
+  -     servings: 2,
+  -     source: 'https://example.invalid/recipe/v1',
+  -     title: 'Rice v1',
+  -     version: 'v1'
+  -   },
+  -   recipeId: 'rice',
+  -   schema: 'offmenu-cooking-witness/1',
+  -   sourceVersionState: 'supplied',
+  -   visibility: 'public'
+  - }
+  
+      at TestContext.<anonymous> (file:///offmenu/data/.offmenu-platform/artifacts/staging/cooking-witness-ns196-g2-20261029/baseline-check/tests-web/cooking-witness-ns196-g2.test.mjs:71:54)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { schema: 'offmenu-cooking-witness/1', batchId: 'batch-a', recipeId: 'rice', recipe: { id: 'rice', title: 'Rice v1', servings: 2, source: 'https://example.invalid/recipe/v1', license: 'CC0', attribution: 'Synthetic source', version: 'v1', provenance: [Object], ingredients: [Array], instructions: [Array] }, sourceVersionState: 'supplied', allocations: [ [Object] ], nutrientInputs: [ [Object] ], visibility: 'public', canonicalIdentityAsserted: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests-web/cooking-witness-ns196-g2.test.mjs:79:1
+✖ retained source references do not acquire a public visibility grant (0.804451ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + {
+  +   allocations: [
+  +     {
+  +       barcode: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+  +       ingredient: 'rice',
+  +       lotId: 'raw',
+  +       quantity: 100,
+  +       sourceReferences: {
+  +         sourceObservationReference: {
+  +           privateNote: 'SOURCE_REFERENCE_PRIVATE_NOTE',
+  +           schema: 'offmenu-identifier-observation/1',
+  +           sourceRecordId: 'retained-source'
+  +         }
+  +       },
+  +       unit: 'g'
+  +     }
+  +   ],
+  +   batchId: 'batch-a',
+  +   canonicalIdentityAsserted: false,
+  +   nutrientInputs: [
+  +     {
+  +       canonicalIdentityAsserted: false,
+  +       declaredBasisLabel: null,
+  +       lotId: 'raw',
+  +       nutriments: {
+  +         fat_100g: 7,
+  +         proteins_100g: 0
+  +       },
+  +       profileReference: {
+  +         basis: {
+  +           amount: 100,
+  +           state: 'as-described',
+  +           unit: 'g'
+  +         },
+  +         id: 'usda-files:nutrientProfile:fixture-v1',
+  +         status: 'candidate'
+  +       },
+  +       profileState: 'supplied-input',
+  +       provenance: {
+  +         attribution: 'Synthetic source',
+  +         license: 'CC0',
+  +         recordId: 'fixture-v1',
+  +         releaseId: 'source-v1',
+  +         sourceId: 'usda-files',
+  +         visibility: 'public'
+  +       },
+  +       quantity: 100,
+  +       relationship: 'user-selected-for-this-lot',
+  +       sourceNutrientContext: {
+  +         fat: {
+  +           unit: 'g',
+  +           value: 7
+  +         },
+  +         protein: {
+  +           unit: 'g',
+  +           value: 0
+  +         },
+  +         sugars: {
+  +           qualifier: 'unknown',
+  +           unit: 'g',
+  +           value: null
+  +         }
+  +       },
+  +       unit: 'g'
+  +     }
+  +   ],
+  +   recipe: {
+  +     attribution: 'Synthetic source',
+  +     id: 'rice',
+  +     ingredients: [
+  +       {
+  +         ingredient: 'rice',
+  +         quantity: 100,
+  +         raw: '100 g rice',
+  +         unit: 'g'
+  +       }
+  +     ],
+  +     instructions: [
+  +       'Cook v1.'
+  +     ],
+  +     license: 'CC0',
+  +     provenance: {
+  +       manifestSha256: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+  +       recordId: 'rice-variant',
+  +       releaseId: 'edition-v1',
+  +       sourceId: 'synthetic',
+  +       visibility: 'public'
+  +     },
+  +     servings: 2,
+  +     source: 'https://example.invalid/recipe/v1',
+  +     title: 'Rice v1',
+  +     version: 'v1'
+  +   },
+  +   recipeId: 'rice',
+  +   schema: 'offmenu-cooking-witness/1',
+  +   sourceVersionState: 'supplied',
+  +   visibility: 'unknown'
+  + }
+  - undefined
+  
+      at TestContext.<anonymous> (file:///offmenu/data/.offmenu-platform/artifacts/staging/cooking-witness-ns196-g2-20261029/baseline-check/tests-web/cooking-witness-ns196-g2.test.mjs:84:115)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'offmenu-cooking-witness/1', batchId: 'batch-a', recipeId: 'rice', recipe: { id: 'rice', title: 'Rice v1', servings: 2, source: 'https://example.invalid/recipe/v1', license: 'CC0', attribution: 'Synthetic source', version: 'v1', provenance: [Object], ingredients: [Array], instructions: [Array] }, sourceVersionState: 'supplied', allocations: [ [Object] ], nutrientInputs: [ [Object] ], visibility: 'unknown', canonicalIdentityAsserted: false },
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

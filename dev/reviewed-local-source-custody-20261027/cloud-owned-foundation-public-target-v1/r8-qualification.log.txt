@@ -1,0 +1,64 @@
+{
+  "counts": {
+    "sourceObservations": 11527,
+    "sourceSpecificQueries": 4908,
+    "partitions": 512,
+    "bySource": {
+      "off": {
+        "observations": 2871,
+        "queries": 2871
+      },
+      "usda-files": {
+        "observations": 8656,
+        "queries": 2037
+      }
+    },
+    "parameterStates": {
+      "known": 2037,
+      "unknown": 274611,
+      "notApplicable": 0
+    },
+    "goldAdmitted": 0,
+    "normalizationComplete": 0,
+    "fullProductComplete": 0
+  },
+  "publicProjectionSha256": "a7fe5c4b4f497374e23b8bcf6a60fed0bc21041d5bb4fe4980b238aa6d41143a",
+  "schemaKeys": {
+    "row": {
+      "candidate,id,schema": 10876,
+      "candidate,id,schema,sourceProjection": 651
+    },
+    "candidate": {
+      "barcode,base,classification,identity,parameters,type": 10875,
+      "barcode,base,classification,foundationPolicySha256,identity,parameters,type": 652
+    },
+    "identity": {
+      "lexicalValue,namespace,nativeRecordId,sourceBinding,stageRecordId,stageRecordWireSha256": 11527
+    },
+    "classification": {
+      "evidence,independentReviewSha256,registrySha256,state,value": 11527
+    },
+    "base": {
+      "canonicalEnglishKey,canonicalEnglishLabel,conceptId,evidence,independentReviewSha256,registrySha256,state,typeKey": 11527
+    },
+    "type": {
+      "canonicalEnglishLabel,conceptId,evidence,independentReviewSha256,registrySha256,relationshipId,relationshipKind,state,subjectConceptId,typeKey": 11526,
+      "associationScope,canonicalEnglishLabel,conceptId,evidence,independentReviewSha256,registrySha256,relationshipId,relationshipKind,state,subjectConceptId,typeKey": 1
+    },
+    "parameter:unknown": {
+      "acceptedAlternatives,evidence,qualificationDisposition,reason,state": 258964,
+      "evidence,reason,state": 15647
+    },
+    "evidence": {
+      "kind,pointer,sourceBinding": 274611,
+      "kind,pointer,ruleId,sourceBinding,valueSha256": 3186,
+      "kind,pointer,sourceBinding,valueSha256": 1
+    },
+    "parameter:known": {
+      "evidence,independentReviewSha256,state,value": 2036,
+      "evidence,evidenceKind,independentReviewSha256,qualifier,state,value": 1
+    }
+  },
+  "originalAdmissionBodyVerified": false,
+  "productionTargetAccepted": false
+}

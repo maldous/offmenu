@@ -1,0 +1,7 @@
+# Independent scanner guide CSS review — 2026-10-28 21:38 UTC
+
+Approved decoded inline CSS SHA256 `ee8f8e8bfa058c9f5840c103cfe00f1bf7e753be3b700d163edf9fe901a34477` versus preimage `0bfe2640b19f7862605e659dc20ddd11a90dc4744000bbb2a52e6bbd205fc93e`. Independently verified one exact replacement and no other CSS-byte changes: short-screen rule retains top82px but no longer overrides the existing sheet-aware bottom.
+
+Manual source/cascade check: collapsed sheet occupies footer58 + sheet64 =122px, plus safe area. Former guide bottom58+15=73px overlaps by49px. Existing inherited bottom with propagated64px sheet value is134px plus safe area, giving12px clearance. Its84px fallback yields154px plus safe area, giving32px collapsed clearance. Existing later wide-screen bottom80px+safe area and side-sheet reservation remain untouched. Tall-screen rule unchanged. This does not claim all expanded/full-height modes provide usable guide height; existing min-height behavior remains.
+
+Author reports6/6 tinycss2 Foo contracts. Independent local attempt could not import tinycss2; no dependency installation or duplicate Foo run attempted. Approval is exact diff/hash and source/geometry review, not a claimed independent six-test execution, browser render or physical-camera acceptance. Integrator owns actual retained-wrapper variable propagation inspection, literal-only splice and serving verification; no JS or main198 mutation by reviewer.

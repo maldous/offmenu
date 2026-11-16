@@ -1,0 +1,41 @@
+{
+  "schema": "offmenu-places-batch-source/1",
+  "correction": "Require exact actual format key offmenu-curated/1; no other runtime logic change",
+  "files": [
+    {
+      "path": "corpus/common-data-contract.json",
+      "bytes": 46420,
+      "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"
+    },
+    {
+      "path": "corpus/common-data.schema.json",
+      "bytes": 17632,
+      "sha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+    },
+    {
+      "path": "scripts/align-places-common.py",
+      "bytes": 33575,
+      "sha256": "8a43e699a0d29e01d9ec1ba8c70ef3cd943aeb796a067302631e7c00d71ca808"
+    },
+    {
+      "path": "scripts/places_checkpoint.py",
+      "bytes": 8300,
+      "sha256": "5c972b26cb4fb3b8927a086290706f8523e1f804f2b87f7b464f7f9700204ce2"
+    },
+    {
+      "path": "scripts/places_input_catalog.py",
+      "bytes": 7780,
+      "sha256": "51d7523c6fde3a661b36a92c9b3e37357b5c11aa692c9cb12c0e23190a4cbac5"
+    },
+    {
+      "path": "tests/reference_transform.py",
+      "bytes": 8918,
+      "sha256": "c9b8da97665e135595b916a53433119b49a71a1f1160eb28e7e37ca638f8f78b"
+    },
+    {
+      "path": "tests/test_batched_places.py",
+      "bytes": 16797,
+      "sha256": "a0ecb4e6f8401c48d9c1e1b093f847e1178996d63c7ff41b00f1dff660242174"
+    }
+  ]
+}

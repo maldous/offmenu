@@ -1,0 +1,22 @@
+{
+  "public/app.js": "5c882cc8186faa7ba518cd5c7117ac8cf5a7436c7779bfa6e674024f82d93bf3",
+  "public/model.js": "74ae172868765650cd08a90ae356ae8072b04529e7be00469a3e30973e8b4785",
+  "public/menu-model.js": "71a4f4f4e05d8c62a49ac55233448be42346427e528c485ecc76b7a7cbaeec16",
+  "public/cooking-model.js": "96d160f5fd8c75f6e84148d4001ba7ec5ae991f487bf9c4b0777828cb2baed42",
+  "public/insights-model.js": "f8008145063c8bbcf2c9322ece541ee10dc5a9f63678af78fb6f6167bf51f678",
+  "public/unified-data.js": "82d027668d9f528dd83bce3cbb8c6f39b0bcdfbb88c62994456c433bc402b782",
+  "public/countries.js": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3",
+  "public/ingredients.js": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab",
+  "public/scanner-kitchen-handoff.js": "e35169fee6a7391491c460ddb590f9e1d0b0e59a20a00dcbce557aee7faf1eb1",
+  "public/scanner-identity-v2.js": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76",
+  "public/source-category-claims.js": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6",
+  "public/typed-identifier-contract.mjs": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+  "public/i18n.js": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+  "public/locales/ar.js": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+  "public/locale-negotiation.js": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+  "public/record-policy.js": "048c6cfe0491c341f11424cd39a062c80d317f8bd13ff513c798867f848818a9",
+  "cloud/state.mjs": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce",
+  "package.json": "74e54f7d64098ec238d3b13fc5637ce201824c37f55ce37c43d834cfa3f30ed1",
+  "public/lot-nutrition.js": "c07aaa624c1f9ccbf4fc42170e894388429d09034420b96c86d47e0b1605694a",
+  "tests-web/lot-nutrition-wiring.test.mjs": "a1d8b8afe64c044ca9fd9b3415ccc76a7c59481244f5d3ede2efacb67ee8f9dc"
+}

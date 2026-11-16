@@ -1,0 +1,46 @@
+{
+  "schema": "offmenu-production-foundation-binding-delta/1",
+  "deltas": [
+    {
+      "group": "app",
+      "path": "public/foundation-handoff-bindings.mjs",
+      "beforeSha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76",
+      "afterSha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584",
+      "afterBytes": 2982
+    },
+    {
+      "group": "scanner",
+      "path": "public/foundation-handoff-bindings.mjs",
+      "beforeSha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76",
+      "afterSha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584",
+      "afterBytes": 2982
+    },
+    {
+      "group": "scanner",
+      "path": "public/production-scanner/foundation-scanner-client.mjs",
+      "beforeSha256": "d6e82b813a49184d5fb4ac5e234404acf2bd46009e8cebb8e36240d38381f073",
+      "afterSha256": "46d43f13d06caafc22ddc47e361e04e5e0abb97e23709c3d028ed48f0d518e3d",
+      "afterBytes": 10461,
+      "change": "Only fixed FOUNDATION_SELECTION literal; validator logic unchanged"
+    },
+    {
+      "group": "guest",
+      "path": "public/foundation-handoff-bindings.mjs",
+      "beforeSha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76",
+      "afterSha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584",
+      "afterBytes": 2982
+    },
+    {
+      "group": "guest",
+      "path": "public/production-scanner/foundation-scanner-client.mjs",
+      "beforeSha256": "d6e82b813a49184d5fb4ac5e234404acf2bd46009e8cebb8e36240d38381f073",
+      "afterSha256": "46d43f13d06caafc22ddc47e361e04e5e0abb97e23709c3d028ed48f0d518e3d",
+      "afterBytes": 10461,
+      "change": "Only fixed FOUNDATION_SELECTION literal; validator logic unchanged"
+    }
+  ],
+  "oldThreeBindingsRetained": true,
+  "strictPhaseValidatorUnchanged": true,
+  "sourceIdentitySelectionUnchanged": true,
+  "servedGuestNotReplaced": true
+}

@@ -1,0 +1,227 @@
+{
+  "schema": "offmenu-owned-foundation-production-source-artifacts/1",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7082,
+      "sha256": "9536551254e14b225781abe23ccad07430e66e0cd1bab2488f89be306b5d574f"
+    },
+    {
+      "path": "qualify-r8-release.mjs",
+      "bytes": 10240,
+      "sha256": "970d2918bcaa2650f8da531a633dfe9ed824ea89affcb6bf8c81c44726bdb455"
+    },
+    {
+      "path": "prepare-production-release.mjs",
+      "bytes": 12321,
+      "sha256": "0f5a87ae45c8b10318c201af52f71c80344b37a5bb372aa8192f5abc9fd254fb"
+    },
+    {
+      "path": "r8-projection-qualification.json",
+      "bytes": 3120,
+      "sha256": "a548e680bc8da67479bb03907a7a95773cef42518026b9802b0e010b872c37fe"
+    },
+    {
+      "path": "r8-qualification.log",
+      "bytes": 2216,
+      "sha256": "9a525d1fad34f8f8678cb18f787e6d809483f56de43c26432865896f1030bf19"
+    },
+    {
+      "path": "production-manifest.json",
+      "bytes": 115476,
+      "sha256": "10f4f5acb9dbab8e5411dc7c7aa9136d6bb6317cd5eb11d9ec6c9ccdd4a1a0db"
+    },
+    {
+      "path": "production-publication-receipt.json",
+      "bytes": 2653,
+      "sha256": "fedce50756a6598ee3fc53d6e0507a4d21103711dcaee6911c61679b70cb2cdb"
+    },
+    {
+      "path": "production-SOURCE-NOTICES.txt",
+      "bytes": 3366,
+      "sha256": "9b34b1c2642129e4a8b4f5872dd4e519d72c1bb78911424fb93082bb8649e79b"
+    },
+    {
+      "path": "production-selection.json",
+      "bytes": 1812,
+      "sha256": "b73ef1cc92506c3e5c2dddd68ae034f88b728892e9bc7aeaa98fc877307d9d02"
+    },
+    {
+      "path": "production-candidate-report.json",
+      "bytes": 2116,
+      "sha256": "5950c75d0beb6e9269a656b3fcfeb9559e8fbb47c1505fadf6184cc14499cbe3"
+    },
+    {
+      "path": "production-release-build.log",
+      "bytes": 2116,
+      "sha256": "5950c75d0beb6e9269a656b3fcfeb9559e8fbb47c1505fadf6184cc14499cbe3"
+    },
+    {
+      "path": "production-foundation-handoff-bindings.mjs",
+      "bytes": 2982,
+      "sha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584"
+    },
+    {
+      "path": "production-foundation-selection.patch",
+      "bytes": 6663,
+      "sha256": "f04e188bd60137e7b56a0b3e8dab0eb177ee8cd05b6ca25de2f28c1fbd42c30e"
+    },
+    {
+      "path": "production-browser-source-delta.json",
+      "bytes": 1932,
+      "sha256": "88147af17e8ea449b483dfa24a0c7f8b3cc4f9887c8d8d696b5e792cf191f3d6"
+    },
+    {
+      "path": "production-source-reference-stock-entry.mjs",
+      "bytes": 280,
+      "sha256": "e93f35e0630dc71ed025e5ece7679faa2eb3ae694144029748562aa32e47b738"
+    },
+    {
+      "path": "synchronize-browser-source.py",
+      "bytes": 2879,
+      "sha256": "53450d23bcc4b920cc7ce82e26941d42d47a6ee91cc4bb73417400def2eb918f"
+    },
+    {
+      "path": "build-owned-foundation-api.mjs",
+      "bytes": 1620,
+      "sha256": "ee4ad7261333d72168a27dcd92712143b40696bd595026408c536403f4c03001"
+    },
+    {
+      "path": "api-build-manifest.json",
+      "bytes": 2968,
+      "sha256": "8cdb4e636b3712731e529598b4a4624e492dedf1868e0276febba42bc4f767c0"
+    },
+    {
+      "path": "patch-owned-foundation-route.mjs",
+      "bytes": 2831,
+      "sha256": "43eab1d184695f3fb2d2f6318f8e40f6b66feaf1570c316b750258253a54e860"
+    },
+    {
+      "path": "owned-foundation-production.test.mjs",
+      "bytes": 9419,
+      "sha256": "10a05da19a795f8b82d2d7bd160db3f6af50f600fd49a44551774b5ead8a10e3"
+    },
+    {
+      "path": "owned-foundation-production-tests.log",
+      "bytes": 815,
+      "sha256": "6f86cde7adbbbc13bf07a83b76a643e5d9cf1b73b913625785c84966717e7e53"
+    },
+    {
+      "path": "outer-worker-route.test.mjs",
+      "bytes": 2665,
+      "sha256": "ea0020687c0152ac627a6b08953ae2abe47732e83f520504626e72024ef4342d"
+    },
+    {
+      "path": "outer-worker-route-tests.log",
+      "bytes": 485,
+      "sha256": "5b79fa38eed937f035d6de2ea4a2106b95bcadc31179ae55ace16104c24dd526"
+    },
+    {
+      "path": "build-guest-foundation-adapter.mjs",
+      "bytes": 1493,
+      "sha256": "417759ab76c63af6f3c997d9620dde1e2b242d18ac89ca2721e523ae3caf99a0"
+    },
+    {
+      "path": "guest-foundation-adapter.bundle.js",
+      "bytes": 21264,
+      "sha256": "7c250884bcf9f6273f72a747a20e3bc49344d20755a0e00251aa5b1a1f87877a"
+    },
+    {
+      "path": "guest-adapter-build-manifest.json",
+      "bytes": 1414,
+      "sha256": "957b7185a3ec6cb69c96da7a33f069e8a22735ec3be1effe26e04c6b58d5d48c"
+    },
+    {
+      "path": "patch-existing-guest.mjs",
+      "bytes": 4403,
+      "sha256": "66bf21e104a1171a1af013cae5003efc9153e201686271c81a2fd909b462e9d9"
+    },
+    {
+      "path": "existing-guest-splice-receipt.json",
+      "bytes": 3062,
+      "sha256": "c152dd3428ecc35fd268f6a951a6971f5510d5b4d33dd0186a056e7de84d22af"
+    },
+    {
+      "path": "existing-guest-foundation.test.mjs",
+      "bytes": 7912,
+      "sha256": "1c6747de3fe6151aa552e59dd87dce1493f1597ffff7b882576f5bf0b6f82a27"
+    },
+    {
+      "path": "existing-guest-foundation-tests.log",
+      "bytes": 688,
+      "sha256": "74e0c189018ad860eccbe3360f2ff11be201e4a89f6ceb807e9f3ca1f8b5a929"
+    },
+    {
+      "path": "source/corpus/foundation-origin-reader.mjs",
+      "bytes": 9559,
+      "sha256": "0b098783399eb129970b33d2b90a4382d5475329b8a83bb9ad871e7407bd050f"
+    },
+    {
+      "path": "source/corpus/foundation-phase-contract-v2.mjs",
+      "bytes": 5334,
+      "sha256": "1aa5d45c4e93cf9a7e2405152be58c074e91af50b55d44c797003cb0fdf00d50"
+    },
+    {
+      "path": "source/corpus/foundation-phase-contract.mjs",
+      "bytes": 7358,
+      "sha256": "a7cfadb18b4d821c8474dd112a223f64418fc358db1d008e6fdf185d02918e0e"
+    },
+    {
+      "path": "source/corpus/foundation-policy-set.mjs",
+      "bytes": 3012,
+      "sha256": "cab3c8ea8e5fab9f31eccfd52b8ff85ed575a645b7dbbecba5862beb935e57eb"
+    },
+    {
+      "path": "source/corpus/foundation-product-handler.mjs",
+      "bytes": 2722,
+      "sha256": "cced93ca7d247d5b94c3dbbb03ec35931af409b306542fefd554746abc1a6264"
+    },
+    {
+      "path": "source/corpus/foundation-reference-reader.mjs",
+      "bytes": 3079,
+      "sha256": "8d32deda4d0444dfc932efb66acc8ab9ba9231f82043a8e2649ba3e9ae002a81"
+    },
+    {
+      "path": "source/corpus/owned-foundation-response.mjs",
+      "bytes": 5257,
+      "sha256": "8ac332be5062080e1b89b8ef86cd7b682e54c0024f2626139d9eb0c013ef4867"
+    },
+    {
+      "path": "source/guest-foundation-adapter.mjs",
+      "bytes": 6458,
+      "sha256": "3c4544fb0d86bd3c3fa1a3a619fc93ef3ae213f22f018e5d7376ab5188e3e321"
+    },
+    {
+      "path": "source/owned-foundation-response.mjs",
+      "bytes": 831,
+      "sha256": "0fef1c38c4a2e2e517a10d60ad3f8ccbe82cebf4ea3516c3ac1ea32aef0f48ac"
+    },
+    {
+      "path": "source/public/foundation-handoff-bindings.mjs",
+      "bytes": 2982,
+      "sha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584"
+    },
+    {
+      "path": "source/public/foundation-scanner-handoff.mjs",
+      "bytes": 6878,
+      "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+    },
+    {
+      "path": "source/public/production-scanner/foundation-scanner-client.mjs",
+      "bytes": 10461,
+      "sha256": "46d43f13d06caafc22ddc47e361e04e5e0abb97e23709c3d028ed48f0d518e3d"
+    }
+  ],
+  "sourceOnly": true,
+  "excludes": [
+    "private-release-build/**",
+    "browser-source/**",
+    "source-origin/**",
+    "guest-inspection-sections.txt"
+  ],
+  "curatedPayloadExcludedSha256": "e2ff55d2c5081010656fc13e41a7ef13a377a3add8780c6894c51aac8bd6011a",
+  "actualSourceIdentitySelection": "null",
+  "originalLocalMetadataModified": false,
+  "independentSemanticReviewClaimed": false,
+  "deployedByThisLane": false
+}

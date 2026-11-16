@@ -1,0 +1,18 @@
+--- a/dev/source-identity-consumer-candidate-20261027/source-identity-contract.d.ts
++++ b/dev/source-identity-consumer-candidate-20261027/source-identity-contract.d.ts
+@@ -121,6 +121,7 @@
+   readonly schema: 'offmenu-source-identity-http/1';
+   readonly kind: 'source-identifier-claims';
+   readonly httpStatus: 200;
++  readonly status: SourceIdentityReaderResult['status'];
+   readonly selectionSha256: Sha256;
+   readonly admissionSha256: Sha256;
+   readonly readerResult: SourceIdentityReaderResult;
+@@ -146,6 +147,7 @@
+ } & ({
+   readonly status: 'phase-qualified-own-data';
+   readonly httpStatus: 200;
++  readonly status: SourceIdentityReaderResult['status'];
+   readonly records: readonly QualifiedPhaseRecordForComposition[];
+ } | {
+   readonly status: 'own-data-unavailable';

@@ -1,0 +1,169 @@
+{
+  "kind": "static source/pin/build-input verification only",
+  "checks": [
+    {
+      "check": "build-input:public/record-policy.js",
+      "passed": true
+    },
+    {
+      "check": "build-input:public/app.js",
+      "passed": true
+    },
+    {
+      "check": "build-input:public/data-ui.js",
+      "passed": true
+    },
+    {
+      "check": "build-input:public/recipe-review.js",
+      "passed": true
+    },
+    {
+      "check": "build-input:public/pantry-backup.js",
+      "passed": true
+    },
+    {
+      "check": "build-input:public/sync-ui.js",
+      "passed": true
+    },
+    {
+      "check": "build-input:public/sync-model.js",
+      "passed": true
+    },
+    {
+      "check": "build-input:public/sharing-ui.js",
+      "passed": true
+    },
+    {
+      "check": "build-input:public/cooking-model.js",
+      "passed": true
+    },
+    {
+      "check": "build-input:public/insights-model.js",
+      "passed": true
+    },
+    {
+      "check": "build-input:public/menu-model.js",
+      "passed": true
+    },
+    {
+      "check": "build-input:cloud/state.mjs",
+      "passed": true
+    },
+    {
+      "check": "deployed193-main-pin",
+      "passed": true
+    },
+    {
+      "check": "outer-worker-prefix-pin",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:hA",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:HA",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:uA",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:Cg",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:sA",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:gI",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:Qg",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:og",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:kA",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:tg",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:UA",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:BA",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:QI",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:rg",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:EI",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:wg",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:CA",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:SA",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:hg",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:yg",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:pg",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:Yg",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:uB",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:wA",
+      "passed": true
+    },
+    {
+      "check": "extracted-function:kg",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "notRun": [
+    "No historical tests repeated",
+    "No live private-data/authenticated endpoint tests",
+    "No scheduled cleanup, delete, restore, feed or provider calls",
+    "No full security/privacy audit"
+  ],
+  "newPatch": false
+}

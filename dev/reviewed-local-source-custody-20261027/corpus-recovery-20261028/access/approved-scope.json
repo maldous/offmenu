@@ -1,0 +1,22 @@
+{
+  "ready_packages": [
+    "/home/user/src/offmenu-data/common-data-reviewed-package-20261014",
+    "/home/user/src/offmenu-data/common-reference-delivery-final-20261014",
+    "/home/user/src/offmenu-data/common-national-semantic-final-20261014",
+    "/home/user/src/offmenu-data/measurement-terminology-final-qualified-20261014",
+    "/home/user/src/offmenu-data/recipe-expansion-final-qualified-20261014/common-graph",
+    "/home/user/src/offmenu-data/historical-recipe-quality-final-corrected-20261014"
+  ],
+  "qualification_receipts_not_in_directory_mount_proposal": [
+    "/home/user/src/offmenu-data/common-ready-six-package-global-20261014.json",
+    "/home/user/src/offmenu-data/custody-positive-quiescence-20261014.json"
+  ],
+  "incomplete_packages": [
+    {
+      "path": "/home/user/src/offmenu-data/common-bulk-food-semantic-final-20261014"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/common-places-semantic-final-20261014.partial"
+    }
+  ]
+}

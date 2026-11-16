@@ -1,0 +1,14 @@
+from pathlib import Path
+import json,hashlib,shutil
+r=Path(__file__).parent;old=Path('/workspace/shared/offmenu-worker13-build-source-20261027');new=r/'browser-source';new.mkdir(exist_ok=True)
+shutil.copytree(old/'candidate-source',new/'candidate-source',dirs_exist_ok=True)
+m=json.loads((old/'candidate-source-manifest.json').read_text());sel=json.loads((r/'production-selection.json').read_text());bindings=(r/'production-foundation-handoff-bindings.mjs').read_bytes();deltas=[]
+for group in ['app','scanner','guest']:
+ p=new/'candidate-source'/group/'public/foundation-handoff-bindings.mjs';before=p.read_bytes();p.write_bytes(bindings);deltas.append({'group':group,'path':'public/foundation-handoff-bindings.mjs','beforeSha256':hashlib.sha256(before).hexdigest(),'afterSha256':hashlib.sha256(bindings).hexdigest(),'afterBytes':len(bindings)})
+ p=new/'candidate-source'/group/'public/production-scanner/foundation-scanner-client.mjs'
+ if p.exists():
+  before=p.read_bytes();s=before.decode();oldText="export const FOUNDATION_SELECTION={releaseId:'offmenu-reviewed-foundation-r8-local-20261027-v1',manifestSha256:'f9338984eb416c0c4681697c5257ae72cf2e178fe88879331d4b74efc6dc9aa7'};";newText="export const FOUNDATION_SELECTION={releaseId:'"+sel['releaseId']+"',manifestSha256:'"+sel['manifestSha256']+"'};";assert s.count(oldText)==1;s=s.replace(oldText,newText);after=s.encode();p.write_bytes(after);deltas.append({'group':group,'path':'public/production-scanner/foundation-scanner-client.mjs','beforeSha256':hashlib.sha256(before).hexdigest(),'afterSha256':hashlib.sha256(after).hexdigest(),'afterBytes':len(after),'change':'Only fixed FOUNDATION_SELECTION literal; validator logic unchanged'})
+for d in deltas:
+ rows=[x for x in m['files'] if x['group']==d['group'] and x['path']==d['path']];assert len(rows)==1;row=rows[0];assert row['afterSha256']==d['beforeSha256'];row['beforeProductionTargetSha256']=d['beforeSha256'];row['afterSha256']=d['afterSha256'];row['bytes']=d['afterBytes'];row['productionTargetBindingDelta']=True
+m['productionTarget']={'releaseId':sel['releaseId'],'manifestSha256':sel['manifestSha256'],'publicationReceiptSha256':sel['sourceAdmissionSha256'],'sourceScope':'New target receipt from actual checked curated projection; old local pins retained as historical references','partialIdentitySelection':'null; unchanged','servedGuestWarning':'Recovered guest build is source-only; current183 reviewed-audio guest is NOT replaced wholesale.'}
+(new/'candidate-source-manifest.json').write_text(json.dumps(m,indent=2)+'\n');(r/'production-browser-source-delta.json').write_text(json.dumps({'schema':'offmenu-production-foundation-binding-delta/1','deltas':deltas,'oldThreeBindingsRetained':True,'strictPhaseValidatorUnchanged':True,'sourceIdentitySelectionUnchanged':True,'servedGuestNotReplaced':True},indent=2)+'\n');print(json.dumps(deltas,indent=2))

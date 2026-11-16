@@ -1,0 +1,52 @@
+{
+  "bulk_checkpoint": {
+    "exists": false
+  },
+  "full_schema_verified": false,
+  "packages": [
+    {
+      "candidate_files": 414,
+      "candidate_metadata_stable_at_end": true,
+      "candidate_set_stable_at_end": true,
+      "failed_files": 1,
+      "failures": {
+        "EOFError": 1
+      },
+      "full_package_verified": false,
+      "incomplete_files": 0,
+      "package": "common-bulk-food-semantic-final-20261014",
+      "read_only_payload_preserved": true,
+      "selected_files": 414,
+      "selected_integrity_scope_complete": false,
+      "unverified_files": 0,
+      "verified_compressed_bytes": 468959976,
+      "verified_decoded_bytes": 4584030052,
+      "verified_files": 413,
+      "verified_hash_receipts_sha256": "efa99ca7c7f18138551ba22e682cf5a81dd85351514d1a5c8527c58a852723da",
+      "verified_packets": 413000
+    },
+    {
+      "candidate_files": 2407,
+      "candidate_metadata_stable_at_end": true,
+      "candidate_set_stable_at_end": true,
+      "failed_files": 0,
+      "failures": {},
+      "full_package_verified": false,
+      "incomplete_files": 0,
+      "package": "common-places-semantic-final-20261014.partial",
+      "read_only_payload_preserved": true,
+      "selected_files": 2407,
+      "selected_integrity_scope_complete": true,
+      "unverified_files": 0,
+      "verified_compressed_bytes": 2441520421,
+      "verified_decoded_bytes": 24785401568,
+      "verified_files": 2407,
+      "verified_hash_receipts_sha256": "788aa2d9bc8850aa982e1f446d39de3b0417bf54f0aa5d51c57eca256c06f68c",
+      "verified_packets": 2407
+    }
+  ],
+  "qualification_established": false,
+  "schema": "offmenu-retained-integrity-inspection/1",
+  "scope": "all inventoried gzip candidates, bounded CRC/JSON/basic packet shape and stable byte hashes; no source equality or semantic proof",
+  "source_equivalence_verified": false
+}

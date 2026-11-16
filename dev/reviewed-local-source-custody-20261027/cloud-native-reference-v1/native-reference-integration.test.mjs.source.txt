@@ -1,0 +1,142 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,cp,writeFile,readFile,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {pathToFileURL} from 'node:url';
+import vm from 'node:vm';
+import {webcrypto} from 'node:crypto';
+globalThis.crypto ||= webcrypto;
+// All pins/observations below are synthetic and confined to an ephemeral copy.
+// The deliverable's source-identity-selection.mjs remains exactly null.
+const h=c=>c.repeat(64),raw='0049022712744';
+const fixed={selectionSha256:h('1'),admissionSha256:h('2'),manifestSha256:h('3'),sourceId:'usda-files',releaseId:'2026-04-30',sourceQualificationSha256:h('a'),sourceInputIndexSha256s:[h('b')]};
+const temp=await mkdtemp(join(tmpdir(),'offmenu-native-source-test-'));
+await cp(new URL('./overlay/',import.meta.url),temp,{recursive:true});
+await writeFile(join(temp,'package.json'),'{"type":"module"}\n');
+await writeFile(join(temp,'public/production-scanner/source-identity-selection.mjs'),'export const SOURCE_IDENTITY_SELECTION='+JSON.stringify(fixed)+';\n');
+const phaseBindings={releaseId:'synthetic-phase',manifestSha256:h('4'),sourceAdmissionSha256:h('5'),sources:{'usda-files':{releaseId:fixed.releaseId,qualificationSha256:fixed.sourceQualificationSha256,license:'Synthetic phase notice',attribution:'Synthetic phase attribution'}}};
+await writeFile(join(temp,'public/foundation-handoff-bindings.mjs'),'export const FOUNDATION_HANDOFF_BINDINGS='+JSON.stringify(phaseBindings)+';\n');
+const imported=async path=>import(pathToFileURL(join(temp,path)).href);
+const handoff=await imported('public/source-identity-handoff.mjs');
+const client=await imported('public/production-scanner/source-identity-client.mjs');
+const model=await imported('public/model.js');
+const checkout=await imported('public/checkout-model.js');
+const receipts=await imported('public/scanner-kitchen-handoff.js');
+const {createSourceIdentityHTTP}=await imported('dev/source-identity-consumer-candidate-20261027/source-identity-http.mjs');
+const {sha256}=await imported('dev/source-identity-consumer-candidate-20261027/source-identity-reader.mjs');
+const app=await readFile(join(temp,'public/app.js'),'utf8');
+const scanner=await readFile(join(temp,'public/production-scanner/shelf-scanner.js'),'utf8');
+const awaitableGuestSource=await readFile(join(temp,'public/production-scanner/guest-shelf-scanner-inventory.js'),'utf8');
+const uuid=n=>'00000000-0000-4000-8000-'+String(n).padStart(12,'0');
+const unknown=()=>({state:'unknown',reason:'not-in-qualified-identity-metadata'});
+function observation(id='7',value=raw,namespace='barcode'){
+ const nativeId='usda-files:product:'+id;
+ return {schema:'offmenu-source-identity-observation/2',stageId:'synthetic:stage:'+id,nativeId,wireSha256:h('c'),sourceBinding:{sourceId:fixed.sourceId,releaseId:fixed.releaseId,recordId:id,sourceObservationSha256:h('d'),sourceDocumentSha256:h('e'),inputDatabaseSha256:h('f'),sourceQualificationSha256:fixed.sourceQualificationSha256,nativeRecordId:nativeId},sourceIdentifiers:[{system:'USDA-FDC',value:id},{system:'barcode',value:namespace==='barcode'?value:raw}],sourceRights:{license:'USDA FoodData Central public domain / CC0 (retained declaration)',attribution:'USDA Agricultural Research Service FoodData Central',sourceVisibility:'source-staging'},matchedIdentifier:{namespace,lexicalValue:value,relationship:'exact-source-claim',representation:'untyped',physicalCarrier:namespace==='barcode'?'unverified':'not-applicable',sourceChecksumValid:namespace==='barcode'?value===raw:null},sourceInputIndexSha256:h('b'),rightsVisibilityField:'sourceVisibility',sourceURL:'https://fdc.nal.usda.gov/download-datasets/',originalProductName:unknown(),originalLanguage:unknown(),englishName:unknown(),foodType:unknown(),nutrition:unknown(),canonicalIdentityAccepted:false,identityAssociationAccepted:false,physicalProductEquivalenceAsserted:false,normalizationComplete:false,goldAdmitted:false,automaticPlanningEligible:false,recipeNutritionJoinsAccepted:false};
+}
+function identityEntry(id=1,value=raw,namespace='barcode'){
+ const r=observation(namespace==='USDA-FDC'?value:String(id),value,namespace),match=client.identityMatch(r);
+ return {id:uuid(id),raw:value,namespace,symbology:null,queryGeneration:9,generation:9,foundationLookup:true,sourceChoiceConfirmed:true,status:'source-match',pending:false,lookupPending:false,matches:[match],selectedRecord:match,identityState:{identityLookup:true,namespace,lexicalValue:value,generation:9,records:[r],selectionSha256:fixed.selectionSha256,admissionSha256:fixed.admissionSha256,manifestSha256:fixed.manifestSha256,error:null}};
+}
+function phaseEntry(){
+ const b=observation('phase').sourceBinding;delete b.nativeRecordId;
+ const ref={schema:'offmenu-foundation-source-reference/1',fieldContract:'offmenu-barcode-foundation-phase/2',releaseId:phaseBindings.releaseId,manifestSha256:phaseBindings.manifestSha256,sourceAdmissionSha256:phaseBindings.sourceAdmissionSha256,recordId:'synthetic-phase-row',namespace:'barcode',lexicalValue:raw,nativeRecordId:'usda-files:product:phase',stageRecordWireSha256:h('c'),sourceBinding:b,license:phaseBindings.sources['usda-files'].license,attribution:phaseBindings.sources['usda-files'].attribution,foundationComplete:true,normalizationComplete:false,fullProductComplete:false,goldAdmitted:false,automaticPlanningEligible:false,recipeNutritionJoinsAccepted:false};
+ const match={id:'phase',name:'Canonical base · Synthetic ingredient',brand:null,foundationSourceReference:ref};
+ return {id:uuid(2),raw,namespace:'barcode',symbology:null,foundationLookup:true,sourceChoiceConfirmed:true,status:'source-match',matches:[match],selectedRecord:match};
+}
+function identityItem(){return handoff.createOwnedSourceScannerHandoff([identityEntry()]).items[0];}
+const product=item=>({name:null,retainedSource:true,sourceIdentityReference:item.sourceIdentityReference});
+const manual=lot=>model.validateLot({...lot,name:'My manually identified item',ingredient:'rice',quantity:250,unit:'g',amountBasis:'manual',needsReview:false});
+
+test('mixed explicit choices retain complete identity provenance without changing phase reference or leading zeros',()=>{
+ const identity=identityEntry(),phase=phaseEntry(),before=structuredClone(phase.selectedRecord.foundationSourceReference);
+ const value=handoff.createOwnedSourceScannerHandoff([identity,phase]);
+ assert.equal(value.items.length,2);assert.equal(value.items[0].barcode,raw);
+ assert.equal(value.items[0].name,null);assert.equal(value.items[0].foundationSourceReference,undefined);
+ assert.deepEqual(value.items[0].sourceIdentityReference.observation,identity.selectedRecord.sourceIdentityRecord);
+ assert.deepEqual(value.items[1].foundationSourceReference,before);
+ assert.deepEqual(handoff.parseOwnedSourceScannerHandoff(JSON.parse(JSON.stringify(value))),value);
+ value.items[0].sourceIdentityReference.observation.sourceRights.license='changed';
+ assert.notEqual(identity.selectedRecord.sourceIdentityRecord.sourceRights.license,'changed');
+});
+test('native source namespace and invalid exact barcode claims remain available without checksum repair',()=>{
+ const native=handoff.createOwnedSourceScannerHandoff([identityEntry(3,'0007','USDA-FDC')]).items[0];
+ assert.equal(native.namespace,'USDA-FDC');assert.equal(native.barcode,'0007');
+ assert.equal(native.sourceIdentityReference.observation.matchedIdentifier.sourceChecksumValid,null);
+ const invalid=handoff.createOwnedSourceScannerHandoff([identityEntry(4,'123')]).items[0];
+ assert.equal(invalid.barcode,'123');assert.equal(invalid.sourceIdentityReference.observation.matchedIdentifier.sourceChecksumValid,false);
+ assert.equal(checkout.makeAutoLot('123',product(invalid)).quantity,null);
+});
+test('unknown amount stages and restores as unknown; only explicit positive manual amount can reach stock',()=>{
+ const item=identityItem(),lot=checkout.makeAutoLot(raw,product(item),'invented ingredient');
+ assert.equal(lot.quantity,null);assert.equal(lot.amountBasis,'unknown');assert.equal(lot.ingredient,'unmapped');assert.equal(lot.needsReview,true);
+ assert.equal(model.validateCheckoutDraftLot(lot).quantity,null);
+ assert.throws(()=>model.validateLot(lot),/known quantity/);
+ for(const bad of [{quantity:0,amountBasis:'manual'},{quantity:1,amountBasis:'package'},{quantity:1,amountBasis:'full-pack'}])assert.throws(()=>model.validateLot({...lot,...bad}),/positive manual/);
+ const saved=manual(lot);assert.equal(saved.quantity,250);assert.equal(saved.sourceIdentityReference.observation.englishName.state,'unknown');assert.equal(saved.sourceIdentityReference.observation.foodType.state,'unknown');assert.equal(saved.sourceIdentityReference.observation.normalizationComplete,false);
+ assert.equal(model.eligibleStock(lot,'2026-10-27'),false);
+});
+test('Finish validates source identity, preserves references, and replays exactly without duplicate stock',()=>{
+ const item=identityItem(),draft=checkout.makeAutoLot(raw,product(item));draft.id=item.operationId;
+ const session={mode:'shopping',area:'Pantry',shelf:'Shelf 1',items:[draft],startedAt:'synthetic-time',scannerCompletion:{schema:receipts.SCANNER_COMPLETION}};
+ assert.throws(()=>checkout.finishInventory([],session),/known quantity/);
+ session.items=[manual(draft)];const saved=checkout.finishInventory([],session);
+ assert.equal(saved.length,1);assert.deepEqual(saved[0].sourceIdentityReference,item.sourceIdentityReference);
+ assert.equal(checkout.finishInventory(saved,session),saved);
+ assert.throws(()=>checkout.finishInventory(saved,{...session,items:[{...session.items[0],quantity:251}]}),/conflicts/);
+ const fingerprint=handoff.ownedSourceHandoffFingerprint(item);
+ assert.deepEqual(receipts.validateScannerHandoffReceipts({[item.operationId]:fingerprint},[item.operationId]),{[item.operationId]:fingerprint});
+ assert.throws(()=>receipts.validateScannerHandoffReceipts({[item.operationId]:fingerprint.replace('My fake','x')+' '},[item.operationId]),/history/);
+});
+test('unconfigured selection, stale/foreign choice, altered pins/rights/claims and mixed reference types fail closed',()=>{
+ const value=handoff.createOwnedSourceScannerHandoff([identityEntry()]);
+ assert.throws(()=>handoff.createOwnedSourceHandoffContract(null).parseOwnedSourceScannerHandoff(value),/NOT_CONFIGURED/);
+ for(const mutate of [e=>e.sourceChoiceConfirmed=false,e=>e.selectedRecord={...e.selectedRecord},e=>e.identityState.generation++,e=>e.identityState.lexicalValue='other',e=>e.identityState.records=[]]){const e=identityEntry();mutate(e);assert.throws(()=>handoff.createOwnedSourceScannerHandoff([e]));}
+ for(const mutate of [r=>r.manifestSha256=h('0'),r=>r.observation.sourceRights.license='changed',r=>r.observation.normalizationComplete=true,r=>r.observation.englishName={state:'known',value:'Rice'},r=>r.observation.rawPayload={},r=>r.observation.matchedIdentifier.lexicalValue='49022712744']){const r=structuredClone(value.items[0].sourceIdentityReference);mutate(r);assert.throws(()=>handoff.copySourceIdentityReference(r,raw));}
+ const lot=manual(checkout.makeAutoLot(raw,product(value.items[0])));
+ assert.throws(()=>model.validateLot({...lot,foundationSourceReference:phaseEntry().selectedRecord.foundationSourceReference}),/own exact native/);
+ assert.throws(()=>handoff.createOwnedSourceScannerHandoff([identityEntry(),identityEntry()]),/repeats/);
+});
+
+test('actual protected Finish controller uses mixed handoff, keeps guest separate, and navigates only after persistence',()=>{
+ const queue=[identityEntry(),phaseEntry()],values=new Map(),nodes=new Map(),node=id=>{if(!nodes.has(id))nodes.set(id,{});return nodes.get(id);};let navigated=null,stopped=0;
+ const context=vm.createContext({queue,$:node,createOwnedSourceScannerHandoff:handoff.createOwnedSourceScannerHandoff,createFoundationScannerHandoff(){throw Error('mixed queue must use native path');},createPublicScannerHandoff(){throw Error('mixed queue must not be public');},TextEncoder,sessionStorage:{setItem:(k,v)=>values.set(k,v)},SCANNER_HANDOFF_KEY:receipts.SCANNER_HANDOFF_KEY,generation:1,active:true,finished:false,paused:false,scanner:{stop(){stopped++;}},location:{assign:v=>navigated=v},message:v=>{throw Error(v);}});
+ const line=scanner.split('\n').find(l=>l.startsWith("$('undo').onclick="));vm.runInContext(line.slice(line.indexOf("$('finish').onclick=")),context);node('finish').onclick();
+ assert.equal(navigated,'/kitchen.html?scan=staged');assert.equal(stopped,1);assert.equal(JSON.parse(values.get(receipts.SCANNER_HANDOFF_KEY)).items.length,2);
+ const guest=awaitableGuestSource;assert.ok(guest.includes('finishGuestSession'));assert.ok(!guest.includes('createOwnedSourceScannerHandoff'));
+});
+
+test('actual app handoff reader accepts new schema and keeps old payload bound unchanged',()=>{
+ let rawValue=JSON.stringify(handoff.createOwnedSourceScannerHandoff([identityEntry(),phaseEntry()]));
+ const c=vm.createContext({lifecycleFixture:null,location:{search:'?scan=staged'},URLSearchParams,TextEncoder,sessionStorage:{getItem:()=>rawValue},KITCHEN_HANDOFF:receipts.SCANNER_HANDOFF_KEY,OWNED_SOURCE_HANDOFF_LIMIT:handoff.OWNED_SOURCE_HANDOFF_LIMIT,OWNED_SOURCE_SCANNER_HANDOFF:handoff.OWNED_SOURCE_SCANNER_HANDOFF,FOUNDATION_SCANNER_HANDOFF:'offmenu-foundation-scanner-handoff/1',PUBLIC_SCANNER_HANDOFF:receipts.PUBLIC_SCANNER_HANDOFF,parseOwnedSourceScannerHandoff:handoff.parseOwnedSourceScannerHandoff,parseFoundationScannerHandoff(){throw Error('not this branch');},parsePublicScannerHandoff(){throw Error('old oversized payload must stop before parse');}});
+ const line=app.split('\n').find(l=>l.startsWith('function readScannerImport('));vm.runInContext(line.slice(0,line.indexOf('let statisticsPeriod')),c);
+ assert.equal(c.readScannerImport().items.length,2);
+ rawValue=JSON.stringify({schema:receipts.PUBLIC_SCANNER_HANDOFF,padding:'x'.repeat(3001)});assert.equal(c.readScannerImport(),null);
+});
+
+test('actual app autoAccept stages unknown quantity with operation receipt and never queries a product fallback',()=>{
+ const item=identityItem(),fingerprint=handoff.ownedSourceHandoffFingerprint(item);let saved=0,fetched=0;
+ const c=vm.createContext({session:{mode:'shopping',items:[]},scannerHandoffOperations:[],scannerHandoffReceipts:{},canEditCheckout:()=>true,scannerScopeMatches:()=>true,makeAutoLot:checkout.makeAutoLot,mappedIngredient:()=> 'unmapped',trustedIngredient:()=>null,saveDraft(){saved++;},renderBasket(){},scanFeedback(){},displayAccepted(){},msg(){},t:v=>v,getProduct(){fetched++;throw Error('no fallback');}});
+ vm.runInContext(app.slice(app.indexOf('function autoAccept('),app.indexOf('async function lookup(')),c);
+ assert.equal(c.autoAccept(raw,product(item),item.operationId,fingerprint),true);assert.equal(c.session.items[0].quantity,null);assert.equal(c.session.items[0].amountBasis,'unknown');assert.equal(c.session.items[0].needsReview,true);assert.equal(fetched,0);
+ assert.equal(c.autoAccept(raw,product(item),item.operationId,fingerprint),true);assert.equal(c.session.items.length,1);assert.equal(saved,1);
+ assert.throws(()=>c.autoAccept(raw,product(item),item.operationId,'changed'),/conflicts/);
+});
+
+test('real HTTP adapter output satisfies recovered strict client without changing semantic qualification',async()=>{
+ const r=observation(),encode=v=>new TextEncoder().encode(JSON.stringify(v)),selected=[h('b')],setSha=await sha256(encode(selected));
+ const sourceRights=r.sourceRights;
+ const index={schema:'offmenu-source-identity-index/2',fieldSet:'source-identifier-claims-with-provenance/2',sourceId:fixed.sourceId,releaseId:fixed.releaseId,sourceIndexSha256:setSha,records:[{stageId:r.stageId,nativeId:r.nativeId,wireSha256:r.wireSha256,sourceInputIndexSha256:r.sourceInputIndexSha256,rightsVisibilityField:r.rightsVisibilityField,sourceBinding:r.sourceBinding,identifiers:r.sourceIdentifiers,barcodePostings:[{checksumValid:true,lexicalCode:raw}],sourceRights,canonicalStatus:'unresolved',englishStatus:'unresolved',normalizationComplete:false,goldAdmitted:false}]};
+ const descriptor=async bytes=>({bytes:bytes.byteLength,sha256:await sha256(bytes)}),indexBytes=encode(index),indexRef=await descriptor(indexBytes);
+ const manifest={schema:'offmenu-source-identity-manifest/2',status:'identity-claims-admitted-local',scope:'localhost-only',fieldSet:index.fieldSet,sourceId:fixed.sourceId,releaseId:fixed.releaseId,sourceQualificationSha256:fixed.sourceQualificationSha256,sourceRights,selectedSourceIndexes:selected,sourceIndex:{sha256:setSha},sourceRightsFieldContractSha256:h('6'),nativeRepresentationQualificationSha256:h('7'),sourceURL:r.sourceURL,publicPublicationAccepted:false,normalizationComplete:false,goldAdmitted:false,index:indexRef,recordCount:1,sourceDistinctLexicalKeys:1};
+ const manifestBytes=encode(manifest),manifestRef=await descriptor(manifestBytes);
+ const admission={status:'accepted-local-source-identity-claims',scope:'localhost-only',fieldSet:index.fieldSet,manifestSha256:manifestRef.sha256,indexSha256:indexRef.sha256,sourceIndexSha256:setSha,sourceQualificationSha256:fixed.sourceQualificationSha256,sourceRightsFieldContractSha256:h('6'),nativeRepresentationQualificationSha256:h('7'),operation:'serve-source-identity-claims-local',publicPublicationAccepted:false,runtimeActivation:false};
+ const admissionBytes=encode(admission),admissionRef=await descriptor(admissionBytes),selection={sourceId:fixed.sourceId,releaseId:fixed.releaseId,sourceQualificationSha256:fixed.sourceQualificationSha256,sourceRightsFieldContractSha256:h('6'),nativeRepresentationQualificationSha256:h('7'),manifest:manifestRef,index:indexRef,admission:admissionRef};
+ const adapter=await createSourceIdentityHTTP({selection,manifestBytes,indexBytes,admissionBytes});
+ const response=await adapter.handle(new Request('http://localhost:7645/api/corpus/source-identity?source=usda-files&namespace=barcode&value='+raw));
+ const wire=await response.json();assert.equal(wire.status,wire.readerResult.status);
+ const accepted=client.validateSourceIdentityWire(wire,{namespace:'barcode',value:raw,offset:0,limit:20},{...fixed,selectionSha256:adapter.selectionSha256,admissionSha256:admissionRef.sha256,manifestSha256:manifestRef.sha256});
+ assert.equal(accepted.records[0].normalizationComplete,false);assert.equal(accepted.records[0].foodType.state,'unknown');
+});
+
+test.after(async()=>{await rm(temp,{recursive:true,force:true});});

@@ -1,0 +1,21 @@
+{
+  "schema": "offmenu-bulk-batch-verification/1",
+  "checkpointComplete": false,
+  "checkpointSha256": "411b6d0ffa952ea3955f0bf5a9dab3eb670e1d1d17f9e67366b9559a57cc8061",
+  "verifiedAssets": 513,
+  "verifiedBytes": 582630054,
+  "verifiedPackets": 513000,
+  "recoveredCopyAssets": 413,
+  "recoveredCopiesByteIdentical": 413,
+  "heldLegacyAssets": [
+    {
+      "key": "packets/part-00413.jsonl.gz",
+      "errorClass": "EOFError"
+    }
+  ],
+  "legacyTruncatedTailUnchanged": true,
+  "finalManifestPresent": false,
+  "unexpectedOutputFiles": 0,
+  "freeBytes": 208190251008,
+  "qualificationComplete": false
+}

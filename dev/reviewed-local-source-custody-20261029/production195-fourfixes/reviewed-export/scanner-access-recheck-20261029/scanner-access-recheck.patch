@@ -1,0 +1,145 @@
+--- a/public/scanner-ui.js
++++ b/public/scanner-ui.js
+@@ -67,6 +67,11 @@
+     gate.rearm(); lastFrame=-1; lastCodes=[];
+     if(announce) status('Camera stopped. Your scanned items are kept.');
+   }
++  function currentAccess(sessionToken) {
++    if(sessionToken!==token) return false;
++    if(!canScan()) { stop(); return false; }
++    return true;
++  }
+   async function setting(values) {
+     const activeTrack=track;
+     if(!activeTrack) return false;
+@@ -130,7 +135,7 @@
+   }
+   async function loop(sessionToken) {
+     if(sessionToken!==token || !running) return;
+-    if(!canScan()){timer=setTimeout(()=>void loop(sessionToken),140);return;}
++    if(!currentAccess(sessionToken)) return;
+     const begin=performance.now();
+     try {
+       if(video.readyState>=2 && video.currentTime!==lastFrame) {
+@@ -140,10 +145,10 @@
+         if(native) {
+           try { results=await native.detect(canvas); } catch { native=null; }
+         }
+-        if(sessionToken!==token) return;
++        if(!currentAccess(sessionToken)) return;
+         // Serial fallback: never queue frames behind an in-flight decode.
+         if(!requiresUPCEConfirmation(results,'native') && !selectableCaptures(results,'native').length && (!native || attempts%3===0)) {results=await decode(frame,preferences.enhance);decoderPath='zxing-wasm';}
+-        if(sessionToken!==token) return;
++        if(!currentAccess(sessionToken)) return;
+         const captures=requiresUPCEConfirmation(results,decoderPath)?[]:selectableCaptures(results,decoderPath);
+         const codes=[...new Set(captures.map(x=>x.lookupLexicalValue+'\u0000'+(x.lookupSymbology||'')))];
+         lastCodes=codes;
+@@ -162,7 +167,7 @@
+         else if(!lastRead && performance.now()-started>6000) status(results.some(x=>captureFromDecoder(x,decoderPath).status==='manual-required')?'Decoder representation needs manual confirmation. Use Type code to preserve the printed value.':'No readable code yet. Pause movement, move farther away if blurred, and avoid glare. Try another lens or a photo.');
+       }
+     } catch {
+-      if(sessionToken!==token) return;
++      if(!currentAccess(sessionToken)) return;
+       if(native) { status('Enhanced decoder unavailable; using the device decoder.'); }
+       else { stop({announce:false}); status('Barcode decoder unavailable. Reconnect and reopen the camera, or type the barcode.'); return; }
+     }
+@@ -182,26 +187,26 @@
+       let acquired;
+       try { acquired=await navigator.mediaDevices.getUserMedia({audio:false,video:{...selection,width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30}}}); }
+       catch(error) {
+-        if(error.name!=='OverconstrainedError' || sessionToken!==token) throw error;
++        if(error.name!=='OverconstrainedError' || !currentAccess(sessionToken)) throw error;
+         acquired=await navigator.mediaDevices.getUserMedia({audio:false,video:selection});
+       }
+-      if(sessionToken!==token) { acquired.getTracks().forEach(t=>t.stop()); return; }
++      if(sessionToken!==token || !canScan()) { acquired.getTracks().forEach(t=>t.stop()); if(sessionToken===token) stop(); return; }
+       stream=acquired; track=stream.getVideoTracks()[0]; onStream(stream);
+       track.addEventListener('ended',()=>{if(sessionToken===token){stop({announce:false});status('Camera disconnected. Reconnect and open the scanner again.');}});
+       video.srcObject=stream; video.hidden=false; $('camera-stage').hidden=false;
+-      await video.play(); if(sessionToken!==token) return;
++      await video.play(); if(!currentAccess(sessionToken)) return;
+       const c=caps();
+       for(const key of ['focusMode','exposureMode','whiteBalanceMode']) {
+         if(c[key]?.includes('continuous')) await setting({[key]:'continuous'});
+-        if(sessionToken!==token) return;
++        if(!currentAccess(sessionToken)) return;
+       }
+       native=null;
+       if('BarcodeDetector' in window) {
+         try { const supported=await BarcodeDetector.getSupportedFormats(); if(NATIVE_FORMATS.every(f=>supported.includes(f))) native=new BarcodeDetector({formats:NATIVE_FORMATS}); } catch {}
+       }
+-      if(sessionToken!==token) return;
++      if(!currentAccess(sessionToken)) return;
+       try { await enumerate(); } catch { /* Automatic facing modes remain available. */ }
+-      if(sessionToken!==token) return;
++      if(!currentAccess(sessionToken)) return;
+       preview(); showControls(); $('scanner-controls').hidden=false; $('scanner-rearm').disabled=false;
+       running=true;starting=false; started=performance.now(); lastRead=0; attempts=0;
+       status('Ready. Present one barcode and pause briefly.');
+@@ -236,9 +241,9 @@
+     let bitmap;
+     try {
+       bitmap=await createImageBitmap(file);
+-      if(photoToken!==token) return;
++      if(!currentAccess(photoToken)) return;
+       const results=await decode(pixels(bitmap,2560),preferences.enhance);
+-      if(photoToken!==token) return;
++      if(!currentAccess(photoToken)) return;
+       const captures=requiresUPCEConfirmation(results,'photo-zxing-wasm')?[]:selectableCaptures(results,'photo-zxing-wasm');
+       const codes=[...new Set(captures.map(x=>x.lookupLexicalValue+'\u0000'+(x.lookupSymbology||'')))];
+       if(codes.length!==1) return status(codes.length?'Several barcodes found. Crop the photo to one product.':results.length?'Decoder representation needs manual confirmation. Type the printed code.':'No retail barcode found. Use a sharp photo of the entire barcode, including its blank edges.');
+--- a/tests-web/scanner-lifecycle.test.mjs
++++ b/tests-web/scanner-lifecycle.test.mjs
+@@ -92,3 +92,52 @@
+  scanner.stop();delete globalThis.BarcodeDetector;
+  assert.deepEqual(seen,{width:1536,height:864});
+ });
++
++test('permission revoked during camera prompt releases the acquired stream',async()=>{
++ let allowed=true,resolve;const e=environment(()=>new Promise(r=>resolve=r));let current=null;
++ const scanner=setupScanner({canScan:()=>allowed,onCode(){assert.fail('unexpected capture');},onStream:s=>current=s});
++ const starting=scanner.start();allowed=false;const c=camera();resolve(c);await starting;
++ try{assert.ok(c.track.stopped);assert.equal(current,null);assert.equal(e.$('video').srcObject,null);}
++ finally{scanner.stop();}
++});
++test('permission revoked while photo loads prevents decoding and acceptance',async()=>{
++ let allowed=true,resolve,closed=false;const e=environment(async()=>camera());
++ const scanner=setupScanner({canScan:()=>allowed,onCode(){assert.fail('unexpected capture');},onStream(){}});
++ globalThis.createImageBitmap=()=>new Promise(r=>resolve=r);
++ e.$('scanner-photo').files=[{size:100}];const reading=e.$('scanner-photo').onchange();allowed=false;
++ resolve({width:10,height:10,close(){closed=true;}});
++ try{await reading;assert.ok(closed);assert.equal(e.$('scanner-status').textContent,'Camera stopped. Your scanned items are kept.');}
++ finally{scanner.stop();delete globalThis.createImageBitmap;}
++});
++
++test('permission revoked during native decode rejects the result and releases camera',async()=>{
++ let allowed=true,resolve,accepted=0;const c=camera(),e=environment(async()=>c);
++ e.$('video').readyState=2;e.$('video').currentTime=1;
++ class Detector{static async getSupportedFormats(){return NATIVE_FORMATS;}detect(){return new Promise(r=>resolve=r);}}
++ globalThis.BarcodeDetector=Detector;window.BarcodeDetector=Detector;
++ const scanner=setupScanner({canScan:()=>allowed,onCode(){accepted++;},onStream(){}});
++ try{
++ await scanner.start();assert.equal(typeof resolve,'function');allowed=false;
++ resolve([{format:'ean_13',rawValue:'4006381333931'}]);await new Promise(r=>setTimeout(r,0));
++ assert.equal(accepted,0);assert.ok(c.track.stopped);assert.equal(e.$('video').srcObject,null);
++ }finally{scanner.stop();delete globalThis.BarcodeDetector;}
++});
++test('permission revoked during photo decode discards result and closes resources',async()=>{
++ let allowed=true,accepted=0,closed=false,terminated=false,decoder;const e=environment(async()=>camera());
++ globalThis.createImageBitmap=async()=>({width:10,height:10,close(){closed=true;}});
++ globalThis.Worker=class{constructor(){decoder=this;}postMessage(data){this.request=data;}terminate(){terminated=true;}};
++ const scanner=setupScanner({canScan:()=>allowed,onCode(){accepted++;},onStream(){}});
++ e.$('scanner-photo').files=[{size:100}];const reading=e.$('scanner-photo').onchange();
++ try{
++ await new Promise(r=>setTimeout(r,0));assert.ok(decoder.request);allowed=false;
++ decoder.onmessage({data:{id:decoder.request.id,results:[{format:'EAN-13',text:'4006381333931'}]}});
++ await reading;assert.equal(accepted,0);assert.ok(closed);assert.ok(terminated);assert.equal(e.$('scanner-photo').disabled,false);
++ }finally{scanner.stop();delete globalThis.Worker;delete globalThis.createImageBitmap;}
++});
++
++test('revoked access does not issue the fallback camera request',async()=>{
++ let allowed=true,reject,calls=0;environment(()=>{calls++;if(calls>1)return Promise.reject({name:'NotAllowedError'});return new Promise((_resolve,r)=>reject=r);});
++ const scanner=setupScanner({canScan:()=>allowed,onCode(){assert.fail('unexpected capture');},onStream(){}});
++ try{const starting=scanner.start();allowed=false;reject({name:'OverconstrainedError'});await starting;assert.equal(calls,1);}
++ finally{scanner.stop();}
++});

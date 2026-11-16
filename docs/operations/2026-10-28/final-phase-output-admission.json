@@ -1,0 +1,31 @@
+{
+  "schema": "offmenu-global-final-phase-output-admission/1",
+  "asOfUTC": "2026-10-28T09:18:20Z",
+  "artifacts": [
+    {
+      "path": "qualification-cache-headroom-20261028/ACTUAL-FINAL-PHASE-BUDGET-017.json",
+      "sha256": "bd92ac7238df0f53da87961f5a97dab9f5a3cb3d800d5459e10617b7678345f7",
+      "text": "{\n  \"terminal\": {\n    \"status\": \"success\",\n    \"result\": \"{\\n \\\"ok\\\": true,\\n \\\"job_id\\\": \\\"corpus-global-qualification-cache-headroom-017-20261028\\\",\\n \\\"receipt\\\": {\\n  \\\"logs\\\": {\\n   \\\"stderr\\\": \\\"/offmenu/data/.offmenu-platform/jobs/corpus-global-qualification-cache-headroom-017-20261028/stderr.log\\\",\\n   \\\"stdout\\\": \\\"/offmenu/data/.offmenu-platform/jobs/corpus-global-qualification-cache-headroom-017-20261028/stdout.log\\\"\\n  },\\n  \\\"mode\\\": \\\"write\\\",\\n  \\\"job_id\\\": \\\"corpus-global-qualification-cache-headroom-017-20261028\\\",\\n  \\\"status\\\": \\\"succeeded\\\",\\n  \\\"version\\\": 3,\\n  \\\"exit_code\\\": 0,\\n  \\\"log_bytes\\\": {\\n   \\\"stderr\\\": 0,\\n   \\\"stdout\\\": 2383\\n  },\\n  \\\"created_at\\\": 1793177328.213282,\\n  \\\"started_at\\\": 1793177328.240822,\\n  \\\"finished_at\\\": 1793178768.694696,\\n  \\\"heartbeat_at\\\": 1793178768.6946988,\\n  \\\"output_bytes\\\": {\\n   \\\"stderr\\\": 0,\\n   \\\"stdout\\\": 2383\\n  },\\n  \\\"runner_sha256\\\": \\\"2ae57cc8edc66d9b56f43ad26dd8871fda155d23e50563988d3b0cac89d21674\\\",\\n  \\\"command_sha256\\\": \\\"4aaeca75db05fe23d45f62a951128ee65fa6ac7a42d324dff549ab620a813fc0\\\",\\n  \\\"logs_truncated\\\": {\\n   \\\"stderr\\\": false,\\n   \\\"stdout\\\": false\\n  },\\n  \\\"request_sha256\\\": \\\"82ef485785a46daf55e0145baa3c636ab0bbb387730d3fc91bb9417f45aecd9f\\\",\\n  \\\"child_tree_gone\\\": true,\\n  \\\"timeout_seconds\\\": 1800,\\n  \\\"reconcile_required\\\": false\\n },\\n \\\"admitted\\\": true,\\n \\\"transport_ok\\\": true,\\n \\\"job_succeeded\\\": true\\n}\"\n  },\n  \"metadata\": {\n    \"ok\": true,\n    \"stderr\": \"\",\n    \"stdout\": \"{\\\"phase\\\": \\\"global\\\", \\\"table\\\": 3, \\\"count\\\": 90810000, \\\"database\\\": {\\\"ids\\\": 194541531, \\\"referencesRecorded\\\": 23786447, \\\"translation_sources\\\": 3242}, \\\"checkpointBytes\\\": 4097, \\\"checkpointSha256\\\": \\\"0df9187bb602103749800e2dfb0cbe38d0a9951ab9d06901df20244e25d76557\\\", \\\"pageSize\\\": 4096, \\\"pageCount\\\": 9507420, \\\"freelistCount\\\": 1, \\\"queryPlans\\\": {\\\"ids\\\": [\\\"SCAN ids\\\"], \\\"texts\\\": [\\\"SCAN texts\\\"], \\\"citations\\\": [\\\"SCAN citations\\\"]}, \\\"packageMetadataBytes\\\": 3863, \\\"aggregate\\\": {\\\"assertions\\\": 166914715, \\\"assets\\\": 24147, \\\"externalReferences\\\": 94948126, \\\"packets\\\": 9929609, \\\"relations\\\": 4036948, \\\"resources\\\": 23586626, \\\"translations\\\": 3242}, \\\"scratchBytes\\\": 38942392320, \\\"evidenceExists\\\": false}\\n\",\n    \"exit_code\": 0,\n    \"truncated\": {\n      \"stderr\": false,\n      \"stdout\": false\n    }\n  },\n  \"proposedAdditionalGrowthBytes\": 67108864,\n  \"absoluteScratchBudgetBytes\": 64424509440,\n  \"sharedReserveBytes\": 75161927680\n}\n"
+    },
+    {
+      "path": "qualification-cache-headroom-20261028/INDEPENDENT-FINAL-PHASE-BUDGET-REVIEW.json",
+      "sha256": "c1a2cd00b803d2c4b8b0bbcfeeb934a7d8d0a2244497bbb84c432c5af9bcdaed",
+      "text": "{\n  \"schema\": \"offmenu-final-phase-output-admission-review/1\",\n  \"reviewedUTC\": \"2026-10-28T09:15:30Z\",\n  \"author\": \"assess_partial_corpus_resume\",\n  \"independentReviewer\": \"audit_production_efficiency\",\n  \"decision\": \"Approve 64 MiB additional-growth declaration for the exact clean global checkpoint; not a broader runtime cap change.\",\n  \"sourceSHA256\": \"22502c8f01c4b2c97f724ef09ddba01ec58b6c8cbd9110f5ac10f846c9baa8a7\",\n  \"metadataReceiptSHA256\": \"bd92ac7238df0f53da87961f5a97dab9f5a3cb3d800d5459e10617b7678345f7\",\n  \"checkpointSHA256\": \"0df9187bb602103749800e2dfb0cbe38d0a9951ab9d06901df20244e25d76557\",\n  \"phase\": \"global\",\n  \"table\": 3,\n  \"checkpointBytes\": 4097,\n  \"packageMetadataBytes\": 3863,\n  \"pageSize\": 4096,\n  \"freelistCount\": 1,\n  \"remainingCode\": \"Only PK-ordered keyset SELECT pages over texts/citations, checkpoint INSERT OR REPLACE, read-only pinned final hashes, bounded final metadata/result plus atomic temp and hardlink. No new data-table writes, shard creation or index creation; two small connection-local TEMP triggers retained.\",\n  \"queryPlanEvidence\": \"SCAN texts/citations on WITHOUT ROWID PK ordering; no TEMP B-TREE.\",\n  \"additionalGrowthBytes\": 67108864,\n  \"absoluteScratchBudgetBytes\": 64424509440,\n  \"sharedReserveBytes\": 75161927680,\n  \"conditions\": [\n    \"Exact clean committed checkpoint and same immutable runtime/input pins; resume, not fresh database.\",\n    \"Original global checks, per-step FULL/DELETE transactions and fresh-process hash pause unchanged.\",\n    \"Allowance covers checkpoint overflow/free-list churn, one transaction rollback journal, small final result and atomic temporary file, bounded driver logs and small TEMP schema.\",\n    \"No active marker modification, deletion, checkpoint reset, relaxed proof budget or reserve.\"\n  ],\n  \"testsRerun\": 0,\n  \"validation\": \"Focused source and supplied locked metadata review; no new dataset/proof execution.\"\n}\n"
+    }
+  ],
+  "adoption": {
+    "job": "01a181cb-5043-ffb7-be3e-2679bcabd16f",
+    "logicalRun": "018",
+    "state": "actually-admitted-running-owner-confirmed",
+    "nextBoundaryApproxUTC": "2026-10-28T09:39:45Z",
+    "previousGrowthBytes": 23496962048,
+    "reviewedGrowthBytes": 67108864,
+    "unusedFutureReservationReleasedBytes": 23429853184,
+    "absoluteProofScratchCapBytes": 64424509440,
+    "sharedReserveBytes": 75161927680,
+    "codeAndChecksUnchanged": true,
+    "sourceRuntimeAndCheckpointPinsPreserved": true,
+    "testsRerun": 0
+  },
+  "limit": "This is a measured phase-specific admission declaration for checkpoint/evidence writes after all ingestion, not a lower proof cap or permission to weaken validation. New NorthStar staging writes have a separate pre-execution authority denial; resource headroom does not bypass it."
+}

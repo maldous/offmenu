@@ -1,0 +1,610 @@
+{
+  "schema_version": 1,
+  "workspace": "offmenu",
+  "incident_probe": {
+    "positive": {
+      "status": "SUCCESS",
+      "job_id": "01a17fa7-7206-90da-6999-78a4afb20d81",
+      "url": "https://windmill.aldous.info/run/01a17fa7-7206-90da-6999-78a4afb20d81?workspace=offmenu",
+      "isError": false,
+      "result": {
+        "ok": true,
+        "test": true,
+        "incident_recorded": false
+      }
+    },
+    "negative": {
+      "status": "FAILED",
+      "job_id": "01a17fa7-84a4-df0a-5bc3-155c26c9b104",
+      "url": "https://windmill.aldous.info/run/01a17fa7-84a4-df0a-5bc3-155c26c9b104?workspace=offmenu",
+      "isError": false,
+      "safe_error_code": "SELFTEST_FAILURE_INCIDENT_RECORDED"
+    },
+    "duplicate": {
+      "status": "SUCCESS",
+      "job_id": "01a17fa7-9815-b824-d7cc-5052bdf94561",
+      "url": "https://windmill.aldous.info/run/01a17fa7-9815-b824-d7cc-5052bdf94561?workspace=offmenu",
+      "isError": false,
+      "result": {
+        "code": "SELFTEST_FAILURE",
+        "test": true,
+        "created": false,
+        "recorded": true,
+        "resource_path": "u/admin/offmenu_platform/incidents/99f03fe1c81d1e1c5a0dfff37ee0d5f31b0fd09c224cf16522028b542869fd5e",
+        "needs_reconciliation": false
+      }
+    }
+  },
+  "skills": [
+    {
+      "path": "u/admin/offmenu_skill_batch_execution",
+      "source_path": ".agents/skills/offmenu-batch-execution/SKILL.md",
+      "content_sha256": "39433741d56024faae2e59e21d52d15ec62cb2c6d869e6a3684e0f7bf8e75deb",
+      "resource_type": "ai_skill",
+      "created_by": "admin",
+      "extra_perms": {},
+      "exact_content_verified": true
+    },
+    {
+      "path": "u/admin/offmenu_skill_checkpoint_recovery",
+      "source_path": ".agents/skills/offmenu-checkpoint-recovery/SKILL.md",
+      "content_sha256": "58022cb4ea0c698084a23810674f7b033d30f969af7f1c28a8111421efd55c11",
+      "resource_type": "ai_skill",
+      "created_by": "admin",
+      "extra_perms": {},
+      "exact_content_verified": true
+    },
+    {
+      "path": "u/admin/offmenu_skill_provenance_validation",
+      "source_path": ".agents/skills/offmenu-provenance-validation/SKILL.md",
+      "content_sha256": "2a9d00b4cb0fe74b7af3bb461373c950a8c1f4c7d42187589b12d19becffeb62",
+      "resource_type": "ai_skill",
+      "created_by": "admin",
+      "extra_perms": {},
+      "exact_content_verified": true
+    }
+  ],
+  "changes_to_settings_roles_credentials": false,
+  "manual_checks": {
+    "health": {
+      "status": "SUCCESS",
+      "job_id": "01a17f9e-9b51-dbdf-24fd-5f59a2d6f451",
+      "url": "https://windmill.aldous.info/run/01a17f9e-9b51-dbdf-24fd-5f59a2d6f451?workspace=offmenu",
+      "result": {
+        "ok": true,
+        "mode": "health",
+        "counts": {
+          "jobs_checked": 14,
+          "items_checked": 14,
+          "items_skipped": 0,
+          "entries_scanned": 14,
+          "markers_checked": 0,
+          "checkpoints_verified": 0,
+          "artifact_objects_hashed": 0,
+          "artifact_manifests_verified": 0
+        },
+        "status": "ok",
+        "budgets": {
+          "max_bytes": 67108864,
+          "max_items": 100,
+          "bytes_read": 13093,
+          "max_seconds": 8
+        },
+        "coverage": {
+          "scope": "recent job metadata and fixed in-flight markers",
+          "full_coverage": false,
+          "stopped_reason": null,
+          "selection_truncated": false,
+          "selected_scope_complete": true
+        },
+        "findings": [
+          {
+            "code": "COMPLETED_NON_SUCCESS",
+            "job_id": "platform-phase2-failure-smoke-20261027",
+            "status": "failed",
+            "severity": "info"
+          },
+          {
+            "code": "COMPLETED_NON_SUCCESS",
+            "job_id": "platform-storage-validation-20261027",
+            "status": "failed",
+            "severity": "info"
+          }
+        ],
+        "checked_at": "2026-10-27T23:07:44.045929+00:00",
+        "schema_version": 1,
+        "native_config_private": true
+      },
+      "isError": false
+    },
+    "verify": {
+      "status": "SUCCESS",
+      "job_id": "01a17f9e-ad72-08a0-2077-5b3881b80f06",
+      "url": "https://windmill.aldous.info/run/01a17f9e-ad72-08a0-2077-5b3881b80f06?workspace=offmenu",
+      "result": {
+        "ok": true,
+        "mode": "verify",
+        "counts": {
+          "jobs_checked": 0,
+          "items_checked": 2,
+          "items_skipped": 0,
+          "entries_scanned": 2,
+          "markers_checked": 0,
+          "checkpoints_verified": 1,
+          "artifact_objects_hashed": 1,
+          "artifact_manifests_verified": 1
+        },
+        "status": "ok",
+        "budgets": {
+          "max_bytes": 67108864,
+          "max_items": 100,
+          "bytes_read": 1563,
+          "max_seconds": 8
+        },
+        "coverage": {
+          "scope": "selected current checkpoints and artifact manifests; no history/orphan scan",
+          "full_coverage": false,
+          "stopped_reason": null,
+          "selection_truncated": false,
+          "selected_scope_complete": true
+        },
+        "findings": [],
+        "checked_at": "2026-10-27T23:07:48.307138+00:00",
+        "schema_version": 1,
+        "native_config_private": true
+      },
+      "isError": false
+    },
+    "verify_final_helper": {
+      "status": "SUCCESS",
+      "job_id": "01a17fa1-62a5-7265-ae31-c70ed7c2740e",
+      "url": "https://windmill.aldous.info/run/01a17fa1-62a5-7265-ae31-c70ed7c2740e?workspace=offmenu",
+      "result": {
+        "ok": true,
+        "mode": "verify",
+        "counts": {
+          "jobs_checked": 0,
+          "items_checked": 2,
+          "items_skipped": 0,
+          "entries_scanned": 2,
+          "markers_checked": 0,
+          "checkpoints_verified": 1,
+          "artifact_objects_hashed": 1,
+          "artifact_manifests_verified": 1
+        },
+        "status": "ok",
+        "budgets": {
+          "max_bytes": 67108864,
+          "max_items": 100,
+          "bytes_read": 1397,
+          "max_seconds": 8
+        },
+        "coverage": {
+          "scope": "selected current checkpoints and artifact manifests; no history/orphan scan",
+          "full_coverage": false,
+          "stopped_reason": null,
+          "selection_truncated": false,
+          "selected_scope_complete": true
+        },
+        "findings": [],
+        "checked_at": "2026-10-27T23:10:45.832832+00:00",
+        "schema_version": 1,
+        "native_config_private": true
+      },
+      "isError": false
+    }
+  },
+  "native_checker": {
+    "path": "u/admin/offmenu_platform_check",
+    "private_acl_verified": true,
+    "exact_source_verified": true,
+    "source_sha256": "6950fd128485fae09e20ec571021ca592bf37405a373519b44ab1849d6d7eac8",
+    "script_hash": "c6a5511f337c3b8d"
+  },
+  "schedule_activation": {
+    "status": "SUCCESS",
+    "job_id": "01a17f9d-3602-511d-c2a6-177d172baa96",
+    "url": "https://windmill.aldous.info/run/01a17f9d-3602-511d-c2a6-177d172baa96?workspace=offmenu",
+    "result": {
+      "activated": [
+        "u/admin/offmenu_platform_health_15m",
+        "u/admin/offmenu_platform_verify_daily"
+      ],
+      "schedules": [
+        {
+          "args": {
+            "mode": "health",
+            "max_items": 100
+          },
+          "path": "u/admin/offmenu_platform_health_15m",
+          "enabled": true,
+          "is_flow": false,
+          "schedule": "0 */15 * * * *",
+          "timezone": "Australia/Melbourne",
+          "edited_by": "admin",
+          "next_jobs": [
+            {
+              "job_id": "01a17f9d-3686-28ad-3e42-032897c18157",
+              "running": false,
+              "scheduled_for": "2026-10-27T23:15:00Z"
+            }
+          ],
+          "extra_perms": {},
+          "script_path": "u/admin/offmenu_platform_check",
+          "cron_version": "v2",
+          "workspace_id": "offmenu",
+          "permissioned_as": "u/admin"
+        },
+        {
+          "args": {
+            "mode": "verify",
+            "max_items": 100
+          },
+          "path": "u/admin/offmenu_platform_verify_daily",
+          "enabled": true,
+          "is_flow": false,
+          "schedule": "0 17 3 * * *",
+          "timezone": "Australia/Melbourne",
+          "edited_by": "admin",
+          "next_jobs": [
+            {
+              "job_id": "01a17f9d-368e-c71c-9887-ad8dc0dac2bb",
+              "running": false,
+              "scheduled_for": "2026-10-28T16:17:00Z"
+            }
+          ],
+          "extra_perms": {},
+          "script_path": "u/admin/offmenu_platform_check",
+          "cron_version": "v2",
+          "workspace_id": "offmenu",
+          "permissioned_as": "u/admin"
+        }
+      ],
+      "schema_version": 1
+    },
+    "isError": false
+  },
+  "schedule_final_readback": {
+    "status": "SUCCESS",
+    "job_id": "01a17fa5-a4f2-e551-2913-bd59a23c0f5b",
+    "url": "https://windmill.aldous.info/run/01a17fa5-a4f2-e551-2913-bd59a23c0f5b?workspace=offmenu",
+    "result": {
+      "checker": {
+        "script_hash": "c6a5511f337c3b8d",
+        "source_sha256": "6950fd128485fae09e20ec571021ca592bf37405a373519b44ab1849d6d7eac8",
+        "exact_source_verified": true
+      },
+      "activated": [],
+      "schedules": [
+        {
+          "args": {
+            "mode": "health",
+            "max_items": 100
+          },
+          "path": "u/admin/offmenu_platform_health_15m",
+          "enabled": true,
+          "is_flow": false,
+          "schedule": "0 */15 * * * *",
+          "timezone": "Australia/Melbourne",
+          "edited_by": "admin",
+          "next_jobs": [
+            {
+              "job_id": "01a17fa5-7ef0-9a31-60cf-f70f192086a4",
+              "running": false,
+              "script_hash": "c6a5511f337c3b8d",
+              "scheduled_for": "2026-10-27T23:30:00Z",
+              "latest_checker_hash": true
+            }
+          ],
+          "extra_perms": {},
+          "script_path": "u/admin/offmenu_platform_check",
+          "cron_version": "v2",
+          "workspace_id": "offmenu",
+          "permissioned_as": "u/admin"
+        },
+        {
+          "args": {
+            "mode": "verify",
+            "max_items": 100
+          },
+          "path": "u/admin/offmenu_platform_verify_daily",
+          "enabled": true,
+          "is_flow": false,
+          "schedule": "0 17 3 * * *",
+          "timezone": "Australia/Melbourne",
+          "edited_by": "admin",
+          "next_jobs": [
+            {
+              "job_id": "01a17fa5-7ef3-bc9a-d489-490cb977b196",
+              "running": false,
+              "script_hash": "c6a5511f337c3b8d",
+              "scheduled_for": "2026-10-28T16:17:00Z",
+              "latest_checker_hash": true
+            }
+          ],
+          "extra_perms": {},
+          "script_path": "u/admin/offmenu_platform_check",
+          "cron_version": "v2",
+          "workspace_id": "offmenu",
+          "permissioned_as": "u/admin"
+        }
+      ],
+      "schema_version": 1
+    },
+    "isError": false
+  },
+  "queue_refresh": {
+    "reason": "Checker script deployment automatically replaced pending schedules with latest checker hash; no extra toggle or duplicate execution",
+    "old_health_job": "01a17f9d-3686-28ad-3e42-032897c18157",
+    "old_verify_job": "01a17f9d-368e-c71c-9887-ad8dc0dac2bb",
+    "replacement_health_job": "01a17f9e-dbc9-8c08-63e7-34e6757966e3",
+    "replacement_verify_job": "01a17f9e-dbcb-a9e7-8335-590890f76f1e"
+  },
+  "local_native_tests": 29,
+  "host_checker": {
+    "path": "scripts/windmill/platform_check.py",
+    "sha256": "03f61831f020fdbb5152d1ffbfd656966768559225b3fe1c72b24b2a91aa2957",
+    "jail_tests_passed": 19,
+    "host_install_verify_run": "01a17fa0-761d-b2cb-5838-43e3c4078029"
+  },
+  "expected_synthetic_business_failure": {
+    "logical_job_id": "platform-phase2-failure-smoke-20261027",
+    "windmill_job_id": "01a17f9b-e218-8b96-c7c4-6669a2df1857",
+    "code": "BUSINESS_FAILED",
+    "incident_path": "u/admin/offmenu_platform/incidents/fcf46db77fb467b1c727834d61ba0ea72fd9eb9893f9e76ccabcda9ce7f9a97a",
+    "expected_exit_code": 7,
+    "cleanup_verified": true,
+    "immutable_test_flag": false,
+    "delivery_disposition": "Known controlled negative test; acknowledge only this exact incident in existing delivery ledger; do not rewrite incident or suppress prefixes"
+  },
+  "first_scheduled_health_failure": {
+    "job_id": "01a17f9e-dbc9-8c08-63e7-34e6757966e3",
+    "status": "failure",
+    "scheduled_for": "2026-10-27T23:15:00Z",
+    "started_at": "2026-10-27T23:15:00.007360Z",
+    "duration_ms": 126,
+    "schedule_path": "u/admin/offmenu_platform_health_15m",
+    "script_hash": "d3dd99ed6ca2b738",
+    "safe_error_code": "CHECK_TRANSPORT_FAILED",
+    "root_cause": "Earlier adapter confused scheduled creator WM_USERNAME with actual WM_PERMISSIONED_AS owner; failed before SSH and incident persistence",
+    "preserved": true
+  },
+  "adapter_versions": {
+    "native": "Scheduled-owner context supported with WM_PERMISSIONED_AS=u/admin and exact reviewed schedule identity",
+    "core_client": "Frozen earlier manual-owner embedded adapter; not scheduled; not byte-identical to newer native module"
+  },
+  "owner_guard_manual_health": {
+    "status": "SUCCESS",
+    "job_id": "01a17fa4-86e7-f982-31e8-b0a67cb28606",
+    "url": "https://windmill.aldous.info/run/01a17fa4-86e7-f982-31e8-b0a67cb28606?workspace=offmenu",
+    "result": {
+      "ok": true,
+      "mode": "health",
+      "counts": {
+        "jobs_checked": 16,
+        "items_checked": 16,
+        "items_skipped": 0,
+        "entries_scanned": 16,
+        "markers_checked": 0,
+        "checkpoints_verified": 0,
+        "artifact_objects_hashed": 0,
+        "artifact_manifests_verified": 0
+      },
+      "status": "ok",
+      "budgets": {
+        "max_bytes": 67108864,
+        "max_items": 100,
+        "bytes_read": 14993,
+        "max_seconds": 8
+      },
+      "coverage": {
+        "scope": "recent job metadata and fixed in-flight markers",
+        "full_coverage": false,
+        "stopped_reason": null,
+        "selection_truncated": false,
+        "selected_scope_complete": true
+      },
+      "findings": [
+        {
+          "code": "COMPLETED_NON_SUCCESS",
+          "job_id": "platform-phase2-failure-smoke-20261027",
+          "status": "failed",
+          "severity": "info"
+        },
+        {
+          "code": "COMPLETED_NON_SUCCESS",
+          "job_id": "platform-storage-validation-20261027",
+          "status": "failed",
+          "severity": "info"
+        }
+      ],
+      "checked_at": "2026-10-27T23:14:11.984769+00:00",
+      "schema_version": 1,
+      "native_config_private": true
+    },
+    "isError": false
+  },
+  "review": {
+    "native_tests_passed": 29,
+    "generated_bundle_matches_components": true,
+    "owner_guard_targeted_review_passed": true,
+    "scheduled_resource_created_by": "admin",
+    "attribution_source_version": "windmill-labs/windmill v1.850.0",
+    "strict_resource_owner_check_unchanged": true
+  },
+  "owner_guard_manual_verify": {
+    "status": "SUCCESS",
+    "job_id": "01a17fa8-e95a-8f79-0fac-6cf7f4c85268",
+    "url": "https://windmill.aldous.info/run/01a17fa8-e95a-8f79-0fac-6cf7f4c85268?workspace=offmenu",
+    "result": {
+      "ok": true,
+      "mode": "verify",
+      "counts": {
+        "jobs_checked": 0,
+        "items_checked": 2,
+        "items_skipped": 0,
+        "entries_scanned": 2,
+        "markers_checked": 0,
+        "checkpoints_verified": 1,
+        "artifact_objects_hashed": 1,
+        "artifact_manifests_verified": 1
+      },
+      "status": "ok",
+      "budgets": {
+        "max_bytes": 67108864,
+        "max_items": 100,
+        "bytes_read": 1397,
+        "max_seconds": 8
+      },
+      "coverage": {
+        "scope": "selected current checkpoints and artifact manifests; no history/orphan scan",
+        "full_coverage": false,
+        "stopped_reason": null,
+        "selection_truncated": false,
+        "selected_scope_complete": true
+      },
+      "findings": [],
+      "checked_at": "2026-10-27T23:18:59.343213+00:00",
+      "schema_version": 1,
+      "native_config_private": true
+    },
+    "isError": false
+  },
+  "corrected_actual_scheduled_health": {
+    "label": "Job (script)",
+    "job_id": "01a17fa5-7ef0-9a31-60cf-f70f192086a4",
+    "status": "success",
+    "duration_ms": 716,
+    "job_kind": "script",
+    "path": "u/admin/offmenu_platform_check",
+    "created_by": "schedule-u-admin-offmenu_platform_health_15m",
+    "created_at": "2026-10-27T23:15:14.785617Z",
+    "started_at": "2026-10-27T23:30:00.002839Z",
+    "schedule_path": "u/admin/offmenu_platform_health_15m",
+    "is_flow_step": false,
+    "tag": "python3",
+    "worker": "wk-default-c49953c7070f-9h4cz",
+    "mem_peak_kb": 49956,
+    "args": {
+      "mode": "health",
+      "max_items": 100
+    },
+    "result": {
+      "ok": true,
+      "mode": "health",
+      "counts": {
+        "jobs_checked": 18,
+        "items_checked": 18,
+        "items_skipped": 0,
+        "entries_scanned": 18,
+        "markers_checked": 0,
+        "checkpoints_verified": 0,
+        "artifact_objects_hashed": 0,
+        "artifact_manifests_verified": 0
+      },
+      "status": "ok",
+      "budgets": {
+        "max_bytes": 67108864,
+        "max_items": 100,
+        "bytes_read": 16874,
+        "max_seconds": 8
+      },
+      "coverage": {
+        "scope": "recent job metadata and fixed in-flight markers",
+        "full_coverage": false,
+        "stopped_reason": null,
+        "selection_truncated": false,
+        "selected_scope_complete": true
+      },
+      "findings": [
+        {
+          "code": "COMPLETED_NON_SUCCESS",
+          "job_id": "platform-phase2-failure-smoke-20261027",
+          "status": "failed",
+          "severity": "info"
+        },
+        {
+          "code": "COMPLETED_NON_SUCCESS",
+          "job_id": "platform-storage-validation-20261027",
+          "status": "failed",
+          "severity": "info"
+        }
+      ],
+      "checked_at": "2026-10-27T23:30:00.682622+00:00",
+      "schema_version": 1,
+      "native_config_private": true
+    }
+  },
+  "post_health_schedule_readback": {
+    "status": "SUCCESS",
+    "job_id": "01a17fb3-b6b6-34bf-8dd6-e1b877f04619",
+    "url": "https://windmill.aldous.info/run/01a17fb3-b6b6-34bf-8dd6-e1b877f04619?workspace=offmenu",
+    "result": {
+      "checker": {
+        "script_hash": "c6a5511f337c3b8d",
+        "source_sha256": "6950fd128485fae09e20ec571021ca592bf37405a373519b44ab1849d6d7eac8",
+        "exact_source_verified": true
+      },
+      "activated": [],
+      "schedules": [
+        {
+          "args": {
+            "mode": "health",
+            "max_items": 100
+          },
+          "path": "u/admin/offmenu_platform_health_15m",
+          "enabled": true,
+          "is_flow": false,
+          "schedule": "0 */15 * * * *",
+          "timezone": "Australia/Melbourne",
+          "edited_by": "admin",
+          "next_jobs": [
+            {
+              "job_id": "01a17fb3-0395-0d0d-d3ab-a8f6bde83198",
+              "running": false,
+              "script_hash": "c6a5511f337c3b8d",
+              "scheduled_for": "2026-10-27T23:45:00Z",
+              "latest_checker_hash": true
+            }
+          ],
+          "extra_perms": {},
+          "script_path": "u/admin/offmenu_platform_check",
+          "cron_version": "v2",
+          "workspace_id": "offmenu",
+          "permissioned_as": "u/admin"
+        },
+        {
+          "args": {
+            "mode": "verify",
+            "max_items": 100
+          },
+          "path": "u/admin/offmenu_platform_verify_daily",
+          "enabled": true,
+          "is_flow": false,
+          "schedule": "0 17 3 * * *",
+          "timezone": "Australia/Melbourne",
+          "edited_by": "admin",
+          "next_jobs": [
+            {
+              "job_id": "01a17fa5-7ef3-bc9a-d489-490cb977b196",
+              "running": false,
+              "script_hash": "c6a5511f337c3b8d",
+              "scheduled_for": "2026-10-28T16:17:00Z",
+              "latest_checker_hash": true
+            }
+          ],
+          "extra_perms": {},
+          "script_path": "u/admin/offmenu_platform_check",
+          "cron_version": "v2",
+          "workspace_id": "offmenu",
+          "permissioned_as": "u/admin"
+        }
+      ],
+      "schema_version": 1
+    },
+    "isError": false
+  },
+  "status": "implemented_and_verified",
+  "daily_validation": "Latest exact args manual verification passed; enabled correct Melbourne03:17 daily configuration and next due verified; not falsely claiming first daily execution",
+  "verified_at_utc": "2026-10-27T23:30:59.832065+00:00"
+}

@@ -1,0 +1,34 @@
+{
+  "actualPrecedingProbe": {
+    "childTreeGone": true,
+    "exception": "sqlite3.OperationalError: interrupted",
+    "exitCode": 1,
+    "finishedAtUnix": 1793187451.7733972,
+    "logicalJobId": "north-star-source-caller-proof-001",
+    "profileEdgeQueryFrame": true,
+    "rawLogOrValuesExported": false,
+    "reportExists": false,
+    "status": "failed-at-self-deadline",
+    "windmillRun": "01a18243-e936-376b-34dc-054a1b8bd1e3"
+  },
+  "additionalIndependentTests": 2,
+  "author": "/root/align_north_star_graph",
+  "consumerSha256": "75a43f30967c2ea38606e0a1468132629a51b9c79744eed71938a5e1d146b3bc",
+  "delta": "Redundant exact subject equality added to resolved edge join; existing resolved_subject index now used. No index/input mutation or semantic/admission fallback.",
+  "independentlyRunAuthoredTests": 17,
+  "nextAction": "Create-only caller-code-v2 and one bounded64-key actual retry; original corpus/indices unchanged. No actual retry success claimed by this review.",
+  "observedAtUtc": "2026-10-28T11:40:12Z",
+  "priorConsumerSha256": "a87b2117981ffa6beba37547a23b8ee36040bb7b8bec17aaec99b22ff70322f0",
+  "probeSha256": "ecb88b1c814987e7e266b7431825c6a9a9629deeea8856d67614b7f88e0b865e",
+  "reviewer": "/root/align_north_star_graph/scale_north_star_derivation",
+  "schemaVersion": "offmenu-independent-caller-query-delta-review/1",
+  "testFileSha256": "c49aa3ff4e17d6f75c584cdab4bf76bf0fdd5812dada9087512d784fa8c2f8e0",
+  "verdict": "approved",
+  "verified": [
+    "Exact diff against retained reviewed-source-v2 prior caller, only query constant/comment and replacement use",
+    "Old/new full returned fixture product/profile/quantity/basis/citation objects identical",
+    "Multiple edges for one product and other/absent subjects return identical valid rows",
+    "EXPLAIN searches existing resolved_subject instead of scanning resolved corpus",
+    "Existing strict pins, literalTrue opt-in, citation boundaries and source-scope holds unchanged"
+  ]
+}

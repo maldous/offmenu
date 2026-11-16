@@ -1,0 +1,69 @@
+{
+  "schema": "offmenu-foundation-production-target-receipt/1",
+  "status": "selected-phase-records-exercised",
+  "releaseId": "offmenu-foundation-production-20261027-v1",
+  "targetOrigin": "https://offmenu.aldous.info",
+  "publicPublicationAccepted": true,
+  "publicationAuthorization": {
+    "scope": "User-directed production delivery of valid publishable own curation",
+    "operation": "Publish existing qualified foundation fields at the exact owned production origin",
+    "newSourceAcquisition": false,
+    "independentSemanticReviewClaimed": false
+  },
+  "originalLocalRelease": {
+    "releaseId": "offmenu-reviewed-foundation-r8-local-20261027-v1",
+    "manifestSha256": "f9338984eb416c0c4681697c5257ae72cf2e178fe88879331d4b74efc6dc9aa7",
+    "declaredAdmissionReceiptSha256": "d02e9df26a9469328118cc12321566cc2cef8df2037957372812a1f954439258",
+    "admissionBodyVerified": false,
+    "scopeRemains": "localhost-only",
+    "publicPublicationAcceptedRemains": false,
+    "reusedAsPublicAdmission": false
+  },
+  "qualification": {
+    "reportSha256": "a548e680bc8da67479bb03907a7a95773cef42518026b9802b0e010b872c37fe",
+    "consumerCodeSha256": "0b098783399eb129970b33d2b90a4382d5475329b8a83bb9ad871e7407bd050f",
+    "policySha256": "ad8f03427a4a59f7570c0eb3a12c4e311fb46998d9ee0dbc56058ef360b5d25e",
+    "publicProjectionSha256": "a7fe5c4b4f497374e23b8bcf6a60fed0bc21041d5bb4fe4980b238aa6d41143a",
+    "allSelectedQueriesExercised": true,
+    "allBlobIntegrityAndBoundsVerified": true,
+    "noRawPrivateFieldsOrFilesystemLocators": true
+  },
+  "counts": {
+    "sourceObservations": 11527,
+    "sourceSpecificQueries": 4908,
+    "partitions": 512,
+    "bySource": {
+      "off": {
+        "observations": 2871,
+        "queries": 2871
+      },
+      "usda-files": {
+        "observations": 8656,
+        "queries": 2037
+      }
+    },
+    "parameterStates": {
+      "known": 2037,
+      "unknown": 274611,
+      "notApplicable": 0
+    },
+    "goldAdmitted": 0,
+    "normalizationComplete": 0,
+    "fullProductComplete": 0
+  },
+  "projection": {
+    "omittedInternalSourceProjectionMembers": 651,
+    "recompressedPartitions": 240,
+    "unchangedCandidateObservations": 11527
+  },
+  "partitionInventorySha256": "2f6dd33b1f781221eebc965bdf615809eb068f50dfe4d02c6725636723f20b50",
+  "sourceNoticesSha256": "9b34b1c2642129e4a8b4f5872dd4e519d72c1bb78911424fb93082bb8649e79b",
+  "privateProviderData": false,
+  "rawSourcePayloadPublished": false,
+  "acquisitionAtRuntime": false,
+  "normalizationComplete": false,
+  "fullProductComplete": false,
+  "goldAdmitted": false,
+  "automaticPlanningEligible": false,
+  "recipeNutritionJoinsAccepted": false
+}

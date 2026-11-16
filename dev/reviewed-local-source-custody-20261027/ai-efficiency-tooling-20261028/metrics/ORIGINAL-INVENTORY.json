@@ -1,0 +1,34 @@
+{
+  "offmenu-ai-integration-20261028-PLAN.md": {
+    "bytes": 7073,
+    "sha256": "49f802a4143da207cc1d6009a5acf390aa4a3e3a83af0b1a1d99368fb98b6c00"
+  },
+  "offmenu-ai-integration-20261028-capabilities.json": {
+    "bytes": 911,
+    "sha256": "4621a37caa0bd9bece1177b315c0d85f55532d2e55e4d78a2c507ca2f94d7e0f"
+  },
+  "offmenu-ai-integration-20261028-live-adapter.source.txt": {
+    "bytes": 4241,
+    "sha256": "3760b83e2678f89e2330a62f2ccdf0a8e935461f5cbc2168a3f57d0e725e9f38"
+  },
+  "offmenu-ai-integration-20261028-live-caller.source.txt": {
+    "bytes": 11127,
+    "sha256": "cef944eedb0a6990cd6500b49abac023103d289551506c741b7162bdb6f829dd"
+  },
+  "offmenu-ai-integration-20261028-metrics-adapter.source.txt": {
+    "bytes": 8830,
+    "sha256": "133572094dedd81d42a66413cfcc160145d923491684cc3cbe384431b51f083b"
+  },
+  "offmenu-ai-integration-20261028-metrics-caller.source.txt": {
+    "bytes": 11658,
+    "sha256": "9cec2d0eb2286cbd07a82bd2e9d43395794e868c6071a3ed6889fa77871c9ca2"
+  },
+  "offmenu-ai-integration-20261028-metrics-only.patch": {
+    "bytes": 12775,
+    "sha256": "06f906eb149a4c97b65e20c0f79a083d58c231b06e61a5600a8939477cf56575"
+  },
+  "offmenu-ai-integration-20261028-static-verification.json": {
+    "bytes": 552,
+    "sha256": "efeb530b2b90645d486f3d356a83f3e0f19a7c94a4cc18a075a1c908921a5a75"
+  }
+}

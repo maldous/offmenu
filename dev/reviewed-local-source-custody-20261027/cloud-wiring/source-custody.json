@@ -1,0 +1,58 @@
+{
+  "repository": "maldous/offmenu",
+  "originDevelop": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+  "custodyBranch": "feature/source08-feedback-176-20261027",
+  "custodyHead": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+  "status": "source-only; reconcile with recovered export before adoption; no deployment",
+  "preimage": {
+    "path": "public/sharing-ui.js",
+    "gitBlob": "6bafe618eae47e9a9ebc690ebca9fce27daecc03",
+    "sha256": "f84d30e1c236eb400e5e0587b764c470000a16f3ad7b2f6ec5e3cb6c183f1cc6"
+  },
+  "candidate": [
+    {
+      "path": "public/sharing-ui.js",
+      "sha256": "8ce72cc27171e0b2c4eb3e016409e0bebf59289bed28b41e549d80a403159913",
+      "bytes": 7338
+    },
+    {
+      "path": "public/scoped-kitchen-request.js",
+      "sha256": "802473f7d488f06f76d5e38ba0301d890ec90521ebadfb3fd2dc5fcf035d9733",
+      "bytes": 1102
+    },
+    {
+      "path": "tests-web/scoped-kitchen-request.test.mjs",
+      "sha256": "ff1a743b9af33175272a285fb13db3e30763a89be9c55f4ca4d7e8c3660ad545",
+      "bytes": 3164
+    },
+    {
+      "path": "tests-web/sharing-scope-lifecycle.test.mjs",
+      "sha256": "935d9c554b988321093ff150bf2ca14e00b174b50318d1ec0a839f8b329caf28",
+      "bytes": 3924
+    }
+  ],
+  "patchSha256": "7b0758c56cdd5956c83d6fb2c8d4eedc0142baa10ea84af8a0f4fbcae7826d60",
+  "containment181sha256": "13bd5e94c11ded5756a09edafc414791164425f4aca0b12b947849e1af60157a",
+  "checks": {
+    "exactOriginalLifecycle": {
+      "passed": 1,
+      "failed": 2,
+      "expectedFailures": "late selection across different-account and same-account reset"
+    },
+    "candidateFocused": {
+      "passed": 13,
+      "failed": 0
+    },
+    "network": "All test fetches stubbed; no external providers called",
+    "notRun": [
+      "production deployment",
+      "real-account end-to-end",
+      "broad release tests"
+    ]
+  },
+  "adoptionDependencies": [
+    "Compare recovered sharing-ui.js with exact preimage; rebase only narrow fix if divergent",
+    "Preserve all15 preload1384, cover49d, localhostalias5d54, own-dataR8 and sourceidentityclient13d608",
+    "Keep contained application13bd5e94; never rebuild from stale direct origin provider fallback"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "exit_code": 0,
+  "summary": [
+    "\u2139 tests 8",
+    "\u2139 suites 0",
+    "\u2139 pass 8",
+    "\u2139 fail 0",
+    "\u2139 cancelled 0",
+    "\u2139 skipped 0",
+    "\u2139 todo 0",
+    "\u2139 duration_ms 47.958744"
+  ],
+  "tests": [
+    "\u2714 source review remains visible in shopping without an invented quantity (2.545875ms)",
+    "\u2714 unknown yield remains visible in shopping without an invented quantity (0.132637ms)",
+    "\u2714 invalid yield remains visible in shopping without an invented quantity (0.088723ms)",
+    "\u2714 zero required amount is unresolved rather than an empty shopping list (0.111983ms)",
+    "\u2714 partly measured recipe keeps only its unresolved ingredient in review (0.546894ms)",
+    "\u2714 optional unresolved ingredients never become purchases or review requirements (0.131434ms)",
+    "\u2714 pantry stock cannot resolve an unknown serving basis (0.201574ms)",
+    "\u2714 source text, checked state, custom additions and inputs are preserved (0.158482ms)"
+  ]
+}

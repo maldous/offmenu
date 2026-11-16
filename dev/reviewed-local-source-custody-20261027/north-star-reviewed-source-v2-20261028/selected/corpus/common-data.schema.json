@@ -1,0 +1,899 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://offmenu-corpus.netlify.app/common-data/schema.json",
+  "title": "OffMenu common citation-bearing resource graph",
+  "description": "Declarative acquisition/data-alignment contract, not application implementation. All domains use the same resource/assertion/relation/value structures.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "resources",
+    "assertions",
+    "relations",
+    "citations",
+    "translations"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "offmenu-common/1"
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/resource"
+      }
+    },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/assertion"
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relation"
+      }
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/citation"
+      }
+    },
+    "translations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/translation"
+      }
+    }
+  },
+  "$defs": {
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "visibility": {
+          "enum": [
+            "public",
+            "private",
+            "local-restricted"
+          ]
+        },
+        "ownerId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reuseScope": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "visibility"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "visibility": {
+                "const": "private"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "ownerId"
+            ]
+          }
+        }
+      ]
+    },
+    "citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "iri"
+        },
+        "sourceId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "originalRecordId": {
+          "type": "string"
+        },
+        "originalUrl": {
+          "type": "string",
+          "format": "iri"
+        },
+        "revisionId": {
+          "type": [
+            "string",
+            "integer",
+            "null"
+          ]
+        },
+        "sourceDate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contentSha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attribution": {
+          "type": "string"
+        },
+        "rightsEvidenceUrl": {
+          "type": "string",
+          "format": "iri"
+        },
+        "sourcePath": {
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "historyUrl": {
+          "type": "string",
+          "format": "iri"
+        }
+      },
+      "required": [
+        "id",
+        "sourceId",
+        "originalRecordId",
+        "originalUrl",
+        "license",
+        "attribution",
+        "scope"
+      ]
+    },
+    "text": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "text"
+        },
+        "id": {
+          "type": "string",
+          "format": "iri"
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
+        },
+        "value": {
+          "type": "string"
+        },
+        "sourceTextSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "status": {
+          "enum": [
+            "source-asserted",
+            "candidate",
+            "editor-authored",
+            "reviewed",
+            "verified",
+            "unknown",
+            "conflicting",
+            "superseded",
+            "needs-transcription"
+          ]
+        },
+        "citationIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "iri"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "language",
+        "value",
+        "sourceTextSha256",
+        "status",
+        "citationIds"
+      ]
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "quantity"
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "unitId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "iri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dimension": {
+          "enum": [
+            "mass",
+            "volume",
+            "count",
+            "energy",
+            "time",
+            "length",
+            "temperature",
+            "currency",
+            "ratio",
+            "concentration",
+            "unknown"
+          ]
+        },
+        "sourceValue": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "sourceUnit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceNotation": {
+          "$ref": "#/$defs/text"
+        },
+        "range": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "min": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "max": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "min",
+            "max"
+          ]
+        },
+        "qualifiers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "countedEntityId": {
+          "type": "string",
+          "format": "iri"
+        },
+        "basis": {
+          "$ref": "#/$defs/quantity"
+        },
+        "preparationStateId": {
+          "type": "string",
+          "format": "iri"
+        },
+        "methodId": {
+          "type": "string",
+          "format": "iri"
+        },
+        "currencyCode": {
+          "type": "string"
+        },
+        "definitionId": {
+          "type": "string",
+          "format": "iri"
+        }
+      },
+      "required": [
+        "kind",
+        "value",
+        "unitId",
+        "dimension",
+        "sourceValue",
+        "sourceUnit",
+        "qualifiers"
+      ]
+    },
+    "value": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/text"
+        },
+        {
+          "$ref": "#/$defs/quantity"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "number"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "boolean"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "null"
+            },
+            "value": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "identifier"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "uri"
+            },
+            "value": {
+              "type": "string",
+              "format": "iri"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "date"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "datetime"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "reference"
+            },
+            "id": {
+              "type": "string",
+              "format": "iri"
+            }
+          },
+          "required": [
+            "kind",
+            "id"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "list"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/value"
+              }
+            }
+          },
+          "required": [
+            "kind",
+            "items"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "structure"
+            },
+            "fields": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/value"
+              }
+            }
+          },
+          "required": [
+            "kind",
+            "fields"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "syntax",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "const": "expression"
+            },
+            "syntax": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "iri"
+        },
+        "type": {
+          "type": "string",
+          "format": "iri"
+        },
+        "identityStatus": {
+          "enum": [
+            "source-scoped",
+            "candidate-join",
+            "curated-concept",
+            "identified"
+          ]
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "citationIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "iri"
+          }
+        },
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "additionalTypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "iri"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "identityStatus",
+        "names",
+        "citationIds",
+        "scope"
+      ]
+    },
+    "assertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "iri"
+        },
+        "subjectId": {
+          "type": "string",
+          "format": "iri"
+        },
+        "propertyId": {
+          "type": "string",
+          "format": "iri"
+        },
+        "value": {
+          "$ref": "#/$defs/value"
+        },
+        "status": {
+          "enum": [
+            "source-asserted",
+            "candidate",
+            "editor-authored",
+            "reviewed",
+            "verified",
+            "unknown",
+            "conflicting",
+            "superseded",
+            "needs-transcription"
+          ]
+        },
+        "citationIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "format": "iri"
+          }
+        },
+        "sourcePath": {
+          "type": "string"
+        },
+        "culturalRepresentationIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "iri"
+          }
+        },
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "derivation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "methodId": {
+              "type": "string",
+              "format": "iri"
+            },
+            "inputAssertionIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "iri"
+              }
+            },
+            "reviewStatus": {
+              "enum": [
+                "source-asserted",
+                "candidate",
+                "editor-authored",
+                "reviewed",
+                "verified",
+                "unknown",
+                "conflicting",
+                "superseded",
+                "needs-transcription"
+              ]
+            }
+          },
+          "required": [
+            "methodId",
+            "inputAssertionIds",
+            "reviewStatus"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "subjectId",
+        "propertyId",
+        "value",
+        "status",
+        "citationIds",
+        "sourcePath",
+        "scope"
+      ]
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "iri"
+        },
+        "subjectId": {
+          "type": "string",
+          "format": "iri"
+        },
+        "predicateId": {
+          "type": "string",
+          "format": "iri"
+        },
+        "objectId": {
+          "type": "string",
+          "format": "iri"
+        },
+        "status": {
+          "enum": [
+            "source-asserted",
+            "candidate",
+            "editor-authored",
+            "reviewed",
+            "verified",
+            "unknown",
+            "conflicting",
+            "superseded",
+            "needs-transcription"
+          ]
+        },
+        "citationIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "format": "iri"
+          }
+        },
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "sourcePath": {
+          "type": "string"
+        },
+        "condition": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "selected-alternative"
+            },
+            "groupId": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "branchId": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "sourceScope": {
+              "$ref": "#/$defs/alternativeSourceScope"
+            }
+          },
+          "required": [
+            "kind",
+            "groupId",
+            "branchId",
+            "sourceScope"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "subjectId",
+        "predicateId",
+        "objectId",
+        "status",
+        "citationIds",
+        "scope",
+        "sourcePath"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "condition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "predicateId": {
+                "const": "canonical_ingredient"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "translation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "iri"
+        },
+        "textId": {
+          "type": "string",
+          "format": "iri"
+        },
+        "language": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "sourceTextSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "translator": {
+          "type": "string"
+        },
+        "method": {
+          "enum": [
+            "source-published",
+            "human",
+            "machine",
+            "human-reviewed-machine"
+          ]
+        },
+        "status": {
+          "enum": [
+            "published-source",
+            "draft",
+            "reviewed",
+            "stale"
+          ]
+        },
+        "citationIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "iri"
+          }
+        },
+        "terminologyResourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "iri"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "textId",
+        "language",
+        "value",
+        "sourceTextSha256",
+        "translator",
+        "method",
+        "status",
+        "citationIds",
+        "terminologyResourceIds"
+      ]
+    },
+    "alternativeSourceScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "recipeId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "mentionId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "sourceKey": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "recordId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "contentSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "recipeId",
+        "mentionId",
+        "sourceKey",
+        "sourceVersion",
+        "recordId",
+        "contentSha256"
+      ]
+    }
+  },
+  "$comment": "Semantic validators must check reference resolution, declared registry types/properties, private owner isolation, range ordering, unit/dimension compatibility, translation hash freshness, and identity/quantity comparability. JSON Schema alone cannot establish these."
+}

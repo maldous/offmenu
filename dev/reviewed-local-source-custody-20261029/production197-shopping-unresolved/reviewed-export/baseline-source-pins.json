@@ -1,0 +1,16 @@
+{
+  "public/integrations.js": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9",
+  "public/sources.js": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933",
+  "public/ingredients.js": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab",
+  "public/menu-model.js": "71a4f4f4e05d8c62a49ac55233448be42346427e528c485ecc76b7a7cbaeec16",
+  "public/model.js": "74ae172868765650cd08a90ae356ae8072b04529e7be00469a3e30973e8b4785",
+  "public/scanner-kitchen-handoff.js": "e35169fee6a7391491c460ddb590f9e1d0b0e59a20a00dcbce557aee7faf1eb1",
+  "public/scanner-identity-v2.js": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76",
+  "public/source-category-claims.js": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6",
+  "public/typed-identifier-contract.mjs": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+  "public/i18n.js": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+  "public/locales/ar.js": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+  "public/locale-negotiation.js": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+  "package.json": "74e54f7d64098ec238d3b13fc5637ce201824c37f55ce37c43d834cfa3f30ed1",
+  "tests-web/shopping-unresolved-demand.test.mjs": "4f30d4d9a26fc0ab4540b1c905354ab1e316cab1a6e0e1a07161463a40dc9b8c"
+}

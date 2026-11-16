@@ -1,0 +1,166 @@
+#!/usr/bin/python3 -I
+"""DRAFT login shell. Install root-owned only after host review/tests.
+No host command text is evaluated. SSH_ORIGINAL_COMMAND runs only in bwrap.
+Threat model: remote UID 985 is untrusted; host owner UID 1000 is trusted.
+"""
+import json
+import os
+import resource
+import signal
+import stat
+import subprocess
+import sys
+
+CONFIG = '/var/lib/offmenu-wm/launcher.json'
+PROJECT = '/home/user/src/offmenu'
+UID, GID = 985, 977
+MARKER = 'offmenu-wm-sandbox-v1'
+
+
+def fail():
+    print('OffMenu SSH request refused; configuration or invocation check failed.', file=sys.stderr)
+    raise SystemExit(126)
+
+
+def root_file(path):
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
+    s = os.fstat(fd)
+    if not stat.S_ISREG(s.st_mode) or s.st_uid != 0 or s.st_mode & 0o022 or s.st_nlink != 1:
+        os.close(fd)
+        fail()
+    return fd
+
+
+def validate_project(expected):
+    # No symlink components. Root/ancestors cannot be modified by remote UID.
+    # A trusted owner changing the checkout concurrently is outside threat model.
+    fd = os.open('/', os.O_PATH | os.O_DIRECTORY | os.O_CLOEXEC)
+    walked = ''
+    try:
+        for part in PROJECT.strip('/').split('/'):
+            walked += '/' + part
+            nxt = os.open(part, os.O_PATH | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC,
+                          dir_fd=fd)
+            os.close(fd)
+            fd = nxt
+            if walked != PROJECT and os.access(walked, os.W_OK, effective_ids=True):
+                fail()
+        s = os.fstat(fd)
+        if (s.st_dev, s.st_ino, s.st_uid) != (expected['dev'], expected['ino'], 1000):
+            fail()
+    finally:
+        os.close(fd)
+
+
+CORPUS_MOUNTS = __CORPUS_MOUNTS__
+
+def open_corpus_mounts():
+    # Root-installed exact path/inode allowlist. Remote request cannot supply mounts.
+    fds = []
+    try:
+        with open('/proc/self/mountinfo') as f:
+            mounted = [line.split()[4] for line in f]
+        for item in CORPUS_MOUNTS:
+            # Fixed approved source paths contain no mountinfo escape characters.
+            if any(mp == item['source'] or mp.startswith(item['source'] + '/') for mp in mounted):
+                fail()
+            fd = os.open('/', os.O_PATH | os.O_DIRECTORY | os.O_CLOEXEC)
+            walked = ''
+            try:
+                parts = item['source'].strip('/').split('/')
+                for i, part in enumerate(parts):
+                    walked += '/' + part
+                    flags = os.O_PATH | os.O_NOFOLLOW | os.O_CLOEXEC
+                    if i < len(parts) - 1 or item['kind'] == 'directory':
+                        flags |= os.O_DIRECTORY
+                    nxt = os.open(part, flags, dir_fd=fd)
+                    os.close(fd)
+                    fd = nxt
+                    st = os.fstat(fd)
+                    if stat.S_ISLNK(st.st_mode) or os.access(walked, os.W_OK, effective_ids=True):
+                        fail()
+                st = os.fstat(fd)
+                if (st.st_dev, st.st_ino, stat.S_IFMT(st.st_mode)) != tuple(item['identity']):
+                    fail()
+                if not os.access(item['source'], os.R_OK | (os.X_OK if item['kind'] == 'directory' else 0), effective_ids=True):
+                    fail()
+                fds.append((fd, item['destination']))
+                fd = None
+            finally:
+                if fd is not None:
+                    os.close(fd)
+        return fds
+    except BaseException:
+        for fd, _ in fds:
+            os.close(fd)
+        raise
+
+
+def main():
+    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
+    os.umask(0o007)
+    if (os.getuid(), os.geteuid(), os.getgid(), os.getegid()) != (UID, UID, GID, GID):
+        fail()
+    if set(os.getgroups()) - {GID} or sys.argv[1:] != ['-c', MARKER]:
+        fail()
+    if os.environ.get('SSH_ORIGINAL_COMMAND', '') != 'offmenu-exec-v1':
+        fail()
+    # Client must close stdin after one bounded JSON request. Do not echo payload.
+    def timed_out(signum, frame):
+        raise TimeoutError('protocol deadline')
+    signal.signal(signal.SIGALRM, timed_out)
+    signal.alarm(15)
+    raw = sys.stdin.buffer.read(65537)
+    if len(raw) > 65536:
+        fail()
+    request = json.loads(raw)
+    signal.alarm(0)
+    if not isinstance(request, dict) or set(request) != {'command'}:
+        fail()
+    command = request['command']
+    if not isinstance(command, str) or not command or '\x00' in command:
+        fail()
+    with os.fdopen(root_file(CONFIG), 'r') as f:
+        config = json.load(f)
+    if config.get('enabled') is not True:
+        fail()
+    validate_project(config['project'])
+    # Runtime bindings are fixed, never taken from request or environment.
+    args = ['/bin/bwrap', '--unshare-all', '--unshare-user', '--die-with-parent',
+            '--new-session', '--clearenv', '--cap-drop', 'ALL']
+    for p in ('/usr', '/bin', '/lib', '/lib64'):
+        if os.path.isdir(p):
+            args += ['--ro-bind', p, p]
+    for name in ('passwd', 'group', 'nsswitch.conf'):
+        p = '/var/lib/offmenu-wm/runtime/' + name
+        os.close(root_file(p))
+        args += ['--ro-bind', p, '/etc/' + name]
+    corpus_fds = open_corpus_mounts()
+    # No host-rooted descriptors may enter bwrap or its PID-1 supervisor.
+    for fd, _ in corpus_fds:
+        os.close(fd)
+    # Components were checked non-writable by UID985. As with PROJECT, the
+    # trusted host owner changing paths concurrently is outside this threat model.
+    for item in CORPUS_MOUNTS:
+        args += ['--ro-bind', item['source'], item['destination']]
+    args += ['--proc', '/proc', '--dev', '/dev', '--tmpfs', '/tmp', '--dir', '/tmp/home',
+             '--bind', PROJECT, '/offmenu', '--chdir', '/offmenu',
+             '--setenv', 'PATH', '/usr/bin:/bin', '--setenv', 'HOME', '/tmp/home',
+             '--setenv', 'USER', 'offmenu-wm', '--setenv', 'LOGNAME', 'offmenu-wm',
+             '--setenv', 'LANG', 'C', '--setenv', 'GIT_CONFIG_NOSYSTEM', '1',
+             '--setenv', 'GIT_CONFIG_COUNT', '1',
+             '--setenv', 'GIT_CONFIG_KEY_0', 'safe.directory',
+             '--setenv', 'GIT_CONFIG_VALUE_0', '/offmenu',
+             '--', '/bin/bash', '--noprofile', '--norc', '-c', command]
+    # Before launching bwrap, clear loader/shell/Python/Git environment as well.
+    # sshd AcceptEnv itself must disallow loader/Python variables BEFORE this interpreter starts.
+    result = subprocess.run(args, env={'PATH': '/usr/bin:/bin', 'LANG': 'C'},
+                            cwd='/', stdin=subprocess.DEVNULL, close_fds=True, check=False)
+    return result.returncode if result.returncode >= 0 else 128 - result.returncode
+
+
+if __name__ == '__main__':
+    try:
+        sys.exit(main())
+    except (OSError, ValueError, KeyError, TypeError, RecursionError, TimeoutError):
+        fail()

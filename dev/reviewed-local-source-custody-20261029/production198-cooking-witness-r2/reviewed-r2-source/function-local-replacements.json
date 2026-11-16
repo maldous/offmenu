@@ -1,0 +1,71 @@
+{
+  "baseCommit": "92a0463b3f4ef48fa96ec2fe5adc65a3c513700a",
+  "finding": "NS196-G2",
+  "changes": [
+    {
+      "path": "public/cooking-model.js",
+      "old": "import {t} from './i18n.js';",
+      "new": "import {t} from './i18n.js';\nimport {createCookingWitness,captureNutrientInput,copyCookingWitness} from './cooking-witness.js';"
+    },
+    {
+      "path": "public/cooking-model.js",
+      "old": "original:inventory.find(x=>x.id===lot.id)",
+      "new": "original:structuredClone(inventory.find(x=>x.id===lot.id))"
+    },
+    {
+      "path": "public/cooking-model.js",
+      "old": "const totals=Object.fromEntries(NUTRIENTS.map(([k])=>[k,{value:0,known:0,total:0}]));for(const d of allocated.deductions){const p=nutritionForLot(d.original,products);",
+      "new": "const totals=Object.fromEntries(NUTRIENTS.map(([k])=>[k,{value:0,known:0,total:0}]));const nutrientInputs=[];for(const d of allocated.deductions){const p=nutritionForLot(d.original,products);nutrientInputs.push(captureNutrientInput(d,p));"
+    },
+    {
+      "path": "public/cooking-model.js",
+      "old": "allocations:allocated.deductions,totals,",
+      "new": "allocations:allocated.deductions,cookingWitness:createCookingWitness(recipe,mutationId,allocated.deductions,nutrientInputs),totals,"
+    },
+    {
+      "path": "public/cooking-model.js",
+      "old": "const log={id:eventId,batchId:batch.id,recipeId:batch.recipeId,",
+      "new": "const log={id:eventId,batchId:batch.id,recipeId:batch.recipeId,...(batch.cookingWitness?{cookingWitness:copyCookingWitness(batch.cookingWitness,{batchId:batch.id,recipeId:batch.recipeId})}:{}),"
+    },
+    {
+      "path": "public/cooking-model.js",
+      "old": "for(const b of result){if(",
+      "new": "for(const b of result){if(b.cookingWitness)b.cookingWitness=copyCookingWitness(b.cookingWitness,{batchId:b.id,recipeId:b.recipeId});if("
+    },
+    {
+      "path": "public/insights-model.js",
+      "old": "import {t} from './i18n.js';",
+      "new": "import {t} from './i18n.js';\nimport {historyCookingWitness} from './cooking-witness.js';"
+    },
+    {
+      "path": "public/insights-model.js",
+      "old": "return {...(typeof m.batchId==='string'?{batchId:m.batchId.slice(0,100)}:{}),id:m.id,",
+      "new": "return {...(typeof m.batchId==='string'?{batchId:m.batchId.slice(0,100)}:{}),...(m.cookingWitness?{cookingWitness:historyCookingWitness(m)}:{}),id:m.id,"
+    },
+    {
+      "path": "public/sync-model.js",
+      "old": "const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);",
+      "new": "import {sharedCookingBatch} from './cooking-witness.js';\nconst same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);"
+    },
+    {
+      "path": "public/sync-model.js",
+      "old": ".map(b=>({...b,events:b.events.map(",
+      "new": ".map(b=>({...sharedCookingBatch(b),events:b.events.map("
+    },
+    {
+      "path": "cloud/state.mjs",
+      "old": "import {validateBatches} from '../public/cooking-model.js';",
+      "new": "import {finishCookingWitnessState} from './cooking-witness-parity.mjs';\nimport {validateBatches} from '../public/cooking-model.js';"
+    },
+    {
+      "path": "cloud/state.mjs",
+      "old": "return {inventory,products,recipes:validateRecipes(value.recipes||[]),profile:settings,selections};",
+      "new": "return finishCookingWitnessState(value,{inventory,products,recipes:validateRecipes(value.recipes||[]),profile:settings,selections});"
+    },
+    {
+      "path": "evidence/server-history-helper.js",
+      "old": "return I}",
+      "new": "return __offmenuCookingWitness198.preserveCookingWitnesses(A,I)}"
+    }
+  ]
+}

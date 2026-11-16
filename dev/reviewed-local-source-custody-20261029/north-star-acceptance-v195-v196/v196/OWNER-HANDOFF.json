@@ -1,0 +1,25 @@
+{
+  "coordinator": "audit_production_efficiency",
+  "newAppWriterCreated": false,
+  "existingOwnersOnly": [
+    {
+      "owner": "prepare_production_integration",
+      "result": "Currentv196 changed nutrition caller path passed with immutableV1 source witness through batch/history afterV2 reselection and local reload; preserve it. No new broad gate or parallel adapter change requested."
+    },
+    {
+      "owner": "align_north_star_graph with sole app integrator",
+      "caseId": "NS196-G2",
+      "action": "Fold the finite immutable recipe-version/source witness case into existing typed provenance implementation. Keep selected nutrition and actual lot/batch/history references, zero/unknown and single accounting intact."
+    },
+    {
+      "owner": "01a182db-66d0-7092-bc85-fee8dd21f003 existing recipe/menu/pantry-shopping author",
+      "action": "Reuse the executedv195 connected acceptance case:500g rice/peas ->2portion cook100g each -> serving/leftovers -> future12portion plan200g shortfall each -> checked shopping/draft receipt do not create stock; explicit home receipt confirmation adds200g rice. Re-exercise only actual changed current-release integration, not unchanged isolated tests."
+    }
+  ],
+  "nonSensitiveArtifactReferences": [
+    "../offmenu-north-star-acceptance-v195-20261028/ACCEPTANCE-CASES.json",
+    "EXECUTED-DELTA.json",
+    "FINDING-NS196-G2.json",
+    "COVERAGE-DELTA.json"
+  ]
+}

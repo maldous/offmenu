@@ -1,0 +1,33 @@
+{
+  "kind": "independent-v196-changed-caller-integration-evidence",
+  "recordedUTC": "2026-10-28T20:10:09.086963+00:00",
+  "release": {
+    "version": "abead872-5f5e-48f8-96f8-7cb96446fbbe",
+    "sha256": "e510c7a4cc6f418cbda6d984e0ff7de90f0d7b85d350640b9f624fd9b818c057",
+    "bytes": 468574
+  },
+  "versionBinding": "Version ID supplied by parent served-verification update; public bundle bytes independently downloaded and exact SHA/length verified before execution. No deployment API or authenticated state queried.",
+  "exactCallback": {
+    "symbol": "applyNutrition production callback",
+    "startCharacter": 465683,
+    "endCharacter": 465983,
+    "sha256": "c68d845e5247b7fdbc83373d2729dabcf5124345f44c6bb43d3b56c8bd4a41cb"
+  },
+  "method": "Reuse isolated DOM/storage fixture harness, evaluate exact served bundle in async VM scope, extract its actual applyNutrition callback verbatim using installed acorn, then exercise actual menu/planned cook/serve/local reload. Production source unmodified.",
+  "result": "One changed integration scenario/four checkpoints passed; selected-lot provenance witness retained indirectly. Fullv195 journey remains frozen separately; no new full-loop/current-every-stage acceptance claim.",
+  "runtimeNetwork": {
+    "actualCalls": 0,
+    "attemptsDeniedByHarness": [
+      "/api/services"
+    ]
+  },
+  "privateDataCredentialsSessionDevicesAccessed": false,
+  "packagesInstalled": 0,
+  "productCandidatesOrRuntimeModified": false,
+  "priorAcceptedProductTestsRerun": 0,
+  "limitations": [
+    "Minimal DOM/storage shim; actual picker UI is fixture-disabled, so exact extracted production applyNutrition callback receives explicitly confirmed non-sensitive normalized fixture, then real menu/cook/serve handlers execute.",
+    "No prior full journey or four isolated regressions rerun. One changed production callback-to-meal/history/local-reload integration case only.",
+    "No private data/session/device/provider or external food lookup accessed; all runtime fetches blocked."
+  ]
+}

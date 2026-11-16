@@ -1,0 +1,60 @@
+{
+  "availableBytes": 95410597888,
+  "complete": true,
+  "completedAssets": 8192,
+  "counts": {
+    "compressedProjectionBytes": 6010157039,
+    "metricsWithoutOwnState": 0,
+    "nativeProfiles": 2924709,
+    "nativeRecords": 9478758,
+    "ownStateMetrics": 46795344,
+    "unknownSourceStateMetrics": 0
+  },
+  "expectedAssets": 8192,
+  "metadataBytes": 1751,
+  "metadataSha256": "d7de2786c96d246688ea15fd7d1e3e56d714872fbd00583bfb31e5eed59bd42a",
+  "nativeIndexManifestExists": true,
+  "ownedAllocatedBytes": 8162717696,
+  "ownedLogicalBytes": 8162660034,
+  "phase": "native-index",
+  "publicFiles": [],
+  "rawNativeBodiesStored": false,
+  "schemaVersion": "offmenu-same-source-basis-restoration/1",
+  "selection": {
+    "codePins": {
+      "derive_north_star_bulk.py": "3adc476be2a6694d62c76bb4d539f0fc698810fd3b942dc9ae501e940efde7a1",
+      "north_star_basis_restoration.py": "cae8b86cbacdbf0d81b9a52bb508dadae56e29639cfd332f87fb2b71bd18566a",
+      "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+      "run_north_star_basis_restoration.py": "24b477296d17675f7eb2ef3c674e5ae153a603afa599743161a13d0e05106d59"
+    },
+    "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+    "nativeManifestByteSha256": "312a7f5ce7c32b81d1eb02251303a000073eea2d0b46d9ac710e09ff89dee895",
+    "normalizedManifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e",
+    "rulesetVersion": "north-star-per-nutrient-basis-restoration/1",
+    "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+    "selectedSources": [
+      "off",
+      "usda-files"
+    ]
+  },
+  "sources": {
+    "off": {
+      "compressedProjectionBytes": 2057306219,
+      "metricsWithoutOwnState": 0,
+      "nativeProfiles": 1000202,
+      "nativeRecords": 5452981,
+      "ownStateMetrics": 16003232,
+      "unknownSourceStateMetrics": 0
+    },
+    "usda-files": {
+      "compressedProjectionBytes": 3952850820,
+      "metricsWithoutOwnState": 0,
+      "nativeProfiles": 1924507,
+      "nativeRecords": 4025777,
+      "ownStateMetrics": 30792112,
+      "unknownSourceStateMetrics": 0
+    }
+  },
+  "sqliteBytes": 8162656256,
+  "sqliteSha256": "66677901ec78853ed791f9763149606433e7db448b107b713d71b4a01513d746"
+}

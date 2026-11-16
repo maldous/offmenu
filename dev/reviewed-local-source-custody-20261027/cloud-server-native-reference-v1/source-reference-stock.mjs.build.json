@@ -1,0 +1,94 @@
+{
+  "schema": "offmenu-source-reference-stock-build/1",
+  "esbuild": "0.25.12",
+  "output": {
+    "path": "/workspace/shared/offmenu-server-native-reference-integration-20261027/source-reference-stock.mjs",
+    "bytes": 90639,
+    "sha256": "3952df80dd0799848add2ef68e5e92591e16d99e5d0a9c9f42f048ea497abe52"
+  },
+  "inputs": [
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/foundation-handoff-bindings.mjs",
+      "bytes": 2268,
+      "sha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/foundation-scanner-handoff.mjs",
+      "bytes": 6878,
+      "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/production-scanner/typed-identifier-contract.mjs",
+      "bytes": 10793,
+      "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/production-scanner/source-identity-client.mjs",
+      "bytes": 10890,
+      "sha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/production-scanner/source-identity-selection.mjs",
+      "bytes": 204,
+      "sha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/source-identity-handoff.mjs",
+      "bytes": 6874,
+      "sha256": "469be2b518e2b8422d89400ba686a09f73f736a87db61fbd6cb8db7e31f3f04d"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/typed-identifier-contract.mjs",
+      "bytes": 10793,
+      "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/scanner-kitchen-handoff.js",
+      "bytes": 6528,
+      "sha256": "fb7757734898b93a3ca5e6647d60e7928ae4c226b38cec3f7f282fc11e5ad595"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/locales/ar.js",
+      "bytes": 27728,
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/locale-negotiation.js",
+      "bytes": 2881,
+      "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/i18n.js",
+      "bytes": 8381,
+      "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/ingredients.js",
+      "bytes": 5212,
+      "sha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/source-category-claims.js",
+      "bytes": 1857,
+      "sha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/scanner-identity-v2.js",
+      "bytes": 14759,
+      "sha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76"
+    },
+    {
+      "path": "/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app/public/model.js",
+      "bytes": 8699,
+      "sha256": "4f37f779f445e27bcc8a73f6c03c4604033dae7e6ca153fc4a2cad5395f79807"
+    },
+    {
+      "path": "/workspace/shared/offmenu-server-native-reference-integration-20261027/source-reference-stock-entry.mjs",
+      "bytes": 468,
+      "sha256": "4910abf19f4c672fd7a1a2019c99d777c397f2d5af6dff763e3bad348d232b61"
+    }
+  ],
+  "externalImports": [],
+  "actualSourceIdentitySelection": "null/unconfigured; no admission issued",
+  "scope": "Helper for private stock validation only; existing runtime entrypoints/policy unchanged"
+}

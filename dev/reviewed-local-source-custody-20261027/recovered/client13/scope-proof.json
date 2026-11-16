@@ -1,0 +1,27 @@
+{
+  "id": "worker13-source-identity-consumer-scope-proof-20261027",
+  "phaseClientGuestAvailabilityAppByteIdentical": [
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/foundation-scanner-client.mjs",
+      "sha256": "d6e82b813a49184d5fb4ac5e234404acf2bd46009e8cebb8e36240d38381f073",
+      "bytes": 10468
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/guest-foundation-client.mjs",
+      "sha256": "d9f531f4e41d049aaf0609dccb8479aea24357c7d35218a94addf990abffd9ad",
+      "bytes": 2091
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/app.js",
+      "sha256": "722720c61f4d0a76cf782f690093a28a8efff0d06ce3f49c6e661acc25307c60",
+      "bytes": 104523
+    }
+  ],
+  "phaseHelperAndBindings": "Same pinnedR8f09/119 dependencies; no writer edits",
+  "guestMapFinishAndProtectedFinish": "ExactsamecombinedUndo/Pause/Finishhandlerline aspreimage inbothcontrollers; validatedsynthetic test",
+  "List": "needsSourceChoice/renderQueue/selectedQueueRecord bodiesbyteidentical;19focusedchecks includeactualidentitychoice/ListInspect/Undo",
+  "sourceOnly": "No00reader/HTTPadapter/admission/index/model/entry/runtime mutation; actualselectiondefaultnull",
+  "all15AliasCover": "No entry/staticrenderer/preload/cover source writes; no dependencygate",
+  "testFixtures": "Synthetic names/pins/records only; norealinputpopulation,externalrequests0",
+  "protectedScope": "Identityinspection independent;truthfulnative/sourcehandoffmodel OPEN00; notwholeflowcomplete"
+}

@@ -1,0 +1,39 @@
+{
+  "releaseId": "offmenu-foundation-production-20261027-v1",
+  "manifestSha256": "10f4f5acb9dbab8e5411dc7c7aa9136d6bb6317cd5eb11d9ec6c9ccdd4a1a0db",
+  "sourceAdmissionSha256": "fedce50756a6598ee3fc53d6e0507a4d21103711dcaee6911c61679b70cb2cdb",
+  "selections": {
+    "off": {
+      "manifest": {
+        "key": "own-data/foundation/offmenu-foundation-production-20261027-v1/manifest.json",
+        "sha256": "10f4f5acb9dbab8e5411dc7c7aa9136d6bb6317cd5eb11d9ec6c9ccdd4a1a0db",
+        "bytes": 115476
+      },
+      "policy": {
+        "key": "own-data/foundation/offmenu-foundation-production-20261027-v1/policy.json",
+        "sha256": "ad8f03427a4a59f7570c0eb3a12c4e311fb46998d9ee0dbc56058ef360b5d25e",
+        "bytes": 70447
+      },
+      "sourceId": "off",
+      "releaseId": "offmenu-foundation-production-20261027-v1",
+      "consumerCodeSha256": "0b098783399eb129970b33d2b90a4382d5475329b8a83bb9ad871e7407bd050f",
+      "admissionReceiptSha256": "fedce50756a6598ee3fc53d6e0507a4d21103711dcaee6911c61679b70cb2cdb"
+    },
+    "usda-files": {
+      "manifest": {
+        "key": "own-data/foundation/offmenu-foundation-production-20261027-v1/manifest.json",
+        "sha256": "10f4f5acb9dbab8e5411dc7c7aa9136d6bb6317cd5eb11d9ec6c9ccdd4a1a0db",
+        "bytes": 115476
+      },
+      "policy": {
+        "key": "own-data/foundation/offmenu-foundation-production-20261027-v1/policy.json",
+        "sha256": "ad8f03427a4a59f7570c0eb3a12c4e311fb46998d9ee0dbc56058ef360b5d25e",
+        "bytes": 70447
+      },
+      "sourceId": "usda-files",
+      "releaseId": "offmenu-foundation-production-20261027-v1",
+      "consumerCodeSha256": "0b098783399eb129970b33d2b90a4382d5475329b8a83bb9ad871e7407bd050f",
+      "admissionReceiptSha256": "fedce50756a6598ee3fc53d6e0507a4d21103711dcaee6911c61679b70cb2cdb"
+    }
+  }
+}

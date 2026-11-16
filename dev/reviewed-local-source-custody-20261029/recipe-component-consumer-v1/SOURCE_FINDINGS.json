@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "offmenu-recipe-component-source-findings/1",
+  "coreProof": {
+    "sha256": "9ab94d1566f9a3c784baea3621059a954736dd9b08899d718ebb6d7f5c38fbec",
+    "manifestSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+    "queryIndexSha256": "c2de1379038bfe8cae003c394d343fefb0282ffb0637f56e18f57053eb89e428",
+    "queryIndexBytes": 1362837504,
+    "indexOpenedInThisTask": false,
+    "historicalTypedQuantityJoins": 198791,
+    "historicalRecipeStepJoins": 136962,
+    "historicalReviewedIngredientIdentityLinks": 0,
+    "historicalRecipeNutrientEdges": 0
+  },
+  "sourceInspector": {
+    "relativePath": "recipe-inspector-code-v6/inspect_recipe_relations.py",
+    "sha256": "55cc3e67bd01fd887b2d1375bb3ed4439c330e56686b3ed4e6be4ffde66b8d31",
+    "entrypoint": "inspect(package, manifest_sha, schema_package, output, asset_prefix=None, existing_index=None)",
+    "kind": "aggregate-inspector-not-value-returning-reader",
+    "executedInThisTask": false
+  },
+  "predicate": "urn:offmenu:relation:usesIngredient",
+  "subjectType": "urn:offmenu:type:RecipeVariant",
+  "objectType": "urn:offmenu:type:IngredientMention",
+  "quantityProperty": "urn:offmenu:property:requiredQuantity",
+  "quantityKind": "quantity",
+  "coreAssetBounds": {
+    "selectedAssets": 51,
+    "maxCompressedBytes": 5235571,
+    "maxPackets": 500
+  },
+  "selectedSchemaSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+  "selectedContractSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+  "sourceOwnContractSha256": "c7d1ff1646848b8df2fda3672058c534da63ecae539df338b3f2e9aba01fb749",
+  "fiveRelevantDefinitionsEqual": true,
+  "otherMetadataOnly": [
+    {
+      "manifestSha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
+      "assetCount": 1,
+      "packets": 42,
+      "assetBytes": 158764
+    },
+    {
+      "manifestSha256": "e4c06a1d4a2fcb492529c37c6245a595dd104061ef1a63427cbe9d65e7e2241f",
+      "assetCount": 1,
+      "packets": 5,
+      "assetBytes": 21218
+    }
+  ],
+  "namedBoundsArtifact": {
+    "filename": "ACTUAL-SIX-MANIFEST-BOUNDS.json",
+    "localSearchOutcome": "not-located",
+    "exactCustodyPathChecked": "dev/reviewed-local-source-custody-20261027/north-star-reviewed-source-v2-20261028/ACTUAL-SIX-MANIFEST-BOUNDS.json",
+    "ref": "3ce82a5f07dbdd03d64a70f4de8ce4fd22257a91",
+    "custodyLookupOutcome": "404-not-found",
+    "retried": false,
+    "replacementArtifactInvented": false,
+    "actualBoundsSource": "exact-pinned-source-manifests-and-accepted-reports"
+  },
+  "actualRecipePacketsRead": false,
+  "actualRecipeIndicesOpened": false,
+  "priorProofsRerun": false,
+  "newRealExerciseSubmitted": false
+}

@@ -1,0 +1,110 @@
+"""Focused complete, byte-batched inventory regressions; no host or network."""
+from contextlib import contextmanager
+import importlib.util
+import io
+from pathlib import Path
+import tempfile
+import unittest
+from unittest import mock
+
+ROOT = Path(__file__).resolve().parents[1]
+SPEC = importlib.util.spec_from_file_location('inventory_stream', ROOT / 'scripts/export-local-source.py')
+export = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(export)
+
+
+class StreamingInventory(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name) / 'repo'
+        self.root.mkdir()
+        self.repository = {'head': 'a' * 40, 'branch': 'fixture'}
+        self.patch = mock.patch.multiple(export, CANONICAL=str(self.root))
+        self.patch.start(); self.addCleanup(self.patch.stop)
+
+    def snapshot(self, raw):
+        @contextmanager
+        def captured(root):
+            yield io.BytesIO(raw)
+        return captured
+
+    def test_more_than_fifty_thousand_entries_are_complete_and_chunked(self):
+        count = 50001
+        raw = b''.join(f'100644 {"a" * 40} 0\tsrc/f{i:06d}.py\0'.encode() for i in range(count))
+        raw += f'100644 {"a" * 40} 0\tdatasets/private.json\0'.encode()
+        directory = Path(self.temporary.name) / 'packets'
+        with mock.patch.object(export, 'repo_metadata', return_value=self.repository), \
+                mock.patch.object(export, 'index_snapshot', self.snapshot(raw)), \
+                mock.patch.object(export, 'inventory', side_effect=AssertionError('CLI must stream')):
+            receipt = export.inventory_output('foo-direct-inventory-fixture', str(directory), str(self.root))
+        self.assertGreater(len(receipt['packets']), 1)
+        packets = []
+        for item in receipt['packets']:
+            body = (directory / (item['jobId'] + '.json')).read_bytes()
+            self.assertEqual(export.digest(body), item['sha256'])
+            self.assertEqual(len(body), item['bytes'])
+            self.assertLess(len(body), 520 * 1024)
+            self.assertEqual(item['custody']['totalFiles'], count)
+            packets.append(export.decode(body))
+        export.validate_packet_set(packets)
+        names = [item['repositoryPath'] for packet in packets for item in packet['items']]
+        self.assertEqual(names, [f'src/f{i:06d}.py' for i in range(count)])
+        self.assertTrue((directory / 'packet-set.json').is_file())
+        self.assertEqual(packets[0]['custody']['excludedEntries'], 1)
+        with mock.patch.object(export, 'validate_packet_set', side_effect=AssertionError('metadata must stream')):
+            self.assertEqual(export.validate_packet_directory(str(directory)), receipt)
+        damaged = directory / (receipt['packets'][-1]['jobId'] + '.json')
+        damaged.write_bytes(damaged.read_bytes() + b' ')
+        with self.assertRaisesRegex(export.Rejected, 'packet-set-pin-mismatch'):
+            export.validate_packet_directory(str(directory))
+
+    def test_changed_index_does_not_publish_completion_manifest(self):
+        directory = Path(self.temporary.name) / 'packets'
+        snapshots = iter([b'', f'100644 {"a" * 40} 0\tnew.py\0'.encode()])
+        @contextmanager
+        def snapshot(root):
+            yield io.BytesIO(next(snapshots))
+        with mock.patch.object(export, 'repo_metadata', return_value=self.repository), \
+                mock.patch.object(export, 'index_snapshot', snapshot):
+            with self.assertRaisesRegex(export.Rejected, 'repository-metadata-changed'):
+                export.inventory_output('foo-direct-inventory-fixture', str(directory), str(self.root))
+        self.assertFalse(directory.exists())
+
+    def test_walk_has_no_former_depth_or_selected_count_cap(self):
+        path = self.root
+        for _ in range(65):
+            path = path / 'd'; path.mkdir()
+        (path / 'deep.py').write_bytes(b'pass\n')
+        with mock.patch.object(export, 'repo_metadata', return_value=self.repository), \
+                mock.patch.object(export, 'index_snapshot', self.snapshot(b'')), \
+                mock.patch.object(export, 'MAX_FILES', 0):
+            _, items, _ = export.inventory(str(self.root))
+        self.assertEqual(len(items), 1)
+        self.assertEqual(items[0]['state'], 'present')
+
+    def test_corpus_source_modules_are_inventoried_but_raw_data_and_secrets_are_not(self):
+        paths = {'corpus/engine.mjs': b'export const fixture = true;\n',
+                 'corpus/curation.py': b'pass\n',
+                 'corpus/new-local-module.ts': b'export {};\n',
+                 'corpus/raw.json': b'{"private":true}',
+                 'corpus/raw.csv': b'private,data',
+                 'corpus/raw.txt': b'private',
+                 'corpus/.env.py': b'private',
+                 'corpus/datasets/disguised.py': b'private',
+                 'corpus/cache/cached.py': b'private'}
+        for name, body in paths.items():
+            target = self.root / name
+            target.parent.mkdir(parents=True, exist_ok=True); target.write_bytes(body)
+        with mock.patch.object(export, 'repo_metadata', return_value=self.repository), \
+                mock.patch.object(export, 'index_snapshot', self.snapshot(b'')):
+            _, items, excluded = export.inventory(str(self.root))
+        self.assertEqual({item['repositoryPath'] for item in items},
+                         {'corpus/engine.mjs', 'corpus/curation.py', 'corpus/new-local-module.ts'})
+        self.assertTrue(all(item['state'] == 'present' for item in items))
+        self.assertGreaterEqual(excluded, 6)
+        for item in items: export.source_path(item['sourcePath'])
+
+
+if __name__ == '__main__':
+    unittest.main()

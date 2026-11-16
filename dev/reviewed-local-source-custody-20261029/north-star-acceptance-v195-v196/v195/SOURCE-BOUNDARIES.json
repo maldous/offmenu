@@ -1,0 +1,79 @@
+{
+  "source": "app.js",
+  "sha256": "fce748582a1e4aa940022b00ccaab7ac00ec5d1ca5d357d5f45f4ff0756e1fdf",
+  "offsetEncoding": "JavaScript UTF-16 string character positions; original bundled source",
+  "functions": [
+    {
+      "symbol": "Rt",
+      "startCharacter": 131188,
+      "endCharacter": 132625,
+      "sha256": "6a2fd08f27fe8548c1811c551ddfada0abab9411407ca7e9163cea8d804202ff"
+    },
+    {
+      "symbol": "Gs",
+      "startCharacter": 171222,
+      "endCharacter": 172486,
+      "sha256": "202ed3f443aed9ab66e8425b60e034fa33b20819641aa45f3298cfdc1ba90701"
+    },
+    {
+      "symbol": "Hs",
+      "startCharacter": 172486,
+      "endCharacter": 174493,
+      "sha256": "1685836401c443835364ea4d6f1ea1dc334ccd0729c1d09d620993702194d5df"
+    },
+    {
+      "symbol": "tc",
+      "startCharacter": 195063,
+      "endCharacter": 202873,
+      "sha256": "86dad472a5b8c34127b7fe101db5f1c17e3fb7ac27159b92b39f7f362b9cf8ef"
+    },
+    {
+      "symbol": "Fn",
+      "startCharacter": 259217,
+      "endCharacter": 259673,
+      "sha256": "c33690cf8cbe97aaff4d14a32f2acd1a36cc884aa3d383808fabd2eae6727821"
+    },
+    {
+      "symbol": "vc",
+      "startCharacter": 265448,
+      "endCharacter": 279801,
+      "sha256": "e068276783aafdb21794fd908eb1af03108e0b75b1385cde1901654367acaa5a"
+    },
+    {
+      "symbol": "bc",
+      "startCharacter": 279875,
+      "endCharacter": 281642,
+      "sha256": "9e3295b0fb1b034cd9bf0f9331a308c084ecb05a737d706ba942850e72817ff9"
+    },
+    {
+      "symbol": "On",
+      "startCharacter": 388690,
+      "endCharacter": 388823,
+      "sha256": "c0a03edc8bd0194f4c6ede9f0e94a8594e0b80a11b9caf67981c6827f91cf4c5"
+    },
+    {
+      "symbol": "Al",
+      "startCharacter": 389651,
+      "endCharacter": 389767,
+      "sha256": "f84a47208bc051e003c61e06476c072b53dca4bf8de755e78695b47c8ca148ef"
+    },
+    {
+      "symbol": "Nl",
+      "startCharacter": 389767,
+      "endCharacter": 389918,
+      "sha256": "893e693f48875a8145a19e4d8018051745b84b9941ed6f651a0dfc871ba924c8"
+    },
+    {
+      "symbol": "Le",
+      "startCharacter": 397737,
+      "endCharacter": 403712,
+      "sha256": "5e77e49de4b0b111cbc9c1efaa46f69909ffda2098d1af214e7170bedf962263"
+    },
+    {
+      "symbol": "sn",
+      "startCharacter": 443610,
+      "endCharacter": 447333,
+      "sha256": "24d2a95ce8517332f74247bb7370e8055cd35f0d1a6c9d6a48eca4de4c78d0c0"
+    }
+  ]
+}

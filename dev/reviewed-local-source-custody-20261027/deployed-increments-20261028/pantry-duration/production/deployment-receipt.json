@@ -1,0 +1,16 @@
+{
+  "status": "deployed-and-served-verified",
+  "version": 193,
+  "versionId": "d572a1e0-f43d-432b-8033-fc78564ef7c9",
+  "deploymentId": "acff5306-b021-42fb-9a2e-92ef7618b5fa",
+  "deployedUTC": "2026-10-28T05:33:00.228399Z",
+  "percentage": 100,
+  "moduleSHA256": "0e4420ef0152586a80cf982d7084582180b9e8798d9dd87cb6aae304da305a34",
+  "appSHA256": "9b0d51064d746887ee70dbb79baee98e32a4eb57caf8652a7111d3b9e383bf67",
+  "unchangedModules": 211,
+  "settingsBindingsPreserved": true,
+  "focusedTestsPassed": 5,
+  "privateAPIAnonymousStatus": 401,
+  "authenticatedJourneyTested": false,
+  "heldShoppingDeficitAdopted": false
+}

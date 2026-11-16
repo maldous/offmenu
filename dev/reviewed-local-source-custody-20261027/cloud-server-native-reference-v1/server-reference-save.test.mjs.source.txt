@@ -1,0 +1,73 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile,writeFile,mkdtemp,cp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join,resolve,dirname} from 'node:path';
+import {pathToFileURL} from 'node:url';
+import {execFileSync} from 'node:child_process';
+import {webcrypto,createHash} from 'node:crypto';
+import {patchServerReferenceValidator} from './patch-server-reference.mjs';
+globalThis.crypto ||= webcrypto;
+const root=new URL('.',import.meta.url).pathname;
+const originalPath='/workspace/scratch/88f4120a216c/offmenu-wiring-cloud-20261027/custody/production181-authenticated-own-data-containment/deployed-application.mjs';
+const originalBytes=await readFile(originalPath);
+const original=(await import(pathToFileURL(originalPath))).default;
+const actualPath=process.env.OFFMENU_TEST_APPLICATION?resolve(process.env.OFFMENU_TEST_APPLICATION):new URL('./deployed-application.server-reference.mjs',import.meta.url).pathname;
+const actual=(await import(pathToFileURL(actualPath))).default;
+const temp=await mkdtemp(join(tmpdir(),'offmenu-server-reference-'));
+await cp('/workspace/shared/offmenu-worker13-build-source-20261027/candidate-source/app',join(temp,'app'),{recursive:true});
+await writeFile(join(temp,'package.json'),'{"type":"module"}\n');
+// Preserve optional actual composed own-data modules in the disposable test copy.
+if(process.env.OFFMENU_TEST_APPLICATION)for(const name of ['owned-foundation-response.mjs','foundation-production-release.mjs']){try{await cp(join(dirname(actualPath),name),join(temp,name));}catch(error){if(error.code!=='ENOENT')throw error;}}
+const h=c=>c.repeat(64),raw='0049022712744';
+const fixed={selectionSha256:h('1'),admissionSha256:h('2'),manifestSha256:h('3'),sourceId:'usda-files',releaseId:'2026-04-30',sourceQualificationSha256:h('a'),sourceInputIndexSha256s:[h('b')]};
+const phase={releaseId:'synthetic-phase',manifestSha256:h('4'),sourceAdmissionSha256:h('5'),sources:{'usda-files':{releaseId:fixed.releaseId,qualificationSha256:fixed.sourceQualificationSha256,license:'Synthetic phase notice',attribution:'Synthetic phase attribution'}}};
+// Synthetic configuration exists only in this disposable test tree.
+await writeFile(join(temp,'app/public/production-scanner/source-identity-selection.mjs'),'export const SOURCE_IDENTITY_SELECTION='+JSON.stringify(fixed)+';\n');
+await writeFile(join(temp,'app/public/foundation-handoff-bindings.mjs'),'export const FOUNDATION_HANDOFF_BINDINGS='+JSON.stringify(phase)+';\n');
+await writeFile(join(temp,'entry.mjs'),"export {validateLot as validateSourceReferenceStock} from './app/public/model.js';\n");
+execFileSync(process.execPath,[join(root,'build-server-reference.mjs'),join(temp,'entry.mjs'),join(temp,'source-reference-stock.mjs')],{stdio:'pipe'});
+const patched=patchServerReferenceValidator(originalBytes);
+await writeFile(join(temp,'deployed-application.mjs'),process.env.OFFMENU_TEST_APPLICATION?await readFile(actualPath):patched.bytes);
+const configured=(await import(pathToFileURL(join(temp,'deployed-application.mjs')))).default;
+const savedFetch=globalThis.fetch,authRequests=[];
+globalThis.fetch=async(input,init)=>{const url=String(input);authRequests.push(url);if(url.endsWith('/user'))return Response.json({id:'synthetic-user'});throw Error('Unexpected external request: '+url);};
+const unknown=()=>({state:'unknown',reason:'not-in-qualified-identity-metadata'});
+function identityRef(value=raw,namespace='barcode'){
+ const id=namespace==='USDA-FDC'?value:'7',nativeId='usda-files:product:'+id;
+ return {schema:'offmenu-source-identity-reference/1',selectionSha256:fixed.selectionSha256,admissionSha256:fixed.admissionSha256,manifestSha256:fixed.manifestSha256,observation:{schema:'offmenu-source-identity-observation/2',stageId:'synthetic:stage:'+id,nativeId,wireSha256:h('c'),sourceBinding:{sourceId:fixed.sourceId,releaseId:fixed.releaseId,recordId:id,sourceObservationSha256:h('d'),sourceDocumentSha256:h('e'),inputDatabaseSha256:h('f'),sourceQualificationSha256:fixed.sourceQualificationSha256,nativeRecordId:nativeId},sourceIdentifiers:[{system:'USDA-FDC',value:id},{system:'barcode',value:namespace==='barcode'?value:raw}],sourceRights:{license:'USDA FoodData Central public domain / CC0 (retained declaration)',attribution:'USDA Agricultural Research Service FoodData Central',sourceVisibility:'source-staging'},matchedIdentifier:{namespace,lexicalValue:value,relationship:'exact-source-claim',representation:'untyped',physicalCarrier:namespace==='barcode'?'unverified':'not-applicable',sourceChecksumValid:namespace==='barcode'?value===raw:null},sourceInputIndexSha256:h('b'),rightsVisibilityField:'sourceVisibility',sourceURL:'https://fdc.nal.usda.gov/download-datasets/',originalProductName:unknown(),originalLanguage:unknown(),englishName:unknown(),foodType:unknown(),nutrition:unknown(),canonicalIdentityAccepted:false,identityAssociationAccepted:false,physicalProductEquivalenceAsserted:false,normalizationComplete:false,goldAdmitted:false,automaticPlanningEligible:false,recipeNutritionJoinsAccepted:false}};
+}
+function foundationRef(){const b={...identityRef().observation.sourceBinding};delete b.nativeRecordId;return {schema:'offmenu-foundation-source-reference/1',fieldContract:'offmenu-barcode-foundation-phase/2',releaseId:phase.releaseId,manifestSha256:phase.manifestSha256,sourceAdmissionSha256:phase.sourceAdmissionSha256,recordId:'synthetic-phase-row',namespace:'barcode',lexicalValue:raw,nativeRecordId:'usda-files:product:7',stageRecordWireSha256:h('c'),sourceBinding:b,license:phase.sources['usda-files'].license,attribution:phase.sources['usda-files'].attribution,foundationComplete:true,normalizationComplete:false,fullProductComplete:false,goldAdmitted:false,automaticPlanningEligible:false,recipeNutritionJoinsAccepted:false};}
+const lot=()=>({id:'synthetic-lot',barcode:raw,name:'My recorded stock',ingredient:'rice',quantity:250,unit:'g',expires:null,amountBasis:'manual',needsReview:false,sourceIdentityReference:identityRef()});
+const receipt=item=>({mode:'shopping',area:'Pantry',shelf:'Shelf 1',startedAt:'synthetic-start',finishedAt:'synthetic-finish',items:[structuredClone(item)]});
+const state=item=>({inventory:[item],products:{},recipes:[],selections:[],profile:{servings:2,lastReceipt:receipt(item),waste:[{...receipt(item),mode:'waste'}]}});
+function database(){let stored=null,revision=0;const sql=[];return {sql,get writes(){return revision;},prepare(query){sql.push(query);return {bind(...params){return {async first(){if(query.startsWith('SELECT revision,state_json AS data'))return stored?{revision,data:stored,updated_at:'synthetic'}:null;if(query.startsWith('INSERT INTO user_state')){if(revision!==0)return null;stored=params[1];revision=1;return {revision};}if(query.startsWith('UPDATE user_state')){if(params[3]!==revision)return null;stored=params[0];revision++;return {revision};}throw Error('Unexpected SQL: '+query);}};}};}};}
+function request(path='/api/state',method='PUT',body,headers={}){return new Request('https://offmenu.aldous.info'+path,{method,headers:{Origin:'https://offmenu.aldous.info',Authorization:'Bearer synthetic-test-token','Content-Type':'application/json',...headers},...(body===undefined?{}:{body:JSON.stringify(body)})});}
+async function save(worker,db,value,revision=0){return worker.fetch(request('/api/state','PUT',{state:value,revision}),{DB:db});}
+async function reload(worker,db){const r=await worker.fetch(request('/api/state','GET'),{DB:db});assert.equal(r.status,200);return (await r.json()).state;}
+
+test('actual previous server strips native reference; configured dispatch persists full refs through actual PUT and GET',async()=>{
+ const value=state(lot()),beforeDB=database();assert.equal((await save(original,beforeDB,value)).status,200);assert.equal((await reload(original,beforeDB)).inventory[0].sourceIdentityReference,undefined);
+ const db=database();assert.equal((await save(configured,db,value)).status,200);const loaded=await reload(configured,db);
+ for(const item of [loaded.inventory[0],loaded.profile.lastReceipt.items[0],loaded.profile.waste[0].items[0]])assert.deepEqual(item.sourceIdentityReference,value.inventory[0].sourceIdentityReference);
+ assert.equal(loaded.inventory[0].barcode,raw);assert.equal(loaded.inventory[0].sourceIdentityReference.observation.englishName.state,'unknown');assert.equal(loaded.inventory[0].sourceIdentityReference.observation.normalizationComplete,false);
+ assert.equal((await save(configured,db,loaded,1)).status,200);assert.deepEqual((await reload(configured,db)).inventory[0].sourceIdentityReference,value.inventory[0].sourceIdentityReference);
+});
+test('phase reference remains distinct; native one-character and leading-zero namespaces survive save/reload without coercion',async()=>{
+ const phaseLot={...lot(),foundationSourceReference:foundationRef()};delete phaseLot.sourceIdentityReference;const db=database();assert.equal((await save(configured,db,state(phaseLot))).status,200);assert.deepEqual((await reload(configured,db)).inventory[0].foundationSourceReference,phaseLot.foundationSourceReference);
+ for(const code of ['7','0007']){const native={...lot(),barcode:code,sourceIdentityReference:identityRef(code,'USDA-FDC')},d=database();assert.equal((await save(configured,d,state(native))).status,200);const restored=(await reload(configured,d)).inventory[0];assert.equal(restored.barcode,code);assert.deepEqual(restored.sourceIdentityReference,native.sourceIdentityReference);}
+});
+test('actual unconfigured helper rejects native stock; malformed provenance or assumed amount never writes',async()=>{
+ const db=database(),r=await save(actual,db,state(lot()));assert.equal(r.status,400);assert.match((await r.json()).error,/SOURCE_IDENTITY_NOT_CONFIGURED/);assert.equal(db.writes,0);
+ for(const mutate of [x=>x.quantity=null,x=>x.amountBasis='package',x=>x.sourceIdentityReference.observation.sourceRights.license='changed',x=>x.sourceIdentityReference.observation.normalizationComplete=true,x=>x.sourceIdentityReference.observation.englishName={state:'known',value:'Invented'},x=>x.foundationSourceReference=foundationRef()]){const item=lot();mutate(item);const d=database();assert.equal((await save(configured,d,state(item))).status,400);assert.equal(d.writes,0);}
+});
+test('legacy state results, authentication, origin, revision and own-data provider containment stay unchanged',async()=>{
+ const item=lot();delete item.sourceIdentityReference;const value=state(item),a=database(),b=database();assert.equal((await save(original,a,value)).status,200);assert.equal((await save(actual,b,value)).status,200);assert.deepEqual(await reload(actual,b),await reload(original,a));assert.equal((await save(actual,b,value,0)).status,409);
+ const noAuth=request('/api/state','GET');noAuth.headers.delete('Authorization');assert.equal((await actual.fetch(noAuth,{DB:database()})).status,401);
+ assert.equal((await actual.fetch(request('/api/state','PUT',{state:value,revision:0},{Origin:'https://wrong.invalid'}),{DB:database()})).status,403);
+ const blocked=await actual.fetch(request('/api/data/lookup','POST',{}),{DB:database()});assert.equal(blocked.status,503);assert.equal((await blocked.json()).code,'OWN_DATA_REQUIRED');assert.ok(authRequests.every(url=>url.endsWith('/user')));
+});
+test('patch modifies only two insertions and refuses wrong input or duplicate dispatch',()=>{
+ assert.equal(patched.receipt.unchangedOutsideInsertions,true);assert.equal(patched.receipt.validator.beforeSha256,'a14ce8fc820500a31f8a1faca1c97ff55a70818ec188d03a27bc35573a0da5fe');assert.throws(()=>patchServerReferenceValidator(Buffer.from('wrong')),/preimage/);assert.throws(()=>patchServerReferenceValidator(patched.bytes,{expectedModuleSha256:createHash('sha256').update(patched.bytes).digest('hex')}),/already/);
+});
+test.after(async()=>{globalThis.fetch=savedFetch;await rm(temp,{recursive:true,force:true});});

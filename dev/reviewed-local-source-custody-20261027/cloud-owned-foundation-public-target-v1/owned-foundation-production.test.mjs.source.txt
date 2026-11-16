@@ -1,0 +1,51 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {webcrypto,createHash} from 'node:crypto';
+import {pathToFileURL} from 'node:url';
+globalThis.crypto ||= webcrypto;
+const root=new URL('.',import.meta.url).pathname;
+const api=await import('./private-release-build/production/owned-foundation-response.mjs');
+const app=(await import(pathToFileURL(process.env.OFFMENU_TEST_APPLICATION||root+'private-release-build/production/deployed-application.foundation.mjs'))).default;
+const {createFoundationScannerLookup,FOUNDATION_SELECTION}=await import('./browser-source/candidate-source/scanner/public/production-scanner/foundation-scanner-client.mjs');
+const {createFoundationScannerHandoff}=await import('./browser-source/candidate-source/app/public/foundation-scanner-handoff.mjs');
+const {makeAutoLot}=await import('./browser-source/candidate-source/app/public/checkout-model.js');
+const {validateLot}=await import('./browser-source/candidate-source/app/public/model.js');
+const {createOwnedFoundationResponse}=await import('./source/corpus/owned-foundation-response.mjs');
+const selection=JSON.parse(await readFile(root+'production-selection.json','utf8'));
+const queries=JSON.parse(await readFile(root+'private-release-build/verified-source-queries.json','utf8'));
+const raw='0011225604683',origin='https://offmenu.aldous.info';
+const beforeFetch=globalThis.fetch,network=[];
+globalThis.fetch=async(url)=>{network.push(String(url));if(String(url).endsWith('/user'))return Response.json({id:'synthetic-user'});throw Error('Unexpected live lookup');};
+const request=(path,method='GET',headers={})=>new Request(origin+path,{method,headers});
+async function get(source,barcode=raw,cursor='',limit=20){const params=new URLSearchParams({source,barcode,limit:String(limit)});if(cursor)params.set('cursor',cursor);return api.ownedFoundationResponse(request('/api/corpus/foundation?'+params));}
+let actualRecord;
+test('new public-target lookup returns actual qualified own-source record with rights and unchanged false flags',async()=>{
+ const response=await get('off');assert.equal(response.status,200);assert.ok(response.headers.get('Link').includes('/notices'));const dto=await response.json();assert.equal(dto.releaseId,selection.releaseId);assert.equal(dto.manifestSha256,selection.manifestSha256);assert.equal(dto.records.length,1);assert.equal(dto.externalFallback,false);actualRecord=dto.records[0];assert.equal(actualRecord.provenance.attribution,'Open Food Facts');assert.equal(actualRecord.foundationSourceReference.sourceAdmissionSha256,selection.sourceAdmissionSha256);assert.equal(actualRecord.foundationSourceReference.lexicalValue,raw);for(const key of ['normalizationComplete','goldAdmitted','fullProductComplete','automaticPlanningEligible','recipeNutritionJoinsAccepted'])assert.equal(actualRecord.data[key],false);assert.equal(Object.keys(actualRecord.data.variantParameters).length,24);assert.equal(network.length,0);
+ const head=await api.ownedFoundationResponse(request('/api/corpus/foundation?source=off&barcode='+raw,'HEAD'));assert.equal(head.status,200);assert.equal(await head.text(),'');
+});
+test('existing strict scanner accepts new real selection, explicit handoff and unknown amount without inferred package',async()=>{
+ const lookup=createFoundationScannerLookup({fetchImpl:(path,init)=>api.ownedFoundationResponse(new Request(origin+path,init))});const result=await lookup(raw,7);assert.ok(result.matches.length>=1);assert.equal(result.externalFallback,false);const selected=result.matches.find(m=>m.provenance.sourceId==='off');assert.ok(selected);const handoff=createFoundationScannerHandoff([{id:'00000000-0000-4000-8000-000000000001',raw,namespace:'barcode',symbology:null,foundationLookup:true,sourceChoiceConfirmed:true,status:'source-match',matches:result.matches,selectedRecord:selected}]);assert.equal(handoff.items[0].barcode,raw);const lot=makeAutoLot(raw,{name:selected.name,foundationSourceReference:handoff.items[0].foundationSourceReference});assert.equal(lot.quantity,null);assert.equal(lot.amountBasis,'unknown');assert.throws(()=>validateLot(lot),/known quantity/);assert.equal(FOUNDATION_SELECTION.manifestSha256,selection.manifestSha256);
+});
+test('actual USDA multi-observation pages retain count/order and exact source claims',async()=>{
+ const q=queries.filter(q=>q.sourceId==='usda-files').sort((a,b)=>b.observations-a.observations)[0];let cursor='',count=0,seen=new Set();do{const response=await get('usda-files',q.barcode,cursor,1);assert.equal(response.status,200);const dto=await response.json();assert.equal(dto.qualifiedSourceObservationCount,q.observations);for(const r of dto.records){assert.equal(r.foundationSourceReference.lexicalValue,q.barcode);assert.equal(r.provenance.attribution,'USDA Agricultural Research Service FoodData Central');assert.equal(r.data.normalizationComplete,false);assert.ok(!seen.has(r.id));seen.add(r.id);}count+=dto.records.length;cursor=dto.nextCursor??'';}while(cursor);assert.equal(count,q.observations);assert.ok(count>1);assert.equal(network.length,0);
+});
+test('same-origin guard, strict query/methods, unavailable source and public notices are truthful',async()=>{
+ assert.equal((await api.ownedFoundationResponse(new Request('http://localhost:7645/api/corpus/foundation?source=off&barcode='+raw))).status,403);
+ assert.equal((await api.ownedFoundationResponse(request('/api/corpus/foundation?source=off&barcode='+raw,'GET',{Origin:'https://wrong.invalid'}))).status,403);
+ assert.equal((await api.ownedFoundationResponse(request('/api/corpus/foundation?source=off&barcode='+raw,'POST'))).status,405);
+ assert.equal((await api.ownedFoundationResponse(request('/api/corpus/foundation?source=off&source=usda-files&barcode='+raw))).status,400);
+ const absent=await get('off','0000000000000');assert.equal(absent.status,503);const a=await absent.json();assert.equal(a.externalFallback,false);assert.equal(a.records.length,0);
+ const notice=await api.ownedFoundationResponse(request('/api/corpus/foundation/notices'));assert.equal(notice.status,200);const txt=await notice.text();assert.ok(txt.includes('ODbL')&&txt.includes('USDA')&&txt.includes('original local release'));
+ const release=await (await api.ownedFoundationResponse(request('/api/corpus/foundation/release'))).json();assert.equal(release.counts.sourceObservations,11527);assert.equal(release.counts.sourceSpecificQueries,4908);assert.equal(release.publicPublicationAccepted,true);assert.equal(release.normalizationComplete,false);assert.equal(network.length,0);
+});
+function database(){let data=null,revision=0;return {prepare(query){return {bind(...values){return {async first(){if(query.startsWith('SELECT revision,state_json AS data'))return data?{revision,data,updated_at:'synthetic'}:null;if(query.startsWith('INSERT INTO user_state')){if(revision)return null;data=values[1];revision=1;return {revision};}throw Error('Unexpected SQL');}};}};}};}
+test('actual new-public-reference stock survives composed server PUT and GET with original auth/containment',async()=>{
+ const item=validateLot({id:'actual-phase-test-stock',barcode:raw,name:'My manually recorded stock',ingredient:'unmapped',quantity:2,unit:'count',amountBasis:'manual',needsReview:true,foundationSourceReference:actualRecord.foundationSourceReference});const state={inventory:[item],products:{},recipes:[],selections:[],profile:{servings:2}},db=database();const put=new Request(origin+'/api/state',{method:'PUT',headers:{Origin:origin,Authorization:'Bearer synthetic-test-token','Content-Type':'application/json'},body:JSON.stringify({revision:0,state})});assert.equal((await app.fetch(put,{DB:db})).status,200);const loaded=await (await app.fetch(new Request(origin+'/api/state',{headers:{Authorization:'Bearer synthetic-test-token'}}),{DB:db})).json();assert.deepEqual(loaded.state.inventory[0].foundationSourceReference,item.foundationSourceReference);assert.equal(loaded.state.inventory[0].needsReview,true);assert.ok(network.every(url=>url.endsWith('/user')));
+ const blocked=await app.fetch(new Request(origin+'/api/data/lookup',{method:'POST',headers:{Origin:origin,Authorization:'Bearer synthetic-test-token','Content-Type':'application/json'},body:'{}'}),{DB:db});assert.equal(blocked.status,503);assert.equal((await blocked.json()).code,'OWN_DATA_REQUIRED');
+});
+test('original local-only metadata cannot be passed off as public target; original pins remain unchanged',async()=>{
+ const oldTable=JSON.parse(await readFile(root+'private-release-build/original-blobs.json','utf8')),metadata=JSON.parse(await readFile('/workspace/shared/offmenu-actual-source-39396038/embedded-api-release-metadata.json','utf8'));const response=createOwnedFoundationResponse({selections:metadata.selectionMetadata,readBlob:async(key)=>Uint8Array.from(Buffer.from(oldTable[key].bodyBase64,'base64'))});assert.equal((await response(request('/api/corpus/foundation?source=off&barcode='+raw))).status,503);
+ const bytes=await readFile('/workspace/shared/offmenu-actual-source-39396038/embedded-release-metadata/manifest.json.source');assert.equal(createHash('sha256').update(bytes).digest('hex'),'f9338984eb416c0c4681697c5257ae72cf2e178fe88879331d4b74efc6dc9aa7');const m=JSON.parse(bytes);assert.equal(m.deploymentScope,'localhost-only');assert.equal(m.publicPublicationAccepted,false);
+});
+test.after(()=>{globalThis.fetch=beforeFetch;});

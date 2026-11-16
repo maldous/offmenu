@@ -1,0 +1,74 @@
+{
+  "schema": "offmenu-acceptance-source-evidence-allowlist/1",
+  "scope": "Exactly these payload members plus MANIFEST.json and FILES.tsv; both manifests omit themselves and each other.",
+  "files": {
+    "README.md": {
+      "bytes": 2364,
+      "sha256": "06804af77678002741c4b8ff8f33059a87008f877625ba40197a318fa0cfecb9"
+    },
+    "RELEASES.json": {
+      "bytes": 2378,
+      "sha256": "eaa93103a6554304a1f5bb5fa273c440cf865d58e93634712e00f8d5c6b286d6"
+    },
+    "v195/ACCEPTANCE-CASES.json": {
+      "bytes": 3666,
+      "sha256": "8f9b4608411545c7116982853719ad0945e7d95f6f346e324e60e07d7fa2d61d"
+    },
+    "v195/COVERAGE.json": {
+      "bytes": 7375,
+      "sha256": "409b6be316aff6bed5eab9b8ac19a42ee27a4cb5b2303c1d5f96b6e10e5220fe"
+    },
+    "v195/EXECUTED-JOURNEY.json": {
+      "bytes": 211100,
+      "sha256": "8d35b0eab5916a720e549d0a13fecc357389a63ae522087648aea8c60f956719"
+    },
+    "v195/FINDING-NS195-G1.json": {
+      "bytes": 2854,
+      "sha256": "1d254e566f282854820abd3d1372792628d5f9b005db424912dee35bcf3b9c9e"
+    },
+    "v195/HANDOFF.md": {
+      "bytes": 2185,
+      "sha256": "038fdb0ce6ab6e78b37408e9d3edec13633c12ec7f27b383ece130fbaa168fcb"
+    },
+    "v195/RECEIPT.json": {
+      "bytes": 2324,
+      "sha256": "a45abce9f5ce9a6d46f16e7646feccdabef3bb1cc18e3bc4777b6ca4e5b30058"
+    },
+    "v195/SOURCE-BOUNDARIES.json": {
+      "bytes": 2379,
+      "sha256": "27af9cf1d82998c610ea28566f63d3873456805ba48cdb734e521b0b5ff4098b"
+    },
+    "v195/journey-harness.mjs": {
+      "bytes": 13694,
+      "sha256": "7ce1942f00c5a566a15d1c81ca1b3dce06b569e5dbf12cc320d9ba26a79f8f15"
+    },
+    "v196/COVERAGE-DELTA.json": {
+      "bytes": 2251,
+      "sha256": "c53090afcf884ac20bf0aaea7d1d10e6544bfb21fa557da68db4aa16a430d6de"
+    },
+    "v196/EXECUTED-DELTA.json": {
+      "bytes": 55959,
+      "sha256": "04c1bb42504794f825571d5e287550d360c6fbe98079cdb45b1b3705da76a446"
+    },
+    "v196/FINDING-NS196-G2.json": {
+      "bytes": 2106,
+      "sha256": "56b60bae2ce5f220e6baff03168adee4d35042987627248f11f71ae9c33affc8"
+    },
+    "v196/HANDOFF.md": {
+      "bytes": 1908,
+      "sha256": "793fcd458a3f39b71317752cd51addfd8022ca3bbd1015851d28d5a126dd1f8b"
+    },
+    "v196/OWNER-HANDOFF.json": {
+      "bytes": 1424,
+      "sha256": "b8d0325f2e386cf4ce161305db8771c920b05e59a4867b2dae72562db946079e"
+    },
+    "v196/RECEIPT.json": {
+      "bytes": 2030,
+      "sha256": "6d0b61d90fdeb35f2c12cf660ba06ceeb15e2adb82050a57cdcc6129b8c2f5d4"
+    },
+    "v196/delta-harness.mjs": {
+      "bytes": 11974,
+      "sha256": "7697e6f661d72dcb5514db83cb9f4756ac9bb49ab49203887fb2daada1e73eec"
+    }
+  }
+}

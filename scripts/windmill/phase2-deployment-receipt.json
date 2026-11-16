@@ -1,0 +1,28 @@
+{
+  "schema": "offmenu-platform-phase2-deployment-v1",
+  "baseline_commit": "e38cb82985c555f80200a5e8fc210592e67c05c3",
+  "private_script": "u/admin/foo_jobs_20261027",
+  "deployed_source_sha256": "06ac14241752df96dbec7bf9d7320cccb9634f576310be2ec613f9b74798c5da",
+  "deployed_readback_byte_equal": true,
+  "extra_perms": {},
+  "helper_sha256": "03f61831f020fdbb5152d1ffbfd656966768559225b3fe1c72b24b2a91aa2957",
+  "evidence": {
+    "business_failure_preview": "01a17f9b-e218-8b96-c7c4-6669a2df1857",
+    "production_success": "01a17f9d-2509-f308-c4d7-a3ff7594831c",
+    "production_failed_job_status": "01a17f9d-35f3-cbb7-831d-c1c5fd152537",
+    "host_19_checker_tests_and_verify": "01a17fa0-761d-b2cb-5838-43e3c4078029",
+    "host_source_docs_skills_transfer": "01a17fa1-3871-eb86-0ff1-78a5cec44a33",
+    "host_final_41_tests_18_reference_pins": "01a17fa2-110b-0bea-1704-1f988343c071"
+  },
+  "expected_controlled_failure": {
+    "logical_job_id": "platform-phase2-failure-smoke-20261027",
+    "exit_code": 7,
+    "cleanup_verified": true,
+    "incident_path": "u/admin/offmenu_platform/incidents/fcf46db77fb467b1c727834d61ba0ea72fd9eb9893f9e76ccabcda9ce7f9a97a",
+    "code": "BUSINESS_FAILED",
+    "annotation": "Deliberate verification; original immutable incident retained, not rewritten or prefix-suppressed."
+  },
+  "local_tests": 31,
+  "verification_scope": "Bounded selected current checkpoint/artifact verification, not full history or backup coverage. Same-disk storage only.",
+  "duckdb": "Installed runtime unchanged; setup-only draft regenerated reproducibly, not deployed or rerun."
+}

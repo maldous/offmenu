@@ -1,0 +1,13 @@
+{
+  "revision": "privacy-r2",
+  "manifestSha256": "5d8f69d0509f220ea8dec3ad429522348febce326c301c31a4f8a6d13a7787fa",
+  "appPatchSha256": "fe55a6394bbe10e4437a01086987ec5069665b83e47b2b6655252dc330db17e9",
+  "r1ToR2PatchSha256": "b8234b05e125e4fbea1565173ba0d4a95d42e30aaf3dd651898a3658ef2362c8",
+  "sourceOnly": true,
+  "originalsPreserved": true,
+  "excludes": [
+    "credentials",
+    "real profiles",
+    "raw datasets"
+  ]
+}

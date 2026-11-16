@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "offmenu-independent-runtime-terminal-receipt/1",
+  "observedAtUtc": "2026-10-28T09:17:27Z",
+  "windmillRun": "01a181bf-c416-8068-da08-852b39d3f5ee",
+  "windmillStatus": "success",
+  "durationMs": 368319,
+  "ok": true,
+  "job_id": "north-star-national-full-001",
+  "receipt": {
+    "logs": {
+      "stderr": "/offmenu/data/.offmenu-platform/jobs/north-star-national-full-001/stderr.log",
+      "stdout": "/offmenu/data/.offmenu-platform/jobs/north-star-national-full-001/stdout.log"
+    },
+    "mode": "write",
+    "job_id": "north-star-national-full-001",
+    "status": "succeeded",
+    "version": 3,
+    "exit_code": 0,
+    "log_bytes": {
+      "stderr": 0,
+      "stdout": 3982
+    },
+    "created_at": 1793178191.5260286,
+    "started_at": 1793178191.5468674,
+    "finished_at": 1793178559.1334121,
+    "heartbeat_at": 1793178559.1334198,
+    "output_bytes": {
+      "stderr": 0,
+      "stdout": 3982
+    },
+    "runner_sha256": "2ae57cc8edc66d9b56f43ad26dd8871fda155d23e50563988d3b0cac89d21674",
+    "command_sha256": "3d7dbc69cdf79928d139950f74c4453d2c9076ef2a0ad01a2b4632cd8077840b",
+    "logs_truncated": {
+      "stderr": false,
+      "stdout": false
+    },
+    "request_sha256": "ee72d27d67ab4dfdd254b17fa536abeb841d2049ff317c29aad725b384b20014",
+    "child_tree_gone": true,
+    "timeout_seconds": 1800,
+    "reconcile_required": false
+  },
+  "admitted": true,
+  "transport_ok": true,
+  "job_succeeded": true
+}

@@ -1,0 +1,6 @@
+[
+  "public/scanner-ui.js",
+  "public/cooking-model.js",
+  "public/insights-model.js",
+  "public/household-model.js"
+]

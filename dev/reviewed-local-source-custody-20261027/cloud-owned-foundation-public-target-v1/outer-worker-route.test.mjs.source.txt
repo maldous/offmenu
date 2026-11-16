@@ -1,0 +1,26 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {webcrypto} from 'node:crypto';
+import {pathToFileURL} from 'node:url';
+globalThis.crypto ||= webcrypto;
+const root=new URL('.',import.meta.url).pathname;
+const worker=(await import(pathToFileURL(process.env.OFFMENU_TEST_WORKER||root+'private-release-build/worker-chain/worker.mjs'))).default;
+const base=(await import('/workspace/shared/offmenu-production-route-20261027/production-candidate-modules/worker.mjs')).default;
+const origin='https://offmenu.aldous.info',raw='0011225604683';
+const calls=[];const prior=globalThis.fetch;globalThis.fetch=async(url)=>{calls.push(String(url));throw Error('No outbound requests in anonymous test');};
+const req=(path,method='GET',headers={})=>new Request(origin+path,{method,headers});
+test('actual outer worker serves only intended anonymous owned foundation paths before existing authentication guard',async()=>{
+ for(const path of ['/api/corpus/foundation?source=off&barcode='+raw,'/api/corpus/foundation/notices','/api/corpus/foundation/release']){const response=await worker.fetch(req(path),{});assert.equal(response.status,200,path);assert.equal(calls.length,0);assert.equal(response.headers.get('Cache-Control'),'no-store');}
+ const dto=await(await worker.fetch(req('/api/corpus/foundation?source=off&barcode='+raw),{})).json();assert.equal(dto.records[0].foundationSourceReference.lexicalValue,raw);assert.equal(dto.externalFallback,false);
+});
+test('private state, unknown API, corpus suffix and protocol guards retain exact original anonymous responses',async()=>{
+ for(const path of ['/api/state','/api/profile','/api/data/lookup','/api/corpus/foundation/private','/api/corpus/foundationx','/kitchen.html','/scanner.html']){const original=await base.fetch(req(path),{}),actual=await worker.fetch(req(path),{});assert.equal(actual.status,original.status,path);assert.deepEqual([...actual.headers],[...original.headers],path);assert.equal(await actual.text(),await original.text(),path);assert.ok(actual.status>=300,path);}
+ assert.equal(calls.length,0);
+});
+test('new public route keeps exact origin and method constraints, no credentials/profile or wildcard handling',async()=>{
+ assert.equal((await worker.fetch(req('/api/corpus/foundation?source=off&barcode='+raw,'POST'),{})).status,405);
+ assert.equal((await worker.fetch(req('/api/corpus/foundation?source=off&barcode='+raw,'GET',{Origin:'https://attacker.invalid'}),{})).status,403);
+ assert.equal((await worker.fetch(new Request('https://wrong.invalid/api/corpus/foundation/release'),{})).status,403);
+ assert.equal(calls.length,0);
+});
+test.after(()=>globalThis.fetch=prior);

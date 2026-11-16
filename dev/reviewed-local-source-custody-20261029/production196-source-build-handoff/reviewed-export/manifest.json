@@ -1,0 +1,57 @@
+{
+  "schema": "offmenu-lot-nutrition-source-handoff/1",
+  "baseCommit": "d1a576374a62c41e736464e2c1a8e68cdff37576",
+  "rows": [
+    "NUTRITION-HISTORY-GOALS",
+    "HOUSEHOLD-MEAL-PLANNING"
+  ],
+  "sourceClaims": "explicit user-selected per-lot profile; no canonical identity or corpus admission",
+  "files": {
+    "public/lot-nutrition.js": {
+      "sha256": "52bf54ffb375d4a84ac9b821d83ae2508b97fe6957d886f78737ff356b3ca2ce",
+      "bytes": 5358
+    },
+    "public/nutrient-profile.js": {
+      "sha256": "852801c373a679623cf8f40569cb3d84ddda2d34e221c031b913e5ed671f3a9a",
+      "bytes": 997
+    },
+    "tests-web/lot-nutrition-wiring.test.mjs": {
+      "sha256": "24bb2ee2bcad99fb222808f12d0b11851bd3cd0ce96af636183a9cd1ca49effd",
+      "bytes": 7372
+    },
+    "lot-nutrition-wiring.patch": {
+      "sha256": "cbf3e7b9e21b54c7c76ac8c97b960b48ceb5b6aab79f91150645264e3ae7b5c1",
+      "bytes": 35348
+    },
+    "function-local-replacements.json": {
+      "sha256": "05cbac31bcbc052d7fb7f448fbbae524a74da7c58d0cec110272eefa26ef8177",
+      "bytes": 3838
+    },
+    "HANDOFF.md": {
+      "sha256": "3b6d5c6bfe0bd60182ed6453ac585d1e6633ae179714a8b09a0dff33cf857435",
+      "bytes": 4009
+    },
+    "source-pins.json": {
+      "sha256": "08eba741224d1fe3c30ab9ce1a37fce86a5398b26a46895a030aa1d489ba3350",
+      "bytes": 1944
+    },
+    "baseline-summary.json": {
+      "sha256": "2a2de056fbbc8a0a11894d4cdbce971e51b085efa4d2bfd32456096401d6e2b4",
+      "bytes": 235
+    },
+    "candidate-summary.json": {
+      "sha256": "700cc1f33790a2298016bbde8afc916002be7d957aa697ac31044336fe9f0959",
+      "bytes": 1244
+    }
+  },
+  "changedSourceFiles": {
+    "public/app.js": "d385fea8bd5e38dadb9d8066630993a1c3627e34636636c8bfe2277d5662775c",
+    "public/model.js": "8e9232b49140a8ff3afb831db1e7ab13c0104a01ddfb575af14baf59835ed007",
+    "public/menu-model.js": "f3d33960451af9e0676489b324ec7f8af05f4f59c261661fad349ae2323e9c3e",
+    "public/cooking-model.js": "a8dd9e9697184d3f707ab1dc41f69a54250d2ccc747696a91cbc2ee2b8039106",
+    "public/unified-data.js": "ab4a141a51159df086519bba1cd59c850de4e73d8b2fd0b4e2a4d884ddedcda0",
+    "public/lot-nutrition.js": "52bf54ffb375d4a84ac9b821d83ae2508b97fe6957d886f78737ff356b3ca2ce",
+    "public/nutrient-profile.js": "852801c373a679623cf8f40569cb3d84ddda2d34e221c031b913e5ed671f3a9a",
+    "tests-web/lot-nutrition-wiring.test.mjs": "24bb2ee2bcad99fb222808f12d0b11851bd3cd0ce96af636183a9cd1ca49effd"
+  }
+}

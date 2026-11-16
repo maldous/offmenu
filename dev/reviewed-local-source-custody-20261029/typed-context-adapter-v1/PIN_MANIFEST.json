@@ -1,0 +1,38 @@
+{
+  "actualExecutorSourceDirectory": "/home/user/src/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/north-star-derived-20261028/typed-context-adapter-v1",
+  "containsRawData": false,
+  "files": [
+    {
+      "bytes": 25351,
+      "lines": 410,
+      "path": "typed_nutrient_context.py",
+      "sha256": "d85a499493f982bec60af67e2588290f56d74b50a0cba03602de083b26a16e8e"
+    },
+    {
+      "bytes": 20441,
+      "lines": 344,
+      "path": "test_typed_nutrient_context.py",
+      "sha256": "e1b5aee280344ed7104f31e69295d97cc463238bcaa72eed50bfdd3215e065bc"
+    },
+    {
+      "bytes": 8546,
+      "lines": 144,
+      "path": "CONTRACT.md",
+      "sha256": "a3ef1dad642d9638cf065409ad986872e567bbd9f0a49739a596a7148208e243"
+    },
+    {
+      "bytes": 4609,
+      "lines": 22,
+      "path": "CHECKS.json",
+      "sha256": "647b4dbdc3af877cd0499c5fb9074454dcb0963a4ad760edf1fea4e148a2c9e8"
+    }
+  ],
+  "implementationModifiedForPackaging": false,
+  "retainedCodePins": {
+    "north_star_basis_restoration.py": "cae8b86cbacdbf0d81b9a52bb508dadae56e29639cfd332f87fb2b71bd18566a",
+    "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+    "source_scoped_north_star_consumer.py": "75a43f30967c2ea38606e0a1468132629a51b9c79744eed71938a5e1d146b3bc"
+  },
+  "schemaVersion": "offmenu-typed-context-adapter-source-pins/1",
+  "testsRerunForPackaging": false
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "verified_at_utc": "2026-10-27T22:36:29.890664Z",
+  "verification_run": "https://windmill.aldous.info/run/01a17f82-0543-9ded-f91c-7865478047a3?workspace=offmenu",
+  "sole_writer": "/root/check_execution_tool_availability",
+  "foo_mutations_by_artifact_author": false,
+  "receipt": {
+    "correction": "Allowlist configured before disabling external access; final restrictions unchanged",
+    "dataset": "synthetic-only",
+    "distinct_categories": 8,
+    "duckdb_version": "1.5.6",
+    "elapsed_seconds": 0.042967,
+    "group_count": 8,
+    "grouped_result_sha256": "3f0c13c54e921eaa641f017f8b0b6bf27864d432681e05b9b47070b267104cd7",
+    "install_method": "isolated-venv-pip-no-index-no-deps-require-hashes",
+    "max_rss_kib": 68184,
+    "note": "Single synthetic verification trial, not a throughput/speedup/optimum claim. Buffer/spill/thread settings are not OS-level total process limits.",
+    "ok": true,
+    "parquet_bytes": 20945,
+    "parquet_sha256": "11d6989c72936a4d616d37a1b3318633b0d1b56215e765062e24a1aa71b1d3f5",
+    "pip_bootstrap": "pip 24.0 from /offmenu/data/.offmenu-platform/duckdb/1.5.6-bc9619ed7d4f/venv/lib/python3.12/site-packages/pip (python 3.12)",
+    "rows": 10000,
+    "runtime_directory": "/offmenu/data/.offmenu-platform/duckdb/1.5.6-bc9619ed7d4f",
+    "runtime_source_sha256": "a894d076d7adc6d349a229d417094f7fc7a5b08aab43f83049ed1e7f3662abd0",
+    "settings": {
+      "autoinstall_known_extensions": "false",
+      "autoload_known_extensions": "false",
+      "enable_external_access": "false",
+      "lock_configuration": "true",
+      "max_temp_directory_size": "20.0 GiB",
+      "memory_limit": "8.0 GiB",
+      "threads": "4"
+    },
+    "sum_id": 49995000,
+    "timings": {
+      "generate_seconds": 0.001091,
+      "parquet_groupby_seconds": 0.001178,
+      "parquet_readback_seconds": 0.00141,
+      "parquet_write_seconds": 0.001515,
+      "startup_seconds": 0.036951
+    },
+    "verified_installed_wheel_files": 53,
+    "wheel_bytes": 21568087,
+    "wheel_sha256": "bc9619ed7d4ffa117b5155d84b44794366bb6635178d78ed5e13a6024845c757"
+  }
+}

@@ -1,0 +1,1034 @@
+{
+  "status": "PASS_EXACT_R8_BASELINE_REPRODUCED_SEPARATE_IDENTITY_SOURCE_CANDIDATE",
+  "assets": {
+    "app.js": {
+      "baselineSha256": "c8a3f8d049e539167db4d006e468aa80473886e175525fed88ab23d0e991f96a",
+      "baselineReproduced": true,
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/assets/app.js",
+      "sha256": "c8a3f8d049e539167db4d006e468aa80473886e175525fed88ab23d0e991f96a",
+      "bytes": 448472,
+      "unchangedInputs": 64,
+      "changedInputs": []
+    },
+    "shelf-scanner.js": {
+      "baselineSha256": "ea040a9c4329cde4a4866c738fec78a3d26e3996edeb20cf308b93caf0775b8f",
+      "baselineReproduced": true,
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/assets/shelf-scanner.js",
+      "sha256": "c1fc8f10ee5c93c9f588ebde3e39aa6478dedc15d0edeee2abba7ea72c595670",
+      "bytes": 731374,
+      "unchangedInputs": 29,
+      "changedInputs": [
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/guest-foundation-client.mjs",
+          "logical": "13/guest-foundation-client.mjs",
+          "sha256": "d9f531f4e41d049aaf0609dccb8479aea24357c7d35218a94addf990abffd9ad"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/typed-identifier-contract.mjs",
+          "logical": "13/typed-identifier-contract.mjs",
+          "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-client.mjs",
+          "logical": "13/source-identity-client.mjs",
+          "sha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-selection.mjs",
+          "logical": "13/source-identity-selection.mjs",
+          "sha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/composed-scanner-client.mjs",
+          "logical": "13/composed-scanner-client.mjs",
+          "sha256": "45e6f713a55073ea102af06d9c5e6f20f07053d96a02dc608dacfa9d3019e7bc"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/shelf-scanner.js",
+          "logical": "13/shelf-scanner.js",
+          "sha256": "271366dfa06b165a5e6ac64240895359726d5308d5e761f0458a43856aa05d95"
+        }
+      ]
+    }
+  },
+  "inputs": {
+    "app": {
+      "before": [
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-handoff-bindings.mjs",
+          "logical": "00/bindings",
+          "sha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-scanner-handoff.mjs",
+          "logical": "00/helper",
+          "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/record-policy.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/record-policy.js",
+          "sha256": "048c6cfe0491c341f11424cd39a062c80d317f8bd13ff513c798867f848818a9"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locales/ar.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locales/ar.js",
+          "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locale-negotiation.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locale-negotiation.js",
+          "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/i18n.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/i18n.js",
+          "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/source-category-claims.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/source-category-claims.js",
+          "sha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/countries.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/countries.js",
+          "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/typed-identifier-contract.mjs",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/typed-identifier-contract.mjs",
+          "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/scanner-kitchen-handoff.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/scanner-kitchen-handoff.js",
+          "sha256": "d07d6ce268a4d07cc0c9368ae867b807aa2710ffae9265e737d0a889f74f3803"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/ingredients.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/ingredients.js",
+          "sha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-identity-v2.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-identity-v2.js",
+          "sha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/model.js",
+          "sha256": "ac59b94a9d0089bb770c86196fcd634d15d1ddc87d701bd2875ac3e55e786c2a"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/menu-model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/menu-model.js",
+          "sha256": "71a4f4f4e05d8c62a49ac55233448be42346427e528c485ecc76b7a7cbaeec16"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/unified-data.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/unified-data.js",
+          "sha256": "82d027668d9f528dd83bce3cbb8c6f39b0bcdfbb88c62994456c433bc402b782"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/saved-price-observations.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/saved-price-observations.js",
+          "sha256": "bc07674f9c59e140dce59f93cf85eef4bfde3cec3d2e0635472771c3fe7886cd"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/content-locale.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/content-locale.js",
+          "sha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-ingredient-aliases.json",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-ingredient-aliases.json",
+          "sha256": "c2dbca1d379ce93fa4423993ed0d1ace7669447c7899be025b7af3a8855bb609"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-review.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-review.js",
+          "sha256": "06c291981207ee25288a8bdfe7f1c5fd8eee41eb266cf249f067fddcd4b7600c"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-library-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-library-model.js",
+          "sha256": "7558a5b2fc7f8cb1c3fafc100b3a585b0c52560842270261b0aad85c4670a912"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/corpus/assert-curated.mjs",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/corpus/assert-curated.mjs",
+          "sha256": "c64ce47a881d987b4e3b48b84be1c22f1e95031a77d390d433404ed327bed69d"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/recipe-discovery-client.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/recipe-discovery-client.js",
+          "sha256": "e8e026682f06bd803091c3dfc72cdcee86a822d87d230629b5784f48702ea562"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/recipe-library-ui.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/recipe-library-ui.js",
+          "sha256": "9873ff604170e7df5a0120c5f771540ac83ec910df9609f1a5cb368ad6c6e7fc"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/cooking-model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/cooking-model.js",
+          "sha256": "96d160f5fd8c75f6e84148d4001ba7ec5ae991f487bf9c4b0777828cb2baed42"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sync-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sync-model.js",
+          "sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sync-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sync-ui.js",
+          "sha256": "bf35b0e04b8c77f1e8f453124d12fee69b99e39d7210bb8763218c9ea00759db"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sharing-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sharing-ui.js",
+          "sha256": "f84d30e1c236eb400e5e0587b764c470000a16f3ad7b2f6ec5e3cb6c183f1cc6"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/household-model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/household-model.js",
+          "sha256": "88a375ef4062fe84646af2cc7661749c2c2f2bc2dd8178852ff58ccbefbce587"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/normal-app-dc39-minimal-20261027/source/public/journey-ui.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/normal-app-dc39-minimal-20261027/source/public/journey-ui.js",
+          "sha256": "72ad38d3698fbf139e42d995a781bbab1551a8f1236289864a9b3707f46cc308"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/common-corpus-locale.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/common-corpus-locale.js",
+          "sha256": "728a26ac7eae0a6e55fdf03df2d347ffb5fd7f7a8a44334b243cd6b7df2f14b7"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sources.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sources.js",
+          "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/data-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/data-ui.js",
+          "sha256": "ca5e89125bbc896cc7ec5f8e383d7875f1515dc6af2a6a92405efc5cd6e567ed"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/access-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/access-ui.js",
+          "sha256": "5a394ea2b04fdba6ab39c6e53122a5c883040e353cdf98249bf213a527e85b15"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/waste-analysis-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/waste-analysis-model.js",
+          "sha256": "060e1ab4ca3ccef9506a87ab9d563a6bb626c7b76fe330d746420b97df94052d"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/integration-owner03.mjs",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/integration-owner03.mjs",
+          "sha256": "8e05b6896e840e4a8806b1d44a59f71fc690b6059af529401df5ddcd7731eab8"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/insights-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/insights-model.js",
+          "sha256": "f8008145063c8bbcf2c9322ece541ee10dc5a9f63678af78fb6f6167bf51f678"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/integrations.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/integrations.js",
+          "sha256": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/insights-ui.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/insights-ui.js",
+          "sha256": "45937c6133b3f70af1c2a0cbc589c9d7d889d5fc190a2dd00afd24a1ec39e863"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/checkout-model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/checkout-model.js",
+          "sha256": "e66f7436ddf823d116cc2fc777a86401fa74071f3d59758fb8ff5038c5a41ce8"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/freshness-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/freshness-ui.js",
+          "sha256": "c7a0d22bb09d060fd5b917a6076473f8b6da9d43a43db8dd92a49989234c9caf"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/session-fetch.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/session-fetch.js",
+          "sha256": "cddc55fc2666ed0d4eef67ca3315540b032c86f47628294ce0dc8f180204a8f3"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/offmenu-identity-client.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/offmenu-identity-client.js",
+          "sha256": "f94c0df448c762224ea61fcb2e85b32cd5419a962ae793a45ab450e1ea78b53f"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/care-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/care-model.js",
+          "sha256": "81a5c3771f8420bc81129aeeb57309a0d851dd3878e3c1016895890e40e7f96e"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/care-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/care-ui.js",
+          "sha256": "a67258db6ef0c952450aeb089db3485021966dd0a837a1c0e96725ef7c0a581b"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-community-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-community-model.js",
+          "sha256": "dde224681112c5085ef0038d57ab64e3a3e20eeba1a43da967e5ccbaa7c093d4"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-community-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-community-ui.js",
+          "sha256": "9dd5d426122e602bcd8d42d9b74a44983323858afeb870c49f446b17e1be2acb"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/community-ai-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/community-ai-ui.js",
+          "sha256": "6c4bdbba7fc208a6340b696373ce4a7ca3d7d2243306ebf999d9033dd6eaf560"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/personal-ai-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/personal-ai-ui.js",
+          "sha256": "79d6479ed36cb197ec270c993a501e8ec31e3c22b66603df112ff6c45ee01db8"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/services-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/services-model.js",
+          "sha256": "05d3279638586ad890de104504b40466f13cbdd1bbb87d4091f1962c77ed1ff9"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/services-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/services-ui.js",
+          "sha256": "0db7f4719d4244ce28bf8e26763ac477f948d21aa3be4f31c95aeb49ecd397f4"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-model.js",
+          "sha256": "93de743170678cd633eea2ea737da784386a8e2f3f42d3c0501eb809c50c8de9"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-ui.js",
+          "sha256": "5437925cabde6eec107532d9470dcefe3639f06e73a8aa96a6867b88718000e9"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-operations-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-operations-ui.js",
+          "sha256": "7d8e5385abd34b3bcfad22780482d0465b1333fee2c0d98c267242c366da186d"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/documents.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/documents.js",
+          "sha256": "a19e076a3e9924f0a20ffac53ab7169e1b55768953b39fe3b41a33b0f1bd1f54"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/cloud/state.mjs",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/cloud/state.mjs",
+          "sha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/cloud/meal-preference-owner20.mjs",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/cloud/meal-preference-owner20.mjs",
+          "sha256": "0f49e01eeb5209fd98e39b50efc94b789f066c4a7c00cd4ea4764d54762a741e"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/pantry-backup.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/pantry-backup.js",
+          "sha256": "15043b581af000070ac9db1499af0693eb6dad9dd7071e741f18e70da7c24c80"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/lifecycle-fixture.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/lifecycle-fixture.js",
+          "sha256": "ae75bc08ce8818278b6a330b1872943868ad19991cf536bb4d9863a6fadb40d1"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-model.js",
+          "sha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-capture-envelope.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-capture-envelope.js",
+          "sha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-ui.js",
+          "sha256": "d4224f3c61bc301f9ed0cc331be7338fb4e7af179dbd64456e64dc94f1905dd6"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-retained-identity-ui-20261025/node_modules/gotrue-js/lib/index.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-retained-identity-ui-20261025/node_modules/gotrue-js/lib/index.js",
+          "sha256": "0f26ddf432d7693264ede22528edb58087f646bc6cecfc686ce47351e89bc5df"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-retained-identity-ui-20261025/node_modules/@netlify/identity/dist/main.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-retained-identity-ui-20261025/node_modules/@netlify/identity/dist/main.js",
+          "sha256": "bbfddfc66293ecc3a2ca94c6cdc4a3fd039705bded3e44808ec4e159bc6c23d3"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/r8-list-combined-r1/candidate/app.js",
+          "logical": "13/app.js",
+          "sha256": "722720c61f4d0a76cf782f690093a28a8efff0d06ce3f49c6e661acc25307c60"
+        }
+      ],
+      "after": [
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-handoff-bindings.mjs",
+          "logical": "00/bindings",
+          "sha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-scanner-handoff.mjs",
+          "logical": "00/helper",
+          "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/record-policy.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/record-policy.js",
+          "sha256": "048c6cfe0491c341f11424cd39a062c80d317f8bd13ff513c798867f848818a9"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locales/ar.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locales/ar.js",
+          "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locale-negotiation.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locale-negotiation.js",
+          "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/i18n.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/i18n.js",
+          "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/source-category-claims.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/source-category-claims.js",
+          "sha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/countries.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/countries.js",
+          "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/typed-identifier-contract.mjs",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/typed-identifier-contract.mjs",
+          "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/scanner-kitchen-handoff.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/scanner-kitchen-handoff.js",
+          "sha256": "d07d6ce268a4d07cc0c9368ae867b807aa2710ffae9265e737d0a889f74f3803"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/ingredients.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/ingredients.js",
+          "sha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-identity-v2.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-identity-v2.js",
+          "sha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/model.js",
+          "sha256": "ac59b94a9d0089bb770c86196fcd634d15d1ddc87d701bd2875ac3e55e786c2a"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/menu-model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/menu-model.js",
+          "sha256": "71a4f4f4e05d8c62a49ac55233448be42346427e528c485ecc76b7a7cbaeec16"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/unified-data.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/unified-data.js",
+          "sha256": "82d027668d9f528dd83bce3cbb8c6f39b0bcdfbb88c62994456c433bc402b782"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/saved-price-observations.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/saved-price-observations.js",
+          "sha256": "bc07674f9c59e140dce59f93cf85eef4bfde3cec3d2e0635472771c3fe7886cd"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/content-locale.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/content-locale.js",
+          "sha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-ingredient-aliases.json",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-ingredient-aliases.json",
+          "sha256": "c2dbca1d379ce93fa4423993ed0d1ace7669447c7899be025b7af3a8855bb609"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-review.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-review.js",
+          "sha256": "06c291981207ee25288a8bdfe7f1c5fd8eee41eb266cf249f067fddcd4b7600c"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-library-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-library-model.js",
+          "sha256": "7558a5b2fc7f8cb1c3fafc100b3a585b0c52560842270261b0aad85c4670a912"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/corpus/assert-curated.mjs",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/corpus/assert-curated.mjs",
+          "sha256": "c64ce47a881d987b4e3b48b84be1c22f1e95031a77d390d433404ed327bed69d"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/recipe-discovery-client.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/recipe-discovery-client.js",
+          "sha256": "e8e026682f06bd803091c3dfc72cdcee86a822d87d230629b5784f48702ea562"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/recipe-library-ui.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/recipe-library-ui.js",
+          "sha256": "9873ff604170e7df5a0120c5f771540ac83ec910df9609f1a5cb368ad6c6e7fc"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/cooking-model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/cooking-model.js",
+          "sha256": "96d160f5fd8c75f6e84148d4001ba7ec5ae991f487bf9c4b0777828cb2baed42"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sync-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sync-model.js",
+          "sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sync-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sync-ui.js",
+          "sha256": "bf35b0e04b8c77f1e8f453124d12fee69b99e39d7210bb8763218c9ea00759db"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sharing-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sharing-ui.js",
+          "sha256": "f84d30e1c236eb400e5e0587b764c470000a16f3ad7b2f6ec5e3cb6c183f1cc6"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/household-model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/household-model.js",
+          "sha256": "88a375ef4062fe84646af2cc7661749c2c2f2bc2dd8178852ff58ccbefbce587"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/normal-app-dc39-minimal-20261027/source/public/journey-ui.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/normal-app-dc39-minimal-20261027/source/public/journey-ui.js",
+          "sha256": "72ad38d3698fbf139e42d995a781bbab1551a8f1236289864a9b3707f46cc308"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/common-corpus-locale.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/common-corpus-locale.js",
+          "sha256": "728a26ac7eae0a6e55fdf03df2d347ffb5fd7f7a8a44334b243cd6b7df2f14b7"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sources.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/sources.js",
+          "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/data-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/data-ui.js",
+          "sha256": "ca5e89125bbc896cc7ec5f8e383d7875f1515dc6af2a6a92405efc5cd6e567ed"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/access-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/access-ui.js",
+          "sha256": "5a394ea2b04fdba6ab39c6e53122a5c883040e353cdf98249bf213a527e85b15"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/waste-analysis-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/waste-analysis-model.js",
+          "sha256": "060e1ab4ca3ccef9506a87ab9d563a6bb626c7b76fe330d746420b97df94052d"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/integration-owner03.mjs",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/integration-owner03.mjs",
+          "sha256": "8e05b6896e840e4a8806b1d44a59f71fc690b6059af529401df5ddcd7731eab8"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/insights-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/insights-model.js",
+          "sha256": "f8008145063c8bbcf2c9322ece541ee10dc5a9f63678af78fb6f6167bf51f678"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/integrations.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/integrations.js",
+          "sha256": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/insights-ui.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/insights-ui.js",
+          "sha256": "45937c6133b3f70af1c2a0cbc589c9d7d889d5fc190a2dd00afd24a1ec39e863"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/checkout-model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/checkout-model.js",
+          "sha256": "e66f7436ddf823d116cc2fc777a86401fa74071f3d59758fb8ff5038c5a41ce8"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/freshness-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/freshness-ui.js",
+          "sha256": "c7a0d22bb09d060fd5b917a6076473f8b6da9d43a43db8dd92a49989234c9caf"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/session-fetch.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/session-fetch.js",
+          "sha256": "cddc55fc2666ed0d4eef67ca3315540b032c86f47628294ce0dc8f180204a8f3"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/offmenu-identity-client.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/offmenu-identity-client.js",
+          "sha256": "f94c0df448c762224ea61fcb2e85b32cd5419a962ae793a45ab450e1ea78b53f"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/care-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/care-model.js",
+          "sha256": "81a5c3771f8420bc81129aeeb57309a0d851dd3878e3c1016895890e40e7f96e"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/care-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/care-ui.js",
+          "sha256": "a67258db6ef0c952450aeb089db3485021966dd0a837a1c0e96725ef7c0a581b"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-community-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-community-model.js",
+          "sha256": "dde224681112c5085ef0038d57ab64e3a3e20eeba1a43da967e5ccbaa7c093d4"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-community-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/recipe-community-ui.js",
+          "sha256": "9dd5d426122e602bcd8d42d9b74a44983323858afeb870c49f446b17e1be2acb"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/community-ai-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/community-ai-ui.js",
+          "sha256": "6c4bdbba7fc208a6340b696373ce4a7ca3d7d2243306ebf999d9033dd6eaf560"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/personal-ai-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/personal-ai-ui.js",
+          "sha256": "79d6479ed36cb197ec270c993a501e8ec31e3c22b66603df112ff6c45ee01db8"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/services-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/services-model.js",
+          "sha256": "05d3279638586ad890de104504b40466f13cbdd1bbb87d4091f1962c77ed1ff9"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/services-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/services-ui.js",
+          "sha256": "0db7f4719d4244ce28bf8e26763ac477f948d21aa3be4f31c95aeb49ecd397f4"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-model.js",
+          "sha256": "93de743170678cd633eea2ea737da784386a8e2f3f42d3c0501eb809c50c8de9"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-ui.js",
+          "sha256": "5437925cabde6eec107532d9470dcefe3639f06e73a8aa96a6867b88718000e9"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-operations-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/admin-operations-ui.js",
+          "sha256": "7d8e5385abd34b3bcfad22780482d0465b1333fee2c0d98c267242c366da186d"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/documents.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/documents.js",
+          "sha256": "a19e076a3e9924f0a20ffac53ab7169e1b55768953b39fe3b41a33b0f1bd1f54"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/cloud/state.mjs",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/cloud/state.mjs",
+          "sha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/cloud/meal-preference-owner20.mjs",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/cloud/meal-preference-owner20.mjs",
+          "sha256": "0f49e01eeb5209fd98e39b50efc94b789f066c4a7c00cd4ea4764d54762a741e"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/pantry-backup.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/pantry-backup.js",
+          "sha256": "15043b581af000070ac9db1499af0693eb6dad9dd7071e741f18e70da7c24c80"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/lifecycle-fixture.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/lifecycle-fixture.js",
+          "sha256": "ae75bc08ce8818278b6a330b1872943868ad19991cf536bb4d9863a6fadb40d1"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-model.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-model.js",
+          "sha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-capture-envelope.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-capture-envelope.js",
+          "sha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-ui.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-ui.js",
+          "sha256": "d4224f3c61bc301f9ed0cc331be7338fb4e7af179dbd64456e64dc94f1905dd6"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-retained-identity-ui-20261025/node_modules/gotrue-js/lib/index.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-retained-identity-ui-20261025/node_modules/gotrue-js/lib/index.js",
+          "sha256": "0f26ddf432d7693264ede22528edb58087f646bc6cecfc686ce47351e89bc5df"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-retained-identity-ui-20261025/node_modules/@netlify/identity/dist/main.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-retained-identity-ui-20261025/node_modules/@netlify/identity/dist/main.js",
+          "sha256": "bbfddfc66293ecc3a2ca94c6cdc4a3fd039705bded3e44808ec4e159bc6c23d3"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/app.js",
+          "logical": "13/app.js",
+          "sha256": "722720c61f4d0a76cf782f690093a28a8efff0d06ce3f49c6e661acc25307c60"
+        }
+      ]
+    },
+    "scanner": {
+      "before": [
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-handoff-bindings.mjs",
+          "logical": "00/bindings",
+          "sha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-scanner-handoff.mjs",
+          "logical": "00/helper",
+          "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/source-category-claims.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/source-category-claims.js",
+          "sha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-identity-v2.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-identity-v2.js",
+          "sha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/source-classification-contract.mjs",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/source-classification-contract.mjs",
+          "sha256": "e781776fd220a9957c8e03b8e365d62ac161ebc85ba376d5d916c6696b8a82ef"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-source-assertions.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-source-assertions.js",
+          "sha256": "ea2266461c216750d6a9bc7e34a0a781e2beacf479bb1c5751f3490f61175c16"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/typed-identifier-contract.mjs",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/typed-identifier-contract.mjs",
+          "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/scanner-kitchen-handoff.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/scanner-kitchen-handoff.js",
+          "sha256": "d07d6ce268a4d07cc0c9368ae867b807aa2710ffae9265e737d0a889f74f3803"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/r8-list-combined-r1/candidate/foundation-scanner-client.mjs",
+          "logical": "13/foundation-scanner-client.mjs",
+          "sha256": "d6e82b813a49184d5fb4ac5e234404acf2bd46009e8cebb8e36240d38381f073"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/locales/ar.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/locales/ar.js",
+          "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/locale-negotiation.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/locale-negotiation.js",
+          "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/i18n.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/i18n.js",
+          "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-model.js",
+          "sha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/typed-identifier-contract.mjs",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/typed-identifier-contract.mjs",
+          "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-capture-envelope.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-capture-envelope.js",
+          "sha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-ui.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-ui.js",
+          "sha256": "6d36d4a364c89f38550c9f0050e5f4076d11a248e8a692b54e71f6b6c3a7b12b"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/retained-source-photo-selection.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/retained-source-photo-selection.js",
+          "sha256": "a76143f08fedd1683d91ce8d6501c71e13d619d7d3c8ff6ed84a7be9504a3eaa"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locales/ar.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locales/ar.js",
+          "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locale-negotiation.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locale-negotiation.js",
+          "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/i18n.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/i18n.js",
+          "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/ingredients.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/ingredients.js",
+          "sha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/model.js",
+          "sha256": "ac59b94a9d0089bb770c86196fcd634d15d1ddc87d701bd2875ac3e55e786c2a"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/off-photo-metadata.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/off-photo-metadata.js",
+          "sha256": "1a3808a413e4302b440fe71e7c326e4e66c84a9d6a653bcc55dc7da9f18f9280"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/off-photo-catalogue.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/off-photo-catalogue.js",
+          "sha256": "991791f2b176c0e216cfe3d96c9e9d7daf86a3a2d89ab0b527d578098ebab430"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-selector.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-selector.js",
+          "sha256": "635040c812cb96cb323260ee153a58767006adbd25c0b09c34eae0aa163032c4"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-association.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-association.js",
+          "sha256": "7cbeb14a1c39dc079cad96f155f1ae0c6ea4f6402ffecf6f871dade6956ce661"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/scanner-product-visuals.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/scanner-product-visuals.js",
+          "sha256": "3993582332aa3b9708cf349cbb1a352676ea2500014a83c066d2615393e5a769"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-product-visuals-production.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-product-visuals-production.js",
+          "sha256": "37f2a6642afc5991ecc37577e2a09c4312439f12a2018179d45e81c02a3488e2"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-three.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-three.js",
+          "sha256": "316e4a74c70140ee8253c44032b2f1a3e683f8f36608c8fce2a789256fd8fe8a"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/r8-list-combined-r1/candidate/shelf-scanner.js",
+          "logical": "13/shelf-scanner.js",
+          "sha256": "15b41defdff1e1f600a286da98015a6db554856b94f607e2f89884385cadc0cf"
+        }
+      ],
+      "after": [
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-handoff-bindings.mjs",
+          "logical": "00/bindings",
+          "sha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-scanner-handoff.mjs",
+          "logical": "00/helper",
+          "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/source-category-claims.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/source-category-claims.js",
+          "sha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-identity-v2.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-identity-v2.js",
+          "sha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/source-classification-contract.mjs",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/source-classification-contract.mjs",
+          "sha256": "e781776fd220a9957c8e03b8e365d62ac161ebc85ba376d5d916c6696b8a82ef"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-source-assertions.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-source-assertions.js",
+          "sha256": "ea2266461c216750d6a9bc7e34a0a781e2beacf479bb1c5751f3490f61175c16"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/typed-identifier-contract.mjs",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/typed-identifier-contract.mjs",
+          "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/scanner-kitchen-handoff.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/scanner-kitchen-handoff.js",
+          "sha256": "d07d6ce268a4d07cc0c9368ae867b807aa2710ffae9265e737d0a889f74f3803"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/foundation-scanner-client.mjs",
+          "logical": "13/foundation-scanner-client.mjs",
+          "sha256": "d6e82b813a49184d5fb4ac5e234404acf2bd46009e8cebb8e36240d38381f073"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/guest-foundation-client.mjs",
+          "logical": "13/guest-foundation-client.mjs",
+          "sha256": "d9f531f4e41d049aaf0609dccb8479aea24357c7d35218a94addf990abffd9ad"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/typed-identifier-contract.mjs",
+          "logical": "13/typed-identifier-contract.mjs",
+          "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-client.mjs",
+          "logical": "13/source-identity-client.mjs",
+          "sha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-selection.mjs",
+          "logical": "13/source-identity-selection.mjs",
+          "sha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/composed-scanner-client.mjs",
+          "logical": "13/composed-scanner-client.mjs",
+          "sha256": "45e6f713a55073ea102af06d9c5e6f20f07053d96a02dc608dacfa9d3019e7bc"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/locales/ar.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/locales/ar.js",
+          "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/locale-negotiation.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/locale-negotiation.js",
+          "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/i18n.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/i18n.js",
+          "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-model.js",
+          "sha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/typed-identifier-contract.mjs",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/typed-identifier-contract.mjs",
+          "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-capture-envelope.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-capture-envelope.js",
+          "sha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-ui.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-ui.js",
+          "sha256": "6d36d4a364c89f38550c9f0050e5f4076d11a248e8a692b54e71f6b6c3a7b12b"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/retained-source-photo-selection.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/retained-source-photo-selection.js",
+          "sha256": "a76143f08fedd1683d91ce8d6501c71e13d619d7d3c8ff6ed84a7be9504a3eaa"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locales/ar.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locales/ar.js",
+          "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locale-negotiation.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/locale-negotiation.js",
+          "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+        },
+        {
+          "path": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/i18n.js",
+          "logical": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/i18n.js",
+          "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/ingredients.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/ingredients.js",
+          "sha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/model.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-foundation-root14-r1/confirmed-handoff-r1/model.js",
+          "sha256": "ac59b94a9d0089bb770c86196fcd634d15d1ddc87d701bd2875ac3e55e786c2a"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/off-photo-metadata.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/off-photo-metadata.js",
+          "sha256": "1a3808a413e4302b440fe71e7c326e4e66c84a9d6a653bcc55dc7da9f18f9280"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/off-photo-catalogue.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/off-photo-catalogue.js",
+          "sha256": "991791f2b176c0e216cfe3d96c9e9d7daf86a3a2d89ab0b527d578098ebab430"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-selector.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-selector.js",
+          "sha256": "635040c812cb96cb323260ee153a58767006adbd25c0b09c34eae0aa163032c4"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-association.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-association.js",
+          "sha256": "7cbeb14a1c39dc079cad96f155f1ae0c6ea4f6402ffecf6f871dade6956ce661"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/scanner-product-visuals.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/scanner-product-visuals.js",
+          "sha256": "3993582332aa3b9708cf349cbb1a352676ea2500014a83c066d2615393e5a769"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-product-visuals-production.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-product-visuals-production.js",
+          "sha256": "37f2a6642afc5991ecc37577e2a09c4312439f12a2018179d45e81c02a3488e2"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-three.js",
+          "logical": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/production-scanner/scanner-three.js",
+          "sha256": "316e4a74c70140ee8253c44032b2f1a3e683f8f36608c8fce2a789256fd8fe8a"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/shelf-scanner.js",
+          "logical": "13/shelf-scanner.js",
+          "sha256": "271366dfa06b165a5e6ac64240895359726d5308d5e761f0458a43856aa05d95"
+        }
+      ]
+    }
+  },
+  "scope": "Identity client SOURCE ONLY/unconfigured default. App and phase client/helper/bindings unchanged; protected controller and separate identity modules only. No entry/auth/Finish/model/backend/runtime mutation."
+}

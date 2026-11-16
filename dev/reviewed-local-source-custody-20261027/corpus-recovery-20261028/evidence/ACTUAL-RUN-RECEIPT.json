@@ -1,0 +1,16 @@
+{
+  "windmill_run_id": "01a18006-a398-b79c-4977-9cae7b11ae36",
+  "inventory_read_run_id": "01a18006-f8b4-4a0e-95d7-89f922799b77",
+  "job_id": "corpus-metadata-inventory-20261028-v1",
+  "exit_code": 0,
+  "mode": "read",
+  "timeout_seconds": 30,
+  "child_tree_gone": true,
+  "stdout_bytes": 5811,
+  "stderr_bytes": 0,
+  "truncated": false,
+  "runner_sha256": "81b2918d8384ac3da63397263263c01340dc9b90031672d1fa4baab16aef8c1a",
+  "deployed_client_source_sha256": "06ac14241752df96dbec7bf9d7320cccb9634f576310be2ec613f9b74798c5da",
+  "probe_sha256": "7a399db0cc8fa2f9ac7a1da14bc59e081730702cfa299db5993e23d28a3458a7",
+  "full_data_verification": false
+}

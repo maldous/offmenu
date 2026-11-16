@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "offmenu-independent-national-derivation-review/1",
+  "reviewer": "align_north_star_graph",
+  "author": "scale_north_star_derivation",
+  "verdict": "approved-for-selected-immutable-national-input",
+  "sourcePins": {
+    "derive_north_star_national.py": "db14fe986b3d6c5e1b51cfb7ff88b89244fc54e44fb940dc075e4def41242160",
+    "north_star_national_context.py": "c9d3594287884e5f6060aa97aef284903ff9bb23397cbbba03ff60f21bbdd5bb",
+    "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509"
+  },
+  "tests": {
+    "authoredIndependentlyRun": 10,
+    "additionalIndependentProbes": 4
+  },
+  "selectedManifestSha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+  "reviewScope": [
+    "113-line runner delta from independently reviewed bulk runner",
+    "exact source subject/path/citation/resource/scope metric-context join",
+    "food/profile/metric typed source-release consumer paths",
+    "frozen canonical schema and contract metadata pins",
+    "existing checkpoint/durability/resource controls retained"
+  ],
+  "limits": [
+    "No actual national production result yet.",
+    "No nutrient-definition equivalence, identity, diet or planning admission.",
+    "Core structural builder and original quantity values remain unchanged."
+  ]
+}

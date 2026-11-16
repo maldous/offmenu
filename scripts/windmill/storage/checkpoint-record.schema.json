@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OffMenu nonsecret checkpoint record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id", "partition", "status"],
+  "properties": {
+    "run_id": {"type": "string", "minLength": 1, "maxLength": 160},
+    "partition": {"type": "string", "minLength": 1, "maxLength": 160},
+    "status": {"enum": ["pending", "running", "completed", "failed"]},
+    "cursor": {"oneOf": [{"type": "null"}, {"type": "string", "maxLength": 512}, {"type": "integer", "minimum": 0, "maximum": 9223372036854775807}]},
+    "counts": {"type": "object", "maxProperties": 32, "additionalProperties": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807}}
+  },
+  "$comment": "Operational metadata only; no secrets or source rows. Python helper additionally enforces safe identifiers and total byte bounds. This file does not create a Windmill custom resource type."
+}

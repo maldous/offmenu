@@ -1,0 +1,113 @@
+{
+  "baseDependencies": {
+    "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+    "manifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e",
+    "resolver": "Original citation and resource IDs resolve only against the exact selected immutable input graph; no copied rights grant or identity admission.",
+    "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+  },
+  "candidateOnly": true,
+  "committedShardBytes": 19271064278,
+  "complete": true,
+  "completedAssets": 9797,
+  "confidence": {
+    "probability": null,
+    "status": "not-calibrated"
+  },
+  "consumerIndex": {
+    "acceptedIdentityJoins": 0,
+    "queries": {
+      "ambiguousProductKeysNotMerged": {
+        "count": 400164,
+        "sql": "SELECT count(*) FROM (SELECT key_sha FROM identifiers GROUP BY key_sha HAVING count(DISTINCT subject)>1)"
+      },
+      "identifierProductProfileJoins": {
+        "count": 2980298,
+        "sql": "SELECT count(*) FROM unique_product_keys k WHERE EXISTS (SELECT 1 FROM resolved_edges e WHERE e.subject=k.subject)"
+      },
+      "identifierProductProfileNutrientContextJoins": {
+        "count": 2980298,
+        "sql": "SELECT count(*) FROM unique_product_keys k WHERE EXISTS (SELECT 1 FROM resolved_edges e WHERE e.subject=k.subject AND e.has_context=1)"
+      },
+      "productProfileEdgesResolved": {
+        "count": 2915727,
+        "sql": "SELECT count(*) FROM resolved_edges"
+      },
+      "productProfileNutrientContextJoins": {
+        "count": 2915727,
+        "sql": "SELECT count(*) FROM resolved_edges WHERE has_context=1"
+      },
+      "sourceScopedProductIdentifierKeys": {
+        "count": 7019159,
+        "sql": "SELECT count(DISTINCT key_sha) FROM identifiers"
+      },
+      "uniqueSourceScopedProductKeys": {
+        "count": 6618995,
+        "sql": "SELECT count(*) FROM unique_product_keys"
+      },
+      "unresolvedOrIncompatibleProductProfileEdges": {
+        "count": 0,
+        "sql": "SELECT (SELECT count(*) FROM edges)-(SELECT count(*) FROM resolved_edges)"
+      }
+    },
+    "servedAppQueries": 0,
+    "sqliteBytes": 11325087744,
+    "sqliteSha256": "5e6d5c14a26515632a56aac2ff128a12baaa6ec7d030703c368cc8c297a4c1ad"
+  },
+  "counts": {
+    "assertions": 137295959,
+    "canonicalUnitCandidates": 2924709,
+    "derivedAssertions": 46795344,
+    "derivedRelations": 2915727,
+    "indexRows": 20948483,
+    "packets": 9796656,
+    "profileReportedBasisContexts": 46795344,
+    "relations": 2915727,
+    "resources": 9796656,
+    "sidecarPackets": 5840436,
+    "translations": 0
+  },
+  "elapsedSeconds": 533.13,
+  "expectedAssets": 9797,
+  "globalQualificationBinding": "pending separate owner proof",
+  "localShardInventory": {
+    "canonicalSha256": "0273bfc24351a54f48d9c0e2b782755393f8b7f19978bd628553edbfc9c79def",
+    "canonicalization": "JSON UTF-8, ensure_ascii=False, sort_keys=True, separators comma/colon",
+    "count": 9797
+  },
+  "producerManifest": {
+    "bytes": 5042590,
+    "sha256": "83773291ac70931a110f60e872ae47a2bd470b5f397c709195dcf016c0bf0694"
+  },
+  "publicFileInventory": {
+    "bytes": 17663495101,
+    "canonicalSha256": "be444447e3548d8ea8524370e62ba574778398c6e624398a3fb742dad200fd97",
+    "canonicalization": "JSON UTF-8, ensure_ascii=False, sort_keys=True, separators comma/colon",
+    "count": 9797,
+    "first": {
+      "bytes": 1123140,
+      "key": "shards/000000/derivations.jsonl.gz",
+      "sha256": "8ae858c4450376305129b30341d790f285c50a11a943918f0f8cb3321bfa5002",
+      "sidecarPackets": 357
+    },
+    "last": {
+      "bytes": 38,
+      "key": "shards/009796/derivations.jsonl.gz",
+      "sha256": "d7b94fd49d1a26b9aca1af9070a18ee3e218019c83bc7273226052cd53cc569a",
+      "sidecarPackets": 0
+    }
+  },
+  "publicationEligible": false,
+  "schemaVersion": "offmenu-north-star-full-derivation/1",
+  "selection": {
+    "codePins": {
+      "derive_north_star_bulk.py": "3adc476be2a6694d62c76bb4d539f0fc698810fd3b942dc9ae501e940efde7a1",
+      "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509"
+    },
+    "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+    "manifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e",
+    "rulesetVersion": "north-star-structural-derivations/2",
+    "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+  },
+  "semanticStatus": "candidate-not-admitted",
+  "status": "all-selected-packets-derived-and-consumer-queries-exercised"
+}

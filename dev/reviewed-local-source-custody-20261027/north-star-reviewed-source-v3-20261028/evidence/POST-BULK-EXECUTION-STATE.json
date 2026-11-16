@@ -1,0 +1,77 @@
+{
+  "activeNorthStarDataWriters": 0,
+  "automaticIdentityOrServingActivation": false,
+  "baseOutputRoot": "/offmenu/data/.offmenu-platform/corpus-recovery-20261028-v1/north-star-derived-20261028",
+  "basis": {
+    "authorityState": "Parent escalated new destination-authorization denial to root; no dependent new Foo writes attempted.",
+    "codeRoot": "basis-code-v1",
+    "outputRoot": "basis-restoration-v1",
+    "phase1AbsoluteOwnedOutputBudgetBytes": 10737418240,
+    "phase2TotalBudget": "Must include retained phase1 index, sidecars, local locator and proof; measure before admission.",
+    "pureSha256": "cae8b86cbacdbf0d81b9a52bb508dadae56e29639cfd332f87fb2b71bd18566a",
+    "resourceState": "Global proof017 clean terminal; next remaining64MiB declaration review pending, may free ordinary headroom.",
+    "runnerSha256": "24b477296d17675f7eb2ef3c674e5ae153a603afa599743161a13d0e05106d59",
+    "state": "reviewed-code-staged-not-submitted"
+  },
+  "globalCorpusProofOwner": "/root/assess_partial_corpus_resume",
+  "jobs": [
+    {
+      "artifact": "full-bulk-v1/manifest.json",
+      "artifactBytes": 5042590,
+      "artifactSha256": "83773291ac70931a110f60e872ae47a2bd470b5f397c709195dcf016c0bf0694",
+      "childTreeGone": true,
+      "completedAtUnix": 1793177905.8994431,
+      "evidence": "FULL-BULK-FINAL-MANIFEST-SUMMARY.json",
+      "exitCode": 0,
+      "logicalJobId": "north-star-full-bulk-004",
+      "state": "succeeded",
+      "windmillRun": "01a181b3-4525-d5c6-9ef8-fb0dab41ebae"
+    },
+    {
+      "artifact": "full-national-v1/manifest.json",
+      "artifactBytes": 753945,
+      "artifactSha256": "71fbf6f68e050989b95c4c602ee90775e2eac83a53ae66790f3b915d091af29d",
+      "childTreeGone": true,
+      "completedAtUnix": 1793178559.1334121,
+      "evidence": "FULL-NATIONAL-FINAL-MANIFEST-SUMMARY.json",
+      "exitCode": 0,
+      "logicalJobId": "north-star-national-full-001",
+      "state": "succeeded",
+      "windmillRun": "01a181bf-c416-8068-da08-852b39d3f5ee"
+    },
+    {
+      "artifact": "full-bulk-namespace-query-v1/report.json",
+      "artifactBytes": 2551,
+      "artifactSha256": "1fba08ba7c859afaa355530d74b4c0dc9ec6c35a0212ab8c871bf3cf68e41ef4",
+      "childTreeGone": true,
+      "completedAtUnix": 1793178588.5172794,
+      "evidence": "FULL-BULK-NAMESPACE-QUERY-PROOF.json",
+      "exitCode": 0,
+      "logicalJobId": "north-star-full-bulk-namespace-001",
+      "state": "succeeded",
+      "windmillRun": "01a181c4-c80e-f765-0663-a7d7d5195d5c"
+    },
+    {
+      "destination": "caller-code-v1",
+      "logicalJobId": "north-star-caller-code-001",
+      "reason": "Persistent reviewed source upload to Foo/Windmill destination not accepted as explicitly authorized or verified trusted; approval described as GitHub-only.",
+      "retryOrAlternateRouteAttempted": false,
+      "state": "platform-denied-known-nonexecuted",
+      "windmillRun": null
+    },
+    {
+      "artifactBytes": 9445,
+      "artifactSha256": "18c956aba631eb2b7090f6d0f492394398d5349e6926df635514b297e8a36369",
+      "destination": "full-bulk-v1/reviewed-consumer-proof.json",
+      "logicalJobId": "north-star-bulk-consumer-receipt-001",
+      "reason": "Nonpublic internal proof metadata destination not accepted as explicitly authorized or verified trusted; approval described as GitHub-only.",
+      "retryOrAlternateRouteAttempted": false,
+      "state": "platform-denied-known-nonexecuted",
+      "windmillRun": null
+    }
+  ],
+  "observedAtUtc": "2026-10-28T09:16:05Z",
+  "owner": "/root/align_north_star_graph/scale_north_star_derivation",
+  "publicationOwner": "/root/prepare_common_corpus_publication",
+  "schemaVersion": "offmenu-north-star-runtime-custody/1"
+}

@@ -1,0 +1,289 @@
+{
+  "budget_usage": {
+    "entries": 4503,
+    "metadata_bytes_read": 341130
+  },
+  "full_data_verification": false,
+  "packages": [
+    {
+      "exists": true,
+      "historical_role": "ready",
+      "manifest.json": {
+        "bytes": 32624,
+        "declared_counts": {
+          "assertions": 2199543,
+          "packets": 79534,
+          "relations": 459245,
+          "resources": 441391,
+          "translations": 3242
+        },
+        "declared_files_entries": 170,
+        "declared_top_level_counts": {
+          "recipeRecords": 25135,
+          "sourceCount": 20,
+          "sourceRecordTotal": 22574292
+        },
+        "json_object": true,
+        "sha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+        "status": "hashed"
+      },
+      "metadata_scan": {
+        "complete": true,
+        "depth_skips": 0,
+        "directories": 5,
+        "non_readonly_subtrees": 0,
+        "regular_file_bytes_from_stat": 176235424,
+        "regular_files": 171,
+        "special_files_not_opened": 0,
+        "symlinks_not_followed": 0
+      },
+      "mounted_readonly": true,
+      "package": "common-data-reviewed-package-20261014"
+    },
+    {
+      "exists": true,
+      "historical_role": "ready",
+      "manifest.json": {
+        "bytes": 3992,
+        "declared_complete": true,
+        "declared_counts": {
+          "assertions": 31168,
+          "packets": 3896,
+          "relations": 0,
+          "resources": 3896,
+          "translations": 0
+        },
+        "declared_files_entries": 9,
+        "declared_top_level_counts": {},
+        "json_object": true,
+        "sha256": "bec93ffedf4d80eef10ec11000c18161024a3c30999697ad1f3db5f3318ff3e7",
+        "status": "hashed"
+      },
+      "metadata_scan": {
+        "complete": true,
+        "depth_skips": 0,
+        "directories": 2,
+        "non_readonly_subtrees": 0,
+        "regular_file_bytes_from_stat": 2315486,
+        "regular_files": 10,
+        "special_files_not_opened": 0,
+        "symlinks_not_followed": 0
+      },
+      "mounted_readonly": true,
+      "package": "common-reference-delivery-final-20261014"
+    },
+    {
+      "exists": true,
+      "historical_role": "ready",
+      "manifest.json": {
+        "bytes": 276023,
+        "declared_complete": true,
+        "declared_counts": {
+          "assertions": 2020535,
+          "packets": 36737,
+          "relations": 661266,
+          "resources": 661266,
+          "translations": 0
+        },
+        "declared_files_entries": 1470,
+        "declared_top_level_counts": {
+          "sourceCount": 11
+        },
+        "json_object": true,
+        "sha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+        "status": "hashed"
+      },
+      "metadata_scan": {
+        "complete": true,
+        "depth_skips": 0,
+        "directories": 1,
+        "non_readonly_subtrees": 0,
+        "regular_file_bytes_from_stat": 222621496,
+        "regular_files": 1471,
+        "special_files_not_opened": 0,
+        "symlinks_not_followed": 0
+      },
+      "mounted_readonly": true,
+      "package": "common-national-semantic-final-20261014"
+    },
+    {
+      "exists": true,
+      "historical_role": "ready",
+      "manifest.json": {
+        "bytes": 4122,
+        "declared_complete": true,
+        "declared_counts": {
+          "assertions": 440,
+          "packets": 56,
+          "relations": 0,
+          "resources": 56,
+          "translations": 0
+        },
+        "declared_files_entries": 2,
+        "declared_top_level_counts": {},
+        "json_object": true,
+        "sha256": "75c33340f1ee25c4121c57d8fc124621b4455412717fc6d9dd01bfb162351679",
+        "status": "hashed"
+      },
+      "metadata_scan": {
+        "complete": true,
+        "depth_skips": 0,
+        "directories": 1,
+        "non_readonly_subtrees": 0,
+        "regular_file_bytes_from_stat": 4394555,
+        "regular_files": 6,
+        "special_files_not_opened": 0,
+        "symlinks_not_followed": 0
+      },
+      "mounted_readonly": true,
+      "package": "measurement-terminology-final-qualified-20261014"
+    },
+    {
+      "exists": true,
+      "historical_role": "ready",
+      "manifest.json": {
+        "bytes": 4955,
+        "declared_complete": true,
+        "declared_counts": {
+          "assertions": 1588,
+          "packets": 42,
+          "relations": 644,
+          "resources": 682,
+          "translations": 0
+        },
+        "declared_files_entries": 7,
+        "declared_top_level_counts": {},
+        "json_object": true,
+        "sha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
+        "status": "hashed"
+      },
+      "metadata_scan": {
+        "complete": true,
+        "depth_skips": 0,
+        "directories": 1,
+        "non_readonly_subtrees": 0,
+        "regular_file_bytes_from_stat": 208426,
+        "regular_files": 8,
+        "special_files_not_opened": 0,
+        "symlinks_not_followed": 0
+      },
+      "mounted_readonly": true,
+      "package": "recipe-expansion-final-qualified-20261014/common-graph"
+    },
+    {
+      "exists": true,
+      "historical_role": "ready",
+      "manifest.json": {
+        "bytes": 12907,
+        "declared_complete": true,
+        "declared_counts": {
+          "assertions": 256,
+          "packets": 5,
+          "relations": 66,
+          "resources": 66,
+          "translations": 0
+        },
+        "declared_files_entries": 3,
+        "declared_top_level_counts": {},
+        "json_object": true,
+        "sha256": "e4c06a1d4a2fcb492529c37c6245a595dd104061ef1a63427cbe9d65e7e2241f",
+        "status": "hashed"
+      },
+      "metadata_scan": {
+        "complete": true,
+        "depth_skips": 0,
+        "directories": 0,
+        "non_readonly_subtrees": 0,
+        "regular_file_bytes_from_stat": 39921,
+        "regular_files": 4,
+        "special_files_not_opened": 0,
+        "symlinks_not_followed": 0
+      },
+      "mounted_readonly": true,
+      "package": "historical-recipe-quality-final-corrected-20261014"
+    },
+    {
+      "exists": true,
+      "historical_role": "partial",
+      "manifest.json": {
+        "errno": 2,
+        "status": "absent"
+      },
+      "metadata_scan": {
+        "complete": true,
+        "depth_skips": 0,
+        "directories": 1,
+        "non_readonly_subtrees": 0,
+        "regular_file_bytes_from_stat": 469701397,
+        "regular_files": 414,
+        "special_files_not_opened": 0,
+        "symlinks_not_followed": 0
+      },
+      "mounted_readonly": true,
+      "package": "common-bulk-food-semantic-final-20261014"
+    },
+    {
+      "exists": true,
+      "historical_role": "partial",
+      "manifest.json": {
+        "errno": 2,
+        "status": "absent"
+      },
+      "metadata_scan": {
+        "complete": true,
+        "depth_skips": 0,
+        "directories": 1,
+        "non_readonly_subtrees": 0,
+        "regular_file_bytes_from_stat": 2441520421,
+        "regular_files": 2407,
+        "special_files_not_opened": 0,
+        "symlinks_not_followed": 0
+      },
+      "mounted_readonly": true,
+      "package": "common-places-semantic-final-20261014.partial"
+    }
+  ],
+  "qualification_established": false,
+  "read_only": true,
+  "receipts": [
+    {
+      "metadata": {
+        "bytes": 5156,
+        "declared_aggregate_counts": {
+          "assertions": 4253530,
+          "assets": 1661,
+          "externalReferences": 1357438,
+          "packets": 120270,
+          "relations": 1121221,
+          "resources": 1107357,
+          "translations": 3242
+        },
+        "declared_counts": {},
+        "declared_packages_entries": 6,
+        "declared_top_level_counts": {
+          "packageCount": 6
+        },
+        "json_object": true,
+        "sha256": "6d6cb00806d6cd4350e0bb703de1ed7b7722c8e4bc33fc7fea8c96e6a9413fbd",
+        "status": "hashed"
+      },
+      "mounted_readonly": true,
+      "receipt": "common-ready-six-package-global-20261014.json"
+    },
+    {
+      "metadata": {
+        "bytes": 1351,
+        "declared_counts": {},
+        "declared_top_level_counts": {},
+        "json_object": true,
+        "sha256": "6ada3fee02c79255680276cb76a03045f1e916e2dd49673b6b7d5f74d43b601b",
+        "status": "hashed"
+      },
+      "mounted_readonly": true,
+      "receipt": "custody-positive-quiescence-20261014.json"
+    }
+  ],
+  "schema": "offmenu-corpus-metadata-probe/1",
+  "scope_attempted_complete": true,
+  "stopped_reason": null
+}

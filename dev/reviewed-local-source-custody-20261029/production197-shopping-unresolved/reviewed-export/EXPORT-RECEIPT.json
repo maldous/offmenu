@@ -1,0 +1,22 @@
+{
+  "schema": "offmenu-shopping-demand-export/1",
+  "baseCommit": "009caee01aed805db5d7d141a3fab9e845e72bdc",
+  "baseline": {
+    "tests": 8,
+    "pass": 2,
+    "fail": 6
+  },
+  "candidate": {
+    "tests": 8,
+    "pass": 8,
+    "fail": 0
+  },
+  "patchSHA256": "9e3f8226e96581d9b6d2c3d3d49716d9cf33fdd67638d1e90906bb7d6b904746",
+  "candidateSHA256": "fbe3f4efc7131e2a318858671acf18cc29f48949ccf731d99c37577e1590a6ee",
+  "manifestSHA256": "fad3bb17f224c63497750aca6518bd8ca06efbc7e9b556a031fdef28389520e4",
+  "production195TargetPinMatched": true,
+  "frozenLotNutritionFilesTouched": false,
+  "productionMutation": false,
+  "credentialsOrRawDatasets": false,
+  "candidateReceipt": "https://windmill.aldous.info/run/01a18416-8a9d-5d42-8915-487e381172bb?workspace=offmenu"
+}

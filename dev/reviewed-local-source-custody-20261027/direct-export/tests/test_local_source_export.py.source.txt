@@ -1,0 +1,452 @@
+"""Focused fixture-only custody and hostile-input tests for source export."""
+from __future__ import annotations
+
+import base64
+import copy
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import shlex
+import stat
+import subprocess
+import tempfile
+from types import SimpleNamespace
+import unittest
+from unittest import mock
+
+
+HELPER = Path(__file__).resolve().parents[1] / 'scripts' / 'export-local-source.py'
+SPEC = importlib.util.spec_from_file_location('offmenu_local_source_export_tested', HELPER)
+export = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(export)
+
+
+class SourceExport(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix='offmenu-source-export-test-')
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name) / 'repo'
+        self.root.mkdir()
+        self.external = Path(self.temp.name) / 'external'
+        self.external.mkdir()
+        self.patches = mock.patch.multiple(export, CANONICAL=str(self.root), EXTERNAL=str(self.external))
+        self.patches.start()
+        self.addCleanup(self.patches.stop)
+        self.repo = {'head': 'a' * 40, 'branch': 'fixture'}
+
+    def write(self, path, body=b'fixture\n'):
+        target = self.root / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(body)
+        return target
+
+    def selection(self, path='src/example.py', body=b'print("fixture")\n', kind='source'):
+        target = self.write(path, body)
+        return [{'sourcePath': str(target), 'repositoryPath': path,
+                 'bytes': len(body), 'sha256': export.digest(body),
+                 'kind': kind, 'reviewRef': 'fixture-review-1'}]
+
+    def selected_packets(self, selection):
+        return export.packets('selected', 'fixture-export', self.repo, selection,
+                              export.selected_parts(selection))
+
+    def git(self, *args):
+        return subprocess.run(['/usr/bin/git', '-C', str(self.root), *args],
+                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                              check=True).stdout
+
+    def init_git(self):
+        self.git('init', '-q')
+        self.git('config', 'user.name', 'Fixture')
+        self.git('config', 'user.email', 'fixture@example.invalid')
+        self.write('src/tracked.py')
+        self.git('add', 'src/tracked.py')
+        self.git('commit', '-qm', 'fixture')
+
+    def test_relative_paths_reject_traversal_hidden_secrets_and_runtime(self):
+        denied = ['../src/a.py', '/src/a.py', 'src//a.py', 'src/./a.py',
+                  'src\\a.py', 'src/a\n.py', '.git/config', '.env',
+                  '.env.local', 'src/.env.production', '.ssh/key.py',
+                  'src/cache/a.json', 'src/logs/a.txt', 'datasets/a.json',
+                  'src/private.pem', 'src/key.p12', 'src/unknown.bin']
+        for path in denied:
+            with self.subTest(path=path), self.assertRaises(export.Rejected):
+                export.relative(path)
+        for path in ['src/a.py', 'tests/test_a.py', 'docs/a.md',
+                     '.github/workflows/check.yml', '.agents/skills/a/SKILL.md']:
+            self.assertEqual(str(export.relative(path)), path)
+
+    def test_source_path_requires_exact_selected_root_prefix(self):
+        with self.assertRaises(export.Rejected):
+            export.source_path(str(self.root) + '-other/src/a.py')
+        with self.assertRaises(export.Rejected):
+            export.source_path(str(self.root) + '/../external/a.py')
+
+    def test_final_symlink_rejected(self):
+        target = self.write('src/real.py')
+        link = self.root / 'src/link.py'
+        link.symlink_to(target)
+        with self.assertRaises((OSError, export.Rejected)):
+            export.read_regular(str(link))
+
+    def test_symlink_ancestor_rejected(self):
+        target = self.external / 'real.py'
+        target.write_bytes(b'fixture')
+        (self.root / 'alias').symlink_to(self.external, target_is_directory=True)
+        with self.assertRaises((OSError, export.Rejected)):
+            export.read_regular(str(self.root / 'alias/real.py'))
+
+    def test_hardlink_rejected(self):
+        target = self.write('src/real.py')
+        linked = self.root / 'src/link.py'
+        os.link(target, linked)
+        with self.assertRaisesRegex(export.Rejected, 'not-single-regular-file'):
+            export.read_regular(str(linked))
+
+    def test_fifo_rejected_without_blocking(self):
+        target = self.root / 'pipe.py'
+        os.mkfifo(target)
+        with self.assertRaisesRegex(export.Rejected, 'not-single-regular-file'):
+            export.read_regular(str(target))
+
+    def test_bounded_read_rejects_oversized_file(self):
+        target = self.write('src/a.py', b'0123456789')
+        with self.assertRaisesRegex(export.Rejected, 'file-too-large'):
+            export.read_regular(str(target), maximum=8)
+
+    def test_file_change_during_read_rejected(self):
+        target = self.write('src/a.py', b'original')
+        actual = export.os.read
+        changed = False
+        def read_and_change(fd, count):
+            nonlocal changed
+            result = actual(fd, count)
+            if result and not changed:
+                changed = True
+                target.write_bytes(b'changed!')
+            return result
+        with mock.patch.object(export.os, 'read', side_effect=read_and_change):
+            with self.assertRaisesRegex(export.Rejected, 'file-changed-during-read'):
+                export.read_regular(str(target))
+
+    def test_known_secret_signatures_rejected_without_disclosure(self):
+        examples = [b'-----BEGIN PRIVATE KEY-----', b'ghp_' + b'a' * 30,
+                    b'github_pat_' + b'a' * 30, b'AKIA' + b'A' * 16,
+                    b'sk-proj-' + b'a' * 30, b'https://alice:password@example.invalid/']
+        for body in examples:
+            with self.subTest(length=len(body)):
+                with self.assertRaisesRegex(export.Rejected, '^secret-pattern-rejected$'):
+                    export.check_body(body, 'source')
+
+    def test_non_utf8_and_nul_text_rejected(self):
+        for body in (b'\xff', b'abc\0def'):
+            with self.assertRaises(export.Rejected):
+                export.check_body(body, 'source')
+
+    def test_selected_pin_mismatch_rejected(self):
+        selection = self.selection()
+        Path(selection[0]['sourcePath']).write_bytes(b'changed')
+        with self.assertRaisesRegex(export.Rejected, 'selected-source-pin-mismatch'):
+            export.selected_parts(selection)
+
+    def test_duplicate_selection_source_or_destination_rejected(self):
+        selection = self.selection()
+        second = dict(selection[0], repositoryPath='src/other.py')
+        with self.assertRaisesRegex(export.Rejected, 'duplicate-selected-path'):
+            export.validate_selection(selection + [second])
+        second = dict(selection[0], sourcePath=str(self.root / 'src/other.py'))
+        with self.assertRaisesRegex(export.Rejected, 'duplicate-selected-path'):
+            export.validate_selection(selection + [second])
+
+    def test_packet_strict_identity_and_unknown_fields(self):
+        packet = self.selected_packets(self.selection())[0]
+        with self.assertRaisesRegex(export.Rejected, 'job-id-mismatch'):
+            export.validate_packet(packet, 'different-job-0001')
+        bad = dict(packet, command='never execute this')
+        with self.assertRaisesRegex(export.Rejected, 'unexpected-schema-keys'):
+            export.validate_packet(bad)
+
+    def test_json_duplicate_keys_and_nonfinite_rejected(self):
+        for body in (b'{"a":1,"a":2}', b'{"a":NaN}', b'{"a":Infinity}'):
+            with self.assertRaises(export.Rejected):
+                export.decode(body)
+
+    def test_boolean_is_not_an_integer_in_schema(self):
+        packet = self.selected_packets(self.selection())[0]
+        packet['batch']['index'] = True
+        with self.assertRaisesRegex(export.Rejected, 'integer-out-of-range'):
+            export.validate_packet(packet)
+
+    def test_tampered_content_digest_rejected(self):
+        packet = self.selected_packets(self.selection())[0]
+        packet['items'][0]['contentBase64'] = base64.b64encode(b'tampered').decode()
+        with self.assertRaisesRegex(export.Rejected, 'part-digest-mismatch'):
+            export.validate_packet(packet)
+
+    def test_chunking_preserves_utf8_bytes_across_split_boundary(self):
+        body = ('abcéΩ😀' * 61).encode()
+        with mock.patch.object(export, 'PART_BYTES', 17):
+            selection = self.selection(body=body)
+            packets = self.selected_packets(selection)
+            pieces = [p for packet in packets for p in packet['items']]
+            restored = b''.join(base64.b64decode(p['contentBase64']) for p in pieces)
+            self.assertEqual(restored, body)
+            self.assertEqual(export.digest(restored), selection[0]['sha256'])
+            for packet in packets:
+                export.validate_packet(packet)
+
+    def test_empty_source_has_one_explicit_empty_part(self):
+        packets = self.selected_packets(self.selection(body=b''))
+        pieces = [p for packet in packets for p in packet['items']]
+        self.assertEqual(len(pieces), 1)
+        self.assertEqual(pieces[0]['offset'], 0)
+        self.assertEqual(pieces[0]['bytes'], 0)
+
+    def test_chunk_boundary_secret_is_rejected_before_packet_creation(self):
+        with mock.patch.object(export, 'PART_BYTES', 17):
+            body = b'prefix padding ' + b'ghp_' + b'a' * 35
+            with self.assertRaisesRegex(export.Rejected, 'secret-pattern-rejected'):
+                export.selected_parts(self.selection(body=body))
+
+    def test_metadata_commands_do_not_execute_filters_or_fsmonitor_or_write_index(self):
+        self.init_git()
+        marker = Path(self.temp.name) / 'unexpected-command-ran'
+        self.write('.gitattributes', b'*.py filter=probe\n')
+        self.git('config', 'filter.probe.clean', 'touch ' + shlex.quote(str(marker)) + '; cat')
+        self.git('config', 'core.fsmonitor', 'touch ' + shlex.quote(str(marker)))
+        self.write('src/tracked.py', b'changed worktree\n')
+        index = self.root / '.git/index'
+        before_bytes = index.read_bytes()
+        before_stat = index.stat()
+        export.repo_metadata(str(self.root))
+        export.safe_git(str(self.root), ['ls-files', '--stage', '-z'])
+        self.assertFalse(marker.exists())
+        self.assertEqual(index.read_bytes(), before_bytes)
+        self.assertEqual(index.stat().st_mtime_ns, before_stat.st_mtime_ns)
+
+    def test_inventory_includes_eligible_untracked_hidden_allowed_roots(self):
+        self.init_git()
+        self.write('src/untracked.py')
+        self.write('.github/workflows/new.yml')
+        self.write('.agents/skills/test/SKILL.md')
+        _, items, _ = export.inventory(str(self.root))
+        names = {item['repositoryPath'] for item in items}
+        self.assertTrue({'src/tracked.py', 'src/untracked.py',
+                         '.github/workflows/new.yml', '.agents/skills/test/SKILL.md'} <= names)
+
+    def test_inventory_does_not_traverse_excluded_or_symlink_directories(self):
+        self.init_git()
+        self.write('cache/never.json', b'private')
+        self.write('.secret/never.py', b'private')
+        (self.external / 'never.py').write_bytes(b'private')
+        (self.root / 'alias').symlink_to(self.external, target_is_directory=True)
+        _, items, excluded = export.inventory(str(self.root))
+        names = {item['repositoryPath'] for item in items}
+        self.assertNotIn('cache/never.json', names)
+        self.assertNotIn('.secret/never.py', names)
+        self.assertNotIn('alias/never.py', names)
+        self.assertGreaterEqual(excluded, 3)
+
+    def test_inventory_is_not_limited_by_selected_file_count(self):
+        self.init_git()
+        self.write('src/one.py')
+        self.write('src/two.py')
+        with mock.patch.object(export, 'MAX_FILES', 2):
+            _, items, _ = export.inventory(str(self.root))
+        self.assertEqual({item['repositoryPath'] for item in items},
+                         {'src/tracked.py', 'src/one.py', 'src/two.py'})
+
+    def test_private_output_is_exclusive_and_manifest_covers_each_packet(self):
+        prepared = self.selected_packets(self.selection())
+        directory = str(Path(self.temp.name) / 'prepared')
+        manifest = export.private_output(directory, prepared)
+        self.assertEqual(len(manifest['packets']), len(prepared))
+        for item in manifest['packets']:
+            raw = (Path(directory) / (item['jobId'] + '.json')).read_bytes()
+            self.assertEqual(item['bytes'], len(raw))
+            self.assertEqual(item['sha256'], export.digest(raw))
+        with self.assertRaises(FileExistsError):
+            export.private_output(directory, prepared)
+
+    def test_summary_closed_schema_never_contains_source_content(self):
+        value = {'schemaVersion': export.SUMMARY, 'phase': 'inventory',
+                 'packetBytes': 100, 'packetSha256': 'a' * 64,
+                 'selectionSha256': 'b' * 64, 'batchIndex': 1,
+                 'batchCount': 1, 'totalFiles': 1, 'totalBytes': 2,
+                 'itemCount': 1, 'sourceContentsIncluded': False}
+        self.assertEqual(export.sanitize_report(value), value)
+        with self.assertRaises(export.Rejected):
+            export.sanitize_report(dict(value, source='private text'))
+
+    def multipart(self):
+        selection = self.selection(body=b'fixture source bytes\n' * 100)
+        prepared = self.selected_packets(selection)
+        self.assertGreater(len(prepared), 1)
+        return prepared
+
+    def test_complete_packet_set_accepts_exact_reassembly_in_any_packet_order(self):
+        with mock.patch.multiple(export, PART_BYTES=64, MAX_PACKET=1800):
+            prepared = self.multipart()
+            export.validate_packet_set(prepared)
+            export.validate_packet_set(list(reversed(prepared)))
+            all_parts = [part for packet in prepared for part in packet['items']]
+            raw = b''.join(base64.b64decode(part['contentBase64']) for part in all_parts)
+            self.assertEqual(export.digest(raw), prepared[0]['selection'][0]['sha256'])
+
+    def test_complete_packet_set_rejects_missing_duplicate_or_mixed_packet(self):
+        with mock.patch.multiple(export, PART_BYTES=64, MAX_PACKET=1800):
+            prepared = self.multipart()
+            with self.assertRaisesRegex(export.Rejected, 'incomplete-packet-set'):
+                export.validate_packet_set(prepared[:-1])
+            with self.assertRaisesRegex(export.Rejected, 'duplicate-job-id'):
+                export.validate_packet_set(prepared + [prepared[0]])
+            altered = copy.deepcopy(prepared)
+            altered[-1]['repository'] = dict(altered[-1]['repository'], branch='different')
+            with self.assertRaisesRegex(export.Rejected, 'mixed-packet-set'):
+                export.validate_packet_set(altered)
+
+    def test_complete_packet_set_rejects_cross_packet_duplicate_chunk(self):
+        with mock.patch.multiple(export, PART_BYTES=64, MAX_PACKET=1800):
+            prepared = self.multipart()
+            prepared[1]['items'][0] = copy.deepcopy(prepared[0]['items'][0])
+            with self.assertRaisesRegex(export.Rejected, 'noncontiguous-file-parts'):
+                export.validate_packet_set(prepared)
+
+    def test_complete_packet_set_rejects_chunk_digest_rewritten_but_whole_digest_wrong(self):
+        with mock.patch.multiple(export, PART_BYTES=64, MAX_PACKET=1800):
+            prepared = self.multipart()
+            piece = prepared[0]['items'][0]
+            changed = b'x' * piece['bytes']
+            piece['contentBase64'] = base64.b64encode(changed).decode()
+            piece['sha256'] = export.digest(changed)
+            with self.assertRaisesRegex(export.Rejected, 'whole-source-pin-mismatch'):
+                export.validate_packet_set(prepared)
+
+    def test_complete_packet_set_scans_secret_across_chunk_boundaries(self):
+        with mock.patch.object(export, 'PART_BYTES', 17):
+            secret = b'padding padding' + b'ghp_' + b'a' * 35
+            selection = self.selection(body=b'x' * len(secret))
+            prepared = self.selected_packets(selection)
+            for packet in prepared:
+                packet['selection'][0]['sha256'] = export.digest(secret)
+                packet['custody']['selectionSha256'] = export.digest(export.canonical(packet['selection']))
+                for piece in packet['items']:
+                    raw = secret[piece['offset']:piece['offset'] + piece['bytes']]
+                    piece['contentBase64'] = base64.b64encode(raw).decode()
+                    piece['sha256'] = export.digest(raw)
+                export.validate_packet(packet)  # No individual chunk holds a full token.
+            with self.assertRaisesRegex(export.Rejected, 'secret-pattern-rejected'):
+                export.validate_packet_set(prepared)
+
+    def test_complete_packet_set_rejects_invalid_utf8_across_whole_source(self):
+        with mock.patch.object(export, 'PART_BYTES', 17):
+            body = b'x' * 40 + b'\xff'
+            prepared = self.selected_packets(self.selection(body=b'x' * len(body)))
+            for packet in prepared:
+                packet['selection'][0]['sha256'] = export.digest(body)
+                packet['custody']['selectionSha256'] = export.digest(export.canonical(packet['selection']))
+                for piece in packet['items']:
+                    raw = body[piece['offset']:piece['offset'] + piece['bytes']]
+                    piece['contentBase64'] = base64.b64encode(raw).decode()
+                    piece['sha256'] = export.digest(raw)
+            with self.assertRaisesRegex(export.Rejected, 'source-not-utf8'):
+                export.validate_packet_set(prepared)
+
+    def test_packet_rejects_empty_trailing_chunk_for_nonempty_source(self):
+        with mock.patch.object(export, 'PART_BYTES', 17):
+            packet = self.selected_packets(self.selection(body=b'x' * 34))[0]
+            packet['items'].append({'fileIndex': 0, 'offset': 34, 'bytes': 0,
+                                    'sha256': export.digest(b''), 'contentBase64': ''})
+            with self.assertRaisesRegex(export.Rejected, 'trailing-empty-part-rejected|invalid-part-range'):
+                export.validate_packet(packet)
+
+    def test_inventory_complete_set_detects_omission_or_rewritten_totals(self):
+        self.init_git()
+        self.write('src/untracked.py')
+        repository, items, excluded = export.inventory(str(self.root))
+        prepared = export.packets('inventory', 'inventory-fixture', repository, [], items, excluded)
+        export.validate_packet_set(prepared)
+        altered = copy.deepcopy(prepared)
+        altered[0]['items'].pop()
+        with self.assertRaisesRegex(export.Rejected, 'incomplete-item-set'):
+            export.validate_packet_set(altered)
+        altered = copy.deepcopy(prepared)
+        altered[0]['custody']['totalBytes'] += 1
+        with self.assertRaisesRegex(export.Rejected, 'inventory-byte-count-mismatch'):
+            export.validate_packet_set(altered)
+
+    def test_private_output_rejects_incomplete_set_before_writing_directory(self):
+        with mock.patch.multiple(export, PART_BYTES=64, MAX_PACKET=1800):
+            prepared = self.multipart()
+            output = Path(self.temp.name) / 'must-not-exist'
+            with self.assertRaises(export.Rejected):
+                export.private_output(str(output), prepared[:-1])
+            self.assertFalse(output.exists())
+
+    def test_stage_requires_explicit_root_invocation(self):
+        with mock.patch.object(export.os, 'geteuid', return_value=1000):
+            with self.assertRaisesRegex(export.Rejected, 'stage-requires-explicit-owner-sudo'):
+                export.stage(str(Path(self.temp.name) / 'anything'))
+
+    def test_receive_requires_root_approved_readonly_packet(self):
+        packet = self.selected_packets(self.selection())[0]
+        raw = export.canonical(packet)
+        output = str(Path(self.temp.name) / 'artifact.json')
+        for uid, gid, mode in [(1000, os.getgid(), 0o440),
+                               (0, os.getgid(), 0o640),
+                               (0, os.getgid() + 1, 0o440)]:
+            info = SimpleNamespace(st_uid=uid, st_gid=gid,
+                                   st_mode=stat.S_IFREG | mode)
+            with self.subTest(uid=uid, gid=gid, mode=mode):
+                with mock.patch.object(export, 'read_regular', return_value=(raw, info)):
+                    with self.assertRaisesRegex(export.Rejected, 'staged-packet-not-owner-approved'):
+                        export.receive(packet['jobId'], output)
+        self.assertFalse(Path(output).exists())
+
+    def test_receive_projects_exact_artifact_and_content_free_summary(self):
+        packet = self.selected_packets(self.selection())[0]
+        raw = export.canonical(packet)
+        info = SimpleNamespace(st_uid=0, st_gid=os.getgid(),
+                               st_mode=stat.S_IFREG | 0o440)
+        output = str(Path(self.temp.name) / 'artifact.json')
+        with mock.patch.object(export, 'read_regular', return_value=(raw, info)):
+            result = export.receive(packet['jobId'], output)
+        self.assertEqual(Path(output).read_bytes(), raw)
+        self.assertEqual(result['packetSha256'], export.digest(raw))
+        self.assertTrue(result['sourceContentsIncluded'])
+        export.sanitize_report(result)
+        self.assertNotIn('contentBase64', json.dumps(result))
+
+    def test_receive_artifact_no_overwrite_or_symlink(self):
+        packet = self.selected_packets(self.selection())[0]
+        raw = export.canonical(packet)
+        info = SimpleNamespace(st_uid=0, st_gid=os.getgid(),
+                               st_mode=stat.S_IFREG | 0o440)
+        existing = Path(self.temp.name) / 'preserved'
+        existing.write_bytes(b'keep')
+        alias = Path(self.temp.name) / 'alias'
+        alias.symlink_to(existing)
+        with mock.patch.object(export, 'read_regular', return_value=(raw, info)):
+            for path in (existing, alias):
+                with self.assertRaises(OSError):
+                    export.receive(packet['jobId'], str(path))
+        self.assertEqual(existing.read_bytes(), b'keep')
+
+
+class InventorySizeAccounting(unittest.TestCase):
+    def test_metadata_totals_can_exceed_selected_transfer_cap(self):
+        item = {'sourcePath': export.CANONICAL + '/public/approved-art.png',
+                'repositoryPath': 'public/approved-art.png', 'kind': 'artwork',
+                'indexObject': None, 'indexMode': None, 'bytes': export.MAX_TOTAL + 1,
+                'sha256': None, 'state': 'present-unhashed'}
+        packets = export.packets('inventory', 'metadata-size-fixture',
+                                 {'head': 'a' * 40, 'branch': 'develop'}, [], [item])
+        export.validate_packet_set(packets)
+        self.assertEqual(packets[0]['custody']['totalBytes'], export.MAX_TOTAL + 1)
+        self.assertEqual(packets[0]['items'], [item])
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -1,0 +1,106 @@
+[
+  {
+    "path": "/app.js",
+    "status": "200",
+    "headers": [
+      "content-type: application/javascript",
+      "cache-control: public, max-age=300"
+    ],
+    "bytes": 468574,
+    "sha256": "e510c7a4cc6f418cbda6d984e0ff7de90f0d7b85d350640b9f624fd9b818c057",
+    "curlExit": 0
+  },
+  {
+    "path": "/",
+    "status": "200",
+    "headers": [
+      "content-type: text/html; charset=utf-8",
+      "cache-control: no-cache"
+    ],
+    "bytes": 2074,
+    "sha256": "3e545e3d808d2f1bc1b2d9e15c2ca522594e8dee6b354038ae9a04c916945d36",
+    "curlExit": 0
+  },
+  {
+    "path": "/auth.html",
+    "status": "200",
+    "headers": [
+      "content-type: text/html; charset=utf-8",
+      "cache-control: no-cache"
+    ],
+    "bytes": 2410,
+    "sha256": "768188e484f3eea7ee0ef1125e2df07f9cf59c11838e51af157ce573ef2e3e01",
+    "curlExit": 0
+  },
+  {
+    "path": "/kitchen.html",
+    "status": "303",
+    "headers": [
+      "location: /auth.html",
+      "cache-control: no-store",
+      "vary: Cookie, Authorization"
+    ],
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "curlExit": 0
+  },
+  {
+    "path": "/shelf-scanner.html",
+    "status": "303",
+    "headers": [
+      "location: /auth.html",
+      "cache-control: no-store",
+      "vary: Cookie, Authorization"
+    ],
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "curlExit": 0
+  },
+  {
+    "path": "/api/kitchens",
+    "status": "401",
+    "headers": [
+      "content-type: application/json",
+      "cache-control: no-store",
+      "vary: Cookie, Authorization"
+    ],
+    "bytes": 50,
+    "sha256": "9153fc34443b131b78f6f2856b73ba424c3ad0de8e183ed118729cfaa33fcdd0",
+    "curlExit": 0
+  },
+  {
+    "path": "/api/product?barcode=0000000000000",
+    "status": "401",
+    "headers": [
+      "content-type: application/json",
+      "cache-control: no-store",
+      "vary: Cookie, Authorization"
+    ],
+    "bytes": 50,
+    "sha256": "9153fc34443b131b78f6f2856b73ba424c3ad0de8e183ed118729cfaa33fcdd0",
+    "curlExit": 0
+  },
+  {
+    "path": "/api/prices",
+    "status": "401",
+    "headers": [
+      "content-type: application/json",
+      "cache-control: no-store",
+      "vary: Cookie, Authorization"
+    ],
+    "bytes": 50,
+    "sha256": "9153fc34443b131b78f6f2856b73ba424c3ad0de8e183ed118729cfaa33fcdd0",
+    "curlExit": 0
+  },
+  {
+    "path": "/landing-static-15/story.js",
+    "status": "200",
+    "headers": [
+      "content-type: application/javascript; charset=utf-8",
+      "cache-control: no-cache"
+    ],
+    "bytes": 34620,
+    "sha256": "02219ef83ac33d931cde88fbe0fc54294cf7eeccd3d29af3c77bea497f1e035d",
+    "curlExit": 0
+  }
+]

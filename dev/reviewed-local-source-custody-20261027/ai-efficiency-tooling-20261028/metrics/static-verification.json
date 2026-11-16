@@ -1,0 +1,13 @@
+{
+  "both_proposed_sources_parse": true,
+  "patch_applies_to_live_snapshots": true,
+  "five_tasks_and_settings_unchanged": true,
+  "validator_and_token_helpers_match_approved_r2": true,
+  "main_calls_named_uncached_transport": true,
+  "prior_frozen_artifacts_unchanged": true,
+  "original_windmill_files_unchanged": 68,
+  "new_runtime_tests": 0,
+  "provider_calls": 0,
+  "live_writes": 0,
+  "cache_activation_blocked": "Shared trusted POSIX mount and actual worker fork/signal support unverified; supported connector does not expose these metadata."
+}

@@ -1,0 +1,13 @@
+✔ existing guest manual-submit and unchanged capture execute anonymous own API as primary provider (95.605573ms)
+✔ existing source-choice UI shows honest phase readout and retains provenance without pantry assumptions (1.762972ms)
+✔ old exact typed barcode analyzer controls aliases and original leading zeros are never rewritten (69.337186ms)
+✔ unchanged explicit guest Finish remains tab-local and never accesses private state or infers quantity (0.427436ms)
+✔ all original camera, capture, queue, audio and Finish source bytes are retained exactly (3.17246ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 514.176638

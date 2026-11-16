@@ -1,0 +1,21 @@
+{
+  "id": "188dac2d-ac29-4354-a757-e112a9a84258",
+  "number": 198,
+  "count": 212,
+  "unique": 212,
+  "worker": {
+    "name": "worker.mjs",
+    "type": "application/javascript+module",
+    "bytes": 4604740,
+    "sha256": "7cef6c38c9a35e4b94d5e7d7d25702a04d64abf35a8497fbd6f91be848f0eabd"
+  },
+  "main": {
+    "name": "deployed-application.mjs",
+    "type": "application/javascript+module",
+    "bytes": 2585134,
+    "sha256": "c2ddec2cf5b1965160160eab24e1a2cd43f8395f7095906955ff67148b95c180"
+  },
+  "other211Hash": "e350f7587b114fcae56c453fa2236b6c98b7d812a6f6cf59299e7f6832fbfdd8",
+  "settingsHash": "ad00e592ba7c9c481a7acccc8218f47fb792e401689e053f1569c00c66d3592b",
+  "bindingsHash": "63bb446a357f9750cefabeeceaa01a3a39fcc8a2a0e06ac44afd4ecb8705188e"
+}

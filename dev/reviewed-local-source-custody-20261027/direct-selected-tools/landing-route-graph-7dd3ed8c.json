@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "offmenu-landing-graph-reconciliation/1",
+  "sourceCommit": "7dd3ed8cf25b345b41edeaa4367735c0bda66444",
+  "verifiedRouteDeltaCount": 6,
+  "verifiedRouteDeltaBytes": 73751,
+  "targetSelection": "1384a1b3469be561ad3ecdbda2fc605c91f5cfc6722e01507b9335e1c9d0f71b",
+  "routeDelta": [
+    {
+      "route": "/landing-static-15/story.js",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/candidate-story-ready-r4.js",
+      "sha256": "5a5cc5baabec9c1cc9fa420d628f52d8e0f97370669fb531056453a9525b03e7",
+      "bytes": 34620,
+      "mime": "application/javascript; charset=utf-8"
+    },
+    {
+      "route": "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current183-all15-r2/world-action-ready-r4.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/world-action-ready-r4.mjs",
+      "sha256": "31fcedd67549bcbf5ebd5d056684c1d8cd635b6194288c07716dd3bd819fd0a7",
+      "bytes": 8297,
+      "mime": "application/javascript; charset=utf-8"
+    },
+    {
+      "route": "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current183-all15-r2/prepared-scene-catalog-r1.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/prepared-scene-catalog-r1.mjs",
+      "sha256": "f3f4ba50765b9d96db9b26937924fbf417549443d5d16cb3cc5260a077b35c63",
+      "bytes": 1686,
+      "mime": "application/javascript; charset=utf-8"
+    },
+    {
+      "route": "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current183-all15-r2/asset-aliases-ready-r1.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/asset-aliases-ready-r1.mjs",
+      "sha256": "aa8d208e768f8f0f2b54d7d0160baf4b9020df520e0d224fde4b6af5c5c18c82",
+      "bytes": 21048,
+      "mime": "application/javascript; charset=utf-8"
+    },
+    {
+      "route": "/landing-motion-v12/mount-first-pair-ready-r1.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/mount-first-pair-ready-r1.mjs",
+      "sha256": "211479c0081702f22c1faabc94ce60e45668ca020989554dee6c17ec8118ba70",
+      "bytes": 1964,
+      "mime": "application/javascript; charset=utf-8"
+    },
+    {
+      "route": "/landing-motion-v12/scene-adapter-ready-r1.mjs",
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/scene-adapter-ready-r1.mjs",
+      "sha256": "374f33a7372f9ec5f229744d3634940f9951333752f059a746e6b813c30349c3",
+      "bytes": 6136,
+      "mime": "application/javascript; charset=utf-8"
+    }
+  ],
+  "preserve": {
+    "/": {
+      "sha256": "3e545e3d808d2f1bc1b2d9e15c2ca522594e8dee6b354038ae9a04c916945d36",
+      "bytes": 2074,
+      "contentType": "text/html; charset=utf-8"
+    },
+    "/landing.html": {
+      "sha256": "3e545e3d808d2f1bc1b2d9e15c2ca522594e8dee6b354038ae9a04c916945d36",
+      "bytes": 2074,
+      "contentType": "text/html; charset=utf-8"
+    },
+    "/landing-static-15/story.js": {
+      "sha256": "5a5cc5baabec9c1cc9fa420d628f52d8e0f97370669fb531056453a9525b03e7",
+      "bytes": 34620,
+      "contentType": "application/javascript; charset=utf-8"
+    },
+    "/landing-native-vertical-local.css": {
+      "sha256": "f45a464868960b83e3f01e8caa154da58796d74955d5a13d2d13901e277a119c",
+      "bytes": 6392,
+      "contentType": "text/css; charset=utf-8"
+    },
+    "/demo/full-scanner.js": {
+      "sha256": "b4eb939ee3744e26f1f4a7f4b22880c634288a5405a7db92e906202e9e94d849",
+      "bytes": 882785,
+      "contentType": "application/javascript; charset=utf-8"
+    },
+    "/demo/scanner.html": {
+      "sha256": "beb658cd34580800f3cbe19fe61e6dba2417f642b370210964207de2484f0c89",
+      "bytes": 45825,
+      "contentType": "text/html; charset=utf-8"
+    },
+    "/app.js": {
+      "sha256": "c8a3f8d049e539167db4d006e468aa80473886e175525fed88ab23d0e991f96a",
+      "bytes": 448472,
+      "contentType": "application/javascript"
+    },
+    "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current183-all15-r2/world-action-ready-r4.mjs": {
+      "sha256": "31fcedd67549bcbf5ebd5d056684c1d8cd635b6194288c07716dd3bd819fd0a7",
+      "bytes": 8297,
+      "contentType": "application/javascript; charset=utf-8"
+    },
+    "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current183-all15-r2/prepared-scene-catalog-r1.mjs": {
+      "sha256": "f3f4ba50765b9d96db9b26937924fbf417549443d5d16cb3cc5260a077b35c63",
+      "bytes": 1686,
+      "contentType": "application/javascript; charset=utf-8"
+    },
+    "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current183-all15-r2/asset-aliases-ready-r1.mjs": {
+      "sha256": "aa8d208e768f8f0f2b54d7d0160baf4b9020df520e0d224fde4b6af5c5c18c82",
+      "bytes": 21048,
+      "contentType": "application/javascript; charset=utf-8"
+    },
+    "/landing-motion-v12/mount-first-pair-ready-r1.mjs": {
+      "sha256": "211479c0081702f22c1faabc94ce60e45668ca020989554dee6c17ec8118ba70",
+      "bytes": 1964,
+      "contentType": "application/javascript; charset=utf-8"
+    },
+    "/landing-motion-v12/scene-adapter-ready-r1.mjs": {
+      "sha256": "374f33a7372f9ec5f229744d3634940f9951333752f059a746e6b813c30349c3",
+      "bytes": 6136,
+      "contentType": "application/javascript; charset=utf-8"
+    },
+    "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/scene-module-runtime-r4.mjs": {
+      "sha256": "f026ee929292222007b518cd457f8d4a513cb1d50098ecc5712e942094738a2b",
+      "bytes": 9741,
+      "contentType": "application/javascript; charset=utf-8"
+    }
+  },
+  "currentIntegrationRequirement": "Over CURRENTactual5d54(scanneralias API) or accepted compatible successor, never roll back to49d/2001 backend. Preserve R3 original aliases, coverf45/f026, app/data/R8List/own-data/auth/header/state and acceptedAPIalias fixes.",
+  "sourceStatus": "Six path/hash/size bodies selected for export, not materialized here; current docs validated inert by importer",
+  "fullClosureStillNeeded": [
+    "Current static bundlee7a8bd65 or exact source route table mapping all340 route keys/203 distinct bodies (source paths not yet in returned docs)",
+    "Root/landing HTML3e545e3d path, cover CSSf45a4648 path, world runtimef026ee92 path: route hashes/sizes known but source paths not yet provided",
+    "Alias API26ef source selected; current source assembly result47814d4c and alias5d54 receipt92f74390 selected to resolve body/import closure",
+    "Do not replace current preserved backend823325a7 with older49d/2001; protected R9/new identity stays other lane"
+  ],
+  "knownReusableCustody": [
+    {
+      "route": "/demo/scanner.html",
+      "path": "dev/production-release-custody/20261026-existing-fullscanner-vertical/public-fix-beb658cd34580800-01.bin",
+      "sha256": "beb658cd34580800f3cbe19fe61e6dba2417f642b370210964207de2484f0c89",
+      "bytes": 45825,
+      "basis": "Existing exact Git custody selected-source-pins and newer all15 retained readback agree"
+    }
+  ],
+  "noClaims": [
+    "No production deploy",
+    "No real-account or phone end-to-end",
+    "No whole all15 actual browser execution from Node/mockedGL evidence",
+    "No new corpus/data completeness"
+  ]
+}

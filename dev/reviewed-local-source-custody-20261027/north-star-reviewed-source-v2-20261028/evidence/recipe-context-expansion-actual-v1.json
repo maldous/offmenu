@@ -1,0 +1,135 @@
+{
+  "recipe-context-v1/expansion/manifest.json": {
+    "sha256": "e10deb8b50cddce89b15a29f82aa664b71b87d1fdff56a901826aa793a9e53e5",
+    "bytes": 1836,
+    "document": {
+      "assertedIdentityJoins": 0,
+      "automaticPlanningEligible": false,
+      "complete": true,
+      "counts": {
+        "recipesExamined": 42,
+        "restoredAssertions": 308,
+        "scalingRule": 266,
+        "unknownYields": 42,
+        "yield": 42
+      },
+      "files": [
+        {
+          "bytes": 46299,
+          "key": "recipe-context.jsonl.gz",
+          "packets": 42,
+          "sha256": "b8ba2924b38193f961608a7d0f6f73ee8cf3909e5742aa6d0c99d431e5001a0a"
+        }
+      ],
+      "helperSourceSha256": {
+        "inspect_north_star_sample.py": "07a6f7cd7eab6a446f52ba783808c8be8c9188d29a764a3fd5425824ccc107fc",
+        "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+        "reconcile_recipe_fidelity.py": "da98835561781d1855f06b44e8e9c3f70c5ac9f1939af5d5b2e6c83aca76d258"
+      },
+      "nutritionAggregationEligible": false,
+      "originalsModified": false,
+      "publicationEligible": false,
+      "qualifications": [
+        "Exact copied native normalized field candidates, not new source facts.",
+        "Unknown yield remains unknown; scaling codes confer no calculation safety.",
+        "References require the exact base package and its original citations."
+      ],
+      "releaseId": "recipe-expansion-qualified-20261014-context-v1",
+      "rulesetVersion": "recipe-normalized-field-restoration/1",
+      "schemaVersion": "offmenu-recipe-context-release/1",
+      "servedApplicationQueries": 0,
+      "sourceCodeSha256": "a82cf054ff613467de1dc58c2a34a9f1e08e6c3f5d44ad24edd2d66c5e1ec214",
+      "sourcePins": {
+        "graphAsset": {
+          "bytes": 158764,
+          "key": "recipe-source-alignment.jsonl.gz",
+          "packets": 42,
+          "sha256": "170d0413de1c5101970e20889aacf849984cf49201a2a681cc7f66b58a67af28"
+        },
+        "manifestByteSha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
+        "nativeAsset": {
+          "bytes": 15798,
+          "key": "recipes.normalized.jsonl.gz",
+          "sha256": "ca1dcfd582c40062f6dbf11940a50622bd60579550432866c19fb6bf539844f6"
+        },
+        "packagePath": "/offmenu-corpus/recipe-expansion-final-qualified-20261014/common-graph",
+        "releaseId": "recipe-expansion-qualified-20261014"
+      },
+      "status": "candidate-not-admitted"
+    }
+  },
+  "recipe-expansion-v2/input-fidelity.json": {
+    "sha256": "8f3fa01c7f1347b60e606a3c81fdcbdc39ba1efd0ffaec34cda481e060e53cb0",
+    "bytes": 63088,
+    "document": {
+      "conclusion": "A null already present in pre-alignment normalized input cannot be repaired by the common aligner. Original extraction fidelity requires the exact earlier source material/decision; source numeric values with unsupported units remain distinguishable from genuinely absent source magnitudes.",
+      "counts": {
+        "graphMissingScalingAssertions": 266,
+        "graphMissingYieldAssertions": 42,
+        "ingredientsCompared": 266,
+        "nativeAutomaticPlanningFalse": 42,
+        "nativeCanonicalKnownAmounts": 64,
+        "nativeCanonicalUnknownAmounts": 202,
+        "nativeSourceKnownAmounts": 176,
+        "nativeSourceUnknownAmounts": 90,
+        "nativeUnknownYields": 42,
+        "recipesCompared": 42,
+        "sourceAmountPresentButCanonicalUnresolved": 112
+      },
+      "graphAsset": {
+        "bytes": 158764,
+        "key": "recipe-source-alignment.jsonl.gz",
+        "packets": 42,
+        "sha256": "170d0413de1c5101970e20889aacf849984cf49201a2a681cc7f66b58a67af28"
+      },
+      "manifestByteSha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
+      "mismatches": {
+        "count": 308,
+        "fields": {
+          "yield": 42,
+          "scaling": 266
+        }
+      },
+      "nativeAsset": {
+        "bytes": 15798,
+        "key": "recipes.normalized.jsonl.gz",
+        "sha256": "ca1dcfd582c40062f6dbf11940a50622bd60579550432866c19fb6bf539844f6"
+      },
+      "originalSourceExtractionVerified": false,
+      "originalsModified": false,
+      "quantityStatuses": {
+        "unrecognized-sha256:c03022f3a11bbcf820429f2d5f23e8a162b244294288936858c1795d4c820da4 / parsed": 112,
+        "unrecognized-sha256:c03022f3a11bbcf820429f2d5f23e8a162b244294288936858c1795d4c820da4 / unrecognized-sha256:01816b89263624e64a47d2d5727923a8d8b2d8bbcf7e50e80a987e1c2c3978d9": 88,
+        "unrecognized-sha256:c03022f3a11bbcf820429f2d5f23e8a162b244294288936858c1795d4c820da4 / unrecognized-sha256:75ac37b82701bed83374df14dd3dd54d34fddb79e64cc35cb08a5b933917a9e7": 2,
+        "unrecognized-sha256:d81149421f96cc418ed012836a52dc8369f3ace41806a828ec59ea47af10cc96 / parsed": 64
+      },
+      "releaseId": "recipe-expansion-qualified-20261014",
+      "schemaVersion": "offmenu-recipe-alignment-fidelity/1",
+      "sourceCodeSha256": "da98835561781d1855f06b44e8e9c3f70c5ac9f1939af5d5b2e6c83aca76d258",
+      "sourceUnitCounts": {
+        "count": 8,
+        "g": 33,
+        "kg": 4,
+        "l": 1,
+        "ml": 9,
+        "unknown": 160,
+        "unrecognized-sha256:0f22501c1dc4f02fcd614ad45e8bd6d08500162014d59998e92fb39cd61a1fe6": 5,
+        "unrecognized-sha256:56196dcc6e45c7b6c0f61b09651dba92e2ffc8d8c86af5a9973930e367d75caa": 2,
+        "unrecognized-sha256:6c336090e9852830edba04094079e4c1af6b28f8e495ae2c8fb474a8c63af9c5": 7,
+        "unrecognized-sha256:7622925263469346e6ff73e8a216d3991dc0be23cc11423895831bc6fafccb28": 1,
+        "unrecognized-sha256:7ce993ec84996858a0825482ce66e9a0b8d3b53ea65dcd67e86b6eb53e4155ea": 12,
+        "unrecognized-sha256:a187d8b3d4924b9143655272f615ffd131ea7af27a685b63838ac0c6891dc7bb": 2,
+        "unrecognized-sha256:d19a858ba131924102c9cc14fe6f6b6675bcdf3deca06afc87ba1e3907ff1a20": 13,
+        "unrecognized-sha256:d33f4af1ae54a3aa6c9ca02019d1a46ee8c0b765fd8ed7bb056f32d4702a8db2": 8,
+        "unrecognized-sha256:d9d76bee6c962ae46c1393e33fb2b14ac0e58e9bbb2b1af21a961ed94e2e1f7e": 1
+      },
+      "status": "alignment-field-differences"
+    }
+  },
+  "historical-recipe-v2/input-fidelity.json": {
+    "exists": false
+  },
+  "recipe-context-v1/historical/manifest.json": {
+    "exists": false
+  }
+}

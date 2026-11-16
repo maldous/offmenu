@@ -1,0 +1,40 @@
+{
+  "status": "deployed-and-served-verified",
+  "version": 195,
+  "versionId": "8db6b5c4-2e5f-483f-90ea-de0260733526",
+  "deploymentId": "1e0e079a-8468-4454-8427-70c789787253",
+  "deployedUTC": "2026-10-28T19:47:06.450379Z",
+  "percentage": 100,
+  "origin": "https://offmenu.aldous.info",
+  "rollbackVersionId": "40a3e73d-6aac-45ea-b7e4-8d529376c812",
+  "moduleSHA256": "9a9a15c6da6c12e98c2b9683839da509060cb21e9974b6a562f78d5ebdfddd7d",
+  "moduleBytes": 2507864,
+  "appSHA256": "fce748582a1e4aa940022b00ccaab7ac00ec5d1ca5d357d5f45f4ff0756e1fdf",
+  "appBytes": 464652,
+  "appStatus": 200,
+  "unchangedModules": 211,
+  "totalModules": 212,
+  "settingsBindingsPreserved": true,
+  "focusedTestsPassed": 110,
+  "exportedFocusedTests": 34,
+  "independentServerParityChecks": 11,
+  "privateAPIAnonymousStatus": 401,
+  "protectedDocumentsAnonymousStatus": 303,
+  "landingStoryUnchanged": true,
+  "authenticatedJourneyTested": false,
+  "physicalScannerAcceptance": false,
+  "landingGPUVerified": false,
+  "exportArchiveSHA256": "512c85900c952f11ba78de0b5e1a9fab80e2b9370327176d1a94e3a1c15c8134",
+  "baseline194RebuildExact": true,
+  "scope": [
+    "scanner asynchronous access rechecks in retained app scanner",
+    "require actual measured nonoptional pantry demand while preserving expiry/date fixes",
+    "reject cooking retries with changed recipe/servings/date",
+    "preserve absent served portions on zero-intake history roundtrip in client and actual server helper"
+  ],
+  "remainingHolds": [
+    "physical scanner/authenticated device acceptance",
+    "broader confirmed receipt and source-policy evidence",
+    "separate NorthStar caller wiring"
+  ]
+}

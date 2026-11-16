@@ -1,0 +1,257 @@
+"""Small semantic regression fixtures only: no throughput or stress workload."""
+import importlib.util
+import json
+import sqlite3
+import tempfile
+import subprocess
+import sys
+import unittest
+from pathlib import Path
+import test_resumable as t
+
+ROOT = Path(__file__).resolve().parents[1]
+TABLES = ('ids', 'texts', 'citations', 'references_pending', 'translation_sources')
+SPEC = importlib.util.spec_from_file_location('prior_workers', ROOT.parent / 'qualification-parallel-20261028/scripts/qualification_asset_workers.py')
+prior = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(prior)
+
+
+def fingerprint(value):
+    return t.r.q.sha_bytes(value.encode())
+
+
+def rows(connection):
+    return {table: connection.execute(f'SELECT * FROM {table} ORDER BY 1,2').fetchall() for table in TABLES}
+
+
+class MergeTests(unittest.TestCase):
+    def make_shard(self, path, values):
+        db = t.r.q.Database(path, 1024 ** 2)
+        for table, entries in values.items():
+            if entries:
+                db.connection.executemany(f'INSERT INTO {table} VALUES ({",".join("?" for _ in entries[0])})', entries)
+        db.connection.commit()
+        db.connection.close()
+        return {'path': str(path), 'bytes': path.stat().st_size, 'sha256': t.r.q.sha_file(path)}
+
+    def base_values(self):
+        h = fingerprint
+        return {'ids': [('resource', h('r0'))], 'texts': [(h('t0'), h('identity'), h('source'))],
+                'citations': [(h('c0'), h('canonical'))], 'references_pending': [('resource', h('r0'))],
+                'translation_sources': [(h('t0'), h('source'))]}
+
+    def test_single_pass_exact_rows_and_identical_duplicates_do_not_update(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as tmp:
+            p = Path(tmp)
+            seed = self.make_shard(p / 'seed', self.base_values())
+            extra = self.base_values()
+            extra['ids'] = [('assertion', fingerprint('a1'))]
+            extra['texts'].append((fingerprint('t1'), fingerprint('identity1'), fingerprint('source1')))
+            extra['citations'].append((fingerprint('c1'), fingerprint('canonical1')))
+            shard = self.make_shard(p / 'extra', extra)
+            results = []
+            for name, merge in (('prior', prior.merge), ('new', t.r.workers.merge)):
+                db = t.r.Database(p / name, 1024 ** 2, True)
+                try:
+                    before_schema = db.connection.execute('SELECT type,name,sql FROM sqlite_master ORDER BY name').fetchall()
+                    merge(db.connection, seed); db.connection.commit(); db.connection.execute('DETACH DATABASE asset')
+                    db.connection.execute('CREATE TEMP TABLE updates_seen (name TEXT)')
+                    for table in ('texts', 'citations'):
+                        db.connection.execute(f"CREATE TEMP TRIGGER audit_{table} AFTER UPDATE ON main.{table} BEGIN INSERT INTO updates_seen VALUES ('{table}'); END")
+                    trace = []
+                    db.connection.set_trace_callback(trace.append)
+                    merge(db.connection, shard); db.connection.commit(); db.connection.execute('DETACH DATABASE asset')
+                    db.connection.set_trace_callback(None)
+                    self.assertEqual(db.connection.execute('SELECT * FROM updates_seen').fetchall(), [])
+                    self.assertEqual(db.connection.execute('SELECT type,name,sql FROM sqlite_master ORDER BY name').fetchall(), before_schema)
+                    if name == 'new':
+                        self.assertFalse(any('JOIN main.' in statement for statement in trace))
+                    results.append(rows(db.connection))
+                finally:
+                    db.connection.close()
+            self.assertEqual(*results)
+
+    def test_conflicts_roll_back_new_rows_and_checkpoint(self):
+        for kind in ('text', 'citation', 'resource', 'assertion', 'relation', 'translation'):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as tmp:
+                p = Path(tmp); values = self.base_values()
+                values['ids'] = [(kind if kind not in ('text', 'citation') else 'resource', fingerprint('duplicate'))]
+                seed = self.make_shard(p / 'seed', values)
+                db = t.r.Database(p / 'main', 1024 ** 2, True)
+                try:
+                    t.r.workers.merge(db.connection, seed)
+                    db.connection.execute("INSERT INTO checkpoint VALUES (1, 'unchanged')")
+                    db.connection.commit(); db.connection.execute('DETACH DATABASE asset')
+                    before = rows(db.connection)
+                    incoming = self.base_values()
+                    incoming['texts'].append((fingerprint('new-text'), fingerprint('new-identity'), fingerprint('new-source')))
+                    incoming['citations'].append((fingerprint('new-citation'), fingerprint('new-content')))
+                    if kind == 'text': incoming['texts'][0] = (fingerprint('t0'), fingerprint('conflict'), fingerprint('source'))
+                    elif kind == 'citation': incoming['citations'][0] = (fingerprint('c0'), fingerprint('conflict'))
+                    else: incoming['ids'] = [(kind, fingerprint('duplicate')), (kind, fingerprint('new-id'))]
+                    shard = self.make_shard(p / 'conflict', incoming)
+                    expected = f'repeated {kind} id' if kind in ('text', 'citation') else f'duplicate global {kind} id'
+                    with self.assertRaisesRegex(t.r.workers.q.QualificationError, expected):
+                        t.r.workers.merge(db.connection, shard)
+                    db.connection.rollback(); db.connection.execute('DETACH DATABASE asset')
+                    self.assertEqual(rows(db.connection), before)
+                    self.assertEqual(db.connection.execute('SELECT value FROM checkpoint').fetchone()[0], 'unchanged')
+                finally: db.connection.close()
+
+    def test_sql_interrupt_after_text_and_citation_statements_is_atomic(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as tmp:
+            p = Path(tmp); shard = self.make_shard(p / 'shard', self.base_values())
+            db = t.r.Database(p / 'main', 1024 ** 2, True)
+            try:
+                db.connection.execute("INSERT INTO checkpoint VALUES (1, 'before-asset')"); db.connection.commit()
+                before = rows(db.connection)
+                interrupted = False
+                def trace(sql):
+                    nonlocal interrupted
+                    if sql.startswith('INSERT INTO main.ids'):
+                        interrupted = True
+                        db.connection.set_progress_handler(lambda: 1, 1)
+                db.connection.set_trace_callback(trace)
+                with self.assertRaisesRegex(sqlite3.OperationalError, 'interrupted'):
+                    t.r.workers.merge(db.connection, shard)
+                db.connection.set_progress_handler(None, 0); db.connection.set_trace_callback(None)
+                db.connection.rollback(); db.connection.execute('DETACH DATABASE asset')
+                self.assertTrue(interrupted)
+                self.assertEqual(rows(db.connection), before)
+                self.assertEqual(db.connection.execute('SELECT value FROM checkpoint').fetchone()[0], 'before-asset')
+                t.r.workers.merge(db.connection, shard); db.connection.commit(); db.connection.execute('DETACH DATABASE asset')
+                self.assertEqual(rows(db.connection), self.base_values())
+            finally: db.connection.close()
+
+    def test_unrelated_id_integrity_failure_is_not_reported_as_duplicate(self):
+        class FailingConnection:
+            def __init__(self): self.statements = []
+            def execute(self, sql, parameters=()):
+                self.statements.append(sql)
+                if sql.startswith('INSERT INTO main.ids'):
+                    error = sqlite3.IntegrityError('unrelated NOT NULL constraint failed')
+                    error.sqlite_errorcode = sqlite3.SQLITE_CONSTRAINT_NOTNULL
+                    raise error
+        with tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as tmp:
+            shard = self.make_shard(Path(tmp) / 'shard', self.base_values())
+            connection = FailingConnection()
+            with self.assertRaisesRegex(sqlite3.IntegrityError, 'unrelated NOT NULL'):
+                t.r.workers.merge(connection, shard)
+            self.assertFalse(any('JOIN main.ids' in sql for sql in connection.statements))
+
+    def test_changed_shard_bytes_rejected_before_any_merge(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as tmp:
+            p = Path(tmp); shard = self.make_shard(p / 'shard', self.base_values())
+            with (p / 'shard').open('ab') as handle: handle.write(b'changed')
+            db = t.r.Database(p / 'main', 1024 ** 2, True)
+            try:
+                with self.assertRaisesRegex(t.r.workers.q.QualificationError, 'fingerprint bytes changed'):
+                    t.r.workers.merge(db.connection, shard)
+                self.assertEqual(rows(db.connection), {table: [] for table in TABLES})
+            finally: db.connection.close()
+
+    def test_all_eight_small_packages_exact_original_evidence_and_rows(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as tmp:
+            p = Path(tmp); packages = []
+            for i in range(8):
+                package = p / f'package-{i}'; packages.append(package)
+                # Forward references require the unchanged final global scan.
+                t.fixtures.make_package(package, [t.fixtures.packet(
+                    resources=[t.fixtures.resource(f'urn:test:r{i}')],
+                    assertions=[t.fixtures.assertion(f'urn:test:a{i}', f'urn:test:r{(i + 1) % 8}')])])
+            expected = t.fixtures.qualification.qualify(p / 'original.json', p / 'original.db', packages, 20)
+            actual = t.r.qualify(p / 'new.json', p / 'new.db', packages, 20)
+            expected.pop('seconds'); actual.pop('seconds')
+            self.assertEqual(actual, expected)
+            with sqlite3.connect(p / 'original.db') as old, sqlite3.connect(p / 'new.db') as new:
+                self.assertEqual(rows(old), rows(new))
+
+    def test_final_global_reference_and_translation_failures_remain_mandatory(self):
+        for failure in ('reference', 'translation'):
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as tmp:
+                p = Path(tmp); a, b = p / 'a', p / 'b'
+                t.fixtures.make_package(a, [t.fixtures.packet(resources=[t.fixtures.resource()])])
+                translations = []
+                if failure == 'translation':
+                    translations = [{
+                        'id': 'urn:test:translation', 'textId': 'urn:test:text', 'language': 'fr',
+                        'value': 'nom', 'sourceTextSha256': fingerprint('wrong-source').hex(),
+                        'translator': 'publisher', 'method': 'source-published', 'status': 'published-source',
+                        'citationIds': ['urn:test:citation'], 'terminologyResourceIds': ['urn:test:resource'],
+                    }]
+                t.fixtures.make_package(b, [t.fixtures.packet(
+                    assertions=[t.fixtures.assertion(subject='urn:test:missing' if failure == 'reference' else 'urn:test:resource')],
+                    translations=translations)])
+                message = 'do not resolve globally' if failure == 'reference' else 'correct original text hash'
+                with self.assertRaisesRegex(t.r.q.QualificationError, message):
+                    t.r.qualify(p / 'out', p / 'db', [a, b], 20)
+                self.assertFalse((p / 'out').exists())
+
+
+# Migration exercises the real reviewed parallel implementation, not a reset DB.
+MSPEC = importlib.util.spec_from_file_location('merge_migration', ROOT / 'scripts/migrate_qualification_merge.py')
+migration = importlib.util.module_from_spec(MSPEC); MSPEC.loader.exec_module(migration)
+def prior_checkpoint(root, steps):
+    code = """
+import importlib.util, sys
+from pathlib import Path
+spec = importlib.util.spec_from_file_location('prior_wrapper', sys.argv[1])
+r = importlib.util.module_from_spec(spec); spec.loader.exec_module(r)
+p = Path(sys.argv[2])
+r.qualify(p / 'out', p / 'db', [p / 'package'], 20, max_steps=int(sys.argv[3]))
+"""
+    subprocess.run([sys.executable, '-c', code,
+                    str(ROOT.parent / 'qualification-parallel-20261028/scripts/qualify-common-expansion-resumable.py'),
+                    str(root), str(steps)], check=True)
+
+
+class MergeMigrationTests(unittest.TestCase):
+    def test_exact_parallel_checkpoint_migration_preserves_work_and_resumes(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as tmp:
+            p = Path(tmp); package = p / 'package'
+            t.fixtures.make_package(package, [t.fixtures.packet(resources=[t.fixtures.resource()])])
+            prior_checkpoint(p, 3)
+            with sqlite3.connect(p / 'db') as db:
+                checkpoint = db.execute('SELECT value FROM checkpoint').fetchone()[0]
+                pins = json.loads(db.execute('SELECT value FROM run_pins').fetchone()[0])
+                graph = rows(db)
+            self.assertEqual(pins['orchestrator'], migration.OLD)
+            self.assertEqual(pins['workerHelper'], migration.OLD_HELPER)
+            self.assertFalse(migration.migrate(p / 'db')['applied'])
+            target_wrapper = t.r.q.sha_file(ROOT / 'scripts/qualify-common-expansion-resumable.py')
+            target_helper = t.r.q.sha_file(ROOT / 'scripts/qualification_asset_workers.py')
+            with self.assertRaisesRegex(ValueError, 'explicit approved target'):
+                migration.migrate(p / 'db', True, 'wrong', target_helper)
+            migration.migrate(p / 'db', True, target_wrapper, target_helper)
+            with sqlite3.connect(p / 'db') as db:
+                self.assertEqual(db.execute('SELECT value FROM checkpoint').fetchone()[0], checkpoint)
+                self.assertEqual(rows(db), graph)
+                after = json.loads(db.execute('SELECT value FROM run_pins').fetchone()[0])
+                expected = dict(pins, orchestrator=target_wrapper, workerHelper=target_helper)
+                self.assertEqual(after, expected)
+                record = json.loads(db.execute('SELECT value FROM implementation_migrations').fetchone()[0])
+                self.assertEqual(record['priorPins'], pins)
+                self.assertEqual(record['nextPins'], after)
+                self.assertEqual(record['checkpointSha256'], t.r.hashlib.sha256(checkpoint.encode()).hexdigest())
+            actual = t.r.qualify(p / 'out', p / 'db', [package], 20, resume=True)
+            expected = t.fixtures.qualification.qualify(p / 'expected', p / 'expected.db', [package], 20)
+            actual.pop('seconds'); expected.pop('seconds')
+            self.assertEqual(actual, expected)
+
+    def test_migration_rejects_unknown_helper_and_completed_proof(self):
+        for mutation in ('helper', 'done'):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as tmp:
+                p = Path(tmp); package = p / 'package'
+                t.fixtures.make_package(package, [t.fixtures.packet(resources=[t.fixtures.resource()])])
+                prior_checkpoint(p, 1)
+                with sqlite3.connect(p / 'db') as db:
+                    if mutation == 'helper':
+                        pins = json.loads(db.execute('SELECT value FROM run_pins').fetchone()[0]); pins['workerHelper'] = 'unknown'
+                        db.execute('UPDATE run_pins SET value=?', (json.dumps(pins),))
+                    else:
+                        state = json.loads(db.execute('SELECT value FROM checkpoint').fetchone()[0]); state['phase'] = 'done'
+                        db.execute('UPDATE checkpoint SET value=?', (json.dumps(state),))
+                with self.assertRaisesRegex(ValueError, 'exact reviewed parallel' if mutation == 'helper' else 'completed proof'):
+                    migration.migrate(p / 'db')
+
+if __name__ == '__main__': unittest.main()

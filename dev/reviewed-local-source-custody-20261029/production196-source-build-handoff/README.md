@@ -1,0 +1,7 @@
+# Exact production196 source/build handoff
+This source-only package is for the existing Foo build owner. No build has been rerun here after publication;120 combined tests and served196 are already verified. Inspect current installed tooling first; do not overwrite shared checkout or create another app writer.
+Build requires Node and esbuild0.25.12 available at toolchain/node_modules/esbuild; pinned lockfile and exact official @netlify/identity2.0.0 and gotrue-js1.0.1 entry files included. build-browser.mjs verifies all manifest pins and dependency hashes. Build command from extracted root: node build-browser.mjs candidate-source-root candidate-build
+Focused combined tests: (cd candidate-source-root/candidate-source/app && node --test tests-web/*.test.mjs)
+Current app expected SHA e510c7a4cc6f418cbda6d984e0ff7de90f0d7b85d350640b9f624fd9b818c057. Protected scanner and guest source groups remain unchanged. Do not deploy generic guest build over production custom guest graph.
+Evidence splice scripts reference integrator-specific prior module paths and are provenance, not standalone deploy automation. Publication/authenticated connectors remain sole cloud integrator owned. Existing main module is not included; obtain exact reviewed runtime artifact separately if needed for integration, never rebuild whole server generically.
+No credentials, raw datasets, caches, binaries or truncated source-reference module included. Source manifest originalPath fields are historical provenance, not required paths.

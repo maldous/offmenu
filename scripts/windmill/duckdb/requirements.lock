@@ -1,0 +1,2 @@
+# CPython 3.12, Linux x86_64, glibc >=2.26; no extras or third-party dependencies.
+duckdb==1.5.6 --hash=sha256:bc9619ed7d4ffa117b5155d84b44794366bb6635178d78ed5e13a6024845c757

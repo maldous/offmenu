@@ -1,0 +1,38 @@
+{
+  "connector": "Windmill OffMenu Chat",
+  "workspace": "offmenu",
+  "successful_read_only_tools": [
+    "read_workspace_item(version=deployed)",
+    "list_workers",
+    "list_workspace_items"
+  ],
+  "adapter": {
+    "path": "u/admin/offmenu_groq_public_development_20261028",
+    "isDraft": false,
+    "extraPerms": {}
+  },
+  "caller": {
+    "path": "u/admin/offmenu_provider_orchestrator_20261028",
+    "isDraft": false,
+    "extraPerms": {}
+  },
+  "listed_worker_count": 64,
+  "worker_groups": [
+    "default"
+  ],
+  "all_listed_workers_have_python3": true,
+  "worker_metadata_fields": [
+    "worker",
+    "worker_group",
+    "custom_tags",
+    "last_ping",
+    "jobs_executed"
+  ],
+  "shared_mount_verified": false,
+  "worker_fork_signal_verified": false,
+  "read_mount_query_result": [],
+  "scripts_run": 0,
+  "resources_read": 0,
+  "live_writes": 0,
+  "recorded_at": "2026-10-28T10:42:34.323636+00:00"
+}

@@ -1,0 +1,52 @@
+{
+  "id": "master-all15-ready-before-navigation-r4-source-ready-20261027",
+  "atUTC": "2026-10-27T00:32:00.523059+00:00",
+  "task": "CORE-APP-SCANNER-DELIVERY",
+  "nativeThread": "01a17547-1458-7fe3-a05c-11a3c28f216f",
+  "status": "SOURCE_READY_ALL15_TARGETED_CHECKS_PASS_NOT_SERVED",
+  "manifest": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/route-manifest.json",
+    "sha256": "ab2420fdc74b005efdbf24f62157a7db02bd88bdbfa0c86249c4c917f637b827"
+  },
+  "sourceRequirement": "DirectMatt: no per-page Preparinganimation, ALL15assets/modules ready inadvancefor arbitraryscroll, sharedassetsreused; preserve exactexistingart/vertical/cover/anchor/auto+5s/currentappstate.",
+  "implementation": [
+    "All13authoredCPUscenes prepare duringopening andretainuntilpagehide;01/02memoizedCPU/resources+sharedrenderer retainedwhencontrollersrebuild.",
+    "Story navigation/introautoarm admitted onlyafterall15ready; requestsduringopeningqueued. Existingopeningneon remains, no preparing message, no new loading controls. Reducedmotion behavior preserved andanimationtoggle-on starts fullreadiness.",
+    "Pageentryprepared-only synchronouscatalogacquire; no on-demand producer/fetch/decode. SharedworldGPUprogramprepared beforeadmission/reused; sceneGPUtexturesreleasedbetweenworlds. Existingfirstpairprogram/texturesmemoized, no all15GPUcontexts/textures.",
+    "Sharednative/worldleasecache+78exactequalSHA/mimealias canonicalizations prevents repeatedsharedassetdownloads/decode. Allfiniteart/motion/camera sampling and5sholdsourcepreserved;coverassetsunchanged."
+  ],
+  "tests": {
+    "result": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/check-result.json",
+      "sha256": "96cd145d394b66eb3213939f5db891c781d8b1bdfdf0c6b95d811c3d4e84d01b"
+    },
+    "source": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/check-ready.mjs",
+      "sha256": "ce75f663cd6bccf81863ca5415f277fb470d2665e0bc6eae835a0dcda558de1a"
+    },
+    "status": "PASS_PREPARED_ONLY_NONADJACENT_AND_RETURN_ENTRY",
+    "oldCurrentNextReloadReproduced": true,
+    "selectedPublicAssetRequests": 101,
+    "selectedImageDecodes": 89,
+    "all15ResourceStats": {
+      "entries": 101,
+      "active": 0,
+      "queued": 0,
+      "bytes": 20703276,
+      "pixels": 67340542,
+      "disposed": false
+    },
+    "entries": "All13worlds prepared;15nonadjacent/backworldmounts+4native01/02mounts noadditionalfetch/decode;2sharedGPUprogramconstructors total.",
+    "openingGate": "Noautoarm untilready thenoriginal5000ms; failuredoesnotadmitpartialcatalog; cancellation/late/disposeverified.",
+    "preservation": "Nativefiniteclock/action/transition sourceexact; coverCSS/runtimeSHAexact; story5sarmexactafterreadinessguard; anchor/wait/gestures sourceexact.",
+    "syntax": "Candidate story/world/native/catalog syntaxPASS."
+  },
+  "limits": [
+    "Targeted Node executesactualpublicmodule/JSON/PNGbytes/bindings withdimension-onlyImage andmock2D/GL plusfileURLmapping; not realbrowserdecodedheap/GPU/visual/physicalphone clearance.",
+    "SelectedPNGheaderpixelaccount67,340,542 (~269MBRGBA) plusderivedcanvases/browsertransients/GPU are outsideencoded20.7MB accounting; boundsfinite, no measureddeviceallocationorOOMclaim. ALL15coverage notsilently reduced.",
+    "Initialall-resource download/decode mustcompletewhileopeningsequence remains beforearbitrarypageentry; no networkcanbeinstantbeforeinitialdataarrives.",
+    "No actualservedclaim yet;00/05currentrole/API/state preservation andactualreceiptrequired."
+  ],
+  "nextAction": "ExistingGateway/00/05 integrateexact6routes overCURRENT5d54 orcompatibleacceptedrole preservingown-data/cover/state/scanneralias fixes. Useonlyaffectedqualificationneeded; no broadbenchmark/artwork/newowner gate. Confirmactualservedstoryand5newmodules/retainedcover/API thenreportALL15scope honestly.",
+  "holds": "No source/private/auth/security/production/CIX changes; actualpermissions/denials retained."
+}

@@ -1,0 +1,25 @@
+{
+  "exit_code": 0,
+  "summary": [
+    "\u2139 tests 10",
+    "\u2139 suites 0",
+    "\u2139 pass 10",
+    "\u2139 fail 0",
+    "\u2139 cancelled 0",
+    "\u2139 skipped 0",
+    "\u2139 todo 0",
+    "\u2139 duration_ms 74.056832"
+  ],
+  "tests": [
+    "\u2714 existing source-data UI assigns nutrition only to the selected lot (4.239434ms)",
+    "\u2714 actual planner consumes selected and barcode profiles independently (1.499733ms)",
+    "\u2714 actual cooking consumes each lot profile without contaminating the next batch (3.936326ms)",
+    "\u2714 cloud validation retains source, method, basis, unknown and zero across roundtrip (1.23863ms)",
+    "\u2714 view-only kitchen cannot apply the source-data UI selection (0.776669ms)",
+    "\u2714 stale inventory object cannot apply a source profile after replacement (0.542422ms)",
+    "\u2714 changed lot identity or unit makes its explicit selection unknown (0.519997ms)",
+    "\u2714 rights-held, incompatible basis and unconfirmed selections are refused (0.551788ms)",
+    "\u2714 expired selection remains retained but is excluded from consumption (0.346061ms)",
+    "\u2714 mapped values cannot diverge from the retained source profile or replace missing with zero (0.559032ms)"
+  ]
+}

@@ -1,0 +1,23 @@
+Read-only EXPLAIN of SQL on empty exact-schema fixture; not a benchmark.
+SQLite 3.53.1
+
+SELECT 1 FROM asset.texts s JOIN main.texts t ON s.id_sha256=t.id_sha256 WHERE s.identity_sha256 != t.identity_sha256 LIMIT 1
+(4, 0, 215, 'SCAN s')
+(6, 0, 45, 'SEARCH t USING PRIMARY KEY (id_sha256=?)')
+
+SELECT 1 FROM asset.citations s JOIN main.citations t ON s.id_sha256=t.id_sha256 WHERE s.canonical_sha256 != t.canonical_sha256 LIMIT 1
+(4, 0, 215, 'SCAN s')
+(6, 0, 45, 'SEARCH t USING PRIMARY KEY (id_sha256=?)')
+
+SELECT kind FROM asset.ids s JOIN main.ids t USING(kind,id_sha256) LIMIT 1
+(4, 0, 215, 'SCAN s')
+(6, 0, 45, 'SEARCH t USING PRIMARY KEY (kind=? AND id_sha256=?)')
+
+INSERT INTO main.ids SELECT * FROM asset.ids ORDER BY kind,id_sha256
+(4, 0, 215, 'SCAN asset.ids')
+
+INSERT OR IGNORE INTO main.texts SELECT * FROM asset.texts
+(17, 0, 215, 'SCAN asset.texts')
+
+INSERT INTO main.texts SELECT * FROM asset.texts WHERE 1 ORDER BY id_sha256 ON CONFLICT(id_sha256) DO UPDATE SET identity_sha256=excluded.identity_sha256 WHERE texts.identity_sha256 != excluded.identity_sha256
+(4, 0, 215, 'SCAN asset.texts')

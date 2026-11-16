@@ -1,0 +1,11 @@
+✔ actual outer worker serves only intended anonymous owned foundation paths before existing authentication guard (78.62805ms)
+✔ private state, unknown API, corpus suffix and protocol guards retain exact original anonymous responses (9.169773ms)
+✔ new public route keeps exact origin and method constraints, no credentials/profile or wildcard handling (0.494096ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 282.312011

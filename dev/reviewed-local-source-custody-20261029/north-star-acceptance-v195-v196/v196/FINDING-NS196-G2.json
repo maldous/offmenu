@@ -1,0 +1,57 @@
+{
+  "id": "NS196-G2",
+  "classification": "remaining-recipe-version-provenance-coverage-gap-not-new-release-gate",
+  "releaseSHA256": "e510c7a4cc6f418cbda6d984e0ff7de90f0d7b85d350640b9f624fd9b818c057",
+  "observed": "The executed actual cook handler creates batch.recipeId and title plus actual ingredient allocations, numeric totals and events. No immutable recipe version, recipe source/license/instructions snapshot or corresponding versioned-recipe reference is explicitly frozen in the batch. History links recipeId and batchId. This is distinct from the now-retained selected nutrient profile witness.",
+  "evidence": {
+    "batchKeys": [
+      "id",
+      "planId",
+      "recipeId",
+      "title",
+      "date",
+      "createdAt",
+      "servings",
+      "remaining",
+      "allocations",
+      "totals",
+      "events",
+      "undone"
+    ],
+    "historyKeys": [
+      "id",
+      "batchId",
+      "recipeId",
+      "title",
+      "date",
+      "slot",
+      "memberId",
+      "servings",
+      "servedPortions",
+      "completion",
+      "intakeKnown",
+      "leftovers",
+      "createdAt",
+      "source",
+      "totals",
+      "unresolved",
+      "note"
+    ],
+    "recipeFieldsAvailable": [
+      "id",
+      "title",
+      "servings",
+      "ingredients",
+      "instructions",
+      "source",
+      "license"
+    ],
+    "checkpoint": "02-actual-menu-plan-cook-selected-source"
+  },
+  "finiteAcceptanceCase": "Cook using a source/version-bound recipe V1, retain that immutable recipe/version witness through batch and history, then replace/edit current recipe data. Source/recipe/version originally used must remain recoverable alongside allocations and selected nutrition profile. No new stock/intake operation should be produced by the edit.",
+  "owners": [
+    "align_north_star_graph typed provenance implementation",
+    "prepare_production_integration sole app integration"
+  ],
+  "limits": "No real-data admission, malformed-source hardening, new rights grant, clinical/device/account claim or full-release gate inferred. Do not alter the in-flight candidate from this review lane."
+}

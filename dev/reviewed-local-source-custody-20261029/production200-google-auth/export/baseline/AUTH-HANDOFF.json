@@ -1,0 +1,44 @@
+{
+  "origin": "https://offmenu.aldous.info",
+  "version": 199,
+  "versionId": "b060fae2-0319-447c-9968-940e1fb20984",
+  "facts": {
+    "googleProviderConfigured": true,
+    "oauthAvailable": false,
+    "synthetic": false,
+    "runtimeGate": "worker.mjs authPageOptions identityTransport real oauthCallbackReady false",
+    "noCredentialsExported": true
+  },
+  "files": [
+    {
+      "path": "auth.html",
+      "sha256": "768188e484f3eea7ee0ef1125e2df07f9cf59c11838e51af157ce573ef2e3e01",
+      "bytes": 2410
+    },
+    {
+      "path": "auth.js",
+      "sha256": "61ab5315ca62cecba443e7fad2563fb4955e27930f7658b4b9a6fab8ac03f472",
+      "bytes": 34912
+    },
+    {
+      "path": "auth-return-bridge.js",
+      "sha256": "fdd80162819472361807e81bc7845de745c60d63fcd083f9a398dc7f3b3d840e",
+      "bytes": 340
+    },
+    {
+      "path": "auth-config.json",
+      "sha256": "aba12af67c61de10214a603360d04766eee522e72387a10529d8ad86d7104a8b",
+      "bytes": 272
+    },
+    {
+      "path": "identity-settings.json",
+      "sha256": "a1c3e114ca735830ec5615789c1556512d1c7310961aadbc5efa143899f97895",
+      "bytes": 183
+    },
+    {
+      "path": "auth-gate-source-evidence.json",
+      "sha256": "b663ec58dd37a02bf7d0783f1fab8dbf28b1c33df5add893a27632e0ec17e1c5",
+      "bytes": 4371
+    }
+  ]
+}

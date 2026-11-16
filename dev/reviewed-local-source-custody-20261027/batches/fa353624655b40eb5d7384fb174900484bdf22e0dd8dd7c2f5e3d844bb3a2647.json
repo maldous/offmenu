@@ -1,0 +1,198 @@
+{
+  "baseCommit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+  "comparisonScope": [
+    {
+      "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+      "treeSha": "71779bed7a1469cdc3dd116759dd49e97febc815"
+    },
+    {
+      "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+      "treeSha": "d0f272757ca95ef40985bdce75fb568773c62400"
+    },
+    {
+      "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+      "treeSha": "03fb1c0398327871f3f31876a23f19d56aff1a7d"
+    },
+    {
+      "commit": "05c32bd0c33465b8212959d7a77eb95ace6698b7",
+      "treeSha": "c19fd38b6a6f2e48e885df2110890e536bd532f7"
+    }
+  ],
+  "dataPublication": false,
+  "files": [
+    {
+      "bytes": 42395,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "direct-source-recovery-byte-review-20261027",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "758b56d4f57f17ab429ceed78048e1c94614e778623e7eeaf5ef61b2b933f63a",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "9d31925800395daefc4b02b173a7a0b78e209d1b",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-export/scripts/export-local-source.py",
+      "reviewRef": "direct-source-recovery-reviewed-20261027",
+      "sha256": "758b56d4f57f17ab429ceed78048e1c94614e778623e7eeaf5ef61b2b933f63a",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-corpus-inventory-20261027/scripts/export-local-source.py"
+    },
+    {
+      "bytes": 23127,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "direct-source-recovery-byte-review-20261027",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "fabe5fe0c4b1806765406c65aba5b9985180ab79600e080cbbf12183ad523661",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "7dbf23f90aadaae101b164fbf7b1f051cf051f8e",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-export/tests/test_local_source_export.py.source.txt",
+      "reviewRef": "direct-source-recovery-reviewed-20261027",
+      "sha256": "fabe5fe0c4b1806765406c65aba5b9985180ab79600e080cbbf12183ad523661",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-corpus-inventory-20261027/tests/test_local_source_export.py"
+    },
+    {
+      "bytes": 2148,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "direct-source-recovery-byte-review-20261027",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "e72dafd2c80df4c26ba16e6e50a522f240552d86470683c61cc0106eda122bc3",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "0c3b1ffa2067c3a1bac758d0de144c3fd137379c",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-export/tests/test_local_source_export_reader.py.source.txt",
+      "reviewRef": "direct-source-recovery-reviewed-20261027",
+      "sha256": "e72dafd2c80df4c26ba16e6e50a522f240552d86470683c61cc0106eda122bc3",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-corpus-inventory-20261027/tests/test_local_source_export_reader.py"
+    },
+    {
+      "bytes": 5774,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "direct-source-recovery-byte-review-20261027",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "95126664ba7bd371ec23f605a1ad1f40339a5dffd09eb3657a6bb251d1cf1ec0",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "bf1c752959f2c7c7315f4c6eae26b2a7902b805a",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-export/tests/test_local_source_inventory_stream.py.source.txt",
+      "reviewRef": "direct-source-recovery-reviewed-20261027",
+      "sha256": "95126664ba7bd371ec23f605a1ad1f40339a5dffd09eb3657a6bb251d1cf1ec0",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-corpus-inventory-20261027/tests/test_local_source_inventory_stream.py"
+    },
+    {
+      "bytes": 3837,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "direct-source-recovery-byte-review-20261027",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "70217b8ab44d4bddca191db323aa9efc48e8c769f185ba353ae91fab8e430398",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "10fd8ab8f056a1f5d3ffc483d05ef61886c8ae78",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-export/docs/direct-source-inventory.md",
+      "reviewRef": "direct-source-recovery-reviewed-20261027",
+      "sha256": "70217b8ab44d4bddca191db323aa9efc48e8c769f185ba353ae91fab8e430398",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-corpus-inventory-20261027/docs/direct-source-inventory.md"
+    },
+    {
+      "bytes": 11767,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "direct-source-recovery-byte-review-20261027",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "dc0982c0c900cc67e8953654618648cffe70ce5ec766a115b8637c585a9df0bd",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "ffdd66412a1b6194671bbcba116ce7cc5817f498",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-export/scripts/direct_publish_metadata.py",
+      "reviewRef": "direct-source-recovery-reviewed-20261027",
+      "sha256": "dc0982c0c900cc67e8953654618648cffe70ce5ec766a115b8637c585a9df0bd",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-custody-import-20261027/direct_publish_metadata.py"
+    },
+    {
+      "bytes": 9066,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "direct-source-recovery-byte-review-20261027",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "9e78c9602447270c7f022d4961b97d41703910badf71e5e46057350fb2356be8",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "e7753db5002243ff863633499d84d7ae7afc6983",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-export/tests/test_direct_publish_metadata.py.source.txt",
+      "reviewRef": "direct-source-recovery-reviewed-20261027",
+      "sha256": "9e78c9602447270c7f022d4961b97d41703910badf71e5e46057350fb2356be8",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-custody-import-20261027/test_direct_publish_metadata.py"
+    },
+    {
+      "bytes": 3410,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "direct-source-recovery-byte-review-20261027",
+        "reviewedBy": "cloud-custody-lane",
+        "sha256": "222ba110f822599d829c048169218ff9ace51a8fdd5bc1f7a4e179fef325e036",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "04764ecfead241b7b2bd697ad3e5d28ed4699433",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-export/DIRECT-SYNC.md",
+      "reviewRef": "direct-source-recovery-reviewed-20261027",
+      "sha256": "222ba110f822599d829c048169218ff9ace51a8fdd5bc1f7a4e179fef325e036",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-custody-import-20261027/DIRECT-SYNC.md"
+    }
+  ],
+  "repository": "maldous/offmenu",
+  "runtimeAdoption": false,
+  "schemaVersion": "offmenu-source-custody-import/1",
+  "scope": "direct-metadata-recovery-tools-only; no Actions; no runtime/data adoption",
+  "screeningDispositions": [
+    {
+      "disposition": "Synthetic rejection fixture only; no private-key body or footer; generated token and example.invalid fixtures inspected. Exact source bytes unchanged.",
+      "finding": "private-key header marker",
+      "sha256": "fabe5fe0c4b1806765406c65aba5b9985180ab79600e080cbbf12183ad523661"
+    }
+  ],
+  "screeningLimit": "Pattern scanning supplements the recorded exact-byte content reviews; it is not a confidentiality proof.",
+  "selectionSha256": "fa353624655b40eb5d7384fb174900484bdf22e0dd8dd7c2f5e3d844bb3a2647",
+  "transport": null
+}

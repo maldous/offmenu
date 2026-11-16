@@ -1,0 +1,7 @@
+# Reviewed North Star source custody V4
+
+This additive source-only packet depends on published V2 (`a759cb1df44df4108dbd0cdc75f4221ecfd1d255`) and V3 (`5957b94449fabfaa2f34f6f8e23c6474bc871012`) for unchanged reviewed helpers and synthetic fixtures. It contains the independently reviewed caller subject-index correction, reviewed phase2 storage-measurement helper/tests, and exact final basis/caller proof metadata. Overlay the frozen V2, V3 and V4 roots in that order for local source tests; these custody directories are not a deployed application.
+
+No dataset, raw record value, lexical barcode, native SQLite, resource locator data, credential or runtime request payload is included. Terminal receipts carry only status and cryptographic bindings, not logs. The manifest/file inventories and source-path references are provenance metadata, not new source-access authority.
+
+The corrected caller source pin is `75a43f30967c2ea38606e0a1468132629a51b9c79744eed71938a5e1d146b3bc`; its actual 64-key metadata receipt is `921fa2113c67b05213786dbebfb10e350e2716a45a325b977f44c18e7bacf61b`. Basis producer code remains unchanged from its prior independent review; final manifest is `3520dff24e7b96635fd3d8f8cfa60664d03d5bd65709b547059cee10b306e1a9`. The reviewed consumer receipt preserves candidate/no-admission semantics and requires the publication owner to bind the exact actually-served base release separately. It is not an application deployment or a new public source-rights grant.

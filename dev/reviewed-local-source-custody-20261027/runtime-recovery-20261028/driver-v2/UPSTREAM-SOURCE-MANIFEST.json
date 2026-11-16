@@ -1,0 +1,35 @@
+{
+  "schema": "offmenu-reviewed-source-candidate/1",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5779,
+      "sha256": "8f60ca855916d5e66935879e6c1f28d09dad1f9d6483f5a17da1c659aeda68f4"
+    },
+    {
+      "path": "first-prefix-places-plan.json",
+      "bytes": 4218,
+      "sha256": "fc663778af1f6caf5432d55cf68aefaebe20690e37e261837f9a2d06599f32e0"
+    },
+    {
+      "path": "parallel_driver.py",
+      "bytes": 14230,
+      "sha256": "ba63308f0f7039a7775feb88e9310dbec5092179ead4a0ba4eb37a8f247af59b"
+    },
+    {
+      "path": "parallel_driver_v2.py",
+      "bytes": 15345,
+      "sha256": "ede23e56ef8e67b13dc75f5bd321bbb3f1dd3bf30ac1bb65b22c61231d6d07ff"
+    },
+    {
+      "path": "test_parallel_driver.py",
+      "bytes": 6375,
+      "sha256": "e7311f6b7e98fddb3b83aa114742a56801a037fc20b84357f071c5f25a05faf8"
+    },
+    {
+      "path": "test_parallel_driver_v2.py",
+      "bytes": 7481,
+      "sha256": "0e129059209e0e04c34dbbd1c8dfd25032352538509f6895144c1c1ee8bfc4a6"
+    }
+  ]
+}

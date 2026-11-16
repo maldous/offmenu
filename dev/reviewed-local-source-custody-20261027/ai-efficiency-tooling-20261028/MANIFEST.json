@@ -1,0 +1,86 @@
+{
+  "kind": "source_only_inactive_custody_export",
+  "live_step": "held_after_denial_no_retry",
+  "files": {
+    "README.md": {
+      "bytes": 2378,
+      "sha256": "04abb7d08219115023d4ad601ae75f46aaa64fb8ab1b4f0a3b57a5f259024c58"
+    },
+    "REVIEW-RECEIPT.json": {
+      "bytes": 2484,
+      "sha256": "32046c3f0416fa80e1cb3399ef04b1e1be80fb678f99095667156bcfa2ad9bd1"
+    },
+    "inactive-r2/FILE-INVENTORY.json": {
+      "bytes": 1373,
+      "sha256": "dfd2bcf814fe8e2b802774c6a1990665e158c66f864792422ed9147b514c1c8e"
+    },
+    "inactive-r2/HANDOFF.md": {
+      "bytes": 6341,
+      "sha256": "392758fd611fa668e8d7e3ca4b1dc17f8c0d649fc836c9dcd0c09d53c68f7fcc"
+    },
+    "inactive-r2/base/offmenu_groq_public_development_20261028.py": {
+      "bytes": 4241,
+      "sha256": "3760b83e2678f89e2330a62f2ccdf0a8e935461f5cbc2168a3f57d0e725e9f38"
+    },
+    "inactive-r2/candidate/offmenu_groq_public_development_20261028.py": {
+      "bytes": 20957,
+      "sha256": "1e24c1d5ce2d5b6cecb47666f775f85c4a2b582215e951c1845815eb102fef67"
+    },
+    "inactive-r2/candidate/test_accepted_reuse.py": {
+      "bytes": 10073,
+      "sha256": "8cb3c094b68f917ab3313e005546c226e829ee3dd2a8fe9c0731dfdf36acdbb8"
+    },
+    "inactive-r2/candidate/test_deadline_and_live_tasks.py": {
+      "bytes": 5703,
+      "sha256": "13484e36a78208d45e5743361fa4354f8f0c982965265d1303be9f453b07dbb1"
+    },
+    "inactive-r2/review.patch": {
+      "bytes": 39041,
+      "sha256": "10703ce67a7a9da6fd18c77cd7a199dbaf910ad2d4f5dda0de497f74ec749b2c"
+    },
+    "inactive-r2/tests.log": {
+      "bytes": 2591,
+      "sha256": "dc5516274b9daacdcb9886743d029b004694ad4998c15feeb2f107e3b5f60e83"
+    },
+    "inactive-r2/verification.json": {
+      "bytes": 387,
+      "sha256": "b64a5959e06c8f49d4587ebb363bc1ef4cf258887886edcaefddb14a7f95aa34"
+    },
+    "metrics/ORIGINAL-INVENTORY.json": {
+      "bytes": 1326,
+      "sha256": "a718c06653835935d56a3c54f9ba1ddd1ac287b3361cca277e0be511e2848dda"
+    },
+    "metrics/PLAN.md": {
+      "bytes": 7073,
+      "sha256": "49f802a4143da207cc1d6009a5acf390aa4a3e3a83af0b1a1d99368fb98b6c00"
+    },
+    "metrics/candidate-adapter.source.txt": {
+      "bytes": 8830,
+      "sha256": "133572094dedd81d42a66413cfcc160145d923491684cc3cbe384431b51f083b"
+    },
+    "metrics/candidate-caller.source.txt": {
+      "bytes": 11658,
+      "sha256": "9cec2d0eb2286cbd07a82bd2e9d43395794e868c6071a3ed6889fa77871c9ca2"
+    },
+    "metrics/capabilities.json": {
+      "bytes": 911,
+      "sha256": "4621a37caa0bd9bece1177b315c0d85f55532d2e55e4d78a2c507ca2f94d7e0f"
+    },
+    "metrics/metrics-only.patch": {
+      "bytes": 12775,
+      "sha256": "06f906eb149a4c97b65e20c0f79a083d58c231b06e61a5600a8939477cf56575"
+    },
+    "metrics/rollback-adapter.source.txt": {
+      "bytes": 4241,
+      "sha256": "3760b83e2678f89e2330a62f2ccdf0a8e935461f5cbc2168a3f57d0e725e9f38"
+    },
+    "metrics/rollback-caller.source.txt": {
+      "bytes": 11127,
+      "sha256": "cef944eedb0a6990cd6500b49abac023103d289551506c741b7162bdb6f829dd"
+    },
+    "metrics/static-verification.json": {
+      "bytes": 552,
+      "sha256": "efeb530b2b90645d486f3d356a83f3e0f19a7c94a4cc18a075a1c908921a5a75"
+    }
+  }
+}

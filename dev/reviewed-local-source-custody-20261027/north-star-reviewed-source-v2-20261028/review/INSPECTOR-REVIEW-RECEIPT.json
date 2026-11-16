@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "offmenu-north-star-inspector-review/1",
+  "status": "pass-scoped",
+  "reviewer": "/root/align_north_star_graph/review_north_star_derivations",
+  "scope": "inspect_north_star_sample.py only; separate core review owner /root/review_corpus_mount_delta",
+  "candidateSha256": "07a6f7cd7eab6a446f52ba783808c8be8c9188d29a764a3fd5425824ccc107fc",
+  "coreDependencySha256": "f6b8ab12135adb78aa381b198dab43c516ccd121983ad6e8fa2ccee3473b9ca6",
+  "independentTests": {
+    "passed": 14,
+    "failed": 0,
+    "command": "python3 -m unittest discover -s review -p test_sample_inspector.py -v",
+    "testSha256": "824286a96267554b18cffc9eab6962f684744f8c4f9eb6c25c7c8128ca972ecb",
+    "log": "independent-tests-final.log"
+  },
+  "correctedFindings": [
+    "Cross-packet endpoint mere existence no longer treated as type/scope/release resolution",
+    "Selected packet schema now actually validated",
+    "Identifier queries exclude superseded/invalid/uncited/unversioned/source-mismatched keys"
+  ],
+  "covered": [
+    "qualified positive cross-packet diagnostic query",
+    "wrong target type",
+    "private other-owner scope",
+    "different source release",
+    "superseded identifier",
+    "empty namespace",
+    "missing source revision",
+    "different-source citation",
+    "malformed common schema packet",
+    "manifest/asset hash mismatch",
+    "existing output preservation",
+    "absolute/traversal/symlink selected assets"
+  ],
+  "excluded": [
+    "full corpus data qualification",
+    "real Foo rerun",
+    "served app queries",
+    "public/source identity admission",
+    "new recipe inspector not covered by this PASS",
+    "core evidence semantic review already assigned separately"
+  ],
+  "fooGitOrProductionOperations": false,
+  "originalEightPackagesModified": false,
+  "blocksIndependentCorpusPublication": false
+}

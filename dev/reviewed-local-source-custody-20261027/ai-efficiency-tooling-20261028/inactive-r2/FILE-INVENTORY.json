@@ -1,0 +1,41 @@
+{
+  "version": "R2-frozen",
+  "files": {
+    "HANDOFF.md": {
+      "bytes": 6341,
+      "sha256": "392758fd611fa668e8d7e3ca4b1dc17f8c0d649fc836c9dcd0c09d53c68f7fcc"
+    },
+    "adapter.patch": {
+      "bytes": 22624,
+      "sha256": "072c6e39d8b572e940ad2596ed2e7efae8d5e1b1dd1d3441aa51dfbcf5228431"
+    },
+    "base/offmenu_groq_public_development_20261028.py": {
+      "bytes": 4241,
+      "sha256": "3760b83e2678f89e2330a62f2ccdf0a8e935461f5cbc2168a3f57d0e725e9f38"
+    },
+    "candidate/offmenu_groq_public_development_20261028.py": {
+      "bytes": 20957,
+      "sha256": "1e24c1d5ce2d5b6cecb47666f775f85c4a2b582215e951c1845815eb102fef67"
+    },
+    "candidate/test_accepted_reuse.py": {
+      "bytes": 10073,
+      "sha256": "8cb3c094b68f917ab3313e005546c226e829ee3dd2a8fe9c0731dfdf36acdbb8"
+    },
+    "candidate/test_deadline_and_live_tasks.py": {
+      "bytes": 5703,
+      "sha256": "13484e36a78208d45e5743361fa4354f8f0c982965265d1303be9f453b07dbb1"
+    },
+    "review.patch": {
+      "bytes": 39041,
+      "sha256": "10703ce67a7a9da6fd18c77cd7a199dbaf910ad2d4f5dda0de497f74ec749b2c"
+    },
+    "tests.log": {
+      "bytes": 2591,
+      "sha256": "dc5516274b9daacdcb9886743d029b004694ad4998c15feeb2f107e3b5f60e83"
+    },
+    "verification.json": {
+      "bytes": 387,
+      "sha256": "b64a5959e06c8f49d4587ebb363bc1ef4cf258887886edcaefddb14a7f95aa34"
+    }
+  }
+}

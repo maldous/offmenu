@@ -1,0 +1,7 @@
+# Preserve history zero-intake roundtrips
+
+Row NUTRITION-HISTORY-GOALS. Pinned source72d146c. validateInsights accepts historical zero-consumption entries without servedPortions, then normalizes missing served amount to zero. Its own next validation rejects that injected zero, making a second save fail.
+
+Fix only emits servedPortions when either its explicit valid value or the existing positive-servings fallback is positive. Missing served amount stays missing when consumption is zero; no portion amount is invented. Explicit invalid served amounts remain rejected. Intake-known flags, completion, zero consumption, known zero nutrients and unknown nutrient counts remain unchanged.
+
+Three regressions fail baseline; all seven focused checks pass candidate, including repeated validation of legacy/unknown/zero-completion entries, explicit served amounts and positive legacy fallback. Exact patch, local replacement JSON, logs and hashes retained. Existing sole integration writer should apply to latest actual source without changing the deployed194 CSV unknown-intake correction, rerun these checks and relevant existing history validation checks. No new producer, receipt metadata integration, qualified nutrition/health claim, data migration, provider call or production action. The broader frozen producer/confirmed-receipt join remains open. No new user permission needed for this source correction.

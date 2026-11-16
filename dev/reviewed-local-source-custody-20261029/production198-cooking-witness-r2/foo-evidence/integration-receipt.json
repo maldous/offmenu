@@ -1,0 +1,43 @@
+{
+  "status": "corrected_privacy_r2_delta_integrated_exactly",
+  "input_archive_sha256": "22322d74536172742a6a789977537b4ac9521d13a8580e847bf7283833e3d28b",
+  "manifest_sha256": "5d8f69d0509f220ea8dec3ad429522348febce326c301c31a4f8a6d13a7787fa",
+  "archive_files_verified": 34,
+  "retained_r1_source_paths_verified": 197,
+  "three_file_delta": [
+    {
+      "path": "public/cooking-witness.js",
+      "before_sha256": "a6b6406475482faeea52e78db007b1ff9870e05646eca8aecf9f72974637f8ea",
+      "after_sha256": "8b2032742e0b3f14bae9d5f6ae314cca8f1162a2aa6aa1591bea573047afe304"
+    },
+    {
+      "path": "cloud/cooking-witness-parity.mjs",
+      "before_sha256": "f6cce26e7c415cb9a2bfb765caf1b4f2306eec8b7198a6c76cd997e3299a8a12",
+      "after_sha256": "dfbf8109dc81b0f1d4c62dd7642e00cafe0432c645d1a7461509b4bee6b5cdee"
+    },
+    {
+      "path": "tests-web/cooking-witness-ns196-g2.test.mjs",
+      "before_sha256": "1eeb65745acedc3f807e36dfc8bad36d5fc6731a883a6973939fb7bc2b514246",
+      "after_sha256": "deb1a89e639c3859d24fca40ec2c9126f2b23b9cc4da08413050deda56689d71"
+    }
+  ],
+  "all_eight_final_author_files_exact": true,
+  "complete_patch_sha256": "fe55a6394bbe10e4437a01086987ec5069665b83e47b2b6655252dc330db17e9",
+  "r1_to_r2_patch_sha256": "b8234b05e125e4fbea1565173ba0d4a95d42e30aaf3dd651898a3658ef2362c8",
+  "v197_shopping_preserved": true,
+  "original_r1_preserved_and_superseded": true,
+  "new_namespace_exports": [
+    "copyCookingWitness",
+    "finishCookingWitnessState",
+    "preserveCookingWitnesses",
+    "sharedCookingBatch"
+  ],
+  "required_native_hooks": [
+    "SA shared-batch projection",
+    "lg history",
+    "CA full validated-state return"
+  ],
+  "source_manifest_sha256": "e38b407322956450bd6ee509a6b18a0451f8c03bc74d70c80523331495c30344",
+  "full_worker_preimage_available": false,
+  "full_worker_integration_claimed": false
+}

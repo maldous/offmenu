@@ -1,0 +1,24 @@
+{
+  "id": "900c0726-195d-4ab3-a694-77a8fca5b62f",
+  "number": 200,
+  "count": 212,
+  "unique": 212,
+  "changed": [
+    {
+      "name": "landing-only.mjs",
+      "type": "application/javascript+module",
+      "bytes": 853495,
+      "sha256": "cceef18a1e65cc9e12d99d52e531b84aec0fdd9227edee275805bc7107065d29"
+    },
+    {
+      "name": "worker.mjs",
+      "type": "application/javascript+module",
+      "bytes": 4604685,
+      "sha256": "8e11ab63e8821a1321055e07a244b8a417b556d8844cdac713015731275043d6"
+    }
+  ],
+  "other210Hash": "797b352afb449ca442f5e97cbffead843577c618d3710379c7eefc072e4ac2fe",
+  "settingsHash": "ad00e592ba7c9c481a7acccc8218f47fb792e401689e053f1569c00c66d3592b",
+  "bindingsHash": "63bb446a357f9750cefabeeceaa01a3a39fcc8a2a0e06ac44afd4ecb8705188e",
+  "receiptRecoveredFromObservedFullReadback": true
+}

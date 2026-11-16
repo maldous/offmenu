@@ -1,0 +1,1882 @@
+{
+  "schema": "offmenu-complete-historical-obligation-crosswalk/1",
+  "asOfUTC": "2026-10-28T01:46:00Z",
+  "sourcePath": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+  "sourceSHA256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+  "historicalCount": 89,
+  "currentCompletionCountClaimed": false,
+  "rows": [
+    {
+      "id": "COUNTRY-04",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-04",
+        "state": "open",
+        "owner": 4,
+        "nextAction": "Read next eligible category or exhaustion disposition; route frozen delta to reserved reviewer",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/0",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-43",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-43",
+        "state": "open",
+        "owner": 43,
+        "nextAction": "Gateway route exact source-packet SHA256 8dee99d6a3fdd0fc4320e118ca8c136cebe5d1e72ff284148ad73b60a65d68b8 and manifest SHA256 e2af11e94f327b308025886fd84ebaf83d478880454e72c2bdfc9462f25b53ae to reserved reviewer38 for metadata-only review; no workbook-cell reads. Keep country portfolio open and source-specific rights/access gaps intact.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/1",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-55",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-55",
+        "state": "open",
+        "owner": 55,
+        "nextAction": "Gateway return scoped metadata review to existing55. Existing13 must provide exact immutable BOBS receipt revision/handoff resolving historical b8f87cbe versus current e38ebcf9 before that binding is relied on; no correction invented or no-retry route retried. All30category gaps remain: require existing owner exact source/version, source-specific reuse decision and immutable accepted normalized/review handoff. MY38CPI reported output/review20 remains separately unaccepted here; PriceCatcher39/reader51/portability48/extraction30 ownership unchanged.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/2",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-19",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-19",
+        "state": "metadata-review46-scoped-pass-concerns-retained",
+        "owner": 19,
+        "nextAction": "Gateway select46 source-semantic review later for405f23aa manifest/14definitions/514links. Separate lineage-index acceptance pending. Preserve parent country incompleteness and all denied/source/ownership holds.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/3",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-01",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-01",
+        "state": "dietary-discovery-held",
+        "owner": 1,
+        "nextAction": "Exact eligible source/rights input or separately selected same-portfolio work; no repeated search",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/4",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-07",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-07",
+        "state": "blocked",
+        "owner": 7,
+        "nextAction": "scope hold",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/5",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-08",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-08",
+        "state": "blocked",
+        "owner": 8,
+        "nextAction": "scope hold",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/6",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-15",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-15",
+        "state": "BG-menu-identity-review14-scoped-pass-reused",
+        "owner": 15,
+        "nextAction": "Gateway bind the existing exact SAME14 BG identity/credits/custody/rights-unknown scoped PASS to COUNTRY-15; preserve source owner40 and prior11 acceptance separately. No recipe/rights/translation/country/admission acceptance; select only separately authorized next work.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/7",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-16",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-16",
+        "state": "retained-review11-scoped-pass-bound-gaps-open",
+        "owner": 16,
+        "nextAction": "Gateway select one finite retained pointer/qualification gap under existing owner16; if missing, name exact source/permission/semantic input. No acquisition/reprocess merely to fill30gaps.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/8",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-18",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-18",
+        "state": "delta05-review-bound-versioned-methodology-input-held",
+        "owner": 18,
+        "nextAction": "Existing18 requires retained version-matched CBS2021 methodology/questionnaire or publisher erratum; no numerical extraction or acquisition selected.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/9",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-22",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-22",
+        "state": "open",
+        "owner": 22,
+        "nextAction": "Gateway return scoped receipt to existing Owner22. Select only a distinct explicitly permitted exact publisher edition/reuse record or CG-issued/adopted numeric guideline with cited cells/context/rights; batch-b searches/metadata reads exhausted. No PDF acquisition or denied-route retry.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/10",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-23",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-23",
+        "state": "new-delta-complete-review14-dispatched",
+        "owner": 23,
+        "nextAction": "14 bounded new metadata/rights/provenance review; old11PASS preserved",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/11",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-25",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-25",
+        "state": "open",
+        "owner": 25,
+        "nextAction": "Gateway select capacity-qualified independent11 review of exact COUNTRY25 binding-parser module/test/closure/author receipt; no integration/admission or prior-work replay",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/12",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-26",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-26",
+        "state": "delta-frozen-review-pending",
+        "owner": 26,
+        "nextAction": "Route exact new delta to reserved reviewer with trusted messaging authority; preserve existing portfolio",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/13",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-27",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-27",
+        "state": "blocked",
+        "owner": 27,
+        "nextAction": "scope hold",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/14",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-28",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-28",
+        "state": "blocked",
+        "owner": 28,
+        "nextAction": "technical send failure",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/15",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-29",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-29",
+        "state": "scoped-review-bound",
+        "owner": 29,
+        "nextAction": "Retain FR scoped PASS binding2888e670; do not replay. Portfolio gaps and licence qualification remain open; no new task started.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/16",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-32",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-32",
+        "state": "accepted-table-manifest-v2-frozen-review-pending",
+        "owner": 32,
+        "nextAction": "Gateway route additivev2deliverymanifest /home/user/src/offmenu-data/country-bundles-20261016/owner-32/accepted-tables-manifest-v2/delivery-manifest.json SHA256 d735b422243ea06e80c8e5c66d69f8e669811e5594775a1c264ad89dd45ee881 to SAME38manifest-onlyreview;preserveacceptedparentandTables1/2/4/6,Table4nullSTOP,GFhold;noclinicalnumericjoins/PDFreplay/admission.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/17",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-33",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-33",
+        "state": "open",
+        "owner": 33,
+        "nextAction": "Gateway use exact GH historical thread01a139b7-e9d7-7161-a3ef-51e6e965866b and GN historical thread01a138ee-5252-7f63-8b43-cf730ecd7e05 to identify current recognized custodians. Obtain existing source-version operation-use decision and normalized manifest/output/six-row maps or scoped no-output confirmation. Do not require new publisher permission if valid existing decision suffices. GI/GM/GP prior exact prerequisites remain by reference.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/18",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-34",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-34",
+        "state": "metadata-review46-scoped-pass-concerns-retained",
+        "owner": 34,
+        "nextAction": "Gateway bind exact scoped receipt to original owner34 packet and return concerns. Existing source owners supply exact permitted missing original/version, applicable licence/attribution and finite coverage input before newly selected category work. No acquisition, extraction, admission or country completion authorized.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/19",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-35",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-35",
+        "state": "metadata-frozen-review-pending",
+        "owner": 35,
+        "nextAction": "Gateway route this exact frozen packet hash to reserved SAME11 for metadata-only review. Next required input is SAME11 report binding this author hash; any further source work requires exact selected scope plus source-specific version/permission/access evidence. No new source request selected.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/20",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-40",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-40",
+        "state": "retained-metadata-frozen-review38-pending",
+        "owner": 40,
+        "nextAction": "Gateway route frozen owner40 metadata delivery-manifest.json to reserved SAME38 for source/extent/scope-only independent review. No row projection or content admission; any later work requires exact retained eligible source/version/rights input within existing ownership and holds.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/21",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-42",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-42",
+        "state": "open",
+        "owner": 42,
+        "nextAction": "Gateway select independent existing reviewer for exact569candidate+1held recordset/mapping/lineage. Source custodian44 unchanged. Resolve other country-specific prerequisites from country-stage-progress.json; no global no-ready inference.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/22",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-45",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-45",
+        "state": "JM-table3-qualified-proposal-independent-review-needed",
+        "owner": 45,
+        "nextAction": "Gateway deduplicate this exact new JM Table3 manifest and route one independent review to current designated reviewer14 if eligible; do not replay IT/JE reviews. Qualify source-internal carbohydrate/sugars anomalies before numeric use. COUNTRY-45 remains open; IT bodies need publisher permission and measured whole-set plan from46; all IS/JO rights and denied-route holds persist.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/23",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-49",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-49",
+        "state": "blocked",
+        "owner": 49,
+        "nextAction": "bootstrap interruption",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/24",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-54",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-54",
+        "state": "delta-frozen-review-pending",
+        "owner": 54,
+        "nextAction": "Route exact new delta to reserved reviewer with trusted messaging authority; preserve existing portfolio",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/25",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-47",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-47",
+        "state": "review-pending-discovery-budget-exhausted",
+        "owner": 47,
+        "nextAction": "Gateway dispose this exact COUNTER-01 closure to existing47. Counter ambiguity is closed for metadata interpretation:16historical intermediate, final18/18exhausted and0remaining. Original checkpoint and all30category/source/rights gaps remain; any future action needs distinct eligible current owner/source scope and prospective allocation where applicable. No unchanged review replay; messaging authorization hold separate.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/26",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-53",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-53",
+        "state": "new-delta-complete-review14-dispatched",
+        "owner": 53,
+        "nextAction": "14 bounded new metadata/rights/provenance review; old11PASS preserved",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/27",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-59",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-59",
+        "state": "price-metadata-scoped-pass-local-row-witness-dispatched",
+        "owner": 59,
+        "nextAction": "Up to6retainedLibyarows with exact marketID/unit/currency/date/price-type; no normalization/network",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/28",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-QUEUE",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-QUEUE",
+        "state": "160-accountability-assigned-89-unallocated-source-reconciled",
+        "owner": "Existing country owners;44/38/20/53/59 reviewers",
+        "nextAction": "Use existingcountry-allocation-extension-20261016-001.json afterhistoricalmatrix:160accountabilityassigned/89unallocated. Gateway selects exactexisting-owner safeboundary forremainingallocation; no newworker, sourceownershipoverride orcountryacceptance. Preserveall72top-levelobligations.",
+        "priority": 8,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "COUNTRY-QUEUE",
+          "priority": 8,
+          "owner": "Existing country owners;44/38/20/53/59 reviewers",
+          "support": "Gateway allocation",
+          "status": "assigned-existing-owner"
+        }
+      },
+      "historicalPointer": "/obligations/29",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "REVIEW-44",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "REVIEW-44",
+        "state": "blocked",
+        "owner": "44",
+        "nextAction": "Reconcile bootstrap interruption; no redispatch",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/30",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "REVIEW-46",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "REVIEW-46",
+        "state": "follow-on-assignments-released",
+        "owner": "46",
+        "nextAction": "Original four complete; four unstarted follow-ons assigned to11 under latest owner scheduling direction; no platform restriction bypass",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/31",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "PRODUCT-03",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "PRODUCT-03",
+        "state": "done-local",
+        "owner": "03/14",
+        "nextAction": "Owner binding verified; local deliverable complete, integration held",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/32",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "PRODUCT-20",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "PRODUCT-20",
+        "state": "done-local",
+        "owner": "20/52",
+        "nextAction": "Review bound; publication/adoption held",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/33",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "PRODUCT-56",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "PRODUCT-56",
+        "state": "done-local",
+        "owner": "56/13",
+        "nextAction": "Review bound; publication/adoption held",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/34",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "PRODUCT-31",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "PRODUCT-31",
+        "state": "blocked",
+        "owner": "31/24",
+        "nextAction": "24bootstrap interruption; no bypass",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/35",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "UX-HISTORY",
+      "group": "product-integration",
+      "historical": {
+        "id": "UX-HISTORY",
+        "state": "partial-chronology-reconciled",
+        "owner": "Gateway/third-party owner",
+        "nextAction": "Resolve earliest-conversation chronology gaps against actual sources; do not label full history complete",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/36",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "SERVICES-GAPS",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "SERVICES-GAPS",
+        "state": "assessment-done",
+        "owner": "Existing integration writer01a1371c",
+        "nextAction": "Separate enabled/configuration/deployment; selectedidentity only",
+        "priority": 13,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "SERVICES-GAPS",
+          "priority": 13,
+          "owner": "Existing integration writer01a1371c",
+          "support": "single GitFlow writer",
+          "status": "assigned-existing-owner"
+        }
+      },
+      "historicalPointer": "/obligations/37",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Separately assigned maintenance lane reproduced current generated-bundle drift and prepared a six-file optional non-mutating detection patch with ten passing focused tests; independent review/integration remain pending. Sonar scan acceptance remains unestablished.",
+      "nextIndependentAction": "Review the exact independently prepared maintenance artifact and coordinated integration scope. Preserve the tracked bundle unchanged under the UI hold; recover existing Sonar owner/route/project/baseline before a scan.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "IDENTITY-ASSESSMENT",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "IDENTITY-ASSESSMENT",
+        "state": "done",
+        "owner": "Worker4",
+        "nextAction": "PreserveIDs/linking; managedDEVfirst/WireMockfallback",
+        "priority": 12,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "IDENTITY-ASSESSMENT",
+          "priority": 12,
+          "owner": "Worker4",
+          "support": "05 runtime; third-party validator owner",
+          "status": "assigned-existing-owner"
+        }
+      },
+      "historicalPointer": "/obligations/38",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "IDENTITY-DEV",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "IDENTITY-DEV",
+        "state": "configuration-blocked",
+        "owner": "same identity owner",
+        "nextAction": "Distinctapprovedproject/configuration/provisioning needed; sixsitesread noDEVidentified",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/39",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "IDENTITY-VALIDATOR",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "IDENTITY-VALIDATOR",
+        "state": "independent-SAME4-delta-review-scoped-pass",
+        "owner": "same identity owner",
+        "nextAction": "Gateway bind exact65df/SAME4 scopedPASS to existing IDENTITY-VALIDATOR record andretain prior e481 findings/history. No worker implementation/adoption/release action selected; IDENTITY-DEV account/session/configuration boundaries and blocked ownership remain in ledger.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/40",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Historical 65df/SAME4 scoped PASS is retained. The newer repository checkpoint records an unmounted Better Auth foundation and seam; that does not close old identity parents.",
+      "nextIndependentAction": "Preserve 65df review and compare exact existing identity/stable-ID contracts to the retained foundation when a bounded adoption packet is selected.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "IDENTITY-PROD",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "IDENTITY-PROD",
+        "state": "unverified",
+        "owner": "same identity owner",
+        "nextAction": "Configuration/independentreview/PRODrejectDEV/fulljourneys required; no deploy",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/41",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "UI-ROUTE",
+      "group": "product-integration",
+      "historical": {
+        "id": "UI-ROUTE",
+        "state": "resolved-reported",
+        "owner": "01a1415d-b449-77e0-843a-84b53c8e80fd",
+        "nextAction": "Separate directUIowner; do not reopen",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/42",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "app-view-history",
+        "landing-served-assets"
+      ]
+    },
+    {
+      "id": "APPROVAL-HOLDS",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "APPROVAL-HOLDS",
+        "state": "blocked",
+        "owner": "Gateway/ManagingMorgan",
+        "nextAction": "Use current-denied-action-inventory.json;64/14dispatch released;Freebuff restored user-reported,connection unverified",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/43",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "SUPERVISOR-RESEARCH",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "SUPERVISOR-RESEARCH",
+        "state": "delivered",
+        "owner": "root ManagingMorgan",
+        "nextAction": "Apply delivered design in64candidate/14evaluation; research delivery does not prove live readiness",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/44",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "FREEBUFF-COMPAT",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "FREEBUFF-COMPAT",
+        "state": "health-only-verified",
+        "owner": "Worker16",
+        "nextAction": "Qualify existing Alexander identity/MCP/cost/roundtrip with proper custodian; no restore or model invocation inferred",
+        "priority": 5,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "FREEBUFF-COMPAT",
+          "priority": 5,
+          "owner": "Worker16",
+          "support": "64 integration",
+          "status": "assigned-existing-owner"
+        }
+      },
+      "historicalPointer": "/obligations/45",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Historical health-only verification does not establish present supported client access or model round-trip.",
+      "nextIndependentAction": "Use only existing supported route evidence if it becomes available.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "ROUTING-FAILOVER",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "ROUTING-FAILOVER",
+        "state": "desired-not-implemented",
+        "owner": "ManagingMorgan/Gateway",
+        "nextAction": "Quiesce/reconcile/verifycapacity-cost-approval beforeFreebuffactivation",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/46",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "REPORTING-GATEWAYS",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "REPORTING-GATEWAYS",
+        "state": "ongoing",
+        "owner": "Gateway/directUI/ManagingMorgan",
+        "nextAction": "Keep uncertain sends open; UIseparate",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/47",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "MEMORY-HABITS",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "MEMORY-HABITS",
+        "state": "done-local",
+        "owner": "Gateway",
+        "nextAction": "Use topicrecords; noOffMenumemorymapping/newplatform",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/48",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "BACKLOG-AUDIT",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "BACKLOG-AUDIT",
+        "state": "bounded-cache-trace-no-finding",
+        "owner": "Worker52",
+        "nextAction": "Needs selected varying representation consumer/provider binding for furtherCACHE03 work; no speculative patch",
+        "priority": 7,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "BACKLOG-AUDIT",
+          "priority": 7,
+          "owner": "Worker52",
+          "support": "audit only",
+          "status": "assigned-existing-owner"
+        }
+      },
+      "historicalPointer": "/obligations/49",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Accepted temporal trace remains accepted; no speculative cache patch is warranted. Current source-presence and checkpoint-staleness deltas are now documented.",
+      "nextIndependentAction": "Consume source-bound deltas only; do not repeat accepted PR29/PDF audit or use historical ready lists as present dispatch capacity.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "AUDIT-CLOUD-PDF-VERSIONS",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "AUDIT-CLOUD-PDF-VERSIONS",
+        "state": "open",
+        "owner": "Gateway local audit / parent cloud researcher",
+        "nextAction": "Compare versions; matching size alone does not establish identity",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/50",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "SUPERVISOR-FULL-CANDIDATE",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "SUPERVISOR-FULL-CANDIDATE",
+        "state": "practical-local-workflow-in-use",
+        "owner": "Worker64 implementation / Worker14 evaluation",
+        "nextAction": "Continue actual result/action/ledger/turn-end loop; investigate observed issues only",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/51",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "AUDIT-LOCAL-CORPUS-SUPERSESSION",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "AUDIT-LOCAL-CORPUS-SUPERSESSION",
+        "state": "reported-source-implementation-join-pending",
+        "owner": "Gateway/parent researcher",
+        "nextAction": "Reconcile against Oct12 proposals and actual implementation; no cloud deletion authorized",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/52",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "ARCH-CURATED-CORPUS-DELIVERY",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "ARCH-CURATED-CORPUS-DELIVERY",
+        "state": "initial-architecture-synthesized-bounded-measurement-active",
+        "owner": "Worker13",
+        "nextAction": "Pure bounded engine delivered; existing UI owns live route. Apply24/29/37 findings through equivalent-output end-to-end measurement, not migration.",
+        "priority": 14,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "ARCH-CURATED-CORPUS-DELIVERY",
+          "priority": 14,
+          "owner": "Worker13",
+          "support": "OffMenu - 00 - Development Prototypes edits",
+          "status": "current-event-reconciled"
+        }
+      },
+      "historicalPointer": "/obligations/53",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Collection/corpus and UI execution are excluded; existing bounded architecture evidence is retained.",
+      "nextIndependentAction": "Reference the independently owned source audit when delivered.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "INTERIM-CAPTURE-RETIREMENT",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "INTERIM-CAPTURE-RETIREMENT",
+        "state": "ongoing",
+        "owner": "Gateway",
+        "nextAction": "Main/Gateway and worker controllers update relevant obligations on meaningful events and reconcile before end of turn; ACK does not close unresolved action",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/54",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "SESSION-DESCRIPTIVE-TITLES",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "SESSION-DESCRIPTIVE-TITLES",
+        "state": "verified-64-unique",
+        "owner": "Gateway",
+        "nextAction": "Maintain unique task titles on assignment; unused OffMenu \u2014 NN; no execution authority from titles",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/55",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "GATEWAY-DURABLE-INTERFACES",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "GATEWAY-DURABLE-INTERFACES",
+        "state": "nonblocking-followthrough-dispatched",
+        "owner": "Gateway coordination; infrastructure custodian unidentified",
+        "nextAction": "64 existing interface/custodian read-only follow-through dispatched; no new route/access/model invocation",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/56",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "OFFMENU-MEMPALACE-ROUTE",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "OFFMENU-MEMPALACE-ROUTE",
+        "state": "global-Codex-enabled-native-OffMenu-recall-verified",
+        "owner": "Worker64",
+        "nextAction": null,
+        "priority": 3,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "OFFMENU-MEMPALACE-ROUTE",
+          "priority": 3,
+          "owner": "Worker64",
+          "support": "sole shared configuration writer",
+          "status": "assigned-existing-owner"
+        }
+      },
+      "historicalPointer": "/obligations/57",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "SUPERVISOR-INDEPENDENT-EVALUATION",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "SUPERVISOR-INDEPENDENT-EVALUATION",
+        "state": "v4-focused-pass",
+        "owner": "Worker14",
+        "nextAction": "No repeated evaluation; new observed delta only",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/58",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "REVIEW-38",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "REVIEW-38",
+        "state": "context-blocked",
+        "owner": "Worker38 / Gateway",
+        "nextAction": "Reconcile current assignment authority and actual pickup without duplicate dispatch",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/59",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "COMPACTION-RECOVERY",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "COMPACTION-RECOVERY",
+        "state": "reconciled-partial",
+        "owner": "Main controller / Gateway",
+        "nextAction": "Persist corrected state and explicit unknowns; avoid historical bootstrap substitution",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/60",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "AUDIT-CLOUD68-TRANSFER",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "AUDIT-CLOUD68-TRANSFER",
+        "state": "transfer-reconciliation-gap",
+        "owner": "Parent cloud researcher / Gateway",
+        "nextAction": "Recover complete text/artifact and verify all68 IDs; cloud research exists, local transfer incomplete",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/61",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "COUNTRY-6",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-6",
+        "state": "MF-MG-dietary-batch-b-frozen-review14-pending",
+        "owner": 6,
+        "nextAction": "Designated14 review exact metadata/negative scope; manager selects only a finite eligible guideline metadata lead after edition, coverage and rights evidence. No dataset/body acquisition authorized by this result.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/62",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "COUNTRY-12",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-12",
+        "state": "review-binding-complete-scoped",
+        "owner": 12,
+        "nextAction": "Select only next eligible existing portfolio work;30source gaps remain",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/63",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "DEV7645-COUNTRY-PROGRESS-VIEW",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "DEV7645-COUNTRY-PROGRESS-VIEW",
+        "state": "rpc-attribution-header-corrected-blocked-live-body-digest-reference",
+        "owner": "OffMenu - 00 - Development Prototypes",
+        "nextAction": "Morgan review of live-body-versus-pinned-local-reference digest mismatch before any further requests. Preserve both failed requests and unknown historical headers;continuation instrumented arm was not requested. Same soleUI/13 ownership;no budget expansion or inferred cause.",
+        "priority": 9,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "DEV7645-COUNTRY-PROGRESS-VIEW",
+          "priority": 9,
+          "owner": "OffMenu - 00 - Development Prototypes",
+          "support": "6/12/13/59 exports",
+          "status": "current-event-reconciled"
+        }
+      },
+      "historicalPointer": "/obligations/64",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Excluded from this non-collection batch because UI work is explicitly held.",
+      "nextIndependentAction": "Preserve exact historical failure/digest evidence.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "COUNTRY-13",
+      "group": "country-corpus-existing-owners",
+      "historical": {
+        "id": "COUNTRY-13",
+        "state": "actual-pickup-active",
+        "owner": 13,
+        "nextAction": "Metadata-first portfolio; bounded5queries8HTTP2MiB, no deniedroute/body acquisition",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/65",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "assess_partial_corpus_resume / prepare_places_checkpoint_batches for shared common expansion; individual country binding not assigned",
+      "priorEvidenceDisposition": "Country row preserved; common corpus completion is not country/source acceptance.",
+      "nextIndependentAction": "Join exact source/rights/provenance acceptance to existing corpus output; never duplicate existing recovery jobs.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "common-corpus-expansion"
+      ]
+    },
+    {
+      "id": "PRIORITY-RECORD-PROVENANCE-CORRECTION",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "PRIORITY-RECORD-PROVENANCE-CORRECTION",
+        "state": "open-provenance-unresolved-scoped-correction-pass-bound",
+        "owner": "Worker1",
+        "nextAction": "Gateway forwards exact fa01b17a input specification to existing Worker1 and establishes the existing source custodian from custody history. Observe recipient admission/pickup and resolve01/12/16/23/30 first; then individually trace remaining25. Keep parent provenance OPEN; explicit missing-input outcomes if origin/asset/revision/licence/derivation evidence absent. All holds remain; no acquisition, ownership transfer or denied-route retry.",
+        "priority": 10,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "PRIORITY-RECORD-PROVENANCE-CORRECTION",
+          "priority": 10,
+          "owner": "Worker1",
+          "support": "traceback only",
+          "status": "assigned-existing-owner"
+        }
+      },
+      "historicalPointer": "/obligations/66",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Metadata provenance work is separately owned by the source audit lane; no duplicate collection or ownership transfer.",
+      "nextIndependentAction": "Join the final source-audit evidence only after reviewed delivery; preserve exact missing-origin cases.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "CORE-BARCODE-CANONICAL-IDENTITY",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "CORE-BARCODE-CANONICAL-IDENTITY",
+        "state": "design-defaults-endorsed-execution-and-promotion-held",
+        "owner": "Worker56",
+        "nextAction": "Gateway incorporate D01/D04/D05/D07 design endorsements, resolve delegated technical detail and explicitly name owners within existing authority. Keep SAME11 review and every execution/promotion hold; implementation needs separate explicit authorization.",
+        "priority": 11,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "CORE-BARCODE-CANONICAL-IDENTITY",
+          "priority": 11,
+          "owner": "Worker56",
+          "support": "schema proposal owner",
+          "status": "assigned-existing-owner"
+        }
+      },
+      "historicalPointer": "/obligations/67",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Historical design endorsements are preserved; execution and promotion remain held.",
+      "nextIndependentAction": "Retain D01/D04/D05/D07 decisions without repeating the blocked child.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "production-foundation",
+        "identity-only-candidate"
+      ]
+    },
+    {
+      "id": "PERMANENT-LEDGER-OPERATIONAL-ADOPTION",
+      "group": "evidence-reconciliation-exact-result-needed",
+      "historical": {
+        "id": "PERMANENT-LEDGER-OPERATIONAL-ADOPTION",
+        "state": "summary-and-r1-gates-scoped-pass-full-backlog-materialization-open",
+        "owner": "Morgan durable parent",
+        "nextAction": "Materialize qualified groupedpackages through fixedowners andcorrectedgates; autonomouswake/full89acceptance remainunqualified.",
+        "priority": 1,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "PERMANENT-LEDGER-OPERATIONAL-ADOPTION",
+          "priority": 1,
+          "owner": "Morgan durable parent",
+          "support": "64 implementation;14 evaluation",
+          "status": "current-event-reconciled"
+        }
+      },
+      "historicalPointer": "/obligations/68",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Current evidence reconciliation prepared; full authoritative semantic projection remains unestablished.",
+      "nextIndependentAction": "Review this additive evidence/disposition delta; retain the existing authority and single writer.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "BULK-IDLE-WORKER-RECOVERY",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "BULK-IDLE-WORKER-RECOVERY",
+        "state": "gateway-per-result-followthrough-active-worker30-closed",
+        "owner": "Gateway",
+        "nextAction": "Consume eligible per-result inputs through existing owners; Worker30 remains closed and is not assigned recovery.",
+        "priority": 4,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "BULK-IDLE-WORKER-RECOVERY",
+          "priority": 4,
+          "owner": "Gateway",
+          "support": "Gateway dispatch authority",
+          "status": "current-event-reconciled"
+        }
+      },
+      "historicalPointer": "/obligations/69",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Historical follow-through policy is preserved; current historical-worker capacity is unknown.",
+      "nextIndependentAction": "Use existing active authorized lanes and exact result evidence; never restart historical sessions from old status.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "UNIVERSAL-LOCAL-WORKFLOW-ADOPTION",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "UNIVERSAL-LOCAL-WORKFLOW-ADOPTION",
+        "state": "canonical-pointer-and-ledger-selector-published-use-verification-owner6",
+        "owner": "Worker6",
+        "nextAction": "Gateway uses selector-v2; Owner6 verifies actual rollout, Owner16 Freebuff and SAME14 observed corrections. Gateway memory native0 remains separate; one-shot MCP adapter available.",
+        "priority": 2,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "UNIVERSAL-LOCAL-WORKFLOW-ADOPTION",
+          "priority": 2,
+          "owner": "Worker6",
+          "support": "64 integration;14 evaluation",
+          "status": "assigned-existing-owner"
+        }
+      },
+      "historicalPointer": "/obligations/70",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Historical approval-blocked child remains a no-resend item; no new execution or all-worker adoption is established.",
+      "nextIndependentAction": "Retain historical count and new-evidence-only accounting; reconcile any exact current owner result without retrying dispatch.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "CIX-LINEAR-LOCAL-LEDGER-BOUNDARY",
+      "group": "operational-platform-reconcile-not-restart",
+      "historical": {
+        "id": "CIX-LINEAR-LOCAL-LEDGER-BOUNDARY",
+        "state": "accepted-assessment-paragraph-frozen-awaiting64-integration",
+        "owner": "Worker11",
+        "nextAction": "Gateway route frozen paragraph to existing64; preserve CIX pause",
+        "priority": 6,
+        "ownerSource": "priority-allocation",
+        "priorityAllocation": {
+          "obligation": "CIX-LINEAR-LOCAL-LEDGER-BOUNDARY",
+          "priority": 6,
+          "owner": "Worker11",
+          "support": "read-only",
+          "status": "assigned-existing-owner"
+        }
+      },
+      "historicalPointer": "/obligations/71",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Historical frozen governance paragraph is preserved; CIX remains paused.",
+      "nextIndependentAction": "A documentary integration receipt may be reconciled if already available; no CIX execution or migration.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "CORE-APP-SCANNER-DELIVERY",
+      "group": "product-integration",
+      "historical": {
+        "id": "CORE-APP-SCANNER-DELIVERY",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Gateway bind existing scanner source/owner and exact device acceptance scope; preserve broad UI/actual denial holds. Tracking parent creation itself needs no further approval.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/72",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "scanner-device-acceptance"
+      ]
+    },
+    {
+      "id": "HOUSEHOLD-DURABLE-SYNC",
+      "group": "product-integration",
+      "historical": {
+        "id": "HOUSEHOLD-DURABLE-SYNC",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Bind exact existing caller/transport/enrollment adoption receipt or explicit missing pointer to the named component owners; no activation, migration or central-runtime edits.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/73",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "shared-kitchen-lifecycle",
+        "product-caller-joins"
+      ]
+    },
+    {
+      "id": "MEAL-DISCOVERY-DELIVERY",
+      "group": "product-integration",
+      "historical": {
+        "id": "MEAL-DISCOVERY-DELIVERY",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Gateway identify exact promoted meal/source packet from retained22content evidence and current origin traceback; do not repeat disputed print-input review or denied meal-thread relay.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/74",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Corrected historical helper and producer are present with exact matching Git blobs in the selected develop baseline. Parent feature acceptance remains open.",
+      "nextIndependentAction": "Update source-presence evidence and bind exact caller identity, physical basis, source admission and account/snapshot round-trip.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "product-caller-joins"
+      ]
+    },
+    {
+      "id": "HOUSEHOLD-DIET-PROFILES",
+      "group": "product-integration",
+      "historical": {
+        "id": "HOUSEHOLD-DIET-PROFILES",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Bind current ingredient/rule and profile custodians plus exact representative package/market/version evidence; scope a permitted resolver before implementation.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/75",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "HOUSEHOLD-MEAL-PLANNING",
+      "group": "product-integration",
+      "historical": {
+        "id": "HOUSEHOLD-MEAL-PLANNING",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Gateway bind existing planner/stock-reservation owner and one exact household journey, separating functional plan from paused presentation work.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/76",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "SHOPPING-PLAN-DURATION",
+      "group": "product-integration",
+      "historical": {
+        "id": "SHOPPING-PLAN-DURATION",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Resolve existing shopping planner source/custody and select a tiny ingredient/meal input; basket-report CLI is evidence of reporting only, not this algorithm.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/77",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Shopping deficit source is present in the selected develop tree. The current checkpoint records a completed contract with integration held.",
+      "nextIndependentAction": "Preserve accepted pure deficit work and the completed mapping contract; select only a concrete current caller-evidence join.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": [
+        "product-caller-joins"
+      ]
+    },
+    {
+      "id": "NUTRITION-HISTORY-GOALS",
+      "group": "product-integration",
+      "historical": {
+        "id": "NUTRITION-HISTORY-GOALS",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Identify current history/statistics source and named existing custodian; select one concrete metric journey without private-profile inspection or UI changes.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/78",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "CONSUMPTION-LEFTOVERS-RECONCILIATION",
+      "group": "product-integration",
+      "historical": {
+        "id": "CONSUMPTION-LEFTOVERS-RECONCILIATION",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Receive already selected03 frozen producer/confirmed-receipt trace if available; otherwise record exact missing packet. Receipt-metadata integration denial stays; no replay or substitute actor.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/79",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "PRODUCT-PREFERENCE-QUALIFICATION",
+      "group": "product-integration",
+      "historical": {
+        "id": "PRODUCT-PREFERENCE-QUALIFICATION",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Use retained ENRICH02\u201306 source/implementation joins to identify exact existing custody/selected consumer input; no full reread or source acquisition.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/80",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "GROWER-OPERATOR-QUALIFICATION",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "GROWER-OPERATOR-QUALIFICATION",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Bind current source/entity-role custodian using retained ENRICH04/07/08 evidence, then select one exact permitted input, no fictional GTIN or forced joins.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/81",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "SOURCE-FIELD-PERMISSION-POLICY",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "SOURCE-FIELD-PERMISSION-POLICY",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Select current source-policy/caller input and existing custodian using bounded retained evidence; distinguish paid/BYOC rights from API success and user checkbox.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/82",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Existing recordPermission and admission helpers are verified in the current source. A two-file requirements comparison is prepared; exact owner02 result/review remains unresolved.",
+      "nextIndependentAction": "Use the supplied static comparison and exact existing helper pins; recover the already-selected owner02 result/review before choosing any implementation.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "CACHE-REPRESENTATION-ISOLATION",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "CACHE-REPRESENTATION-ISOLATION",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Bind exact varying consumer/provider/key input to actual existing cache custodian; reuse52accepted temporal trace and do not speculate a patch or repeat review.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/83",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "Historical scoped C1-RL review and integration-preparation evidence exist; no current actual consumer/provider/key or policy/caller binding is established.",
+      "nextIndependentAction": "Reconcile the exact historical identity proof holds and map one actual consumer/provider/key input after the policy input is known.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "DERIVED-RIGHTS-SAFETY-INVALIDATION",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "DERIVED-RIGHTS-SAFETY-INVALIDATION",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Identify actual derived-store/caller and permitted recall/withdrawal feed authority from retained receipts; do not start feed polling, delete data or migrate stores.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/84",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "AGGREGATE-HEALTH-PRIVACY",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "AGGREGATE-HEALTH-PRIVACY",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Bind actual producer/store/privacy-policy authority via existing custody; validator review is not privacy judgement or publication authority.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/85",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "REVOCATION-DELETION-RESTORE",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "REVOCATION-DELETION-RESTORE",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Bind current stores/retention/backup operator evidence; one read-only propagation map may precede any separately authorized operational delete. No deletion runs here.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/86",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "COLLABORATIVE-SHOPPING-LIST",
+      "group": "product-integration",
+      "historical": {
+        "id": "COLLABORATIVE-SHOPPING-LIST",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Bind existing shopping-list consumer/source/owner and exact received-stock boundary; no calendar publication or receipt-integration denial bypass.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/87",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    },
+    {
+      "id": "HOUSEHOLD-PILOT-PROMOTION",
+      "group": "qualification-security-holds",
+      "historical": {
+        "id": "HOUSEHOLD-PILOT-PROMOTION",
+        "state": "open-tracking-gap-reconciled",
+        "owner": "Gateway",
+        "nextAction": "Retain deferred promotion/UI status; Gateway selects any future consented pilot or outreach only after concrete routine evidence and scope. No messages to participants.",
+        "priority": null,
+        "ownerSource": "merged-ledger-row"
+      },
+      "historicalPointer": "/obligations/88",
+      "currentCompletion": "not-established-by-this-reconciliation",
+      "currentOwner": "not-assigned-by-this-read-only-reconciliation",
+      "priorEvidenceDisposition": "No current task-level completion or readiness has been established by this bounded evidence reconciliation.",
+      "nextIndependentAction": "Retain historical state and join only a new exact current receipt; do not replay work.",
+      "warning": "Historical owner/state are not current running task or retry authority.",
+      "currentEvidenceRows": []
+    }
+  ],
+  "currentEvidenceOverlay": "docs/operations/morgan-delivery-ledger.json#/currentDeliveryReconciliation",
+  "interpretation": "Historical parentcompletion remains unestablished; specific current delivered/active evidence is joined in currentEvidenceOverlay, not repeated as blanket closures."
+}

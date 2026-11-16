@@ -1,0 +1,22 @@
+{
+  "schema": "offmenu-lot-nutrition-source-export/1",
+  "status": "source-package-verified",
+  "sourceFiles": 10,
+  "patchSHA256": "cbf3e7b9e21b54c7c76ac8c97b960b48ceb5b6aab79f91150645264e3ae7b5c1",
+  "manifestSHA256": "b31b62eef767ecf4710466dcd3683005a3e70051ff380539aa0404304d7ece5e",
+  "baseline": {
+    "tests": 10,
+    "pass": 4,
+    "fail": 6
+  },
+  "candidate": {
+    "tests": 10,
+    "pass": 10,
+    "fail": 0
+  },
+  "receiptURL": "https://windmill.aldous.info/run/01a1840f-19cd-a95b-31d1-56e8270e4bf0?workspace=offmenu",
+  "rawDatasetsIncluded": false,
+  "credentialsIncluded": false,
+  "productionMutation": false,
+  "sourcePinInterpretation": "source-pins.json records initial staging inputs; final new module/test and changed-source hashes are in manifest.json. Existing repository input pins remain unchanged."
+}

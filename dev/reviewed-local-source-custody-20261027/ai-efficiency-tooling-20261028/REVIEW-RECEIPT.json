@@ -1,0 +1,33 @@
+{
+  "recorded_at": "2026-10-28T11:06:01.591245+00:00",
+  "record_type": "trusted_parent_delegation_review_and_hold_receipt",
+  "source_thread_id": "01a17c1c-e8cb-709e-925f-d70a861a50fc",
+  "evidence_scope": "Parent-reported review outcomes; no raw independent reviewer report, review ID, or reviewer identity was supplied to this task.",
+  "r2": {
+    "status": "independently_approved_source_only_parent_reported",
+    "candidate_sha256": "1e24c1d5ce2d5b6cecb47666f775f85c4a2b582215e951c1845815eb102fef67",
+    "parent_statement": "Frozen R2 is now independently approved: exact candidate 1e24c1d5ce2d5b6cecb47666f775f85c4a2b582215e951c1845815eb102fef67, all 15 mocked tests and the focused supervisor-SIGKILL check passed. Source approval is not deployment, and schema acceptance is not semantic correctness.",
+    "deployed_by_this_task": false,
+    "shared_store_verified": false,
+    "actual_windmill_fork_signal_support_verified": false
+  },
+  "metrics_only": {
+    "status": "independently_reviewed_source_candidate_parent_reported",
+    "adapter_sha256": "133572094dedd81d42a66413cfcc160145d923491684cc3cbe384431b51f083b",
+    "caller_sha256": "9cec2d0eb2286cbd07a82bd2e9d43395794e868c6071a3ed6889fa77871c9ca2",
+    "patch_sha256": "06f906eb149a4c97b65e20c0f79a083d58c231b06e61a5600a8939477cf56575",
+    "parent_statement": "Unaffected source-only custody remains approved: please prepare a compact source-only export handoff containing the independently reviewed metrics-only adapter/caller candidate, exact saved baseline/rollback snapshots, patch, inventory and recorded review receipt.",
+    "deployed_by_this_task": false
+  },
+  "live_hold": {
+    "status": "denied_before_admission_parent_reported",
+    "parent_statement": "The live adoption instruction was denied before admission, and its one same-action retry with additional user-authority evidence was also denied. No mutation or provider call is authorized by this message; do not deploy through another route or retry.",
+    "retries_performed_by_this_preservation_turn": 0,
+    "reason": "Specific confirmation is being resolved by root; the detailed denial rationale was not supplied to this task.",
+    "outcome": "Live step held; no mutation or provider call in this preservation turn."
+  },
+  "semantic_correctness": "Not established by schema validation or source review.",
+  "provider_calls_in_preservation_turn": 0,
+  "tests_repeated_in_preservation_turn": 0,
+  "remote_writes_in_preservation_turn": 0
+}

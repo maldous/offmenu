@@ -1,0 +1,68 @@
+{
+  "id": "NS195-G1",
+  "type": "confirmed-connected-provenance-coverage-gap",
+  "releaseSHA256": "fce748582a1e4aa940022b00ccaab7ac00ec5d1ca5d357d5f45f4ff0756e1fdf",
+  "owners": {
+    "implementation": "align_north_star_graph",
+    "appIntegration": "prepare_production_integration (sole app writer)",
+    "handoff": "audit_production_efficiency"
+  },
+  "observed": "Actual menu nutrition uses synthetic products with explicit nutritionProvenance.nutrientProfile.id/sourceDate/basis. Actual cook confirmation freezes numeric totals, ingredient allocations and recipeId; actual serving freezes scaled totals and batchId/recipeId. Neither batch nor history retains the nutrient-profile ID or source release that produced those values. Mutable products remain the only profile reference.",
+  "evidence": {
+    "checkpoints": [
+      "03-plan-cooked",
+      "07-person-specific-history-rendered",
+      "12-local-reload"
+    ],
+    "inputProfileIds": [
+      "synthetic-profile-rice-v1",
+      "synthetic-profile-peas-v1"
+    ],
+    "batchKeys": [
+      "id",
+      "planId",
+      "recipeId",
+      "title",
+      "date",
+      "createdAt",
+      "servings",
+      "remaining",
+      "allocations",
+      "totals",
+      "events",
+      "undone"
+    ],
+    "historyKeys": [
+      "id",
+      "batchId",
+      "recipeId",
+      "title",
+      "date",
+      "slot",
+      "memberId",
+      "servings",
+      "servedPortions",
+      "completion",
+      "intakeKnown",
+      "leftovers",
+      "createdAt",
+      "source",
+      "totals",
+      "unresolved",
+      "note"
+    ],
+    "profileIdsPresentInBatchOrHistory": false,
+    "sourceSymbols": [
+      "Gs",
+      "Hs",
+      "tc",
+      "Rt",
+      "Fn"
+    ],
+    "sourceBoundaryFile": "SOURCE-BOUNDARIES.json"
+  },
+  "expectedNorthStarContract": "Keep recipe/version, actual allocated ingredient changes, quantity/nutrition basis and source provenance with cooked food and frozen intake; frozen numbers alone do not retain their source evidence.",
+  "smallestReusableCase": "Use already-qualified caller-compatible source projection or non-sensitive versioned fixture; plan/cook2portions from actual lots, serve across2members and reuse leftovers; update/remove current product lookup/profile. Old batch/history must retain original immutable nutrient-profile/source-release/basis and recipe-version references while old numeric totals and single accounting remain unchanged.",
+  "scopeGuard": "Do not become a second app writer or alter the in-flight lot-specific nutrition adapter. Fold this case into existing provenance/app owners. No full corpus verification, external food lookup, new rights grant or broad release gate requested.",
+  "notClaimed": "This fixture does not establish correctness of real source nutrition, clinical interpretation, account privacy or whole-loop release acceptance."
+}

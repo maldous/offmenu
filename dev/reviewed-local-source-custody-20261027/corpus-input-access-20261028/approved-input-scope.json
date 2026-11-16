@@ -1,0 +1,16 @@
+{
+  "input_access_request": {
+    "directories": [
+      "/home/user/src/offmenu-data/common-bulk-food-20261014",
+      "/home/user/src/offmenu-data/curated-expanded-country-search-20261013/blobs"
+    ],
+    "optional_existing_files": [
+      "/home/user/src/offmenu-data/common-places-semantic-final-20261014.checkpoint.sqlite",
+      "/home/user/src/offmenu-data/common-places-semantic-final-20261014.checkpoint.sqlite-journal",
+      "/home/user/src/offmenu-data/common-places-semantic-final-20261014.checkpoint.sqlite-wal",
+      "/home/user/src/offmenu-data/common-places-semantic-final-20261014.checkpoint.sqlite-shm",
+      "/home/user/src/offmenu-data/common-places-semantic-final-20261014.alignment.lock",
+      "/home/user/src/offmenu-data/common-bulk-food-semantic-final-20261014.repair.lock"
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "offmenu-server-stock-reference-dispatch/1",
+  "before": {
+    "bytes": 2220629,
+    "sha256": "13bd5e94c11ded5756a09edafc414791164425f4aca0b12b947849e1af60157a"
+  },
+  "after": {
+    "bytes": 2220848,
+    "sha256": "01ee8a6152de32e43cc0b2dac833815a7eac5e8bd26ae2b0a7e1404659beedde"
+  },
+  "validator": {
+    "name": "W",
+    "beforeBytes": 1894,
+    "beforeSha256": "a14ce8fc820500a31f8a1faca1c97ff55a70818ec188d03a27bc35573a0da5fe",
+    "insertOffset": 29383,
+    "insertText": "if(A?.foundationSourceReference||A?.sourceIdentityReference)return _offmenuValidateSourceReferenceStock(A);"
+  },
+  "importText": "import{validateSourceReferenceStock as _offmenuValidateSourceReferenceStock}from\"./source-reference-stock.mjs\";\n",
+  "unchangedOutsideInsertions": true,
+  "unchanged": [
+    "legacy validator body",
+    "state validator CA",
+    "private/shared save and load handlers",
+    "authentication",
+    "origin/revision checks",
+    "OWN_DATA_REQUIRED containment"
+  ],
+  "newModule": "source-reference-stock.mjs"
+}

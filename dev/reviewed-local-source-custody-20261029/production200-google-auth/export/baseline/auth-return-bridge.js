@@ -1,0 +1,1 @@
+function r(t=globalThis.location){if(!t)return!1;let e=new URL(t.href);if(e.pathname==="/auth.html"||!e.hash)return!1;let a=new URLSearchParams(e.hash.slice(1));return["access_token","confirmation_token","email_change_token"].some(n=>a.has(n))?(t.replace("/auth.html"+e.hash),!0):!1}typeof window<"u"&&r();export{r as routeIdentityReturn};

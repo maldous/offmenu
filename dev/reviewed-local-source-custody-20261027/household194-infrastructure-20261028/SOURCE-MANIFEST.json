@@ -1,0 +1,260 @@
+{
+  "schema": "offmenu-household-infrastructure-custody/1",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 3794,
+      "sha256": "c219e610aa43305c5300fdcbc87e3d4d312c2d0a3bd5e09d81b2161649b0a7b1"
+    },
+    {
+      "path": "health64/ACTUAL-HEALTH-READBACK.json",
+      "bytes": 2500,
+      "sha256": "7e1353e54a6118c990ab8fc89b75bcfb9eb375903ce3a85f76f6143b5de717e8"
+    },
+    {
+      "path": "health64/DEPLOYMENT-STATUS.json",
+      "bytes": 1347,
+      "sha256": "3d94de1cceb0fa84e5b8c485fbced833b724affed259ed488d8edaa6ac55fcd7"
+    },
+    {
+      "path": "health64/README.md",
+      "bytes": 2318,
+      "sha256": "c0e830aa62a51feedc0ff8fb43d58dc6f184fb61074365471711abff499bd3bd"
+    },
+    {
+      "path": "health64/install_health64.py",
+      "bytes": 7597,
+      "sha256": "51c135c7a13140a1b0bc716caeb55e3d716c9b650bef5713205afd42359441c1"
+    },
+    {
+      "path": "health64/platform_check.py",
+      "bytes": 14320,
+      "sha256": "ca919ab491685c9b60bad9ff827b8da3e77ae5d3ec06424c160a8c386e2b2334"
+    },
+    {
+      "path": "health64/platform_check_preimage.py",
+      "bytes": 14243,
+      "sha256": "03f61831f020fdbb5152d1ffbfd656966768559225b3fe1c72b24b2a91aa2957"
+    },
+    {
+      "path": "health64/storage/offmenu_storage.py",
+      "bytes": 18197,
+      "sha256": "a6d4222f7324b5fc4260f7133ab9815a95d4849f81049ef1ef3bec53bd309d70"
+    },
+    {
+      "path": "health64/test_capacity_health.py",
+      "bytes": 2854,
+      "sha256": "0bf66b8c60db3861465236931b25da57b1275c5e3a5ad84d8224ba93d9ca9dd5"
+    },
+    {
+      "path": "health64/test_client_baseline.py",
+      "bytes": 5289,
+      "sha256": "77ac10d76b6534b221e7ccfaf320d908a008fc585d9880341fd8e3bed77e5c46"
+    },
+    {
+      "path": "health64/test_host_baseline.py",
+      "bytes": 9449,
+      "sha256": "3c9c5a189428af8f3f1b6c1be09487e27c2c027bc32f6b724055ea38a9a622e1"
+    },
+    {
+      "path": "health64/test_install.py",
+      "bytes": 1913,
+      "sha256": "18301d8f45b1805b3fa037d693d0913dd637c32f78393febd7c0e61c3a90ec7d"
+    },
+    {
+      "path": "health64/windmill_platform_check.py",
+      "bytes": 18586,
+      "sha256": "4d48d4ab293771fae9ad830ddf0c0d5e3e8535d1b7bc9dbdb8d83347b13fddc8"
+    },
+    {
+      "path": "netlify/ADOPTED-NORTH-STAR-PUBLICATION-20261028.md",
+      "bytes": 1795,
+      "sha256": "280996013bc54c854e9b650e950a278b4341ea1495cfc4418c6030cf7a97b2bb"
+    },
+    {
+      "path": "netlify/INDEPENDENT-NORTH-STAR-PUBLISHER-REVIEW.md",
+      "bytes": 2320,
+      "sha256": "4abfb2e5f141021f2e0e859026331d7725e2bcfb6297ef9e773fc7b52bcb1efe"
+    },
+    {
+      "path": "netlify/INDEPENDENT-PUBLISHER-REVIEW.md",
+      "bytes": 2218,
+      "sha256": "66b9dd315d0814322a44c97a5e77bee29336572d11074116487dafe284de58c8"
+    },
+    {
+      "path": "netlify/PRIVATE-ACCESS-VERIFIED.json",
+      "bytes": 1249,
+      "sha256": "0a29a772959028e307952e21234e4656231b31730592b485ba6a49d4f4cfa279"
+    },
+    {
+      "path": "netlify/import_netlify_token.py",
+      "bytes": 6622,
+      "sha256": "5b841f3d0f295c0ffa3ca3dbb6a87c4d6fb04c7f3ff048bec8ad3b75a2ffce20"
+    },
+    {
+      "path": "netlify/netlify_fixed_site_publisher.py",
+      "bytes": 14400,
+      "sha256": "bdeb6fdbcf1f9c21277d06d319d112e519faab66303d352b80195fd7a4a1ccee"
+    },
+    {
+      "path": "netlify/netlify_north_star_publisher.py",
+      "bytes": 15028,
+      "sha256": "966ef21bc8771bae492c053fe9f0d54f1bae6395bb1fbbf3e042a36c8e076885"
+    },
+    {
+      "path": "netlify/netlify_publication_seed.py",
+      "bytes": 13145,
+      "sha256": "7e7feaadbde370346e73d223f4d01259464956645d670d3211d8bd0eace1d7e9"
+    },
+    {
+      "path": "netlify/netlify_publisher_inspect.py",
+      "bytes": 3778,
+      "sha256": "d3514c11b802a3aa6b10de523cae234680715482664b5dc551eef06e8627e638"
+    },
+    {
+      "path": "netlify/prepare_north_star_projection_reviewed.py",
+      "bytes": 7137,
+      "sha256": "75e7d573596d98679b18598e3ecbd04c859105913282b18beacfc5e5ab59386f"
+    },
+    {
+      "path": "netlify/prepare_publication_delta.py",
+      "bytes": 3876,
+      "sha256": "f2e03697beeaf173c8f732340fcca73b28cf90c8d305926831f432f8cb157034"
+    },
+    {
+      "path": "netlify/publication_seed_tail.py",
+      "bytes": 4811,
+      "sha256": "68c9077c6188de36165e8581f5dc5d1f7fc0e21eab3538cd0d2df784161dc90c"
+    },
+    {
+      "path": "netlify/test_fixed_site_publisher.py",
+      "bytes": 5539,
+      "sha256": "15ae7ede163fc0af1d75346173bc9efccb74cf04550c04ef00056c8647e5f7d4"
+    },
+    {
+      "path": "netlify/test_import_netlify_token.py",
+      "bytes": 4098,
+      "sha256": "93955e9fba985bded3fb90bed28c8ce85ff1759335d4bcc0df1b1eaf190447ce"
+    },
+    {
+      "path": "netlify/test_netlify_publisher_inspect.py",
+      "bytes": 1818,
+      "sha256": "fff9bf433e5c85338dbc329dda7801554ecf6b86cb6b3bbd63b28329dd52ac55"
+    },
+    {
+      "path": "netlify/test_north_star_projection_durability.py",
+      "bytes": 2879,
+      "sha256": "0707e9037375cab0ca390102a47d9b0827f00a9f00726472004ab28299e7c111"
+    },
+    {
+      "path": "netlify/test_north_star_publication.py",
+      "bytes": 2870,
+      "sha256": "009c009c88dadb428e064dbb5f9b8622fba41ea899152ca334e05ade06ac5c38"
+    },
+    {
+      "path": "netlify/test_publication_seed.py",
+      "bytes": 1768,
+      "sha256": "0538d719f762ddf93355eb1cfcdc789866211d3f42fba4b48485542ecd95bffb"
+    },
+    {
+      "path": "production194/build-pins-sanitized.json",
+      "bytes": 33476,
+      "sha256": "0090ec1b97a6a0a2236b38c76b9dae198a473676889be1478fb42de8413281aa"
+    },
+    {
+      "path": "production194/deployed-application.mjs.asset-splice.json",
+      "bytes": 791,
+      "sha256": "01c3a99d3ec507eaec8cc1ce35062358d59b0a6727db7b5dfdd4c303f37049dc"
+    },
+    {
+      "path": "production194/deployment-receipt.json",
+      "bytes": 1114,
+      "sha256": "e3220151552acbac2fa0329042e5d9eb1abd4382d11aea5fb30d3bb53803653d"
+    },
+    {
+      "path": "production194/final-public/app.js",
+      "bytes": 109255,
+      "sha256": "9dcebe457842f8596a89cf5902dcd89fb6a1b7f50ef8855001613d0005a5c9fb"
+    },
+    {
+      "path": "production194/final-public/insights-ui.js",
+      "bytes": 18357,
+      "sha256": "aa4e5ccd6896ad51e2d4230016b7c9d01b9c97fb7e9859af5a63c2f2681143b4"
+    },
+    {
+      "path": "production194/served-probes.json",
+      "bytes": 2697,
+      "sha256": "e4274911ef0af07beca98213b95ec7b7906bbdc2cdf38a3495acc5bf7675cb67"
+    },
+    {
+      "path": "production194/source-pins-sanitized.json",
+      "bytes": 112883,
+      "sha256": "cd20b51253e147ee2f20b1760b836309e360c6f03fe91863edbcd9d1eb16234d"
+    },
+    {
+      "path": "reviews/consumption/INDEPENDENT-REVIEW.md",
+      "bytes": 731,
+      "sha256": "15cc4d4ea2289b1a172828a3b802cf05d4f14287e25b14a5fc40fcdcfb97c521"
+    },
+    {
+      "path": "reviews/consumption/candidate/app/tests-web/consumption-history.test.mjs",
+      "bytes": 11341,
+      "sha256": "71f75bf615c928b4994defed5272db74146d48502855a3338bb06544fc833b59"
+    },
+    {
+      "path": "reviews/consumption/history-csv-unknown-intake.patch",
+      "bytes": 3792,
+      "sha256": "85e0e3e9bffe56742e92a98229b10e1f9cb9fe4a6e031ff38deeef4b5f7898f0"
+    },
+    {
+      "path": "reviews/consumption/source-pins.json",
+      "bytes": 1992,
+      "sha256": "59311b86c419e5d380866d241f825126726b406ad9eaf8fd0e4d74f4e11dc0ab"
+    },
+    {
+      "path": "reviews/member-editor/INDEPENDENT-REVIEW.md",
+      "bytes": 1426,
+      "sha256": "f2ce58450dff2b96b44f3e301a4695101d9b181ea20193e9c8e3064c453f208c"
+    },
+    {
+      "path": "reviews/member-editor/candidate-app/tests-web/household-profile-planner.test.mjs",
+      "bytes": 11674,
+      "sha256": "eb222db3c11fe544a495b55f421bdb5d4ec7d69740a6a451e4fb1ee551634f50"
+    },
+    {
+      "path": "reviews/member-editor/member-editor-scope.patch",
+      "bytes": 13621,
+      "sha256": "50ff1fc4aa40937feb3cb156ec33b7bd645a846be566e8315689f37b7768e7a5"
+    },
+    {
+      "path": "reviews/member-editor/source-pins.json",
+      "bytes": 2541,
+      "sha256": "fe95a3883cdf329029cd9370fa3400caa6245cabf1fce0acd4cf74ebb3b5b944"
+    },
+    {
+      "path": "reviews/shopping/HANDOFF.md",
+      "bytes": 7091,
+      "sha256": "bbf7b23ad4e17b0e51b2ade337c23336125a1785cab2b4502270e0d77c3256ee"
+    },
+    {
+      "path": "reviews/shopping/candidate/tests-web/collaborative-shopping-contract.test.mjs",
+      "bytes": 7426,
+      "sha256": "502db3937fe2b7790010aaceda833e44ada1e52a69b0e5182a36207cbefe112e"
+    },
+    {
+      "path": "reviews/shopping/candidate/tests-web/shopping-write-scope.test.mjs",
+      "bytes": 4781,
+      "sha256": "ccabc97b7408b2204f4d661fa279781c4ae7d074cc176273e0fe3c00cfe4aa37"
+    },
+    {
+      "path": "reviews/shopping/manifest.json",
+      "bytes": 4063,
+      "sha256": "64bd5bfb0fd2086ec70ae0d9ea6b42af447c8b28653de887749976619f694f15"
+    },
+    {
+      "path": "reviews/shopping/shopping-write-scope.patch",
+      "bytes": 15433,
+      "sha256": "bd4aa57a367d29adb27b8ab0a4b9d8376c512c620c7d388530e09665af1844bc"
+    }
+  ]
+}

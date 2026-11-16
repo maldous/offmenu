@@ -1,0 +1,9 @@
+{
+  "file": "packets/part-00413.jsonl.gz",
+  "bytes": 741421,
+  "full_file_valid": false,
+  "sha256": "9609e5728df5248926deabdea9424e764ff9b348866b27d224a1c1a121e03fc6",
+  "error_class": "EOFError",
+  "stable_metadata": true,
+  "decoded_bytes_before_error": 6291456
+}

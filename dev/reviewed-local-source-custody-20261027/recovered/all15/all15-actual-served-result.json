@@ -1,0 +1,432 @@
+{
+  "at": "2026-10-27T11:58:13.807990+11:00",
+  "worker": 5,
+  "nativeThreadId": "01a138a5-6210-7ad3-af85-b50eb97eaf38",
+  "host": "foo/Linux/local",
+  "task": "UI-ROUTE",
+  "status": "DONE_LOCAL_EXACT_ALL15_1384_CODE_ACTUALLY_SERVED_22_PINNED_ASSET_READBACKS_PASS",
+  "url": "http://127.0.0.1:7645/",
+  "demoURL": "http://localhost:7645/demo/scanner.html",
+  "selectionSha256": "1384a1b3469be561ad3ecdbda2fc605c91f5cfc6722e01507b9335e1c9d0f71b",
+  "backendSha256": "823325a7e48015f350d3fe9c3d78789bed8d2009ea2e283aa8723fb38f1bdfa0",
+  "API": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/local-origin-alias-source-r1/foundation-local-response.bundled.mjs",
+    "sha256": "26efc3a3b0ecdad63f9a6eddc478d49227e9c5ace4879fbab12d4bf3786def8f"
+  },
+  "runtimeReady": true,
+  "processes": [
+    {
+      "pid": 3018869,
+      "ppid": 3350,
+      "startTicks": "26604772",
+      "cwd": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/parallel-generations/fdb0fcf0-3388-41bd-853b-257fc52c4275",
+      "argv": [
+        "/bin/node",
+        "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/launch-primary.mjs",
+        "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/actual-launch-inline-input.json",
+        "a0c1099b22fd4543a8956cd8ab88bdeb5fb9c6b8ee889d8430dcdd5a2c978608"
+      ]
+    },
+    {
+      "pid": 3018991,
+      "ppid": 3018869,
+      "startTicks": "26605171",
+      "cwd": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/parallel-generations/fdb0fcf0-3388-41bd-853b-257fc52c4275",
+      "argv": [
+        "/home/user/src/offmenu/node_modules/@cloudflare/workerd-linux-64/bin/workerd",
+        "serve",
+        "--binary",
+        "--experimental",
+        "--socket-addr=entry=127.0.0.1:7645",
+        "--external-addr=loopback=127.0.0.1:14535",
+        "--control-fd=3",
+        "-"
+      ]
+    }
+  ],
+  "bootId": "b154aed2-7455-4127-9f6c-38af4b3182a9",
+  "detachedProcessSession": 3018869,
+  "durability": "Currentnewsession/parentindependence/aliveverified;indefinitedurabilitynotclaimed.",
+  "state": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/parallel-generations/fdb0fcf0-3388-41bd-853b-257fc52c4275/state",
+    "device": 64512,
+    "inode": 18109841,
+    "runId": "fdb0fcf0-3388-41bd-853b-257fc52c4275",
+    "d1Database": "delivery-fdb0fcf0-3388-41bd-853b-257fc52c4275",
+    "schemaStatements": null,
+    "reset": false,
+    "storageMode": "preserve-existing"
+  },
+  "exclusiveListener": {
+    "table": "tcp",
+    "address": "0100007F:1DDD",
+    "inode": "10623461",
+    "pid": 3018991,
+    "fd": "22"
+  },
+  "operation": {
+    "stopAttempts": 1,
+    "signals": 1,
+    "startAttempts": 1,
+    "bothFormer296ProcessesActuallyAbsent": true,
+    "exclusiveFreeSlotObserved": true,
+    "gracefulDrainProven": false,
+    "retry": false,
+    "fallback": false,
+    "windowRenewal": false,
+    "startupWindowExpiresAt": "2026-10-27T01:07:37.881Z",
+    "keepCorrectInstanceAvailableAfterExpiry": true,
+    "stop": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/all15-1384-actual00-admission-20261027/actual-current-primary-stop-admission.json",
+      "sha256": "f733e8f1aee470236e3b8642d4a885f84a37fbf40a9d8cab1eebea2926e48859"
+    },
+    "start": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/all15-1384-actual00-admission-20261027/actual-local-primary-start-admission.json",
+      "sha256": "1e3d005edd366f0053332f7a24ef394aa831e084df953afbcefd838f34989c67"
+    },
+    "qualification": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker06/demo-mock-restoration-20261025/qualified-runtime-be166-jit-all15-1384-2026-10-27T005237881Z.json",
+      "sha256": "4719941bb48426667c53f60bddc795ecedc4003911833d07f99f42ad77e85758"
+    },
+    "disposition": "CONSUMED;no replay.",
+    "portReleaseWaitNeeded": false,
+    "failedStartAttempts": 0,
+    "socketOptionsOrKernelChanged": false
+  },
+  "actionEvidence": {
+    "fresh06-operation-binding-readback.json": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/fresh06-operation-binding-readback.json",
+      "sha256": "482ee8cc40be9caf2cc254841ee33ae9f3653c1f6f89b725d0fd6058effe9da4"
+    },
+    "preflight-result.json": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/preflight-result.json",
+      "sha256": "a9a0cfa19fa59a4ea171620bc8873890d30ff0d48b662f25163f293f00104252"
+    },
+    "actual-prestop-boundary.json": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/actual-prestop-boundary.json",
+      "sha256": "358693d1f96d827a55b36e2b416af9229b298418e8b2a069064ab7a3bfc04898"
+    },
+    "actual-stop-exclusive-intent.json": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/actual-stop-exclusive-intent.json",
+      "sha256": "fcaeaeeeb428ecf3139fc7ad92b2abc3bbd8a2e27e85fcf86dc4cf28fba38194"
+    },
+    "actual-stop-result.json": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/actual-stop-result.json",
+      "sha256": "aecb1cbac515b343e00a76f7f65d7db5319d32573688a5c42354fd678c5a46e8"
+    },
+    "actual-empty-slot-proof.json": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/actual-empty-slot-proof.json",
+      "sha256": "b62b88a4fbdc0aa67df0263b7709f7156effa5ae21bcf1762d8421db5d62859b"
+    },
+    "actual-prestart-final-source-guard.json": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/actual-prestart-final-source-guard.json",
+      "sha256": "6dc7cf796dd17cc59dce1f6e1df7fb02efa376b92a8bd27c7ce07591197706c3"
+    },
+    "actual-start-exclusive-intent.json": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/actual-start-exclusive-intent.json",
+      "sha256": "3d9aeee50c9dad4998fdf8c8d413518690355f79d68f7b753003188e05973ad1"
+    },
+    "actual-process-start.json": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/actual-process-start.json",
+      "sha256": "dec6accbeb804c69f11bee85c55711bf27426b424dcdb5d329ff32b67e3452b5"
+    },
+    "actual-startup.log": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/actual-startup.log",
+      "sha256": "c39a8d08fa68048df65689f1c3c1169e51555f937b9e63d183c8f83b77912831"
+    }
+  },
+  "input": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/actual-launch-inline-input.json",
+    "sha256": "a0c1099b22fd4543a8956cd8ab88bdeb5fb9c6b8ee889d8430dcdd5a2c978608",
+    "bytes": 89134969
+  },
+  "readinessEvidence": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/actual-static-readiness-readback.json",
+    "sha256": "268e839dc66fff344ed54333067327865c0bacc1b3f630e5392415006c81fa25"
+  },
+  "actualServed": {
+    "sixExactALL15Routes": [
+      {
+        "route": "/landing-static-15/story.js",
+        "sha256": "5a5cc5baabec9c1cc9fa420d628f52d8e0f97370669fb531056453a9525b03e7",
+        "bytes": 34620,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "5a5cc5baabec9c1cc9fa420d628f52d8e0f97370669fb531056453a9525b03e7",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      },
+      {
+        "route": "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current183-all15-r2/world-action-ready-r4.mjs",
+        "sha256": "31fcedd67549bcbf5ebd5d056684c1d8cd635b6194288c07716dd3bd819fd0a7",
+        "bytes": 8297,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "31fcedd67549bcbf5ebd5d056684c1d8cd635b6194288c07716dd3bd819fd0a7",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      },
+      {
+        "route": "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current183-all15-r2/prepared-scene-catalog-r1.mjs",
+        "sha256": "f3f4ba50765b9d96db9b26937924fbf417549443d5d16cb3cc5260a077b35c63",
+        "bytes": 1686,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "f3f4ba50765b9d96db9b26937924fbf417549443d5d16cb3cc5260a077b35c63",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      },
+      {
+        "route": "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current183-all15-r2/asset-aliases-ready-r1.mjs",
+        "sha256": "aa8d208e768f8f0f2b54d7d0160baf4b9020df520e0d224fde4b6af5c5c18c82",
+        "bytes": 21048,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "aa8d208e768f8f0f2b54d7d0160baf4b9020df520e0d224fde4b6af5c5c18c82",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      },
+      {
+        "route": "/landing-motion-v12/mount-first-pair-ready-r1.mjs",
+        "sha256": "211479c0081702f22c1faabc94ce60e45668ca020989554dee6c17ec8118ba70",
+        "bytes": 1964,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "211479c0081702f22c1faabc94ce60e45668ca020989554dee6c17ec8118ba70",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      },
+      {
+        "route": "/landing-motion-v12/scene-adapter-ready-r1.mjs",
+        "sha256": "374f33a7372f9ec5f229744d3634940f9951333752f059a746e6b813c30349c3",
+        "bytes": 6136,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "374f33a7372f9ec5f229744d3634940f9951333752f059a746e6b813c30349c3",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      }
+    ],
+    "allSixGETHEADTruthfulSHATypeSizeAndEmptyHEAD": true,
+    "retainedAssetGETRows": {
+      "/": {
+        "sha256": "3e545e3d808d2f1bc1b2d9e15c2ca522594e8dee6b354038ae9a04c916945d36",
+        "bytes": 2074,
+        "contentType": "text/html; charset=utf-8",
+        "rootStaticSHA256": null,
+        "UIAssetSHA256": "3e545e3d808d2f1bc1b2d9e15c2ca522594e8dee6b354038ae9a04c916945d36",
+        "frontendSHA256": null
+      },
+      "/landing.html": {
+        "sha256": "3e545e3d808d2f1bc1b2d9e15c2ca522594e8dee6b354038ae9a04c916945d36",
+        "bytes": 2074,
+        "contentType": "text/html; charset=utf-8",
+        "rootStaticSHA256": null,
+        "UIAssetSHA256": "3e545e3d808d2f1bc1b2d9e15c2ca522594e8dee6b354038ae9a04c916945d36",
+        "frontendSHA256": null
+      },
+      "/landing-static-15/story.js": {
+        "sha256": "5a5cc5baabec9c1cc9fa420d628f52d8e0f97370669fb531056453a9525b03e7",
+        "bytes": 34620,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "5a5cc5baabec9c1cc9fa420d628f52d8e0f97370669fb531056453a9525b03e7",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      },
+      "/landing-native-vertical-local.css": {
+        "sha256": "f45a464868960b83e3f01e8caa154da58796d74955d5a13d2d13901e277a119c",
+        "bytes": 6392,
+        "contentType": "text/css; charset=utf-8",
+        "rootStaticSHA256": null,
+        "UIAssetSHA256": "f45a464868960b83e3f01e8caa154da58796d74955d5a13d2d13901e277a119c",
+        "frontendSHA256": null
+      },
+      "/demo/full-scanner.js": {
+        "sha256": "b4eb939ee3744e26f1f4a7f4b22880c634288a5405a7db92e906202e9e94d849",
+        "bytes": 882785,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "b4eb939ee3744e26f1f4a7f4b22880c634288a5405a7db92e906202e9e94d849",
+        "UIAssetSHA256": null,
+        "frontendSHA256": "b4eb939ee3744e26f1f4a7f4b22880c634288a5405a7db92e906202e9e94d849"
+      },
+      "/demo/scanner.html": {
+        "sha256": "beb658cd34580800f3cbe19fe61e6dba2417f642b370210964207de2484f0c89",
+        "bytes": 45825,
+        "contentType": "text/html; charset=utf-8",
+        "rootStaticSHA256": "beb658cd34580800f3cbe19fe61e6dba2417f642b370210964207de2484f0c89",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      },
+      "/app.js": {
+        "sha256": "c8a3f8d049e539167db4d006e468aa80473886e175525fed88ab23d0e991f96a",
+        "bytes": 448472,
+        "contentType": "application/javascript",
+        "rootStaticSHA256": null,
+        "UIAssetSHA256": null,
+        "frontendSHA256": "c8a3f8d049e539167db4d006e468aa80473886e175525fed88ab23d0e991f96a"
+      },
+      "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current183-all15-r2/world-action-ready-r4.mjs": {
+        "sha256": "31fcedd67549bcbf5ebd5d056684c1d8cd635b6194288c07716dd3bd819fd0a7",
+        "bytes": 8297,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "31fcedd67549bcbf5ebd5d056684c1d8cd635b6194288c07716dd3bd819fd0a7",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      },
+      "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current183-all15-r2/prepared-scene-catalog-r1.mjs": {
+        "sha256": "f3f4ba50765b9d96db9b26937924fbf417549443d5d16cb3cc5260a077b35c63",
+        "bytes": 1686,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "f3f4ba50765b9d96db9b26937924fbf417549443d5d16cb3cc5260a077b35c63",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      },
+      "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current183-all15-r2/asset-aliases-ready-r1.mjs": {
+        "sha256": "aa8d208e768f8f0f2b54d7d0160baf4b9020df520e0d224fde4b6af5c5c18c82",
+        "bytes": 21048,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "aa8d208e768f8f0f2b54d7d0160baf4b9020df520e0d224fde4b6af5c5c18c82",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      },
+      "/landing-motion-v12/mount-first-pair-ready-r1.mjs": {
+        "sha256": "211479c0081702f22c1faabc94ce60e45668ca020989554dee6c17ec8118ba70",
+        "bytes": 1964,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "211479c0081702f22c1faabc94ce60e45668ca020989554dee6c17ec8118ba70",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      },
+      "/landing-motion-v12/scene-adapter-ready-r1.mjs": {
+        "sha256": "374f33a7372f9ec5f229744d3634940f9951333752f059a746e6b813c30349c3",
+        "bytes": 6136,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "374f33a7372f9ec5f229744d3634940f9951333752f059a746e6b813c30349c3",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      },
+      "/landing-world-actions/current183-all15-r2-assets/native15-first-sequence-20261026/full15-master-r1/scene-module-runtime-r4.mjs": {
+        "sha256": "f026ee929292222007b518cd457f8d4a513cb1d50098ecc5712e942094738a2b",
+        "bytes": 9741,
+        "contentType": "application/javascript; charset=utf-8",
+        "rootStaticSHA256": "f026ee929292222007b518cd457f8d4a513cb1d50098ecc5712e942094738a2b",
+        "UIAssetSHA256": null,
+        "frontendSHA256": null
+      }
+    },
+    "allTwentyTwoReadbacksPass": true,
+    "storySHA256": "5a5cc5baabec9c1cc9fa420d628f52d8e0f97370669fb531056453a9525b03e7",
+    "qualifiedStaticBundleSHA256": "e7a8bd65881ff82c2b9f5797ffa1ab387f3961bd3e7f4c063a3c961cf9926d27",
+    "DOMSHA256": "17105266ad9defbe04dc659f38a9e18584ae228b1ee34ce151c7c4d26401abfb",
+    "compositionRevision": "ed294f770d6fc76c82d396d1d846beecb2c6c74a6a815807e49aeb139e128c01",
+    "rootHeaderDemoLoginExactBothAliases": true,
+    "trafficMeaning": "Worker05syntheticoperatorstaticassetreadinessonly;notincomingMatt/usertraffic/history/identity/phoneproof."
+  },
+  "qualifiedSourcePackage": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-all15-ready-owner00-qualification-20261027/result.json",
+    "sha256": "0c4ccf7ca15d11f0cc010e9291df26201b15d554d9019e1d71b1f22948dfdc8b"
+  },
+  "source": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/all15-ready-source-r1/result.json",
+    "sha256": "47814d4cb105233de71ba493e17227203bab3b60a490d91347e08337c184731d"
+  },
+  "sourceAuthor": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/result.json",
+    "sha256": "b0c37fbbfc7517edc1d4c0c40e7326b306dd39bcb3c6c3e1f7770af723b303f8"
+  },
+  "frozenSixRouteManifest": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/route-manifest.json",
+    "sha256": "ab2420fdc74b005efdbf24f62157a7db02bd88bdbfa0c86249c4c917f637b827"
+  },
+  "sourceALL15ProofReused": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/check-result.json",
+    "sha256": "96cd145d394b66eb3213939f5db891c781d8b1bdfdf0c6b95d811c3d4e84d01b"
+  },
+  "requirementEvidence": {
+    "required": "ALL15 assets/modules ready before navigation; arbitrary/backscroll no per-pagePreparing; exactscope/design preserved.",
+    "sourceProof": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/check-result.json",
+      "sha256": "96cd145d394b66eb3213939f5db891c781d8b1bdfdf0c6b95d811c3d4e84d01b"
+    },
+    "all13WorldIDs": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "native01And02Prepared": true,
+    "preparedOnlyNonadjacentAndReturnEntries": 15,
+    "nativeReturnMounts": 4,
+    "noEntryFetchOrDecode": true,
+    "openingReadinessBarrier": true,
+    "noPreparingText": true,
+    "anchorHelperByteIdentical": true,
+    "fiveSecondArmPreservedAfterExplicitReadinessGuard": true,
+    "sharedAssetAliasRewrites": 78,
+    "all15ResourceStats": {
+      "entries": 101,
+      "active": 0,
+      "queued": 0,
+      "bytes": 20703276,
+      "pixels": 67340542,
+      "disposed": false
+    },
+    "limits": [
+      "Targeted Node executesactualpublicmodule/JSON/PNGbytes/bindings withdimension-onlyImage andmock2D/GL plusfileURLmapping; not realbrowserdecodedheap/GPU/visual/physicalphone clearance.",
+      "SelectedPNGheaderpixelaccount67,340,542 (~269MBRGBA) plusderivedcanvases/browsertransients/GPU are outsideencoded20.7MB accounting; boundsfinite, no measureddeviceallocationorOOMclaim. ALL15coverage notsilently reduced.",
+      "Initialall-resource download/decode mustcompletewhileopeningsequence remains beforearbitrarypageentry; no networkcanbeinstantbeforeinitialdataarrives.",
+      "No actualservedclaim yet;00/05currentrole/API/state preservation andactualreceiptrequired."
+    ],
+    "servedAcceptance": "NOT_SERVED;source-onlyauthorNode/mockedImage2DGLproof reused. Fullall15scope notsilentlyreduced;browser/device/physicalallocationclaims notmade."
+  },
+  "requirementDisposition": {
+    "coverage": "ExactALL15implementation locallydelivered;notcurrent+nextsubstitute.",
+    "acceptedSourceEvidence": "All13worlds+native01/02retainedreadyduringopeningBEFOREnavigation/arbitrary/backscroll;noPreparingtext;nonadjacent/returnentries no newfetch/decode targetedNodeactualpublicgraphproof reused.",
+    "actualLocalDeliveryEvidence": "ExactqualifiedsixsourcebodiesGETHEADserved/all22changed-retainedassetreadbacksPASS/currentrole/stateverified.",
+    "limits": "No newbrowsercontrollerexecution,realdecodedheap/GPU/physicalphone/all15cachepopulationmeasurementclaimedby05;source67.34Mpixels/~269MBRGBA+derived/transientlimitsretained,scopeunreduced.",
+    "noUnconfirmedTradeoffOrCoverageReduction": true
+  },
+  "preservation": "API26ef/knownlocalhostaliasfix/R8f933-d02-119/List1aff/e302/guestb4eb/backend823/COVER CSSf45/runtimef026/DOM1710/root3e545/header/art/neon/vertical/anchor/action+5000ms/native/private/principal/realm/state18109841retained.340routekeys/334otheroldroute descriptors/all197oldbodiesretained/203nextbodies;R3originalmodulealiaseskept,storyrouteexplicitly3362\u21925a5c. No R9/identity/logger/CORS/securitysettingsbundle.",
+  "retainedKnownLocalhostEvidence": {
+    "operatorAPI18625": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-local-alias-r2-5d54/actual-served-result.json",
+      "sha256": "92f74390be88fe49fb51eec77c7d09945fbb37b6d9bbb224816982c2a6dec15e"
+    },
+    "renderedUI18638": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker64/guest-scanner-trace-20261027-r1/postserve-alias5d54/actual-run/localhost-alias-ui-list-result.json",
+      "sha256": "f9ea121de8710237ba3be3981121f18a3edff6074b4a6263309d9e9dec3c0c9b"
+    },
+    "meaning": "Priorclosedknownmanualcaseaccepted/evidence retained;NOnewdataAPI/browsercampaignafterall15update."
+  },
+  "scopeLimits": [
+    "Targeted Node executesactualpublicmodule/JSON/PNGbytes/bindings withdimension-onlyImage andmock2D/GL plusfileURLmapping; not realbrowserdecodedheap/GPU/visual/physicalphone clearance.",
+    "SelectedPNGheaderpixelaccount67,340,542 (~269MBRGBA) plusderivedcanvases/browsertransients/GPU are outsideencoded20.7MB accounting; boundsfinite, no measureddeviceallocationorOOMclaim. ALL15coverage notsilently reduced.",
+    "Initialall-resource download/decode mustcompletewhileopeningsequence remains beforearbitrarypageentry; no networkcanbeinstantbeforeinitialdataarrives.",
+    "No actualservedclaim yet;00/05currentrole/API/state preservation andactualreceiptrequired."
+  ],
+  "scopeExclusions": "No newbrowser/dataAPI/phone/camera/pixeldecoder/account/login/logout/kitchen/USDAunknown/fullcorpus/sourceclassifier/recensus/Gold/country/publicationclearance. Existing64knownlocalhostUIloopclosed/notrequeued. ALL15scopeintact,actualdeviceallocationnotmeasured.",
+  "actualControls": {
+    "suppliedFilesystem": "unrestricted/danger-full-access",
+    "suppliedNetwork": "enabled",
+    "suppliedApprovalPolicy": "never",
+    "userConfigLabelSeparately": ":danger-full-access",
+    "mandatoryAutoReview": "retained",
+    "reviewerIdentityModelEffort": "Notexposed; exact64/Renderer/00acceptance separatelypinned"
+  },
+  "baselineQualification": {
+    "acceptedDevelop": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+    "observedRemoteDevelop": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+    "observedAtUTC": "2026-10-27T00:45:09.784159+00:00",
+    "source": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-all15-ready-owner00-qualification-20261027/fresh-develop-source-checkpoint.json",
+      "sha256": "41e6b2d426dbc1cba78668860451b378a3478b713dcee9dd0b34ea11d4fc967d"
+    },
+    "meaning": "00sourcecurrentbaselineevidence;immutablecoreABI/runtimecompositejustifiedseparately,notwholecurrentdeveloptreeruntimeclaim."
+  },
+  "cleanup": "Retaincorrectnew1384app/state/source/proofs/transports/consumedmarkers.Prior296pairreleasedonlyadmittedtransition.NoGit/ref/branch/worktree/deletion/newworker/controller/security/production/CIX action.",
+  "holds": "Allsource/privacy/rights/ownership/actualpermission/denials/11529no-read-stat-hash/Google/OpenPrices/ALDI/Sonar/main/production/CIX/securitysettings/credentials/cost/mandatoryauto_reviewretained.No globalproductionstateassertion.",
+  "nextAction": "Notify00/GatewayactualEXACTALL15sixroutes/22assetpasses/currentrole/stateonce;GatewayrelayRendereractualdeliveryscope/pins.Keepcorrect1384aliveafter12:07:37.881AEDTstartup-onlyexpiry;allnewadmissions/windowCONSUMED.No replay/restart/renewal/newbrowser/dataAPIgate orR9identitybundle. Continueonlyconcreteauthorizednextnativeassignment."
+}

@@ -1,0 +1,101 @@
+{
+  "assertedIdentityJoins": 0,
+  "automaticPlanningEligible": false,
+  "consumerEvidenceKind": "Exact selected source-field restoration and native/common-graph fidelity reconciliation, not live app or value-returning caller adoption.",
+  "counts": {
+    "recipesExamined": 42,
+    "restoredAssertions": 308,
+    "scalingRule": 266,
+    "unknownYields": 42,
+    "yield": 42
+  },
+  "files": [
+    {
+      "bytes": 46299,
+      "key": "recipe-context.jsonl.gz",
+      "packets": 42,
+      "sha256": "b8ba2924b38193f961608a7d0f6f73ee8cf3909e5742aa6d0c99d431e5001a0a"
+    }
+  ],
+  "fullNorthStarComplete": false,
+  "helperSourceSha256": {
+    "inspect_north_star_sample.py": "07a6f7cd7eab6a446f52ba783808c8be8c9188d29a764a3fd5425824ccc107fc",
+    "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509",
+    "reconcile_recipe_fidelity.py": "da98835561781d1855f06b44e8e9c3f70c5ac9f1939af5d5b2e6c83aca76d258"
+  },
+  "inputFidelity": {
+    "counts": {
+      "graphMissingScalingAssertions": 266,
+      "graphMissingYieldAssertions": 42,
+      "ingredientsCompared": 266,
+      "nativeAutomaticPlanningFalse": 42,
+      "nativeCanonicalKnownAmounts": 64,
+      "nativeCanonicalUnknownAmounts": 202,
+      "nativeSourceKnownAmounts": 176,
+      "nativeSourceUnknownAmounts": 90,
+      "nativeUnknownYields": 42,
+      "recipesCompared": 42,
+      "sourceAmountPresentButCanonicalUnresolved": 112
+    },
+    "existingQuantityAssertionsReplaced": 0,
+    "fieldsRestored": [
+      "yield",
+      "scalingRule"
+    ],
+    "originalSourceExtractionVerified": false,
+    "reportBytes": 63088,
+    "reportSha256": "8f3fa01c7f1347b60e606a3c81fdcbdc39ba1efd0ffaec34cda481e060e53cb0"
+  },
+  "limits": [
+    "All42 restored yields remain unknown, not zero or inferred serving counts.",
+    "Copied scaling codes are not a calculation-safety or ingredient-identity decision.",
+    "Historical5-record sidecar contains zero restorations and is deliberately excluded.",
+    "Core25,135 recipe query proof is a different artifact and not part of this42-record payload."
+  ],
+  "nutritionAggregationEligible": false,
+  "privatePayloadExcluded": true,
+  "producerManifestBytes": 1836,
+  "producerManifestSha256": "e10deb8b50cddce89b15a29f82aa664b71b87d1fdff56a901826aa793a9e53e5",
+  "producerPublicationEligible": false,
+  "producerSourceSha256": "a82cf054ff613467de1dc58c2a34a9f1e08e6c3f5d44ad24edd2d66c5e1ec214",
+  "publicationDependencies": {
+    "fixedRecipePublicationDescriptor": "not yet implemented by publication owner",
+    "qualifiedActuallyServedBaseManifestSha256": null,
+    "sourceCitationAndResourceResolverRequired": true,
+    "thisReceiptDoesNotAuthorizeNewDestinationWrites": true
+  },
+  "publicationScope": "candidate-sidecars-only",
+  "reviewBasis": {
+    "actualSanitizedManifestAndFidelityEnvelopeSha256": "21384640aa8fd44e00c6a77647614a0233976646981f445127a407cc9f1a4deb",
+    "additionalPayloadReadOrSourceSchemaProofPerformed": false,
+    "independentBuilderReviewSha256": "5f1e494dae8264ddffc6b188f1a9d3745260b3c51829f1c24cd6d6ebb2ac0d76",
+    "manifestExactBytesReconstructedAndVerified": true,
+    "publicScopesOnly": true,
+    "recipeProseImagesAndNativeRecordsExcludedFromSidecar": true,
+    "sourceCitationIdentityAndTypedIngredientPathsRequired": true
+  },
+  "reviewedAtUtc": "2026-10-28T09:22:00Z",
+  "reviewer": "/root/align_north_star_graph",
+  "schemaVersion": "offmenu-reviewed-recipe-context-proof/1",
+  "semanticStatus": "candidate-not-admitted",
+  "servedApplicationQueries": 0,
+  "sourcePins": {
+    "graphAsset": {
+      "bytes": 158764,
+      "key": "recipe-source-alignment.jsonl.gz",
+      "packets": 42,
+      "sha256": "170d0413de1c5101970e20889aacf849984cf49201a2a681cc7f66b58a67af28"
+    },
+    "manifestByteSha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
+    "nativeAsset": {
+      "bytes": 15798,
+      "key": "recipes.normalized.jsonl.gz",
+      "sha256": "ca1dcfd582c40062f6dbf11940a50622bd60579550432866c19fb6bf539844f6"
+    },
+    "packagePath": "/offmenu-corpus/recipe-expansion-final-qualified-20261014/common-graph",
+    "releaseId": "recipe-expansion-qualified-20261014"
+  },
+  "sourceRightsMeaning": "Exact native/graph citation source, record, content hash, licence, URL, revision and scope matched by the reviewed builder; this preserves existing restrictions and grants no new rights.",
+  "sourceRightsPreserved": true,
+  "status": "reviewed-source-scoped-consumer-proof"
+}

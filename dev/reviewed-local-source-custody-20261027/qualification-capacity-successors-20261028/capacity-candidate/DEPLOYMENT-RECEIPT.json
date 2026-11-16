@@ -1,0 +1,71 @@
+{
+  "format": "offmenu-capacity-deployment-v1",
+  "status": "deployed_configuration_verified",
+  "observed_at_utc": "2026-10-28T05:05:47Z",
+  "natural_checkpoint": "corpus-global-qualification-parallel-005-20261028; terminal succeeded/expected pause; child_tree_gone true, reconciliation false; next submission held by assessor",
+  "installation": {
+    "run_id": "01a180e4-6601-c9bf-f292-160af90979b7",
+    "status": "created_new_version",
+    "path": "/offmenu/scripts/windmill/job_runner_capacity_v3.py",
+    "sha256": "2ae57cc8edc66d9b56f43ad26dd8871fda155d23e50563988d3b0cac89d21674",
+    "old_runner_unchanged": true,
+    "old_sha256": "81b2918d8384ac3da63397263263c01340dc9b90031672d1fa4baab16aef8c1a"
+  },
+  "windmill": {
+    "workspace": "offmenu",
+    "path": "u/admin/foo_jobs_20261027",
+    "url": "https://windmill.aldous.info/scripts/get/u/admin/foo_jobs_20261027?workspace=offmenu",
+    "source_sha256": "4a19ef0acfd49b83236b83dc65dca41785bb1ffad304b22f4a6ea04d556c3d8e",
+    "deployed_readback_exact": true,
+    "isDraft": false,
+    "extraPerms": {},
+    "resources_parameter": "optional object; omitted preserves legacy serialization"
+  },
+  "admission": {
+    "job_ceiling": 64,
+    "computation_worker_ceiling_per_job": 256,
+    "separate_orchestration_processes_per_job": [
+      1,
+      8
+    ],
+    "operating_cpu_millis_budget_at_31_cpus": 27000,
+    "ram_declaration_ceiling_bytes": 57982058496,
+    "ram_available_headroom_bytes": 8589934592,
+    "cpu_reserve_count": 4,
+    "disk_reserve_bytes": 75161927680,
+    "normal_scheduler_business_dispatch_max": 62,
+    "normal_scheduler_control_headroom": 2,
+    "dedicated_control_worker_groups": false,
+    "shared_aggregate_declarations": true,
+    "write_write_and_write_read_overlap_refused": true,
+    "legacy_default_serialization_unchanged": true,
+    "enforcement": "Cooperative declared-demand admission and sampled descendant/RSS guards; not hard cgroup or filesystem enforcement"
+  },
+  "verification": {
+    "readback_run_id": "01a180e6-667a-b883-375b-659b7108e80b",
+    "readback_url": "https://windmill.aldous.info/run/01a180e6-667a-b883-375b-659b7108e80b?workspace=offmenu",
+    "installed_constants": {
+      "VERSION": 3,
+      "JOB_CEILING": 64,
+      "WORKER_CEILING": 256,
+      "OVERHEAD_CEILING": 8,
+      "CPU_RESERVE": 4
+    },
+    "inflight_markers": 0,
+    "offline_checks_passed": 43,
+    "business_jobs_launched_for_capacity_verification": 0,
+    "stress_test_performed": false,
+    "kernel_cgroup_capacity_certified": false
+  },
+  "deployment_review": {
+    "first_deploy_attempt": "rejected; confirmed old deployed version unchanged; private draft discarded to prevent preview bypass",
+    "retry": "one retry after materially new explicit trusted user setup/apply authorization; deployed successfully",
+    "security_scope_expansion": false
+  },
+  "limits": [
+    "Cgroup pids/memory/cpu and ancestor limits remain unobservable inside existing jail.",
+    "No claim that 64 jobs each using256 workers fit physical resources simultaneously.",
+    "All future scheduled jobs must use upgraded entrypoint; direct invocation of old runner is outside pooled cooperative accounting.",
+    "Server-side Windmill cancellation can free a saturated worker, but remote cleanup/receipts must still be reconciled."
+  ]
+}

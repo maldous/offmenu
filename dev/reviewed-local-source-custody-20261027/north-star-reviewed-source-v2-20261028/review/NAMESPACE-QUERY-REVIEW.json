@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "offmenu-independent-namespace-query-review/1",
+  "verdict": "approved-for-completed-pinned-bulk-index",
+  "reviewer": "align_north_star_graph",
+  "author": "scale_north_star_derivation",
+  "sourcePins": {
+    "inspect_north_star_namespace_coverage.py": "e01ce9316f3bfa6f122a509403a00e422120b54a1bb2b3a88b14036bcfc39024"
+  },
+  "authoredTestsIndependentlyRun": 4,
+  "independentExercise": "Actual synthetic fullrunner index -> readonly namespaceSQL -> exact totals/no lexical output/unchanged SQLite; tampered pin refused",
+  "limits": [
+    "No actual fullbulk output proof yet.",
+    "Literal namespaces remain distinct, no inferred GTIN equivalence or accepted identity.",
+    "Single-citation selected producer scope; no generalized merged-source claim."
+  ]
+}

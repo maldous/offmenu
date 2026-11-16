@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "offmenu-north-star-recipe-inspector-review/1",
+  "status": "pass-scoped",
+  "reviewer": "/root/align_north_star_graph/review_north_star_derivations",
+  "scope": "Finite corrected recipe SQL join/scope behavior, not domain identity or recipe qualification",
+  "candidateSha256": "402d026e7b4f0254a78f56b105368820a33267493768ec53a4a6fddd380d0e5b",
+  "helperDependencySha256": "07a6f7cd7eab6a446f52ba783808c8be8c9188d29a764a3fd5425824ccc107fc",
+  "canonicalSchemaSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+  "independentTests": {
+    "passed": 8,
+    "failed": 0,
+    "command": "python3 -m unittest discover -s review -p test_recipe_inspector.py -v",
+    "testSha256": "528822221ce0c77a2ccf751a8705daa44edbe5cba001ece870458c4d4187dea5",
+    "log": "recipe-independent-tests.log"
+  },
+  "correctedFindings": [
+    "Recipe joins now require appropriate typed source/target resources",
+    "Ingredient quantity join distinguishes recipe use from step use",
+    "Superseded source edges excluded from resolved joins",
+    "Public normalized rows require same-scope original citations",
+    "Quantities retain unknown-versus-zero distinction"
+  ],
+  "covered": [
+    "positive recipe/mention/quantity/step joins",
+    "manifest native asset not interpreted as common packet",
+    "nonrecipe subject exclusion",
+    "step use separate from recipe quantity",
+    "superseded edge exclusion",
+    "private citation rejection",
+    "different-public-reuse-scope quantity exclusion",
+    "null-versus-zero counts"
+  ],
+  "limitations": [
+    "Raw occurrence/assertion count queries remain explicit source counts rather than accepted entity/admission counts",
+    "External-target exact-match occurrence count does not prove the target resolves or is admitted",
+    "No Foo rerun or real corpus dataset read by reviewer",
+    "No live app or full North Star qualification claimed",
+    "No full new security audit or repeated core evidence review"
+  ],
+  "originalEightPackagesModified": false,
+  "blocksIndependentCorpusPublication": false
+}

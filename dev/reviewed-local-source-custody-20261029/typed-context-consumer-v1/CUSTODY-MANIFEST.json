@@ -1,0 +1,34 @@
+{
+  "archive_sha256": "ac34ebae748d1fe2c06bb8280c0778789e32986a18c3ec004e7491bb59ef675f",
+  "scope": "Exact reviewed source, synthetic tests and documented source contract; one-key aggregate execution proof. Candidate-only/offline, accepted identity zero; no aggregation, planning or app activation. No full corpus reproof. CHECKS and CONTRACT retain historical pre-execution status. Actual private execution arguments excluded.",
+  "files": {
+    "CHECKS.json": {
+      "bytes": 662,
+      "sha256": "4a840ce2297bc9276907e4835b414dd9f78c18d37547c56791a7c11da1a2ec2c"
+    },
+    "CONTRACT.md": {
+      "bytes": 7099,
+      "sha256": "9c71911a0f1939138205ab09bb0fdb05f767bb2de96baf68206b0602d49e713b"
+    },
+    "SANITIZED-EXECUTION.json": {
+      "bytes": 1362,
+      "sha256": "f8580dcaa0c32cc2e46cfbf110fd0e3e303dcaf168c2d07f06f4c58b9ce9ad46"
+    },
+    "integration-proof.json": {
+      "bytes": 2073,
+      "sha256": "2590cdab9c3d472d939b40dc5b785b62ae60e1f2df41d6b0f9f7720d61b1c46b"
+    },
+    "source-only.patch": {
+      "bytes": 39529,
+      "sha256": "c9c7cc935503d79e1abd94d8c6b5fb6a7db9897b2a4183395a533fd4e9d9f617"
+    },
+    "test_typed_context_consumer.py": {
+      "bytes": 14259,
+      "sha256": "6a86c31dd376ec4a39cb4e7091f0fb2966ecdf2856f2a63bf98e22162edae906"
+    },
+    "typed_context_consumer.py": {
+      "bytes": 16812,
+      "sha256": "b39ceccaeddbed8624fc58669b1c1569dd140c5212b8836fc2f9349708a42040"
+    }
+  }
+}

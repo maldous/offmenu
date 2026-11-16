@@ -1,0 +1,191 @@
+{
+  "baseCommit": "ba133e1c48a5a61c791cc1399430f3ef1b21386f",
+  "comparisonScope": [
+    {
+      "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+      "treeSha": "71779bed7a1469cdc3dd116759dd49e97febc815"
+    },
+    {
+      "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+      "treeSha": "d0f272757ca95ef40985bdce75fb568773c62400"
+    },
+    {
+      "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+      "treeSha": "03fb1c0398327871f3f31876a23f19d56aff1a7d"
+    },
+    {
+      "commit": "ba133e1c48a5a61c791cc1399430f3ef1b21386f",
+      "treeSha": "435dba1536782699ffdd4d4da487026028cb5d7c"
+    }
+  ],
+  "dataPublication": false,
+  "files": [
+    {
+      "bytes": 42597,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "exact-source-tools-and-actual-anchor-review",
+        "reviewedBy": "cloud-custody-lane-and-helper-owner",
+        "sha256": "d6e348a926043ece29e4c9fcbd5e6dfafd30dabaf2d529ef1dc944a9aa14d4e2",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "12b217165f38682b5a91b2ee5fbdddc7fdee9dde",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/scripts/export-local-source.py",
+      "reviewRef": "ba133e1c-explicit-source-recovery-reviewed",
+      "sha256": "d6e348a926043ece29e4c9fcbd5e6dfafd30dabaf2d529ef1dc944a9aa14d4e2",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-exact-worktree-export-20261027/scripts/export-local-source.py"
+    },
+    {
+      "bytes": 2097,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "exact-source-tools-and-actual-anchor-review",
+        "reviewedBy": "cloud-custody-lane-and-helper-owner",
+        "sha256": "c27c669d4eeffb7515ea6d049b41681b90f21834b7294ef0527e7584bc0eacbe",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "b5ba14de3726c15411596daf06f7f4c13558f535",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/tests/test_local_source_patch_suffix.py.source.txt",
+      "reviewRef": "ba133e1c-explicit-source-recovery-reviewed",
+      "sha256": "c27c669d4eeffb7515ea6d049b41681b90f21834b7294ef0527e7584bc0eacbe",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-patch-export-20261027/tests/test_local_source_patch_suffix.py"
+    },
+    {
+      "bytes": 1484,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "exact-source-tools-and-actual-anchor-review",
+        "reviewedBy": "cloud-custody-lane-and-helper-owner",
+        "sha256": "549f6de5f7bfac18b6aa6e9f9ea146f59fcdc46455a8c5f71169f5a75b185ade",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "439df10ae00057f69fb46cc49b84424d57fd2f6e",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/tests/test_local_source_exact_worktree.py.source.txt",
+      "reviewRef": "ba133e1c-explicit-source-recovery-reviewed",
+      "sha256": "549f6de5f7bfac18b6aa6e9f9ea146f59fcdc46455a8c5f71169f5a75b185ade",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-exact-worktree-export-20261027/tests/test_local_source_exact_worktree.py"
+    },
+    {
+      "bytes": 13856,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "exact-source-tools-and-actual-anchor-review",
+        "reviewedBy": "cloud-custody-lane-and-helper-owner",
+        "sha256": "555c54fc777c1da1af894d26d1f7b27ea216535a3e10edd923bb96b9299a198d",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "9c677b6dd3a4c9fb249cac793ab1fbcc4d4fa014",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/scripts/direct_publish_selected.py",
+      "reviewRef": "ba133e1c-explicit-source-recovery-reviewed",
+      "sha256": "555c54fc777c1da1af894d26d1f7b27ea216535a3e10edd923bb96b9299a198d",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-custody-import-20261027/direct_publish_selected.py"
+    },
+    {
+      "bytes": 4998,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "exact-source-tools-and-actual-anchor-review",
+        "reviewedBy": "cloud-custody-lane-and-helper-owner",
+        "sha256": "43a69ef7d5323f0ddb6647d58009251ab13ee89780b1b3d405e0de7736f87653",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "6c9273923d8808c5918f2dc5efe63a8379abfacc",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/tests/test_direct_publish_selected.py.source.txt",
+      "reviewRef": "ba133e1c-explicit-source-recovery-reviewed",
+      "sha256": "43a69ef7d5323f0ddb6647d58009251ab13ee89780b1b3d405e0de7736f87653",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-custody-import-20261027/test_direct_publish_selected.py"
+    },
+    {
+      "bytes": 15270,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "exact-source-tools-and-actual-anchor-review",
+        "reviewedBy": "cloud-custody-lane-and-helper-owner",
+        "sha256": "b02ae5d0e7d90d0b4465bd157eb46dde987ab78f0c24ad310c60fd8af3a90b44",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "9f30ab7d271f445fcd0de32dc63e0615d979f6b7",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/reviewed-source-requests-r1.json",
+      "reviewRef": "ba133e1c-explicit-source-recovery-reviewed",
+      "sha256": "b02ae5d0e7d90d0b4465bd157eb46dde987ab78f0c24ad310c60fd8af3a90b44",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-custody-import-20261027/reviewed-source-requests-r1.json"
+    },
+    {
+      "bytes": 2764,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "exact-source-tools-and-actual-anchor-review",
+        "reviewedBy": "cloud-custody-lane-and-helper-owner",
+        "sha256": "ab423ab1bc8b2e5317c314eb28aec7e6a51c0c5190b828c81ad5ecd4dfa6a2ec",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "35fadc3106da3e26648ace429ced2fb2a37332f3",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/DIRECT-SELECTED.md",
+      "reviewRef": "ba133e1c-explicit-source-recovery-reviewed",
+      "sha256": "ab423ab1bc8b2e5317c314eb28aec7e6a51c0c5190b828c81ad5ecd4dfa6a2ec",
+      "sourcePath": "/workspace/scratch/88f4120a216c/offmenu-source-custody-import-20261027/DIRECT-SELECTED.md"
+    },
+    {
+      "bytes": 165899,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "exact-source-tools-and-actual-anchor-review",
+        "reviewedBy": "cloud-custody-lane-and-helper-owner",
+        "sha256": "7eef9660ef88d1ec86edac69fc48c7fd3ba837dd7e70d9075b632c04bb2f63b0",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "5e6d302d56e1ed5b7dcfa65407e7fcdb53292323",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/direct-selected-tools/worker13-origin-exact-hash-reuse.json",
+      "reviewRef": "ba133e1c-explicit-source-recovery-reviewed",
+      "sha256": "7eef9660ef88d1ec86edac69fc48c7fd3ba837dd7e70d9075b632c04bb2f63b0",
+      "sourcePath": "/workspace/shared/offmenu-owned-data-integration-20261027/worker13-origin-exact-hash-reuse.json"
+    }
+  ],
+  "repository": "maldous/offmenu",
+  "runtimeAdoption": false,
+  "schemaVersion": "offmenu-source-custody-import/1",
+  "scope": "exact-source-test-documentation-custody-only-unimported",
+  "screeningLimit": "Pattern scanning supplements the recorded exact-byte content reviews; it is not a confidentiality proof.",
+  "selectionSha256": "6113fff846423f355d64dc9d4cf8ed13ca8db20d2a25bc6c19c18dfe05d79593",
+  "transport": null
+}

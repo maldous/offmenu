@@ -1,0 +1,125 @@
+{
+  "schema": "offmenu-production197-custody/1",
+  "files": [
+    {
+      "relativePath": "README.md",
+      "sha256": "56c63095990baf54fda97ad35294331b64af5c2f89227c4f648bf8798a6173cb",
+      "bytes": 517
+    },
+    {
+      "relativePath": "SOURCE-PINS.json",
+      "sha256": "e4b12b012673fff1185b2fbffa1efe6f0294c0798ddd7243b8f9a75b1cca4eb9",
+      "bytes": 107336
+    },
+    {
+      "relativePath": "build/build-upload.py",
+      "sha256": "689028a8d47b0a2a4329ca063d4dcdea49d42cea5188c204a537f91f834adbb3",
+      "bytes": 2327
+    },
+    {
+      "relativePath": "build/splice-app.mjs",
+      "sha256": "5a6ca403b8c54e5400f761e6ff9b256418cb55b9a8bfb7696e09335cce2cbc57",
+      "bytes": 2483
+    },
+    {
+      "relativePath": "build/upload-template.js",
+      "sha256": "b0aaafedfd783b21ad64c851d112f8cb6573aa71b485b23bbe8a48ab738f62f6",
+      "bytes": 3603
+    },
+    {
+      "relativePath": "evidence/INDEPENDENT-SHOPPING-UNRESOLVED-REVIEW.md",
+      "sha256": "2cb54b408cbd7da8fc5e6210fd4f2935b4d288a86d2ed731566dc75ade5cb7f3",
+      "bytes": 1218
+    },
+    {
+      "relativePath": "evidence/asset-splice-receipt.json",
+      "sha256": "a3607164099518bf4787e0f63a2cd2e43cfc8404f5039df26e8820712c332665",
+      "bytes": 354
+    },
+    {
+      "relativePath": "evidence/baseline-fingerprint.json",
+      "sha256": "f5535f03e8ba577c5207aba2313a7b826987a9c0cec20c0f6f54b013de99e391",
+      "bytes": 563
+    },
+    {
+      "relativePath": "evidence/deployment-receipt.json",
+      "sha256": "96f284a580a55fe354b3dae571ade02db92a032510547a6f8e43d5612fb21dfd",
+      "bytes": 1248
+    },
+    {
+      "relativePath": "evidence/merged-tests.log",
+      "sha256": "c31032ee3c90797b04f165b66d8ec3bd028ac517b9cbeea649b7761b451b4cc8",
+      "bytes": 11476
+    },
+    {
+      "relativePath": "evidence/served-probes.json",
+      "sha256": "91b0c78aa54ee6e9b115bb72a88948d0920cea0b055a47b0513860081ba3d8b7",
+      "bytes": 2697
+    },
+    {
+      "relativePath": "evidence/version-fingerprint.json",
+      "sha256": "c45c1b1018871aa86223cd470a0bfa5df27e010453de1334455e137215f4bfe7",
+      "bytes": 563
+    },
+    {
+      "relativePath": "reviewed-export/EXPORT-RECEIPT.json",
+      "sha256": "c9265e7aff0b08751b57e88d2c47b4f1072347f909bc6cb2585dff55b8426866",
+      "bytes": 771
+    },
+    {
+      "relativePath": "reviewed-export/HANDOFF.md",
+      "sha256": "6420469a33778c0a6afba6a7a0ebd564eb63e602702563c33602b526f433ca76",
+      "bytes": 3582
+    },
+    {
+      "relativePath": "reviewed-export/baseline-source-pins.json",
+      "sha256": "07d3214de5d16a90363adfa71411b9afde86387d665edad45366768fac756d7f",
+      "bytes": 1383
+    },
+    {
+      "relativePath": "reviewed-export/baseline-summary.json",
+      "sha256": "15ed0a606b849a5e96b09ef20afe58ea033d452d782622153289ced1c9c07ebf",
+      "bytes": 1618
+    },
+    {
+      "relativePath": "reviewed-export/candidate-summary.json",
+      "sha256": "b62289aeecaa028aad4560c901940560eb1f132b68d183dc3533ba0fa60d6445",
+      "bytes": 1021
+    },
+    {
+      "relativePath": "reviewed-export/function-local-replacements.json",
+      "sha256": "c8cac4c0edd643daff36308d09f4a88567d4f7b3af29185cf55d027e442911f6",
+      "bytes": 980
+    },
+    {
+      "relativePath": "reviewed-export/manifest.json",
+      "sha256": "fad3bb17f224c63497750aca6518bd8ca06efbc7e9b556a031fdef28389520e4",
+      "bytes": 1492
+    },
+    {
+      "relativePath": "reviewed-export/public/integrations.js",
+      "sha256": "fbe3f4efc7131e2a318858671acf18cc29f48949ccf731d99c37577e1590a6ee",
+      "bytes": 2360
+    },
+    {
+      "relativePath": "reviewed-export/shopping-unresolved-demand.patch",
+      "sha256": "9e3f8226e96581d9b6d2c3d3d49716d9cf33fdd67638d1e90906bb7d6b904746",
+      "bytes": 6407
+    },
+    {
+      "relativePath": "reviewed-export/tests-web/shopping-unresolved-demand.test.mjs",
+      "sha256": "4f30d4d9a26fc0ab4540b1c905354ab1e316cab1a6e0e1a07161463a40dc9b8c",
+      "bytes": 2926
+    },
+    {
+      "relativePath": "source/public/integrations.js",
+      "sha256": "fbe3f4efc7131e2a318858671acf18cc29f48949ccf731d99c37577e1590a6ee",
+      "bytes": 2360
+    },
+    {
+      "relativePath": "tests-web/shopping-unresolved-demand.test.mjs",
+      "sha256": "4f30d4d9a26fc0ab4540b1c905354ab1e316cab1a6e0e1a07161463a40dc9b8c",
+      "bytes": 2926
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "offmenu-independent-windmill-terminal/1",
+  "reviewer": "/root/align_north_star_graph",
+  "runId": "01a18238-74d1-6d01-a239-881e03305389",
+  "observedAtUtc": "2026-10-28T11:28:34Z",
+  "runStatus": "success",
+  "ok": true,
+  "job_id": "north-star-basis-restore-002",
+  "receipt": {
+    "logs": {
+      "stderr": "/offmenu/data/.offmenu-platform/jobs/north-star-basis-restore-002/stderr.log",
+      "stdout": "/offmenu/data/.offmenu-platform/jobs/north-star-basis-restore-002/stdout.log"
+    },
+    "mode": "write",
+    "job_id": "north-star-basis-restore-002",
+    "status": "succeeded",
+    "version": 3,
+    "exit_code": 0,
+    "log_bytes": {
+      "stderr": 0,
+      "stdout": 3370
+    },
+    "created_at": 1793186100.811596,
+    "started_at": 1793186100.8160374,
+    "finished_at": 1793186587.0524428,
+    "heartbeat_at": 1793186587.0524478,
+    "output_bytes": {
+      "stderr": 0,
+      "stdout": 3370
+    },
+    "runner_sha256": "2ae57cc8edc66d9b56f43ad26dd8871fda155d23e50563988d3b0cac89d21674",
+    "command_sha256": "ed5fda10b006706d8607e981c265787b09da7c190efafb15f085f3f8a6426652",
+    "logs_truncated": {
+      "stderr": false,
+      "stdout": false
+    },
+    "request_sha256": "517226e0942a6423fdccaa941de1e1af9c8ebbb2ea65dd3afa87fbad469daf80",
+    "child_tree_gone": true,
+    "timeout_seconds": 1800,
+    "reconcile_required": false
+  },
+  "admitted": true,
+  "transport_ok": true,
+  "job_succeeded": true,
+  "limits": "Independent terminal/command binding only; final artifact/source reconciliation recorded separately. No raw logs or runtime args exported."
+}

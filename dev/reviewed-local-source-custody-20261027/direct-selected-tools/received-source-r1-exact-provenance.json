@@ -1,0 +1,334 @@
+{
+  "commit": "7dd3ed8cf25b345b41edeaa4367735c0bda66444",
+  "custody": {
+    "excludedEntries": 0,
+    "selectionSha256": "2e989e6404e5f9c2c4decb06881b23f786329a1c32ac96a8804ba075ef19b2e7",
+    "totalBytes": 513977,
+    "totalFiles": 31,
+    "totalParts": 31
+  },
+  "exactBytesVerified": true,
+  "files": [
+    {
+      "bytes": 104523,
+      "gitBlobSha": "dbf961261aea27e0bbe8147e8f2c2dc7f4a29a11",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/candidate/app.js.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/candidate/app.js",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "722720c61f4d0a76cf782f690093a28a8efff0d06ce3f49c6e661acc25307c60",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/app.js"
+    },
+    {
+      "bytes": 5349,
+      "gitBlobSha": "b0f960da46797375cebba79dddf52350e6845bde",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/candidate/composed-scanner-client.mjs.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/candidate/composed-scanner-client.mjs",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "45e6f713a55073ea102af06d9c5e6f20f07053d96a02dc608dacfa9d3019e7bc",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/composed-scanner-client.mjs"
+    },
+    {
+      "bytes": 10468,
+      "gitBlobSha": "05aca045e6c5f4d5f2d8080c0625c46f6d369da6",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/candidate/foundation-scanner-client.mjs.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/candidate/foundation-scanner-client.mjs",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "d6e82b813a49184d5fb4ac5e234404acf2bd46009e8cebb8e36240d38381f073",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/foundation-scanner-client.mjs"
+    },
+    {
+      "bytes": 2091,
+      "gitBlobSha": "59342f303491ab724c2ac5a7d4deeb4f6626ed64",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/candidate/guest-foundation-client.mjs.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/candidate/guest-foundation-client.mjs",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "d9f531f4e41d049aaf0609dccb8479aea24357c7d35218a94addf990abffd9ad",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/guest-foundation-client.mjs"
+    },
+    {
+      "bytes": 50619,
+      "gitBlobSha": "136137a3b3a25b1cdb76aff6c0a3dcbd26111215",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/candidate/guest-shelf-scanner-inventory.js.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/candidate/guest-shelf-scanner-inventory.js",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "a175b40c61f91a498b74e8fad30eec0f389408808626f0b2f908883cdc7ce668",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/guest-shelf-scanner-inventory.js"
+    },
+    {
+      "bytes": 45959,
+      "gitBlobSha": "bc92fd84466a4b6f14ec5f223da55ba66119fe94",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/candidate/shelf-scanner.js.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/candidate/shelf-scanner.js",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "271366dfa06b165a5e6ac64240895359726d5308d5e761f0458a43856aa05d95",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/shelf-scanner.js"
+    },
+    {
+      "bytes": 10890,
+      "gitBlobSha": "19e589c9861bdbda4cdb0b5b5aab0fc983c15f3e",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/candidate/source-identity-client.mjs.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/candidate/source-identity-client.mjs",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-client.mjs"
+    },
+    {
+      "bytes": 204,
+      "gitBlobSha": "4db643e2d597c86c3b039bbcd444ab53453b66b5",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/candidate/source-identity-selection.mjs.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/candidate/source-identity-selection.mjs",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/source-identity-selection.mjs"
+    },
+    {
+      "bytes": 10793,
+      "gitBlobSha": "84641cb514ec4f20adfa8abb260e95aa7f2be9dd",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/candidate/typed-identifier-contract.mjs.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/candidate/typed-identifier-contract.mjs",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/candidate/typed-identifier-contract.mjs"
+    },
+    {
+      "bytes": 22413,
+      "gitBlobSha": "b2db59b5ad4afa2efb97145f0c81d14934f9aa05",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/inspection-controller.patch.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/inspection-controller.patch",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "089eb0abb0ad2f46df430a2f58b41b3aaa1379faf60dc72ecd08d2d1f82376d2",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/inspection-controller.patch"
+    },
+    {
+      "bytes": 3034,
+      "gitBlobSha": "6132a704f2fdee9ee398cd4819b3edc86360bb66",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/INTEGRATION.md.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/INTEGRATION.md",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "9b0c17a06cda9a6019ce813ac7ea3132e312cee3e202b9289a86ad1ee10582f3",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/INTEGRATION.md"
+    },
+    {
+      "bytes": 1904,
+      "gitBlobSha": "d5c601fa2de7c1e3a54d693c2301ee884cb9b145",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/scope-proof.json.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/scope-proof.json",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "02cde4c94b111a3a0801e7b612db7c85a4d23746d8b713e5d82c662bbb07c6c4",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/scope-proof.json"
+    },
+    {
+      "bytes": 1531,
+      "gitBlobSha": "e3956347de24580898cde2ed0f5de72dbdc759d3",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/pickup.json.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/pickup.json",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "9ca64b66d379bdab6b86b7c794a695d40d60fe9b8e46dd4d6c097389147b4fa2",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/pickup.json"
+    },
+    {
+      "bytes": 13587,
+      "gitBlobSha": "3c81695e3164869aa221b2c5fe66ecba13be6fb1",
+      "kind": "test",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/identity-client.test.mjs.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/identity-client.test.mjs",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "ee9c255c16e491738770f2dc728ebc0c9dcb72999b2c92680f2809da10100105",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/identity-client.test.mjs"
+    },
+    {
+      "bytes": 9225,
+      "gitBlobSha": "29d5df29bd615fe19443b4ccf510e5ea17f569b1",
+      "kind": "test",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/list-identity.test.mjs.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/list-identity.test.mjs",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "523cfd8745e21e343cac35dad4e30f9cd970b6e88b61fd195b84c722a17397d7",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/list-identity.test.mjs"
+    },
+    {
+      "bytes": 2969,
+      "gitBlobSha": "8738aa768d89a200778c6a5d39c7b4ee77691edd",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/test-runtime-closure.json.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/test-runtime-closure.json",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "17a543648b48c0d20ab07cf6841c93fc208725465b6da248e7e2bc122ab250c4",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/test-runtime-closure.json"
+    },
+    {
+      "bytes": 83812,
+      "gitBlobSha": "b8a5d1d93d528ff4fab7587079ce80b76336a754",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/protected-build-proof.json.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/protected-build-proof.json",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "c1b9b1a452753b4bc33be1e18c84ea1d24c5deb2ffada55fd31c517833561bd2",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/protected-build-proof.json"
+    },
+    {
+      "bytes": 17491,
+      "gitBlobSha": "a006a5996d545d35ac2c91a743d9eebd32b4c365",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/build-proof.json.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/build-proof.json",
+      "reviewRef": "ba133e1c-client13-source-and-import-closure",
+      "sha256": "f47b9e41bd4218b574cc6cd1d10f86872beb115bb2f4885e3e70926c3169edb1",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/local-foundation-consumer-contract2-20261027/confirmed-handoff-r1/named-r3/source-identity-client-r1/build-proof.json"
+    },
+    {
+      "bytes": 6901,
+      "gitBlobSha": "25ca5f63930bebe5e8037b131e9190b82b98a4c7",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/transport-contract.json.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/transport-contract.json",
+      "reviewRef": "ba133e1c-client13-result-transport-contract",
+      "sha256": "fffd007e5264beec61116d2275bff75eae1d414c303648db8f29b65a87484225",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/source-identity-consumer-candidate-v1-20261027/http-contract-r1/transport-contract.json"
+    },
+    {
+      "bytes": 25309,
+      "gitBlobSha": "30abdd559ca878a2362aacda55f550b9a6fd0688",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/all15/all15-actual-served-result.json.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/all15/all15-actual-served-result.json",
+      "reviewRef": "ba133e1c/all15-actual-delivery-accepted.json:source",
+      "sha256": "4c4ffe569a92e211cb16c764d87da17a9ff31fd69f31bed36fec1e14d1e910fd",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker05/local-own-data-root14-successor-20261027/qualified-owner-operation-all15-1384/actual-served-result.json"
+    },
+    {
+      "bytes": 4213,
+      "gitBlobSha": "c7992e6d99def1722252eb5c5fc739461520deb8",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/all15/all15-author-result.json.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/all15/all15-author-result.json",
+      "reviewRef": "ba133e1c/all15-actual-delivery-accepted.json:author",
+      "sha256": "b0c37fbbfc7517edc1d4c0c40e7326b306dd39bcb3c6c3e1f7770af723b303f8",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/result.json"
+    },
+    {
+      "bytes": 4030,
+      "gitBlobSha": "fdb22f46c2945f3af2563ae884806ac847f911a9",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/all15/all15-route-manifest.json.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/all15/all15-route-manifest.json",
+      "reviewRef": "ba133e1c/all15-actual-delivery-accepted.json:manifest",
+      "sha256": "ab2420fdc74b005efdbf24f62157a7db02bd88bdbfa0c86249c4c917f637b827",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/all-scenes-ready-20261027-r1/route-manifest.json"
+    },
+    {
+      "bytes": 12569,
+      "gitBlobSha": "e579a88d0f6001ff1fb42189bd35dce493678d13",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/catalogue/docs__FREEBUFF_CORPUS_MISSION.txt.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/catalogue/docs__FREEBUFF_CORPUS_MISSION.txt",
+      "reviewRef": "catalogue-readonly-navigation-from-ba133e1c-inventory",
+      "sha256": "4db6767adb55b6a5c5a3d007c879010ca4030212fde6cd57f42091fde0b1b197",
+      "sourcePath": "/home/user/src/offmenu/docs/FREEBUFF_CORPUS_MISSION.txt"
+    },
+    {
+      "bytes": 8889,
+      "gitBlobSha": "53035bd3b87b22e8ee5c352d4a28713ea4a2cb88",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/catalogue/docs__FREEBUFF_HANDOVER.txt.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/catalogue/docs__FREEBUFF_HANDOVER.txt",
+      "reviewRef": "catalogue-readonly-navigation-from-ba133e1c-inventory",
+      "sha256": "c5001bb0a81b8e3ed6e6aae98b9212a949711c57047b12431e593c1cec8db90b",
+      "sourcePath": "/home/user/src/offmenu/docs/FREEBUFF_HANDOVER.txt"
+    },
+    {
+      "bytes": 925,
+      "gitBlobSha": "12302b0670db3e1814b43242725eee3489020f66",
+      "kind": "documentation",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/catalogue/knowledge.md.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/catalogue/knowledge.md",
+      "reviewRef": "catalogue-readonly-navigation-from-ba133e1c-inventory",
+      "sha256": "2dccc5d1b7afe1003241e13e23cf495959a58fd510401e78be835bfb0e7b21df",
+      "sourcePath": "/home/user/src/offmenu/knowledge.md"
+    },
+    {
+      "bytes": 2268,
+      "gitBlobSha": "69c2f5658fa254e91a924a8cb8d36cb2e8928b5e",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/dependency-inputs/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-handoff-bindings.mjs.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/dependency-inputs/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-handoff-bindings.mjs",
+      "reviewRef": "ba133e1c-client13-closure-origin-hash-comparison",
+      "sha256": "119e3870a17389755cf6646c38aba1faa922fafd645202f5fc263433c3556d76",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/local7645-r8-foundation-v1-20261027/consumer/foundation-handoff-bindings.mjs"
+    },
+    {
+      "bytes": 18334,
+      "gitBlobSha": "074eab25e3b55faa8c41dcdd1cafd66cad81475d",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/dependency-inputs/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-ui.js.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/dependency-inputs/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-ui.js",
+      "reviewRef": "ba133e1c-client13-closure-origin-hash-comparison",
+      "sha256": "d4224f3c61bc301f9ed0cc331be7338fb4e7af179dbd64456e64dc94f1905dd6",
+      "sourcePath": "/home/user/src/offmenu-worktrees/worker00-generation2-code-batch-20261025/public/scanner-ui.js"
+    },
+    {
+      "bytes": 9824,
+      "gitBlobSha": "b78b594283c344b405f603e5775277f856fbbd46",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/dependency-inputs/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-selector.js.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/dependency-inputs/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-selector.js",
+      "reviewRef": "ba133e1c-client13-closure-origin-hash-comparison",
+      "sha256": "635040c812cb96cb323260ee153a58767006adbd25c0b09c34eae0aa163032c4",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/product-visual-selector.js"
+    },
+    {
+      "bytes": 4087,
+      "gitBlobSha": "f7306b543aba08e208d1ab9688b16332a57ada5f",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/dependency-inputs/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/scanner-product-visuals.js.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/dependency-inputs/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/scanner-product-visuals.js",
+      "reviewRef": "ba133e1c-client13-closure-origin-hash-comparison",
+      "sha256": "3993582332aa3b9708cf349cbb1a352676ea2500014a83c066d2615393e5a769",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/accepted-url91-current-source-20261026/source-freeze/public/scanner-product-visuals.js"
+    },
+    {
+      "bytes": 1427,
+      "gitBlobSha": "15adec11547159636ea4876df859e45b8456f773",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/dependency-inputs/offmenu-data/runtime/layout-migration/worker19/full-scanner-guest-providers-20261026/candidate/public/production-scanner/guest-scanner-state.mjs.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/dependency-inputs/offmenu-data/runtime/layout-migration/worker19/full-scanner-guest-providers-20261026/candidate/public/production-scanner/guest-scanner-state.mjs",
+      "reviewRef": "ba133e1c-client13-closure-origin-hash-comparison",
+      "sha256": "dc600a66de0f160ca28c2ef16e681f4e87690ec59f26e4215a459cdfeba51906",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker19/full-scanner-guest-providers-20261026/candidate/public/production-scanner/guest-scanner-state.mjs"
+    },
+    {
+      "bytes": 18339,
+      "gitBlobSha": "63d2b43d5623b64e2b3b143dfe8b53e710bdd999",
+      "kind": "source",
+      "localPath": "/workspace/shared/offmenu-actual-source-7dd3ed8c/sources/client13/dependency-inputs/offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/source/production-scanner/guest-scanner-ui.js.source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/recovered/client13/dependency-inputs/offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/source/production-scanner/guest-scanner-ui.js",
+      "reviewRef": "ba133e1c-client13-closure-origin-hash-comparison",
+      "sha256": "68cd03afac308f3e8f16f1de46f29dafae28db55ca00093973511e1d4bb69856",
+      "sourcePath": "/home/user/src/offmenu-data/runtime/layout-migration/worker13/existing-full-scanner-guest-wiring-20261026/source/production-scanner/guest-scanner-ui.js"
+    }
+  ],
+  "manifestSha256": "400bd42f2091d425018440a7acb6d42acb48168f2134fab693bc2f36e6a3a044",
+  "parent": "0351f69939574b0ddd2494c0e804485417a9f783",
+  "repository": {
+    "branch": "main",
+    "head": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d"
+  },
+  "requestSha256": "b02ae5d0e7d90d0b4465bd157eb46dde987ab78f0c24ad310c60fd8af3a90b44",
+  "runtimeAdopted": false,
+  "schemaVersion": "offmenu-selected-source-receipt/1",
+  "selectionSha256": "2e989e6404e5f9c2c4decb06881b23f786329a1c32ac96a8804ba075ef19b2e7",
+  "validatorSha256": "d6e348a926043ece29e4c9fcbd5e6dfafd30dabaf2d529ef1dc944a9aa14d4e2"
+}

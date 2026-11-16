@@ -1,0 +1,64 @@
+{
+  "bytes": 2551,
+  "report": {
+    "acceptedIdentityJoins": 0,
+    "candidateOnly": true,
+    "crossNamespaceEquivalenceAsserted": false,
+    "groups": [
+      {
+        "namespace": "barcode",
+        "productProfileContextKeys": 991221,
+        "productProfileKeys": 991221,
+        "sourceId": "off",
+        "sourceRelease": "2026-10-12",
+        "sourceScopedKeys": 4452779,
+        "uniqueProductKeys": 4452779
+      },
+      {
+        "namespace": "USDA-FDC",
+        "productProfileContextKeys": 1924506,
+        "productProfileKeys": 1924506,
+        "sourceId": "usda-files",
+        "sourceRelease": "usda-2026-04",
+        "sourceScopedKeys": 2101270,
+        "uniqueProductKeys": 2101270
+      },
+      {
+        "ambiguousProductKeysNotMerged": 400164,
+        "namespace": "barcode",
+        "productProfileContextKeys": 64571,
+        "productProfileKeys": 64571,
+        "sourceId": "usda-files",
+        "sourceRelease": "usda-2026-04",
+        "sourceScopedKeys": 465110,
+        "uniqueProductKeys": 64946
+      }
+    ],
+    "inputConstraint": "Pinned single-citation bulk producer; not a general merged-source packet proof.",
+    "inputManifestByteSha256": "83773291ac70931a110f60e872ae47a2bd470b5f397c709195dcf016c0bf0694",
+    "inputSqliteSha256": "5e6d5c14a26515632a56aac2ff128a12baaa6ec7d030703c368cc8c297a4c1ad",
+    "inspectorSha256": "e01ce9316f3bfa6f122a509403a00e422120b54a1bb2b3a88b14036bcfc39024",
+    "lexicalValuesExported": false,
+    "query": "SELECT key_sha,min(source),min(release),min(namespace),count(DISTINCT subject),\nmax(EXISTS(SELECT 1 FROM resolved_edges e WHERE e.subject=i.subject)),\nmax(EXISTS(SELECT 1 FROM resolved_edges e WHERE e.subject=i.subject AND e.has_context=1))\nFROM identifiers i GROUP BY key_sha",
+    "schemaVersion": "offmenu-north-star-namespace-query-proof/1",
+    "servedAppQueries": 0,
+    "sourceSelection": {
+      "codePins": {
+        "derive_north_star_bulk.py": "3adc476be2a6694d62c76bb4d539f0fc698810fd3b942dc9ae501e940efde7a1",
+        "north_star_derivations.py": "fee258de07319fd19c0032701ea2731afabc1f560eb69c80f111088c65cf0509"
+      },
+      "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+      "manifestByteSha256": "8cd8abbf28f8fac11ccb73f336a91c7a5d90fbaff6ec1c864ec7b492f13da58e",
+      "rulesetVersion": "north-star-structural-derivations/2",
+      "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+    },
+    "totals": {
+      "ambiguousProductKeysNotMerged": 400164,
+      "productProfileContextKeys": 2980298,
+      "productProfileKeys": 2980298,
+      "sourceScopedKeys": 7019159,
+      "uniqueProductKeys": 6618995
+    }
+  },
+  "sha256": "1fba08ba7c859afaa355530d74b4c0dc9ec6c35a0212ab8c871bf3cf68e41ef4"
+}

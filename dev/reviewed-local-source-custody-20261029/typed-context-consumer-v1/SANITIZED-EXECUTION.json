@@ -1,0 +1,29 @@
+{
+  "status": "succeeded",
+  "scope": "one selected connected source key through existing pinned reader then frozen adapter; no full corpus reproof",
+  "windmillRunId": "01a1843a-7119-be8f-9337-811cddcb8300",
+  "recordedUtc": "2026-10-28T20:38:07.870768+00:00",
+  "wrapperExecutionSha256": "b39ceccaeddbed8624fc58669b1c1569dd140c5212b8836fc2f9349708a42040",
+  "wrapperHashVerifiedBeforeSubmissionAndAfterExecution": true,
+  "applicationActivated": false,
+  "derivationsRerun": false,
+  "originalDataModified": false,
+  "testSuitesRerun": false,
+  "original_private_receipt_sha256": "1c4a3b80c7e4c148d6e2f4d003765c5c4d300feaad3ad0475f8b51c65f31db61",
+  "admitted": true,
+  "supervisor": {
+    "status": "succeeded",
+    "exit_code": 0,
+    "child_tree_gone": true,
+    "reconcile_required": false,
+    "command_sha256": "10a3a7b19f9ac0e457669d82abb9699774f8ed3b98ee58fb318257b51cf926bc",
+    "request_sha256": "51da965bb8efac0ddfe2d710c7e6909f8019c36b1d47ec06059ac6d6af50a50e",
+    "runner_sha256": "2ae57cc8edc66d9b56f43ad26dd8871fda155d23e50563988d3b0cac89d21674",
+    "logs_truncated": {
+      "stderr": false,
+      "stdout": false
+    }
+  },
+  "proof_sha256": "2590cdab9c3d472d939b40dc5b785b62ae60e1f2df41d6b0f9f7720d61b1c46b",
+  "exclusions": "Actual runtime command, root lists, private execution paths and original execution receipt are not published."
+}

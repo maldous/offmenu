@@ -1,0 +1,17 @@
+{
+  "deployment": {
+    "id": "bb2beb12-6baf-44ec-9dc4-daa235cc4977",
+    "versions": [
+      {
+        "version_id": "b060fae2-0319-447c-9968-940e1fb20984",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-28T21:40:57.596321Z"
+  },
+  "targetLiteralContainsCandidate": true,
+  "removedOverrideAbsent": true,
+  "runtimeBindingSourceModule": "scanner-audio-bab01e0e-2.bin",
+  "runtimeBinding": "lse;\nvar optionsSnap = 2;\nfunction setSheetSnap(next, { user = false } = {}) {\n  sheetSnap = Math.max(0, Math.min(3, next));\n  if (user) sheetTouched = true;\n  const sheet = $(\"product-sheet\");\n  sheet.dataset.snap = String(sheetSnap);\n  const heights = [64, Math.min(Math.max(innerHeight * 0.32, 190), 310), Math.min(Math.max(innerHeight * 0.58, 310), 580), Math.max(220, innerHeight - 116)];\n  document.documentElement.style.setProperty(\"--sheet-occlusion\", heights[sheetSnap] + \"px\");\n  $(\"product-handle\").setAttribute(\"aria-expanded\", String(sheetSnap > 0));\n  $(\"product-sheet-body\").setAttribute(\"aria-hidden\", String(sheetSnap === 0));\n  $(\"snap-label\").textCont",
+  "evidenceScope": "Deployed static-source and unchanged runtime binding, not authenticated response or physical camera"
+}

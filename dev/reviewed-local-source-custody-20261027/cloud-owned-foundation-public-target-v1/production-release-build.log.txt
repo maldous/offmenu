@@ -1,0 +1,64 @@
+{
+  "schema": "offmenu-derived-foundation-production-candidate/1",
+  "releaseId": "offmenu-foundation-production-20261027-v1",
+  "targetOrigin": "https://offmenu.aldous.info",
+  "originalLocalMetadataChanged": false,
+  "partialIdentityIncluded": false,
+  "counts": {
+    "sourceObservations": 11527,
+    "sourceSpecificQueries": 4908,
+    "partitions": 512,
+    "bySource": {
+      "off": {
+        "observations": 2871,
+        "queries": 2871
+      },
+      "usda-files": {
+        "observations": 8656,
+        "queries": 2037
+      }
+    },
+    "parameterStates": {
+      "known": 2037,
+      "unknown": 274611,
+      "notApplicable": 0
+    },
+    "goldAdmitted": 0,
+    "normalizationComplete": 0,
+    "fullProductComplete": 0
+  },
+  "projection": {
+    "omittedInternalSourceProjectionMembers": 651,
+    "recompressedPartitions": 240,
+    "unchangedCandidateObservations": 11527
+  },
+  "publicProjectionIdentical": true,
+  "manifest": {
+    "key": "own-data/foundation/offmenu-foundation-production-20261027-v1/manifest.json",
+    "sha256": "10f4f5acb9dbab8e5411dc7c7aa9136d6bb6317cd5eb11d9ec6c9ccdd4a1a0db",
+    "bytes": 115476
+  },
+  "receipt": {
+    "key": "own-data/foundation/offmenu-foundation-production-20261027-v1/PUBLICATION-RECEIPT.json",
+    "sha256": "fedce50756a6598ee3fc53d6e0507a4d21103711dcaee6911c61679b70cb2cdb",
+    "bytes": 2653
+  },
+  "policy": {
+    "key": "own-data/foundation/offmenu-foundation-production-20261027-v1/policy.json",
+    "sha256": "ad8f03427a4a59f7570c0eb3a12c4e311fb46998d9ee0dbc56058ef360b5d25e",
+    "bytes": 70447
+  },
+  "notices": {
+    "key": "own-data/foundation/offmenu-foundation-production-20261027-v1/SOURCE-NOTICES.txt",
+    "sha256": "9b34b1c2642129e4a8b4f5872dd4e519d72c1bb78911424fb93082bb8649e79b",
+    "bytes": 3366
+  },
+  "blobs": 516,
+  "dataModule": {
+    "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/private-release-build/production/foundation-production-release.mjs",
+    "bytes": 9285993,
+    "sha256": "e2ff55d2c5081010656fc13e41a7ef13a377a3add8780c6894c51aac8bd6011a"
+  },
+  "sourceOnly": false,
+  "deployed": false
+}

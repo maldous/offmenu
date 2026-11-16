@@ -1,0 +1,15 @@
+{
+  "path": "u/admin/offmenu_provider_orchestrator_20261028",
+  "sha256": "2f568d51aef98c405eb7b6e681719d572f820d7e9e8e8ebdd8bd425637804649",
+  "deployed": true,
+  "extraPerms": {},
+  "offline_tests": 14,
+  "check_job": "01a1810c-ee3f-7525-e2d5-f286c4f9f498",
+  "providers": 18,
+  "service_ceiling": 64,
+  "controller_headroom": 2,
+  "atomic_global_lease": false,
+  "cooldown": "observed Retry-After or evidence-bound registry reset; explicit controlled retry after expiry",
+  "unknown_reset": "reset_metadata_required",
+  "openrouter_resource": "u/admin/intelligible_openrouter"
+}

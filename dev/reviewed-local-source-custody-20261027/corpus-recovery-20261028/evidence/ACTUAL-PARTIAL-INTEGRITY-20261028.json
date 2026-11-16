@@ -1,0 +1,236 @@
+{
+  "bulk_checkpoint": {
+    "exists": false
+  },
+  "full_schema_verified": false,
+  "packages": [
+    {
+      "candidate_files": 414,
+      "complete_file_hashes": [
+        {
+          "compressed_bytes": 1129091,
+          "name": "packets/part-00000.jsonl.gz",
+          "packets": 1000,
+          "sha256": "4f67c0313bf3632306b29c069607972f0c04c333a261489a6ac2aa64d577c1b1"
+        },
+        {
+          "compressed_bytes": 1113013,
+          "name": "packets/part-00001.jsonl.gz",
+          "packets": 1000,
+          "sha256": "95e75ccb350ae5a526ccdecea04fcfc6f989b415066a1b5e646dd43f9041c954"
+        },
+        {
+          "compressed_bytes": 1151567,
+          "name": "packets/part-00002.jsonl.gz",
+          "packets": 1000,
+          "sha256": "f31297f326daa6de08c54f17b8dd5deac8146fd4abc100bec1670ea295d46868"
+        },
+        {
+          "compressed_bytes": 1111888,
+          "name": "packets/part-00003.jsonl.gz",
+          "packets": 1000,
+          "sha256": "ec164fbca850b7ceffba3bb31a83c7449f9b43927603fdf44f3d742e56b06e04"
+        },
+        {
+          "compressed_bytes": 1142928,
+          "name": "packets/part-00004.jsonl.gz",
+          "packets": 1000,
+          "sha256": "2236d023d4d78d1f2c1924d09aac7a84da9d5eb3c36ec4859fea9a6d911e0596"
+        },
+        {
+          "compressed_bytes": 1162442,
+          "name": "packets/part-00005.jsonl.gz",
+          "packets": 1000,
+          "sha256": "c9c994b8946e793b7782ecc35a586d64f997eed27d06d3c492b8f2fa04652659"
+        },
+        {
+          "compressed_bytes": 1123938,
+          "name": "packets/part-00006.jsonl.gz",
+          "packets": 1000,
+          "sha256": "007ddb245bccf4da6a9109e1d5cb07c67c65048c95e2b822154b8a058919d480"
+        },
+        {
+          "compressed_bytes": 1112008,
+          "name": "packets/part-00007.jsonl.gz",
+          "packets": 1000,
+          "sha256": "72fdb93105d920f0773aa947d23cdf078cc502a3d187808610a6aedc527ba2f7"
+        },
+        {
+          "compressed_bytes": 1104318,
+          "name": "packets/part-00008.jsonl.gz",
+          "packets": 1000,
+          "sha256": "a0808242402bcb21247c2832f2304bd03a789ea26792923e88970aea539680bb"
+        },
+        {
+          "compressed_bytes": 1132276,
+          "name": "packets/part-00009.jsonl.gz",
+          "packets": 1000,
+          "sha256": "c899431e21f6542c42929d1364ac0bf315f4d1cca408cc4f2831dc1c455ad3ea"
+        },
+        {
+          "compressed_bytes": 1133607,
+          "name": "packets/part-00010.jsonl.gz",
+          "packets": 1000,
+          "sha256": "a0f6e0648d645f63a99c2acb66fdf841bee3c52ab8860e89dbffc6315ee9079a"
+        },
+        {
+          "compressed_bytes": 1115354,
+          "name": "packets/part-00011.jsonl.gz",
+          "packets": 1000,
+          "sha256": "248710e2c6616577b7ddb153ff233c24386d9a034293bcde5db097cd52254963"
+        },
+        {
+          "compressed_bytes": 1115606,
+          "name": "packets/part-00012.jsonl.gz",
+          "packets": 1000,
+          "sha256": "d68cf5a88952c2a644103698a7bcbb11c53046160ca392a850baf553f197556b"
+        },
+        {
+          "compressed_bytes": 1130873,
+          "name": "packets/part-00013.jsonl.gz",
+          "packets": 1000,
+          "sha256": "db41ca2290624d59200e0ed6777d369a61b0cb1229004affa4e60cc79baf508a"
+        },
+        {
+          "compressed_bytes": 1156769,
+          "name": "packets/part-00014.jsonl.gz",
+          "packets": 1000,
+          "sha256": "290c837a1b6f05a3a8685c2b628ec7b0fbead812c1b40caf02a0438cd6d350a0"
+        },
+        {
+          "compressed_bytes": 1105887,
+          "name": "packets/part-00015.jsonl.gz",
+          "packets": 1000,
+          "sha256": "eb647ecc50412568e0b1801f9c64b0dc19fccd5587aef7856fcac1fc41f023fe"
+        }
+      ],
+      "failed_files": 0,
+      "failures": {},
+      "full_package_verified": false,
+      "incomplete_files": 0,
+      "package": "common-bulk-food-semantic-final-20261014",
+      "selected_files": 16,
+      "unverified_files": 398,
+      "verified_compressed_bytes": 18041565,
+      "verified_decoded_bytes": 176424072,
+      "verified_files": 16,
+      "verified_packets": 16000
+    },
+    {
+      "candidate_files": 2407,
+      "complete_file_hashes": [
+        {
+          "compressed_bytes": 1013210,
+          "name": "packets/part-00000.jsonl.gz",
+          "packets": 1,
+          "sha256": "1ca346d8d58f5738896399796a372e5302d9b43038513f97174278a23f206e4b"
+        },
+        {
+          "compressed_bytes": 1010664,
+          "name": "packets/part-00001.jsonl.gz",
+          "packets": 1,
+          "sha256": "cc2a82da16e86b694783ed6ad30b433197f75bc8eb026d0cdabb1da71fdd5ede"
+        },
+        {
+          "compressed_bytes": 1018681,
+          "name": "packets/part-00002.jsonl.gz",
+          "packets": 1,
+          "sha256": "b1001aac7e53bac15bc3e0b38cdc5e22328393184f47a02cef5d98937c10b328"
+        },
+        {
+          "compressed_bytes": 1008482,
+          "name": "packets/part-00003.jsonl.gz",
+          "packets": 1,
+          "sha256": "975efe75c3cbd313a4f71da9bd520d18e33c54f501574c9644e96243267e3a24"
+        },
+        {
+          "compressed_bytes": 1019744,
+          "name": "packets/part-00004.jsonl.gz",
+          "packets": 1,
+          "sha256": "90ed514425bb1fbe487118f67ff5b2cd887eca41d48a1308eddc27d40a6e25dd"
+        },
+        {
+          "compressed_bytes": 1012075,
+          "name": "packets/part-00005.jsonl.gz",
+          "packets": 1,
+          "sha256": "df14532eef7c30e524c63e38dd4d47d7ea020552a9e64b2215e1dd70c9746c9c"
+        },
+        {
+          "compressed_bytes": 1015911,
+          "name": "packets/part-00006.jsonl.gz",
+          "packets": 1,
+          "sha256": "1a398c4408477b584af613d2afd139a6d72bcaff8bc436d36362734e35c75224"
+        },
+        {
+          "compressed_bytes": 1016869,
+          "name": "packets/part-00007.jsonl.gz",
+          "packets": 1,
+          "sha256": "151d3171e31f840306545c4e44e11daaa2244231ccd69b540b907981add9c8d4"
+        },
+        {
+          "compressed_bytes": 1015027,
+          "name": "packets/part-00008.jsonl.gz",
+          "packets": 1,
+          "sha256": "00683dd7ef41658d58aad029b9a4bb3c1829f4ec36b4a2bc45e083f1239977e6"
+        },
+        {
+          "compressed_bytes": 1014816,
+          "name": "packets/part-00009.jsonl.gz",
+          "packets": 1,
+          "sha256": "d8ca561837234caf26349909c8f7fc85d04e2a1ef942bee93c6df3edaadf7799"
+        },
+        {
+          "compressed_bytes": 1012466,
+          "name": "packets/part-00010.jsonl.gz",
+          "packets": 1,
+          "sha256": "cfc0db2838518af441f5c5409ec41bc5efc8a69f1b3dbadf0a6b9ecc4b16f8b1"
+        },
+        {
+          "compressed_bytes": 1020520,
+          "name": "packets/part-00011.jsonl.gz",
+          "packets": 1,
+          "sha256": "54b648c839337f5a0dfdef69b4b2772c6b299a4c6e0d03a78b20db01a5ef0af1"
+        },
+        {
+          "compressed_bytes": 1013652,
+          "name": "packets/part-00012.jsonl.gz",
+          "packets": 1,
+          "sha256": "7af9a5fded46a3ddfabd88fd832f7cbea96bcae1aaef6e379c89d3096cd8fa3a"
+        },
+        {
+          "compressed_bytes": 1008672,
+          "name": "packets/part-00013.jsonl.gz",
+          "packets": 1,
+          "sha256": "6d1614963843465736b39a5f306b82dc29de32cdb1089514cf0fa33c64e8a77a"
+        },
+        {
+          "compressed_bytes": 1014980,
+          "name": "packets/part-00014.jsonl.gz",
+          "packets": 1,
+          "sha256": "3f8d6224c1b9bf397f8455aae40938322f9a594f1840f0683e7c9014794f7e92"
+        },
+        {
+          "compressed_bytes": 1014089,
+          "name": "packets/part-00015.jsonl.gz",
+          "packets": 1,
+          "sha256": "e219d85f46459fa1306cda8849a307b91dc5722895dfbee99f1f78f023dc5eff"
+        }
+      ],
+      "failed_files": 0,
+      "failures": {},
+      "full_package_verified": false,
+      "incomplete_files": 0,
+      "package": "common-places-semantic-final-20261014.partial",
+      "selected_files": 16,
+      "unverified_files": 2391,
+      "verified_compressed_bytes": 16229858,
+      "verified_decoded_bytes": 164771923,
+      "verified_files": 16,
+      "verified_packets": 16
+    }
+  ],
+  "qualification_established": false,
+  "schema": "offmenu-retained-integrity-inspection/1",
+  "scope": "first sorted maximum16gzip files per partial; CRC/JSON/basic packet shape and stable byte hashes only",
+  "source_equivalence_verified": false
+}

@@ -1,0 +1,22 @@
+{
+  "target": "sole integrator current full Worker (not supplied locally)",
+  "operation": "replace one exact existing auth-page initializer after current-source drift reconciliation",
+  "before": "authPageOptions:{identityTransport:\"real\",oauthCallbackReady:!1}",
+  "after": "authPageOptions:{identityTransport:\"real\",oauthCallbackReady:!0}",
+  "requiredMatchCount": 1,
+  "preserve": [
+    "runtime mode netlify",
+    "verifiedUser CA",
+    "all authOptions and tenant checks",
+    "all Identity proxy routes/scopes",
+    "all unrelated asset/runtime source"
+  ],
+  "readback": {
+    "identityTransport": "real",
+    "synthetic": false,
+    "oauthAvailable": true,
+    "identitySettingsExternalGoogle": true
+  },
+  "qualification": "12 mocked local tests, including actual supplied SDK authorize URL and callback/server-user matching; NOT real Google account acceptance",
+  "rollback": "restore exact prior initializer and the three prior asset snapshots; retain current newer Worker unrelated changes"
+}

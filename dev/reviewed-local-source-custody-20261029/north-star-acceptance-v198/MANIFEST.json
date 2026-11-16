@@ -1,0 +1,42 @@
+{
+  "schema": "offmenu-source-evidence-allowlist/1",
+  "servedAppExcluded": {
+    "version": "188dac2d-ac29-4354-a757-e112a9a84258",
+    "deployment": "786625f4-e35e-4aa8-a112-359979d467fc",
+    "sha256": "19c11668db13b88a4c77ddd565dbf7853928b9c0c22cebe1da87fa3742cdb7a5",
+    "bytes": 476307
+  },
+  "containsOnlySyntheticSourceAndEvidence": true,
+  "files": [
+    {
+      "path": "delta-harness.mjs",
+      "bytes": 16381,
+      "sha256": "2da1ddaab80317377ed5860df2d41907ed8f9a269f5cdc387ce72787cdf10d81"
+    },
+    {
+      "path": "cooking-witness.mjs",
+      "bytes": 10223,
+      "sha256": "8b2032742e0b3f14bae9d5f6ae314cca8f1162a2aa6aa1591bea573047afe304"
+    },
+    {
+      "path": "EXECUTED-DELTA.json",
+      "bytes": 87379,
+      "sha256": "368e48b4155fb00c63e5821b58c760c570fe758627822466e849e739854fa5af"
+    },
+    {
+      "path": "RECEIPT.json",
+      "bytes": 3140,
+      "sha256": "068cf92886850c1b2cfdba6ee33a073c9f77f8e2abd7205f3e3a14d38269a170"
+    },
+    {
+      "path": "OWNER-HANDOFF.json",
+      "bytes": 1530,
+      "sha256": "4da5f1a141b65558c4f425c25fc3191ce8e7dfcc0d30f19b3b83ea4d3b83d189"
+    },
+    {
+      "path": "HANDOFF.md",
+      "bytes": 1372,
+      "sha256": "de2b7bfc1a9668a0fa13f4797f3457a463cb258444631103673c120e6224ac6e"
+    }
+  ]
+}

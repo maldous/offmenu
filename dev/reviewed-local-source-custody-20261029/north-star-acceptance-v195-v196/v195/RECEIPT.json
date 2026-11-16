@@ -1,0 +1,30 @@
+{
+  "kind": "independent-current-release-caller-journey",
+  "recordedUTC": "2026-10-28T20:06:06.228711+00:00",
+  "release": {
+    "version": "8db6b5c4-2e5f-483f-90ea-de0260733526",
+    "bytes": 464652,
+    "sha256": "fce748582a1e4aa940022b00ccaab7ac00ec5d1ca5d357d5f45f4ff0756e1fdf"
+  },
+  "publicRetrieval": "Read-only HTTPS app.js download; sandbox DNS failed, scoped public-download escalation succeeded. No auth/session/credential read. Exact supplied app hash/size matched before evaluation.",
+  "execution": "Node VM evaluates exact served bundle inside async scope with appended read-only/test fixture bridge. Browser DOM/storage/date are in-memory synthetic shims; all runtime fetch calls throw. Actual food/menu/plan/cook/serve/history/shopping/receipt handlers execute. No production candidate edited.",
+  "result": "12-checkpoint connected journey executed successfully, with one recorded provenance coverage gap; not full NorthStar acceptance.",
+  "fixtureNetworkAttemptsDenied": [
+    "/api/services"
+  ],
+  "actualRuntimeNetworkCalls": 0,
+  "localPersistence": "One synthetic namespace and memory storage only; durable records reloaded by actual v195 Zp caller.",
+  "harnessDevelopment": "First draft used overly strict whole-object reload equality; actual normalization removes transient pending:false. Corrected harness compares all durable lot fields and history. No app source changed; subsequent connected run succeeded.",
+  "priorAcceptedTestsRerun": 0,
+  "fullCorpusVerificationOrBulkDerivation": false,
+  "newImplementationOrProviderCalls": false,
+  "devicesOrAuthenticatedPrivateDataAccessed": false,
+  "soleOwnersPreserved": true,
+  "limitations": [
+    "DOM is a minimal in-memory event/element shim, not browser layout/device or authenticated acceptance.",
+    "No account, browser session store, external provider or dataset inspected. Fetch stub denies every runtime request; /api/services attempts are recorded.",
+    "Synthetic source-labelled nutrition is not real source qualification or clinical validity.",
+    "Receipt item supplied by cached synthetic barcode through actual manual-scan controller; no physical scan or retailer order executed."
+  ],
+  "sourceBasis": "Authoritative README/plan at009caee01aed805db5d7d141a3fab9e845e72bdc. Git blob hashes recomputed from fetched bytes."
+}

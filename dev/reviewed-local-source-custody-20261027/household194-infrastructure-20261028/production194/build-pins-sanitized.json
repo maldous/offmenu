@@ -1,0 +1,890 @@
+{
+  "original_sha256": "51f65198dbd9f461261455124dcd1691af55021f526c67e895ec5774a81bdfb3",
+  "sanitization": "private source locators omitted; source hashes retained",
+  "receipt": {
+    "schema": "offmenu-pinned-browser-build/1",
+    "esbuild": "0.25.12",
+    "sourceManifestSha256": "7d6480ef781e177c00fffeb051bb8863dc727317c2f98fd16f3fa5862d0b0a4a",
+    "buildOptions": {
+      "bundle": true,
+      "minify": true,
+      "format": "esm",
+      "platform": "browser",
+      "legalComments": "eof"
+    },
+    "runtimeSelection": "Preserved source preimage only; final runtime bindings/landing graph are not yet adopted.",
+    "production": false,
+    "results": [
+      {
+        "group": "app",
+        "entry": "public/app.js",
+        "output": "app.js",
+        "bytes": 464444,
+        "sha256": "9d5df398c92ba8fbb9eb979907a2e3570972deb337c7cafa93f705529c61edf8",
+        "inputs": [
+          {
+            "group": "app",
+            "path": "public/foundation-handoff-bindings.mjs",
+            "bytes": 2982,
+            "sha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584"
+          },
+          {
+            "group": "app",
+            "path": "public/foundation-scanner-handoff.mjs",
+            "bytes": 6878,
+            "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+          },
+          {
+            "group": "app",
+            "path": "public/production-scanner/typed-identifier-contract.mjs",
+            "bytes": 10793,
+            "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+          },
+          {
+            "group": "app",
+            "path": "public/production-scanner/source-identity-client.mjs",
+            "bytes": 10890,
+            "sha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca"
+          },
+          {
+            "group": "app",
+            "path": "public/production-scanner/source-identity-selection.mjs",
+            "bytes": 204,
+            "sha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f"
+          },
+          {
+            "group": "app",
+            "path": "public/source-identity-handoff.mjs",
+            "bytes": 6874,
+            "sha256": "469be2b518e2b8422d89400ba686a09f73f736a87db61fbd6cb8db7e31f3f04d"
+          },
+          {
+            "group": "app",
+            "path": "public/record-policy.js",
+            "bytes": 2376,
+            "sha256": "048c6cfe0491c341f11424cd39a062c80d317f8bd13ff513c798867f848818a9"
+          },
+          {
+            "group": "app",
+            "path": "public/locales/ar.js",
+            "bytes": 27728,
+            "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+          },
+          {
+            "group": "app",
+            "path": "public/locale-negotiation.js",
+            "bytes": 2881,
+            "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+          },
+          {
+            "group": "app",
+            "path": "public/i18n.js",
+            "bytes": 8381,
+            "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+          },
+          {
+            "group": "app",
+            "path": "public/source-category-claims.js",
+            "bytes": 1857,
+            "sha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6"
+          },
+          {
+            "group": "app",
+            "path": "public/countries.js",
+            "bytes": 1497,
+            "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3"
+          },
+          {
+            "group": "app",
+            "path": "public/typed-identifier-contract.mjs",
+            "bytes": 10793,
+            "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+          },
+          {
+            "group": "app",
+            "path": "public/scanner-kitchen-handoff.js",
+            "bytes": 6528,
+            "sha256": "fb7757734898b93a3ca5e6647d60e7928ae4c226b38cec3f7f282fc11e5ad595"
+          },
+          {
+            "group": "app",
+            "path": "public/ingredients.js",
+            "bytes": 5212,
+            "sha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab"
+          },
+          {
+            "group": "app",
+            "path": "public/scanner-identity-v2.js",
+            "bytes": 14759,
+            "sha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76"
+          },
+          {
+            "group": "app",
+            "path": "public/model.js",
+            "bytes": 8699,
+            "sha256": "4f37f779f445e27bcc8a73f6c03c4604033dae7e6ca153fc4a2cad5395f79807"
+          },
+          {
+            "group": "app",
+            "path": "public/menu-model.js",
+            "bytes": 4308,
+            "sha256": "71a4f4f4e05d8c62a49ac55233448be42346427e528c485ecc76b7a7cbaeec16"
+          },
+          {
+            "group": "app",
+            "path": "public/unified-data.js",
+            "bytes": 15990,
+            "sha256": "82d027668d9f528dd83bce3cbb8c6f39b0bcdfbb88c62994456c433bc402b782"
+          },
+          {
+            "group": "app",
+            "path": "public/saved-price-observations.js",
+            "bytes": 4160,
+            "sha256": "bc07674f9c59e140dce59f93cf85eef4bfde3cec3d2e0635472771c3fe7886cd"
+          },
+          {
+            "group": "app",
+            "path": "public/content-locale.js",
+            "bytes": 5887,
+            "sha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d"
+          },
+          {
+            "group": "app",
+            "path": "public/recipe-ingredient-aliases.json",
+            "bytes": 10156,
+            "sha256": "c2dbca1d379ce93fa4423993ed0d1ace7669447c7899be025b7af3a8855bb609"
+          },
+          {
+            "group": "app",
+            "path": "public/recipe-review.js",
+            "bytes": 1006,
+            "sha256": "06c291981207ee25288a8bdfe7f1c5fd8eee41eb266cf249f067fddcd4b7600c"
+          },
+          {
+            "group": "app",
+            "path": "public/recipe-library-model.js",
+            "bytes": 4739,
+            "sha256": "7558a5b2fc7f8cb1c3fafc100b3a585b0c52560842270261b0aad85c4670a912"
+          },
+          {
+            "group": "app",
+            "path": "corpus/assert-curated.mjs",
+            "bytes": 644,
+            "sha256": "c64ce47a881d987b4e3b48b84be1c22f1e95031a77d390d433404ed327bed69d"
+          },
+          {
+            "group": "app",
+            "path": "public/recipe-discovery-client.js",
+            "bytes": 4022,
+            "sha256": "e8e026682f06bd803091c3dfc72cdcee86a822d87d230629b5784f48702ea562"
+          },
+          {
+            "group": "app",
+            "path": "public/recipe-library-ui.js",
+            "bytes": 8930,
+            "sha256": "9873ff604170e7df5a0120c5f771540ac83ec910df9609f1a5cb368ad6c6e7fc"
+          },
+          {
+            "group": "app",
+            "path": "public/cooking-model.js",
+            "bytes": 8148,
+            "sha256": "96d160f5fd8c75f6e84148d4001ba7ec5ae991f487bf9c4b0777828cb2baed42"
+          },
+          {
+            "group": "app",
+            "path": "public/sync-model.js",
+            "bytes": 3990,
+            "sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3"
+          },
+          {
+            "group": "app",
+            "path": "public/sync-ui.js",
+            "bytes": 5535,
+            "sha256": "bf35b0e04b8c77f1e8f453124d12fee69b99e39d7210bb8763218c9ea00759db"
+          },
+          {
+            "group": "app",
+            "path": "public/scoped-kitchen-request.js",
+            "bytes": 1102,
+            "sha256": "802473f7d488f06f76d5e38ba0301d890ec90521ebadfb3fd2dc5fcf035d9733"
+          },
+          {
+            "group": "app",
+            "path": "public/sharing-ui.js",
+            "bytes": 7338,
+            "sha256": "8ce72cc27171e0b2c4eb3e016409e0bebf59289bed28b41e549d80a403159913"
+          },
+          {
+            "group": "app",
+            "path": "public/household-model.js",
+            "bytes": 7703,
+            "sha256": "e01dd557d86520d279434f53fdde80097de1921084775517f95c65f9ab3b3d72"
+          },
+          {
+            "group": "app",
+            "path": "public/journey-ui.js",
+            "bytes": 9993,
+            "sha256": "72ad38d3698fbf139e42d995a781bbab1551a8f1236289864a9b3707f46cc308"
+          },
+          {
+            "group": "app",
+            "path": "public/common-corpus-locale.js",
+            "bytes": 11249,
+            "sha256": "728a26ac7eae0a6e55fdf03df2d347ffb5fd7f7a8a44334b243cd6b7df2f14b7"
+          },
+          {
+            "group": "app",
+            "path": "public/sources.js",
+            "bytes": 17882,
+            "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933"
+          },
+          {
+            "group": "app",
+            "path": "public/data-ui.js",
+            "bytes": 23348,
+            "sha256": "ca5e89125bbc896cc7ec5f8e383d7875f1515dc6af2a6a92405efc5cd6e567ed"
+          },
+          {
+            "group": "app",
+            "path": "public/access-ui.js",
+            "bytes": 7881,
+            "sha256": "5a394ea2b04fdba6ab39c6e53122a5c883040e353cdf98249bf213a527e85b15"
+          },
+          {
+            "group": "app",
+            "path": "public/waste-analysis-model.js",
+            "bytes": 3506,
+            "sha256": "060e1ab4ca3ccef9506a87ab9d563a6bb626c7b76fe330d746420b97df94052d"
+          },
+          {
+            "group": "app",
+            "path": "public/integration-owner03.mjs",
+            "bytes": 5711,
+            "sha256": "8e05b6896e840e4a8806b1d44a59f71fc690b6059af529401df5ddcd7731eab8"
+          },
+          {
+            "group": "app",
+            "path": "public/insights-model.js",
+            "bytes": 6815,
+            "sha256": "f8008145063c8bbcf2c9322ece541ee10dc5a9f63678af78fb6f6167bf51f678"
+          },
+          {
+            "group": "app",
+            "path": "public/integrations.js",
+            "bytes": 2087,
+            "sha256": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9"
+          },
+          {
+            "group": "app",
+            "path": "public/insights-ui.js",
+            "bytes": 18357,
+            "sha256": "aa4e5ccd6896ad51e2d4230016b7c9d01b9c97fb7e9859af5a63c2f2681143b4"
+          },
+          {
+            "group": "app",
+            "path": "public/checkout-model.js",
+            "bytes": 5588,
+            "sha256": "5343262bab8a3f95300037feb238b2ad7b06be52f0937964bd2012563051c0e7"
+          },
+          {
+            "group": "app",
+            "path": "public/freshness-ui.js",
+            "bytes": 3194,
+            "sha256": "c7a0d22bb09d060fd5b917a6076473f8b6da9d43a43db8dd92a49989234c9caf"
+          },
+          {
+            "group": "app",
+            "path": "public/session-fetch.js",
+            "bytes": 1126,
+            "sha256": "cddc55fc2666ed0d4eef67ca3315540b032c86f47628294ce0dc8f180204a8f3"
+          },
+          {
+            "group": "app",
+            "path": "public/offmenu-identity-client.js",
+            "bytes": 3555,
+            "sha256": "f94c0df448c762224ea61fcb2e85b32cd5419a962ae793a45ab450e1ea78b53f"
+          },
+          {
+            "group": "app",
+            "path": "public/care-model.js",
+            "bytes": 2133,
+            "sha256": "81a5c3771f8420bc81129aeeb57309a0d851dd3878e3c1016895890e40e7f96e"
+          },
+          {
+            "group": "app",
+            "path": "public/care-ui.js",
+            "bytes": 20929,
+            "sha256": "a67258db6ef0c952450aeb089db3485021966dd0a837a1c0e96725ef7c0a581b"
+          },
+          {
+            "group": "app",
+            "path": "public/recipe-community-model.js",
+            "bytes": 1356,
+            "sha256": "dde224681112c5085ef0038d57ab64e3a3e20eeba1a43da967e5ccbaa7c093d4"
+          },
+          {
+            "group": "app",
+            "path": "public/recipe-community-ui.js",
+            "bytes": 10713,
+            "sha256": "9dd5d426122e602bcd8d42d9b74a44983323858afeb870c49f446b17e1be2acb"
+          },
+          {
+            "group": "app",
+            "path": "public/community-ai-ui.js",
+            "bytes": 5470,
+            "sha256": "6c4bdbba7fc208a6340b696373ce4a7ca3d7d2243306ebf999d9033dd6eaf560"
+          },
+          {
+            "group": "app",
+            "path": "public/personal-ai-ui.js",
+            "bytes": 2795,
+            "sha256": "79d6479ed36cb197ec270c993a501e8ec31e3c22b66603df112ff6c45ee01db8"
+          },
+          {
+            "group": "app",
+            "path": "public/services-model.js",
+            "bytes": 5585,
+            "sha256": "05d3279638586ad890de104504b40466f13cbdd1bbb87d4091f1962c77ed1ff9"
+          },
+          {
+            "group": "app",
+            "path": "public/services-ui.js",
+            "bytes": 18582,
+            "sha256": "0db7f4719d4244ce28bf8e26763ac477f948d21aa3be4f31c95aeb49ecd397f4"
+          },
+          {
+            "group": "app",
+            "path": "public/admin-model.js",
+            "bytes": 1322,
+            "sha256": "93de743170678cd633eea2ea737da784386a8e2f3f42d3c0501eb809c50c8de9"
+          },
+          {
+            "group": "app",
+            "path": "public/admin-ui.js",
+            "bytes": 7128,
+            "sha256": "5437925cabde6eec107532d9470dcefe3639f06e73a8aa96a6867b88718000e9"
+          },
+          {
+            "group": "app",
+            "path": "public/admin-operations-ui.js",
+            "bytes": 3309,
+            "sha256": "7d8e5385abd34b3bcfad22780482d0465b1333fee2c0d98c267242c366da186d"
+          },
+          {
+            "group": "app",
+            "path": "public/documents.js",
+            "bytes": 14592,
+            "sha256": "a19e076a3e9924f0a20ffac53ab7169e1b55768953b39fe3b41a33b0f1bd1f54"
+          },
+          {
+            "group": "app",
+            "path": "cloud/state.mjs",
+            "bytes": 6798,
+            "sha256": "5c3b10a27b99a386d7093c7ef3ac326de2af2f7164ee62a6eaa789ba4cba93ce"
+          },
+          {
+            "group": "app",
+            "path": "cloud/meal-preference-owner20.mjs",
+            "bytes": 5835,
+            "sha256": "0f49e01eeb5209fd98e39b50efc94b789f066c4a7c00cd4ea4764d54762a741e"
+          },
+          {
+            "group": "app",
+            "path": "public/pantry-backup.js",
+            "bytes": 2118,
+            "sha256": "15043b581af000070ac9db1499af0693eb6dad9dd7071e741f18e70da7c24c80"
+          },
+          {
+            "group": "app",
+            "path": "public/lifecycle-fixture.js",
+            "bytes": 2512,
+            "sha256": "ae75bc08ce8818278b6a330b1872943868ad19991cf536bb4d9863a6fadb40d1"
+          },
+          {
+            "group": "app",
+            "path": "public/scanner-model.js",
+            "bytes": 3559,
+            "sha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228"
+          },
+          {
+            "group": "app",
+            "path": "public/scanner-capture-envelope.js",
+            "bytes": 6765,
+            "sha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89"
+          },
+          {
+            "group": "app",
+            "path": "public/scanner-ui.js",
+            "bytes": 18334,
+            "sha256": "d4224f3c61bc301f9ed0cc331be7338fb4e7af179dbd64456e64dc94f1905dd6"
+          },
+          {
+            "path": "gotrue-js/lib/index.js",
+            "bytes": 12998,
+            "sha256": "0f26ddf432d7693264ede22528edb58087f646bc6cecfc686ce47351e89bc5df",
+            "thirdParty": true
+          },
+          {
+            "path": "@netlify/identity/dist/main.js",
+            "bytes": 32999,
+            "sha256": "bbfddfc66293ecc3a2ca94c6cdc4a3fd039705bded3e44808ec4e159bc6c23d3",
+            "thirdParty": true
+          },
+          {
+            "group": "app",
+            "path": "public/app.js",
+            "bytes": 109255,
+            "sha256": "9dcebe457842f8596a89cf5902dcd89fb6a1b7f50ef8855001613d0005a5c9fb"
+          }
+        ],
+        "externalImports": []
+      },
+      {
+        "group": "scanner",
+        "entry": "public/production-scanner/shelf-scanner.js",
+        "output": "shelf-scanner.js",
+        "bytes": 735236,
+        "sha256": "d25bedb3516b482dff7353230a50a7fd9b9445a6614d9269d5c60626eba0d889",
+        "inputs": [
+          {
+            "group": "scanner",
+            "path": "public/foundation-handoff-bindings.mjs",
+            "bytes": 2982,
+            "sha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584"
+          },
+          {
+            "group": "scanner",
+            "path": "public/foundation-scanner-handoff.mjs",
+            "bytes": 6878,
+            "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/typed-identifier-contract.mjs",
+            "bytes": 10793,
+            "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/source-identity-client.mjs",
+            "bytes": 10890,
+            "sha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/source-identity-selection.mjs",
+            "bytes": 204,
+            "sha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f"
+          },
+          {
+            "group": "scanner",
+            "path": "public/source-identity-handoff.mjs",
+            "bytes": 6874,
+            "sha256": "469be2b518e2b8422d89400ba686a09f73f736a87db61fbd6cb8db7e31f3f04d"
+          },
+          {
+            "group": "scanner",
+            "path": "public/source-category-claims.js",
+            "bytes": 1857,
+            "sha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6"
+          },
+          {
+            "group": "scanner",
+            "path": "public/scanner-identity-v2.js",
+            "bytes": 14759,
+            "sha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76"
+          },
+          {
+            "group": "scanner",
+            "path": "public/source-classification-contract.mjs",
+            "bytes": 4219,
+            "sha256": "e781776fd220a9957c8e03b8e365d62ac161ebc85ba376d5d916c6696b8a82ef"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/scanner-source-assertions.js",
+            "bytes": 22771,
+            "sha256": "ea2266461c216750d6a9bc7e34a0a781e2beacf479bb1c5751f3490f61175c16"
+          },
+          {
+            "group": "scanner",
+            "path": "public/typed-identifier-contract.mjs",
+            "bytes": 10793,
+            "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+          },
+          {
+            "group": "scanner",
+            "path": "public/scanner-kitchen-handoff.js",
+            "bytes": 6528,
+            "sha256": "fb7757734898b93a3ca5e6647d60e7928ae4c226b38cec3f7f282fc11e5ad595"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/foundation-scanner-client.mjs",
+            "bytes": 10461,
+            "sha256": "46d43f13d06caafc22ddc47e361e04e5e0abb97e23709c3d028ed48f0d518e3d"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/guest-foundation-client.mjs",
+            "bytes": 2091,
+            "sha256": "d9f531f4e41d049aaf0609dccb8479aea24357c7d35218a94addf990abffd9ad"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/composed-scanner-client.mjs",
+            "bytes": 5349,
+            "sha256": "45e6f713a55073ea102af06d9c5e6f20f07053d96a02dc608dacfa9d3019e7bc"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/locales/ar.js",
+            "bytes": 27728,
+            "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/locale-negotiation.js",
+            "bytes": 2881,
+            "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/i18n.js",
+            "bytes": 8381,
+            "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/scanner-model.js",
+            "bytes": 3559,
+            "sha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/scanner-capture-envelope.js",
+            "bytes": 6765,
+            "sha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/scanner-ui.js",
+            "bytes": 18345,
+            "sha256": "6d36d4a364c89f38550c9f0050e5f4076d11a248e8a692b54e71f6b6c3a7b12b"
+          },
+          {
+            "group": "scanner",
+            "path": "public/retained-source-photo-selection.js",
+            "bytes": 7301,
+            "sha256": "a76143f08fedd1683d91ce8d6501c71e13d619d7d3c8ff6ed84a7be9504a3eaa"
+          },
+          {
+            "group": "scanner",
+            "path": "public/locales/ar.js",
+            "bytes": 27728,
+            "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+          },
+          {
+            "group": "scanner",
+            "path": "public/locale-negotiation.js",
+            "bytes": 2881,
+            "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+          },
+          {
+            "group": "scanner",
+            "path": "public/i18n.js",
+            "bytes": 8381,
+            "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+          },
+          {
+            "group": "scanner",
+            "path": "public/ingredients.js",
+            "bytes": 5212,
+            "sha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab"
+          },
+          {
+            "group": "scanner",
+            "path": "public/model.js",
+            "bytes": 8699,
+            "sha256": "4f37f779f445e27bcc8a73f6c03c4604033dae7e6ca153fc4a2cad5395f79807"
+          },
+          {
+            "group": "scanner",
+            "path": "public/off-photo-metadata.js",
+            "bytes": 8143,
+            "sha256": "1a3808a413e4302b440fe71e7c326e4e66c84a9d6a653bcc55dc7da9f18f9280"
+          },
+          {
+            "group": "scanner",
+            "path": "public/off-photo-catalogue.js",
+            "bytes": 4008,
+            "sha256": "991791f2b176c0e216cfe3d96c9e9d7daf86a3a2d89ab0b527d578098ebab430"
+          },
+          {
+            "group": "scanner",
+            "path": "public/product-visual-selector.js",
+            "bytes": 9824,
+            "sha256": "635040c812cb96cb323260ee153a58767006adbd25c0b09c34eae0aa163032c4"
+          },
+          {
+            "group": "scanner",
+            "path": "public/product-visual-association.js",
+            "bytes": 10747,
+            "sha256": "7cbeb14a1c39dc079cad96f155f1ae0c6ea4f6402ffecf6f871dade6956ce661"
+          },
+          {
+            "group": "scanner",
+            "path": "public/scanner-product-visuals.js",
+            "bytes": 4087,
+            "sha256": "3993582332aa3b9708cf349cbb1a352676ea2500014a83c066d2615393e5a769"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/scanner-product-visuals-production.js",
+            "bytes": 224,
+            "sha256": "37f2a6642afc5991ecc37577e2a09c4312439f12a2018179d45e81c02a3488e2"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/scanner-three.js",
+            "bytes": 487719,
+            "sha256": "316e4a74c70140ee8253c44032b2f1a3e683f8f36608c8fce2a789256fd8fe8a"
+          },
+          {
+            "group": "scanner",
+            "path": "public/production-scanner/shelf-scanner.js",
+            "bytes": 46144,
+            "sha256": "b57877928dc9ca5b5ee1e9adb96ac3982467acc9aa2aade8b237357d4e34b143"
+          }
+        ],
+        "externalImports": []
+      },
+      {
+        "group": "guest",
+        "entry": "public/production-scanner/guest-shelf-scanner-inventory.js",
+        "output": "full-scanner.js",
+        "bytes": 730678,
+        "sha256": "5d1f71e7056ecf95d596717c93afb3554cc622514b75038f54089c80e1c2f25a",
+        "inputs": [
+          {
+            "group": "guest",
+            "path": "public/foundation-handoff-bindings.mjs",
+            "bytes": 2982,
+            "sha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584"
+          },
+          {
+            "group": "guest",
+            "path": "public/foundation-scanner-handoff.mjs",
+            "bytes": 6878,
+            "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/foundation-scanner-client.mjs",
+            "bytes": 10461,
+            "sha256": "46d43f13d06caafc22ddc47e361e04e5e0abb97e23709c3d028ed48f0d518e3d"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/guest-foundation-client.mjs",
+            "bytes": 2091,
+            "sha256": "d9f531f4e41d049aaf0609dccb8479aea24357c7d35218a94addf990abffd9ad"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/typed-identifier-contract.mjs",
+            "bytes": 10793,
+            "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/source-identity-client.mjs",
+            "bytes": 10890,
+            "sha256": "bf02315bccc6cc639d8cae57e14a8f375a53ee91ac2e60acbb021137533d93ca"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/source-identity-selection.mjs",
+            "bytes": 204,
+            "sha256": "8dc3dc938af4f82270f4b3562c3cf2fc7ac9cb9dd5856f4dbbb3448a471cd16f"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/composed-scanner-client.mjs",
+            "bytes": 5349,
+            "sha256": "45e6f713a55073ea102af06d9c5e6f20f07053d96a02dc608dacfa9d3019e7bc"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/guest-scanner-state.mjs",
+            "bytes": 1427,
+            "sha256": "dc600a66de0f160ca28c2ef16e681f4e87690ec59f26e4215a459cdfeba51906"
+          },
+          {
+            "group": "guest",
+            "path": "public/source-category-claims.js",
+            "bytes": 1857,
+            "sha256": "a53cffa78ccc58c131795388b9a684128bca039619875e28a36a8fa7555398e6"
+          },
+          {
+            "group": "guest",
+            "path": "public/scanner-identity-v2.js",
+            "bytes": 14759,
+            "sha256": "ac3cad23512e09dc2aabac8e58d751db71b3d04c692e724a04fdd2a69b1c7d76"
+          },
+          {
+            "group": "guest",
+            "path": "public/source-classification-contract.mjs",
+            "bytes": 4219,
+            "sha256": "e781776fd220a9957c8e03b8e365d62ac161ebc85ba376d5d916c6696b8a82ef"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/scanner-source-assertions.js",
+            "bytes": 22771,
+            "sha256": "ea2266461c216750d6a9bc7e34a0a781e2beacf479bb1c5751f3490f61175c16"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/locales/ar.js",
+            "bytes": 27728,
+            "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/locale-negotiation.js",
+            "bytes": 2881,
+            "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/i18n.js",
+            "bytes": 8381,
+            "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/scanner-model.js",
+            "bytes": 3559,
+            "sha256": "38aa40fb6722f9bc392477d06f78a9921c414ab7a3b3ddb15b6df898f82ef228"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/scanner-capture-envelope.js",
+            "bytes": 6765,
+            "sha256": "ddf456e8c86fe3e25517f35d68747da4aa8315b69d2324c1d9e8f33488750b89"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/guest-scanner-ui.js",
+            "bytes": 18339,
+            "sha256": "68cd03afac308f3e8f16f1de46f29dafae28db55ca00093973511e1d4bb69856"
+          },
+          {
+            "group": "guest",
+            "path": "public/product-visual-selector.js",
+            "bytes": 11859,
+            "sha256": "03daa6a6e6575c74cebb06b3320111e022877434e41b4d5698bad6b43d2029fa"
+          },
+          {
+            "group": "guest",
+            "path": "public/local-retained-category-presentation.js",
+            "bytes": 2527,
+            "sha256": "a775711245bb829b84e009ab2d0354e02815793511d36bb4acf6624c59e4251c"
+          },
+          {
+            "group": "guest",
+            "path": "public/retained-source-photo-selection.js",
+            "bytes": 7301,
+            "sha256": "a76143f08fedd1683d91ce8d6501c71e13d619d7d3c8ff6ed84a7be9504a3eaa"
+          },
+          {
+            "group": "guest",
+            "path": "public/typed-identifier-contract.mjs",
+            "bytes": 10793,
+            "sha256": "5a3274d7272c5703c08ef8e6110078f4dd37d5edf4d3b9cc42c3c35d23586534"
+          },
+          {
+            "group": "guest",
+            "path": "public/scanner-kitchen-handoff.js",
+            "bytes": 6134,
+            "sha256": "e35169fee6a7391491c460ddb590f9e1d0b0e59a20a00dcbce557aee7faf1eb1"
+          },
+          {
+            "group": "guest",
+            "path": "public/locales/ar.js",
+            "bytes": 27728,
+            "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+          },
+          {
+            "group": "guest",
+            "path": "public/locale-negotiation.js",
+            "bytes": 2881,
+            "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+          },
+          {
+            "group": "guest",
+            "path": "public/i18n.js",
+            "bytes": 8381,
+            "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+          },
+          {
+            "group": "guest",
+            "path": "public/ingredients.js",
+            "bytes": 5212,
+            "sha256": "f541a8332c68208cd0138b75d450d26826910b7862ca96f24b1f0b723d1b5cab"
+          },
+          {
+            "group": "guest",
+            "path": "public/model.js",
+            "bytes": 7059,
+            "sha256": "74ae172868765650cd08a90ae356ae8072b04529e7be00469a3e30973e8b4785"
+          },
+          {
+            "group": "guest",
+            "path": "public/off-photo-metadata.js",
+            "bytes": 8143,
+            "sha256": "1a3808a413e4302b440fe71e7c326e4e66c84a9d6a653bcc55dc7da9f18f9280"
+          },
+          {
+            "group": "guest",
+            "path": "public/off-photo-catalogue.js",
+            "bytes": 4008,
+            "sha256": "991791f2b176c0e216cfe3d96c9e9d7daf86a3a2d89ab0b527d578098ebab430"
+          },
+          {
+            "group": "guest",
+            "path": "public/product-visual-association.js",
+            "bytes": 10747,
+            "sha256": "7cbeb14a1c39dc079cad96f155f1ae0c6ea4f6402ffecf6f871dade6956ce661"
+          },
+          {
+            "group": "guest",
+            "path": "public/scanner-product-visuals.js",
+            "bytes": 4899,
+            "sha256": "a980f106d2194116d78a7efe71e183d57949e3dab61fa55440b57db5125ad915"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/scanner-product-visuals-production.js",
+            "bytes": 224,
+            "sha256": "37f2a6642afc5991ecc37577e2a09c4312439f12a2018179d45e81c02a3488e2"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/scanner-three.js",
+            "bytes": 487719,
+            "sha256": "316e4a74c70140ee8253c44032b2f1a3e683f8f36608c8fce2a789256fd8fe8a"
+          },
+          {
+            "group": "guest",
+            "path": "public/production-scanner/guest-shelf-scanner-inventory.js",
+            "bytes": 50619,
+            "sha256": "a175b40c61f91a498b74e8fad30eec0f389408808626f0b2f908883cdc7ce668"
+          }
+        ],
+        "externalImports": []
+      }
+    ]
+  }
+}

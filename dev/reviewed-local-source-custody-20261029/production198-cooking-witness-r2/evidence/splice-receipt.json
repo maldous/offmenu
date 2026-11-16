@@ -1,0 +1,16 @@
+{
+  "baseSha256": "08f5ae17eec6b5bede7c746391952cd3f8190507c7ebccd6abb6cb0c66d3d4a4",
+  "candidateSha256": "c2ddec2cf5b1965160160eab24e1a2cd43f8395f7095906955ff67148b95c180",
+  "candidateBytes": 2585134,
+  "appSha256": "19c11668db13b88a4c77ddd565dbf7853928b9c0c22cebe1da87fa3742cdb7a5",
+  "appBytes": 476307,
+  "helperSha256": "b98427279bb9a04fa081140cbbbb2711f6146ffe6bee37599122da8ee18c1193",
+  "exactReverseReconstructsPreimage": true,
+  "changedSeams": [
+    "embedded-app",
+    "server-SA",
+    "server-CA",
+    "server-lg"
+  ],
+  "otherServerAndAssetBytesPreserved": true
+}

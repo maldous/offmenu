@@ -1,0 +1,70 @@
+{
+  "schema": "offmenu-owned-foundation-api-build/1",
+  "output": {
+    "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/private-release-build/production/owned-foundation-response.mjs",
+    "bytes": 31274,
+    "sha256": "dcde08ee9d7299e1c406208210a2f07145742b5610a6209fc2718e5597af505b"
+  },
+  "inputs": [
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/foundation-phase-contract.mjs",
+      "bytes": 7358,
+      "sha256": "a7cfadb18b4d821c8474dd112a223f64418fc358db1d008e6fdf185d02918e0e"
+    },
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/foundation-phase-contract-v2.mjs",
+      "bytes": 5334,
+      "sha256": "1aa5d45c4e93cf9a7e2405152be58c074e91af50b55d44c797003cb0fdf00d50"
+    },
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/foundation-policy-set.mjs",
+      "bytes": 3012,
+      "sha256": "cab3c8ea8e5fab9f31eccfd52b8ff85ed575a645b7dbbecba5862beb935e57eb"
+    },
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/foundation-origin-reader.mjs",
+      "bytes": 9559,
+      "sha256": "0b098783399eb129970b33d2b90a4382d5475329b8a83bb9ad871e7407bd050f"
+    },
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/foundation-product-handler.mjs",
+      "bytes": 2722,
+      "sha256": "cced93ca7d247d5b94c3dbbb03ec35931af409b306542fefd554746abc1a6264"
+    },
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/public/foundation-handoff-bindings.mjs",
+      "bytes": 2982,
+      "sha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584"
+    },
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/public/foundation-scanner-handoff.mjs",
+      "bytes": 6878,
+      "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00"
+    },
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/foundation-reference-reader.mjs",
+      "bytes": 3079,
+      "sha256": "8d32deda4d0444dfc932efb66acc8ab9ba9231f82043a8e2649ba3e9ae002a81"
+    },
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/owned-foundation-response.mjs",
+      "bytes": 5257,
+      "sha256": "8ac332be5062080e1b89b8ef86cd7b682e54c0024f2626139d9eb0c013ef4867"
+    },
+    {
+      "path": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/owned-foundation-response.mjs",
+      "bytes": 831,
+      "sha256": "0fef1c38c4a2e2e517a10d60ad3f8ccbe82cebf4ea3516c3ac1ea32aef0f48ac"
+    }
+  ],
+  "externalImports": [
+    {
+      "path": "./foundation-production-release.mjs",
+      "kind": "import-statement",
+      "external": true
+    }
+  ],
+  "sourceOnlyAPI": true,
+  "dataModuleIsSeparate": true,
+  "deployed": false
+}

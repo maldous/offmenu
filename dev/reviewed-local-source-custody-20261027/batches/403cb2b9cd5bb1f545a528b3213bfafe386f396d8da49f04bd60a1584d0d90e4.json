@@ -1,0 +1,1250 @@
+{
+  "baseCommit": "4ff8c1531adf2ea69a276c37f19afda181d5a021",
+  "comparisonScope": [
+    {
+      "commit": "dc39d0d7f29f0b0650be374f0e7e2111ec45c4b7",
+      "treeSha": "71779bed7a1469cdc3dd116759dd49e97febc815"
+    },
+    {
+      "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+      "treeSha": "d0f272757ca95ef40985bdce75fb568773c62400"
+    },
+    {
+      "commit": "97b98b44df4bc5ae838e8b4a102c2ce8e52fa582",
+      "treeSha": "03fb1c0398327871f3f31876a23f19d56aff1a7d"
+    },
+    {
+      "commit": "4ff8c1531adf2ea69a276c37f19afda181d5a021",
+      "treeSha": "9747a1adb12e66ebe71fdbd1f10cbfb249182c8f"
+    }
+  ],
+  "contentScanExactByteReview": {
+    "allOtherScreeningPassed": true,
+    "bytes": 90639,
+    "exceptions": [
+      {
+        "endCharacter": 65922,
+        "matchedTextSha256": "f9bb234dc8ad825fa9c6147dab3155801f206df089ce21f4207acb91204356c7",
+        "reason": "Localized Set new password UI label",
+        "startCharacter": 65805
+      },
+      {
+        "endCharacter": 66101,
+        "matchedTextSha256": "ffaf900b7b0b24f2f8f7963c069d7cd69e5b4878bef146cd6db1063a37cd894f",
+        "reason": "Localized Password UI label",
+        "startCharacter": 66029
+      }
+    ],
+    "finding": "Generic secret-assignment scanner matched two public localized UI labels, not authentication values.",
+    "noCredentials": true,
+    "preserveBytesUnchanged": true,
+    "reviewedBy": [
+      "custody-import lane",
+      "owned-data source owner"
+    ],
+    "schemaVersion": "offmenu-exact-byte-scan-review/1",
+    "scope": "Only these two exact spans in this exact SHA256 file; all other scans remain active.",
+    "sha256": "3952df80dd0799848add2ef68e5e92591e16d99e5d0a9c9f42f048ea497abe52",
+    "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/source-reference-stock.mjs"
+  },
+  "curatedPayloadExcludedSha256": "e2ff55d2c5081010656fc13e41a7ef13a377a3add8780c6894c51aac8bd6011a",
+  "dataPublication": false,
+  "files": [
+    {
+      "bytes": 7082,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "9536551254e14b225781abe23ccad07430e66e0cd1bab2488f89be306b5d574f",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "f276a8e90ea6db05f764ba1aaa41d1db5ddaf189",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/README.md",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "9536551254e14b225781abe23ccad07430e66e0cd1bab2488f89be306b5d574f",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/README.md"
+    },
+    {
+      "bytes": 10240,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "970d2918bcaa2650f8da531a633dfe9ed824ea89affcb6bf8c81c44726bdb455",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "99706c5c83adbb335d43a7e37995cc2559e532ff",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/qualify-r8-release.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "970d2918bcaa2650f8da531a633dfe9ed824ea89affcb6bf8c81c44726bdb455",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/qualify-r8-release.mjs"
+    },
+    {
+      "bytes": 12321,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "0f5a87ae45c8b10318c201af52f71c80344b37a5bb372aa8192f5abc9fd254fb",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "32283ba08ed5b66fd6245bba59d3d3904731bac3",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/prepare-production-release.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "0f5a87ae45c8b10318c201af52f71c80344b37a5bb372aa8192f5abc9fd254fb",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/prepare-production-release.mjs"
+    },
+    {
+      "bytes": 3120,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "a548e680bc8da67479bb03907a7a95773cef42518026b9802b0e010b872c37fe",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "dbce493afdc664cf76e010f6cb43637f9927e300",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/r8-projection-qualification.json",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "a548e680bc8da67479bb03907a7a95773cef42518026b9802b0e010b872c37fe",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/r8-projection-qualification.json"
+    },
+    {
+      "bytes": 2216,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "9a525d1fad34f8f8678cb18f787e6d809483f56de43c26432865896f1030bf19",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "d9911313ee089faec03a8061b769616a4ed9bae3",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/r8-qualification.log.txt",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "9a525d1fad34f8f8678cb18f787e6d809483f56de43c26432865896f1030bf19",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/r8-qualification.log"
+    },
+    {
+      "bytes": 115476,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "10f4f5acb9dbab8e5411dc7c7aa9136d6bb6317cd5eb11d9ec6c9ccdd4a1a0db",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "4a72a1e24b502be760f32f49f77c3bdc5460ba99",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/production-manifest.json",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "10f4f5acb9dbab8e5411dc7c7aa9136d6bb6317cd5eb11d9ec6c9ccdd4a1a0db",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/production-manifest.json"
+    },
+    {
+      "bytes": 2653,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "fedce50756a6598ee3fc53d6e0507a4d21103711dcaee6911c61679b70cb2cdb",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "a3287b5947f7e1449225c729347630599923bca9",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/production-publication-receipt.json",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "fedce50756a6598ee3fc53d6e0507a4d21103711dcaee6911c61679b70cb2cdb",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/production-publication-receipt.json"
+    },
+    {
+      "bytes": 3366,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "9b34b1c2642129e4a8b4f5872dd4e519d72c1bb78911424fb93082bb8649e79b",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "3d7c5797ec77289dad112e0c02b54c52fdada8fa",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/production-SOURCE-NOTICES.txt",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "9b34b1c2642129e4a8b4f5872dd4e519d72c1bb78911424fb93082bb8649e79b",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/production-SOURCE-NOTICES.txt"
+    },
+    {
+      "bytes": 1812,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "b73ef1cc92506c3e5c2dddd68ae034f88b728892e9bc7aeaa98fc877307d9d02",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "97dd80ec55f6472ace95ff75443b03218115724b",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/production-selection.json",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "b73ef1cc92506c3e5c2dddd68ae034f88b728892e9bc7aeaa98fc877307d9d02",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/production-selection.json"
+    },
+    {
+      "bytes": 2116,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "5950c75d0beb6e9269a656b3fcfeb9559e8fbb47c1505fadf6184cc14499cbe3",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "03d2e1df4549e82daa90dab6cc2d413a2d1fda58",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/production-candidate-report.json",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "5950c75d0beb6e9269a656b3fcfeb9559e8fbb47c1505fadf6184cc14499cbe3",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/production-candidate-report.json"
+    },
+    {
+      "bytes": 2116,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "5950c75d0beb6e9269a656b3fcfeb9559e8fbb47c1505fadf6184cc14499cbe3",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "03d2e1df4549e82daa90dab6cc2d413a2d1fda58",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/production-release-build.log.txt",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "5950c75d0beb6e9269a656b3fcfeb9559e8fbb47c1505fadf6184cc14499cbe3",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/production-release-build.log"
+    },
+    {
+      "bytes": 2982,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "c9030d37c649cc442f58680531d7de44d391f11b",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/production-foundation-handoff-bindings.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/production-foundation-handoff-bindings.mjs"
+    },
+    {
+      "bytes": 6663,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "f04e188bd60137e7b56a0b3e8dab0eb177ee8cd05b6ca25de2f28c1fbd42c30e",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "3530035b8b2e1a0066b01661e55380cb6ebff25f",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/production-foundation-selection.patch",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "f04e188bd60137e7b56a0b3e8dab0eb177ee8cd05b6ca25de2f28c1fbd42c30e",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/production-foundation-selection.patch"
+    },
+    {
+      "bytes": 1932,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "88147af17e8ea449b483dfa24a0c7f8b3cc4f9887c8d8d696b5e792cf191f3d6",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "5d10f4ad78ec2c387f6ffd57756aa28cfa419ea0",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/production-browser-source-delta.json",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "88147af17e8ea449b483dfa24a0c7f8b3cc4f9887c8d8d696b5e792cf191f3d6",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/production-browser-source-delta.json"
+    },
+    {
+      "bytes": 280,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "e93f35e0630dc71ed025e5ece7679faa2eb3ae694144029748562aa32e47b738",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "fd76a8b8d97d50b04775fb79092a67af4fd3bfae",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/production-source-reference-stock-entry.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "e93f35e0630dc71ed025e5ece7679faa2eb3ae694144029748562aa32e47b738",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/production-source-reference-stock-entry.mjs"
+    },
+    {
+      "bytes": 2879,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "53450d23bcc4b920cc7ce82e26941d42d47a6ee91cc4bb73417400def2eb918f",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "711a5c8df8a4a27bed36218cdde41d0869c7b1c1",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/synchronize-browser-source.py",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "53450d23bcc4b920cc7ce82e26941d42d47a6ee91cc4bb73417400def2eb918f",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/synchronize-browser-source.py"
+    },
+    {
+      "bytes": 1620,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "ee4ad7261333d72168a27dcd92712143b40696bd595026408c536403f4c03001",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "232698356de69afe20ead50d2035334b629758e8",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/build-owned-foundation-api.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "ee4ad7261333d72168a27dcd92712143b40696bd595026408c536403f4c03001",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/build-owned-foundation-api.mjs"
+    },
+    {
+      "bytes": 2968,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "8cdb4e636b3712731e529598b4a4624e492dedf1868e0276febba42bc4f767c0",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "1c8ff16995d59d1ec28d7cba4156f80ed33e66d3",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/api-build-manifest.json",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "8cdb4e636b3712731e529598b4a4624e492dedf1868e0276febba42bc4f767c0",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/api-build-manifest.json"
+    },
+    {
+      "bytes": 2831,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "43eab1d184695f3fb2d2f6318f8e40f6b66feaf1570c316b750258253a54e860",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "4cc8a2b942903cc1728bc9d2eb56d5fd8a581984",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/patch-owned-foundation-route.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "43eab1d184695f3fb2d2f6318f8e40f6b66feaf1570c316b750258253a54e860",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/patch-owned-foundation-route.mjs"
+    },
+    {
+      "bytes": 9419,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "10a05da19a795f8b82d2d7bd160db3f6af50f600fd49a44551774b5ead8a10e3",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "b1bd96bc867471506e0242c6e03c59c3790174df",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/owned-foundation-production.test.mjs.source.txt",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "10a05da19a795f8b82d2d7bd160db3f6af50f600fd49a44551774b5ead8a10e3",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/owned-foundation-production.test.mjs"
+    },
+    {
+      "bytes": 815,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "6f86cde7adbbbc13bf07a83b76a643e5d9cf1b73b913625785c84966717e7e53",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "77b0d2a9ed5b34a6a53ac80d38f7fa23ff9901c5",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/owned-foundation-production-tests.log.txt",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "6f86cde7adbbbc13bf07a83b76a643e5d9cf1b73b913625785c84966717e7e53",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/owned-foundation-production-tests.log"
+    },
+    {
+      "bytes": 2665,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "ea0020687c0152ac627a6b08953ae2abe47732e83f520504626e72024ef4342d",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "bff91053aacd8e1d1a3601569d5abb6ce6cc4e6a",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/outer-worker-route.test.mjs.source.txt",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "ea0020687c0152ac627a6b08953ae2abe47732e83f520504626e72024ef4342d",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/outer-worker-route.test.mjs"
+    },
+    {
+      "bytes": 485,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "5b79fa38eed937f035d6de2ea4a2106b95bcadc31179ae55ace16104c24dd526",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "7e1cdc701b068097971991a8da4b83ddca558766",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/outer-worker-route-tests.log.txt",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "5b79fa38eed937f035d6de2ea4a2106b95bcadc31179ae55ace16104c24dd526",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/outer-worker-route-tests.log"
+    },
+    {
+      "bytes": 1493,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "417759ab76c63af6f3c997d9620dde1e2b242d18ac89ca2721e523ae3caf99a0",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "98a0ee5fdc71cb8e3bbd49b51b943da9cd3072fc",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/build-guest-foundation-adapter.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "417759ab76c63af6f3c997d9620dde1e2b242d18ac89ca2721e523ae3caf99a0",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/build-guest-foundation-adapter.mjs"
+    },
+    {
+      "bytes": 21264,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "7c250884bcf9f6273f72a747a20e3bc49344d20755a0e00251aa5b1a1f87877a",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "b0ffb4697a054d07fcc91ad8c64522ee030b2d07",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/guest-foundation-adapter.bundle.js",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "7c250884bcf9f6273f72a747a20e3bc49344d20755a0e00251aa5b1a1f87877a",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/guest-foundation-adapter.bundle.js"
+    },
+    {
+      "bytes": 1414,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "957b7185a3ec6cb69c96da7a33f069e8a22735ec3be1effe26e04c6b58d5d48c",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "7f69034566af40fe7a95efc9718a787c4737bdca",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/guest-adapter-build-manifest.json",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "957b7185a3ec6cb69c96da7a33f069e8a22735ec3be1effe26e04c6b58d5d48c",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/guest-adapter-build-manifest.json"
+    },
+    {
+      "bytes": 4403,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "66bf21e104a1171a1af013cae5003efc9153e201686271c81a2fd909b462e9d9",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "700b22ffde69f5de3509e5ae60bbd8a8ff181d00",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/patch-existing-guest.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "66bf21e104a1171a1af013cae5003efc9153e201686271c81a2fd909b462e9d9",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/patch-existing-guest.mjs"
+    },
+    {
+      "bytes": 3062,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "c152dd3428ecc35fd268f6a951a6971f5510d5b4d33dd0186a056e7de84d22af",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "575dfaa698fb2a707926438c7da065fbac2748ff",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/existing-guest-splice-receipt.json",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "c152dd3428ecc35fd268f6a951a6971f5510d5b4d33dd0186a056e7de84d22af",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/existing-guest-splice-receipt.json"
+    },
+    {
+      "bytes": 7912,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "1c6747de3fe6151aa552e59dd87dce1493f1597ffff7b882576f5bf0b6f82a27",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "e1d77d0e5d4f3791df3afa49aa822fb0cb284882",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/existing-guest-foundation.test.mjs.source.txt",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "1c6747de3fe6151aa552e59dd87dce1493f1597ffff7b882576f5bf0b6f82a27",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/existing-guest-foundation.test.mjs"
+    },
+    {
+      "bytes": 688,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "74e0c189018ad860eccbe3360f2ff11be201e4a89f6ceb807e9f3ca1f8b5a929",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "0679fc928f988ff2d8fbb1e4feb0fb4eedbe65fe",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/existing-guest-foundation-tests.log.txt",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "74e0c189018ad860eccbe3360f2ff11be201e4a89f6ceb807e9f3ca1f8b5a929",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/existing-guest-foundation-tests.log"
+    },
+    {
+      "bytes": 9559,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "0b098783399eb129970b33d2b90a4382d5475329b8a83bb9ad871e7407bd050f",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [
+        {
+          "bytes": 9559,
+          "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+          "gitBlobSha": "7e8215250ead18187d2c709df3e7dbd607954ad0",
+          "mode": "100644",
+          "path": "corpus/foundation-origin-reader.mjs"
+        }
+      ],
+      "gitBlobSha": "7e8215250ead18187d2c709df3e7dbd607954ad0",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source/corpus/foundation-origin-reader.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "0b098783399eb129970b33d2b90a4382d5475329b8a83bb9ad871e7407bd050f",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/foundation-origin-reader.mjs"
+    },
+    {
+      "bytes": 5334,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "1aa5d45c4e93cf9a7e2405152be58c074e91af50b55d44c797003cb0fdf00d50",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [
+        {
+          "bytes": 5334,
+          "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+          "gitBlobSha": "90724b922bb40ad842b1bd784c9e510288218289",
+          "mode": "100644",
+          "path": "corpus/foundation-phase-contract-v2.mjs"
+        },
+        {
+          "bytes": 5334,
+          "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+          "gitBlobSha": "90724b922bb40ad842b1bd784c9e510288218289",
+          "mode": "100644",
+          "path": "dev/r9-phase-adapter-candidate-custody-20261027/corpus/foundation-phase-contract-v2.mjs"
+        }
+      ],
+      "gitBlobSha": "90724b922bb40ad842b1bd784c9e510288218289",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source/corpus/foundation-phase-contract-v2.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "1aa5d45c4e93cf9a7e2405152be58c074e91af50b55d44c797003cb0fdf00d50",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/foundation-phase-contract-v2.mjs"
+    },
+    {
+      "bytes": 7358,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "a7cfadb18b4d821c8474dd112a223f64418fc358db1d008e6fdf185d02918e0e",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [
+        {
+          "bytes": 7358,
+          "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+          "gitBlobSha": "2d49353d1f046554414d36b0a9cd24ad6fdd1e6b",
+          "mode": "100644",
+          "path": "corpus/foundation-phase-contract.mjs"
+        },
+        {
+          "bytes": 7358,
+          "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+          "gitBlobSha": "2d49353d1f046554414d36b0a9cd24ad6fdd1e6b",
+          "mode": "100644",
+          "path": "dev/r9-phase-adapter-candidate-custody-20261027/corpus/foundation-phase-contract.mjs"
+        }
+      ],
+      "gitBlobSha": "2d49353d1f046554414d36b0a9cd24ad6fdd1e6b",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source/corpus/foundation-phase-contract.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "a7cfadb18b4d821c8474dd112a223f64418fc358db1d008e6fdf185d02918e0e",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/foundation-phase-contract.mjs"
+    },
+    {
+      "bytes": 3012,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "cab3c8ea8e5fab9f31eccfd52b8ff85ed575a645b7dbbecba5862beb935e57eb",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [
+        {
+          "bytes": 3012,
+          "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+          "gitBlobSha": "740057a9746ba58a18c77ade42f09a12b3510560",
+          "mode": "100644",
+          "path": "corpus/foundation-policy-set.mjs"
+        }
+      ],
+      "gitBlobSha": "740057a9746ba58a18c77ade42f09a12b3510560",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source/corpus/foundation-policy-set.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "cab3c8ea8e5fab9f31eccfd52b8ff85ed575a645b7dbbecba5862beb935e57eb",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/foundation-policy-set.mjs"
+    },
+    {
+      "bytes": 2722,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "cced93ca7d247d5b94c3dbbb03ec35931af409b306542fefd554746abc1a6264",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [
+        {
+          "bytes": 2722,
+          "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+          "gitBlobSha": "47439db769739db3734d307aede86cd2d885b616",
+          "mode": "100644",
+          "path": "corpus/foundation-product-handler.mjs"
+        }
+      ],
+      "gitBlobSha": "47439db769739db3734d307aede86cd2d885b616",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source/corpus/foundation-product-handler.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "cced93ca7d247d5b94c3dbbb03ec35931af409b306542fefd554746abc1a6264",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/foundation-product-handler.mjs"
+    },
+    {
+      "bytes": 3079,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "8d32deda4d0444dfc932efb66acc8ab9ba9231f82043a8e2649ba3e9ae002a81",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "c2c0b3c3c20e46d57bbc3e810dfa8d23096f211f",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source/corpus/foundation-reference-reader.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "8d32deda4d0444dfc932efb66acc8ab9ba9231f82043a8e2649ba3e9ae002a81",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/foundation-reference-reader.mjs"
+    },
+    {
+      "bytes": 5257,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "8ac332be5062080e1b89b8ef86cd7b682e54c0024f2626139d9eb0c013ef4867",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "291b9b1046d690847e33d5f67291a6b573df2ff4",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source/corpus/owned-foundation-response.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "8ac332be5062080e1b89b8ef86cd7b682e54c0024f2626139d9eb0c013ef4867",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/corpus/owned-foundation-response.mjs"
+    },
+    {
+      "bytes": 6458,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "3c4544fb0d86bd3c3fa1a3a619fc93ef3ae213f22f018e5d7376ab5188e3e321",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "cdea7df9c93f886ef4d6bd526d49e4d3817df57b",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source/guest-foundation-adapter.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "3c4544fb0d86bd3c3fa1a3a619fc93ef3ae213f22f018e5d7376ab5188e3e321",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/guest-foundation-adapter.mjs"
+    },
+    {
+      "bytes": 831,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "0fef1c38c4a2e2e517a10d60ad3f8ccbe82cebf4ea3516c3ac1ea32aef0f48ac",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "f444f183847e7755efa8e18c494621dc44155934",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source/owned-foundation-response.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "0fef1c38c4a2e2e517a10d60ad3f8ccbe82cebf4ea3516c3ac1ea32aef0f48ac",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/owned-foundation-response.mjs"
+    },
+    {
+      "bytes": 2982,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "c9030d37c649cc442f58680531d7de44d391f11b",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source/public/foundation-handoff-bindings.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "5cf149699ea8ac2894a9b53b720dc9f919764160bdce68480dae85aa7f87f584",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/public/foundation-handoff-bindings.mjs"
+    },
+    {
+      "bytes": 6878,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [
+        {
+          "bytes": 6878,
+          "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+          "gitBlobSha": "c29c25292c01da77f252acd04072a90ffb5f2886",
+          "mode": "100644",
+          "path": "dev/local-foundation-retained-cutsets-20261027/foundation-scanner-handoff.mjs"
+        },
+        {
+          "bytes": 6878,
+          "commit": "d6267b36bba7db669561293bd191980e1a6b567a",
+          "gitBlobSha": "c29c25292c01da77f252acd04072a90ffb5f2886",
+          "mode": "100644",
+          "path": "dev/local-named-foundation-r3-custody-20261027/consumer/foundation-scanner-handoff.mjs"
+        }
+      ],
+      "gitBlobSha": "c29c25292c01da77f252acd04072a90ffb5f2886",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source/public/foundation-scanner-handoff.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "f09f47ef05afc944795a798ff0f9d2545848c05ad96da25478cb7175e8953d00",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/public/foundation-scanner-handoff.mjs"
+    },
+    {
+      "bytes": 10461,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "46d43f13d06caafc22ddc47e361e04e5e0abb97e23709c3d028ed48f0d518e3d",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "dc35e1180950ba6a67d12ead3e162880d6587e2b",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source/public/production-scanner/foundation-scanner-client.mjs",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "46d43f13d06caafc22ddc47e361e04e5e0abb97e23709c3d028ed48f0d518e3d",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source/public/production-scanner/foundation-scanner-client.mjs"
+    },
+    {
+      "bytes": 7622,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "1a81d4a2ab45485b7c7cf88f8c06f0aee13aa298",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-owned-foundation-public-target-v1/source-artifact-manifest.json",
+      "reviewRef": "owned-data-final-manifest:97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sha256": "97f45d60e369c128d5e268de9514f164986df10025fcd8636624936cc8ad5530",
+      "sourcePath": "/workspace/shared/offmenu-owned-foundation-production-20261027/source-artifact-manifest.json"
+    },
+    {
+      "bytes": 5197,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "cfb4d43c1b63f558fa18ef61523827ff2388110ffb09c72a6ee0e9ec27158e6d",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "3de05f5753f657866ab641015814ddccfb9070a1",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/README.md",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "cfb4d43c1b63f558fa18ef61523827ff2388110ffb09c72a6ee0e9ec27158e6d",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/README.md"
+    },
+    {
+      "bytes": 408,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "275180a284f2629ee6deec33fded25006191c08f8219076f7786f1c5d65792c7",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "53ca762429686333769d8e6050c51721180b5ace",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/source/cloud/source-reference-stock.mjs",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "275180a284f2629ee6deec33fded25006191c08f8219076f7786f1c5d65792c7",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/source/cloud/source-reference-stock.mjs"
+    },
+    {
+      "bytes": 468,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "4910abf19f4c672fd7a1a2019c99d777c397f2d5af6dff763e3bad348d232b61",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "556dec9f2a6bb943d2af798eed4380b2e6ffa399",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/source-reference-stock-entry.mjs",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "4910abf19f4c672fd7a1a2019c99d777c397f2d5af6dff763e3bad348d232b61",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/source-reference-stock-entry.mjs"
+    },
+    {
+      "bytes": 90639,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "3952df80dd0799848add2ef68e5e92591e16d99e5d0a9c9f42f048ea497abe52",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "603e54ddd403e81a245bd26993526ec243694bad",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/source-reference-stock.mjs",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "3952df80dd0799848add2ef68e5e92591e16d99e5d0a9c9f42f048ea497abe52",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/source-reference-stock.mjs"
+    },
+    {
+      "bytes": 4471,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "39fb9620aa00bce6b32df3baea58d9eef7f3b461606ab90691fb88c07edbe2e5",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "f6937c4ddaae46511bb43bbcf7e49d7642bea70f",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/source-reference-stock.mjs.build.json",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "39fb9620aa00bce6b32df3baea58d9eef7f3b461606ab90691fb88c07edbe2e5",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/source-reference-stock.mjs.build.json"
+    },
+    {
+      "bytes": 1786,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "8f32c1b3d154ec094744c68c5000e6c1e26c28f7abbe1199ab2593707c57027c",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "ce87214ef224acb14f5e5842a5e5aa4b549d05bf",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/build-server-reference.mjs",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "8f32c1b3d154ec094744c68c5000e6c1e26c28f7abbe1199ab2593707c57027c",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/build-server-reference.mjs"
+    },
+    {
+      "bytes": 3602,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "6cf3b2db6712dc8e872bebe4415f41df82b585839ad86449a441a8fc5a6d32c8",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "07713665ea0c8578026497cad6a476dd2e2147bf",
+      "kind": "source",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/patch-server-reference.mjs",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "6cf3b2db6712dc8e872bebe4415f41df82b585839ad86449a441a8fc5a6d32c8",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/patch-server-reference.mjs"
+    },
+    {
+      "bytes": 11911,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "24c805e086b60f837bf8ccdf112992fa60c99d7119d29d250fafd44b9551a710",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "b6fb2b0b23db99c005054cf9fb9c47ec3f166123",
+      "kind": "test",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/server-reference-save.test.mjs.source.txt",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "24c805e086b60f837bf8ccdf112992fa60c99d7119d29d250fafd44b9551a710",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/server-reference-save.test.mjs"
+    },
+    {
+      "bytes": 721,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "fd02ea7efe28893b91324442c4231a5e7116039245a1ec5a3dab35d2130d2449",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "3e3b6615bd533d2138a4f1d68e214c2b23103c61",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/server-reference-save-tests.log.txt",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "fd02ea7efe28893b91324442c4231a5e7116039245a1ec5a3dab35d2130d2449",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/server-reference-save-tests.log"
+    },
+    {
+      "bytes": 1038,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "d0f9fc3ba92f8edeb1259fcf68e12bb7b8b9f0dc00a03cbca36be8eed333319a",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "26c1e978a31dc40895750b4853a66ea49903b508",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/deployed-application.server-reference.mjs.server-dispatch.json",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "d0f9fc3ba92f8edeb1259fcf68e12bb7b8b9f0dc00a03cbca36be8eed333319a",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/deployed-application.server-reference.mjs.server-dispatch.json"
+    },
+    {
+      "bytes": 722,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "f0c6b4eb59afaa3d01854bf05175a2701b6658e013368f081e45a4135fce9e43",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "0c2e8e34b8e6a6a7d4557e41ffbaa5603b842fb1",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/composed-server-reference-save-tests.log.txt",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "f0c6b4eb59afaa3d01854bf05175a2701b6658e013368f081e45a4135fce9e43",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/composed-server-reference-save-tests.log"
+    },
+    {
+      "bytes": 721,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "855272555340f9ede1b04de6f8d786948a30f603596f6e3b61ae6be6ad132e9e",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "d68452945ec45e60d8c18420adf5852038bae9ec",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/public-target-server-reference-save-tests.log.txt",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "855272555340f9ede1b04de6f8d786948a30f603596f6e3b61ae6be6ad132e9e",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/public-target-server-reference-save-tests.log"
+    },
+    {
+      "bytes": 2552,
+      "contentReview": {
+        "noRawDatasets": true,
+        "noRuntimeGrants": true,
+        "noSecrets": true,
+        "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "reviewedBy": "owned-data source owner and custody import review",
+        "sha256": "3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+        "sourceOnly": true
+      },
+      "custodyMode": "100644",
+      "existingOriginObjects": [],
+      "gitBlobSha": "696fc001b000b3b9b9722bf8fe934d74bcd188db",
+      "kind": "documentation",
+      "repositoryPath": "dev/reviewed-local-source-custody-20261027/cloud-server-native-reference-v1/artifact-manifest.json",
+      "reviewRef": "owned-data-final-manifest:3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sha256": "3728d0702bc68527220e9f8a797488b7a2157f9771a39faab3ffb2815b83472c",
+      "sourcePath": "/workspace/shared/offmenu-server-native-reference-integration-20261027/artifact-manifest.json"
+    }
+  ],
+  "repository": "maldous/offmenu",
+  "runtimeAdoption": false,
+  "schemaVersion": "offmenu-source-custody-import/1",
+  "scope": "exact-source-test-documentation-custody-only-unimported",
+  "screeningLimit": "Pattern scanning supplements the recorded exact-byte content reviews; it is not a confidentiality proof.",
+  "selectionSha256": "403cb2b9cd5bb1f545a528b3213bfafe386f396d8da49f04bd60a1584d0d90e4",
+  "transport": null
+}

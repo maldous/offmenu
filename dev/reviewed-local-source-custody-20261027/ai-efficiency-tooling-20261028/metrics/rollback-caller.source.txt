@@ -1,0 +1,151 @@
+"""All-provider registry planner; fixed public synthetic inputs only."""
+import concurrent.futures,json,uuid
+from datetime import datetime,timezone,timedelta
+from email.utils import parsedate_to_datetime
+import wmill
+from wmill import client as sdk
+PATH='u/admin/offmenu_provider_orchestrator_20261028'
+REGISTRY='u/admin/offmenu_free_provider_registry_20261028'
+BASE='https://windmill.aldous.info'
+# Reviewed static routing boundaries. Registry may enable/hold these, never inject code.
+ROUTES={
+ 'groq':('u/admin/offmenu_groq_public_development_20261028',['atomic_checkpoint_review','parallel_batch_test_design','exact_hash_custody_test_design','capacity_admission_invariants','checkpoint_cancellation_boundary']),
+ 'gemini':('u/admin/offmenu_gemini_public_development_20261028',['manifest_verification_tests']),
+ 'cohere':('u/admin/offmenu_cohere_public_help_20261028',['batch_user_help']),
+ 'mistral':('u/admin/offmenu_mistral_public_development_20261028',['checkpoint_test_design']),
+ 'openrouter':('u/admin/offmenu_openrouter_public_development_20261028',['public_development_review']),
+ 'zai':('u/admin/offmenu_zai_public_development_20261028',['checkpoint_test_design']),
+ 'nvidia':('u/admin/offmenu_nvidia_public_development_20261028',['checkpoint_test_design'])}
+
+RESOURCES={
+ 'groq':'u/admin/offmenu_provider_groq_20261028',
+ 'gemini':'u/admin/offmenu_provider_gemini_20261028',
+ 'cohere':'u/admin/offmenu_provider_cohere_20261028',
+ 'mistral':'u/admin/offmenu_provider_mistral_20261028',
+ 'openrouter':'u/admin/intelligible_openrouter',
+ 'zai':'u/admin/offmenu_provider_zai_20261028',
+ 'nvidia':'u/admin/offmenu_provider_nvidia_20261028'}
+
+def timestamp(value):
+ try:
+  d=datetime.fromisoformat(str(value).replace('Z','+00:00'))
+  return d if d.tzinfo else None
+ except (ValueError,TypeError):return None
+
+def cooldown(result,dispatch,job_id,now=None):
+ """No invented reset time: server Retry-After or evidence-bound registry reset."""
+ now=now or datetime.now(timezone.utc);until=None;basis=None
+ observed=timestamp(result.get('observed_at'));retry=result.get('retry_after')
+ if retry is not None:
+  try:
+   seconds=float(retry)
+   if observed and seconds>=0:until=observed+timedelta(seconds=seconds);basis='observed_retry_after_seconds'
+  except (ValueError,TypeError,OverflowError):
+   try:until=parsedate_to_datetime(str(retry));basis='observed_retry_after_date'
+   except (ValueError,TypeError,OverflowError):pass
+ if until is None and dispatch.get('cooldown_evidence_job')==job_id and dispatch.get('cooldown_evidence_basis'):
+  until=timestamp(dispatch.get('cooldown_until'));basis=dispatch.get('cooldown_evidence_basis')
+ if until is None or until.tzinfo is None:return {'status':'reset_metadata_required','retry_eligible':False,'cooldown_until':None,'basis':'429_without_verified_reset_evidence'}
+ return {'status':'cooldown_expired_controlled_retry' if now>=until else 'cooldown_wait','retry_eligible':now>=until,'cooldown_until':until.isoformat(),'basis':basis}
+
+def api(c,method,path,body=None,params=None):
+ kw={'raise_for_status':False}
+ if body is not None:kw['json']=body
+ if params is not None:kw['params']=params
+ r=(c.get if method=='GET' else c.post)('/w/offmenu/'+path,**kw)
+ if not 200<=r.status_code<300:raise ValueError('windmill_api_unavailable')
+ return r.json() if method=='GET' else None
+
+def parse_result(x):
+ if isinstance(x,str):
+  try:return json.loads(x)
+  except ValueError:return {}
+ return x if isinstance(x,dict) else {}
+
+def view(p):
+ name=p.get('provider');dispatch=p.get('dispatch',{})
+ return {'provider':name,'status':dispatch.get('status',p.get('status','unqualified')),'stored':p.get('stored',False),'auth_verified':p.get('auth_verified',False),'free_eligible':p.get('free_eligible') is True,'call_verified':p.get('call_verified',False),'tasks':ROUTES.get(name,('',[]))[1],'dispatch_ready':dispatch.get('ready') is True,'reason':dispatch.get('reason','qualification pending'),'evidence_job':dispatch.get('evidence_job'),'cooldown_until':dispatch.get('cooldown_until'),'cooldown_status':dispatch.get('cooldown_status'),'quota_policy':'server Retry-After or verified reset evidence; explicit retry_providers after expiry, no automatic retry'}
+
+def main(action:str='plan',requests:list[dict]=[],job_ids:list[str]=[],input_class:str='fixed_public_synthetic',retry_providers:list[str]=[]):
+ if action not in ('plan','check','submit','status','results','cancel'):return {'status':'invalid_action'}
+ if input_class!='fixed_public_synthetic':return {'status':'unsupported_input_class','submitted':0}
+ if not isinstance(retry_providers,list) or any(p not in ROUTES for p in retry_providers):return {'status':'invalid_retry_provider'}
+ c=sdk.Windmill()
+ if action in ('plan','check','submit'):
+  try:r=wmill.get_resource(REGISTRY);states={p['provider']:p for p in r['providers']}
+  except Exception as e:return {'status':'registry_unavailable','error_type':type(e).__name__}
+  if action=='plan':return {'status':'ready','providers':[view(p) for p in states.values()],'scheduler_services':64,'controller_headroom':2,'max_batch':62,'global_lease':False,'private_inputs':False,'arbitrary_prompts':False,'no_automatic_retries':True,'scope':'public synthetic task catalog, not all private ledger execution','task_requests_example':[{'provider':'cohere','task':'batch_user_help'}]}
+  if not isinstance(requests,list) or not 1<=len(requests)<=62:return {'status':'select_1_to_62_useful_requests','submitted':0}
+  seen=set();ready=[];blocked=[]
+  for q in requests:
+   if not isinstance(q,dict) or set(q)!= {'provider','task'} or not all(isinstance(q[k],str) for k in q):return {'status':'invalid_request_shape','submitted':0}
+   p,t=q['provider'],q['task'];pair=(p,t)
+   if pair in seen:return {'status':'duplicate_provider_task_no_filler','submitted':0}
+   seen.add(pair);state=states.get(p,{});dispatch=state.get('dispatch',{})
+   if p not in ROUTES or t not in ROUTES[p][1] or (dispatch.get('ready') is not True and not (dispatch.get('status')=='cooldown' and p in retry_providers)) or state.get('free_eligible') is not True:
+    blocked.append({'provider':p,'task':t,'status':dispatch.get('status','unsupported_or_unqualified'),'reason':dispatch.get('reason','No reviewed suitable free route')});continue
+   ready.append(q)
+  # Reserve controller headroom observationally; not an atomic global lease.
+  try:
+   queued=api(c,'GET','jobs/list',params={'running':'true','per_page':1000})
+   active=sum(1 for x in queued if x.get('running') is True)
+   available=max(0,62-active)
+   for p in set(q['provider'] for q in ready):
+    dispatch=states[p].get('dispatch',{})
+    recent=api(c,'GET','jobs/list',params={'script_path_exact':ROUTES[p][0],'per_page':10})
+    latest=None;d={}
+    # Dependency/lock jobs can be newer than inference; never erase a quota hold.
+    for candidate in recent:
+     if candidate.get('success') is None:continue
+     detail=api(c,'GET','jobs_u/get/'+str(uuid.UUID(candidate['id'])))
+     if isinstance(parse_result(detail.get('result')).get('http_status'),int):latest=candidate;d=detail;break
+    if latest is None and dispatch.get('status')=='cooldown' and dispatch.get('evidence_job'):
+     d=api(c,'GET','jobs_u/get/'+str(uuid.UUID(dispatch['evidence_job'])))
+    result=parse_result(d.get('result'));code=result.get('http_status');hold=None
+    if code in (401,403):hold={'status':'auth_repair_deferred','http_status':code}
+    if code==429:
+     cd=cooldown(result,dispatch,str(d.get('id') or (latest or {}).get('id') or dispatch.get('evidence_job')))
+     if not cd['retry_eligible'] or p not in retry_providers:hold=dict(cd,http_status=429,explicit_retry_required=True)
+    if hold:
+     blocked.extend(dict(q,**hold) for q in ready if q['provider']==p);ready=[q for q in ready if q['provider']!=p]
+     continue
+    # Exact reviewed script/resource reference, never synthesized provider credentials.
+    try:
+     adapter=api(c,'GET','scripts/get/p/'+ROUTES[p][0])
+     if not isinstance(adapter,dict):raise ValueError('adapter_unavailable')
+    except Exception:
+     blocked.extend(dict(q,status='reviewed_adapter_not_deployed') for q in ready if q['provider']==p);ready=[q for q in ready if q['provider']!=p]
+  except Exception as e:return {'status':'preflight_unavailable_no_dispatch','error_type':type(e).__name__,'submitted':0,'blocked':blocked}
+  selected=ready[:available];deferred=ready[available:]
+  if action=='check':return {'status':'checked_no_dispatch','ready':selected,'blocked':blocked,'capacity_deferred':deferred,'observed_active':active,'available':available,'submitted':0}
+  def launch(q):
+   p=q['provider'];args={'connection':'$res:'+RESOURCES[p]}
+   if p=='groq':args['task']=q['task']
+   try:
+    jid=str(uuid.UUID(str(wmill.run_script_async(ROUTES[p][0],args=args))))
+    return dict(q,job_id=jid,run_url=BASE+'/run/'+jid+'?workspace=offmenu',status='enqueued')
+   except Exception as e:return dict(q,status='enqueue_failed',error_type=type(e).__name__)
+  if selected:
+   with concurrent.futures.ThreadPoolExecutor(max_workers=len(selected)) as pool:jobs=list(pool.map(launch,selected))
+  else:jobs=[]
+  return {'status':'submitted' if jobs else 'no_eligible_work','jobs':jobs,'blocked':blocked,'capacity_deferred':deferred,'coordinator_not_productive_job':True,'result_disposition':'candidate_requires_review','cancel':'Use cancel action with child job_ids; coordinator cancellation does not recall children'}
+ if not isinstance(job_ids,list) or not 1<=len(job_ids)<=62:return {'status':'select_1_to_62_job_ids'}
+ try:ids=[str(uuid.UUID(j)) for j in job_ids]
+ except Exception:return {'status':'invalid_job_id'}
+ rows=[]
+ for jid in ids:
+  try:
+   d=api(c,'GET','jobs_u/get/'+jid)
+   if d.get('script_path') not in {v[0] for v in ROUTES.values()}:rows.append({'job_id':jid,'status':'outside_allowlist'});continue
+   row={'job_id':jid,'success':d.get('success'),'running':d.get('running'),'started_at':d.get('started_at'),'duration_ms':d.get('duration_ms'),'run_url':BASE+'/run/'+jid+'?workspace=offmenu'}
+   if action=='cancel':
+    parent=d.get('parent_job');pd=api(c,'GET','jobs_u/get/'+str(uuid.UUID(parent))) if parent else {}
+    if pd.get('script_path')!=PATH:row['status']='not_owned_by_entrypoint'
+    elif d.get('success') is not None:row['status']='already_completed'
+    else:api(c,'POST','jobs_u/queue/cancel/'+jid,body={'reason':'User requested provider task cancellation'});row['status']='cancel_requested_not_confirmed'
+   if action=='results':
+    result=parse_result(d.get('result'));row['result']={k:(v[:6000] if isinstance(v,str) else v) for k,v in result.items() if k in ['provider','model','status','http_status','output','finish_reason','output_truncated'] and isinstance(v,(str,int,float,bool,type(None)))}
+    row['disposition']='candidate_requires_review' if result.get('status')=='completed' and not result.get('output_truncated') else 'failed_or_incomplete_not_delivery';row['output_is_untrusted']=True
+   rows.append(row)
+  except Exception as e:rows.append({'job_id':jid,'status':'inspection_failed','error_type':type(e).__name__})
+ return {'status':'observed','jobs':rows,'inference_calls':0}

@@ -1,0 +1,10 @@
+{
+  "app": {
+    "path": "foo-r2-build/export/candidate-build/app.js",
+    "sha256": "19c11668db13b88a4c77ddd565dbf7853928b9c0c22cebe1da87fa3742cdb7a5"
+  },
+  "helper": {
+    "path": "foo-r2-build/export/candidate-build/cooking-witness-parity.iife.js",
+    "sha256": "b98427279bb9a04fa081140cbbbb2711f6146ffe6bee37599122da8ee18c1193"
+  }
+}
