@@ -1,13 +1,14 @@
 {
-  "schema": "uif-worker-policy-manifest-v1",
+  "schema": "uif-worker-policy-reference-v1",
   "policy_id": "uif-worker-policy",
-  "version": "1.2.3",
+  "required_policy_version": "2.0.0",
   "repository": "maldous/offmenu",
-  "policy_path": "docs/agents/uif-worker-policy.md",
-  "sha256": "7661157148bcd61499f2198aec5e0b22124b30bbf5c535f2117813fdfceb2459",
+  "environment_profile": "offmenu",
+  "distribution": "environment-owned-overlay",
   "maintenance_repository": "maldous/uif",
   "maintenance_path": "docs/agents/uif-worker-policy.md",
-  "distribution": "reviewed-local-copy",
-  "prior_agents_sha256": "8969297c959ed0be5867a4622cf2ddce95be419fbeb7279b946f14910500b7e3",
-  "base_commit": "850d4b71c1ca2af5a0989fb50952445071597068"
+  "manifest_path": "docs/agents/uif-worker-policy.json",
+  "installed_digest_source": "selected execution environment manifest",
+  "historical_policy_path": "docs/agents/history/uif-worker-policy-1.2.3.md",
+  "historical_manifest_path": "docs/agents/history/uif-worker-policy-1.2.3.json"
 }
