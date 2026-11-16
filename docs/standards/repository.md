@@ -1,6 +1,7 @@
-# Repository standard 2.5.3
+# Repository standard 2.5.4
 
-Status: 2.5.3 merge-only amendment candidate based on accepted source 349dbf9; previous standard status: adopted through reviewed integration after independent source review and
+Status: 2.5.4 environment-policy distribution candidate, preserving the 2.5.3
+merge-only amendment candidate based on accepted source 349dbf9; previous standard status: adopted through reviewed integration after independent source review and
 real retained-extraction validation. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
 [`repository-standard.json`](../../repository-standard.json). This document
@@ -182,14 +183,18 @@ or security configuration and cannot certify its own integration.
 
 ## Shared agent instructions
 
-[ADR 0010](../adr/0010-shared-worker-policy.md) adds a pinned local UIF worker
-policy copy and startup reference. It changes no runtime capacity/admission rule,
-source layout, integration ownership or publication permission.
+[ADR 0014](../adr/0014-environment-owned-operating-policy.md) changes shared
+instruction distribution to an optional environment-owned UIF policy 2.0.0
+bundle and an OffMenu profile reference. Project source/toolchain/review contracts
+remain self-contained. Source adoption and actual environment installation are
+separate. The previous full local policy and manifest remain unchanged in
+`docs/agents/history/`.
 
-Standard 2.5.2 follows [ADR 0012](../adr/0012-cloud-routing-policy-1-2.md):
-carry the exact canonical UIF worker policy 1.2.0 and reconcile task routing with
-independent project-cloud execution and optional scoped Foo MCP. Existing typed
-admission, resource, review and integration requirements remain unchanged.
+[ADR 0010](../adr/0010-shared-worker-policy.md) and
+[ADR 0012](../adr/0012-cloud-routing-policy-1-2.md) retain the historical local-copy
+decisions. Their independent cloud/scoped MCP distinctions remain applicable.
+The distribution amendment changes no runtime capacity, typed admission,
+resource, review, integration or publication authority.
 
 ## Explicit merge-only existing PRs
 
