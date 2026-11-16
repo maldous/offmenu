@@ -14,6 +14,9 @@ native help from optional third-party services.
 For barcode capture, source-result inspection and session controls, see the
 [source-bound scanner task guide](scanner-user-guide.md).
 
+For the member's assistant name, private instructions and save/conflict states,
+see [Personal AI preferences](personal-ai-guide.md).
+
 ## Code and workflow map
 
 | Area | Entry points and guides |
