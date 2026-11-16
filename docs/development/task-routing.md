@@ -269,6 +269,13 @@ authorize recovery or substitute for the runner/controller's acceptance checks.
 
 ## Capacity is capability, not a target
 
+The table below describes this repository's retained adapter configuration.
+The [environment policy](../agents/uif-worker-policy.md) owns the multi-project
+64 Foo-local-session target and quota-mode transitions; verify installed policy,
+resource headroom and ownership before admission. Do not equate the final row's
+64 subprocesses with 64 model sessions or change this adapter's configuration to
+match an unverified host observation.
+
 | Resource | What is established | What it does not establish |
 | --- | --- | --- |
 | Native reasoning collaboration | The current tool session may expose a root plus six independent slots | Availability of cloud durable tasks, provider quota, or permission to duplicate work |
