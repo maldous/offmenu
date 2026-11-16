@@ -1,6 +1,6 @@
 # OffMenu execution-environment policy reference
 
-UIF operating policy **2.0.0** is owned and installed by the selected execution
+UIF operating policy **2.0.1** is owned and installed by the selected execution
 environment. Its canonical source is [maldous/uif](https://github.com/maldous/uif/blob/develop/docs/agents/uif-worker-policy.md)
 and its [version manifest](https://github.com/maldous/uif/blob/develop/docs/agents/uif-worker-policy.json).
 This file is a reference, not an installed policy bundle or proof of adoption.
