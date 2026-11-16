@@ -149,8 +149,7 @@ the full validated envelope; owner-approved migration/export/delete remains need
 Read immutable native local D1 protocol `f88902e87baa4e901006ec87083080c5188d06dd`,
 cloud/session-state-d1-owner04.mjs SHA256
 `1dc8633974f83f643d13b27cdeb44f3e4a4c3093c487583ff8719fefa574d12a`,
-and independent11 proof.json at
-/home/user/Documents/Codex/2026-10-15/worker-11-review/native-d1-owner04.
+and its retained independent proof.
 It supplies operationId/expectedVersion/state mutation, primary revision CAS,
 session/subject/realm/epoch/expected-version admission and outcome ledger in atomic
 D1 batch. D1 is async; no JavaScript callback transaction or SQLite substitution

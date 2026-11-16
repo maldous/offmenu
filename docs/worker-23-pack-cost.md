@@ -53,9 +53,4 @@ Outputs retain need/product/offer/store/account identities, provenance (includin
 
 ## Actual validation and limits
 
-- `node tests-web/offer-comparison-model.test.mjs`: initial exit 1 (module absent); final exit 0, **8 tests passed** in 6.593179 ms. These were the only two focused Node invocations, with no spawned fixtures, servers or broad suites.
-- Checks cover the 600 g negative example, kg/g conversion, dimension and identity mismatch, null quantity/price/fee/budget, explicit zero fee/budget, observation dates and windows, malformed dates, currency/account/provenance mismatch, fee counting, store limits, arithmetic bounds, duplicates, bounded arrays and input immutability.
-- `git diff --check`: exit 0; untracked additions also checked after staging before commit.
-- Shared common dir: `/home/user/src/offmenu/.git`; shared main HEAD: `8652b312ce7989c5e4f2d49ae765d5d8daf5841d`; shared main index SHA-256: `4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389`. Read-back values were equal before and after focused checks; commit gating asserts these remain unchanged.
-
-DATA-06/DATA-11 custody and qualification, NORM-05 conversion evidence beyond simple units, approved joins and conditions, UI adoption, accessibility and independent acceptance remain integration dependencies. No real provider coverage, release fitness, allergy/medical suitability, nutrition equivalence, food expiry, ownership or purchase authority is established by these unit tests. Morgan review is the next gate; Worker 23 returns to idle afterward.
+DATA-06/DATA-11 custody and qualification, NORM-05 conversion evidence beyond simple units, approved joins and conditions, UI adoption, accessibility and independent acceptance remain integration dependencies. No real provider coverage, release fitness, allergy/medical suitability, nutrition equivalence, food expiry, ownership or purchase authority is established by these unit tests. the product maintainer review is the next gate; Worker 23 returns to idle afterward.

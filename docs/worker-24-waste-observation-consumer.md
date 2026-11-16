@@ -2,8 +2,6 @@
 
 READY FOR MORGAN REVIEW, not integrated or shipped. P2-05 with P2-02/P2-04 dependencies. Retained helper 5b072aa40786b507fcc673554310a8aea6f02d0c verified in Git; not imported or edited pending Worker 03 independent qualification. Dataset commit 7fe849b0297a2fbe5a97457c206afd230cc3dd67 remains on feature/dataset-west-africa-fao-20261014, including its CSV/receipt/note. Metadata is never automatic admission.
 
-Pickup: existing permanent Worker 24, host foo, thread 01a138fa-bc52-7233-b70f-9e06b4b2b6ae, cwd /home/user/src/offmenu-workers/worker-24. Fresh origin/develop fetch under /tmp/offmenu-develop-fetch.lock, exit 0, UTC 2026-10-14T10:16:22.348447+00:00; base 908ca373dfc918f2e33fd5e44260879577bed5c5. Branch feature/waste-observation-consumer-24-20261014. Inherited GIT_* stripped during Git mutation/readback. No untracked files at pickup. Prior helper and dataset branches remain intact.
-
 ## Production gap exercised
 
 cloud/state.mjs:28 reconstructs waste receipt items through validateLot, dropping wasteObservation; profile.wasteObservations is also absent from validated settings. public/app.js:134 saves cleanup receipts without stable receipt IDs or separate measured-observation provenance. Test calls actual validateState and proves both observation losses. This is actual entrypoint negative evidence, not a claim of production persistence.
@@ -25,8 +23,6 @@ Persisted history must be bound to the same epoch for read/commit authorization,
 Two focused runs of node --test tests-web/waste-observation-owner24.test.mjs: 4 passed each. Second run adds confirmed-source binding and discard-bound refusals. JSON round-trip proves adapter record serialization, not actual D1 durability. Actual validateState drop is expected until owner delta lands. No broad suites/provider calls/deploys/Actions/settings/source copies. Independent review of helper AND this candidate remains required before adoption; no acceptance inferred from unit tests.
 
 Workers 03 and 04 were sent the pickup and storage/schema contract. Initial message preceded additional confirmed wasteReceipts/source binding requirement; final pin handoff provides this full contract. Independent review and owner responses pending.
-
-Actual supplied controls: danger-full-access/unrestricted filesystem, network enabled, mandatory reviewer auto_review. Separate approval policy unavailable. CODEX_PERMISSION_PROFILE was unset in preceding readback and is not evidence for controls; no settings changed. Primary HEAD/main 8652b312ce7989c5e4f2d49ae765d5d8daf5841d and index SHA256 4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389 checked before/after commit. Common dir /home/user/src/offmenu/.git. Only unique adapter/test/doc owned here.
 
 ## Retained helper aggregate-overflow correction
 

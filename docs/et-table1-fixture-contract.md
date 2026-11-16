@@ -55,7 +55,7 @@ python3 -B -m unittest tests.test_et_table1_contract -v
 The central source-neutral planner is the qualified exact dependency
 `d5147b2713abfe0c87332ab3ee692b33a80a05b1`, module SHA256
 `ba47921d80d3cc43afe109d10f24db6d196f97231d50ad423505ed32f62e8f9e`,
-independently passed6979 by06 and delivered through Gateway. The adapter calls
+independently passed6979 by06 and delivered through the product maintainer. The adapter calls
 `retained_policy.plan_retained_input`; it contains no local cache-policy fallback.
 The policy key binds that dependency, code identity and reviewed policy; the
 scope key binds rights/selector/unit/basis/expected inventory. Historical input
@@ -63,12 +63,9 @@ pins are declarations only. The shared planner always requires actual input
 verification and allows neither network nor data admission. At30days it reports
 revalidation-required intent, never an automatic refresh operation.
 
-The exact qualified dependency is now available in the existing common Git store,
-`/home/user/src/offmenu/.git` (availability7009). PR46 was unmerged at delivery;
-00's normal PR46 gates/merge precede dependent composition. This candidate adds
-only owned ET files. The integration writer composes the shared dependency before
-running the ordinary CLI/test command above; this branch does not copy shared
-planner code or claim it is already on its933proposal base.
+The source composition must include the shared dependency before running the
+CLI or focused tests above. A dependency commit or an external worktree location
+does not establish that a separately selected checkout contains that dependency.
 
 The retained16-test proof was obtained before7009, using a test-scoped loader that
 verified and loaded the exact qualified Git-object bytes in memory. That was an

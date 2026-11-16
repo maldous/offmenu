@@ -4,7 +4,7 @@
 metadata-only capability view to the existing coverage assessment. It reads only
 the original pinned 249-country matrix and 1,303-source discovery ledger. It does
 not fetch source bodies, invoke parsers, change the existing coverage classification,
-register admissions, create Foo jobs, accept records, or publish anything.
+register admissions, create local executor jobs, accept records, or publish anything.
 
 ## Reconciled result
 

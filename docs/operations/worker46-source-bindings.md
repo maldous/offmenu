@@ -52,8 +52,8 @@ snapshots are local custody identities, not invented publisher release dates.
 | us-recipes | May 2013 FNS-430, publication/credits/use/selector held | PDF recipe-body processing; public catalogue access is not a reuse grant |
 | vn-composition | 2017 catalogue only, qualified primary dataset not held | 403 bytes, lead counts or custody labels cannot stand in for a dataset |
 
-Retained authority root (outside the repository):
-`/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables`.
+Retained source-binding evidence is external to this repository. The following
+relative identifiers and digests describe that frozen evidence, not current file locations.
 Source pointers are `owner-46/RW/reviewed-source-binding.json` (SHA
 201cbf7395aa6e4e013dade718a309968450c417311ed324a4689e00bc360af3)
 and `owner-46/TH/reviewed-source-binding.json` (SHA
@@ -91,10 +91,10 @@ coverage/gold state. Shared schema/custody/hold failures remain intact.
 
 ## Integration boundary and next dependencies
 
-Proposal base: abecb99ee1125730ccbc2824b6ec49ffc5cc4302, verified by integrator00
+Proposal base: abecb99ee1125730ccbc2824b6ec49ffc5cc4302, verified by the product integrator
 result5798. Recheck provider develop and immutable candidate at delivery/review.
 Worker46 owns only this module, its tests and this document. Shared core remains
-unchanged; integrator00/Morgan owns shared interfaces and review scheduling.
+unchanged; the product maintainer owns shared interfaces and review scheduling.
 
 No generic pure private-cache planner exists at this baseline. The Wikibooks
 `core.cache_policy` and registry-only `plan_fixture` must not be spoofed;
@@ -106,5 +106,5 @@ supply a qualified primary release (owner52 result5078 says NOT_HELD). TH method
 proposal and mapping require their own selected review. Preserve all source,
 403/private, Finland/Frida/native NO-FR, security, production/CIX and DEV7645 holds.
 No country is complete, no source dataset is newly downloaded, and no gold record
-is admitted by this package. Independent review and Morgan's integration verdict
+is admitted by this package. Independent review and the product maintainer's integration verdict
 remain necessary before integration; Worker46 retains correction ownership.

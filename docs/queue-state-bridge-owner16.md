@@ -17,7 +17,7 @@ New before/after probe executes immutable consumer `61192dd...` with queue `0e72
 
 Protocol candidate: `25543bd75c3812a203e0d3b865d51302bfe1854d:cloud/session-state-owner04.mjs`, SHA-256 `4520436816c70f93028fbbef38fdec572018dd507a8489c9027bb528af6f0be5`. Tests read immutable Git bytes with inherited GIT variables removed. The imported validator at this base is SHA-256 `801c68accc3a21fa59756e8cc8029251319ff0266ad93152563ad499f666b88b`, asserted before execution. No mutable Owner04 checkout reads, source copies or source edits.
 
-Read retained independent review `/home/user/Documents/Codex/2026-10-14/task-2/worker-11-review/session-state-owner04-independent-review/corrected-25543bd/review.txt`: F1 resolved for captured command/credential boundary; synchronous parser contract established. That verdict applies to Owner04, not this new bridge. This successor requires independent exact-pin review before adoption or normal publication.
+The retained independent review of the prior session-state contract found: F1 resolved for captured command/credential boundary; synchronous parser contract established. That verdict applies to Owner04, not this new bridge. This successor requires independent exact-pin review before adoption or normal publication.
 
 ## Bridge API and ordering
 
@@ -79,6 +79,6 @@ SAME25 exact composed-candidate re-review and manager acceptance remain required
 
 ### SAME25 W25-Q16-C2: preserve LF fixture bytes on checkout
 
-SAME25 exact d396802 review at `/home/user/Documents/Codex/2026-10-15/worker-25-digest-d396802-review/review.md` independently retained the 19/19 exported-closure result and closed the original packaging finding, but reproduced raw checksum failure on Git CRLF checkout. Added only a fixture-scoped `.gitattributes` rule (`* text eol=lf`) in `tests-web/fixtures/queue-state-owner16/`. Raw SHA256 verification, original manifests, protocol snapshots and production bridge/entrypoint remain unchanged; no newline-normalizing checksum fallback weakens content verification.
+The exact retained d396802 review independently retained the 19/19 exported-closure result and closed the original packaging finding, but reproduced raw checksum failure on Git CRLF checkout. Added only a fixture-scoped `.gitattributes` rule (`* text eol=lf`) in `tests-web/fixtures/queue-state-owner16/`. Raw SHA256 verification, original manifests, protocol snapshots and production bridge/entrypoint remain unchanged; no newline-normalizing checksum fallback weakens content verification.
 
 Focused actual disposable Git checkout regression, inherited GIT_* removed: without the attribute, core.autocrlf=true materialized CRLF in all 29 source fixtures and verifier exited 1. With the attribute, all 29 stayed LF, every declared source SHA256 matched and verifier exited 0. An intentional source-content mutation in that disposable checkout still caused verifier exit 1. Evidence: `docs/reviews/worker16-digest-composition-f6cb92a/crlf-checkout-regression.json`. This tests actual Git line-ending behavior on this host, not Windows native runtime behavior. The unchanged 19-test runtime result is retained; no broad replay was performed for this attribute-only correction. Exact successor SAME25 delta review and all existing adoption/production holds remain required.

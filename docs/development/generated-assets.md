@@ -4,8 +4,8 @@
 `apps/retailer-extension/popup-source.js`. The application build and the check below share
 `scripts/extension-build-options.mjs`, preserving the existing bundle options.
 
-After installing the repository's locked dependencies with the existing approved
-install-script policy, run this **before** `npm run build`:
+After installing the locked dependencies with `npm ci`, run this **before**
+`npm run build`:
 
 ```sh
 npm run check:generated

@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "repository": "maldous/offmenu",
+  "integration_branch": "develop",
+  "release_branch": "main",
+  "work_branch_prefixes": [
+    "feature/",
+    "bugfix/"
+  ],
+  "release_candidate": {
+    "immutable": true,
+    "required_source_facts": [
+      "base",
+      "head",
+      "tree",
+      "policy_sha256"
+    ],
+    "required_artifact_facts": [
+      "path",
+      "sha256"
+    ],
+    "develop_may_advance": true,
+    "repair_requires_new_candidate": true
+  },
+  "release": {
+    "promotion_target": "main",
+    "requires_independent_review": true,
+    "requires_complete_validation": true,
+    "requires_canonical_tree_readback": true,
+    "requires_immutable_tag": true,
+    "main_changes_only_for_approved_release": true,
+    "tag_updates_allowed": false,
+    "automatic_product_deployment": false
+  },
+  "ownership": {
+    "integration_writers": 1,
+    "source_authority": "github"
+  },
+  "recovery": {
+    "unknown_effect_requires_reconciliation": true,
+    "retain_original_operation_identity": true
+  }
+}

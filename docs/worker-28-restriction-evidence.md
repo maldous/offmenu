@@ -1,4 +1,4 @@
-# Worker 28 restriction evidence — ready for Morgan review
+# Worker 28 restriction evidence — ready for the product maintainer review
 
 Custody: branch `feature/restriction-evidence-20261014`, exact base
 `8652b312ce7989c5e4f2d49ae765d5d8daf5841d`. Dispatch supplied the successful
@@ -95,11 +95,6 @@ result. Unit coverage demonstrates this independent adapter slice, not shipment.
 Only the three reserved new files are eligible for this commit. Shared common
 directory identity, main checkout HEAD and main index hash are checked before
 and after commit; the worker's own branch/index necessarily change on commit.
-
-Initial main HEAD: `8652b312ce7989c5e4f2d49ae765d5d8daf5841d`.
-Initial main index SHA-256:
-`4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389`.
-Common directory: `/home/user/src/offmenu/.git`.
 
 Completion status: **READY FOR MORGAN REVIEW**, pending owner integration and
 independent acceptance. Worker 28 returns idle after the immutable result.

@@ -244,7 +244,7 @@ Threads only coordinate bounded adapters; this is not an OS isolation boundary.
 
 
 def compact(report):
-    """Closed small report for bounded control logs; full report stays on Foo."""
+    """Closed small report for bounded control logs; full report stays in private local storage."""
     fingerprint, size = stream_report(report)
     totals = {state: 0 for state in ('succeeded', 'reused', 'failed', 'held',
                                      'unsupported', 'quarantined', 'blocked')}
@@ -277,10 +277,10 @@ def stream_report(report, stream=None):
 
 
 def write_report(report, output):
-    """Stream an exclusive report to an operator-selected Foo output location.
+    """Stream an exclusive report to an operator-selected local output location.
 
 No overwrite, pointer update, remote upload, or implicit directory creation.
-The caller is responsible for selecting its approved Foo-only storage route.
+The caller is responsible for selecting its approved private local storage route.
 """
     output = Path(os.path.abspath(output))
     if any(path.is_symlink() for path in (output, *output.parents)):
@@ -309,7 +309,7 @@ def main(argv=None):
     parser.add_argument('--matrix', required=True)
     parser.add_argument('--ledger', required=True)
     parser.add_argument('--compact', action='store_true', help='Bounded summary; full report hash uses canonical JSON.')
-    parser.add_argument('--output', help='Stream full report exclusively to an approved Foo path; stdout is compact.')
+    parser.add_argument('--output', help='Stream full report exclusively to an approved private local path; stdout is compact.')
     args = parser.parse_args(argv)
     from .coverage import assess, CoverageError
     try:

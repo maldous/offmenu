@@ -183,15 +183,3 @@ Only Node builtins plus the same-tree pure helper and ESM package are needed; no
 historical objects, corpus, source acquisition, install or real provider fixture.
 
 ## Delivery and adoption state
-
-Only this note, public/dated-cost-comparison-owner35.mjs and its unique test change.
-Fixed branch feature/dated-cost-composition-owner35-4693cbc3-20261015 retains all old
-pins in ancestry. Main/index, previous Worker35 review artifacts, deps and owner
-paths are protected. Exact local/private-backup/source/tree/patch records are under
-/home/user/Documents/Codex/2026-10-15/task-2/worker35-dated-cost-json-contract.
-SAME41 must review the CHANGED CONTRACT and exact successor; root then binds it
-before ordinary provider recheck/eligible merge. Old PASS cannot approve this code.
-No real source/issuer/store/FX/PPP/provider, customer ranking, central account,
-purchasing, normal merge or production activation is claimed. Mandatory auto_review
-remains; filesystem unrestricted, network enabled, named env profile and separate
-approval-policy/user configuration unavailable. No controls were changed.

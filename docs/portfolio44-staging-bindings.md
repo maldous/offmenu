@@ -39,7 +39,7 @@ qualified in the tests; no production contract is constructed from a receipt.
 
 The catalog pins fourteen response references from corrected identity result4924:
 
-`/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-44/B03-W44-identity-resolution/corrected-identity-index.json`
+the retained `owner-44/B03-W44-identity-resolution/corrected-identity-index.json` evidence artifact
 
 SHA256 `889a6b71ed27a226c1d0bc942d5d5c6bf899115a86aee09a2139fddb02224c1a`.
 That index retains fifteen lineage links: the CCD June2022 PDF's two receipts
@@ -109,8 +109,8 @@ tampering, explicit nulls, deterministic replay, changed policy, no-op output,
 peer isolation, shared qualification, and the shared fixture cache window.
 The source-specific production callback/contracts are not installed. Existing00
 must capture the candidate/base/provider at the delivery gate and obtain the
-designated independent review/Morgan verdict before develop integration. Keep
-old worker44 checkout, raw Foo holdings, Finland/Frida/NO-FR crash restrictions,
+designated independent review before develop integration. Keep
+old worker44 checkout, raw local executor holdings, Finland/Frida/NO-FR crash restrictions,
 actual denials, production/CIX and DEV7645 custody unchanged.
 
 ## Bounded review correction: W32-W44-15CE-F1 / F2

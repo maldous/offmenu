@@ -16,7 +16,7 @@ acquisition timestamp and externally reviewed rights/scope evidence digests. It
 is a descriptor, not a verifier of the underlying files or evidence. Input size
 is bounded to 64 MiB; eager parsing occurs in memory, not streaming. Emitted
 canonical output is bounded to 64 MiB, 8 MiB per record and 100,000 records.
-Execution process memory isolation remains the caller's responsibility. Large retained releases stay in Foo.
+Execution process memory isolation remains the caller's responsibility. Large retained releases stay in local executor.
 
 The explicit output schema is `contracts/schemas/reference-candidate.schema.json`.
 

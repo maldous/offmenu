@@ -263,7 +263,7 @@ class Portfolio05Bindings(unittest.TestCase):
             self.assertEqual(outputs[0], outputs[1])
             self.assertEqual((path.stat().st_mtime_ns, path.read_bytes()), before)
 
-    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'Foo POSIX reader regression')
+    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'POSIX reader regression')
     def test_previous_fifo_rejected_before_metadata_reads(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp)/'previous.json'

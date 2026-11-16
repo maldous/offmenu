@@ -68,7 +68,7 @@ copy or create country PDF, HTML, JSON-stat or nutrition engines. The authored
 positive tests use one existing shared handler's exact synthetic identity and
 an authored scope pin solely to validate the metadata interface.
 
-## Proposed integrator00 interface work (not implemented)
+## Proposed the product integrator interface work (not implemented)
 
 1. Select an existing generic retained-format handler or independently review a
    generic JSON-stat/table metadata-input adapter and exact source/release schema
@@ -79,11 +79,11 @@ an authored scope pin solely to validate the metadata interface.
    SourceContract from its JSON config or calls qualify/accept/replay.
 3. The pilot `core.cache_policy` labels source/release with Wikibooks constants.
    It is therefore deliberately not called for portfolio identities. If execution
-   needs a reusable generic cache descriptor, integrator00 should select a shared
+   needs a reusable generic cache descriptor, the product integrator should select a shared
    source/release-parameterized interface, preserving under-30-day zero-download
    and unchanged-content no-op gates. This package only supplies metadata age and
    replay identity; it cannot certify a durable cache or change shared core.
 
 All Finland/Frida, NO/FR crash, FSAI403, HSE derivative and other actual source
-rights/privacy/custody restrictions survive. Raw stays Foo. No UI/DEV7645,
+rights/privacy/custody restrictions survive. Raw stays on the selected local executor. No UI/DEV7645,
 production/CIX, automation, worker dispatch, model or permission changes.

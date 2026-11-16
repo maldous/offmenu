@@ -1,8 +1,0 @@
-{
-  "content": [
-    {
-      "type": "text",
-      "text": "{\n  \"atUTC\": \"2026-10-26T12:30:14.883Z\",\n  \"activationHTTP\": 200,\n  \"version\": \"7267a1eb-a94b-4c58-8ea7-fd9217b0cd6e\",\n  \"number\": 169,\n  \"deploymentId\": \"95ffd095-e80c-4763-8875-728bab96a7a3\",\n  \"createdOn\": \"2026-10-26T12:30:14.502331Z\",\n  \"percentage\": 100,\n  \"moduleCount\": 192,\n  \"totalBytes\": 34782062,\n  \"all192ExpectedBytesTypesHashesPassed\": true,\n  \"mainSHA256\": \"c35305c644c5a65c53662dabac0b1f261b546c8b2c1c98c6546076df1d52ddb3\",\n  \"scope\": \"VERSIONED_UNFINISHED_WORLD_FEEDBACK_ONLY\",\n  \"rootLandingReplaced\": false,\n  \"authDeltaIncluded\": false,\n  \"foodDataProjectionAdopted\": false,\n  \"retainedInactiveFoodVersion\": \"039eb57c-fbd6-4606-8f98-05e7e14e515d\"\n}"
-    }
-  ]
-}
