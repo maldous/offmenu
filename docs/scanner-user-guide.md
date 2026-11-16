@@ -150,6 +150,34 @@ stream facts. It does not test successful decoding, device reliability or
 accessibility. For help reporting an issue or choosing main-app preferences,
 see [support and optional-service preferences](support-preferences-guide.md).
 
+## Return to scanning or change its appearance
+
+These additional control notes are checked separately at source
+`0e0ceeec889251ab2c4ed01a5b5688ca9f736780`; they do not establish rendered,
+camera or assistive-technology behavior on your device.
+
+Open **Scanner tools** with the **⋯** button. Its light/dark button has the
+accessible label **Switch light and dark mode**. It changes this scanner's theme
+and attempts to save that choice on the device. This is separate from the
+**Interface language** choice; neither is a product or inventory action.
+
+**Back to scanner** closes the tools, expanded readout or current-session view.
+It is a return action, not **Finish scanning**. Do not rely on closing one of
+those views to stop capture; use **Pause** or **Finish scanning** for the
+different behaviors described above.
+
+In **Choose mode**, **Cancel** closes the options and attempts to start capture
+in the current mode/connection. It is not a stop command or a rollback of every
+setting: camera placement/lens and preview controls can already have applied
+their changes. Use the selected **Enter** button when deliberately applying a
+mode selection. If you intend to keep capture stopped, do not use Cancel as a
+substitute for Finish.
+
+The ordinary connection described by this guide is the visible retained-data
+connection. A hidden reviewed-file control in this source is not a general
+import, backup or private-data access feature. This guide does not enable that
+lane, supply a file or authorize obtaining one.
+
 ## Source and maintenance
 
 The OffMenu documentation owner should update this guide when scanner controls,
