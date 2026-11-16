@@ -4,7 +4,7 @@ This repository owns OffMenu product and source contracts. Optional UIF
 maintenance orchestration is supplied by the selected execution environment;
 read the [policy reference](docs/agents/uif-worker-policy.md) and
 [profile reference manifest](docs/agents/uif-worker-policy.json) when that lane
-is selected. Load its verified policy 2.0.0 bundle and `offmenu` profile, then
+is selected. Load its verified policy 2.0.1 bundle and `offmenu` profile, then
 this file and applicable component instructions. Record the actual policy
 version, digest, source revision, executor and ownership in the existing handoff.
 Do not treat the local reference as an installed bundle or make UIF a product
