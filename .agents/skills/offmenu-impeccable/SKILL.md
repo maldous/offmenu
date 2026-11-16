@@ -11,6 +11,11 @@ metadata:
 
 This is a project-local, documentation-only adaptation of selected Impeccable references. It supplements existing frontend-design skills and Emil Kowalski guidance. It does not replace them or install the upstream engine.
 
+Use the [project capability matrix](../../../docs/development/agent-capabilities.md)
+to distinguish this pinned guidance from an environment-provided engine,
+documentation-review workflow or connected provider. Verify actual availability
+in the selected environment; loading this skill installs none of those tools.
+
 ## Scope and design authority
 
 - Respect any current UI pause. Installing or loading this guidance does not resume UI implementation or change dataset priorities. Check the latest task direction before editing.
