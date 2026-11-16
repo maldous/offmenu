@@ -1,7 +1,7 @@
 {
   "schema": "uif-worker-policy-reference-v1",
   "policy_id": "uif-worker-policy",
-  "required_policy_version": "2.0.0",
+  "required_policy_version": "2.0.1",
   "repository": "maldous/offmenu",
   "environment_profile": "offmenu",
   "distribution": "environment-owned-overlay",
