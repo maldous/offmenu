@@ -1,0 +1,105 @@
+{
+  "atUTC": "2026-10-26T16:00:20.542220+00:00",
+  "status": "DONE_WITH_CONCERNS_ROOT05_INCREMENT182_ACTIVE",
+  "worker": 0,
+  "threadId": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+  "version": {
+    "number": 182,
+    "id": "9cf3a5db-264a-4aae-8479-fc6b1551b0d7",
+    "deployment": "356f56b4-f188-4b1d-9cd9-78f0e5c4176c",
+    "percentage": 100,
+    "activatedAtUTC": "2026-10-26T15:59:36.079755Z"
+  },
+  "main": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root05-pouring-r2-over181-r1/landing-only.mjs",
+    "sha256": "ce7926c01bf53b25aab69bce97812fab3ec18d129100dbaa4f13a8ae469669c9"
+  },
+  "moduleCount": 207,
+  "totalModuleBytes": 39181832,
+  "pins": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root05-pouring-r2-over181-r1/candidate-207-expected-pins.json",
+    "sha256": "41b7692e980d03c3211864dde69415f40a244c99041e7d5553ce0468f7b81d97"
+  },
+  "selection": {
+    "selectedIds": [
+      1,
+      2,
+      5,
+      6,
+      7,
+      8,
+      9,
+      11,
+      13,
+      14
+    ],
+    "sourceConfiguredCount": 10,
+    "staticRetainedIds": [
+      3,
+      4,
+      10,
+      12,
+      15
+    ],
+    "postActivationAllTenExecuted": false
+  },
+  "composition": {
+    "routes": 87,
+    "aliasesReused": 74,
+    "newUniqueBodies": 13,
+    "newBodyBytes": 1061460,
+    "oldRoutesPreserved": 434,
+    "changedExistingOldRoute": "/landing-static-15/story.js",
+    "storySHA": "5c8589b4ee0d7543cbaa1f915d62d2763c51c30cb2f0477e93ac85b05ef98096",
+    "other205NonMainModulesUnchangedFrom181": true,
+    "containedApp": "13bd5e94c11ded5756a09edafc414791164425f4aca0b12b947849e1af60157a",
+    "rootHTML": "597143c955773000f7aaaa3ca07811070e3ceeaf0cdd355bcf7632af1401a066",
+    "CSS": "483a693065ea2eff4b849ae4749b1959b932122b8832f051f7aa0d983a0d02b3",
+    "authPreserved": true,
+    "audioBab01Preserved": true,
+    "privateOwnDataCSPSTOPPreserved": true
+  },
+  "evidence": {
+    "source": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current180-pouring-r2/actual-ready-for-delivery.json",
+      "sha256": "02af644469a379b6cb955106a018577770603f3b696f9c30dead3a6e54a3d537"
+    },
+    "manifest": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/native15-first-sequence-20261026/full15-master-r1/root-landing-working-worlds-current180-pouring-r2/manifest.json",
+      "sha256": "b7c211ddab6cd08cd505b4c4502836fec4e8346c8625cb350785ce2fbdec0219"
+    },
+    "actual05ActionHold": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker64/world11-vertical-browser-20261026/root-current180-pouring-r1/root05-integration-result.json",
+      "sha256": "052a52ed958c385b150f3ed5c6b9987f8169039d13889e20cf881ae486105a08"
+    },
+    "actualPending6Fixed": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker64/world11-vertical-browser-20261026/root-current180-pouring-r2-pending6/r2-pending6-regression-result.json",
+      "sha256": "64d6fddf4310ac997ca4d6dc19ae8abf5eac4e89a669f465c6b001406f05d729"
+    },
+    "offline": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root05-pouring-r2-over181-r1/package-qualification.json",
+      "sha256": "cca448622d76ac2829b35261e09990536df280294bf79da267d4e304359dae0e"
+    },
+    "independent207Pins": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root05-pouring-r2-over181-r1/inactive182-independent207-readback.json",
+      "sha256": "f85772935402dcd303a22694b70356feb0c26d47f71a3ac85d2f992b8067d3a7"
+    },
+    "activeReadback": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root05-pouring-r2-over181-r1/activation182-readback-envelope.json",
+      "sha256": "d854fc42850c8014054d9a87b34d90c424e8fcd78eff6f8618b653385564b4aa"
+    }
+  },
+  "limits": [
+    "Actual05entry/action3400/~5hold andfiveocclusionframes reused18082; exactpending6native123pxoffset align/unpause/progress fixed18094. Originalfailure retained.",
+    "10source-configured selectedIDs verifiedthrough exactmodulepins/readback; notalltenexecutedafteractivation/full15/physicalphone/fullneon/geometry/material/anatomy/useracceptance.",
+    "Only87rootnewbody/434oldbodyand4resourcesVMchecks; privateworker/3unchangednativeparts explicitopaque. No forbiddenpublicHTTPprobe."
+  ],
+  "authority": "Existingincrementalrootdirection plusParentafterimmediatecontainment priority; actualb7c211/18094/18082 scope only. No broaderprovider/security/data/main/CIX approval.",
+  "rollback": {
+    "number": 181,
+    "id": "690e7cd8-ef04-42e6-9075-a7c616c359bb",
+    "source": "13bdpatchedappMUSTremain inallfuturecuts;neveruncontained1802a07"
+  },
+  "cleanup": "Retainactivesource/oldfailure/207pins/readbacksandnewpublicassetbin;noownedservers/browser/childprocessesstarted.",
+  "nextAction": "Privateorigin181/182sourcecustody. Root03/04/10c7f67+actual18108 newscopedqualifiedsubset nextincrementfresh182, no all13/all15gate. Local05boundednativechainproofnowpassed; verifyexactpins thenGatewayONEfresh06/newpairedgrants/05solelifecycle. Typedphasepolicy/adapter work independentlycontinues."
+}

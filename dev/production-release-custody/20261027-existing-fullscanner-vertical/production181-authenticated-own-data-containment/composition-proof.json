@@ -1,0 +1,15 @@
+{
+  "atUTC": "2026-10-26T15:50:43.983Z",
+  "status": "PASS_EXACT_SINGLE_AUTHENTICATED_BRANCH_REPLACEMENT",
+  "oldSHA": "2a07a3e6e302a328c65dbb0c21b3dce0fa8bd993edcfc5dbcf3511762c15ff6e",
+  "newSHA": "13bd5e94c11ded5756a09edafc414791164425f4aca0b12b947849e1af60157a",
+  "oldBytes": 2221680,
+  "newBytes": 2220629,
+  "prefixSuffixExact": true,
+  "mainUnchanged": "d55eb1ecea1eb5d28517b4d2f1fafb8dd4ce0e65afd0a41d2286c597905aea32",
+  "allOther205ModulesUnchanged": true,
+  "sourceDeltaSHA": "60eb323447691591119401ad01095b242797d17c8a100865bded0b82412aa6a7",
+  "generatedCandidateProofSHA": "4120478be670b181b2cd9beaf2e0c6851486b3ddc219da63ca337e0f307dfb30",
+  "originalTripwireProofSHA": "b66f9be2dc023416d50b6c227312ed8fc737acafd8c828ec465b3c58fef39091",
+  "authority": "ParentIMMEDIATECONTAINMENTAUTHORITYthisturn/Mattown-dataSTOP; only POST/api/data/lookup afterexistingDB/method/Origin/verifiedUser checks,503OWN_DATA_REQUIRED. No broaderreview/securitysettings/IDP/data/UIchange."
+}

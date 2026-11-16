@@ -1,0 +1,107 @@
+{
+  "id": "worker00-versioned-source08-r3-feedback176-delivered-20261027",
+  "atUTC": "2026-10-26T14:26:08.574019+00:00",
+  "worker": 0,
+  "threadId": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+  "host": "local",
+  "status": "DONE_WITH_CONCERNS_VERSIONED_PREVIEW_ONLY",
+  "url": "https://offmenu.aldous.info/feedback/source-actions/scene08-r3/",
+  "actualDeployment": {
+    "id": "56ff2bb9-b877-4b9d-a961-0aa522ba93d7",
+    "version": "95a06159-302d-4aaa-aa6a-6b554f57e60b",
+    "number": 176,
+    "percentage": 100,
+    "createdAtUTC": "2026-10-26T14:24:36.421174Z",
+    "moduleCount": 203,
+    "totalBytes": 37094770,
+    "mainSHA": "fceb82446a02e3460a5df805cfb2a9af1b4ce2d21a012eae30510dff65edb98e"
+  },
+  "preservation": {
+    "prior175NonMainModules": 201,
+    "exactByteLengthTypeHash": true,
+    "oldModuleRemoved": 0,
+    "inverseMainSource": "RemoveONLYonebinaryimport+16assetassignments andgetexact17513820aa6 source",
+    "oldStaticRoutesResponseComparison": 348,
+    "newActualResponseHashAndHEAD": 16,
+    "requiredExistingRoomResourceHashes": 3,
+    "authAndPrivate": "Opaque delegation tests5/invalidenvironment3,noauthchanges/noidentitycalls; realauthE2E not claimed",
+    "noExternalFoodLookup": true,
+    "newPublicHTTPProbe": false,
+    "noData165OrCorpusAdoption": true,
+    "rootLandingCSPSTOPAndHistory": "Preserved bytewisebyinverse/sourcepins",
+    "prior175Deployment": "Retained da799f97-622e-4f9e-9806-1a844e46fe91"
+  },
+  "assets": {
+    "reuseAliases": 11,
+    "newFileBodies": 5,
+    "newDataBytes": 15884,
+    "newDataSHA": "3753c38ecdcf228e9194d545c2752ebb110bb875765ef5fe0d5ad5b792bb42a1",
+    "newDataName": "source08-r3-3753c38ecdcf228e.bin",
+    "earlierUnoptimizedLocalPackingBytes": 818203,
+    "newPackingReduction": 802319,
+    "qualification": "Only minimalpackage uploaded. Earlierlocal818203B preparedfixture retained, unadopted."
+  },
+  "actualMotionSource": {
+    "sourceEvent": 18001,
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker64/world11-vertical-browser-20261026/source08-batch-r1/source08-pair-result.json",
+    "sha256": "dd48fffab50d48e4be90297ae4a13addad57944eec854241fcc922db8fc82829",
+    "authorSourceManifestSHA": "c18434a92ad573aaf89e57716e0b1c77b4e6f78b95c1798db9a3d3efeaef3015",
+    "proofReuse": "14runtime/source/imagefilesexacttested,HTML/entryversioned; no playback rerun",
+    "tolerance": "ExplicitRendereraccepted smallfinalRGB6371pixels/max2of255/86pixels>1/zeroalphamismatch/RMSE.07154 forisolatedpreviewonly",
+    "metricsLimit": "Localorderedpair30.127\u219260.002drawFPS/8\u21921transfers not causaluniversal/phone/hardwarebenchmark; noallprogressbitexactness/world/physical/anatomy/full15/natural/userfinalacceptance"
+  },
+  "evidence": [
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/source08-r3-offline-package-current175-20261027/minimal-reuse-r2/manifest.json",
+      "sha256": "d799e8085e653538c738250b1712bceaf6ebf5c2b95c96ed731f5de622e0ae08"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/source08-r3-offline-package-current175-20261027/minimal-reuse-r2/source08-203-expected-pins.json",
+      "sha256": "40793457d9a3088dc9228d8d322ca883f8d26aafed5e2a2825b269c5903655ec"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/source08-r3-offline-package-current175-20261027/minimal-reuse-r2/inverse-source-proof.json",
+      "sha256": "ee1239fbe46aae607529aa45ed1b601802e7856c893ee81d33d17358bca625d6"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/source08-r3-offline-package-current175-20261027/minimal-reuse-r2/package-qualification.json",
+      "sha256": "5960432b4b06539d1fc713e1047495212397cd94d8dae5ad7b2c0d86d53410a3"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/source08-r3-offline-package-current175-20261027/minimal-reuse-r2/candidate-source08-exact-ast-reference-closure.json",
+      "sha256": "1f38b4c01e91804cfb5e97b897d161d37f4aa01c563b1f5b13794a8ab3bcf5d7"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/source08-r3-offline-package-current175-20261027/minimal-reuse-r2/fresh-base-envelope.json",
+      "sha256": "b5adafe0b7e2e527bc856c58eb2d39382d2af11bc8e211176ba91282a809c984"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/source08-r3-offline-package-current175-20261027/minimal-reuse-r2/inactive-stage-once-intent.json",
+      "sha256": "5c09d92dd04a35e792f68f3baa1f4eafa3ca04f639ad200535b5c35403632b4a"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/source08-r3-offline-package-current175-20261027/minimal-reuse-r2/inactive-stage-envelope.json",
+      "sha256": "d06d393f242c91b530b177424af3ed0c2b547c3d5c86f7a157d41c78b6a1364b"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/source08-r3-offline-package-current175-20261027/minimal-reuse-r2/inactive176-independent203-exact-readback-envelope.json",
+      "sha256": "dfd00232ec07af3f7051f760e56692082d84b10328485d8193aa3ecafef7df67"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/source08-r3-offline-package-current175-20261027/minimal-reuse-r2/activate176-once-intent.json",
+      "sha256": "0deef9c9b33812e4919f6fd68ecc3190170e90b3b4f155e0ebb56bcf0cb6099b"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/source08-r3-offline-package-current175-20261027/minimal-reuse-r2/activation176-envelope.json",
+      "sha256": "5bc764db431b53abc7911393c02429f3eebf512f8a88abd834e31b0010bc25f1"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/public-beetroot-lookup-diagnosis-20261026/source08-r3-offline-package-current175-20261027/minimal-reuse-r2/activation176-readback-envelope.json",
+      "sha256": "0c899ecce7387a35ae6a1fd4e2e658e2e0901a699866392c01944fd84acae05b"
+    }
+  ],
+  "sourceBaseline": "Accepteddevelopdc39 fornormalapp; CFfeedback176 exact175runtimebase separate; no plainappworker deployment",
+  "holds": "All priorown-only94/STOP/private/CSP/history/source/ownership/privacy/11529noaccess/denial/Sonar/main/auth/generalproduction/CIXholds retained; oneexactversionedpreview exception only.",
+  "nextAction": "Preserve source176+proofs through authorizedprivateorigin GitFlow custody; notifyGatewayonceactual176and remaininglimits.05preps qualifiednormalappcomposition fromimmutablefc80dc39assets;19reader-r2 replacesoldsource for boundedconsumerreview; no duplicateacquisition/publish.",
+  "cleanup": "RETAIN unique source andproviderreceipts; noRootserver/browser/newsourcebodyjob;05owned7645 nottouched. No countryassigned/owncountrystagecounts0/no countrycompletion."
+}

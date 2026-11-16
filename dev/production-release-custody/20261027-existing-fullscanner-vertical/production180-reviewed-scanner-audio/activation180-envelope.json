@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"atUTC\": \"2026-10-26T15:26:35.483Z\",\n  \"status\": 200,\n  \"deployment\": {\n    \"id\": \"b625b2f7-3351-4db3-b2f8-f545eb7901d1\"\n  }\n}"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "status": "SAME_REVIEWER_FINDING_CLOSED_EXACT_TIMEOUT_R1_SUCCESSOR",
+  "findingId": "AUDIO-VOICE-RETRY-TIMEOUT-01",
+  "priorReviewSHA256": "415dd818b8dd352a9801f9f39f8dc346c27ad8912dab011e532cdf0d7b56a4e7",
+  "authorResultSHA256": "67deba50687980801b14092a1cddd2051f78e07a4fb985dfcdaff60fab248ca7",
+  "controllerSHA256": "a375315d7dfd745d776271d416593c76d8f8963f9afc0ba6a4bad0e6a110ef1f",
+  "bundleSHA256": "bab01e0e6f58219be7c5febf1d7372e78816ac8156eecc2b30a99d8843566531",
+  "bundleBytes": 885653,
+  "cumulativePatchSHA256": "4f8db99e94b27c629a947e3d569c29fe77c0c4ec12ee5050341025fec743292c",
+  "exactFixReviewed": [
+    "cancelPendingSpeech clears owned timeout with listener.",
+    "Timeout captures exact listener identity; canceled old callback cannot remove newer callback even if invoked.",
+    "Unavailable status update additionally requires current generation and entry."
+  ],
+  "verification": {
+    "authorChecksReused": "successor10/10; priorcandidate9/10",
+    "independentSameRepro": "PASS; canceledA callback leavesB intact, B localvoice speaks once",
+    "additionalBoundedControls": [
+      "B own timeout still expires",
+      "stale generation timeout leaves newer UI status unchanged"
+    ],
+    "twoSpeechCallsRetained": true,
+    "beepGestureAndCapturePathsUnchanged": true,
+    "newOpenFindings": 0
+  },
+  "preserved": [
+    "default beep/speech",
+    "duplicate/stale/invalid/unavailable guards",
+    "localEnglish source-name/voice restriction",
+    "mute",
+    "rear camera",
+    "own-data lookup",
+    "Undo/List/Finish",
+    "guest Map preferences within document only; reload/new tab reset"
+  ],
+  "scope": "Exact pinned successor code/bundle closure only;00 existing integration path. Preference-store inspection non-gating; no redesign. No browser/physical audible output/live lookup proof, deployment or source writes."
+}

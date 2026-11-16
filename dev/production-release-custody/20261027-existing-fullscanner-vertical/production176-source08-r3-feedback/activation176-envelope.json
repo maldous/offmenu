@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"atUTC\": \"2026-10-26T14:24:37.002Z\",\n  \"status\": 200,\n  \"deployment\": {\n    \"id\": \"56ff2bb9-b877-4b9d-a961-0aa522ba93d7\"\n  },\n  \"scope\": \"VERSIONED_SOURCE08_ONLY\"\n}"
+    }
+  ]
+}

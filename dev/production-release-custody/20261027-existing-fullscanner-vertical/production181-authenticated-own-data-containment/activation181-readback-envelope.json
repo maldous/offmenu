@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"atUTC\": \"2026-10-26T15:51:51.492Z\",\n  \"active\": {\n    \"id\": \"8661abe3-3914-48a7-8a4b-cdf7534d2d08\",\n    \"versions\": [\n      {\n        \"version_id\": \"690e7cd8-ef04-42e6-9075-a7c616c359bb\",\n        \"percentage\": 100\n      }\n    ],\n    \"created_on\": \"2026-10-26T15:51:50.783572Z\"\n  },\n  \"confirmed100percent\": true,\n  \"prior180RetainedForEvidence\": true,\n  \"rollbackWarning\": \"Neverrestoreuncontained2a07path;minimalfix-forward baseline13bd mustremain\",\n  \"publicHTTPProbeAttempted\": false\n}"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"atUTC\": \"2026-10-26T15:26:35.849Z\",\n  \"active\": {\n    \"id\": \"b625b2f7-3351-4db3-b2f8-f545eb7901d1\",\n    \"versions\": [\n      {\n        \"version_id\": \"c9a114d9-cfe4-4eaf-95c5-5cf0230d8efb\",\n        \"percentage\": 100\n      }\n    ],\n    \"created_on\": \"2026-10-26T15:26:35.190036Z\"\n  },\n  \"confirmed100percent\": true,\n  \"prior179Retained\": true,\n  \"publicHTTPProbeAttempted\": false\n}"
+    }
+  ]
+}

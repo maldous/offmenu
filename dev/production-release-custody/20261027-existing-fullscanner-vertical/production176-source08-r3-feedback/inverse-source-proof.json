@@ -1,0 +1,11 @@
+{
+  "baseMainSHA": "13820aa6b77d75a99cc152ef2b2349bea94f35837b698aca824170fc95ebd339",
+  "candidateMainSHA": "fceb82446a02e3460a5df805cfb2a9af1b4ce2d21a012eae30510dff65edb98e",
+  "inverseExactlyBase": true,
+  "prior201NonMainPinsUnchanged": true,
+  "newBytes": 15884,
+  "routes": 16,
+  "aliases": 11,
+  "newFileBodies": 5,
+  "noProviderRequest": true
+}

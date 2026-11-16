@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"atUTC\": \"2026-10-26T15:08:01.190Z\",\n  \"status\": 200,\n  \"deploymentId\": \"c2465aba-c821-4bac-8519-52b169b71eae\",\n  \"version\": \"d19139ad-e638-4c3d-99a6-ee5ba13e602c\",\n  \"scope\": \"CORRECT_FINAL_ROOT_LOGIN_OVERRIDE_ONLY\"\n}"
+    }
+  ]
+}

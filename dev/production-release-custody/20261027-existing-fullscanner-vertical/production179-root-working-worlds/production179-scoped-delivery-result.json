@@ -1,0 +1,127 @@
+{
+  "atUTC": "2026-10-26T15:22:26.775512+00:00",
+  "status": "DONE_WITH_CONCERNS_EXACT_ROOT179_INCREMENTAL_DELIVERED",
+  "worker": 0,
+  "threadId": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+  "host": "local",
+  "assignedCountries": [],
+  "countryStageCounts": {
+    "fetched": 0,
+    "parsed": 0,
+    "normalized": 0,
+    "mapped": 0,
+    "reviewed": 0,
+    "goldAdmitted": 0
+  },
+  "version": {
+    "number": 179,
+    "id": "47755daf-3bb3-48c6-a993-b459faf8aa05",
+    "deployment": "a7b34799-924c-4611-b6e4-97c396202d47",
+    "percentage": 100
+  },
+  "main": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/landing-only.mjs",
+    "sha256": "d1ffce4e4f1ac4ea51b48013a1d4cf00faa151e365a516bf1e30638f93c3d7c8"
+  },
+  "modulePins": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/candidate-204-expected-pins.json",
+    "sha256": "d1360de1d5fd92d9ceeb1b32cd99caff0f1bff283ed2342776debb505f95be73"
+  },
+  "moduleCount": 204,
+  "totalModuleBytes": 37209952,
+  "composition": {
+    "routeCount": 71,
+    "aliasesReused": 64,
+    "newUniqueBodies": 7,
+    "newBodyBytes": 53508,
+    "unchangedNonMain178Modules": 202,
+    "lateAssignmentAfterAllOverrides": true,
+    "onlyChangedOldRoute": "/landing-static-15/story.js",
+    "rootHTMLUnchangedFrom178": "597143c955773000f7aaaa3ca07811070e3ceeaf0cdd355bcf7632af1401a066",
+    "storyJS": "5139d65f618a6131ae72e2011bd163306f8f48fde2b0ceeebe1344aaeecac991",
+    "CSSUnchanged": "483a693065ea2eff4b849ae4749b1959b932122b8832f051f7aa0d983a0d02b3",
+    "authHTMLPreserved": "768188e484f3eea7ee0ef1125e2df07f9cf59c11838e51af157ce573ef2e3e01",
+    "authJSPreserved": "61ab5315ca62cecba443e7fad2563fb4955e27930f7658b4b9a6fab8ac03f472"
+  },
+  "validation": {
+    "offline": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/package-qualification.json",
+      "sha256": "033a51539f10bde2627b19099be606cf06d412173c855a444d15fa103f2575ce"
+    },
+    "moduleReadback": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/inactive179-independent204-readback.json",
+      "sha256": "38a9ae273ab7586a6968cd843231c4682f74c57dc4c5fa334061cd0e1df19422"
+    },
+    "activeReadback": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2/activation179-readback-envelope.json",
+      "sha256": "b4a9870c6eb7611b03685ff7515ecda2649091225d0c398b4eae1ffd18e12e5b"
+    },
+    "rootFocused": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker64/world11-vertical-browser-20261026/root-current176-r3-focused/root-r3-focused-result.json",
+      "sha256": "40e1f6e1f2405523e424bff1a3230113a7b9415814773748cb98ce3842f1df47"
+    },
+    "r6Native": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker64/world11-vertical-browser-20261026/integrated-new07-08-09-15-r5/r6-end-and-one-native-final/r6-targeted-result.json",
+      "sha256": "8cd240f24d9457c625b0759423914c49d909b52c4f4453f3bf81a3374a06c74c"
+    }
+  },
+  "selectedNormalMotionIds": [
+    1,
+    2,
+    6,
+    7,
+    8,
+    9,
+    11,
+    13,
+    14
+  ],
+  "selectedSourceCount": 9,
+  "staticRetainedIds": [
+    3,
+    4,
+    5,
+    10,
+    12,
+    15
+  ],
+  "actualBrowserExecutedThisCase": [
+    7
+  ],
+  "postActivationAllNineExecution": false,
+  "limits": [
+    "Exact provider modules matched candidate after independent204pinreadback, active179confirmed. No directpublicHTTPprobe because existingForbidden-domainhold.",
+    "Coldneon early startup observed; completecycle unobserved. No all15/physicalphone/anatomy/humanacceptanceclaim.",
+    "OriginalR5failure and initialfixtureCSS500 retained; R6targeted/native/rootproofscoped.",
+    "Firstinactive rootstage rejected10021 ArrayBufferABI; sourcecorrectedexplicitUint8Array and fixtureABI corrected, nopermissiondenialbypass."
+  ],
+  "rollback": {
+    "version": 178,
+    "id": "d19139ad-e638-4c3d-99a6-ee5ba13e602c",
+    "source": {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/landing-only.mjs",
+      "sha256": "c327f5eaf9c51a77b36c327da40a5b904b706e30f3f397f3092a24bd2e2512d6"
+    }
+  },
+  "authority": "Scoped real-root incremental direction via Gateway human11:52Sentinel_816ac1d6c99c81919edb8754df77d922 and exactactualroot18057proceed; allsource/privacy/provider/security/production-outside-exactscope/main/CIXholds preserved.",
+  "cleanup": {
+    "ownedProcessesStarted": 0,
+    "retained": [
+      {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r2",
+        "reason": "Active179source/pins/rollback/evidence needed; private-origin custody pending"
+      },
+      {
+        "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/root-working-worlds-over178-r1",
+        "reason": "Original technicalproviderrejection/failure disposition retained"
+      }
+    ]
+  },
+  "nextActions": [
+    "Preserve178/179source via existing private-originGitFlowcustody with no rawdata/secrets.",
+    "CompleteAPP05normalrole/pair/identity/privatee40/source/currentstopstart qualification; noGooglegrant.",
+    "Integrate reviewed scanner audio successor67deba/bab01/ad0ff over freshcurrent179.",
+    "Consume actual19R2terminal through ownerbundle; no duplicate run.",
+    "OpenNutrition inspection consumed; no fullreaderUNBOUND flip or archive reopen without next exact scopedoperation."
+  ]
+}

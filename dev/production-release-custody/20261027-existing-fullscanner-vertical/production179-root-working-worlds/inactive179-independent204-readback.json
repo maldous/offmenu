@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"atUTC\": \"2026-10-26T15:21:22.007Z\",\n  \"version\": \"47755daf-3bb3-48c6-a993-b459faf8aa05\",\n  \"number\": 179,\n  \"moduleCount\": 204,\n  \"totalBytes\": 37209952,\n  \"mismatches\": [],\n  \"all204Exact\": true,\n  \"active\": {\n    \"id\": \"c2465aba-c821-4bac-8519-52b169b71eae\",\n    \"versions\": [\n      {\n        \"version_id\": \"d19139ad-e638-4c3d-99a6-ee5ba13e602c\",\n        \"percentage\": 100\n      }\n    ]\n  },\n  \"bindingNames\": [\n    \"CURATED_CORPUS_ORIGIN\",\n    \"DB\",\n    \"PROVIDER_VAULT_KEY\"\n  ],\n  \"compatibility_date\": \"2026-10-12\",\n  \"compatibility_flags\": [\n    \"nodejs_compat\"\n  ],\n  \"activation\": false\n}"
+    }
+  ]
+}

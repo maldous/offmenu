@@ -1,0 +1,158 @@
+{
+  "id": "worker00-production-normal-auth178-root-login-final-override-delivered-20261027",
+  "atUTC": "2026-10-26T15:09:40.495133+00:00",
+  "worker": 0,
+  "threadId": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+  "host": "local/foo",
+  "state": "DONE_WITH_CONCERNS_NORMAL_AUTH_CODE_DELIVERED_REAL_ACCOUNT_UNVERIFIED",
+  "authority": "CurrentexplicitParent/Gateway incrementalproductionNORMALauthpage/navigation/kitchenguard current176orfreshsuccessorafterfocusedchecks. No realaccountgate, no dev/diagnosticroutes/unverifiedGooglecallback/providerconfig/grantchange. SourceactualmessageID notexposed.",
+  "baseVersion": "95a06159-302d-4aaa-aa6a-6b554f57e60b",
+  "baseMainSHA": "fceb82446a02e3460a5df805cfb2a9af1b4ce2d21a012eae30510dff65edb98e",
+  "changedRoutes": [
+    "/",
+    "/landing.html"
+  ],
+  "newOuterAssetOverrides": [
+    "/auth.html",
+    "/auth.js"
+  ],
+  "headerDelta": "<a href=\"/auth.html\">Log in</a> immediatelybeforeunchangedDemo; existingCSS/approvedlayoutretained. Rendererreceivedsameexacthunk/href.",
+  "reusedNormalProductionAssets": [
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/authenticated-app-delivery-20261026/candidate-source/public/auth.html",
+      "sha256": "768188e484f3eea7ee0ef1125e2df07f9cf59c11838e51af157ce573ef2e3e01"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/authenticated-app-delivery-20261026/candidate-source/dist/auth.js",
+      "sha256": "61ab5315ca62cecba443e7fad2563fb4955e27930f7658b4b9a6fab8ac03f472"
+    }
+  ],
+  "behavior": "ExistingemailSDKflow gainsfixedOpenmykitchenalongsideContinueScanner; both recheckmatching freshSDK/server user/modebeforefixednavigation. Existinganonymousserverguardrefuseskitchen/scanner; no auth/session/provider/config change.",
+  "verification": {
+    "controllerAndActualRouting": 10,
+    "actualProductionGuardChecks": 5,
+    "actualConfig": "mode netlify/identityTransportreal/syntheticfalse/emailSignInexisting-provider/oauthAvailablefalse/callbacknot-inspected; no Googleenabling",
+    "actualAppBody": "Fullpreserved2a07 source executedthroughactualworker83421, generatedIDPonly, GET200/56356B/032c45a0/appScriptpresent, nosentinel; notrealaccount/browser",
+    "anonymous": "GETHEADkitchen/scanner303auth/no-store",
+    "invalidBearer": "Cannotopenkitchen/no-store",
+    "authenticatedHEAD": "ExistingactualpreservedappHEAD405retained; initialnewtest200expectationincorrect, dispositionrecorded. No inventedHEADgate orimplementation.",
+    "newDevOrDiagnosticRoutes": 0,
+    "guardProviderOriginalAppEdits": 0,
+    "existingImportsAndDispatch": "Exactbyteidentical",
+    "unchangedOriginalAssetDefinitions": 16,
+    "allAdditiveFeedbackAndSource08Blocks": "Byteidenticalbywholemoduleoutsideexistingassetsinitializerproof",
+    "externalNetworkCalls": 0,
+    "realAccountCompletion": false
+  },
+  "evidence": [
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/candidate/source-delta.json",
+      "sha256": "88e8c6f2649dfd6fcadd2428481999e2539c284cb5d882f8d3c20700445809aa"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/smoke-result.json",
+      "sha256": "6ab5595a1fc3d3f02d438a2d2ae2db8dea1e25eac8488726cb0fad312ecccca8"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/preservation-result.json",
+      "sha256": "d90f81472e4d6eced8089260c0fb9863c7b21788f0cceda4406002584ebba574"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/full-app-source-proof.json",
+      "sha256": "6831feaeff3dab238c07a2ec5048db91780c6a8f499b4b99157739011b5c5cad"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/focused-production-guards-result.json",
+      "sha256": "3cd333a91a80199f0717140ecc1fd840db1ce6383479cf9a65ee854b08e147d5"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/head-baseline-assumption-disposition.json",
+      "sha256": "335e9d556a7994d0d584cec47de58ada6738b38ae31b7b26f55017fe4716956e"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/inactive177-independent203-exact-readback-envelope.json",
+      "sha256": "90c60213024a7cfed50e2010459caf006f5f6f078983c9c6f0abd3c8444e6d4e"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/activation177-envelope.json",
+      "sha256": "8874d9abad034fb440b5ecb389e74d3d234abd0aa0f6490ded62091c2a96d1bd"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/activation177-readback-envelope.json",
+      "sha256": "6086771194cf2e6b1af94be645878f4cb11ac4c09a676866e3ec4df25df6cbc5"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/root-override-disposition.json",
+      "sha256": "1e5e5f939de4258e49d527ca0e7ab96b9f1442991da8c4fe5ad810033b79fb4d"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/package-qualification.json",
+      "sha256": "f73d1481395ba2f9179719b74da442fd286c38613d8b46737ae1da74dacf3e73"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/inactive178-independent203-readback.json",
+      "sha256": "e26398853aaeedcac21cc1eeb6aad1303a95247c2ecb09375eaccf4ab6092ab7"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/activate178-once-intent.json",
+      "sha256": "33e7c1b4a48ba7d94b61173b2604abc9f7a1c105d9a7c21810736138ebe45331"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/activation178-envelope.json",
+      "sha256": "92a419b9bd8c14aef57355eb2d6bfebc9dedb7c8535fc415412067849062f9c7"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/activation178-readback-envelope.json",
+      "sha256": "0cbdbdff74b4d7e2bb4fc521670d43cdfbaaff119e5d75db7f2562d98b824835"
+    }
+  ],
+  "remaining": "Realaccount/browsercompletionunverified, notgateoncurrentcode-onlydelivery. Root9scenesnotyetdeployed; renderer/64targetedrootcold/lazy/nativefinalproofpending. 05dc7a exactlocalrolequalificationpending;13audiolatestbab01/ad0ffreadyseparatecurrentassembly;source/phasepublicationseparate.",
+  "parallel": "05retainslocalmixedsource4UIdelta/7645solelifecycle; rendererreal9sectionroot/current15art/End-afterautofix;13audioonlyready8b0f pendingdesignatedreview/integration;19actual64semanticR2applicationonlyafterf4a0068receipt, no newgainclaimedhere.",
+  "holds": "Allsource/ownership/privacy/11529/OpenPrices/12814/14324/06/26/denial/Googleconsumed/no retry/Sonar/security/main/generalproductionoutsideexactnormal-auth+rootscope/CIXremain.",
+  "nextAction": "NotifyGatewayandrendereractual178/freshroot/main/pins; preserveexactsourceprivateorigin. Composefrozen9sectionrootR3over178andcurrentaudioonlyafterexactaffectedproof. Continue05genuinenormalrole/lifecyclequalification; preserveallsource/private/denial/main/CIXholds.",
+  "cleanup": "Retainuniqueexactcandidate/source/proofs; noRootruntime/browser/provider/network/sourcebodyprocess ornewcoordinator. ExistingG6c8d/source1764d13/05/64ownersretained.",
+  "initialQualifiedCandidate": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/candidate/landing-only.mjs",
+    "sha256": "3c81e89cb97f878af86f6609319553ca42ee75a03dd2da274b889d2c09397457",
+    "bytes": 624177
+  },
+  "actualVersion": "d19139ad-e638-4c3d-99a6-ee5ba13e602c",
+  "number": 178,
+  "deployment": "c2465aba-c821-4bac-8519-52b169b71eae",
+  "activePercentage": 100,
+  "mainSHA": "c327f5eaf9c51a77b36c327da40a5b904b706e30f3f397f3092a24bd2e2512d6",
+  "moduleCount": 203,
+  "totalBytes": 37135480,
+  "userEntry": "https://offmenu.aldous.info/auth.html",
+  "landing": "https://offmenu.aldous.info/",
+  "currentCandidate": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/landing-only.mjs",
+    "sha256": "c327f5eaf9c51a77b36c327da40a5b904b706e30f3f397f3092a24bd2e2512d6",
+    "bytes": 626324
+  },
+  "realRootHTML": {
+    "path": "/home/user/src/offmenu-data/runtime/layout-migration/worker00/private10300-local-integration-20261026/production-normal-auth-current176-r1/root-header-r2/root-index.html",
+    "sha256": "597143c955773000f7aaaa3ca07811070e3ceeaf0cdd355bcf7632af1401a066",
+    "bytes": 1938,
+    "qualification": "FullyassembledVMactualroutebodyhash+HEAD and203providerpins/deploymentreadback; notpublicHTTPprobe. MatchesrendererfrozenrootHTML597143."
+  },
+  "importantCorrectedDefect": {
+    "initial177": "NormalauthHTML/JSandlandingaliasinstalled, butnewrootlinkinitialconstantwasmaskedbyexisting94lateObject.assignrootparts. Initialselectedconstantchecks/compositionreviewmissedfinalassetmap; const-only1857rootcutexplicitlyinvalidated.",
+    "correction178": "Late rootassignment exact94SSRHTML+Login afterpreviousoverrides; wholeactualgraph363oldroutesbyteheaders+4actualroot/auth/landingbodyhashHEAD+3roomresourcesPASS. Oneassignmentremovedinverselyreconstitutes177exactly.",
+    "retention": "root-override-disposition and CONST-ONLY-NOT-ACTUAL-ROOT evidencekept."
+  },
+  "productionVerification": {
+    "normalFlowAndActualGuards": 15,
+    "sourceActualWorker": "83421e679296b4f0a59e3f9a7ebde12b40638ad8cc1c480709f34c5a393b61bb",
+    "sourceActualPreservedApp": "2a07a3e6e302a328c65dbb0c21b3dce0fa8bd993edcfc5dbcf3511762c15ff6e",
+    "actualProductionConfig": "netlify/identityTransportreal/syntheticfalse/email-existing/oauthAvailablefalse/callbacknot-inspected",
+    "anonymousGETHEAD": "kitchen/scanner303auth,no-store",
+    "invalidBearer": "refused",
+    "generatedAuthenticatedGET": "ActualpreservedkitchenGET20056356B/appScriptpresent; no externalnetwork orrealaccountclaim",
+    "authenticatedHEAD": "Existing405retained/disclosed; wrongnewtest200expectationcorrected,noinventedHEADfeature/gate",
+    "actualStaticGraph": "363oldroutesunchanged+4actualroot/authHTML/authJS/landingaliasresponseSHAHEAD+3roomresources",
+    "independentProviderPins": "All203178byte/type/hashmatch,noextras; all202nonmain177unchanged/settingsnamesandcompatunchanged",
+    "effect": "One177normalauthactivationthenone178finalrootlinkcorrection, eachintent/actualreadback. Current178100%,prior176+177retained.",
+    "review": "181603d2compositionpreservationclosure; authorshipofreusedauthassetsdisclosed, NOTindependentre-reviewcontroller. New178late-rootproofnottransplantedtooldconst-onlycheck."
+  }
+}
