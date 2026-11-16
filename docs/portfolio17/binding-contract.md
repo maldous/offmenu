@@ -13,7 +13,7 @@ metadata root:
 ```sh
 python3 -B -m offmenu.refresh.portfolio17 \
   --bindings docs/portfolio17/bindings.json \
-  --metadata-root /home/user/src/offmenu-data \
+  --metadata-root /absolute/private/metadata-root \
   --now 2026-10-18T00:00:00Z \
   --output /absolute/owned/output/portfolio17-diagnostics.json
 python3 -B -m unittest discover -s tests -p test_portfolio17.py -v
@@ -38,7 +38,7 @@ metadata/output readers and remaining00batch invariants retain their own review.
 
 The total evidence read budget is 1 MiB per evaluation (including repeated
 references), at most 32 bindings/16 evidence files per binding. Outputs contain
-metadata and manifest references, never copied payload bodies. They stay on Foo.
+metadata and manifest references, never copied payload bodies. They stay on the selected local executor.
 Metadata values are limited to depth64 (root depth0), checked iteratively before
 recursive provenance traversal. A deeper value or recursion failure returns
 `metadata-depth-exceeded` for that binding and leaves later peers evaluable.
@@ -156,5 +156,5 @@ The baseline/interface receipt5798 and its late-dependency addendum confirm
 `abecb99ee1125730ccbc2824b6ec49ffc5cc4302` as the selected proposal snapshot;
 local4693cbc/5f5bdb6 refs are older ancestors. Integration00 must reverify live
 provider/candidate/base at delivery gates. A later generic pure planner, if
-Morgan selects it, belongs to00/shared-core ownership. This package neither
+the product maintainer selects it, belongs to00/shared-core ownership. This package neither
 implements that shared extension nor makes held real inputs wait for it.

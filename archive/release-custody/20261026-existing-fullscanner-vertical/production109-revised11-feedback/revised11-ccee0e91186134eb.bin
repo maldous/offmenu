@@ -1,8 +1,0 @@
-import * as base from '../scene-11.mjs';
-import {sourceProgress,pointFollowThrough,heldInspection,bodyFollow} from './motion.mjs';
-export const id=11;export const durationMs=2900;
-export const reference={...base.reference,choreography:'R3 distinct anticipation/reach-or-raise/inspection/follow-through; incremental source-local candidate, not completed human/world animation'};
-export function load(ctx){return base.load({...ctx,resolveAsset:path=>ctx.resolveAsset('../'+path.replace(/^\.\//,''))});}
-export function sample(p,assets){const q=sourceProgress(id,p),frame=base.sample(q,assets);
- pointFollowThrough(frame,id,p,reference);bodyFollow(frame,id,p,reference);
- frame.choreographyProgress=p;return frame;}

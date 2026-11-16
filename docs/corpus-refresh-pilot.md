@@ -43,7 +43,7 @@ On the machine holding the existing datasets:
 
 ```sh
 python3 -B -m offmenu.refresh inventory \
-  --root /home/user/src/offmenu-data --max-entries 10000 --max-depth 4
+  --root /absolute/private/data-root --max-entries 10000 --max-depth 4
 ```
 
 The root shown is the documented historical location, **not verified current

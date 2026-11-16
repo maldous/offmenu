@@ -7,7 +7,7 @@ feature/shopping-destination-owner31-20261015. Only new module, test and this
 note are owned; no edits to the parent adapter/helper or central app/schema.
 
 Worker64 discharged the original no-write hold via exact descendant/custody
-record at /home/user/Documents/Codex/2026-10-15/task/transition-codex-readiness-20261015/FINALSYNC64-f6cb92ae-20261015/develop-inclusion-results.json,
+record in the retained develop-inclusion evidence,
 observed 2026-10-15T11:22:52.666402+00:00. Worker31 row is registered, ownership
 validated, clean, developIncluded true, unchanged bce4 head. No sync/fetch/ref
 repair or new checkout was performed. The bce4 task ref and Worker24 verdict
@@ -88,7 +88,7 @@ URL test now rejects both literal '?' and '#' markers even when WHATWG URL
 search/hash are empty. Final run: 7 passed. No broad suite was run.
 
 Retained Worker24 review for parent bce4:
-/home/user/Documents/Codex/2026-10-15/worker-24-shopping-composition-review/receipt.json
+the retained independent shopping-composition review receipt
 SHA256 06a58bd47f58d2d408c07858f083a2eda7fe5eb0863b6a52a5f4376204cd64a1.
 Its bounded PASS is not acceptance of this new boundary. SAME existing Worker24
 is the selected distinct reviewer; new immutable candidate verdict pending.

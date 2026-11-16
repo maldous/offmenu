@@ -6,7 +6,7 @@ does not install source admission, a GLOBAL handler, canonical mapping or gold.
 The base is accepted develop snapshot
 `abecb99ee1125730ccbc2824b6ec49ffc5cc4302`; pending PR42/handover code is not used.
 
-## Run privately on Foo
+## Run privately on the selected local executor
 
 ```sh
 python3 -m offmenu.portfolio_worker09 \
@@ -21,7 +21,7 @@ directory. The root is a prefix for exact relative JSON pins in
 archive extraction or publisher-body path inside a receipt is followed. No
 third-party packages, credentials, AI calls or network are required.
 
-Integrator00's baseline/interface receipt5798 confirms there is no generic pure
+the product integrator's baseline/interface receipt5798 confirms there is no generic pure
 cache planner at this base. These age fields are portfolio metadata diagnostics,
 not a new shared planner. Neither the Wikibooks-specific `core.cache_policy`,
 registry-only `plan_fixture` nor operational/body-reading `CachedAcquirer` is
@@ -141,7 +141,7 @@ No existing generic payload adapter claims compatibility with BFM HTML or CPI
 PDF; this package does not misroute them into national/reference engines.
 
 No shared-interface change is required to run this direct metadata CLI. To use
-it in GLOBAL, integrator00 must separately select/review an explicit generic
+it in GLOBAL, the product integrator must separately select/review an explicit generic
 metadata-reference candidate schema/handler and trusted scope/rights contract;
 no source manifest or CLI flag may construct a `SourceContract` grant. That
 future shared registration is a proposed integration dependency, not edited

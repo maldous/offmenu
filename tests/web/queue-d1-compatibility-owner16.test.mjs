@@ -10,8 +10,11 @@ import {verifyFixtures} from './fixtures/queue-state-owner16/verify.mjs';
 verifyFixtures();
 const inputs = JSON.parse(readFileSync(new URL('../../docs/reviews/worker16-04-queue-compatibility/inputs.json', import.meta.url)));
 // Keep the reviewed logical paths/hashes historical while resolving current
-// checkout locations through the accepted repository migration contract.
-const movedPaths = new Map(JSON.parse(readFileSync(new URL('../../docs/standards/layout-migration-v2.json', import.meta.url))).moves.map(({from, to}) => [from, to]));
+// checkout locations with this test's exact two product-module relocations.
+const movedPaths = new Map([
+  ['cloud/queue-state-bridge-owner16.mjs', 'apps/web/server/queue-state-bridge-owner16.mjs'],
+  ['cloud/queue-state-entry-owner16.mjs', 'apps/web/server/queue-state-entry-owner16.mjs'],
+]);
 const selected = new Map();
 for (const file of inputs.files) {
   const localPath = movedPaths.get(file.localPath) ?? file.localPath.replace(/^tests-web\//, 'tests/web/');

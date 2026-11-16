@@ -7,7 +7,7 @@ policy is changed. Pending PR42 is not a dependency or accepted develop.
 
 ## Runnable interface
 
-From this checkout, on Foo:
+From this checkout, on the selected local executor:
 
 ```
 python3 -m unittest tests.test_portfolio56 -v
@@ -94,7 +94,7 @@ They do not import NO/FR/Finland/Frida engines, run old source tests, grant righ
 qualify a real parser or prove whole-country completion. Independent review and
 normal develop integration are still required; golden promotion is later.
 
-## Proposed shared-interface request to integrator00 (no core edit here)
+## Proposed shared-interface request to the product integrator (no core edit here)
 
 The generic `core.cache_policy` is currently a specific Wikibooks pilot and
 `policy.plan_fixture` requires a registered fixture. Neither is advertised as a
@@ -109,7 +109,6 @@ with a compatible retained release and a trusted SourceContract covering schema,
 independent count/IDs, semantic unit/basis checks, input custody, rights, source
 field origins and intended output scope. Do not construct one from this config.
 
-
 ## Current official documentation check
 
 The [IEOM legal page](https://www.ieom.fr/Mentions-legales?lang=fr) describes
@@ -119,7 +118,6 @@ transformation/cache entitlement. Source-specific holds remain. The attempted
 SPC terminology disclaimer returned403; it was not retried and is not a cookbook
 licence. `config/portfolio56/public-documentation.json` records this limited
 research; no retained report/book body was opened or publisher contacted.
-
 
 ## SAME45 reader correction (review6504)
 

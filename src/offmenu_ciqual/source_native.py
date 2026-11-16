@@ -314,10 +314,10 @@ def _publish(files, output):
 
 
 def build_selected(output):
-    """Foo-local entry point, fixed read-only cache and fixed output-root boundary.
+    """Local entry point, fixed read-only cache and fixed output-root boundary.
 
     Call from the trusted runner's normal non-root account. Only aggregate pins
-    and counts leave this function; food records and dictionary stay on Foo.
+    and counts leave this function; food records and dictionary stay in private local storage.
     """
     _require(os.geteuid() != 0, 'normal-user-required')
     output = core.safe_path(output)

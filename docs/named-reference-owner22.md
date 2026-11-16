@@ -4,12 +4,6 @@ Status: candidate pending different existing08 independent review (after Fineli)
 root acceptance and owner02 adoption. No actual issuer target profile is supplied.
 No endpoint, shared import, schema, people-data request or clinical/default selection.
 
-Owner22/thread01a138fa-1d15-7701-94a1-39bdf19ffb22; fixed worktree
-/home/user/src/offmenu-workers/worker-22. Branch feature/named-reference-owner22-20261015,
-fresh locked-fetch base 4693cbc3fe17cdde2e292e6eb00cd83769ee45ae, exit0, 2026-10-14T16:47:45.620862+00:00.
-Assessment115d7d8cbf947e1e23334c6f60cd7a7c77d09d93, prepared e86/PR8 merge4693cbc,
-prior4d/standalone2f/workspacea143/sourcebeebcce/dataset refs are preserved.
-
 ## Authority and actual source dependency
 
 The assessment in 115d7:docs/norm13-named-profile-owner22.md found no qualified

@@ -15,21 +15,23 @@ The CLI loads the inert `worker24_catalogue.BINDINGS` module included in wheel
 and sdist builds. Its literals exactly match the retained `bindings.json`
 document; runtime loading does not depend on that repository document.
 Embedded absolute evidence and
-candidate paths are Foo custody pointers, never opened by the CLI. The report
+candidate paths are local executor custody pointers, never opened by the CLI. The report
 does not certify current asset availability, bytes, rights or data acceptance.
 The original immutable candidates/manifests remain unchanged. This metadata
 package installs neither a production `SourceContract` nor GLOBAL handlers.
 
 Default tests read only committed authored metadata fixtures. They resolve the
 `tables` pointers, reject the old `members` pointer and reject declaration or
-evidence-hash drift. Private Foo files are not required by test discovery.
+evidence-hash drift. Private local executor files are not required by test discovery.
 For an explicit check of the actual eleven PF/UY metadata evidence pointers on
-Foo, separately run:
+local executor, separately run:
 
 ```sh
 python3 -m offmenu.refresh.worker24_metadata_diagnostic --foo-metadata
 ```
 
+The `--foo-metadata` spelling is a retained compatibility flag for an explicit
+local metadata diagnostic, not a dependency on a named host or external service.
 This diagnostic follows only pinned metadata evidence paths. It checks their
 hashes and the declared filename, digest, size, headers and release version;
 it never opens the source/candidate body paths inside those documents. Missing
@@ -79,13 +81,13 @@ qualification, reviewed records, gold admission or country completion.
 
 | Dependency | Type / current owner | Next action |
 | --- | --- | --- |
-| PF/UY original acquisition timestamps and custody evidence | Missing input; original custodians24/47, selected through Morgan | Supply exact retained acquisition metadata, not a new download or guessed date |
-| Actual cell-coordinate semantics and native staging schema | Review/contract; Morgan designated reviewer + integration00 | Review exact lexical-only scope and configure trusted `SourceContract` before any real row processing |
+| PF/UY original acquisition timestamps and custody evidence | Missing input; original custodians24/47, selected through the product maintainer | Supply exact retained acquisition metadata, not a new download or guessed date |
+| Actual cell-coordinate semantics and native staging schema | Review/contract; the product maintainer designated reviewer + integration00 | Review exact lexical-only scope and configure trusted `SourceContract` before any real row processing |
 | Shared fixture-independent refresh planner hook | Shared interface; integration00 | Expose trusted source/release/input-key acquisition planning with explicit clock, no force bypass under30days, isolated diagnostics; existing `plan_fixture` is fixture-registry-specific |
-| PF non-agricultural/IEOM and other country types | Source-use/applicability; Morgan + source owner | Supply operation-specific evidence; current metadata does not expand use |
-| UY price body/allocation, date/schema join, composition release/rights | Missing input/authorization/source-use;47/45 via Morgan | Select exact metadata resolution; no2GB price acquisition or joins in this task |
-| SL403 | Explicit denied route; Morgan/source owner | Preserve no retry; qualified evidence through existing owner only |
-| TF report014873-01 exact section, max2pages, attribution and policy403 | Source-use + denied route; Morgan/source owner | Supply exact permitted section/use evidence; no report read or alternate route |
+| PF non-agricultural/IEOM and other country types | Source-use/applicability; the product maintainer + source owner | Supply operation-specific evidence; current metadata does not expand use |
+| UY price body/allocation, date/schema join, composition release/rights | Missing input/authorization/source-use;47/45 via the product maintainer | Select exact metadata resolution; no2GB price acquisition or joins in this task |
+| SL403 | Explicit denied route; the source owner | Preserve no retry; qualified evidence through existing owner only |
+| TF report014873-01 exact section, max2pages, attribution and policy403 | Source-use + denied route; the source owner | Supply exact permitted section/use evidence; no report read or alternate route |
 
 Proposed integrator interface is a successor request, not an installed core
 change: `plan_retained(contract, acquisition_evidence, now, previous_content_key)`

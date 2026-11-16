@@ -42,7 +42,7 @@ here. A real refresh will need a separately reviewed `SourceSpec` and the shared
 ## Existing evidence and applicability
 
 The Python declarations pin exact external receipt/validation manifests and their
-selectors. Source snapshots remain on Foo; nothing is copied into this commit.
+selectors. Source snapshots remain on the selected local executor; nothing is copied into this commit.
 
 | Country | Retained source scope | Binding and origin declaration | Remaining limits |
 | --- | --- | --- | --- |
@@ -93,10 +93,10 @@ unknown units, held rights, absent metadata, malformed metadata, acquisition ver
 validation age, the exact30-day boundary and a malformed sibling next to a valid
 fixture. No record is dropped to make diagnostics pass.
 
-## Proposed shared integration boundary, for existing integrator00
+## Proposed shared integration boundary, for the product integrator
 
 No shared-interface patch is proposed or required for this metadata package.
-Integrator00 can review/cherry-pick the four owned files and run the bounded tests
+the product integrator can review/cherry-pick the four owned files and run the bounded tests
 without changing registry/admission tables. The observed MM/MO literals are not
 the shared `[record]` candidate envelope; no wrapper or raw-data replay was done.
 
@@ -110,7 +110,7 @@ has its own bounded streaming interface, but using it on real bytes requires
 explicit selected scope and resource admission. Do not independently modify the
 shared execution core to accommodate this portfolio.
 
-Independent review and develop integration remain required. Morgan owns scheduling;
+Independent review and develop integration remain required. the product maintainer owns scheduling;
 existing00 owns integration. Preserve all source/privacy/Finland/Frida/nativeNO-FR
 denial restrictions, old uncertain sends, rawFoo custody and separate DEV7645 lane.
 Golden promotion, production and CIX remain held.

@@ -120,7 +120,7 @@ composition, the supplied base existed locally and an independent read-only
 ls-remote of origin refs/heads/develop returned exactly f6cb92a. No fresh-base
 claim is derived from the stale tracking ref.
 
-Retained Worker24 review: /home/user/Documents/Codex/2026-10-14/task-2/worker-24-review-shopping/receipt.json.
+The retained independent shopping review remains historical evidence, not a current checkout dependency.
 Its probe-results, review runner and check-output hashes were verified. Verdict:
 PASS bounded in-memory list proposal/confirmation only; URL transport, source
 admission, session binding and production consumer installation unqualified.

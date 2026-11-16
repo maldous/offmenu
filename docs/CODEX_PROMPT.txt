@@ -1,7 +1,0 @@
-Continue OffMenu from the private GitHub repository https://github.com/maldous/offmenu, branch main. Read docs/CODEX_HANDOVER.md, docs/delivery-plan.md, docs/product-review-status.md and all specialist reports and registers in research/ before implementation.
-
-The migration is complete: verify the checked-out commit and read docs/MIGRATION.md. Keep the repository private. Reconcile the actual Cloudflare deployment and D1 counts with the checkpoint; preserve user data, household state, Netlify authentication and the existing provider-vault secret.
-
-Deliver the dependency-ordered functionality and permitted normalized datasets in one sustained run. Keep country/source discovery separate from verified ingestion; retain licensing, evidence, dates, preparation state and explicit unknowns. Prioritize functionality over presentation. Cover inventory and receipts, household menus and shopping, cooking and leftovers, dietary history and statistics, private health imports, global country data, BYOC connectors and scoped REST/MCP. Do not claim universal worldwide coverage from a complete ISO index.
-
-Use available MCP connections, batch requests to avoid excess calls, run meaningful checks, deploy verified changes and save durable checkpoints. Provide brief progress updates at least every minute while working. Maintain a requirements/acceptance register and report delivered, verified and externally blocked items separately. Additional UI/UX feedback will follow later.

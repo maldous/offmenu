@@ -1,7 +1,7 @@
 # Validation during development and at release
 
 Use the checkout and source revision selected for your change. The
-[maintainer guide](../maintainer.md#checks-and-generated-files) remains the
+[maintainer guide](../maintainer.md#source-and-build-checks) remains the
 command reference. Optional `validate:dev` and `validate:release` aliases group
 existing commands; direct commands remain valid and no new mandatory tool is introduced.
 
@@ -116,27 +116,17 @@ a green required CI context for a new commit.
 
 ## Carry scoped evidence into integration
 
-Keep the same owner/peer pair for a coupled interface through its concrete
-corrections. Pass one canonical result ID with short deltas, already-granted
-authority, exact source/artifact pins, tested boundary, remaining dependency
-and its owner. See the maintainer guide's
-[coordination and delivery states](../maintainer.md#coordination-and-delivery-states).
-Worker00's shared mutation lock can delay application without blocking another
-owner's disjoint patch, generated fixture or already-qualified preparation.
-Never use that parallelism to read held data or activate an unapproved runtime.
+Keep one integration writer for a coupled interface and obtain independent
+review of its source and evidence. Pass the exact source/artifact pins, tested
+boundary, remaining dependency and responsible maintainer. Disjoint preparation
+can continue without overwriting another owner's work. It does not authorize
+reading held data, deploying, or activating an unapproved service.
 
-During development, run materially affected checks and the necessary auth,
-isolation and data-loss regressions. Reuse unchanged valid evidence by exact
-reference; full frozen-release and mandatory provider checks retain their actual
-scope. Record ready, placed, tested, integrated, qualified, mounted and usable
-separately. A patch plus a passing test is not a consumer usability receipt.
-
-Use source-event times separately from ledger-write times when reporting those
-transitions. Ready-to-usable, waiting, rework and cost measurements come only
-from matching existing receipts; absent evidence is `UNKNOWN`, not zero or a
-claimed saving. Preserve earlier failures and completed scope in existing
-custody. A docs-only alignment needs focused static checks and a guarded inverse
-patch, not a new telemetry system, full-suite replay or optional signoff cycle.
+Record prepared, reviewed, tested, integrated and deployed outcomes separately.
+A source patch and passing focused test establish only their selected scope.
+Preserve original failures and evidence, including source observation times and
+any remaining consumer requirement. A documentation correction normally needs
+focused static checks, not a repeated application suite.
 
 ## Thorough validation at the release boundary
 
@@ -191,11 +181,7 @@ Keep exact valid test evidence from development rather than blindly repeating
 it; required branch checks and release-specific integration checks still must
 satisfy their actual current rules. Build, source integration, data admission,
 auth activation and production deployment are separate states. Record meaningful
-actions and actual check states through the existing canonical ledger workflow,
-not new GitHub task Issues or another tracker. Tests/evidence consolidation has
-its existing owner; use command/evidence artifacts to coordinate, not a second
-framework or optional approval loop. Land compatible test-consolidation and
-workflow documentation changes in one coherent revision with their existing
-owners. Ordinary delivery does not wait for a complete audit or a new signoff
-barrier. Preserve meaningful tests and evidence; do not delete assertions to
-make either profile faster.
+actions and actual check states against the selected product change, including
+its source revision and output hashes. Keep one integration writer and preserve
+independent review. Preserve meaningful tests and evidence; do not delete
+assertions to make either profile faster.

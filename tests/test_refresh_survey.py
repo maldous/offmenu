@@ -146,7 +146,7 @@ class SurveyTests(unittest.TestCase):
         from offmenu.refresh.__main__ import main
         for args in (['survey-selected','--workspace',str(self.root),'--input-root','/tmp'], ['survey-selected','--workspace',str(self.root),'--lock','/tmp/test'], ['survey-selected','--workspace',str(self.root),'--force-refresh']):
             with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):main(args)
-        # Foo sets TMPDIR beneath OUTPUT; a temporary directory is not proof
+        # The original execution host sets TMPDIR beneath OUTPUT; a temporary directory is not proof
         # that a workspace is outside the allowed output root.
         outside = Path('/offmenu-schema-survey-outside-output-root')
         with mock.patch.object(survey, '_run_worker') as worker, mock.patch.object(survey, '_safe_directory') as directory:
@@ -169,8 +169,8 @@ class SurveyTests(unittest.TestCase):
             self.assertEqual(r.stderr,b'')
 
     def test_worker_missing_foo_read_only_inputs_returns_safe_held(self):
-        # The cloud task has no Foo dataset; do not open source bodies here.
-        if survey.CACHE.exists(): self.skipTest('Foo cache exists; test intentionally never reads it')
+        # The test has no private host dataset; do not open source bodies here.
+        if survey.CACHE.exists(): self.skipTest('Private cache exists; test intentionally never reads it')
         r=subprocess.run([sys.executable,'-I','-B',survey.__file__,'--worker','FR'],capture_output=True,timeout=5)
         self.assertEqual(r.returncode,0)
         value=json.loads(r.stdout)

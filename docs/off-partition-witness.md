@@ -151,7 +151,7 @@ expanded bytes from the previous full witness are planning evidence, not proof
 that a new configuration fits. Current real resources/limits are unset.
 
 Worker57 owns any selected adapter/execution/custody/resource packet, Worker64
-independent output review, Gateway admission/scheduling and Worker00 integration.
+independent output review, the product maintainer admission/scheduling and the product integrator integration.
 Fresh independent source review precedes actual operation selection. Preserve
 source rights/private artifacts and account concurrent commitments exactly once.
 The downstream partition-aware normalization/contract and PR72 independent
@@ -161,7 +161,7 @@ clean/default producer behavior or make candidate-output-before-witness gates.
 ## Verification
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:tests /home/user/src/offmenu-preservation-20261020/checkpoint-venv/bin/python -B -m unittest test_off_partition_witness -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:tests python -B -m unittest test_off_partition_witness -v
 ```
 
 Generated tests cover full ordinal conservation, multiple/identical versions,
