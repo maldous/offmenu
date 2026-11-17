@@ -229,6 +229,7 @@
   "./owned-backup-account-ui.js": "./owned-backup-account-ui.js",
   "./owned-snapshot-extractor.mjs": "./owned-snapshot-extractor.mjs",
   "./pantry-backup.js": "./pantry-backup.js",
+  "./pantry-duration-optimizer.js": "./pantry-duration-optimizer.js",
   "./personal-ai-ui.js": "./personal-ai-ui.js",
   "./personal-ai.mjs": "./personal-ai.mjs",
   "./product-visual-association.js": "./product-visual-association.js",
