@@ -1,6 +1,7 @@
 import {restrictionEvidence,canonicalIngredient,quantified} from './ingredients.js';
-import {normalize,matchMeals,eligibleStock} from './model.js';
+import {normalize,matchMeals} from './model.js';
 import {planSummary} from './menu-model.js';
+import {optimizeMeasuredPantry} from './pantry-duration-optimizer.js';
 export const ADVISORS=[['balanced','Balanced variety'],['high-protein','Higher protein'],['low-carb','Lower carbohydrate'],['weight-loss','Weight management'],['gluten-free','Gluten-free'],['dairy-free','Dairy-free'],['vegetarian','Vegetarian'],['vegan','Vegan']];
 export const DEFAULT_LOCATIONS=[{id:'pantry-1',area:'Pantry',shelf:'Shelf 1'},{id:'fridge-1',area:'Fridge',shelf:'Shelf 1'},{id:'freezer-1',area:'Freezer',shelf:'Shelf 1'}];
 const canonical=s=>normalize(s).replaceAll('cilantro','coriander').replaceAll('aubergine','eggplant');
@@ -11,29 +12,17 @@ export function householdPortions(members,fallback=2){return members.length?memb
 export function rankedMenus(recipes,inventory,products,members,servings,date){const rows=matchMeals(inventory,recipes,servings,date);return rows.map(r=>{const group=groupSuitability(r,members);const summary=planSummary([{recipeId:r.id,date,servings:1}],recipes,inventory,products,[date]);let score=r.coverage*100+(group.automaticSelection?200:group.compatible?100:0);for(const member of members){const goals=member.advisors||[];const complete=k=>{const n=summary.totals[k];return n.known===n.total&&n.total>0?n.value:null;};const protein=complete('proteins_100g'),carbs=complete('carbohydrates_100g'),energy=complete('energy-kcal_100g');if(goals.includes('high-protein')&&protein!=null)score+=protein;if(goals.includes('low-carb')&&carbs!=null)score-=carbs*.2;if(goals.includes('weight-loss')&&(member.age!=null&&member.age>=18)&&energy!=null)score-=energy*.01;}return {...r,group,score};}).sort((a,b)=>b.score-a.score);}
 export function generateHouseholdDay(recipes,inventory,products,members,date,slots=['Dinner']){const portions=householdPortions(members);const plan=[];for(const slot of slots){const ranked=rankedMenus(recipes.filter(quantified),inventory,products,members,portions,date);const shared=ranked.find(r=>r.group.automaticSelection);if(shared){plan.push({id:crypto.randomUUID(),recipeId:shared.id,date,slot,servings:portions,memberIds:members.map(m=>m.id),adjustments:shared.group.changes});continue;}const byRecipe=new Map();for(const member of members){const recipe=rankedMenus(recipes.filter(quantified),inventory,products,[member],member.portion||1,date).find(r=>r.group.automaticSelection);if(!recipe)continue;const existing=byRecipe.get(recipe.id);if(existing){existing.servings+=member.portion||1;existing.memberIds.push(member.id);}else byRecipe.set(recipe.id,{id:crypto.randomUUID(),recipeId:recipe.id,date,slot,servings:member.portion||1,memberIds:[member.id],adjustments:recipe.group.changes});}plan.push(...byRecipe.values());}return plan;}
 export function ingredientUnlocks(recipes,inventory,servings,date,members=[]){const rows=matchMeals(inventory,recipes.filter(quantified),servings,date);const candidates=new Map();for(const r of rows){if(r.unknown.length||r.missing.length!==1||!groupSuitability(r,members).automaticSelection)continue;const i=r.missing[0],key=i.ingredient+'|'+i.unit;const entry=candidates.get(key)||{ingredient:i.ingredient,unit:i.unit,quantity:0,recipes:[]};entry.quantity=Math.max(entry.quantity,i.quantity);entry.recipes.push(r.title);candidates.set(key,entry);}return [...candidates.values()].sort((a,b)=>b.recipes.length-a.recipes.length);}
-// A greedy lower bound for repeated measured meals. It is not proof of dietary completeness.
-export function pantryDuration(recipes,inventory,members,servings,date,mealsPerDay=3){
-  const usable=recipes.filter(r=>quantified(r)&&r.ingredients.length&&r.ingredients.filter(i=>!i.optional).every(i=>Number.isFinite(i.quantity)&&i.quantity>0&&i.unit)&&groupSuitability(r,members).automaticSelection);
-  const stock=inventory.filter(l=>eligibleStock(l,date)).map(l=>({...l}));
-  const start=new Date(date+'T12:00:00Z'),sequence=[];
-  for(let iteration=0;iteration<10000;iteration++){
-    const day=new Date(start);
-    day.setUTCDate(start.getUTCDate()+Math.floor(sequence.length/mealsPerDay));
-    const simulatedDate=day.toISOString().slice(0,10);
-    const ready=matchMeals(stock,usable,servings,simulatedDate).filter(r=>r.status==='ready');
-    if(!ready.length)break;
-    const recipe=ready.sort((a,b)=>a.ingredients.length-b.ingredients.length)[0];
-    for(const ingredient of recipe.ingredients){
-      if(ingredient.optional)continue;
-      let remaining=ingredient.quantity*servings/recipe.servings;
-      for(const lot of stock){
-        if(!eligibleStock(lot,simulatedDate)||normalize(lot.ingredient)!==normalize(ingredient.ingredient)||lot.unit!==ingredient.unit)continue;
-        const take=Math.min(lot.quantity,remaining);
-        lot.quantity-=take;remaining-=take;
-        if(remaining<=.00001)break;
-      }
+// Exact only within the solver's finite measured scope; otherwise a feasible
+// lower bound. Neither outcome proves dietary completeness or food safety.
+export function pantryDuration(recipes,inventory,members,servings,date,mealsPerDay=3,options={}){
+  let usable=null;
+  if(Array.isArray(recipes)&&Array.isArray(members)&&members.every(m=>m&&typeof m==='object')){
+    try{
+      usable=recipes.filter(r=>r&&Array.isArray(r.ingredients)&&quantified(r)&&r.ingredients.length&&r.ingredients.filter(i=>!i.optional).every(i=>Number.isFinite(i.quantity)&&i.quantity>0&&i.unit)&&groupSuitability(r,members).automaticSelection);
+    }catch{
+      // Malformed household/recipe evidence cannot silently qualify a menu.
+      usable=null;
     }
-    sequence.push(recipe.title);
   }
-  return {meals:sequence.length,days:Math.floor(sequence.length/mealsPerDay),sequence,limited:sequence.length===10000};
+  return optimizeMeasuredPantry(usable,inventory,servings,date,mealsPerDay,options);
 }
