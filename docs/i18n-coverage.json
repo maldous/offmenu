@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4032,
+  "messages": 4033,
   "arabicTranslated": 575,
-  "arabicMissing": 3457,
+  "arabicMissing": 3458,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 212,
@@ -1680,6 +1680,7 @@
         "apps/web/src/journey-ui.js",
         "apps/web/src/menu-model.js",
         "apps/web/src/pantry-backup.js",
+        "apps/web/src/pantry-duration-optimizer.js",
         "apps/web/src/product-visual-association.js",
         "apps/web/src/recipe-ingredient-coverage.js",
         "apps/web/src/recipe-review.js",
@@ -1735,6 +1736,13 @@
     "./pantry-backup.js": {
       "sources": [
         "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "./pantry-duration-optimizer.js": {
+      "sources": [
+        "apps/web/src/household-model.js"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"

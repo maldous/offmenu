@@ -37,8 +37,10 @@ for(const [namespace,symbology,raw] of [
 
 test('supported saved camera hints are actual manual choices, not inferred from eight digits',()=>{
  const html=readFileSync(new URL('../../apps/web/assets/shelf-scanner.html',import.meta.url),'utf8');
- for(const format of ['UPC-A','EAN-13','EAN-8','GTIN-14','UPC-E'])
-  assert.match(html,new RegExp('<option value="'+format+'">'));
+ const select=html.match(/<select\b[^>]*\bid="manual-representation"[^>]*>([\s\S]*?)<\/select>/);
+ assert.ok(select,'camera hints belong to the manual representation control');
+ const values=[...select[1].matchAll(/<option\b[^>]*\bvalue="([^"]*)"[^>]*>/g)].map(match=>match[1]);
+ assert.deepEqual(values.sort(),['','UPC-A','EAN-13','EAN-8','GTIN-14','UPC-E'].sort());
  assert.deepEqual(identity.expectedForms('01234558',null).map(form=>form.lexicalValue),['01234558']);
 });
 
