@@ -51,6 +51,7 @@ class Limits:
     max_selected_rows: int
     max_selected_postings: int
     max_global_postings: int
+    max_global_records: int
     max_local_index_bytes: int
     max_sql_steps: int
     timeout_seconds: int
@@ -60,7 +61,7 @@ class Limits:
 
     def check(self):
         for v,m in ((self.max_selected_rows,50000),(self.max_selected_postings,250000),
-                    (self.max_global_postings,16000000),(self.max_local_index_bytes,2**31),
+                    (self.max_global_postings,16000000),(self.max_global_records,16000000),(self.max_local_index_bytes,2**31),
                     (self.max_sql_steps,2**32),(self.timeout_seconds,3600),
                     (self.memory_bytes,8*2**30),(self.io_slots,4),(self.workers,1)):
             need(type(v) is int and 0<v<=m,'unbounded index proof')
@@ -129,7 +130,7 @@ class SelectedProof:
 
 
 def qualify_selection(*, root, root_fd, snapshot, cohorts, limits, issuer):
-    """Verify local indexes once and perform ONE complete global barcode sweep.
+    """Verify local indexes once and perform one global membership sweep and ONE barcode sweep.
 
     All raw payload files remain unopened. The sweep can see unrelated index
     metadata; the issuer MUST explicitly admit this cost/scope, hold the same
@@ -140,7 +141,7 @@ def qualify_selection(*, root, root_fd, snapshot, cohorts, limits, issuer):
     request=_scope(root,root_fd,snapshot,cohorts,limits)
     with issuer.hold_index_proof(request) as g, ExitStack() as st:
         need(isinstance(g,dict) and g.get('request')==request and g.get('snapshot_id')==snapshot.snapshot_id and
-             all(g.get(k) is True for k in ('global_metadata_sweep_allowed','stable_snapshot_held',
+             all(g.get(k) is True for k in ('global_metadata_sweep_allowed','global_record_sweep_allowed','stable_snapshot_held',
                  'provider_rights_and_claims_current','host_limits_enforced','offline_only')) and
              g.get('limits') is not None and wire(g['limits'])==wire(asdict(limits)) and
              type(g.get('valid_until')) in (int,float) and math.isfinite(g['valid_until']) and
@@ -173,13 +174,15 @@ def qualify_selection(*, root, root_fd, snapshot, cohorts, limits, issuer):
             need(set(wanted)<=schema.keys(),'wrong index fields')
             return schema
         global_db=connect(snapshot)
-        need(columns(global_db,'completed',{'cohort','products','result_sha'})['cohort']==1,
+        def primary(cols):
+            return [n for _,n in sorted((v,k) for k,v in cols.items() if v)]
+        need(primary(columns(global_db,'completed',{'cohort','products','result_sha'}))==['cohort'],
              'missing unique cohort completion identity')
-        need(columns(global_db,'records',{'id','source','release','native_id','ref_sha','cohort','record_shard'})['id']==1,
+        need(primary(columns(global_db,'records',{'id','source','release','native_id','ref_sha','cohort','record_shard'}))==['id'],
              'missing indexed unique source identity')
-        bcols=columns(global_db,'barcodes',{'code','id','checksum_valid'})
-        need((bcols['code'],bcols['id'])==(1,2),'wrong global posting constraint')
-        expected={}; entries={}; wanted_counts=Counter();actual_counts=Counter();posting_total=0
+        need(primary(columns(global_db,'barcodes',{'code','id','checksum_valid'}))==['code','id'],
+             'wrong global posting constraint')
+        expected={};identities={};entries={};wanted_counts=Counter();actual_counts=Counter();posting_total=0
         for c in cohorts:
             with _open(root,root_fd,c.receipt) as f:
                 b=decode(_small(f,c.receipt,4*1024**2))
@@ -207,8 +210,7 @@ def qualify_selection(*, root, root_fd, snapshot, cohorts, limits, issuer):
                 clock();need(len(expected)<limits.max_selected_rows and rid not in expected and lid not in by_local
                     and re.fullmatch(r'offmenu:product:[a-f0-9]{24}',rid) and isinstance(native,str) and
                     len(native)<=1024 and HASH.fullmatch(ref) and HASH.fullmatch(linehash),'duplicate/invalid local row')
-                gr=global_db.execute('SELECT source,release,native_id,ref_sha,cohort,record_shard FROM records WHERE id=?',(rid,)).fetchone()
-                need(gr==(c.provider,c.release,native,ref,c.number,shard),'global/private row differs')
+                identities[rid]=(c.provider,c.release,native,ref,c.number,shard)
                 actual_counts[c.provider,c.release,shard]+=1
                 expected[rid]=set();by_local[lid]=rid
             for lid,code,flag in local.execute('SELECT local_id,code,checksum_valid FROM barcodes'):
@@ -226,6 +228,17 @@ def qualify_selection(*, root, root_fd, snapshot, cohorts, limits, issuer):
                 need(0<actual<=5000 and (n is None or n==actual),'per-shard source denominator differs')
                 entries[c.provider,c.release,k]=(actual,c.receipt_sha256,c.index)
         need(set(wanted_counts)==set(actual_counts),'missing selected shard')
+        # The corpus schema has no (cohort,source) index. One separately
+        # authorized records sweep detects extra IDs including zero-posting
+        # rows. Do not confuse forward point lookup with exact membership.
+        provider_cohorts={(c.provider,c.number) for c in cohorts};members=0
+        for rid,source,release,native,ref,number,shard in global_db.execute(
+                'SELECT id,source,release,native_id,ref_sha,cohort,record_shard FROM records'):
+            members+=1;clock();need(members<=limits.max_global_records,'global record sweep exceeded admission before EOF')
+            if (source,number) in provider_cohorts or rid in identities:
+                actual=(source,release,native,ref,number,shard)
+                need(identities.pop(rid,None)==actual,'extra or changed selected global/private row differs')
+        need(not identities,'missing selected global record')
         rows=0;matched=0
         for code,rid,flag in global_db.execute('SELECT code,id,checksum_valid FROM barcodes'):
             rows+=1;clock();need(rows<=limits.max_global_postings,'global sweep exceeded admission before EOF')
@@ -235,6 +248,6 @@ def qualify_selection(*, root, root_fd, snapshot, cohorts, limits, issuer):
         need(matched==posting_total and all(not x for x in expected.values()),'missing selected posting')
         summary={'schema':'offmenu-selected-index-proof/1','request_sha256':request,
                  'selected_records':len(expected),'selected_postings':matched,'global_postings_examined':rows,
-                 'global_sweeps':1,'cohorts':len(cohorts),'whole_file_hash_verified':False,
+                 'global_posting_sweeps':1,'global_record_sweeps':1,'global_records_examined':members,'cohorts':len(cohorts),'whole_file_hash_verified':False,
                  'raw_publisher_data_read':False,'public_distribution_approved':False}
         return SelectedProof(request,snapshot,entries,summary,_issuer=_issued)

@@ -23,7 +23,7 @@ class Issuer:
     def hold_index_proof(self,request):
         self.held=True
         try:
-            grant=dict(request=request,snapshot_id=self.snapshot.snapshot_id,global_metadata_sweep_allowed=True,
+            grant=dict(request=request,snapshot_id=self.snapshot.snapshot_id,global_metadata_sweep_allowed=True,global_record_sweep_allowed=True,
                        stable_snapshot_held=True,provider_rights_and_claims_current=True,host_limits_enforced=True,
                        offline_only=True,limits=asdict(self.limits),valid_until=time.time()+self.limits.timeout_seconds+30)
             grant.update(self.extra);yield grant
@@ -52,7 +52,7 @@ class IndexTest(unittest.TestCase):
                         db.executemany('INSERT INTO '+table+' VALUES('+','.join('?'*len(rows[0]))+')',rows)
             # One unrelated observation: included once in the admitted sweep; no key leaves the verifier.
             db.execute("INSERT INTO barcodes VALUES ('999',0,'unrequested')")
-        self.limit=Limits(10,20,20,8*2**20,1000000,30,512*2**20)
+        self.limit=Limits(10,20,20,20,8*2**20,1000000,30,512*2**20)
     def snap(self):
         s=self.db.stat(); return Snapshot(str(self.db),'fixture-snapshot-v1',s.st_size,s.st_dev,s.st_ino,s.st_mtime_ns,s.st_ctime_ns)
     def proof(self,*,cohorts=None,limit=None,extra=None):
@@ -65,6 +65,8 @@ class IndexTest(unittest.TestCase):
         with patch('offmenu.retained_context_index.sqlite3.connect',side_effect=tracing):
             p=self.proof()
         self.assertEqual(sum(x=='SELECT code,id,checksum_valid FROM barcodes' for x in sql),1)
+        self.assertEqual(sum(x=='SELECT id,source,release,native_id,ref_sha,cohort,record_shard FROM records' for x in sql),1)
+        self.assertEqual(p.metadata()['global_records_examined'],6)
         self.assertEqual(p.metadata()['global_postings_examined'],5)
         self.assertEqual(p.metadata()['selected_records'],6);self.assertEqual(p.metadata()['selected_postings'],4)
         self.assertFalse(p.metadata()['whole_file_hash_verified']);self.assertFalse(p.metadata()['public_distribution_approved'])
@@ -81,9 +83,26 @@ class IndexTest(unittest.TestCase):
         with self.assertRaisesRegex(Refused,'exceeded admission before EOF'):self.proof(limit=replace(self.limit,max_global_postings=3))
         with sqlite3.connect(self.db) as d:d.execute("UPDATE completed SET products=99 WHERE cohort=114")
         with self.assertRaisesRegex(Refused,'not anchored'):self.proof()
+    def test_reverse_membership_extra_zero_and_misplaced_records(self):
+        with sqlite3.connect(self.db) as d:
+            d.execute("INSERT INTO records SELECT 'offmenu:product:ffffffffffffffffffffffff',source,release,'unexpected',ref_sha,cohort,record_shard FROM records WHERE source='off' LIMIT 1")
+        with self.assertRaisesRegex(Refused,'extra or changed selected global'):self.proof()
+        with sqlite3.connect(self.db) as d:
+            d.execute("DELETE FROM records WHERE native_id='unexpected'")
+            d.execute("DELETE FROM records WHERE id=?",('offmenu:product:'+format(3,'024x'),))
+        with self.assertRaisesRegex(Refused,'missing selected global record'):self.proof()
+
+    def test_exact_primary_keys_and_separate_global_record_budget(self):
+        with self.assertRaisesRegex(Refused,'record sweep exceeded'):self.proof(limit=replace(self.limit,max_global_records=2))
+        with sqlite3.connect(self.db) as d:
+            d.executescript('ALTER TABLE records RENAME TO old_records;'
+                'CREATE TABLE records(id TEXT,source,release,native_id,ref_sha,cohort,record_shard,PRIMARY KEY(id,source));'
+                'INSERT INTO records SELECT * FROM old_records;')
+        with self.assertRaisesRegex(Refused,'unique source identity'):self.proof()
+
     def test_scope_issuer_and_deadline_before_reads(self):
         for extra in [{'stable_snapshot_held':False},{'provider_rights_and_claims_current':False},
-                      {'global_metadata_sweep_allowed':False},{'limits':{}},{'valid_until':time.time()+1}]:
+                      {'global_metadata_sweep_allowed':False},{'global_record_sweep_allowed':False},{'limits':{}},{'valid_until':time.time()+1}]:
             with patch('offmenu.retained_context_index._open',side_effect=AssertionError('unadmitted inputs opened')):
                 with self.assertRaisesRegex(Refused,'missing scoped'):self.proof(extra=extra)
         with self.assertRaisesRegex(Refused,'unissued'):SelectedProof('x',self.snap(),{}, {})

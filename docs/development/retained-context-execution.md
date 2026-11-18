@@ -94,13 +94,12 @@ already-qualified frozen filesystem snapshot or an authority that excludes
 concurrent writers for the entire proof and later read, bound to the same
 snapshot ID, file identity and operation. A filename, a WAL checkpoint, no
 visible writer, read-only SQLite URI, or stable timestamps alone are not this
-proof. The issuer must admit the complete metadata sweep (including reading
-unselected postings), time, VM work, RAM and I/O. No default issuer or fallback.
+proof. The issuer must admit two bounded metadata sweeps (including reading unselected
+record metadata and postings), time, VM work, RAM and I/O. No default issuer or fallback.
 
 The verifier checks the exact SHA of each trusted local index and batch receipt
 once. It matches the global completed cohort/count/receipt row, compares each
-selected record identity to the pinned cohort, and scans the global barcode
-table **once for the whole admitted group**, not once per source row.
+selected record identity to the pinned cohort, and scans each global table **once for the whole admitted group**: one explicit records pass for exact reverse membership, and one barcode pass, never one global scan per source row.
 It keeps selected IDs even when they have no barcodes. Missing, extra or
 changed postings, duplicate IDs, a partial pass, a mismatched denominator,
 sidecar change, or limits exceeded refuse the proof. Recorded per-shard counts
