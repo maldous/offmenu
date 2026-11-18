@@ -53,7 +53,13 @@ provider**, two lanes only after both admissions permit it. Allocate CPU, RAM,
 read I/O and total private output per operation using measured sample sizes and
 the full temporary/immutable-space allowance. Check available headroom **at
 admission**; configured worker ceilings and a quiet prior sample are not free
-slots. Share only immutable index reads, not writer cursors. Scale independent
+slots. Bind the entire CPU/memory/I/O/private disk/timeout/worker declaration
+into the immutable operation key; require the supervising host to enforce it.
+For an initial measured shard, a candidate request is one worker, 1,000 CPU
+millis, 2 GiB RAM, one I/O slot, 2 GiB private disk and 900 seconds: **not**
+a reservation or a promise that a slower cold index check fits the deadline.
+Serialize any new large-index verification and reuse a qualified immutable
+identity across eligible readers. Share only immutable index reads, not writer cursors. Scale independent
 shards only when measured memory, I/O, output, deadlines and current ownership
 support them. No new cadence is created here.
 

@@ -1,5 +1,5 @@
 import contextlib
-from dataclasses import replace
+from dataclasses import asdict, replace
 import hashlib
 import multiprocessing
 import os
@@ -7,7 +7,7 @@ from pathlib import Path
 import tempfile
 import time
 import unittest
-from offmenu.retained_context_job import Unit, Refused, execute, decode, wire
+from offmenu.retained_context_job import Budget, Unit, Refused, execute, decode, wire
 
 H = '1'*64
 
@@ -29,7 +29,7 @@ class TestIssuer:
             yield dict({'unit':key,'purpose':purpose,'generation':self.unit.generation,
                         'operation':self.unit.operation,'effect_fenced':True,
                         'prior_effects_reconciled':True,'rights_verified':True,'resources_reserved':True,
-                        'offline_only':True,'valid_until':time.time()+60},**self.mutate)
+                        'host_limits_enforced':True,'resources':asdict(self.unit.budget),'offline_only':True,'valid_until':time.time()+60},**self.mutate)
         finally:
             self.held=False
 
@@ -39,7 +39,7 @@ class JobTest(unittest.TestCase):
         self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
         self.root=Path(self.tmp.name);self.fd=os.open(self.root,os.O_DIRECTORY|os.O_RDONLY);self.addCleanup(os.close,self.fd)
         s=os.fstat(self.fd)
-        self.unit=Unit('off','release-1','queue-1','cohort-114/chunk-00001','op1',4,H,H,H,H,H,s.st_dev,s.st_ino,5,30000,2)
+        self.unit=Unit('off','release-1','queue-1','cohort-114/chunk-00001','op1',4,H,H,H,H,H,s.st_dev,s.st_ino,5,30000,2,Budget(1000,2*1024**3,1,2*1024**3,900))
         self.issuer=TestIssuer(self.unit);self.read=[];self.starts=[]
         self.dir=self.root/self.unit.namespace
 
@@ -66,7 +66,7 @@ class JobTest(unittest.TestCase):
 
     def test_no_authority_and_mismatch(self):
         for key,val in [('prior_effects_reconciled',False),('rights_verified',False),('effect_fenced',False),
-                        ('offline_only',False),('resources_reserved',False),('valid_until',0),
+                        ('offline_only',False),('resources_reserved',False),('resources',{}),('host_limits_enforced',False),('valid_until',0),
                         ('operation','old'),('generation',2)]:
             with self.subTest(key=key):
                 self.issuer.mutate={key:val}
@@ -127,6 +127,17 @@ class JobTest(unittest.TestCase):
                 finally:os.close(fd)
         self.unit=replace(self.unit,max_output_bytes=15);self.issuer=TestIssuer(self.unit)
         with self.assertRaisesRegex(Refused,'exceeds'):self.run_job()
+
+    def test_declared_budget_is_part_of_the_fence(self):
+        original=self.unit
+        for key,v in [('workers',2),('io_slots',0),('disk_bytes',30000),('cpu_millis',True)]:
+            u=replace(original,budget=replace(original.budget,**{key:v}))
+            with self.subTest(key=key),self.assertRaises(Refused):
+                execute(u,destination_fd=self.fd,guard=TestIssuer(u),produce=self.source)
+        u=replace(original,budget=replace(original.budget,timeout_seconds=600))
+        self.assertNotEqual(u.key,original.key)
+        with self.assertRaises(Refused):execute(u,destination_fd=self.fd,guard=self.issuer,produce=self.source)
+        self.assertEqual(list(self.root.iterdir()),[])
 
     def test_unapproved_destination_and_symlink(self):
         other=replace(self.unit,destination_inode=self.unit.destination_inode+1)

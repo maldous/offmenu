@@ -52,6 +52,27 @@ READ = os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK
 
 
 @dataclass(frozen=True)
+class Budget:
+    """Per-shard reservation, not host capacity or permission to create a job."""
+    cpu_millis: int
+    memory_bytes: int
+    io_slots: int
+    disk_bytes: int
+    timeout_seconds: int
+    workers: int = 1
+
+    def check(self, output_bytes, rows):
+        for n, low, high in ((self.cpu_millis, 125, 4000),
+                             (self.memory_bytes, 256*1024**2, 8*1024**3),
+                             (self.io_slots, 1, 4), (self.disk_bytes, 1, 8*1024**3),
+                             (self.timeout_seconds, 1, 3600), (self.workers, 1, 1)):
+            need(type(n) is int and low <= n <= high,'invalid per-shard resource declaration')
+        # Worst case: staged output, one current attempt and eight preserved
+        # crash temporaries, plus filesystem block/envelope overhead for each segment.
+        need(self.disk_bytes >= 10*(output_bytes+8192)+rows*8192,'private disk budget')
+
+
+@dataclass(frozen=True)
 class Unit:
     provider: str
     release: str
@@ -69,6 +90,7 @@ class Unit:
     max_rows: int
     max_output_bytes: int
     batch_rows: int
+    budget: Budget
 
     def check(self):
         need(self.provider in ('off', 'usda-files'), 'unrecognised provider')
@@ -82,6 +104,8 @@ class Unit:
                            (self.batch_rows, 250), (self.max_output_bytes, 128*1024**2)):
             need(type(n) is int and 0 < n <= ceiling, 'bound')
         need(self.batch_rows <= self.max_rows, 'batch size')
+        need(isinstance(self.budget,Budget),'missing resource declaration')
+        self.budget.check(self.max_output_bytes,self.max_rows)
         need(all(type(n) is int and n >= 0 for n in
                  (self.destination_device, self.destination_inode)), 'destination identity')
 
@@ -151,6 +175,7 @@ def _hold(issuer, unit, purpose):
              and grant.get('purpose')==purpose and grant.get('effect_fenced') is True and
              grant.get('prior_effects_reconciled') is True and grant.get('rights_verified') is True
              and grant.get('resources_reserved') is True and grant.get('offline_only') is True and
+             grant.get('host_limits_enforced') is True and grant.get('resources')==asdict(unit.budget) and
              type(grant.get('valid_until')) in (float,int) and grant['valid_until']>time.time(),
              'missing/stale scope, predecessor, rights or admission')
         yield

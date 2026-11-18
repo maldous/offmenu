@@ -1,6 +1,6 @@
 """Real code paths; all rows, SQLite indexes, rights-shaped fixtures, and leases synthetic."""
 from contextlib import ExitStack
-from dataclasses import replace
+from dataclasses import asdict, replace
 import gzip
 import hashlib
 import json
@@ -11,7 +11,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from offmenu import retained_context_consumers as adapters
-from offmenu.retained_context_job import Unit, Refused, digest, wire
+from offmenu.retained_context_job import Budget, Unit, Refused, digest, wire
 from offmenu.retained_context_source import Pin, LEGACY_BRIDGE, ENCODING, signature, input_key, run_qualified
 from test_retained_context_job import TestIssuer
 
@@ -77,7 +77,7 @@ class RouteTest(unittest.TestCase):
             sfd=os.open(root,os.O_DIRECTORY);dfd=os.open(dest,os.O_DIRECTORY);stack.callback(os.close,sfd);stack.callback(os.close,dfd)
             d=os.fstat(dfd); parser=digest(Path(adapters.__file__).read_bytes())
             u=Unit(provider,rel,'fixture-queue',key,'op',1,pins['queue'].sha256,pins['assignment'].sha256,rights,parser,
-               input_key(str(root),sfd,pins),d.st_dev,d.st_ino,3,128*1024,2)
+               input_key(str(root),sfd,pins),d.st_dev,d.st_ino,3,128*1024,2,Budget(1000,2*1024**3,1,2*1024**3,900))
             def verify(p,fd):
                 # No real database or implicit OK; independently hash the already-open fixture.
                 return digest(os.pread(fd,p.size,0))==p.sha256
