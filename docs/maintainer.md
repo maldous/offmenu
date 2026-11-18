@@ -43,6 +43,10 @@ any difference deliberately. The build checks locale inventory, bundles browser
 assets and the Worker, and creates the retailer-extension archive. It neither
 deploys the application nor publishes a data candidate.
 
+For the bounded generated-fixture provider profile and its product-local lock,
+see [offline provider contract checks](development/offline-provider-checks.md).
+That profile neither contacts providers nor replaces full product validation.
+
 For broader selected validation, use:
 
 ```sh
