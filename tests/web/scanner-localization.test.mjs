@@ -37,11 +37,13 @@ test('scanner device selection falls back to URL without changing captured ident
 test('scanner UI labels reuse Arabic resources and mark untranslated labels as English',()=>{
   setLanguage('ar');
   try {
-    const translated={},fallback={};
+    const translated={},finish={},fallback={};
     setLocalizedText(translated,'Cancel');
-    setLocalizedText(fallback,'Finish scanning');
+    setLocalizedText(finish,'Finish scanning');
+    setLocalizedText(fallback,'Synthetic unmapped scanner label');
     assert.notEqual(translated.textContent,'Cancel');assert.equal(translated.lang,'ar');
-    assert.equal(fallback.textContent,'Finish scanning');assert.equal(fallback.lang,'en');
+    assert.equal(finish.textContent,'إنهاء المسح');assert.equal(finish.lang,'ar');
+    assert.equal(fallback.textContent,'Synthetic unmapped scanner label');assert.equal(fallback.lang,'en');
   } finally {setLanguage('en');}
 });
 
@@ -81,10 +83,11 @@ test('actual Worker route localizes scanner HTML while preserving source namespa
     assert.equal(response.headers.get('cache-control'),'private, no-store');
     assert.match(body,/<html[^>]*lang="ar"[^>]*dir="rtl"/);
     assert.match(body,/لغة الواجهة/);
-    assert.match(body,/<h1[^>]*lang="en"[^>]*>Choose your scanner mode<\/h1>/);
+    assert.match(body,/<h1[^>]*lang="ar"[^>]*>اختر وضع الماسح<\/h1>/);
     assert.match(body,/<option value="USDA-FDC"/);assert.match(body,/<option value="UPC-E"/);
     assert.match(body,/<span id="queue-count">0<\/span>/);
     const english=await worker.dispatchFetch('https://offmenu.test/shelf-scanner.html?uiLanguage=en');
-    assert.equal(english.headers.get('content-language'),'en');assert.match(await english.text(),/Interface language/);
+    assert.equal(english.headers.get('content-language'),'en');const englishBody=await english.text();
+    assert.match(englishBody,/Interface language/);assert.match(englishBody,/<h1[^>]*>Choose your scanner mode<\/h1>/);
   } finally {await worker.dispose();}
 });
