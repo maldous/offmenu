@@ -17,6 +17,23 @@ import time
 from uuid import uuid4
 
 
+def static_delivery_contract():
+    """Constraints inherited by any later rights-qualified static asset build.
+
+    This library does not implement a browser, run provider calls, or grant
+    those capabilities. Use a fresh value, never a shared mutable template.
+    """
+    return {
+        'corpusDistribution':'versioned-text-only',
+        'hostProviderImageBinaries':False, 'serverImageProxy':False,
+        'runtimeExternalDataApi':False, 'runtimeTranslation':False,
+        'providerAcquisitionAndTranslation':'separately-authorized-scheduled-foo-build-only',
+        'externalCitations':'explicit-user-initiated-navigation-only',
+        'visualFallbackOrder':['direct-client-provider-origin-image-if-terms-and-browser-allow',
+                               'emoji-or-unicode','local-offmenu-logo'],
+    }
+
+
 class Refused(ValueError):
     """An unresolved input, authority or output requires owner reconciliation."""
 
@@ -267,7 +284,7 @@ def execute(unit, *, destination_fd, guard, produce, crash=lambda _: None):
             def receipt():
                 return wire({'schema':'offmenu-retained-terminal/1','unit':unit.key,
                              'rows':pos,'segments':seq,'payload_bytes':used,'chain':chain,
-                             'published':False,'canonical_acceptance':False})
+                             'published':False,'canonical_acceptance':False,'downstream_delivery':static_delivery_contract()})
             done = _maybe(fd, 'receipt.json', 8192)
             if done is not None:
                 need(done == receipt() and pos == unit.max_rows, 'terminal integrity')

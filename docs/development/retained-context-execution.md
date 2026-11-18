@@ -76,7 +76,12 @@ support them. No new cadence is created here.
   evidence, and explicit nonpublication state. This runner's source-bound
   receipt is **not** public-distribution rights, a translation, a Gold decision,
   a publication manifest or a go-live instruction.
-- The application should read only separately approved static data. Provider
-  citations are explicit user-initiated links, not background fetches, CDN
-  embeds, prefetches, translation calls or tracking. No live interface, browser
+- Distribute versioned **text-only** corpus data. Do not embed, download for
+  hosting, serve, or proxy provider image binaries. An eligible image may be
+  loaded **directly by the client from its provider origin** only when the
+  provider terms and browser allow it. If missing, disallowed, offline or
+  failed, try emoji/Unicode, then the local OffMenu logo. This is the sole
+  runtime exception; do not fetch external data APIs or translate at runtime.
+  Provider citations are explicit user-initiated navigation, not background
+  fetches or tracking. No live interface, browser
   or distribution path is activated or certified by these synthetic tests.

@@ -65,6 +65,19 @@ class JobTest(unittest.TestCase):
         self.assertFalse(r['published']); self.assertFalse(r['canonical_acceptance'])
         self.assertEqual(r,self.run_job(produce=lambda _:self.fail('replayed terminal')))
 
+    def test_terminal_carries_text_only_static_and_client_image_contract(self):
+        d=self.run_job()['downstream_delivery']
+        self.assertEqual(d['corpusDistribution'],'versioned-text-only')
+        self.assertIs(d['hostProviderImageBinaries'],False);self.assertIs(d['serverImageProxy'],False)
+        self.assertIs(d['runtimeExternalDataApi'],False);self.assertIs(d['runtimeTranslation'],False)
+        self.assertEqual(d['providerAcquisitionAndTranslation'],'separately-authorized-scheduled-foo-build-only')
+        self.assertEqual(d['externalCitations'],'explicit-user-initiated-navigation-only')
+        self.assertEqual(d['visualFallbackOrder'],['direct-client-provider-origin-image-if-terms-and-browser-allow',
+                                                  'emoji-or-unicode','local-offmenu-logo'])
+        self.assertFalse(any(p.suffix in ('.jpg','.png','.webp','.gif','.jpeg') for p in self.dir.iterdir()))
+        d['visualFallbackOrder'].clear()
+        self.assertEqual(len(self.run_job()['downstream_delivery']['visualFallbackOrder']),3)
+
     def test_no_authority_and_mismatch(self):
         for key,val in [('prior_effects_reconciled',False),('rights_verified',False),('effect_fenced',False),
                         ('offline_only',False),('resources_reserved',False),('resources',{}),('host_limits_enforced',False),('valid_until',0),
