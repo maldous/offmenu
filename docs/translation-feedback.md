@@ -21,3 +21,5 @@ Use the existing OffMenu translation-intake record for the destination and named
 5. Read back the native issue identity, team, project, assignee and source key. On another delivery of the same source, confirm it reaches that same record rather than creating a second one. Record the outcome in the existing private handoff, not in the public issue.
 
 The form definition belongs in `.github/ISSUE_TEMPLATE/`. A feature branch or a merge into `develop` does not make it visible in GitHub's chooser: the released repository default branch must contain it. Before calling intake live, verify visibility from a signed-in contributor account, keyboard/screen-reader use, privacy guidance and one authorized non-sensitive submission through verified, deduplicated receiving. A source check alone proves none of these.
+
+For the private consumer's exact source, moderation, reservation and readback requirements, see the [translation intake contract](development/translation-feedback-routing.md). It is an offline-tested adapter contract, not an active integration.
