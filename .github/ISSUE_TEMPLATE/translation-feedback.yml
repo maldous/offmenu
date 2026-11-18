@@ -1,0 +1,43 @@
+name: Suggest a better translation
+description: Tell us how to improve a word or phrase you saw in OffMenu.
+title: "Translation suggestion: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping OffMenu sound natural in your language. Pick a short title, such as **Shopping list button in French**. You can write your answers in your own language. You do not need to know any code.
+
+        **This is public.** When you submit, anyone can read your title and answers alongside your GitHub username. Use example wording, not real names, addresses, health details or other private information. Please do not add screenshots, contact details or security reports.
+  - type: input
+    id: language
+    attributes:
+      label: Which language is this for?
+      description: Write the language name. If wording varies by region, name the region too.
+      placeholder: For example, French (Canada)
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Where did you see the wording?
+      description: Name the screen and what you were doing. A description is enough.
+      placeholder: For example, the button for adding an item to my shopping list
+    validations:
+      required: true
+  - type: input
+    id: current
+    attributes:
+      label: What does it say now? (optional)
+      description: If you remember, copy just the word or phrase. Leave out any personal details.
+  - type: input
+    id: suggestion
+    attributes:
+      label: What should it say?
+      description: Write the words you would use, including any punctuation.
+    validations:
+      required: true
+  - type: input
+    id: context
+    attributes:
+      label: What else would help us understand? (optional)
+      description: For example, is the current wording too formal, unclear or used differently in your region?

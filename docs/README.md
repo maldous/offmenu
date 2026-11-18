@@ -47,6 +47,8 @@ maintainer guide.
 
 ## Community task guides
 
+For translation suggestions, see [how to report wording and what GitHub makes public](translation-feedback.md).
+
 Members can use [recipe contributions and public profiles](recipe-contribution-guide.md)
 for the implemented community submission, comment and voting controls.
 Administrators can use [AI community review](community-ai-review-guide.md) for
