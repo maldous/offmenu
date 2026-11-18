@@ -56,7 +56,8 @@ def _open(root_path, root_fd, pin, *, index=False):
             d=os.open(name,DIR,dir_fd=d);stack.callback(os.close,d)
         f=stack.enter_context(os.fdopen(os.open(parts[-1],READ,dir_fd=d),'rb'))
         s=os.fstat(f.fileno())
-        need(stat.S_ISREG(s.st_mode) and signature(s)==pin.stat_key() and HASH.fullmatch(pin.sha256),
+        need(stat.S_ISREG(s.st_mode) and signature(s)==pin.stat_key() and
+             (not isinstance(pin,Pin) or HASH.fullmatch(pin.sha256)),
              'input identity changed')
         def still_bound():
             need(signature(os.fstat(f.fileno()))==pin.stat_key() and
@@ -128,7 +129,7 @@ def _project(row):
             'packageQuantityInference':'NOT_ALLOWED_FROM_SERVING','sourceTermAssertions':[]},'sourceTermAssertions':[]}
 
 
-def produce(unit, start, *, root_path, root_fd, pins, verify_index, consume):
+def produce(unit, start, *, root_path, root_fd, pins, verify_index, consume, selected_proof=None):
     """Caller must hold real read admission on each advancement of this iterator.
 
     verify_index(pin, fd) recognizes a trusted prior SHA verified against the
@@ -163,7 +164,13 @@ def produce(unit, start, *, root_path, root_fd, pins, verify_index, consume):
         need(type(src['uncompressedBytes']) is int and 0<src['uncompressedBytes']<=32*1024**2,'inflated byte limit')
         def db(role):
             p=pins[role];f=st.enter_context(_open(root_path,root_fd,p,index=True))
-            need(verify_index(p,f.fileno()) is True,'missing verified immutable index fingerprint')
+            from .retained_context_index import Snapshot, SelectedProof
+            if type(p) is Snapshot:
+                need(role=='global_index' and unit.snapshot_id==p.snapshot_id and
+                     type(selected_proof) is SelectedProof and selected_proof.covers(p,unit,pins['cohort_receipt'].sha256,pins['index']),
+                     'missing exact selected-index proof')
+            else:
+                need(type(p) is Pin and verify_index(p,f.fileno()) is True,'missing verified immutable index fingerprint')
             con=sqlite3.connect(f'file:/proc/self/fd/{f.fileno()}?mode=ro&immutable=1',uri=True)
             st.callback(con.close);con.execute('PRAGMA query_only=ON');return con
         local=db('index'); glob=db('global_index')
@@ -215,7 +222,7 @@ def produce(unit, start, *, root_path, root_fd, pins, verify_index, consume):
         need(n==unit.max_rows and total==src['uncompressedBytes'],'source denominator')
 
 
-def run_qualified(unit, *, source_root, source_fd, destination_fd, pins, issuer, verify_index):
+def run_qualified(unit, *, source_root, source_fd, destination_fd, pins, issuer, verify_index, selected_proof=None):
     """Production embedding point, not a CLI: no installed issuer fallback.
 
     The containing process and its exact source revision are bound by the
@@ -225,11 +232,20 @@ def run_qualified(unit, *, source_root, source_fd, destination_fd, pins, issuer,
     from pathlib import Path
     from . import retained_context_consumers as adapters
     from .retained_context_job import _hold, execute
+    from .retained_context_index import Snapshot, SelectedProof
     unit.check()
     with _hold(issuer,unit,'qualify-route'):
         need(callable(verify_index) and set(pins)==ROLES and
              input_key(source_root,source_fd,pins)==unit.inputs_sha256,'route inputs')
         need(digest(Path(adapters.__file__).read_bytes())==unit.parser_sha256,'parser pin')
+        need(all(type(v) is Pin for k,v in pins.items() if k!='global_index'),'wrong local evidence class')
+        gp=pins['global_index']
+        if type(gp) is Snapshot:
+            need(unit.snapshot_id==gp.snapshot_id and type(selected_proof) is SelectedProof and
+                 selected_proof.covers(gp,unit,pins['cohort_receipt'].sha256,pins['index']),
+                 'missing exact selected-index proof')
+        else:
+            need(type(gp) is Pin and unit.snapshot_id is None and selected_proof is None,'mixed index evidence mode')
     return execute(unit,destination_fd=destination_fd,guard=issuer,produce=lambda n:produce(
         unit,n,root_path=source_root,root_fd=source_fd,pins=pins,
-        verify_index=verify_index,consume=adapters.consume_context))
+        verify_index=verify_index,consume=adapters.consume_context,selected_proof=selected_proof))

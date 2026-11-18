@@ -109,6 +109,8 @@ class Unit:
     max_output_bytes: int
     batch_rows: int
     budget: Budget
+    snapshot_id: str | None = None
+    proof_request_sha256: str | None = None
 
     def check(self):
         need(self.provider in ('off', 'usda-files'), 'unrecognised provider')
@@ -124,12 +126,23 @@ class Unit:
         need(self.batch_rows <= self.max_rows, 'batch size')
         need(isinstance(self.budget,Budget),'missing resource declaration')
         self.budget.check(self.max_output_bytes,self.max_rows)
+        need(self.snapshot_id is None or isinstance(self.snapshot_id,str) and NAME.fullmatch(self.snapshot_id),
+             'invalid snapshot identity')
+        need((self.snapshot_id is None and self.proof_request_sha256 is None) or
+             (self.snapshot_id is not None and isinstance(self.proof_request_sha256,str) and HASH.fullmatch(self.proof_request_sha256)),
+             'unbound scoped proof')
         need(all(type(n) is int and n >= 0 for n in
                  (self.destination_device, self.destination_inode)), 'destination identity')
 
+    def document(self):
+        doc=asdict(self)
+        if self.snapshot_id is None:
+            doc.pop('snapshot_id');doc.pop('proof_request_sha256')   # Preserve whole-hash operation identities.
+        return doc
+
     @property
     def key(self):
-        return digest(wire(asdict(self)))
+        return digest(wire(self.document()))
 
     @property
     def namespace(self):
@@ -191,6 +204,8 @@ def _hold(issuer, unit, purpose):
         need(isinstance(grant,dict) and grant.get('unit')==unit.key and
              type(grant.get('generation')) is int and grant['generation']==unit.generation and grant.get('operation')==unit.operation
              and grant.get('purpose')==purpose and grant.get('effect_fenced') is True and
+             (unit.snapshot_id is None or grant.get('snapshot_id')==unit.snapshot_id
+              and grant.get('stable_snapshot_held') is True) and
              grant.get('prior_effects_reconciled') is True and grant.get('rights_verified') is True
              and grant.get('resources_reserved') is True and grant.get('offline_only') is True and
              grant.get('host_limits_enforced') is True and isinstance(grant.get('resources'),dict) and
@@ -240,7 +255,7 @@ def execute(unit, *, destination_fd, guard, produce, crash=lambda _: None):
     unit.check()
     need(callable(getattr(guard,'hold',None)) and callable(produce), 'missing authority/producer')
     with _workspace(destination_fd, unit, guard) as fd:
-        binding = wire({'schema':'offmenu-retained-shard/1', 'unit':asdict(unit)})
+        binding = wire({'schema':'offmenu-retained-shard/1', 'unit':unit.document()})
         with _hold(guard, unit, 'reconcile-output'):
             first = _maybe(fd, 'binding.json', 8192)
             if first is None:

@@ -85,3 +85,32 @@ support them. No new cadence is created here.
   Provider citations are explicit user-initiated navigation, not background
   fetches or tracking. No live interface, browser
   or distribution path is activated or certified by these synthetic tests.
+
+### When the global index has no authentic historical whole-file SHA
+
+Do not invent one. A separately authorized **selected-snapshot proof** can be
+used for explicit complete provider/cohort partitions. It requires an
+already-qualified frozen filesystem snapshot or an authority that excludes
+concurrent writers for the entire proof and later read, bound to the same
+snapshot ID, file identity and operation. A filename, a WAL checkpoint, no
+visible writer, read-only SQLite URI, or stable timestamps alone are not this
+proof. The issuer must admit the complete metadata sweep (including reading
+unselected postings), time, VM work, RAM and I/O. No default issuer or fallback.
+
+The verifier checks the exact SHA of each trusted local index and batch receipt
+once. It matches the global completed cohort/count/receipt row, compares each
+selected record identity to the pinned cohort, and scans the global barcode
+table **once for the whole admitted group**, not once per source row.
+It keeps selected IDs even when they have no barcodes. Missing, extra or
+changed postings, duplicate IDs, a partial pass, a mismatched denominator,
+sidecar change, or limits exceeded refuse the proof. Recorded per-shard counts
+may be derived from the exact index only when the complete provider cohort
+matches the pinned source receipt, not from estimated chunk sizes.
+
+The process-local result exposes only counts and proof/selection identity, not
+unselected identifiers, raw source records or rights authorization. It does
+not certify historical whole-file identity or globally authorize other shards.
+Each consumer binds the proof request and snapshot into its operation key and
+must obtain an independent current claim and snapshot fence. Moving proofs
+between processes requires existing authenticated issuer custody; never hand an
+unsigned JSON summary to the producer as authority.

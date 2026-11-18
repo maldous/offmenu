@@ -15,16 +15,16 @@ from offmenu.retained_context_job import Budget, Unit, Refused, digest, wire
 from offmenu.retained_context_source import Pin, LEGACY_BRIDGE, ENCODING, signature, input_key, run_qualified
 from test_retained_context_job import TestIssuer
 
-def fixture(where, provider, *, mismatch=False):
+def fixture(where, provider, *, mismatch=False, one_zero=False):
     root=where/'inputs';root.mkdir(mode=0o700); dest=where/'outputs';dest.mkdir(mode=0o700)
-    def save(name,data): p=root/name;p.write_bytes(data);return p
+    def save(name,data): p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data);return p
     def ref(path):return dict(path=str(path),sha256=digest(path.read_bytes()))
     def meta(name,data):return save(name,wire(data))
     rel,rights=adapters.PROVIDERS[provider]; cohort=114 if provider=='off' else 112
     key=f'cohort-{cohort:03d}/chunk-00001';shard_rows=[];loc=[];glo=[]; lcode=[];gcode=[]
     dbsha='b'*64
     for n in range(3):
-        rid=f'offmenu:product:{n+1:024x}'; native=f'{provider}:product:00{n}'; obs=digest(str(n).encode())
+        rid="offmenu:product:%024x" % (n+(1 if provider=="off" else 101)); native=f'{provider}:product:00{n}'; obs=digest(str(n).encode())
         ptr='/data/' if provider=='off' else '/0/data/'
         def ev(k,v):
             b=json.dumps(v,ensure_ascii=False,separators=(',',':')).encode()
@@ -38,6 +38,7 @@ def fixture(where, provider, *, mismatch=False):
             d['ingredientsText']='1/2  OZ';d['dataType']='Fixture type'
             fields['ingredientDeclaration']=ev('ingredientsText',d['ingredientsText'])
             fields['categories']['dataType']=ev('dataType',d['dataType'])
+        if one_zero and n==2: d['identifiers']=[]
         row={'id':rid,'kind':'product','data':d,'curation':{'sourceRecordReference':native,
              'sourceObservationSha256':obs,'inputDatabaseSha256':dbsha,'sourceQualificationSha256':rights},
              'provenance':{'sourceId':provider,'releaseId':rel,'recordId':f'00{n}',
@@ -45,7 +46,8 @@ def fixture(where, provider, *, mismatch=False):
         line=wire([rid,[row]]);shard_rows.append(line)
         loc.append((n,rid,provider,rel,native,obs,key,digest(line)))
         glo.append((rid,provider,('wrong' if mismatch else rel),native,obs,cohort,key))
-        lcode.append(('00123',0,n));gcode.append(('00123',0,rid))
+        if d['identifiers']:
+            lcode.append(('00123',0,n));gcode.append(('00123',0,rid))
     def db(name,lr,bc,ss,bb):
         p=root/name
         with sqlite3.connect(p) as con:
@@ -54,10 +56,13 @@ def fixture(where, provider, *, mismatch=False):
                 con.executemany('insert into '+tab+' values('+','.join('?' for _ in rows[0])+')',rows)
         return p
     idx=db('cohort.sqlite',loc,lcode,'local_id,public_id,source,release,native_id,ref_sha,record_shard,wire_sha','code,checksum_valid,local_id')
-    glob=db('global.sqlite',glo,gcode,'id,source,release,native_id,ref_sha,cohort,record_shard','code,checksum_valid,id')
-    raw=b''.join(shard_rows);gz=save('shard.gz',gzip.compress(raw,mtime=0))
+    glob=db('global.sqlite',glo,gcode,'id TEXT PRIMARY KEY,source,release,native_id,ref_sha,cohort,record_shard','code,checksum_valid,id,PRIMARY KEY(code,id)')
+    raw=b''.join(shard_rows);gz=save('records/'+provider+'/'+key+'.jsonl.gz',gzip.compress(raw,mtime=0))
     desc=dict(ref(gz),key=key,bytes=gz.stat().st_size,uncompressedBytes=len(raw))
-    cohort_path=meta('batch.json',dict(index=ref(idx),input={'sha256':dbsha},files=[desc],state='SOURCE_STAGING_COMPLETE_CANONICAL_ACCEPTANCE_SEPARATE'))
+    cohort_path=meta('batch.json',dict(index=ref(idx),input={'sha256':dbsha},files=[desc],counts={'products':3},sourceCounts={provider:3},state='SOURCE_STAGING_COMPLETE_CANONICAL_ACCEPTANCE_SEPARATE'))
+    with sqlite3.connect(glob) as con:
+        con.execute('CREATE TABLE completed(cohort INTEGER PRIMARY KEY,products INTEGER,result_sha TEXT)')
+        con.execute('INSERT INTO completed VALUES (?,?,?)',(cohort,3,ref(cohort_path)['sha256']))
     bridge={'path':'inactive-reference-to-verified-source','sha256':LEGACY_BRIDGE}
     aa=meta('assign.json',dict(status='EXACT_HELPER_ASSIGNMENTS_PREPARED_SOURCE_READ_BY19_FALSE',assignments=[dict(source=provider,slice=desc,sourceQualificationSha256=rights)],
         cohortReceipt=ref(cohort_path),cohortIndex=ref(idx),sourceContextBridge=bridge,retainedGlobalIndexPath=str(glob)))
@@ -109,7 +114,7 @@ class RouteTest(unittest.TestCase):
                 self.run_synthetic(mutation=lambda root,u,p,v:(replace(u,**{k:val}),p,v))
     def test_no_symlink_or_late_file_swap(self):
         def swap(root,u,p,v):
-            path=root/'shard.gz'; path.rename(root/'moved.gz');path.symlink_to(root/'moved.gz')
+            path=Path(p['shard'].path); path.rename(root/'moved.gz');path.symlink_to(root/'moved.gz')
             return u,p,v
         with self.assertRaises(OSError):self.run_synthetic(mutation=swap)
     def test_index_sidecar_refused_even_with_verifier(self):
