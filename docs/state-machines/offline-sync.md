@@ -24,7 +24,7 @@ separately holds the scope's baseline, revision and dirty marker.
 | Event | From → to | Observable effect or limit |
 | --- | --- | --- |
 | New scope key | Prior context → new generation | Load the new key's baseline/revision; reset conflict, recovery and retry tracking. One recovery promise is reused per context. |
-| Absent, invalid or redundant checkpoint | Recovering → current local state | The version/state guard, an unchanged checkpoint or equality with current state yields no restoration. A queue read failure is ignored by recovery; it is not proof no edits existed. |
+| Missing, unsupported or redundant checkpoint | Recovering → current local state | An absent checkpoint, version other than 1, missing state, unchanged checkpoint or equality with current state yields no restoration. A queue read failure is ignored by recovery; it is not proof no edits existed. |
 | Pending checkpoint and local edits | Recovering → restored, unchanged or blocked | Merge checkpoint base, current state and saved state. On conflict, retain local state and report a conflict. On actual restoration, apply merged state, remember the checkpoint base/revision and mark dirty. |
 | User confirms device-copy removal | Local data → cleared for the selected prefixes | The [clear-local handler][app-clear] removes matching localStorage entries, awaits prefix-based IndexedDB removal, then reloads. This is **not** a cloud delete or rollback. The synthetic fixture path returns without clearing shared storage. |
 
@@ -69,12 +69,20 @@ in-memory revision, marks recovery satisfied for that context and schedules.
 Neither constitutes a cross-tab lock, a durable transaction across browser
 stores, or server-side compensation.
 
+**Where scope checks stop.** The loop checks context after each network
+response. It does not recheck the initiating key/generation immediately
+after the IndexedDB checkpoint preceding GET or PUT, or after the final
+checkpoint before updating the dirty marker and reporting status. The
+separate scheduled checkpoint's failure message also lacks a generation
+check. These are source-visible intervals in which context can change,
+not observations of a request, data change or status in a real session.
+
 ## OM-SYNC-SCOPE-001: account, shared editor and viewer
 
 | Owner / boundary | State and transition | Persistence and authority |
 | --- | --- | --- |
 | Account client | [Account switch and dirty tracking][account] select guest, demo or user keys. [Account wiring][app] suppresses account auto-sync while sharing is active. | A snapshot covers lots, products, recipes, profile and selections. Applying synced state writes these separately to browser storage, then renders. There is no multi-key transaction here. The account request uses a 15-second timeout. |
-| Shared client | [Select, close and resume][sharing] use a selection generation. Selecting remembers the account snapshot, reads kitchen state and applies it. On ordinary exit an editor with pending work attempts sync; if still pending it stays in the kitchen. Forced exit has different behavior. | Its sync key includes account scope and kitchen ID. It sends the [shared projection][projection], not the whole private profile. Viewers do not enter the editor sync path; polling can refresh the displayed state or detect revoked membership. Filtering a projection is not proof of every privacy requirement. |
+| Shared client | [Select, close and resume][sharing] use a selection generation. Selecting remembers the account snapshot, reads kitchen state and applies it. On ordinary exit an editor with pending work attempts sync; if still pending it stays in the kitchen. Forced exit has different behavior. | Its sync key includes account scope and kitchen ID. It sends the [shared projection][projection], not the whole private profile. A cached viewer selection stays out of editor sync. Polling can detect revoked membership or refresh the displayed state for a newly reported viewer; unlike resume, that poll does not replace the cached selection role. Server membership, not the cached role, determines write authority. Filtering a projection is not proof of every privacy requirement. |
 | Account server | [GET and conditional PUT][server] read the verified user's row. Revision zero attempts first insert; a later revision updates only a matching user/revision. No returned row yields a conflict, not an unconditional overwrite. | The [schema][schema] stores user ID, revision, state and update time. A successful response binds a specific revision. Client status, local checkpoint and database commit are separate observations. |
 | Kitchen server | [Kitchen routes][kitchens] check membership; viewers cannot PUT. A valid revision and projected/validated state precede a revision-conditional update. A mismatch returns a conflict. | Kitchen and account rows differ. A client scope change can discard a stale response locally; it does **not** retract a request already received by the server. No distributed lock or cross-channel rollback is evidenced. |
 
@@ -84,8 +92,9 @@ The [journey assertions][journey-tests] describe checkpoint recovery, competing
 edits, shared projections and concurrent cooking/serving. The [scope
 cancellation assertions][scope-tests] use a stub environment and rejected
 requests for changed account, stale/abort and ordinary failure. They do not
-exercise a physical browser database or a successful server-side write with
-a lost response. These tests were **read**, not rerun; no live account, device,
+change context during a checkpoint, check the scheduled queue-failure message,
+simulate a live role demotion, or exercise a physical browser database or a
+successful server-side write with a lost response. These tests were **read**, not rerun; no live account, device,
 database, provider, service or deployment was used.
 
 * **UIF-145** (account journeys): account-key changes and stale-result handling
