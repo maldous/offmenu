@@ -7,6 +7,7 @@ from pathlib import Path
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 from offmenu.retained_context_job import Budget, Unit, Refused, execute, decode, wire
 
 H = '1'*64
@@ -29,7 +30,7 @@ class TestIssuer:
             yield dict({'unit':key,'purpose':purpose,'generation':self.unit.generation,
                         'operation':self.unit.operation,'effect_fenced':True,
                         'prior_effects_reconciled':True,'rights_verified':True,'resources_reserved':True,
-                        'host_limits_enforced':True,'resources':asdict(self.unit.budget),'offline_only':True,'valid_until':time.time()+60},**self.mutate)
+                        'host_limits_enforced':True,'resources':asdict(self.unit.budget),'offline_only':True,'valid_until':time.time()+self.unit.budget.timeout_seconds+15},**self.mutate)
         finally:
             self.held=False
 
@@ -75,6 +76,22 @@ class JobTest(unittest.TestCase):
         self.issuer.mutate={}
         with self.assertRaises(Refused):
             execute(self.unit,destination_fd=self.fd,guard=None,produce=self.source)
+
+    def test_denied_reconciliation_cannot_even_list_private_segments(self):
+        self.run_job()
+        self.issuer.denied={'reconcile-output'}
+        with patch('offmenu.retained_context_job.os.listdir', side_effect=AssertionError('listing without grant')), \
+             patch('offmenu.retained_context_job._read',side_effect=AssertionError('read without grant')):
+            with self.assertRaisesRegex(Refused,'fence unavailable'):
+                self.run_job(produce=lambda n:self.fail())
+
+    def test_expiry_types_and_reservation_cannot_alias_booleans(self):
+        self.unit=replace(self.unit,generation=1);self.issuer=TestIssuer(self.unit)
+        for key,value in [('generation',True),('valid_until',float('inf')),('valid_until',time.time()+1),
+                          ('resources',dict(asdict(self.unit.budget),workers=True))]:
+            self.issuer.mutate={key:value}
+            with self.assertRaises(Refused):self.run_job()
+            self.assertEqual(list(self.root.iterdir()),[])
 
     def test_fence_rechecked_at_commit(self):
         self.issuer.denied.add('commit-segment')

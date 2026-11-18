@@ -14,8 +14,11 @@ network client, credentials, legacy worker, or permissive default claim issuer.
    Do not treat “planned, not read” as an expired claim or mark its helper complete.
 2. An authenticated issuer must reserve this exact operation and generation,
    register the private source and output directory identities, verify rights
-   for this specific processing operation, fund the maximum bytes/resources,
-   and hold its fencing mechanism through each actual read or commit. Never
+   for this specific processing operation, reserve the maximum bytes/resources,
+   and hold its fencing mechanism through every actual read, reconciliation
+   (including private prior outputs) or commit. The finite lease must remain
+   valid through the externally enforced hard job deadline, and ownership must
+   not transfer during a held effect. Never
    mint a local grant, edit an expired claim, or use an unenforced lease check.
    A new generation must explicitly reconcile its predecessor; this library
    refuses to appropriate the original generation's output. A scoped sandbox

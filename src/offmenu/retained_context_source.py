@@ -196,7 +196,7 @@ def produce(unit, start, *, root_path, root_fd, pins, verify_index, consume):
                  (unit.provider,unit.release,lr[3],lr[4]) and sb['inputDatabaseSha256']==c['input']['sha256']
                  and sb['sourceQualificationSha256']==unit.rights_sha256,'stage evidence')
             codes=sorted(v['value'] for v in context['identifiers'] if isinstance(v,dict) and v.get('system')=='barcode')
-            posts=local.execute('SELECT code,checksum_valid FROM barcodes WHERE local_id=? ORDER BY code',(lr[0],)).fetchall()
+            posts=local.execute('SELECT code,checksum_valid FROM barcodes WHERE local_id=? ORDER BY code LIMIT ?',(lr[0],len(codes)+1)).fetchmany(len(codes)+1)
             need([code for code,_ in posts]==codes,'local barcode bindings')
             for code,valid in posts:
                 need(valid in (0,1) and _one_sql(glob,'SELECT checksum_valid FROM barcodes WHERE code=? AND id=?',

@@ -4,11 +4,12 @@ No default issuer, process launcher or production CLI. The owner supplies privat
 directory descriptors and an independently verified, *held* authority guard
 for each effect. Existing helpers' files and cursors are never repaired in place.
 """
-from contextlib import contextmanager
+from contextlib import contextmanager, ExitStack
 from dataclasses import asdict, dataclass
 import fcntl
 import hashlib
 import json
+import math
 import os
 import re
 import stat
@@ -171,42 +172,45 @@ def _hold(issuer, unit, purpose):
     need(callable(getattr(issuer, 'hold', None)), 'no current claim issuer')
     with issuer.hold(unit.key, purpose) as grant:
         need(isinstance(grant,dict) and grant.get('unit')==unit.key and
-             grant.get('generation')==unit.generation and grant.get('operation')==unit.operation
+             type(grant.get('generation')) is int and grant['generation']==unit.generation and grant.get('operation')==unit.operation
              and grant.get('purpose')==purpose and grant.get('effect_fenced') is True and
              grant.get('prior_effects_reconciled') is True and grant.get('rights_verified') is True
              and grant.get('resources_reserved') is True and grant.get('offline_only') is True and
-             grant.get('host_limits_enforced') is True and grant.get('resources')==asdict(unit.budget) and
-             type(grant.get('valid_until')) in (float,int) and grant['valid_until']>time.time(),
+             grant.get('host_limits_enforced') is True and isinstance(grant.get('resources'),dict) and
+             set(grant['resources'])==set(asdict(unit.budget)) and all(type(v) is int and v==getattr(unit.budget,k)
+                 for k,v in grant['resources'].items()) and
+             type(grant.get('valid_until')) in (float,int) and math.isfinite(grant['valid_until']) and
+             # Issuer must hold a non-revocable fence or abort the job before
+             # transferring ownership; do not begin an effect with a near-expiry
+             # observation. The trusted host enforces the *entire* job timeout.
+             grant['valid_until']>=time.time()+unit.budget.timeout_seconds,
              'missing/stale scope, predecessor, rights or admission')
         yield
 
 
 @contextmanager
 def _workspace(parent, unit, guard):
-    p = os.fstat(parent)
-    need((p.st_dev, p.st_ino) == (unit.destination_device, unit.destination_inode),
-         'wrong destination')
-    need(stat.S_ISDIR(p.st_mode) and p.st_uid == os.geteuid() and not p.st_mode & 0o077,
-         'destination must be an owner-private directory')
-    with _hold(guard, unit, 'open-workspace'):
-        try:
-            os.mkdir(unit.namespace, 0o700, dir_fd=parent)
-            os.fsync(parent)
-        except FileExistsError:
-            pass
-        fd = os.open(unit.namespace, DIR, dir_fd=parent)
-    try:
-        inside = os.fstat(fd)
-        need(inside.st_uid == os.geteuid() and inside.st_mode & 0o077 == 0,
-             'workspace is not private')
-        # Directory lock has stable identity; no unlinkable/recreated lock file.
-        try:
-            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
-            raise Refused('writer already active') from None
+    with ExitStack() as resources:
+        with _hold(guard, unit, 'open-workspace'):
+            p = os.fstat(parent)
+            need((p.st_dev,p.st_ino)==(unit.destination_device,unit.destination_inode),
+                 'wrong destination')
+            need(stat.S_ISDIR(p.st_mode) and p.st_uid==os.geteuid() and not p.st_mode & 0o077,
+                 'destination must be an owner-private directory')
+            try:
+                os.mkdir(unit.namespace,0o700,dir_fd=parent)
+                os.fsync(parent)
+            except FileExistsError:
+                pass
+            fd=os.open(unit.namespace,DIR,dir_fd=parent)
+            resources.callback(os.close,fd)
+            inside=os.fstat(fd)
+            need(inside.st_uid==os.geteuid() and inside.st_mode & 0o077==0,'workspace is not private')
+            try:
+                fcntl.flock(fd,fcntl.LOCK_EX|fcntl.LOCK_NB)
+            except BlockingIOError:
+                raise Refused('writer already active') from None
         yield fd
-    finally:
-        os.close(fd)
 
 
 def execute(unit, *, destination_fd, guard, produce, crash=lambda _: None):
@@ -220,56 +224,57 @@ def execute(unit, *, destination_fd, guard, produce, crash=lambda _: None):
     need(callable(getattr(guard,'hold',None)) and callable(produce), 'missing authority/producer')
     with _workspace(destination_fd, unit, guard) as fd:
         binding = wire({'schema':'offmenu-retained-shard/1', 'unit':asdict(unit)})
-        first = _maybe(fd, 'binding.json', 8192)
-        if first is None:
-            need(not [n for n in os.listdir(fd) if not re.fullmatch(r'\.pending-[0-9a-f]{32}', n)],
-                 'unbound workspace contains effects')
-            with _hold(guard, unit, 'bind-operation'):
-                _install(fd, 'binding.json', binding, crash)
-        else:
-            need(first == binding, 'existing operation or generation differs')
-        names = os.listdir(fd)
-        orphans = [n for n in names if re.fullmatch(r'\.pending-[0-9a-f]{32}',n)]
-        need(len(orphans) <= 8, 'unadmitted temporary files require reconciliation')
-        for n in orphans:
-            orphan = os.stat(n,dir_fd=fd,follow_symlinks=False)
-            need(stat.S_ISREG(orphan.st_mode) and orphan.st_size <= unit.max_output_bytes+8192,
-                 'unadmitted object exceeds bound')
-        part_names = sorted(n for n in names if re.fullmatch(r'part-[0-9]{5}\.json', n))
-        allowed = set(part_names) | {'binding.json', 'receipt.json'}
-        need(all(n in allowed or re.fullmatch(r'\.pending-[0-9a-f]{32}', n) for n in names),
-             'unreconciled workspace file')
-        pos = 0
-        seq = 0
-        used = 0
-        chain = unit.key
-        cap = unit.max_output_bytes + 1024
-        def part(payload, before):
-            need(isinstance(payload, list) and 1 <= len(payload) <= unit.batch_rows
-                 and all(isinstance(v, dict) for v in payload), 'invalid output batch')
-            data = wire(payload)
-            body = {'unit':unit.key,'from':before,'previous':chain,
-                    'payload_sha256':digest(data),'rows':payload}
-            return wire(body), len(data)
-        for index,name in enumerate(part_names):
-            need(name == f'part-{index:05d}.json', 'checkpoint gap')
-            raw = _read(fd, name, cap)
-            obj = decode(raw)
-            expected, nbytes = part(obj['rows'], pos)
-            need(raw == expected, 'checkpoint integrity or binding')
-            need(index == len(part_names)-1 or len(obj['rows']) == unit.batch_rows,
-                 'nonfinal short checkpoint')
-            pos += len(obj['rows']); used += nbytes; chain = digest(raw); seq += 1
-            need(pos <= unit.max_rows and used <= unit.max_output_bytes, 'checkpoint bounds')
-        def receipt():
-            return wire({'schema':'offmenu-retained-terminal/1','unit':unit.key,
-                         'rows':pos,'segments':seq,'payload_bytes':used,'chain':chain,
-                         'published':False,'canonical_acceptance':False})
-        done = _maybe(fd, 'receipt.json', 8192)
-        if done is not None:
-            need(done == receipt() and pos == unit.max_rows, 'terminal integrity')
-            with _hold(guard, unit, 'observe-terminal'):
+        with _hold(guard, unit, 'reconcile-output'):
+            first = _maybe(fd, 'binding.json', 8192)
+            if first is None:
+                need(not [n for n in os.listdir(fd) if not re.fullmatch(r'\.pending-[0-9a-f]{32}', n)],
+                     'unbound workspace contains effects')
+            else:
+                need(first == binding, 'existing operation or generation differs')
+            names = os.listdir(fd)
+            orphans = [n for n in names if re.fullmatch(r'\.pending-[0-9a-f]{32}',n)]
+            need(len(orphans) <= 8, 'unadmitted temporary files require reconciliation')
+            for n in orphans:
+                orphan = os.stat(n,dir_fd=fd,follow_symlinks=False)
+                need(stat.S_ISREG(orphan.st_mode) and orphan.st_size <= unit.max_output_bytes+8192,
+                     'unadmitted object exceeds bound')
+            part_names = sorted(n for n in names if re.fullmatch(r'part-[0-9]{5}\.json', n))
+            allowed = set(part_names) | {'binding.json', 'receipt.json'}
+            need(all(n in allowed or re.fullmatch(r'\.pending-[0-9a-f]{32}', n) for n in names),
+                 'unreconciled workspace file')
+            pos = 0
+            seq = 0
+            used = 0
+            chain = unit.key
+            cap = unit.max_output_bytes + 1024
+            def part(payload, before):
+                need(isinstance(payload, list) and 1 <= len(payload) <= unit.batch_rows
+                     and all(isinstance(v, dict) for v in payload), 'invalid output batch')
+                data = wire(payload)
+                body = {'unit':unit.key,'from':before,'previous':chain,
+                        'payload_sha256':digest(data),'rows':payload}
+                return wire(body), len(data)
+            for index,name in enumerate(part_names):
+                need(name == f'part-{index:05d}.json', 'checkpoint gap')
+                raw = _read(fd, name, cap)
+                obj = decode(raw)
+                expected, nbytes = part(obj['rows'], pos)
+                need(raw == expected, 'checkpoint integrity or binding')
+                need(index == len(part_names)-1 or len(obj['rows']) == unit.batch_rows,
+                     'nonfinal short checkpoint')
+                pos += len(obj['rows']); used += nbytes; chain = digest(raw); seq += 1
+                need(pos <= unit.max_rows and used <= unit.max_output_bytes, 'checkpoint bounds')
+            def receipt():
+                return wire({'schema':'offmenu-retained-terminal/1','unit':unit.key,
+                             'rows':pos,'segments':seq,'payload_bytes':used,'chain':chain,
+                             'published':False,'canonical_acceptance':False})
+            done = _maybe(fd, 'receipt.json', 8192)
+            if done is not None:
+                need(done == receipt() and pos == unit.max_rows, 'terminal integrity')
                 return decode(done)
+        if first is None:
+            with _hold(guard, unit, 'bind-operation'):
+                _install(fd,'binding.json',binding,crash)
         def commit(batch):
             nonlocal pos, seq, used, chain
             raw,nbytes = part(batch, pos)
