@@ -1,0 +1,280 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:offmenu:private-dietary-planning-profile:1",
+  "description": "Separate member-controlled menu-planning policy; never public corpus or clinical advice.",
+  "type": "object",
+  "properties": {
+    "profileVersion": {
+      "const": "offmenu-private-dietary-planning-profile/1"
+    },
+    "accountId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "\\S"
+    },
+    "memberId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "\\S"
+    },
+    "householdId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "\\S"
+    },
+    "profileRevision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "\\S"
+    },
+    "consentId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "\\S"
+    },
+    "purpose": {
+      "const": "private-menu-plan"
+    },
+    "zone": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "\\S"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "ruleId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512,
+                    "pattern": "\\S"
+                  },
+                  "severity": {
+                    "enum": [
+                      "hard",
+                      "preference"
+                    ]
+                  },
+                  "period": {
+                    "enum": [
+                      "per-serving",
+                      "per-meal",
+                      "per-day"
+                    ]
+                  },
+                  "targetId": {
+                    "type": "string",
+                    "maxLength": 512,
+                    "pattern": "^(urn:[A-Za-z0-9][A-Za-z0-9-]*:|https://)[^\\s]+$"
+                  },
+                  "from": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                  },
+                  "through": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                  },
+                  "kind": {
+                    "enum": [
+                      "require-ingredient",
+                      "require-attribute"
+                    ]
+                  },
+                  "quantifier": {
+                    "enum": [
+                      "any-item",
+                      "every-item"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "ruleId",
+                  "severity",
+                  "period",
+                  "targetId",
+                  "from",
+                  "through",
+                  "kind",
+                  "quantifier"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "ruleId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512,
+                    "pattern": "\\S"
+                  },
+                  "severity": {
+                    "enum": [
+                      "hard",
+                      "preference"
+                    ]
+                  },
+                  "period": {
+                    "enum": [
+                      "per-serving",
+                      "per-meal",
+                      "per-day"
+                    ]
+                  },
+                  "targetId": {
+                    "type": "string",
+                    "maxLength": 512,
+                    "pattern": "^(urn:[A-Za-z0-9][A-Za-z0-9-]*:|https://)[^\\s]+$"
+                  },
+                  "from": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                  },
+                  "through": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                  },
+                  "kind": {
+                    "enum": [
+                      "exclude-ingredient",
+                      "exclude-attribute"
+                    ]
+                  },
+                  "quantifier": {
+                    "const": "every-item"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "ruleId",
+                  "severity",
+                  "period",
+                  "targetId",
+                  "from",
+                  "through",
+                  "kind",
+                  "quantifier"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "ruleId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512,
+                "pattern": "\\S"
+              },
+              "severity": {
+                "enum": [
+                  "hard",
+                  "preference"
+                ]
+              },
+              "period": {
+                "enum": [
+                  "per-serving",
+                  "per-meal",
+                  "per-day"
+                ]
+              },
+              "targetId": {
+                "type": "string",
+                "maxLength": 512,
+                "pattern": "^(urn:[A-Za-z0-9][A-Za-z0-9-]*:|https://)[^\\s]+$"
+              },
+              "from": {
+                "type": "string",
+                "format": "date",
+                "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+              },
+              "through": {
+                "type": "string",
+                "format": "date",
+                "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+              },
+              "kind": {
+                "enum": [
+                  "nutrient-min",
+                  "nutrient-max"
+                ]
+              },
+              "magnitude": {
+                "type": "string",
+                "maxLength": 48,
+                "pattern": "^(0|[1-9][0-9]*)([.][0-9]+)?$"
+              },
+              "unit": {
+                "enum": [
+                  "1",
+                  "J",
+                  "L",
+                  "[foz_br]",
+                  "[foz_us]",
+                  "[lb_av]",
+                  "[oz_av]",
+                  "g",
+                  "kJ",
+                  "kcal_th",
+                  "kg",
+                  "mL",
+                  "mg",
+                  "ug"
+                ]
+              },
+              "inclusive": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "ruleId",
+              "severity",
+              "period",
+              "targetId",
+              "from",
+              "through",
+              "kind",
+              "magnitude",
+              "unit",
+              "inclusive"
+            ]
+          }
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 128
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "profileVersion",
+    "accountId",
+    "memberId",
+    "householdId",
+    "profileRevision",
+    "consentId",
+    "purpose",
+    "zone",
+    "rules"
+  ]
+}
