@@ -2,8 +2,8 @@
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
   "messages": 4028,
-  "arabicTranslated": 376,
-  "arabicMissing": 3652,
+  "arabicTranslated": 430,
+  "arabicMissing": 3598,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 212,
@@ -4165,9 +4165,10 @@
     },
     "Back to scanner": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Backup has duplicate item IDs.": {
@@ -4259,9 +4260,10 @@
     },
     "Barcode image": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Barcode number": {
@@ -4353,9 +4355,10 @@
     },
     "Bench · front camera": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Bench, cupboard, fridge…": {
@@ -4745,9 +4748,10 @@
     "Camera": {
       "sources": [
         "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/scanner-three.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Camera ": {
@@ -4759,9 +4763,10 @@
     },
     "Camera & sound settings": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Camera / lens": {
@@ -4781,9 +4786,10 @@
     },
     "Camera connects automatically": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Camera could not start. Try another camera, a barcode photo, or manual entry.": {
@@ -4795,9 +4801,10 @@
     },
     "Camera diagnostics not requested.": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Camera disconnected. Reconnect and open the scanner again.": {
@@ -5097,9 +5104,10 @@
     },
     "Check camera support": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Check dated shop observations": {
@@ -5385,9 +5393,10 @@
     },
     "Choose mode": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Choose portions within the cooked amount remaining.": {
@@ -5492,9 +5501,10 @@
     },
     "Choose your scanner mode": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Cineon": {
@@ -6195,9 +6205,10 @@
     },
     "Confirm identifier": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Confirm permission to store your private measurements first": {
@@ -6322,9 +6333,10 @@
     },
     "Connecting camera… Manual entry stays available.": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Connection and contribution choices": {
@@ -6464,9 +6476,10 @@
     },
     "Contrast": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Contribution preference retained. Publication remains disabled until source rights and review pass.": {
@@ -6933,9 +6946,10 @@
     },
     "Current scan": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Current scoped evidence not established": {
@@ -6954,9 +6968,10 @@
     },
     "Current session": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Current source results are cached by OffMenu. Name matches remain candidates; corporate country is not food origin.": {
@@ -8463,9 +8478,10 @@
     },
     "Enter an identifier": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Enter nutrient totals actually consumed, not per 100 g. Leave unknown values blank. Completion is recorded for context; it does not scale these entered totals.": {
@@ -8909,16 +8925,18 @@
     },
     "Expand": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Expand current product readout": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Expand product details": {
@@ -8931,9 +8949,10 @@
     "Expand scanner options": {
       "sources": [
         "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/shelf-scanner.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Expected 1–200 OCR lines": {
@@ -9293,9 +9312,10 @@
     },
     "Exposure": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Exposure · darker to brighter": {
@@ -9630,17 +9650,19 @@
     },
     "Finish": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Finish scanning": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/shelf-scanner.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "First public recipe": {
       "sources": [
@@ -9701,16 +9723,18 @@
     "Focus": {
       "sources": [
         "apps/web/assets/index.html",
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Focus distance": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Focus once": {
@@ -9939,9 +9963,10 @@
     },
     "Front camera": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Front camera (automatic)": {
@@ -12965,9 +12990,10 @@
     },
     "Live barcode camera": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Live barcode camera preview": {
@@ -12980,9 +13006,10 @@
     },
     "Live camera preview": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Live lookup": {
@@ -13758,9 +13785,10 @@
     },
     "Mirror": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Mirror preview": {
@@ -13795,9 +13823,10 @@
     },
     "Mode": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Model": {
@@ -14187,9 +14216,10 @@
     },
     "Next": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Next collection page": {
@@ -14201,9 +14231,10 @@
     },
     "Next detail page": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Next identical pack": {
@@ -14318,9 +14349,10 @@
     },
     "No items captured.": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "No known ingredient conflict for the selected diners": {
@@ -15696,9 +15728,10 @@
     },
     "Original identifier": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Original ingredient wording": {
@@ -15771,17 +15804,19 @@
     },
     "Overview": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Overview readout": {
       "sources": [
         "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/shelf-scanner.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Owned backup unavailable (AUTHORITY_CHANGED).": {
@@ -15998,9 +16033,10 @@
     "Pause": {
       "sources": [
         "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/shelf-scanner.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Pause & choose another shelf": {
@@ -16269,9 +16305,10 @@
     },
     "Photo": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Photo / category icon: no qualified applicable binding": {
@@ -16594,16 +16631,18 @@
     },
     "Previous": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Previous detail page": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Previously chosen for this barcode: ": {
@@ -16807,9 +16846,10 @@
     },
     "Product details": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Product details unavailable.": {
@@ -16829,9 +16869,10 @@
     },
     "Product information": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Product information from Open Food Facts. Always check the package for allergens.": {
@@ -17624,9 +17665,10 @@
     },
     "Read a barcode image locally": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Read dietary history, meal completion, nutrition and cleanup records": {
@@ -18040,9 +18082,10 @@
     },
     "Rear camera": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Rear camera (automatic)": {
@@ -18860,10 +18903,11 @@
     },
     "Resume": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/shelf-scanner.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Resume or start checkout ↗": {
       "sources": [
@@ -19324,9 +19368,10 @@
     },
     "Rotate": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Rows withheld from this scanned page by export rights or country filtering.": {
@@ -20147,23 +20192,26 @@
     },
     "Scanner options": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Scanner tools": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Scanning setup": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Scans are accepted automatically. Sound and other feedback can be enabled above.": {
@@ -21368,9 +21416,10 @@
     "Sound off": {
       "sources": [
         "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/shelf-scanner.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Source": {
@@ -22042,9 +22091,10 @@
     },
     "Stand · rear camera": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Start a discussion": {
@@ -22430,9 +22480,10 @@
     },
     "Switch light and dark mode": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Symbology / namespace: ": {
@@ -23782,9 +23833,10 @@
     },
     "Type code": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Type or use a USB / Bluetooth scanner": {
@@ -24054,9 +24106,10 @@
     },
     "Undo last": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Uneaten part of this serving": {
@@ -25745,9 +25798,10 @@
     },
     "Zoom": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "a little shelf respect.": {

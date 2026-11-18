@@ -4,8 +4,16 @@ This guide follows OffMenu source
 `59496c6cf006c16b6ac4859580d0e91374682756`, checked by reading source rather than
 using a running installation. Camera/device performance, assistive-technology
 behavior, deployed lookup availability and offline operation remain unverified.
-The scanner described here uses English labels and has no language chooser;
-the main app's language preference does not initialize this scanner page.
+
+Language initialization is separately checked at accepted source
+`0e02f3de39757af60d8d58673afc09205600e865`: this scanner calls the shared
+interface-language setup, including the supported `uiLanguage` URL override,
+stored device choice and cookie/profile/browser negotiation. The **Scanner tools**
+dialog has an **Interface language** chooser for English or Arabic. Untranslated
+messages fall back to English; the English
+labels below identify source keys, not a promise that every displayed control
+remains English. This note does not establish complete translation or rendered
+RTL/accessibility behavior.
 
 ## Open the scanner and present one item
 

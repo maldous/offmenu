@@ -36,6 +36,9 @@ than proving live deployment. The [help-search](help-search-verification-plan.md
 and [locale-preference](locale-preference-verification-plan.md) documents are
 verification plans, not executed acceptance receipts.
 
+For a bounded control-to-task/help map and explicit remaining coverage gaps,
+see the [scanner control crosswalk](scanner-control-help-map.md).
+
 Maintained guides describe current product responsibilities. Frozen evidence
 preserved elsewhere retains its original identity and scope; it does not become
 a build dependency or establish current product behavior. Keep private data and
