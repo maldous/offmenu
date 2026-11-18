@@ -4,6 +4,8 @@ Use the kitchen’s **Data** tab to explore source records, review a file, and
 choose what to retain privately. Start with a small batch whose food identities,
 units and source terms you can check.
 
+For the separate **Global data** page, see [country records, basket comparisons and private measurement history](data-workspace-control-help.md).
+
 This guide describes source revision
 `1ea77f7bf9eda6f3487a4954bd4dbab72305c15f`. It is source-backed guidance;
 screens, device layouts and the deployed service have not been verified for
