@@ -116,6 +116,27 @@ export function optimizeMeasuredPantry(recipes, inventory, servings, date, meals
     supported &&= exactQuantity(lot.quantity);
     lots.push({key, quantity: lot.quantity, expires: lot.expires || null, order: lots.length});
   }
+  // Match the public meal matcher: individually finite lots can still have an
+  // unrepresentable per-ingredient/unit total. Exact fractions must not turn
+  // that unknown stock into a feasible witness. Use input order, before FEFO.
+  const initialTotals = new Map();
+  for (const lot of lots) initialTotals.set(lot.key, (initialTotals.get(lot.key) || 0) + lot.quantity);
+  const overflow = new Map([...initialTotals].filter(([, total]) => !Number.isFinite(total))
+    .map(([key]) => [key, {lots: [], day: null, finite: false}]));
+  for (const lot of lots) overflow.get(lot.key)?.lots.push(lot);
+  function knownStock(key, day) {
+    const guard = overflow.get(key);
+    if (!guard) return true;
+    if (guard.day !== day) {
+      // The key was never consumed while unknown. Expiry can narrow its
+      // source set; once finite, later FEFO consumption can only decrease it.
+      const total = guard.lots.reduce((sum, lot) =>
+        lot.expires && lot.expires < day ? sum : sum + lot.quantity, 0);
+      guard.finite = Number.isFinite(total);
+      guard.day = day;
+    }
+    return guard.finite;
+  }
   lots.sort((a, b) => a.expires === b.expires ? a.order - b.order :
     a.expires === null ? 1 : b.expires === null ? -1 : a.expires.localeCompare(b.expires));
   const initial = lots.map(lot => lot.quantity);
@@ -151,6 +172,7 @@ export function optimizeMeasuredPantry(recipes, inventory, servings, date, meals
   function consumeFraction(stock, recipe, day) {
     const next = stock.slice();
     for (const [key, required] of recipe.rationalDemands) {
+      if (!knownStock(key, day)) return null;
       let remaining = required;
       for (let i = 0; i < lots.length && remaining.n > 0n; i++) {
         if (lots[i].key !== key || lots[i].expires && lots[i].expires < day) continue;
