@@ -1,12 +1,12 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4028,
+  "messages": 4031,
   "arabicTranslated": 430,
-  "arabicMissing": 3598,
+  "arabicMissing": 3601,
   "arabicComplete": false,
   "excludedTechnical": {
-    "sql": 212,
+    "sql": 214,
     "shader": 216
   },
   "entries": {
@@ -999,6 +999,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "(kind!='source' OR lower(id) NOT IN (": {
+      "sources": [
+        "apps/web/server/catalogue.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "(max-width:620px)": {
       "sources": [
         "apps/web/src/app.js"
@@ -1106,7 +1113,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "../../../docs/research/manifest.json": {
+    "../../../docs/research/active-manifest.json": {
+      "sources": [
+        "apps/web/server/catalogue.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "../../../src/offmenu/refresh/retired_direct_sources.json": {
       "sources": [
         "apps/web/server/catalogue.mjs"
       ],
@@ -26519,6 +26533,13 @@
     "discarded from": {
       "sources": [
         "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "discovery:": {
+      "sources": [
+        "apps/web/server/catalogue.mjs"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"

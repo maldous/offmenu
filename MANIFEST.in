@@ -12,3 +12,4 @@ include src/offmenu/refresh/portfolio_owner51.json
 include src/offmenu/refresh/portfolio55.json
 include src/offmenu/refresh/source_recipe_template.schema.json
 include src/offmenu/refresh/english_extension.schema.json
+include src/offmenu/refresh/retired_direct_sources.json
