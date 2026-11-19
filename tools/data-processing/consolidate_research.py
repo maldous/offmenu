@@ -1,5 +1,7 @@
 from pathlib import Path
-import json, hashlib, gzip, base64
+import json, hashlib, gzip, base64, sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
+from offmenu.refresh.source_retirement import retired, active_providers
 root=Path(__file__).resolve().parents[2]
 def read(name):return json.loads((root/'docs/research'/name).read_text())
 g=read('OffMenu_Global_Data_Source_Register.json');e=read('OffMenu_Enrichment_Source_Register_249.json');b=read('OffMenu_Country_Basket_Register.json');n=read('OffMenu_Basket_Normalization_Spec.json')
@@ -13,17 +15,19 @@ for code in sorted(geo):
   # Register calls published examples published_example_lines.
   lines=ba[code].get(key,ba[code].get('published_example_lines',[]) if track=='published-example' else [])
   for line in lines:add('basketLine',line.get('normalization',line)['line_id'],code,{'country':code,'track':track,**line})
-for x in g['sources']:add('source','discovery:'+x['id'],'',{'id':'discovery:'+x['id'],'original':x,'accessState':'documented-lead','reuseApproved':False})
-for x in e['source_catalog']:add('source',x['source_id'],'',{'id':x['source_id'],'original':x,'accessState':'documented-lead','reuseApproved':False})
+for x in g['sources']:
+ if not retired(x['id']):add('source','discovery:'+x['id'],'',{'id':'discovery:'+x['id'],'original':x,'accessState':'documented-lead','reuseApproved':False})
+for x in e['source_catalog']:
+ if not retired(x['source_id']):add('source',x['source_id'],'',{'id':x['source_id'],'original':x,'accessState':'documented-lead','reuseApproved':False})
 for x in n['food_concepts']:add('foodConcept',x['concept_id'],'',x)
 for x in n['metric_dictionary']:add('metric',x['metric_id'],'',x)
 add('specification','basket-normalization','',n)
-add('specification','enrichment-recommendations','',{'recommendations':e['report_recommendations'],'globalSources':e['global_sources']})
-add('specification','global-providers','',{'providers':g['global_providers'],'legend':g['legend']})
+add('specification','enrichment-recommendations','',{'recommendations':e['report_recommendations'],'globalSources':[x for x in e['global_sources'] if not retired(x['source_id'])]})
+add('specification','global-providers','',{'providers':list(active_providers(g['global_providers'])),'legend':g['legend']})
 counts={kind:sum(x['kind']==kind for x in docs) for kind in sorted({x['kind'] for x in docs})}
 assert counts['basketLine']==3230,counts
-manifest={'version':'2026-10-13.1','counts':counts,'countries':249,'sourceFiles':[{ 'name':p.name,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted((root/'docs/research').glob('OffMenu*.json'))],'limits':b['important_limits'],'metrics':len(n['metric_dictionary'])}
-(root/'docs/research'/'manifest.json').write_text(json.dumps(manifest,indent=2))
+manifest={'version':'2026-11-19.1','counts':counts,'countries':249,'sourceFiles':[{ 'name':p.name,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted((root/'docs/research').glob('OffMenu*.json'))],'limits':b['important_limits'],'metrics':len(n['metric_dictionary'])}
+(root/'docs/research'/'active-manifest.json').write_text(json.dumps(manifest,indent=2))
 def quote(v):return "'"+str(v).replace("'","''")+"'"
 out=root/'dist'/'catalogue.sql';out.parent.mkdir(exist_ok=True)
 with out.open('w') as f:

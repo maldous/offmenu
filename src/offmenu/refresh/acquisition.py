@@ -20,6 +20,7 @@ import threading
 from urllib.parse import urlsplit, parse_qsl
 from email.utils import parsedate_to_datetime
 
+from .source_retirement import REASON, retired
 from .core import (RefreshError, atomic_json, canonical, digest, fsync_directory,
                    safe_path, sha, strict_json, timestamp, writer_lock)
 
@@ -54,6 +55,8 @@ class SourceSpec:
     public_read_only_post: bool = False
 
     def validate(self):
+        if retired(self.source_key, self.url):
+            raise RefreshError(REASON)
         if not re.fullmatch(r'[a-z0-9][a-z0-9._-]{0,127}', self.source_key):
             raise RefreshError('invalid-source-key')
         if (type(self.enabled) is not bool or type(self.rights_approved) is not bool
@@ -152,6 +155,8 @@ class AcquisitionResult:
 class HTTPSFileTransport:
     """One HTTPS GET; no redirects, cookies, proxy discovery or credentials."""
     def __call__(self, spec, headers, *, deadline=None):
+        if retired(spec.source_key, spec.url):
+            raise RefreshError(REASON)
         remaining = deadline - time.monotonic() if deadline is not None else 180
         if remaining <= 0:
             raise RefreshError('acquisition-duration-limit-exceeded')
@@ -889,7 +894,7 @@ def describe_collection_registry(registry):
             'knownRecordedLocatorDescriptors': len(locators),
             'publisherCitationDescriptors': len(origins), 'unresolvedDescriptors': len(unresolved),
             'declaredLocalDescriptors': len(local), 'desiredSourceCitations': len(desired),
-            'selectedExecutableSources': len(source_keys), 'countriesRepresented': len(countries),
+            'selectedExecutableSources': sum(not retired(key, spec['url']) for key, spec in selected.items()), 'countriesRepresented': len(countries),
             'countryTypeRequirements': len(rows), 'requirementsWithDeclaredAssetEdges': mapped,
             'requirementsWithoutDeclaredAssetEdges': len(rows) - mapped,
             'mappingComplete': False, 'countryComplete': False,
