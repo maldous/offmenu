@@ -5855,7 +5855,6 @@
     },
     "Close": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
