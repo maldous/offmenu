@@ -33,7 +33,20 @@ export function validateLot(value) {
 export function eligibleStock(item,today) {
   return !item.needsReview&&!(item.expires&&item.expires<today)&&Number.isFinite(item.quantity)&&item.quantity>0&&['g','ml','count'].includes(item.unit)&&typeof item.ingredient==='string'&&!!normalize(item.ingredient)&&!normalize(item.ingredient).startsWith('review:');
 }
-export function matchMeals(inventory,recipes,servings,today) {
+export function matchMeals(inventory,recipes,servings,today,{forRestock=false}={}) {
+  // Unlock suggestions are inputs to meal matching, not rounded display amounts.
+  // Even a finite subtraction can round so that adding it back misses the target.
+  function restockQuantity(available,required,deficit) {
+    const total=available+deficit;
+    if(Number.isFinite(total)&&total>=required)return deficit;
+    // The correctly rounded difference is one representable neighbor away from
+    // bracketing the exact difference. Move up for a shortage, down for overflow.
+    const bits=new DataView(new ArrayBuffer(8));
+    bits.setFloat64(0,deficit);
+    bits.setBigUint64(0,bits.getBigUint64(0)+(total<required?1n:-1n));
+    const quantity=bits.getFloat64(0),restocked=available+quantity;
+    return Number.isFinite(restocked)&&restocked>=required?quantity:NaN;
+  }
   if(!Number.isFinite(servings)||servings<=0)throw Error(t('Enter a positive serving count.'));
   const stock=new Map();
   for(const item of inventory){
@@ -50,7 +63,9 @@ export function matchMeals(inventory,recipes,servings,today) {
     for(const item of recipe.ingredients){
       if(item.optional)continue;
       if(!demandResolved||!measuredIngredient(item)){unknown.push(item.ingredient);continue;}
-      const key=normalize(item.ingredient)+'|'+item.unit;
+      const identity=normalize(item.ingredient);
+      if(forRestock&&(!identity||identity.startsWith('review:'))){unknown.push(item.ingredient);continue;}
+      const key=identity+'|'+item.unit;
       const scaled=item.quantity*servings/recipe.servings;
       // Keep failed scaling on this key, even if a later duplicate is finite.
       needs.set(key,Number.isFinite(scaled)&&scaled>0?(needs.get(key)??0)+scaled:NaN);
@@ -58,12 +73,18 @@ export function matchMeals(inventory,recipes,servings,today) {
     const missing=[];let met=0,arithmeticKnown=true;
     for(const [key,required]of needs){
       const available=stock.get(key)??0,deficit=required-available;
-      const [ingredient,unit]=key.split('|');
+      // The unit is controlled; ingredient text may itself contain the separator.
+      const separator=key.lastIndexOf('|');
+      const [ingredient,unit]=forRestock?[key.slice(0,separator),key.slice(separator+1)]:key.split('|');
       if(!Number.isFinite(required)||!Number.isFinite(available)||!Number.isFinite(deficit)){
         arithmeticKnown=false;unknown.push(ingredient);continue;
       }
       if(available>=required)met++;
-      else{
+      else if(forRestock){
+        const quantity=restockQuantity(available,required,deficit);
+        if(!Number.isFinite(quantity)){arithmeticKnown=false;unknown.push(ingredient);continue;}
+        missing.push({ingredient,unit,quantity});
+      }else{
         const rounded=Math.round(deficit*1000)/1000;
         missing.push({ingredient,unit,quantity:Number.isFinite(rounded)?rounded:deficit});
       }

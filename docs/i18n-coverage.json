@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4028,
-  "arabicTranslated": 430,
-  "arabicMissing": 3598,
+  "messages": 4033,
+  "arabicTranslated": 575,
+  "arabicMissing": 3458,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 212,
@@ -1680,6 +1680,7 @@
         "apps/web/src/journey-ui.js",
         "apps/web/src/menu-model.js",
         "apps/web/src/pantry-backup.js",
+        "apps/web/src/pantry-duration-optimizer.js",
         "apps/web/src/product-visual-association.js",
         "apps/web/src/recipe-ingredient-coverage.js",
         "apps/web/src/recipe-review.js",
@@ -1735,6 +1736,13 @@
     "./pantry-backup.js": {
       "sources": [
         "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "./pantry-duration-optimizer.js": {
+      "sources": [
+        "apps/web/src/household-model.js"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -2793,10 +2801,11 @@
     },
     "AI agent name": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "AI community review": {
       "sources": [
@@ -2828,17 +2837,19 @@
     },
     "AI-assisted by": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "AI-assisted recipe": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "ALDI country portals": {
       "sources": [
@@ -3253,10 +3264,11 @@
     },
     "Administration": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Administrative MCP": {
       "sources": [
@@ -3331,10 +3343,11 @@
     },
     "Administrative settings are incomplete.": {
       "sources": [
-        "apps/web/src/admin-model.js"
+        "apps/web/src/admin-model.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Administrative settings are unavailable.": {
       "sources": [
@@ -3512,9 +3525,10 @@
     },
     "Allow camera access if asked. Type code remains available.": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Allow eligible facts to be considered for contribution": {
@@ -3972,9 +3986,10 @@
     },
     "Audit · reconcile existing stock": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Australia-specific reference values; retain FSANZ limitations and licence notices.": {
@@ -4275,24 +4290,27 @@
     },
     "Barcode representation hint": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Barcode · original": {
       "sources": [
         "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/shelf-scanner.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Barcode · printed code": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Based on actual allocated ingredient lots; mixed plates may need manual correction.": {
@@ -4391,10 +4409,11 @@
     },
     "Bio": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Blank = unknown; * = partial. Sodium uses label data when available, otherwise salt × 400 mg/g. {v0}": {
       "sources": [
@@ -4462,9 +4481,10 @@
     "Brand": {
       "sources": [
         "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/shelf-scanner.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Brand unavailable": {
@@ -4572,9 +4592,10 @@
     },
     "Buy · shopping intent, not payment": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "CASE WHEN ": {
@@ -5055,9 +5076,10 @@
     },
     "Category: Not yet identified": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Ceiling": {
@@ -5257,9 +5279,10 @@
     },
     "Choose a JSON recipe file under 20 KB.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Choose a clear barcode photo": {
@@ -5465,10 +5488,11 @@
     },
     "Choose unit": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Choose what happens when an item scans. Every option is optional.": {
       "sources": [
@@ -5583,10 +5607,11 @@
     },
     "Clear vote": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Close": {
       "sources": [
@@ -5815,17 +5840,19 @@
     },
     "Comment": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Comment already submitted.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Comment submission unavailable.": {
       "sources": [
@@ -5836,17 +5863,19 @@
     },
     "Comment submitted for review.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Comments": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Common corpus graph loaded for local preview. Source identities, citations and quantities are preserved; nothing is saved.": {
       "sources": [
@@ -5888,10 +5917,11 @@
     "Community moderation": {
       "sources": [
         "apps/web/src/care-ui.js",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Community moderation failed.": {
       "sources": [
@@ -5952,10 +5982,11 @@
     },
     "Community recipes": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Community recipes unavailable.": {
       "sources": [
@@ -6156,9 +6187,10 @@
     },
     "Configure here. The running scanner keeps its camera and readouts in fixed positions.": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Confirm & finish": {
@@ -6220,9 +6252,10 @@
     },
     "Confirm publication rights before submitting.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Confirm quantity below": {
@@ -6262,9 +6295,10 @@
     },
     "Confirm your ingredient matches, measurements and instructions.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-model.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Confirm your source/plan permits storage before applying this data.": {
@@ -7089,9 +7123,10 @@
     },
     "Data connection": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Data exceeds 2 MB.": {
@@ -7303,10 +7338,11 @@
     },
     "Default country": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Default currency for prices": {
       "sources": [
@@ -7317,24 +7353,27 @@
     },
     "Default interface language": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Default servings": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Default units": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Delete": {
       "sources": [
@@ -7530,10 +7569,11 @@
     },
     "Diagnostics hourly limit": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Dietary advisors": {
       "sources": [
@@ -7602,9 +7642,10 @@
     },
     "Disable value": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Discard": {
@@ -7630,9 +7671,10 @@
     },
     "Discard · stock outflow": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Discarded": {
@@ -7696,10 +7738,11 @@
     },
     "Document email": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Document email is not available.": {
       "sources": [
@@ -7724,10 +7767,11 @@
     },
     "Document hourly limit": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Done": {
       "sources": [
@@ -7746,10 +7790,11 @@
     },
     "Down vote": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Download CSV ↓": {
       "sources": [
@@ -8001,16 +8046,18 @@
     },
     "EAN-13 · explicitly known format": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "EAN-8 · explicitly known format": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "EST. RIGHT NOW": {
@@ -8365,9 +8412,10 @@
     },
     "Enter Explore": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Enter a barcode with 4–32 digits.": {
@@ -8436,9 +8484,10 @@
     },
     "Enter a positive yield and at least one required ingredient.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-model.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Enter a recipe search of at most 100 characters.": {
@@ -9262,16 +9311,18 @@
     },
     "Explore · Ready": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Explore · information only": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Export history CSV ↓": {
@@ -10074,9 +10125,10 @@
     },
     "GTIN-14 · only when known, not inferred from ITF": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Garmin Health": {
@@ -10179,10 +10231,11 @@
     },
     "Global settings": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Global · all countries": {
       "sources": [
@@ -10408,9 +10461,10 @@
     },
     "Historical OCR candidate: the ingredient list is incomplete. Read the source text; pantry matching and personal recipe saving are disabled until complete transcription.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Historical OCR ingredient list needs transcription": {
@@ -10437,9 +10491,10 @@
     },
     "Historical source; measurements and text may require correction.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Home checkout receipt": {
@@ -10557,9 +10612,10 @@
     },
     "Human recipe": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "I authorise OffMenu to store these measurements privately for history and descriptive statistics. I can export or delete them.": {
@@ -10571,10 +10627,11 @@
     },
     "I confirm this is an original recipe and I have rights to publish it under the recipe license.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "I have reviewed the ingredient identities, measurements, yield and instructions, and choose these as linearly scalable quantities for my kitchen.": {
       "sources": [
@@ -10820,9 +10877,10 @@
     },
     "Import reviewed USDA saved result": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Import unified JSON, OFF or USDA JSON, or map CSV columns. Private to your account; no public redistribution.": {
@@ -10971,9 +11029,10 @@
     },
     "Ingredient in my kitchen": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Ingredient match": {
@@ -10986,9 +11045,10 @@
     },
     "Ingredient match: Not yet identified": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Ingredient not mapped. Excluded from meal matching.": {
@@ -11015,9 +11075,10 @@
     "Ingredients": {
       "sources": [
         "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Ingredients & allergens": {
@@ -11273,9 +11334,10 @@
     },
     "Interpreted source status": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Intolerances (comma-separated)": {
@@ -12420,9 +12482,10 @@
     },
     "Inventory changes are unavailable until product eligibility and the existing pantry action binding are verified.": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Inventory item": {
@@ -12570,9 +12633,10 @@
     },
     "Keep existing value": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Keep leading zeroes": {
@@ -12838,9 +12902,10 @@
     },
     "License": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "License declaration: ": {
@@ -13572,9 +13637,10 @@
     },
     "Measure every required ingredient in g, ml or count.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-model.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Measured quantity exceeds confirmed source or is unsupported.": {
@@ -13853,9 +13919,10 @@
     "Moderation reason": {
       "sources": [
         "apps/web/src/care-ui.js",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Moderation unavailable.": {
@@ -14029,9 +14096,10 @@
     },
     "Name the AI agent for public attribution.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Name unavailable": {
@@ -14195,9 +14263,10 @@
     },
     "New value": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Newer case revision exists.": {
@@ -14239,9 +14308,10 @@
     },
     "Next identical pack": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Next item, please.": {
@@ -14292,9 +14362,10 @@
     },
     "No changes to save.": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "No cloud copy yet. Add items or import a backup, then save.": {
@@ -14328,9 +14399,10 @@
     },
     "No hint · exact lexical lookup": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "No identity winner, usable_as mapping, English/gold or inventory eligibility inferred.": {
@@ -14652,9 +14724,10 @@
     },
     "Not loaded. Only the pinned reviewed file is eligible.": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Not provided by this source representation": {
@@ -14696,10 +14769,11 @@
     "Not yet identified": {
       "sources": [
         "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/product-visual-association.js",
         "apps/web/src/shelf-scanner.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Note": {
@@ -14784,9 +14858,10 @@
     },
     "Nutrition": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Nutrition basis compatible; nutrient values may still be missing.": {
@@ -15022,9 +15097,10 @@
     },
     "OffMenu": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "OffMenu app fallback; no eligible product photo or category illustration": {
@@ -15120,9 +15196,10 @@
     },
     "OffMenu · Continuous scanner": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "OffMenu · Global data workspace": {
@@ -15509,9 +15586,10 @@
     },
     "Open recipe details": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Open request": {
@@ -15714,9 +15792,10 @@
     },
     "Original characters and leading zeros are preserved. Choose the source namespace explicitly. A UPC-E hint is used only when you select it; eight digits alone do not imply UPC-E. No inventory changes or inferred product identity.": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Original grants, sessions, entitlements and credentials are never restored.": {
@@ -15920,9 +15999,10 @@
     },
     "Pack size: Unknown": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Package": {
@@ -16064,17 +16144,19 @@
     },
     "Pending comments": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Pending recipes": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "People / adjustments": {
       "sources": [
@@ -16496,10 +16578,11 @@
     },
     "Post comment": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Potassium": {
       "sources": [
@@ -16617,10 +16700,11 @@
     },
     "Preview recipe": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Preview your message before sending.": {
       "sources": [
@@ -16788,9 +16872,10 @@
     },
     "Private saved-result connection": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Private service request limit reached. Try again next hour.": {
@@ -16929,16 +17014,18 @@
     },
     "Product readout": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Product readouts": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Product · source assertion": {
@@ -17241,10 +17328,11 @@
     },
     "Public alias": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Public allergy and recall notices. Confirm the original notice, affected batch and country.": {
       "sources": [
@@ -17255,10 +17343,11 @@
     },
     "Public community profile": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Public data catalogue": {
       "sources": [
@@ -17367,10 +17456,11 @@
     },
     "Publish this profile": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Publish this public reply for review?": {
       "sources": [
@@ -17609,16 +17699,18 @@
     },
     "Rate recipe": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Rating": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Raw": {
@@ -17968,9 +18060,10 @@
     },
     "Readout pages": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Ready": {
@@ -18047,9 +18140,10 @@
     },
     "Ready · loaded retained barcode identifiers": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Ready. Present one barcode and pause briefly.": {
@@ -18061,9 +18155,10 @@
     },
     "Real source records remain unresolved where evidence is missing.": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Real source records retain ambiguity, provenance and missing mappings. No inventory action is enabled.": {
@@ -18075,9 +18170,10 @@
     },
     "Real · loaded retained barcode identifiers": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Rear camera": {
@@ -18106,10 +18202,11 @@
     },
     "Recent recipes": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Recipe": {
       "sources": [
@@ -18128,17 +18225,19 @@
     },
     "Recipe JSON": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Recipe JSON file": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Recipe Step": {
       "sources": [
@@ -18156,17 +18255,19 @@
     },
     "Recipe already submitted.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Recipe attribution": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Recipe ingredient": {
       "sources": [
@@ -18185,9 +18286,10 @@
     },
     "Recipe is no longer in this search; search again.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Recipe language": {
@@ -18230,9 +18332,10 @@
     },
     "Recipe page repeats an earlier result": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Recipe response does not match the selected release.": {
@@ -18265,10 +18368,11 @@
     },
     "Recipe submitted for review.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Recipe, bounded inventory, product map and explicit date required.": {
       "sources": [
@@ -18526,10 +18630,11 @@
     },
     "Reload settings": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Reload source policies": {
       "sources": [
@@ -18684,9 +18789,10 @@
     },
     "Replace value": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Replace your pantry with this backup?": {
@@ -18748,9 +18854,10 @@
     },
     "Reported protein per serving": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Representation plan mismatch": {
@@ -19032,10 +19139,11 @@
     },
     "Review changes": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Review details at the end": {
       "sources": [
@@ -19090,9 +19198,10 @@
     },
     "Review selected source in kitchen ↗": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Review source quantity": {
@@ -19104,9 +19213,10 @@
     },
     "Review the comment before submitting.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Review the known quantity and ingredient for every scanner item before saving inventory.": {
@@ -19132,10 +19242,11 @@
     },
     "Review the public profile.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-model.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Review the public reply before sending.": {
       "sources": [
@@ -19146,10 +19257,11 @@
     },
     "Review the recipe before submitting.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-model.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Review the request before sending.": {
       "sources": [
@@ -19211,9 +19323,10 @@
     },
     "Reviewed quantity": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Reviewed restriction lift": {
@@ -19240,9 +19353,10 @@
     },
     "Reviewed unit": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Reviewed {v0} public contributions: {v1}.": {
@@ -19639,17 +19753,19 @@
     },
     "Save community profile": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Save confirmed settings": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Save correction": {
       "sources": [
@@ -19803,9 +19919,10 @@
     },
     "Save these reviewed administrative settings?": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Saved as cooked stock": {
@@ -20309,9 +20426,10 @@
     },
     "Searching shared recipes…": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Second basket JSON": {
@@ -20338,9 +20456,10 @@
     "Secure request delivery is unavailable.": {
       "sources": [
         "apps/web/src/care-model.js",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Select a recipe record": {
@@ -20373,9 +20492,10 @@
     },
     "Select the exact reviewed USDA result on this device. It stays in this tab’s memory. No upload, persistence or live fallback.": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Selected ": {
@@ -20395,9 +20515,10 @@
     },
     "Selected Balanced Final OffMenu logo": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Selected admitted snapshot only; inherited vocabulary/matching/allocation. Basis eligibility is not nutrient completeness, food safety, recipe admission or cooking/serving evidence.": {
@@ -20640,9 +20761,10 @@
     },
     "Self-reported; not a validated health claim.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Send a confirmed staff reply or internal note.": {
@@ -20775,10 +20897,11 @@
     },
     "Service settings": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Service setup is required.": {
       "sources": [
@@ -20838,9 +20961,10 @@
     },
     "Session ·": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Set a known quantity for each retained source item before saving inventory. The barcode does not state your stock amount.": {
@@ -20867,10 +20991,11 @@
     },
     "Settings changed elsewhere. Refresh and review again.": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Settings changed elsewhere. Reload and review again.": {
       "sources": [
@@ -20937,9 +21062,10 @@
     },
     "Shared recipe search failed. {reason}": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Shared recipes are available to everyone. Your pantry matching runs on this device.": {
@@ -21099,9 +21225,10 @@
     },
     "Show next recipes": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Show the whole world": {
@@ -21130,9 +21257,10 @@
         "apps/web/src/admin-operations-ui.js",
         "apps/web/src/admin-ui.js",
         "apps/web/src/app.js",
-        "apps/web/src/community-ai-ui.js"
+        "apps/web/src/community-ai-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Sign in first": {
@@ -21429,9 +21557,10 @@
         "apps/web/assets/shelf-scanner.html",
         "apps/web/src/documents.js",
         "apps/web/src/insights-ui.js",
+        "apps/web/src/locales/ar.js",
         "apps/web/src/services-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Source ": {
@@ -21655,9 +21784,10 @@
     },
     "Source information and explicit unknowns. Inspection does not resolve identity or mutate inventory.": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Source instructions": {
@@ -21691,9 +21821,10 @@
     },
     "Source namespace": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Source nutrition basis": {
@@ -21852,9 +21983,10 @@
     },
     "Source scaling: {rule}. Your personal recipe uses linear quantities.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Source serving (not package)": {
@@ -21971,9 +22103,10 @@
     },
     "Source-record matches": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Source-specific identity": {
@@ -22151,10 +22284,11 @@
     },
     "Steps": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Steps · count": {
       "sources": [
@@ -22193,9 +22327,10 @@
     },
     "Stock · unpacking intake": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Stop camera": {
@@ -22308,10 +22443,11 @@
     },
     "Submit recipe for review": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Sugar": {
       "sources": [
@@ -22382,10 +22518,11 @@
     "Support email": {
       "sources": [
         "apps/web/server/service-config.mjs",
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Support email is not available.": {
       "sources": [
@@ -22403,10 +22540,11 @@
     },
     "Support hourly limit": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Support request sent and a copy was emailed to your verified address.": {
       "sources": [
@@ -22438,10 +22576,11 @@
     },
     "Support retention days": {
       "sources": [
-        "apps/web/src/admin-ui.js"
+        "apps/web/src/admin-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Survey food and nutrient datasets; use the applicable release and definitions.": {
       "sources": [
@@ -23676,10 +23815,11 @@
     },
     "Top recipes": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Topic changed, is unavailable, or community posting budget reached.": {
       "sources": [
@@ -23727,9 +23867,10 @@
     },
     "Transcribe the complete historical OCR ingredient list before creating a kitchen recipe.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-model.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Transition already recorded.": {
@@ -23904,16 +24045,18 @@
     },
     "UPC-A · explicitly known format": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "UPC-E · explicitly known format": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "UPDATE owner04_d1_sessions AS s SET revoked_at=": {
@@ -23974,9 +24117,10 @@
     },
     "USDA-FDC · source identifier, not a printed barcode": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Unable to create the private request.": {
@@ -24564,10 +24708,11 @@
     },
     "Up vote": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Update care cases and send staff replies": {
       "sources": [
@@ -24838,9 +24983,10 @@
     },
     "Uses the bundled ZXing worker when native detection is unavailable. Image stays on this device. The camera resumes automatically after local photo decoding. A decoded code is not product qualification.": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Uses the selected week and “Use existing ingredients” setting in My week. Unmeasured ingredients stay visible for review.": {
@@ -25763,9 +25909,10 @@
     },
     "Your reviewed recipe is saved in this kitchen.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Your trophy shelf.": {
@@ -26056,6 +26203,13 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "approve": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "at a time.": {
       "sources": [
@@ -26830,6 +26984,13 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "hide": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "history:read": {
       "sources": [
@@ -27890,6 +28051,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "reject": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "release unknown": {
       "sources": [
         "apps/web/src/app.js"
@@ -27917,6 +28085,13 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "restore": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "restriction:": {
       "sources": [
@@ -28766,9 +28941,10 @@
     },
     "{v0} shown from {v1} loaded search results · {v2} published recipes, including OCR candidates. Continue browsing for later results; this list keeps the latest 200. Language and pantry filters apply to loaded results. Pantry matches are hints needing review; quantities compare the source batch.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-library-ui.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "{v0} sources / services · {v1} in the global catalogue": {
@@ -28934,9 +29110,10 @@
     },
     "— · unmapped / missing evidence": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html"
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "← My kitchen": {
