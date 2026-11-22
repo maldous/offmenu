@@ -14204,7 +14204,7 @@
         "apps/web/src/care-ui.js"
       ],
       "arabic": false,
-      "classification": "heuristic-candidate"
+      "classification": "explicit-ui"
     },
     "My source licence or personal provider plan permits this storage / export.": {
       "sources": [
