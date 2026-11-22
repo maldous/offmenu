@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4077,
+  "messages": 4078,
   "arabicTranslated": 642,
-  "arabicMissing": 3435,
+  "arabicMissing": 3436,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -3064,7 +3064,6 @@
     },
     "Account setup pending. Guest pantry and offline recipes remain available.": {
       "sources": [
-        "apps/web/src/app.js",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -21716,6 +21715,13 @@
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Sign-in is unavailable. You can still use your Guest pantry.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
       "classification": "explicit-ui"
     },
     "Sign-in required": {
