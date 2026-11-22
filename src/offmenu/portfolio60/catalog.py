@@ -1,5 +1,5 @@
 """Exact retained metadata configuration; all real source executions stay held.
-No payload or credential is embedded. Absolute paths are Foo-local evidence locators.
+No payload or credential is embedded. Absolute paths are historical local evidence locators.
 """
 from .bindings import Binding, Evidence, Field
 

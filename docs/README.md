@@ -49,8 +49,8 @@ Contextual in-app help and search integration remain separate work.
 | Work and action status | Existing OffMenu Linear issues hold active status, dependencies and acceptance; [routing and documentation homes](development/task-routing.md#documentation-homes-and-update-responsibility) define the complementary repo/ADR/AGENTS references. GitHub PRs are code review; historical ledgers preserve provenance. |
 
 For repository layout, use the [root architecture](development/root-layout.md).
-For repeatable discovery, delivery and recovery, use the
-[delivery workflow](../tools/delivery/README.md).
+For repeatable local checks and recovery of a selected source change, use the
+[maintainer guide](maintainer.md) and [validation workflow](development/validation-workflow.md).
 
 ## Historical and specialist evidence
 

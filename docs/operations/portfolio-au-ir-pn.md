@@ -17,7 +17,7 @@ without a `docs/` directory; this addresses live PR43 P1 comment4305926950.
 The catalogue contains six trusted portfolio declarations: AFCD Release 3,
 ABS 2025 statistical weights, three FSANZ notices, the IR PERSIAN supplement v1,
 and two explicitly missing/held PN inputs. Paths and SHA256 references identify
-retained metadata evidence on Foo; the tool never follows those paths. It does
+retained metadata evidence on the selected local executor; the tool never follows those paths. It does
 not copy raw bodies, third-party assets or credentials. Provenance and counts in
 the referenced manifests retain their original scope. Historical manifest
 `accepted` counts do not become STAGING acceptance.
@@ -62,7 +62,7 @@ Unknown age emits `unknown-no-download`. Every result explicitly reports
 `metadata-intent-only-generic-planner-unsupported`; this narrow portfolio intent
 does not implement a shared pure cache planner or an operational source adapter.
 
-The Foo metadata entrypoint rejects symlinks and nonregular files. It opens a
+The local executor metadata entrypoint rejects symlinks and nonregular files. It opens a
 regular descriptor with nonblocking/no-follow flags, verifies descriptor identity
 against the pre-open stat, bounds reads and rechecks identity/size/timestamps after
 reading. FIFO/device/directory inputs and swaps fail with typed errors; a read
@@ -108,7 +108,7 @@ PN MPI original remains missing under a no-retry challenge hold. Regional PNDB
 licence, actual body, units/bases and PN applicability remain unknown. No PN body
 or policy is opened, and no category is declared not applicable.
 
-## Integrator00 interface request and next dependency
+## the product integrator interface request and next dependency
 
 No shared-interface patch is included. Please review whether to extract an
 existing source-neutral30-day planning helper from `core.cache_policy` /
@@ -120,7 +120,7 @@ Retain existing callers and force-mode semantics; a future automatic adapter mus
 not bypass the under30-day zero-download rule. This is a proposed interface for
 00, not worker03 permission to edit shared core.
 
-For an actual portfolio staging run, Morgan/00 must select exact reviewed source
+For an actual portfolio staging run, the product maintainer must select exact reviewed source
 schemas, per-datum selector/semantic contracts, source-use conditions, independent
 scope/count/ID digests and the existing execution resource boundary. FSANZ
 field-origin licence, PN finite parsed-body custody and AFCD original acquisition

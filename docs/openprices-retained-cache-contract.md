@@ -12,16 +12,14 @@ Worker57 owns selection10195, held operation/reservation10208 and the single
 future body pass. Its existing1GiB reservation remains active and counted once;
 this code does not allocate another job or budget. Current source metadata:
 
-- `/home/user/src/offmenu-data/prices-2026-10-12/manifest.json`, SHA-256
+- the retained `prices-2026-10-12` manifest, SHA-256
   `a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5`.
 - 317898 declared retained price observations,256 partitions,30400169 compressed
   bytes. These totals are metadata declarations, not a newly observed denominator.
 - Declared original archive SHA-256
   `337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0`.
   This code does not stat, hash, read or revalidate that original.
-- Worker57's exact handoff is
-  `/home/user/Documents/Codex/2026-10-21/worker57-retained-barcode-family/current-contract-hold-handoff.json`.
-  The result packet pins this handoff, operation evidence and all current declared
+- The retained result packet pins the source handoff, operation evidence and all declared
   partition paths/counts/bytes/hashes. All256 current compressed hashes differ
   from historical committed collection metadata. Equal counts/archive assertions
   prove neither content equivalence nor freshness; old gzip pins are not adopted.
@@ -111,8 +109,8 @@ Worker56 additionally needs a reviewed source-to-existing-IRI/role/context resol
 and actual source-supported relationship witnesses. Those are separate from
 price-row schema qualification; no IRIs, relationships or reviewed assertions
 are invented. Worker64 field mapping and Worker19 language-neutral mapping remain
-their disjoint ownership. Gateway schedules the next exact contract/bridge work,
-independent reviewer and Worker00 integration. Worker57 executes only after
+their disjoint ownership. the product maintainer schedules the next exact contract/bridge work,
+independent reviewer and the product integrator integration. Worker57 executes only after
 review/integration and required operation/resource gates.
 
 ## Validation and retained boundaries
@@ -120,7 +118,7 @@ review/integration and required operation/resource gates.
 Run from the isolated checkout:
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tests /home/user/src/offmenu-preservation-20261020/checkpoint-venv/bin/python -B -m unittest test_openprices_cache_contract -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tests python -B -m unittest test_openprices_cache_contract -v
 ```
 
 Tests use synthetic256-partition manifests and authored price packets only. They

@@ -11,12 +11,12 @@ From this checkout:
 
 ```sh
 python3 -B -m offmenu.refresh.portfolio05 --now 2026-10-18T06:00:00Z
-python3 -B -m offmenu.refresh.portfolio05 --now 2026-10-18T06:00:00Z --previous /private/foo/metadata-diagnostics.json
+python3 -B -m offmenu.refresh.portfolio05 --now 2026-10-18T06:00:00Z --previous /private/offmenu/metadata-diagnostics.json
 python3 -B -m unittest discover -s tests -p test_portfolio05_bindings.py -v
 ```
 
 The first command emits canonical JSON on stdout; redirect it only to a private
-Foo report directory. The second compares per-candidate content hashes with an
+local executor report directory. The second compares per-candidate content hashes with an
 existing report. It does not persist candidates or change accepted/cache pointers.
 `unchangedContentNoOp` means no candidate-content change and no data write; checking
 metadata pins still reads the eight receipts. No automatic download/revalidation,
@@ -131,15 +131,15 @@ legal decision, new entitlement or removal of an existing explicit hold.
 
 | Type | Exact remaining dependency | Owner / next action |
 | --- | --- | --- |
-| Integration/review | This committed package needs independent scope/code review and accepted-develop integration | Integrator00/Morgan select reviewer, integrate through normal gates; no push by Worker05 |
-| Shared interface | No general pure cache planner; current capability explicitly unsupported, not all metadata bindings blocked | Integrator00/Morgan alone may select one shared `policy.plan_retained_input` per result5798; reviewed identity/evidence/hold binding, original age, unknown-no-download, no execution or admission. Worker05 did not edit shared core or copy a planner |
-| BB source use/scope | Exact operation-specific use/credit/exception decisions and finite source fields absent in scoped36reply | Morgan selects new lawful evidence/operation; do not repeat identical request to36 |
-| JO source use/scope | Exact primary clause/page and applicable private annotation decision/credit absent in49reply | Morgan/right-scope owner resolves; recorded copying/transmission/translation hold remains |
-| PY source use/selectors | Exact lawful-use decision, credit and recipe ID/page/ingredient/method/measure/yield selectors absent in40reply | Morgan selects qualified inputs; no repeated identical request to40 |
+| Integration/review | This committed package needs independent scope/code review and accepted-develop integration | the product maintainer select reviewer, integrate through normal gates; no push by Worker05 |
+| Shared interface | No general pure cache planner; current capability explicitly unsupported, not all metadata bindings blocked | the product maintainer alone may select one shared `policy.plan_retained_input` per result5798; reviewed identity/evidence/hold binding, original age, unknown-no-download, no execution or admission. Worker05 did not edit shared core or copy a planner |
+| BB source use/scope | Exact operation-specific use/credit/exception decisions and finite source fields absent in scoped36reply | the product maintainer selects new lawful evidence/operation; do not repeat identical request to36 |
+| JO source use/scope | Exact primary clause/page and applicable private annotation decision/credit absent in49reply | the source-rights owner resolves; recorded copying/transmission/translation hold remains |
+| PY source use/selectors | Exact lawful-use decision, credit and recipe ID/page/ingredient/method/measure/yield selectors absent in40reply | the product maintainer selects qualified inputs; no repeated identical request to40 |
 | Source denial | Senatur403 | Preserve no-retry/no-body-processing; no alternate actor/route |
 | Actual staging acceptance | Reviewed real-source contract, measured expected inventory, field semantics and rights not supplied | Remains later selection; authored fixture pass and metadata proposals do not satisfy dataset acceptance |
 
 Finland/Frida, native NO/FR crash restrictions, private/credential/source holds,
 mandatory auto_review, production/CIX pause and separate DEV7645 custody survive.
-Raw stays Foo. No shared engine fork, source-body processing, acquisition,
+Raw stays on the selected local executor. No shared engine fork, source-body processing, acquisition,
 source-test replay, permission change or accepted pointer movement occurred.

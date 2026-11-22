@@ -9,13 +9,13 @@ execution, acquisition, adapters, qualification and registry remain unchanged.
 From the repository, run:
 
 ```sh
-python3 -m offmenu.refresh.worker06_bindings --now 2026-10-18T00:00:00Z > /private/foo/metadata-report.json
-python3 -m offmenu.refresh.worker06_bindings --now 2026-10-18T00:00:00Z --previous /private/foo/metadata-report.json
+python3 -m offmenu.refresh.worker06_bindings --now 2026-10-18T00:00:00Z > /private/offmenu/metadata-report.json
+python3 -m offmenu.refresh.worker06_bindings --now 2026-10-18T00:00:00Z --previous /private/offmenu/metadata-report.json
 python3 -m unittest tests.test_worker06_bindings -v
 python3 -m unittest tests.test_worker06_packaging -v
 ```
 
-Use an existing private Foo output directory. The module prints JSON and never
+Use an existing private local executor output directory. The module prints JSON and never
 writes to source/cache/accepted pointers. Its only retained-input reads are the
 four exact small `deliverable-validation.json` metadata manifests selected by
 the committed configuration. Repeated reads are per binding, at most128KiB each;
@@ -106,7 +106,7 @@ fixture contracts fail through the same qualifier. No country engine is copied.
 
 Real bindings remain `held`, with typed owners and blockers. Payload operation
 lists are empty and no actual SourceContract is created. Before a real source
-successor, Morgan and its existing rights/scope reviewer must bind exact
+successor, the product maintainer and its existing rights/scope reviewer must bind exact
 operation-use evidence, allowed source portion, format-specific parser/adapter,
 native units/bases/definitions, independently expected counts/IDs/schema, body
 field origins and original-acquisition clock. Source-specific exceptions and
@@ -114,7 +114,7 @@ retained explicit denials remain in that future trusted contract. No new grant
 is required merely because a custodian is missing; positive existing evidence
 may qualify a narrowly reviewed operation. Missing evidence is not a denial.
 
-Integrator00 can integrate these owned portfolio files after designated
+the product integrator can integrate these owned portfolio files after designated
 independent review. No shared-interface mutation is proposed in this batch.
 The live PR43 catalogue finding4305926950 is addressed for Worker06 by this
 owned declaration. An authored offline test builds an sdist from the package
@@ -156,5 +156,5 @@ rights decisions. No publisher contact, account or terms acceptance was made.
   extraction terms and all exact body-method selectors remain unqualified.
 
 Finland/Frida, NO/FR native-crash, private/credential/actual-denial restrictions,
-UI STOP/DEV7645, production and CIX holds remain. Raw datasets stay on Foo.
+UI STOP/DEV7645, production and CIX holds remain. Raw datasets stay on the selected local executor.
 Code/metadata delivery is not permission to fetch, process or publish them.

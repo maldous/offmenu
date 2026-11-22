@@ -132,14 +132,14 @@ and retained scratch, all output files and receipt bytes, Python/native SQLite/
 gzip memory, CPU/walltime, file/inode limits, available capacity and concurrent
 commitments charged once. These values, actual OS boundary and real operation
 admission remain unset; a cooperative cap or self-hashed plan is not a grant.
-Worker57's existing qualification/runtime/session remains untouched. Gateway
-selects fresh appropriate56/64 source/evidence review; Worker00 alone integrates.
+Worker57's existing qualification/runtime/session remains untouched. the product maintainer
+selects fresh appropriate56/64 source/evidence review; the product integrator alone integrates.
 All source/privacy/custody/denial/incident10230/production/CIX holds remain.
 
 ## Generated verification
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:tests /home/user/src/offmenu-preservation-20261020/checkpoint-venv/bin/python -B -m unittest test_off_partition_custody test_off_partition_witness test_product_input_witness -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:tests python -B -m unittest test_off_partition_custody test_off_partition_witness test_product_input_witness -v
 ```
 
 Controls cover exact selection/rights/clock/code binding before original open,

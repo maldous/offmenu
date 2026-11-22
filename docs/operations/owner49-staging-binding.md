@@ -15,7 +15,7 @@ are checked before authored cells are processed. Focused regressions run with
 `owner49-staging-catalog.json` is the source-linked configuration for FI/JP/KE/KG.
 It contains exact retained manifests/receipt hashes, input identities, country/type
 applicability, field selectors, native units/basis, unknowns and typed dependencies.
-These absolute metadata pointers remain on Foo. They are not source bodies,
+These absolute metadata pointers remain on the selected local executor. They are not source bodies,
 credentials, a new ledger, or a request to acquire anything.
 
 FI selectors are the retained two-food/four-observation measured CSV/JSON map;
@@ -85,16 +85,16 @@ country source data. Tests cover all outcomes, duplicate/nonfinite JSON, size,
 identity/hash/time mismatch, TTL boundary, replay, per-source failure isolation,
 zero/null origins, native unit/basis failure and shared fixture qualification.
 
-Proposed shared interface for Morgan/00 **only if selected**: one pure
+Proposed shared interface for the product maintainer **only if selected**: one pure
 `plan_retained_input` in the shared policy module, with trusted source/release and
 input pins, original-acquisition/revalidation chain, UTC now and hold/retention
 status; return unknown/reuse/revalidation intent with zero network and no asset,
-rights or admission claim. Integrator00 result5798 documents the same gap.
+rights or admission claim. the product integrator result5798 documents the same gap.
 This package does not add that public API or copy a shared acquisition engine.
 
 Only these owner49 paths change. Shared core and other workers' bindings remain
 owned by their current authors. Submit the immutable commit, files and focused
-test evidence through Gateway to integrator00 and a designated independent
+test evidence through the product maintainer to the product integrator and a designated independent
 reviewer. Human direct00 messaging authority is not inferred from another chat's
 request. Current package is an author proposal until independent approval and
 develop integration. No next source assignment, security change, production/CIX

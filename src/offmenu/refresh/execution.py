@@ -121,7 +121,7 @@ def execute(source_id, bundle, destination, *, repository=None):
     """Normalize an admitted cache bundle in a resource-bounded offline process.
 
 Only ADMISSIONS supplies the contract. No accept/curate/graph claims are made.
-Caller owns private Foo staging storage; output must not already exist.
+Caller owns private local staging storage; output must not already exist.
 """
     if source_id not in ADMISSIONS:
         raise RefreshError('execution-admission-missing')

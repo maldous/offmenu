@@ -1,7 +1,0 @@
-# Selected local mock preparation
-
-Root explicitly selected immutable06 be166bb61483825498094d496e2caed9d8b775bb after12 C12 correction PASS and58 compatibility review. This separate preparation does not change existing d100 preview/inputPins, port18797, mock19076, state or receipts. Worker04 SDK bridge8711147752d58b7d93ed3fed4c5047cd87ee4cdb is reviewed source only; central02 successor remains unselected until exact review. No836f copy or realGoogle claim.
-
-Owner05 materializes bounded regular Git source files only, references retained dependencies/JAR, and verifies exact blob/current hashes. A unique own native run at19077 uses pinned runtime custody. Actual176 Identity+2reset qualification is followed by native actor token/user/refresh/logout/revocation/re-login and pure callback reply validation, retaining redacted hashes and native reset/audit receipts. This is preparation evidence, not app composition/SDK guard or all-flow acceptance. Fresh12/58 binding review must precede adoption.
-
-Preparation inputs, native custody and execution/qualification files are exclusive immutable writes in a new private directory. Process birth/cwd/argv/health is checked through exact pinned06 runtime before calls; stop only via that runtime's own custody-verified stop operation. Startup failure evidence is retained. No existing process is adopted, stopped or relabelled. Actual supplied unrestricted filesystem/network and mandatoryauto_review remain; separate approval policy/profile unavailable. ProductionSTOP.

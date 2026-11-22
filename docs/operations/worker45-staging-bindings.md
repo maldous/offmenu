@@ -9,12 +9,12 @@ opened, parsed, downloaded or accepted by this package.
 ## Repeatable metadata interface
 
 ```sh
-python3 -B -m offmenu.refresh.portfolio45 --templates > /private/foo/metadata.json
-python3 -B -m offmenu.refresh.portfolio45 --input /private/foo/metadata.json --as-of 2026-10-18T00:00:00Z
+python3 -B -m offmenu.refresh.portfolio45 --templates > /private/offmenu/metadata.json
+python3 -B -m offmenu.refresh.portfolio45 --input /private/offmenu/metadata.json --as-of 2026-10-18T00:00:00Z
 python3 -B -m unittest tests.test_portfolio45_bindings -v
 ```
 
-The caller chooses an existing private Foo output directory. The CLI reads only
+The caller chooses an existing private local executor output directory. The CLI reads only
 its small metadata envelope and the bundled trusted catalog; it never opens any
 referenced source/evidence paths. stdout is deterministic canonical JSON with an
 explicit clock. Unknown bindings, malformed descriptors and peers receive isolated
@@ -28,7 +28,7 @@ binding's evidenced revision/scope, not an invented national release. Manifest
 means the retained metadata evidence file here, not an accepted parser manifest.
 `metadataValues` are small qualification facts/counts, never source observations.
 Origins point into that exact retained metadata JSON; they do not claim direct
-field coverage of raw nutrients/prices. Bodies stay exclusively on Foo.
+field coverage of raw nutrients/prices. Bodies stay exclusively on the selected local executor.
 
 Shared `field_origin_errors` validates complete per-datum origin coverage, source
 and input-pin identity. This binding additionally checks exact metadata values
@@ -37,7 +37,7 @@ provide grants, remove holds or create shared `SourceContract`/admission objects
 Real catalog entries remain held, including the metadata-only execution boundary.
 Missing inputs are reported alongside holds; no implied global source absence.
 
-Integrator00 baseline/interface result5798 confirms there is **no generic pure
+the product integrator baseline/interface result5798 confirms there is **no generic pure
 cache planner** at this base. This package does not call Wikibooks-specific
 `core.cache_policy`, registry-only `plan_fixture`, or operational `CachedAcquirer`.
 It preserves originalAcquiredAt and validatedAt separately, reports informational
@@ -60,10 +60,10 @@ receipt/artifacts before using it to skip work. `assetBytesVerified=false` and
 
 | Binding | Evidence and applicability | Typed remaining input / owner |
 | --- | --- | --- |
-| IT CREA | Original producer11 metadata receipt chain; one metadata row, zero food samples, 2019 label unverified | Custody: actual later release holder remains unknown; Morgan routes existing11 evidence. Rights: operation-specific grant/decision missing. No new acquisition. |
-| IT facilities | Eight reviewed private Ministry facility/activity records, not recipes | Missing exact original manifest; private extent/operation acceptance retained with Morgan/source owner. No recipe/image/publication entitlement. |
+| IT CREA | Original producer11 metadata receipt chain; one metadata row, zero food samples, 2019 label unverified | Custody: actual later release holder remains unknown; the product maintainer routes existing11 evidence. Rights: operation-specific grant/decision missing. No new acquisition. |
+| IT facilities | Eight reviewed private Ministry facility/activity records, not recipes | Missing exact original manifest; private extent/operation acceptance retained with the source owner. No recipe/image/publication entitlement. |
 | IS CPI | 12 bilingual legend categories,24labels; historical annual CPI changes context | No numeric bar/item-price extraction; semantic scope is taxonomy only. |
-| IS ÍSGEM | Composition source metadata only | Authorization: existing agreement-authorized edition/dictionary required; source owner/Morgan. No agreement acceptance or body access. |
+| IS ÍSGEM | Composition source metadata only | Authorization: existing agreement-authorized edition/dictionary required; the source owner. No agreement acceptance or body access. |
 | JE RPI | 105 quarters/1680 lexemes; retained resource revision and original SHA | Semantics: historical labels/RPI(X) base binding; custody: original acquisition timing. Named OGL-J1.0 and retained isopen=false coexist, no new adjudication. |
 | JE survey | Ten adult previous-day5+portion prevalence observations | Semantics: CSV fraction-versus-percent encoding unknown; no100 multiplication. Acquisition timing missing. |
 | JM Table3 |14rows/182literalobservations; per100g edible portion, UK composites | Scientific: sugars/carbohydrate conflict, analyte legend, row primary-sample count; source authority required. No repair or national equivalence. |
@@ -74,7 +74,7 @@ was needed for this successor: exact source-method findings were already retaine
 in B03-W45. Explicit denied routes, Finland/Frida and native NO/FR restrictions,
 private-source holds, old uncertain sends, production/CIX and DEV7645 stay intact.
 
-## Proposed shared interface for Integrator00
+## Proposed shared interface for the product integrator
 
 No shared change is required to run this standalone metadata package. For normal
 runner wiring, propose an identity-neutral pure helper, selected and implemented
@@ -92,7 +92,7 @@ implemented or called here. Current core v1 has hardcoded source labels. A later
 reviewed metadata-only
 SourceContract factory can wrap this portfolio callback after exact rights,
 scope, inventory, record expectations and runner isolation are selected; no
-factory/production admission is installed here. Integrator00 owns that decision,
+factory/production admission is installed here. the product integrator owns that decision,
 independent review and develop integration. Golden promotion remains later.
 
 ## Verification
@@ -124,7 +124,7 @@ pre/post inode metadata are checked on that descriptor; reads are bounded to the
 512KiB limit plus one rejection byte. It does not check a path then reopen it.
 Replacement, growth, FIFO and hardlink fixtures fail closed. Unsupported platforms
 do not silently fall back to an unsafe reader; this selected implementation is
-for the existing POSIX Foo runtime.
+for the existing POSIX local executor runtime.
 
 Recursive direct-API descriptors are contained as per-entry malformed diagnostics.
 Nonstrings are not echoed as unknown binding identities, so cyclic inputs cannot

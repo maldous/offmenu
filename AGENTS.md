@@ -1,102 +1,95 @@
-# OffMenu agent execution context
+# OffMenu project instructions
 
-This repository owns OffMenu product and source contracts. Optional UIF
-maintenance orchestration is supplied by the selected execution environment;
-read the [policy reference](docs/agents/uif-worker-policy.md) and
-[profile reference manifest](docs/agents/uif-worker-policy.json) when that lane
-is selected. Load its verified policy 2.0.1 bundle and `offmenu` profile, then
-this file and applicable component instructions. Record the actual policy
-version, digest, source revision, executor and ownership in the existing handoff.
-Do not treat the local reference as an installed bundle or make UIF a product
-build/runtime prerequisite.
+This repository contains the OffMenu product, its source contracts, examples,
+build tools and tests. Work from the selected checkout and record its branch,
+commit and local changes before editing. Preserve unrelated work and existing
+source/data custody. Never infer that a source change authorizes a deployment,
+account action, dataset read or permission change.
 
-Cloud Git, Foo Codex inference and Foo MCP commands retain distinct prerequisites.
-Project cloud CPU/storage are independent of Foo; host execution must bind the
-actual project, host, owner, worktree and branch. Deterministic MCP commands do
-not consume a Foo Codex session. Quota return permits fresh admitted work only
-after current ownership and original-operation reconciliation. Historical workers
-remain held. ADR 0014 records this instruction-distribution change.
+## Source and ownership
 
-# OffMenu developer and agent entrypoint
+Use `develop` for reviewed integration and `main` for approved releases. Work on
+an isolated `feature/` or `bugfix/` branch. Retain one integration writer and
+independent review of the exact candidate. Reconcile uncertain external effects
+before retrying an operation. Do not force-push, reset, clean or discard work to
+establish a baseline.
 
-Read `docs/standards/repository.md`, `repository-standard.json` and the relevant
-ADR before changing structure. Read `tools/delivery/README.md` for the repeatable
-workflow. Discover the actual source/manifests before proposing new rules.
+Read [the repository standard](docs/standards/repository.md) and
+[`repository-standard.json`](repository-standard.json) before changing structure.
+Structural changes require a versioned decision and affected-consumer updates.
+Product release requirements are in
+[`config/release-policy.json`](config/release-policy.json). Freeze the exact
+release candidate, source tree and artifact hashes; repairs produce a new
+candidate. Promote only a reviewed, qualified candidate to `main`, verify its
+canonical tree and immutable tag, and keep `main` static between releases.
 
-For MCP work, follow the [execution identities and privilege boundary](tools/delivery/README.md#execution-identities-and-privilege-boundary). Keep service-job grants separate
-from developer access; normal typed validation needs no new sudo grant.
+## Local development
 
-Use `develop` for integration, `main` for reviewed releases, and a reviewed
-`feature/` or `bugfix/` branch for changes. The standardization workstream uses
-`feature/langgraph-delivery-standardization`. New qualified product/backlog work
-uses its own exact bound feature/bugfix branch. There is one Git integration writer.
-Existing historical workers and the hourly automation remain suspended. Do not infer that
-a Linear assignment or a prepared Symphony workflow permits their resumption.
-Newly and specifically authorized, manifest-bound work may obtain fresh normal
-provider, resource and ownership admission. This does not resume historical
-workers, enable `automatic_start` or change `legacy_workers_resume`; all mandatory
-platform confirmations and access/security limits still apply.
+Use the ordinary project environment described in
+[the maintainer guide](docs/maintainer.md). A fresh product checkout must build
+without another project checkout, host-specific paths, service credentials or
+an orchestration service. Product deployment and optional provider features have
+their own configuration; a build does not activate them.
 
-For releases, follow ADR 0009 and `config/delivery-release-policy.json`. Freeze
-an exact candidate from accepted `develop`; exhaustive qualification stays bound
-to its source, tree and artifacts while `develop` advances. Publish the frozen
-candidate through `release/candidate-<candidate fingerprint>` into `main` only
-after separate release review. Verify the resulting tree and immutable tag;
-keep `main` static between approved releases. Source acceptance, installed
-delivery BAU, application deployment and product acceptance are separate facts.
+Read [the project capability guide](docs/development/agent-capabilities.md) for
+actual skill/tool discovery, source-bound checks and environment-specific limits.
+When the optional UIF maintenance lane is selected, load the execution
+environment's verified policy and OffMenu profile through
+[the policy reference](docs/agents/uif-worker-policy.md), then these project
+instructions. The reference and dated history are not a bundled service or a
+product build prerequisite. Record what was actually loaded; a readable policy
+is not installed enforcement, resource admission or permission to resume workers.
 
-Select work using [task routing and tracking](docs/development/task-routing.md).
-Keep immediate bounded answers and genuine decisions with the coordinating owner;
-use available independent reasoning for separable analysis and the dedicated
-project agent's isolated cloud Git checkout for independent repository work.
-Owned Foo/Stokowski branches are the optional Foo execution lane when that task
-requires it; resource-admitted Windmill jobs handle long-running deterministic
-work. All lanes retain existing typed admission, bound review and sole integration
-writer controls. Link runs and evidence to the existing Linear outcome rather
-than creating issues for messages or subprocesses. Recover from durable receipts;
-chat polling is not an execution or recovery mechanism. Capacity ceilings describe
-available capabilities, not utilization targets or permission to resume workers.
+Run the source checks appropriate to the change:
 
-For new origin-specific validation, retain exact source/review/workspace/output
-bindings; source-only extraction is not a coding attempt. Record requested model,
-effort and provider separately from observed or unknown resolution and resources.
-Treat a ready-refill observation as provisional; use normal admission before work.
-The proposed extension is scoped in ADR 0006 and does not relax existing gates.
-For completed validation and standalone unit review, follow the [canonical runbook](tools/delivery/README.md#completed-validation-and-standalone-unit-review).
+```sh
+python3 scripts/check_repository.py
+python3 scripts/check_final_layout.py
+```
 
-Classify source, generated files, historical evidence and private runtime data
-before moving anything. Preserve data/configuration holds in the reconciliation
-handoff. Keep checkpoints/logs private under ignored `.delivery/`; never add raw
-datasets, credentials, screenshots or runtime receipts to Git.
+Use focused behavior tests for changed interfaces. Imports, build wiring,
+packaging and generated assets need their affected checks; run
+`npm run check:generated` before rebuilding so generation cannot hide drift.
+Reuse equivalent valid evidence rather than repeating unrelated suites. Record
+commands, exits, source/artifact hashes, skipped checks and remaining limitations.
+A layout check or source merge is not full product, device or deployment proof.
 
-Discover -> propose/record standards -> apply bounded changes -> check behavior
-and accepted output hashes -> publish reviewed source -> verify remote content.
-Record base/head, exact paths, checks, remaining failures and next step. A push
-is not application acceptance. Changes to standards require version and ADR.
+## Product boundaries and privacy
 
-Bootstrap first; run `.venv-delivery/bin/python -m offmenu.delivery discover`,
-`.venv-delivery/bin/python -m offmenu.delivery check` and
-`.venv-delivery/bin/python scripts/check_final_layout.py`.
-Use the pinned delivery environment for the graph and its tests. Runtime test
-locations are `tests/web`, `tests/edge`, `tests/compat`; Python suites stay under
-`tests/`. Historical pinned snapshot paths remain historical.
+Keep the browser and Worker under `apps/web/`, the retailer extension under
+`apps/retailer-extension/`, installed Python packages under `src/`, and product
+contracts under `contracts/`. Source adapters preserve original identities,
+units, unknown values, licences and rights. Acquisition, normalization, export
+and publication are distinct operations; no code or fixture grants source rights.
 
-Linear records work/dependencies/acceptance; Stokowski provides admitted coding
-sessions; Windmill executes bounded deterministic jobs; LangGraph tracks finite
-workflow decisions/checkpoints. Review task command arrays as executable code.
-Reconcile uncertain effects before retrying the same immutable task ID. No
-recursive managers, automatic push/deploy, new schedules, new paid API charges or private telemetry are enabled by this workflow. Evidence-bound automatic integration into develop is enabled under ADR 0005 and tools/delivery/integration-policy.json; only the authenticated integration owner may consume its typed actions. Coding children cannot authorize their own merge.
+Do not commit credentials, private account records, raw datasets, runtime
+receipts, databases or screenshots. Use authored synthetic fixtures for tests
+unless an exact source and operation is separately qualified. Preserve current
+authentication, account isolation, consent, retention and withdrawal checks.
+Never weaken them to obtain a passing result. Do not start services, install
+models, create paid usage, dispatch hosted workflows or deploy the product
+without the applicable user authorization.
 
-No Actions execution/dispatch/retry, production deployment, live food/barcode
-lookups, local model installation, force push/reset/clean or permanent data
-removal is authorized. Inspect workflow triggers before publishing. Only push
-this authorized feature branch; do not push the runner control branch.
+Before moving or removing files, classify product source, generated output,
+private runtime data and historical evidence. Preserve necessary originals and
+hashes in the approved custody location outside the product source tree. Such
+preservation does not prove transfer, adoption or runtime readiness. Keep held
+private paths and consumers intact until their actual owner completes a handoff.
 
-The conditional validation policy in ADR 0011 was adopted into `develop` by
-PR #217 under its explicit one-time initial exception. PR #216 subsequently
-integrated the shared worker directions and standalone validation fixes into
-`develop`. The accepted version 2 policy is recorded in
-`tools/delivery/integration-policy.json`. Subsequent candidates must use an accepted policy
-base and the version 4 existing-PR contract for independently reviewed exact-source
-cloud validation of explicit Foo-independent scope. Unknown/Foo-dependent scope
-and historical bindings retain Windmill. No host configuration is changed.
+## Handoffs
+
+Report completed source changes, actual checks and known blockers promptly.
+Keep project delivery with its current owner; delegates receive a bounded scope,
+immutable source, owned paths and required output. Do not create a competing
+writer or claim completion from a proposed task, submitted request or unverified
+receipt. Communicate a concrete missing input and continue eligible independent
+work within the user's scope and existing access limits.
+
+Current Linear issues hold live requirements, status, dependencies and acceptance;
+GitHub holds source review, while dated ledgers preserve provenance only. The
+coordinating Morgan role routes qualified independent work through available
+cloud Git or deterministic Foo MCP lanes without waiting for task-by-task chat
+directions. Preserve existing claims, source/publisher custody and original
+operations. Foo commands do not establish local model quota, worker admission or
+an off-Foo authority installation. Reuse accepted exact-input checks; reconcile
+unknown effects before retry and hold only the affected dependent work.

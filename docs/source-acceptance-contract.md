@@ -85,7 +85,7 @@ receipt; it neither edits a manifest nor changes an accepted pointer.
 Contracts have explicit `max_input_bytes`, `max_output_bytes` and `max_records`.
 Defaults are 256 MiB/256 MiB/1,000,000 rows, with reviewed upper bounds of 1 TiB
 and 1 billion rows. Lines remain bounded at 8 MiB. Large runs must pass a private
-Foo scratch directory for the SQLite index and use the runner's reviewed
+local executor scratch directory for the SQLite index and use the runner's reviewed
 resource/isolation boundary. Increasing a contract limit does not increase the
 GLOBAL runtime budget or remove a source-specific eager-parser cap.
 
@@ -97,7 +97,7 @@ not a user-facing runtime toggle.
 ## Real endstate stage wiring
 
 `CandidateArtifact` packages contract, bundle, candidate, manifest and optional
-Foo `scratch_root`. `endstate_handlers(native, curate, graph, receipts,
+local executor `scratch_root`. `endstate_handlers(native, curate, graph, receipts,
 discovery_id=...)` returns handlers and a private state dictionary. Native is a
 trusted factory taking a StageContext. Curate and graph factories take the
 context and previous qualified artifact, perform their reviewed transformation,

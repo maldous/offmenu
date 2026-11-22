@@ -109,14 +109,14 @@ After the actual complete eligible OFF terminal witness, finalization requires:
 
 Do not require a future product output to run the separately scoped full-input
 witness. That witness is already implemented; Worker57 owns its execution packet,
-Worker64 its independent review and Gateway its current admission/scheduling.
-Worker00 alone integrates reviewed source changes. This candidate does not retry
+Worker64 its independent review and the product maintainer its current admission/scheduling.
+the product integrator alone integrates reviewed source changes. This candidate does not retry
 a denied review, consume the restricted OpenPrices sample or alter its holds.
 
 ## Verification
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tests /home/user/src/offmenu-preservation-20261020/checkpoint-venv/bin/python -B -m unittest test_off_native_policy -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tests python -B -m unittest test_off_native_policy -v
 ```
 
 Authored rows exercise the accepted pure Python projector only. Tests cover full
