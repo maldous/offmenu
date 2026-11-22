@@ -130,3 +130,34 @@ this four-control sample cannot close the parent help-completeness outcome.
 | `apps/web/src/insights-ui.js` | `45937c6133b3f70af1c2a0cbc589c9d7d889d5fc190a2dd00afd24a1ec39e863` |
 | `apps/web/src/integrations.js` | `675fe4dd36e09fa8afeebd8a5380bd42d86154efee61074da2bd579b384f1543` |
 | `apps/web/src/checkout-model.js` | `46c35698eef7389c7627ea87a21edf9f8e402daf2ad0be04172023b1e5bb29ad` |
+
+## Bundled Help source replay at `2370a93dbd496b2642b62fdbf77c90ec762070af`
+
+The historical pins and planned browser/assistive-technology rows above are
+unchanged. This local source replay passed the bundled article text to the
+actual `rankedTopics` implementation. Its inputs were `help.html` (Git blob
+`bb5db5bb2d67cc3aff87d208015c88bcb4a0c577`) and `help.js` (Git blob
+`e0eb1de2c8b4efc815a37606701ec10f11f96ea1`). This is source-only evidence,
+not a browser run, contextual entry test, or assistive-technology result.
+
+| Case | Exact queries | Source replay result |
+| --- | --- | --- |
+| H1 Account | `profile backup`; `where is my account` | Both return one result: `#account-backup`, **Find your account and back up your kitchen**. These are general Help results; the source control opens Account, not search. |
+| H2 Shopping share/copy | `share shopping list`; `copy uncollected items` | No matching bundled topic. Keep uncollected names/amount text and the share/copy fallback distinct from CSV and checkout. |
+| H3 Shopping CSV | `download shopping csv`; `collected column` | No matching bundled topic. Keep all current rows and the Collected field distinct from share/copy, printing and food-history CSV. |
+| H4 Receipt confirmation | `confirm grocery receipt`; `shelf reset versus grocery unpacking` | No matching bundled topic. Review is not confirmation; the completed receipt has no confirmation control. |
+| Shopping/print probes | `shopping`; `print`; `print shopping list` | No matching bundled topic. Print is a distinct help gap, not evidence of a missing or supported native print action. |
+| Unknown-query control | `zz-help-no-match-186` | Zero results, kept separate from the nine missing-coverage queries. No failure or unavailable-index route was exercised. |
+
+For H4, the confirmed source labels on active review are **✓ Confirm grocery
+receipt** (adds staged items), **✓ Confirm shelf receipt** (replaces the selected
+location), and **✓ Confirm removal receipt** (removes the selected recorded stock
+or amounts). Keep the static **Confirm & finish** seed and these mode-specific
+labels distinct; do not present a completed receipt or shopping checklist as an
+active stock-changing confirmation.
+
+No help content or index was expanded by this worksheet. The H1 prompt-to-topic
+binding is available for a future browser run. H2–H4 and Print need approved
+content and actual contextual destinations. Native keyboard/touch, return focus,
+browser history/reload, screen-reader announcements, device/RTL behavior and
+full UIF-186 acceptance remain unqualified.
