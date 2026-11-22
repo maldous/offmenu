@@ -1,6 +1,8 @@
 """Preserve research source applicability without assuming worldwide coverage."""
 from pathlib import Path
-import json
+import json, sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
+from offmenu.refresh.source_retirement import retired
 
 root = Path(__file__).resolve().parents[2]
 g = json.loads((root / 'docs/research/OffMenu_Global_Data_Source_Register.json').read_text())
@@ -26,6 +28,8 @@ for source in e['source_catalog']:
             links.add((source['source_id'], context['iso2']))
         elif context.get('scope') == 'global':
             links.add((source['source_id'], ''))
+
+links = {(source, country) for source, country in links if not retired(source)}
 
 def q(value):
     return "'" + value.replace("'", "''") + "'"
