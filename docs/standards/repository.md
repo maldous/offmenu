@@ -1,8 +1,10 @@
-# Repository standard 2.5.4
+# Repository standard 2.5.5
 
-Status: 2.5.4 environment-policy distribution candidate, preserving the 2.5.3
-merge-only amendment candidate based on accepted source 349dbf9; previous standard status: adopted through reviewed integration after independent source review and
-real retained-extraction validation. Changes enter `develop`
+Status: 2.5.5 runtime-installation candidate, preserving the 2.5.4
+environment-policy distribution candidate and the 2.5.3 merge-only amendment
+candidate based on accepted source 349dbf9. Previous standard status: adopted
+through reviewed integration after independent source review and real
+retained-extraction validation. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
 [`repository-standard.json`](../../repository-standard.json). This document
 explains decisions; historical handovers do not override it.
@@ -205,3 +207,10 @@ this amendment/controller is accepted through its separately authorized bootstra
 Such a binding rejects project/full-issue acceptance fields, never publishes or
 completes Linear work, and ends at canonical `merge-verified`. Existing issue-bound
 records and their fingerprints are unchanged. No candidate can adopt itself.
+
+## Explicit Windmill runtime installation
+
+[ADR 0015](../adr/0015-explicit-windmill-runtime-installation.md) defines the
+proposed explicit installed `.offmenu-runtime/` location. It preserves private
+`.delivery/` staging and existing runtime holds until a verified consumer handoff.
+The source candidate does not install, select, or activate that runtime.
