@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4088,
-  "arabicTranslated": 642,
-  "arabicMissing": 3446,
+  "messages": 4091,
+  "arabicTranslated": 643,
+  "arabicMissing": 3448,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -4912,12 +4912,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Camera permission is blocked. Allow the camera in this site’s browser settings, then retry.": {
+    "Camera permission is blocked. You can type the barcode or use a USB / Bluetooth scanner. To retry with the camera, allow it in your browser settings.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/scanner-model.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Camera stopped. Your scanned items are kept.": {
       "sources": [
@@ -6825,6 +6826,13 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Could not load your requests.": {
+      "sources": [
+        "apps/web/src/care-ui.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
     },
     "Count": {
       "sources": [
@@ -13349,6 +13357,13 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Loading your requests…": {
+      "sources": [
+        "apps/web/src/care-ui.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
     "Loading…": {
       "sources": [
         "apps/web/src/locales/ar.js"
@@ -14235,7 +14250,7 @@
         "apps/web/src/care-ui.js"
       ],
       "arabic": false,
-      "classification": "heuristic-candidate"
+      "classification": "explicit-ui"
     },
     "My source licence or personal provider plan permits this storage / export.": {
       "sources": [
@@ -14803,7 +14818,7 @@
         "apps/web/src/care-ui.js"
       ],
       "arabic": false,
-      "classification": "heuristic-candidate"
+      "classification": "explicit-ui"
     },
     "No retail barcode found. Use a sharp photo of the entire barcode, including its blank edges.": {
       "sources": [
@@ -21733,6 +21748,13 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Sign in to view your requests.": {
+      "sources": [
+        "apps/web/src/care-ui.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
     },
     "Sign in to your own offmenu account before allowing access.": {
       "sources": [
