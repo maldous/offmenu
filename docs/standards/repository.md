@@ -1,6 +1,8 @@
-# Repository standard 2.5.5
+# Repository standard 2.5.6
 
-Status: 2.5.5 runtime-installation candidate, preserving the 2.5.4
+Version 2.5.6 adds the Impeccable product record and shared workflow settings
+described in [ADR 0016](../adr/0016-impeccable-project-context.md). It builds
+on the 2.5.5 runtime-installation candidate, preserving the 2.5.4
 environment-policy distribution candidate and the 2.5.3 merge-only amendment
 candidate based on accepted source 349dbf9. Previous standard status: adopted
 through reviewed integration after independent source review and real
