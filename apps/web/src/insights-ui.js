@@ -28,11 +28,70 @@ for(const id of ['history-end','history-range','history-member','trend-nutrient'
 for(const [key,name,unit]of NUTRIENTS){const option=text('option',name+' ('+unit+')');option.value=key;$('goal-nutrient').append(option);}
 $('goal-form').onsubmit=e=>{e.preventDefault();const {profile}=data(),goal={memberId:$('goal-member').value,key:$('goal-nutrient').value,value:Number($('goal-value').value),mode:$('goal-mode').value};if(!Number.isFinite(goal.value)||goal.value<=0)return;const member=(profile.members||[]).find(m=>m.id===goal.memberId);if(member&&(member.age==null||member.age<18)&&goal.key==='energy-kcal_100g'&&goal.mode==='ceiling'){setLocalizedText(document.getElementById('goal-progress'),'Energy ceilings are available only for recorded adult profiles.');return;}profile.goals=(profile.goals||[]).filter(g=>g.memberId!==goal.memberId||g.key!==goal.key);profile.goals.push(goal);persist();$('history-member').value=goal.memberId;$('trend-nutrient').value=goal.key;render();};
 function items(){const {profile,recipes,inventory,products,date,usePantry}=data();return shoppingItems(profile,recipes,inventory,products,date,usePantry);}
-function renderShopping(){const {profile}=data();$('shopping-checklist').replaceChildren();for(const item of items()){const row=document.createElement('label');row.className='shopping-check';const check=document.createElement('input');check.type='checkbox';check.checked=item.checked;check.onchange=()=>{const custom=(profile.shopping||[]).find(i=>i.id===item.id);if(custom)custom.checked=check.checked;else profile.shoppingChecked=[...(profile.shoppingChecked||[]).filter(x=>x!==item.id),...(check.checked?[item.id]:[])];persist();};row.append(check,text('span',item.name),text('strong',item.amount));$('shopping-checklist').append(row);if((profile.shopping||[]).some(i=>i.id===item.id)){const remove=text('button',t("Remove {v0}", {v0:(item.name)}),'text-button');remove.onclick=()=>{profile.shopping=profile.shopping.filter(i=>i.id!==item.id);persist();renderShopping();};$('shopping-checklist').append(remove);}}if(!items().length)$('shopping-checklist').append(text('p',t('Plan a meal in My week, or add a shopping item below.')));}
-$('shopping-add-form').onsubmit=e=>{e.preventDefault();const {profile}=data();profile.shopping||=[];profile.shopping.push({id:crypto.randomUUID(),name:$('shopping-name').value.trim(),amount:$('shopping-amount').value.trim(),checked:false});persist();$('shopping-name').value='';$('shopping-amount').value='';renderShopping();};
+const shoppingStatusFilter=$('shopping-status-filter');
+let shoppingFilterIdentity=getIdentity(),shoppingRenderRevision=0;
+function renderShopping(){
+ const identity=getIdentity(),revision=++shoppingRenderRevision;
+ if(identity!==shoppingFilterIdentity){shoppingFilterIdentity=identity;shoppingStatusFilter.value='all';}
+ const status=shoppingStatusFilter.value;
+ const {profile,date,usePantry}=data(),all=items(),list=$('shopping-checklist');
+ const visible=status==='collected'?all.filter(item=>item.checked):status==='uncollected'?all.filter(item=>!item.checked):all;
+ list.replaceChildren();
+ for(const [index,item] of visible.entries()){
+  const row=document.createElement('label');row.className='shopping-check';
+  const manual=(profile.shopping||[]).find(i=>i.id===item.id);
+  let expectedChecked=item.checked;
+  const isCurrent=()=>{
+   const current=data();
+   if(revision!==shoppingRenderRevision||identity!==getIdentity()||profile!==current.profile||date!==current.date||usePantry!==current.usePantry)return false;
+   if(manual)return (profile.shopping||[]).find(i=>i.id===item.id)===manual;
+   const live=items().find(i=>i.id===item.id);
+   return !!live&&live.name===item.name&&live.amount===item.amount&&live.quantity===item.quantity&&live.unit===item.unit&&live.checked===expectedChecked;
+  };
+  const check=document.createElement('input');check.type='checkbox';check.checked=item.checked;
+  check.onchange=()=>{
+   if(!isCurrent())return;
+   const focused=document.activeElement===check;
+   if(manual)manual.checked=check.checked;else profile.shoppingChecked=[...(profile.shoppingChecked||[]).filter(x=>x!==item.id),...(check.checked?[item.id]:[])];
+   persist();
+   expectedChecked=check.checked;
+   if(status==='collected'||status==='uncollected'){renderShopping();if(focused)shoppingStatusFilter.focus();}
+  };
+  const amount=text('strong',item.amount);
+  row.append(check,text('span',item.name),amount);list.append(row);
+  if(manual){
+   const remove=text('button',t("Remove {v0}", {v0:(item.name)}),'text-button');
+   if(amount.textContent.trim()){
+    amount.id='offmenu-shopping-remove-amount-'+revision+'-'+index;
+    remove.setAttribute('aria-describedby',amount.id);
+   }
+   remove.onclick=()=>{if(!isCurrent())return;profile.shopping=profile.shopping.filter(i=>i.id!==item.id);persist();renderShopping();};
+   list.append(remove);
+  }
+ }
+ if(!all.length)list.append(text('p',t('Plan a meal in My week, or add a shopping item below.')));
+ else if(!visible.length)list.append(text('p',status==='collected'?t('No collected shopping items.'):t('No uncollected shopping items.')));
+}
+shoppingStatusFilter.onchange=()=>renderShopping();
+$('shopping-add-form').onsubmit=e=>{e.preventDefault();const field=$('shopping-name'),name=field.value.trim();if(!name){field.value='';field.focus();field.reportValidity();return;}const {profile}=data();profile.shopping||=[];profile.shopping.push({id:crypto.randomUUID(),name,amount:$('shopping-amount').value.trim(),checked:false});persist();field.value='';$('shopping-amount').value='';renderShopping();};
 $('shopping-csv').onclick=()=>download('offmenu-shopping.csv',csv([['Ingredient','Amount','Collected'],...items().map(i=>[i.name,i.amount,i.checked?'Yes':'No'])]),'text/csv;charset=utf-8');$('shopping-jsonld').onclick=()=>download('offmenu-shopping.jsonld',JSON.stringify(shoppingJSONLD(items()),null,2),'application/ld+json');$('recipe-jsonld').onclick=()=>download('offmenu-recipes.jsonld',JSON.stringify(recipeJSONLD(data().recipes),null,2),'application/ld+json');
 $('history-csv').onclick=()=>{const {profile}=data();download('offmenu-food-history.csv',csv([['Date','Meal','Person','Dish','Portions','Source',...NUTRIENTS.flatMap(([,name,unit])=>[name+' '+unit,'Coverage'])],...(profile.history||[]).map(m=>[m.date,m.slot,scopeName(m.memberId),m.title,m.servings,m.source,...NUTRIENTS.flatMap(([key])=>[m.totals[key]?.known?m.totals[key].value:'',m.totals[key]?m.totals[key].known+'/'+m.totals[key].total:'0/1'])])]),'text/csv;charset=utf-8');};
-$('share-shopping').onclick=async()=>{const content='offmenu shopping list\n'+items().filter(i=>!i.checked).map(i=>i.name+' — '+i.amount).join('\n');try{if(navigator.share)await navigator.share({title:'offmenu shopping list',text:content});else{await navigator.clipboard.writeText(content);setLocalizedText($('integration-notice'),'Shopping list copied. Paste it into your preferred app.');}}catch(e){if(e.name!=='AbortError')setLocalizedText($('integration-notice'),'Sharing unavailable. Download the list instead.');}};
+const shoppingText=()=>'offmenu shopping list\n'+items().filter(i=>!i.checked).map(i=>i.name+' — '+i.amount).join('\n');
+let shoppingAction=0;
+$('share-shopping').hidden=typeof navigator.share!=='function';
+$('share-shopping').onclick=async()=>{
+ const action=++shoppingAction;
+ try{await navigator.share({title:'offmenu shopping list',text:shoppingText()});}
+ catch(error){if(action===shoppingAction&&error.name!=='AbortError')setLocalizedText($('integration-notice'),'Sharing unavailable. Download the list instead.');}
+};
+$('copy-shopping').hidden=typeof navigator.clipboard?.writeText!=='function';
+$('copy-shopping').onclick=async()=>{
+ const action=++shoppingAction;
+ try{
+  await navigator.clipboard.writeText(shoppingText());
+  if(action===shoppingAction)setLocalizedText($('integration-notice'),'Shopping list copied. Paste it into your preferred app.');
+ }catch{if(action===shoppingAction)setLocalizedText($('integration-notice'),'Sharing unavailable. Download the list instead.');}
+};
 let priceRequest=0;
 $('integration-prices').onclick=async()=>{const attempt=++priceRequest,target=$('integration-price-results');target.replaceChildren();const code=$('integration-barcode').value.trim();if(!/^\d{4,32}$/.test(code)){setLocalizedText(target,'Enter a numeric barcode.');return;}setLocalizedText(target,'Checking dated observations…');try{
  const {saved,savedError,upstreamError,upstream:v}=await loadPriceObservations({barcode:code,country:$('source-country')?.value||'',profile:data().profile,getIdentity,request});

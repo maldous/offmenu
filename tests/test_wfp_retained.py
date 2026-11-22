@@ -104,6 +104,38 @@ class WfpRetainedContractTests(unittest.TestCase):
                 self.assertEqual(json.loads(packets[0])[0]['data']['native']['price'], '0.00')
             self.assertEqual(outputs[0], outputs[1])
 
+    def test_equal_price_lexemes_do_not_join_incompatible_observations(self):
+        candidates = deepcopy(self.fixture['records'])
+        for candidate, market, unit, currency, date, price_type in (
+            (candidates[0], '9001', 'KG', 'LYD', '2001-01-01', 'Retail'),
+            (candidates[1], '9002', 'L', 'USD', '2001-02-01', 'Wholesale'),
+        ):
+            candidate['values'].update(market_id=market, unit=unit, currency=currency,
+                                       date=date, price='7.00', usdprice='', pricetype=price_type)
+        raw = b''.join(self.canonical(candidate) for candidate in candidates)
+        context = self.context(raw)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source, destination = root / 'retained.jsonl', root / 'result'
+            source.write_bytes(raw)
+            summary = self.adapter.normalize_retained(source, destination, context=context,
+                                                      expected_records=2)
+            with gzip.open(destination / 'normalized.jsonl.gz', 'rt', encoding='utf-8') as stream:
+                rows = [json.loads(line)[0] for line in stream]
+        self.assertFalse(summary['accepted'])
+        self.assertEqual(len(rows), 2)
+        self.assertNotEqual(rows[0]['id'], rows[1]['id'])
+        for row, candidate in zip(rows, candidates):
+            self.assertFalse(row['accepted'])
+            self.assertFalse(row['automaticPlanningEligible'])
+            self.assertEqual(row['data']['native'], candidate['values'])
+            self.assertTrue(all(value is None for value in row['data']['unqualified'].values()))
+            for field in ('market_id', 'unit', 'currency', 'date', 'pricetype', 'price', 'usdprice'):
+                origin = row['provenance']['fieldOrigins']['/data/native/' + field]
+                self.assertEqual(origin['sourceField'], '/values/' + field)
+                self.assertEqual(origin['sourceRecordId'], candidate['id'])
+                self.assertEqual(origin['releaseId'], context['releaseId'])
+
     def test_changed_input_count_duplicate_and_malformed_stream_leave_no_output(self):
         first, second = self.fixture['records']
         cases = {'wrong-count': self.canonical(first),

@@ -145,20 +145,30 @@ def retain_success_receipt(target, receipt):
         os.fsync(target.file_fd)
         os.fsync(target.parent_fd)
         before = _check_target(target)
-        chunks, offset = [], 0
-        while offset < len(raw)+1:
-            block = os.pread(target.file_fd, len(raw)+1-offset, offset)
-            if not block:
-                break
-            chunks.append(block)
-            offset += len(block)
-        observed = b''.join(chunks)
+        def readback():
+            chunks, offset = [], 0
+            while offset < len(raw)+1:
+                block = os.pread(target.file_fd, len(raw)+1-offset, offset)
+                if not block:
+                    break
+                chunks.append(block)
+                offset += len(block)
+            return b''.join(chunks)
+
+        observed = readback()
         after = _check_target(target)
         if (observed != raw or before.st_size != len(raw)
                 or _signature(before) != _signature(after)):
             raise RefreshError('partition-receipt-readback-mismatch')
+        # Metadata may not distinguish two same-size observations in one
+        # filesystem clock tick. Confirm the bytes again before claiming this
+        # point-in-time observation; a failed first check is never retried.
+        confirmed = readback()
+        final = _check_target(target)
+        if confirmed != raw or _signature(after) != _signature(final):
+            raise RefreshError('partition-receipt-readback-mismatch')
         return {'schemaVersion': 'offmenu-partition-custody-retention-observation/1',
-            'identity': _inode(after), 'parentIdentity': target.parent_identity,
+            'identity': _inode(final), 'parentIdentity': target.parent_identity,
             'location': os.readlink(f'/proc/self/fd/{target.file_fd}'),
             'bytes': len(observed), 'sha256': hashlib.sha256(observed).hexdigest(),
             'fileAndDirectoryFsyncCompleted': True, 'readbackVerified': True,
