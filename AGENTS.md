@@ -1,8 +1,30 @@
+# OffMenu agent execution context
+
+This repository owns OffMenu product and source contracts. Optional UIF
+maintenance orchestration is supplied by the selected execution environment;
+read the [policy reference](docs/agents/uif-worker-policy.md) and
+[profile reference manifest](docs/agents/uif-worker-policy.json) when that lane
+is selected. Load its verified policy 2.0.1 bundle and `offmenu` profile, then
+this file and applicable component instructions. Record the actual policy
+version, digest, source revision, executor and ownership in the existing handoff.
+Do not treat the local reference as an installed bundle or make UIF a product
+build/runtime prerequisite.
+
+Cloud Git, Foo Codex inference and Foo MCP commands retain distinct prerequisites.
+Project cloud CPU/storage are independent of Foo; host execution must bind the
+actual project, host, owner, worktree and branch. Deterministic MCP commands do
+not consume a Foo Codex session. Quota return permits fresh admitted work only
+after current ownership and original-operation reconciliation. Historical workers
+remain held. ADR 0014 records this instruction-distribution change.
+
 # OffMenu developer and agent entrypoint
 
 Read `docs/standards/repository.md`, `repository-standard.json` and the relevant
 ADR before changing structure. Read `tools/delivery/README.md` for the repeatable
 workflow. Discover the actual source/manifests before proposing new rules.
+
+For MCP work, follow the [execution identities and privilege boundary](tools/delivery/README.md#execution-identities-and-privilege-boundary). Keep service-job grants separate
+from developer access; normal typed validation needs no new sudo grant.
 
 Use `develop` for integration, `main` for reviewed releases, and a reviewed
 `feature/` or `bugfix/` branch for changes. The standardization workstream uses
@@ -25,9 +47,12 @@ delivery BAU, application deployment and product acceptance are separate facts.
 
 Select work using [task routing and tracking](docs/development/task-routing.md).
 Keep immediate bounded answers and genuine decisions with the coordinating owner;
-use available independent reasoning for separable analysis, owned Foo/Stokowski
-branches for repository work, and resource-admitted Windmill jobs for long-running
-deterministic work. Link runs and evidence to the existing Linear outcome rather
+use available independent reasoning for separable analysis and the dedicated
+project agent's isolated cloud Git checkout for independent repository work.
+Owned Foo/Stokowski branches are the optional Foo execution lane when that task
+requires it; resource-admitted Windmill jobs handle long-running deterministic
+work. All lanes retain existing typed admission, bound review and sole integration
+writer controls. Link runs and evidence to the existing Linear outcome rather
 than creating issues for messages or subprocesses. Recover from durable receipts;
 chat polling is not an execution or recovery mechanism. Capacity ceilings describe
 available capabilities, not utilization targets or permission to resume workers.
@@ -66,3 +91,12 @@ No Actions execution/dispatch/retry, production deployment, live food/barcode
 lookups, local model installation, force push/reset/clean or permanent data
 removal is authorized. Inspect workflow triggers before publishing. Only push
 this authorized feature branch; do not push the runner control branch.
+
+The conditional validation policy in ADR 0011 was adopted into `develop` by
+PR #217 under its explicit one-time initial exception. PR #216 subsequently
+integrated the shared worker directions and standalone validation fixes into
+`develop`. The accepted version 2 policy is recorded in
+`tools/delivery/integration-policy.json`. Subsequent candidates must use an accepted policy
+base and the version 4 existing-PR contract for independently reviewed exact-source
+cloud validation of explicit Foo-independent scope. Unknown/Foo-dependent scope
+and historical bindings retain Windmill. No host configuration is changed.

@@ -7,6 +7,33 @@ receipt for the work; dated reports do not establish current activation.
 For scoped REST/MCP, schema limits and offline executable examples, use the
 [developer interface reference](developer-interfaces.md).
 
+For source-bound user guidance, see [support and optional-service preferences](support-preferences-guide.md).
+The guide distinguishes reviewing a request from submitting it and separates
+native help from optional third-party services.
+
+For barcode capture, source-result inspection and session controls, see the
+[source-bound scanner task guide](scanner-user-guide.md).
+For a bounded control-to-task/help map and explicit remaining coverage gaps,
+see the [scanner control crosswalk](scanner-control-help-map.md).
+
+For the member's assistant name, private instructions and save/conflict states,
+see [Personal AI preferences](personal-ai-guide.md).
+
+## Source-bound user guides
+
+These guides describe the pinned implementation and distinguish it from live
+service, device and account qualification:
+
+- [Account data, privacy and backup controls](account-data-guide.md).
+- [Kitchen inventory and planning](kitchen-planning-guide.md).
+- [Using a shared kitchen](shared-kitchen-guide.md).
+- [Finding and reviewing shared recipes](recipe-library-guide.md).
+- [Application administrator controls](administrator-controls-guide.md).
+- [Food history and recorded estimates](insights-guide.md).
+
+The OffMenu documentation owner maintains these alongside their linked source.
+Contextual in-app help and search integration remain separate work.
+
 ## Code and workflow map
 
 | Area | Entry points and guides |
@@ -17,6 +44,8 @@ For scoped REST/MCP, schema limits and offline executable examples, use the
 | Authentication seam | [foundation](better-auth-foundation.md), [unmounted runtime seam](better-auth-runtime-seam.md); source integration is not activation. |
 | Local originals / static delivery | [curation architecture](curation-architecture.md), [source acceptance](source-acceptance-contract.md), [refresh/acquisition](refresh-acquisition-contract.md). |
 | Private source-only processing | [ingredient ingestion](ingredient-ingestion.md), [`tools/source-processing/`](source-processing/README.md) source interfaces; selected inputs and review are required. |
+| Member food history and recorded estimates | [Insights guide](insights-guide.md), including record scope, missing data and full-history export. |
+| Application administration | [Administrator controls](administrator-controls-guide.md) for reviewed settings and existing public source policies. |
 | Work and action status | Existing OffMenu Linear issues hold active status, dependencies and acceptance; [routing and documentation homes](development/task-routing.md#documentation-homes-and-update-responsibility) define the complementary repo/ADR/AGENTS references. GitHub PRs are code review; historical ledgers preserve provenance. |
 
 For repository layout, use the [root architecture](development/root-layout.md).
@@ -32,3 +61,14 @@ commands. Foo runner documentation describes a separate selected execution
 workflow; it is not required to build or run the small local demo. AI instruction
 files have their own maintenance lane and are not a substitute for this human
 maintainer guide.
+
+## Community task guides
+
+For translation suggestions, see [how to report wording and what GitHub makes public](translation-feedback.md).
+
+Members can use [recipe contributions and public profiles](recipe-contribution-guide.md)
+for the implemented community submission, comment and voting controls.
+Administrators can use [AI community review](community-ai-review-guide.md) for
+settings, explicit review requests and decision states. These guides describe
+the source controls; they do not establish that a live service has accepted or
+published a contribution.

@@ -1,4 +1,4 @@
-# ADR 0010: Explicit installed Windmill runtime
+# ADR 0015: Explicit installed Windmill runtime
 
 Status: proposed source candidate; no live cutover accepted.
 

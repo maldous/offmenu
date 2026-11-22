@@ -256,10 +256,14 @@ class SliceTests(unittest.TestCase):
 
     def test_precise_runtime_sqlite_failure_preserves_low_limit(self):
         f = self.fixture(length_limit=8)
+        # SQLite can clamp a requested limit to its runtime minimum. Preserve
+        # the effective caller-installed limit, rather than assuming exactly 8.
+        installed_limit = f.db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH)
+        self.assertLess(installed_limit, 4096)
         e = self.error('sqlite-failure', f.read)
         self.assertEqual(e.sqlite_details['sqliteErrorName'], 'SQLITE_TOOBIG')
         self.assertEqual(e.sqlite_details['sqliteErrorCode'], sqlite3.SQLITE_TOOBIG)
-        self.assertEqual(f.db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH), 8)
+        self.assertEqual(f.db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH), installed_limit)
         self.assertEqual(f.db.reads, [])
 
     def test_caller_progress_handler_remains_and_100k_vm_budget_interrupts(self):

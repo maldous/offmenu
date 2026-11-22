@@ -47,7 +47,7 @@ moves its jobs, locks, checkpoints, artifacts, or database files.
 
 ## Cutover prerequisites still outstanding
 
-- Approve the ADR 0010 production `.offmenu-runtime` access contract, then qualify it as readable by the actual UID985 SSH executor
+- Approve the ADR 0015 production `.offmenu-runtime` access contract, then qualify it as readable by the actual UID985 SSH executor
   without exposing unrelated private `.delivery` material or relaxing confinement.
   The current owner-only staging directory is deliberately not readable there. Installation alone does not constitute consumer handoff or canonical cleanup.
 - Verify actual visibility, policy/import resolution, and access through the

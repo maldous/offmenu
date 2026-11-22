@@ -16,7 +16,7 @@ SOURCE = Asset('off-2026-10-12.jsonl.gz',13132516914,
     '11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e')
 LICENSE = 'ODbL / DbCL (retained data only)'
 ATTRIBUTION = 'Open Food Facts'
-VERSION = 'offmenu-off-native-policy/1'
+VERSION = 'offmenu-off-native-policy/2'
 
 
 def _object(properties):
@@ -64,17 +64,31 @@ def native_schemas():
             'unit':{'const':unit},'basis':basis,
             'sourceAmount':{'type':['string','number','null']},
             'sourceField':{'const':field},'method':{'const':'source'}})
+    unknown_nutrients={'type':'object','properties':{
+        '$nutriments':_object({'state':{'const':'unknown'},
+            'reason':{'enum':['nutriments-missing-or-null','nutriments-not-object']},
+            'sourceAmount':{'$ref':'#/$defs/json'}})},'additionalProperties':False}
+    for field,(_,unit) in adapters._OFF_NUTRIENTS.items():
+        unknown_nutrients['properties'][field]=_object({
+            'state':{'const':'unknown'},
+            'reason':{'enum':['trace-not-quantified','invalid-numeric-amount','missing-or-empty-amount',
+                              'negative-nutrient-amount','source-basis-unknown-or-unsupported']},
+            'sourceAmount':{'$ref':'#/$defs/json'},'sourceUnit':{'const':unit},
+            'sourceBasis':{'$ref':'#/$defs/json'},'sourceField':{'const':field}})
     data={
         'product':_object({'name':{'type':'string','minLength':1},'identifiers':ids,
             'brand':nullable_text,'ingredientsText':nullable_text,
             'sourceCountryTags':{'type':['array','null'],'items':text},
-            'rawNutriments':{'type':'object','additionalProperties':{'$ref':'#/$defs/json'}},
-            'nutritionSourceBasis':nullable_text,
+            'names':{'type':'object','additionalProperties':{'$ref':'#/$defs/json'}},
+            'nameLanguage':{'$ref':'#/$defs/json'},
+            'rawNutriments':{'$ref':'#/$defs/json'},
+            'nutritionSourceBasis':{'$ref':'#/$defs/json'},
             'qualificationStatus':{'const':'unverified-source-assertions'},
             'sourceCategoryFields':category_values,
             'nutritionId':{'type':'string','pattern':'^off:nutrientProfile:[0-9]{4,32}$'}}),
         'nutrientProfile':_object({'foodName':{'type':'string','minLength':1},
-            'identifiers':ids,'basis':basis,'nutrients':{
+            'identifiers':ids,'basis':{'anyOf':[basis,{'type':'null'}]},
+            'nutrientDispositions':unknown_nutrients,'nutritionSourceBasis':{'$ref':'#/$defs/json'},'nutrients':{
                 'type':'object','properties':nutrients,'additionalProperties':False}}),
     }
     provenance=_object({'sourceId':{'const':'off'},'releaseId':{'const':RELEASE},
@@ -84,6 +98,7 @@ def native_schemas():
         'rightsEvidenceSha256':sha,'scopeEvidenceSha256':sha,
         'transform':{'const':adapters.VERSION},'visibility':{'const':'private-candidate'},
         'rights':{'const':'Original source terms govern reuse; normalization does not relicense data.'},
+        'offOptionalNutritionProjectionVersion':{'const':adapters.OFF_OPTIONAL_PROJECTION_VERSION},
         'sourceRow':{'type':'integer','minimum':1},
         # Preserved source claims, not inferred acquisition/freshness timestamps.
         'sourceRevision':scalar,'sourceLastModified':scalar,'sourceLastUpdated':scalar,
@@ -185,7 +200,8 @@ def policy_descriptor():
     return {'version':VERSION,'sourceId':'off','releaseId':RELEASE,
         'source':vars(SOURCE),'schemasSha256':fingerprint(native_schemas()),
         'projection':{'module':'offmenu.refresh.product_adapters','symbol':'_off',
-                      'version':adapters.VERSION},
+                      'version':adapters.VERSION,
+                      'offOptionalNutritionNamesProjectionVersion':adapters.OFF_OPTIONAL_PROJECTION_VERSION},
         'sourceRecordMode':'exact raw product row and physical logical-row ordinal',
         'scope':'private native source assertions only, lexical barcode not verified GTIN',
         'realContractConstructed':False,'realDataQualified':False,

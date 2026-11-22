@@ -13,6 +13,8 @@ import tarfile
 import subprocess
 import shlex
 import unittest
+import venv
+from types import ModuleType
 from unittest.mock import patch
 
 TOOLS = Path(__file__).resolve().parents[2]/'tools/delivery'
@@ -90,8 +92,9 @@ class OperationRecoveryTests(unittest.TestCase):
         base=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip()
         validator.write_text('import unittest\nclass Weakened(unittest.TestCase):\n def test_empty(self): pass\n')
         (root/'src/target.py').write_text('answer=0\n')
-        (root/'.venv-delivery/bin').mkdir(parents=True)
-        (root/'.venv-delivery/bin/python').symlink_to(sys.executable)
+        # A bare symlink loses relocatable Python's stdlib prefix. Preserve the
+        # interpreter configuration without installing packages or using network.
+        venv.EnvBuilder(with_pip=False, symlinks=True).create(root/'.venv-delivery')
         command=operations.trusted_validation_command(dict(self.spec,base=base))
         argv=shlex.split(command);argv[2]=argv[2].replace("pathlib.Path('/offmenu')",'pathlib.Path('+repr(str(root))+')')
         result=subprocess.run(argv,text=True,capture_output=True,timeout=20)
@@ -687,6 +690,7 @@ class PublisherProfileTests(unittest.TestCase):
                     finally:
                         sys.path[:] = previous
                 with self.subTest(bad_index=bad_index,kind=kind), \
+                     patch.dict(sys.modules, {'stokowski': ModuleType('stokowski')}), \
                      patch('subprocess.check_output',return_value=archive) as control, \
                      patch('subprocess.run',side_effect=run), \
                      patch.object(unittest.TestLoader,'loadTestsFromNames',side_effect=load), \
@@ -778,6 +782,83 @@ class DetachedContributionTests(unittest.TestCase):
         # Even structurally valid claims cannot replace historical source ancestry.
         ref['source_head'] = self.detached
         self.run_check(spec,False)
+
+
+
+
+class RootSourceBindingTests(unittest.TestCase):
+    spec = PublisherProfileTests.spec
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name).resolve()
+        def git(*args):
+            return subprocess.check_output(['git','-C',str(self.root),
+                '-c','user.name=Synthetic','-c','user.email=synthetic@example.invalid',
+                *args],stderr=subprocess.PIPE).decode().strip()
+        self.git = git
+        git('init','-b','feature/synthetic-reviewed')
+        (self.root/'README').write_text('synthetic baseline\n')
+        git('add','README'); git('commit','-m','base')
+        self.base = git('rev-parse','HEAD')
+        self.outputs = {}
+        for name in ('AGENTS.md','repository-standard.json'):
+            path = self.root/name
+            path.write_text('synthetic source '+name+'\n')
+            self.outputs[name] = hashlib.sha256(path.read_bytes()).hexdigest()
+        git('add',*self.outputs); git('commit','-m','root source contribution')
+        self.head = git('rev-parse','HEAD')
+
+    def selected(self):
+        outputs = dict(self.outputs)
+        spec = self.spec(head=self.head,base=self.base,outputs=outputs,
+                         local_source_root=str(self.root))
+        spec['origin']['provenance'][0].update(source_head=self.base,
+            contribution_head=self.head,outputs=dict(outputs),
+            path_mapping={name:name for name in outputs})
+        return spec
+
+    def check(self, spec, error=None):
+        operations.validated(spec)
+        result = subprocess.run([sys.executable,'-c',operations.reviewed_check_code(spec,self.root)],
+                                capture_output=True,text=True)
+        if error is None:
+            self.assertEqual(result.returncode,0,result.stderr)
+        else:
+            self.assertNotEqual(result.returncode,0)
+            self.assertIn(error,result.stderr)
+
+    def test_exact_root_files_pass_committed_source_oracle(self):
+        self.check(self.selected())
+
+    def test_missing_or_extra_output_cannot_replace_full_delta(self):
+        for outputs in ({'AGENTS.md':self.outputs['AGENTS.md']},
+                        dict(self.outputs, **{'docs/extra.md':'a'*64})):
+            spec = self.selected()
+            spec['outputs'] = outputs
+            spec['origin']['provenance'][0].update(outputs=dict(outputs),
+                path_mapping={name:name for name in outputs})
+            self.check(spec,'reviewed source delta drift')
+
+    def test_wrong_root_blob_hash_is_rejected(self):
+        for name in self.outputs:
+            spec = self.selected()
+            spec['outputs'][name] = '0'*64
+            spec['origin']['provenance'][0]['outputs'][name] = '0'*64
+            self.check(spec,'contribution blob drift')
+
+    def test_root_symlink_is_rejected_even_when_committed(self):
+        path = self.root/'AGENTS.md'
+        path.unlink()
+        path.symlink_to('repository-standard.json')
+        self.git('add','AGENTS.md'); self.git('commit','-m','synthetic alias')
+        self.head = self.git('rev-parse','HEAD')
+        self.check(self.selected(),'nonregular contribution')
+
+    def test_working_root_bytes_cannot_drift_from_commit(self):
+        (self.root/'AGENTS.md').write_text('changed after review\n')
+        self.check(self.selected(),'dirty source')
 
 
 if __name__ == '__main__':

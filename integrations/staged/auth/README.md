@@ -10,7 +10,7 @@ The callback classifier rejects duplicate accepted fields before constructing th
 SDK. Google return correlation retains its one-time nonce, exact return origin
 and path, and verified-subject checks. Credentials remain with the existing SDK.
 
-Run `node auth-source-preparation/build.mjs` from the repository root to reproduce
+Run `node integrations/staged/auth/build.mjs` from the repository root to reproduce
 the final reviewed browser assets. The build verifies their exact hashes and
 writes only this package's ignored `dist` directory. It makes no network request
 and does not modify the normal application build.

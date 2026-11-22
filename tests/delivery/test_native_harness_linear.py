@@ -8,7 +8,12 @@ import unittest
 from unittest.mock import patch
 
 import httpx
-from stokowski.linear import LinearClient
+try:
+    from stokowski.linear import LinearClient
+except ModuleNotFoundError as error:
+    if error.name != 'stokowski':
+        raise
+    raise unittest.SkipTest('Optional Stokowski Linear integration is not installed') from error
 from stokowski_adapter import CurrentWork
 from native_harness_contract import fingerprint
 from native_harness_linear import LinearEffectHold, NativeLinearAdapter, STORE, milestone_body

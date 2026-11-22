@@ -34,7 +34,7 @@ class ProductAdaptersTest(unittest.TestCase):
 
     def off(self, **extra):
         return self.lines('products.gz', [{'code': '001234', 'product_name': 'Example',
-            'countries_tags': ['en:france', 'en:germany'],
+            'countries_tags': ['en:france', 'en:germany'], 'nutrition_data_per': '100g',
             'nutriments': {'proteins_100g': 2.3, 'sodium_100g': 0.1}, **extra}])
 
     def records(self, dest='output'):

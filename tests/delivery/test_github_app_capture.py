@@ -481,7 +481,8 @@ class CaptureTests(unittest.TestCase):
             connection.getresponse.return_value.read.return_value = raw
             connection.getresponse.return_value.status = 201
             connection.getresponse.return_value.getheaders.return_value = response()[1]
-            with patch.object(c.ssl, 'create_default_context', return_value='OS-TRUST') as trust, \
+            with patch.dict(os.environ, {}, clear=True), \
+                    patch.object(c.ssl, 'create_default_context', return_value='OS-TRUST') as trust, \
                     patch.object(c.http.client, 'HTTPSConnection', return_value=connection) as https:
                 if len(raw) > c.LIMIT:
                     with self.assertRaises(c.Held):

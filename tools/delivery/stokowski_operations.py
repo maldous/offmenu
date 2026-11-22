@@ -129,7 +129,8 @@ def validated(spec):
         path = PurePosixPath(name)
         if (not name or path.is_absolute() or '\\' in name or str(path) != name
             or any(p in ('','.','..') for p in name.split('/'))
-            or path.parts[0] not in ('src','apps','tests','tools','scripts','docs','contracts','config')
+            or (name not in ('AGENTS.md','repository-standard.json')
+                and path.parts[0] not in ('src','apps','tests','tools','scripts','docs','contracts','config'))
             or not isinstance(value,str) or not re.fullmatch('[0-9a-f]{64}',value)):
             raise OperationError('Invalid output binding')
     return spec

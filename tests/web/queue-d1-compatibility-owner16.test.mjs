@@ -9,9 +9,13 @@ import {fileURLToPath} from 'node:url';
 import {verifyFixtures} from './fixtures/queue-state-owner16/verify.mjs';
 verifyFixtures();
 const inputs = JSON.parse(readFileSync(new URL('../../docs/reviews/worker16-04-queue-compatibility/inputs.json', import.meta.url)));
+// Keep the reviewed logical paths/hashes historical while resolving current
+// checkout locations through the accepted repository migration contract.
+const movedPaths = new Map(JSON.parse(readFileSync(new URL('../../docs/standards/layout-migration-v2.json', import.meta.url))).moves.map(({from, to}) => [from, to]));
 const selected = new Map();
 for (const file of inputs.files) {
-  const lf = readFileSync(new URL('../../' + file.localPath.replace(/^tests-web\//, 'tests/web/'), import.meta.url), 'utf8').replaceAll('\r\n', '\n');
+  const localPath = movedPaths.get(file.localPath) ?? file.localPath.replace(/^tests-web\//, 'tests/web/');
+  const lf = readFileSync(new URL('../../' + localPath, import.meta.url), 'utf8').replaceAll('\r\n', '\n');
   assert.equal(createHash('sha256').update(lf).digest('hex'), file.sha256, file.localPath);
   if (file.inputCommit === inputs.d1Commit) selected.set(file.sourcePath, lf);
 }

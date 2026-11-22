@@ -114,6 +114,7 @@ def _check_contract(contract, manifest, limits):
     expected={'context':asdict(p.context),'limits':asdict(limits),'inputFiles':[raw_pin],
               'adapterVersion':adapters.VERSION,
               'offCategoryFieldProjectionVersion':adapters.OFF_CATEGORY_FIELD_VERSION,
+              'offOptionalNutritionNamesProjectionVersion':adapters.OFF_OPTIONAL_PROJECTION_VERSION,
               'clockPolicySha256':hashlib.sha256(Path(product_clock.__file__).read_bytes()).hexdigest()}
     if (type(manifest) is not dict or canonical(manifest.get('contract'))!=canonical(expected)
             or manifest.get('sourceId')!='off' or manifest.get('releaseId')!=policy.RELEASE

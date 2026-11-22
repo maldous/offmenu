@@ -205,9 +205,18 @@ export async function reviewCompletedNativeValidation({observe, reviewedCurrentU
  * Existing authenticated adapters supply observations. Persisted controller
  * intent precedes mutations; canonical readback alone certifies their effects.
  */
-export async function advanceIntegration({controller, github, linear, observe, unitReviewWriter, reviewedCurrentUnit}) {
+export async function advanceIntegration({controller, github, linear, observe, unitReviewWriter, reviewedCurrentUnit,
+  integrationMode = 'issue-bound'}) {
+  if (!['issue-bound','merge-only'].includes(integrationMode)) throw Error('invalid-integration-mode');
+  // The authenticated caller derives this from the immutable binding. No Linear
+  // adapter is needed for merge-only; refuse even an unexpected typed action.
+  const guard = decision => {
+    if (integrationMode === 'merge-only' && decision.action?.kind === 'update-linear')
+      throw Error('merge-only-linear-action');
+    return decision;
+  };
   let snapshot = await observe();
-  let decision = await controller.step(snapshot);
+  let decision = guard(await controller.step(snapshot));
   // Only the fresh controller qualification may cross this seam; repair and
   // reconciliation decisions never become unit verdicts. Normal flow is unchanged.
   if ((reviewedCurrentUnit || unitReviewWriter) && decision.status === 'merge-intent' &&
@@ -275,7 +284,7 @@ export async function advanceIntegration({controller, github, linear, observe, u
       // Repairs are work packets, never report-supplied executable commands.
       return decision;
     }
-    decision = await controller.step(await observe());
+    decision = guard(await controller.step(await observe()));
   }
   if (decision.action?.kind === 'update-linear') {
     // Defensive bound: do not strand a newly persisted but unconsumed intent.

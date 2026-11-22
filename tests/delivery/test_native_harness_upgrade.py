@@ -53,8 +53,8 @@ def closure(root):
 class UpgradeTests(unittest.TestCase):
     def setUp(self):
         self.source = preflight_tests.AdoptionTests()
-        self.source.setUp()
         self.addCleanup(self.source.doCleanups)
+        self.source.setUp()
         self.temp = tempfile.TemporaryDirectory(prefix='offmenu-upgrade-')
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)

@@ -1,0 +1,14 @@
+{
+  "schema": "uif-worker-policy-reference-v1",
+  "policy_id": "uif-worker-policy",
+  "required_policy_version": "2.0.1",
+  "repository": "maldous/offmenu",
+  "environment_profile": "offmenu",
+  "distribution": "environment-owned-overlay",
+  "maintenance_repository": "maldous/uif",
+  "maintenance_path": "docs/agents/uif-worker-policy.md",
+  "manifest_path": "docs/agents/uif-worker-policy.json",
+  "installed_digest_source": "selected execution environment manifest",
+  "historical_policy_path": "docs/agents/history/uif-worker-policy-1.2.3.md",
+  "historical_manifest_path": "docs/agents/history/uif-worker-policy-1.2.3.json"
+}

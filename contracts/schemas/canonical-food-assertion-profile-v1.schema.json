@@ -1,0 +1,354 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:offmenu:canonical-public-food-assertion-profile:1",
+  "description": "Numeric sidecar to a cited public common-data assertion, not source authority or a mirror.",
+  "type": "object",
+  "properties": {
+    "profileVersion": {
+      "const": "offmenu-public-food-assertion-profile/1"
+    },
+    "assertionId": {
+      "type": "string",
+      "maxLength": 512,
+      "pattern": "^(urn:[A-Za-z0-9][A-Za-z0-9-]*:|https://)[^\\s]+$"
+    },
+    "subjectId": {
+      "type": "string",
+      "maxLength": 512,
+      "pattern": "^(urn:[A-Za-z0-9][A-Za-z0-9-]*:|https://)[^\\s]+$"
+    },
+    "propertyId": {
+      "type": "string",
+      "maxLength": 512,
+      "pattern": "^(urn:[A-Za-z0-9][A-Za-z0-9-]*:|https://)[^\\s]+$"
+    },
+    "fieldPointer": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 512,
+      "pattern": "^/([^~]|~[01])+$"
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "measureId": {
+          "type": "string",
+          "maxLength": 512,
+          "pattern": "^(urn:[A-Za-z0-9][A-Za-z0-9-]*:|https://)[^\\s]+$"
+        },
+        "nutrientForm": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "jurisdiction": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "issuer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "population": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "ageBand": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "sex": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "lifeStage": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "edition": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "referenceType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "period": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "basis": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "foodState": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "measurementMethod": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "effectiveFrom": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "effectiveThrough": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "measureId",
+        "nutrientForm",
+        "jurisdiction",
+        "issuer",
+        "population",
+        "ageBand",
+        "sex",
+        "lifeStage",
+        "edition",
+        "referenceType",
+        "period",
+        "basis",
+        "foodState",
+        "measurementMethod",
+        "effectiveFrom",
+        "effectiveThrough"
+      ]
+    },
+    "measurement": {
+      "type": "object",
+      "properties": {
+        "magnitude": {
+          "type": "string",
+          "maxLength": 48,
+          "pattern": "^(0|[1-9][0-9]*)([.][0-9]+)?$"
+        },
+        "unit": {
+          "enum": [
+            "1",
+            "J",
+            "L",
+            "[foz_br]",
+            "[foz_us]",
+            "[lb_av]",
+            "[oz_av]",
+            "g",
+            "kJ",
+            "kcal_th",
+            "kg",
+            "mL",
+            "mg",
+            "ug"
+          ]
+        },
+        "originalLexeme": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "magnitude",
+        "unit",
+        "originalLexeme"
+      ]
+    },
+    "origins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "citationId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "\\S"
+          },
+          "sourceId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "\\S"
+          },
+          "releaseId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "\\S"
+          },
+          "sourceRecordId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "\\S"
+          },
+          "sourceField": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "\\S"
+          },
+          "upstreamOccurrenceId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "\\S"
+          },
+          "upstreamUrl": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "\\S"
+          },
+          "assetSha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "sourceFieldSha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "license": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "\\S"
+          },
+          "attribution": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "\\S"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "citationId",
+          "sourceId",
+          "releaseId",
+          "sourceRecordId",
+          "sourceField",
+          "upstreamOccurrenceId",
+          "upstreamUrl",
+          "assetSha256",
+          "sourceFieldSha256",
+          "license",
+          "attribution"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 32
+    },
+    "fieldOrigins": {
+      "type": "object",
+      "maxProperties": 128,
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "source"
+              },
+              "citationIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512,
+                  "pattern": "\\S"
+                },
+                "minItems": 1,
+                "maxItems": 32
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "citationIds"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "derived"
+              },
+              "citationIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512,
+                  "pattern": "\\S"
+                },
+                "minItems": 1,
+                "maxItems": 32
+              },
+              "methodId": {
+                "type": "string",
+                "maxLength": 512,
+                "pattern": "^(urn:[A-Za-z0-9][A-Za-z0-9-]*:|https://)[^\\s]+$"
+              },
+              "policySha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "citationIds",
+              "methodId",
+              "policySha256"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "profileVersion",
+    "assertionId",
+    "subjectId",
+    "propertyId",
+    "fieldPointer",
+    "context",
+    "measurement",
+    "origins",
+    "fieldOrigins"
+  ]
+}

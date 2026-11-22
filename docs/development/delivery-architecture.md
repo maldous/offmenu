@@ -27,13 +27,18 @@ and evidence links. This guide owns maintained architecture, not a duplicate que
 | Sole publisher | Authorized deployment intent/result and canonical version/traffic readback; separate served hashes and functional acceptance evidence. | [Publication boundary](../../tools/delivery/README.md), [protocol handover](execution-protocols.md). Source integration, deployment, served content and functional acceptance are separate phases. |
 | Evidence custodian | Private facts, checkpoint/log custody and restricted source/data/configuration holds; publish only permitted references and sanitized hashes/status. | [Repository standard](../standards/repository.md). No raw datasets, credentials, private profiles or runtime receipts enter Git. |
 
-The integration gateway runs in the authenticated connector owner's durable
+This retained integration gateway runs in the authenticated connector owner's durable
 execution context. It is not an independently authenticated local publisher or
 an installed continuous supervisor. Loss of that owner pauses publication while
 retaining intent. LangChain Core supplies LangGraph integration dependencies;
 this does not install another manager. LangSmith/private telemetry remains disabled.
 
-## Recovery and current execution limits
+The selected [UIF environment policy](../agents/uif-worker-policy.md) owns the
+broader unattended lifecycle and off-Foo-authority contract. The limitations of
+this retained adapter do not establish installed outage recovery or a new pause
+for independent work or existing authorized capacity.
+
+## Retained adapter recovery and execution limits
 
 Checkpoint persistence is not exactly-once external execution. Reopen validates
 source, schema/task identity, behavior/runner/policy bindings and output evidence;
@@ -56,12 +61,16 @@ or dispatch the next task. Existing admission must recheck scope, source, provid
 freshness and aggregate resources before work. There is no new polling manager,
 schedule or permission to resume historical workers or the paused hourly automation.
 
-Native coding currently requests `gpt-6.1-sol` / `medium` through `codex-chatgpt`.
+This adapter's reviewed native coding configuration requests `gpt-6.1-sol` /
+`medium` through `codex-chatgpt`.
 Receipts distinguish that request from an observed resolution or explicit unknown.
 Declared resources, affinity and sampled process/RSS observations are distinct;
 they do not prove a kernel quota. Deterministic jobs have no model. The
-[8 coding / 16 service / 32 admitted jobs / 64 subprocesses ceilings](parallel-capacity.md)
-are capabilities, not utilization targets or guaranteed provider entitlement.
+[retained adapter's 8 coding / 16 service / 32 admitted jobs / 64 subprocesses ceilings](parallel-capacity.md)
+are distinct from current UIF host capacity. The environment policy owns the
+64-local-session target and quota handoff, subject to current runtime readback,
+shared resource admission and qualified ownership controls. No ceiling is a
+utilization target or guaranteed provider entitlement.
 
 At the UIF-119 documentation checkpoint, compact observer correction
 `0becb3a668d60910c9553118a2ff54bb0552c408` has independent candidate acceptance;

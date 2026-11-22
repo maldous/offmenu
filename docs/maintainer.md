@@ -72,6 +72,10 @@ the output deliberately; do not treat a subsequent build as evidence that the
 original output was current.
 
 `npm test` selects `tests/web/*.test.mjs`; it does not select `tests/edge/`.
+For `npm run check:web-imports`, first run
+`node integrations/staged/auth/build.mjs` to reproduce the inactive auth package's
+hash-checked, ignored assets. The import audit includes that package; building it
+does not mount or activate it in the application.
 `npm run test:auth` is an additional focused authentication command. The workflow
 also names a bounded portable receipt-OCR check; retain that check when changing
 its extraction or admission path. Optional external scans are separate from

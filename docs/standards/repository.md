@@ -1,7 +1,10 @@
-# Repository standard 2.5.0
+# Repository standard 2.5.5
 
-Status: adopted through reviewed integration after independent source review and
-real retained-extraction validation. Changes enter `develop`
+Status: 2.5.5 runtime-installation candidate, preserving the 2.5.4
+environment-policy distribution candidate and the 2.5.3 merge-only amendment
+candidate based on accepted source 349dbf9. Previous standard status: adopted
+through reviewed integration after independent source review and real
+retained-extraction validation. Changes enter `develop`
 through the reviewed GitFlow integration process. The machine-readable contract is
 [`repository-standard.json`](../../repository-standard.json). This document
 explains decisions; historical handovers do not override it.
@@ -169,4 +172,45 @@ legacy retirement. Exact installed, active and functional evidence is required
 before retiring the obsolete lane. This source standard grants no product
 deployment, CIX execution, Actions, new credentials or spend.
 
-The explicit installed `.offmenu-runtime/` location is governed by [ADR 0010](../adr/0010-explicit-windmill-runtime-installation.md). It does not replace private `.delivery/` staging or release existing runtime holds without a verified consumer handoff.
+## Conditional validation source activation
+
+[ADR 0011](../adr/0011-conditional-independent-validation.md) records separate
+owner adoption of integration policy v2, integrated into `develop` by PR #217.
+Its exact reviewed bytes are in `integration-policy.json`. Exact-source candidates
+with independently reviewed, explicitly
+Foo-independent scope may use an independent cloud receipt. Foo-dependent or
+unclassified work still requires Windmill. Historical v1/v2 bindings retain their
+existing semantics. This source activation changes no installed publisher, host
+or security configuration and cannot certify its own integration.
+
+## Shared agent instructions
+
+[ADR 0014](../adr/0014-environment-owned-operating-policy.md) changes shared
+instruction distribution to an optional environment-owned UIF policy 2.0.0
+bundle and an OffMenu profile reference. Project source/toolchain/review contracts
+remain self-contained. Source adoption and actual environment installation are
+separate. The previous full local policy and manifest remain unchanged in
+`docs/agents/history/`.
+
+[ADR 0010](../adr/0010-shared-worker-policy.md) and
+[ADR 0012](../adr/0012-cloud-routing-policy-1-2.md) retain the historical local-copy
+decisions. Their independent cloud/scoped MCP distinctions remain applicable.
+The distribution amendment changes no runtime capacity, typed admission,
+resource, review, integration or publication authority.
+
+## Explicit merge-only existing PRs
+
+[ADR 0013](../adr/0013-merge-only-existing-pr.md) proposes the narrow amendment
+to ADR 0005's issue-association requirement. A v4 existing-PR binding may select
+`integration_mode: "merge-only"` with an explicit `issue_id: null` only after
+this amendment/controller is accepted through its separately authorized bootstrap.
+Such a binding rejects project/full-issue acceptance fields, never publishes or
+completes Linear work, and ends at canonical `merge-verified`. Existing issue-bound
+records and their fingerprints are unchanged. No candidate can adopt itself.
+
+## Explicit Windmill runtime installation
+
+[ADR 0015](../adr/0015-explicit-windmill-runtime-installation.md) defines the
+proposed explicit installed `.offmenu-runtime/` location. It preserves private
+`.delivery/` staging and existing runtime holds until a verified consumer handoff.
+The source candidate does not install, select, or activate that runtime.
