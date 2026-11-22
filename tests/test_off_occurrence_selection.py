@@ -169,7 +169,10 @@ class OccurrenceSelectionTests(unittest.TestCase):
         receipt = self.receipt(); real = os.pread
         def mutate(fd,size,offset):
             data = real(fd,size,offset); os.pwrite(fd,b'!',0); return data
-        with patch.object(os,'pread',side_effect=mutate):
+        # Filesystem observations may share the same timestamp tick. Keep
+        # real descriptor validation but make that clock behavior deterministic.
+        with patch.object(os,'pread',side_effect=mutate), \
+             patch.object(s,'_signature',side_effect=lambda info: (*s._inode(info),info.st_size,0,0)):
             with self.assertRaisesRegex(RefreshError,'readback-mismatch'):
                 s.retain_success_receipt(self.target,receipt)
         self.assertEqual((self.root/self.target.name).read_bytes()[:1],b'!')
@@ -232,10 +235,13 @@ class ReceiptReadbackTests(unittest.TestCase):
         self.assertTrue(result['readbackVerified']); self.assertEqual(result['bytes'],len(raw))
         self.assertEqual(result['sha256'],hashlib.sha256(raw).hexdigest())
         self.assertEqual((self.root/self.target.name).read_bytes(),raw)
-        self.assertGreater(len(reads),1); self.assertEqual(reads[-1],(len(raw),0))
-        self.assertEqual([offset for offset,_ in reads],
-                         [sum(size for _,size in reads[:i]) for i in range(len(reads))])
-        self.assertLessEqual(len(reads),len(raw)+1)
+        boundaries = [i for i,(offset,_) in enumerate(reads) if offset==0]
+        self.assertEqual(len(boundaries),2)
+        for sample in (reads[:boundaries[1]],reads[boundaries[1]:]):
+            self.assertGreater(len(sample),1); self.assertEqual(sample[-1],(len(raw),0))
+            self.assertEqual([offset for offset,_ in sample],
+                             [sum(size for _,size in sample[:i]) for i in range(len(sample))])
+            self.assertLessEqual(len(sample),len(raw)+1)
         os.fstat(self.target.file_fd); os.fstat(self.target.parent_fd)
 
     def test_short_positive_read_continues_to_complete_receipt(self):

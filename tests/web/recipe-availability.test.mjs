@@ -47,7 +47,7 @@ test('older startup cannot replace newer rows or status in memory or storage', a
   jsonFetch:async()=>({}), initAuth:async()=>{},loadProfile(){},pantry(){},findMeals(){},connectivity(){},
   localStorage:{getItem(){return null},setItem(key,rows){saved.push(JSON.parse(rows));}},
   navigator:{}, msg(message){throw Error(message)},t(message,values){return values?.v0||message}};
- runInNewContext(`let requestIdentity={},recipeAvailabilityTicket=0,recipeAvailability='local-only',recipes=[],lots=[],products={};const KEY='k',PRODUCTS='p',RECIPES='r',lifecycleFixture=true; ${fetchSource}${initSource} globalThis.start=init;globalThis.snapshot=()=>JSON.stringify({recipes,status:recipeAvailability});`,c);
+ runInNewContext(`let user=null,demoMode=false,requestIdentity={},recipeAvailabilityTicket=0,recipeAvailability='local-only',recipes=[],lots=[],products={};const KEY='k',PRODUCTS='p',RECIPES='r',lifecycleFixture=true; ${fetchSource}${initSource} globalThis.start=init;globalThis.snapshot=()=>JSON.stringify({recipes,status:recipeAvailability});`,c);
  const older=c.start(),newer=c.start();
  for(let i=0;i<6&&pending.length!==2;i++)await Promise.resolve();
  assert.equal(pending.length,2);
