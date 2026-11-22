@@ -27,7 +27,9 @@ and runtimePin, adds driver (android-instrumentation or xcuitest),
 reportSha256, and nonempty unique case names. Use synthetic or ephemeral
 simulator IDs, not physical-device serials or secrets.
 
-The verifier checks receipt shape and consistency, not issuer authenticity,
+The evidence output uses not-run, compile-reported, install-reported, and
+journey-reported. The last three describe a submitted receipt, not an action
+this tool performed. The verifier checks receipt shape and consistency, not issuer authenticity,
 actual report bytes, behavior or full journey coverage. WebView-only script
 execution does not count as a native journey. Report unrun cases, artifacts
 and actual device/store checks separately. No native packaging, signing, store

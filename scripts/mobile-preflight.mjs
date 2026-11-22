@@ -49,19 +49,19 @@ export function readEvidence(expected, envelope) {
     }
     const sameArtifact = record => bound(record, expected) &&
       record.artifactSha256 === entry.compile.artifactSha256;
-    if (!Object.hasOwn(entry, 'install') && !Object.hasOwn(entry, 'journey')) return [name, {stage: 'compiled'}];
+    if (!Object.hasOwn(entry, 'install') && !Object.hasOwn(entry, 'journey')) return [name, {stage: 'compile-reported'}];
     if (!sameArtifact(entry.install) || entry.install.result !== 'pass' || entry.install.target !== spec.target ||
         !nonempty(entry.install.simulatorId) || !nonempty(entry.install.runtimePin)) {
       throw new TypeError(name + ': install receipt does not match simulated target and compiled artifact.');
     }
-    if (!Object.hasOwn(entry, 'journey')) return [name, {stage: 'installed'}];
+    if (!Object.hasOwn(entry, 'journey')) return [name, {stage: 'install-reported'}];
     if (!sameArtifact(entry.journey) || entry.journey.result !== 'pass' || entry.journey.driver !== spec.driver ||
         entry.journey.simulatorId !== entry.install.simulatorId || entry.journey.runtimePin !== entry.install.runtimePin ||
         !hash(entry.journey.reportSha256, 64) || !Array.isArray(entry.journey.cases) || !entry.journey.cases.length ||
         !entry.journey.cases.every(nonempty) || new Set(entry.journey.cases).size !== entry.journey.cases.length) {
       throw new TypeError(name + ': no matching native runner journey report.');
     }
-    return [name, {stage: 'simulator-journey-reported', cases: entry.journey.cases}];
+    return [name, {stage: 'journey-reported', cases: entry.journey.cases}];
   }));
 }
 

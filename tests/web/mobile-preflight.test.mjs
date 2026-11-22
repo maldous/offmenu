@@ -31,11 +31,11 @@ test('local host caps distinguish missing tools, wrong host, unavailable KVM and
 
 test('no receipt, compile, install and platform-specific native journey are distinct', () => {
   assert.deepEqual(readEvidence(source), {android: {stage: 'not-run'}, ios: {stage: 'not-run'}});
-  assert.equal(readEvidence(source, envelope({android: {compile: android.compile}})).android.stage, 'compiled');
-  assert.equal(readEvidence(source, envelope({android: {compile: android.compile, install: android.install}})).android.stage, 'installed');
+  assert.equal(readEvidence(source, envelope({android: {compile: android.compile}})).android.stage, 'compile-reported');
+  assert.equal(readEvidence(source, envelope({android: {compile: android.compile, install: android.install}})).android.stage, 'install-reported');
   assert.deepEqual(readEvidence(source, envelope({android, ios})), {
-    android: {stage: 'simulator-journey-reported', cases: android.journey.cases},
-    ios: {stage: 'simulator-journey-reported', cases: ios.journey.cases},
+    android: {stage: 'journey-reported', cases: android.journey.cases},
+    ios: {stage: 'journey-reported', cases: ios.journey.cases},
   });
 });
 
