@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4037,
+  "messages": 4043,
   "arabicTranslated": 575,
-  "arabicMissing": 3462,
+  "arabicMissing": 3468,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -1806,6 +1806,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "./recipe-availability.js": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "./recipe-community-model.js": {
       "sources": [
         "apps/web/src/recipe-community-ui.js"
@@ -2275,6 +2282,7 @@
     "/recipes.json?v=i18n-1": {
       "sources": [
         "apps/web/src/app.js",
+        "apps/web/src/recipe-availability.js",
         "apps/web/src/sw.js"
       ],
       "arabic": false,
@@ -12154,6 +12162,20 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Invalid recipe collection": {
+      "sources": [
+        "apps/web/src/recipe-availability.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Invalid recipe identity": {
+      "sources": [
+        "apps/web/src/recipe-availability.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Invalid recipe ingredient.": {
       "sources": [
         "apps/web/src/model.js"
@@ -14448,12 +14470,19 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "No matching menus yet. Try another ingredient or choose the whole kitchen.": {
+    "No matching menus in the recipes loaded. Try another ingredient or choose the whole kitchen.": {
       "sources": [
         "apps/web/src/app.js"
       ],
       "arabic": false,
-      "classification": "explicit-ui"
+      "classification": "heuristic-candidate"
+    },
+    "No matching menus in the recipes saved on this device.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
     },
     "No matching observations in the latest sample. Check the retailer directly.": {
       "sources": [
@@ -21548,6 +21577,13 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Some recipes did not load. Try again later or browse the recipes already saved.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Some saved observations are unavailable. Retry in your current profile.": {
       "sources": [
         "apps/web/src/insights-ui.js"
@@ -23514,6 +23550,13 @@
     "The owner must retain ownership": {
       "sources": [
         "apps/web/server/kitchens.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "The recipe catalogue did not load. Try again later.": {
+      "sources": [
+        "apps/web/src/app.js"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"

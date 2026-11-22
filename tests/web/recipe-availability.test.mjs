@@ -22,5 +22,37 @@ test('two successful empty recipe reads are distinct from partial or unavailable
  const source=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
  assert.match(source,/recipeAvailability==='unavailable'\?'The recipe catalogue did not load/);
  assert.match(source,/recipeAvailability==='loaded'\?'No matching menus in the recipes loaded/);
- assert.match(source,/owner===requestIdentity&&ticket===recipeAvailabilityTicket/);
+ assert.match(source,/result.owner===requestIdentity&&result.ticket===recipeAvailabilityTicket/);
+});
+
+test('malformed rows are not a definitive empty result and do not erase valid rows',async()=>{
+ const valid={id:'synthetic-valid'};
+ const result=await readRecipeAvailability(async path=>path.startsWith('/api/')?[null,{id:'reject'}]:[valid],row=>{
+  if(row?.id==='reject')throw Error('invalid recipe shape');
+  return row;
+ });
+ assert.deepEqual(result,{recipes:[valid],status:'partial'});
+ assert.deepEqual(await readRecipeAvailability(async()=>[null]),{recipes:[],status:'unavailable'});
+});
+
+test('older startup cannot replace newer rows or status in memory or storage', async()=>{
+ const {runInNewContext}=await import('node:vm');
+ const {readFileSync}=await import('node:fs');
+ const app=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
+ const fetchSource=app.slice(app.indexOf('async function fetchRecipes(){'),app.indexOf('function switchAccount('));
+ const initSource=app.slice(app.indexOf('async function init(){'),app.indexOf('function markDirty(){'));
+ const pending=[];
+ const saved=[];
+ const c={readRecipeAvailability:()=>new Promise(resolve=>pending.push(resolve)),validateRecipes:rows=>rows,validateLot:row=>row,
+  jsonFetch:async()=>({}), initAuth:async()=>{},loadProfile(){},pantry(){},findMeals(){},connectivity(){},
+  localStorage:{getItem(){return null},setItem(key,rows){saved.push(JSON.parse(rows));}},
+  navigator:{}, msg(message){throw Error(message)},t(message,values){return values?.v0||message}};
+ runInNewContext(`let requestIdentity={},recipeAvailabilityTicket=0,recipeAvailability='local-only',recipes=[],lots=[],products={};const KEY='k',PRODUCTS='p',RECIPES='r',lifecycleFixture=true; ${fetchSource}${initSource} globalThis.start=init;globalThis.snapshot=()=>JSON.stringify({recipes,status:recipeAvailability});`,c);
+ const older=c.start(),newer=c.start();
+ for(let i=0;i<6&&pending.length!==2;i++)await Promise.resolve();
+ assert.equal(pending.length,2);
+ pending[1]({recipes:[{id:'new'}],status:'loaded'});await newer;
+ pending[0]({recipes:[{id:'old'}],status:'partial'});await older;
+ assert.deepEqual(JSON.parse(c.snapshot()),{recipes:[{id:'new'}],status:'loaded'});
+ assert.deepEqual(saved,[[{id:'new'}]]);
 });
