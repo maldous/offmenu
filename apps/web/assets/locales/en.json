@@ -369,6 +369,7 @@
   "A reviewed write confirmation is required.": "A reviewed write confirmation is required.",
   "A same-origin request function is required.": "A same-origin request function is required.",
   "A served batch cannot be undone. Correct its servings instead.": "A served batch cannot be undone. Correct its servings instead.",
+  "A serving cannot be before the cooking date.": "A serving cannot be before the cooking date.",
   "A short pulse after each scan.": "A short pulse after each scan.",
   "A state revision is required.": "A state revision is required.",
   "A support recipient and email service must be configured.": "A support recipient and email service must be configured.",

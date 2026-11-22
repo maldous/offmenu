@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4086,
+  "messages": 4087,
   "arabicTranslated": 642,
-  "arabicMissing": 3444,
+  "arabicMissing": 3445,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -2772,6 +2772,13 @@
       "classification": "heuristic-candidate"
     },
     "A served batch cannot be undone. Correct its servings instead.": {
+      "sources": [
+        "apps/web/src/cooking-model.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
+    "A serving cannot be before the cooking date.": {
       "sources": [
         "apps/web/src/cooking-model.js"
       ],
