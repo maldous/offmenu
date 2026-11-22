@@ -160,7 +160,8 @@ $('shops').onclick=async()=>{const attempt=++shopsRequest,target=$('prices');tar
 function download(filename,data){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 // The export check uses the same UTF-8, pretty-printed bytes as download().
 const PANTRY_BACKUP_MAX_BYTES=20_000_000;
-$('export').onclick=()=>{try{const backup=createPantryBackup({inventory:lots,profile,products,recipes,selections},{accountId:user?.id});if(new Blob([JSON.stringify(backup,null,2)]).size>PANTRY_BACKUP_MAX_BYTES)throw Error(t('Pantry backup exceeds 20 MB.'));download('offmenu-pantry.json',backup);}catch(e){msg(e.message);}};
+$('export').onclick=()=>{setLocalizedText($('export-error'),'');try{const backup=createPantryBackup({inventory:lots,profile,products,recipes,selections},{accountId:user?.id});if(new Blob([JSON.stringify(backup,null,2)]).size>PANTRY_BACKUP_MAX_BYTES)throw Error(t('Pantry backup exceeds 20 MB.'));download('offmenu-pantry.json',backup);}catch(e){setLocalizedText($('export-error'),e.message);}};
+$('account-dialog').addEventListener('close',()=>setLocalizedText($('export-error'),''));
 async function readJSON(input,maxBytes=2_000_000){const f=input.files[0];if(!f)return null;if(f.size>maxBytes)throw Error(maxBytes===PANTRY_BACKUP_MAX_BYTES?t('Pantry backup exceeds 20 MB.'):t('File must be under 2 MB.'));return JSON.parse(await f.text());}
 function showAccountFileError(id,error){
  const message=error instanceof SyntaxError?t('Choose a valid JSON file and try again.'):error.message;
