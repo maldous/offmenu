@@ -15,6 +15,7 @@ const actualFunction = name => {
 function kitchen(overrides = {}) {
   const requests = [], writes = [];
   const context = vm.createContext({
+    recipeAvailability: 'local-only', recipeAvailabilityTicket: 0,
     Error, JSON, AbortSignal, Map, demoMode: false,
     requestIdentity: {owner: 'Opaque: Account-A'},
     getUser: async () => ({id: 'Opaque: Account-A'}),
@@ -31,7 +32,8 @@ function kitchen(overrides = {}) {
   context.boundFetch = sessionFetch({identity: () => context.requestIdentity,
     refresh: () => context.refreshSession(), currentUser: () => context.getUser(),
     request: (...args) => context.fetch(...args)});
-  vm.runInContext(actualFunction('cloudRequest') + '\n' + actualFunction('loadCloud'), context);
+  context.fetchRecipes = async () => ({owner:context.requestIdentity,ticket:++context.recipeAvailabilityTicket,status:'loaded',recipes:[]});
+  vm.runInContext(actualFunction('isCurrentRecipeRead') + '\n' + actualFunction('cloudRequest') + '\n' + actualFunction('loadCloud'), context);
   return {context, requests, writes};
 }
 const saved = {inventory: [{id: 'A-only'}], products: {}, recipes: [], profile: {}, selections: []};

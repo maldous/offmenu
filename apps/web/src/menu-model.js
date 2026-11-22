@@ -28,7 +28,10 @@ export function planSummary(plan,recipes,inventory,products,dates){
    const scale=demandKnown?meal.servings/recipe.servings:null;
    const valid=demandKnown&&measuredIngredient(ingredient);
    if(!valid){unknown();unresolved++;continue;}
-   const amount=ingredient.quantity*scale,key=normalize(ingredient.ingredient)+'|'+ingredient.unit;
+   const amount=ingredient.quantity*scale;
+   // Finite positive inputs can still produce an unrepresentable scaled demand.
+   if(!Number.isFinite(amount)||amount<=0){unknown();unresolved++;continue;}
+   const key=normalize(ingredient.ingredient)+'|'+ingredient.unit;
    const need=requirements.get(key)||{ingredient:ingredient.ingredient,unit:ingredient.unit,quantity:0};
    need.quantity+=amount;requirements.set(key,need);
    // Already-cooked plans do not draw raw stock or infer its nutrient profile.

@@ -75,7 +75,7 @@ export function matchMeals(inventory,recipes,servings,today,{forRestock=false}={
       const available=stock.get(key)??0,deficit=required-available;
       // The unit is controlled; ingredient text may itself contain the separator.
       const separator=key.lastIndexOf('|');
-      const [ingredient,unit]=forRestock?[key.slice(0,separator),key.slice(separator+1)]:key.split('|');
+      const [ingredient,unit]=[key.slice(0,separator),key.slice(separator+1)];
       if(!Number.isFinite(required)||!Number.isFinite(available)||!Number.isFinite(deficit)){
         arithmeticKnown=false;unknown.push(ingredient);continue;
       }
