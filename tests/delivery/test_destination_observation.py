@@ -6,7 +6,7 @@ import unittest
 from unittest.mock import Mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools/delivery'))
-from destination_observation import ObservationRequest, observe_candidate_destination
+from destination_observation import ObservationReport, ObservationRequest, observe_candidate_destination
 import release_qualification as release
 
 
@@ -29,12 +29,16 @@ class DestinationObservationTests(unittest.TestCase):
         self.reader = Mock(return_value={'result': 'synthetic-observation'})
 
     def check(self, proof, **overrides):
-        options = dict(destination=self.destination, now=100, max_age_seconds=10, reader=self.reader)
+        options = dict(destination=self.destination, now=100, max_age_seconds=10, reader=self.reader,
+                       approved_pairs=frozenset({('web', 'staging-fixture')}))
         options.update(overrides)
         return observe_candidate_destination(self.candidate, self.policy, proof=proof, **options)
 
     def test_exact_frozen_source_artifact_destination_allows_one_observation(self):
-        self.assertEqual(self.check(self.proof), {'result': 'synthetic-observation'})
+        outcome = self.check(self.proof)
+        self.assertIsInstance(outcome, ObservationReport)
+        self.assertEqual(outcome.stage, 'observation-reported')
+        self.assertIs(outcome.publication_authorized, False)
         self.reader.assert_called_once_with(ObservationRequest(
             'web', 'staging-fixture', 'synthetic-account', 'synthetic-site',
             self.proof['candidate_sha256'], '2' * 40, '3' * 40,
@@ -58,6 +62,23 @@ class DestinationObservationTests(unittest.TestCase):
             self.check(missing)
         self.reader.assert_not_called()
 
+    def test_missing_unknown_or_malformed_approved_pair_never_calls_reader(self):
+        for pairs in (None, frozenset(), {('web', 'staging-fixture')},
+                      frozenset({('web', 'other-env')}), frozenset({('mcp', 'staging-fixture')}),
+                      frozenset({('web', '*')}), frozenset({'web'}),
+                      frozenset({('web', 'staging-fixture', 'extra')})):
+            with self.subTest(pairs=pairs), self.assertRaises(release.ContractError):
+                self.check(self.proof, approved_pairs=pairs)
+            self.reader.assert_not_called()
+
+    def test_mock_result_cannot_promote_observation_to_publication_authority(self):
+        self.reader.return_value = {'stage': 'publish-approved', 'publication_authorized': True}
+        outcome = self.check(self.proof)
+        self.assertEqual(outcome.stage, 'observation-reported')
+        self.assertIs(outcome.publication_authorized, False)
+        self.assertFalse(hasattr(outcome, 'reader_result'))
+        self.reader.assert_called_once()
+
     def test_mismatched_destination_source_artifact_and_time_never_call_reader(self):
         for delta in (
             {'destination': {**self.destination, 'environment': 'different-environment'}},
@@ -71,9 +92,11 @@ class DestinationObservationTests(unittest.TestCase):
                 with self.assertRaises(release.ContractError):
                     self.check({**self.proof, **delta})
                 self.reader.assert_not_called()
-        with self.assertRaises(release.ContractError):
-            self.check(deepcopy(self.proof), max_age_seconds=0)
-        self.reader.assert_not_called()
+        for parameters in (dict(max_age_seconds=0), dict(max_age_seconds=True), dict(now=False),
+                           dict(now=89), dict(now=101)):
+            with self.subTest(parameters=parameters), self.assertRaises(release.ContractError):
+                self.check(deepcopy(self.proof), **parameters)
+            self.reader.assert_not_called()
 
 
 if __name__ == '__main__':

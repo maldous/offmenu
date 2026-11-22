@@ -1,5 +1,5 @@
 """Check an offline destination binding, not publication permission."""
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import re
 
 from native_harness_contract import fingerprint, validate_release_candidate
@@ -27,24 +27,41 @@ class ObservationRequest:
     artifact_sha256: str
 
 
+@dataclass(frozen=True)
+class ObservationReport:
+    request: ObservationRequest
+    stage: str = field(default='observation-reported', init=False)
+    publication_authorized: bool = field(default=False, init=False)
+
+
+def _identifier(value):
+    return isinstance(value, str) and IDENTIFIER.fullmatch(value) is not None
+
+
 def _identity(metadata):
     fields(metadata, DESTINATION_FIELDS)
-    require(all(isinstance(metadata[k], str) and IDENTIFIER.fullmatch(metadata[k])
+    require(all(_identifier(metadata[k])
                 for k in DESTINATION_FIELDS), 'invalid destination identity metadata')
     return tuple(metadata[key] for key in DESTINATION_FIELDS)
 
 
 def observe_candidate_destination(candidate, release_policy, *, destination, proof,
-                                  now, max_age_seconds, reader):
+                                  now, max_age_seconds, reader, approved_pairs=None):
     """Call an injected observation reader only after an exact binding check.
 
-    The caller supplies the already selected destination and a clock/freshness
-    limit. Inputs are non-secret metadata from an approved upstream authority.
-    This function neither authenticates metadata nor owns connector execution.
-    It has no default reader, network transport, or publication result.
+    The fixture caller supplies the selected destination, an explicit immutable
+    set of approved (channel, environment) pairs, and a trusted clock/freshness
+    limit. Existing release policy governs frozen source, not deployment target
+    pairs; there is no implicit mapping, wildcard or fallback. This offline
+    fixture has no connector and does not authenticate metadata. A mock reader's
+    return value is discarded, never forwarded as publication authority.
     """
     candidate = validate_release_candidate(candidate, release_policy)
     identity = _identity(destination)
+    require(type(approved_pairs) is frozenset and bool(approved_pairs)
+            and all(type(pair) is tuple and len(pair) == 2 and all(map(_identifier, pair))
+                    for pair in approved_pairs), 'explicit approved destination pairs required')
+    require(identity[:2] in approved_pairs, 'channel and environment not approved')
     fields(proof, PROOF_FIELDS)
     require(_identity(proof['destination']) == identity, 'destination mismatch')
     require(_identity(proof['credential_binding']) == identity, 'credential binding mismatch')
@@ -65,4 +82,5 @@ def observe_candidate_destination(candidate, release_policy, *, destination, pro
     require(callable(reader), 'observation reader required')
     request = ObservationRequest(*identity, candidate_sha256, source['head'], source['tree'],
                                  artifact['path'], artifact['sha256'])
-    return reader(request)
+    reader(request)
+    return ObservationReport(request)
