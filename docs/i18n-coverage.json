@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4077,
+  "messages": 4080,
   "arabicTranslated": 642,
-  "arabicMissing": 3435,
+  "arabicMissing": 3438,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -6803,6 +6803,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Could not load your requests.": {
+      "sources": [
+        "apps/web/src/care-ui.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
     "Count": {
       "sources": [
         "apps/web/src/data-workspace.js"
@@ -13304,6 +13311,13 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Loading your requests…": {
+      "sources": [
+        "apps/web/src/care-ui.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
     "Loading…": {
       "sources": [
         "apps/web/src/locales/ar.js"
@@ -14751,7 +14765,7 @@
         "apps/web/src/care-ui.js"
       ],
       "arabic": false,
-      "classification": "heuristic-candidate"
+      "classification": "explicit-ui"
     },
     "No retail barcode found. Use a sharp photo of the entire barcode, including its blank edges.": {
       "sources": [
@@ -21681,6 +21695,13 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Sign in to view your requests.": {
+      "sources": [
+        "apps/web/src/care-ui.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
     },
     "Sign in to your own offmenu account before allowing access.": {
       "sources": [
