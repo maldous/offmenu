@@ -22,7 +22,7 @@ function run({storage={}, session=shopping, lots=[], authResolved=true, user=nul
  const localStorage=new Proxy(storage,{get(obj,key){
   if(key==='getItem')return k=>{access.push(['get',k]);if(fail==='marker-read')throw Error('storage denied');return obj[k]??null;};
   if(key==='setItem')return (k,v)=>{access.push(['set',k]);if(fail==='marker')throw Error('storage denied');obj[k]=v;};
-  if(key==='removeItem')return k=>{access.push(['remove',k]);if(fail==='reset')throw Error('storage denied');delete obj[k];};
+  if(key==='removeItem')return k=>{access.push(['remove',k]);if(fail==='reset'&&k===KEY)throw Error('storage denied');delete obj[k];};
   return obj[key];
  }});
  const record=(kind,fn=()=>{})=>value=>{if(fail===kind)throw Error('storage denied: '+kind);events.push(kind);fn(value);};
@@ -30,7 +30,7 @@ function run({storage={}, session=shopping, lots=[], authResolved=true, user=nul
   canEditCheckout:()=>writable,scannerScopeMatches:()=>true,document:{querySelectorAll:()=>[]},finishInventory,profile:{},
   persistProfile:record('waste'),save:record('stock',value=>{context.lots=value;}),saveReceipt:record('receipt'),saveDraft:record('draft'),
   setLocalizedText:(el,value)=>{el.textContent=value;},t:v=>v,beep(){},pantry(){},findMeals(){},msg(){},
-  confirm:()=>true,clearPending:async()=>events.push('clear'),location:{reload:()=>events.push('reload')}};
+  confirm:()=>true,clearPending:async()=>{if(fail==='pending')throw Error('storage denied');events.push('clear');},location:{reload:()=>events.push('reload')}};
  vm.createContext(context);vm.runInContext(source,context);
  return {finish:()=>$('confirm-finish').onclick(),clear:()=>$('clear-local').onclick(),read:()=>vm.runInContext('typeof readGuestShelfStarter === "function" && readGuestShelfStarter()',context),events,access,$};
 }
@@ -65,8 +65,16 @@ test('non-Guest cannot read, write, or clear the Guest award; confirmed Guest re
  assert.deepEqual(guest.events,['clear','reload']);assert.deepEqual(guest.access,[['remove',KEY]]);
  const held={[KEY]:'1','offmenu-pantry-v1':'[]'},denied=run({storage:held,fail:'reset'});
  await assert.rejects(denied.clear(),/storage denied/);
- assert.equal(held['offmenu-pantry-v1'],'[]');assert.equal(held[KEY],'1');assert.deepEqual(denied.events,[]);
+ assert.equal(held['offmenu-pantry-v1'],undefined);assert.equal(held[KEY],'1');assert.deepEqual(denied.events,['clear']);
 });
 test('other milestones are unaffected by the new award option',()=>{
  const profile={history:[],plan:[]};assert.deepEqual(milestones(profile,[],true).slice(1),milestones(profile,[],false).slice(1));
+});
+test('late pending-clear refusal preserves the Guest award and never reloads',async()=>{
+ const storage={[KEY]:'1','offmenu-pantry-v1':'[]'},guest=run({storage,fail:'pending'});
+ await assert.rejects(guest.clear(),/storage denied/);
+ assert.equal(storage['offmenu-pantry-v1'],undefined);
+ assert.equal(storage[KEY],'1');
+ assert.deepEqual(guest.events,[]);
+ assert.deepEqual(guest.access,[['remove','offmenu-pantry-v1']]);
 });
