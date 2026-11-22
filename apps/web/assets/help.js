@@ -42,7 +42,7 @@ export function mountHelp(d=globalThis.document,w=globalThis.window) {
     }
     list.append(ul);status.textContent=unknown?'That help topic is unavailable. Browse the topics or search again.':
         !words?'Browse all '+topics.length+' topics, or enter a search.':
-        !topics.length?'No matching help topics. Try “backup”, “shopping” or “print”, or clear the search.':
+        !topics.length?'No matching help topics. Try “backup” or “restore”, or clear the search.':
         topics.length+' matching help topic'+(topics.length===1?'.':'s.');
     if(focus)(Array.from(list.querySelectorAll('a')).find(a=>a.hash==='#'+previouslyOpened)||query).focus();
   }
