@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 import tempfile
 from types import MappingProxyType
+from .source_retirement import REASON, retired, active_ids
 
 STAGES = ('acquire', 'verify', 'parse', 'normalize', 'validate', 'curate',
           'graph', 'qualify', 'accept')
@@ -105,11 +106,16 @@ def _blocked(status, code):
 
 
 def _source(source, binding, limits, fetch_policy, force_rebuild):
+    if retired(source['sourceId']):
+        source = {**source, 'status': 'held', 'globalRoute': False, 'countries': [],
+                  'normalizationStatus': 'held',
+                  'holds': list(dict.fromkeys([REASON, *source.get('holds', [])]))}
+        binding = None
     rows = {}
     if binding is not None:
         binding.endstate.clear()  # Endstate evidence is per-run, never retained state.
     held = source.get('status') == 'held' or bool(source.get('holds'))
-    gate = ('source-held' if held else
+    gate = (REASON if retired(source['sourceId']) else 'source-held' if held else
             'reviewed-handler-binding-missing' if binding is None else
             'source-admission-not-reviewed' if binding.admission != 'reviewed' else
             'resource-boundary-unverified' if not binding.resource_boundary_verified else None)
@@ -195,14 +201,21 @@ Threads only coordinate bounded adapters; this is not an OS isolation boundary.
         raise GlobalRunError('invalid-source-binding')
     # A fixed cap bounds both queued jobs and memory reservations. Executor.map
     # alone eagerly submits the complete registry on older Python versions.
-    source_results = []
-    ordered = sorted(sources, key=lambda row: row['sourceId'])
+    source_results = [_source(row, None, limits, fetch_policy, force_rebuild) for row in sources
+                      if retired(row['sourceId'])]
+    ordered = sorted((row for row in sources if not retired(row['sourceId'])),
+                     key=lambda row: row['sourceId'])
     with ThreadPoolExecutor(max_workers=workers) as pool:
         for start in range(0, len(ordered), workers):
             futures = [pool.submit(_source, row, bindings.get(row['sourceId']), limits,
                                    fetch_policy, force_rebuild)
                        for row in ordered[start:start + workers]]
             source_results.extend(future.result() for future in futures)
+    source_results.sort(key=lambda row: row['sourceId'])
+    countries = [{**row, 'domains': {domain: {**cell, 'sourceIds': active_ids(cell['sourceIds'])}
+                                            if isinstance(cell, dict) and 'sourceIds' in cell else cell
+                                      for domain, cell in row['domains'].items()}, **{key: active_ids(row[key]) for key in ('sourceIds', 'globalSourceIds')
+                             if key in row}} for row in countries]
     from .acceptance import assess_cells, fingerprint
     # Only receipts bound to successful current accept stages qualify this run.
     accepted_evidence = {evidence for source in source_results
@@ -214,11 +227,14 @@ Threads only coordinate bounded adapters; this is not an OS isolation boundary.
                                 verified_receipts,
                                 countries=COUNTRIES, domains=DOMAINS)
     failures = sum(not row['selectedSourceComplete'] for row in source_results)
+    # Preserve historical rows/denominators without making retirement an outstanding job.
+    active = [row for row in source_results if not retired(row['sourceId'])]
+    selected_complete = bool(active) and all(row['selectedSourceComplete'] for row in active)
     report = {
         'schemaVersion': 'offmenu-global-run/1',
-        'status': 'complete' if failures == 0 and cell_results['countryCoverageComplete'] else 'incomplete',
+        'status': 'complete' if selected_complete and cell_results['countryCoverageComplete'] else 'incomplete',
         'assessmentComplete': True, 'registryComplete': True,
-        'executionComplete': failures == 0, 'selectedScopeComplete': failures == 0,
+        'executionComplete': selected_complete, 'selectedScopeComplete': selected_complete,
         'countryCoverageComplete': cell_results['countryCoverageComplete'],
         'countryDomainAcceptance': cell_results['cells'],
         'inventoryPins': coverage.get('inventoryPins', {}),

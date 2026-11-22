@@ -7,6 +7,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path
+from .source_retirement import REASON, active_ids, retired
 from .capabilities import RELEASES, MAPPING_EVIDENCE, BASELINE_COMMIT, SUPPORTING_HANDLERS
 
 COUNTRIES = tuple('AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW'.split())
@@ -75,6 +76,7 @@ def _reconcile(matrix, ledger):
     global_ids = sorted(set(matrix.get('globalSourceIds', [])))
     if not set(global_ids) <= known:
         raise CoverageError('unresolved-global-source')
+    global_ids = active_ids(global_ids)
     associations = {sid: set() for sid in ids}
     bindings = {sid: release for release in RELEASES for sid in release['discoveryIds']}
     if not set(bindings) <= known:
@@ -84,6 +86,7 @@ def _reconcile(matrix, ledger):
         linked = sorted(set(country.get('sourceIds', [])))
         if not set(linked) <= known:
             raise CoverageError('unresolved-country-source')
+        linked = active_ids(linked)
         for sid in linked:
             associations[sid].add(country['iso2'])
         domain_rows = {}
@@ -107,7 +110,7 @@ def _reconcile(matrix, ledger):
     for source in sorted(sources, key=lambda s: s['sourceId']):
         sid = source['sourceId']
         evidence = source.get('accessEvidence', {})
-        holds = HOLDS.get(sid, [])
+        holds = [REASON] if retired(sid) else HOLDS.get(sid, [])
         binding = bindings.get(sid)
         handler = binding and binding['handler']
         compatible = binding and binding['releaseMatch'] != 'different-release'

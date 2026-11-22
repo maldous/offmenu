@@ -6,16 +6,32 @@ discovery URLs never become approved download selections automatically.
 """
 import argparse,concurrent.futures,datetime,hashlib,json,re,urllib.request,urllib.parse
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
+from offmenu.refresh.source_retirement import REASON, retired
+
+
+class _ActiveLandingRedirect(urllib.request.HTTPRedirectHandler):
+ def redirect_request(self, req, fp, code, msg, headers, newurl):
+  if retired(None, newurl):raise ValueError(REASON)
+  return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+def active_landing_sources(sources):
+ return [s for s in sources if not retired(s['sourceId'], s['url'])]
+
 
 def collect(source,output):
- key=source['sourceId'];saved=output/(hashlib.sha256(key.encode()).hexdigest()[:24]+'.json')
+ key=source['sourceId']
+ if retired(key,source['url']):raise ValueError(REASON)
+ saved=output/(hashlib.sha256(key.encode()).hexdigest()[:24]+'.json')
  if saved.exists():return json.loads(saved.read_text())
  url=source['url']; result={'sourceId':key,'requestedUrl':url,'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'scope':'landing-page access metadata only','datasetCollected':False,'rightsDecision':'requires primary licence review'}
  try:
   parsed=urllib.parse.urlsplit(url)
   if parsed.scheme not in ['http','https'] or not parsed.hostname or parsed.username:raise ValueError('Unsupported source URL')
   req=urllib.request.Request(url,headers={'User-Agent':'OffMenu-source-discovery/1.0'})
-  with urllib.request.urlopen(req,timeout=20) as response:
+  with urllib.request.build_opener(_ActiveLandingRedirect()).open(req,timeout=20) as response:
    kind=response.headers.get('Content-Type','');result.update(httpStatus=response.status,finalUrl=response.url,contentType=kind)
    if 'html' in kind or 'text' in kind or 'json' in kind:
     body=response.read(1024*1024+1);result['landingPageTruncated']=len(body)>1024*1024;body=body[:1024*1024]
@@ -64,10 +80,10 @@ def main():
   print(json.dumps({'status':'collection-reported','verifiedSources':report['verifiedSources'],'failedSources':report['failedSources'],'network':report['network'],'countryComplete':False}))
   return 1 if report['failedSources'] else 0
  a.output.mkdir(parents=True,exist_ok=True)
- root=Path(__file__).resolve().parents[2];sources=json.loads((root/'docs/source-delivery-ledger.json').read_text())['sources'];results=[]
+ root=Path(__file__).resolve().parents[2];sources=json.loads((root/'docs/source-delivery-ledger.json').read_text())['sources'];sources=active_landing_sources(sources);results=[]
  with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
   for f in concurrent.futures.as_completed([pool.submit(collect,s,a.output) for s in sources]):
    results.append(f.result())
    if len(results)%50==0:print(json.dumps({'sourcesChecked':len(results),'total':len(sources)}),flush=True)
- report={'schema':'offmenu-source-access/1','checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sources':sorted(results,key=lambda x:x['sourceId']),'sourceCount':len(sources),'scope':'All registered landing-page access checks; download/rights links are candidates, not licence or data acceptance.'};(a.output/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({'status':'complete','sourcesChecked':len(results)}))
+ report={'schema':'offmenu-source-access/1','checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sources':sorted(results,key=lambda x:x['sourceId']),'sourceCount':len(sources),'scope':'Active registered landing-page access checks only; download/rights links are candidates, not licence or data acceptance.'};(a.output/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({'status':'complete','sourcesChecked':len(results)}))
 if __name__=='__main__':raise SystemExit(main())
