@@ -70,4 +70,32 @@ class CoFIDDispositionTest(unittest.TestCase):
 
     def test_absent_current_file_refuses_disposition(self):
         with self.assertRaisesRegex(ValueError,'current workbook is not inventoried'):
-            COLLECT.cofid_file_dispositions([{'key':'cofid-old-foods.xlsx'}])
+            COLLECT.cofid_file_dispositions([{'key':'cofid-old-foods.xlsx','bytes':1,'sha256':'a'*64}])
+
+    def test_empty_or_partial_projection_leaves_no_release_and_allows_retry(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp); inputs=root/'synthetic-inputs'; inputs.mkdir()
+            workbook(inputs/'cofid2021.xlsx',[
+                ['0007','Fictional solid',None,'A',None,None,None,2.1,3.2],
+                ['0008','Fictional drink',None,'Q',None,None,None,4.3,5.4],
+            ])
+            output=root/'synthetic-output'
+            with self.assertRaisesRegex(ValueError,'emitted no normalized rows'):
+                COLLECT.publish_local('cofid',[],inputs,output,'2021')
+            self.assertFalse(output.exists())
+            rows=COLLECT.national.cofid(inputs)
+            broken=[rows[0],{**rows[1],'fixture-unserializable':object()}]
+            with self.assertRaises(TypeError):
+                COLLECT.publish_local('cofid',broken,inputs,output,'2021')
+            self.assertEqual(list(output.iterdir()),[])
+            COLLECT.publish_local('cofid',rows,inputs,output,'2021')
+            manifest=json.loads((output/'cofid-2021/manifest.json').read_bytes())
+            self.assertEqual(manifest['normalizedRows'],2)
+            self.assertEqual(manifest['fileDispositions'][0]['disposition'],'processed')
+            self.assertIn('was emitted',manifest['fileDispositions'][0]['reason'])
+            self.assertIn('does not establish completeness',manifest['scope'])
+
+    def test_dispositions_only_expose_allowlisted_file_metadata(self):
+        entry={'key':'cofid2021.xlsx','bytes':10,'sha256':'a'*64,'private':'synthetic-not-emitted'}
+        [item]=COLLECT.cofid_file_dispositions([entry])
+        self.assertEqual(set(item),{'key','bytes','sha256','disposition','reason'})
