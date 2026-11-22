@@ -15,13 +15,13 @@ function fixture({failKey,absent=false}={}){
  const raw=new Map([['pantry','[] '],['profile',JSON.stringify(old.profile)+' '],['products','{} '],['recipes','[] '],['selections','[] ']]);
  if(absent)raw.delete('products');
  const before=new Map(raw);let failed=false;
- const $=id=>{if(!nodes.has(id))nodes.set(id,{files:[],value:'',addEventListener(){}});return nodes.get(id);};
+ const $=id=>{if(!nodes.has(id))nodes.set(id,{files:[],value:'',listeners:new Map(),addEventListener(type,callback){this.listeners.set(type,[...(this.listeners.get(type)||[]),callback]);}});return nodes.get(id);};
  const context={$,Blob,JSON,Object,Error,createPantryBackup,restorePantryBackup,reconcileCookedStock,
   KEY:'pantry',PROFILE:'profile',PRODUCTS:'products',RECIPES:'recipes',SELECTIONS:'selections',
   lots:old.inventory,profile:old.profile,products:old.products,recipes:old.recipes,selections:old.selections,
   user:null,demoMode:false,requestIdentity:{owner:null},today:()=> '2026-10-26',confirm:()=>true,t:x=>x,
   localStorage:{getItem:k=>raw.get(k)??null,setItem(k,v){if(k===failKey&&!failed){failed=true;throw Error('Synthetic quota failure');}raw.set(k,v);},removeItem:k=>raw.delete(k)},
-  msg:x=>messages.push(x),download:(name,data)=>downloads.push({name,data}),loadProfile(){},pantry(){},findMeals(){},
+  setLocalizedText:(node,text)=>{node.textContent=text;},msg:x=>messages.push(x),download:(name,data)=>downloads.push({name,data}),loadProfile(){},pantry(){},findMeals(){},
   markDirty(){sync.push(JSON.stringify({inventory:context.lots,profile:context.profile,products:context.products,recipes:context.recipes,selections:context.selections}));}};
  vm.createContext(context);
  // save() is included solely to reproduce the old partial-commit behavior.
@@ -80,7 +80,25 @@ test('the pantry byte ceiling is shared and recipe import keeps its 2MB ceiling'
  await assert.rejects(f.context.readJSON({files:[{size:2_000_001,text:async()=> '{}'}]}),/under 2 MB/);
  const v=value();v.products['1111'].ingredients='米'.repeat(6_666_667);
  Object.assign(f.context,{lots:v.inventory,profile:v.profile,products:v.products,recipes:v.recipes,selections:v.selections});
- f.$('export').onclick();assert.equal(f.downloads.length,0);assert.match(f.messages.at(-1),/exceeds 20 MB/);
+ f.$('account-dialog').open=true;
+ const messages=f.messages.slice(),storage=new Map(f.raw),sync=f.sync.slice();
+ f.$('export').onclick();
+ assert.equal(f.downloads.length,0);
+ assert.equal(f.$('export-error').textContent,'Pantry backup exceeds 20 MB.');
+ assert.deepEqual(f.messages,messages);
+ v.products['1111'].ingredients='rice';
+ f.$('export').onclick();
+ assert.equal(f.$('export-error').textContent,'');
+ assert.equal(f.downloads.length,1);
+ assert.equal(f.downloads[0].name,'offmenu-pantry.json');
+ assert.equal(restorePantryBackup(f.downloads[0].data).state.products['1111'].ingredients,'rice');
+ assert.deepEqual(f.messages,messages);assert.deepEqual(f.raw,storage);assert.deepEqual(f.sync,sync);
+ f.$('export-error').textContent='Previous local export error';
+ for(const listener of f.$('account-dialog').listeners.get('close'))listener();
+ assert.equal(f.$('export-error').textContent,'');
+ const html=readFileSync(new URL('../../apps/web/assets/index.html',import.meta.url),'utf8');
+ const account=html.match(/<dialog id="account-dialog"[^>]*>[\s\S]*?<\/dialog>/)?.[0];
+ assert.match(account, /id="export"[^>]*>[^<]*<\/button><div id="export-error" role="status" aria-live="polite" aria-atomic="true"><\/div>/);
 });
 test('same-account typed member preferences survive the complete restore',async()=>{
  const f=fixture(),v=value(),preferences={version:1,scope:{accountId:'owner',memberId:'member'},likes:['rice'],textures:['soft'],spice:'mild'};
