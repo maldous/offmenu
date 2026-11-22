@@ -5,8 +5,29 @@
     "ignoreFiles": [
       "apps/web/server/generated.mjs",
       "archive/release-custody/20261026-existing-fullscanner-vertical/production109-exact-app-source/deployed-application.mjs",
-      "archive/release-custody/20261026-existing-fullscanner-vertical/production109-exact-app-source/worker.mjs"
+      "archive/release-custody/20261026-existing-fullscanner-vertical/production109-exact-app-source/worker.mjs",
+      "archive/release-custody/20261026-existing-fullscanner-vertical/feedback91-inactive/landing-only.mjs",
+      "archive/release-custody/20261026-existing-fullscanner-vertical/landing-only.mjs",
+      "archive/release-custody/20261026-existing-fullscanner-vertical/production109-revised11-feedback/landing-only.mjs",
+      "archive/release-custody/20261026-existing-fullscanner-vertical/production168-source-r2-feedback/landing-only.mjs",
+      "archive/release-custody/20261026-existing-fullscanner-vertical/production169-world-taps-r3-feedback/landing-only.mjs",
+      "archive/release-custody/20261026-existing-fullscanner-vertical/production87/landing-only.mjs",
+      "archive/release-custody/20261026-existing-fullscanner-vertical/production92-external-stop/landing-only.mjs",
+      "archive/release-custody/20261026-existing-fullscanner-vertical/production93/landing-only.mjs",
+      "archive/release-custody/20261026-existing-fullscanner-vertical/production94/landing-only.mjs",
+      "archive/release-custody/20261026-existing-fullscanner-vertical/production97/landing-only.mjs",
+      "archive/release-custody/20261027-existing-fullscanner-vertical/production175-fridge-r3-feedback/landing-only.mjs"
     ],
-    "ignoreValues": []
+    "ignoreValues": [
+      {
+        "rule": "radial-halo",
+        "value": "*",
+        "files": [
+          "apps/web/assets/index.html"
+        ],
+        "createdAt": "2026-11-22T22:04:18.840Z",
+        "reason": "Agent: landing-only signboard lighting grounds the original neon sign in the user-selected Cinematic Glass opening"
+      }
+    ]
   }
 }

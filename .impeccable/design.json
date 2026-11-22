@@ -1,0 +1,727 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-22T22:45:51Z",
+  "title": "Design System: OffMenu",
+  "extensions": {
+    "colorMeta": {
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Visible Green Canvas",
+        "canonical": "#d9efda",
+        "tonalRamp": [
+          "#153a24",
+          "#2f6240",
+          "#56876a",
+          "#7fac8c",
+          "#a8cfb2",
+          "#d9efda",
+          "#e8f6e8",
+          "#f7fcf7"
+        ]
+      },
+      "home-ink": {
+        "role": "neutral",
+        "displayName": "Home Green",
+        "canonical": "#214638",
+        "tonalRamp": [
+          "#10251d",
+          "#214638",
+          "#416b59",
+          "#6c9780",
+          "#9abda6",
+          "#c9decf",
+          "#e5f0e8",
+          "#f6faf7"
+        ]
+      },
+      "coral": {
+        "role": "primary",
+        "displayName": "Pale Coral Action",
+        "canonical": "#f3b09a",
+        "tonalRamp": [
+          "#58291f",
+          "#844131",
+          "#ae5e49",
+          "#d98770",
+          "#f3b09a",
+          "#f8cdbb",
+          "#fbe3d6",
+          "#fff5ef"
+        ]
+      },
+      "signboard": {
+        "role": "neutral",
+        "displayName": "Neon Signboard",
+        "canonical": "#02050a",
+        "tonalRamp": [
+          "#02050a",
+          "#0a1421",
+          "#142638",
+          "#29455d",
+          "#55728b",
+          "#91a8ba",
+          "#cedae3",
+          "#f4f8fb"
+        ]
+      },
+      "camera-frame": {
+        "role": "neutral",
+        "displayName": "Camera Frame",
+        "canonical": "#081719",
+        "tonalRamp": [
+          "#02070a",
+          "#081719",
+          "#102b2e",
+          "#1d484b",
+          "#467377",
+          "#85a7a8",
+          "#c9dddd",
+          "#f2f8f8"
+        ]
+      },
+      "camera-raised": {
+        "role": "neutral",
+        "displayName": "Camera Raised",
+        "canonical": "#091322",
+        "tonalRamp": [
+          "#03070d",
+          "#091322",
+          "#122b44",
+          "#254c6d",
+          "#527da1",
+          "#90abc2",
+          "#cedce7",
+          "#f2f7fb"
+        ]
+      },
+      "camera-panel": {
+        "role": "neutral",
+        "displayName": "Camera Panel",
+        "canonical": "#071c22",
+        "tonalRamp": [
+          "#02090c",
+          "#071c22",
+          "#12353d",
+          "#285963",
+          "#5a8790",
+          "#96b3b8",
+          "#d2e0e2",
+          "#f4f9f9"
+        ]
+      },
+      "camera-guide": {
+        "role": "neutral",
+        "displayName": "Camera Guide",
+        "canonical": "#0a2732",
+        "tonalRamp": [
+          "#031016",
+          "#0a2732",
+          "#164757",
+          "#2c6a7a",
+          "#5d98a5",
+          "#98c0c8",
+          "#d1e5e8",
+          "#f3fafb"
+        ]
+      },
+      "camera-line": {
+        "role": "neutral",
+        "displayName": "Camera Line",
+        "canonical": "#c0d6e39c",
+        "tonalRamp": [
+          "#253039",
+          "#495b67",
+          "#6e8390",
+          "#92abb7",
+          "#c0d6e3",
+          "#d9e6ee",
+          "#ebf2f6",
+          "#fafcfd"
+        ]
+      },
+      "camera-copy": {
+        "role": "neutral",
+        "displayName": "Camera Copy",
+        "canonical": "#e8f4ee",
+        "tonalRamp": [
+          "#344039",
+          "#596c61",
+          "#809487",
+          "#adc0b2",
+          "#e8f4ee",
+          "#eef8f3",
+          "#f6fbf8",
+          "#fcfefd"
+        ]
+      },
+      "camera-copy-strong": {
+        "role": "neutral",
+        "displayName": "Camera Strong Copy",
+        "canonical": "#f5fff9",
+        "tonalRamp": [
+          "#3b453f",
+          "#626f67",
+          "#8d9a91",
+          "#bbc6be",
+          "#f5fff9",
+          "#f8fffb",
+          "#fbfffd",
+          "#ffffff"
+        ]
+      },
+      "register-case": {
+        "role": "neutral",
+        "displayName": "Register Case",
+        "canonical": "#54715c",
+        "tonalRamp": [
+          "#1f2f25",
+          "#39503f",
+          "#54715c",
+          "#77947c",
+          "#a3ba9f",
+          "#d0dfca",
+          "#e8f0e5",
+          "#f8fbf7"
+        ]
+      },
+      "register-display": {
+        "role": "neutral",
+        "displayName": "Register Display",
+        "canonical": "#203e32",
+        "tonalRamp": [
+          "#0b1712",
+          "#203e32",
+          "#3b6252",
+          "#668c76",
+          "#98bba3",
+          "#c8decf",
+          "#e6f0e9",
+          "#f7fbf8"
+        ]
+      },
+      "register-phosphor": {
+        "role": "secondary",
+        "displayName": "Register Phosphor",
+        "canonical": "#e0edbb",
+        "tonalRamp": [
+          "#354322",
+          "#5b7039",
+          "#869953",
+          "#b2c977",
+          "#e0edbb",
+          "#eaf3cf",
+          "#f3f8e4",
+          "#fbfdf5"
+        ]
+      },
+      "scanner-confirmation": {
+        "role": "secondary",
+        "displayName": "Scanner Confirmation",
+        "canonical": "#6affb7",
+        "tonalRamp": [
+          "#063d2b",
+          "#096447",
+          "#108b61",
+          "#23bd84",
+          "#6affb7",
+          "#a1ffcf",
+          "#ccffe3",
+          "#effff6"
+        ]
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "Danger",
+        "canonical": "#9c351f",
+        "tonalRamp": [
+          "#401209",
+          "#682113",
+          "#9c351f",
+          "#c95b42",
+          "#e88a72",
+          "#f5bcac",
+          "#fbe1d8",
+          "#fff5f1"
+        ]
+      },
+      "warning-surface": {
+        "role": "tertiary",
+        "displayName": "Warning Surface",
+        "canonical": "#efe4ca",
+        "tonalRamp": [
+          "#463b23",
+          "#70613b",
+          "#998557",
+          "#c5ad78",
+          "#efe4ca",
+          "#f6eedc",
+          "#fbf7ed",
+          "#fefdf9"
+        ]
+      },
+      "error-surface": {
+        "role": "tertiary",
+        "displayName": "Error Surface",
+        "canonical": "#f4dfd1",
+        "tonalRamp": [
+          "#503326",
+          "#795143",
+          "#a47362",
+          "#ce9c87",
+          "#f4dfd1",
+          "#f9ece4",
+          "#fcf5f1",
+          "#fffaf8"
+        ]
+      },
+      "print-paper": {
+        "role": "neutral",
+        "displayName": "Receipt Paper",
+        "canonical": "#fffdf5",
+        "tonalRamp": [
+          "#3d3c35",
+          "#69675b",
+          "#949184",
+          "#c2beae",
+          "#e9e5d5",
+          "#fffdf5",
+          "#fffefa",
+          "#ffffff"
+        ]
+      },
+      "action": {
+        "role": "primary",
+        "displayName": "Scanner Blue",
+        "canonical": "#2865b5",
+        "tonalRamp": [
+          "#0c244b",
+          "#123b72",
+          "#1e5294",
+          "#2865b5",
+          "#5d91d7",
+          "#91b9e8",
+          "#c7dcf4",
+          "#edf5fc"
+        ]
+      },
+      "forest": {
+        "role": "neutral",
+        "displayName": "Forest Ink",
+        "canonical": "#183f35",
+        "tonalRamp": [
+          "#0d241e",
+          "#183f35",
+          "#2e5a4d",
+          "#52796a",
+          "#7f9f91",
+          "#b1c8bb",
+          "#dce8df",
+          "#f4f8f5"
+        ]
+      },
+      "neon-blue": {
+        "role": "primary",
+        "displayName": "Neon Scanner Blue",
+        "canonical": "#5da2ff",
+        "tonalRamp": [
+          "#0d315e",
+          "#155398",
+          "#2878cc",
+          "#5da2ff",
+          "#88bcff",
+          "#b2d5ff",
+          "#d8eaff",
+          "#f1f8ff"
+        ]
+      },
+      "dark-canvas": {
+        "role": "neutral",
+        "displayName": "Dark Canvas",
+        "canonical": "#081413",
+        "tonalRamp": [
+          "#153a24",
+          "#2f6240",
+          "#56876a",
+          "#7fac8c",
+          "#a8cfb2",
+          "#d9efda",
+          "#e8f6e8",
+          "#f7fcf7"
+        ]
+      },
+      "dark-paper": {
+        "role": "neutral",
+        "displayName": "Dark Paper",
+        "canonical": "#112321",
+        "tonalRamp": [
+          "#153a24",
+          "#2f6240",
+          "#56876a",
+          "#7fac8c",
+          "#a8cfb2",
+          "#d9efda",
+          "#e8f6e8",
+          "#f7fcf7"
+        ]
+      },
+      "dark-mint": {
+        "role": "neutral",
+        "displayName": "Dark Mint",
+        "canonical": "#1b332d",
+        "tonalRamp": [
+          "#153a24",
+          "#2f6240",
+          "#56876a",
+          "#7fac8c",
+          "#a8cfb2",
+          "#d9efda",
+          "#e8f6e8",
+          "#f7fcf7"
+        ]
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Dark Ink",
+        "canonical": "#e1f4e9",
+        "tonalRamp": [
+          "#10251d",
+          "#214638",
+          "#416b59",
+          "#6c9780",
+          "#9abda6",
+          "#c9decf",
+          "#e5f0e8",
+          "#f6faf7"
+        ]
+      },
+      "dark-muted": {
+        "role": "neutral",
+        "displayName": "Dark Muted",
+        "canonical": "#b1c9bb",
+        "tonalRamp": [
+          "#153a24",
+          "#2f6240",
+          "#56876a",
+          "#7fac8c",
+          "#a8cfb2",
+          "#d9efda",
+          "#e8f6e8",
+          "#f7fcf7"
+        ]
+      },
+      "dark-line": {
+        "role": "neutral",
+        "displayName": "Dark Line",
+        "canonical": "#45665b",
+        "tonalRamp": [
+          "#153a24",
+          "#2f6240",
+          "#56876a",
+          "#7fac8c",
+          "#a8cfb2",
+          "#d9efda",
+          "#e8f6e8",
+          "#f7fcf7"
+        ]
+      },
+      "dark-coral": {
+        "role": "primary",
+        "displayName": "Dark Coral",
+        "canonical": "#ffc2a8",
+        "tonalRamp": [
+          "#58291f",
+          "#844131",
+          "#ae5e49",
+          "#d98770",
+          "#f3b09a",
+          "#f8cdbb",
+          "#fbe3d6",
+          "#fff5ef"
+        ]
+      },
+      "dark-on-ink": {
+        "role": "neutral",
+        "displayName": "Dark On Ink",
+        "canonical": "#0b2018",
+        "tonalRamp": [
+          "#10251d",
+          "#214638",
+          "#416b59",
+          "#6c9780",
+          "#9abda6",
+          "#c9decf",
+          "#e5f0e8",
+          "#f6faf7"
+        ]
+      },
+      "dark-selected": {
+        "role": "neutral",
+        "displayName": "Dark Selected",
+        "canonical": "#a5dfc4",
+        "tonalRamp": [
+          "#153a24",
+          "#2f6240",
+          "#56876a",
+          "#7fac8c",
+          "#a8cfb2",
+          "#d9efda",
+          "#e8f6e8",
+          "#f7fcf7"
+        ]
+      },
+      "dark-focus": {
+        "role": "primary",
+        "displayName": "Dark Focus",
+        "canonical": "#ffc2a8",
+        "tonalRamp": [
+          "#58291f",
+          "#844131",
+          "#ae5e49",
+          "#d98770",
+          "#f3b09a",
+          "#f8cdbb",
+          "#fbe3d6",
+          "#fff5ef"
+        ]
+      },
+      "dark-danger": {
+        "role": "tertiary",
+        "displayName": "Dark Danger",
+        "canonical": "#ffc2af",
+        "tonalRamp": [
+          "#401209",
+          "#682113",
+          "#9c351f",
+          "#c95b42",
+          "#e88a72",
+          "#f5bcac",
+          "#fbe1d8",
+          "#fff5f1"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "landing-display": {
+        "displayName": "Landing Display",
+        "purpose": "The first food decision and landing headline."
+      },
+      "body": {
+        "displayName": "Household Body",
+        "purpose": "Scannable planning, food and shopping instructions."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Compact field labels, quantities and state markers."
+      },
+      "compact": {
+        "displayName": "Compact",
+        "purpose": "Dense navigation and supporting controls."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Editable fields and standard task controls."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card and grouped task titles."
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "Workspace section headings."
+      },
+      "heading": {
+        "displayName": "Heading",
+        "purpose": "Major page headings."
+      },
+      "page-heading": {
+        "displayName": "Page Heading",
+        "purpose": "Large workspace page headings."
+      },
+      "scanner": {
+        "displayName": "Scanner Operational",
+        "purpose": "Self-hosted scanner controls and camera feedback."
+      }
+    },
+    "shadows": [
+      {
+        "name": "working-elevation",
+        "value": "0 14px 40px #0000000d in light mode; 0 18px 58px #0004 in dark mode",
+        "purpose": "Neutral elevation for working surfaces in both themes."
+      },
+      {
+        "name": "neon-sign-glow",
+        "value": "Material-contained SVG glow",
+        "purpose": "Reserved for the original neon barcode-bowl sign."
+      }
+    ],
+    "motion": [
+      {
+        "name": "standard",
+        "value": "cubic-bezier(.23,1,.32,1)",
+        "purpose": "Responsive control transitions and a single sign ignition."
+      },
+      {
+        "name": "neon-visibility",
+        "value": "pause when offscreen or hidden; static for prefers-reduced-motion",
+        "purpose": "Keeps the sign expressive without ambient distraction."
+      },
+      {
+        "name": "workspace-continuity",
+        "value": "250ms cubic-bezier(.16,1,.3,1)",
+        "purpose": "Short native view transitions between kitchen panes, with immediate navigation in reduced motion."
+      },
+      {
+        "name": "receipt-completion",
+        "value": "380ms title settle; 440ms confirmation ring",
+        "purpose": "Acknowledges a completed receipt once and respects reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "760px"
+      },
+      {
+        "name": "tablet",
+        "value": "1100px"
+      }
+    ],
+    "scales": {
+      "spacing": [
+        "4px",
+        "8px",
+        "12px",
+        "16px",
+        "24px",
+        "32px",
+        "48px",
+        "64px"
+      ],
+      "type": [
+        "12px",
+        "14px",
+        "15px",
+        "16px",
+        "18px",
+        "24px",
+        "30px",
+        "36px"
+      ],
+      "radius": [
+        "4px",
+        "8px",
+        "10px",
+        "12px",
+        "16px",
+        "18px",
+        "999px"
+      ],
+      "controlHeight": [
+        "42px",
+        "46px",
+        "56px"
+      ]
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The committed household action.",
+      "html": "<button class=\"ds-btn-primary\">Find recipes with one food</button>",
+      "css": ".ds-btn-primary { min-height:46px; padding:11px 17px; border:1px solid #f3b09a; border-radius:var(--om-control-radius,10px); background:var(--coral,#f3b09a); color:#1e352a; font:700 15px/1.4 Avenir Next,Segoe UI,sans-serif; cursor:pointer; transition:transform 120ms cubic-bezier(.23,1,.32,1),filter 120ms cubic-bezier(.23,1,.32,1); } .ds-btn-primary:hover { filter:brightness(.96); } .ds-btn-primary:active { transform:scale(.98); } .ds-btn-primary:focus-visible { outline:3px solid #f3b09a; outline-offset:4px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A clear alternative without taking over the task.",
+      "html": "<button class=\"ds-btn-secondary\">Try the demo</button>",
+      "css": ".ds-btn-secondary { min-height:56px; padding:12px 22px; border:1px solid #b9cabd; border-radius:var(--om-control-radius,10px); background:#e3ede5; color:#183f35; font:700 1rem/1.4 ui-sans-serif,system-ui,sans-serif; cursor:pointer; } .ds-btn-secondary:hover { background:#f9fcf9; } .ds-btn-secondary:active { transform:scale(.98); } .ds-btn-secondary:focus-visible { outline:3px solid #2865b5; outline-offset:4px; }"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "An explicit household input with a generous touch target.",
+      "html": "<label class=\"ds-field\">Food name<input placeholder=\"e.g. tomatoes\"></label>",
+      "css": ".ds-field { display:grid; gap:6px; color:#183f35; font:700 .75rem/1.4 ui-sans-serif,system-ui,sans-serif; letter-spacing:.08em; } .ds-field input { min-height:56px; padding:12px; border:1px solid #b9cabd; border-radius:var(--om-control-radius,10px); background:#e3ede5; color:#183f35; font:400 1rem/1.5 ui-sans-serif,system-ui,sans-serif; } .ds-field input:focus-visible { outline:3px solid #2865b5; outline-offset:4px; }"
+    },
+    {
+      "name": "Working Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "A bounded decision group on the visible green canvas.",
+      "html": "<article class=\"ds-card\"><strong>Tonight's meal</strong><p>Use what is already at home.</p></article>",
+      "css": ".ds-card { display:grid; gap:10px; padding:24px; border:1px solid #b9cabd; border-radius:18px; background:#f9fcf9; color:#183f35; box-shadow:0 8px 18px #183f3529,0 2px 3px #183f3524; font:400 1rem/1.5 ui-sans-serif,system-ui,sans-serif; } .ds-card strong { font-weight:750; } .ds-card p { margin:0; color:#4b6256; }"
+    },
+    {
+      "name": "OffMenu Compact Mark",
+      "kind": "custom",
+      "description": "The compact static SVG is the small counterpart to the landing's full animated sign.",
+      "html": "<svg class=\"ds-offmenu-mark\" viewBox=\"0 0 512 512\" role=\"img\" aria-label=\"OffMenu compact logo\"><rect width=\"512\" height=\"512\" rx=\"112\" fill=\"#071a3b\"/><g fill=\"none\" stroke=\"#218cff\" stroke-linecap=\"round\" stroke-width=\"32\"><path d=\"M104 212v-64q0-44 44-44h64\"/><path d=\"M300 104h64q44 0 44 44v64\"/><path d=\"M408 300v64q0 44-44 44h-64\"/><path d=\"M212 408h-64q-44 0-44-44v-64\"/></g><g fill=\"#fff\"><rect x=\"169\" y=\"173\" width=\"17\" height=\"105\" rx=\"8.5\"/><rect x=\"198\" y=\"158\" width=\"22\" height=\"120\" rx=\"11\"/><rect x=\"233\" y=\"171\" width=\"14\" height=\"107\" rx=\"7\"/><rect x=\"260\" y=\"151\" width=\"25\" height=\"127\" rx=\"12.5\"/><rect x=\"298\" y=\"169\" width=\"17\" height=\"109\" rx=\"8.5\"/><rect x=\"327\" y=\"159\" width=\"20\" height=\"119\" rx=\"10\"/><path d=\"M144 292c8 58 55 91 112 91s104-33 112-91H144Zm35 29h154c-17 22-44 34-77 34s-60-12-77-34Z\"/></g></svg>",
+      "css": ".ds-offmenu-mark { display:block; width:72px; height:72px; }"
+    },
+    {
+      "name": "Appearance Toggle",
+      "kind": "button",
+      "description": "A stable label and pressed state identify dark mode.",
+      "html": "<button class=\"ds-theme-toggle\" aria-pressed=\"false\">Dark mode</button>",
+      "css": ".ds-theme-toggle{min-height:44px;border:1px solid var(--line,#b9cabd);border-radius:var(--om-control-radius,10px);padding:8px 12px;background:transparent;color:var(--ink,#214638)}.ds-theme-toggle:hover,.ds-theme-toggle[aria-pressed=true]{border-color:currentColor}.ds-theme-toggle:focus-visible{outline:2px solid var(--focus,#ad402d);outline-offset:2px}"
+    },
+    {
+      "name": "Kitchen Task Tabs",
+      "kind": "navigation",
+      "description": "A horizontally scrollable row with a visible current page.",
+      "html": "<nav class=\"ds-task-tabs\" aria-label=\"Kitchen\"><button aria-current=\"page\">Today</button><button>Kitchen</button><button>Plan</button></nav>",
+      "css": ".ds-task-tabs{display:flex;gap:6px;overflow:auto;border-bottom:1px solid var(--line,#b9cabd);padding:8px 0}.ds-task-tabs button{min-height:44px;background:transparent;color:var(--muted,#4b6256);border:0;border-radius:8px;padding:8px 12px}.ds-task-tabs button[aria-current=page]{background:var(--ink,#214638);color:var(--on-ink,#fff)}.ds-task-tabs button:focus-visible{outline:2px solid var(--focus,#ad402d);outline-offset:2px}"
+    },
+    {
+      "name": "Feature Showcase Entry",
+      "kind": "card",
+      "description": "A hairline, short feature description and direct action.",
+      "html": "<article class=\"ds-showcase\"><h3>Find recipes and plan meals</h3><p>Compare what you have with what you need.</p><button type=\"button\">Meal ideas</button></article>",
+      "css": ".ds-showcase{border-block-start:1px solid var(--line,#b9cabd);padding-block:22px;color:var(--ink,#214638)}.ds-showcase h3{margin:0}.ds-showcase p{color:var(--muted,#4b6256);text-wrap:pretty}.ds-showcase button{border:0;background:transparent;color:inherit;text-decoration:underline;text-underline-offset:.24em;min-height:44px;padding:8px 0}.ds-showcase button:hover{text-decoration-thickness:2px}.ds-showcase button:focus-visible{outline:2px solid var(--focus,#ad402d);outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The bright pantry, lit by a real scanner sign.",
+    "overview": "OffMenu opens with the original animated blue-bracket, white-glass barcode-bowl sign centred on an almost-black signboard. The sign and the motto “From product to pantry to plate” share the full opening viewport. The kitchen fills the viewport in daylight green or dark evergreen. The identity feels like a practical kitchen tool that happens to have a luminous after-hours window, never a generic grocery template.",
+    "keyCharacteristics": [
+      "Full-width household panes in daylight green and dark evergreen.",
+      "Home-green type, warm paper layers and a pale-coral landing action.",
+      "The original animated blue-bracket, white-glass barcode-bowl sign is the product mark everywhere a logo appears.",
+      "Motion is purposeful: the sign energises once, its steam only moves while visible, and every reduced-motion path is still and complete."
+    ],
+    "rules": [
+      {
+        "name": "The Green-First Rule",
+        "body": "The default light surface is the visible green canvas; a neutral cream or near-white page background is not an OffMenu substitute.",
+        "section": "colors"
+      },
+      {
+        "name": "The Work-First Type Rule",
+        "body": "Let application language remain direct and readable; the sign carries the theatre.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sign Owns the Glow Rule",
+        "body": "The full animated sign belongs only to the landing stage. Kitchen, account and navigation surfaces use the compact static SVG mark; work surfaces communicate hierarchy with tone, border and quiet elevation.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use the visible green canvas as the default light environment.",
+      "Do use the original neon barcode-bowl sign anywhere a logo or branded identity is needed.",
+      "Do keep controls explicit, high-contrast and comfortably tappable.",
+      "Do give the neon sign a dark stage when it needs to glow, while keeping routine product work calm in both themes."
+    ],
+    "donts": [
+      "Don't let the light background drift into cream, off-white or ambiguous near-white.",
+      "Don't replace the logo with the former boxed mark, a barcode tile, emoji or generic food icon.",
+      "Don't spread neon glow or continuous animation across ordinary task UI.",
+      "Don't remove the reduced-motion, offscreen-pause or material-fallback behavior from the sign."
+    ]
+  }
+}

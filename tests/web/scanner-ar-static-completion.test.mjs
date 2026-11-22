@@ -7,7 +7,7 @@ import {setLanguage,t,hasTranslation,translateUI} from '../../apps/web/src/i18n.
 // New regression pins, not independent linguistic or rendered-device certification.
 const remaining = {
   "OffMenu · Continuous scanner": "OffMenu · ماسح مستمر",
-  "Allow camera access if asked. Type code remains available.": "اسمح بالوصول إلى الكاميرا إذا طُلب ذلك. يبقى إدخال الرمز متاحًا.",
+  "Allow camera access if asked, then centre a barcode in the frame. If you prefer, type the code.": "اسمح باستخدام الكاميرا عند الطلب، ثم ضع الباركود في وسط الإطار. يمكنك أيضًا كتابة الرمز.",
   "Ready · loaded retained barcode identifiers": "جاهز · تم تحميل معرّفات الرموز الشريطية المحتفَظ بها",
   "Brand": "العلامة التجارية",
   "— · unmapped / missing evidence": "— · غير مربوط / الأدلة مفقودة",
@@ -57,7 +57,7 @@ const remaining = {
   "EAN-13 · explicitly known format": "EAN-13 · صيغة معروفة صراحةً",
   "EAN-8 · explicitly known format": "EAN-8 · صيغة معروفة صراحةً",
   "GTIN-14 · only when known, not inferred from ITF": "GTIN-14 · فقط عند معرفته، ولا يُستنتَج من ITF",
-  "Source-record matches": "مطابقات سجلات المصدر",
+  "Matching source records": "سجلات المصادر المطابقة",
   "Retry camera": "أعِد محاولة الكاميرا"
 };
 const scannerURL = new URL('../../apps/web/assets/shelf-scanner.html',import.meta.url);

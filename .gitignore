@@ -37,3 +37,9 @@ integrations/staged/auth/dist/
 
 # Explicit installed Windmill runtime; ADR 0010. No source or custody masking.
 .offmenu-runtime/
+
+# Impeccable Live process, session, host-path and injection state is local.
+# The static target configuration remains shareable.
+.impeccable/live/*
+!.impeccable/live/
+!.impeccable/live/config.json

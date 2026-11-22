@@ -1,8 +1,10 @@
-# Repository standard 2.5.6
+# Repository standard 2.5.7
 
-Version 2.5.6 adds the Impeccable product record and shared workflow settings
-described in [ADR 0016](../adr/0016-impeccable-project-context.md). It builds
-on the 2.5.5 runtime-installation candidate, preserving the 2.5.4
+Version 2.5.7 adds the Impeccable design-system record, its validated sidecar
+and the safe shared Live configuration described in
+[ADR 0017](../adr/0017-impeccable-design-system-record.md). It builds on the
+2.5.6 product-context candidate, preserving the 2.5.5 runtime-installation
+candidate and the 2.5.4
 environment-policy distribution candidate and the 2.5.3 merge-only amendment
 candidate based on accepted source 349dbf9. Previous standard status: adopted
 through reviewed integration after independent source review and real
@@ -31,6 +33,7 @@ adequate architecture.
 | `scripts/` | Small build/bootstrap/validation entrypoints. |
 | `tests/` | Python suites and `web/`, `edge/`, `compat/`, `support/` runtime verification. |
 | `docs/`, `examples/`, `archive/` | Current guides and ADRs, offline examples, and explicitly frozen custody. |
+| `DESIGN.md`, `.impeccable/design.json` | Portable design-system record and its panel-only extensions; tokens in `DESIGN.md` are normative. |
 
 Root manifests/configuration remain where their tools require them. Ignored
 `node_modules/`, `dist/`, `build/`, virtual environments, package metadata and
@@ -54,7 +57,7 @@ New Python modules and tests use `snake_case.py` and `test_<behavior>.py`.
 JavaScript modules, styles, schemas and prose use descriptive lower kebab case;
 JS tests use `<behavior>.test.mjs`. Python package directory underscores remain
 correct. JSON field casing follows its existing public schema, not its filename.
-Keep platform conventions such as `README.md`, `MANIFEST.in`, `SKILL.md`,
+Keep platform conventions such as `README.md`, `MANIFEST.in`, `SKILL.md`, `DESIGN.md`,
 `__init__.py` and lockfile names. Never rename an externally specified path just
 to satisfy a generic regular expression.
 

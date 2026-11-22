@@ -8,7 +8,7 @@ web
 
 ## Brand Commitments
 
-Use a pale green background for the shared light theme, retailer popup and local pantry demo.
+Use a light green canvas (`#d9efda`) for the household app, shared light theme, retailer popup and local pantry demo. Open the landing page with the original blue-and-white OffMenu neon bowl on its dark signboard. Use the compact scanner-frame bowl wherever space calls for a small brand mark.
 
 ## Users
 

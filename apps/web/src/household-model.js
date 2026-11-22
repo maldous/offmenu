@@ -9,7 +9,34 @@ const has=(text,term)=>new RegExp('\\b'+term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&
 export function memberSuitability(recipe,member){const hard=[],changes=[],checks=[];const diets=member.advisors||[],restrictions=member.restrictions||[];for(const i of recipe.ingredients){const evidence=restrictionEvidence(i),prohibited=[];if(diets.includes('gluten-free')&&evidence.tags.includes('gluten'))prohibited.push('gluten ingredient');if((diets.includes('dairy-free')||diets.includes('vegan'))&&evidence.tags.includes('dairy'))prohibited.push('dairy');if((diets.includes('vegetarian')&&evidence.tags.includes('meat'))||(diets.includes('vegan')&&evidence.tags.includes('animal')))prohibited.push('animal ingredient');for(const restriction of restrictions){if(evidence.tags.includes(restriction.term)||evidence.id===canonicalIngredient(restriction.term))prohibited.push(restriction.type+': '+restriction.term);if(['allergy','intolerance','religious'].includes(restriction.type))checks.push('Check package evidence for '+restriction.term+'; certification and cross-contact are not inferred');}for(const dislike of member.avoid||[])if(evidence.id===canonicalIngredient(dislike))prohibited.push('avoid '+dislike);for(const reason of prohibited){if(i.optional)changes.push('Omit optional '+i.ingredient+' for '+member.name);else hard.push(i.ingredient+' ('+reason+')');}if(!evidence.known)checks.push('Unknown ingredient evidence: '+i.ingredient);if(evidence.packageCheck&&(restrictions.length||diets.some(x=>['vegan','gluten-free','dairy-free'].includes(x))))checks.push('Check the actual '+i.ingredient+' package');}if(diets.includes('gluten-free'))checks.push('Check every package for gluten and cross-contact information');if((member.age==null||member.age<18)&&diets.includes('weight-loss'))checks.push('Adult weight-loss scoring disabled until age 18+ is recorded');const status=hard.length?'blocked':checks.length?'needs-check':'no-known-conflict';return {memberId:member.id,name:member.name,hard:[...new Set(hard)],changes:[...new Set(changes)],checks:[...new Set(checks)],status,compatible:hard.length===0,automaticSelection:hard.length===0&&checks.length===0};}
 export function groupSuitability(recipe,members){const details=members.map(m=>memberSuitability(recipe,m));return {details,compatible:details.every(d=>d.compatible),automaticSelection:details.every(d=>d.automaticSelection),changes:details.flatMap(d=>d.changes),blocked:details.filter(d=>!d.compatible).map(d=>d.name),checks:details.flatMap(d=>d.checks)};}
 export function householdPortions(members,fallback=2){return members.length?members.reduce((n,m)=>n+(m.portion||1),0):fallback;}
-export function rankedMenus(recipes,inventory,products,members,servings,date){const rows=matchMeals(inventory,recipes,servings,date);return rows.map(r=>{const group=groupSuitability(r,members);const summary=planSummary([{recipeId:r.id,date,servings:1}],recipes,inventory,products,[date]);let score=r.coverage*100+(group.automaticSelection?200:group.compatible?100:0);for(const member of members){const goals=member.advisors||[];const complete=k=>{const n=summary.totals[k];return n.known===n.total&&n.total>0?n.value:null;};const protein=complete('proteins_100g'),carbs=complete('carbohydrates_100g'),energy=complete('energy-kcal_100g');if(goals.includes('high-protein')&&protein!=null)score+=protein;if(goals.includes('low-carb')&&carbs!=null)score-=carbs*.2;if(goals.includes('weight-loss')&&(member.age!=null&&member.age>=18)&&energy!=null)score-=energy*.01;}return {...r,group,score};}).sort((a,b)=>b.score-a.score);}
+export function rankedMenus(recipes,inventory,products,members,servings,date){
+ const rows=matchMeals(inventory,recipes,servings,date);
+ const nutritionAdvisors=members.flatMap(member=>{
+  const goals=member.advisors||[];
+  const protein=goals.includes('high-protein');
+  const carbs=goals.includes('low-carb');
+  const energy=goals.includes('weight-loss')&&member.age!=null&&member.age>=18;
+  return protein||carbs||energy?[{protein,carbs,energy}]:[];
+ });
+ return rows.map(recipe=>{
+  const group=groupSuitability(recipe,members);
+  let score=recipe.coverage*100+(group.automaticSelection?200:group.compatible?100:0);
+  if(nutritionAdvisors.length){
+   const {totals}=planSummary([{recipeId:recipe.id,date,servings:1}],recipes,inventory,products,[date]);
+   const complete=key=>{
+    const nutrient=totals[key];
+    return nutrient.known===nutrient.total&&nutrient.total>0?nutrient.value:null;
+   };
+   const protein=complete('proteins_100g'),carbs=complete('carbohydrates_100g'),energy=complete('energy-kcal_100g');
+   for(const advisor of nutritionAdvisors){
+    if(advisor.protein&&protein!=null)score+=protein;
+    if(advisor.carbs&&carbs!=null)score-=carbs*.2;
+    if(advisor.energy&&energy!=null)score-=energy*.01;
+   }
+  }
+  return {...recipe,group,score};
+ }).sort((a,b)=>b.score-a.score);
+}
 export function generateHouseholdDay(recipes,inventory,products,members,date,slots=['Dinner']){const portions=householdPortions(members);const plan=[];for(const slot of slots){const ranked=rankedMenus(recipes.filter(quantified),inventory,products,members,portions,date);const shared=ranked.find(r=>r.group.automaticSelection);if(shared){plan.push({id:crypto.randomUUID(),recipeId:shared.id,date,slot,servings:portions,memberIds:members.map(m=>m.id),adjustments:shared.group.changes});continue;}const byRecipe=new Map();for(const member of members){const recipe=rankedMenus(recipes.filter(quantified),inventory,products,[member],member.portion||1,date).find(r=>r.group.automaticSelection);if(!recipe)continue;const existing=byRecipe.get(recipe.id);if(existing){existing.servings+=member.portion||1;existing.memberIds.push(member.id);}else byRecipe.set(recipe.id,{id:crypto.randomUUID(),recipeId:recipe.id,date,slot,servings:member.portion||1,memberIds:[member.id],adjustments:recipe.group.changes});}plan.push(...byRecipe.values());}return plan;}
 // Suggest a quantity that can actually be added in the manual grocery form
 // (0.001 minimum, any precision); the raw shortfall remains in meal matching.

@@ -87,7 +87,8 @@ const messages = new Map(), classifications = new Map();
 const excludedTechnical={sql:0,shader:0};
 const arabicTree=parse(await readFile('apps/web/src/locales/ar.js','utf8'),{ecmaVersion:'latest',sourceType:'module'});
 const catalogueKeys=new Set();
-for(const entry of arabicTree.body[0].declaration.declarations[0].init.arguments[0].properties){
+const arabicCatalogue=arabicTree.body.flatMap(node=>node.declaration?.declarations||[]).find(node=>node.id.name==='ARABIC');
+for(const entry of arabicCatalogue.init.arguments[0].properties){
   if(catalogueKeys.has(entry.key.value))throw Error('Duplicate Arabic message key: '+entry.key.value);
   catalogueKeys.add(entry.key.value);
 }

@@ -1,0 +1,28 @@
+/* Scope every animation to the retained sign; never hide or lock the page. */
+svg[data-offmenu-neon] { display:block; inline-size:100%; block-size:100%; max-inline-size:100%; max-block-size:100%; overflow:visible; isolation:isolate; }
+svg[data-offmenu-neon] .circuit { opacity:1; pointer-events:none; }
+svg[data-offmenu-neon] .pulse { opacity:0; }
+svg[data-offmenu-neon] .neon-fallback { display:none; }
+svg[data-offmenu-neon][data-neon-phase="loading"] .circuit { opacity:.25; }
+svg[data-offmenu-neon][data-neon-phase="starting"] .circuit { animation:offmenu-neon-energize 800ms cubic-bezier(.16,.68,.3,1) var(--delay) both; }
+svg[data-offmenu-neon][data-neon-phase="starting"] .circuit.ready { animation:none; opacity:1; }
+svg[data-offmenu-neon][data-neon-phase="steaming"] .pulse { animation:offmenu-neon-rise var(--period) linear var(--phase) infinite; will-change:transform,opacity; }
+svg[data-offmenu-neon][data-neon-run="paused"] .circuit,
+svg[data-offmenu-neon][data-neon-run="paused"] .pulse { animation-play-state:paused; }
+svg[data-offmenu-neon][data-neon-run="paused"] .pulse { will-change:auto; }
+svg[data-offmenu-neon][data-neon-material="failed"] .neon-fallback { display:initial; }
+svg[data-offmenu-neon][data-neon-material="failed"] use[href="#glass-atlas"] { display:none; }
+svg[data-offmenu-neon][data-neon-material="failed"] .neon-material { display:none; }
+/* One shallow ignition dip per tube, never repeated full-sign on/off flashes. */
+@keyframes offmenu-neon-energize { 0%{opacity:.25} 35%{opacity:.62} 52%{opacity:.48} 70%{opacity:.9} 100%{opacity:1} }
+@keyframes offmenu-neon-rise { 0%{transform:translateY(0);opacity:0} 12%{opacity:.95} 84%{opacity:.95} 100%{transform:translateY(var(--travel));opacity:0} }
+@media (prefers-reduced-motion:reduce) {
+  svg[data-offmenu-neon] .circuit { animation:none!important; opacity:1!important; }
+  svg[data-offmenu-neon] .pulse { animation:none!important; opacity:0!important; will-change:auto!important; }
+}
+
+/* The luminous signboard is local to the landing page. */
+.hero::before{
+  content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 73% 46%,#182c53 0%,#081020 33%,transparent 66%);
+}

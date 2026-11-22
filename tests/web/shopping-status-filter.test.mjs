@@ -56,7 +56,7 @@ test('a filtered toggle keeps focus usable and separates no matches from a truly
   assert.equal(f.document.activeElement,f.outside);
   assert.deepEqual(f.names(),['Manual']);
   f.rows.length=0;f.profile.shopping.length=0;f.renderShopping();
-  assert.equal(f.list.children[0].textContent,'Plan a meal in My week, or add a shopping item below.');
+  assert.equal(f.list.children[0].textContent,'Your shopping list is empty. Add an item below or choose a recipe in Plan to bring in its shopping gaps.');
 });
 
 const paired=()=>[{id:'left',name:'Same label',amount:'1',checked:false},{id:'right',name:'Same label',amount:'2',checked:false}];

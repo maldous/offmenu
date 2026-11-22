@@ -1,7 +1,7 @@
-import {t,renderedLanguage,apiError} from './i18n.js';
+import {byId as $,localizedElement as el} from './ui-dom.js';
+import {t,apiError} from './i18n.js';
 import {setupSync} from './sync-ui.js';
 import {kitchenProjection,applyKitchen} from './sync-model.js';
-const $=id=>document.getElementById(id),el=(tag,text)=>{const e=document.createElement(tag);e.textContent=text;if(renderedLanguage(text))e.lang=renderedLanguage(text);e.dir='auto';return e;};
 export function setupSharing({getUser,isDemo,getKey,snapshot,apply,refreshSession,status,onScopeChange}){let selected=null,notice='',pollFailures=0,nextPoll=0,generation=0,selectionContext=null,renderGeneration=0;
 // Contexts bind every continuation and detached control to its initiating scope.
 const context=()=>({generation,user:getUser()?.id,key:getKey(),demo:isDemo()});
