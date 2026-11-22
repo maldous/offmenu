@@ -57,17 +57,36 @@ def frida(directory):
  print(json.dumps({'source':'frida','foodRows':len(foods),'parameterRows':len(parameters),'nutrientObservations':observations}),flush=True)
  return rows
 
+def cofid_file_dispositions(source_files):
+ # Input custody, not rights clearance or a claim that a held file was parsed.
+ dispositions=[]
+ for item in source_files:
+  key=item['key']
+  if key=='cofid2021.xlsx':
+   disposition,reason='processed','Current CoFID 2021 workbook; the normalized rows come from this file.'
+  elif key=='cofid-old-foods.xlsx':
+   disposition,reason='held','Historical workbook retained separately; excluded from the current edition.'
+  else:
+   disposition,reason='held','Retained input has no mapping to the current CoFID workbook.'
+  dispositions.append({**item,'disposition':disposition,'reason':reason})
+ if not any(item['disposition']=='processed' for item in dispositions):
+  raise ValueError('CoFID 2021 current workbook is not inventoried')
+ return dispositions
+
 def publish_local(source,rows,inputs,output,release):
  target=output/(source+'-'+release)
  if target.exists():raise ValueError('Immutable output exists: '+str(target))
  if len({r['id'] for r in rows})!=len(rows):raise ValueError('Duplicate normalized identity')
- target.mkdir(parents=True);digests=[]
+ digests=[]
  for p in sorted(inputs.rglob('*')):
   if p.is_file():digests.append({'key':str(p.relative_to(inputs)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+ dispositions=cofid_file_dispositions(digests) if source=='cofid' and release=='2021' else None
+ target.mkdir(parents=True)
  with gzip.open(target/'normalized.jsonl.gz','wt',encoding='utf8',compresslevel=1) as f:
   for row in rows:
    row['provenance']['releaseId']=release;row['provenance']['archiveSha256']=hashlib.sha256(json.dumps(digests,sort_keys=True).encode()).hexdigest();f.write(json.dumps([row],ensure_ascii=False,separators=(',',':'))+'\n')
  manifest={'schemaVersion':'offmenu-collection/1','sourceId':source,'releaseId':release,'status':'normalized','normalizedRows':len(rows),'counts':{'raw':len(rows),'accepted':len(rows),'duplicates':0,'quarantined':0,'excluded':0,'records':len(rows)},'sourceFiles':digests,'archiveSha256':rows[0]['provenance']['archiveSha256'],'license':rows[0]['provenance']['license'],'attribution':rows[0]['provenance']['attribution'],'scope':'Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.','publication':'local only','completedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+ if dispositions is not None:manifest['fileDispositions']=dispositions
  (target/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n');print(json.dumps({'source':source,'records':len(rows),'directory':str(target)}),flush=True)
 
 def main():
