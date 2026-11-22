@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4104,
+  "messages": 4105,
   "arabicTranslated": 643,
-  "arabicMissing": 3461,
+  "arabicMissing": 3462,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -20442,9 +20442,15 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Saved {food} in {place}. Searched recipes for {ingredient}.": {
+      "sources": [
+        "apps/web/src/journey-ui.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Saved {food} in {place}. Showing meals with {ingredient}.": {
       "sources": [
-        "apps/web/src/journey-ui.js",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
