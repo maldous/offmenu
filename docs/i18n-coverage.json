@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4094,
+  "messages": 4097,
   "arabicTranslated": 643,
-  "arabicMissing": 3451,
+  "arabicMissing": 3454,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -4283,6 +4283,13 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Backup restored in this browser.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
     "Backup restored in this browser. Save to cloud to back it up.": {
       "sources": [
         "apps/web/src/app.js"
@@ -5455,6 +5462,13 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Choose a valid JSON file and try again.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
     },
     "Choose a valid remainder action": {
       "sources": [
@@ -7562,6 +7576,13 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Demo backup restored in this browser.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
     },
     "Demo changes stay separate from your kitchen.": {
       "sources": [

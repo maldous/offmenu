@@ -15,11 +15,11 @@ function fixture({failKey,absent=false}={}){
  const raw=new Map([['pantry','[] '],['profile',JSON.stringify(old.profile)+' '],['products','{} '],['recipes','[] '],['selections','[] ']]);
  if(absent)raw.delete('products');
  const before=new Map(raw);let failed=false;
- const $=id=>{if(!nodes.has(id))nodes.set(id,{files:[],value:''});return nodes.get(id);};
+ const $=id=>{if(!nodes.has(id))nodes.set(id,{files:[],value:'',addEventListener(){}});return nodes.get(id);};
  const context={$,Blob,JSON,Object,Error,createPantryBackup,restorePantryBackup,reconcileCookedStock,
   KEY:'pantry',PROFILE:'profile',PRODUCTS:'products',RECIPES:'recipes',SELECTIONS:'selections',
   lots:old.inventory,profile:old.profile,products:old.products,recipes:old.recipes,selections:old.selections,
-  user:null,requestIdentity:{owner:null},today:()=> '2026-10-26',confirm:()=>true,t:x=>x,
+  user:null,demoMode:false,requestIdentity:{owner:null},today:()=> '2026-10-26',confirm:()=>true,t:x=>x,
   localStorage:{getItem:k=>raw.get(k)??null,setItem(k,v){if(k===failKey&&!failed){failed=true;throw Error('Synthetic quota failure');}raw.set(k,v);},removeItem:k=>raw.delete(k)},
   msg:x=>messages.push(x),download:(name,data)=>downloads.push({name,data}),loadProfile(){},pantry(){},findMeals(){},
   markDirty(){sync.push(JSON.stringify({inventory:context.lots,profile:context.profile,products:context.products,recipes:context.recipes,selections:context.selections}));}};
@@ -87,4 +87,17 @@ test('same-account typed member preferences survive the complete restore',async(
  v.profile.members=[{id:'member',name:'Synthetic',portion:1,avoid:[],advisors:[],mealPreferences:preferences}];
  f.context.user={id:'owner'};f.input(createPantryBackup(v,{accountId:'owner'}));await f.$('restore').onchange();
  assert.match(f.messages.at(-1),/Backup restored/);assert.deepEqual(JSON.parse(f.raw.get('profile')).members[0].mealPreferences,preferences);assert.equal(f.sync.length,1);
+});
+
+test('restore shows only local copy for Guest and Demo, preserving account hint',async()=>{
+ for(const [user,demoMode,expected] of [
+  [null,false,'Backup restored in this browser.'],
+  [{id:'synthetic-member'},false,'Backup restored in this browser. Save to cloud to back it up.'],
+  [null,true,'Demo backup restored in this browser.'],
+  [{id:'synthetic-member'},true,'Demo backup restored in this browser.']
+ ]){
+  const f=fixture();Object.assign(f.context,{user,demoMode});
+  f.input({version:1,inventory:value().inventory});await f.$('restore').onchange();
+  assert.equal(f.messages.at(-1),expected);
+ }
 });

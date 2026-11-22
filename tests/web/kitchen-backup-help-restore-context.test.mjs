@@ -14,7 +14,7 @@ const topic={id,aliases:aliases.split(';'),title:plain(article.match(/<h2[^>]*>(
   summary:plain(article.match(/<p>(.*?)<\/p>/s)[1]),body:plain(article)};
 const find=query=>rankedTopics([topic],query).map(x=>x.id);
 
-test('the actual wrong-picker notice for a recipe-only JSON file leads to the one recovery topic',async()=>{
+for(const dialogOpen of [true,false])test('the actual wrong-picker notice leads to the one recovery topic, Account open='+dialogOpen,async()=>{
   const recipe={id:'synthetic-rice',title:'Synthetic rice',source:'Generated test fixture',license:'Synthetic test fixture',servings:1,
     ingredients:[{ingredient:'rice',quantity:1,unit:'g'}],instructions:['Stir.']};
   const recipeFile=[recipe],text=JSON.stringify(recipeFile);
@@ -23,19 +23,27 @@ test('the actual wrong-picker notice for a recipe-only JSON file leads to the on
   const start=app.indexOf('const PANTRY_BACKUP_MAX_BYTES='),end=app.indexOf("$('recipe-import').onchange",start);
   assert(start>=0&&end>start);
   const picker={files:[{size:new Blob([text]).size,text:async()=>text}],value:'synthetic-recipes.json'};
-  const exportControl={},messages=[];
+  const exportControl={},messages=[],account=new EventTarget();
+  account.open=dialogOpen;
+  const restoreError={textContent:'previous restore notice'}, recipeError={textContent:'previous recipe notice'};
+  const controls={restore:picker,export:exportControl,'account-dialog':account,
+    'restore-error':restoreError,'recipe-import-error':recipeError};
   const seen={reads:0,writes:0,confirmation:0,sync:0};
   vm.runInNewContext(app.slice(start,end),{
-    $(id){if(id==='restore')return picker;assert.equal(id,'export');return exportControl;},
+    $(id){assert(Object.hasOwn(controls,id),'unexpected Account control: '+id);return controls[id];},
+    setLocalizedText(control,value){control.textContent=value;},
     restorePantryBackup,t:x=>x,requestIdentity:{owner:null},user:null,lots:[{id:'retained-synthetic'}],
     confirm(){seen.confirmation++;return false;},msg:s=>messages.push(s),markDirty(){seen.sync++;},
     localStorage:{getItem(){seen.reads++;return null;},setItem(){seen.writes++;},removeItem(){seen.writes++;}}
   });
   await picker.onchange();
-  assert.deepEqual(messages,['Invalid pantry backup.']);
+  const expected='Invalid pantry backup.';
+  assert.deepEqual(messages,dialogOpen?[]:[expected]);
+  assert.equal(restoreError.textContent,dialogOpen?expected:'');
+  assert.equal(recipeError.textContent,'');
   assert.deepEqual(seen,{reads:0,writes:0,confirmation:0,sync:0});
   assert.equal(picker.value,'');
-  assert.deepEqual(find(messages[0]),['account-backup'],'Help must index the actual restore notice');
+  assert.deepEqual(find(dialogOpen?restoreError.textContent:messages[0]),['account-backup'],'Help must index the actual restore notice');
   assert.deepEqual(find('restore backup'),['account-backup']);
   assert.deepEqual(find('shopping'),[]);
 });
