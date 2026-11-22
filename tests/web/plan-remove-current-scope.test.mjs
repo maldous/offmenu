@@ -33,3 +33,17 @@ test('stale account, scope epoch, write permission or selected row refuses chang
   c.remove.onclick();assert.deepEqual(writes,[]);assert.equal(JSON.stringify(c.profile),before);
  }
 });
+
+test('Plan keeps the selected meal, siblings and dirty state when browser storage refuses removal',()=>{
+ const {context:c,writes,a,b,dinner}=snapshot(), messages=[];
+ let dirty=0, renders=0;
+ c.localStorage.setItem=()=>{throw Error('fixture storage refusal');};
+ c.markDirty=()=>dirty++;
+ c.renderPlan=()=>renders++;
+ c.msg=message=>messages.push(message);
+ c.t=(key,{v0})=>key.replace('{v0}',v0);
+ try { c.remove.onclick(); } catch {}
+ assert.deepEqual(structuredClone(c.profile.plan),[a,dinner,b],'A rejected save cannot hide the selected meal in memory');
+ assert.deepEqual(writes,[]);assert.equal(dirty,0);assert.equal(renders,0);
+ assert.match(messages[0],/fixture storage refusal/);
+});
