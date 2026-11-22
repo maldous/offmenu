@@ -4,23 +4,26 @@ import {readFileSync} from 'node:fs';
 const src=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
 const code=src.slice(src.indexOf('let recipeImportGeneration=0;'),src.indexOf("\n};",src.indexOf('let recipeImportGeneration=0;'))+3);
 const open=src.match(/if\(!\$\('account-dialog'\)\.open\)\{recipeImportGeneration\+\+;\$\('recipe-import'\)\.value='';\$\('account-dialog'\)\.showModal\(\);\}/)[0];
-function fixture(){
+const readJSONSource=src.split('\n').find(line=>line.startsWith('async function readJSON('));
+function fixture({useRealReadJSON=false}={}){
  let requestIdentity={},recipes=[];
- const out=[], storage=[], close=[];
+ const out=[], storage=[], close=[], effects=[];
  const dialog={open:true,showModal(){this.open=true;},addEventListener(type,fn){close.push(fn);}};
  const field={value:'',files:[]}; const $=key=>key==='account-dialog'?dialog:field;
- const readJSON=async input=>JSON.parse(await input.files[0].text());
+ const PANTRY_BACKUP_MAX_BYTES=20_000_000;
+ const readJSON=useRealReadJSON?eval('('+readJSONSource+')'):async input=>JSON.parse(await input.files[0].text());
  const clearAccountFileErrors=()=>{};
- const showAccountFileError=(id,error)=>out.push(error.name);
+ const showAccountFileError=(id,error)=>out.push(useRealReadJSON?error.message:error.name);
  const validateRecipes=v=>v, RECIPES='mock',localStorage={setItem(k,v){storage.push(JSON.parse(v));}};
- const markDirty=()=>{},findMeals=()=>{},msg=m=>out.push(m),t=x=>x;
+ const markDirty=()=>effects.push('dirty'),findMeals=()=>effects.push('render'),msg=m=>out.push(m),t=x=>x;
  const controls=eval(code+'\n({open:()=>{'+open+'}})');
  function select(name){
   let resolve;const p=new Promise(r=>resolve=r);
   field.value=name;field.files=[{text:()=>p}];
   return {resolve,done:field.onchange()};
  }
- return {select,storage,out,field,close(){dialog.open=false;}, notify(){close.forEach(fn=>fn());},open:controls.open,changeScope(){requestIdentity={};}};
+ function selectSized(name,file){field.value=name;field.files=[file];return field.onchange();}
+ return {select,selectSized,storage,out,field,effects,close(){dialog.open=false;}, notify(){close.forEach(fn=>fn());},open:controls.open,changeScope(){requestIdentity={};}};
 }
 test('current selection writes once and clears picker',async()=>{
  const f=fixture(), x=f.select('current');x.resolve('[{"id":"current"}]');await x.done;
@@ -39,4 +42,26 @@ test('reselection suppresses stale error without clearing active picker',async()
 test('different actor prevents late old-scope mutation and status',async()=>{
  const f=fixture(), x=f.select('old');f.changeScope();x.resolve('[{"id":"old"}]');await x.done;
  assert.deepEqual(f.storage,[]);assert.deepEqual(f.out,[]);
+});
+
+test('Recipe JSON accepts exactly 2 MB and refuses one extra byte before reading, then permits retry',async()=>{
+ const f=fixture({useRealReadJSON:true}),reads=[];
+ function file(id,size){
+  const json=JSON.stringify([{id}]);
+  const contents=json.padEnd(size,' ');
+  assert.equal(Buffer.byteLength(contents,'utf8'),size);
+  return {size,text:async()=>{reads.push(id);return contents;}};
+ }
+ await f.selectSized('too-large.json',file('oversize',2_000_001));
+ assert.deepEqual(reads,[]);
+ assert.deepEqual(f.storage,[]);
+ assert.deepEqual(f.effects,[]);
+ assert.deepEqual(f.out,['File must be under 2 MB.']);
+ assert.equal(f.field.value,'');
+ await f.selectSized('within-limit.json',file('retry',2_000_000));
+ assert.deepEqual(reads,['retry']);
+ assert.deepEqual(f.storage,[[{id:'retry'}]]);
+ assert.deepEqual(f.effects,['dirty','render']);
+ assert.deepEqual(f.out,['File must be under 2 MB.','Recipes imported.']);
+ assert.equal(f.field.value,'');
 });
