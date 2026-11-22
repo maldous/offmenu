@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4077,
+  "messages": 4078,
   "arabicTranslated": 642,
-  "arabicMissing": 3435,
+  "arabicMissing": 3436,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -6773,6 +6773,13 @@
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Copy shopping list": {
+      "sources": [
+        "apps/web/assets/index.html"
+      ],
+      "arabic": false,
       "classification": "explicit-ui"
     },
     "Copy this token now. Treat it as a password; it grants the selected access. It will not be shown again.": {

@@ -32,7 +32,19 @@ function renderShopping(){const {profile}=data();$('shopping-checklist').replace
 $('shopping-add-form').onsubmit=e=>{e.preventDefault();const {profile}=data();profile.shopping||=[];profile.shopping.push({id:crypto.randomUUID(),name:$('shopping-name').value.trim(),amount:$('shopping-amount').value.trim(),checked:false});persist();$('shopping-name').value='';$('shopping-amount').value='';renderShopping();};
 $('shopping-csv').onclick=()=>download('offmenu-shopping.csv',csv([['Ingredient','Amount','Collected'],...items().map(i=>[i.name,i.amount,i.checked?'Yes':'No'])]),'text/csv;charset=utf-8');$('shopping-jsonld').onclick=()=>download('offmenu-shopping.jsonld',JSON.stringify(shoppingJSONLD(items()),null,2),'application/ld+json');$('recipe-jsonld').onclick=()=>download('offmenu-recipes.jsonld',JSON.stringify(recipeJSONLD(data().recipes),null,2),'application/ld+json');
 $('history-csv').onclick=()=>{const {profile}=data();download('offmenu-food-history.csv',csv([['Date','Meal','Person','Dish','Portions','Source',...NUTRIENTS.flatMap(([,name,unit])=>[name+' '+unit,'Coverage'])],...(profile.history||[]).map(m=>[m.date,m.slot,scopeName(m.memberId),m.title,m.servings,m.source,...NUTRIENTS.flatMap(([key])=>[m.totals[key]?.known?m.totals[key].value:'',m.totals[key]?m.totals[key].known+'/'+m.totals[key].total:'0/1'])])]),'text/csv;charset=utf-8');};
-$('share-shopping').onclick=async()=>{const content='offmenu shopping list\n'+items().filter(i=>!i.checked).map(i=>i.name+' — '+i.amount).join('\n');try{if(navigator.share)await navigator.share({title:'offmenu shopping list',text:content});else{await navigator.clipboard.writeText(content);setLocalizedText($('integration-notice'),'Shopping list copied. Paste it into your preferred app.');}}catch(e){if(e.name!=='AbortError')setLocalizedText($('integration-notice'),'Sharing unavailable. Download the list instead.');}};
+const shoppingText=()=>'offmenu shopping list\n'+items().filter(i=>!i.checked).map(i=>i.name+' — '+i.amount).join('\n');
+$('share-shopping').hidden=typeof navigator.share!=='function';
+$('share-shopping').onclick=async()=>{
+ try{await navigator.share({title:'offmenu shopping list',text:shoppingText()});}
+ catch(error){if(error.name!=='AbortError')setLocalizedText($('integration-notice'),'Sharing unavailable. Download the list instead.');}
+};
+$('copy-shopping').hidden=typeof navigator.clipboard?.writeText!=='function';
+$('copy-shopping').onclick=async()=>{
+ try{
+  await navigator.clipboard.writeText(shoppingText());
+  setLocalizedText($('integration-notice'),'Shopping list copied. Paste it into your preferred app.');
+ }catch{setLocalizedText($('integration-notice'),'Sharing unavailable. Download the list instead.');}
+};
 let priceRequest=0;
 $('integration-prices').onclick=async()=>{const attempt=++priceRequest,target=$('integration-price-results');target.replaceChildren();const code=$('integration-barcode').value.trim();if(!/^\d{4,32}$/.test(code)){setLocalizedText(target,'Enter a numeric barcode.');return;}setLocalizedText(target,'Checking dated observations…');try{
  const {saved,savedError,upstreamError,upstream:v}=await loadPriceObservations({barcode:code,country:$('source-country')?.value||'',profile:data().profile,getIdentity,request});
