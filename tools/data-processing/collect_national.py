@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Normalize complete named national releases locally; originals stay outside Git."""
-import argparse,datetime,gzip,hashlib,importlib.util,json,re,tempfile,xml.etree.ElementTree as ET
+import argparse,datetime,gzip,hashlib,importlib.util,json,os,re,tempfile,xml.etree.ElementTree as ET
 from pathlib import Path
 import openpyxl
 ROOT=Path(__file__).resolve().parents[2]
@@ -73,6 +73,22 @@ def cofid_file_dispositions(source_files):
   raise ValueError('CoFID 2021 current workbook is not inventoried')
  return dispositions
 
+def promote_cofid_collection(staged,target):
+ # Use the existing admitted Linux primitive, never a replacing rename.
+ from offmenu.refresh.product_input_witness import _rename_noreplace
+ flags=os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW
+ src=os.open(staged.parent,flags)
+ try:
+  dst=os.open(target.parent,flags)
+  try:
+   _rename_noreplace(src,staged.name,dst,target.name)
+  except FileExistsError:
+   raise ValueError('Immutable output exists: '+str(target)) from None
+  finally:
+   os.close(dst)
+ finally:
+  os.close(src)
+
 def publish_local(source,rows,inputs,output,release):
  target=output/(source+'-'+release)
  if target.exists():raise ValueError('Immutable output exists: '+str(target))
@@ -98,8 +114,7 @@ def publish_local(source,rows,inputs,output,release):
    staged=Path(staging)/target.name
    staged.mkdir()
    write_collection(staged)
-   if target.exists():raise ValueError('Immutable output exists: '+str(target))
-   staged.rename(target)
+   promote_cofid_collection(staged,target)
  else:
   target.mkdir(parents=True)
   write_collection(target)

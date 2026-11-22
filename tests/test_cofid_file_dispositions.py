@@ -1,4 +1,5 @@
 """Tiny synthetic XLSX fixtures only; no provider assets or permissions."""
+import errno
 import gzip
 import hashlib
 import importlib.util
@@ -6,6 +7,9 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
+
+from offmenu.refresh import product_input_witness
 
 import openpyxl
 
@@ -99,3 +103,53 @@ class CoFIDDispositionTest(unittest.TestCase):
         entry={'key':'cofid2021.xlsx','bytes':10,'sha256':'a'*64,'private':'synthetic-not-emitted'}
         [item]=COLLECT.cofid_file_dispositions([entry])
         self.assertEqual(set(item),{'key','bytes','sha256','disposition','reason'})
+
+    def test_atomic_racing_target_is_never_replaced_and_retry_is_clean(self):
+        for populated in (False,True):
+            with self.subTest(populated=populated), tempfile.TemporaryDirectory() as tmp:
+                root=Path(tmp); inputs=root/'synthetic-inputs'; inputs.mkdir()
+                workbook(inputs/'cofid2021.xlsx',[
+                    ['0007','Fictional solid',None,'A',None,None,None,2.1,3.2],
+                ])
+                output=root/'synthetic-output'; target=output/'cofid-2021'
+                rows=COLLECT.national.cofid(inputs)
+                actual=product_input_witness._rename_noreplace
+                observation={}
+                def race(*args):
+                    target.mkdir()
+                    observation['inode']=target.stat().st_ino
+                    if populated:
+                        (target/'sentinel').write_bytes(b'synthetic preexisting bytes')
+                    return actual(*args)
+                with patch.object(product_input_witness,'_rename_noreplace',side_effect=race):
+                    with self.assertRaisesRegex(ValueError,'Immutable output exists'):
+                        COLLECT.publish_local('cofid',rows,inputs,output,'2021')
+                self.assertEqual(target.stat().st_ino,observation['inode'])
+                self.assertEqual(sorted(p.name for p in target.iterdir()),['sentinel'] if populated else [])
+                if populated:
+                    self.assertEqual((target/'sentinel').read_bytes(),b'synthetic preexisting bytes')
+                    (target/'sentinel').unlink()
+                self.assertEqual(list(output.iterdir()),[target])
+                target.rmdir()  # Removes only the test's racing directory.
+                COLLECT.publish_local('cofid',rows,inputs,output,'2021')
+                self.assertEqual(list(output.iterdir()),[target])
+                self.assertEqual(json.loads((target/'manifest.json').read_bytes())['normalizedRows'],1)
+
+    def test_promotion_failure_is_closed_preserves_siblings_and_leaves_no_partial(self):
+        for code in (errno.EACCES,errno.ENOSYS):
+            with self.subTest(code=code), tempfile.TemporaryDirectory() as tmp:
+                root=Path(tmp); inputs=root/'synthetic-inputs'; inputs.mkdir()
+                workbook(inputs/'cofid2021.xlsx',[
+                    ['0007','Fictional solid',None,'A',None,None,None,2.1,3.2],
+                ])
+                rows=COLLECT.national.cofid(inputs)
+                output=root/'synthetic-output'; output.mkdir(); keep=output/'sibling'
+                keep.write_bytes(b'synthetic existing output')
+                inode=keep.stat().st_ino
+                with patch.object(product_input_witness,'_rename_noreplace',side_effect=OSError(code,'synthetic')):
+                    with self.assertRaises(OSError) as raised:
+                        COLLECT.publish_local('cofid',rows,inputs,output,'2021')
+                self.assertEqual(raised.exception.errno,code)
+                self.assertEqual(list(output.iterdir()),[keep])
+                self.assertEqual(keep.stat().st_ino,inode)
+                self.assertEqual(keep.read_bytes(),b'synthetic existing output')
