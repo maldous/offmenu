@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4099,
+  "messages": 4104,
   "arabicTranslated": 643,
-  "arabicMissing": 3456,
+  "arabicMissing": 3461,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -3531,6 +3531,13 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "All items": {
+      "sources": [
+        "apps/web/assets/index.html"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
     "All languages": {
       "sources": [
         "apps/web/assets/index.html",
@@ -5934,10 +5941,11 @@
     },
     "Collected": {
       "sources": [
+        "apps/web/assets/index.html",
         "apps/web/src/insights-ui.js"
       ],
       "arabic": false,
-      "classification": "heuristic-candidate"
+      "classification": "explicit-ui"
     },
     "Come on in.": {
       "sources": [
@@ -14631,6 +14639,13 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "No collected shopping items.": {
+      "sources": [
+        "apps/web/src/insights-ui.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
     "No current evidenced control path; absence is not independence": {
       "sources": [
         "apps/web/src/evidence-model.js"
@@ -14902,6 +14917,13 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "No uncollected shopping items.": {
+      "sources": [
+        "apps/web/src/insights-ui.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
     },
     "No updates yet.": {
       "sources": [
@@ -21598,6 +21620,13 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Shopping status": {
+      "sources": [
+        "apps/web/assets/index.html"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
     "Shopping, settled.": {
       "sources": [
         "apps/web/src/app.js"
@@ -24724,6 +24753,13 @@
     "Unclosed CSV quote.": {
       "sources": [
         "apps/web/src/unified-data.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
+    "Uncollected": {
+      "sources": [
+        "apps/web/assets/index.html"
       ],
       "arabic": false,
       "classification": "explicit-ui"
