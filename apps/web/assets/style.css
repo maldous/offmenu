@@ -96,3 +96,6 @@ input[inputmode="numeric"],input[type="email"],input[type="url"],input[type="dat
   .capture-dock{display:grid;grid-template-columns:1fr 1fr}
   #sync-indicator{grid-column:1/-1}
 }
+.entry-privacy{max-width:65ch;margin:2rem auto;padding:0 1.25rem;line-height:1.5}
+.entry-privacy-preferences{display:none}
+.account-dialog:has(#third-party-services form) .entry-privacy-preferences{display:block}
