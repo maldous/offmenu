@@ -143,7 +143,7 @@ not a browser run, contextual entry test, or assistive-technology result.
 | Case | Exact queries | Source replay result |
 | --- | --- | --- |
 | H1 Account | `profile backup`; `where is my account` | Both return one result: `#account-backup`, **Find your account and back up your kitchen**. These are general Help results; the source control opens Account, not search. |
-| H2 Shopping share/copy | `share shopping list`; `copy uncollected items` | No matching bundled topic. Keep uncollected names/amount text and the share/copy fallback distinct from CSV and checkout. |
+| H2 Shopping share/copy | `share shopping list`; `copy uncollected items` | No matching bundled topic. **Share shopping list** and **Copy shopping list** are separate, capability-gated actions using unchecked item names and amounts, which may be private. Cancelling Share does not copy anything; **Download CSV ↓** is a separate action. |
 | H3 Shopping CSV | `download shopping csv`; `collected column` | No matching bundled topic. Keep all current rows and the Collected field distinct from share/copy, printing and food-history CSV. |
 | H4 Receipt confirmation | `confirm grocery receipt`; `shelf reset versus grocery unpacking` | No matching bundled topic. Review is not confirmation; the completed receipt has no confirmation control. |
 | Shopping/print probes | `shopping`; `print`; `print shopping list` | No matching bundled topic. Print is a distinct help gap, not evidence of a missing or supported native print action. |
