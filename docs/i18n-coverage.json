@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4092,
+  "messages": 4094,
   "arabicTranslated": 643,
-  "arabicMissing": 3449,
+  "arabicMissing": 3451,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -11054,6 +11054,13 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Import stopped: recipes with a matching ID contain different details. Existing recipes were kept.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
     "Import unified JSON, OFF or USDA JSON, or map CSV columns. Private to your account; no public redistribution.": {
       "sources": [
         "apps/web/src/sources.js"
@@ -14724,6 +14731,13 @@
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "No new recipes to import.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
       "classification": "explicit-ui"
     },
     "No nutrient data for selected day": {
