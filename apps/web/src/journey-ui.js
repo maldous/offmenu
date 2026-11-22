@@ -1,10 +1,10 @@
+import {byId as $,localizedElement as el} from './ui-dom.js';
 import {showLocalized,localizedField} from './content-locale.js';
-import {t,renderedLanguage,setLocalizedText,getLanguage} from './i18n.js';
+import {t,setLocalizedText,getLanguage} from './i18n.js';
 import {groupSuitability} from './household-model.js';
 import {INGREDIENTS,ingredientIdentity,canonicalAmount,canonicalIngredient,displayAmount} from './ingredients.js';
 import {cookMeal,serveBatch,undoCook} from './cooking-model.js';
 import {validateLot} from './model.js';
-const $=id=>document.getElementById(id),el=(tag,text)=>{const e=document.createElement(tag);e.textContent=text;if(renderedLanguage(text))e.lang=renderedLanguage(text);e.dir='auto';return e;};
 export function setupJourney({getData,commit,today,view}){let selectedRecipe=null,selectedPlan=null,selectedBatch=null,completedBatchId='',wake=null,timer=null,cookSubmitting=false;
 for(const i of INGREDIENTS){const o=el('option',i.id);o.value=i.id;$('produce-options').append(o);}
 let findAfterSaving = false;
@@ -23,26 +23,38 @@ function showFoodRecipes(term) {
   notice.tabIndex = -1;
   return notice;
 }
-$('food-browse').onclick = () => {
+function browseFoodRecipes() {
   const nameInput = $('food-name');
   nameInput.value = nameInput.value.trim();
   if (!nameInput.reportValidity()) return;
   const term = $('food-ingredient').value.trim() || $('food-name').value.trim();
   $('food-dialog').close();
   const notice = showFoodRecipes(term);
-  setLocalizedText(notice, 'Finding recipes for {food}. Your stock has not changed.', {food:term});
+  setLocalizedText(notice, 'Searching recipes for {food}. Nothing was saved to your kitchen.', {food:term});
   notice.focus();
-};
-function openFood(forMeals = false) {
+}
+$('food-browse').onclick = browseFoodRecipes;
+function openFood(forMeals = false, showStock = !forMeals) {
   findAfterSaving = forMeals;
   ingredientEdited = false;
   $('food-form').reset();
-  $('food-form').querySelector('details').open = false;
-  setLocalizedText($('food-save'), forMeals ? 'Save and find meals' : 'Add to my kitchen');
+  const stockOptions = $('food-stock-options');
+  stockOptions.open = showStock;
+  $('food-stock-summary').hidden = !forMeals;
+  $('food-stock-options').querySelector('.food-date-options').open = false;
+  $('food-browse').className = forMeals ? 'coral' : 'text-button';
+  setLocalizedText($('food-save'), forMeals ? 'Save and find recipes' : 'Add to my kitchen');
   $('food-location').replaceChildren();const data=getData(),known=[...(data.profile.locations||[]),...data.inventory.map(l=>l.location).filter(Boolean)];if(!known.length)known.push({area:'Pantry',shelf:'Shelf 1'});const seen=new Set;for(const l of known){if(!l?.area||!l?.shelf)continue;const key=JSON.stringify([l.area,l.shelf]);if(seen.has(key))continue;seen.add(key);const o=el('option',l.area+' / '+l.shelf);o.value=JSON.stringify({area:l.area,shelf:l.shelf});$('food-location').append(o);}setLocalizedText($('food-notice'),'');$('food-dialog').showModal();}
 $('quick-add').onclick = () => openFood();
+$('food-form').addEventListener('invalid', event => {
+  if ($('food-stock-options').contains(event.target)) $('food-stock-options').open = true;
+}, true);
 $('food-form').onsubmit = event => {
   event.preventDefault();
+  if (findAfterSaving && !$('food-stock-options').open) {
+    browseFoodRecipes();
+    return;
+  }
   try {
     const d = getData();
     const name = $('food-name').value.trim();

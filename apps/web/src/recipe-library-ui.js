@@ -1,8 +1,8 @@
+import {byId as $,localizedElement as el} from './ui-dom.js';
 import {localizedField,localizedRecipe,showLocalized} from './content-locale.js';
-import {t,renderedLanguage,setLocalizedText,getLanguage} from './i18n.js';
+import {t,setLocalizedText,getLanguage} from './i18n.js';
 import {matchRecipeStock,personallyReviewedRecipe,recipeJSONLD} from './recipe-library-model.js';
 import {createRecipeDiscovery,recipeDiscoveryView} from './recipe-discovery-client.js';
-const $=id=>document.getElementById(id),el=(tag,text)=>{const n=document.createElement(tag);n.textContent=text;if(renderedLanguage(text))n.lang=renderedLanguage(text);n.dir='auto';return n;};
 export function setupRecipeLibrary({inventory,saveRecipe,download,today=()=>new Date().toISOString().slice(0,10)}){
  let manifest,library=[],selected,loaded=false,nextCursor=null,query='',generation=0,controller,timer;
  const discovery=createRecipeDiscovery(),records=new Map();

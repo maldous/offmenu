@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4104,
-  "arabicTranslated": 643,
-  "arabicMissing": 3461,
+  "messages": 4211,
+  "arabicTranslated": 764,
+  "arabicMissing": 3447,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -1014,6 +1014,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "(prefers-reduced-motion: reduce)": {
+      "sources": [
+        "apps/web/src/app.js",
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "(prefers-reduced-motion:reduce)": {
       "sources": [
         "apps/web/src/app.js"
@@ -1030,7 +1038,6 @@
     },
     "+ Add food": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -1570,8 +1577,8 @@
         "apps/web/src/services-ui.js",
         "apps/web/src/sharing-ui.js",
         "apps/web/src/shelf-scanner.js",
-        "apps/web/src/sw.js",
         "apps/web/src/sync-ui.js",
+        "apps/web/src/ui-dom.js",
         "apps/web/src/unified-data.js"
       ],
       "arabic": false,
@@ -1656,9 +1663,23 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "./locale-negotiation.js": {
+      "sources": [
+        "apps/web/src/sw.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "./locale.mjs": {
       "sources": [
         "apps/web/server/handler.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "./locales/offline.js": {
+      "sources": [
+        "apps/web/src/sw.js"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -1720,6 +1741,13 @@
       "classification": "heuristic-candidate"
     },
     "./offmenu-identity-client.js": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "./offmenu-neon.js": {
       "sources": [
         "apps/web/src/app.js"
       ],
@@ -2075,6 +2103,16 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "./ui-dom.js": {
+      "sources": [
+        "apps/web/src/insights-ui.js",
+        "apps/web/src/journey-ui.js",
+        "apps/web/src/recipe-library-ui.js",
+        "apps/web/src/sharing-ui.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "./unified-data.js": {
       "sources": [
         "apps/web/src/data-ui.js",
@@ -2264,6 +2302,36 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "/offmenu-neon-material.jpg": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js",
+        "apps/web/src/sw.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "/offmenu-neon.css": {
+      "sources": [
+        "apps/web/src/sw.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "/offmenu-neon.svg": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js",
+        "apps/web/src/sw.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "/offmenu-tokens.css": {
+      "sources": [
+        "apps/web/src/sw.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "/openapi.json": {
       "sources": [
         "apps/web/server/integrations.mjs",
@@ -2319,16 +2387,21 @@
     },
     "/scanner-balanced-final-dark.svg": {
       "sources": [
-        "apps/web/src/product-visual-selector.js",
-        "apps/web/src/shelf-scanner.js"
+        "apps/web/src/product-visual-selector.js"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
     },
     "/scanner-balanced-final.svg": {
       "sources": [
-        "apps/web/src/product-visual-selector.js",
-        "apps/web/src/shelf-scanner.js"
+        "apps/web/src/product-visual-selector.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "/scanner-theme-init.js": {
+      "sources": [
+        "apps/web/src/sw.js"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -2439,7 +2512,6 @@
     },
     "3 items · endless possibilities": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -2607,13 +2679,6 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
-    "A fresh start.": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
     "A gentle, brief green glow around the register.": {
       "sources": [
         "apps/web/assets/index.html"
@@ -2623,7 +2688,6 @@
     },
     "A little inspiration": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -2646,24 +2710,9 @@
     },
     "A little room for possibility.": {
       "sources": [
-        "apps/web/src/app.js",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
-      "classification": "explicit-ui"
-    },
-    "A little sensory satisfaction.": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
-    "A new find": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
       "classification": "explicit-ui"
     },
     "A newer AI settings revision exists.": {
@@ -2749,13 +2798,6 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
-    },
-    "A place for everything.": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
     },
     "A reviewed write confirmation is required.": {
       "sources": [
@@ -2911,7 +2953,6 @@
     },
     "ALREADY YOURS ✓": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -3105,6 +3146,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Achievements": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Acquisition and modelled baskets are not observed consumption. Unknown amounts are not zero.": {
       "sources": [
         "apps/web/src/basket-model.js"
@@ -3171,6 +3220,23 @@
     "Add a food": {
       "sources": [
         "apps/web/assets/index.html",
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Add a food and its amount to check which recipes you can make.": {
+      "sources": [
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Add a food to see where it is stored and which recipes it can help you make.": {
+      "sources": [
+        "apps/web/src/app.js",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -3192,11 +3258,12 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
-    "Add anything else": {
+    "Add food": {
       "sources": [
-        "apps/web/assets/index.html"
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Add food to my kitchen": {
@@ -3237,7 +3304,6 @@
     },
     "Add my first food": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -3259,7 +3325,6 @@
     },
     "Add people, their preferences and dietary advisors to personalise your menus.": {
       "sources": [
-        "apps/web/src/app.js",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -3606,9 +3671,16 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
-    "Allow camera access if asked. Type code remains available.": {
+    "Allow camera access if asked, then centre a barcode in the frame. If you prefer, type the code.": {
       "sources": [
         "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Allow camera access if asked. Type code remains available.": {
+      "sources": [
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -4616,9 +4688,16 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Bring on the beeps.": {
+    "Bring missing ingredients into a shopping list and add impulse buys or other unplanned purchases by hand. Tick off items, check dated price observations by barcode, and share, print or export the list.": {
       "sources": [
         "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Bring on the beeps.": {
+      "sources": [
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -4643,6 +4722,14 @@
         "apps/web/src/data-ui.js"
       ],
       "arabic": false,
+      "classification": "explicit-ui"
+    },
+    "Browse food datasets by country, inspect published records and mappings, find starter baskets, and compare measured baskets. Explore data exports, developer APIs and optional connections.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Browse source ↗": {
@@ -4924,6 +5011,14 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Camera light": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Camera permission is blocked. You can type the barcode or use a USB / Bluetooth scanner. To retry with the camera, allow it in your browser settings.": {
       "sources": [
@@ -5280,6 +5375,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Check what was scanned, count identical packs, correct an item or undo the last scan. Review the receipt before confirming and print or save a copy.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Check your email for recovery instructions.": {
       "sources": [
         "apps/web/src/app.js",
@@ -5440,6 +5543,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Choose a recipe and check which ingredients you have in the quantities it needs.": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Choose a setup, then open the camera.": {
       "sources": [
         "apps/web/assets/index.html",
@@ -5457,7 +5567,6 @@
     },
     "Choose a shelf and scan your first items through checkout.": {
       "sources": [
-        "apps/web/src/app.js",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -5503,6 +5612,14 @@
         "apps/web/src/app.js"
       ],
       "arabic": false,
+      "classification": "explicit-ui"
+    },
+    "Choose another area to see what you have.": {
+      "sources": [
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Choose at least one scope.": {
@@ -5631,6 +5748,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Choose your language and units, switch between light and dark, and set scan sound, vibration and other feedback. Review privacy choices or find help when you need it.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Choose your own check interval from the label and storage conditions.": {
       "sources": [
         "apps/web/src/freshness-ui.js"
@@ -5681,16 +5806,8 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
-    "Cleanup, recorded.": {
-      "sources": [
-        "apps/web/src/app.js"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
     "Clear a shelf.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -5738,6 +5855,7 @@
     },
     "Close": {
       "sources": [
+        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -5898,11 +6016,10 @@
     },
     "Coconut milk": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/app.js"
       ],
       "arabic": false,
-      "classification": "explicit-ui"
+      "classification": "heuristic-candidate"
     },
     "Code captured · querying selected retained identifiers": {
       "sources": [
@@ -5949,7 +6066,6 @@
     },
     "Come on in.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/app.js"
       ],
       "arabic": false,
@@ -6162,18 +6278,19 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
-    "Compare a second measured basket": {
+    "Compare compatible evidence": {
       "sources": [
         "apps/web/assets/data-workspace.html"
       ],
       "arabic": false,
       "classification": "explicit-ui"
     },
-    "Compare compatible evidence": {
+    "Compare with a second measured basket": {
       "sources": [
-        "apps/web/assets/data-workspace.html"
+        "apps/web/assets/data-workspace.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Competing observations": {
@@ -6352,16 +6469,8 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Confirm cooked · deduct ingredients": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
     "Confirm identifier": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -6561,13 +6670,6 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Consumption, curiosity and little milestones. Make it your own.": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
     "Contact support": {
       "sources": [
         "apps/web/src/services-ui.js"
@@ -6686,6 +6788,14 @@
     "Cook this meal": {
       "sources": [
         "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Cook, serve and save leftovers": {
+      "sources": [
+        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -7001,6 +7111,14 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Create household profiles with dietary preferences, allergies and portions. Check recipes for selected diners, use available advisors and choose whether to connect optional health tools.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Create or revise a confirmed public care update.": {
       "sources": [
         "apps/web/server/admin-mcp.mjs"
@@ -7301,6 +7419,15 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Dark mode": {
+      "sources": [
+        "apps/web/assets/data-workspace.html",
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Data connection": {
       "sources": [
@@ -7770,6 +7897,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Dietary profiles": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Dietary status": {
       "sources": [
         "apps/web/src/shelf-scanner.js"
@@ -7807,7 +7942,6 @@
     },
     "Dinner starts": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -7874,6 +8008,14 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Discarded food recorded": {
+      "sources": [
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Discover regional food composition tables worldwide; not a single globally licensed database.": {
       "sources": [
         "apps/web/src/sources.js"
@@ -7910,11 +8052,12 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Do another shelf ↗": {
+    "Do another shelf": {
       "sources": [
-        "apps/web/assets/index.html"
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Document": {
@@ -8049,11 +8192,12 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
-    "Download private import JSON": {
+    "Download product data as JSON": {
       "sources": [
-        "apps/retailer-extension/popup.html"
+        "apps/retailer-extension/popup.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Download source recipe as JSON-LD": {
@@ -8251,7 +8395,6 @@
     },
     "EST. RIGHT NOW": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -8607,6 +8750,14 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Enter a barcode or product code": {
+      "sources": [
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Enter a barcode with 4–32 digits.": {
       "sources": [
         "apps/web/src/app.js"
@@ -8709,7 +8860,6 @@
     },
     "Enter an identifier": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -9506,7 +9656,23 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Explore the evidence behind food": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Explore the shared recipe library.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Explore what OffMenu can do": {
       "sources": [
         "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
@@ -9868,11 +10034,19 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
-    "Find a menu to add ✳": {
+    "Find a meal": {
       "sources": [
-        "apps/web/assets/index.html"
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Find a menu to add": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Find a source, service or data type": {
@@ -9889,7 +10063,7 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
-    "Find recipes without adding stock": {
+    "Find recipes": {
       "sources": [
         "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
@@ -9897,9 +10071,31 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Find recipes and plan meals": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Find recipes with one food": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Find recipes without adding stock": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Finding recipes for {food}. Your stock has not changed.": {
       "sources": [
-        "apps/web/src/journey-ui.js",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -10023,6 +10219,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Follow a food from its barcode or ingredient name to the meals you plan, cook and share.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Food": {
       "sources": [
         "apps/web/src/documents.js"
@@ -10051,6 +10255,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Food and nutrition history": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Food concepts": {
       "sources": [
         "apps/web/assets/data-workspace.html"
@@ -10061,6 +10273,31 @@
     "Food data & estimated nutrition": {
       "sources": [
         "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Food data and sources": {
+      "sources": [
+        "apps/web/assets/data-workspace.html",
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Food dates and reminders": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Food freshness": {
+      "sources": [
+        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -10210,6 +10447,14 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "From product to pantry to plate": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "From your shopping bag to its new home.": {
       "sources": [
         "apps/web/src/app.js",
@@ -10337,6 +10582,13 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Garbage scan": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Garmin Health": {
       "sources": [
         "apps/web/src/sources.js"
@@ -10390,7 +10642,6 @@
     },
     "Give your kitchen": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -10422,7 +10673,6 @@
     },
     "Global food and evidence workspace": {
       "sources": [
-        "apps/web/assets/data-workspace.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -10554,7 +10804,6 @@
     },
     "HELLO, KITCHEN.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -10747,6 +10996,22 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Household member profile": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Household members and advisors": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Household menus & recipe booklet": {
       "sources": [
         "apps/web/src/documents.js",
@@ -10779,6 +11044,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "How OffMenu works": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "How are you scanning?": {
       "sources": [
         "apps/web/assets/index.html",
@@ -10795,14 +11067,15 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
-    "How far can your kitchen go?": {
+    "How it works": {
       "sources": [
-        "apps/web/assets/index.html"
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
-    "How it works": {
+    "How many meals can your ingredients cover?": {
       "sources": [
         "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
@@ -11005,7 +11278,6 @@
     },
     "Illustration of the offmenu home checkout": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -12089,6 +12361,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Invalid neon asset": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Invalid notification update.": {
       "sources": [
         "apps/web/server/care-updates.mjs"
@@ -12774,6 +13053,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Item to buy": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Items": {
       "sources": [
         "apps/web/assets/index.html"
@@ -12847,7 +13134,6 @@
     },
     "Just one shelf and a clear bit of bench.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -12868,6 +13154,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Keep personal and shared kitchens": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Keep scanning": {
       "sources": [
         "apps/web/assets/index.html"
@@ -12884,7 +13178,6 @@
     },
     "Keep the kitchen current.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -12916,6 +13209,14 @@
         "apps/web/src/journey-ui.js"
       ],
       "arabic": false,
+      "classification": "explicit-ui"
+    },
+    "Kitchen": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Kitchen access unavailable": {
@@ -12986,6 +13287,14 @@
       "classification": "heuristic-candidate"
     },
     "Kitchen sorted.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Kitchen storage locations": {
       "sources": [
         "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
@@ -13314,6 +13623,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Load a sample basket": {
+      "sources": [
+        "apps/web/assets/data-workspace.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Load child ": {
       "sources": [
         "apps/web/src/source-field-page-presenter.js"
@@ -13355,13 +13672,6 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
-    },
-    "Load synthetic arithmetic example": {
-      "sources": [
-        "apps/web/assets/data-workspace.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
     },
     "Loaded source observations": {
       "sources": [
@@ -13468,6 +13778,14 @@
       "sources": [
         "apps/web/assets/index.html",
         "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Log what you ate to review your meals and any nutrition you recorded.": {
+      "sources": [
+        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -13647,6 +13965,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Make OffMenu yours": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Manage locations": {
       "sources": [
         "apps/web/assets/index.html"
@@ -13768,6 +14094,14 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Matching source records": {
+      "sources": [
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Material": {
       "sources": [
         "apps/web/src/scanner-three.js"
@@ -13796,6 +14130,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Me": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Meal": {
       "sources": [
         "apps/web/assets/index.html",
@@ -13812,6 +14154,23 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Meal ideas": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Meal log": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Meal name": {
       "sources": [
@@ -13832,6 +14191,14 @@
     "Meal nutrients & notes": {
       "sources": [
         "apps/web/src/insights-ui.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Meal plan": {
+      "sources": [
+        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -13917,13 +14284,6 @@
       "classification": "heuristic-candidate"
     },
     "Medium": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
-    "Meet your table.": {
       "sources": [
         "apps/web/assets/index.html"
       ],
@@ -14489,6 +14849,55 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Neon already mounted": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Neon animation paused.": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Neon animation restarted.": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Neon animation resumed.": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Neon asset unavailable": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Neon circuits are missing": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Neon host already mounted": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Netlify Identity": {
       "sources": [
         "apps/web/server/service-config.mjs"
@@ -14667,6 +15076,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "No food in this storage area": {
+      "sources": [
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "No hint · exact lexical lookup": {
       "sources": [
         "apps/web/assets/shelf-scanner.html",
@@ -14767,6 +15184,14 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "No meals match this person and date range.": {
+      "sources": [
+        "apps/web/src/insights-ui.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "No measured ingredient gaps. Check unmeasured ingredients below.": {
       "sources": [
@@ -14941,7 +15366,6 @@
     },
     "No whole-house marathon required.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -15454,6 +15878,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "OffMenu help": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "OffMenu ingredient: unmapped. No evidenced usable_as or contains links. Claims in the source name are not certifications.": {
       "sources": [
         "apps/web/src/shelf-scanner.js"
@@ -15467,6 +15899,14 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "OffMenu neon sign, shown without movement.": {
+      "sources": [
+        "apps/web/src/locales/ar.js",
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "OffMenu property verification must be configured.": {
       "sources": [
@@ -15607,7 +16047,6 @@
     },
     "Oh, so that’s what’s": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -15641,13 +16080,6 @@
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
-      "classification": "explicit-ui"
-    },
-    "One ingredient, more possibilities.": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
       "classification": "explicit-ui"
     },
     "One item to add": {
@@ -15840,9 +16272,16 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
-    "Open camera scanner ▥": {
+    "Open camera scanner": {
       "sources": [
         "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Open camera scanner ▥": {
+      "sources": [
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -15876,9 +16315,16 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Open my checkout ↗": {
+    "Open my checkout": {
       "sources": [
         "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Open my checkout ↗": {
+      "sources": [
         "apps/web/src/app.js",
         "apps/web/src/locales/ar.js"
       ],
@@ -16377,7 +16823,6 @@
     },
     "Pantry, fridge or freezer. One satisfying": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -16439,6 +16884,15 @@
       "sources": [
         "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Pause neon animation": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js",
+        "apps/web/src/offmenu-neon.js"
       ],
       "arabic": true,
       "classification": "explicit-ui"
@@ -16781,7 +17235,6 @@
     },
     "Pick your pantry, fridge or freezer. Put its contents on the bench so you can see what’s there.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -16794,11 +17247,20 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Plan a meal in My week, or add a shopping item below.": {
+    "Plan": {
       "sources": [
-        "apps/web/src/insights-ui.js"
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Plan for the people at your table": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Plan meals on 7 different dates": {
@@ -16849,7 +17311,6 @@
     },
     "Play shopkeeper.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -17016,6 +17477,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Preview kitchen, recipe and shopping documents for printing, email, phone or Kindle. Import and export supported records, or use the retailer extension to review details from a product page.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Preview message": {
       "sources": [
         "apps/web/src/services-ui.js"
@@ -17075,6 +17544,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Price history by barcode": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Price lookup unavailable": {
       "sources": [
         "apps/web/src/saved-price-observations.js"
@@ -17101,6 +17578,14 @@
         "apps/web/assets/index.html"
       ],
       "arabic": false,
+      "classification": "explicit-ui"
+    },
+    "Printable documents & Kindle": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Prioritise recipes using my available ingredients": {
@@ -17896,7 +18381,6 @@
     },
     "Put the good stuff back.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -18119,7 +18603,6 @@
     },
     "Read a barcode image locally": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -18131,13 +18614,6 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
-    },
-    "Read history and statistics": {
-      "sources": [
-        "apps/web/assets/data-workspace.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
     },
     "Read ingredients, source quantities and directions in their original language. Match against your kitchen, then review measurements before adding a recipe to your menus.": {
       "sources": [
@@ -18216,6 +18692,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Read product details from this tab": {
+      "sources": [
+        "apps/retailer-extension/popup.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Read recipe & review quantities": {
       "sources": [
         "apps/web/src/locales/ar.js",
@@ -18247,7 +18731,6 @@
     },
     "Read selected product page": {
       "sources": [
-        "apps/retailer-extension/popup.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -18487,13 +18970,6 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
-    "Ready to put it all away?": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
     "Ready to scan": {
       "sources": [
         "apps/web/src/shelf-scanner.js"
@@ -18552,6 +19028,14 @@
         "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js",
         "apps/web/src/scanner-ui.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Rebuild a shelf": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
       "classification": "explicit-ui"
@@ -18766,6 +19250,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Recipes one ingredient away": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Recipes; scroll for more results": {
       "sources": [
         "apps/web/src/app.js"
@@ -18786,6 +19278,14 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Record cooking and deduct ingredients": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Record family": {
       "sources": [
@@ -18893,12 +19393,27 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Reduced motion: the neon sign is still.": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Reference links only; national documents require separate permission and do not become personal diet rules.": {
       "sources": [
         "apps/web/src/sources.js"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Refresh": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Refresh my connections": {
       "sources": [
@@ -18916,7 +19431,6 @@
     },
     "Refresh ↻": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -19380,6 +19894,13 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Resume neon animation": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Resume or start checkout ↗": {
       "sources": [
         "apps/web/src/app.js"
@@ -19502,6 +20023,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Review a checkout before saving": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Review before putting away.": {
       "sources": [
         "apps/web/assets/index.html"
@@ -19530,6 +20059,14 @@
         "apps/web/src/community-ai-ui.js"
       ],
       "arabic": false,
+      "classification": "explicit-ui"
+    },
+    "Review estimated nutrition and coverage for a day or week, log meals and intake, and compare totals with personal goals. See meal completion, leftovers, waste and earned trophies.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Review every source line": {
@@ -19575,6 +20112,14 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Review scanned items": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Review selected source in kitchen ↗": {
       "sources": [
@@ -19666,7 +20211,6 @@
     },
     "Review your receipt, update that shelf, then find a meal that starts with what you have.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -19797,12 +20341,11 @@
     },
     "Rice": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/app.js",
         "apps/web/src/lifecycle-fixture.js"
       ],
       "arabic": false,
-      "classification": "explicit-ui"
+      "classification": "heuristic-candidate"
     },
     "Rice and carrots": {
       "sources": [
@@ -19941,7 +20484,6 @@
     },
     "SCAN → CHECK → SHELF": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -20116,6 +20658,13 @@
       "classification": "explicit-ui"
     },
     "Save and find meals": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Save and find recipes": {
       "sources": [
         "apps/web/src/journey-ui.js",
         "apps/web/src/locales/ar.js"
@@ -20312,6 +20861,21 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Save this food to my kitchen": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Save to my kitchen": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Saved as cooked stock": {
       "sources": [
         "apps/web/assets/index.html"
@@ -20472,11 +21036,34 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Scale a recipe, use a cooking timer, and record a batch to deduct its ingredients. Record servings and how much was eaten, then keep remaining portions and their storage dates for another meal.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Scan a barcode or type what you have. A loose ingredient works too.": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Scan a barcode photo": {
       "sources": [
         "apps/web/assets/index.html"
       ],
       "arabic": false,
+      "classification": "explicit-ui"
+    },
+    "Scan a barcode photo on this device": {
+      "sources": [
+        "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Scan a barcode to see product details.": {
@@ -20500,6 +21087,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Scan and check products": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Scan at least one item and choose its shelf.": {
       "sources": [
         "apps/web/src/checkout-model.js"
@@ -20514,7 +21109,30 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Scan complete": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Scan discarded food": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Scan each item straight onto your receipt. Glance at nutrition and enjoy the beep. Review it all at the end.": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Scan feedback": {
       "sources": [
         "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
@@ -20524,6 +21142,21 @@
     },
     "Scan feedback ✳": {
       "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Scan groceries": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Scan next demo item": {
+      "sources": [
         "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
@@ -20532,7 +21165,6 @@
     },
     "Scan next demo item ▥": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -20553,12 +21185,44 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Scan sound and feedback": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Scan sounds": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Scan to inspect a product.": {
       "sources": [
         "apps/web/src/shelf-scanner.js"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Scan with a camera or barcode photo, type a code, or use a USB or Bluetooth scanner. Review product matches, ingredients, allergens, nutrition labels and source records before saving.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Scan your items": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Scan → beep → put it back. Every scan is accepted automatically.": {
       "sources": [
@@ -20569,6 +21233,14 @@
       "classification": "explicit-ui"
     },
     "Scan, check, then put it back.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Scanned item": {
       "sources": [
         "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
@@ -20782,6 +21454,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Screen glow": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Screen-up bench · front camera": {
       "sources": [
         "apps/web/assets/index.html",
@@ -20800,6 +21480,22 @@
     "Search": {
       "sources": [
         "apps/web/assets/data-workspace.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Search by ingredient, browse the shared recipe library, import or review recipes, and compare what you have with what you need. Plan meals by day and portion, and see which recipes one missing ingredient could unlock.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Search for this code": {
+      "sources": [
+        "apps/web/assets/shelf-scanner.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -20842,6 +21538,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Searching recipes for {food}. Nothing was saved to your kitchen.": {
+      "sources": [
+        "apps/web/src/journey-ui.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Searching shared recipes…": {
       "sources": [
         "apps/web/src/locales/ar.js",
@@ -20876,6 +21580,13 @@
         "apps/web/src/care-model.js",
         "apps/web/src/locales/ar.js",
         "apps/web/src/recipe-community-ui.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "See what’s missing": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
       "classification": "explicit-ui"
@@ -21548,6 +22259,14 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Shelf scan complete": {
+      "sources": [
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Shelf starter": {
       "sources": [
         "apps/web/src/insights-model.js"
@@ -21555,12 +22274,12 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Shelf, sorted.": {
+    "Shop": {
       "sources": [
         "apps/web/assets/index.html",
-        "apps/web/src/app.js"
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Shop observation #": {
@@ -21575,6 +22294,14 @@
         "apps/web/src/insights-ui.js"
       ],
       "arabic": false,
+      "classification": "explicit-ui"
+    },
+    "Shop with a plan": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Shopping & connections.": {
@@ -21608,9 +22335,10 @@
     },
     "Shopping list": {
       "sources": [
-        "apps/web/assets/index.html"
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Shopping list copied. Paste it into your preferred app.": {
@@ -21620,16 +22348,17 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Shopping scan complete": {
+      "sources": [
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Shopping status": {
       "sources": [
         "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
-    "Shopping, settled.": {
-      "sources": [
-        "apps/web/src/app.js"
       ],
       "arabic": false,
       "classification": "explicit-ui"
@@ -21648,6 +22377,14 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Show all storage": {
+      "sources": [
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Show more recipes": {
       "sources": [
@@ -22027,9 +22764,19 @@
     },
     "Sound off": {
       "sources": [
+        "apps/web/assets/index.html",
         "apps/web/assets/shelf-scanner.html",
+        "apps/web/src/app.js",
         "apps/web/src/locales/ar.js",
         "apps/web/src/shelf-scanner.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Sound on": {
+      "sources": [
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
       "classification": "explicit-ui"
@@ -22588,7 +23335,6 @@
     },
     "Source-record matches": {
       "sources": [
-        "apps/web/assets/shelf-scanner.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -22629,6 +23375,14 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Speak the product": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Special provisioning context: no ordinary household starter": {
       "sources": [
@@ -22722,6 +23476,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Start as a Guest on this device, or sign in for cloud backup. Create or switch between shared kitchens, invite people, manage access and export or restore a kitchen backup.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Start cleanup for this location": {
       "sources": [
         "apps/web/src/freshness-ui.js"
@@ -22775,6 +23537,22 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Start with one person. Add their dietary preferences to check recipes for that diner.": {
+      "sources": [
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Statistics & history": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Statistics cover a page of measurement groups. Export all groups for a complete independent calculation.": {
       "sources": [
         "apps/web/src/data-workspace.js"
@@ -22819,6 +23597,14 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Stock and organise your kitchen": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Stock or journal changed; review again.": {
       "sources": [
@@ -23228,7 +24014,6 @@
     },
     "THE HOME CHECKOUT CLUB": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -23878,6 +24663,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Take your kitchen with you": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Tap water · demo staple": {
       "sources": [
         "apps/web/src/app.js"
@@ -23989,6 +24782,13 @@
       ],
       "arabic": false,
       "classification": "explicit-ui"
+    },
+    "The neon sign is shown without animation.": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
     },
     "The owner must retain ownership": {
       "sources": [
@@ -24267,8 +25067,6 @@
     },
     "Three ideas for dinner.": {
       "sources": [
-        "apps/web/assets/index.html",
-        "apps/web/src/app.js",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -24315,6 +25113,14 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Today": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Toggle a public source.": {
       "sources": [
@@ -24771,6 +25577,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Understand nutrition and progress": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Undo cooking": {
       "sources": [
         "apps/web/assets/index.html",
@@ -24794,6 +25608,20 @@
       ],
       "arabic": false,
       "classification": "explicit-ui"
+    },
+    "Unexpected neon asset reference": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Unexpected neon event attribute": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
     },
     "Unexpected preference field": {
       "sources": [
@@ -25103,6 +25931,22 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Unpack groceries, rebuild a shelf or record discarded food. Add loose ingredients by hand, manage pantry, fridge and freezer locations, and track package dates and freshness reminders.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Unpack shopping": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Unpacking intake needs eligible identity, quantity and a verified pantry action.": {
       "sources": [
@@ -25415,6 +26259,13 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Use the recipe’s gaps to decide what to pick up next time you shop.": {
+      "sources": [
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Use the separately consented private health/history workflow": {
       "sources": [
         "apps/web/src/record-policy.js"
@@ -25650,6 +26501,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Vibrate": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Vibration is unavailable in this browser.": {
       "sources": [
         "apps/web/src/app.js"
@@ -25673,11 +26532,20 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
-    "View final receipt ▤": {
+    "View final receipt": {
       "sources": [
-        "apps/web/assets/index.html"
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "View history and statistics": {
+      "sources": [
+        "apps/web/assets/data-workspace.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Viewer · read kitchen only": {
@@ -25878,11 +26746,20 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
-    "What can I cook? ✳": {
+    "What are you scanning?": {
       "sources": [
-        "apps/web/assets/index.html"
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "What can I cook?": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "What happened to the rest?": {
@@ -25891,13 +26768,6 @@
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
-      "classification": "explicit-ui"
-    },
-    "What has this barcode cost?": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
       "classification": "explicit-ui"
     },
     "What's new": {
@@ -25916,7 +26786,6 @@
     },
     "What’s on the bench?": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -26106,7 +26975,6 @@
     },
     "YOUR KITCHEN": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -26184,6 +27052,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Your OffMenu account": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Your application ID": {
       "sources": [
         "apps/web/assets/index.html"
@@ -26256,13 +27132,6 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
-    "Your daily & weekly menu.": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
     "Your entered use-by date": {
       "sources": [
         "apps/web/assets/index.html"
@@ -26292,27 +27161,6 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
-    "Your food journal.": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
-    "Your food observatory.": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
-    "Your household & advisors.": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
     "Your issued API key, plan, attribution and retention rules. Retailer catalogue prices are not store availability.": {
       "sources": [
         "apps/web/src/sources.js"
@@ -26334,14 +27182,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Your kitchen at a glance.": {
+    "Your kitchen has no measured items yet.": {
       "sources": [
-        "apps/web/assets/index.html"
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
-    "Your kitchen has no measured items yet.": {
+    "Your kitchen inventory is empty": {
       "sources": [
         "apps/web/src/app.js",
         "apps/web/src/locales/ar.js"
@@ -26354,6 +27202,14 @@
         "apps/web/src/app.js"
       ],
       "arabic": false,
+      "classification": "explicit-ui"
+    },
+    "Your meal log is empty. Log a meal to start seeing what you ate and any nutrition you recorded.": {
+      "sources": [
+        "apps/web/src/insights-ui.js",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Your member account": {
@@ -26434,11 +27290,12 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
-    "Your trophy shelf.": {
+    "Your shopping list is empty. Add an item below or choose a recipe in Plan to bring in its shopping gaps.": {
       "sources": [
-        "apps/web/assets/index.html"
+        "apps/web/src/insights-ui.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Your verified account has no deliverable email address.": {
@@ -26447,13 +27304,6 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
-    },
-    "Your week’s shopping.": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
     },
     "Your {v0} connection": {
       "sources": [
@@ -26472,7 +27322,6 @@
     },
     "a little shelf respect.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -26661,7 +27510,6 @@
     },
     "already have.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -26732,7 +27580,6 @@
     },
     "at a time.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -26740,7 +27587,6 @@
     },
     "at the back of the shelf.": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -26798,17 +27644,9 @@
     },
     "beep": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
-      "classification": "explicit-ui"
-    },
-    "beep!": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
       "classification": "explicit-ui"
     },
     "black beans": {
@@ -26839,7 +27677,7 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "body{font-family:serif;line-height:1.5}h1,h2,h3{page-break-after:avoid}table{width:100%;border-collapse:collapse}td,th{padding:.4em;text-align:left;border-bottom:1px solid #aaa}.doc-meta{font-size:.8em}.doc-brand{font-weight:bold;font-size:1.4em}": {
+    "body{font-family:serif;line-height:1.5}h1,h2,h3{page-break-after:avoid}table{width:100%;border-collapse:collapse}td,th{padding:.4em;text-align:left;border-bottom:1px solid currentColor}.doc-meta{font-size:.8em}.doc-brand{font-weight:bold;font-size:1.4em}": {
       "sources": [
         "apps/web/src/documents.js"
       ],
@@ -27256,6 +28094,7 @@
     },
     "e.g. carrot": {
       "sources": [
+        "apps/web/assets/data-workspace.html",
         "apps/web/assets/index.html"
       ],
       "arabic": false,
@@ -28020,7 +28859,6 @@
     },
     "offmenu": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/documents.js"
       ],
       "arabic": false,
@@ -28033,15 +28871,9 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
-    "offmenu / REGISTER 01": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
     "offmenu home": {
       "sources": [
+        "apps/web/assets/data-workspace.html",
         "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
@@ -28126,6 +28958,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "offmenu-neon-material.jpg": {
+      "sources": [
+        "apps/web/server/handler.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "offmenu-pantry.json": {
       "sources": [
         "apps/web/src/app.js"
@@ -28184,7 +29023,6 @@
     },
     "offmenu.": {
       "sources": [
-        "apps/retailer-extension/popup.html",
         "apps/web/assets/index.html",
         "apps/web/src/documents.js"
       ],
@@ -28200,7 +29038,15 @@
     },
     "offmenu:": {
       "sources": [
+        "apps/web/src/offmenu-neon.js",
         "apps/web/src/scanner-kitchen-handoff.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "offmenu:error": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -28275,6 +29121,13 @@
       ],
       "arabic": false,
       "classification": "explicit-ui"
+    },
+    "parsererror,script,foreignObject": {
+      "sources": [
+        "apps/web/src/offmenu-neon.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
     },
     "partial estimate": {
       "sources": [
@@ -28691,14 +29544,14 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "scanner-roboto-bold.ttf": {
+    "scanner-roboto-bold.woff2": {
       "sources": [
         "apps/web/server/handler.mjs"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "scanner-roboto-regular.ttf": {
+    "scanner-roboto-regular.woff2": {
       "sources": [
         "apps/web/server/handler.mjs"
       ],
@@ -29263,7 +30116,6 @@
     },
     "with what you": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29689,16 +30541,8 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
-    "⌁ Vibrate": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
     "▤ Kitchen": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29706,7 +30550,6 @@
     },
     "▤ Printable documents & Kindle": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29714,7 +30557,6 @@
     },
     "▤ Rebuild a shelf": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29722,7 +30564,6 @@
     },
     "▥ Make space for good food": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29730,7 +30571,6 @@
     },
     "▥ Scan groceries": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29738,7 +30578,6 @@
     },
     "▦ Plan": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29746,7 +30585,6 @@
     },
     "◇ Shop": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29754,37 +30592,20 @@
     },
     "◎ See what’s hiding": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
-      "classification": "explicit-ui"
-    },
-    "◖ Speak the product": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
       "classification": "explicit-ui"
     },
     "◷ Statistics & history": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
       "classification": "explicit-ui"
     },
-    "☀ Camera light": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
     "♧ Dietary profiles": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29792,23 +30613,13 @@
     },
     "♧ Me": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
       "classification": "explicit-ui"
     },
-    "♪ Scan sounds": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
     "♪ Sound off": {
       "sources": [
-        "apps/web/assets/index.html",
-        "apps/web/src/app.js",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29816,7 +30627,6 @@
     },
     "♪ Sound on": {
       "sources": [
-        "apps/web/src/app.js",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29824,7 +30634,6 @@
     },
     "♲ Garbage scan": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29860,22 +30669,13 @@
     },
     "✳ Find your next meal": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
       "classification": "explicit-ui"
     },
-    "✳ Screen glow": {
-      "sources": [
-        "apps/web/assets/index.html"
-      ],
-      "arabic": false,
-      "classification": "explicit-ui"
-    },
     "✳ Today": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -29883,7 +30683,6 @@
     },
     "🛍 Unpack shopping": {
       "sources": [
-        "apps/web/assets/index.html",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,

@@ -1,0 +1,25 @@
+/* Brand values shared by the household app, scanner and retailer popup. */
+:root {
+  --om-brand-canvas: #d9efda;
+  --om-brand-ink: #214638;
+  --om-brand-forest: #183f35;
+  --om-brand-surface: #f9fcf9;
+  --om-brand-raised: #e3ede5;
+  --om-brand-muted: #4b6256;
+  --om-brand-line: #b9cabd;
+  --om-brand-coral: #f3b09a;
+  --om-brand-blue: #2865b5;
+  --om-brand-signboard: #02050a;
+  --om-brand-neon-blue: #5da2ff;
+  --om-brand-neon-white: #f2f5f0;
+  --om-brand-dark-canvas: #081413;
+  --om-brand-dark-ink: #e1f4e9;
+  --om-brand-dark-on-ink: #0b2018;
+  --om-brand-dark-raised: #1b332d;
+  --om-brand-dark-line: #45665b;
+  --om-brand-dark-coral: #ffc2a8;
+  --om-brand-dark-selected: #a5dfc4;
+  --om-control-radius: 10px;
+  --om-motion-fast: 120ms;
+  --om-motion-ease: cubic-bezier(.23,1,.32,1);
+}

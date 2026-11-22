@@ -9,7 +9,7 @@ import {rankedTopics} from '../../apps/web/assets/help.js';
 const origin='https://offmenu.test';
 const previous='offmenu-shell-v12';
 const current='offmenu-shell-v13';
-const basePaths=['/','/app.js?v=i18n-1','/scanner-worker.js','/scanner.wasm','/style.css?v=i18n-1','/recipes.json?v=i18n-1','/data-workspace.html','/data-workspace.js?v=i18n-1','/afcd-nutrient-details.json','/icon.svg','/receipt-bars.svg','/manifest.webmanifest','/manifest-ar.webmanifest'];
+const basePaths=['/','/app.js?v=i18n-1','/scanner-worker.js','/scanner-theme-init.js','/scanner.wasm','/style.css?v=i18n-1','/offmenu-tokens.css','/recipes.json?v=i18n-1','/data-workspace.html','/data-workspace.js?v=i18n-1','/afcd-nutrient-details.json','/icon.svg','/receipt-bars.svg','/manifest.webmanifest','/manifest-ar.webmanifest','/offmenu-neon.css','/offmenu-neon.svg','/offmenu-neon-material.jpg'];
 const helpPaths=['/help.html','/help.css','/help.js'];
 const helpBytes=new Map(helpPaths.map(path=>[path,readFileSync(new URL('../../apps/web/assets'+path,import.meta.url),'utf8')]));
 const worker=(await build({

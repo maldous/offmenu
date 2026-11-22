@@ -1,6 +1,6 @@
 /* Help inherits the shipped OffMenu controls, typography and light palette. */
-.help-page { color-scheme: light; }
-.help-page .wrap { max-width: 52rem; margin: auto; padding: 1rem clamp(1rem,4vw,2rem); }
+.help-page { color-scheme: inherit; }
+.help-page .wrap { max-width: none; margin: auto; padding: 1rem clamp(1rem,4vw,2rem); }
 .help-page header { display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid var(--line); }
 .help-page header > span { color: var(--muted); }
 .help-page h1 { margin: .4em 0 .35em; font-size: clamp(1.8rem,5vw,2.3rem); line-height: 1.16; letter-spacing: -.025em; text-wrap: balance; }
