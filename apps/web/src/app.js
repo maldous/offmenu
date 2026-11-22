@@ -133,8 +133,14 @@ function download(filename,data){const blob=new Blob([JSON.stringify(data,null,2
 const PANTRY_BACKUP_MAX_BYTES=20_000_000;
 $('export').onclick=()=>{try{const backup=createPantryBackup({inventory:lots,profile,products,recipes,selections},{accountId:user?.id});if(new Blob([JSON.stringify(backup,null,2)]).size>PANTRY_BACKUP_MAX_BYTES)throw Error(t('Pantry backup exceeds 20 MB.'));download('offmenu-pantry.json',backup);}catch(e){msg(e.message);}};
 async function readJSON(input,maxBytes=2_000_000){const f=input.files[0];if(!f)return null;if(f.size>maxBytes)throw Error(maxBytes===PANTRY_BACKUP_MAX_BYTES?t('Pantry backup exceeds 20 MB.'):t('File must be under 2 MB.'));return JSON.parse(await f.text());}
-$('restore').onchange=async()=>{const started=requestIdentity;try{
- const v=await readJSON($('restore'),PANTRY_BACKUP_MAX_BYTES);if(!v)return;
+function showAccountFileError(id,error){
+ const message=error instanceof SyntaxError?t('Choose a valid JSON file and try again.'):error.message;
+ if($('account-dialog').open)setLocalizedText($(id+'-error'),message);else msg(message);
+}
+function clearAccountFileErrors(){for(const id of ['restore','recipe-import'])$(id+'-error').textContent='';}
+let restoreSelectionGeneration=0;
+$('restore').onchange=async()=>{clearAccountFileErrors();const started=requestIdentity,generation=++restoreSelectionGeneration;try{
+ const v=await readJSON($('restore'),PANTRY_BACKUP_MAX_BYTES);if(!v||generation!==restoreSelectionGeneration)return;
  if(requestIdentity!==started)throw Error(t('Account changed. Retry from your current account.'));
  const {inventory:next,state}=restorePantryBackup(v,{accountId:user?.id});
  if(lots.length&&!confirm(t('Replace your pantry with this backup?')))return;
@@ -145,9 +151,22 @@ $('restore').onchange=async()=>{const started=requestIdentity;try{
  try{for(const entry of entries){localStorage.setItem(entry[0],entry[1]);written.push(entry);}}
  catch(error){let rollbackFailed=false;for(const [key,,previous]of written.reverse()){try{if(previous===null)localStorage.removeItem(key);else localStorage.setItem(key,previous);}catch{rollbackFailed=true;}}if(rollbackFailed)throw Error(t('Backup restore failed and browser storage could not be fully restored. Keep your backup and reload before making changes.'));throw error;}
  lots=next;profile=nextProfile;if(state){products=state.products;recipes=state.recipes;selections=state.selections;}
- markDirty();if(state)loadProfile();pantry();findMeals();msg(t('Backup restored in this browser. Save to cloud to back it up.'));
-}catch(e){msg(e.message);}finally{$('restore').value='';}};
-$('recipe-import').onchange=async()=>{try{const v=await readJSON($('recipe-import'));if(!v)return;const imported=validateRecipes(v);const next=[...new Map([...recipes,...imported].map(r=>[r.id,r])).values()];localStorage.setItem(RECIPES,JSON.stringify(next));recipes=next;markDirty();findMeals();msg(t('Recipes imported.'));}catch(e){msg(e.message);}finally{$('recipe-import').value='';}};
+ markDirty();if(state)loadProfile();pantry();findMeals();msg(demoMode?t('Demo backup restored in this browser.'):user?t('Backup restored in this browser. Save to cloud to back it up.'):t('Backup restored in this browser.'));
+}catch(e){if(generation===restoreSelectionGeneration)showAccountFileError('restore',requestIdentity===started?e:Error(t('Account changed. Retry from your current account.')));}
+finally{if(generation===restoreSelectionGeneration&&requestIdentity===started)$('restore').value='';}};
+let recipeImportGeneration=0;
+$('account-dialog').addEventListener('close',()=>{if(!$('account-dialog').open)recipeImportGeneration++;});
+$('recipe-import').onchange=async()=>{
+ const generation=++recipeImportGeneration, identity=requestIdentity;
+ const current=()=>generation===recipeImportGeneration&&identity===requestIdentity&&$('account-dialog').open;
+ clearAccountFileErrors();
+ try{
+  const v=await readJSON($('recipe-import'));if(!v||!current())return;
+  const imported=validateRecipes(v);const next=[...new Map([...recipes,...imported].map(r=>[r.id,r])).values()];
+  localStorage.setItem(RECIPES,JSON.stringify(next));recipes=next;markDirty();findMeals();msg(t('Recipes imported.'));
+ }catch(e){if(current())showAccountFileError('recipe-import',e);}
+ finally{if(current())$('recipe-import').value='';}
+};
 function connectivity(){setLocalizedText($('connection'),demoMode?t('Demo kitchen · separate sample data.'):navigator.onLine?user?t('Signed in · automatic cloud saves; local copy available offline.'):t('Guest pantry · saved in this browser.'):t('Offline · Pantry and downloaded recipes work. New product and shop lookups need internet.'));}window.addEventListener('online',connectivity);window.addEventListener('offline',connectivity);
 let applicationDefaults={country:'',units:'metric',servings:2};
 async function init(){try{try{const config=await jsonFetch('/api/services');if(config.globalDefaults)applicationDefaults={country:config.globalDefaults.country,units:config.globalDefaults.units,servings:config.globalDefaults.servings};}catch{}await initAuth();loadProfile();lots=JSON.parse(localStorage.getItem(KEY)||'[]').map(validateLot);products=JSON.parse(localStorage.getItem(PRODUCTS)||'{}');const stored=localStorage.getItem(RECIPES);const fresh=await fetchRecipes();recipes=validateRecipes([...new Map([...(stored?JSON.parse(stored):[]),...fresh].map(r=>[r.id,r])).values()]);localStorage.setItem(RECIPES,JSON.stringify(recipes));pantry();findMeals();connectivity();if(!lifecycleFixture&&'serviceWorker'in navigator)await navigator.serviceWorker.register('/sw.js');}catch(e){msg(t("Setup needs attention: {v0}", {v0:(e.message)}));}}
@@ -179,7 +198,7 @@ const demoProducts=[
 ];
 function foodIcon(name){const n=normalize(name);return /milk|yoghurt|cream/.test(n)?'🥛':/rice|pasta|grain|flour/.test(n)?'🌾':/water|drink|juice/.test(n)?'💧':/egg/.test(n)?'🥚':/apple|fruit|banana/.test(n)?'🍎':/bread/.test(n)?'🍞':/broccoli|vegetable|spinach/.test(n)?'🥬':/fish|salmon/.test(n)?'🐟':'🥫';}
 function providerMark(provider){if(provider==='google')return '<span class="provider-logo" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#4285F4" d="M43.6 24.5c0-1.5-.1-3-.4-4.4H24v8.4h11a9.4 9.4 0 0 1-4.1 6.2v5.2h6.6c3.8-3.5 6.1-8.7 6.1-15.4Z"/><path fill="#34A853" d="M24 44c5.4 0 9.9-1.8 13.2-4.8l-6.6-5.2c-1.8 1.2-4 1.9-6.6 1.9-5.2 0-9.6-3.5-11.2-8.2H6v5.4A20 20 0 0 0 24 44Z"/><path fill="#FBBC05" d="M12.8 27.7a12 12 0 0 1 0-7.4v-5.4H6a20 20 0 0 0 0 18.2l6.8-5.4Z"/><path fill="#EA4335" d="M24 12.1c2.9 0 5.5 1 7.5 2.9l5.6-5.6A19 19 0 0 0 24 4 20 20 0 0 0 6 14.9l6.8 5.4c1.6-4.7 6-8.2 11.2-8.2Z"/></svg></span>';return '<span class="provider-logo" aria-hidden="true">'+({github:'◉',gitlab:'◆',bitbucket:'▣',facebook:'f'}[provider]||'↗')+'</span>';}
-async function openAccount(){await startup;void administration.refresh();void adminOperations.refresh();services.render();services.track('account_opened');if(!$('account-dialog').open)$('account-dialog').showModal();void accountBackup.refresh();setLocalizedText($('login-heading'),user&&!demoMode?t('Your kitchen, connected.'):t('Come on in.'));}
+async function openAccount(){await startup;void administration.refresh();void adminOperations.refresh();services.render();services.track('account_opened');if(!$('account-dialog').open){recipeImportGeneration++;$('recipe-import').value='';$('account-dialog').showModal();}void accountBackup.refresh();setLocalizedText($('login-heading'),user&&!demoMode?t('Your kitchen, connected.'):t('Come on in.'));}
 function setView(view){stop();for(const name of ['checkout','shelves','meals','plan','household','insights','integrations','me'])$(name+'-page').hidden=name!==view;for(const tab of document.querySelectorAll('[data-view]')){tab.classList.toggle('active',tab.dataset.view===view);tab.setAttribute('aria-current',tab.dataset.view===view?'page':'false');}if(view==='shelves'){pantry();journey.renderBatches();}if(view==='me'){journey.applyPreferences();void sharing.render();}if(view==='meals'){
   findMeals();
   requestAnimationFrame(()=>{
@@ -216,6 +235,7 @@ for(const key of ['sound','vibration','screen','light','speech'])$('feedback-'+k
 $('feedback-test').onclick=async()=>{if(feedback.sound)await enableAudio();scanFeedback('Coconut milk');};
 $('sound-toggle').onclick=async()=>{try{feedback.sound=!feedback.sound;if(feedback.sound&&!await enableAudio())feedback.sound=false;saveFeedback();if(feedback.sound)beep('open');}catch{feedback.sound=false;saveFeedback();}};
 for(const id of ['header-login','workspace-account','me-account'])$(id).onclick=openAccount;
+$('account-dialog').addEventListener('close',clearAccountFileErrors);
 $('continue-guest').onclick=async()=>{await startup;$('account-dialog').close();openWorkspace();};$('open-pantry').onclick=async()=>{await startup;openWorkspace();};
 $('hero-demo').onclick=()=>enterDemo().catch(e=>msg(e.message));$('delivery-demo').onclick=()=>enterDemo('shopping').catch(e=>msg(e.message));
 $('exit-demo').onclick=()=>{demoMode=false;switchAccount(user);location.reload();};
