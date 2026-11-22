@@ -22,3 +22,12 @@ test('cancelled share does not fall back to clipboard; absent clipboard hides on
  assert.deepEqual(writes,[]);assert.equal(f.notice.text,undefined);
  assert.equal(bound({share}).copy.hidden,true);
 });
+
+test('separate native buttons name only their explicit action',()=>{
+ const html=read(new URL('../../apps/web/assets/index.html',import.meta.url),'utf8');
+ const share=html.match(/<button[^>]*id="share-shopping"[^>]*>[^<]*<\/button>/)?.[0];
+ const copy=html.match(/<button[^>]*id="copy-shopping"[^>]*>[^<]*<\/button>/)?.[0];
+ assert.match(share, /data-i18n="Share shopping list">Share shopping list<\/button>/);
+ assert.match(copy, /data-i18n="Copy shopping list">Copy shopping list<\/button>/);
+ assert.match(html, /id="integration-notice" role="status"/);
+});
