@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Normalize complete named national releases locally; originals stay outside Git."""
-import argparse,datetime,gzip,hashlib,importlib.util,json,re,xml.etree.ElementTree as ET
+import argparse,datetime,gzip,hashlib,importlib.util,json,os,re,tempfile,xml.etree.ElementTree as ET
 from pathlib import Path
 import openpyxl
 ROOT=Path(__file__).resolve().parents[2]
@@ -57,18 +57,68 @@ def frida(directory):
  print(json.dumps({'source':'frida','foodRows':len(foods),'parameterRows':len(parameters),'nutrientObservations':observations}),flush=True)
  return rows
 
+def cofid_file_dispositions(source_files):
+ # Input custody, not rights clearance or a claim that a held file was parsed.
+ dispositions=[]
+ for item in source_files:
+  key=item['key']
+  if key=='cofid2021.xlsx':
+   disposition,reason='processed','Current CoFID 2021 workbook; a nonempty normalized projection was emitted from this file.'
+  elif key=='cofid-old-foods.xlsx':
+   disposition,reason='held','Historical workbook retained separately; excluded from the current edition.'
+  else:
+   disposition,reason='held','Retained input has no mapping to the current CoFID workbook.'
+  dispositions.append({'key':key,'bytes':item['bytes'],'sha256':item['sha256'],'disposition':disposition,'reason':reason})
+ if not any(item['disposition']=='processed' for item in dispositions):
+  raise ValueError('CoFID 2021 current workbook is not inventoried')
+ return dispositions
+
+def promote_cofid_collection(staged,target):
+ # Use the existing admitted Linux primitive, never a replacing rename.
+ from offmenu.refresh.product_input_witness import _rename_noreplace
+ flags=os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW
+ src=os.open(staged.parent,flags)
+ try:
+  dst=os.open(target.parent,flags)
+  try:
+   _rename_noreplace(src,staged.name,dst,target.name)
+  except FileExistsError:
+   raise ValueError('Immutable output exists: '+str(target)) from None
+  finally:
+   os.close(dst)
+ finally:
+  os.close(src)
+
 def publish_local(source,rows,inputs,output,release):
  target=output/(source+'-'+release)
  if target.exists():raise ValueError('Immutable output exists: '+str(target))
+ cofid_current=source=='cofid' and release=='2021'
+ if cofid_current and not rows:raise ValueError('CoFID 2021 emitted no normalized rows')
  if len({r['id'] for r in rows})!=len(rows):raise ValueError('Duplicate normalized identity')
- target.mkdir(parents=True);digests=[]
+ digests=[]
  for p in sorted(inputs.rglob('*')):
   if p.is_file():digests.append({'key':str(p.relative_to(inputs)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
- with gzip.open(target/'normalized.jsonl.gz','wt',encoding='utf8',compresslevel=1) as f:
-  for row in rows:
-   row['provenance']['releaseId']=release;row['provenance']['archiveSha256']=hashlib.sha256(json.dumps(digests,sort_keys=True).encode()).hexdigest();f.write(json.dumps([row],ensure_ascii=False,separators=(',',':'))+'\n')
- manifest={'schemaVersion':'offmenu-collection/1','sourceId':source,'releaseId':release,'status':'normalized','normalizedRows':len(rows),'counts':{'raw':len(rows),'accepted':len(rows),'duplicates':0,'quarantined':0,'excluded':0,'records':len(rows)},'sourceFiles':digests,'archiveSha256':rows[0]['provenance']['archiveSha256'],'license':rows[0]['provenance']['license'],'attribution':rows[0]['provenance']['attribution'],'scope':'Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.','publication':'local only','completedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()}
- (target/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n');print(json.dumps({'source':source,'records':len(rows),'directory':str(target)}),flush=True)
+ dispositions=cofid_file_dispositions(digests) if cofid_current else None
+ def write_collection(root):
+  with gzip.open(root/'normalized.jsonl.gz','wt',encoding='utf8',compresslevel=1) as f:
+   for row in rows:
+    row['provenance']['releaseId']=release;row['provenance']['archiveSha256']=hashlib.sha256(json.dumps(digests,sort_keys=True).encode()).hexdigest();f.write(json.dumps([row],ensure_ascii=False,separators=(',',':'))+'\n')
+  manifest={'schemaVersion':'offmenu-collection/1','sourceId':source,'releaseId':release,'status':'normalized','normalizedRows':len(rows),'counts':{'raw':len(rows),'accepted':len(rows),'duplicates':0,'quarantined':0,'excluded':0,'records':len(rows)},'sourceFiles':digests,'archiveSha256':rows[0]['provenance']['archiveSha256'],'license':rows[0]['provenance']['license'],'attribution':rows[0]['provenance']['attribution'],'scope':'Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.','publication':'local only','completedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+  if dispositions is not None:
+   manifest['fileDispositions']=dispositions
+   manifest['scope']='Local normalized projection from the current CoFID 2021 workbook only. The historical workbook is held separately. This receipt does not establish completeness, operation rights or Gold admission.'
+  (root/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+ if cofid_current:
+  output.mkdir(parents=True,exist_ok=True)
+  with tempfile.TemporaryDirectory(prefix='.cofid-write-',dir=output) as staging:
+   staged=Path(staging)/target.name
+   staged.mkdir()
+   write_collection(staged)
+   promote_cofid_collection(staged,target)
+ else:
+  target.mkdir(parents=True)
+  write_collection(target)
+ print(json.dumps({'source':source,'records':len(rows),'directory':str(target)}),flush=True)
 
 def main():
  p=argparse.ArgumentParser();p.add_argument('originals',type=Path);p.add_argument('output',type=Path);a=p.parse_args()
