@@ -7,12 +7,12 @@
   plus retained standalone candidate `5d6a647243a9ca710dcf4c57f34e583fdc15fcd9`.
 
 The original candidate used number 0014. This continuation uses 0015 so the
-accepted [environment-owned policy decision](0014-environment-owned-operating-policy.md)
-keeps its identity. Product-independent setup and that optional maintenance
-policy are compatible: retain its short project references and explicitly dated
-history, not an orchestration dependency or installed-runtime claim. Current
-capability guidance and source-bound user guides remain discoverable. The
-original candidate and its separate evidence are preserved, not overwritten.
+accepted environment-owned policy decision retains its separate external-custody
+identity. Product-independent setup and that optional maintenance policy are
+compatible: retain its short project references and explicitly dated history,
+not an orchestration dependency or installed-runtime claim. Current capability
+guidance and source-bound user guides remain discoverable. The original candidate
+and its separate evidence are preserved, not overwritten.
 
 ## Decision
 
@@ -47,6 +47,13 @@ Original qualified inputs and historical evidence retain their original scope.
 A current source binding must not inherit stale dataset acceptance after a code
 or path change. Private runtime files and held consumers are outside this tracked
 source cleanup and retain their actual handoff requirements.
+
+Historical evidence readers require the recorded provenance owner and the exact
+source/tree identity before interpreting a removed control-plane record. They
+cannot use a product checkout to restart a stopped child, infer that an uncertain
+external effect completed, or select a replacement owner. A stopped child or
+uncertain outcome remains an external-custody hold until its original owner
+reconciles it through the applicable control record.
 
 ## Required evidence
 

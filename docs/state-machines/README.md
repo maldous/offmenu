@@ -15,9 +15,11 @@ PR #227 scanner/localisation, PR #234 standalone-product and other retained
 editions are not assumed integrated. Private ignored data and runtime stores
 were not traversed or exported.
 
-The [coverage ledger](coverage.json) enumerates all 2,298 tracked entries with
-their Git blob identities and initial classification. Its 1,150 code-extension
-candidates include tests and history; they are not 1,150 discovered machines.
+The [coverage ledger](coverage.json) is a historical, commit-pinned ledger of
+the 2,298 entries in that selected edition, with their Git blob identities and
+initial classification. It does not enumerate the current standalone tree. Its
+1,150 code-extension candidates include tests and history; they are not 1,150
+discovered machines.
 No keyword match is a completeness proof. Ten broad source passes remain:
 account/authentication; scanner/camera/identity; household/pantry/expiry;
 planning/shopping; corpus/enrichment/provenance; cache/withdrawal/privacy;

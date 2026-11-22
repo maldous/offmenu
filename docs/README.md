@@ -46,7 +46,7 @@ Contextual in-app help and search integration remain separate work.
 | Private source-only processing | [ingredient ingestion](ingredient-ingestion.md), [`tools/source-processing/`](source-processing/README.md) source interfaces; selected inputs and review are required. |
 | Member food history and recorded estimates | [Insights guide](insights-guide.md), including record scope, missing data and full-history export. |
 | Application administration | [Administrator controls](administrator-controls-guide.md) for reviewed settings and existing public source policies. |
-| Work and action status | Existing OffMenu Linear issues hold active status, dependencies and acceptance; [routing and documentation homes](development/task-routing.md#documentation-homes-and-update-responsibility) define the complementary repo/ADR/AGENTS references. GitHub PRs are code review; historical ledgers preserve provenance. |
+| Work and action status | Existing OffMenu Linear issues hold active status, dependencies and acceptance; the [repository standard](standards/repository.md#branch-release-and-evidence), ADRs and `AGENTS.md` define complementary product references. GitHub PRs are code review; historical ledgers preserve provenance. |
 
 For repository layout, use the [root architecture](development/root-layout.md).
 For repeatable local checks and recovery of a selected source change, use the

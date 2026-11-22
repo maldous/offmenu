@@ -254,4 +254,5 @@ existing integration owner. Do not blindly replace
 hashes to make a drift failure pass. Historical acceptance is not current
 source presence. Product-specific gaps belong in OffMenu; shared source-role
 and consumer principles remain in the existing
-[documentation ownership guidance](development/task-routing.md#documentation-homes-and-update-responsibility).
+[repository standard](standards/repository.md#branch-release-and-evidence) and
+the relevant product guide.

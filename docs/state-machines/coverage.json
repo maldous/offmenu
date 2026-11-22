@@ -3,8 +3,10 @@
   "repository": "maldous/offmenu",
   "selected_commit": "436f16c2a62a5e53af0ee7bf7bc06cd971910d63",
   "selected_tree": "c46efaf40ffce140bfa2d14cf7a6195ac44e1f16",
-  "scope": "Tracked accepted source only. Retained/unmerged PR editions remain separate and are not read as integrated source. Private ignored datasets/runtime receipts not traversed.",
-  "coverage_status": "source universe enumerated; semantic machine reconstruction not complete",
+  "scope": "Historical tracked-source ledger for selected commit only. Retained/unmerged PR editions remain separate. Private ignored datasets/runtime receipts were not traversed.",
+  "coverage_status": "historical source universe enumerated; semantic machine reconstruction not complete",
+  "current_tree_claim": false,
+  "historical_readers": "Read rows only against selected_commit and selected_tree. Removed control-plane paths retain provenance only and do not authorize execution, ownership transfer, restart, or interpretation of uncertain outcomes.",
   "classification_counts": {
     "documentation-or-project-metadata": 724,
     "supporting-delivery-infrastructure": 67,
