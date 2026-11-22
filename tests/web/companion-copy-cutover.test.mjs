@@ -31,3 +31,43 @@ test('separate native buttons name only their explicit action',()=>{
  assert.match(copy, /data-i18n="Copy shopping list">Copy shopping list<\/button>/);
  assert.match(html, /id="integration-notice" role="status"/);
 });
+
+function pendingAction(){
+ let resolve,reject;
+ const promise=new Promise((pass,fail)=>{resolve=pass;reject=fail;});
+ return {promise,resolve,reject};
+}
+test('older Share refusal cannot overwrite the latest Copy success',async()=>{
+ const share=pendingAction(),writes=[];
+ const f=bound({share:()=>share.promise,clipboard:{writeText:async text=>writes.push(text)}});
+ const older=f.share.onclick();
+ await f.copy.onclick();
+ share.reject({name:'NotAllowedError'});
+ await older;
+ assert.equal(f.notice.text,'Shopping list copied. Paste it into your preferred app.');
+ assert.equal(writes.length,1);
+});
+test('older Copy success cannot replace a later Share refusal or cancellation',async()=>{
+ for(const [name,expected] of [['NotAllowedError','Sharing unavailable. Download the list instead.'],['AbortError',undefined]]){
+  const copy=pendingAction(),writes=[];
+  const f=bound({share:async()=>{throw {name};},clipboard:{writeText:text=>{writes.push(text);return copy.promise;}}});
+  const older=f.copy.onclick();
+  await f.share.onclick();
+  copy.resolve();
+  await older;
+  assert.equal(f.notice.text,expected);
+  assert.equal(writes.length,1);
+ }
+});
+test('older Copy refusal cannot replace a later successful Copy',async()=>{
+ const first=pendingAction(),second=pendingAction(),calls=[];
+ const f=bound({clipboard:{writeText:text=>{calls.push(text);return calls.length===1?first.promise:second.promise;}}});
+ const older=f.copy.onclick(),latest=f.copy.onclick();
+ second.resolve();
+ await latest;
+ first.reject({name:'NotAllowedError'});
+ await older;
+ assert.equal(f.notice.text,'Shopping list copied. Paste it into your preferred app.');
+ assert.equal(calls.length,2);
+ assert.equal(calls[0],calls[1]);
+});
