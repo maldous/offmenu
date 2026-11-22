@@ -1,5 +1,10 @@
 // Source text is preserved when a translation is not yet available.
 export const ARABIC = Object.freeze({
+  'Share shopping list':'مشاركة قائمة التسوق',
+  'Copy shopping list':'نسخ قائمة التسوق',
+  'Recipe actions':'إجراءات الوصفة',
+  'Share source link':'مشاركة رابط المصدر',
+  'Sharing unavailable. Download the recipe instead.':'المشاركة غير متاحة. نزّل الوصفة بدلاً من ذلك.',
   'Offline resource unavailable':'المورد غير متاح دون اتصال',
   'Translation is stale; showing the original source text.':'الترجمة قديمة؛ يُعرض نص المصدر الأصلي.',
   'Common corpus graph loaded for local preview. Source identities, citations and quantities are preserved; nothing is saved.':'تم تحميل بيانات المجموعة للمعاينة المحلية. تبقى هويات المصادر والاستشهادات والكميات كما هي؛ لم تُحفظ أي تغييرات.',

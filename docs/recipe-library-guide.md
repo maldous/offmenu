@@ -73,7 +73,7 @@ candidates, kitchen matching and saving a personal recipe are blocked until
 complete transcription. Reading or downloading an OCR candidate does not make
 its ingredient list complete.
 
-Choose **Download source recipe as JSON-LD** to download the selected source
+Open **Recipe actions**, then choose **Download source recipe as JSON-LD** to download the selected source
 recipe representation. This downloads the source recipe, not your edited
 personal copy. Attribution, licence and source links are retained. Check the
 source licence before reuse; a download does not grant additional rights.

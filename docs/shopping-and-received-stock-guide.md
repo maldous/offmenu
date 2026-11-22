@@ -37,10 +37,10 @@ week, the pantry setting and any unmeasured recipe ingredients.
 
 ## Take the list with you
 
-**Share / copy list** shares the names and amount text of uncollected lines
-through the browser’s sharing facility, or copies that text to the clipboard
-when sharing is unavailable. Check the recipient or application before sending
-household information. Cancelling the share dialog does not place an order.
+**Share shopping list** opens the browser’s sharing facility for the names and
+amounts of uncollected lines. **Copy shopping list** writes that text to the
+clipboard only when you choose it. Check the recipient before sending household
+information. If either control is unavailable, use a download.
 
 **Download CSV** includes the list’s ingredient, amount and collected status.
 **Download JSON-LD** exports an item list with names and amount descriptions.

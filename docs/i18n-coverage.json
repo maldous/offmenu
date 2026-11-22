@@ -1,8 +1,8 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4037,
-  "arabicTranslated": 575,
+  "messages": 4042,
+  "arabicTranslated": 580,
   "arabicMissing": 3462,
   "arabicComplete": false,
   "excludedTechnical": {
@@ -6660,6 +6660,14 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Copy shopping list": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Copy this token now. Treat it as a password; it grants the selected access. It will not be shown again.": {
       "sources": [
         "apps/web/assets/index.html"
@@ -8684,6 +8692,13 @@
     "Error reporting limit reached.": {
       "sources": [
         "apps/web/server/service-observability.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Escape": {
+      "sources": [
+        "apps/web/src/recipe-library-ui.js"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
@@ -18274,6 +18289,14 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Recipe actions": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
     "Recipe already submitted.": {
       "sources": [
         "apps/web/src/locales/ar.js",
@@ -21039,11 +21062,20 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Share / copy list ↗": {
+    "Share shopping list": {
       "sources": [
-        "apps/web/assets/index.html"
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
+      "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Share source link": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/locales/ar.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Shared (recipient intake not inferred)": {
@@ -21124,6 +21156,14 @@
         "apps/web/src/insights-ui.js"
       ],
       "arabic": false,
+      "classification": "explicit-ui"
+    },
+    "Sharing unavailable. Download the recipe instead.": {
+      "sources": [
+        "apps/web/src/locales/ar.js",
+        "apps/web/src/recipe-library-ui.js"
+      ],
+      "arabic": true,
       "classification": "explicit-ui"
     },
     "Shelf / container": {
