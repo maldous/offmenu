@@ -2797,6 +2797,7 @@
   "Saved result identity or release does not match.": "Saved result identity or release does not match.",
   "Saved source assertion is not on this bounded page or selected release. Continue the selected search; no identity was inferred.": "Saved source assertion is not on this bounded page or selected release. Continue the selected search; no identity was inferred.",
   "Saved to cloud. Automatic saving continues.": "Saved to cloud. Automatic saving continues.",
+  "Saved {food} in {place}. Searched recipes for {ingredient}.": "Saved {food} in {place}. Searched recipes for {ingredient}.",
   "Saved {food} in {place}. Showing meals with {ingredient}.": "Saved {food} in {place}. Showing meals with {ingredient}.",
   "Saved {food}. Confirm its ingredient in Kitchen before counting it toward a recipe.": "Saved {food}. Confirm its ingredient in Kitchen before counting it toward a recipe.",
   "Saved-result miss · not global absence · no live fallback": "Saved-result miss · not global absence · no live fallback",

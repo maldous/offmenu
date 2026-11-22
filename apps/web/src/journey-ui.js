@@ -58,7 +58,7 @@ $('food-form').onsubmit = event => {
       const notice = showFoodRecipes(ingredient === 'unmapped' ? name : ingredient);
       setLocalizedText(notice, ingredient === 'unmapped'
         ? 'Saved {food}. Confirm its ingredient in Kitchen before counting it toward a recipe.'
-        : 'Saved {food} in {place}. Showing meals with {ingredient}.',
+        : 'Saved {food} in {place}. Searched recipes for {ingredient}.',
         {food:name, place:lot.location.area+' / '+lot.location.shelf, ingredient});
       notice.focus();
     } else {
