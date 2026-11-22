@@ -34,20 +34,27 @@ function renderShopping(){
  const identity=getIdentity(),revision=++shoppingRenderRevision;
  if(identity!==shoppingFilterIdentity){shoppingFilterIdentity=identity;shoppingStatusFilter.value='all';}
  const status=shoppingStatusFilter.value;
- const {profile}=data(),all=items(),list=$('shopping-checklist');
+ const {profile,date,usePantry}=data(),all=items(),list=$('shopping-checklist');
  const visible=status==='collected'?all.filter(item=>item.checked):status==='uncollected'?all.filter(item=>!item.checked):all;
  list.replaceChildren();
  for(const item of visible){
   const row=document.createElement('label');row.className='shopping-check';
   const manual=(profile.shopping||[]).find(i=>i.id===item.id);
-  const isCurrent=()=>revision===shoppingRenderRevision&&identity===getIdentity()&&profile===data().profile&&
-   (manual?(profile.shopping||[]).find(i=>i.id===item.id)===manual:items().some(i=>i.id===item.id));
+  let expectedChecked=item.checked;
+  const isCurrent=()=>{
+   const current=data();
+   if(revision!==shoppingRenderRevision||identity!==getIdentity()||profile!==current.profile||date!==current.date||usePantry!==current.usePantry)return false;
+   if(manual)return (profile.shopping||[]).find(i=>i.id===item.id)===manual;
+   const live=items().find(i=>i.id===item.id);
+   return !!live&&live.name===item.name&&live.amount===item.amount&&live.quantity===item.quantity&&live.unit===item.unit&&live.checked===expectedChecked;
+  };
   const check=document.createElement('input');check.type='checkbox';check.checked=item.checked;
   check.onchange=()=>{
    if(!isCurrent())return;
    const focused=document.activeElement===check;
    if(manual)manual.checked=check.checked;else profile.shoppingChecked=[...(profile.shoppingChecked||[]).filter(x=>x!==item.id),...(check.checked?[item.id]:[])];
    persist();
+   expectedChecked=check.checked;
    if(status==='collected'||status==='uncollected'){renderShopping();if(focused)shoppingStatusFilter.focus();}
   };
   row.append(check,text('span',item.name),text('strong',item.amount));list.append(row);
