@@ -1180,6 +1180,7 @@
   "Enter nutrient totals actually consumed, not per 100 g. Leave unknown values blank. Completion is recorded for context; it does not scale these entered totals.": "Enter nutrient totals actually consumed, not per 100 g. Leave unknown values blank. Completion is recorded for context; it does not scale these entered totals.",
   "Enter optional completion after a meal to start this view.": "Enter optional completion after a meal to start this view.",
   "Enter or scan a barcode first.": "Enter or scan a barcode first.",
+  "Enter portions in tenths, for example 1.5.": "Enter portions in tenths, for example 1.5.",
   "Enter up to 32 comma-separated terms per field, 100 characters per term.": "Enter up to 32 comma-separated terms per field, 100 characters per term.",
   "Enter {mode}": "Enter {mode}",
   "Entered ": "Entered ",
