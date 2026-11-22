@@ -37,7 +37,7 @@ function renderShopping(){
  const {profile,date,usePantry}=data(),all=items(),list=$('shopping-checklist');
  const visible=status==='collected'?all.filter(item=>item.checked):status==='uncollected'?all.filter(item=>!item.checked):all;
  list.replaceChildren();
- for(const item of visible){
+ for(const [index,item] of visible.entries()){
   const row=document.createElement('label');row.className='shopping-check';
   const manual=(profile.shopping||[]).find(i=>i.id===item.id);
   let expectedChecked=item.checked;
@@ -57,9 +57,14 @@ function renderShopping(){
    expectedChecked=check.checked;
    if(status==='collected'||status==='uncollected'){renderShopping();if(focused)shoppingStatusFilter.focus();}
   };
-  row.append(check,text('span',item.name),text('strong',item.amount));list.append(row);
+  const amount=text('strong',item.amount);
+  row.append(check,text('span',item.name),amount);list.append(row);
   if(manual){
    const remove=text('button',t("Remove {v0}", {v0:(item.name)}),'text-button');
+   if(amount.textContent.trim()){
+    amount.id='offmenu-shopping-remove-amount-'+revision+'-'+index;
+    remove.setAttribute('aria-describedby',amount.id);
+   }
    remove.onclick=()=>{if(!isCurrent())return;profile.shopping=profile.shopping.filter(i=>i.id!==item.id);persist();renderShopping();};
    list.append(remove);
   }

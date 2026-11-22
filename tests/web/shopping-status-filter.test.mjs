@@ -13,6 +13,7 @@ function fixture(){
     constructor(tag){this.tag=tag;this.children=[];this.value='all';}
     append(...children){this.children.push(...children)}
     replaceChildren(){this.children=[];}
+    setAttribute(name,value){(this.attributes??={})[name]=value;}
     focus(){document.activeElement=this;}
   }
   document.createElement=tag=>new Element(tag);
@@ -111,5 +112,25 @@ test('fresh regenerated derived row supports deliberate repeated check and unche
  assert.deepEqual(Array.from(f.profile.shoppingChecked),['planned']);
  current.checked=false;current.onchange();
  assert.deepEqual(Array.from(f.profile.shoppingChecked),[]);
+ assert.equal(f.writes(),2);
+});
+
+test('same-name remove buttons expose their own visible quantity without changing stable row actions',()=>{
+ const f=fixture();
+ const rows=[{id:'fixture-a',name:'Rice',amount:'1 kg',checked:false},{id:'fixture-b',name:'Rice',amount:'2 kg',checked:false}];
+ f.profile.shopping=rows.map(item=>({...item}));
+ f.renderShopping();
+ const all=f.list.children,buttons=all.filter(node=>node.tag==='button'),amounts=buttons.map(button=>all[all.indexOf(button)-1].children[2]);
+ assert.deepEqual(buttons.map(button=>button.textContent),['Remove Rice','Remove Rice']);
+ assert.deepEqual(amounts.map(amount=>amount.textContent),['1 kg','2 kg']);
+ assert.ok(amounts.every(amount=>typeof amount.id==='string'&&amount.id&&!/\s|fixture-[ab]/.test(amount.id)));
+ assert.equal(new Set(amounts.map(amount=>amount.id)).size,2);
+ assert.deepEqual(buttons.map(button=>button.attributes?.['aria-describedby']),amounts.map(amount=>amount.id));
+ const secondCheckbox=all[all.indexOf(buttons[1])-1].children[0];
+ secondCheckbox.checked=true;
+ secondCheckbox.onchange();
+ assert.deepEqual(f.profile.shopping.map(({id,checked})=>[id,checked]),[['fixture-a',false],['fixture-b',true]]);
+ buttons[1].onclick();
+ assert.deepEqual(Array.from(f.profile.shopping),[rows[0]]);
  assert.equal(f.writes(),2);
 });
