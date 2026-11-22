@@ -2,8 +2,8 @@
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
   "messages": 4077,
-  "arabicTranslated": 642,
-  "arabicMissing": 3435,
+  "arabicTranslated": 643,
+  "arabicMissing": 3434,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -4897,12 +4897,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Camera permission is blocked. Allow the camera in this site’s browser settings, then retry.": {
+    "Camera permission is blocked. You can type the barcode or use a USB / Bluetooth scanner. To retry with the camera, allow it in your browser settings.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/scanner-model.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Camera stopped. Your scanned items are kept.": {
       "sources": [

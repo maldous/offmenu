@@ -660,7 +660,7 @@
   "Camera could not start. Try another camera, a barcode photo, or manual entry.": "Camera could not start. Try another camera, a barcode photo, or manual entry.",
   "Camera diagnostics not requested.": "Camera diagnostics not requested.",
   "Camera disconnected. Reconnect and open the scanner again.": "Camera disconnected. Reconnect and open the scanner again.",
-  "Camera permission is blocked. Allow the camera in this site’s browser settings, then retry.": "Camera permission is blocked. Allow the camera in this site’s browser settings, then retry.",
+  "Camera permission is blocked. You can type the barcode or use a USB / Bluetooth scanner. To retry with the camera, allow it in your browser settings.": "Camera permission is blocked. You can type the barcode or use a USB / Bluetooth scanner. To retry with the camera, allow it in your browser settings.",
   "Camera stopped. Your scanned items are kept.": "Camera stopped. Your scanned items are kept.",
   "Camera zoom": "Camera zoom",
   "Canada recalls": "Canada recalls",
