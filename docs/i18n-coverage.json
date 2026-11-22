@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4033,
+  "messages": 4034,
   "arabicTranslated": 575,
-  "arabicMissing": 3458,
+  "arabicMissing": 3459,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 212,
@@ -16831,6 +16831,13 @@
     "Private measurement group deleted. Reload history to refresh totals.": {
       "sources": [
         "apps/web/src/data-workspace.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Private menu verification unavailable.": {
+      "sources": [
+        "apps/web/server/private-menu-policy.mjs"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
