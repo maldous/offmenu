@@ -21,7 +21,7 @@ test('the landing and footer link to a script-independent notice before sign-in'
   assert.match(notice, /id="entry-privacy" tabindex="-1"/);
   assert.match(notice, /Guest without signing in/);
   assert.match(notice, /not a choice to allow optional tracking/);
-  assert.match(notice, /not the full policy/);
+  assert.match(notice, /<p>This is a short notice about this entry screen, not OffMenu’s full privacy policy\.<\/p>/);
   assert.doesNotMatch(notice, /<(?:script|link|iframe|img|form|input)\b|\b(?:src|href)=/i);
   const dialog = html.match(/<dialog id="account-dialog"([\s\S]*?)<\/dialog>/)[1];
   assert.match(dialog, /not a choice to allow optional tracking[\s\S]+id="auth-controls"/);
