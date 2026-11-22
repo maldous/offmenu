@@ -29,9 +29,9 @@ for(const [key,name,unit]of NUTRIENTS){const option=text('option',name+' ('+unit
 $('goal-form').onsubmit=e=>{e.preventDefault();const {profile}=data(),goal={memberId:$('goal-member').value,key:$('goal-nutrient').value,value:Number($('goal-value').value),mode:$('goal-mode').value};if(!Number.isFinite(goal.value)||goal.value<=0)return;const member=(profile.members||[]).find(m=>m.id===goal.memberId);if(member&&(member.age==null||member.age<18)&&goal.key==='energy-kcal_100g'&&goal.mode==='ceiling'){setLocalizedText(document.getElementById('goal-progress'),'Energy ceilings are available only for recorded adult profiles.');return;}profile.goals=(profile.goals||[]).filter(g=>g.memberId!==goal.memberId||g.key!==goal.key);profile.goals.push(goal);persist();$('history-member').value=goal.memberId;$('trend-nutrient').value=goal.key;render();};
 function items(){const {profile,recipes,inventory,products,date,usePantry}=data();return shoppingItems(profile,recipes,inventory,products,date,usePantry);}
 const shoppingStatusFilter=$('shopping-status-filter');
-let shoppingFilterIdentity=getIdentity();
+let shoppingFilterIdentity=getIdentity(),shoppingRenderRevision=0;
 function renderShopping(){
- const identity=getIdentity();
+ const identity=getIdentity(),revision=++shoppingRenderRevision;
  if(identity!==shoppingFilterIdentity){shoppingFilterIdentity=identity;shoppingStatusFilter.value='all';}
  const status=shoppingStatusFilter.value;
  const {profile}=data(),all=items(),list=$('shopping-checklist');
@@ -39,18 +39,21 @@ function renderShopping(){
  list.replaceChildren();
  for(const item of visible){
   const row=document.createElement('label');row.className='shopping-check';
+  const manual=(profile.shopping||[]).find(i=>i.id===item.id);
+  const isCurrent=()=>revision===shoppingRenderRevision&&identity===getIdentity()&&profile===data().profile&&
+   (manual?(profile.shopping||[]).find(i=>i.id===item.id)===manual:items().some(i=>i.id===item.id));
   const check=document.createElement('input');check.type='checkbox';check.checked=item.checked;
   check.onchange=()=>{
+   if(!isCurrent())return;
    const focused=document.activeElement===check;
-   const custom=(profile.shopping||[]).find(i=>i.id===item.id);
-   if(custom)custom.checked=check.checked;else profile.shoppingChecked=[...(profile.shoppingChecked||[]).filter(x=>x!==item.id),...(check.checked?[item.id]:[])];
+   if(manual)manual.checked=check.checked;else profile.shoppingChecked=[...(profile.shoppingChecked||[]).filter(x=>x!==item.id),...(check.checked?[item.id]:[])];
    persist();
    if(status==='collected'||status==='uncollected'){renderShopping();if(focused)shoppingStatusFilter.focus();}
   };
   row.append(check,text('span',item.name),text('strong',item.amount));list.append(row);
-  if((profile.shopping||[]).some(i=>i.id===item.id)){
+  if(manual){
    const remove=text('button',t("Remove {v0}", {v0:(item.name)}),'text-button');
-   remove.onclick=()=>{profile.shopping=profile.shopping.filter(i=>i.id!==item.id);persist();renderShopping();};
+   remove.onclick=()=>{if(!isCurrent())return;profile.shopping=profile.shopping.filter(i=>i.id!==item.id);persist();renderShopping();};
    list.append(remove);
   }
  }

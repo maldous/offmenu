@@ -18,7 +18,7 @@ function fixture(){
   document.createElement=tag=>new Element(tag);
   const list=new Element('div'),filter=new Element('select'),outside=new Element('button');
   const rows=[{id:'planned',name:'Planned',amount:'2',checked:false}];
-  const profile={shopping:[{id:'manual',name:'Manual',amount:'1',checked:true}],shoppingChecked:[]};
+  let profile={shopping:[{id:'manual',name:'Manual',amount:'1',checked:true}],shoppingChecked:[]};
   const data=()=>({profile});
   const shoppingItems=()=>[...rows.map(r=>({...r,checked:profile.shoppingChecked.includes(r.id)})),...profile.shopping];
   const f=vm.runInNewContext(actual+'\n({items,renderShopping})',{
@@ -30,7 +30,7 @@ function fixture(){
   const names=()=>list.children.filter(row=>row.tag==='label').map(row=>row.children[1].textContent);
   const select=value=>{filter.value=value;filter.onchange();};
   const check=()=>list.children.find(row=>row.tag==='label').children[0];
-  return {...f,document,list,filter,select,check,names,outside,rows,profile,writes:()=>writes,switchActor:()=>{actor={};}};
+  return {...f,document,list,filter,select,check,names,outside,rows,profile,writes:()=>writes,switchActor:()=>{actor={};},replaceProfile:next=>{profile=next;}};
 }
 test('labelled shopping filter defaults to All and does not change all-row data',()=>{
   assert.match(html,/<label for="shopping-status-filter"[^>]*>/);
@@ -56,4 +56,39 @@ test('a filtered toggle keeps focus usable and separates no matches from a truly
   assert.deepEqual(f.names(),['Manual']);
   f.rows.length=0;f.profile.shopping.length=0;f.renderShopping();
   assert.equal(f.list.children[0].textContent,'Plan a meal in My week, or add a shopping item below.');
+});
+
+const paired=()=>[{id:'left',name:'Same label',amount:'1',checked:false},{id:'right',name:'Same label',amount:'2',checked:false}];
+const firstManual=f=>{
+ const row=f.list.children.find(node=>node.tag==='label'&&node.children[1].textContent==='Same label');
+ return {check:row.children[0],remove:f.list.children[f.list.children.indexOf(row)+1]};
+};
+for(const boundary of ['actor','profile','rerender'])test('retained Shopping row actions cannot mutate after '+boundary+' changes',()=>{
+ const f=fixture(), previous=paired(), replacement={shopping:paired(),shoppingChecked:[]};
+ f.profile.shopping=previous;
+ f.renderShopping();
+ const old=firstManual(f);
+ if(boundary==='actor')f.switchActor();
+ if(boundary==='profile')f.replaceProfile(replacement);
+ if(boundary==='rerender')f.renderShopping();
+ old.check.checked=true;
+ old.check.onchange();
+ old.remove.onclick();
+ assert.deepEqual(f.profile.shopping,paired());
+ assert.deepEqual(replacement.shopping,paired());
+ assert.deepEqual(f.profile.shoppingChecked,[]);
+ assert.deepEqual(replacement.shoppingChecked,[]);
+ assert.equal(f.writes(),0);
+});
+test('current Shopping check and remove affect only the selected stable ID when labels match',()=>{
+ const f=fixture();
+ f.profile.shopping=paired();
+ f.renderShopping();
+ const first=firstManual(f);
+ first.check.checked=true;
+ first.check.onchange();
+ assert.deepEqual(f.profile.shopping,paired().map(item=>item.id==='left'?{...item,checked:true}:item));
+ first.remove.onclick();
+ assert.deepEqual(Array.from(f.profile.shopping),[paired()[1]]);
+ assert.equal(f.writes(),2);
 });
