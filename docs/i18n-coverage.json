@@ -5502,7 +5502,8 @@
     },
     "Choose portions within the cooked amount remaining.": {
       "sources": [
-        "apps/web/src/cooking-model.js"
+        "apps/web/src/cooking-model.js",
+        "apps/web/src/journey-ui.js"
       ],
       "arabic": false,
       "classification": "explicit-ui"
