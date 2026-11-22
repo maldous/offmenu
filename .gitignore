@@ -13,6 +13,9 @@ apps/web/server/generated.mjs
 .netlify/
 
 .playwright-cli/
+.impeccable/config.local.json
+.impeccable/hook.cache.json
+/impeccable.json
 output/playwright/
 output/third-party-compatibility/
 deploy/auth-return/i18n.js

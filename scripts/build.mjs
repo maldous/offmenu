@@ -21,7 +21,7 @@ for(const file of ['scanner-roboto-regular.ttf','scanner-roboto-bold.ttf'])asset
 assets['scanner-theme-init.js']=await readFile('apps/web/src/scanner-theme-init.js','utf8');
 assets['data-workspace.html']=await readFile('apps/web/assets/data-workspace.html','utf8');
 assets['retailer-extension.zip']=(await readFile('dist/retailer-extension.zip')).toString('base64');
-for(const file of ['index.html','style.css','scanner-licenses.txt','recipes.json','afcd-nutrient-details.json','icon.svg','manifest.webmanifest','manifest-ar.webmanifest'])assets[file]=await readFile('apps/web/assets/'+file,'utf8');
+for(const file of ['index.html','style.css','scanner-licenses.txt','recipes.json','afcd-nutrient-details.json','icon.svg','receipt-bars.svg','manifest.webmanifest','manifest-ar.webmanifest'])assets[file]=await readFile('apps/web/assets/'+file,'utf8');
 assets['sw.js']=await readFile('dist/sw.js','utf8');
 assets['scanner-worker.js']=await readFile('dist/scanner-worker.js','utf8');
 assets['scanner.wasm']=(await readFile('node_modules/zxing-wasm/dist/reader/zxing_reader.wasm')).toString('base64');
