@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4083,
+  "messages": 4085,
   "arabicTranslated": 642,
-  "arabicMissing": 3441,
+  "arabicMissing": 3443,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -21868,6 +21868,13 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "Some recipes did not load. Showing the recipes that are available.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Some recipes did not load. Try again later or browse the recipes already saved.": {
       "sources": [
         "apps/web/src/app.js"
@@ -23857,6 +23864,13 @@
     "The owner must retain ownership": {
       "sources": [
         "apps/web/server/kitchens.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "The recipe catalogue did not load. Showing recipes already available to this kitchen.": {
+      "sources": [
+        "apps/web/src/app.js"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
