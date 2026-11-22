@@ -42,7 +42,7 @@ function harness({inventory=[inventoryLot('old'),inventoryLot('other','Shelf 2')
   localStorage:{getItem:key=>store.get(key)??null,setItem:(key,value)=>store.set(key,value),removeItem:key=>store.delete(key)},
   sharing:{canWrite:()=>writable},syncStatus:()=>{},finishInventory,locationKey,makeAutoLot,validateLot,reconcileCookedStock,t,setLocalizedText,getLanguage,
   localizedLotName:item=>({value:item.name}),localizedField:(item,key='name')=>({value:item[key]}),showLocalized:(el,text)=>{el.textContent=text.value;},suggest:()=>'',
-  getProduct:lookup,markDirty:()=>dirty++,stop(){},setView(){},showRun(){},beep(){},pantry(){},findMeals(){},scanFeedback(){},displayAccepted(){},msg(){},persistProfile(){},DEFAULT_LOCATIONS:[],confirm:()=>false,
+  scannerMessageRevision:0,ownsLookupAnnouncement:()=>false,getProduct:lookup,markDirty:()=>dirty++,stop(){},setView(){},showRun(){},beep(){},pantry(){},findMeals(){},scanFeedback(){},displayAccepted(){},msg(){},persistProfile(){},DEFAULT_LOCATIONS:[],confirm:()=>false,
  };
  vm.createContext(ctx);vm.runInContext([...functions,...assignments,source.slice(closes.start,closes.end),`globalThis.scanAllowed=${source.slice(canScan.start,canScan.end)};`].join('\n'),ctx);
  return {ctx,$,cancel,store,setWritable:value=>{writable=value;},dirty:()=>dirty};
