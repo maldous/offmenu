@@ -3,7 +3,8 @@ import {extensionBuildOptions} from './extension-build-options.mjs';
 import {assertNoPublicAuthoring,publicHTML} from './public-html-boundary.mjs';
 import {execFileSync} from 'node:child_process';
 import {build} from 'esbuild';
-import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {readFile,writeFile,mkdir,realpath} from 'node:fs/promises';
+import {resolve} from 'node:path';
 execFileSync('node',['scripts/i18n-catalogue.mjs','--check'],{stdio:'inherit'});
 await build({entryPoints:['deploy/auth-return/i18n-source.js'],bundle:true,minify:true,outfile:'deploy/auth-return/i18n.js'});
 await build(extensionBuildOptions);
@@ -11,7 +12,17 @@ await mkdir('dist',{recursive:true});
 await build({entryPoints:['apps/web/src/sw.js'],bundle:true,minify:true,format:'iife',outfile:'dist/sw.js'});
 await build({entryPoints:['apps/web/src/data-workspace.js'],bundle:true,minify:true,format:'esm',outfile:'dist/data-workspace.js'});
 await build({entryPoints:['apps/web/src/app.js'],bundle:true,minify:true,format:'esm',outfile:'dist/app.js'});
-execFileSync('python3',['-c',"import zipfile; z=zipfile.ZipFile('dist/retailer-extension.zip','w',zipfile.ZIP_DEFLATED); [z.write('apps/retailer-extension/'+f,'offmenu-retailer-extension/'+f) for f in ['manifest.json','popup.html','popup.css','offmenu-tokens.css','popup.js','README.md','icons/icon-16.png','icons/icon-48.png','icons/icon-128.png']]; z.write('apps/web/assets/icon.svg','offmenu-retailer-extension/icon.svg'); z.close()"]);
+const extensionFiles=['manifest.json','popup.html','popup.css','offmenu-tokens.css','popup.js','README.md','icons/icon-16.png','icons/icon-48.png','icons/icon-128.png'];
+const extensionBrand='apps/web/assets/icon.svg';
+for(const name of extensionFiles){
+  const path='apps/retailer-extension/'+name;
+  const canonical=name==='offmenu-tokens.css'?'apps/web/assets/offmenu-tokens.css':path;
+  if(await realpath(path)!==resolve(canonical)) throw new Error('Unexpected public extension source path.');
+  if(!name.endsWith('.png')) assertNoPublicAuthoring(await readFile(path,'utf8'));
+}
+if(await realpath(extensionBrand)!==resolve(extensionBrand)) throw new Error('Unexpected public extension source path.');
+assertNoPublicAuthoring(await readFile(extensionBrand,'utf8'));
+execFileSync('python3',['-c',"import sys,zipfile; z=zipfile.ZipFile('dist/retailer-extension.zip','w',zipfile.ZIP_DEFLATED); [z.write('apps/retailer-extension/'+f,'offmenu-retailer-extension/'+f) for f in sys.argv[2:]]; z.write(sys.argv[1],'offmenu-retailer-extension/icon.svg'); z.close()",extensionBrand,...extensionFiles]);
 await build({entryPoints:['apps/web/src/scanner-worker.js'],bundle:true,minify:true,format:'esm',outfile:'dist/scanner-worker.js'});
 await build({entryPoints:['apps/web/src/shelf-scanner.js'],bundle:true,minify:true,format:'esm',outfile:'dist/shelf-scanner.js'});
 await build({entryPoints:['apps/web/src/scanner-three.js'],bundle:true,minify:true,format:'esm',outfile:'dist/scanner-three.js'});
