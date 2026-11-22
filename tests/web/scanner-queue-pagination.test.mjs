@@ -4,6 +4,7 @@ import {mkdtemp,readFile,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import vm from 'node:vm';
+import {setLocalizedText,t as translate} from '../../apps/web/src/i18n.js';
 import {parse} from 'acorn';
 import {createIdentifierAdapter} from '../../apps/web/server/identifier-host.mjs';
 import * as shim from '../../apps/web/src/scanner-identifiers.js';
@@ -31,14 +32,14 @@ print(json.dumps({'databaseSha256':'${IDENTIFIER_DB}','rows':rows,'hasMore':more
  globalThis.fetch=(path,options)=>adapter(new Request('https://offmenu-identifiers.invalid'+path,options));
  t.after(()=>{globalThis.fetch=previousFetch;});
  const source=await readFile(new URL('../../apps/web/src/shelf-scanner.js',import.meta.url),'utf8'),nodes=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body;
- const functions=['el','btn','capture','showMatches','renderQueue'].map(name=>{const node=nodes.find(n=>n.type==='FunctionDeclaration'&&n.id.name===name);assert.ok(node,name);return source.slice(node.start,node.end);});
+ const functions=['el','ui','btn','capture','showMatches','renderQueue'].map(name=>{const node=nodes.find(n=>n.type==='FunctionDeclaration'&&n.id.name===name);assert.ok(node,name);return source.slice(node.start,node.end);});
  const formats=nodes.find(n=>n.type==='VariableDeclaration'&&n.declarations.some(d=>d.id.name==='CAPTURE_FORMATS'));
  const pause=nodes.find(n=>n.type==='ExpressionStatement'&&n.expression.type==='AssignmentExpression'&&n.expression.left.type==='MemberExpression'&&n.expression.left.property.name==='onclick'&&n.expression.left.object.type==='CallExpression'&&n.expression.left.object.arguments[0]?.value==='pause');
  const handoff=nodes.find(n=>n.type==='ExpressionStatement'&&n.expression.type==='AssignmentExpression'&&n.expression.left.type==='MemberExpression'&&n.expression.left.property.name==='onclick'&&n.expression.left.object.type==='CallExpression'&&n.expression.left.object.arguments[0]?.value==='kitchen-handoff');
  class Element{constructor(){this.children=[];this.dataset={};this.textContent='';}append(...children){this.children.push(...children);}replaceChildren(...children){this.children=children;}}
  const elements=new Map(),$=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};
  let hold=false,entered,release;const requestGenerations=[];
- const ctx={$,document:{createElement:()=>new Element()},sheetTouched:false,setSheetSnap(){},innerWidth:900,active:true,paused:false,processed:new Set(),generation:0,queue:[],current:null,selected:null,mode:'Explore',connection:'live',requestedSourceReference:null,crypto,
+ const ctx={$,setLocalizedText,t:translate,document:{createElement:()=>new Element()},sheetTouched:false,setSheetSnap(){},innerWidth:900,active:true,paused:false,processed:new Set(),generation:0,queue:[],current:null,selected:null,mode:'Explore',connection:'live',requestedSourceReference:null,crypto,
   render(){},readTone(){},close(){},open(){},scanner:{noteAccepted(){},start(){}},mergeIdentifierPages:shim.mergeIdentifierPages,
   async lookupIdentifiers(raw,generation,cursor,symbology){requestGenerations.push({raw,generation,cursor});const response=await shim.lookupIdentifiers(raw,generation,cursor,symbology);if(cursor&&hold){entered();await new Promise(resolve=>{release=resolve;});}return response;},message(value){ctx.lastMessage=value;}};
  vm.createContext(ctx);vm.runInContext([source.slice(formats.start,formats.end),...functions,source.slice(pause.start,pause.end),source.slice(handoff.start,handoff.end)].join('\n'),ctx);

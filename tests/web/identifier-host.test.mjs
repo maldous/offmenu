@@ -16,7 +16,7 @@ async function fixture(mode='valid',delay=0,timeoutMs=7000,records=null,failDisp
  let enrich=`import sys,json,time\nq=json.load(sys.stdin)\nwith open(${JSON.stringify(calls)},'a') as f:f.write('details:'+q['action']+'\\n')\np=q['identity'];p['details']={'detailBackend':'${BACKEND}','state':'loaded','accepted':False,'sourceProducts':[{'records':[{'kind':'product','data':{'name':'Generated product'}}],'ingredientUsability':{'status':'unclassified'}}]}\n`;
  if(mode==='invalid')enrich+="print('{invalid')\n";
  else if(mode==='overflow')enrich+="print('x'*262145)\n";
- else if(mode==='timeout')enrich+="time.sleep(0.4);print(json.dumps(p))\n";
+ else if(mode==='timeout')enrich+="time.sleep(30);print(json.dumps(p))\n";
  else if(mode==='mismatched')enrich+="p['rows']=[];print(json.dumps(p))\n";
  else if(mode==='failed')enrich+="sys.exit(3)\n";
  else enrich+="print(json.dumps(p,sort_keys=True))\n";
@@ -28,8 +28,25 @@ function request(changes={}){return new Request('https://offmenu-identifiers.inv
 test('identity is retrieved before details, deep row binding ignores JSON key ordering',async()=>{
  const f=await fixture();try{const response=await f.adapter(request());const body=await response.json();assert.equal(response.status,200);assert.equal(body.rows.length,2);assert.equal(body.details.state,'loaded');assert.equal(body.rows[0].lexical_value,'00027000612323');assert.equal(body.identitySearchIndependentOfDetails,true);for(const match of body.identityMatches){assert.equal(match.categoryDisposition.state,'ambiguous-unknown');assert.equal(match.categoryDisposition.canonicalConceptId,null);assert.equal(match.categoryDisposition.ingredientCompositionAsserted,false);}assert.deepEqual(body.categoryDispositionCoverage,{scope:'returned-identifier-observations-only',returnedOccurrences:2,mappedIngredientCategory:0,nonIngredientNotApplicable:0,ambiguousUnknown:2,unreturnedPopulation:null});assert.deepEqual((await readFile(f.calls,'utf8')).trim().split('\n'),['identity:query','identity:query','identity:query','details:enrich']);assert.match(response.headers.get('Cache-Control'),/no-store/);}finally{await f.close();}
 });
-for(const mode of ['invalid','overflow','timeout','mismatched','failed'])test('detail '+mode+' preserves both exact identity/source results',async()=>{
- const f=await fixture(mode,0,mode==='timeout'?120:7000);try{const response=await f.adapter(request());const body=await response.json();assert.equal(response.status,200);assert.equal(body.rows.length,2);assert.deepEqual(body.rows.map(x=>x.source_id),['fixture-1','fixture-2']);assert.equal(body.details.state,'unavailable');assert.equal(body.rows[0].ingredientStatus,'unclassified');assert.equal(body.hasMore,false);assert.equal(body.nextCursor,null);}finally{await f.close();}
+for(const mode of ['invalid','overflow','timeout','mismatched','failed'])test('detail '+mode+' preserves both exact identity/source results',async t=>{
+ const f=await fixture(mode);try{
+  const realTimer=setTimeout;
+  if(mode==='timeout')t.mock.timers.enable({apis:['Date','setTimeout']});
+  const pending=f.adapter(request());
+  if(mode==='timeout'){
+   // Advance the request deadline only after the real child records that all
+   // identity lanes completed and enrichment started. CI load cannot consume
+   // the identity budget before this test reaches its intended failure.
+   const started=performance.now();let calls='';
+   try{
+    while(!calls.includes('details:enrich')&&performance.now()-started<10000){
+     try{calls=await readFile(f.calls,'utf8');}catch(e){if(e.code!=='ENOENT')throw e;}
+     if(!calls.includes('details:enrich'))await new Promise(r=>realTimer(r,10));
+    }
+   }finally{t.mock.timers.tick(7001);}
+   assert.deepEqual(calls.trim().split('\n'),['identity:query','identity:query','identity:query','details:enrich']);
+  }
+  const response=await pending;const body=await response.json();assert.equal(response.status,200);assert.equal(body.rows.length,2);assert.deepEqual(body.rows.map(x=>x.source_id),['fixture-1','fixture-2']);assert.equal(body.details.state,'unavailable');if(mode==='timeout')assert.equal(body.details.error.reasonCode,'DETAIL_TIME_BOUND');assert.equal(body.rows[0].ingredientStatus,'unclassified');assert.equal(body.hasMore,false);assert.equal(body.nextCursor,null);}finally{await f.close();}
 });
 test('status and identity-only queries never depend on a detail child',async()=>{
  const f=await fixture('failed');try{const status=await f.adapter(new Request('https://offmenu-identifiers.invalid/__dev/identifiers/status'));const s=await status.json();assert.equal(s.queryAvailable,true);assert.equal(s.identitySearchPlanVersion,2);assert.equal(s.detailAvailability,'not-assessed');const body=await (await f.adapter(request({include:undefined}))).json();assert.equal(body.rows.length,2);assert.equal(body.details,undefined);assert.deepEqual((await readFile(f.calls,'utf8')).trim().split('\n'),['identity:status','identity:query','identity:query','identity:query']);}finally{await f.close();}

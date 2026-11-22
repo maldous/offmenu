@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {parse} from 'acorn';
 import vm from 'node:vm';
+import {setLocalizedText} from '../../apps/web/src/i18n.js';
 import {mountScannerProductVisual} from '../../apps/web/src/scanner-product-visuals.js';
 import {sourceObservationReference} from '../../apps/web/src/scanner-identity-v2.js';
 import {photoFixture} from './fixtures/off-photos/context.mjs';
@@ -65,13 +66,14 @@ test('actual scanner render sends its current selected observation and detail to
       matchType:'representation-alias',equivalence:'upc-a-as-leading-zero-ean-13'}};
   const current={id:'one',original:fixture.reference.originalLexicalValue,raw:fixture.reference.originalLexicalValue,
     databaseSha256:fixture.reference.databaseSha256,runId:fixture.reference.runId,namespace:'barcode',status:'source-match'};
-  const context=vm.createContext({selected,current,connection:'live',generation:9,mode:'Explore',finished:false,
+  const label=ast.body.find(n=>n.type==='FunctionDeclaration'&&n.id.name==='label');assert.ok(label);
+  const context=vm.createContext({setLocalizedText,selected,current,connection:'live',generation:9,mode:'Explore',finished:false,
     active:true,paused:false,streaming:false,queue:[],saved:null,document:doc,navigator:{onLine:true},
     sourceObservationReference,productVisual:{show:input=>{passed=input;return presenter.show(input);}},
     $:id=>{if(!nodes.has(id))nodes.set(id,new Element('div',doc));return nodes.get(id);},
     displayValue(){},renderConsumerSummary(){},message(){},renderData(){},detailQueryUnavailable:()=>false,
     projectedField:()=>null,projectedValue:()=>null,humanValue:value=>String(value)});
-  vm.runInContext(source.slice(node.start,node.end),context);context.render();
+  vm.runInContext([label,node].map(fn=>source.slice(fn.start,fn.end)).join('\n'),context);context.render();
   assert.equal(passed.detail,fixture.detail);assert.equal(passed.generation,9);assert.equal(passed.entryId,'one');
   assert.equal(passed.reference.sourceLexicalValue,'0078742003986');
   assert.equal(presenter.current().tier,'product-photo');
