@@ -23,10 +23,17 @@ class Surface(HTMLParser):
         attrs = dict(attrs)
         if tag == "a" and "href" in attrs:
             key = "href:" + attrs["href"]
+            if attrs["href"] == "/" and "workspace-brand" in (attrs.get("class") or "").split():
+                key = 'a.workspace-brand[href="/"]'
         elif tag == "summary":
             key = "summary:" + attrs["data-i18n"]
         elif tag in {"button", "input", "select", "textarea"}:
-            key = attrs["id"]
+            if tag == "button" and "data-theme-toggle" in attrs:
+                key = "button[data-theme-toggle]"
+            elif attrs.get("id"):
+                key = attrs["id"]
+            else:
+                raise AssertionError(f"Unidentified <{tag}> control at H{self.getpos()[0]}")
         else:
             return
         self.controls.append((key, self.getpos()[0]))
