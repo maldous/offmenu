@@ -40,7 +40,7 @@ function harness({inventory=[inventoryLot('old'),inventoryLot('other','Shelf 2')
  const ctx={...handoff,$,KEY:'test-pantry',PROFILE:'test-profile',requestIdentity:{owner:null},session:copy(session),pendingScannerImport:null,scannerHandoffOperations:[],scannerHandoffReceipts:{},scannerHandoffStateValid:true,KITCHEN_HANDOFF:'offmenu-scanner-kitchen-pending-v1',validSourceObservationReference,lifecycleFixture:false,location:{search:'?scan=staged'},URLSearchParams,lots:copy(inventory),profile:{batches:[],locations:[]},products:{},feedback:{},latestAcceptedId:null,selectedMode:'shelf',selectedArea:'Pantry',demoMode:false,user:null,lastReceipt:null,editingId:null,crypto,Date,
   document:{createElement:()=>new Element(),querySelectorAll:selector=>selector==='[data-close]'?[cancel]:[]},window:{scrollTo(){}},
   localStorage:{getItem:key=>store.get(key)??null,setItem:(key,value)=>store.set(key,value),removeItem:key=>store.delete(key)},
-  sharing:{canWrite:()=>writable},syncStatus:()=>{},finishInventory,locationKey,makeAutoLot,validateLot,reconcileCookedStock,t,setLocalizedText,getLanguage,
+  isLocalGuest:()=>false,sharing:{canWrite:()=>writable},syncStatus:()=>{},finishInventory,locationKey,makeAutoLot,validateLot,reconcileCookedStock,t,setLocalizedText,getLanguage,
   localizedLotName:item=>({value:item.name}),localizedField:(item,key='name')=>({value:item[key]}),showLocalized:(el,text)=>{el.textContent=text.value;},suggest:()=>'',
   scannerMessageRevision:0,ownsLookupAnnouncement:()=>false,getProduct:lookup,markDirty:()=>dirty++,stop(){},setView(){},showRun(){},beep(){},pantry(){},findMeals(){},scanFeedback(){},displayAccepted(){},msg(){},persistProfile(){},DEFAULT_LOCATIONS:[],confirm:()=>false,
  };
