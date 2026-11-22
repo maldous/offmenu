@@ -6,13 +6,15 @@ Choose **Global data** from the kitchen to open the **Global food and evidence w
 
 ## Find and check a public record
 
-1. Choose **Country**, then **Open country**. Read the evidence status and open **All source and mapping evidence** for the underlying record. Suggested foods are not a measured national basket. Changing the menu does not reload the open record: open the new country before downloading it or using its starter list.
-2. To search individual records, choose a **Record family**, enter **Search** text, and press **Search**. The country filter applies to *Source directory* and *Basket lines*, not all families. **Next page** replaces the current results. If there is no next cursor, start a new search rather than assuming another page exists.
+1. Choose **Country**, then **View country sources**. Read the evidence status and open **All source and mapping evidence** for the underlying record. Suggested foods are not a measured national basket. Changing the menu does not reload the open record: open the new country before downloading it or using its starter list.
+2. To search individual records, choose a **Record family**, enter **Search** text, and press **Search public records**. The country filter applies to *Source directory* and *Basket lines*, not all families. **Next page** replaces the current results. If there is no next cursor, start a new search rather than assuming another page exists.
 3. For a company candidate, choose **GLEIF** for a company name or **Wikidata** for an exact Q identifier. Check the returned evidence before using it. A matching name is not proof of identity; the company’s country is not the food’s origin.
 
 **Use starter shopping list** takes the currently open country’s suggested foods to the kitchen, not measured quantities or purchased stock. If you see **Open a country first**, load its record. A special provisioning context with no ordinary starter cannot be imported with this button.
 
 ## Calculate, compare or download a basket
+
+Open **Advanced private and technical tools** to reveal this and the private-storage controls. It is a disclosure only; opening it neither signs you in nor sends data.
 
 For a first look, choose **Load synthetic arithmetic example** and then **Calculate nutrients and coverage**. The example exercises the arithmetic; it is not dietary advice or evidence for a country. For your own measured basket, supply its quantities, preparation state, nutrient units/basis, source and definition. Volume needs a density and a count needs a unit mass. Treat unknown values as unknown, not zero. Compare the reported total with the known subtotal and coverage.
 
@@ -53,6 +55,7 @@ The line numbers below refer to [the page (H)](https://github.com/maldous/offmen
 | `enrichment-source` | H4, J15 | Public researcher: select a company-evidence source. |
 | `enrichment-query` | H4, J15 | Public researcher: enter a name or Q identifier for the selected source. |
 | `enrich` | H4, J15 | Public researcher: request public evidence, not verified food origin. |
+| `summary:Advanced private and technical tools` | H5 | Any reader: expand/collapse advanced measured, private and technical inputs. Opening it does not sign in or send data. |
 | `basket-example` | H5, J16 | Learner: fill the first editor with a synthetic example. |
 | `basket-json` | H5, J16–18, J26 | Basket analyst: edit the first measured basket. |
 | `calculate` | H5, J17 | Basket analyst: calculate metrics and inspect missing evidence. |

@@ -19,6 +19,11 @@ remain held. ADR 0014 records this instruction-distribution change.
 
 # OffMenu developer and agent entrypoint
 
+When the user requests an Impeccable critique, apply every proposed fix within
+the requested scope and verify the affected flows in the same task, unless the
+user explicitly asks for findings only. Include the changes and verification
+in the critique report.
+
 Read `docs/standards/repository.md`, `repository-standard.json` and the relevant
 ADR before changing structure. Read `tools/delivery/README.md` for the repeatable
 workflow. Discover the actual source/manifests before proposing new rules.

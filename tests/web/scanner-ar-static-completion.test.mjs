@@ -57,7 +57,8 @@ const remaining = {
   "EAN-13 · explicitly known format": "EAN-13 · صيغة معروفة صراحةً",
   "EAN-8 · explicitly known format": "EAN-8 · صيغة معروفة صراحةً",
   "GTIN-14 · only when known, not inferred from ITF": "GTIN-14 · فقط عند معرفته، ولا يُستنتَج من ITF",
-  "Source-record matches": "مطابقات سجلات المصدر"
+  "Source-record matches": "مطابقات سجلات المصدر",
+  "Retry camera": "أعِد محاولة الكاميرا"
 };
 const scannerURL = new URL('../../apps/web/assets/shelf-scanner.html',import.meta.url);
 function staticKeys(html) {
@@ -68,7 +69,7 @@ function staticKeys(html) {
 }
 
 test('remaining static scanner Arabic pairs preserve English and identifier spellings',()=>{
-  assert.equal(Object.keys(remaining).length,52);
+  assert.equal(Object.keys(remaining).length,53);
   for (const [key,expected] of Object.entries(remaining)) {
     assert.equal(ARABIC[key],expected,key);
     assert.equal(hasTranslation(key,'ar'),true,key);
@@ -83,7 +84,7 @@ test('remaining static scanner Arabic pairs preserve English and identifier spel
 
 test('remaining static scanner scope is actual decoded HTML with no static fallback',async()=>{
   const keys=staticKeys(await readFile(scannerURL,'utf8'));
-  assert.equal(keys.length,110,'selected static inventory only, not dynamic runtime text');
+  assert.equal(keys.length,111,'selected static inventory only, not dynamic runtime text');
   for (const key of Object.keys(remaining)) assert.ok(keys.includes(key),key);
   for (const key of keys) assert.equal(hasTranslation(key,'ar'),true,key);
 });

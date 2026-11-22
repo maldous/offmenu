@@ -80,11 +80,13 @@ test('anonymous measured menu keeps no invented household identity',()=>{
 
  test('filtered results expose the entire loaded collection and last result saves only selected diners',()=>{
  const h=harness({recipeCount:130});
- assert.equal(h.$('meals').children.length,24);
+ assert.equal(h.$('meals').children.length,3);
+ assert.equal(h.$('meals-heading').textContent,'Three ideas for dinner.');
  assert.equal(h.$('meals').tabIndex,-1);
  const box=h.checkbox(1);box.checked=false;box.onchange();
  h.$('menu-search').value='synthetic';h.ctx.findMeals();
  assert.equal(h.$('meals').children.length,130);
+ assert.equal(h.$('meals-heading').textContent,'Matching recipes');
  assert.equal(h.$('meals').tabIndex,0);
  assert.equal(h.$('meals').classes.has('meal-results-scroll'),true);
  const last=h.$('meals').children.at(-1);
@@ -92,7 +94,8 @@ test('anonymous measured menu keeps no invented household identity',()=>{
  assert.equal(h.ctx.profile.plan.at(-1).recipeId,recipe.id+':129');
  assert.deepEqual(plain(h.ctx.profile.plan.at(-1).memberIds),['small']);
  h.$('menu-search').value='';h.ctx.findMeals();
- assert.equal(h.$('meals').children.length,24);
+ assert.equal(h.$('meals').children.length,3);
+ assert.equal(h.$('meals-heading').textContent,'Three ideas for dinner.');
  assert.equal(h.$('meals').classes.has('meal-results-scroll'),false);
  h.$('show-all-meals').checked=true;h.ctx.findMeals();
  assert.equal(h.$('meals').children.length,130);

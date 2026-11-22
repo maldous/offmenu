@@ -1,0 +1,12 @@
+{
+  "buildPath": "code",
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [
+      "apps/web/server/generated.mjs",
+      "archive/release-custody/20261026-existing-fullscanner-vertical/production109-exact-app-source/deployed-application.mjs",
+      "archive/release-custody/20261026-existing-fullscanner-vertical/production109-exact-app-source/worker.mjs"
+    ],
+    "ignoreValues": []
+  }
+}
