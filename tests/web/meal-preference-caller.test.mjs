@@ -162,9 +162,10 @@ test('scope change invalidates an open editor and controls remain in existing lo
  const sharingSetup=ast.body.find(n=>n.type==='VariableDeclaration'&&n.declarations.some(d=>d.id.name==='sharing'));
  const callback=sharingSetup.declarations[0].init.arguments[0].properties.find(p=>p.key.name==='onScopeChange').value;
  const f=fixture();f.open();
- Object.assign(f.context,{autoSync:{resume(){}},sharing:{active:()=>false,canWrite:()=>true}});
+ Object.assign(f.context,{scannerMessageRevision:0,settledLookupAnnouncement:null,planScopeEpoch:0,autoSync:{resume(){}},sharing:{active:()=>false,canWrite:()=>true}});
  f.$('workspace').classList={toggle(){}};
  vm.runInContext('('+source.slice(callback.start,callback.end)+')()',f.context);
+ assert.equal(f.context.scannerMessageRevision,1);assert.equal(f.context.planScopeEpoch,1);
  f.save();assert.equal(f.writes.length,0);assert.match(f.$('member-notice').textContent,/changed/);
  const dialog=html.slice(html.indexOf('<dialog id="member-dialog"'),html.indexOf('</dialog>',html.indexOf('<dialog id="member-dialog"')));
  for(const id of ['member-likes','member-textures','member-spice','member-reset-taste'])assert.ok(dialog.includes('id="'+id+'"'));

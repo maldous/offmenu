@@ -42,7 +42,7 @@ function harness({people=members,mapped=true,recipeCount=1}={}){
  const ctx={$,recipeLibrary:null,profile:{members:plain(people),units:'metric',plan:[]},recipes:Array.from({length:recipeCount},(_,i)=>({...plain(recipe),id:recipeCount===1?recipe.id:recipe.id+':'+i})),products,absentDiners:new Set(),selections:[],PROFILE:'synthetic-profile',crypto:webcrypto,NUTRIENTS,planSummary,rankedMenus,householdPortions,quantified,
   document,appendRecipeIngredientCoverage,
   today:()=>date,menuInventory:()=>inventory,normalizeSearchText:s=>String(s).toLowerCase(),multilingualSearchText:r=>r.title.toLowerCase(),normalize:s=>String(s).toLowerCase(),locationKey:()=>'',
-  setLocalizedText:(el,text,values={})=>{el.textContent=String(text).replace(/\{(v\d+)\}/g,(_,k)=>String(values[k]));},t:(s,values={})=>String(s).replace(/\{(v\d+)\}/g,(_,k)=>String(values[k])),getLanguage:()=> 'en',
+  recipeAvailability:'loaded',renderRecipeAvailabilityNote(){},setLocalizedText:(el,text,values={})=>{el.textContent=String(text).replace(/\{(v\d+)\}/g,(_,k)=>String(values[k]));},t:(s,values={})=>String(s).replace(/\{(v\d+)\}/g,(_,k)=>String(values[k])),getLanguage:()=> 'en',
   localizedField:(r,k)=>({value:r[k]}),showLocalized:(el,v)=>{el.textContent=v.value;},displayAmount:(n,u)=>n+' '+u,displayName:s=>s,
   renderPlan(){},markDirty(){dirty++;},localStorage:{setItem:(key,value)=>store.set(key,value)},journey:{openCook(){}}
  };

@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4077,
-  "arabicTranslated": 642,
-  "arabicMissing": 3435,
+  "messages": 4092,
+  "arabicTranslated": 643,
+  "arabicMissing": 3449,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -1799,6 +1799,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "./recipe-availability.js": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "./recipe-community-model.js": {
       "sources": [
         "apps/web/src/recipe-community-ui.js"
@@ -2282,6 +2289,7 @@
     "/recipes.json?v=i18n-1": {
       "sources": [
         "apps/web/src/app.js",
+        "apps/web/src/recipe-availability.js",
         "apps/web/src/sw.js"
       ],
       "arabic": false,
@@ -2770,6 +2778,13 @@
       "arabic": false,
       "classification": "explicit-ui"
     },
+    "A serving cannot be before the cooking date.": {
+      "sources": [
+        "apps/web/src/cooking-model.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
     "A short pulse after each scan.": {
       "sources": [
         "apps/web/assets/index.html",
@@ -3064,7 +3079,6 @@
     },
     "Account setup pending. Guest pantry and offline recipes remain available.": {
       "sources": [
-        "apps/web/src/app.js",
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
@@ -4897,12 +4911,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Camera permission is blocked. Allow the camera in this site’s browser settings, then retry.": {
+    "Camera permission is blocked. You can type the barcode or use a USB / Bluetooth scanner. To retry with the camera, allow it in your browser settings.": {
       "sources": [
+        "apps/web/src/locales/ar.js",
         "apps/web/src/scanner-model.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Camera stopped. Your scanned items are kept.": {
       "sources": [
@@ -5502,7 +5517,8 @@
     },
     "Choose portions within the cooked amount remaining.": {
       "sources": [
-        "apps/web/src/cooking-model.js"
+        "apps/web/src/cooking-model.js",
+        "apps/web/src/journey-ui.js"
       ],
       "arabic": false,
       "classification": "explicit-ui"
@@ -6775,6 +6791,13 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Copy shopping list": {
+      "sources": [
+        "apps/web/assets/index.html"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
     "Copy this token now. Treat it as a password; it grants the selected access. It will not be shown again.": {
       "sources": [
         "apps/web/assets/index.html"
@@ -6802,6 +6825,13 @@
       ],
       "arabic": false,
       "classification": "heuristic-candidate"
+    },
+    "Could not load your requests.": {
+      "sources": [
+        "apps/web/src/care-ui.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
     },
     "Count": {
       "sources": [
@@ -8676,6 +8706,14 @@
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Enter portions in tenths, for example 1.5.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/journey-ui.js"
+      ],
+      "arabic": false,
       "classification": "explicit-ui"
     },
     "Enter up to 32 comma-separated terms per field, 100 characters per term.": {
@@ -12274,6 +12312,20 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Invalid recipe collection": {
+      "sources": [
+        "apps/web/src/recipe-availability.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Invalid recipe identity": {
+      "sources": [
+        "apps/web/src/recipe-availability.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "Invalid recipe ingredient.": {
       "sources": [
         "apps/web/src/model.js"
@@ -13304,6 +13356,13 @@
       "arabic": true,
       "classification": "explicit-ui"
     },
+    "Loading your requests…": {
+      "sources": [
+        "apps/web/src/care-ui.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
     "Loading…": {
       "sources": [
         "apps/web/src/locales/ar.js"
@@ -14190,7 +14249,7 @@
         "apps/web/src/care-ui.js"
       ],
       "arabic": false,
-      "classification": "heuristic-candidate"
+      "classification": "explicit-ui"
     },
     "My source licence or personal provider plan permits this storage / export.": {
       "sources": [
@@ -14610,12 +14669,19 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "No matching menus yet. Try another ingredient or choose the whole kitchen.": {
+    "No matching menus in the recipes loaded. Try another ingredient or choose the whole kitchen.": {
       "sources": [
         "apps/web/src/app.js"
       ],
       "arabic": false,
-      "classification": "explicit-ui"
+      "classification": "heuristic-candidate"
+    },
+    "No matching menus in the recipes saved on this device.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
     },
     "No matching observations in the latest sample. Check the retailer directly.": {
       "sources": [
@@ -14751,7 +14817,7 @@
         "apps/web/src/care-ui.js"
       ],
       "arabic": false,
-      "classification": "heuristic-candidate"
+      "classification": "explicit-ui"
     },
     "No retail barcode found. Use a sharp photo of the entire barcode, including its blank edges.": {
       "sources": [
@@ -21306,7 +21372,7 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
-    "Share / copy list ↗": {
+    "Share shopping list": {
       "sources": [
         "apps/web/assets/index.html"
       ],
@@ -21682,6 +21748,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "Sign in to view your requests.": {
+      "sources": [
+        "apps/web/src/care-ui.js"
+      ],
+      "arabic": false,
+      "classification": "explicit-ui"
+    },
     "Sign in to your own offmenu account before allowing access.": {
       "sources": [
         "apps/web/src/access-ui.js"
@@ -21716,6 +21789,13 @@
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Sign-in is unavailable. You can still use your Guest pantry.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
       "classification": "explicit-ui"
     },
     "Sign-in required": {
@@ -21838,6 +21918,20 @@
       ],
       "arabic": false,
       "classification": "explicit-ui"
+    },
+    "Some recipes did not load. Showing the recipes that are available.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "Some recipes did not load. Try again later or browse the recipes already saved.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
     },
     "Some saved observations are unavailable. Retry in your current profile.": {
       "sources": [
@@ -23821,6 +23915,20 @@
     "The owner must retain ownership": {
       "sources": [
         "apps/web/server/kitchens.mjs"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "The recipe catalogue did not load. Showing recipes already available to this kitchen.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
+    "The recipe catalogue did not load. Try again later.": {
+      "sources": [
+        "apps/web/src/app.js"
       ],
       "arabic": false,
       "classification": "heuristic-candidate"

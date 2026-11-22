@@ -66,5 +66,5 @@ export function enhanceContrast(image) {
 }
 
 export function cameraError(error) {
-  return ({NotAllowedError:'Camera permission is blocked. Allow the camera in this site’s browser settings, then retry.',NotFoundError:'No camera found. Connect a camera or use a barcode photo or manual entry.',NotReadableError:'The camera is busy. Close other camera apps and retry.',OverconstrainedError:'This camera cannot use those settings. Try another camera.',SecurityError:'Open OffMenu directly over HTTPS to use the camera.'})[error?.name] || 'Camera could not start. Try another camera, a barcode photo, or manual entry.';
+  return ({NotAllowedError:'Camera permission is blocked. You can type the barcode or use a USB / Bluetooth scanner. To retry with the camera, allow it in your browser settings.',NotFoundError:'No camera found. Connect a camera or use a barcode photo or manual entry.',NotReadableError:'The camera is busy. Close other camera apps and retry.',OverconstrainedError:'This camera cannot use those settings. Try another camera.',SecurityError:'Open OffMenu directly over HTTPS to use the camera.'})[error?.name] || 'Camera could not start. Try another camera, a barcode photo, or manual entry.';
 }

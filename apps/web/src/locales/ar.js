@@ -1,5 +1,6 @@
 // Source text is preserved when a translation is not yet available.
 export const ARABIC = Object.freeze({
+ 'Camera permission is blocked. You can type the barcode or use a USB / Bluetooth scanner. To retry with the camera, allow it in your browser settings.': 'إذن استخدام الكاميرا محظور. يمكنك كتابة الرمز الشريطي أو استخدام ماسح ضوئي عبر USB أو Bluetooth. لإعادة المحاولة باستخدام الكاميرا، اسمح باستخدامها في إعدادات المتصفح.',
   "No portions remain in this batch.":"لم تتبقَّ أي حصص من هذه الوجبة.",
   "Portions remaining: {count}. Storage location unknown.":"الحصص المتبقية: {count}. مكان التخزين غير معروف.",
   "One cooked portion is stored in {place}.":"تُحفظ حصّة مطبوخة واحدة في {place}.",
