@@ -1,6 +1,6 @@
 # Using Global data in OffMenu
 
-Choose **Global data** from the kitchen to open the **Global food and evidence workspace**. Use this page to inspect country and source evidence, compare measured baskets, and manage your own private measurement groups. It is **not** the kitchen’s Data tab: for CSV mapping, food-record import or connecting a provider, use the [food data import guide](data-import-guide.md).
+Choose **Global data** from the kitchen to open the **Food data and sources**. Use this page to inspect country and source evidence, compare measured baskets, and manage your own private measurement groups. It is **not** the kitchen’s Data tab: for CSV mapping, food-record import or connecting a provider, use the [food data import guide](data-import-guide.md).
 
 **Find your task:** [country and public records](#find-and-check-a-public-record) · [basket arithmetic](#calculate-compare-or-download-a-basket) · [private measurement groups](#keep-private-measurements-separate) · [rules and contribution choices](#evaluate-a-rule-or-save-a-contribution-preference).
 
@@ -18,7 +18,7 @@ Open **Advanced private and technical tools** to reveal this and the private-sto
 
 For a first look, choose **Load synthetic arithmetic example** and then **Calculate nutrients and coverage**. The example exercises the arithmetic; it is not dietary advice or evidence for a country. For your own measured basket, supply its quantities, preparation state, nutrient units/basis, source and definition. Volume needs a density and a count needs a unit mass. Treat unknown values as unknown, not zero. Compare the reported total with the known subtotal and coverage.
 
-**Save privately** sends the *current basket JSON* for private account storage. **Download calculation** downloads the *most recent successful calculation*, not the editor contents. After editing the basket, calculate again before exporting: changing the text does not clear the previous result. Expand **Compare a second measured basket**, enter the second basket and metric, and choose **Compare compatible evidence**. Input errors appear in the page status; a failed comparison is not a finding that two baskets are equal.
+**Save privately** sends the *current basket JSON* for private account storage. **Download calculation** downloads the *most recent successful calculation*, not the editor contents. After editing the basket, calculate again before exporting: changing the text does not clear the previous result. Expand **Compare with a second measured basket**, enter the second basket and metric, and choose **Compare compatible evidence**. Input errors appear in the page status; a failed comparison is not a finding that two baskets are equal.
 
 ## Keep private measurements separate
 
@@ -35,13 +35,15 @@ Enter the rule, market and evidence JSON, then choose **Evaluate evidence**. Unk
 
 ## Control and evidence map
 
-This is a source guide, not a live help index. The following lookup includes every button, field, link and disclosure present in this page's HTML and the additional interactive control types constructed by its script. The first column is a stable source locator (ID, href, disclosure label or dynamic selector); the last is the intended guide destination. Search words refer to this document, **not** to verified app search results. The kitchen Data tab, scanner, extension, administrator screens and translated/device behavior are outside this page’s inventory.
+This is a source guide, not a live help index. The following lookup includes every button, field, link and disclosure present in this page's HTML and the additional interactive control types constructed by its script. The first column is a stable source locator (ID, href, disclosure label or selector); the last is the intended guide destination. Search words refer to this document, **not** to verified app search results. The kitchen Data tab, scanner, extension, administrator screens and translated/device behavior are outside this page’s inventory.
 
-The line numbers below refer to [the page (H)](https://github.com/maldous/offmenu/blob/51ad2b27a226f097dcaa9a27db5fade33d9ef4dd/apps/web/assets/data-workspace.html), [its module (J)](https://github.com/maldous/offmenu/blob/51ad2b27a226f097dcaa9a27db5fade33d9ef4dd/apps/web/src/data-workspace.js) and [shared language setup (L)](https://github.com/maldous/offmenu/blob/51ad2b27a226f097dcaa9a27db5fade33d9ef4dd/apps/web/src/i18n.js#L120-L148). Controls labelled H are native HTML until an associated handler runs.
+The line numbers below refer to [the page (H)](https://github.com/maldous/offmenu/blob/26c653e17ac7c1903cf23e232ae9d6ea078837ac/apps/web/assets/data-workspace.html), [its module (J)](https://github.com/maldous/offmenu/blob/51ad2b27a226f097dcaa9a27db5fade33d9ef4dd/apps/web/src/data-workspace.js) and [shared language setup (L)](https://github.com/maldous/offmenu/blob/51ad2b27a226f097dcaa9a27db5fade33d9ef4dd/apps/web/src/i18n.js#L120-L148). Controls labelled H are native HTML until an associated handler runs.
 
 | Source locator | Source | Audience, task and guide lookup |
 | --- | --- | --- |
+| `button[data-theme-toggle]` | H1 | Any reader: switch the interface between light and dark appearance. This does not change data or language. |
 | `workspace-language` | H1, J2, L120–148 | Any reader: change the interface language (English/Arabic). This is not a source-data translation. |
+| `a.workspace-brand[href="/"]` | H1 | Any reader: select the OffMenu brand to return to the app home. |
 | `href:/` | H1 | Any reader: return to My kitchen, including for account sign-in. |
 | `country` | H2, J10–14 | Public researcher: select the country for the next lookup; countries are populated at runtime. |
 | `load-country` | H2, J11 | Public researcher: load the country summary and evidence. |
@@ -61,7 +63,7 @@ The line numbers below refer to [the page (H)](https://github.com/maldous/offmen
 | `calculate` | H5, J17 | Basket analyst: calculate metrics and inspect missing evidence. |
 | `save-basket` | H5, J18 | Signed-in user: send the current basket for private storage. |
 | `export-basket` | H5, J18 | Basket analyst: download the last calculated result. |
-| `summary:Compare a second measured basket` | H5 | Basket analyst: reveal the second basket and comparison controls. |
+| `summary:Compare with a second measured basket` | H5 | Basket analyst: reveal the second basket and comparison controls. |
 | `basket-second` | H5, J26 | Basket analyst: enter the other basket. |
 | `compare-metric` | H5, J26 | Basket analyst: select a metric by identifier. |
 | `compare-baskets` | H5, J26 | Basket analyst: compare the supplied JSON for the selected metric. |
