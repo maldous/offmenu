@@ -19,7 +19,7 @@ function fixture(){
    const value=body.match(new RegExp('<'+tag+'(?: [^>]*)?>(.*?)</'+tag+'>','s'))[1];
    return node({textContent:text(value)});
   }}));
- assert.deepEqual(articles.map(x=>x.id),['account-backup']);
+ assert.deepEqual(articles.map(x=>x.id),['account-backup','recipe-import']);
  const elements=Object.fromEntries(['matches','feedback','finder','query','back','clear','topics','skip'].map(id=>[id,node()]));
  elements.topics.querySelectorAll=selector=>{assert.equal(selector,'article');return articles;};
  const d={createElement:()=>node(),querySelector(selector){return elements[selector.startsWith('#')?selector.slice(1):'skip'];}};
@@ -37,10 +37,26 @@ test('no-result suggestions from the mounted help search lead to the real bundle
  assert.match(help,/^No matching help topics[.]/);
  const next=[...help.matchAll(/“([^”]+)”/gu)].map(x=>x[1]);
  assert(next.length>0,'no-result guidance should offer a supported query');
- for(const term of next)assert.deepEqual(query(term),['#account-backup'],'Suggested term has no relevant help result: '+term);
- assert.deepEqual(query('restore kitchen'),['#account-backup']);
- assert.deepEqual(query('shopping'),[]);
+ for(const term of next)assert.equal(query(term)[0],'#account-backup','Suggested term does not rank the backup article first: '+term);
+ assert.equal(query('restore kitchen')[0],'#account-backup');
+ assert.deepEqual(query('shopping list export'),[]);
  assert.deepEqual(query('print'),[]);
  elements.clear.listeners.click();
- assert.deepEqual(resultLinks(),['#account-backup']);assert.equal(elements.query.value,'');assert.equal(elements.query.focused,true);
+ assert.deepEqual(resultLinks(),['#account-backup','#recipe-import']);assert.equal(elements.query.value,'');assert.equal(elements.query.focused,true);
+});
+
+test('Account links directly to searchable English recipe-import recovery and exact notices',()=>{
+ const account=readFileSync(new URL('../../apps/web/assets/index.html',import.meta.url),'utf8');
+ const help=readFileSync(new URL('../../apps/web/assets/help.html',import.meta.url),'utf8');
+ assert.match(account,/<label for="recipe-import"[^>]*>Import recipes \(offmenu JSON\)<\/label>[\s\S]*?<a href="\/help\.html#recipe-import" lang="en">Recipe import help \(English\)<\/a>/);
+ assert.match(help,/<html lang="en" dir="ltr">/);
+ const article=help.match(/<article id="recipe-import"[^>]*>([\s\S]*?)<\/article>/)?.[1];
+ assert(article);
+ assert.match(article,/<h2 tabindex="-1">/);
+ for(const error of ['Choose a valid JSON file and try again.','File must be under 2 MB.','Import stopped: recipes with a matching ID contain different details. Existing recipes were kept.']){
+  assert(article.includes(error));
+ }
+ const {query}=fixture();
+ assert.equal(query('recipe import')[0],'#recipe-import');
+ assert.equal(query('file must be under 2 mb')[0],'#recipe-import');
 });
