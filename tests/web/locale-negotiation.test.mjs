@@ -52,6 +52,23 @@ test('browser uses current preferences, mirrors account hints and clears stale a
     root.cookie=LOCALE_COOKIE+'=en';assert.equal(browserLocaleDecision(root,{getItem:()=> 'ar'},browser).locale,'ar');
   }finally{globalThis.location=original;setLanguage('en');onLanguagePreference(null);}
 });
+test('denied cookie and storage reads preserve explicit locale and clean browser fallback',()=>{
+  const previous=globalThis.location;
+  let cookieReads=0,storageReads=0;
+  const root={
+    documentElement:{dataset:{offmenuLocale:'ar',offmenuLocaleSource:'profile'}},
+    get cookie(){cookieReads++;throw new Error('cookie access denied');},
+  };
+  const storage={getItem(){storageReads++;throw new Error('storage access denied');}};
+  try{
+    globalThis.location={href:'https://offmenu.test/?uiLanguage=ar'};
+    assert.deepEqual(browserLocaleDecision(root,storage,{languages:['en']}),{locale:'ar',source:'url'});
+    globalThis.location={href:'https://offmenu.test/'};
+    assert.deepEqual(browserLocaleDecision(root,storage,{languages:['en']}),{locale:'en',source:'accept-language'});
+    assert.equal(cookieReads,2);
+    assert.equal(storageReads,2);
+  }finally{globalThis.location=previous;}
+});
 test('account interface locale survives validation and is excluded from shared kitchen projection',()=>{
   const state={inventory:[],products:{},recipes:[],profile:{country:'AU',units:'metric',servings:2,uiLanguage:'ar'},selections:[]};
   assert.equal(validateState(state).profile.uiLanguage,'ar');assert.equal(kitchenProjection(state).profile.uiLanguage,undefined);

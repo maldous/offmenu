@@ -95,14 +95,15 @@ export function writeLocaleCookie(name,value,root=globalThis.document){
   try{root.cookie=name+'='+encodeURIComponent(value||'')+'; Path=/; SameSite=Lax; Max-Age='+(value?31536000:0)+(globalThis.location?.protocol==='https:'?'; Secure':'');}catch{/* Cookie denial does not block local or URL preferences. */}
 }
 export function browserLocaleDecision(root=globalThis.document,storage,browser=globalThis.navigator){
-  let saved;
+  let saved, cookies;
   try { storage ??= globalThis.localStorage; saved = storage?.getItem(LANGUAGE_KEY); } catch { /* A URL preference also works with storage disabled. */ }
   const requested = new URL(globalThis.location?.href || 'https://offmenu.invalid/').searchParams.get('uiLanguage');
   const boot=root?.documentElement?.dataset||{};
-  const accountHint=cookieValue(root?.cookie,ACCOUNT_LOCALE_COOKIE)?.split(':');
+  try { cookies = root?.cookie; } catch { /* Cookie denial leaves URL and browser hints available. */ }
+  const accountHint=cookieValue(cookies,ACCOUNT_LOCALE_COOKIE)?.split(':');
   const source=accountHint?.[0],hint=accountHint?.[1];
   const accepted=Array.isArray(browser?.languages)?browser.languages:[browser?.language];
-  return negotiateLocale({explicit:requested,device:saved,cookie:cookieValue(root?.cookie,LOCALE_COOKIE),
+  return negotiateLocale({explicit:requested,device:saved,cookie:cookieValue(cookies,LOCALE_COOKIE),
     profile:source==='profile'?hint:null,
     provider:source==='provider'?hint:null,
     accepted:[...accepted,...(boot.offmenuLocaleSource==='accept-language'?[boot.offmenuLocale]:[])],excluded:(boot.offmenuExcludedLocales||'').split(','),country:boot.offmenuCountry,defaultLocale:boot.offmenuDefaultLocale});
