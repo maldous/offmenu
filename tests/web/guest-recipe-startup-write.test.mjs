@@ -39,7 +39,7 @@ test('Guest startup does not overwrite a later append or resurrect a cleared val
 });
 test('a fetched catalogue discarded after an observed Guest change is not reported as loaded',async()=>{
  const result=await startup({after:[earlier,later],remote:[catalogue],status:'loaded'});
- assert.deepEqual(result,{writes:[],stored:[earlier,later],recipes:[earlier,later],availability:'partial'});
+ assert.deepEqual(result,{writes:[],stored:[earlier,later],recipes:[earlier,later],availability:'deferred'});
 });
 test('positive unchanged Guest cache, signed-in and Demo flows, and stale-read fence retain their behavior',async()=>{
  const fetched=await startup({remote:[catalogue],status:'loaded'});
@@ -50,4 +50,17 @@ test('positive unchanged Guest cache, signed-in and Demo flows, and stale-read f
  }
  const stale=await startup({after:[earlier,later],remote:[catalogue],status:'loaded',current:false});
  assert.deepEqual(stale,{writes:[],stored:[earlier,later],recipes:[],availability:'local-only'});
+});
+
+test('a deferred update explains that the catalogue update was not applied in both Meals states',async()=>{
+ const {availability}=await startup({after:[earlier,later],remote:[catalogue],status:'loaded'});
+ const note={dataset:{},textContent:''};
+ const noteSource=source.slice(source.indexOf('function renderRecipeAvailabilityNote('),source.indexOf('function findMeals('));
+ const emptySource=source.match(/setLocalizedText\(empty,(recipeAvailability===[\s\S]*?)\);setLocalizedText\(clear,'Clear filters'\)/)?.[1];
+ assert.ok(noteSource&&emptySource);
+ const c=vm.createContext({recipeAvailability:availability,$:()=>note,setLocalizedText(node,text){node.textContent=text;}});
+ vm.runInContext(noteSource+'renderRecipeAvailabilityNote(true)',c);
+ assert.equal(note.hidden,false);
+ assert.equal(note.textContent,'Showing recipes saved on this device. The catalogue update was not applied.');
+ assert.equal(vm.runInContext(emptySource,c),'No matching menus in the recipes saved on this device. The catalogue update was not applied.');
 });
