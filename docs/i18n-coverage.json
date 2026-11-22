@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4097,
+  "messages": 4099,
   "arabicTranslated": 643,
-  "arabicMissing": 3454,
+  "arabicMissing": 3456,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -14711,6 +14711,13 @@
       "arabic": false,
       "classification": "heuristic-candidate"
     },
+    "No matching menus in the recipes saved on this device. The catalogue update was not applied.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
+    },
     "No matching observations in the latest sample. Check the retailer directly.": {
       "sources": [
         "apps/web/src/insights-ui.js"
@@ -21634,6 +21641,13 @@
       ],
       "arabic": false,
       "classification": "explicit-ui"
+    },
+    "Showing recipes saved on this device. The catalogue update was not applied.": {
+      "sources": [
+        "apps/web/src/app.js"
+      ],
+      "arabic": false,
+      "classification": "heuristic-candidate"
     },
     "Showing the first 100 of {v0} records. Export retains the full batch.": {
       "sources": [
