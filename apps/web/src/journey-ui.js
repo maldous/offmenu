@@ -137,7 +137,8 @@ $('cook-dialog').addEventListener('close',()=>{void wake?.release();wake=null;$(
 $('timer-start').onclick=()=>{clearInterval(timer);const minutes=Number($('timer-minutes').value);if(!Number.isFinite(minutes)||minutes<=0||minutes>240)return;const end=Date.now()+minutes*60000;timer=setInterval(()=>{const sec=Math.max(0,Math.ceil((end-Date.now())/1000));setLocalizedText($('timer-status'),Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0'));if(sec===0){clearInterval(timer);setLocalizedText($('timer-status'),'Timer finished. Check your food.');}},1000);};$('timer-stop').onclick=()=>{clearInterval(timer);setLocalizedText($('timer-status'),'Timer stopped');};
 function servingPortions(raw, remaining){
  const normalized=raw.trim().replace(/[٠-٩۰-۹]/g,d=>String((d.codePointAt(0)-(d<='٩'?0x660:0x6f0)))).replace(/[٫,]/g,'.');
- const portions=/^(?:\d+(?:\.\d)?|\.\d)$/.test(normalized)?Number(normalized):NaN;
+ if(!/^(?:\d+(?:\.\d(?:0)?)?|\.\d(?:0)?)$/.test(normalized))throw Error(t('Enter portions in tenths, for example 1.5.'));
+ const portions=Number(normalized);
  if(!Number.isFinite(portions)||portions<0.1||portions>remaining+1e-7)throw Error(t('Choose portions within the cooked amount remaining.'));
  return portions;
 }

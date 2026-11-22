@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 4077,
+  "messages": 4078,
   "arabicTranslated": 642,
-  "arabicMissing": 3435,
+  "arabicMissing": 3436,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 214,
@@ -8677,6 +8677,14 @@
         "apps/web/src/locales/ar.js"
       ],
       "arabic": true,
+      "classification": "explicit-ui"
+    },
+    "Enter portions in tenths, for example 1.5.": {
+      "sources": [
+        "apps/web/assets/index.html",
+        "apps/web/src/journey-ui.js"
+      ],
+      "arabic": false,
       "classification": "explicit-ui"
     },
     "Enter up to 32 comma-separated terms per field, 100 characters per term.": {
