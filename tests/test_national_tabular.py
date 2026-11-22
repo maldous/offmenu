@@ -136,6 +136,40 @@ class NationalTabularTests(unittest.TestCase):
         self.assertIn('national-nutrient-unit-unqualified',diagnostics)
         self.assertEqual(['national-source-not-supported'],national.national_semantic_errors('fineli',{}))
 
+    def test_foodfiles_opaque_matrices_cannot_override_reviewed_food_basis(self):
+        import copy
+        source = 'foodfiles'
+        # W uses the reviewed whole-food basis. F and N are opaque source
+        # matrices, not alternate spellings of that denominator.
+        whole_food = {
+            'kind': 'nutrientProfile',
+            'schemaVersion': '1.0',
+            'provenance': {'sourceId': source, 'releaseId': execution._release(source)['releaseId']},
+            'data': {
+                'basis': {'amount': 100, 'unit': 'g'},
+                'nutrients': {'synthetic:nutrient': {'unit': 'g', 'value': 2.5}},
+            },
+        }
+        # All fixtures have the same numerator and numeric amount, and even
+        # a mistakenly broad override allowlist must not admit F or N.
+        basis_units = ('g', 'source-matrix:F', 'source-matrix:N')
+        for matrix, expected in (
+            ('W', []),
+            ('F', ['national-nutrient-basis-unqualified']),
+            ('N', ['national-nutrient-basis-unqualified']),
+        ):
+            with self.subTest(matrix=matrix):
+                row = copy.deepcopy(whole_food)
+                if matrix != 'W':
+                    row['data']['nutrients']['synthetic:nutrient']['basis'] = {
+                        'amount': 100, 'unit': f'source-matrix:{matrix}',
+                    }
+                before = copy.deepcopy(row)
+                self.assertEqual(expected, national.national_semantic_errors(
+                    source, row, allowed_units=('g',), basis_units=basis_units,
+                ))
+                self.assertEqual(before, row)
+
     def test_foodfiles_duplicate_definitions_fail_without_success_receipt(self):
         repo=Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as folder:
