@@ -138,7 +138,7 @@ test('non-GET, off-origin and existing excluded authority paths are not intercep
 test('the cached Help shell still uses one exact anchor and bounds local search input',()=>{
   const html=helpBytes.get('/help.html');
   assert.match(html,/<input id="query"[^>]+maxlength="160"/);
-  assert.deepEqual([...html.matchAll(/<article id="([^"]+)"/g)].map(x=>x[1]),['account-backup']);
+  assert.deepEqual([...html.matchAll(/<article id="([^"]+)"/g)].map(x=>x[1]),['account-backup','recipe-import']);
   const topics=[{id:'account-backup',title:'Kitchen backup',aliases:['restore'],summary:'Back up your kitchen',body:'Backup and restore'}];
   assert.deepEqual(rankedTopics(topics,'backup'+' '.repeat(154)+'shopping'),topics);
   assert.deepEqual(rankedTopics(topics,' '.repeat(160)+'backup'),[]);
