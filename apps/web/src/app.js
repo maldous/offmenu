@@ -300,6 +300,13 @@ $('documents-open').onclick=()=>$('documents-dialog').showModal();$('document-pr
 // Qualified selection metadata must be supplied by deployment code; absence stays disabled.
 const accountBackup=setupOwnedBackupAccount({root:$('owned-backup-account'),dialog:$('account-dialog'),getUser:()=>lifecycleFixture||demoMode?null:user});
 const services=setupServices({onSupport:()=>openCare(),getUser:()=>demoMode?null:user,authFetch:async(path,options)=>{if(path!=='/api/services'){if(!user||demoMode)throw Error(t('Sign in to use private support.'));return boundFetch(path,{...options,signal:AbortSignal.timeout(20000)});}return fetch(path,{...options,signal:AbortSignal.timeout(20000)});}});
+const privacyPreferences = $('privacy-preferences');
+privacyPreferences.onclick = () => {
+  const dialog = $('account-dialog');
+  if (!dialog.open) dialog.showModal();
+  $('third-party-services').focus();
+};
+privacyPreferences.hidden = false;
 void services.refresh();
 const boundFetch=sessionFetch({identity:()=>requestIdentity,refresh:refreshSession,currentUser:()=>demoMode?null:getUser(),changed:()=>Error(t('Account changed. Retry from your current account.'))});
 const adminFetch=async(path,options)=>{if(!user||demoMode)throw Error(t('Sign in as an administrator.'));return boundFetch(path,{...options,signal:AbortSignal.timeout(20000)});};

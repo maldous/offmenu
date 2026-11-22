@@ -56,3 +56,6 @@ input[inputmode="numeric"],input[type="email"],input[type="url"],input[type="dat
 /* Keep the full recipe collection reachable through contextual scrolling. */
 .meal-results-scroll{max-height:min(70vh,48rem);overflow-y:auto;overscroll-behavior:contain;}
 .meal-results-scroll:focus-visible{outline:2px solid currentColor;outline-offset:3px;}
+
+.entry-privacy{max-width:65ch;margin:2rem auto;padding:0 1.25rem;line-height:1.5}
+.legal-footer a[href="#entry-privacy"]{font-size:1rem;text-decoration:underline}

@@ -24,3 +24,36 @@ test('a failed optional support-email copy never resubmits an already sent suppo
 test('document email keeps only a hashed unknown attempt, reuses its identity, and isolates owners',async()=>{const preferences=storage(),session=storage(),serviceConfig={...configured,services:[{id:'brevo',name:'Brevo',category:'email',status:'configured',reason:''}]};preferences.setItem(SERVICES_PREFERENCE_KEY,JSON.stringify({schemaVersion:1,preferences:{privacy:false,analytics:false,diagnostics:false,support:true,advertising:false}}));let user={id:'alice'},emails=0;const authFetch=async(path)=>{if(path==='/api/services')return new Response(JSON.stringify(serviceConfig));emails++;return new Response(JSON.stringify({request:{status:'unknown'}}),{status:502,headers:{'content-type':'application/json'}});};const first=setupServices({authFetch,getUser:()=>user,getDocument:()=>null,storage:preferences,session});await first.refresh();assert.deepEqual(await first.emailDocument({title:'Kitchen plan',text:'Private recipe notes',confirmed:true}),{status:'unknown',blocked:true});const saved=[...session.data.values()][0];assert.equal(saved.includes('Private recipe notes'),false);assert.equal(saved.includes('Kitchen plan'),false);const second=setupServices({authFetch,getUser:()=>user,getDocument:()=>null,storage:preferences,session});await second.refresh();assert.deepEqual(await second.emailDocument({title:'Kitchen plan',text:'Private recipe notes',confirmed:true}),{status:'unknown',blocked:true});assert.equal(emails,1);user={id:'bob'};const third=setupServices({authFetch:async path=>path==='/api/services'?new Response(JSON.stringify(serviceConfig)):new Response(JSON.stringify({request:{id:'email',status:'sent'}}),{status:201}),getUser:()=>user,getDocument:()=>null,storage:preferences,session});await third.refresh();assert.equal((await third.emailDocument({title:'Kitchen plan',text:'Private recipe notes',confirmed:true})).status,'sent');assert.equal(session.data.size,1);});
 test('a definitive email failure clears its idempotency identity for a later confirmed attempt',async()=>{const preferences=storage(),session=storage(),config={...configured,services:[{id:'brevo',name:'Brevo',category:'email',status:'configured',reason:''}]};preferences.setItem(SERVICES_PREFERENCE_KEY,JSON.stringify({schemaVersion:1,preferences:{privacy:false,analytics:false,diagnostics:false,support:true,advertising:false}}));const keys=[];let failures=1;const services=setupServices({getUser:()=>({id:'alice'}),getDocument:()=>null,storage:preferences,session,authFetch:async(path,init)=>{if(path==='/api/services')return new Response(JSON.stringify(config));const body=JSON.parse(init.body);keys.push(body.idempotencyKey);if(failures-- > 0)return new Response(JSON.stringify({request:{status:'failed'}}),{status:502,headers:{'content-type':'application/json'}});return new Response(JSON.stringify({request:{status:'sent'}}),{status:201});}});await services.refresh();await assert.rejects(services.emailDocument({title:'Plan',text:'Text',confirmed:true}));assert.equal(session.data.size,0);assert.equal((await services.emailDocument({title:'Plan',text:'Text',confirmed:true})).status,'sent');assert.notEqual(keys[0],keys[1]);});
 test('native care integration replaces vendor board and widget',async()=>{const document=fakeDocument(),s=storage();let opened=0;s.setItem(SERVICES_PREFERENCE_KEY,JSON.stringify({schemaVersion:1,preferences:{privacy:false,support:true}}));const services=setupServices({onSupport:()=>{opened++;},getDocument:()=>document,storage:s,authFetch:async()=>new Response(JSON.stringify(configured))});await services.refresh();assert.equal(document.scripts.some(x=>x.dataset.offmenuService==='sleekplan'),false);assert.equal(document.root.children.some(x=>x.textContent==='Open support board'),false);document.root.children.find(x=>x.textContent==='Help & community').onclick();assert.equal(opened,1);});
+
+test('Guest can reopen and decline service choices while configuration is pending or unavailable', async () => {
+  const document = fakeDocument();
+  const device = storage();
+  const requests = [];
+  let rejectConfiguration;
+  const services = setupServices({
+    getDocument: () => document,
+    getUser: () => null,
+    storage: device,
+    authFetch: path => {
+      requests.push(path);
+      return new Promise((resolve, reject) => { rejectConfiguration = reject; });
+    }
+  });
+  const pending = services.refresh();
+  function decline() {
+    services.render();
+    const form = document.root.children.find(node => node.tagName === 'FORM');
+    const choices = form.children.filter(node => node.tagName === 'LABEL').map(row => row.children[0]);
+    assert.equal(choices.length, 5);
+    assert.ok(choices.every(input => input.checked === false));
+    form.children.find(node => node.textContent === 'Revoke all optional services').onclick();
+    assert.deepEqual(services.getPreferences(), defaultServicePreferences());
+    assert.deepEqual(document.scripts, []);
+    assert.deepEqual(requests, ['/api/services']);
+    assert.equal(device.data.size, 0);
+  }
+  decline();
+  rejectConfiguration(new Error('offline fixture'));
+  await pending;
+  decline();
+});
