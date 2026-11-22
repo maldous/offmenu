@@ -1,10 +1,13 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import {getLanguage,hasTranslation,setLanguage,setLocalizedText} from '../../apps/web/src/i18n.js';
 import {setupCare} from '../../apps/web/src/care-ui.js';
 
 function mount(){
  class Node{
-  constructor(tag){this.tag=tag;this.children=[];this.attrs={};this.ownerDocument=d;}
+  constructor(tag){this.tag=tag;this.children=[];this.attrs={};this.ownerDocument=d;this.lang='';this.textWrites=0;}
+  set textContent(value){this.value=value;this.textWrites++;}
+  get textContent(){return this.value??'';}
   append(...children){this.children.push(...children);}
   replaceChildren(...children){this.children=children;}
   removeChild(child){this.children=this.children.filter(x=>x!==child);}
@@ -54,4 +57,22 @@ test('populated refresh clears and hides the same region; reset clears and detac
  m.setActor({id:'synthetic-b'});m.care.render();assert.equal(m.notice(),node);assert.equal(node.textContent,'Loading your requests…');
  m.setCases({cases:[]});await m.care.refresh();assert.equal(m.notice(),node);assert.equal(node.hidden,false);
  m.care.reset();assert.equal(node.textContent,'');assert.equal(m.notice(),undefined);
+});
+
+test('Arabic Care marks untranslated live status as English without replacing or rewriting it',async()=>{
+ const previous=getLanguage();setLanguage('ar');
+ try{
+  const m=mount();m.setActor(null);await m.care.refresh();const node=m.notice();
+  assert.equal(node.dir,'auto');
+  assert.equal(node.lang,'en');assert.equal(node.textContent,'Sign in to view your requests.');
+  const writes=node.textWrites;m.care.render();
+  assert.equal(m.notice(),node);assert.equal(node.textWrites,writes);
+  m.setActor({id:'synthetic-a'});await m.care.refresh();
+  assert.equal(node.lang,'en');assert.equal(node.textContent,'No requests yet.');
+  m.care.reset();assert.equal(node.lang,'');
+  // The actual i18n helper reports an existing Arabic catalogue entry separately.
+  // No Care status string currently has a reviewed Arabic catalogue entry.
+  const translated={};assert.equal(hasTranslation('Interface language','ar'),true);
+  setLocalizedText(translated,'Interface language');assert.equal(translated.lang,'ar');
+ }finally{setLanguage(previous);}
 });
