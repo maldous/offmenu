@@ -290,3 +290,33 @@ setattr(NationalFieldOriginTests, 'test_duplicate_nutrient_projection_rejected',
 setattr(NationalFieldOriginTests, 'test_mext_row_coordinates_skip_notes_without_renumbering', _case(test_mext_row_coordinates_skip_notes_without_renumbering, {}))
 for index, raw in enumerate((None, 0, '-', 'TRACE', 'N', 'ND', 'NT', '< 0.01', '1,25', 'source note')):
     setattr(NationalFieldOriginTests, 'test_numeric_variants_' + str(index), _case(test_numeric_variants_preserve_exact_original, {'raw': raw}))
+
+
+def test_mext_companion_observation_does_not_replace_main_basis_or_value(tmp_path):
+    # Same fictional source food and component, but an incompatible denominator.
+    # The collector may fingerprint the companion without projecting its records.
+    companion = 'authored-special-denominator.xlsx'
+    save(tmp_path, companion, {'Authored companion': [
+        ['Food code', 'ENERC_KCAL', 'basis'],
+        ['00001', 999, 'per 100 g total fatty acids'],
+    ]})
+    module, rows = mext(tmp_path)
+    assert rows[0]['data']['identifiers'][0]['value'] == '00001'
+    assert 'en' not in rows[0]['data']['names']
+    assert rows[0]['data']['basis'] == {
+        'amount': 100, 'unit': 'g', 'state': 'as-described', 'portion': 'edible portion',
+    }
+    observation = rows[0]['data']['nutrients']['energy']
+    assert observation['sourceComponent'] == 'ENERC_KCAL'
+    assert observation['unit'] == 'kcal' and observation['value'] is None
+    assert observation['originalText'] == '(100)'
+    with emitter('mext', tmp_path, module, rows[0]) as mapping:
+        result = mapping.annotate(rows[0])
+    origin = result['provenance']['fieldOrigins']['/data/nutrients/energy/originalText']['inputs'][0]
+    assert origin['sheet'] == 'Authored main' and origin['cell'] == 'G13'
+    receipt = json.loads((tmp_path / 'legacy-output' / 'manifest.json').read_text())
+    assert {entry['key'] for entry in receipt['sourceFiles']} == {MEXT_MAIN, companion}
+
+
+setattr(NationalFieldOriginTests, 'test_mext_companion_observation_does_not_replace_main_basis_or_value',
+        _case(test_mext_companion_observation_does_not_replace_main_basis_or_value, {}))
