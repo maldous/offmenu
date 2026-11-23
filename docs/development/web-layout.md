@@ -42,11 +42,11 @@ npm run check:web-imports
 npm run check:generated
 npm run i18n:check
 npm run build
-node integrations/staged/auth/build.mjs
 ```
 
-`check:web-imports` parses maintained modules and verifies relative imports
-without executing or mounting them. It separately reports the existing unmounted
+`check:web-imports` first reproduces the inactive auth package's hash-checked
+assets in its ignored `dist/` directory, then parses maintained modules and
+verifies relative imports without executing or mounting them. It separately reports the existing unmounted
 production-scanner worker's absent `scanner-decode.js` helper. That source hold
 is not a new migration defect; introducing the candidate into a runtime build
 closure makes the check fail. Historical snapshot fixtures and archived source

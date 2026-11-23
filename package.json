@@ -16,7 +16,7 @@
     "check:repository": ".venv-delivery/bin/python -m offmenu.delivery check",
     "delivery:bootstrap": "python3 scripts/bootstrap_delivery.py",
     "test:delivery": ".venv-delivery/bin/python -m unittest discover -s tests/delivery -v",
-    "check:web-imports": "node scripts/check-web-imports.mjs",
+    "check:web-imports": "node integrations/staged/auth/build.mjs && node scripts/check-web-imports.mjs",
     "check:layout": ".venv-delivery/bin/python scripts/check_final_layout.py"
   },
   "dependencies": {
