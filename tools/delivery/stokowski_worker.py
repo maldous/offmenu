@@ -25,7 +25,7 @@ from symphony_workspace import checkpoint
 from windmill_runner import cleanup, capacity_usage
 from stokowski_performance import project_observation
 
-MODEL = 'gpt-6.1-sol'
+MODEL = 'gpt-6.2-sol'
 SAFE_ENV = {'PATH', 'HOME', 'USER', 'LOGNAME', 'LANG', 'LC_ALL', 'TMPDIR',
             'CODEX_HOME', 'CODEX_SQLITE_HOME'}
 

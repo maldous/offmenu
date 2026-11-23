@@ -59,7 +59,7 @@ class PublicationTests(unittest.TestCase):
         self.write(self.catalog, dict(version=1, entries=[]))
         self.catalog_before = self.catalog.read_bytes()
         self.write(self.qualified / 'observation.json', dict(id='123', login='synthetic'))
-        self.write(self.qualified / 'provider.json', dict(requested_model='gpt-6.1-sol',
+        self.write(self.qualified / 'provider.json', dict(requested_model='gpt-6.2-sol',
             requested_effort='medium', route='codex-chatgpt', session_ceiling=8,
             max_age_seconds=300, checked_at_max_future_skew_seconds=5))
         self.write(self.root / 'installation.json', dict(source_revision='2' * 40,
@@ -166,7 +166,7 @@ class PublicationTests(unittest.TestCase):
         self.manifest.update(branch=self.branch, base_revision=self.base, project_id=self.issue['project_id'], tasks={self.issue['identifier']:task})
         self.write(self.qualified/'manifest.json', self.manifest)
         self.write(self.qualified/'request.json', dict(prompt='Explicit synthetic successor',timeout_seconds=60))
-        self.write(self.qualified/'provider.json', dict(requested_model='gpt-6.1-sol',requested_effort='medium',
+        self.write(self.qualified/'provider.json', dict(requested_model='gpt-6.2-sol',requested_effort='medium',
             route='codex-chatgpt',session_ceiling=8,max_age_seconds=300,checked_at_max_future_skew_seconds=5))
         self.write(self.qualified/'observation.json', dict(id='123',login='synthetic'))
         claim_path = self.qualified/'repository-claim.json'
@@ -241,7 +241,7 @@ class PublicationTests(unittest.TestCase):
         files = self.snapshot(self.root)
         self.assertEqual(self.publish()['status'], 'duplicate')
         self.assertEqual(self.snapshot(self.root), files)
-        self.provider.assert_called_once_with('gpt-6.1-sol', 8)
+        self.provider.assert_called_once_with('gpt-6.2-sol', 8)
         self.authenticated.assert_called_with()
         self.assertEqual(self.snapshot(self.coordinator), self.original_coordinator)
         self.assertEqual((self.runtime / 'manifest.json').read_bytes(), (self.qualified / 'manifest.json').read_bytes())
@@ -344,7 +344,7 @@ class PublicationTests(unittest.TestCase):
         self.provider.assert_not_called()
 
     def test_stale_unavailable_or_wrong_provider_proof_is_refused(self):
-        good = self.provider('gpt-6.1-sol', 8)
+        good = self.provider('gpt-6.2-sol', 8)
         for delta in (dict(checked_at=time.time()-301), dict(checked_at=time.time()+60),
                       dict(checked_at=float('nan')), dict(available=False),
                       dict(route='other'), dict(requested_model='other'), dict(session_ceiling=9)):
