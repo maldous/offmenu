@@ -7,13 +7,19 @@ const start=source.indexOf("\$('recipe-import').onchange=");
 const end=source.indexOf('function connectivity()',start);
 assert.ok(start>=0&&end>start);
 const mounted=source.slice(start,end);
-async function run(existing,incoming){
- const input={value:'selected'},writes=[],status=[],effects=[];
+async function run(existing,...selections){
+ const input={value:''},writes=[],status=[],effects=[];
+ let incoming;
  const context=createContext({$:id=>id==='account-dialog'?{open:true}:input,readJSON:async()=>incoming,validateRecipes:x=>x,
   recipeImportGeneration:0,requestIdentity:{},clearAccountFileErrors:()=>{},showAccountFileError:(_id,e)=>status.push(e.message),
   recipes:existing,RECIPES:'private-test-key',localStorage:{setItem:(k,v)=>writes.push([k,JSON.parse(v)])},
   markDirty:()=>effects.push('dirty'),findMeals:()=>effects.push('render'),msg:x=>status.push(x),t:x=>x});
- runInContext(mounted,context);await input.onchange();assert.equal(input.value,'');
+ runInContext(mounted,context);
+ for(incoming of selections){
+  input.value='selected';
+  await input.onchange();
+  assert.equal(input.value,'');
+ }
  return {writes,status,effects,recipes:JSON.parse(JSON.stringify(context.recipes))};
 }
 const old={id:'one',title:'Original',metadata:{b:2,a:1},steps:['First','Second']};
@@ -31,4 +37,12 @@ test('mounted recipe import preserves identical records, collapses same-file cop
  const result=await run([old],[same,second,second]);
  assert.deepEqual(result.writes,[['private-test-key',[old,second]]]);
  assert.deepEqual(result.effects,['dirty','render']);
+});
+
+test('a later clean selection succeeds after a divergent same-file rejection',async()=>{
+ const result=await run([old],[second,{...second,title:'Conflict'}],[same,second]);
+ assert.match(result.status[0],/matching ID/);
+ assert.deepEqual(result.writes,[['private-test-key',[old,second]]]);
+ assert.deepEqual(result.effects,['dirty','render']);
+ assert.deepEqual(result.recipes,[old,second]);
 });
