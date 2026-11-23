@@ -783,4 +783,12 @@ export const ARABIC = Object.freeze({
   "Start with a dish. We’ll keep this day and meal selected, then show its ingredients and shopping gaps here.":"ابدأ بطبق. سنحتفظ باليوم والوجبة المحددين، ثم نعرض مكوناته وفجوات التسوق هنا.",
   "Nutrition & coverage":"التغذية والتغطية",
   "Planning insights":"رؤى التخطيط",
+  "Showing recipes saved on this device. The catalogue update was not applied.":"نعرض الوصفات المحفوظة على هذا الجهاز. لم يُطبَّق تحديث الفهرس.",
+  "Some recipes did not load. Showing the recipes that are available.":"لم تُحمَّل بعض الوصفات. نعرض الوصفات المتاحة.",
+  "The recipe catalogue did not load. Showing recipes already available to this kitchen.":"لم يُحمَّل فهرس الوصفات. نعرض الوصفات المتاحة بالفعل لهذا المطبخ.",
+  "The recipe catalogue did not load. Try again later.":"لم يُحمَّل فهرس الوصفات. حاول مرة أخرى لاحقًا.",
+  "No matching menus in the recipes saved on this device. The catalogue update was not applied.":"لا توجد قوائم وجبات مطابقة ضمن الوصفات المحفوظة على هذا الجهاز. لم يُطبَّق تحديث الفهرس.",
+  "Some recipes did not load. Try again later or browse the recipes already saved.":"لم تُحمَّل بعض الوصفات. حاول مرة أخرى لاحقًا أو تصفَّح الوصفات المحفوظة بالفعل.",
+  "No matching menus in the recipes loaded. Try another ingredient or choose the whole kitchen.":"لا توجد قوائم وجبات مطابقة ضمن الوصفات التي حُمِّلت. جرّب مكوّنًا آخر أو اختر «المطبخ كله».",
+  "No matching menus in the recipes saved on this device.":"لا توجد قوائم وجبات مطابقة ضمن الوصفات المحفوظة على هذا الجهاز.",
 });
