@@ -1,33 +1,29 @@
 # Scan a barcode and inspect its source information
 
-This guide follows OffMenu source
-`59496c6cf006c16b6ac4859580d0e91374682756`, checked by reading source rather than
-using a running installation. Camera/device performance, assistive-technology
-behavior, deployed lookup availability and offline operation remain unverified.
+This guide describes the standalone scanner in OffMenu source
+`56026538d15d29f6f5afd427294a82be69557908`. Camera performance,
+assistive-technology behavior and the installed experience are not verified.
 
-Language initialization is separately checked at accepted source
-`0e02f3de39757af60d8d58673afc09205600e865`: this scanner calls the shared
-interface-language setup, including the supported `uiLanguage` URL override,
-stored device choice and cookie/profile/browser negotiation. The **Scanner tools**
-dialog has an **Interface language** chooser for English or Arabic. Untranslated
-messages fall back to English; the English
-labels below identify source keys, not a promise that every displayed control
-remains English. This note does not establish complete translation or rendered
-RTL/accessibility behavior.
+The scanner uses the shared **Interface language** choice for English or
+Arabic. The control names below are English source wording; some labels or
+statuses may fall back to English. The interface language does not change
+the printed code.
 
 ## Open the scanner and present one item
 
-1. Open **/shelf-scanner.html** on your OffMenu installation. The camera attempts
-   to connect automatically. Allow camera access when the browser asks. Camera
-   use requires a secure context; use the installation's HTTPS address.
+1. Open the standalone scanner at **/shelf-scanner.html**. It may ask for
+   camera access. Allow it only if you want to scan with your camera. Use
+   **Type code** if the camera is unavailable or you prefer not to grant access.
+   **Retry camera** makes a separate attempt; it cannot override a denial.
+   Camera use requires a secure context such as the installation's HTTPS address.
 2. The initial setup is **Handheld · rear camera**. Keep the whole barcode,
    including its blank edges, inside the aiming guide. Start around 15–30 cm
    away, hold still briefly and move farther away if the bars look blurred.
    Tilt shiny packaging away from glare. This distance is a starting suggestion,
    not a measured limit for your device.
 3. Present one barcode at a time. Live reading requires agreeing frames; an
-   **Accepted** camera message means a code was captured. Review the separate
-   product lookup status before treating any displayed information as a match.
+   camera read means a code was captured, not that a product was identified.
+   Read the separate lookup status before relying on product information.
 4. Move the barcode fully out of view before the next identical pack. If you
    deliberately want another capture of the same code, open **⋯ → Session** and
    choose **Next identical pack**. Session entries count capture events, not
@@ -50,72 +46,48 @@ Enter button) to return to scanning.
 
 ## Type the printed code or use a photo
 
-Choose **Type code** when the camera cannot read the label.
+If you cannot use the camera or do not want to give it permission, choose
+**Type code**. You can also open **Scanner options** and choose **Type code**
+there.
 
-1. Enter **Original identifier**, preserving its characters and leading zeros.
-   The form accepts 1–128 printable characters.
-2. Leave **Source namespace** at **Barcode · printed code** for a package
-   barcode. Choose **USDA-FDC** only for a known FoodData Central source
-   identifier; it is not a printed barcode.
-3. Leave **Barcode representation hint** at **No hint · exact lexical lookup**
-   unless you know the format. In particular, eight digits alone do not establish
-   UPC-E. The hint is disabled for USDA-FDC identifiers.
-4. Choose **Confirm identifier**, then review the lookup result. **Cancel**
-   closes the form without confirming it. A scanner that types into the focused
-   field and submits with Enter can use this form, but USB/Bluetooth pairing
-   and hardware compatibility have not been established here.
+1. In **Original identifier**, enter the printed code exactly, including any
+   leading zeros. The field accepts up to 128 printable characters.
+2. Use **Barcode · printed code**. Leave **Barcode representation hint** at
+   **No hint · exact lexical lookup** unless you know the format. Eight digits
+   alone do not establish UPC-E.
+3. Choose **Search for this code**. If the scanner shows **Lookup unavailable**,
+   OffMenu could not check the code. That is not a no-match result and it does
+   not add anything to your pantry.
+4. To leave the form without submitting, choose **Cancel**.
 
-Camera and photo decoding target EAN-13, EAN-8, UPC-A and UPC-E retail codes.
-A representation that needs manual confirmation should be entered from the
-printed label; do not guess missing digits or a format from the decoder's text.
+You can also expand **Scan a barcode photo on this device** and choose a
+**Barcode image** up to 20,000,000 bytes. Use a clear photo of one complete
+barcode, including blank edges. A decoder notice may ask you to confirm the
+printed code. Do not guess missing digits or a format.
 
-For a photo, expand **Read a barcode image locally** in Type code and select a
-**Barcode image** smaller than 20 MB. Use a sharp JPEG/PNG showing the entire
-barcode and its blank edges. If several codes are found, crop to one product
-and choose the image again. A photo is one deliberate submission, without the
-live camera's repeated-frame check. The camera stops while the photo is read
-and attempts to resume afterward when scanning is allowed.
-
-Camera frames and selected photos are passed to local browser decoding in this
-source. Captured identifiers then enter the installation's retained-data lookup;
-local image decoding does not mean product lookup works offline. The visible
-connection is **Real · loaded retained barcode identifiers**. Availability
-depends on the installation having the selected retained release and lookup
-service; this guide does not establish a functioning installation or provider.
+The current scanner decodes preview frames and chosen images locally. An image
+read or captured code does not qualify a product, and the public catalogue is
+unavailable in this source. Do not treat being online as a fix for that status.
+USB/Bluetooth keyboard input and phone/device compatibility were not verified
+by this guide.
 
 ## Read a result without filling in the unknowns
 
-Open **Product details** to expand the sheet. On a narrow screen, the fully
-expanded sheet suspends new camera reads until you lower it. Choose **Overview**,
-**Ingredients**, **Nutrition** or **Source**; use **Previous**, **Next** and
-**Expand** to inspect longer readouts.
+Open **Product details** to expand the sheet and read the reported status.
+On a narrow screen the fully expanded sheet can pause new camera reads until
+you lower it. The readout includes **Overview**, **Ingredients**, **Nutrition**
+and **Source**. Available data depends on what has actually been established.
 
-The Product group shows source information and the captured identifier. The
-OffMenu group shows separately qualified category/ingredient interpretations
-when supplied; **Not yet identified**, **—** and unavailable values must stay
-unknown. A captured code, a source match and eligibility for an inventory action
-are separate facts. Where the decoder normalized its text, the readout warns
-that the printed original is unverified.
+The current public scanner reports **Lookup unavailable**. Capturing or
+typing a barcode does not establish product identity, ingredients, package or
+serving size, stock or an inventory change. A blank or unavailable detail is
+unknown, not evidence that a nutrient, allergen or record is absent.
 
-| Lookup condition | What to do |
-| --- | --- |
-| Source identifier found | Inspect the retained details and source release. A source assertion does not establish a physical-product winner or canonical ingredient mapping. |
-| Multiple source observations | Choose **Inspect source records**, then **Load selected source details** or **Inspect source projection** for the record you want to examine. Selection does not merge identities. |
-| Selected search continuing or incomplete | In the source-record choices, use **Continue bounded source search** or **Retry incomplete source lane** when offered. Loaded observations remain available; the search has not established absence. |
-| No matching source-asserted identifier | Check the original code and namespace. This is a miss in the selected retained generation, not global absence. |
-| Lookup or details unavailable | Read the displayed reason. An identifier may remain known while its product details are unavailable; missing details do not erase the source assertion. |
-
-Source allergens, traces and dietary labels are source claims, not independent
-certification. Markets are not origin; serving quantities are not necessarily
-package quantities. Missing supplier, recall or recipe relations mean unknown,
-not that none exist. Review the **Source** tab's attribution and use notice.
-Open Food Facts notices retain ODbL/DbCL attribution; USDA records retain their
-source declaration. Display here grants no additional image, trademark or
-redistribution rights. An OffMenu fallback logo is not a product photograph.
-
-If **Review selected source in kitchen ↗** appears, it carries the selected
-source reference to kitchen review. It does not establish ingredient use or
-perform an inventory change.
+When you have separately eligible source information, check its edition,
+attribution and licence. Do not treat the absence of a displayed claim as
+certification, or assume that a label or image comes with reuse rights.
+A separately authorized retained-source workflow is not a public fallback
+from this page.
 
 ## Pause, finish or recover
 
@@ -130,16 +102,15 @@ capture event from this temporary session; it is not a pantry rollback. The
 session is held in tab memory and is not a saved receipt or durable history.
 Copy any information you need before reloading or leaving.
 
-**Explore**, **Buy**, **Stock**, **Audit** and **Discard** describe intended
-workflows. This visible retained-data connection records **0 real inventory
-actions**: changing mode does not buy food, add stock, reconcile a lot or discard
-anything. Inventory changes require separately verified eligibility and an
-existing pantry action binding.
+**Explore**, **Buy**, **Stock**, **Audit** and **Discard** are scanner modes.
+Changing mode does not buy food, add stock, reconcile a lot or discard anything.
+A session item is not a pantry entry. For the separate checkout flow, see
+[Type a barcode in Guest checkout](support/type-a-barcode-in-guest-checkout.md).
 
 | Camera message or problem | Next step |
 | --- | --- |
-| Permission blocked | Allow camera access in this site's browser settings, then reopen the scanner. Type code remains available. |
-| No camera / camera busy | Connect a camera or close other camera apps; use manual entry or a photo if needed. |
+| Permission blocked | Choose **Type code** without granting access. If you decide to use the camera, check this site's browser permission, then choose **Retry camera**. |
+| No camera / camera busy | Use **Type code** or choose a barcode photo. If you free a camera, **Retry camera** tries to start it again. |
 | Camera cannot use those settings | Choose another camera or setup. |
 | No readable code / more than one barcode | Hold one complete code steady, adjust distance and glare, or use Type code/photo. |
 | Decoder unavailable | Reconnect and reopen the camera, or type the printed code. |
@@ -173,10 +144,9 @@ their changes. Use the selected **Enter** button when deliberately applying a
 mode selection. If you intend to keep capture stopped, do not use Cancel as a
 substitute for Finish.
 
-The ordinary connection described by this guide is the visible retained-data
-connection. A hidden reviewed-file control in this source is not a general
-import, backup or private-data access feature. This guide does not enable that
-lane, supply a file or authorize obtaining one.
+The public catalogue is unavailable in this source; there is no public
+provider selector or automatic fallback. Any retained, reviewed-file control
+in source is not general import, backup or private-data access for visitors.
 
 ## Source and maintenance
 
@@ -191,8 +161,7 @@ entrypoint at the revision above.
 - [Read agreement and camera errors](../apps/web/src/scanner-model.js).
 - [Retail decoding](../apps/web/src/scanner-decode.js).
 - [Capture representation checks](../apps/web/src/scanner-capture-envelope.js).
-- [Retained source lookup and detail selection](../apps/web/src/scanner-identifiers.js),
-  [selected-release requests](../apps/web/src/scanner-identity-v2.js).
+- [Public catalogue availability boundary](../apps/web/src/public-catalogue-boundary.js).
 - [Product visual captions and fallback](../apps/web/src/scanner-product-visuals.js).
 - [Language initialization](../apps/web/src/i18n.js) and
   [scanner build entrypoint](../scripts/build.mjs).

@@ -5,6 +5,27 @@ This guide describes OffMenu source version
 running installation. Account sign-in, cloud services, provider access, downloads,
 device behavior and accessibility have not been verified by this guide.
 
+## Start as a Guest on this device
+
+1. Open **Log in** to see the Account panel, then choose **Continue on this
+   device**. You do not need an account to use the Guest kitchen.
+2. Changes in the Guest kitchen are stored by this browser. A status such as
+   **Guest data stays in this browser** does not mean you have a cloud copy.
+   Use the same browser profile to return to that copy. Clearing its site data
+   can remove it. The separate Demo kitchen does not become your own kitchen.
+3. To keep a copy you control, open **Profile & backup → Backups & recipe
+   imports → Export kitchen backup**. This downloads ordinary JSON from the
+   current kitchen. Keep the file private. You do not need to sign in for this
+   local export.
+
+**Download encrypted account backup** is a different control. It needs an
+eligible signed-in account and configured backup. If it is unavailable, do
+not assume that a backup already exists in the cloud.
+
+This Guest and backup guidance is checked against OffMenu source
+`56026538d15d29f6f5afd427294a82be69557908`. Browser persistence,
+download handling and signed-in services were not verified on a running device.
+
 ## Choose the copy you mean
 
 Open **Me → Account & backup** for the current account and kitchen backup
@@ -37,8 +58,9 @@ there are no pending local changes; review the status in the account panel.
    accepts files up to 20,000,000 bytes and validates their state. A version-one
    inventory-only backup restores inventory; a backup with profile state also
    replaces the corresponding products, recipes, profile and saved selections.
-5. If prompted to replace the pantry, review that choice before accepting it.
-   This is replacement, not a general merge of the two kitchens.
+5. If the current pantry contains items, OffMenu asks before replacing it.
+   An empty pantry may not prompt. Restore replaces the relevant data; it
+   is not a general merge of the two kitchens.
 6. A success message says the backup was restored in this browser. Check the
    kitchen and sync status before treating it as a completed cloud backup.
 
@@ -66,15 +88,18 @@ Open **Me → Connections & developers** to expand **Connections, public data &
 developer tools** in Shop. The food-data catalogue distinguishes public sources,
 your own provider connections and services whose adapters or access are pending.
 A catalogue entry or saved credential is not proof that a provider lookup works.
+The current public catalogue shows **Lookup unavailable**. Optional connections
+for a signed-in profile are separate; a private lookup needs a supported
+connection and permission. Signing in does not open the public catalogue.
 
-To inspect a batch:
+To review permitted records:
 
-1. Choose a **Source**, then enter a **Food / business search** or a barcode in
-   **Explore & enrich your food data.** Keep barcode leading zeroes.
-2. Choose **Explore normalized records**. Review source identifiers, quantities,
-   nutrition basis, country, date, attribution and licence in **Unified record,
-   provenance & licence**. Missing values remain unknown. Public feed results
-   can be samples; they do not establish a recall match or food safety.
+1. If you already have a supported private connection, use only the controls
+   offered for your own profile. A failed or unavailable lookup is not a
+   verified no-match result.
+2. Review source identifiers, quantities, nutrition basis, country, date,
+   attribution and licence in **Unified record, provenance & licence** where
+   present. Missing values remain unknown; a record is not a food-safety check.
 3. For a local file, select its **Original source** and a **Data file (under
    2 MB per batch)** in **Bring your files, too.** Supported inputs include
    unified JSON, USDA food JSON, Open Food Facts product JSON and mapped CSV.
@@ -93,9 +118,8 @@ workflow, not this generic record importer.
 
 Signed-in saving requests private cloud record storage. Without sign-in, eligible
 records are retained in the current browser profile within its size limits. Use
-**Load my private records** to inspect that profile's retained records. Loading
-the next public collection page replaces the displayed batch; export applies to
-the batch in memory, not every page of the source collection.
+**Load my private records** to inspect that profile's retained records.
+Export applies to the batch being reviewed, not an entire provider collection.
 
 **Food-name display language** selects supplied source text and fallbacks; it
 does not promise a translation of every record. A common-corpus graph preview
