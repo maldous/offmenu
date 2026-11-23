@@ -24,6 +24,8 @@ from symphony_tasks import load_manifest, runtime_lease_ids
 from symphony_workspace import checkpoint
 from windmill_runner import cleanup, capacity_usage
 from stokowski_performance import project_observation
+from stokowski_provider import CLOUDFLARE, MODEL as CLOUDFLARE_MODEL, PROJECT_NAMES, cloudflare_client, select_provider
+from stokowski_cloudflare_turn import Attempt, repository_tools, run_turn
 
 MODEL = 'gpt-6.2-sol'
 SAFE_ENV = {'PATH', 'HOME', 'USER', 'LOGNAME', 'LANG', 'LC_ALL', 'TMPDIR',
@@ -172,7 +174,7 @@ def supervise(command, prompt, workspace, environment, directory, timeout, resou
     return result
 
 
-def execute(runtime, issue, request):
+def execute(runtime, issue, request, *, expected_provider=None):
     runtime = runtime.resolve()
     manifest = load_manifest(runtime/'manifest.json',expected_branch=None)
     task = manifest['tasks'][issue]
@@ -207,7 +209,12 @@ def execute(runtime, issue, request):
     lease = runtime_lease_ids(runtime, manifest)[issue]
     pool = Pool(policy['symphony']['pool_path'], policy)
     proof = json.loads((runtime/'provider-proof.json').read_text())
-    admitted = pool.admit(lease, binding, proof, host_snapshot(runtime))
+    provider = select_provider(proof, policy)
+    if expected_provider is not None and provider.route != expected_provider:
+        raise AdmissionError('stokowski_provider_changed_before_launch')
+    provider.require_active(manifest['project_id'])
+    admitted = pool.admit(lease, binding, provider.proof, host_snapshot(runtime))
+    requested_model = provider.proof['requested_model'] if provider.route == CLOUDFLARE else MODEL
     if admitted.get('reused'):
         raise AdmissionError('Existing resource lease requires reconciliation')
     checkpoint(directory/'intent.json', dict(lease=lease, binding=binding))
@@ -215,7 +222,7 @@ def execute(runtime, issue, request):
     observation_context = dict(
         issue=issue, lease=lease, attempt=issue, binding_sha256=digest(binding),
         source_head=manifest['base_revision'], task_sha256=binding['task_sha256'],
-        requested_model=MODEL, requested_effort='medium', provider_route='codex-chatgpt',
+        requested_model=requested_model, requested_effort='medium', provider_route=provider.route,
         declared_resources=task['resources'])
     try:
         # Fixed source/config paths only: never provider proof, credentials or logs.
@@ -236,11 +243,27 @@ def execute(runtime, issue, request):
         if len(cpus) <= first:
             raise AdmissionError('No admitted coding CPUs')
         os.sched_setaffinity(0, cpus[first:first+width])
-        with isolated_codex_environment(child_environment(os.environ), directory) as env:
-            result = supervise(codex_command(workspace, directory/'final-message.txt'),
-                               request['prompt'], workspace, env, directory,
-                               request['timeout_seconds'], task['resources'],
-                               policy['windmill']['computation_subprocesses_per_job'])
+        if provider.route == CLOUDFLARE:
+            tools, execute_tool = repository_tools(
+                workspace, git(workspace, 'ls-files', '-z').split('\0'), task['allowed_paths'])
+            try:
+                text = run_turn(cloudflare_client(provider, policy['symphony']['pool_path']),
+                                Attempt(PROJECT_NAMES[manifest['project_id']], lease),
+                                request['prompt'], tools=tools, execute_tool=execute_tool,
+                                active_projects=provider.active_projects,
+                                cancelled=lambda: (runtime/'cancel.json').exists(),
+                                timeout=request['timeout_seconds'])
+                (directory/'final-message.txt').write_text(text)
+                result = dict(status='succeeded', child_tree_gone=True, turn_completed=True,
+                              session_id=lease, resolved_model=requested_model, resolution_status='observed')
+            except Exception as error:
+                result = dict(status='failed', child_tree_gone=True, error_type=type(error).__name__)
+        else:
+            with isolated_codex_environment(child_environment(os.environ), directory) as env:
+                result = supervise(codex_command(workspace, directory/'final-message.txt'),
+                                   request['prompt'], workspace, env, directory,
+                                   request['timeout_seconds'], task['resources'],
+                                   policy['windmill']['computation_subprocesses_per_job'])
         if result.get('status') == 'cancelled':
             observation_context['cancelled'] = True
         if (directory/'stdout.jsonl').exists():
@@ -259,7 +282,7 @@ def execute(runtime, issue, request):
                       final_head=final_head, final_branch=final_branch,
                       source_identity_changed=identity_changed,
                       output_sha256=outputs, accepted_delivery=False,
-                      provider_route='codex-chatgpt', requested_model=MODEL,
+                      provider_route=provider.route, requested_model=requested_model,
                       requested_effort='medium',task_fit=task['purpose'],
                       origin='native-coding',parent_runtime=str(runtime),attempt=issue,
                       attempt_path=str(directory),
@@ -346,7 +369,8 @@ def review_contract(runtime, issue, request):
         or policy['reviewer_owner'] in policy['excluded_owners']
         or policy['stage_identity'] != (task['stage_binding']['identity'] if staged else policy['validation_identity'])
         or policy['resources'] != task['resources'] or policy['acceptance'] != task['acceptance']
-        or (policy['provider'],policy['model'],policy['effort']) != ('codex-chatgpt',MODEL,'medium')
+        or (policy['provider'],policy['model'],policy['effort']) not in {
+            ('codex-chatgpt', MODEL, 'medium'), (CLOUDFLARE, CLOUDFLARE_MODEL, 'medium')}
         or policy['require_stopped_child'] is not True
         or type(policy['timeout_seconds']) is not int or not 1 <= policy['timeout_seconds'] <= 600
         or not policy['author_receipts'] or not policy['excluded_sessions'] or not policy['excluded_owners']):
@@ -477,6 +501,17 @@ def execute_review(runtime, issue, request):
         if (runtime/'cancel.json').exists():
             raise AdmissionError('native_review_cancelled')
         capacity = json.loads((runtime/'capacity-policy.json').read_text())
+        proof = json.loads((runtime/'provider-proof.json').read_text())
+        provider = select_provider(proof, capacity)
+        provider.require_active(policy['project_id'])
+        if policy['provider'] == CLOUDFLARE and provider.route != CLOUDFLARE:
+            raise AdmissionError('native_cloudflare_review_provider_unavailable')
+        model = provider.proof['requested_model'] if provider.route == CLOUDFLARE else MODEL
+        if provider.route == CLOUDFLARE:
+            reviewer = provider.cloudflare_policy.get('review_accounts', {}).get(policy['reviewer_owner'])
+            authors = [pinned_record(ref) for ref in policy['author_receipts']]
+            if reviewer is None or len(authors) != 1 or authors[0].get('provider_route') != CLOUDFLARE:
+                raise AdmissionError('native_cloudflare_reviewer_binding')
         pool = Pool(capacity['symphony']['pool_path'], capacity)
         intent_path = directory/'intent.json'
         if intent_path.exists():
@@ -492,7 +527,7 @@ def execute_review(runtime, issue, request):
         # A crash during admission remains uncertain; never infer no effect.
         phase('admission-pending')
         try:
-            admitted = pool.admit(lease,binding,json.loads((runtime/'provider-proof.json').read_text()),host_snapshot(runtime))
+            admitted = pool.admit(lease,binding,provider.proof,host_snapshot(runtime))
         except AdmissionError as error:
             if str(error) in REVIEW_CAPACITY_REFUSALS:
                 # Validate the entire prior history as well as actual absence.
@@ -519,11 +554,27 @@ def execute_review(runtime, issue, request):
                 '; verdict is accept or rework; findings is a list of strings. Accept requires no findings. '
                 'Copy this exact source object: '+json.dumps(policy['source'])+
                 '. Scope and acceptance: '+json.dumps(policy['acceptance']))
-            with isolated_codex_environment(child_environment(os.environ),directory) as environment:
-                phase('spawn-pending')
-                result = supervise(codex_command(policy['source']['root'],directory/'final-message.txt',read_only=True),
-                    prompt,Path(policy['source']['root']),environment,directory,policy['timeout_seconds'],
-                    policy['resources'],capacity['windmill']['computation_subprocesses_per_job'])
+            phase('spawn-pending')
+            if provider.route == CLOUDFLARE:
+                workspace = Path(policy['source']['root'])
+                tools, execute_tool = repository_tools(
+                    workspace, git(workspace, 'ls-files', '-z').split('\0'), [])
+                result = dict(status='failed', child_tree_gone=True)
+                text = run_turn(cloudflare_client(provider, capacity['symphony']['pool_path']),
+                    Attempt(PROJECT_NAMES[policy['project_id']], lease, authors[0]['lease'], reviewer),
+                    prompt, tools=tools, execute_tool=execute_tool,
+                    active_projects=provider.active_projects,
+                    cancelled=lambda: (runtime/'cancel.json').exists(), timeout=policy['timeout_seconds'])
+                (directory/'final-message.txt').write_text(text)
+                (directory/'stdout.jsonl').write_text(
+                    json.dumps(dict(type='thread.started', thread_id=lease))+'\n'+
+                    json.dumps(dict(type='turn.completed', model=model))+'\n')
+                result['status'] = 'succeeded'
+            else:
+                with isolated_codex_environment(child_environment(os.environ),directory) as environment:
+                    result = supervise(codex_command(policy['source']['root'],directory/'final-message.txt',read_only=True),
+                        prompt,Path(policy['source']['root']),environment,directory,policy['timeout_seconds'],
+                        policy['resources'],capacity['windmill']['computation_subprocesses_per_job'])
             if not result.get('child_started', True):
                 raise AdmissionError('native_review_confinement_prelaunch_refusal')
             result.update(summarize_events(directory/'stdout.jsonl'))
@@ -549,8 +600,8 @@ def execute_review(runtime, issue, request):
         finally:
             result.update(origin=REVIEW_ORIGIN,issue=issue,lease=lease,parent_binding=binding,
                 binding_sha256=digest(binding),request=request,policy_sha256=digest(policy),
-                source_before=binding['source_sha256'],requested_model=MODEL,requested_effort='medium',
-                provider_route='codex-chatgpt',accepted_delivery=False)
+                source_before=binding['source_sha256'],requested_model=model,requested_effort='medium',
+                provider_route=provider.route,accepted_delivery=False)
             result.setdefault('resolved_model',None)
             if result.get('resolution_status') != 'observed':
                 result['resolution_status'] = 'unknown'
@@ -610,12 +661,13 @@ if __name__ == '__main__':
     parser.add_argument('--issue', required=True)
     parser.add_argument('--native-review-policy')
     parser.add_argument('--native-review-policy-sha256')
+    parser.add_argument('--provider-route')
     args = parser.parse_args()
     try:
         request = (dict(kind=REVIEW_ORIGIN,policy=dict(path=args.native_review_policy,
                        sha256=args.native_review_policy_sha256)) if args.native_review_policy else
                    json.loads((args.runtime/'requests'/(args.issue+'.json')).read_text()))
-        result = execute(args.runtime, args.issue, request)
+        result = execute(args.runtime, args.issue, request, expected_provider=args.provider_route)
         print(json.dumps(result))
         raise SystemExit(0 if result['status'] == 'succeeded' else 2)
     except (ValueError, OSError, AdmissionError) as error:

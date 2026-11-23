@@ -29,6 +29,7 @@ from symphony_tasks import (load_manifest, runtime_lease_ids, project_route,
                             validated_project_route)
 from symphony_workspace import checkpoint
 from stokowski_worker import child_environment, MODEL
+from stokowski_provider import CLOUDFLARE, MODEL as CLOUDFLARE_MODEL, select_provider
 
 SOURCE = Path(__file__).resolve().parents[2]
 PIN = '339cbf4f3f6d9acdf808f9ba4c639d029cdd8e16'
@@ -1331,11 +1332,15 @@ class CurrentWork:
             or not 1 <= approved['timeout_seconds'] <= 600):
             raise AdmissionError('current_request_invalid')
         proof = read_record(runtime/'provider-proof.json')
-        checked = proof.get('checked_at')
         policy = read_record(runtime/'capacity-policy.json')
+        provider = select_provider(proof, policy)
+        if not review and not observation:
+            provider.require_active(manifest['project_id'])
+        proof = provider.proof
+        checked = proof.get('checked_at')
         # Fresh provider capacity is a dispatch condition. Exact-bound completed
         # evidence remains reviewable after that admission proof expires.
-        if (proof.get('route') != 'codex-chatgpt' or proof.get('available') is not True
+        if (proof.get('route') not in {'codex-chatgpt', CLOUDFLARE} or proof.get('available') is not True
             or type(checked) not in (int,float) or not math.isfinite(checked)
             or checked > time.time()+5
             or (not review and 'stage' not in manifest['tasks'][issue] and time.time()-checked > policy['symphony']['provider_proof_ttl_seconds'])
@@ -2279,7 +2284,8 @@ class CurrentWork:
         if ('stage' in task or template['project_id'] != manifest['project_id']
             or template['resources'] != task['resources'] or template['acceptance'] != task['acceptance']
             or template['reviewer_owner'] == task['owner']
-            or (template['provider'],template['model'],template['effort']) != ('codex-chatgpt',worker.MODEL,'medium')
+            or (template['provider'],template['model'],template['effort']) not in {
+                ('codex-chatgpt', worker.MODEL, 'medium'), (CLOUDFLARE, CLOUDFLARE_MODEL, 'medium')}
             or template['require_stopped_child'] is not True
             or type(template['timeout_seconds']) is not int or not 1 <= template['timeout_seconds'] <= 600):
             raise AdmissionError('native_review_template_scope')
@@ -3116,11 +3122,17 @@ def install_adapters(runtime, manifest, key, current=None, *, native_harness_ada
     async def owned_turn(runner_type, claude_cfg, hooks_cfg, prompt, workspace_path,
                        issue, attempt, on_event=None, on_pid=None, env=None):
         selected_runtime = (current.private(current.entries[issue.identifier]['runtime']) if current else runtime)
-        selected = load_manifest(selected_runtime/'manifest.json', expected_branch=None)['tasks'][issue.identifier]
+        selected_manifest = load_manifest(selected_runtime/'manifest.json', expected_branch=None)
+        selected = selected_manifest['tasks'][issue.identifier]
         if 'stage' in selected:
             raise AdmissionError('nonimplementation_worker_refused')
-        if runner_type != 'codex' or claude_cfg.model != MODEL:
+        if (runner_type, claude_cfg.model) not in {('codex', MODEL), ('cloudflare', CLOUDFLARE_MODEL)}:
             raise AdmissionError('Only the reviewed existing Codex session route is admitted')
+        provider = select_provider(read_record(selected_runtime/'provider-proof.json'),
+                                   read_record(selected_runtime/'capacity-policy.json'))
+        if runner_type == 'cloudflare' and provider.route != CLOUDFLARE:
+            raise AdmissionError('cloudflare_workflow_requires_cloudflare_provider')
+        provider.require_active(selected_manifest['project_id'])
         if any(vars(hooks_cfg).get(k) for k in ('before_run', 'after_run', 'on_stage_enter')):
             raise AdmissionError('Unenforced shell validation hook rejected')
         task_runtime = runtime
@@ -3159,6 +3171,7 @@ def install_adapters(runtime, manifest, key, current=None, *, native_harness_ada
         process = await asyncio.create_subprocess_exec(
             sys.executable, str(SOURCE/'tools/delivery/stokowski_worker.py'),
             '--runtime', str(task_runtime), '--issue', issue.identifier,
+            '--provider-route', provider.route,
             env=child_environment(os.environ), stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE, start_new_session=True)
         if on_pid:
@@ -3240,7 +3253,7 @@ def validate_project_workflow(config, policy, routes, errors):
         or set(slugs) != {r['project_slug'] for r in routes}
         or config.agent.max_concurrent_agents != policy['symphony']['max_concurrent_agents']
         or config.server.port is not None
-        or any(s.runner != 'codex' for p in projects for s in p.all_states().values() if s.type == 'agent')
+        or any(s.runner not in {'codex', 'cloudflare'} for p in projects for s in p.all_states().values() if s.type == 'agent')
         or any(vars(p.hooks).get(k) for p in projects
                for k in ('after_create','before_run','after_run','before_remove','on_stage_enter'))
         or any(s.hooks is not None for p in projects for s in p.all_states().values())):
@@ -3398,24 +3411,40 @@ def qualification_child(runtime, reference):
     if any(not name.startswith('qualification-runtime/') for name in before):
         raise AdmissionError('qualification_dirty_source')
     capacity = read_record(runtime/'capacity-policy.json')
-    from symphony_launch import provider_proof
-    proof = provider_proof(MODEL, capacity['symphony']['provider_session_ceiling'])
+    from stokowski_provider import PROJECT_NAMES, cloudflare_client, prepare_provider_proof
+    proof = prepare_provider_proof(MODEL, capacity['symphony']['provider_session_ceiling'])
+    provider = select_provider(proof, capacity)
+    provider.require_active(authority['project_id'])
     binding = dict(branch=spec['branch'], head=spec['head'], owner=authority['owner'],
         write_roots=[spec['output']], resources=spec['resources'], task_sha256=digest(spec))
     lease = 'qualification-' + digest(dict(runtime=str(runtime), reference=reference))[:48]
     pool = Pool(capacity['symphony']['pool_path'], capacity)
-    if pool.admit(lease, binding, proof, host_snapshot(workspace)).get('reused'):
+    if pool.admit(lease, binding, provider.proof, host_snapshot(workspace)).get('reused'):
         raise AdmissionError('qualification_retained_lease')
     result = dict(status='uncertain', child_tree_gone=False, origin='native-qualification', lease=lease,
-        requested_model=MODEL, requested_effort='medium', provider_route='codex-chatgpt',
+        requested_model=provider.proof.get('requested_model', MODEL), requested_effort='medium',
+        provider_route=provider.route,
         resolved_model=None, resolution_status='unknown', accepted_delivery=False, authority='proposal-only')
     checkpoint(directory/'intent.json', dict(lease=lease, binding=binding, provider=proof))
     try:
-        command = codex_command(workspace, workspace/spec['output'])
-        command[command.index('--sandbox')+1] = 'read-only'
-        with isolated_codex_environment(child_environment(os.environ), directory) as environment:
-            result.update(supervise(command, spec['prompt'], workspace, environment, directory,
-                policy['timeout_seconds'], spec['resources'], capacity['windmill']['computation_subprocesses_per_job']))
+        if provider.route == CLOUDFLARE:
+            from stokowski_cloudflare_turn import Attempt, repository_tools, run_turn
+            tools, execute_tool = repository_tools(workspace, git(workspace, 'ls-files', '-z').split('\0'), [])
+            result['child_tree_gone'] = True
+            text = run_turn(cloudflare_client(provider, capacity['symphony']['pool_path']),
+                Attempt(PROJECT_NAMES[authority['project_id']], lease), spec['prompt'],
+                tools=tools, execute_tool=execute_tool,
+                active_projects=provider.active_projects,
+                cancelled=lambda: (runtime/'cancel.json').exists(), timeout=policy['timeout_seconds'])
+            checkpoint(workspace/spec['output'], json.loads(text))
+            result.update(status='succeeded', turn_completed=True, session_id=lease,
+                          resolved_model=result['requested_model'], resolution_status='observed')
+        else:
+            command = codex_command(workspace, workspace/spec['output'])
+            command[command.index('--sandbox')+1] = 'read-only'
+            with isolated_codex_environment(child_environment(os.environ), directory) as environment:
+                result.update(supervise(command, spec['prompt'], workspace, environment, directory,
+                    policy['timeout_seconds'], spec['resources'], capacity['windmill']['computation_subprocesses_per_job']))
         if (directory/'stdout.jsonl').exists():
             result.update(summarize_events(directory/'stdout.jsonl'))
             if result.get('resolved_model') is None:

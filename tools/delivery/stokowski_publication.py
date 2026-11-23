@@ -16,7 +16,7 @@ import sys
 import time
 
 from stokowski_prepare import prepare_publication, _publication_write, _publication_bytes
-from symphony_launch import provider_proof
+from stokowski_provider import prepare_provider_proof as provider_proof
 from symphony_capacity import AdmissionError, digest
 
 LIMIT = 65536

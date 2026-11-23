@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools/delivery'))
 from stokowski_cloudflare_budget import BudgetRefused, ProjectAccountRouter
 from stokowski_cloudflare_client import MODEL, REQUEST_MAXIMUM, WorkersAIClient, WorkersAIRequestError
 from stokowski_cloudflare_turn import Attempt, run_turn
+from stokowski_provider import CLOUDFLARE, prepare_provider_proof
 
 
 class WorkersAIClientTests(unittest.TestCase):
@@ -108,3 +109,33 @@ class WorkersAIClientTests(unittest.TestCase):
         self.assertEqual(requests[0].args[1], requests[1].args[1])
         self.assertEqual(json.loads(requests[1].kwargs['body'])['messages'][-1],
                          {'role': 'tool', 'tool_call_id': 'edit', 'content': 'Edited fixture'})
+
+    def test_cloudflare_only_prepares_without_inspecting_codex(self):
+        config = dict(mode='cloudflare', accounts=self.accounts, active_projects=['OffMenu'])
+        with (patch('stokowski_provider.load_policy', return_value=config),
+              patch('symphony_launch.provider_proof', side_effect=AssertionError('Codex was probed'))):
+            proof = prepare_provider_proof('gpt-6.2-sol', 4)
+        self.assertEqual((proof['route'], proof['requested_model']), (CLOUDFLARE, MODEL))
+
+    def test_both_mode_can_prepare_when_codex_binary_is_missing(self):
+        config = dict(mode='both', accounts=self.accounts, active_projects=['OffMenu'])
+        with (patch('stokowski_provider.load_policy', return_value=config),
+              patch('symphony_launch.provider_proof', side_effect=FileNotFoundError)):
+            proof = prepare_provider_proof('gpt-6.2-sol', 4)
+        self.assertEqual((proof['route'], proof['requested_model']), (CLOUDFLARE, MODEL))
+
+    def test_both_mode_selects_cloudflare_when_codex_quota_is_exhausted(self):
+        from types import SimpleNamespace
+        from symphony_protocol import codex_quota_exhausted
+
+        config = dict(mode='both', accounts=self.accounts, active_projects=['OffMenu'])
+        exhausted = codex_quota_exhausted({'rateLimitsByLimitId': {
+            'codex': {'primary': {'usedPercent': 25}, 'secondary': {'usedPercent': 100}}}})
+        self.assertTrue(exhausted)
+        readiness = {'models': [{'id': 'gpt-6.2-sol'}], 'quota_exhausted': exhausted}
+        with (patch('stokowski_provider.load_policy', return_value=config),
+              patch('symphony_launch.subprocess.run', return_value=SimpleNamespace(
+                  returncode=0, stdout='Logged in using ChatGPT', stderr='')),
+              patch('symphony_launch.probe', return_value=readiness)):
+            proof = prepare_provider_proof('gpt-6.2-sol', 4)
+        self.assertEqual((proof['route'], proof['requested_model']), (CLOUDFLARE, MODEL))

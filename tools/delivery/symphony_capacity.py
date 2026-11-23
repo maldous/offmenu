@@ -115,7 +115,7 @@ class Pool:
         fingerprint=digest(binding)
         now=time.time();ttl=self.policy['symphony']['provider_proof_ttl_seconds']
         checked=provider.get('checked_at')
-        if (provider.get('route')!='codex-chatgpt' or provider.get('available') is not True
+        if (provider.get('route') not in {'codex-chatgpt', 'cloudflare-workers-ai'} or provider.get('available') is not True
             or type(checked) not in (int,float) or not math.isfinite(checked)
             or checked>now+5 or now-checked>ttl):raise AdmissionError('provider_unavailable_or_stale')
         slots=positive(provider.get('session_ceiling'),'provider_sessions')

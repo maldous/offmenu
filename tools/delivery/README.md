@@ -46,6 +46,29 @@ A standalone pass does not qualify the optional executor, its publisher, or a
 merge. Its existing pinned validation profiles still require their dependencies
 and positive, unskipped tests. Do not install Stokowski merely to build OffMenu.
 
+## Stokowski provider selection
+
+The protected runtime reads the root-owned `/etc/offmenu/stokowski-cloudflare.json`
+policy. `mode` accepts `cloudflare`, `both`, or `codex`. Cloudflare mode skips
+Codex readiness and execution. Both mode uses a current available Codex proof
+and otherwise selects Workers AI before creating the attempt. Provider selection
+does not replay an existing attempt.
+
+The policy's `accounts` maps UIF, OffMenu, ANQR, CIX, and CQ to distinct account
+IDs. `active_projects` contains the currently enabled project names.
+`review_accounts` maps authenticated native reviewer owners to the designated
+Cloudflare account name. A Cloudflare review must use an account distinct from
+the author. The protected runtime reads each account credential from
+`/etc/offmenu/stokowski-cloudflare/<project>.json` (root-owned, mode 0640).
+Each record contains the matching `account_id`, `plan` set to `free`, and the
+scoped Workers AI `token`. Verify the account plan and token scope before staging
+the record. Keep credentials out of source and task packets.
+
+Workers AI uses GPT-OSS 20B and bounded edits to tracked text files. The
+existing validation stage runs reviewed checks against the resulting candidate.
+An admission using Workers AI requires a pinned provider requirements record
+with route `cloudflare-workers-ai` and model `@cf/openai/gpt-oss-20b`.
+
 ## Reviewed task contract
 
 Use the [routing and tracking runbook](../../docs/development/task-routing.md)

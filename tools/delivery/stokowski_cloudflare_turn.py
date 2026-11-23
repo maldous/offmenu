@@ -3,6 +3,9 @@
 from dataclasses import dataclass
 from hashlib import sha256
 import json
+import os
+from pathlib import Path
+import tempfile
 import time
 
 from stokowski_cloudflare_client import WorkersAIClient, WorkersAIRequestError
@@ -14,6 +17,59 @@ class Attempt:
     id: str
     review_of: str | None = None
     reviewer_project: str | None = None
+
+
+def repository_tools(workspace, tracked_paths, write_roots):
+    """Expose only bounded text operations on the admitted checkout."""
+    workspace = Path(workspace).resolve(strict=True)
+    tracked = frozenset(tracked_paths)
+    definitions = {'list_files': (), 'read_file': ('path',)}
+    if write_roots:
+        definitions['replace_text'] = ('path', 'old', 'replacement')
+    tools = [
+        {'type': 'function', 'function': {'name': name, 'parameters': {
+            'type': 'object', 'properties': {key: {'type': 'string'} for key in keys},
+            'required': list(keys), 'additionalProperties': False}}}
+        for name, keys in definitions.items()
+    ]
+
+    def execute(name, arguments, remaining):
+        if set(arguments) != set(definitions[name]) or not all(
+                isinstance(value, str) for value in arguments.values()):
+            raise WorkersAIRequestError('Invalid workspace tool arguments')
+        if name == 'list_files':
+            return '\n'.join(sorted(tracked))[:8000]
+        relative = arguments['path']
+        path = workspace / relative
+        if relative not in tracked or path.resolve(strict=True) != path or not path.is_file():
+            raise WorkersAIRequestError('Workspace file is outside the tracked scope')
+        stat = path.stat()
+        if stat.st_nlink != 1 or stat.st_size > 24_000:
+            raise WorkersAIRequestError('Workspace file exceeds the tool size limit')
+        content = path.read_text(encoding='utf-8')
+        if name == 'read_file':
+            return content
+        if not any(relative == root or relative.startswith(root + '/') for root in write_roots):
+            raise WorkersAIRequestError('Workspace file is outside the write scope')
+        old = arguments['old']
+        if not old or content.count(old) != 1:
+            raise WorkersAIRequestError('Edit requires one unambiguous match')
+        updated = content.replace(old, arguments['replacement'], 1)
+        if len(updated.encode()) > 24_000:
+            raise WorkersAIRequestError('Updated file exceeds the tool size limit')
+        with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', dir=path.parent, delete=False) as stream:
+            staged = Path(stream.name)
+            try:
+                os.fchmod(stream.fileno(), stat.st_mode & 0o777)
+                stream.write(updated)
+                stream.flush()
+                os.fsync(stream.fileno())
+                staged.replace(path)
+            finally:
+                staged.unlink(missing_ok=True)
+        return 'Updated tracked file'
+
+    return tools, execute
 
 
 def run_turn(client: WorkersAIClient, attempt: Attempt, prompt: str, *,
