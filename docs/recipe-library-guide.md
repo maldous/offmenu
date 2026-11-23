@@ -1,109 +1,81 @@
-# Find and review a shared recipe
+# Find and use recipes saved in your kitchen
 
-This guide describes the recipe-library interface in OffMenu source version
-`284f2ce5b369c5b1a5bd57b9f79386e14993e3dc`. It has been checked against that
-source, not a live deployment. Available recipes depend on the collection served
-by your installation. No screenshots or device behavior have been verified for
-this guide.
+This guide covers the local recipe journey in OffMenu source
+`56026538d15d29f6f5afd427294a82be69557908`. It describes the source, not
+a verified running installation or a particular browser or device.
 
 ## Find recipes
 
-1. In Today, find **Explore the shared recipe library.** Choose
-   **Open worldwide recipes**. From Plan, **Find a menu to add ✳** also opens
-   the Today recipe view.
-2. Enter a dish or ingredients in **Dish or ingredients**. Changing the search
-   starts a new result list. Keep searches to 100 characters or fewer.
-3. Use **Recipe language** to filter the results already loaded. This selects
-   recipe content language; it does not translate the source recipe or change
-   the application language.
-4. Select **Prioritise recipes using my available ingredients** to restrict the
-   loaded results to recipes with at least one required ingredient matched in
-   your kitchen. A match is a hint to review, not confirmation that you have
-   everything needed.
-5. When **Show next recipes** appears, use it to request the next page. The list
-   keeps the latest 200 results. Language and kitchen filters apply to those
-   loaded results, so a filtered empty list does not prove there are no matching
-   recipes in the whole collection.
+1. If you already have an OffMenu recipe JSON file, open **Profile & backup**,
+   then **Backups & recipe imports → Import recipes (offmenu JSON)**. Choose a
+   file no larger than 2,000,000 bytes. A kitchen backup, PDF or shopping CSV
+   is not a recipe import. If an existing recipe has the same ID but different
+   details, OffMenu stops the import and keeps the existing version.
+2. Open **Today**. Expand **Adjust portions, diners & filters**, then use
+   **Find a dish or ingredient** to look through recipes in this kitchen.
+   Choose **Whole kitchen** in **Cook from** to include all your locations;
+   check **Show** if the current availability filter is too narrow.
+3. To see imported recipes that still need measurement review, select
+   **Include imported recipes needing review**. **Household portions** changes
+   the portions considered; it does not tell OffMenu how much anyone ate.
 
-The status message distinguishes results shown, results loaded and the published
-collection total. Searches may take a moment; the interface shows
-**Searching shared recipes…** while requesting results.
+**Lookup unavailable** in the shared recipe area means the public catalogue
+cannot be searched in this version. It does not mean a particular recipe is
+missing. There is no automatic switch to an external recipe source. A recipe
+you have already saved or imported is a separate path.
 
 ## Understand ingredient matches
 
-Matching uses inventory on the device within the selected **Cook from** location.
-Choose **Whole kitchen** when you want to include all kitchen locations. Recheck
-the match after changing that scope. Items marked for review,
-items with an expiry date before today, and items without a positive finite
-quantity are excluded from the match calculation. Optional recipe ingredients
-are excluded from required-ingredient totals.
+On a recipe card, expand **Ingredients, quantities & directions**. Read the
+quantities and steps, and check the recipe's source credit and licence shown
+there. If **Original ingredient wording** appears, it preserves the supplied
+wording; it is not a confirmation of a measured amount.
 
-A matching ingredient name does not establish a measured quantity. The source
-compares quantities in `g`, `ml` or `count`, using the source recipe batch. It
-does not convert cups or spoonfuls by assuming density. Check both the
-ingredient identity and the quantity before relying on a match. No dietary,
-allergen or food-safety certification follows from a match.
+**Ready to cook** refers to the measured stock available within the selected
+scope. **Ingredients to add** identifies shortages. **Review source quantities**
+means information is still needed; do not treat an unknown amount as zero or
+assume two names mean the same ingredient. A match is not an allergy, dietary
+or food-safety assessment.
+
+The **Food data & estimated nutrition** section describes estimates based on
+matched ingredients and compatible amounts. Missing measurements or nutrition
+values stay unknown. Source credit does not grant permission to publish or
+reuse the recipe beyond its licence.
 
 ## Review a recipe for your kitchen
 
-You need an editable kitchen to save a personal recipe. Viewing shared recipes
-does not itself give you permission to edit a kitchen.
+To plan a saved recipe, open **Plan** and choose **Day to plan** and **Meal**.
+Return to **Today**, check **Household portions**, and choose the recipe's
+**Add to [day] menu** button. Check the planned meal in **Plan**. Adding the
+meal does not cook it, deduct ingredients or record anything eaten.
 
-1. Choose **Read recipe & review quantities**. Read **Source instructions** and
-   follow **Original source** to inspect the attributed source and licence.
-2. Under **Review for my kitchen**, check each ingredient against the source.
-   Edit its kitchen ingredient name, measured quantity, unit and optional status.
-3. Enter a positive **Reviewed serving yield**. Every required ingredient needs
-   a positive measured quantity and a unit of `g`, `ml` or `count`. Keep at least
-   one required ingredient.
-4. Read the source scaling notice. The personal recipe uses linear quantities;
-   source recipes may describe another scaling rule.
-5. Select the confirmation stating that you have reviewed ingredient identities,
-   measurements, yield and instructions and choose linearly scalable quantities.
-6. Choose **Save my reviewed recipe**. A successful callback displays
-   **Your reviewed recipe is saved in this kitchen.** This guide does not verify
-   hosted persistence, account synchronization or another device's copy.
-
-Your review creates a personal recipe and retains source provenance; it does not
-edit the original source. Personal review is not independent dietary
-certification.
-
-Historical OCR candidates can have incomplete ingredient extraction. For those
-candidates, kitchen matching and saving a personal recipe are blocked until
-complete transcription. Reading or downloading an OCR candidate does not make
-its ingredient list complete.
-
-Choose **Download source recipe as JSON-LD** to download the selected source
-recipe representation. This downloads the source recipe, not your edited
-personal copy. Attribution, licence and source links are retained. Check the
-source licence before reuse; a download does not grant additional rights.
+For a recipe with measured quantities, **More recipe options → Cook this
+meal** may be offered. A disabled cooking action is not a prompt to guess a
+quantity or override a check for selected diners. See
+[record cooking and serving](kitchen-planning-guide.md#record-cooking-once) for
+the separate steps.
 
 ## If you cannot continue
 
 | What you see | What to do |
 | --- | --- |
-| A search failure or collection-validation message | Check the connection and try **Open worldwide recipes** again. An installation must serve a compatible accepted collection; there is no automatic upstream collection fallback. |
-| No visible recipes | Check the search and the language/kitchen filters. Filters cover loaded results only. |
-| Recipe no longer in this search | Search again and reopen it. Older results may have left the latest-200 list. |
-| Open an editable kitchen before saving a recipe | Open a kitchen you are permitted to edit before saving; viewing shared recipes does not grant write access. |
-| Confirmation or quantity validation message | Review the yield, required ingredient names, positive quantities, units and confirmation before saving again. |
-| Historical OCR transcription message | Do not treat the partial extraction as a ready kitchen recipe. Complete transcription is required; this interface does not provide that workflow. |
+| No matching menus in the recipes saved on this device | Choose **Clear filters** if offered. If this kitchen has no recipes, import an OffMenu recipe JSON file you are permitted to use. |
+| Lookup unavailable in the shared recipe area | Work with recipes already in this kitchen, or import your own eligible recipe file. Retrying the local recipe filter does not search the public catalogue. |
+| No new recipes to import | If the file contains identical recipes that are already saved, no new copy is created. Check the current kitchen before trying again. |
+| Invalid recipe file or matching ID with different details | Use a valid OffMenu recipe JSON file. Review differing versions before retrying; the import does not silently replace an existing recipe. |
+| Quantity needs review | Read the original wording and verify the amount before relying on a match or recording cooking. |
 
-Search progress and review messages use status text, and generated ingredient
-fields have names for ingredient, quantity and unit. Keyboard, screen-reader,
-mobile, tablet and foldable behavior still need qualification on the selected
-installation; this source review does not establish those results.
+Read the visible status as well as the cards. Where a result includes a
+disclosure, its heading names the content to open. This guide does not verify
+keyboard focus, screen-reader output, cloud sync or device behavior.
 
 ## Source and maintenance
 
-OffMenu's project documentation owner maintains this guide. Review it whenever
-recipe discovery, matching, personal review or the corresponding labels change.
-Contextual in-app help and search-index integration remain separate work.
+OffMenu's documentation owner maintains this guide alongside the recipe
+controls and source changes. Recheck the guide if discovery availability,
+import requirements, or local recipe actions change. Existing search-index
+and contextual in-app Help changes are separate work.
 
-Source references for this revision:
-
-- [Recipe controls and dialog](../apps/web/assets/index.html).
-- [Recipe-library interaction and messages](../apps/web/src/recipe-library-ui.js).
-- [Matching, personal review and export](../apps/web/src/recipe-library-model.js).
-- [Discovery requests and collection checks](../apps/web/src/recipe-discovery-client.js).
-- [Application integration](../apps/web/src/app.js).
+- [Recipe, import and plan controls](../apps/web/assets/index.html).
+- [Local recipe discovery, import and plan binding](../apps/web/src/app.js).
+- [Public catalogue availability boundary](../apps/web/src/public-catalogue-boundary.js).
