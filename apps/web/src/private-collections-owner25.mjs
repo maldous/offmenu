@@ -91,7 +91,7 @@ export function createPrivateCollections({authorize,authorizeRelease,load,resolv
     }
   }
   return {
-    async read({session,accountId}) {
+    async read({session,accountId,collectionName}) {
       session=capture(session);id(accountId);const a=await authority(session,accountId,'read'),state=envelope(await load(binding(a)),accountId);
       await refresh(state,a);
       await recheck(session,a,'read');
@@ -100,7 +100,11 @@ export function createPrivateCollections({authorize,authorizeRelease,load,resolv
       const sources=state.collections.flatMap(c=>c.bookmarks.map(b=>({reference:capture(b.reference),status:b.status,privateCopyIncluded:Object.hasOwn(b,'privateCopy')})));
       const release=capture(await authorizeRelease(capture(session),{binding:binding(a),sources:capture(sources)}));
       if(release?.allowed!==true||JSON.stringify(release.binding)!==JSON.stringify(binding(a)))throw Error('Current source/account release denied');
-      return capture(state);
+      const nameFilter = typeof collectionName === 'string' ? collectionName.trim().toLowerCase() : '';
+      const collections = nameFilter
+        ? state.collections.filter(collection => collection.name.toLowerCase() === nameFilter)
+        : state.collections;
+      return capture({ ...state, collections });
     },
     async mutate({session,accountId,command}) {
       session=capture(session);id(accountId);const cmd=capture(command);id(cmd.operationId);revision(cmd.expectedVersion);

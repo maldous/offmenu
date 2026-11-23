@@ -108,3 +108,23 @@ test('PR9 null response after applied commit remains unknown, never throws or im
   const f=fixture();f.nullAck();const result=await f.mutate('add',{name:'Family'});
   assert.equal(result.status,'unknown');assert.equal(result.operationId,'op1');assert.equal(f.state().revision,1);
 });
+
+test('private collection filter trims the name and preserves the blank and omitted views',async()=>{
+  const f=fixture();
+  await f.mutate('add',{name:'Family'});
+  await f.mutate('add',{collectionId:'friends',name:'Friends'});
+  const access={session:'verified',accountId:'a'};
+  const names=async collectionName=>(await f.api.read({...access,collectionName})).collections.map(c=>c.name);
+  assert.deepEqual(await names('  fAmIlY  '),['Family']);
+  assert.deepEqual(await names('Other'),[]);
+  assert.deepEqual(await names('   '),['Family','Friends']);
+  assert.deepEqual(await names(undefined),['Family','Friends']);
+});
+
+test('a filter cannot read collections belonging to another account',async()=>{
+  const f=fixture();
+  await f.mutate('add',{name:'Family'});
+  await assert.rejects(f.api.read({session:'verified',accountId:'b',collectionName:'Family'}),
+                       /Private collection access denied/);
+  assert.equal(f.state().revision,1);
+});
