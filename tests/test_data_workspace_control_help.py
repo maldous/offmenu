@@ -72,14 +72,14 @@ class TestWorkspaceHelp(unittest.TestCase):
         # Fail this bounded inventory when a new dynamic interactive element is
         # added rather than silently classifying it as one of today's controls.
         tags = re.findall(r"createElement\(['\"](a|button|input|select|option|textarea|summary)['\"]\)", self.js)
-        self.assertEqual(Counter(tags), {"a": 1, "button": 1, "option": 1})
+        self.assertEqual(Counter(tags), {"a": 1, "button": 1})
         dynamic = [line for line in self.js.splitlines() if "document.createElement('button')" in line]
         self.assertEqual(len(dynamic), 1)
         self.assertIn("Delete measurement group", dynamic[0])
         self.assertIn("$('health-results').append(button)", dynamic[0])
         self.assertIn("delete one returned group", self.by_id["dynamic:health-results/delete-group"][1])
         self.assertIn("download anchor", self.doc)
-        self.assertIn("country options", self.doc)
+        self.assertNotIn("country options", self.doc)
 
     def test_navigation_and_distinct_task_destinations(self):
         self.assertIn("](data-workspace-control-help.md)", IMPORT_GUIDE.read_text())

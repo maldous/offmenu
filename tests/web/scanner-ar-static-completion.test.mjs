@@ -82,10 +82,18 @@ test('remaining static scanner Arabic pairs preserve English and identifier spel
   }
 });
 
+const retiredPublicCopy=new Set([
+ 'Ready · loaded retained barcode identifiers','Data connection','Real · loaded retained barcode identifiers',
+ 'Real source records remain unresolved where evidence is missing.',
+]);
+const activeScannerKeys=Object.keys(remaining).filter(key=>!retiredPublicCopy.has(key));
+
 test('remaining static scanner scope is actual decoded HTML with no static fallback',async()=>{
   const keys=staticKeys(await readFile(scannerURL,'utf8'));
-  assert.equal(keys.length,111,'selected static inventory only, not dynamic runtime text');
-  for (const key of Object.keys(remaining)) assert.ok(keys.includes(key),key);
+  assert.equal(keys.length,108,'selected static inventory only, not dynamic runtime text');
+  assert.ok(keys.includes('Lookup unavailable.'));
+  for(const key of retiredPublicCopy)assert.ok(!keys.includes(key),key);
+  for (const key of activeScannerKeys) assert.ok(keys.includes(key),key);
   for (const key of keys) assert.equal(hasTranslation(key,'ar'),true,key);
 });
 
@@ -108,7 +116,7 @@ test('remaining scanner text and accessible-label translation leaves form identi
 
 test('remaining scanner catalogue evidence is source-bound without whole-language completeness',async()=>{
   const report=JSON.parse(await readFile(new URL('../../docs/i18n-coverage.json',import.meta.url),'utf8'));
-  for (const key of Object.keys(remaining)) {
+  for (const key of activeScannerKeys) {
     const entry=report.entries[key];
     assert.equal(entry?.arabic,true,key);
     assert.equal(entry.classification,'explicit-ui',key);

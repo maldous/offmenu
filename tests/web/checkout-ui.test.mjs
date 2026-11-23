@@ -14,7 +14,7 @@ import * as handoff from '../../apps/web/src/scanner-kitchen-handoff.js';
 // doubles intentionally make no browser, camera, network, or cloud-sync claim.
 const source=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
 const nodes=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body;
-const names=['draftKey','saveDraft','readScannerImport','completeScannerHandoff','scannerScopeMatches','today','save','canEditCheckout','autoAccept','trustedIngredient','mappedIngredient','openWorkspace','startCheckout','renderBasket','saveReceipt','renderFinalReceipt','editReceiptItem'];
+const names=['draftKey','saveDraft','readScannerImport','completeScannerHandoff','scannerScopeMatches','today','save','canEditCheckout','autoAccept','trustedIngredient','mappedIngredient','openWorkspace','startCheckout','checkoutStoredProduct','checkoutLotName','renderBasket','saveReceipt','renderFinalReceipt','editReceiptItem'];
 const functions=names.flatMap(name=>nodes.filter(n=>n.type==='FunctionDeclaration'&&n.id.name===name).map(n=>source.slice(n.start,n.end)));
 for(const name of names)assert.equal(nodes.filter(n=>n.type==='FunctionDeclaration'&&n.id.name===name).length,1,name);
 const handlers=['void-last','finish-checkout','confirm-finish','add'];

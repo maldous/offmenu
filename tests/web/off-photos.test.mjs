@@ -57,10 +57,18 @@ test('exact current source observation binds the separately observed photo, with
     assert.deepEqual(selectedPublisherPhotos(changed,detail),[]);
 });
 
-test('actual handler mounts the fixed image route and preserves exact existing CSP source bytes',async()=>{
-  const handler=createOffMenuHandler({photoFetch:async()=>image()});
-  assert.equal((await handler.fetch(request(),{},{})).status,200);
+test('the public Worker withholds a formerly allowlisted source photo',async()=>{
+ const original=globalThis.fetch;
+ let calls=0;
+ globalThis.fetch=()=>{calls++;throw Error('No provider request allowed');};
+ try{
+  const response=await createOffMenuHandler().fetch(request('/api/off-photos/flour-front-en-rev5.jpg'),{});
+  assert.equal(response.status,503);
+  assert.equal(response.headers.get('Cache-Control'),'no-store');
+  assert.equal((await response.json()).code,'catalogue_unavailable');
+  assert.equal(calls,0);
   const source=await readFile(new URL('../../apps/web/server/handler.mjs',import.meta.url),'utf8');
   assert.match(source,/img-src 'self' blob:; media-src 'self' blob:; connect-src 'self' https:\/\/offmenu-corpus.netlify.app;/);
   assert.equal(source.includes("img-src 'self' blob: https://images.openfoodfacts.org"),false);
+ }finally{globalThis.fetch=original;}
 });

@@ -24,22 +24,18 @@ export async function loadPriceObservations({barcode,country='',profile,getIdent
  const started=getIdentity(),check=()=>{if(getIdentity()!==started)throw Error(t('Account changed. Retry from your current account.'));};
  if(!/^\d{4,32}$/.test(barcode))throw Error(t('Enter a numeric barcode.'));
  const local=selectSavedPriceObservations(profile?.dataRecords,{barcode,country});
- const cloud=[];let savedError=null,upstreamError=null,upstream={items:[]};
+ const cloud=[];let savedError=null;
  async function read(path){const response=await request(path,{signal:AbortSignal.timeout(15000)});check();const value=await response.json();check();if(!response.ok)throw Error(t('Price lookup unavailable'));if(!value||typeof value!=='object'||Array.isArray(value))throw Error('Invalid price response');return value;}
- await Promise.all([
-  (async()=>{if(!started?.owner)return;try{let cursor='';const seen=new Set();do{
+ if(started?.owner)try{let cursor='';const seen=new Set();do{
    const page=await read('/api/data/records?'+new URLSearchParams({kind:'priceObservation',country,limit:'100',cursor}));
    if(!Array.isArray(page.records))throw Error('Invalid saved records response');
    cloud.push(...selectSavedPriceObservations(page.records,{barcode,country,serverAuthorized:true}));
    cursor=page.nextCursor||'';if(cursor&&seen.has(cursor))throw Error('Repeated saved records cursor');seen.add(cursor);
-  }while(cursor);}catch(error){savedError=error;}})(),
-  (async()=>{try{const value=await read('/api/prices?barcode='+encodeURIComponent(barcode));if(!Array.isArray(value.items||value.results||[]))throw Error('Invalid price observations');upstream=value;}catch(error){upstreamError=error;}})()
- ]);
+  }while(cursor);}catch(error){savedError=error;}
  check();
  // The account copy takes precedence over a local copy of the same observation.
- const saved=[...new Map([...selectSavedPriceObservations(local,{barcode,country}),...cloud].map(row=>[row.id,row])).values()];
- const observations=upstream.items||upstream.results||[];
- return {saved,savedError,upstreamError,upstream:{...upstream,items:Array.isArray(observations)?observations.filter(r=>!country||(r.location?.osm_address_country_code||'').toUpperCase()===country):[]}};
+ const saved=[...new Map([...local,...cloud].map(row=>[row.id,row])).values()];
+ return {saved,savedError};
 }
 
 export function renderSavedPriceObservations(target,records){

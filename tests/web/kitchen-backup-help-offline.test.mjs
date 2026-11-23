@@ -7,9 +7,9 @@ import {build} from 'esbuild';
 import {rankedTopics} from '../../apps/web/assets/help.js';
 
 const origin='https://offmenu.test';
-const previous='offmenu-shell-v12';
-const current='offmenu-shell-v13';
-const basePaths=['/','/app.js?v=i18n-1','/scanner-worker.js','/scanner-theme-init.js','/scanner.wasm','/style.css?v=i18n-1','/offmenu-tokens.css','/recipes.json?v=i18n-1','/data-workspace.html','/data-workspace.js?v=i18n-1','/afcd-nutrient-details.json','/icon.svg','/receipt-bars.svg','/manifest.webmanifest','/manifest-ar.webmanifest','/offmenu-neon.css','/offmenu-neon.svg','/offmenu-neon-material.jpg'];
+const previous='offmenu-shell-v13';
+const current='offmenu-shell-v14';
+const basePaths=['/','/app.js?v=i18n-1','/scanner-worker.js','/scanner-theme-init.js','/scanner.wasm','/style.css?v=i18n-1','/offmenu-tokens.css','/data-workspace.html','/data-workspace.js?v=i18n-1','/icon.svg','/receipt-bars.svg','/manifest.webmanifest','/manifest-ar.webmanifest','/offmenu-neon.css','/offmenu-neon.svg','/offmenu-neon-material.jpg'];
 const helpPaths=['/help.html','/help.css','/help.js'];
 const helpBytes=new Map(helpPaths.map(path=>[path,readFileSync(new URL('../../apps/web/assets'+path,import.meta.url),'utf8')]));
 const worker=(await build({
@@ -24,7 +24,7 @@ function fixture({upgrading=false,missing}={}){
   const buckets=new Map(), handlers=new Map(), seen={loads:[],preloads:[],deleted:[],wait:0,claim:0};
   const unrelated='other-app-cache';
   if(upgrading) {
-    buckets.set(previous,new Map([[origin+'/',new Response('v12 retained guest shell')]]));
+    buckets.set(previous,new Map([[origin+'/',new Response('v13 retained guest shell')]]));
     buckets.set(unrelated,new Map());
   }
   let online=true;
@@ -103,11 +103,11 @@ test('fresh install precaches only the existing shell plus the three exact Help 
   await expectOfflineHelp(f);
 });
 
-test('an upgrade retains the warm v12 Guest shell until v13 is installed and activated',async()=>{
+test('an upgrade retains the warm v13 Guest shell until v14 is installed and activated',async()=>{
   const f=fixture({upgrading:true});
   await f.phase('install');
   assert(f.buckets.has(current));
-  assert.equal(await f.buckets.get(previous).get(origin+'/').clone().text(),'v12 retained guest shell');
+  assert.equal(await f.buckets.get(previous).get(origin+'/').clone().text(),'v13 retained guest shell');
   assert.deepEqual(f.seen.deleted,[]);
   assert.equal(f.seen.claim,0);
   await f.phase('activate');
@@ -117,14 +117,14 @@ test('an upgrade retains the warm v12 Guest shell until v13 is installed and act
   await expectOfflineHelp(f);
 });
 
-for(const missing of helpPaths)test('missing '+missing+' cannot displace the warm v12 cache',async()=>{
+for(const missing of helpPaths)test('missing '+missing+' cannot displace the warm v13 cache',async()=>{
   const f=fixture({upgrading:true,missing});
   await assert.rejects(f.phase('install'),error=>error.message==='precache rejected '+missing);
   assert.equal(f.seen.wait,0);
   assert.equal(f.seen.claim,0);
   assert.deepEqual(f.seen.deleted,[]);
   assert.equal(f.buckets.get(current)?.size,0);
-  assert.equal(await f.buckets.get(previous).get(origin+'/').clone().text(),'v12 retained guest shell');
+  assert.equal(await f.buckets.get(previous).get(origin+'/').clone().text(),'v13 retained guest shell');
 });
 
 test('non-GET, off-origin and existing excluded authority paths are not intercepted',()=>{
@@ -142,4 +142,28 @@ test('the cached Help shell still uses one exact anchor and bounds local search 
   const topics=[{id:'account-backup',title:'Kitchen backup',aliases:['restore'],summary:'Back up your kitchen',body:'Backup and restore'}];
   assert.deepEqual(rankedTopics(topics,'backup'+' '.repeat(154)+'shopping'),topics);
   assert.deepEqual(rankedTopics(topics,' '.repeat(160)+'backup'),[]);
+});
+
+test('removed public corpus paths never reach the network or an older unrelated cache',async()=>{
+ const f=fixture({upgrading:true});
+ const paths=['/recipes.json?v=stale','/afcd-nutrient-details.json?v=stale','/recipes/manifest.json','/api/product?barcode=0001'];
+ for(const path of paths){
+  const key=new URL(path,origin).href;
+  f.buckets.get(previous).set(key,new Response('retired sample must never be returned'));
+  f.buckets.get(f.unrelated).set(key,new Response('other cache must never be returned'));
+ }
+ await f.phase('install');
+ await f.phase('activate');
+ const loads=f.seen.loads.length;
+ f.disconnect();
+ for(const path of paths){
+  const response=await f.request(path);
+  assert.equal(response.status,503,path);
+  assert.equal(response.headers.get('Cache-Control'),'no-store',path);
+  assert.deepEqual(await response.json(),{code:'catalogue_unavailable',error:'Public catalogue unavailable.'},path);
+ }
+ assert.equal(f.seen.loads.length,loads);
+ assert.equal(f.buckets.has(previous),false);
+ assert.equal(f.buckets.has(f.unrelated),true);
+ await expectOfflineHelp(f);
 });

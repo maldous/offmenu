@@ -1,8 +1,11 @@
+import {isPublicCatalogueHeld} from '../apps/web/src/public-catalogue-boundary.js';
 import {workerRuntimeBuildOptions} from './worker-build-options.mjs';
 import {extensionBuildOptions} from './extension-build-options.mjs';
+import {assertNoPublicAuthoring,publicHTML} from './public-html-boundary.mjs';
 import {execFileSync} from 'node:child_process';
 import {build} from 'esbuild';
-import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {readFile,writeFile,mkdir,realpath} from 'node:fs/promises';
+import {resolve} from 'node:path';
 execFileSync('node',['scripts/i18n-catalogue.mjs','--check'],{stdio:'inherit'});
 await build({entryPoints:['deploy/auth-return/i18n-source.js'],bundle:true,minify:true,outfile:'deploy/auth-return/i18n.js'});
 await build(extensionBuildOptions);
@@ -10,7 +13,17 @@ await mkdir('dist',{recursive:true});
 await build({entryPoints:['apps/web/src/sw.js'],bundle:true,minify:true,format:'iife',outfile:'dist/sw.js'});
 await build({entryPoints:['apps/web/src/data-workspace.js'],bundle:true,minify:true,format:'esm',outfile:'dist/data-workspace.js'});
 await build({entryPoints:['apps/web/src/app.js'],bundle:true,minify:true,format:'esm',outfile:'dist/app.js'});
-execFileSync('python3',['-c',"import zipfile; z=zipfile.ZipFile('dist/retailer-extension.zip','w',zipfile.ZIP_DEFLATED); [z.write('apps/retailer-extension/'+f,'offmenu-retailer-extension/'+f) for f in ['manifest.json','popup.html','popup.css','offmenu-tokens.css','popup.js','README.md','icons/icon-16.png','icons/icon-48.png','icons/icon-128.png']]; z.write('apps/web/assets/icon.svg','offmenu-retailer-extension/icon.svg'); z.close()"]);
+const extensionFiles=['manifest.json','popup.html','popup.css','offmenu-tokens.css','popup.js','README.md','icons/icon-16.png','icons/icon-48.png','icons/icon-128.png'];
+const extensionBrand='apps/web/assets/icon.svg';
+for(const name of extensionFiles){
+  const path='apps/retailer-extension/'+name;
+  const canonical=name==='offmenu-tokens.css'?'apps/web/assets/offmenu-tokens.css':path;
+  if(await realpath(path)!==resolve(canonical)) throw new Error('Unexpected public extension source path.');
+  if(!name.endsWith('.png')) assertNoPublicAuthoring(await readFile(path,'utf8'));
+}
+if(await realpath(extensionBrand)!==resolve(extensionBrand)) throw new Error('Unexpected public extension source path.');
+assertNoPublicAuthoring(await readFile(extensionBrand,'utf8'));
+execFileSync('python3',['-c',"import sys,zipfile; z=zipfile.ZipFile('dist/retailer-extension.zip','w',zipfile.ZIP_DEFLATED); [z.write('apps/retailer-extension/'+f,'offmenu-retailer-extension/'+f) for f in sys.argv[2:]]; z.write(sys.argv[1],'offmenu-retailer-extension/icon.svg'); z.close()",extensionBrand,...extensionFiles]);
 await build({entryPoints:['apps/web/src/scanner-worker.js'],bundle:true,minify:true,format:'esm',outfile:'dist/scanner-worker.js'});
 await build({entryPoints:['apps/web/src/shelf-scanner.js'],bundle:true,minify:true,format:'esm',outfile:'dist/shelf-scanner.js'});
 await build({entryPoints:['apps/web/src/scanner-three.js'],bundle:true,minify:true,format:'esm',outfile:'dist/scanner-three.js'});
@@ -25,15 +38,20 @@ assets['scanner-theme-init.js']=await readFile('apps/web/src/scanner-theme-init.
 await writeFile('dist/scanner-theme-init.js',assets['scanner-theme-init.js']);
 assets['data-workspace.html']=await readFile('apps/web/assets/data-workspace.html','utf8');
 assets['retailer-extension.zip']=(await readFile('dist/retailer-extension.zip')).toString('base64');
-for(const file of ['index.html','style.css','offmenu-tokens.css','help.html','help.css','help.js','scanner-licenses.txt','recipes.json','afcd-nutrient-details.json','icon.svg','receipt-bars.svg','manifest.webmanifest','manifest-ar.webmanifest'])assets[file]=await readFile('apps/web/assets/'+file,'utf8');
-// Keep the authoring script in source for Impeccable Live previews.
-assets['index.html']=assets['index.html'].replace(/<!-- impeccable-live-start -->[\s\S]*?<!-- impeccable-live-end -->/g,'');
+for(const file of ['index.html','style.css','offmenu-tokens.css','help.html','help.css','help.js','scanner-licenses.txt','icon.svg','receipt-bars.svg','manifest.webmanifest','manifest-ar.webmanifest'])assets[file]=await readFile('apps/web/assets/'+file,'utf8');
 assets['sw.js']=await readFile('dist/sw.js','utf8');
 assets['scanner-worker.js']=await readFile('dist/scanner-worker.js','utf8');
 assets['scanner.wasm']=(await readFile('node_modules/zxing-wasm/dist/reader/zxing_reader.wasm')).toString('base64');
 assets['app.js']=await readFile('dist/app.js','utf8');
+for(const name of Object.keys(assets)) if(name.endsWith('.html')) assets[name]=publicHTML(assets[name]);
+for(const name of Object.keys(assets))if(isPublicCatalogueHeld('/'+name))throw Error('Unadmitted public catalogue asset: '+name);
 const template=await readFile('apps/web/server/handler.mjs','utf8');
 const release={sourceCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),builtAt:new Date().toISOString()};
-await writeFile('apps/web/server/generated.mjs','const ASSETS='+JSON.stringify(assets)+';\nconst RELEASE='+JSON.stringify(release)+';\n'+template);
-await build({...workerRuntimeBuildOptions,entryPoints:['apps/web/server/generated.mjs'],bundle:true,minify:true,format:'esm',platform:'browser',outfile:'dist/worker.mjs'});
+const generated='const ASSETS='+JSON.stringify(assets)+';\nconst RELEASE='+JSON.stringify(release)+';\n'+template;
+assertNoPublicAuthoring(generated);
+await writeFile('apps/web/server/generated.mjs',generated);
+const {outputFiles}=await build({...workerRuntimeBuildOptions,entryPoints:['apps/web/server/generated.mjs'],bundle:true,minify:true,format:'esm',platform:'browser',outfile:'dist/worker.mjs',write:false});
+if (outputFiles.length!==1) throw new Error('The public Worker build must emit exactly one file.');
+assertNoPublicAuthoring(outputFiles[0].text);
+await writeFile('dist/worker.mjs',outputFiles[0].contents);
 console.log('Built worker with '+Object.keys(assets).length+' assets');

@@ -1,9 +1,7 @@
+import {isPublicCatalogueHeld,PUBLIC_CATALOGUE_UNAVAILABLE} from '../src/public-catalogue-boundary.js';
 import {requestLocale,localizedHTML} from './locale.mjs';
 import {catalogueRoutes} from './catalogue.mjs';
-import {enrichmentRoutes} from './enrichment.mjs';
 import {kitchenRoutes} from './kitchens.mjs';
-import {sourceById} from '../src/sources.js';
-import {normalizeOFF,normalizePrices} from '../src/unified-data.js';
 import {providerDataRoutes} from './provider-data.mjs';
 import {integrationRoutes} from './integrations.mjs';
 import {cleanupAdminMcp} from './admin-mcp.mjs';
@@ -20,18 +18,16 @@ import {recipeCommunityRoutes} from './recipe-community.mjs';
 import {communityAIRoutes} from './community-ai.mjs';
 import {personalAIRoutes} from './personal-ai.mjs';
 import {createOffMenuAuthRuntime} from './auth-runtime.mjs';
-import {createOffPhotoRoutes} from './off-photos.mjs';
 const IDENTITY='https://offmenu-accounts.netlify.app/.netlify/identity';
 const SECURITY={'X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Permissions-Policy':'camera=(self), microphone=()','Content-Security-Policy':"default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' blob:; media-src 'self' blob:; connect-src 'self' https://offmenu-corpus.netlify.app; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"};
 const reply=(data,status=200)=>Response.json(data,{status,headers:{...SECURITY,'Cache-Control':'no-store'}});
-async function boundedJSON(request,limit=2_000_000){const reader=request.body?.getReader();if(!reader)throw Error('Missing body.');const chunks=[];let size=0;for(;;){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>limit){await reader.cancel();throw Error('Data exceeds 2 MB.');}chunks.push(value);}const bytes=new Uint8Array(size);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.length;}return JSON.parse(new TextDecoder().decode(bytes));}
+export async function boundedJSON(request,limit=2_000_000){const reader=request.body?.getReader();if(!reader)throw Error('Missing body.');const chunks=[];let size=0;for(;;){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>limit){await reader.cancel();throw Error('Data exceeds 2 MB.');}chunks.push(value);}const bytes=new Uint8Array(size);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.length;}return JSON.parse(new TextDecoder().decode(bytes));}
 async function legacyVerifiedUser(request){const auth=request.headers.get('Authorization');const cookie=request.headers.get('Cookie')||'';const encoded=cookie.match(/(?:^|;\s*)nf_jwt=([^;]+)/)?.[1];let token;try{token=auth?.startsWith('Bearer ')?auth.slice(7):encoded?decodeURIComponent(encoded):null;}catch{return null;}if(!token)return null;const r=await fetch(IDENTITY+'/user',{headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(10000)});if(!r.ok)return null;const user=await r.json();return typeof user.id==='string'&&user.id.length<200?user:null;}
 /** Construct with deployment-owned auth options only, never request or admin settings. */
-export function createOffMenuHandler({authOptions,photoFetch,ownedBackupRoute} = {}) {
+export function createOffMenuHandler({authOptions,ownedBackupRoute} = {}) {
 if(ownedBackupRoute!==undefined&&typeof ownedBackupRoute!=='function')throw new TypeError('Deployment-owned backup route function required.');
-const photos=createOffPhotoRoutes({fetchImpl:photoFetch??fetch});
 return {async scheduled(event,env,ctx){ctx.waitUntil((async()=>{await cleanupAdminMcp(env);const runtime=await loadAdminRuntime(env),serviceEnv=runtime.env;await env.DB.prepare('DELETE FROM resolver_cache WHERE fresh_until<? AND retry_after<?').bind(Date.now()-14*86400000,Date.now()).run();await env.DB.prepare('DELETE FROM resolver_leases WHERE expires_at<?').bind(Date.now()).run();await env.DB.prepare("DELETE FROM unified_records WHERE owner NOT LIKE 'public:%' AND json_valid(document) AND json_extract(document,'$.provenance.retainUntil') IS NOT NULL AND julianday(json_extract(document,'$.provenance.retainUntil'))<=julianday(?)").bind(new Date().toISOString()).run();await env.DB.prepare('DELETE FROM evidence_assertions WHERE retain_until<?').bind(Date.now()).run();await env.DB.prepare('DELETE FROM integration_limits WHERE bucket<?').bind(Math.floor(Date.now()/3600000)-24).run();await cleanupServiceRequests(serviceEnv);await cleanupCareCases(env);await cleanupCareCommunity(env);await cleanupCareUpdates(env);})());},async fetch(request,env,ctx){const url=new URL(request.url);try{
-const photo=await photos(request);if(photo)return photo;
+if(isPublicCatalogueHeld(url.pathname))return reply({code:PUBLIC_CATALOGUE_UNAVAILABLE,error:'Public catalogue unavailable.'},503);
 const runtime=createOffMenuAuthRuntime(env,{legacyVerifiedUser,authOptions});
 const authResponse=await runtime.handleAuthRequest(request);if(authResponse)return authResponse;
 const ownedBackupResponse=ownedBackupRoute?await ownedBackupRoute(request,env,{runtime}):null;if(ownedBackupResponse)return ownedBackupResponse;
@@ -48,7 +44,6 @@ if(url.pathname.startsWith('/api/services')||url.pathname==='/robots.txt'||url.p
  const diagnostics=await diagnosticRoutes(request,serviceEnv,{verifiedUser,boundedJSON,reply,release:typeof RELEASE==='undefined'?{}:RELEASE});if(diagnostics)return diagnostics;
 }
 const catalogue=await catalogueRoutes(request,env,{verifiedUser,boundedJSON});if(catalogue)return catalogue;
-const enrichment=await enrichmentRoutes(request,env,{boundedJSON});if(enrichment)return enrichment;
 const kitchen=await kitchenRoutes(request,env,{verifiedUser,boundedJSON});if(kitchen)return kitchen;
 const providerData=await providerDataRoutes(request,env,{verifiedUser,boundedJSON,assets:typeof ASSETS==='undefined'?{}:ASSETS});if(providerData)return providerData;
 const integration=await integrationRoutes(request,env,{verifiedUser,boundedJSON,assets:typeof ASSETS==='undefined'?{}:ASSETS});if(integration)return integration;
@@ -73,14 +68,6 @@ if(url.pathname==='/api/state'){
 if(url.pathname==='/retailer-extension.zip'&&request.method==='GET')return new Response(Uint8Array.from(atob(ASSETS['retailer-extension.zip']),c=>c.charCodeAt(0)),{headers:{...SECURITY,'Content-Type':'application/zip','Content-Disposition':'attachment; filename=offmenu-retailer-extension.zip'}});
 if(request.method!=='GET')return reply({error:'Method not allowed'},405);
 if(url.pathname==='/api/health')return reply({status:'ok',cloud_storage:!!env.DB,release:typeof RELEASE==='undefined'?null:RELEASE});
-if(url.pathname==='/api/recipes'){const data=await env.DB.prepare('SELECT doc AS data FROM recipes ORDER BY id').all();const saved=data.results.map(x=>JSON.parse(x.data)),shipped=typeof ASSETS==='undefined'?[]:JSON.parse(ASSETS['recipes.json']||'[]');return reply([...new Map([...saved,...shipped].map(r=>[r.id,r])).values()]);}
-if(url.pathname==='/api/product'||url.pathname==='/api/prices'){
- const barcode=url.searchParams.get('barcode')||'';if(!/^\d{4,32}$/.test(barcode))return reply({error:'Invalid barcode'},400);
- const product=url.pathname==='/api/product',table=product?'products':'price_observations';const now=Date.now();const cached=null; // Source responses are transient; only OffMenu curation may be cached.
- if(cached&&now-cached.checked_at<3600000){const data=JSON.parse(cached.data);if(!data.offmenu)data.offmenu={schemaVersion:'1.0',records:product?(data.status===1?normalizeOFF(data,sourceById('off')):[]):normalizePrices(data,sourceById('prices'))};return reply(data);}
- const upstream=product?`https://world.openfoodfacts.org/api/v2/product/${barcode}.json?fields=code,rev,last_modified_t,last_updated_t,lang,product_name,product_name_en,brands,quantity,categories_tags,ingredients_text,allergens_tags,countries_tags,stores_tags,nutriments,nutrition_data_per,nutrition_data_prepared_per,nutriscore_grade,product_quantity,product_quantity_unit`:`https://prices.openfoodfacts.org/api/v1/prices?product_code=${barcode}&size=30&order_by=-date`;
- try{const response=await fetch(upstream,{headers:{'User-Agent':'offmenu/0.2 (https://offmenu.aldous.info)'},signal:AbortSignal.timeout(12000)});if(!response.ok)return reply({error:response.status===404?'Product not found.':'Lookup temporarily unavailable.'},response.status===404?404:502);const data=await boundedJSON(response);data.offmenu={schemaVersion:'1.0',records:product?(data.status===1?normalizeOFF(data,sourceById('off')):[]):normalizePrices(data,sourceById('prices'))};data.offmenu_cachePolicy='source-response-not-persisted';return reply(data);}catch{if(cached)return reply({...JSON.parse(cached.data),offmenu_stale:true,offmenu_checked_at:cached.checked_at});return reply({error:'Lookup timed out. Manual entry remains available.'},502);}
-}
 const file=url.pathname==='/'?'index.html':url.pathname.slice(1);if(!Object.hasOwn(ASSETS,file))return new Response('Not found',{status:404,headers:SECURITY});
 const dynamicHTML=file.endsWith('.html');if(dynamicHTML){const runtime=await loadAdminRuntime(env);serviceEnv=runtime.env;}
 if(file==='scanner.wasm')return new Response(Uint8Array.from(atob(ASSETS[file]),c=>c.charCodeAt(0)),{headers:{...SECURITY,'Content-Type':'application/wasm','Cache-Control':'public, max-age=300'}});if(file==='scanner-roboto-regular.woff2'||file==='scanner-roboto-bold.woff2')return new Response(Uint8Array.from(atob(ASSETS[file]),c=>c.charCodeAt(0)),{headers:{...SECURITY,'Content-Type':'font/woff2','Cache-Control':'public, max-age=300'}});if(file==='offmenu-neon-material.jpg')return new Response(Uint8Array.from(atob(ASSETS[file]),c=>c.charCodeAt(0)),{headers:{...SECURITY,'Content-Type':'image/jpeg','Cache-Control':'public, max-age=300'}});const type=file.endsWith('.html')?'text/html; charset=utf-8':file.endsWith('.css')?'text/css; charset=utf-8':file.endsWith('.js')?'application/javascript':file.endsWith('.svg')?'image/svg+xml':file.endsWith('.webmanifest')?'application/manifest+json':file.endsWith('.txt')?'text/plain; charset=utf-8':'application/json';const response=new Response(file.endsWith('.html')?serviceHTML(ASSETS[file],serviceEnv):ASSETS[file],{headers:{...SECURITY,'Content-Security-Policy':dynamicHTML?serviceCSP(serviceEnv):SECURITY['Content-Security-Policy'],'Content-Type':type,'Cache-Control':file==='sw.js'||file==='index.html'?'no-cache':'public, max-age=300'}});if(file==='index.html'||file==='data-workspace.html'||file==='shelf-scanner.html')return localizedHTML(response,await requestLocale(request,serviceEnv,verifiedUser));return response;

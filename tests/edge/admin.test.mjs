@@ -37,8 +37,14 @@ test('compiled administrator controls preserve private ownership, fresh roles, C
   await db.prepare('DROP TABLE admin_operations_audit').run();assert.equal((await request('/api/admin/sources/gleif','admin',{revision:gleif.revision+2,active:false,confirmed:true})).status,503);assert.equal((await db.prepare("SELECT active FROM source_policies WHERE id='gleif'").first()).active,1);
   adminRole=false;assert.equal((await request('/api/admin/settings')).status,403);assert.equal((await request('/api/admin/settings','admin',{...edit,revision:2})).status,403);adminRole=true;
   await db.prepare('DROP TABLE app_settings_audit').run();assert.equal((await request('/api/admin/settings','admin',{...edit,revision:2})).status,503);assert.equal((await db.prepare('SELECT revision FROM app_settings').first()).revision,2);
-  await db.prepare('DROP TABLE recipes').run();assert.equal((await request('/api/recipes')).status,503);assert.equal(sentryCalls,0);
-  await db.prepare("UPDATE app_settings SET sealed_credentials='corrupt'").run();assert.equal((await request('/api/recipes')).status,503);assert.equal(sentryCalls,0);
+  const heldRecipe=await request('/api/recipes');assert.equal(heldRecipe.status,503);assert.equal((await heldRecipe.json()).code,'catalogue_unavailable');assert.equal(sentryCalls,0);
+  const heldSource=await request('/api/catalogue/enrich?source=gleif&query=Example');assert.equal(heldSource.status,503);assert.equal((await heldSource.json()).code,'catalogue_unavailable');assert.equal(sentryCalls,0);
+  await db.prepare('ALTER TABLE user_state RENAME TO held_user_state').run();
+  try{
+   const failed=await request('/api/state');assert.equal(failed.status,503);assert.match((await failed.json()).error,/local pantry/);assert.equal(sentryCalls,0);
+   await db.prepare("UPDATE app_settings SET sealed_credentials='corrupt'").run();
+   assert.equal((await request('/api/state')).status,503);assert.equal(sentryCalls,0);
+  }finally{await db.prepare('ALTER TABLE held_user_state RENAME TO user_state').run();}
   assert.equal((await db.prepare("SELECT count(*) AS n FROM user_state WHERE user_id='alice'").first()).n,1);assert.equal((await db.prepare("SELECT sealed FROM provider_connections WHERE user_id='alice'").first()).sealed,'ALICE_SEALED_SECRET');
  }finally{await worker.dispose();}
 });

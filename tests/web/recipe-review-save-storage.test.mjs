@@ -4,8 +4,8 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 
 const app=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
-const source=app.split('\n').find(line=>line.includes('recipeLibrary=lifecycleFixture?'));
-assert.ok(source?.includes('saveRecipe:recipe=>'));
+const source=app.split('\n').find(line=>line.startsWith('function storeReviewedRecipe(recipe)'));
+assert.ok(source?.includes('sharing.canWrite()'));
 function fixture({writable=true,deny=false}={}){
  const initial=[{id:'existing',title:'Existing'},{id:'sibling',title:'Sibling'}];
  let ctx;
@@ -18,7 +18,7 @@ function fixture({writable=true,deny=false}={}){
   markDirty:()=>operations.push({kind:'dirty'}),findMeals:()=>operations.push({kind:'render'}),
  });
  vm.runInContext(source,ctx);
- return {initial,operations,ctx,save:ctx.recipeLibrary.saveRecipe};
+ return {initial,operations,ctx,save:ctx.storeReviewedRecipe};
 }
 test('a refused save keeps the original recipe array and siblings without marking or rendering',()=>{
  const f=fixture({deny:true});
