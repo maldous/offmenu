@@ -2951,7 +2951,8 @@ class CurrentDispatchTests(unittest.TestCase):
         native, _, _ = self.adapted()
         async def spawn(*args, **kwargs):
             self.assertEqual(Path(args[1]),self.source/'tools/delivery/stokowski_worker.py')
-            self.assertEqual(args[2:],('--runtime',str(runtime),'--issue',issue.identifier))
+            self.assertEqual(args[2:],('--runtime',str(runtime),'--issue',issue.identifier,
+                                       '--provider-route','codex-chatgpt'))
             self.assertNotIn('LINEAR_API_KEY',kwargs['env'])
             self.assertTrue((runtime/'attempts/UIF-209/dispatch-intent.json').exists())
             self.write(runtime/'attempts/UIF-209/intent.json',{'lease':'worker-owned'})
