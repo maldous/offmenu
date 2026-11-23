@@ -1975,7 +1975,7 @@ class CurrentWork:
                 if retained:
                     # A stopped original operation needs no transport, including
                     # when its executor predates this source correction.
-                    _, _, _, state, _ = self.reviewed_origin(issue, selected_task)
+                    _, _, _, state, _ = self.reviewed_origin(issue, selected_task, observation=True)
                     if state.get('status') == 'succeeded':
                         task['validation'] = dict(identity=identity,status='succeeded',
                             requested_model=None,requested_effort=None,provider=None)
