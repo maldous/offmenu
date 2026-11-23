@@ -37,7 +37,7 @@ function render({r=recipe(),inventory=[],products={},members=[],status}={}){
 const source=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
 const findMeals=parse(source,{ecmaVersion:'latest',sourceType:'module'}).body.find(n=>n.type==='FunctionDeclaration'&&n.id.name==='findMeals');
 
-test('actual proposed findMeals card append uses the same admitted context and two allocated locations',()=>{
+test('actual local Meals preserves allocated coverage and searches, reviews and plans a local recipe',()=>{
  const r=recipe(),inventory=[lot('later',50,{expires:'2026-10-29',location:{area:'Pantry',shelf:'B'}}),lot('first',50,{expires:'2026-10-27',location:{area:'Fridge <script>',shelf:'A'}})],products={'generated-later':{nutrition_data_per:'100g'},'generated-first':{nutrition_data_per:'100g'}};
  const before=structuredClone({r,inventory,products});freeze(inventory);freeze(products);const doc=document(),nodes=new Map(),$=id=>{if(!nodes.has(id))nodes.set(id,doc.createElement('div'));return nodes.get(id);};
  $('servings').value='1';$('plan-date').value=date;let calls=0,result,observedContext;
@@ -46,6 +46,40 @@ test('actual proposed findMeals card append uses the same admitted context and t
  assert.equal(calls,1);const card=$('meals').children[0],i=card.children.indexOf(result.element);assert.match(card.children[i-1].textContent,/All measured ingredients/);assert.equal(choice(result.element).textContent,'Ready now');
  assert.match(result.element.textContent,/50 g · Fridge <script> \/ A/);assert.match(result.element.textContent,/50 g · Pantry \/ B/);assert.equal(doc.created.includes('script'),false);
  assert.deepEqual(result.coverage,recipeIngredientCoverage(observedContext));assert.deepEqual({r,inventory,products},before);
+ // Verify real mounted local handlers after private recipe receipt, with no
+ // shared provider reader or fallback. This fake DOM is not native-browser UAT.
+ const html=readFileSync(new URL('../../apps/web/assets/index.html',import.meta.url),'utf8');
+ for(const id of ['meals-page','menu-search','show-review-meals','browse-menus','plan-date','plan-slot'])assert.ok(html.includes('id="'+id+'"'),id);
+ assert.ok(source.includes("$('browse-menus').onclick=choosePlanMeal"));
+ assert.ok(source.includes("$('show-review-meals').onchange=findMeals"));
+ let egress=0,dirty=0,plans=0;const writes=[];
+ const denied=()=>{egress++;throw Error('Provider path must stay detached');};
+ Object.assign(context,{fetch:denied,jsonFetch:denied,recipeLibrary:{refresh:denied},PROFILE:'invented-current-profile',
+  crypto:{randomUUID:()=> 'invented-plan-occurrence'},
+  localStorage:{setItem(key,value){writes.push({key,value:JSON.parse(value)});}},
+  markDirty(){dirty++;},renderPlan(){plans++;}});
+ context.recipes=[{...r,attribution:'Explicit local review credit'},
+  {...r,id:'other-local-recipe',title:'An unrelated title'}];
+ $('menu-search').value='Generated meal';$('show-review-meals').checked=true;$('plan-slot').value='Dinner';
+ context.findMeals();
+ assert.equal($('meals').children.length,1);
+ const found=$('meals').children[0];
+ assert.match(found.textContent,/Generated meal/);
+ assert.doesNotMatch(found.textContent,/An unrelated title/);
+ const details=all(found,node=>node.tagName==='details'&&all(node,n=>n.tagName==='summary'&&n.textContent==='Ingredients, quantities & directions').length)[0];
+ assert(details);
+ assert.match(details.textContent,/Generated instruction[.]/);
+ assert.match(details.textContent,/Generated fixture.*generated-only.*Explicit local review credit/);
+ assert.equal(writes.length,0,'search and review do not write');
+ const add=all(found,node=>node.tagName==='button'&&node.textContent.startsWith('Add to ')&&node.textContent.endsWith('menu +'))[0];
+ assert.equal(typeof add?.onclick,'function');
+ const plansAfterReview=plans;
+ add.onclick();
+ assert.deepEqual(Array.from(context.profile.plan,({recipeId,date,slot,servings})=>({recipeId,date,slot,servings})),
+  [{recipeId:'generated-recipe',date,slot:'Dinner',servings:1}]);
+ assert.equal(writes.length,1);assert.equal(writes[0].key,'invented-current-profile');
+ assert.equal(writes[0].value.plan[0].recipeId,'generated-recipe');
+ assert.equal(egress,0);assert.equal(dirty,1);assert.equal(plans,plansAfterReview+1);
 });
 test('positive inherited shortfall shows exact units and one-item choice only for missing card',()=>{
  const out=render({r:recipe([ingredient('rice',120)]),inventory:[lot('rice',100)]});assert.equal(choice(out.element).textContent,'One item to add');assert.match(out.element.textContent,/Covered 100 g \/ required 120 g/);assert.match(out.element.textContent,/Still needed: 20 g/);

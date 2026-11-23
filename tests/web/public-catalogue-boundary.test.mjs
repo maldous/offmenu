@@ -72,20 +72,30 @@ test('the actual public shelf capture preserves the literal without attempting o
  assert.equal(scope.selected,null);
 });
 
-test('normal Demo does not restore or replace any unscoped legacy recipe snapshot',async()=>{
+test('normal Demo restores only new own recipe imports, never the old shared snapshot',async()=>{
  const {readFile}=await import('node:fs/promises');
  const {runInNewContext}=await import('node:vm');
  const source=await readFile(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
+ assert.match(source,/RECIPES=demoMode\?'offmenu-recipes-v1-demo-local':'offmenu-recipes-v1'\+suffix/);
+ const helper=source.split('\n').find(line=>line.startsWith('function readDemoOwnRecipes('));
  const line=source.split('\n').find(line=>line.startsWith('async function enterDemo('));
- assert(line);
- const guarded=line.match(/if\(lifecycleFixture\)\{recipes=validateRecipes\(await jsonFetch\('[^']+'\)\);localStorage\.setItem\(RECIPES,JSON\.stringify\(recipes\)\);\}else recipes=\[\];/);
- assert(guarded);
- let reads=0,writes=0;
- const env={lifecycleFixture:false,recipes:[{id:'historical'}],RECIPES:'invented-demo',
-  async jsonFetch(){reads++;return [{id:'fixture'}];},validateRecipes:x=>x,localStorage:{setItem(){writes++;}}};
- const run=()=>runInNewContext('(async()=>{'+guarded[0]+'})()',env);
- await run();assert.equal(env.recipes.length,0);assert.equal(reads,0);assert.equal(writes,0);
- env.lifecycleFixture=true;await run();assert.equal(env.recipes[0].id,'fixture');assert.equal(reads,1);assert.equal(writes,1);
+ const guarded=line?.match(/if\(lifecycleFixture\)\{recipes=validateRecipes\(await jsonFetch\('[^']+'\)\);localStorage\.setItem\(RECIPES,JSON\.stringify\(recipes\)\);\}else recipes=readDemoOwnRecipes\(\);/);
+ assert(helper&&guarded);
+ let requests=0,writes=0;
+ const own='offmenu-recipes-v1-demo-local',oldDemo='offmenu-recipes-v1-demo',guest='offmenu-recipes-v1';
+ const store=new Map([[oldDemo,'[{"id":"old-shared"}]'],[guest,'[{"id":"guest-only"}]']]);
+ const reads=[];
+ const env={lifecycleFixture:false,recipes:[{id:'previous-scope'}],RECIPES:own,
+  async jsonFetch(){requests++;return [{id:'fixture'}];},validateRecipes:r=>r,localStorage:{
+   getItem(k){reads.push(k);return store.get(k);},setItem(k,v){writes++;store.set(k,v);}
+  }};
+ const run=()=>runInNewContext(helper+'\n(async()=>{'+guarded[0]+'})()',env);
+ await run();assert.equal(env.recipes.length,0);assert.deepEqual(reads,[own]);assert.equal(writes,0);
+ store.set(own,'[{"id":"explicit-local-import"}]');
+ await run();assert.equal(env.recipes[0].id,'explicit-local-import');
+ assert.deepEqual(reads,[own,own]);assert.equal(writes,0);assert.equal(requests,0);
+ assert.equal(store.get(oldDemo),'[{"id":"old-shared"}]');assert.equal(store.get(guest),'[{"id":"guest-only"}]');
+ env.lifecycleFixture=true;await run();assert.equal(env.recipes[0].id,'fixture');assert.equal(requests,1);assert.equal(writes,1);
 });
 
 test('public app startup does not mount shared recipe discovery or a stored scanner provider handoff',async()=>{
