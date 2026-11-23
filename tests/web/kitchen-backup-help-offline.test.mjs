@@ -7,10 +7,11 @@ import {build} from 'esbuild';
 import {rankedTopics} from '../../apps/web/assets/help.js';
 
 const origin='https://offmenu.test';
-const previous='offmenu-shell-v13';
-const current='offmenu-shell-v14';
+const previous='offmenu-shell-v14';
+const current='offmenu-shell-v15';
 const basePaths=['/','/app.js?v=i18n-1','/scanner-worker.js','/scanner-theme-init.js','/scanner.wasm','/style.css?v=i18n-1','/offmenu-tokens.css','/data-workspace.html','/data-workspace.js?v=i18n-1','/icon.svg','/receipt-bars.svg','/manifest.webmanifest','/manifest-ar.webmanifest','/offmenu-neon.css','/offmenu-neon.svg','/offmenu-neon-material.jpg'];
 const helpPaths=['/help.html','/help.css','/help.js'];
+const oldHelp='v14 Help: account backup and recipe import only';
 const helpBytes=new Map(helpPaths.map(path=>[path,readFileSync(new URL('../../apps/web/assets'+path,import.meta.url),'utf8')]));
 const worker=(await build({
   entryPoints:[fileURLToPath(new URL('../../apps/web/src/sw.js',import.meta.url))],
@@ -24,8 +25,11 @@ function fixture({upgrading=false,missing}={}){
   const buckets=new Map(), handlers=new Map(), seen={loads:[],preloads:[],deleted:[],wait:0,claim:0};
   const unrelated='other-app-cache';
   if(upgrading) {
-    buckets.set(previous,new Map([[origin+'/',new Response('v13 retained guest shell')]]));
-    buckets.set(unrelated,new Map());
+    buckets.set(previous,new Map([
+      [origin+'/',new Response('v14 retained guest shell')],
+      [origin+'/help.html',new Response(oldHelp)]
+    ]));
+    buckets.set(unrelated,new Map([[origin+'/help.html',new Response('unrelated stale Help')]]));
   }
   let online=true;
   const key=(request,ignoreSearch=false)=>{
@@ -46,7 +50,10 @@ function fixture({upgrading=false,missing}={}){
     async open(name){
       if(!buckets.has(name))buckets.set(name,new Map());
       const bucket=buckets.get(name);
-      return {async addAll(paths){
+      return {async match(request,{ignoreSearch}={}){
+        for(const [url,response] of bucket)
+          if(key(url,ignoreSearch)===key(request,ignoreSearch))return response.clone();
+      },async addAll(paths){
         seen.preloads.push(Array.from(paths));
         const pending=await Promise.all(paths.map(async path=>{
           const result=await fetchFixture(path);
@@ -103,28 +110,33 @@ test('fresh install precaches only the existing shell plus the three exact Help 
   await expectOfflineHelp(f);
 });
 
-test('an upgrade retains the warm v13 Guest shell until v14 is installed and activated',async()=>{
+test('an upgrade retains the warm v14 Guest shell until v15 is installed and activated',async()=>{
   const f=fixture({upgrading:true});
   await f.phase('install');
   assert(f.buckets.has(current));
-  assert.equal(await f.buckets.get(previous).get(origin+'/').clone().text(),'v13 retained guest shell');
+  assert.equal(await f.buckets.get(previous).get(origin+'/').clone().text(),'v14 retained guest shell');
+  assert.equal(await f.buckets.get(previous).get(origin+'/help.html').clone().text(),oldHelp);
   assert.deepEqual(f.seen.deleted,[]);
   assert.equal(f.seen.claim,0);
   await f.phase('activate');
   assert.deepEqual(f.seen.deleted,[previous]);
   assert(f.buckets.has(f.unrelated));
+  assert.equal(await f.buckets.get(f.unrelated).get(origin+'/help.html').clone().text(),'unrelated stale Help');
   assert.equal(f.seen.claim,1);
   await expectOfflineHelp(f);
+  const scanner=await f.request('/help.html#scanner-options');
+  assert.match(await scanner.text(),/<article id="scanner-options"/);
 });
 
-for(const missing of helpPaths)test('missing '+missing+' cannot displace the warm v13 cache',async()=>{
+for(const missing of helpPaths)test('missing '+missing+' cannot displace the warm v14 cache',async()=>{
   const f=fixture({upgrading:true,missing});
   await assert.rejects(f.phase('install'),error=>error.message==='precache rejected '+missing);
   assert.equal(f.seen.wait,0);
   assert.equal(f.seen.claim,0);
   assert.deepEqual(f.seen.deleted,[]);
   assert.equal(f.buckets.get(current)?.size,0);
-  assert.equal(await f.buckets.get(previous).get(origin+'/').clone().text(),'v13 retained guest shell');
+  assert.equal(await f.buckets.get(previous).get(origin+'/').clone().text(),'v14 retained guest shell');
+  assert.equal(await f.buckets.get(previous).get(origin+'/help.html').clone().text(),oldHelp);
 });
 
 test('non-GET, off-origin and existing excluded authority paths are not intercepted',()=>{
@@ -135,10 +147,10 @@ test('non-GET, off-origin and existing excluded authority paths are not intercep
   assert.deepEqual(f.seen.loads,[]);
 });
 
-test('the cached Help shell still uses one exact anchor and bounds local search input',()=>{
+test('the cached Help shell retains the pinned topic set and bounds local search input',()=>{
   const html=helpBytes.get('/help.html');
   assert.match(html,/<input id="query"[^>]+maxlength="160"/);
-  assert.deepEqual([...html.matchAll(/<article id="([^"]+)"/g)].map(x=>x[1]),['account-backup','recipe-import']);
+  assert.deepEqual([...html.matchAll(/<article id="([^"]+)"/g)].map(x=>x[1]),['account-backup','recipe-import', 'scanner-options']);
   const topics=[{id:'account-backup',title:'Kitchen backup',aliases:['restore'],summary:'Back up your kitchen',body:'Backup and restore'}];
   assert.deepEqual(rankedTopics(topics,'backup'+' '.repeat(154)+'shopping'),topics);
   assert.deepEqual(rankedTopics(topics,' '.repeat(160)+'backup'),[]);
