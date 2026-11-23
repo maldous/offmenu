@@ -1,12 +1,14 @@
 # OffMenu
 
+**Turn the food you have into useful meal choices.**
+
 ## From product to pantry to plate
 
 OffMenu is being built around an everyday household routine: understand an item, know what is in the kitchen, decide what to cook, record what people actually eat, and use that knowledge when planning and shopping again. It should help with one ingredient or one meal without requiring the whole kitchen to be catalogued first.
 
 This README is the human-readable product North Star and delivery guide. It describes the intended connected experience, the foundations already in the repository, and what still needs to work together. **It is not a claim that the whole experience is available in the current app.**
 
-[App](https://offmenu.aldous.info) · [Documentation](docs/README.md) · [Developer setup](docs/maintainer.md) · [Detailed delivery programme](docs/research-delivery-plan.md)
+[App](https://offmenu.aldous.info) · [Documentation](docs/README.md) · [Developer setup](docs/maintainer.md) · [Detailed delivery programme](docs/research-delivery-plan.md) · [Architecture and portfolio](https://aldous.info/) · [Contact Matthew](mailto:matthew.aldous@gmail.com)
 
 ## The complete loop
 
