@@ -110,6 +110,23 @@ test('real applyNutrition callback retains imported profile binding separately f
  }
 });
 
+test('held cached public nutrition stays unknown for Plan and Cook while reviewed local zero stays known',()=>{
+ const inventory=[{...lots[0],quantity:100}];
+ const legacy={...products.a,unifiedRecords:[],nutriments:{proteins_100g:16}};
+ const reviewed={...legacy,nutritionProvenance:{nutrientProfile:{basis:{amount:100,unit:'g'}}},nutriments:{proteins_100g:0}};
+ const original=structuredClone({legacy,reviewed,inventory});
+ for(const [product,known] of [[legacy,0],[reviewed,1]]){
+  const values={a:product};
+  const planned=summary(inventory,values);
+  const cooked=cookMeal({recipe,inventory,products:values,servings:1,date,mutationId:'synthetic-held-'+known});
+  const expected={value:0,known,total:1};
+  assert.deepEqual(planned.totals.proteins_100g,expected);
+  assert.deepEqual(cooked.batch.totals.proteins_100g,expected);
+  assert.equal(planned.missing.length,0);
+ }
+ assert.deepEqual({legacy,reviewed,inventory},original);
+});
+
 test('findMeals wording describes allocated lots and unknown uncovered nutrition',()=>{
  const source=readFileSync(new URL('../../apps/web/src/app.js',import.meta.url),'utf8');
  const handler=source.slice(source.indexOf('function findMeals(){'),source.indexOf("\n$('refresh').onclick"));

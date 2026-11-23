@@ -100,12 +100,10 @@ $('copy-shopping').onclick=async()=>{
 };
 let priceRequest=0;
 $('integration-prices').onclick=async()=>{const attempt=++priceRequest,target=$('integration-price-results');target.replaceChildren();const code=$('integration-barcode').value.trim();if(!/^\d{4,32}$/.test(code)){setLocalizedText(target,'Enter a numeric barcode.');return;}setLocalizedText(target,'Checking dated observations…');try{
- const {saved,savedError,upstreamError,upstream:v}=await loadPriceObservations({barcode:code,country:$('source-country')?.value||'',profile:data().profile,getIdentity,request});
+ const {saved,savedError}=await loadPriceObservations({barcode:code,country:$('source-country')?.value||'',profile:data().profile,getIdentity,request});
  if(attempt!==priceRequest)return;target.replaceChildren();renderSavedPriceObservations(target,saved);
- const rows=v.items;for(const r of rows){const box=document.createElement('article');box.append(text('h3',(r.location?.osm_name||t("Shop observation #{v0}", {v0:r.location_id}))),text('strong',r.currency+' '+r.price),text('p',r.date+' · '+(r.location?.osm_display_name||r.location?.osm_address_country||'Location not supplied')),text('small',t("Open Prices · dated observation, not verified current stock{v0}", {v0:v.offmenu_stale?' · cached response':''})));target.append(box);}
- if(!saved.length&&!rows.length)target.append(text('p',t('No matching observations in the latest sample. Check the retailer directly.')));
  if(savedError)target.append(text('p',t('Some saved observations are unavailable. Retry in your current profile.')));
- if(upstreamError)target.append(text('p',t('Latest price lookup unavailable. Saved dated observations remain historical.')));
+ else if(!saved.length)setLocalizedText(target,'No saved observations for this barcode.');
 }catch(e){if(attempt===priceRequest)setLocalizedText(target,e.message);}};
 
 function resetPrices(){priceRequest++;$('integration-price-results').replaceChildren();}

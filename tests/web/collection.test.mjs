@@ -38,11 +38,14 @@ test('retired source database bindings are never queried',async()=>{
  assert.equal(await corpusLookup({CORPUS:database,PRODUCT_CORPUS:database,DB:database}, {source:'off'}),null);
 });
 
-test('transient source responses return valid products without writing source caches',async()=>{
- const old=globalThis.fetch;
- globalThis.fetch=async()=>Response.json({status:1,product:{code:'00012345',product_name:'Rice'}});
- const env={DB:{prepare:()=>({bind:()=>({first:async()=>null,run:async()=>{throw Error('D1 free tier write limit');}})})}};
- try{const response=await handler.fetch(new Request('https://offmenu.aldous.info/api/product?barcode=00012345'),env);
-  assert.equal(response.status,200);const data=await response.json();assert.equal(data.product.product_name,'Rice');assert.equal(data.offmenu_cachePolicy,'source-response-not-persisted');
- }finally{globalThis.fetch=old;}
+test('unadmitted public products neither query nor persist transient source responses',async()=>{
+ const original=globalThis.fetch;
+ let fetches=0,accesses=0;
+ globalThis.fetch=()=>{fetches++;throw Error('No provider request allowed');};
+ const env={DB:{prepare(){accesses++;throw Error('No catalogue database access allowed');}}};
+ try{
+  const response=await handler.fetch(new Request('https://offmenu.aldous.info/api/product?barcode=00012345'),env);
+  assert.equal(response.status,503);assert.equal((await response.json()).code,'catalogue_unavailable');
+  assert.equal(fetches,0);assert.equal(accesses,0);
+ }finally{globalThis.fetch=original;}
 });
