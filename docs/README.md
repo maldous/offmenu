@@ -27,7 +27,7 @@ service, device and account qualification:
 - [Account data, privacy and backup controls](account-data-guide.md).
 - [Kitchen inventory and planning](kitchen-planning-guide.md).
 - [Using a shared kitchen](shared-kitchen-guide.md).
-- [Finding and reviewing shared recipes](recipe-library-guide.md).
+- [Find and use recipes saved in your kitchen](recipe-library-guide.md).
 - [Application administrator controls](administrator-controls-guide.md).
 - [Food history and recorded estimates](insights-guide.md).
 

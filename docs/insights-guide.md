@@ -120,20 +120,28 @@ unknown. A CSV download is separate from an account backup or verified cloud sav
 ## Look up dated price observations in Shop
 
 Open **Shop**, find **What has this barcode cost?**, enter a numeric **Product
-barcode** (4–32 digits, preserving leading zeros), and choose **Find dated price
-observations**. This displays observation cards, not a price-history chart.
+barcode** (4–32 digits, keeping leading zeros), and choose **Find dated price
+observations**.
 
-Saved permitted observations can appear alongside the latest Open Prices sample.
-Read each amount, currency, date, location and provenance. Expand **Unified record,
-provenance & licence** on a saved card for its retained context. The directory's
-country selection filters the observations when set. A matching barcode does not
-establish equal pack size, promotion, tax or delivery cost, current stock or a
-complete market comparison.
+This checks permitted observations already saved for the current profile. If
+you are signed in, it can also check that account's saved records. It does not
+retrieve fresh public prices. A country filter, when set, can narrow the
+saved records. The results are dated cards, not a chart or live stock check.
 
-An empty latest sample is not global absence. Messages distinguish unavailable
-saved observations from an unavailable latest lookup; retained dated observations
-remain historical. For **Account changed. Retry from your current account.**,
-check the account before trying again. No result is a guaranteed current offer.
+Read the amount, currency, date and source. Expand **Unified record,
+provenance & licence** for information retained with the observation. A
+matching barcode does not establish equal pack size, promotion, tax, delivery
+cost or a complete market comparison. An observation is not a current offer.
+
+**No saved observations for this barcode** means no saved record matched the
+selected search scope; it does not mean the item is unavailable in shops.
+If some saved observations could not load, retry from the intended profile.
+If you see **Account changed. Retry from your current account.**, check which
+account is active before trying again.
+
+This price-observation section is checked against OffMenu source
+`56026538d15d29f6f5afd427294a82be69557908`. It does not verify
+live prices or account access.
 
 Choose the intended account and private kitchen before editing personal records.
 If a member form says the account, kitchen or member changed, reopen it before
