@@ -14,6 +14,8 @@ test('scanner language selection retains identifier controls and canonical optio
   for(const value of ['Explore','Buy','Stock','Audit','Discard','barcode','USDA-FDC','UPC-E','UPC-A','EAN-13','EAN-8','GTIN-14']) {
     assert.ok(page.includes('value="'+value+'"'),value);
   }
+  assert.match(page,/<option value="USDA-FDC" disabled hidden/);
+  assert.match(page,/<select id="connection" hidden disabled/);
   assert.match(page,/<input id="barcode"[^>]*dir="ltr"[^>]*maxlength="128"[^>]*required/);
   assert.match(page,/<button id="session-button"[^>]*>.*<span id="queue-count">0<\/span><\/button>/);
 });
@@ -84,7 +86,7 @@ test('actual Worker route localizes scanner HTML while preserving source namespa
     assert.match(body,/<html[^>]*lang="ar"[^>]*dir="rtl"/);
     assert.match(body,/لغة الواجهة/);
     assert.match(body,/<h1[^>]*lang="ar"[^>]*>اختر وضع الماسح<\/h1>/);
-    assert.match(body,/<option value="USDA-FDC"/);assert.match(body,/<option value="UPC-E"/);
+    assert.match(body,/<option value="USDA-FDC" disabled hidden/);assert.match(body,/<select id="connection" hidden disabled/);assert.match(body,/<option value="UPC-E"/);
     assert.match(body,/<span id="queue-count">0<\/span>/);
     const english=await worker.dispatchFetch('https://offmenu.test/shelf-scanner.html?uiLanguage=en');
     assert.equal(english.headers.get('content-language'),'en');const englishBody=await english.text();

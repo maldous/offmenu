@@ -109,7 +109,17 @@ import {generateHouseholdDay} from '../../apps/web/src/household-model.js';
 test('automatic planning withholds menus with unresolved strict dietary evidence',()=>{const member={id:'a',name:'A',portion:1,advisors:[],restrictions:[{type:'allergy',term:'peanut'}]};assert.equal(generateHouseholdDay([recipe],raw,{},[member],'2026-10-13').length,0);});
 
 import handler from '../../apps/web/server/handler.mjs';
-test('the full Worker dispatcher reaches public enrichment instead of catalogue 404',async()=>{const {env}=database(),original=globalThis.fetch;globalThis.fetch=async(url,options)=>{assert.equal(options.redirect,'manual');return Response.json({data:[]});};try{const r=await handler.fetch(request('/api/catalogue/enrich?source=gleif&query=Example'),env);assert.equal(r.status,200);assert.equal((await r.json()).cache,'miss');}finally{globalThis.fetch=original;}});
+test('the full Worker dispatcher withholds public enrichment before network/cache access',async()=>{
+ const original=globalThis.fetch;
+ let fetches=0,accesses=0;
+ globalThis.fetch=()=>{fetches++;throw Error('No provider request allowed');};
+ const env={DB:{prepare(){accesses++;throw Error('No resolver cache access allowed');}}};
+ try{
+  const r=await handler.fetch(request('/api/catalogue/enrich?source=gleif&query=Example'),env);
+  assert.equal(r.status,503);assert.equal((await r.json()).code,'catalogue_unavailable');
+  assert.equal(fetches,0);assert.equal(accesses,0);
+ }finally{globalThis.fetch=original;}
+});
 
 test('REST and MCP private-document reads paginate without crossing account scopes',async()=>{
  const {db,env}=database();

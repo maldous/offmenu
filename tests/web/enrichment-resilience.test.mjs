@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
-import {createOffMenuHandler} from '../../apps/web/server/handler.mjs';
+import {boundedJSON} from '../../apps/web/server/handler.mjs';
+import {enrichmentRoutes} from '../../apps/web/server/enrichment.mjs';
 
 // UIF-102 / OM-C037 / CACHE-06: synthetic source/consumer cut only.
 // No live GLEIF terms/adoption, whole-row acceptance, or historical seed rights
@@ -93,7 +94,6 @@ async function fixture(run) {
   try {
     const memory = database();
     db = memory.db;
-    const handler = createOffMenuHandler({photoFetch: globalThis.fetch});
     const f = {
       db,
       get fetches() { return fetches; },
@@ -113,7 +113,7 @@ async function fixture(run) {
         const url = new URL('https://synthetic.invalid/api/catalogue/enrich');
         url.searchParams.set('source', 'gleif');
         url.searchParams.set('query', value);
-        const response = handler.fetch(new Request(url), memory.env);
+        const response = enrichmentRoutes(new Request(url), memory.env, {boundedJSON});
         pending.push(response);
         return response;
       },

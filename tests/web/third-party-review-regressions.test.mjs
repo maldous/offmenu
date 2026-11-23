@@ -11,7 +11,8 @@ test('static assets and unknown paths do not read administrative settings',async
  try{
   for(const path of ['/app.js','/style.css','/icon.svg','/recipes.json','/scanner.wasm','/missing-file','/missing.html']){
    queries.length=0;const response=await handler.fetch(new Request('https://offmenu.test'+path),env);
-   assert.equal(response.status,path.startsWith('/missing')?404:200,path);
+   assert.equal(response.status,path.startsWith('/missing')?404:path==='/recipes.json'?503:200,path);
+   if(path==='/recipes.json'){assert.equal(response.headers.get('Cache-Control'),'no-store');assert.equal((await response.json()).code,'catalogue_unavailable');}
    assert.deepEqual(queries,[],path+' must not query D1');
   }
  }finally{if(previous===undefined)delete globalThis.ASSETS;else globalThis.ASSETS=previous;}

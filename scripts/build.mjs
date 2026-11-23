@@ -1,3 +1,4 @@
+import {isPublicCatalogueHeld} from '../apps/web/src/public-catalogue-boundary.js';
 import {workerRuntimeBuildOptions} from './worker-build-options.mjs';
 import {extensionBuildOptions} from './extension-build-options.mjs';
 import {assertNoPublicAuthoring,publicHTML} from './public-html-boundary.mjs';
@@ -37,12 +38,13 @@ assets['scanner-theme-init.js']=await readFile('apps/web/src/scanner-theme-init.
 await writeFile('dist/scanner-theme-init.js',assets['scanner-theme-init.js']);
 assets['data-workspace.html']=await readFile('apps/web/assets/data-workspace.html','utf8');
 assets['retailer-extension.zip']=(await readFile('dist/retailer-extension.zip')).toString('base64');
-for(const file of ['index.html','style.css','offmenu-tokens.css','help.html','help.css','help.js','scanner-licenses.txt','recipes.json','afcd-nutrient-details.json','icon.svg','receipt-bars.svg','manifest.webmanifest','manifest-ar.webmanifest'])assets[file]=await readFile('apps/web/assets/'+file,'utf8');
+for(const file of ['index.html','style.css','offmenu-tokens.css','help.html','help.css','help.js','scanner-licenses.txt','icon.svg','receipt-bars.svg','manifest.webmanifest','manifest-ar.webmanifest'])assets[file]=await readFile('apps/web/assets/'+file,'utf8');
 assets['sw.js']=await readFile('dist/sw.js','utf8');
 assets['scanner-worker.js']=await readFile('dist/scanner-worker.js','utf8');
 assets['scanner.wasm']=(await readFile('node_modules/zxing-wasm/dist/reader/zxing_reader.wasm')).toString('base64');
 assets['app.js']=await readFile('dist/app.js','utf8');
 for(const name of Object.keys(assets)) if(name.endsWith('.html')) assets[name]=publicHTML(assets[name]);
+for(const name of Object.keys(assets))if(isPublicCatalogueHeld('/'+name))throw Error('Unadmitted public catalogue asset: '+name);
 const template=await readFile('apps/web/server/handler.mjs','utf8');
 const release={sourceCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),builtAt:new Date().toISOString()};
 const generated='const ASSETS='+JSON.stringify(assets)+';\nconst RELEASE='+JSON.stringify(release)+';\n'+template;

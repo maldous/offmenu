@@ -7,6 +7,9 @@ export function nutrientBasisCompatible(product,unit){
  if(!['g','ml'].includes(unit)||!product)return false;
  const provenance=product.nutritionProvenance;
  if(provenance){const basis=provenance.nutrientProfile?.basis;return basis?.amount===100&&basis.unit===unit;}
+ // Legacy public hydration always wrote this field, even when no unified rows were returned.
+ // A cached package or its old numeric basis is not current catalogue admission.
+ if(Object.hasOwn(product,'unifiedRecords'))return false;
  return product.nutrition_data_per===(unit==='g'?'100g':'100ml');
 }
 export function weekDates(date){const base=new Date(date+'T12:00:00Z');const day=(base.getUTCDay()+6)%7;base.setUTCDate(base.getUTCDate()-day);return Array.from({length:7},(_,i)=>{const d=new Date(base);d.setUTCDate(d.getUTCDate()+i);return d.toISOString().slice(0,10);});}
