@@ -19,7 +19,7 @@ function fixture(){
    const value=body.match(new RegExp('<'+tag+'(?: [^>]*)?>(.*?)</'+tag+'>','s'))[1];
    return node({textContent:text(value)});
   }}));
- assert.deepEqual(articles.map(x=>x.id),['account-backup','recipe-import']);
+ assert.deepEqual(articles.map(x=>x.id),['account-backup','recipe-import', 'scanner-options']);
  const elements=Object.fromEntries(['matches','feedback','finder','query','back','clear','topics','skip'].map(id=>[id,node()]));
  elements.topics.querySelectorAll=selector=>{assert.equal(selector,'article');return articles;};
  const d={createElement:()=>node(),querySelector(selector){return elements[selector.startsWith('#')?selector.slice(1):'skip'];}};
@@ -42,7 +42,7 @@ test('no-result suggestions from the mounted help search lead to the real bundle
  assert.deepEqual(query('shopping list export'),[]);
  assert.deepEqual(query('print'),[]);
  elements.clear.listeners.click();
- assert.deepEqual(resultLinks(),['#account-backup','#recipe-import']);assert.equal(elements.query.value,'');assert.equal(elements.query.focused,true);
+ assert.deepEqual(resultLinks(),['#account-backup','#recipe-import', '#scanner-options']);assert.equal(elements.query.value,'');assert.equal(elements.query.focused,true);
 });
 
 test('Account links directly to searchable English recipe-import recovery and exact notices',()=>{
@@ -59,4 +59,37 @@ test('Account links directly to searchable English recipe-import recovery and ex
  const {query}=fixture();
  assert.equal(query('recipe import')[0],'#recipe-import');
  assert.equal(query('file must be under 2 mb')[0],'#recipe-import');
+});
+
+
+test('Scanner tools opens real English scanner Help without requiring the camera, a lookup, or a save',()=>{
+ const scanner=readFileSync(new URL('../../apps/web/assets/shelf-scanner.html',import.meta.url),'utf8');
+ const help=readFileSync(new URL('../../apps/web/assets/help.html',import.meta.url),'utf8');
+ const dialog=scanner.match(/<dialog id="tools-dialog"[^>]*>([\s\S]*?)<\/dialog>/)?.[1];
+ assert(dialog);
+ const openers=[...scanner.matchAll(/<button id="scanner-options-help" type="button" aria-haspopup="dialog" aria-controls="scanner-options-help-dialog" lang="en" dir="ltr">Scanner options help \(English\)<\/button>/g)];
+ assert.equal(openers.length,1);
+ assert(dialog.includes(openers[0][0]));
+ const preview=scanner.match(/<dialog id="scanner-options-help-dialog"[^>]*aria-labelledby="scanner-options-help-heading" lang="en" dir="ltr">([\s\S]*?)<\/dialog>/)?.[1];
+ assert.match(preview,/<h2 id="scanner-options-help-heading" tabindex="-1" autofocus>Scanner options and camera recovery<\/h2>/);
+ assert.match(preview,/<form method="dialog"><button id="scanner-options-help-close" type="submit">Back to scanner options<\/button><\/form>/);
+ const anchors=[...scanner.matchAll(/<a href="\/help\.html#scanner-options">Read the full Scanner options guide \(English\)<\/a>/g)];
+ assert.equal(anchors.length,1);
+ assert(preview.includes(anchors[0][0]));
+ assert.match(preview,/<b>Lookup unavailable<\/b> means OffMenu could not check the code[.] It does not mean the product was not found[.]/);
+ assert.equal(dialog.includes('<button id="tools-close"'),true);
+ assert.match(help,/<html lang="en" dir="ltr">/);
+ const text=help.match(/<article id="scanner-options"[^>]*>([\s\S]*?)<\/article>/)?.[1];
+ assert.match(text,/<h2 tabindex="-1">Scanner options and camera recovery<\/h2>/);
+ assert.match(text,/keeping any leading zeros/);
+ assert.match(text,/Lookup unavailable<\/b>, OffMenu could not check the code[.] This does not mean the product was not found[.] Nothing is added to your pantry[.]/);
+ assert.match(text,/Choose <b>Cancel<\/b> to close the form without submitting[.]/);
+ const {elements,query}=fixture();
+ for(const value of ['scanner options','camera denied','type code','retry camera','lookup unavailable']){
+   assert.deepEqual(query(value),['#scanner-options'],value);
+   assert.equal(elements.feedback.textContent,'1 matching help topic.');
+ }
+ assert.deepEqual(query('shopping list export'),[]);
+ assert.deepEqual(query('search by unknown invented topic'),[]);
+ assert.equal(query('recipe import')[0],'#recipe-import');
 });
