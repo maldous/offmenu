@@ -36,7 +36,7 @@ class ExecutionMetadataTests(unittest.TestCase):
     def test_requested_identity_is_separate_from_unknown_observed_identity(self):
         with patch.object(worker.os,'sched_setaffinity'):
             result = worker.execute(self.runtime,self.issue,self.request)
-        self.assertEqual(result['requested_model'],'gpt-6.1-sol')
+        self.assertEqual(result['requested_model'],'gpt-6.2-sol')
         self.assertEqual(result['requested_effort'],'medium')
         self.assertEqual(result['provider_route'],'codex-chatgpt')
         self.assertIsNone(result['resolved_model'])

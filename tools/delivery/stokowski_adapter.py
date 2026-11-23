@@ -3128,13 +3128,13 @@ def install_adapters(runtime, manifest, key, current=None, *, native_harness_ada
             raise AdmissionError('nonimplementation_worker_refused')
         if (runner_type, claude_cfg.model) not in {('codex', MODEL), ('cloudflare', CLOUDFLARE_MODEL)}:
             raise AdmissionError('Only the reviewed existing Codex session route is admitted')
+        if any(vars(hooks_cfg).get(k) for k in ('before_run', 'after_run', 'on_stage_enter')):
+            raise AdmissionError('Unenforced shell validation hook rejected')
         provider = select_provider(read_record(selected_runtime/'provider-proof.json'),
                                    read_record(selected_runtime/'capacity-policy.json'))
         if runner_type == 'cloudflare' and provider.route != CLOUDFLARE:
             raise AdmissionError('cloudflare_workflow_requires_cloudflare_provider')
         provider.require_active(selected_manifest['project_id'])
-        if any(vars(hooks_cfg).get(k) for k in ('before_run', 'after_run', 'on_stage_enter')):
-            raise AdmissionError('Unenforced shell validation hook rejected')
         task_runtime = runtime
         if current:
             task_runtime, selected_manifest, _ = current.context(issue.identifier)

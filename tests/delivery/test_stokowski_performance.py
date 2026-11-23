@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+import time
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
@@ -13,6 +14,7 @@ from unittest.mock import Mock, patch
 TOOLS = Path(__file__).resolve().parents[2] / 'tools/delivery'
 sys.path.insert(0, str(TOOLS))
 import stokowski_performance as performance
+import stokowski_provider as provider
 import stokowski_worker as worker
 
 
@@ -100,15 +102,18 @@ class ExecuteTests(unittest.TestCase):
         self.head = 'a'*40
         self.resources = dict(cpu_millis=1000, memory_bytes=2**31,
                               io_slots=1, output_bytes=2**24)
-        self.manifest = dict(base_revision=self.head, branch='feature/offline', tasks={
+        self.manifest = dict(base_revision=self.head, branch='feature/offline',
+                             project_id='ce60c1ab-a732-4a71-8471-14c9dc393886', tasks={
             self.issue: dict(owner='offline', allowed_paths=['result.py'],
                              resources=self.resources, purpose='Offline test')})
         self.policy = dict(symphony=dict(pool_path='unused', cpu_budget_millis=1000),
                            host=dict(cpu_reserve=0),
                            windmill=dict(computation_subprocesses_per_job=64))
+        proof = dict(route='codex-chatgpt', available=True, requested_model=worker.MODEL,
+                     checked_at=time.time(), session_ceiling=8)
         for name, value in (('manifest.json', self.manifest),
                             ('capacity-policy.json', self.policy),
-                            ('provider-proof.json', {'available': True})):
+                            ('provider-proof.json', proof)):
             (self.runtime / name).write_text(json.dumps(value))
         self.directory = self.runtime / 'attempts' / self.issue
         self.state = 'running'
@@ -123,6 +128,9 @@ class ExecuteTests(unittest.TestCase):
         self.pool.finish.side_effect = finish
         self.process_result = dict(status='succeeded', child_tree_gone=True, exit_code=0)
         self.stack = self.enterContext(ExitStack())
+        self.stack.enter_context(patch.object(provider, 'load_policy', return_value=None))
+        self.stack.enter_context(patch.object(worker, 'cloudflare_client',
+                                             side_effect=AssertionError('unexpected provider client')))
         patches = dict(
             load_manifest=lambda *a, **k: self.manifest,
             git=lambda root, *a: self.head if a[-1] == 'HEAD' else 'feature/offline',

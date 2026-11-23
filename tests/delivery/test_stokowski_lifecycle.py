@@ -66,13 +66,21 @@ class AdaptedLifecycleTests(unittest.TestCase):
             before = manifest_path.read_bytes()
             adapted,_ = self.adapted(runtime,stack,manifest=manifest)
             spawn = stack.enter_context(patch.object(adapter.asyncio,'create_subprocess_exec',new_callable=AsyncMock))
-            with self.assertRaisesRegex(Exception,'Unenforced shell validation hook'):
-                asyncio.run(adapted.run_turn('codex',SimpleNamespace(model=MODEL),
-                    SimpleNamespace(after_run='exit 1'),'prompt',Path(temp),
-                    SimpleNamespace(identifier='UIF-92'),SimpleNamespace()))
-            spawn.assert_not_called()
-            self.assertEqual(list(runtime.iterdir()),[manifest_path])
-            self.assertEqual(manifest_path.read_bytes(),before)
+            read = stack.enter_context(patch.object(adapter, 'read_record',
+                side_effect=AssertionError('unexpected provider configuration read')))
+            select = stack.enter_context(patch.object(adapter, 'select_provider',
+                side_effect=AssertionError('unexpected provider selection')))
+            for hook in ('before_run', 'after_run', 'on_stage_enter'):
+                with self.subTest(hook=hook):
+                    with self.assertRaisesRegex(Exception,'Unenforced shell validation hook'):
+                        asyncio.run(adapted.run_turn('codex',SimpleNamespace(model=MODEL),
+                            SimpleNamespace(**{hook:'exit 1'}),'prompt',Path(temp),
+                            SimpleNamespace(identifier='UIF-92'),SimpleNamespace()))
+                    read.assert_not_called()
+                    select.assert_not_called()
+                    spawn.assert_not_called()
+                    self.assertEqual(list(runtime.iterdir()),[manifest_path])
+                    self.assertEqual(manifest_path.read_bytes(),before)
 
     def test_stop_waits_for_inflight_transition_before_closing_tracker_client(self):
         async def scenario(runtime,stack):
