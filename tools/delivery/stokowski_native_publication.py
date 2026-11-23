@@ -334,7 +334,7 @@ def invoke(request, *, adapters=None, root=ROOT):
     # Imports consume only the now-verified installed normal-entrypoint source.
     if adapters is None:
         from stokowski_prepare import prepare_publication
-        from symphony_launch import provider_proof
+        from stokowski_provider import prepare_provider_proof as provider_proof
         adapters = Adapters(process, prepare_publication, provider_proof)
     custody = custody_directory(root,request['context'])
     custody.mkdir(mode=0o700, exist_ok=True)

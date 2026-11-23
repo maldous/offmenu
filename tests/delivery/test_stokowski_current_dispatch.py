@@ -2303,7 +2303,8 @@ class CurrentDispatchTests(unittest.TestCase):
             stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=45,
             env={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8'})
         self.assertEqual(result.returncode,0,result.stdout+result.stderr)
-        self.assertIn('tests 18',result.stdout)
+        self.assertIn('✔ fixed gateway process, timeout reconciliation, duplicate and refusals',
+                      result.stdout)
         incoming = self.runtime/('unit-review-'+issue.identifier+'.json')
         self.assertTrue(incoming.exists())
         expected = json.dumps(packet,sort_keys=True,separators=(',', ':')).encode()
@@ -3568,7 +3569,7 @@ print(json.dumps(dict(type='turn.completed')), flush=True)
             self.assertTrue(receipt['child_tree_gone'])
             self.assertIsNone(receipt['resolved_model'])
             self.assertEqual(receipt['resolution_status'], 'unobserved')
-            self.assertEqual(receipt['requested_model'], 'gpt-6.1-sol')
+            self.assertEqual(receipt['requested_model'], 'gpt-6.2-sol')
             self.assertEqual(receipt['declared_resources'], f.packet['resources'])
             receipts.append(receipt)
             owner = native.Orchestrator(c.runtime/'workflow.yaml')

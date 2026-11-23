@@ -174,7 +174,7 @@ int main(int argc,char **argv) {
     char *env[]={"HOME=/home/user","USER=user","LANG=C.UTF-8","PATH=/usr/bin:/bin",home,state,
         "LANGCHAIN_TRACING_V2=false","LANGSMITH_TRACING=false","OTEL_SDK_DISABLED=true","GIT_CONFIG_COUNT=0",NULL};
     char *args[]={NATIVE,"exec","--json","--ignore-user-config","--sandbox",argv[1],"-c","approval_policy=\"never\"",
-        "-c","model_reasoning_effort=\"medium\"","--model","gpt-6.1-sol","--cd",argv[2],"--output-last-message",argv[3],"-",NULL};
+        "-c","model_reasoning_effort=\"medium\"","--model","gpt-6.2-sol","--cd",argv[2],"--output-last-message",argv[3],"-",NULL};
     struct sock_fprog program={(unsigned short)(sizeof(filter)/sizeof(filter[0])),filter};
     if(prctl(PR_SET_SECCOMP,SECCOMP_MODE_FILTER,&program)) refuse();
     execve(NATIVE,args,env);

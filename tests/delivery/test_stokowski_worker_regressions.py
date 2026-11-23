@@ -120,6 +120,38 @@ class WorkerRegressions(unittest.TestCase):
             json.dumps(dict(type='turn.completed', usage={'input_tokens': 3})) + '\n')
         return dict(status='succeeded', child_tree_gone=True, exit_code=0)
 
+    def test_worker_falls_back_to_cloudflare_without_codex(self):
+        from stokowski_provider import CLOUDFLARE
+        from stokowski_cloudflare_client import WorkersAIClient
+        from stokowski_cloudflare_budget import ProjectAccountRouter
+
+        self.runtime, self.manifest = self.make_runtime('cloudflare', 'README.md')
+        (self.runtime/'provider-proof.json').write_text(json.dumps(dict(self.proof, available=False)))
+        policy_path = self.root/'provider.json'
+        accounts = dict(zip(('UIF', 'OffMenu', 'ANQR', 'CIX', 'CQ'),
+                            (digit * 32 for digit in 'abcde')))
+        policy_path.write_text(json.dumps(dict(mode='both', accounts=accounts, active_projects=['OffMenu'])))
+        router = ProjectAccountRouter(self.root/'provider.sqlite', accounts)
+        client = WorkersAIClient(router, lambda _: 'test-token')
+        with (patch('stokowski_provider.POLICY', policy_path),
+              patch('stokowski_provider.trusted_file', side_effect=lambda path: path),
+              patch.object(worker, 'cloudflare_client', return_value=client),
+              patch('stokowski_cloudflare_client.HTTPSConnection') as connection):
+            response = connection.return_value.getresponse.return_value
+            response.status = 200
+            response.read.side_effect = [
+                json.dumps(dict(success=True, result=dict(usage={'neurons': 1}, tool_calls=[
+                    dict(id='edit', type='function', function=dict(name='replace_text', arguments={
+                        'path': 'README.md', 'old': 'Offline source fixture', 'replacement': 'Cloudflare edit',
+                    }))]))).encode(),
+                b'{"success":true,"result":{"response":"Done","usage":{"neurons":1}}}',
+            ]
+            result = worker.execute(self.runtime, self.issue, self.request, expected_provider=CLOUDFLARE)
+        self.assertEqual((result['status'], result['provider_route']), ('succeeded', CLOUDFLARE))
+        self.assertEqual((self.runtime/'workspaces'/self.issue/'README.md').read_text(), 'Cloudflare edit\n')
+        self.provider.assert_not_called()
+        self.process.assert_not_called()
+
     def test_active_lease_and_intent_block_restart_without_changing_durable_state(self):
         lease = self.admit()
         before = self.events()

@@ -544,7 +544,7 @@ class ReplacementTests(unittest.TestCase):
         self.assertEqual(json.loads(c.catalog.read_bytes()), after)
         self.assertEqual(n.api.call_count, 2)
         self.assertEqual(sum(call['mode'] == 'prepare' for call in n.calls), 2)
-        first.provider.assert_has_calls([unittest.mock.call('gpt-6.1-sol',8)]*2)
+        first.provider.assert_has_calls([unittest.mock.call('gpt-6.2-sol',8)]*2)
         self.assertEqual(first.provider.call_count, 2)
         for p, raw in frozen.items():
             self.assertEqual(p.read_bytes(), raw, str(p))

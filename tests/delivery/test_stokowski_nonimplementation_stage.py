@@ -116,7 +116,7 @@ class TypedStageTests(unittest.TestCase):
         config_ref=write('config.json',config)
         manifest=write('manifest.json',self.stage_manifest)
         request=write('request.json',dict(prompt='No coding',timeout_seconds=5))
-        provider=write('provider.json',dict(requested_model='gpt-6.1-sol',requested_effort='medium',
+        provider=write('provider.json',dict(requested_model='gpt-6.2-sol',requested_effort='medium',
             route='codex-chatgpt',session_ceiling=8,max_age_seconds=300,checked_at_max_future_skew_seconds=5))
         outcome=dict(identifier='UIF-106',uuid=self.stage_task['issue_id'],project_id=adapter.PROJECT)
         source_issue=dict(identifier='UIF-119',uuid='source-only',project_id='other-project')

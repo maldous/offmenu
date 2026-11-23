@@ -94,6 +94,7 @@ def provider_proof(model, ceiling):
     login = subprocess.run([BINARY, 'login', 'status'], capture_output=True, text=True, timeout=20)
     facts = probe()
     available = (login.returncode == 0 and 'Logged in using ChatGPT' in login.stdout+login.stderr
+                 and not facts.get('quota_exhausted')
                  and model in [m['id'] for m in facts.get('models', [])])
     return {'route': 'codex-chatgpt', 'available': available, 'checked_at': time.time(),
             'session_ceiling': ceiling, 'requested_model': model,

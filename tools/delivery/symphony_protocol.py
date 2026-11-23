@@ -10,6 +10,21 @@ import time
 BINARY = '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex'
 
 
+def codex_quota_exhausted(quotas):
+    """Use the Codex bucket; other products' quota does not gate Codex."""
+    buckets = quotas.get('rateLimitsByLimitId') or {}
+    bucket = buckets.get('codex') or quotas.get('rateLimits') or {}
+    if bucket.get('limitId', 'codex') != 'codex':
+        return False
+    if bucket.get('rateLimitReachedType'):
+        return True
+    for name in ('primary', 'secondary'):
+        used = (bucket.get(name) or {}).get('usedPercent')
+        if type(used) in {int, float} and used >= 100:
+            return True
+    return False
+
+
 def probe(binary=BINARY, timeout=25, argv=None, client_name="offmenu-readiness", isolate_home=True, cwd=None, initialize_only=False):
     state = tempfile.TemporaryDirectory(prefix='offmenu-codex-state-')
     environment = os.environ.copy()
@@ -62,7 +77,7 @@ def probe(binary=BINARY, timeout=25, argv=None, client_name="offmenu-readiness",
         models = request('model/list', {'limit': 100})
         quotas = request('account/rateLimits/read', {})
         identity = account.get('account') or {}
-        return {'initialized': True, 'account_type': identity.get('type'), 'plan_type': identity.get('planType'), 'authentication_required': account.get('requiresOpenaiAuth'), 'models': [{'id': m.get('id'), 'is_default': m.get('isDefault', False), 'reasoning_efforts': [e.get('reasoningEffort') for e in m.get('supportedReasoningEfforts', [])]} for m in models.get('data', [])], 'quota_response_present': not quotas.get('probe_error') and bool(quotas), 'account_probe_error': bool(account.get('probe_error')), 'account_error_code': account.get('error_code'), 'account_method_unavailable': account.get('method_unavailable'), 'account_login_required': account.get('login_required'), 'model_probe_error': bool(models.get('probe_error')), 'quota_probe_error': bool(quotas.get('probe_error')), 'quota_error_code': quotas.get('error_code'), 'quota_method_unavailable': quotas.get('method_unavailable'), 'quota_login_required': quotas.get('login_required'), 'thread_started': False, 'turn_started': False, 'model_calls': False}
+        return {'initialized': True, 'account_type': identity.get('type'), 'plan_type': identity.get('planType'), 'authentication_required': account.get('requiresOpenaiAuth'), 'models': [{'id': m.get('id'), 'is_default': m.get('isDefault', False), 'reasoning_efforts': [e.get('reasoningEffort') for e in m.get('supportedReasoningEfforts', [])]} for m in models.get('data', [])], 'quota_response_present': not quotas.get('probe_error') and bool(quotas), 'quota_exhausted': codex_quota_exhausted(quotas), 'account_probe_error': bool(account.get('probe_error')), 'account_error_code': account.get('error_code'), 'account_method_unavailable': account.get('method_unavailable'), 'account_login_required': account.get('login_required'), 'model_probe_error': bool(models.get('probe_error')), 'quota_probe_error': bool(quotas.get('probe_error')), 'quota_error_code': quotas.get('error_code'), 'quota_method_unavailable': quotas.get('method_unavailable'), 'quota_login_required': quotas.get('login_required'), 'thread_started': False, 'turn_started': False, 'model_calls': False}
     except Exception as error:
         return {'probe_error_type': type(error).__name__, 'stage': stage, 'thread_started': False, 'turn_started': False, 'model_calls': False}
     finally:

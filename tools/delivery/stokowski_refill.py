@@ -11,6 +11,7 @@ import time
 
 from symphony_capacity import AdmissionError, host_snapshot, overlap
 from symphony_tasks import load_manifest, runtime_lease_ids
+from stokowski_provider import CLOUDFLARE, CODEX, select_provider
 
 
 def ready_refill(manifest, provider, rows, host, policy, retained=(), cancelled=False, now=None):
@@ -20,7 +21,7 @@ def ready_refill(manifest, provider, rows, host, policy, retained=(), cancelled=
     if cancelled:
         return dict(result,reason='runtime-cancelled')
     checked = provider.get('checked_at') if isinstance(provider,dict) else None
-    if (not isinstance(provider,dict) or provider.get('route') != 'codex-chatgpt' or
+    if (not isinstance(provider,dict) or provider.get('route') not in {CODEX, CLOUDFLARE} or
         provider.get('available') is not True or type(checked) not in (int,float) or
         not math.isfinite(checked) or checked > now+5 or
         now-checked > policy['symphony']['provider_proof_ttl_seconds'] or
@@ -60,7 +61,8 @@ def observe_refill(runtime, phases):
         manifest = load_manifest(runtime/'manifest.json',expected_branch=None)
         policy = json.loads((runtime/'capacity-policy.json').read_text())
         proof_path = runtime/'provider-proof.json'
-        provider = json.loads(proof_path.read_text()) if proof_path.exists() else None
+        proof = json.loads(proof_path.read_text()) if proof_path.exists() else {}
+        provider = select_provider(proof, policy).proof
         provider_check = ready_refill({'tasks':{}},provider,[],{},policy,cancelled=(runtime/'cancel.json').exists())
         if provider_check['status'] == 'deferred' or (runtime/'cancel.json').exists():
             return provider_check

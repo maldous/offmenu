@@ -78,7 +78,7 @@ def bind_native(command, workspace, environment):
     mode = command[5]
     expected = [BINARY, 'exec', '--json', '--ignore-user-config', '--sandbox',
                 mode, '-c', 'approval_policy="never"', '-c',
-                'model_reasoning_effort="medium"', '--model', 'gpt-6.1-sol',
+                'model_reasoning_effort="medium"', '--model', 'gpt-6.2-sol',
                 '--cd', str(workspace), '--output-last-message', command[-2], '-']
     # Keep this comparison exact; arbitrary executable/options are not forwarded.
     if mode not in {'read-only', 'workspace-write'} or command != expected:
