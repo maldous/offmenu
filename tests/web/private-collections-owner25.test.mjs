@@ -108,3 +108,21 @@ test('PR9 null response after applied commit remains unknown, never throws or im
   const f=fixture();f.nullAck();const result=await f.mutate('add',{name:'Family'});
   assert.equal(result.status,'unknown');assert.equal(result.operationId,'op1');assert.equal(f.state().revision,1);
 });
+
+test('a denied account and a duplicate retry preserve the original owner bookmark',async()=>{
+  const f=fixture();
+  await f.mutate('add',{name:'Family'});
+  await f.mutate('bookmark',{bookmarkId:'original',reference});
+  const before=f.state();
+
+  await assert.rejects(f.api.mutate({
+    session:'verified',accountId:'b',
+    command:{type:'bookmark',operationId:'denied',expectedVersion:before.revision,
+             collectionId:'family',bookmarkId:'other-owner',reference},
+  }),/Private collection access denied/);
+  await assert.rejects(f.mutate('bookmark',{bookmarkId:'duplicate',reference}),/Duplicate or full bookmark/);
+
+  assert.deepEqual(f.state(),before);
+  const view=await f.api.read({session:'verified',accountId:'a'});
+  assert.deepEqual(view.collections[0].bookmarks.map(bookmark=>bookmark.id),['original']);
+});
