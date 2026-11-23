@@ -2,8 +2,8 @@
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
   "messages": 4109,
-  "arabicTranslated": 764,
-  "arabicMissing": 3345,
+  "arabicTranslated": 772,
+  "arabicMissing": 3337,
   "arabicComplete": false,
   "excludedTechnical": {
     "sql": 213,
@@ -14705,24 +14705,27 @@
     },
     "No matching menus in the recipes loaded. Try another ingredient or choose the whole kitchen.": {
       "sources": [
-        "apps/web/src/app.js"
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "No matching menus in the recipes saved on this device.": {
       "sources": [
-        "apps/web/src/app.js"
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "No matching menus in the recipes saved on this device. The catalogue update was not applied.": {
       "sources": [
-        "apps/web/src/app.js"
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "No matching source observation in the selected index and completed query plan · not global absence.": {
       "sources": [
@@ -21791,10 +21794,11 @@
     },
     "Showing recipes saved on this device. The catalogue update was not applied.": {
       "sources": [
-        "apps/web/src/app.js"
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Showing the first 100 of {v0} records. Export retains the full batch.": {
       "sources": [
@@ -22117,17 +22121,19 @@
     },
     "Some recipes did not load. Showing the recipes that are available.": {
       "sources": [
-        "apps/web/src/app.js"
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Some recipes did not load. Try again later or browse the recipes already saved.": {
       "sources": [
-        "apps/web/src/app.js"
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "Some saved observations are unavailable. Retry in your current profile.": {
       "sources": [
@@ -24156,17 +24162,19 @@
     },
     "The recipe catalogue did not load. Showing recipes already available to this kitchen.": {
       "sources": [
-        "apps/web/src/app.js"
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "The recipe catalogue did not load. Try again later.": {
       "sources": [
-        "apps/web/src/app.js"
+        "apps/web/src/app.js",
+        "apps/web/src/locales/ar.js"
       ],
-      "arabic": false,
-      "classification": "heuristic-candidate"
+      "arabic": true,
+      "classification": "explicit-ui"
     },
     "The retained scanner could not open in this tab. Nothing was added to inventory.": {
       "sources": [
