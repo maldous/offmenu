@@ -10,6 +10,16 @@ version, digest, source revision, executor and ownership in the existing handoff
 Do not treat the local reference as an installed bundle or make UIF a product
 build/runtime prerequisite.
 
+For UIF-managed OffMenu work, use the [canonical continuous BAU definition](https://github.com/maldous/uif/blob/develop/docs/operations/business-as-usual.md).
+The target is an unattended delivery loop that survives individual Dot chats:
+Morgan can work in parallel on disjoint tasks, while UIF selects among verified,
+currently eligible zero-cost providers without paid fallback. Eligible work can
+proceed from intake and exclusive ownership through validation, independent
+review, authorized publication and refill. On interruption, recover from
+persistent original-operation evidence before retrying or reassigning. This is
+an operating target, not evidence that BAU is installed or permission to start
+or resume workers, change provider policy, or publish through another writer.
+
 Cloud Git, Foo Codex inference and Foo MCP commands retain distinct prerequisites.
 Project cloud CPU/storage are independent of Foo; host execution must bind the
 actual project, host, owner, worktree and branch. Deterministic MCP commands do
