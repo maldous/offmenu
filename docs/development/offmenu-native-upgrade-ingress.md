@@ -127,3 +127,36 @@ Preserve all receipts and partial slots. A second confirmation or invocation
 must not be used to replace an unresolved original. `installed` is the
 canonical stopped-host installation result. Service start and the private
 issue publication invocation are separate owner actions.
+
+## Foo job self-approval boundary
+
+The Foo job route can be attached here once the existing platform supplies
+authenticated current-job provenance. It has no mutation entry in this source.
+The existing OpenSSH owner route is unchanged.
+
+The deployed Windmill `u/admin/foo_root_jobs` authenticates its connection to
+Foo. Its `foo-root-exec-v1` request currently forwards a caller-selected
+`job_id` and shell command, working directory, and timeout. It sends no
+server-authenticated Windmill actor or platform run ID to the fixed ingress.
+A root UID, environment variable, transient unit name, caller receipt,
+or reusable transport access cannot supply those facts.
+
+The missing hook is at the maintained runner's authenticated admission
+boundary, before turning the current job into a shell command. It must carry
+the immutable platform run ID and initiating principal from the authenticated
+invocation through the protected Foo bridge to the fixed OffMenu operation.
+The bridge must bind that same executing job to the permitted OffMenu Unix
+principal and exact operation, package, source/tree, release, request digest,
+and short deadline using existing authorization. Generic commands or supplied
+arguments cannot create that attestation. There is no verified deployed hook
+on the current protocol and no new signing identity or grant in this change.
+
+The read-only `audit_runner_request` receiver defines the narrow in-process
+contract. A qualified adapter must resolve the current authenticated invocation
+itself and then return `VerifiedFooRun`. The receiver checks the fixed scope,
+protected request and independently accepted package/review pins and reports
+the retained original state. The ordinary CLI cannot supply an adapter or
+activate this route. A matching audit grants no effects. The eventual fixed
+effect boundary still must recheck authenticated provenance, custody and
+quiescence under the existing native locks and use the canonical typed
+materialize/upgrade methods and durable publisher fence.

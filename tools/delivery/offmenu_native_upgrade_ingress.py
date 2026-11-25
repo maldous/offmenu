@@ -1,6 +1,7 @@
 """Fixed Foo owner ingress for one reviewed OffMenu package replacement."""
 
 from contextlib import contextmanager
+from dataclasses import dataclass
 import hashlib
 import json
 import os
@@ -11,6 +12,7 @@ import stat
 import subprocess
 import sys
 import time
+from uuid import UUID
 
 CODE = Path('/usr/local/lib/offmenu-native-upgrade')
 STATE = Path('/var/lib/offmenu-publisher/upgrade-ingress')
@@ -26,6 +28,7 @@ MAX_OPERATIONS = 4096
 RECORDS = ('package-review.json', 'preflight.json', 'upgrade.json', 'custody.json')
 OWNER = re.compile(r'[A-Za-z_][A-Za-z0-9_.-]{0,63}')
 HEX = re.compile(r'[0-9a-f]{64}')
+GIT_OID = re.compile(r'[0-9a-f]{40}')
 
 
 def require(ok, reason):
@@ -86,7 +89,7 @@ def encode(value):
                        allow_nan=False) + '\n').encode('ascii')
 
 
-def signed_request(packet, operation, release):
+def request_record(packet, operation, release):
     raw = read(packet / 'request.json', SMALL)
     request = shape(record(raw), 'schema', 'action', 'repository', 'unit', 'target', 'owner',
                     'operation_id', 'package_sha256', 'release_sha256', 'inputs', 'issued_at', 'expires_at')
@@ -103,6 +106,12 @@ def signed_request(packet, operation, release):
         require(type(value) is str and HEX.fullmatch(value), 'digest_required')
     require(type(request['issued_at']) is type(request['expires_at']) is int
             and 0 < request['expires_at'] - request['issued_at'] <= 300, 'request_window')
+    return request, raw
+
+
+def signed_request(packet, operation, release):
+    request, raw = request_record(packet, operation, release)
+    owner = request['owner']
     with protected_open(SIGNERS) as signers, protected_open(packet / 'request.json.sig') as signature:
         anchor = signers.read(SMALL + 1)
         lines = anchor.strip().splitlines()
@@ -223,6 +232,83 @@ def check_publisher_fence(canonical_state):
                 'publisher_original_requires_reconciliation')
 
 
+def request_inputs(packet, request):
+    inputs = {name: read(packet / name, LARGE if name == 'upgrade.json' else 262144)
+              for name in RECORDS}
+    require({name: sha(data) for name, data in inputs.items()} == request['inputs'],
+            'signed_inputs_changed')
+    review = shape(record(inputs['package-review.json']), 'schema', 'owner', 'head', 'tree',
+                   'author', 'reviewer', 'verdict')
+    require((review['schema'], review['owner'], review['verdict']) ==
+            ('offmenu.native-package-review/1', request['owner'], 'accept')
+            and all(type(review[key]) is str and OWNER.fullmatch(review[key])
+                    for key in ('author', 'reviewer'))
+            and review['reviewer'].casefold() not in
+            (review['author'].casefold(), request['owner'].casefold()), 'independent_review_required')
+    return inputs, review
+
+
+@dataclass(frozen=True)
+class VerifiedFooRun:
+    """Facts from the platform's protected current-job authenticator.
+
+    This is a local return type for a qualified adapter, never wire JSON
+    accepted from the current SSH session or a runner receipt on stdout.
+    """
+    workspace: str
+    runnable: str
+    platform_run_id: str
+    platform_actor: str
+    owner: str
+    operation_id: str
+    request_sha256: str
+    package_sha256: str
+    release_sha256: str
+    source_head: str
+    source_tree: str
+    issued_at: int
+    expires_at: int
+
+
+def audit_runner_request(operation, release, canonical_state, authenticate=None):
+    """Read-only receiver boundary. No effect entry is wired to this audit."""
+    require(callable(authenticate), 'authenticated_runner_job_provenance_unavailable')
+    require(type(operation) is str and HEX.fullmatch(operation), 'operation_id')
+    packet = STATE / operation
+    request, raw = request_record(packet, operation, release)
+    # The adapter resolves the actual current invocation from the host-side
+    # authenticated session. No actor, run ID or receipt is passed to it.
+    run = authenticate()
+    require(type(run) is VerifiedFooRun, 'authenticated_runner_job_provenance_required')
+    require(run.workspace == 'foo' and run.runnable == 'u/admin/foo_root_jobs'
+            and type(run.platform_actor) is str and 0 < len(run.platform_actor) <= 200
+            and run.platform_actor.isprintable(), 'runner_binding_mismatch')
+    require(type(run.platform_run_id) is str, 'runner_run_id')
+    run_id = UUID(run.platform_run_id)
+    require(run_id.int != 0 and str(run_id) == run.platform_run_id, 'runner_run_id')
+    require((run.owner, run.operation_id, run.request_sha256, run.package_sha256, run.release_sha256) ==
+            (request['owner'], operation, sha(raw), request['package_sha256'], release),
+            'runner_request_mismatch')
+    require(type(run.issued_at) is type(run.expires_at) is int
+            and request['issued_at'] <= run.issued_at <= time.time() < run.expires_at <= request['expires_at'],
+            'runner_attestation_window')
+    _, review = request_inputs(packet, request)
+    manifest_raw = read(packet / 'package' / 'manifest.json', LARGE)
+    require(sha(manifest_raw) == run.package_sha256, 'runner_package_pin')
+    manifest = record(manifest_raw)
+    require(type(run.source_head) is str and GIT_OID.fullmatch(run.source_head)
+            and type(run.source_tree) is str and GIT_OID.fullmatch(run.source_tree)
+            and (run.owner, run.source_head, run.source_tree) ==
+            (manifest.get('owner'), manifest.get('head'), manifest.get('tree')) ==
+            (review['owner'], review['head'], review['tree'])
+            and manifest.get('review') ==
+            {'path': 'package-review.json', 'sha256': request['inputs']['package-review.json']},
+            'runner_source_review_binding')
+    result = operation_status(packet, dict(operation_id=operation, confirmation_sha256=sha(raw)),
+                              canonical_state)
+    return dict(result, runner_provenance_verified=True, effect_authorized=False)
+
+
 def run(action, operation, release, package_api, upgrade_api):
     require(type(operation) is str and HEX.fullmatch(operation), 'operation_id')
     packet = STATE / operation
@@ -240,18 +326,7 @@ def run(action, operation, release, package_api, upgrade_api):
                 'owner_confirmation_changed')
 
     current()
-    inputs = {name: read(packet / name, LARGE if name == 'upgrade.json' else 262144)
-              for name in RECORDS}
-    require({name: sha(data) for name, data in inputs.items()} == request['inputs'],
-            'signed_inputs_changed')
-    review = shape(record(inputs['package-review.json']), 'schema', 'owner', 'head', 'tree',
-                   'author', 'reviewer', 'verdict')
-    require((review['schema'], review['owner'], review['verdict']) ==
-            ('offmenu.native-package-review/1', request['owner'], 'accept')
-            and all(type(review[key]) is str and OWNER.fullmatch(review[key])
-                    for key in ('author', 'reviewer'))
-            and review['reviewer'].casefold() not in
-            (review['author'].casefold(), request['owner'].casefold()), 'independent_review_required')
+    inputs, review = request_inputs(packet, request)
     acceptance = package_api.PackageAcceptance(
         review['owner'], review['head'], review['tree'],
         {'path': 'package-review.json', 'sha256': sha(inputs['package-review.json'])})
