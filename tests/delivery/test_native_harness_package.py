@@ -121,7 +121,7 @@ class PackageTests(unittest.TestCase):
         source['tools/delivery/native_rpc.py']=b'from native_missing import value\n'
         with self.assertRaises(ValueError): package.publisher_sources(source)
 
-    def build(self, *, private_catalog=False):
+    def build(self, *, private_catalog=False, owner_local=False):
         repo=self.root/'repo';repo.mkdir()
         source=self.source()
         # Never execute this accepted payload while producing or materializing it.
@@ -150,7 +150,7 @@ class PackageTests(unittest.TestCase):
         publisher=protected.encoded(dict(sourceHead=head,publisherUid=984,publisherGid=976,repositoryId=1416253963,
                     pythonSha256=package.sha(interpreter),codePins={'tools/delivery/github-app-publisher.mjs':package.sha(source['tools/delivery/github-app-publisher.mjs'])}))
         stage=self.root/'package'
-        result=package.prepare_coherent_package(stage,git_dir=repo/'.git',head=head,tree=tree,
+        common=dict(git_dir=repo/'.git',head=head,tree=tree,
                     dependencies=deps,dependency_evidence=evidence,
                     dependency_sha256=package.sha(protected.encoded({n:package.sha(raw) for n,raw in sorted(deps.items())})),
                     runtime='/home/user/src/offmenu/.delivery/stokowski/selected',
@@ -158,10 +158,28 @@ class PackageTests(unittest.TestCase):
                     interpreter_custody={'path':'custody.json','sha256':'c'*64},
                     node_sha256='f'*64,node_custody={'path':'node-custody.json','sha256':'9'*64},
                     pyvenv_cfg=b'home = /usr/bin\ninclude-system-site-packages = false\nversion = 3.12.3\n',
-                    owner_current=current,owner_catalog=catalog,publisher_config=publisher,
                     config_pins=dict(owner_current=package.sha(current),owner_catalog=package.sha(catalog),publisher_config=package.sha(publisher)),
                     acceptance=package.PackageAcceptance('root-owner',head,tree,{'path':'review.json','sha256':'b'*64}))
-        return stage,result
+        configs = dict(owner_current=current, owner_catalog=catalog, publisher_config=publisher)
+        if owner_local:
+            refs = {}
+            for name, raw in configs.items():
+                path = self.root / name
+                path.write_bytes(raw)
+                refs[name] = str(path)
+            return stage, package.prepare_owner_local_package(stage, config_files=refs, **common)
+        return stage, package.prepare_coherent_package(stage, **configs, **common)
+
+    def test_owner_local_projection_matches_real_five_role_stage(self):
+        stage, receipt = self.build(owner_local=True)
+        manifest, _ = package.read_package(stage, receipt['package_sha256'])
+        self.assertEqual(receipt['head'], manifest['head'])
+        self.assertEqual(receipt['tree'], manifest['tree'])
+        self.assertEqual(receipt['role_sha256'], {
+            role: package.sha(protected.encoded(closure))
+            for role, closure in manifest['roles'].items()
+        })
+        self.assertNotIn(str(self.root), str(receipt))
 
     def test_private_granted_catalog_route_preserves_seed_and_config_bytes(self):
         stage,result=self.build(private_catalog=True)
