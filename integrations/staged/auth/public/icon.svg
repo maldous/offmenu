@@ -1,1 +1,20 @@
-../../../../apps/web/assets/icon.svg
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">OffMenu</title>
+  <desc id="desc">Blue scanner frame around a white barcode bowl.</desc>
+  <rect width="512" height="512" rx="112" fill="#071a3b"/>
+  <g fill="none" stroke="#218cff" stroke-linecap="round" stroke-width="32">
+    <path d="M104 212v-64q0-44 44-44h64"/>
+    <path d="M300 104h64q44 0 44 44v64"/>
+    <path d="M408 300v64q0 44-44 44h-64"/>
+    <path d="M212 408h-64q-44 0-44-44v-64"/>
+  </g>
+  <g fill="#fff">
+    <rect x="169" y="173" width="17" height="105" rx="8.5"/>
+    <rect x="198" y="158" width="22" height="120" rx="11"/>
+    <rect x="233" y="171" width="14" height="107" rx="7"/>
+    <rect x="260" y="151" width="25" height="127" rx="12.5"/>
+    <rect x="298" y="169" width="17" height="109" rx="8.5"/>
+    <rect x="327" y="159" width="20" height="119" rx="10"/>
+    <path d="M144 292c8 58 55 91 112 91s104-33 112-91H144Zm35 29h154c-17 22-44 34-77 34s-60-12-77-34Z"/>
+  </g>
+</svg>
