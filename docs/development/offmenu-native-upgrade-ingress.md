@@ -48,6 +48,11 @@ SHA-256 values. From the authenticated Foo owner transport, use:
 
 ## Owner request and original operation
 
+The owner provisions the root-controlled directory
+`/var/lib/offmenu-publisher/upgrade-ingress/publisher-fence/` beside the
+operation packets. Keep it and its append-only intent files with the
+protected receipts. A missing or unreadable fence refuses replacement.
+
 For one owner-selected lowercase 64-hex operation ID, use the protected
 directory `/var/lib/offmenu-publisher/upgrade-ingress/<operation-id>/`. Its
 root-controlled packet contains:
@@ -108,8 +113,13 @@ Use the original operation ID with one protected invocation:
 
 The ingress rechecks authenticated pins and stopped service under the
 existing custody locks before the first effect. It retains those same locks
-while calling the canonical materialize and upgrade code. The ingress and
-canonical effects leave durable create-only intents. The exact signed
+while calling the canonical materialize and upgrade code. Before staging,
+the fixed publisher fence is checked against all operation receipts under
+those locks. A publisher intent is durable before the per-operation intent
+or any staging. Every new operation refuses while a retained original is
+unresolved, or when the fence, packet, or receipt evidence contradicts it.
+A completion binds the exact retained canonical installed receipt. All
+intents and receipts are create-only. The exact signed
 request, with the same reviewed release and signer, can be queried with
 `status "$operation_id"`, including after its mutation authorization expires.
 `reconcile` means the owner must observe the original canonical operation.

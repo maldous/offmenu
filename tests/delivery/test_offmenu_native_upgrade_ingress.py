@@ -33,7 +33,13 @@ class IngressTests(unittest.TestCase):
         self.root = Path(tmp.name)
         self.operation = '1' * 64
         self.release = '2' * 64
-        self.packet = self.root / self.operation
+        self.state = self.root / 'ingress'
+        self.state.mkdir()
+        self.fence = self.state / ingress.FENCE
+        self.fence.mkdir()
+        self.canonical_state = self.root / 'canonical'
+        self.canonical_state.mkdir()
+        self.packet = self.state / self.operation
         self.packet.mkdir()
         (self.packet / 'package').mkdir()
         self.signers = self.root / 'allowed_signers'
@@ -88,7 +94,7 @@ class IngressTests(unittest.TestCase):
                 assert fixture.stage_lock
 
             def path(self, value):
-                return fixture.root / Path(value).name
+                return fixture.canonical_state / Path(value).name
 
             def verify_role(self, role, path, closure):
                 assert fixture.stage_lock
@@ -102,7 +108,8 @@ class IngressTests(unittest.TestCase):
                 roles=self.operation_record['new']), {})),
             materialize=Mock(side_effect=self.materialize))
         self.upgrade = SimpleNamespace(
-            **{k: getattr(upgrade, k) for k in ('STATE', 'OwnerAdmission', 'upgrade_digest')},
+            **{k: getattr(upgrade, k) for k in ('OwnerAdmission', 'upgrade_digest')},
+            STATE=str(self.canonical_state),
             Host=Host, asdict=lambda val: {'fixture_type': val}, TARGETS=('publisher',),
             qualify=Mock(return_value={'fixture': True}), qualify_lock_custody=Mock(),
             qualify_publisher_custody=Mock(), qualify_public_ca_pins=Mock(),
@@ -113,7 +120,7 @@ class IngressTests(unittest.TestCase):
         # request parsing, OpenSSH verification, durable receipt and entry
         # dispatch run through the maintained ingress.
         stack = [
-            patch.object(ingress, 'STATE', self.root),
+            patch.object(ingress, 'STATE', self.state),
             patch.object(ingress, 'SIGNERS', self.signers),
             patch.object(ingress, 'protected_open', lambda path: path.open('rb')),
             patch.object(ingress, 'protected_dirs'),
@@ -151,6 +158,10 @@ class IngressTests(unittest.TestCase):
                              ingress.sha((self.packet / 'request.json').read_bytes()))
             self.assertIs(quiescence, self.q)
             self.assertIsNone(public_ca_pins)
+            installed = self.canonical_state / f'native-upgrade-{self.operation}.installed.json'
+            installed.write_bytes(ingress.encode(dict(kind='native-upgrade-installed-v1',
+                upgrade_sha256=admission.upgrade_sha256, readback=dict(installed_verified=True,
+                rollback_verified=True))))
 
     def invoke(self, action='replace'):
         return ingress.run(action, self.operation, self.release, self.package, self.upgrade)
@@ -176,6 +187,44 @@ class IngressTests(unittest.TestCase):
             self.invoke()
         self.package.materialize.assert_called_once()
         self.upgrade.execute.assert_called_once()
+
+    def test_interrupted_publisher_fences_a_different_signed_operation(self):
+        self.sign()
+        self.upgrade.execute.side_effect = OSError('fixture interruption')
+        with self.assertRaises(OSError):
+            self.invoke()
+        first_fence = self.fence / self.operation
+        first_intent = self.packet / 'ingress-intent.json'
+        original_bytes = first_intent.read_bytes()
+        self.assertEqual(self.invoke('status')['state'], 'reconcile')
+        self.assertEqual(first_fence.read_bytes(), original_bytes)
+
+        self.operation = '8' * 64
+        self.packet = self.state / self.operation
+        self.packet.mkdir()
+        (self.packet / 'package').mkdir()
+        later = dict(self.operation_record, operation_id=self.operation)
+        for name, data in self.files.items():
+            (self.packet / name).write_bytes(ingress.encode(later) if name == 'upgrade.json' else data)
+        self.request['operation_id'] = self.operation
+        self.request['inputs']['upgrade.json'] = ingress.sha(ingress.encode(later))
+        self.sign()
+        with self.assertRaisesRegex(ValueError, 'publisher_original_requires_reconciliation'):
+            self.invoke()
+        self.assertFalse((self.packet / 'ingress-intent.json').exists())
+        self.assertFalse((self.fence / self.operation).exists())
+        # A crash after the publisher intent, or loss of the per-operation
+        # intent, still fences the later request from staging.
+        first_intent.unlink()
+        with self.assertRaisesRegex(ValueError, 'publisher_original_requires_reconciliation'):
+            self.invoke()
+        first_intent.write_bytes(original_bytes)
+        first_fence.unlink()
+        with self.assertRaisesRegex(ValueError, 'publisher_intent_missing'):
+            self.invoke()
+        self.package.materialize.assert_called_once()
+        self.upgrade.execute.assert_called_once()
+        self.assertEqual(first_intent.read_bytes(), original_bytes)
 
     def test_wrong_signature_namespace_and_absent_enrollment_refuse(self):
         self.sign('wrong-purpose')

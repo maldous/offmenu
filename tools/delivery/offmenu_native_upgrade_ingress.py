@@ -21,6 +21,8 @@ SERVICE = 'offmenu-stokowski-current.service'
 TARGET = '/opt/offmenu-publisher'
 SMALL = 65536
 LARGE = 32 * 1024 * 1024
+FENCE = 'publisher-fence'
+MAX_OPERATIONS = 4096
 RECORDS = ('package-review.json', 'preflight.json', 'upgrade.json', 'custody.json')
 OWNER = re.compile(r'[A-Za-z_][A-Za-z0-9_.-]{0,63}')
 HEX = re.compile(r'[0-9a-f]{64}')
@@ -163,13 +165,62 @@ def custody_inputs(value, api):
             tuple(api.PublicCARecordPin(**pin) for pin in c['public_ca_pins']))
 
 
-def operation_status(packet, binding):
+def publisher_fence():
+    directory = STATE / FENCE
+    protected_dirs(directory)
+    return directory
+
+
+def installed_receipt(canonical_state, operation):
+    return read(canonical_state / f'native-upgrade-{operation}.installed.json', SMALL)
+
+
+def operation_status(packet, binding, canonical_state):
+    fence = original(publisher_fence() / packet.name)
     prior = original(packet / 'ingress-intent.json')
     completion = original(packet / 'ingress-result.json')
-    require(prior is None or prior == binding, 'original_intent_conflict')
-    require(completion is None or (prior == binding and completion == dict(binding, state='installed')),
-            'original_result_conflict')
-    return dict(binding, state='installed' if completion else 'reconcile' if prior else 'not_started')
+    require(fence is None or fence == binding, 'publisher_intent_conflict')
+    require(prior is None or prior == fence == binding, 'original_intent_conflict')
+    if completion is not None:
+        require(prior == binding and completion == dict(binding, state='installed',
+                    installed_receipt_sha256=sha(installed_receipt(canonical_state, packet.name))),
+                'original_result_conflict')
+    return dict(binding, state='installed' if completion else 'reconcile' if fence else 'not_started')
+
+
+def operation_names(directory, reserved=None):
+    names = set()
+    for entry in directory.iterdir():
+        if entry == reserved:
+            continue
+        require(len(names) < MAX_OPERATIONS, 'publisher_fence_bound')
+        require(HEX.fullmatch(entry.name), 'publisher_fence_entry')
+        names.add(entry.name)
+    return names
+
+
+def check_publisher_fence(canonical_state):
+    """Check both immutable journal sides before starting any replacement."""
+    fence = publisher_fence()
+    packets = operation_names(STATE, reserved=fence)
+    intents = operation_names(fence)
+    require(intents <= packets, 'publisher_packet_missing')
+    for name in sorted(packets):
+        packet = STATE / name
+        protected_dirs(packet)
+        if name not in intents:
+            # Prepared packets can lack receipts, but a per-operation receipt
+            # with no fixed publisher intent is contradictory.
+            require(original(packet / 'ingress-intent.json') is None
+                    and original(packet / 'ingress-result.json') is None,
+                    'publisher_intent_missing')
+            continue
+        binding = shape(original(fence / name), 'operation_id', 'confirmation_sha256')
+        require(binding['operation_id'] == name
+                and type(binding['confirmation_sha256']) is str
+                and HEX.fullmatch(binding['confirmation_sha256']), 'publisher_intent_conflict')
+        require(operation_status(packet, binding, canonical_state)['state'] == 'installed',
+                'publisher_original_requires_reconciliation')
 
 
 def run(action, operation, release, package_api, upgrade_api):
@@ -177,7 +228,8 @@ def run(action, operation, release, package_api, upgrade_api):
     packet = STATE / operation
     request, raw, anchor = signed_request(packet, operation, release)
     binding = dict(operation_id=operation, confirmation_sha256=sha(raw))
-    status = operation_status(packet, binding)
+    canonical_state = Path(upgrade_api.STATE)
+    status = operation_status(packet, binding, canonical_state)
     if action == 'status' or status['state'] == 'installed':
         return status
     require(action == 'replace' and status['state'] == 'not_started', 'original_requires_reconciliation')
@@ -237,8 +289,9 @@ def run(action, operation, release, package_api, upgrade_api):
     upgrade_api.qualify_publisher_custody(publisher, admission.publisher_config_custody_sha256, host, now)
     upgrade_api.qualify_public_ca_pins(ca, admission.public_ca_pins_sha256, upgrade)
     with super(LockedHost, host).locks(locks):
-        require(operation_status(packet, binding)['state'] == 'not_started',
+        require(operation_status(packet, binding, canonical_state)['state'] == 'not_started',
                 'original_requires_reconciliation')
+        check_publisher_fence(canonical_state)
         with host.publisher_config(publisher):
             require(not any(os.path.lexists(host.path(path)) for path in (
                 f'{upgrade_api.STATE}/native-upgrade-{operation}.intent.json',
@@ -256,6 +309,7 @@ def run(action, operation, release, package_api, upgrade_api):
             host.verify_locks()
             host.verify_publisher_custody()
             current()
+            create(publisher_fence() / operation, binding)
             create(packet / 'ingress-intent.json', binding)
             current()
             package_api.materialize(package, expected_sha256=request['package_sha256'],
@@ -265,8 +319,15 @@ def run(action, operation, release, package_api, upgrade_api):
                             lock_custody=locks, publisher_config_custody=publisher,
                             public_ca_pins=ca, host=host)
         # Persist only the result already recorded by the canonical upgrade.
+        receipt = installed_receipt(canonical_state, operation)
+        installed = record(receipt)
+        require(installed.get('kind') == 'native-upgrade-installed-v1'
+                and installed.get('upgrade_sha256') == admission.upgrade_sha256
+                and installed.get('readback', {}).get('installed_verified') is True
+                and installed['readback'].get('rollback_verified') is True,
+                'canonical_result_refused')
         result = dict(binding, state='installed')
-        create(packet / 'ingress-result.json', result)
+        create(packet / 'ingress-result.json', dict(result, installed_receipt_sha256=sha(receipt)))
         return result
 
 
