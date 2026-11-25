@@ -309,22 +309,84 @@ def audit_runner_request(operation, release, canonical_state, authenticate=None)
     return dict(result, runner_provenance_verified=True, effect_authorized=False)
 
 
+@dataclass(frozen=True)
+class WindmillReleaseApproval:
+    """Exact protected deployment approval, never accepted from wire JSON."""
+
+    owner: str
+    operation_id: str
+    release_sha256: str
+    package_sha256: str
+    protected_request_sha256: str
+    head: str
+    tree: str
+
+
+def bind_private_windmill_release(approved, package_api, upgrade_api):
+    """Bind only on the private receiver of the authenticated Windmill action.
+
+    This is not a CLI or an authentication endpoint. There is deliberately no
+    default mounted receiver. The deployed composition must shield this callable
+    from every other caller, and provide its fixed root-owned approval and APIs.
+    """
+    def receive(action, operation, job):
+        require(type(approved) is WindmillReleaseApproval and os.getresuid() == (0, 0, 0),
+                'private_windmill_release_unbound')
+        require(action in ('replace', 'status') and operation == approved.operation_id
+                and type(operation) is str and HEX.fullmatch(operation), 'windmill_operation_refused')
+        require(type(job) is str and len(job) == 36 and str(UUID(job)) == job
+                and UUID(job).int != 0, 'windmill_run_id')
+        release = release_digest()
+        require(release == approved.release_sha256, 'windmill_release_mismatch')
+        packet = STATE / operation
+        request, raw = request_record(packet, operation, release)
+        require((request['owner'], request['package_sha256'], sha(raw)) ==
+                (approved.owner, approved.package_sha256, approved.protected_request_sha256),
+                'windmill_approval_pin_mismatch')
+        inputs, review = request_inputs(packet, request)
+        manifest_raw = read(packet / 'package' / 'manifest.json', LARGE)
+        manifest = record(manifest_raw)
+        require(sha(manifest_raw) == approved.package_sha256 and
+                (manifest.get('owner'), manifest.get('head'), manifest.get('tree')) ==
+                (review['owner'], review['head'], review['tree']) ==
+                (approved.owner, approved.head, approved.tree) and
+                manifest.get('review') ==
+                {'path': 'package-review.json', 'sha256': sha(inputs['package-review.json'])},
+                'windmill_source_review_mismatch')
+
+        def current():
+            require(request['issued_at'] <= time.time() < request['expires_at'],
+                    'windmill_release_expired')
+            require(read(packet / 'request.json', SMALL) == raw,
+                    'windmill_request_changed')
+
+        return _run_protected_release(action, operation, packet, request, raw, current,
+                                      package_api, upgrade_api)
+    return receive
+
+
 def run(action, operation, release, package_api, upgrade_api):
     require(type(operation) is str and HEX.fullmatch(operation), 'operation_id')
     packet = STATE / operation
     request, raw, anchor = signed_request(packet, operation, release)
-    binding = dict(operation_id=operation, confirmation_sha256=sha(raw))
-    canonical_state = Path(upgrade_api.STATE)
-    status = operation_status(packet, binding, canonical_state)
-    if action == 'status' or status['state'] == 'installed':
-        return status
-    require(action == 'replace' and status['state'] == 'not_started', 'original_requires_reconciliation')
 
     def current():
         require(request['issued_at'] <= time.time() < request['expires_at'], 'owner_confirmation_expired')
         require(read(SIGNERS, SMALL) == anchor and read(packet / 'request.json', SMALL) == raw,
                 'owner_confirmation_changed')
 
+    return _run_protected_release(action, operation, packet, request, raw, current,
+                                  package_api, upgrade_api)
+
+
+def _run_protected_release(action, operation, packet, request, raw, current,
+                           package_api, upgrade_api):
+    binding = dict(operation_id=operation, confirmation_sha256=sha(raw))
+    canonical_state = Path(upgrade_api.STATE)
+    status = operation_status(packet, binding, canonical_state)
+    if action == 'status' or status['state'] == 'installed':
+        return status
+    require(action == 'replace' and status['state'] == 'not_started', 'original_requires_reconciliation')
     current()
     inputs, review = request_inputs(packet, request)
     acceptance = package_api.PackageAcceptance(
