@@ -63,7 +63,7 @@ def path_name(name):
     return name
 
 
-def nofollow(root, name):
+def nofollow(root, name, *, limit=protected.MAX_FILE):
     """Read immutable-looking bounded regular bytes without following any link."""
     path_name(name)
     fd = os.open(root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
@@ -72,7 +72,7 @@ def nofollow(root, name):
             child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)
             os.close(fd)
             fd = child
-        return protected.regular(name.split('/')[-1], dir_fd=fd)
+        return protected.regular(name.split('/')[-1], limit, dir_fd=fd)
     finally:
         os.close(fd)
 
@@ -439,6 +439,47 @@ def prepare_coherent_package(stage, *, git_dir, head, tree, dependencies,
     protected.write_new(stage / 'manifest.json', raw, 0o400)
     protected.sync_dir(stage)
     return {'path': str(stage), 'sha256': sha(raw), 'roles': manifest['roles']}
+
+
+def prepare_owner_local_package(stage, *, config_files, config_pins, acceptance, **inputs):
+    """Compose existing non-root preparation from owner-private local references.
+
+    In-process only: the already-qualified owner chooses the three authorized
+    absolute references and supplies the independently established pins and
+    PackageAcceptance. No escalation, config authoring, approval issuance,
+    receipt-file destination, or wire entrypoint is provided here.
+    """
+    require(os.getuid() != 0 and os.geteuid() != 0, 'nonroot_producer')
+    roles = ('owner_current', 'owner_catalog', 'publisher_config')
+    require(type(config_files) is dict and set(config_files) == set(roles)
+            and type(config_pins) is dict and set(config_pins) == set(roles),
+            'local_config_refs')
+    require(type(acceptance) is PackageAcceptance
+            and (acceptance.head, acceptance.tree) == (inputs.get('head'), inputs.get('tree')),
+            'source_acceptance')
+    refs = {}
+    for role in roles:
+        ref = config_files[role]
+        require(type(ref) is str and ref.startswith('/') and ref != '/'
+                and Path(ref).as_posix() == ref, 'local_config_ref')
+        path_name(ref[1:])
+        refs[role] = (ref[1:], pin(config_pins[role]))
+    configs = {}
+    for role, (ref, expected) in refs.items():
+        try:
+            raw = nofollow('/', ref, limit=1024 * 1024)
+        except (OSError, ValueError):
+            raise ValueError('local_config_input_unavailable:' + role) from None
+        require(sha(raw) == expected, 'config_input_pin')
+        configs[role] = raw
+    result = prepare_coherent_package(
+        stage, config_pins=config_pins, acceptance=acceptance, **configs, **inputs)
+    return dict(
+        schema='offmenu.owner-local-package-receipt/1',
+        head=acceptance.head, tree=acceptance.tree,
+        package_sha256=result['sha256'],
+        role_sha256={role: sha(protected.encoded(result['roles'][role])) for role in ROLES},
+    )
 
 
 @dataclass(frozen=True)
