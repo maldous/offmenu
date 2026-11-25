@@ -1,6 +1,7 @@
 """Detached real OpenSSH ingress tests with no host mutations."""
 
 from contextlib import contextmanager
+from dataclasses import replace
 from pathlib import Path
 import subprocess
 import sys
@@ -165,6 +166,64 @@ class IngressTests(unittest.TestCase):
 
     def invoke(self, action='replace'):
         return ingress.run(action, self.operation, self.release, self.package, self.upgrade)
+
+    def runner_evidence(self):
+        manifest = ingress.encode(dict(owner=self.fields['owner'], head=self.fields['head'],
+            tree=self.fields['tree'], review={'path': 'package-review.json',
+            'sha256': self.request['inputs']['package-review.json']}))
+        (self.packet / 'package' / 'manifest.json').write_bytes(manifest)
+        self.request['package_sha256'] = ingress.sha(manifest)
+        raw = ingress.encode(self.request)
+        (self.packet / 'request.json').write_bytes(raw)
+        return ingress.VerifiedFooRun('foo', 'u/admin/foo_root_jobs',
+            '79b70b57-12a2-4d09-946f-54d45910a65b', 'fixture-platform-actor',
+            self.fields['owner'], self.operation, ingress.sha(raw), ingress.sha(manifest),
+            self.release, self.fields['head'], self.fields['tree'],
+            self.request['issued_at'], self.request['expires_at'])
+
+    def runner_audit(self, authenticate=None):
+        return ingress.audit_runner_request(self.operation, self.release,
+                                            self.canonical_state, authenticate)
+
+    def test_runner_audit_accepts_exact_verified_provenance_without_effect(self):
+        attested = self.runner_evidence()
+        result = self.runner_audit(lambda: attested)
+        self.assertEqual(result['state'], 'not_started')
+        self.assertTrue(result['runner_provenance_verified'])
+        self.assertFalse(result['effect_authorized'])
+        self.assertFalse((self.fence / self.operation).exists())
+        self.package.materialize.assert_not_called()
+        self.upgrade.execute.assert_not_called()
+
+    def test_runner_audit_refuses_missing_untyped_wrong_and_expired_provenance(self):
+        attested = self.runner_evidence()
+        with self.assertRaisesRegex(ValueError, 'authenticated_runner_job_provenance_unavailable'):
+            self.runner_audit()
+        for claims, problem in [
+            (vars(attested), 'authenticated_runner_job_provenance_required'),
+            (replace(attested, runnable='u/admin/other'), 'runner_binding_mismatch'),
+            (replace(attested, operation_id='8' * 64), 'runner_request_mismatch'),
+            (replace(attested, expires_at=attested.issued_at), 'runner_attestation_window'),
+            (replace(attested, source_tree='8' * 40), 'runner_source_review_binding'),
+        ]:
+            with self.subTest(problem=problem), self.assertRaisesRegex(ValueError, problem):
+                self.runner_audit(lambda: claims)
+        self.package.materialize.assert_not_called()
+        self.upgrade.execute.assert_not_called()
+
+    def test_runner_audit_preserves_uncertain_original_for_reconciliation(self):
+        attested = self.runner_evidence()
+        retained = dict(operation_id=self.operation, confirmation_sha256=attested.request_sha256)
+        raw = ingress.encode(retained)
+        fence = self.fence / self.operation
+        fence.write_bytes(raw)
+        result = self.runner_audit(lambda: attested)
+        self.assertEqual(result['state'], 'reconcile')
+        self.assertFalse(result['effect_authorized'])
+        self.assertEqual(fence.read_bytes(), raw)
+        self.assertFalse((self.packet / 'ingress-intent.json').exists())
+        self.package.materialize.assert_not_called()
+        self.upgrade.execute.assert_not_called()
 
     def test_signed_fixed_operation_reuses_existing_locks_and_recovers_one_result(self):
         self.sign()
