@@ -1,5 +1,8 @@
 """Behavior checks: pinned RECORDs, complete imports, fixed copies and no replay."""
 import base64
+from dataclasses import replace
+import stat
+from types import SimpleNamespace
 import csv
 import hashlib
 import io
@@ -121,7 +124,7 @@ class PackageTests(unittest.TestCase):
         source['tools/delivery/native_rpc.py']=b'from native_missing import value\n'
         with self.assertRaises(ValueError): package.publisher_sources(source)
 
-    def build(self, *, private_catalog=False, owner_local=False):
+    def build(self, *, private_catalog=False, owner_local=False, split_fixture=False):
         repo=self.root/'repo';repo.mkdir()
         source=self.source()
         # Never execute this accepted payload while producing or materializing it.
@@ -161,6 +164,17 @@ class PackageTests(unittest.TestCase):
                     config_pins=dict(owner_current=package.sha(current),owner_catalog=package.sha(catalog),publisher_config=package.sha(publisher)),
                     acceptance=package.PackageAcceptance('root-owner',head,tree,{'path':'review.json','sha256':'b'*64}))
         configs = dict(owner_current=current, owner_catalog=catalog, publisher_config=publisher)
+        if split_fixture:
+            result = package.prepare_coherent_package(stage, **configs, **common)
+            actual_tree, pairs, metadata = protected.git_closure(common['git_dir'], head)
+            self.assertEqual(actual_tree, tree)
+            options = {k: v for k, v in common.items()
+                       if k not in ('git_dir', 'config_pins', 'acceptance')}
+            owner = package.OwnerPackageInputs(
+                **options, owner_current=current, owner_catalog=catalog,
+                source={n: raw for n, (raw, _) in dict(pairs, **metadata).items()})
+            other = package.PublisherPackageInput(head, tree, publisher)
+            return stage, result, owner, other, common['config_pins'], common['acceptance']
         if owner_local:
             refs = {}
             for name, raw in configs.items():
@@ -180,6 +194,70 @@ class PackageTests(unittest.TestCase):
             for role, closure in manifest['roles'].items()
         })
         self.assertNotIn(str(self.root), str(receipt))
+
+    def test_split_role_join_yields_exact_v1_and_opaque_receipt_without_root_git(self):
+        prior, original, owner, publisher, pins, acceptance = self.build(split_fixture=True)
+        operation = '7' * 64
+        self.assertNotIn(publisher.config, owner.source.values())
+        self.assertNotIn(publisher.config.decode(), repr(publisher))
+        combined = self.root / 'joined'
+        with (patch.object(package.os, 'getresuid', return_value=(0, 0, 0)),
+              patch.object(package, '_split_stage', return_value=combined) as stage,
+              patch.object(protected, 'git_closure', side_effect=AssertionError('root Git'))):
+            receipt = package.prepare_split_role_package(
+                operation, owner=owner, publisher=publisher, config_pins=pins, acceptance=acceptance)
+            stage.assert_called_once_with(operation)
+            self.assertEqual(receipt['package_sha256'], original['sha256'])
+            self.assertEqual((prior/'manifest.json').read_bytes(), (combined/'manifest.json').read_bytes())
+            manifest, content = package.read_package(combined, receipt['package_sha256'])
+            self.assertEqual(manifest['kind'], 'native-harness-package-v1')
+            self.assertEqual(content['publisher_config']['config.json'], publisher.config)
+            self.assertNotIn(publisher.config.decode(), repr(receipt))
+            self.assertNotIn(str(self.root), repr(receipt))
+            self.assertEqual(stat.S_IMODE(combined.stat().st_mode), 0o700)
+            self.assertEqual(stat.S_IMODE((combined/'payload').stat().st_mode), 0o700)
+            with self.assertRaises(FileExistsError):
+                package.prepare_split_role_package(
+                    operation, owner=owner, publisher=publisher, config_pins=pins, acceptance=acceptance)
+
+    def test_split_custody_source_and_digest_fail_before_output(self):
+        _, _, owner, publisher, pins, acceptance = self.build(split_fixture=True)
+        output = self.root / 'not-written'
+        operation = '7' * 64
+        run = lambda a, b: package.prepare_split_role_package(
+            operation, owner=a, publisher=b, config_pins=pins, acceptance=acceptance)
+        with (patch.object(package.os, 'getresuid', return_value=(1000, 0, 0)),
+              patch.object(package, '_split_stage') as stage):
+            with self.assertRaisesRegex(ValueError, 'root_split_context_required'):
+                run(owner, publisher)
+            stage.assert_not_called()
+        with (patch.object(package.os, 'getresuid', return_value=(0, 0, 0)),
+              patch.object(package, '_split_stage', return_value=output)):
+            for a, b, refusal in (
+                    (publisher, owner, 'split_role_inputs'),
+                    (owner, replace(publisher, head='1' * 40), 'split_role_source'),
+                    (owner, replace(publisher, config=publisher.config+b' '), 'config_input_pin')):
+                with self.subTest(refusal=refusal), self.assertRaisesRegex(ValueError, refusal):
+                    run(a, b)
+            self.assertFalse(output.exists())
+
+    def test_split_stage_is_fixed_existing_approved_packet_only(self):
+        operation = 'a' * 64
+        with self.assertRaisesRegex(ValueError, 'sha256'):
+            package._split_stage('../../fixture')
+        packet = package._SPLIT_PACKET_ROOT / operation
+        directory = SimpleNamespace(st_mode=stat.S_IFDIR | 0o755, st_uid=0)
+        private = SimpleNamespace(st_mode=stat.S_IFDIR | 0o700, st_uid=0)
+        def mode(path):
+            return private if path == packet else directory
+        with patch.object(Path, 'lstat', autospec=True, side_effect=mode):
+            self.assertEqual(package._split_stage(operation), packet / 'package')
+            private.st_mode = stat.S_IFDIR | 0o750
+            with self.assertRaisesRegex(ValueError, 'private_split_packet'):
+                package._split_stage(operation)
+            private.st_mode = stat.S_IFLNK | 0o700
+            with self.assertRaisesRegex(ValueError, 'protected_split_packet'):
+                package._split_stage(operation)
 
     def test_private_granted_catalog_route_preserves_seed_and_config_bytes(self):
         stage,result=self.build(private_catalog=True)

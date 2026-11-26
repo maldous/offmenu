@@ -354,6 +354,26 @@ def prepare_coherent_package(stage, *, git_dir, head, tree, dependencies,
                              publisher_config, config_pins, acceptance):
     """Build only actor-owned private content-addressed payload; no /opt reads."""
     require(os.getuid() != 0 and os.geteuid() != 0, 'nonroot_producer')
+    def selected_source():
+        actual_tree, source_pairs, metadata = protected.git_closure(git_dir, head)
+        require(actual_tree == tree, 'source_tree')
+        return {name: raw for name, (raw, _) in dict(source_pairs, **metadata).items()}
+    manifest, roles = _compose_package(
+        source_for_head=selected_source, head=head, tree=tree, dependencies=dependencies,
+        dependency_evidence=dependency_evidence, dependency_sha256=dependency_sha256,
+        runtime=runtime, interpreter=interpreter, interpreter_sha256=interpreter_sha256,
+        interpreter_custody=interpreter_custody, node_sha256=node_sha256,
+        node_custody=node_custody, pyvenv_cfg=pyvenv_cfg, owner_current=owner_current,
+        owner_catalog=owner_catalog, publisher_config=publisher_config,
+        config_pins=config_pins, acceptance=acceptance)
+    return _write_package(stage, manifest, roles)
+
+
+def _compose_package(*, source_for_head, head, tree, dependencies, dependency_evidence,
+                     dependency_sha256, runtime, interpreter, interpreter_sha256,
+                     interpreter_custody, node_sha256, node_custody, pyvenv_cfg,
+                     owner_current, owner_catalog, publisher_config, config_pins, acceptance):
+    """Validate and project the same v1 payload from already held byte inputs."""
     require(type(acceptance) is PackageAcceptance and acceptance.owner.strip()
             and (acceptance.head, acceptance.tree) == (head, tree), 'source_acceptance')
     require(set(acceptance.review) == {'path', 'sha256'}, 'review_reference')
@@ -368,9 +388,10 @@ def prepare_coherent_package(stage, *, git_dir, head, tree, dependencies,
     cfg = {k.strip(): v.strip() for k, v in cfg.items()}
     require(cfg.get('include-system-site-packages') == 'false' and cfg.get('version', '').startswith('3.12.')
             and cfg.get('home') in ('/bin', '/usr/bin'), 'qualified_python_cfg')
-    actual_tree, source_pairs, metadata = protected.git_closure(git_dir, head)
-    require(actual_tree == tree, 'source_tree')
-    source = {name: raw for name, (raw, _) in dict(source_pairs, **metadata).items()}
+    source = source_for_head()
+    require(type(source) is dict and 0 < len(source) <= MAX_FILES, 'source_closure')
+    for name, value in source.items():
+        path_name(name); bounded(value)
     protected.validate_git_payload({str(protected.SOURCE / n): raw for n, raw in source.items()},
                                    dict(head=head, tree=tree))
     require(type(dependencies) is dict and dependencies, 'dependencies')
@@ -420,6 +441,10 @@ def prepare_coherent_package(stage, *, git_dir, head, tree, dependencies,
                     interpreter_custody=interpreter_custody, node_custody=node_custody,
                     dependency_evidence=dependency_evidence,
                     roles={role: closure(role, files) for role, files in roles.items()})
+    return manifest, roles
+
+
+def _write_package(stage, manifest, roles):
     raw = protected.encoded(manifest)
     require(len(raw) <= 32*1024*1024, 'package_manifest_bound')
     stage = Path(stage)
@@ -474,12 +499,85 @@ def prepare_owner_local_package(stage, *, config_files, config_pins, acceptance,
         configs[role] = raw
     result = prepare_coherent_package(
         stage, config_pins=config_pins, acceptance=acceptance, **configs, **inputs)
+    return _owner_local_receipt(result, acceptance)
+
+
+def _owner_local_receipt(result, acceptance):
     return dict(
         schema='offmenu.owner-local-package-receipt/1',
         head=acceptance.head, tree=acceptance.tree,
         package_sha256=result['sha256'],
         role_sha256={role: sha(protected.encoded(result['roles'][role])) for role in ROLES},
     )
+
+
+_SPLIT_PACKET_ROOT = Path('/var/lib/offmenu-publisher/upgrade-ingress')
+
+
+@dataclass(frozen=True, repr=False)
+class OwnerPackageInputs:
+    """Already authenticated UID1000-side source and config byte snapshot."""
+    head: str
+    tree: str
+    source: dict
+    dependencies: dict
+    dependency_evidence: object
+    dependency_sha256: str
+    runtime: str
+    interpreter: bytes
+    interpreter_sha256: str
+    interpreter_custody: dict
+    node_sha256: str
+    node_custody: dict
+    pyvenv_cfg: bytes
+    owner_current: bytes
+    owner_catalog: bytes
+
+
+@dataclass(frozen=True, repr=False)
+class PublisherPackageInput:
+    """One already authenticated UID984-side config snapshot, not a path."""
+    head: str
+    tree: str
+    config: bytes
+
+
+def _split_stage(operation):
+    packet = _SPLIT_PACKET_ROOT / pin(operation)
+    for directory in (*reversed(packet.parents), packet):
+        info = directory.lstat()
+        require(stat.S_ISDIR(info.st_mode) and info.st_uid == 0 and not info.st_mode & 0o022,
+                'protected_split_packet')
+    require(not packet.lstat().st_mode & 0o077, 'private_split_packet')
+    return packet / 'package'
+
+
+def prepare_split_role_package(operation, *, owner, publisher, config_pins, acceptance):
+    """Root-only in-process join for the existing private release context.
+
+    Inputs are fixed role snapshots authenticated by its trusted caller, not
+    paths or worker/request JSON. This function neither reads the role sources
+    on behalf of another UID nor grants package acceptance or starts install.
+    It writes the same v1 package into the existing operation's fixed slot and
+    returns only its canonical digest receipt to the protected caller.
+    """
+    require(os.getresuid() == (0, 0, 0), 'root_split_context_required')
+    require(type(owner) is OwnerPackageInputs and type(publisher) is PublisherPackageInput,
+            'split_role_inputs')
+    require((owner.head, owner.tree) == (publisher.head, publisher.tree), 'split_role_source')
+    require(type(owner.source) is dict and type(owner.dependencies) is dict, 'split_owner_closure')
+    stage = _split_stage(operation)
+    manifest, roles = _compose_package(
+        source_for_head=lambda: dict(owner.source), head=owner.head, tree=owner.tree,
+        dependencies=dict(owner.dependencies), dependency_evidence=owner.dependency_evidence,
+        dependency_sha256=owner.dependency_sha256, runtime=owner.runtime,
+        interpreter=owner.interpreter, interpreter_sha256=owner.interpreter_sha256,
+        interpreter_custody=owner.interpreter_custody, node_sha256=owner.node_sha256,
+        node_custody=owner.node_custody, pyvenv_cfg=owner.pyvenv_cfg,
+        owner_current=owner.owner_current, owner_catalog=owner.owner_catalog,
+        publisher_config=publisher.config, config_pins=config_pins, acceptance=acceptance)
+    return _owner_local_receipt(_write_package(stage, manifest, roles), acceptance)
+
 
 
 @dataclass(frozen=True)
