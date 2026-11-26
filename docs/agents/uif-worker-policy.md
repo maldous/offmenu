@@ -30,6 +30,9 @@ ceiling is bounded by shared resource admission and is separate from job and
 subprocess counts. These requirements do not prove an installed lifecycle or
 qualified off-Foo authority adapter.
 
+For protected OffMenu package and runtime release work, use the
+[canonical native runtime release runbook](../development/native-runtime-release-runbook.md).
+
 The environment policy does not activate services, relax project holds, transfer
 publication rights or establish that handoff controls are deployed. This
 repository retains its source, toolchain, review, privacy and acceptance contracts.
