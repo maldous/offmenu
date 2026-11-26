@@ -1,8 +1,11 @@
 """Detached real OpenSSH ingress tests with no host mutations."""
 
-from contextlib import contextmanager
+from contextlib import contextmanager, redirect_stdout
 from dataclasses import replace
 from pathlib import Path
+import importlib.util
+import io
+import json
 import subprocess
 import sys
 import tempfile
@@ -16,6 +19,54 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools/delivery'))
 import native_harness_package as package
 import native_harness_upgrade as upgrade
 import offmenu_native_upgrade_ingress as ingress
+
+
+class VersionedShelfTests(unittest.TestCase):
+    def test_fixed_v2_release_id_rejects_original_and_alias_paths(self):
+        installed = Path("/usr/local/lib/offmenu-native-upgrade-v2")
+        suffix = "tools/delivery/offmenu_native_upgrade_ingress.py"
+        self.assertEqual(ingress.CODE, installed)
+        with (patch.object(ingress.os, "getresuid", return_value=(0, 0, 0)),
+              patch.object(ingress.os, "umask"),
+              patch.object(ingress.sys, "flags", SimpleNamespace(isolated=True, no_site=True)),
+              patch.object(ingress.sys, "dont_write_bytecode", True),
+              patch.object(ingress.sys, "argv", [str(installed / suffix), "release-id"]),
+              patch.object(ingress, "release_digest", return_value="a" * 64) as digest):
+            for root in (installed.with_name("offmenu-native-upgrade"),
+                         installed.with_name("offmenu-native-upgrade-current")):
+                with patch.object(ingress, "__file__", str(root / suffix)):
+                    with self.assertRaisesRegex(ValueError, "fixed_code_path"):
+                        ingress.main()
+            digest.assert_not_called()
+            with (patch.object(ingress, "__file__", str(installed / suffix)),
+                  redirect_stdout(io.StringIO()) as output):
+                ingress.main()
+            digest.assert_called_once_with()
+            self.assertEqual(json.loads(output.getvalue()), {"release_sha256": "a" * 64})
+
+    def test_canonical_schema_resources_stay_on_their_immutable_shelves(self):
+        repo = Path(ingress.__file__).resolve().parents[2]
+        relative = Path("contracts/schemas/delivery-handoff-v1.schema.json")
+        source = (repo / "tools/delivery/native_harness_contract.py").read_bytes()
+        schema = json.loads((repo / relative).read_bytes())
+        with tempfile.TemporaryDirectory() as temp:
+            modules = {}
+            for version in ("offmenu-native-upgrade", "offmenu-native-upgrade-v2"):
+                root = Path(temp) / version
+                module_file = root / "tools/delivery/native_harness_contract.py"
+                schema_file = root / relative
+                module_file.parent.mkdir(parents=True)
+                schema_file.parent.mkdir(parents=True)
+                module_file.write_bytes(source)
+                schema_file.write_text(json.dumps(dict(schema, **{"$comment": version})))
+                spec = importlib.util.spec_from_file_location(version, module_file)
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                self.assertEqual(module._SCHEMA_PATH, schema_file)
+                modules[version] = module
+            for version, module in modules.items():
+                self.assertEqual(module._SCHEMA["$comment"], version)
+                self.assertEqual(json.loads(module._SCHEMA_PATH.read_bytes())["$comment"], version)
 
 
 class IngressTests(unittest.TestCase):

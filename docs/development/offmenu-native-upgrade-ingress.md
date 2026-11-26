@@ -27,7 +27,7 @@ test ! -L /etc/offmenu-native-upgrade/allowed_signers &&
 ```
 
 The root owner independently approves and provisions the reviewed executable
-closure at `/usr/local/lib/offmenu-native-upgrade`. Preserve `tools/delivery/`
+closure at `/usr/local/lib/offmenu-native-upgrade-v2`. Preserve `tools/delivery/`
 for the ingress, canonical native harness package, upgrade, adoption and
 contract modules and their protected owner/publisher install dependencies.
 Include `contracts/schemas/delivery-handoff-v1.schema.json` and independently
@@ -38,12 +38,21 @@ group/other writes. Symlinks and hardlinked files refuse. Install the reviewed
 exact bytes using the existing host release procedure. The candidate package
 and all request data are outside the executable tree.
 
+The previous immutable shelf remains at
+`/usr/local/lib/offmenu-native-upgrade`. Preserve its bytes and receipts.
+Deploy the reviewed v2 closure at the fixed sibling path; do not rename,
+overwrite or alias either shelf. The versioned basename is not derived from
+a digest. Build the closure with that literal path first, then independently
+qualify its whole-tree digest and bind the existing private loader to that
+exact shelf before importing any module from it. The signed namespace and
+protected original-operation state are unchanged.
+
 The protected release identity is computed over the exact file names and
 SHA-256 values. From the authenticated Foo owner transport, use:
 
 ```sh
 /usr/bin/python3.12 -I -S -B \
-    /usr/local/lib/offmenu-native-upgrade/tools/delivery/offmenu_native_upgrade_ingress.py release-id
+    /usr/local/lib/offmenu-native-upgrade-v2/tools/delivery/offmenu_native_upgrade_ingress.py release-id
 ```
 
 ## Owner request and original operation
@@ -107,7 +116,7 @@ Use the original operation ID with one protected invocation:
 
 ```sh
 /usr/bin/python3.12 -I -S -B \
-    /usr/local/lib/offmenu-native-upgrade/tools/delivery/offmenu_native_upgrade_ingress.py \
+    /usr/local/lib/offmenu-native-upgrade-v2/tools/delivery/offmenu_native_upgrade_ingress.py \
     replace "$operation_id"
 ```
 
