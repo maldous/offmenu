@@ -33,6 +33,8 @@ PUBLIC_CA_PATHS = {
 MAX_FILES = 50000
 MAX_FILE = 64 * 1024 * 1024
 MAX_TOTAL = 1024 * 1024 * 1024
+RUNTIME_FILES = ('capacity-policy.json', 'current-owner.json')
+RUNTIME_LIMIT = 8 * 1024 * 1024
 
 
 @dataclass(frozen=True)
@@ -458,6 +460,7 @@ class Host:
         require(getattr(self, '_held_locks', None) is None, 'nested_lock_custody')
         with ExitStack() as stack:
             held = []
+            runtime_fd = None
             for record in custody.locks:
                 fd = os.open(self.root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
                 stack.callback(os.close, fd)
@@ -470,6 +473,8 @@ class Host:
                     require(identity(os.fstat(child)) == parent.identity, 'lock_parent_drift')
                     held.append((fd, name, child, parent.identity, True))
                     fd = child
+                if record.role == 'runtime-coordinator':
+                    runtime_fd = fd
                 name = Path(record.path).name
                 lock = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=fd)
                 stack.callback(os.close, lock)
@@ -481,11 +486,44 @@ class Host:
                 # Linux flock serializes the same existing inode as its owner.
                 fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             self._held_locks, self._lock_custody = held, custody
+            self._runtime_fd = runtime_fd
             try:
                 self.verify_locks()
                 yield
             finally:
-                self._held_locks = self._lock_custody = None
+                self._held_locks = self._lock_custody = self._runtime_fd = None
+
+    def runtime_fd(self, runtime):
+        self.verify_locks()
+        require(self._lock_custody.runtime == runtime and self._runtime_fd is not None,
+                'runtime_transition_lock_binding')
+        return self._runtime_fd
+
+    @contextmanager
+    def runtime_observation(self, runtime, expected):
+        # Read only from the exact directory inode retained in the root intent.
+        # The owner can move a private directory, so walk no-follow from the
+        # root and revalidate the complete open chain after the read.
+        require(type(runtime) is str and runtime.startswith('/'), 'runtime_observation_path')
+        parts = protected.relative(runtime[1:]).parts
+        with ExitStack() as stack:
+            fd = os.open(self.root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+            stack.callback(os.close, fd)
+            edges = []
+            for part in parts:
+                child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)
+                stack.callback(os.close, child)
+                edges.append((fd, part, child))
+                fd = child
+            def named():
+                for parent, name, child in edges:
+                    require(identity(os.fstat(child)) == identity(
+                        os.stat(name, dir_fd=parent, follow_symlinks=False)),
+                        'runtime_observation_path_drift')
+                require(asdict(identity(os.fstat(fd))) == expected, 'runtime_observation_identity')
+            named()
+            yield fd
+            named()
 
     def create(self, absolute, value):
         path = self.path(absolute)
@@ -643,6 +681,65 @@ def locations(role, operation):
     return target, parent + '/.native-upgrade-' + operation + '-' + role + '.new', parent + '/.native-upgrade-' + operation + '-' + role + '.old'
 
 
+def runtime_transition(plan, upgrade, *, old_config, new_config, old_policy,
+                       reviewed_policy, saved_state, old_binding, new_binding,
+                       old_catalog, new_catalog, old_python_sha256, new_python_sha256):
+    """Derive the two permitted fixed-file replacements, without host effects.
+
+    Caller must read selected runtime and old/new package roles while the
+    existing stopped-owner mutation locks are held. Input bytes never enter
+    the original journal; the admission-bound digest map covers them.
+    """
+    pins = upgrade['runtime_transition']
+    fields(pins, 'old_config_sha256 new_config_sha256 old_policy_sha256 '
+           'new_policy_sha256 old_state_sha256 new_state_sha256')
+    for value in pins.values():
+        sha(value)
+    require(all(type(raw) is bytes and 0 < len(raw) <= 8*1024*1024 for raw in
+                (old_config, new_config, old_policy, reviewed_policy, saved_state,
+                 old_binding, new_binding)), 'runtime_transition_bounds')
+    before, after = map(protected.record, (old_config, new_config))
+    previous, successor = map(protected.record, (old_binding, new_binding))
+    runtime = plan['legacy_snapshot']['runtime_path']
+    target = plan['request']['target']
+    for binding, config, raw, key, catalog, python_pin in (
+            (previous, before, old_config, 'old_config_sha256', old_catalog, old_python_sha256),
+            (successor, after, new_config, 'new_config_sha256', new_catalog, new_python_sha256)):
+        sha(python_pin)
+        require(binding == dict(schema='protected-current-owner-v1', runtime=runtime,
+                source_root=TARGETS['owner_source'], config_sha256=protected.sha(raw),
+                catalog_sha256=protected.sha(catalog), python_sha256=python_pin)
+                and binding['config_sha256'] == pins[key]
+                and config.get('owner') == plan['request']['owner'],
+                'runtime_transition_owner_binding')
+    changed = {'source_head', 'source_sha256', 'policy_sha256'}
+    require({k:v for k,v in before.items() if k not in changed}
+            == {k:v for k,v in after.items() if k not in changed}
+            and before.get('source_head') == plan['legacy_snapshot']['source_head']
+            and after.get('source_head') == target['source_head']
+            and old_catalog == new_catalog
+            and old_python_sha256 == new_python_sha256,
+            'runtime_transition_fixed_context')
+    exact_source_pin = upgrade['new']['owner_source']['files'].get(
+        'tools/delivery/capacity-policy.json', {}).get('sha256')
+    require(protected.sha(old_policy) == before['policy_sha256'] == pins['old_policy_sha256']
+            and protected.sha(reviewed_policy) == after['policy_sha256']
+                == pins['new_policy_sha256'] == exact_source_pin,
+            'runtime_transition_policy')
+    retained = protected.record(saved_state)
+    require(protected.sha(saved_state) == pins['old_state_sha256']
+            and retained.get('owner') == before['owner']
+            and retained.get('config_sha256') == pins['old_config_sha256']
+            and type(retained.get('bindings')) is dict and type(retained.get('tasks')) is dict,
+            'runtime_transition_saved_state')
+    # Preserve every nested field and unknown historical field. Do not
+    # recalculate historical task/attempt policy evidence or clear holds.
+    next_state = protected.encoded(dict(retained, config_sha256=pins['new_config_sha256']))
+    require(protected.sha(next_state) == pins['new_state_sha256'],
+            'runtime_transition_new_state_pin')
+    return {'capacity-policy.json': reviewed_policy, 'current-owner.json': next_state}
+
+
 def qualify(plan_bytes, upgrade, admission, now):
     require(type(plan_bytes) is bytes and len(plan_bytes) <= 262144, 'plan_bytes')
     plan = protected.record(plan_bytes)
@@ -661,7 +758,19 @@ def qualify(plan_bytes, upgrade, admission, now):
             and plan['stop_witness_qualified'] is True and not plan['unresolved_effects']
             and plan['holds'] == ['REVIEWED_TYPED_UPGRADE_ROUTE_REQUIRED',
                                   'ACTUAL_HOST_CONFIRMATIONS_AND_READBACK_REQUIRED'], 'preflight_not_qualified')
-    fields(upgrade, 'version kind operation_id preflight_sha256 old new legacy_receipts')
+    manifest_keys = 'version kind operation_id preflight_sha256 old new legacy_receipts'
+    if 'runtime_transition' in upgrade:
+        manifest_keys += ' runtime_transition'
+        pins = upgrade['runtime_transition']
+        fields(pins, 'old_config_sha256 new_config_sha256 old_policy_sha256 '
+               'new_policy_sha256 old_state_sha256 new_state_sha256')
+        for pin in pins.values():
+            sha(pin)
+        require(pins['old_config_sha256'] != pins['new_config_sha256']
+                and pins['old_policy_sha256'] != pins['new_policy_sha256']
+                and pins['old_state_sha256'] != pins['new_state_sha256'],
+                'runtime_transition_distinct_images')
+    fields(upgrade, manifest_keys)
     require(type(upgrade['version']) is int and upgrade['version'] == 1
             and upgrade['kind'] == 'native-harness-upgrade-v1', 'upgrade_version')
     sha(upgrade['operation_id'])
@@ -727,6 +836,132 @@ def mutation_guard(host, plan, observation, admission):
     host.check_mutation_time()  # Final pure gate AFTER all guard I/O.
 
 
+def runtime_read(fd, name):
+    before = os.stat(name, dir_fd=fd, follow_symlinks=False)
+    require(stat.S_ISREG(before.st_mode) and before.st_nlink == 1
+            and not stat.S_IMODE(before.st_mode) & 0o7022
+            and 0 < before.st_size <= RUNTIME_LIMIT, 'runtime_file_custody')
+    raw = protected.regular(name, RUNTIME_LIMIT, dir_fd=fd)
+    after = os.stat(name, dir_fd=fd, follow_symlinks=False)
+    require(identity(before) == identity(after)
+            and (before.st_size, before.st_ctime_ns, before.st_mtime_ns)
+            == (after.st_size, after.st_ctime_ns, after.st_mtime_ns),
+            'runtime_file_drift')
+    return raw, before
+
+
+def runtime_side(operation, name):
+    sha(operation)
+    require(name in RUNTIME_FILES, 'runtime_fixed_file')
+    return '.native-upgrade-' + operation + '-' + name
+
+
+def runtime_stage(host, plan, upgrade, operation):
+    runtime = plan['legacy_snapshot']['runtime_path']
+    fd = host.runtime_fd(runtime)
+    current, stage, _ = locations('owner_config', operation)
+    _, new_source, _ = locations('owner_source', operation)
+
+    def sealed(directory, relative, max_bytes):
+        parent = host.path(directory + '/' + relative)
+        st = parent.lstat()
+        require(stat.S_ISREG(st.st_mode) and st.st_uid == host.uid
+                and not st.st_mode & 0o222, 'runtime_sealed_input_custody')
+        return protected.regular(parent, max_bytes)
+
+    catalog = 'catalog.json'
+    old_policy, p_stat = runtime_read(fd, RUNTIME_FILES[0])
+    saved_state, s_stat = runtime_read(fd, RUNTIME_FILES[1])
+    runtime_owner = ((host.uid, os.getegid()) if host.synthetic else (1000,1000))
+    for st in (p_stat, s_stat):
+        require((st.st_uid,st.st_gid) == runtime_owner, 'runtime_file_owner')
+    for name in RUNTIME_FILES:
+        try:
+            os.stat(runtime_side(operation, name), dir_fd=fd, follow_symlinks=False)
+        except FileNotFoundError:
+            continue
+        raise ValueError('runtime_transition_side_exists')
+    old_binding = sealed(current, 'binding.json', RUNTIME_LIMIT)
+    # The retained older venv is explicitly opaque in the established protocol.
+    # Reuse its root-sealed declared interpreter pin, without reopening or
+    # executing an old venv file that may be owned by the runtime user.
+    new = runtime_transition(plan, upgrade,
+        old_config=sealed(current, 'current.json', RUNTIME_LIMIT),
+        new_config=sealed(stage, 'current.json', RUNTIME_LIMIT),
+        old_policy=old_policy,
+        reviewed_policy=sealed(new_source, 'tools/delivery/capacity-policy.json', RUNTIME_LIMIT),
+        saved_state=saved_state,
+        old_binding=old_binding,
+        new_binding=sealed(stage, 'binding.json', RUNTIME_LIMIT),
+        old_catalog=sealed(current, catalog, RUNTIME_LIMIT),
+        new_catalog=sealed(stage, catalog, RUNTIME_LIMIT),
+        old_python_sha256=protected.record(old_binding)['python_sha256'],
+        new_python_sha256=upgrade['new']['owner_venv']['files']['bin/python']['sha256'])
+    return fd, new, dict(directory=asdict(identity(os.fstat(fd))), owner=plan['request']['owner'],
+        files={name:dict(uid=st.st_uid,gid=st.st_gid,mode=stat.S_IMODE(st.st_mode))
+                for name,st in zip(RUNTIME_FILES,(p_stat,s_stat))})
+
+
+def runtime_match(fd, name, expected, metadata):
+    raw, st = runtime_read(fd, name)
+    require(protected.sha(raw) == expected and
+            metadata == dict(uid=st.st_uid,gid=st.st_gid,mode=stat.S_IMODE(st.st_mode)),
+            'runtime_exact_image')
+    return raw
+
+
+def prepare_runtime_side(host, fd, operation, name, raw, metadata, guard):
+    side = runtime_side(operation, name)
+    guard()
+    tmp = os.open(side, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                  0o600, dir_fd=fd)
+    try:
+        if not host.synthetic:
+            guard()
+            os.fchown(tmp, metadata['uid'], metadata['gid'])
+        rest = memoryview(raw)
+        while rest:
+            guard()
+            size = os.write(tmp, rest)
+            require(size > 0, 'runtime_stage_write')
+            rest = rest[size:]
+        guard()
+        os.fchmod(tmp, metadata['mode'])
+    finally:
+        try:
+            os.fsync(tmp)
+        finally:
+            os.close(tmp)
+            os.fsync(fd)
+
+
+def exchange_runtime(host, fd, operation, name, old, new, metadata, guard):
+    side = runtime_side(operation, name)
+    rename = getattr(ctypes.CDLL(None, use_errno=True), 'renameat2', None)
+    require(rename is not None, 'runtime_exchange_unavailable')
+    runtime_match(fd, name, old, metadata)
+    runtime_match(fd, side, new, metadata)
+    guard()
+    # The fixed names are under cooperative custody; do not trust a snapshot
+    # taken before the service/lock guard's I/O. Fail before replacement if
+    # either name was changed during that guard; recheck the pure deadline
+    # after the last evidence reads.
+    runtime_match(fd, name, old, metadata)
+    runtime_match(fd, side, new, metadata)
+    host.check_mutation_time()
+    if rename(fd, os.fsencode(side), fd, os.fsencode(name), 2) != 0:
+        raise OSError(ctypes.get_errno(), 'runtime atomic exchange refused')
+    os.fsync(fd)
+    runtime_match(fd, name, new, metadata)
+    runtime_match(fd, side, old, metadata)
+
+
+def runtime_pins(upgrade, name):
+    stem = 'policy' if name == RUNTIME_FILES[0] else 'state'
+    pins = upgrade['runtime_transition']
+    return pins['old_'+stem+'_sha256'], pins['new_'+stem+'_sha256']
+
+
 def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
             publisher_config_custody=None, public_ca_pins=None, host=None):
     """One admitted attempt; never start services, retire legacy or auto-rollback.
@@ -773,12 +1008,23 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
             public_ca_pins_sha256=admission.public_ca_pins_sha256,
             host_scope='synthetic' if host.synthetic else 'production',
             runtime_path=plan['legacy_snapshot']['runtime_path'])
+        transition = None
+        if 'runtime_transition' in upgrade:
+            transition = runtime_stage(host, plan, upgrade, operation)
+            intent['runtime_transition_custody'] = transition[2]
         # Old-closure fence precedes the operation fence. A crash between them
         # still suppresses a new ID/preflight attempting the same old closure.
         mutation_guard(host, plan, quiescence, admission)
         host.create(old_fence, intent)
         mutation_guard(host, plan, quiescence, admission)
         host.create(receipt, intent)
+        def guard():
+            mutation_guard(host, plan, quiescence, admission)
+        if transition:
+            fd, inputs, metadata = transition
+            for name in RUNTIME_FILES:
+                prepare_runtime_side(host, fd, operation, name, inputs[name],
+                                     metadata['files'][name], guard)
         for role in TARGETS:
             require(time.time() < admission.expires_at, 'admission_expired')
             stopped(host, plan, quiescence, time.time())
@@ -789,8 +1035,13 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
             host.move(target, backup)
             mutation_guard(host, plan, quiescence, admission)
             host.move(stage, target)
+        if transition:
+            for name in RUNTIME_FILES:
+                old, new = runtime_pins(upgrade, name)
+                exchange_runtime(host, fd, operation, name, old, new,
+                                 metadata['files'][name], guard)
         readback = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody,
-                           public_ca_pins=public_ca_pins)
+                           public_ca_pins=public_ca_pins, _cutover=transition is not None)
         require(readback['installed_verified'] and readback['rollback_verified'], 'installed_readback_mismatch')
         mutation_guard(host, plan, quiescence, admission)
         host.create(result_path, dict(kind='native-upgrade-installed-v1', upgrade_sha256=upgrade_digest(upgrade),
@@ -798,7 +1049,66 @@ def execute(plan_bytes, upgrade, *, admission, quiescence, lock_custody=None,
         return readback
 
 
-def observe(upgrade, *, publisher_config_custody=None, public_ca_pins=None, host=None):
+def runtime_readback(host, upgrade, intent, *, moving=False, active=False):
+    operation = upgrade['operation_id']
+    unknown = dict.fromkeys(RUNTIME_FILES, 'unknown-or-mismatch')
+    custody = intent['runtime_transition_custody']
+    fields(custody, 'directory files owner')
+    fields(custody['files'], ' '.join(RUNTIME_FILES))
+    phases = dict(unknown)
+    with host.runtime_observation(intent['runtime_path'], custody['directory']) as fd:
+        for name in RUNTIME_FILES:
+            old, new = runtime_pins(upgrade, name)
+            side = runtime_side(operation, name)
+            metadata = custody['files'][name]
+            try:
+                if active and name == RUNTIME_FILES[1]:
+                    raw, st = runtime_read(fd, name)
+                    require(metadata == dict(uid=st.st_uid,gid=st.st_gid,mode=stat.S_IMODE(st.st_mode)),
+                            'runtime_active_metadata')
+                    state = protected.record(raw)
+                    require(state.get('owner') == custody['owner']
+                            and state.get('config_sha256') == upgrade['runtime_transition']['new_config_sha256']
+                            and type(state.get('bindings')) is dict and type(state.get('tasks')) is dict,
+                            'runtime_active_binding')
+                else:
+                    runtime_match(fd, name, new, metadata)
+                runtime_match(fd, side, old, metadata)
+                phases[name] = 'applied'
+                continue
+            except (OSError, ValueError, TypeError, KeyError):
+                pass
+            try:
+                runtime_match(fd, name, old, metadata)
+                try:
+                    runtime_match(fd, side, new, metadata)
+                except FileNotFoundError:
+                    pass
+                phases[name] = 'not-applied'
+            except (OSError, ValueError, TypeError, KeyError):
+                pass
+    if phases[RUNTIME_FILES[1]] == 'applied' and phases[RUNTIME_FILES[0]] != 'applied':
+        phases = unknown
+    canonical = False
+    if not moving:
+        try:
+            receipt = protected.record(protected.regular(host.path(
+                STATE + '/native-upgrade-' + operation + '.installed.json'), 32*1024*1024))
+            readback = receipt['readback']
+            canonical = (receipt['kind'] == 'native-upgrade-installed-v1'
+                    and receipt['upgrade_sha256'] == upgrade_digest(upgrade)
+                    and readback['operation_id'] == operation
+                    and readback['upgrade_sha256'] == receipt['upgrade_sha256']
+                    and readback['runtime_transition']['files'] == dict.fromkeys(RUNTIME_FILES, 'applied')
+                    and readback['installed_verified'] is True and readback['rollback_verified'] is True)
+        except (OSError, ValueError, TypeError, KeyError):
+            pass
+    return dict(files=phases, canonical_cutover_receipt_verified=canonical,
+                verified=(moving or canonical) and all(v == 'applied' for v in phases.values()))
+
+
+def observe(upgrade, *, publisher_config_custody=None, public_ca_pins=None, host=None,
+            _cutover=False, _active=False):
     """Read-only same-operation reconciliation. Never clear receipts or retry."""
     host = host or Host()
     operation = upgrade['operation_id']
@@ -865,7 +1175,17 @@ def observe(upgrade, *, publisher_config_custody=None, public_ca_pins=None, host
                 pass
         except (OSError, ValueError):
             publisher_ok = False
+    transition = None
+    if 'runtime_transition' in upgrade:
+        try:
+            require(intent_ok, 'runtime_transition_intent_required')
+            transition = runtime_readback(host, upgrade, intent, moving=_cutover, active=_active)
+        except (OSError, ValueError, TypeError, KeyError):
+            transition = dict(files=dict.fromkeys(RUNTIME_FILES, 'unknown-or-mismatch'),
+                              canonical_cutover_receipt_verified=False, verified=False)
+    runtime_ok = transition is None or transition['verified']
     return dict(operation_id=operation, upgrade_sha256=upgrade_digest(upgrade), closures=results,
+        **({} if transition is None else {'runtime_transition': transition}),
         host_scope='synthetic' if host.synthetic else 'production',
         intent_verified=intent_ok,
         legacy_receipts_verified=receipts_ok,
@@ -873,8 +1193,8 @@ def observe(upgrade, *, publisher_config_custody=None, public_ca_pins=None, host
         public_ca_selection_verified=public_ca_ok,
         publisher_observed_at=time.time() if publisher_ok else None,
         old_custody_coverage='directory-root-identity-only; publisher-old-config-file-hash',
-        installed_verified=intent_ok and receipts_ok and publisher_ok and public_ca_ok and all(row['installed'] == 'verified' for row in results.values()),
-        rollback_verified=intent_ok and publisher_ok and public_ca_ok and all(
+        installed_verified=runtime_ok and intent_ok and receipts_ok and publisher_ok and public_ca_ok and all(row['installed'] == 'verified' for row in results.values()),
+        rollback_verified=runtime_ok and intent_ok and publisher_ok and public_ca_ok and all(
             row['rollback'] == ('verified' if role == 'publisher_config' else 'retained-identity')
             for role,row in results.items()),
         active_observed=False, legacy_retired=False, replay_authorized=False)
@@ -889,7 +1209,7 @@ def verify_active(upgrade, *, publisher_config_custody=None, public_ca_pins=None
     """
     host = host or Host()
     before = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody,
-                     public_ca_pins=public_ca_pins)
+                     public_ca_pins=public_ca_pins, _active='runtime_transition' in upgrade)
     require(before['installed_verified'] and before['rollback_verified'], 'active_closure_mismatch')
     intent = protected.record(protected.regular(host.path(
         STATE + '/native-upgrade-' + upgrade['operation_id'] + '.intent.json'), 32*1024*1024))
@@ -900,7 +1220,7 @@ def verify_active(upgrade, *, publisher_config_custody=None, public_ca_pins=None
             and state.get('MainPID', '').isdigit() and int(state['MainPID']) > 0, 'service_not_active')
     require(host.process_bound(int(state['MainPID']), runtime), 'active_process_binding')
     after = observe(upgrade, host=host, publisher_config_custody=publisher_config_custody,
-                    public_ca_pins=public_ca_pins)
+                    public_ca_pins=public_ca_pins, _active='runtime_transition' in upgrade)
     require(after['installed_verified'] and after['rollback_verified'], 'active_readback_drift')
     require(host.service_state() == state and host.process_bound(int(state['MainPID']), runtime),
             'active_process_changed')
