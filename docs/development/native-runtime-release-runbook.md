@@ -66,9 +66,8 @@ tree `42abc1cbf160faf8744b2ee8ca6db0b4f555aeb1`.
 [UIF #140](https://github.com/maldous/uif/pull/140) updated the fixed
 source pair for that release. These are source results. The current production
 binding that invokes the composer with the custodian's inputs has not been
-verified. Neither have the protected
-source-bound config references and their independently established pins,
-the typed production package acceptance and its original Windmill operation,
-and exact installed #340 readback have not been verified. An older accepted
-source/shelf receipt is not a substitute. Reconcile any newer original with
+verified. Also unverified: the protected source-bound config references and
+independent pins, the typed production package acceptance and its original
+Windmill operation, and the exact installed #340 readback. An older accepted
+source or shelf receipt is not a substitute. Reconcile any newer original with
 the actual owner before acting.
