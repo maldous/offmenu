@@ -14,7 +14,8 @@ import sys
 import time
 from uuid import UUID
 
-CODE = Path('/usr/local/lib/offmenu-native-upgrade')
+# This is a fixed versioned root, not a selector or a caller-supplied path.
+CODE = Path('/usr/local/lib/offmenu-native-upgrade-v2')
 STATE = Path('/var/lib/offmenu-publisher/upgrade-ingress')
 SIGNERS = Path('/etc/offmenu-native-upgrade/allowed_signers')
 NAMESPACE = 'offmenu-foo-native-upgrade-v1'
