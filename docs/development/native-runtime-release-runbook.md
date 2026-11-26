@@ -43,8 +43,11 @@ or change the product release workflow.
    A tool login or historical job is not evidence of the current custodian or
    reviewer; use the actual recorded owner/recipient and original receipt.
    If those are unknown, ask for the existing custodian or original reference,
-   not the protected inputs. An interrupted or uncertain operation must be
-   reconciled against its original, not replaced with a new request.
+   not the protected inputs. Prefer a single prepared package for the exact
+   application original, retaining the authorized role snapshots, independent
+   review and digest receipt in their existing custody. An interrupted or
+   uncertain operation must be reconciled against that original, not replaced
+   with a new request or another approval for the same scope.
 4. **Read back the installation.** Record the original operation and its
    canonical installed receipt, and verify the active role closures and
    installed source head/tree against the reviewed package. A stopped
@@ -57,7 +60,7 @@ Report **source accepted** separately. If the producer binding or its inputs
 are not evidenced, report **pre-install blocked** with the exact missing item,
 not **waiting for transport approval** or **not installed** by inference.
 
-To verify the existing builder without production inputs, run this synthetic
+To verify the existing builder without production inputs, run these synthetic
 fixtures from a checked-out revision containing #344, as a non-root user:
 
 ```sh
@@ -75,11 +78,21 @@ installation.
 the owner-local composer. [OffMenu #343](https://github.com/maldous/offmenu/pull/343)
 extended the upgrade to preserve saved runtime state across its policy and
 configuration transition. [OffMenu #344](https://github.com/maldous/offmenu/pull/344)
-added the split-custody helper at head
+added the split-custody helper at merged OffMenu commit
 `f40db673ac8d1c39d6b32146198210a09b6ef309`, tree
 `1880f68de14946f5dd66fe231ae943e2abb77598`.
 [UIF #145](https://github.com/maldous/uif/pull/145) repinned the protected
 release source to that exact OffMenu pair; repinning does not deploy it.
+
+[OffMenu #346](https://github.com/maldous/offmenu/pull/346) changed only
+the fixed V2 verifier ingress selection. The [installed verifier readback](https://windmill.aldous.info/run/01a2193c-5eff-7d43-cb2b-e7a3fd9e1932?workspace=foo)
+and [loader readback](https://windmill.aldous.info/run/01a2193d-ecb1-caf1-0c48-294c69b39097?workspace=foo)
+established the exact V2 shelf and unchanged V1. The
+[installed module pin readback](https://windmill.aldous.info/run/01a21942-9923-5a74-5b09-f5f9f3f33aed?workspace=foo)
+also matched the selected #344 package preparation and #343 upgrade modules
+on that shelf. These are dated verifier and compatibility facts only, not
+permission to prepare a packet on another role's behalf or evidence of
+application acceptance or replacement.
 
 Independent detached source tests passed. An existing Foo read-only transition
 check for #344 preserved 6 bindings and 75 task records in its projected state;
