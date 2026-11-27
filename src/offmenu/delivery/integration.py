@@ -671,7 +671,7 @@ class Controller:
             current.update(status='publication-intent', action=None)
             return self._publication_checkpoint(current)
 
-    def consume_publisher_intent(self, expected_binding, intent, plan=None):
+    def consume_publisher_intent(self, expected_binding, intent, plan=None, *, protected_uif=None):
         """Reserve once under repository-owner.lock BEFORE HTTP; crash stays held.
 
         Protected helper admission pins expected_binding out of band. A matching
@@ -708,6 +708,11 @@ class Controller:
                     raise DeliveryError('No unconsumed durable publication intent')
                 pub['effect'] = 'unknown'
                 current['status'] = 'publication-reconciliation-required'
+            if protected_uif is not None:
+                from native_publication_outcome_join import ProtectedUIFPublicationConsume
+                if type(protected_uif) is not ProtectedUIFPublicationConsume:
+                    raise DeliveryError('Expected private UIF publication resolver')
+                protected_uif.check(self)
             self._publication_checkpoint(current)
             return True
 
@@ -972,7 +977,7 @@ def publisher_request(config, request):
     return _publisher_transaction_request(config,request,Path('/var/lib/offmenu-publisher/integration'))
 
 
-def _publisher_transaction_request(config,request,root):
+def _publisher_transaction_request(config,request,root,*,protected_uif=None):
     # Trusted in-process test seam; no wire/config-selected root or executable.
     pins = {'native_binding_sha256','native_runtime_sha256'}
     if isinstance(request,dict) and pins.intersection(request):
@@ -1003,10 +1008,10 @@ def _publisher_transaction_request(config,request,root):
     if readonly:
         controller.require_current_claim = True
         request = dict(request,op=request['op'].removeprefix('observe-'))
-    return _publisher_request(controller, config, request)
+    return _publisher_request(controller, config, request, protected_uif=protected_uif)
 
 
-def _publisher_request(controller, config, request):
+def _publisher_request(controller, config, request, *, protected_uif=None):
     if not isinstance(request, dict) or not isinstance(request.get('op'), str):
         raise DeliveryError('Invalid publisher request')
     operation = request['op']
@@ -1017,6 +1022,8 @@ def _publisher_request(controller, config, request):
     if operation not in shapes or set(request) != shapes[operation]:
         raise DeliveryError('Unsupported publisher request field')
     if isinstance(controller, ReleaseController):
+        if protected_uif is not None:
+            raise DeliveryError('Private UIF publication resolver is integration-only')
         if (config.get('version') != 2 or controller.binding['owner'] != config.get('logicalOwner')
             or fingerprint(controller.binding) != fingerprint(config['binding'])):
             raise DeliveryError('Release admission changed')
@@ -1065,7 +1072,8 @@ def _publisher_request(controller, config, request):
         intent = request['intent']
         if intent.get('kind') != 'merge-pr' and intent != expected:
             raise DeliveryError('Publisher exact consume mismatch')
-        return {'authorized': controller.consume_publisher_intent(fingerprint(binding), intent, plan)}
+        return {'authorized': controller.consume_publisher_intent(
+            fingerprint(binding), intent, plan, **({'protected_uif': protected_uif} if protected_uif is not None else {}))}
     if operation == 'freeze-pr':
         return controller.freeze_publication_pr(index, expected, request['number'])
     if operation == 'reconcile':
