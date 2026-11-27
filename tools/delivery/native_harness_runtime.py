@@ -738,44 +738,81 @@ def invocation_capability(value):
 
 
 async def fixed_invocation_wire(envelope):
-    """Only own sudo is reaped here; privileged descendants need helper proof."""
+    """Own local pipe endpoints only; privileged descendants need helper proof."""
     import asyncio
+    import os
+    from contextlib import ExitStack
+
     payload = json.dumps(envelope, sort_keys=True, ensure_ascii=True, allow_nan=False).encode()
     require(len(payload) <= 16384, 'publisher_invocation_request_bound')
-    process = await asyncio.create_subprocess_exec(*PUBLISHER_HELPER_ARGV,
-        cwd='/', env={'PATH': '/usr/bin:/bin', 'LANG': 'C.UTF-8'}, close_fds=True,
-        start_new_session=True, stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE)
-    async def read(stream):
-        raw = bytearray()
-        while True:
-            chunk = await stream.read(4096)
-            if not chunk:
-                return bytes(raw)
-            raw.extend(chunk)
-            require(len(raw) <= 65536, 'publisher_invocation_response_bound')
+    loop = asyncio.get_running_loop()
     tasks = []
-    try:
-        process.stdin.write(payload)
-        tasks = [asyncio.create_task(read(process.stdout)), asyncio.create_task(read(process.stderr)),
-                 asyncio.create_task(process.wait())]
-        await process.stdin.drain()
-        process.stdin.close()
-        stdout, _, code = await asyncio.wait_for(asyncio.gather(*tasks), timeout=25)
-        require(code == 0, 'publisher_invocation_transport_unknown')
-        return stdout
-    finally:
-        if process.returncode is None:
+    process = None
+    transports = []
+    with ExitStack() as pipes:
+        async def output_pipe():
+            read_fd, write_fd = os.pipe()
+            pipes.callback(os.close, write_fd)  # Parent copy only until subprocess creation.
             try:
-                process.kill()  # This caller owns sudo, NOT the privileged child tree.
-            except (ProcessLookupError, PermissionError):
-                pass
-        await asyncio.wait_for(process.wait(), timeout=3)
-        for task in tasks:
-            if not task.done():
-                task.cancel()
-        if tasks:
-            await asyncio.gather(*tasks, return_exceptions=True)
+                source = os.fdopen(read_fd, 'rb', buffering=0)
+            except BaseException:
+                os.close(read_fd)
+                raise
+            try:
+                reader = asyncio.StreamReader()
+                transport, _ = await loop.connect_read_pipe(
+                    lambda: asyncio.StreamReaderProtocol(reader), source)
+            except BaseException:
+                source.close()
+                raise
+            transports.append(transport)
+            return reader, write_fd
+
+        async def read(stream):
+            raw = bytearray()
+            while True:
+                chunk = await stream.read(4096)
+                if not chunk:
+                    return bytes(raw)
+                raw.extend(chunk)
+                require(len(raw) <= 65536, 'publisher_invocation_response_bound')
+
+        try:
+            async with asyncio.timeout(25):
+                stdout, stdout_fd = await output_pipe()
+                stderr, stderr_fd = await output_pipe()
+                process = await asyncio.create_subprocess_exec(*PUBLISHER_HELPER_ARGV,
+                    cwd='/', env={'PATH': '/usr/bin:/bin', 'LANG': 'C.UTF-8'}, close_fds=True,
+                    start_new_session=True, stdin=asyncio.subprocess.PIPE,
+                    stdout=stdout_fd, stderr=stderr_fd)
+                pipes.close()  # Child owns its output writers; parent no longer has any.
+                process.stdin.write(payload)
+                tasks = [asyncio.create_task(read(stdout)), asyncio.create_task(read(stderr)),
+                         asyncio.create_task(process.wait())]
+                await process.stdin.drain()
+                process.stdin.close()
+                result, _, code = await asyncio.gather(*tasks)
+                require(code == 0, 'publisher_invocation_transport_unknown')
+                return result
+        finally:
+            # Close caller-owned readers even if a privileged writer survived.
+            # This cannot establish privileged process cleanup.
+            for transport in transports:
+                transport.close()
+            for task in tasks:
+                if not task.done():
+                    task.cancel()
+            if process is not None:
+                process.stdin.close()
+                if process.returncode is None:
+                    try:
+                        process.kill()  # Only the caller's sudo process.
+                    except (ProcessLookupError, PermissionError):
+                        pass
+            if tasks:
+                await asyncio.gather(*tasks, return_exceptions=True)
+            if process is not None:
+                await asyncio.wait_for(process.wait(), timeout=3)
 
 
 def invocation_projection(module, value, envelope, capability, phase):
