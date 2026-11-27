@@ -362,6 +362,7 @@ class _Host:
         config = decode(raw, 1048576)
         require(CONFIG.stat().st_gid == 976, 'config_group')
         phase = association(config, inner)
+        self.protected_config = config
         manifest_raw = _read(CLOSURE, 0, 0o444, MANIFEST_LIMIT)
         manifest = validate_closure(manifest_raw, config['sourceHead'])
         files = manifest['files']
@@ -591,6 +592,11 @@ def _result(envelope, record):
                 receipt={'sha256': sha(wire(record)), 'body': record} if record else None)
 
 
+def uif_attempt_id(value):
+    return (type(value) is str and
+            re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}', value) is not None)
+
+
 def validate_result(value, envelope, closure_sha256):
     """Pure126 boundary: a body hash alone is NOT privileged authentication."""
     envelope = request(wire(envelope))
@@ -610,9 +616,18 @@ def validate_result(value, envelope, closure_sha256):
     require(exact(record, {'version', 'kind', 'intent', 'terminal'}) and type(record['version']) is int
             and record['version'] == 1 and record['kind'] == 'native-publisher-invocation-record-v1', 'receipt_shape')
     intent = record['intent']
-    require(exact(intent, {'operation_id', 'invocation_id', 'request', 'request_sha256', 'closure_sha256',
-                           'phase', 'supervisor_pid', 'supervisor_starttime'})
-            and intent['operation_id'] == value['operation_id'] and intent['invocation_id'] == value['invocation_id']
+    fields = {'operation_id', 'invocation_id', 'request', 'request_sha256', 'closure_sha256',
+              'phase', 'supervisor_pid', 'supervisor_starttime'}
+    require(exact(intent, fields) or exact(intent, fields | {'uif_publication'}), 'receipt_intent_shape')
+    if 'uif_publication' in intent:
+        seal = intent['uif_publication']
+        require(exact(seal, {'schema', 'handoff_sha256', 'fence', 'attempt_id'})
+                and seal['schema'] == 'uif.offmenu-native-publication-original/1'
+                and uif_attempt_id(seal['attempt_id'])
+                and hex64(seal['handoff_sha256']) and type(seal['fence']) is dict
+                and type(seal['fence'].get('generation')) is int and seal['fence']['generation'] > 0
+                and intent['phase'] == 'integration', 'receipt_uif_publication')
+    require(intent['operation_id'] == value['operation_id'] and intent['invocation_id'] == value['invocation_id']
             and intent['request'] == envelope['request'] and intent['request_sha256'] == value['request_sha256']
             and intent['closure_sha256'] == closure_sha256 and hex64(closure_sha256)
             and intent['phase'] in ('integration', 'release')
@@ -644,7 +659,7 @@ def validate_result(value, envelope, closure_sha256):
     return value
 
 
-def _invoke(raw, host):
+def _invoke(raw, host, *, resolve_uif_publication=None):
     envelope = request(raw)
     if type(host) is not _Host:
         # Disposable in-process tests only; there is no executable selector.
@@ -682,6 +697,7 @@ def _invoke(raw, host):
         entries = list(directory.iterdir())
         require(len(entries) <= 256, 'invocation_custody_bound')
         historical = set()
+        ready_observed = False
         for item in entries:
             if item.name.startswith('native-invocation-') and item.name.endswith('.json'):
                 previous = decode(_read(item, uid, 0o600))
@@ -695,6 +711,19 @@ def _invoke(raw, host):
                 validate_result(_result(prior_envelope, previous), prior_envelope, old_closure)
                 require(previous['terminal'] is not None and previous['terminal']['child_tree_gone'] is True,
                         'prior_invocation_unresolved')
+                require('uif_publication' not in previous['intent'],
+                        'uif_publication_requires_same_original_readback')
+                if resolve_uif_publication is not None:
+                    # The installed harness records an explicit readiness check
+                    # first. Only the terminal read-only ready observation may
+                    # precede a new bridged publisher effect.
+                    terminal = previous['terminal']
+                    response = terminal['response']
+                    require(previous['intent']['request']['mode'] == 'observe'
+                            and terminal['outcome'] == 'succeeded' and response is not None
+                            and response['status'] == 'ready',
+                            'uif_publication_requires_same_original_readback')
+                    ready_observed = True
                 if grant and any(r['invocation_id'] == prior_envelope['invocation_id'] for r in grant['receipts']):
                     terminal = previous['terminal']
                     require((terminal['response'] is not None and terminal['response']['status'] not in ('pending','unknown'))
@@ -709,12 +738,35 @@ def _invoke(raw, host):
                                   closure_sha256=closure, phase=phase, supervisor_pid=os.getpid(),
                                   supervisor_starttime=_starttime(os.getpid())))
         require(type(record['intent']['supervisor_starttime']) is int, 'supervisor_identity')
+        if resolve_uif_publication is not None:
+            require(ready_observed, 'uif_publication_requires_ready_original_observation')
+            require(phase == 'integration' and envelope['request']['mode'] in ('step', 'publish'),
+                    'uif_publication_effect_scope')
+            # This callback is held only by the existing protected publisher
+            # owner, never part of the submitted invocation envelope.
+            from native_publication_outcome_join import seal_native_publication
+            def observe_uif_seal():
+                handoff, protected_pin, current_fence, protected_attempt_id = resolve_uif_publication()
+                return seal_native_publication(
+                    inner=envelope['request'], protected_config=host.protected_config,
+                    handoff_raw=handoff, protected_owner_handoff_sha256=protected_pin,
+                    current_fence=current_fence, protected_attempt_id=protected_attempt_id)
+            record['intent']['uif_publication'] = observe_uif_seal()
         _write(path, record)  # Before spawn; a crash retains an unresolved intent.
+        if resolve_uif_publication is not None:
+            require(observe_uif_seal() == record['intent']['uif_publication'],
+                    'uif_publication_fence_changed_before_spawn')
         record['terminal'] = _supervise(envelope['request'], phase, host)
         _write(path, record)  # A failed write leaves the prior intent, never a success reply.
         return existing()  # Actual durable bytes, not the in-memory proposed receipt.
     finally:
         os.close(lock)
+
+
+def _invoke_uif_publication(raw, resolve_protected_owner_original):
+    """Existing protected owner adapter only; no CLI/token/config request input."""
+    require(callable(resolve_protected_owner_original), 'publisher_owner_intake_required')
+    return _invoke(raw, _Host(), resolve_uif_publication=resolve_protected_owner_original)
 
 
 def invoke(raw):

@@ -558,3 +558,183 @@ class InvocationTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class NativePublicationJoinTests(unittest.TestCase):
+    def test_actual_same_original_and_destination_join_only_exact_merge(self):
+        from native_publication_outcome_join import join_native_publication, Controller, ProtectedUIFPublicationConsume
+        from unittest.mock import Mock
+        with tempfile.TemporaryDirectory() as scratch:
+            host = SyntheticHost(scratch)
+            host.prepare()
+            config, envelope = fixture()
+            b = config['binding']
+            inner = envelope['request']
+            fence = {'scope':{'key':{'issue_id':inner['issue_id'],'project_id':inner['project_id']}},
+                     'source': {'repository':b['repository'],'branch':'develop','head':b['base']},
+                     'generation':2}
+            handoff = dict(schema='uif.native-owner-candidate/1',publisher='offmenu-cloud',
+                issue_id=inner['issue_id'],fence=fence,binding={'kind':'git','issue_id':inner['issue_id'],
+                'repo':b['repository'],'base':'develop','branch':b['head_branch'],'candidate':b['head']},
+                accepted_review_sha256='1'*64,candidate=b['head'],tree=b['tree'],parent=b['base'],
+                bundle=b['head']+'.bundle',bundle_sha256='2'*64,
+                existing_publication_intent=None,existing_publication_receipt=None)
+            # Exact producer wire from UIF handoff_store.wire, independent of
+            # OffMenu's newline-terminated packet encoder.
+            raw=json.dumps(handoff,sort_keys=True,separators=(",",":"),allow_nan=False).encode()
+            self.assertFalse(raw.endswith(b'\n'))
+            c=object.__new__(Controller)
+            c.binding={**b,'version':1,'pr_number':42}
+            # Fixture binds the exact integration packet to the exact Controller.
+            # Observe the same original created by the synthetic supervisor.
+            config['binding']=c.binding
+            host.config=config
+            host.protected_config=config
+            inner['operation_id']=module.fingerprint(c.binding)
+            envelope=dict(envelope,invocation_id=str(uuid4()),mode='invoke')
+            ended=terminal(inner)
+            ended['response']['status']='verified'
+            ended['response_sha256']=module.fingerprint(ended['response'])
+            pin=module.sha(raw)
+            attempt="synthetic-attempt"
+            resolve=Mock(return_value=(raw,pin,fence,attempt))
+            poll=dict(envelope,invocation_id=str(uuid4()),request={**inner,'mode':'observe'})
+            with patch.object(module,'_supervise',return_value=terminal(poll['request'])):
+                ready=module._invoke(module.wire(poll),host)
+            self.assertEqual(ready['response']['status'],'ready')
+            for bad_attempt in ('attempt-é', 'attempt id', 'a'*129):
+                with self.subTest(bad_attempt=bad_attempt):
+                    original_path=host.directory/('native-invocation-'+envelope['invocation_id']+'.json')
+                    with patch.object(module,'_supervise',side_effect=AssertionError('no malformed attempt spawn')):
+                        with self.assertRaisesRegex(module.InvocationHold,'owner_fence_attempt'):
+                            module._invoke(module.wire(envelope), host,
+                                resolve_uif_publication=lambda:(raw,pin,fence,bad_attempt))
+                    self.assertFalse(original_path.exists())
+            def spawn(*args):
+                record=module.decode((host.directory/('native-invocation-'+envelope['invocation_id']+'.json')).read_bytes())
+                self.assertIsNone(record['terminal'])
+                self.assertEqual(record['intent']['uif_publication']['handoff_sha256'],pin)
+                self.assertEqual(record['intent']['uif_publication']['fence'],fence)
+                self.assertEqual(record['intent']['uif_publication']['attempt_id'],attempt)
+                from contextlib import nullcontext
+                c.directory=c.claim_root=host.directory
+                c.key=inner['operation_id']
+                c.ownership=lambda:nullcontext()
+                action=dict(kind='merge-pr',repository=b['repository'],pr_number=42,
+                    expected_head_sha=b['head'],expected_base_sha=b['base'],expected_head_branch=b['head_branch'])
+                intent={**action,'merge_method':'merge','intent_sha256':module.fingerprint(action)}
+                state=dict(action=action,merge_effect='pending',qualification_sha256='synthetic')
+                committed=Mock()
+                c.status=lambda:copy.deepcopy(state)
+                c._publication_checkpoint=committed
+                check=Mock(side_effect=[{'current':False},{'current':True}])
+                with self.assertRaisesRegex(module.InvocationHold,'protected_consume_context'):
+                    ProtectedUIFPublicationConsume(envelope=envelope,closure_sha256='1'*64,
+                        seal=record['intent']['uif_publication'],attempt_id='another-attempt',resolve_current=check)
+                check.assert_not_called()
+                capability=ProtectedUIFPublicationConsume(envelope=envelope,closure_sha256='1'*64,
+                    seal=record['intent']['uif_publication'],attempt_id=attempt,resolve_current=check)
+                real_read=module._read
+                with patch('offmenu.delivery.integration.read_claim',return_value={'binding_sha256':c.key}), \
+                     patch.object(module,'_read',side_effect=lambda path,uid,mode,max_size=module.LIMIT:
+                                  real_read(path,os.getuid(),mode,max_size)):
+                    with self.assertRaisesRegex(module.InvocationHold,'protected_consume_fence_not_current'):
+                        c.consume_publisher_intent(c.key,intent,protected_uif=capability)
+                    committed.assert_not_called()
+                    self.assertTrue(c.consume_publisher_intent(c.key,intent,protected_uif=capability))
+                committed.assert_called_once()
+                self.assertEqual(check.call_args.kwargs,{'fence':fence,'attempt_id':attempt})
+                return ended
+            write=module._write
+            def lost_ack(path,value):
+                write(path,value)
+                if value['terminal'] is not None:
+                    raise OSError('lost terminal acknowledgement')
+            with patch.object(module,'_supervise',side_effect=spawn),patch.object(module,'_write',side_effect=lost_ack):
+                with self.assertRaisesRegex(OSError,'lost terminal acknowledgement'):
+                    module._invoke(module.wire(envelope),host,resolve_uif_publication=resolve)
+            envelope['mode']='observe'
+            with patch.object(module,'_supervise',side_effect=AssertionError('no replay')):
+                observed=module._invoke(module.wire(envelope),host,resolve_uif_publication=resolve)
+                competing=dict(envelope,mode='invoke',invocation_id=str(uuid4()))
+                with self.assertRaisesRegex(module.InvocationHold,'same_original_readback'):
+                    module._invoke(module.wire(competing),host,resolve_uif_publication=resolve)
+            self.assertEqual(resolve.call_count,2)
+            c.key=inner['operation_id']
+            c.status=lambda: {'status':'merge-reconciliation-required','qualification_sha256':'fixture'}
+            merge='8'*40
+            destination=dict(observed_at=time.time(),publisher_owner=b['owner'],
+                github=dict(repository=b['repository'],number=42,merged=True,merge_commit_sha=merge),
+                merge_commit=dict(sha=merge,parents=[b['base'],b['head']],tree=b['tree']),
+                develop_contains_merge=True)
+            args=dict(current_fence=fence,handoff_raw=raw,protected_owner_handoff_sha256=module.sha(raw),
+                envelope=envelope,result=observed,closure_sha256='1'*64,protected_config=config,
+                protected_attempt_id=attempt,
+                controller=c,destination_snapshot=destination)
+            control=Mock()
+            value=join_native_publication(**args)
+            control(value)
+            self.assertEqual(value['publication_original_id'],inner['operation_id'])
+            self.assertEqual(value['publication_receipt_sha256'],observed['receipt']['sha256'])
+            self.assertEqual(value['fence'],fence)
+            for bad_attempt in ('attempt-é', 'attempt id', 'a'*129):
+                corrupt=copy.deepcopy(observed)
+                corrupt['receipt']['body']['intent']['uif_publication']['attempt_id']=bad_attempt
+                corrupt['receipt']['sha256']=module.sha(module.wire(corrupt['receipt']['body']))
+                with self.assertRaisesRegex(module.InvocationHold,'receipt_uif_publication'):
+                    module.validate_result(corrupt,envelope,'1'*64)
+            for changes in ({'closure_sha256':'f'*64}, {'protected_attempt_id':'another-attempt'},
+                {'current_fence':{**fence,'generation':3}},
+                {'destination_snapshot':{**destination,'develop_contains_merge':False}},
+                {'destination_snapshot':{**destination,'merge_commit':{**destination['merge_commit'],'tree':'0'*40}}}):
+                with self.assertRaises(module.InvocationHold):
+                    join_native_publication(**{**args,**changes})
+            successor={**fence,'generation':3}
+            successor_raw=json.dumps({**handoff,'fence':successor},sort_keys=True,
+                separators=(",",":"),allow_nan=False).encode()
+            with self.assertRaisesRegex(module.InvocationHold,'owner_original_not_verified'):
+                join_native_publication(**{**args,'current_fence':successor,'handoff_raw':successor_raw,
+                    'protected_owner_handoff_sha256':module.sha(successor_raw)})
+            legacy=copy.deepcopy(observed)
+            del legacy['receipt']['body']['intent']['uif_publication']
+            legacy['receipt']['sha256']=module.sha(module.wire(legacy['receipt']['body']))
+            with self.assertRaisesRegex(module.InvocationHold,'owner_original_not_verified'):
+                join_native_publication(**{**args,'result':legacy})
+            other=module.wire(handoff)
+            with self.assertRaisesRegex(module.InvocationHold, 'owner_handoff_scope'):
+                join_native_publication(**{**args,'handoff_raw':other,
+                    'protected_owner_handoff_sha256':module.sha(other)})
+            for field in ('accepted_review_sha256','bundle_sha256'):
+                changed=raw.replace(b'1'*64 if field=='accepted_review_sha256' else b'2'*64,b'9'*64)
+                with self.assertRaisesRegex(module.InvocationHold,'owner_handoff_pin'):
+                    join_native_publication(**{**args,'handoff_raw':changed})
+            control.assert_called_once_with(value)
+
+            # An independently observed holder change after durable intent,
+            # before process launch, cannot launch or substitute the new fence.
+            for label, changed_evidence in (
+                ('fence',(successor_raw,module.sha(successor_raw),successor,attempt)),
+                ('attempt',(raw,pin,fence,'another-attempt')),
+            ):
+                host.directory=Path(scratch)/('separate-transaction-fixture-'+label)
+                host.prepare()
+                stale=dict(envelope,mode='invoke',invocation_id=str(uuid4()))
+                resolve=Mock(side_effect=[(raw,pin,fence,attempt),changed_evidence])
+                with patch.object(module,'_supervise',side_effect=AssertionError('missing readiness')):
+                    with self.assertRaisesRegex(module.InvocationHold,'requires_ready_original_observation'):
+                        module._invoke(module.wire(stale),host,resolve_uif_publication=resolve)
+                resolve.assert_not_called()
+                self.assertFalse(list(host.directory.glob('native-invocation-*.json')))
+                poll={**poll,'invocation_id':str(uuid4())}
+                with patch.object(module,'_supervise',return_value=terminal(poll['request'])):
+                    ready=module._invoke(module.wire(poll),host)
+                self.assertEqual(ready['response']['status'],'ready')
+                with patch.object(module,'_supervise',side_effect=AssertionError('no stale spawn')):
+                    with self.assertRaisesRegex(module.InvocationHold,'fence_changed_before_spawn'):
+                        module._invoke(module.wire(stale),host,resolve_uif_publication=resolve)
+                    retained=module._invoke(module.wire({**stale,'mode':'observe'}),host,
+                                             resolve_uif_publication=resolve)
+                self.assertEqual(retained['status'],'unknown')
+                self.assertEqual(retained['receipt']['body']['intent']['uif_publication']['fence'],fence)
+                self.assertIsNone(retained['receipt']['body']['terminal'])
+                self.assertEqual(resolve.call_count,2)
